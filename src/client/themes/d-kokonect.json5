@@ -1,18 +1,18 @@
 {
-	id: '8050783a-7f63-445a-b270-36d0f6ba1677',
+	id: 'da73e355-3f13-4f0d-8202-d0946716601a',
 
-	name: 'Mi Dark',
-	author: 'syuilo',
-	desc: 'Default light theme',
+	name: 'Kokonect Dark',
+	author: 'noridev',
+	desc: 'Kokonect default dark theme',
 
 	base: 'dark',
 
 	props: {
-		bg: '#232323',
+		bg: '#131313',
 		fg: 'rgb(199, 209, 216)',
 		fgHighlighted: '#fff',
 		divider: 'rgba(255, 255, 255, 0.14)',
-		panel: '#2d2d2d',
+		panel: '#1a1a1a',
 		panelShadow: '" 0 8px 24px rgb(0 0 0 / 25%)',
 		panelHeaderBg: '@panel',
 		panelHeaderDivider: '@divider',

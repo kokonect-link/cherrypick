@@ -3,7 +3,7 @@
 
 	name: 'Mi Light',
 	author: 'syuilo',
-	desc: 'Default light theme',
+	desc: 'Misskey default light theme',
 
 	base: 'light',
 
