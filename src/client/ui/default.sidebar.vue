@@ -32,7 +32,8 @@
 	</MkA>
 	<div class="divider"></div>
 	<div class="foo">
-		<MkEmoji :normal="true" :no-style="true" emoji="🍮🍮🍮"/>
+		<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+		<p style="font-size:10px;"><b><span style="color: #ffabbc;">KOKO</span><span style="color: #aaf500;">NECT</span></b></p>
 	</div>
 	<!--<MisskeyLogo class="misskey"/>-->
 </div>

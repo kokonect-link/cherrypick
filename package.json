@@ -1,7 +1,7 @@
 {
 	"name": "misskey",
 	"author": "noridev <support@kokonect.link>, syuilo <syuilotan@yahoo.co.jp>",
-	"version": "12.76.0-noridev",
+	"version": "12.76.0-noridev.1",
 	"codename": "indigo",
 	"repository": {
 		"type": "git",
