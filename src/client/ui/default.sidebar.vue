@@ -32,7 +32,7 @@
 	</MkA>
 	<div class="divider"></div>
 	<div class="foo">
-		<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+		<MkEmoji :normal="true" :no-style="true" emoji="🍮🍮🍮"/>
 	</div>
 	<!--<MisskeyLogo class="misskey"/>-->
 </div>
