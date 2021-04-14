@@ -9,7 +9,7 @@
 	kind: 'light',
 
 	props: {
-		accent: '#ffabbc',
+		accent: '#ffa9c3',
 		accentDarken: ':darken<10<@accent',
 		accentLighten: ':lighten<10<@accent',
 		focus: ':alpha<0.3<@accent',
@@ -58,7 +58,7 @@
 		listItemHoverBg: 'rgba(0, 0, 0, 0.03)',
 		driveFolderBg: ':alpha<0.3<@accent',
 		wallpaperOverlay: 'rgba(255, 255, 255, 0.5)',
-		badge: '#ffabbc',
+		badge: '#ffa9c3',
 		messageBg: '@panel',
 		success: '#86b300',
 		error: '#ec4137',
