@@ -38,6 +38,11 @@
 				<button class="item _button post" @click="post">
 					<Fa :icon="faPencilAlt" fixed-width/><span class="text">{{ $ts.note }}</span>
 				</button>
+				<div class="divider"></div>
+				<div class="foo">
+					<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+					<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #b4f1fc;">NECT</span></b></p>
+				</div>
 			</div>
 		</nav>
 	</transition>
