@@ -1,5 +1,5 @@
 {
-	id: 'da73e355-3f13-4f0d-8202-d0946716601a',
+	id: 'da73e355-3f13-4f0d-8202-d0946716601b',
 
 	name: 'Kokonect Dark',
 	author: 'noridev',
@@ -19,7 +19,7 @@
 		infoFg: '@accent',
 		infoBg: 'rgb(0, 0, 0)',
 		header: ':alpha<0.7<@panel',
-		navBg: '#363636',
+		navBg: '@panel',
 		renote: '@accent',
 		mention: '#da6d35',
 		mentionMe: '#d44c4c',
