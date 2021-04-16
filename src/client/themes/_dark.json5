@@ -3,7 +3,7 @@
 {
 	id: 'dark',
 
-	name: 'Kokonect Dark',
+	name: 'Dark',
 	author: 'noridev',
 	desc: 'Kokonect default dark theme',
 	kind: 'dark',

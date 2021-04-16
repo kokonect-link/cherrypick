@@ -3,7 +3,7 @@
 {
 	id: 'light',
 
-	name: 'Kokonect Light',
+	name: 'Light',
 	author: 'noridev',
 	desc: 'Kokonect default light theme',
 	kind: 'light',

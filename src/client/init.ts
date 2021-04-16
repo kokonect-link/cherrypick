@@ -38,8 +38,8 @@ window.onunhandledrejection = null;
 // 後方互換性のため。
 // TODO: そのうち消す
 if ((typeof ColdDeviceStorage.get('lightTheme') === 'string') || (typeof ColdDeviceStorage.get('darkTheme') === 'string')) {
-	ColdDeviceStorage.set('lightTheme', require('@client/themes/syuilo/l-light.json5'));
-	ColdDeviceStorage.set('darkTheme', require('@client/themes/syuilo/d-dark.json5'));
+	ColdDeviceStorage.set('lightTheme', require('@client/themes/l-kokonect.json5'));
+	ColdDeviceStorage.set('darkTheme', require('@client/themes/d-kokonect.json5'));
 }
 
 if (_DEV_) {
