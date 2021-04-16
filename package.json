@@ -180,11 +180,7 @@
 		"lookup-dns-cache": "2.1.0",
 		"markdown-it": "12.0.5",
 		"markdown-it-anchor": "7.1.0",
-<<<<<<< HEAD
-		"matter-js": "0.16.1",
-=======
 		"matter-js": "0.17.1",
->>>>>>> upstream/develop
 		"mfm-js": "0.15.0",
 		"mocha": "8.3.2",
 		"moji": "0.5.1",
