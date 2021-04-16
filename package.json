@@ -1,11 +1,11 @@
 {
 	"name": "misskey",
 	"author": "noridev <support@kokonect.link>, syuilo <syuilotan@yahoo.co.jp>",
-	"version": "12.76.0-noridev.1",
+	"version": "12.76.1-hina.1",
 	"codename": "indigo",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/noridev/misskey.git"
+		"url": "https://github.com/kokonect-link/misskey.git"
 	},
 	"main": "./index.js",
 	"private": true,
@@ -181,7 +181,7 @@
 		"markdown-it": "12.0.4",
 		"markdown-it-anchor": "7.1.0",
 		"matter-js": "0.16.1",
-		"mfm-js": "0.14.1",
+		"mfm-js": "0.15.0",
 		"mocha": "8.3.2",
 		"moji": "0.5.1",
 		"ms": "2.1.3",
