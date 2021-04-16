@@ -15,12 +15,10 @@ export const darkTheme: Theme = require('@client/themes/_dark.json5');
 export const themeProps = Object.keys(lightTheme.props).filter(key => !key.startsWith('X'));
 
 export const builtinThemes = [
-//	require('@client/themes/l-kokonect.json5'),
 	require('@client/themes/syuilo/l-light.json5'),
 	require('@client/themes/syuilo/l-apricot.json5'),
 	require('@client/themes/syuilo/l-rainy.json5'),
 
-//	require('@client/themes/d-kokonect.json5'),
 	require('@client/themes/syuilo/d-dark.json5'),
 	require('@client/themes/syuilo/d-persimmon.json5'),
 	require('@client/themes/syuilo/d-black.json5'),
