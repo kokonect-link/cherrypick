@@ -386,6 +386,12 @@ export default defineComponent({
 				border-top: solid 0.5px var(--divider);
 			}
 
+			> .foo {
+				text-align: center;
+				padding: 8px 0 16px 0;
+				opacity: 0.5;
+			}
+
 			> .item {
 				position: relative;
 				display: block;
