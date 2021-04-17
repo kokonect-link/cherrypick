@@ -722,6 +722,12 @@ notSpecifiedMentionWarning: "수신자가 선택되지 않은 멘션이 있어�
 info: "정보"
 userInfo: "유저 정보"
 unknown: "알 수 없음"
+onlineStatus: "온라인 상태"
+hideOnlineStatus: "온라인 상태 숨기기"
+hideOnlineStatusDescription: "온라인 상태를 숨기면, 검색과 같은 일부 기능에 영향을 미칠 수 있습니다."
+online: "온라인"
+active: "활동 중"
+offline: "오프라인"
 
 _email:
   _follow:
@@ -1602,7 +1608,7 @@ _notification:
     followRequestAccepted: "팔로우 요청이 승인되었을 때"
     groupInvited: "그룹에 초대되었을 때"
     app: "연동된 앱을 통한 알림"
-
+    
 _deck:
   alwaysShowMainColumn: "메인 칼럼 항상 표시"
   columnAlign: "칼럼 정렬"

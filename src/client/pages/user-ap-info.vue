@@ -22,7 +22,7 @@
 				</FormKeyValueView>
 				<FormKeyValueView>
 					<template #key>Shared Inbox</template>
-					<template #value><span class="_monospace">{{ ap.sharedInbox }}</span></template>
+					<template #value><span class="_monospace">{{ ap.sharedInbox || ap.endpoints.sharedInbox }}</span></template>
 				</FormKeyValueView>
 				<FormKeyValueView>
 					<template #key>Outbox</template>
@@ -43,6 +43,9 @@
 			<FormObjectView tall :value="ap">
 				<span>Raw</span>
 			</FormObjectView>
+			<FormGroup>
+				<FormLink :to="`https://${user.host}/.well-known/webfinger?resource=acct:${user.username}`" external>WebFinger</FormLink>
+			</FormGroup>
 			<FormLink v-if="user.host" :to="`/instance-info/${user.host}`">{{ $ts.instanceInfo }}<template #suffix>{{ user.host }}</template></FormLink>
 			<FormKeyValueView v-else>
 				<template #key>{{ $ts.instanceInfo }}</template>
