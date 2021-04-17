@@ -337,7 +337,7 @@ export default defineComponent({
 		position: fixed;
 		z-index: 1000;
 		bottom: 0;
-		padding: 16px;
+//	padding: 16px;
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
@@ -351,13 +351,14 @@ export default defineComponent({
 			flex: 1;
 			padding: 0;
 			margin: auto;
-			height: 64px;
-			border-radius: 8px;
+			height: 80px;
+	//	border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
+			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
 			&:not(:last-child) {
-				margin-right: 12px;
+	//		margin-right: 12px;
 			}
 
 			@media (max-width: 400px) {
@@ -390,7 +391,7 @@ export default defineComponent({
 			}
 
 			> * {
-				font-size: 22px;
+				font-size: 18px;
 			}
 
 			&:disabled {
