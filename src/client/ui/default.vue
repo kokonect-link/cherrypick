@@ -351,7 +351,7 @@ export default defineComponent({
 			flex: 1;
 			padding: 0;
 			margin: auto;
-			height: 80px;
+			height: 50px;
 	//	border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
