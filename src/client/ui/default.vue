@@ -35,6 +35,8 @@
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
+	<button v-if="isMobile" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
+
 	<transition name="tray-back">
 		<div class="tray-back _modalBg"
 			v-if="widgetsShowing"
@@ -46,8 +48,6 @@
 	<transition name="tray">
 		<XWidgets v-if="widgetsShowing" class="tray"/>
 	</transition>
-
-	<button v-if="$i" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
 
 	<XCommon/>
 </div>
@@ -338,7 +338,7 @@ export default defineComponent({
 	> .post {
 			position: fixed;
 			z-index: 1000;
-			bottom: 60px calc(env(safe-area-inset-bottom) + 80px);
+			bottom: 50px;
 			width: 55px;
 			height: 55px;
 			border-radius: 100%;
