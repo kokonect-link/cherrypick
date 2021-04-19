@@ -338,7 +338,7 @@ export default defineComponent({
 	> .post {
 			position: fixed;
 			z-index: 1000;
-			bottom: 50px 0 calc(env(safe-area-inset-bottom) + 60px);
+			bottom: 20px calc(env(safe-area-inset-bottom) + 40px);
 			width: 55px;
 			height: 55px;
 			border-radius: 100%;
