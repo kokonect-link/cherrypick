@@ -30,7 +30,7 @@
 		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><Fa :icon="faHome"/></button>
 		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
-		<button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button>
+		<!-- <button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button> -->
 	</div>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
@@ -46,6 +46,8 @@
 	<transition name="tray">
 		<XWidgets v-if="widgetsShowing" class="tray"/>
 	</transition>
+
+	<button v-if="$i" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
 
 	<XCommon/>
 </div>
@@ -274,6 +276,26 @@ export default defineComponent({
 			}
 		}
 
+		> .post,
+		> .nav {
+			position: fixed;
+			z-index: 1000;
+			bottom: 32px;
+			width: 64px;
+			height: 64px;
+			border-radius: 100%;
+			box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+			font-size: 22px;
+			
+			@media (min-width: ($nav-hide-threshold + 1px)) {
+				display: none;
+			}
+		}
+		
+		> .post {
+			right: 32px;
+		}
+
 		> .main {
 			min-width: 0;
 			width: 750px;
@@ -337,7 +359,7 @@ export default defineComponent({
 		position: fixed;
 		z-index: 1000;
 		bottom: 0;
-	//	padding: 16px;
+		//	padding: 16px;
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
@@ -349,16 +371,16 @@ export default defineComponent({
 		> .button {
 			position: relative;
 			flex: 1;
-			padding: 0;
+			//	padding: 0;
 			margin: auto;
 			height: 50px;
-			//border-radius: 8px;
+			//	border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
 			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
 			&:not(:last-child) {
-				//margin-right: 12px;
+				//	margin-right: 12px;
 			}
 
 			@media (max-width: 300px) {
