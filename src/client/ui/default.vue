@@ -337,7 +337,7 @@ export default defineComponent({
 		position: fixed;
 		z-index: 1000;
 		bottom: 0;
-		//	padding: 16px;
+	//	padding: 16px;
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
@@ -352,16 +352,16 @@ export default defineComponent({
 			padding: 0;
 			margin: auto;
 			height: 50px;
-			//	border-radius: 8px;
+			//border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
 			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
 			&:not(:last-child) {
-				margin-right: 12px;
+				//margin-right: 12px;
 			}
 
-			@media (max-width: 400px) {
+			@media (max-width: 300px) {
 				height: 60px;
 
 				&:not(:last-child) {
