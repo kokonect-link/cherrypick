@@ -25,16 +25,12 @@
 		</div>
 	</div>
 
-	<div class="floatbtn" v-if="isMobile">
-                <button v-if="$i" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
-        </div>
-
 	<div class="buttons" v-if="isMobile">
-		<button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
-		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><Fa :icon="faHome"/></button>
-		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
-		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
-		<!-- <button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button> -->
+		<button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><i class="fas fa-home"></i></button>
+		<button class="button notifications _button" @click="$router.push('/my/notifications')"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button widget _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
+		<button class="button post _button" @click="post"><i class="fas fa-pencil-alt"></i></button>
 	</div>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
@@ -57,8 +53,6 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue';
-import { faLayerGroup, faBars, faHome, faCircle, faWindowMaximize, faExpand, faPencilAlt, faCompress } from '@fortawesome/free-solid-svg-icons';
-import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import XSidebar from './default.sidebar.vue';
@@ -90,7 +84,6 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
-			faLayerGroup, faBars, faBell, faHome, faCircle, faPencilAlt,
 		};
 	},
 
@@ -179,13 +172,13 @@ export default defineComponent({
 				type: 'label',
 				text: path,
 			}, {
-				icon: this.fullView ? faCompress : faExpand,
+				icon: this.fullView ? 'fas fa-compress' : 'fas fa-expand',
 				text: this.fullView ? this.$ts.quitFullView : this.$ts.fullView,
 				action: () => {
 					this.fullView = !this.fullView;
 				}
 			}, {
-				icon: faWindowMaximize,
+				icon: 'fas fa-window-maximize',
 				text: this.$ts.openInWindow,
 				action: () => {
 					os.pageWindow(path);
@@ -220,7 +213,6 @@ export default defineComponent({
 }
 
 .mk-app {
-	$nav-hide-threshold: 650px;
 	$header-height: 50px;
 	$ui-font-size: 1em;
 	$widgets-hide-threshold: 1200px;
@@ -338,35 +330,11 @@ export default defineComponent({
 		}
 	}
 
-	> .floatbtn {
-		position: fixed;
-		z-index: 1000;
-		bottom: 70px;
-		width: 100%;
-		box-sizing: border-box;
-		padding: 15px 0 calc(env(safe-area-inset-bottom) + 50px);
-		
-		@media (min-width: ($nav-hide-threshold + 1px)) {
-			display: none;
-		}
-
-		> .post {
-			position: fixed;
-			z-index: 1000;
-			width: 55px;
-			height: 55px;
-			border-radius: 100%;
-			box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-			font-size: 22px;
-			right: 15px;
-		}
-	}
-
 	> .buttons {
 		position: fixed;
 		z-index: 1000;
 		bottom: 0;
-		//padding: 16px;
+		padding: 16px;
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
@@ -378,19 +346,18 @@ export default defineComponent({
 		> .button {
 			position: relative;
 			flex: 1;
-			//padding: 0;
+			padding: 0;
 			margin: auto;
-			height: 50px;
-			//border-radius: 8px;
+			height: 64px;
+			border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
-			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
 			&:not(:last-child) {
 				margin-right: 12px;
 			}
 
-			@media (max-width: 300px) {
+			@media (max-width: 400px) {
 				height: 60px;
 
 				&:not(:last-child) {
@@ -402,7 +369,7 @@ export default defineComponent({
 				background: var(--X2);
 			}
 
-			> i {
+			> .indicator {
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -420,7 +387,7 @@ export default defineComponent({
 			}
 
 			> * {
-				font-size: 18px;
+				font-size: 22px;
 			}
 
 			&:disabled {
