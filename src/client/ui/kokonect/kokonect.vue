@@ -343,7 +343,7 @@ export default defineComponent({
 		z-index: 1000;
 		bottom: 70px;
 		box-sizing: border-box;
-		padding: 15px 0 calc(env(safe-area-inset-bottom) + 50px);
+		padding: 15px 0 calc(env(safe-area-inset-bottom) + 40px);
 		
 		@media (min-width: ($nav-hide-threshold + 1px)) {
 			display: none;
