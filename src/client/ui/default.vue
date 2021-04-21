@@ -25,6 +25,10 @@
 		</div>
 	</div>
 
+	<div class="floatbtn" v-if="isMobile">
+                <button v-if="$i" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
+        </div>
+
 	<div class="buttons" v-if="isMobile">
 		<button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
 		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><Fa :icon="faHome"/></button>
@@ -34,8 +38,6 @@
 	</div>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
-
-	<button v-if="isMobile" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
 
 	<transition name="tray-back">
 		<div class="tray-back _modalBg"
@@ -218,6 +220,7 @@ export default defineComponent({
 }
 
 .mk-app {
+	$nav-hide-threshold: 650px;
 	$header-height: 50px;
 	$ui-font-size: 1em;
 	$widgets-hide-threshold: 1200px;
@@ -335,10 +338,21 @@ export default defineComponent({
 		}
 	}
 
-	> .post {
+	> .floatbtn {
+		position: fixed;
+		z-index: 1000;
+		bottom: 70px;
+		width: 100%;
+		box-sizing: border-box;
+		padding: 15px 0 calc(env(safe-area-inset-bottom) + 50px);
+		
+		@media (min-width: ($nav-hide-threshold + 1px)) {
+			display: none;
+		}
+
+		> .post {
 			position: fixed;
 			z-index: 1000;
-			bottom: 50px;
 			width: 55px;
 			height: 55px;
 			border-radius: 100%;
@@ -346,12 +360,13 @@ export default defineComponent({
 			font-size: 22px;
 			right: 15px;
 		}
+	}
 
 	> .buttons {
 		position: fixed;
 		z-index: 1000;
 		bottom: 0;
-		//	padding: 16px;
+		//padding: 16px;
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
@@ -363,16 +378,16 @@ export default defineComponent({
 		> .button {
 			position: relative;
 			flex: 1;
-			//	padding: 0;
+			//padding: 0;
 			margin: auto;
 			height: 50px;
-			//	border-radius: 8px;
+			//border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
 			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
 			&:not(:last-child) {
-				//	margin-right: 12px;
+				margin-right: 12px;
 			}
 
 			@media (max-width: 300px) {
