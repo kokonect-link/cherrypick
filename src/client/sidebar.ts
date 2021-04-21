@@ -131,7 +131,7 @@ export const sidebarDef = {
 		icon: faColumns,
 		action: (ev) => {
 			os.modalMenu([{
-				text: i18n.locale.kokonect,
+				text: i18n.locale.kokonect + ' (β)',
 				action: () => {
 					localStorage.setItem('ui', 'kokonect');
 					unisonReload();
