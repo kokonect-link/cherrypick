@@ -12,14 +12,9 @@
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
 			</div>
 		</div>
-		<div class="buttons_L">
+		<div class="buttons">
 			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="action.icon"/></button>
-			</template>
-			<button v-if="showMenu" class="_button button" @click.stop="menu"><Fa :icon="faEllipsisH"/></button>
-		</div>
-		<div class="buttons_R">
-			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="action.icon"/></button>
 			</template>
 			<button v-if="showMenu" class="_button button" @click.stop="menu"><Fa :icon="faEllipsisH"/></button>
@@ -146,27 +141,24 @@ export default defineComponent({
 		width: var(--height);
 	}
 
-	> .buttons_L {
+	> .buttons {
 		position: absolute;
 		z-index: 1;
 		top: 0;
-		left: 0;
 
-		> .button {
+		> .button_L,
+		> .button_R {
+			position: fixed;
 			height: var(--height);
 			width: var(--height);
 		}
-	}
 
-	> .buttons_R {
-		position: absolute;
-		z-index: 1;
-		top: 0;
-		right: 0;
+		> .button_L {
+			left: 0;
+		}
 
-		> .button {
-			height: var(--height);
-			width: var(--height);
+		> .button_R {
+			right: 0;
 		}
 	}
 
