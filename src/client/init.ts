@@ -168,7 +168,8 @@ const app = createApp(await (
 	ui === 'desktop'                  ? import('@client/ui/desktop.vue') :
 	ui === 'chat'                     ? import('@client/ui/chat/index.vue') :
 	ui === 'pope'                     ? import('@client/ui/universal.vue') :
-	import('@client/ui/default.vue')
+	ui === 'misskey'                  ? import('@client/ui/default.vue') :
+	import('@client/ui/kokonect/kokonect.vue')
 ).then(x => x.default));
 
 if (_DEV_) {
