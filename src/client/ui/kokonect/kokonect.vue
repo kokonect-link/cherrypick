@@ -341,9 +341,9 @@ export default defineComponent({
 	> .floatbtn {
 		position: fixed;
 		z-index: 1000;
-		bottom: 70px;
+		bottom: 77px;
 		box-sizing: border-box;
-		padding: 18px 0 calc(env(safe-area-inset-bottom) + 45px);
+		padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px);
 		
 		@media (min-width: ($nav-hide-threshold + 1px)) {
 			display: none;
