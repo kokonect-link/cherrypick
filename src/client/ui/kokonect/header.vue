@@ -14,9 +14,9 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="info.actions && showActions && isMobile">
-				<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
+				<MkAvatar :user="$i" class="avatar" @click="showDrawerNav" ref="navButton"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
 			</template>
-			<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
+			<MkAvatar :user="$i" class="avatar" @click="showDrawerNav" ref="navButton"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
@@ -72,7 +72,7 @@ export default defineComponent({
 			if (this.info.menu != null) return true;
 			if (this.info.share != null) return true;
 			return false;
-		}
+		},
 
 		navIndicated(): boolean {
 			for (const def in this.menuDef) {
@@ -117,6 +117,10 @@ export default defineComponent({
 			});
 		},
 
+		showDrawerNav() {
+			this.$refs.drawerNav.show();
+		},
+
 		menu(ev) {
 			let menu = this.info.menu ? this.info.menu() : [];
 			if (!this.showActions && this.info.actions) {
@@ -135,10 +139,6 @@ export default defineComponent({
 				});
 			}
 			modalMenu(menu, ev.currentTarget || ev.target);
-		},
-
-		showDrawerNav() {
-			this.$refs.drawerNav.show();
 		},
 	}
 });
