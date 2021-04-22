@@ -34,6 +34,9 @@ import { faChevronLeft, faCircle, faShareAlt, faEllipsisH } from '@fortawesome/f
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
 
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
+
 export default defineComponent({
 	props: {
 		info: {
@@ -53,6 +56,8 @@ export default defineComponent({
 
 	data() {
 		return {
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			canBack: false,
 			showActions: false,
 			height: 0,
