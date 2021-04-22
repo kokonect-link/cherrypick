@@ -14,9 +14,8 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="info.actions && showActions && isMobile">
-				<MkAvatar :user="$i" class="avatar" @click="showDrawerNav" ref="navButton"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
+				<MkAvatarHeader :user="$i" class="avatarHeader" @click="showDrawerNav" ref="navButton"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
 			</template>
-			<MkAvatar :user="$i" class="avatar" @click="showDrawerNav" ref="navButton"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
@@ -25,6 +24,7 @@
 			<button v-if="showMenu" class="_button button_R" @click.stop="menu"><Fa :icon="faEllipsisH"/></button>
 		</div>
 	</template>
+	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 </div>
 </template>
 
@@ -33,11 +33,16 @@ import { defineComponent } from 'vue';
 import { faChevronLeft, faCircle, faShareAlt, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
+import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
+	components: {
+		XDrawerSidebar,
+	},
+	
 	props: {
 		info: {
 			required: true

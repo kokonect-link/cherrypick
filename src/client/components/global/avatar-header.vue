@@ -1,0 +1,119 @@
+<template>
+<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="showDrawerNav"/>
+<MkA class="eiwwqkts _noSelect" :class="{ cat }" :to="XDrawerSidebar" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id"/>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { getStaticImageUrl } from '@client/scripts/get-static-image-url';
+import { extractAvgColorFromBlurhash } from '@client/scripts/extract-avg-color-from-blurhash';
+
+export default defineComponent({
+	props: {
+		user: {
+			type: Object,
+			required: true
+		},
+		target: {
+			required: false,
+			default: null
+		},
+		disableLink: {
+			required: false,
+			default: false
+		},
+		disablePreview: {
+			required: false,
+			default: false
+		},
+	},
+	emits: ['click'],
+	computed: {
+		cat(): boolean {
+			return this.user.isCat;
+		},
+		url(): string {
+			return this.$store.state.disableShowingAnimatedImages
+				? getStaticImageUrl(this.user.avatarUrl)
+				: this.user.avatarUrl;
+		},
+		navIndicated(): boolean {
+			for (const def in this.menuDef) {
+				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
+				if (this.menuDef[def].indicated) return true;
+			}
+			return false;
+		},
+	},
+	watch: {
+		'user.avatarBlurhash'() {
+			if (this.$el == null) return;
+			this.$el.style.color = extractAvgColorFromBlurhash(this.user.avatarBlurhash);
+		}
+	},
+	mounted() {
+		this.$el.style.color = extractAvgColorFromBlurhash(this.user.avatarBlurhash);
+	},
+	methods: {
+		showDrawerNav() {
+			this.$refs.drawerNav.show();
+		},
+	}
+});
+</script>
+
+<style lang="scss" scoped>
+.eiwwqkts {
+	position: relative;
+	display: inline-block;
+	vertical-align: bottom;
+	flex-shrink: 0;
+	border-radius: 100%;
+	line-height: 16px;
+
+	&.cat {
+		&:before, &:after {
+			background: #df548f;
+			border: solid 4px currentColor;
+			box-sizing: border-box;
+			content: '';
+			display: inline-block;
+			height: 50%;
+			width: 50%;
+		}
+
+		&:before {
+			border-radius: 0 75% 75%;
+			transform: rotate(37.5deg) skew(30deg);
+		}
+
+		&:after {
+			border-radius: 75% 0 75% 75%;
+			transform: rotate(-37.5deg) skew(-30deg);
+		}
+	}
+
+	> .inner {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: 0;
+		border-radius: 100%;
+		z-index: 1;
+		overflow: hidden;
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
+	}
+
+	> .indicator {
+		position: absolute;
+		z-index: 1;
+		bottom: 0;
+		left: 0;
+		width: 20%;
+		height: 20%;
+	}
+}
+</style>

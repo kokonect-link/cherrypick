@@ -4,6 +4,7 @@ import mfm from './global/misskey-flavored-markdown.vue';
 import a from './global/a.vue';
 import acct from './global/acct.vue';
 import avatar from './global/avatar.vue';
+import avatarHeader from './global/avatar-header.vue';
 import emoji from './global/emoji.vue';
 import userName from './global/user-name.vue';
 import ellipsis from './global/ellipsis.vue';
@@ -18,6 +19,7 @@ export default function(app: App) {
 	app.component('MkA', a);
 	app.component('MkAcct', acct);
 	app.component('MkAvatar', avatar);
+	app.component('MkAvatarHeader', avatarHeader);
 	app.component('MkEmoji', emoji);
 	app.component('MkUserName', userName);
 	app.component('MkEllipsis', ellipsis);
