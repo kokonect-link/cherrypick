@@ -4,7 +4,7 @@ import mfm from './global/misskey-flavored-markdown.vue';
 import a from './global/a.vue';
 import acct from './global/acct.vue';
 import avatar from './global/avatar.vue';
-import avatarHeader from './global/avatar-header.vue';
+import avatarHeader from './global/avatar.vue';
 import emoji from './global/emoji.vue';
 import userName from './global/user-name.vue';
 import ellipsis from './global/ellipsis.vue';
