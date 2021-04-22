@@ -729,6 +729,7 @@ hideOnlineStatusDescription: "Hiding your online status reduces the convenience 
 online: "Online"
 active: "Active"
 offline: "Offline"
+menu: "Menu"
 _email:
   _follow:
     title: "You've got a new follower"

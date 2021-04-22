@@ -729,6 +729,7 @@ hideOnlineStatusDescription: "온라인 상태를 숨기면, 검색과 같은 �
 online: "온라인"
 active: "자리 비움"
 offline: "오프라인"
+menu: "메뉴"
 
 _email:
   _follow:

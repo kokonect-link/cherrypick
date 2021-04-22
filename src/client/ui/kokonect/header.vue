@@ -3,7 +3,7 @@
 	<template v-if="info">
 		<div class="titleContainer">
 			<div class="title">
-				<Fa v-if="info.icon" :icon="info.icon" :key="info.icon" class="icon"/>
+				<!-- <Fa v-if="info.icon" :icon="info.icon" :key="info.icon" class="icon"/> -->
 				<MkAvatar v-else-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 				<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
@@ -11,8 +11,8 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
-				<MkAvatar :user="$i" :show-indicator="true" class="avatar"/>
+				<button class="_button button_L" @click="showDrawerNav" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
+				<MkAvatar v-else-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 			</template>
 		</div>
 		<div class="buttons_R">
