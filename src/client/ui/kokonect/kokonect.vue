@@ -36,7 +36,7 @@
 		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
 		<!-- <button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button> -->
 		<!-- <button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button> -->
-		<button class="button tab _button" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
+		<button class="button tab _button" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
 	</div>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
