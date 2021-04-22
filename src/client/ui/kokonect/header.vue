@@ -14,6 +14,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
+				<button class="_button button_L" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
 				<MkAvatar :user="$i" class="avatar"/>
 			</template>
 		</div>
@@ -24,6 +25,7 @@
 			<button v-if="showMenu" class="_button button_R" @click.stop="menu"><Fa :icon="faEllipsisH"/></button>
 		</div>
 	</template>
+	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 </div>
 </template>
 
@@ -32,11 +34,18 @@ import { defineComponent } from 'vue';
 import { faChevronLeft, faCircle, faShareAlt, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
+import XSidebar from './kokonect.sidebar.vue';
+import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
+	components: {
+		XSidebar,
+		XDrawerSidebar,
+	},
+
 	props: {
 		info: {
 			required: true
@@ -66,6 +75,14 @@ export default defineComponent({
 	},
 
 	computed: {
+		navIndicated(): boolean {
+			for (const def in this.menuDef) {
+				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
+				if (this.menuDef[def].indicated) return true;
+			}
+			return false;
+		},
+
 		showMenu() {
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
@@ -111,6 +128,10 @@ export default defineComponent({
 				url: url + this.info.path,
 				...this.info.share,
 			});
+		},
+
+		showDrawerNav() {
+			this.$refs.drawerNav.show();
 		},
 
 		menu(ev) {
