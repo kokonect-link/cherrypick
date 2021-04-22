@@ -14,9 +14,9 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="info.actions && showActions && isMobile">
-				<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/>
+				<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
 			</template>
-			<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/>
+			<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
@@ -71,6 +71,14 @@ export default defineComponent({
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
 			if (this.info.share != null) return true;
+			return false;
+		}
+
+		navIndicated(): boolean {
+			for (const def in this.menuDef) {
+				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
+				if (this.menuDef[def].indicated) return true;
+			}
 			return false;
 		}
 	},
@@ -131,7 +139,7 @@ export default defineComponent({
 
 		showDrawerNav() {
 			this.$refs.drawerNav.show();
-		}
+		},
 	}
 });
 </script>
@@ -140,7 +148,7 @@ export default defineComponent({
 .fdidabkb {
 	$ui-font-size: 1em; // TODO: どこかに集約したい
 	$avatar-size: 32px;
-	$avatar-margin: 8px;
+	$avatar-margin: 10px;
 
 	&.center {
 		text-align: center;
@@ -171,7 +179,7 @@ export default defineComponent({
 		}
 
 		> .avatar {
-			margin-right: $avatar-margin;
+			margin-left: $avatar-margin;
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
