@@ -12,9 +12,7 @@
 		<div class="buttons_L">
 			<template v-if="isMobile">
 				<button class="_button button_L" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
-				<MkAvatar :user="$i" class="avatar">
-					<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
-				</MkAvatar>
+				<MkAvatar :user="$i" :show-indicator="true" class="avatar"/>
 			</template>
 		</div>
 		<div class="buttons_R">
@@ -38,7 +36,6 @@ import { modalMenu } from '@client/os';
 import { url } from '@client/config';
 import XSidebar from './kokonect.sidebar.vue';
 import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
-import MkUserOnlineIndicator from '@client/components/user-online-indicator.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -216,15 +213,6 @@ export default defineComponent({
 			height: var(--height);
 			width: var(--height);
 		}
-	}
-
-	> .indicator {
-		position: absolute;
-		z-index: 1;
-		bottom: 0;
-		left: 0;
-		width: 20%;
-		height: 20%;
 	}
 
 	> .titleContainer {
