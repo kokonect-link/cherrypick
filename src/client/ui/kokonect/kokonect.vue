@@ -32,9 +32,11 @@
 	<div class="buttons" v-if="isMobile">
 		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button> -->
 		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><Fa :icon="faHome"/></button>
+		<button class="button search _button" @click="search" v-tooltip="$ts.search"><i class="fas fa-search"></i></button>
 		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
-		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
+		<!-- <button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button> -->
 		<!-- <button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button> -->
+		<button class="button tab _button" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
 	</div>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
@@ -58,7 +60,7 @@
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue';
 import { faLayerGroup, faBars, faHome, faCircle, faWindowMaximize, faExpand, faPencilAlt, faCompress } from '@fortawesome/free-solid-svg-icons';
-import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faBell, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import XSidebar from './kokonect.sidebar.vue';
@@ -68,6 +70,8 @@ import XHeader from './header.vue';
 import * as os from '@client/os';
 import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
+import XTimeline from '@client/components/timeline.vue';
+import { search } from '@client/scripts/search';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -78,6 +82,7 @@ export default defineComponent({
 		XSidebar,
 		XDrawerSidebar,
 		XHeader,
+		XTimeline,
 		XWidgets: defineAsyncComponent(() => import('./kokonect.widgets.vue')),
 	},
 
@@ -90,7 +95,7 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
-			faLayerGroup, faBars, faBell, faHome, faCircle, faPencilAlt,
+			faLayerGroup, faBars, faBell, faHome, faCircle, faPencilAlt, faEnvelope,
 		};
 	},
 
@@ -146,6 +151,10 @@ export default defineComponent({
 
 		post() {
 			os.post();
+		},
+
+		search() {
+			search();
 		},
 
 		top() {
