@@ -1,14 +1,21 @@
 <template>
-<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="showDrawerNav"/>
-<MkA class="eiwwqkts _noSelect" :class="{ cat }" :to="XDrawerSidebar" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id"/>
+<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="onClick">
+</span>
+<MkA class="eiwwqkts _noSelect" :class="{ cat }" :to="userPage(user)" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id">
+</MkA>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { getStaticImageUrl } from '@client/scripts/get-static-image-url';
 import { extractAvgColorFromBlurhash } from '@client/scripts/extract-avg-color-from-blurhash';
+import { acct, userPage } from '@client/filters/user';
+import MkUserOnlineIndicator from '@client/components/user-online-indicator.vue';
 
 export default defineComponent({
+	components: {
+		MkUserOnlineIndicator
+	},
 	props: {
 		user: {
 			type: Object,
@@ -26,6 +33,10 @@ export default defineComponent({
 			required: false,
 			default: false
 		},
+		showIndicator: {
+			required: false,
+			default: false
+		}
 	},
 	emits: ['click'],
 	computed: {
@@ -36,13 +47,6 @@ export default defineComponent({
 			return this.$store.state.disableShowingAnimatedImages
 				? getStaticImageUrl(this.user.avatarUrl)
 				: this.user.avatarUrl;
-		},
-		navIndicated(): boolean {
-			for (const def in this.menuDef) {
-				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
-				if (this.menuDef[def].indicated) return true;
-			}
-			return false;
 		},
 	},
 	watch: {
@@ -55,9 +59,11 @@ export default defineComponent({
 		this.$el.style.color = extractAvgColorFromBlurhash(this.user.avatarBlurhash);
 	},
 	methods: {
-		showDrawerNav() {
-			this.$refs.drawerNav.show();
+		onClick(e) {
+			this.$emit('click', e);
 		},
+		acct,
+		userPage
 	}
 });
 </script>
