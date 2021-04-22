@@ -64,7 +64,7 @@ import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import XSidebar from './kokonect.sidebar.vue';
 import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
 import XCommon from '../_common_/common.vue';
-import XHeader from '../_common_/header.vue';
+import XHeader from './kokonect.header.vue';
 import * as os from '@client/os';
 import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
