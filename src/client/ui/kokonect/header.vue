@@ -4,7 +4,7 @@
 		<div class="titleContainer">
 			<div class="title">
 				<!-- <Fa v-if="info.icon" :icon="info.icon" :key="info.icon" class="icon"/> -->
-				<MkAvatar v-else-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
+				<MkAvatar class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 				<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
 			</div>
