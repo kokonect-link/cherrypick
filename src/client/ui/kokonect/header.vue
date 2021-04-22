@@ -14,13 +14,9 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="info.actions && showActions && isMobile">
-				<button class="item _button account" @click="openAccountMenu">
-					<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
-				</button>
+				<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/>
 			</template>
-			<button class="item _button account" @click="openAccountMenu">
-				<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
-			</button>
+			<MkAvatar :user="$i" class="avatar" @click="showDrawerNav"/>
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
@@ -131,6 +127,10 @@ export default defineComponent({
 				});
 			}
 			modalMenu(menu, ev.currentTarget || ev.target);
+		},
+
+		showDrawerNav() {
+			this.$refs.drawerNav.show();
 		}
 	}
 });
@@ -169,6 +169,13 @@ export default defineComponent({
 			height: var(--height);
 			width: var(--height);
 		}
+
+		> .avatar {
+			margin-right: $avatar-margin;
+			width: $avatar-size;
+			height: $avatar-size;
+			vertical-align: middle;
+		}
 	}
 
 	> .buttons_R {
@@ -180,52 +187,6 @@ export default defineComponent({
 		> .button_R {
 			height: var(--height);
 			width: var(--height);
-		}
-	}
-
-	> .item {
-		position: relative;
-		display: block;
-		font-size: $ui-font-size;
-		line-height: 2.6rem;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		white-space: nowrap;
-		width: 100%;
-		text-align: left;
-		box-sizing: border-box;
-
-		> [data-icon] {
-			width: 32px;
-		}
-
-		> [data-icon],
-		> .avatar {
-			margin-right: $avatar-margin;
-		}
-
-		> .avatar {
-			width: $avatar-size;
-			height: $avatar-size;
-			vertical-align: middle;
-		}
-
-		> i {
-			position: absolute;
-			top: 0;
-			left: 20px;
-			color: var(--navIndicator);
-			font-size: 8px;
-			animation: blink 1s infinite;
-		}
-
-		&:hover {
-			text-decoration: none;
-			color: var(--navHoverFg);
-		}
-
-		&.active {
-			color: var(--navActive);
 		}
 	}
 
