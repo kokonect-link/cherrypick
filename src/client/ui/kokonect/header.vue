@@ -11,7 +11,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" @click="showDrawerNav" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
+				<button class="_button button_L" v-if!="withBack && canBack" @click="showDrawerNav" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
 				<MkAvatar v-else-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 			</template>
 		</div>
