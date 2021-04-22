@@ -1,12 +1,16 @@
 <template>
-<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="onClick">
+<!--<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="showDrawerNav">
 	<img class="inner" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
 </span>
 <MkA class="eiwwqkts _noSelect" :class="{ cat }" :to="userPage(user)" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id">
 	<img class="inner" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
-</MkA>
+</MkA>-->
+<button class="eiwwqkts _noSelect" :class="{ cat }" :to="userPage(user)" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id" @click="showDrawerNav">
+	<img class="inner" :src="url" decoding="async"/>
+	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
+</button>
 </template>
 
 <script lang="ts">

@@ -26,8 +26,8 @@
 	</div>
 
 	<div class="floatbtn" v-if="isMobile">
-                <button v-if="$i" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
-        </div>
+		<button v-if="$i" class="post _buttonPrimary" @click="post()"><Fa :icon="faPencilAlt"/></button>
+  </div>
 
 	<div class="buttons" v-if="isMobile">
 		<button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
