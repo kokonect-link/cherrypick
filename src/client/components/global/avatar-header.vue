@@ -1,7 +1,9 @@
 <template>
-<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="onClick">
+<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="showDrawerNav">
+	<img class="inner" :src="url" decoding="async"/>
 </span>
 <MkA class="eiwwqkts _noSelect" :class="{ cat }" :to="userPage(user)" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id">
+	<img class="inner" :src="url" decoding="async"/>
 </MkA>
 </template>
 
@@ -48,6 +50,13 @@ export default defineComponent({
 				? getStaticImageUrl(this.user.avatarUrl)
 				: this.user.avatarUrl;
 		},
+		navIndicated(): boolean {
+			for (const def in this.menuDef) {
+				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
+				if (this.menuDef[def].indicated) return true;
+			}
+			return false;
+		},
 	},
 	watch: {
 		'user.avatarBlurhash'() {
@@ -59,11 +68,9 @@ export default defineComponent({
 		this.$el.style.color = extractAvgColorFromBlurhash(this.user.avatarBlurhash);
 	},
 	methods: {
-		onClick(e) {
-			this.$emit('click', e);
-		},
-		acct,
-		userPage
+		showDrawerNav() {
+			this.$refs.drawerNav.show();
+		}
 	}
 });
 </script>
