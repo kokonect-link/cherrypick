@@ -12,9 +12,9 @@
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
 			</div>
 		</div>
-		<div class="buttons_L">
+		<div class="buttons_L" v-if="isMobile">
 			<template v-if="info.actions && showActions">
-				<MkAvatar v-if="isMobile" :user="$i" class="avatar"/>
+				<MkAvatar :user="$i" class="avatar"/>
 			</template>
 		</div>
 		<div class="buttons_R">
@@ -94,6 +94,11 @@ export default defineComponent({
 			this.height = this.$el.parentElement.offsetHeight + 'px';
 			this.showActions = this.$el.parentElement.offsetWidth >= 500;
 		}).observe(this.$el);
+
+		window.addEventListener('resize', () => {
+			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
+			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
+		}, { passive: true });
 	},
 
 	methods: {
