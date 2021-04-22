@@ -138,6 +138,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .fdidabkb {
+	$ui-font-size: 1em; // TODO: どこかに集約したい
+	$avatar-size: 32px;
+	$avatar-margin: 8px;
+
 	&.center {
 		text-align: center;
 
