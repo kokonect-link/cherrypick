@@ -12,8 +12,8 @@
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
 			</div>
 		</div>
-		<div class="buttons_L" v-if="isMobile">
-			<template v-if="info.actions && showActions">
+		<div class="buttons_L">
+			<template v-if="isMobile">
 				<MkAvatar :user="$i" class="avatar"/>
 			</template>
 		</div>
