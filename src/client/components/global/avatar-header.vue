@@ -1,9 +1,11 @@
 <template>
-<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="showDrawerNav">
+<span class="eiwwqkts _noSelect" :class="{ cat }" :title="acct(user)" v-if="disableLink" v-user-preview="disablePreview ? undefined : user.id" @click="onClick">
 	<img class="inner" :src="url" decoding="async"/>
+	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
 </span>
 <MkA class="eiwwqkts _noSelect" :class="{ cat }" :to="userPage(user)" :title="acct(user)" :target="target" v-else v-user-preview="disablePreview ? undefined : user.id">
 	<img class="inner" :src="url" decoding="async"/>
+	<MkUserOnlineIndicator v-if="showIndicator" class="indicator" :user="user"/>
 </MkA>
 </template>
 
@@ -13,10 +15,12 @@ import { getStaticImageUrl } from '@client/scripts/get-static-image-url';
 import { extractAvgColorFromBlurhash } from '@client/scripts/extract-avg-color-from-blurhash';
 import { acct, userPage } from '@client/filters/user';
 import MkUserOnlineIndicator from '@client/components/user-online-indicator.vue';
+import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
 
 export default defineComponent({
 	components: {
-		MkUserOnlineIndicator
+		MkUserOnlineIndicator,
+		XDrawerSidebar
 	},
 	props: {
 		user: {
@@ -70,7 +74,12 @@ export default defineComponent({
 	methods: {
 		showDrawerNav() {
 			this.$refs.drawerNav.show();
-		}
+		},
+		onClick(e) {
+			this.$emit('click', e);
+		},
+		acct,
+		userPage
 	}
 });
 </script>
