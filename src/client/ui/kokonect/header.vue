@@ -14,7 +14,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="info.actions && showActions && isMobile">
-				<MkAvatarHeader :user="$i" class="avatar" @click="showDrawerNav" ref="navButton"/><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i>
+				<MkAvatarHeader :user="$i" class="avatar" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></MkAvatarHeader>
 			</template>
 		</div>
 		<div class="buttons_R">
