@@ -14,8 +14,8 @@
 		</div>
 		<div class="buttons">
 			<template v-if="info.actions && showActions">
-				<button v-for="action in info.actions" class="_button button" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="action.icon"/></button>
-				<button v-for="action in info.actions" class="_button button" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="action.icon"/></button>
+				<button v-for="action in info.share" class="_button button_L" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="faEllipsisH"/></button>
+				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="action.icon"/></button>
 			</template>
 			<button v-if="showMenu" class="_button button" @click.stop="menu"><Fa :icon="faEllipsisH"/></button>
 		</div>
@@ -145,6 +145,11 @@ export default defineComponent({
 		position: absolute;
 		z-index: 1;
 		top: 0;
+
+		> .button {
+			height: var(--height);
+			width: var(--height);
+		}
 
 		> .button_L,
 		> .button_R {
