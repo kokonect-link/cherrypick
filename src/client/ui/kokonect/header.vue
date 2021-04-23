@@ -27,7 +27,6 @@
 		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><Fa :icon="faChevronLeft"/></button>
 	</transition>
 </div>
-<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 </template>
 
 <script lang="ts">
@@ -136,7 +135,7 @@ export default defineComponent({
 		},
 
 		showDrawerNav() {
-			this.$refs.drawerNav.show();
+			this.$refs.kokonect.showDrawerNav();
 		},
 
 		menu(ev) {
