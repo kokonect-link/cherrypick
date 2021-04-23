@@ -26,8 +26,8 @@
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
 		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><Fa :icon="faChevronLeft"/></button>
 	</transition>
-	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 </div>
+<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 </template>
 
 <script lang="ts">
