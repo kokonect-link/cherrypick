@@ -36,7 +36,7 @@ import { faChevronLeft, faBars, faCircle, faShareAlt, faEllipsisH } from '@forta
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
 import XSidebar from './kokonect.sidebar.vue';
-import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
+import XDrawerSidebar from './sidebar.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
