@@ -1,7 +1,7 @@
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
 	<button class="item _button account" @click="openAccountMenu">
-		<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
+		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i" :nowrap="true"/>
 	</button>
 	<div class="post" @click="post">
 		<MkButton class="button" primary full>
@@ -301,6 +301,12 @@ export default defineComponent({
 
 			> .text {
 				display: none;
+			}
+
+			> .name {
+				display: none;
+				margin-left: 10px;
+				font-weight: bold;
 			}
 
 		}
