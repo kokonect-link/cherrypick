@@ -197,13 +197,13 @@ export default defineComponent({
 		}
 
 		> .avatar {
-			margin-left: $avatar-margin;
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
 		}
 
 		> .avatar_back {
+			margin-left: 50px;
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
