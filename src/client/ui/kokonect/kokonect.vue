@@ -64,7 +64,7 @@ import { faBell, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import XSidebar from './kokonect.sidebar.vue';
-import XDrawerSidebar from '@client/ui/_common_/sidebar.vue';
+import XDrawerSidebar from './sidebar.vue';
 import XCommon from '../_common_/common.vue';
 import XHeader from './header.vue';
 import * as os from '@client/os';
