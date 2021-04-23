@@ -302,13 +302,6 @@ export default defineComponent({
 			> .text {
 				display: none;
 			}
-
-			> .name {
-				display: none;
-				margin-left: 10px;
-				font-weight: bold;
-			}
-
 		}
 	}
 
@@ -364,6 +357,12 @@ export default defineComponent({
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
+		}
+
+		> .name {
+				display: none;
+				margin-left: 10px;
+				font-weight: bold;
 		}
 
 		> i {
