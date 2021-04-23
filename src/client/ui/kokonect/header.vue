@@ -11,7 +11,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
+				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawer" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 			</template>
@@ -26,7 +26,6 @@
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
 		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><Fa :icon="faChevronLeft"/></button>
 	</transition>
-	<XDrawerKokonect ref="drawerNav" class="sidebar" v-if="isMobile"/>
 </div>
 </template>
 
@@ -36,7 +35,7 @@ import { faChevronLeft, faBars, faCircle, faShareAlt, faEllipsisH } from '@forta
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
 import XSidebar from './kokonect.sidebar.vue';
-import XDrawerKokonect from './kokonect.vue';
+import XKokonect from './kokonect.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -44,7 +43,7 @@ const MOBILE_THRESHOLD = 600;
 export default defineComponent({
 	components: {
 		XSidebar,
-		XDrawerKokonect,
+		XKokonect,
 	},
 
 	props: {
@@ -135,8 +134,8 @@ export default defineComponent({
 			});
 		},
 
-		showDrawerNav() {
-			this.$refs.drawerNav.showDrawerNav();
+		showDrawer() {
+			this.$refs.drawerNav.show();
 		},
 
 		menu(ev) {
