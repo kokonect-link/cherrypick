@@ -1,7 +1,7 @@
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
 	<button class="item _button account" @click="openAccountMenu">
-		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i" :nowrap="true"/>
+		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i" v-if="!iconOnly"/>
 	</button>
 	<div class="post" @click="post">
 		<MkButton class="button" primary full>
