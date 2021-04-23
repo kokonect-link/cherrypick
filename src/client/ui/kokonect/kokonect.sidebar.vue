@@ -360,7 +360,6 @@ export default defineComponent({
 		}
 
 		> .name {
-				display: none;
 				margin-left: 10px;
 				font-weight: bold;
 		}
