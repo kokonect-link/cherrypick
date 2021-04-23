@@ -4,15 +4,16 @@
 		<div class="titleContainer">
 			<div class="title">
 				<!-- <Fa v-if="info.icon" :icon="info.icon" :key="info.icon" class="icon"/> -->
-				<MkAvatar class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
+				<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 				<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
 			</div>
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!withBack && !canBack" @click="showDrawerNav" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
-				<MkAvatar class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
+				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
+				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
+				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 			</template>
 		</div>
 		<div class="buttons_R">
@@ -163,7 +164,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .fdidabkb {
-	$ui-font-size: 1em; // TODO: どこかに集約したい
+	$ui-font-size: 1em;
 	$avatar-size: 32px;
 	$avatar-margin: 10px;
 
@@ -197,6 +198,13 @@ export default defineComponent({
 
 		> .avatar {
 			margin-left: $avatar-margin;
+			width: $avatar-size;
+			height: $avatar-size;
+			vertical-align: middle;
+		}
+
+		> .avatar_back {
+			margin-left: 50px;
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
