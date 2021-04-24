@@ -39,7 +39,7 @@
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 
-	<XDrawerSidebar v-on:KNdrawerNav="showDrawerNav" ref="drawerNav" class="sidebar" v-if="isMobile"/>
+	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">
 		<div class="tray-back _modalBg"
@@ -55,6 +55,7 @@
 
 	<XCommon/>
 </div>
+<KNdrawerNavBar @KNdrawerNav="showDrawerNav" ref="navButton"></KNdrawerNavBar>
 </template>
 
 <script lang="ts">
@@ -72,6 +73,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
+import KNdrawerNavBar from './sidebar.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -83,6 +85,7 @@ export default defineComponent({
 		XDrawerSidebar,
 		XHeader,
 		XTimeline,
+		KNdrawerNavBar,
 		XWidgets: defineAsyncComponent(() => import('./kokonect.widgets.vue')),
 	},
 
