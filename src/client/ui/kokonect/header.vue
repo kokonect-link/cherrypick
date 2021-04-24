@@ -26,6 +26,8 @@
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
 		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><Fa :icon="faChevronLeft"/></button>
 	</transition>
+	<!-- <XKokonect ref="drawerNav" class="sidebar" v-if="isMobile"/> -->
+	<child-component v-on:drawerNav="showDrawerNav"></child-component>
 </div>
 </template>
 
@@ -35,7 +37,7 @@ import { faChevronLeft, faBars, faCircle, faShareAlt, faEllipsisH } from '@forta
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
 import XSidebar from './kokonect.sidebar.vue';
-import XKokonect from './kokonect.vue';
+//import XKokonect from './kokonect.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -43,7 +45,7 @@ const MOBILE_THRESHOLD = 600;
 export default defineComponent({
 	components: {
 		XSidebar,
-		XKokonect,
+		//XKokonect,
 	},
 
 	props: {
@@ -135,7 +137,8 @@ export default defineComponent({
 		},
 
 		showDrawer() {
-			this.$refs.drawerNav.show();
+			//this.$refs.drawerNav.show();
+			this.$emit('drawerNav');
 		},
 
 		menu(ev) {
