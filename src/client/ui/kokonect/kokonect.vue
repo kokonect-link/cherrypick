@@ -39,7 +39,7 @@
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 	
-	<kndrawernavbar @KNdrawerNav="showDrawerNav"/>
+	<kndrawernavbar @kndrawernav="showDrawerNav"/>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
@@ -74,7 +74,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
-import KNdrawerNavBar from './sidebar.vue';
+import KNdrawerNavBar from './header.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;

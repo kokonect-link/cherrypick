@@ -137,7 +137,7 @@ export default defineComponent({
 
 		showDrawer() {
 			//this.$refs.drawerNav.show();
-			this.$emit('KNdrawerNav');
+			this.$emit('kndrawernav');
 		},
 
 		menu(ev) {
