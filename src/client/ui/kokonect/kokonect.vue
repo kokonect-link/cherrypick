@@ -39,7 +39,7 @@
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 
-	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
+	<XDrawerSidebar v-on:KNdrawerNav="showDrawerNav" ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">
 		<div class="tray-back _modalBg"
@@ -55,7 +55,6 @@
 
 	<XCommon/>
 </div>
-<child-component v-on:KNdrawerNav="showDrawerNav"></child-component>
 </template>
 
 <script lang="ts">
