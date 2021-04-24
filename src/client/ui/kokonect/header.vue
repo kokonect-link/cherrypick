@@ -27,7 +27,6 @@
 		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><Fa :icon="faChevronLeft"/></button>
 	</transition>
 	<!-- <XKokonect ref="drawerNav" class="sidebar" v-if="isMobile"/> -->
-	<child-component v-on:drawerNav="showDrawerNav"></child-component>
 </div>
 </template>
 
@@ -138,7 +137,7 @@ export default defineComponent({
 
 		showDrawer() {
 			//this.$refs.drawerNav.show();
-			this.$emit('drawerNav');
+			this.$emit('KNdrawerNav');
 		},
 
 		menu(ev) {

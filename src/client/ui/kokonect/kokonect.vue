@@ -55,6 +55,7 @@
 
 	<XCommon/>
 </div>
+<child-component v-on:KNdrawerNav="showDrawerNav"></child-component>
 </template>
 
 <script lang="ts">
