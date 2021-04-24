@@ -38,8 +38,8 @@
 		<button class="button tab _button" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
-	
-	<XHeader @kn-drawernav="showDrawerNav" ref="navButton"/>
+
+	<kndrawernav @kndrawernav="showDrawerNav"></kndrawernav>
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">

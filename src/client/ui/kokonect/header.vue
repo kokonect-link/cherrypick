@@ -47,8 +47,6 @@ export default defineComponent({
 		//XKokonect,
 	},
 
-	emits: ['kn-drawernav'],
-
 	props: {
 		info: {
 			required: true
@@ -139,7 +137,7 @@ export default defineComponent({
 
 		showDrawer() {
 			//this.$refs.drawerNav.show();
-			this.$emit('kn-drawernav');
+			this.$emit('kndrawernav');
 		},
 
 		menu(ev) {
