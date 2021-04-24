@@ -38,6 +38,8 @@
 		<button class="button tab _button" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
+	
+	<kndrawernavbar @KNdrawerNav="showDrawerNav"/>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
@@ -55,7 +57,6 @@
 
 	<XCommon/>
 </div>
-<KNdrawerNavBar @KNdrawerNav="showDrawerNav" ref="navButton"></KNdrawerNavBar>
 </template>
 
 <script lang="ts">
