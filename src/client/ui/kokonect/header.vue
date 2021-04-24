@@ -47,6 +47,8 @@ export default defineComponent({
 		//XKokonect,
 	},
 
+	emits: ['kn-drawernav'],
+
 	props: {
 		info: {
 			required: true

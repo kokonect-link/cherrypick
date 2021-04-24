@@ -39,8 +39,7 @@
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 	
-	<XHeader @kn-drawernav="showDrawerNav" ref="navButton"></XHeader>
-
+	<XHeader @kn-drawernav="showDrawerNav" ref="navButton"/>
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">
