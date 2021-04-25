@@ -163,6 +163,7 @@ export default defineComponent({
 		},
 
 		showDrawerNav() {
+			alert('event received');
 			this.$refs.drawerNav.show();
 		},
 
