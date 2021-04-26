@@ -19,10 +19,12 @@ export const builtinThemes = [
 	require('@client/themes/syuilo/l-light.json5'),
 	require('@client/themes/syuilo/l-apricot.json5'),
 	require('@client/themes/syuilo/l-rainy.json5'),
+	require('@client/themes/syuilo/l-vivid.json5'),
 
 	require('@client/themes/d-kokonect.json5'),
 	require('@client/themes/syuilo/d-dark.json5'),
 	require('@client/themes/syuilo/d-persimmon.json5'),
+	require('@client/themes/syuilo/d-astro.json5'),
 	require('@client/themes/syuilo/d-black.json5'),
 ] as Theme[];
 

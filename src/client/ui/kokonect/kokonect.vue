@@ -30,13 +30,13 @@
   </div>
 
 	<div class="buttons" v-if="isMobile">
-		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button> -->
-		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><Fa :icon="faHome"/></button>
-		<button class="button search _button" @click="search"><Fa :icon="faSearch"/></button>
-		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
-		<!-- <button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button> -->
-		<button class="button tab _button" @click="$router.push('/my/messages')"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
-		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
+		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
+		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><i class="fas fa-home"></i></button>
+		<button class="button search _button" @click="search"><i class="fas fa-search"/></button>
+		<button class="button notifications _button" @click="$router.push('/my/notifications')"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button tab _button" @click="$router.push('/my/messages')"><i class="fas fa-envelope"></i><span v-if="$i.hasUnreadSpecifiedNotes"><i class="fas fa-circle"></i></span></button>
+		<button class="button widget _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
+		<!-- <button class="button post _button" @click="post"><i class="fas fa-pencil-alt"></i></button> -->
 	</div>
 
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
@@ -59,8 +59,6 @@
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue';
-import { faLayerGroup, faBars, faHome, faSearch, faCircle, faWindowMaximize, faExpand, faPencilAlt, faCompress } from '@fortawesome/free-solid-svg-icons';
-import { faBell, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import XSidebar from './kokonect.sidebar.vue';
@@ -95,7 +93,6 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
-			faLayerGroup, faBars, faBell, faHome, faSearch, faCircle, faPencilAlt, faEnvelope,
 		};
 	},
 
@@ -181,20 +178,20 @@ export default defineComponent({
 				}
 			};
 			if (isLink(e.target)) return;
-			if (['INPUT', 'TEXTAREA'].includes(e.target.tagName) || e.target.attributes['contenteditable']) return;
+			if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO'].includes(e.target.tagName) || e.target.attributes['contenteditable']) return;
 			if (window.getSelection().toString() !== '') return;
 			const path = this.$route.path;
 			os.contextMenu([{
 				type: 'label',
 				text: path,
 			}, {
-				icon: this.fullView ? faCompress : faExpand,
+				icon: this.fullView ? 'fas fa-compress' : 'fas fa-expand',
 				text: this.fullView ? this.$ts.quitFullView : this.$ts.fullView,
 				action: () => {
 					this.fullView = !this.fullView;
 				}
 			}, {
-				icon: faWindowMaximize,
+				icon: 'fas fa-window-maximize',
 				text: this.$ts.openInWindow,
 				action: () => {
 					os.pageWindow(path);
@@ -235,6 +232,8 @@ export default defineComponent({
 	$widgets-hide-threshold: 1200px;
 	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
 
+	--panelShadow: none;
+
 	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 	min-height: calc(var(--vh, 1vh) * 100);
 	box-sizing: border-box;
@@ -267,7 +266,7 @@ export default defineComponent({
 		display: flex;
 		justify-content: center;
 		max-width: 100%;
-		margin: 32px 0;
+		//margin: 32px 0;
 
 		&.fullView {
 			margin: 0;
@@ -293,6 +292,8 @@ export default defineComponent({
 			width: 750px;
 			margin: 0 16px 0 0;
 			background: var(--bg);
+			box-shadow: 0 0 0 1px var(--divider);
+			border-radius: 0;
 			--margin: 12px;
 
 			> .header {
@@ -325,10 +326,15 @@ export default defineComponent({
 		> .widgets {
 			//--panelShadow: none;
 			width: 300px;
+			margin-top: 16px;
 
 			@media (max-width: $widgets-hide-threshold) {
 				display: none;
 			}
+		}
+
+		> .sidebar {
+			margin-top: 16px;
 		}
 
 		@media (max-width: 850px) {
@@ -410,7 +416,7 @@ export default defineComponent({
 				background: var(--X2);
 			}
 
-			> i {
+			> .indicator {
 				position: absolute;
 				top: 0;
 				left: 0;

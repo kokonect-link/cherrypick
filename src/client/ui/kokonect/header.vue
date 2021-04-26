@@ -3,7 +3,7 @@
 	<template v-if="info">
 		<div class="titleContainer" @click="onHeaderClick">
 			<div class="title">
-				<!-- <Fa v-if="info.icon" :icon="info.icon" :key="info.icon" class="icon"/> -->
+				<!-- <i v-if="info.icon" class="icon" :class="info.icon"></i> -->
 				<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 				<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
@@ -11,16 +11,16 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu"><Fa :icon="faBars"/></button>
+				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 			</template>
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
-				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text"><Fa :icon="action.icon"/></button>
+				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text"><i :class="action.icon"></i></button>
 			</template>
-			<button v-if="showMenu" class="_button button_R" @click.stop="menu"><Fa :icon="faEllipsisH"/></button>
+			<button v-if="showMenu" class="_button button_R" @click.stop="menu"><i class="fas fa-ellipsis-h"></i></button>
 		</div>
 	</template>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
@@ -31,19 +31,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { faChevronLeft, faBars, faCircle, faShareAlt, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
-import XSidebar from './kokonect.sidebar.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
-	components: {
-		XSidebar
-	},
-
 	props: {
 		info: {
 			required: true
@@ -72,7 +66,6 @@ export default defineComponent({
 			showActions: false,
 			height: 0,
 			key: 0,
-			faChevronLeft, faBars, faCircle, faShareAlt, faEllipsisH,
 		};
 	},
 
@@ -145,7 +138,7 @@ export default defineComponent({
 				if (menu.length > 0) menu.push(null);
 				menu.push({
 					text: this.$ts.share,
-					icon: faShareAlt,
+					icon: 'fas fa-share-alt',
 					action: this.share
 				});
 			}
