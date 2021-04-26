@@ -33,7 +33,7 @@
 	<div class="divider"></div>
 	<div class="about">
 		<MkA class="link" to="/about" v-click-anime>
-			<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+			<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
 			<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #b4f1fc;">NECT</span></b></p>
 		</MkA>
 	</div>
