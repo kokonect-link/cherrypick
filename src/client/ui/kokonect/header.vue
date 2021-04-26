@@ -11,7 +11,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawer" v-tooltip="$ts.menu"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
+				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 			</template>
@@ -132,8 +132,8 @@ export default defineComponent({
 			});
 		},
 
-		showDrawer() {
-			this.$emit('kndrawernav');
+		showDrawerNav() {
+			this.$emit('kn-drawernav');
 			console.log('네비바를 눌렀습니다!');
 		},
 

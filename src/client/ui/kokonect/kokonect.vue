@@ -30,7 +30,7 @@
   </div>
 
 	<div class="buttons" v-if="isMobile">
-		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button> -->
+		<button class="button nav _button" @click="showDrawerNav" ref="navButton"><Fa :icon="faBars"/><i v-if="navIndicated"><Fa :icon="faCircle"/></i></button>
 		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><Fa :icon="faHome"/></button>
 		<button class="button search _button" @click="search"><Fa :icon="faSearch"/></button>
 		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
@@ -39,7 +39,7 @@
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 
-	<kndrawernav @kndrawernav="showDrawerNav"></kndrawernav>
+	<x-header v-on:kn-drawernav="showDrawerNav"></x-header>
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">
@@ -84,7 +84,7 @@ export default defineComponent({
 		XDrawerSidebar,
 		XHeader,
 		XTimeline,
-		XWidgets: defineAsyncComponent(() => import('./kokonect.widgets.vue')),
+		XWidgets: defineAsyncComponent(() => import('./kokonect.widgets.vue'))
 	},
 
 	data() {
@@ -163,7 +163,7 @@ export default defineComponent({
 		},
 
 		showDrawerNav() {
-			alert('event received');
+			console.log('이벤트를 받았습니다!');
 			this.$refs.drawerNav.show();
 		},
 
