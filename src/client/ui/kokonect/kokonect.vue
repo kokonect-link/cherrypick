@@ -7,7 +7,7 @@
 
 		<main class="main _panel" @contextmenu.stop="onContextmenu">
 			<header class="header" @click="onHeaderClick">
-				<XHeader :info="pageInfo"/>
+				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo"/>
 			</header>
 			<div class="content" :class="{ _flat_: !fullView }">
 				<router-view v-slot="{ Component }">
@@ -39,7 +39,6 @@
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 
-	<x-header v-on:kn-drawernav="showDrawerNav"></x-header>
 	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">
