@@ -268,7 +268,7 @@ export default defineComponent({
 		text-align: center;
 
 		> .link {
-			display: block;
+			//display: block;
 			width: 32px;
 			margin: 0 auto;
 

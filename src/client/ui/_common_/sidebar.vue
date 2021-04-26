@@ -41,7 +41,7 @@
 				<div class="divider"></div>
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
-						<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
 						<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #b4f1fc;">NECT</span></b></p>
 					</MkA>
 				</div>
@@ -243,23 +243,6 @@ export default defineComponent({
 	$nav-width: 250px;
 	$nav-icon-only-width: 86px;
 
-	> .about {
-		fill: currentColor;
-		padding: 8px 0 16px 0;
-		text-align: center;
-
-		> .link {
-			display: block;
-			width: 32px;
-			margin: 0 auto;
-
-			img {
-				display: block;
-				width: 100%;
-			}
-		}
-	}
-
 	> .nav-back {
 		z-index: 1001;
 	}
@@ -345,10 +328,21 @@ export default defineComponent({
 				border-top: solid 0.5px var(--divider);
 			}
 
-			> .foo {
-				text-align: center;
+			> .about {
+				fill: currentColor;
 				padding: 8px 0 16px 0;
-				opacity: 0.5;
+				text-align: center;
+				
+				> .link {
+					//display: block;
+					width: 32px;
+					margin: 0 auto;
+					
+					img {
+						display: block;
+						width: 100%;
+					}
+				}
 			}
 
 			> .item {

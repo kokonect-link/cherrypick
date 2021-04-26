@@ -1,5 +1,8 @@
 <template>
 <div class="fdidabkb" :class="{ center }" :style="`--height:${height};`" :key="key">
+	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
+		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
+	</transition>
 	<template v-if="info">
 		<div class="titleContainer" @click="onHeaderClick">
 			<div class="title">
@@ -23,9 +26,6 @@
 			<button v-if="showMenu" class="_button button_R" @click.stop="menu"><i class="fas fa-ellipsis-h"></i></button>
 		</div>
 	</template>
-	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
-		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><Fa :icon="faChevronLeft"/></button>
-	</transition>
 </div>
 </template>
 

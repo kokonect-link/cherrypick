@@ -12,7 +12,7 @@
 		<nav class="nav" :class="{ iconOnly, hidden }" v-show="showing">
 			<div>
 				<button class="item _button account" @click="openAccountMenu">
-					<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 				</button>
 				<MkA class="item index" active-class="active" to="/" exact>
 					<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
@@ -243,23 +243,6 @@ export default defineComponent({
 	$nav-width: 250px;
 	$nav-icon-only-width: 86px;
 
-	> .about {
-		fill: currentColor;
-		padding: 8px 0 16px 0;
-		text-align: center;
-
-		> .link {
-			display: block;
-			width: 32px;
-			margin: 0 auto;
-
-			img {
-				display: block;
-				width: 100%;
-			}
-		}
-	}
-
 	> .nav-back {
 		z-index: 1001;
 	}
@@ -350,10 +333,21 @@ export default defineComponent({
 				border-top: solid 0.5px var(--divider);
 			}
 
-			> .foo {
-				text-align: center;
+			> .about {
+				fill: currentColor;
 				padding: 8px 0 16px 0;
-				opacity: 0.5;
+				text-align: center;
+				
+				> .link {
+					//display: block;
+					width: 32px;
+					margin: 0 auto;
+					
+					img {
+						display: block;
+						width: 100%;
+					}
+				}
 			}
 
 			> .item {
