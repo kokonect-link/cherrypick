@@ -35,7 +35,7 @@
 		<button class="button search _button" @click="search"><Fa :icon="faSearch"/></button>
 		<button class="button notifications _button" @click="$router.push('/my/notifications')"><Fa :icon="faBell"/><i v-if="$i.hasUnreadNotification"><Fa :icon="faCircle"/></i></button>
 		<!-- <button class="button post _button" @click="post"><Fa :icon="faPencilAlt"/></button> -->
-		<button class="button tab _button" @click="$route.name === 'about' ? top() : $router.push('/about')"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
+		<button class="button tab _button" @click="$router.push('/my/messages')"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
 		<button class="button widget _button" @click="widgetsShowing = true"><Fa :icon="faLayerGroup"/></button>
 	</div>
 
