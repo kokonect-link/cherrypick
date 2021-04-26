@@ -134,7 +134,6 @@ export default defineComponent({
 
 		showDrawerNav() {
 			this.$emit('kn-drawernav');
-			console.log('네비바를 눌렀습니다!');
 		},
 
 		menu(ev) {
