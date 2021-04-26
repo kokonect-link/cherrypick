@@ -170,7 +170,9 @@ export default defineComponent({
 		},
 
 		onHeaderClick() {
-			if (!this.showDrawerNav) window.scroll({ top: 0, behavior: 'smooth' });
+			if (!this.showDrawerNav) {
+				window.scroll({ top: 0, behavior: 'smooth' });
+			}
 		},
 
 		onContextmenu(e) {
