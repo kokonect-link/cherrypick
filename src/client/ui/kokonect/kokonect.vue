@@ -6,7 +6,7 @@
 		</div>
 
 		<main class="main _panel" @contextmenu.stop="onContextmenu">
-			<header class="header" @click="onHeaderClick">
+			<header class="header">
 				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo"/>
 			</header>
 			<div class="content" :class="{ _flat_: !fullView }">
@@ -170,9 +170,7 @@ export default defineComponent({
 		},
 
 		onHeaderClick() {
-			if (!this.showDrawerNav) {
-				window.scroll({ top: 0, behavior: 'smooth' });
-			}
+			window.scroll({ top: 0, behavior: 'smooth' });
 		},
 
 		onContextmenu(e) {

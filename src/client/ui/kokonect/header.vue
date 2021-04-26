@@ -1,7 +1,7 @@
 <template>
 <div class="fdidabkb" :class="{ center }" :style="`--height:${height};`" :key="key">
 	<template v-if="info">
-		<div class="titleContainer">
+		<div class="titleContainer" @click="onHeaderClick">
 			<div class="title">
 				<!-- <Fa v-if="info.icon" :icon="info.icon" :key="info.icon" class="icon"/> -->
 				<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
@@ -126,6 +126,10 @@ export default defineComponent({
 
 		showDrawerNav() {
 			this.$emit('kn-drawernav');
+		},
+
+		onHeaderClick() {
+			window.scroll({ top: 0, behavior: 'smooth' });
 		},
 
 		menu(ev) {
