@@ -6,10 +6,9 @@
 		</div>
 
 		<main class="main _panel" @contextmenu.stop="onContextmenu">
-			<header class="header" @click="onHeaderClick">
-				<XHeader :info="pageInfo"/>
+			<header class="header">
+				<XHeader @kn-drawernav="showDrawerNav" @click="onHeaderClick" :info="pageInfo"/>
 			</header>
-			<XHeader @kn-drawernav="showDrawerNav"/>
 			<div class="content" :class="{ _flat_: !fullView }">
 				<router-view v-slot="{ Component }">
 					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
