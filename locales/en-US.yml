@@ -777,6 +777,8 @@ _aboutMisskey:
   donate: "Donate to Misskey"
   morePatrons: "We really appreciate the support of many other helpers not listed here. Thank you! 🥰"
   patrons: "Backers"
+  _kokonect:
+    about: "This Misskey was customized by NoriDev to run Kokonect instances."
 _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"

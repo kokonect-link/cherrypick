@@ -30,6 +30,17 @@
 				<template #suffix>Patreon</template>
 			</FormLink>
 		</FormGroup>
+		<section class="_formItem" style="text-align: center; padding: 0 16px;" @click="gravity">
+			{{ $ts._aboutMisskey._kokonect.about }}
+		</section>
+		<FormGroup>
+			<FormLink to="https://github.com/noridev" external>@noridev</FormLink>
+			<FormLink to="https://github.com/kokonect-link/misskey" external>
+				<template #icon><i class="fas fa-code"></i></template>
+				{{ $ts._aboutMisskey.source }}
+				<template #suffix>GitHub</template>
+			</FormLink>
+		</FormGroup>
 		<FormGroup>
 			<template #label>{{ $ts._aboutMisskey.contributors }}</template>
 			<FormLink to="https://github.com/syuilo" external>@syuilo</FormLink>
