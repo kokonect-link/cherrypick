@@ -10,7 +10,7 @@
 			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><Fa :icon="faGlobe"/></button>
 			<span class="divider"></span>
 			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><Fa :icon="faAt"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadMentions"/></button>
-			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button>
+			<!-- <button class="_button tab" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><Fa :icon="faEnvelope"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadSpecifiedNotes"/></button> -->
 		</div>
 		<div class="right">
 			<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><Fa :icon="faSatelliteDish"/><Fa :icon="faCircle" class="i" v-if="$i.hasUnreadChannel"/></button>
