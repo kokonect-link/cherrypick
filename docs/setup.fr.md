@@ -7,6 +7,7 @@ Ce guide décrit les étapes à suivre afin d'installer et de configurer une ins
 - [La version en japonnais est également disponible sur - 日本語版もあります](./setup.ja.md)
 - [Version anglaise également disponible - English version also available - 英語版もあります](./setup.en.md)
 - [Version Chinois simplifié également disponible - Simplified Chinese version also available - 简体中文版同样可用](./setup.zh.md)
+- [Il existe également une version coréenne - Korean version also available - 한국어판도 있어요!](./setup.ko.md)
 
 ----------------------------------------------------------------
 
@@ -24,7 +25,7 @@ adduser --disabled-password --disabled-login misskey
 Installez les paquets suivants :
 
 #### Dépendences :package:
-* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x)
+* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x, 15.x)
 * **[PostgreSQL](https://www.postgresql.org/)** (>= 10)
 * **[Redis](https://redis.io/)**
 
@@ -41,13 +42,13 @@ Installez les paquets suivants :
 
 2. Clonez la branche master du dépôt misskey.
 
-	`git clone -b master git://github.com/misskey-dev/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/misskey.git`
 
 3. Accédez au dossier misskey.
 
 	`cd misskey`
 
-4. Checkout sur le tag de la [version la plus récente](https://github.com/misskey-dev/misskey/releases/latest)
+4. Checkout sur le tag de la [version la plus récente](https://github.com/kokonect-link/misskey/releases/latest)
 
 	`git checkout master`
  

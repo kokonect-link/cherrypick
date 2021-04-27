@@ -6,6 +6,7 @@ Misskeyサーバーの構築にご関心をお寄せいただきありがとう�
 
 - [英語版もあります - English version also available](./setup.en.md)
 - [简体中文版同样可用 - Simplified Chinese version also available](./setup.zh.md)
+- [韓国語版もあります - Korean version also available](./setup.ko.md)
 
 ----------------------------------------------------------------
 
@@ -23,7 +24,7 @@ adduser --disabled-password --disabled-login misskey
 これらのソフトウェアをインストール・設定してください:
 
 #### 依存関係 :package:
-* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x)
+* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x, 15.x)
 * **[PostgreSQL](https://www.postgresql.org/)** (10以上)
 * **[Redis](https://redis.io/)**
 
@@ -42,13 +43,13 @@ adduser --disabled-password --disabled-login misskey
 
 2. masterブランチからMisskeyレポジトリをクローン
 
-	`git clone -b master git://github.com/misskey-dev/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/misskey.git`
 
 3. misskeyディレクトリに移動
 
 	`cd misskey`
 
-4. [最新のリリース](https://github.com/misskey-dev/misskey/releases/latest)を確認
+4. [最新のリリース](https://github.com/kokonect-link/misskey/releases/latest)を確認
 
 	`git checkout master`
 

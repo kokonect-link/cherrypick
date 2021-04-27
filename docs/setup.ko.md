@@ -7,6 +7,7 @@ Misskey 서버 구축에 관심을 가져주셔서 감사합니다!
 - [일본어 문서도 있어요 - 日本語版もあります](./setup.ja.md)
 - [영어 버전도 있어요 - English version also available](./setup.en.md)
 - [중국어 간체 버전도 제공돼요 - 简体中文版同样可用](./setup.zh.md)
+- [프랑스어 버전도 있어요 - Version française aussi](./setup.fr.md)
 
 ----------------------------------------------------------------
 

@@ -6,6 +6,7 @@ This guide describes how to install and setup Misskey.
 
 - [Japanese version also available - 日本語版もあります](./setup.ja.md)
 - [Simplified Chinese version also available - 简体中文版同样可用](./setup.zh.md)
+- [Korean version also available - 한국어판도 있어요!](./setup.ko.md)
 
 ----------------------------------------------------------------
 
@@ -23,7 +24,7 @@ adduser --disabled-password --disabled-login misskey
 Please install and setup these softwares:
 
 #### Dependencies :package:
-* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x)
+* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x, 15.x)
 * **[PostgreSQL](https://www.postgresql.org/)** (>= 10)
 * **[Redis](https://redis.io/)**
 
@@ -40,13 +41,13 @@ Please install and setup these softwares:
 
 2. Clone the misskey repo from master branch.
 
-	`git clone -b master git://github.com/misskey-dev/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/misskey.git`
 
 3. Navigate to misskey directory
 
 	`cd misskey`
 
-4. Checkout to the [latest release](https://github.com/misskey-dev/misskey/releases/latest)
+4. Checkout to the [latest release](https://github.com/kokonect-link/misskey/releases/latest)
 
 	`git checkout master`
 
