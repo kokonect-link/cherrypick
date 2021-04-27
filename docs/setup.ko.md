@@ -138,9 +138,12 @@ yarn run init
 3. `yarn install`
 4. `NODE_ENV=production yarn build`
 5. `yarn migrate`
+6. Misskey 프로세스를 다시 시작하여 수정된 내용을 반영합니다.
 
-문제가 발생한 경우, `yarn clean`또는 `yarn cleanall`를 입력하면 해결될 수도 있습니다.
+업데이트에 문제가 발생한 경우, 아래 항목을 따라주십시오.
+1. `yarn clean` 또는 `yarn cleanall` 입력
+2. 업데이트 다시 시도하기 (`yarn install` 명령어를 잊지 마세요!)
 
 ----------------------------------------------------------------
 
-해결하기 어려운 문제가 발생한 경우, 부담없이 연락 주세요!
+해결하기 어려운 문제가 발생한 경우, 부담없이 연락 주세요 :D
