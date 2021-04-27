@@ -25,7 +25,7 @@
 		</div>
 	</div>
 
-	<div class="floatbtn" v-if="isMobile">
+	<div class="floatbtn" v-if="isMobile && !(withBack && canBack)">
 		<button v-if="$i" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
   </div>
 
