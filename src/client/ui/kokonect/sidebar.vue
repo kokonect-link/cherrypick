@@ -35,9 +35,9 @@
 				<MkA class="item" active-class="active" to="/settings">
 					<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 				</MkA>
-				<button class="item _button post" @click="post">
+				<!-- <button class="item _button post" @click="post">
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
-				</button>
+				</button> -->
 				<div class="divider"></div>
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
