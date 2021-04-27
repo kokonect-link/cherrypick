@@ -39,7 +39,7 @@
 				<template #suffix>GitHub</template>
 			</FormLink>
 			<FormLink to="https://status.kokonect.link" external>
-				<template #icon><i class="fas fa-code"></i></template>
+				<template #icon><i class="fas fa-server"></i></template>
 				{{ $ts._aboutMisskey._kokonect.serverStatus }}
 			</FormLink>
 			<template #caption>{{ $ts._aboutMisskey._kokonect.about }}</template>
