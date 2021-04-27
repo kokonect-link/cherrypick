@@ -785,6 +785,7 @@ _aboutMisskey:
   patrons: "支援者"
   _kokonect:
     about: "このMisskeyはKokonectインスタンスを駆動するため、NoriDevによってカスタムされました。"
+    serverStatus: "サーバ状態"
 
 _nsfw:
   respect: "閲覧注意のメディアは隠す"

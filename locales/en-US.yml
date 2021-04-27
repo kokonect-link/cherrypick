@@ -779,6 +779,7 @@ _aboutMisskey:
   patrons: "Backers"
   _kokonect:
     about: "This Misskey was customized by NoriDev to run Kokonect instances."
+    serverStatus: "Server Status"
 _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"
