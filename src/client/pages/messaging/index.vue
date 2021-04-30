@@ -44,6 +44,9 @@ import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
+
 export default defineComponent({
 	components: {
 		MkButton
@@ -59,6 +62,8 @@ export default defineComponent({
 			moreFetching: false,
 			messages: [],
 			connection: null,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 
