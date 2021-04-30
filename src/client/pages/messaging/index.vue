@@ -64,7 +64,7 @@ export default defineComponent({
 	},
 
 	created() {
-    this.$eventBus.$on('kn-messaging-room-create', createMessagingRoom => {
+    EventBus.$on('kn-messaging-room-create', createMessagingRoom => {
 			if (createMessagingRoom == true) {
 				this.start();
 				console.log("이벤트 수신");
