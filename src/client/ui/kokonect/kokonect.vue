@@ -154,7 +154,7 @@ export default defineComponent({
 		},
 
 		createMessagingRoom() {
-			EventBus.$emit("kn-messaging-room-create", this.createMessagingRoom);
+			EventBus.$emit('kn-messaging-room-create', this.createMessagingRoom);
 		}
 
 		search() {
