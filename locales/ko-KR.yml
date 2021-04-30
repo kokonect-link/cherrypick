@@ -784,7 +784,7 @@ _aboutMisskey:
   morePatrons: "이 외에도 다른 많은 분들이 도움을 주시고 계십니다. 감사합니다🥰"
   patrons: "후원자"
   _kokonect:
-    about: "이 Misskey는 Kokonect 인스턴스를 구동하기 위해서, NoriDev에 의해서 커스텀 되었어요!"
+    about: "이 Misskey는 Kokonect 인스턴스를 구동하기 위해서, NoriDev에 의해 커스텀 되었어요!"
     serverStatus: "서버 상태"
 
 _nsfw:
