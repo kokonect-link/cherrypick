@@ -1,7 +1,6 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
 	<!-- <MkButton @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton> -->
-	{{recivedCreateMessagingRoom}}
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -66,7 +65,7 @@ export default defineComponent({
 
 	created() {
     EventBus.$on("kn-messaging-room-create", createMessagingRoom => {
-      if (createMessagingRoom == true) this.start();
+      this.receivedCreateMessagingRoom = createMessagingRoom;
     });
   }
 

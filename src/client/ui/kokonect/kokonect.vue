@@ -95,7 +95,7 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
-			createMessagingRoom: true,
+			createMessagingRoom: false,
 		};
 	},
 
