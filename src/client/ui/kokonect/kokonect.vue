@@ -34,8 +34,8 @@
 		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
 		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.push('/')"><i class="fas fa-home"></i></button>
 		<button class="button search _button" @click="search"><i class="fas fa-search"/></button>
-		<button class="button notifications _button" @click="$route.name === 'notifications'"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
-		<button class="button tab _button" @click="$route.name === 'messaging'"><i class="fas fa-comments"></i><span v-if="$i.hasUnreadMessagingMessage" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button notifications _button" @click="$route.name === 'notifications' ? top() : $router.push('/my/notifications')"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button tab _button" @click="$route.name === 'messaging' ? top() : $router.push('/my/messaging')"><i class="fas fa-comments"></i><span v-if="$i.hasUnreadMessagingMessage" class="indicator"><i class="fas fa-circle"></i></span></button>
 		<button class="button widget _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
 		<!-- <button class="button post _button" @click="post"><i class="fas fa-pencil-alt"></i></button> -->
 	</div>
