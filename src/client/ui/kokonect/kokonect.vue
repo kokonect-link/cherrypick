@@ -25,9 +25,9 @@
 		</div>
 	</div>
 
-	<div class="floatbtn" v-if="isMobile && ($route.name === 'index' || $route.replace('/my/notifications') || $route.replace('/my/messaging'))">
-		<button v-if="$route.name === 'index' || $route.replace('/my/notifications')" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
-		<button v-if="$route.replace('/my/messaging')" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
+	<div class="floatbtn" v-if="isMobile && ($route.name === 'index' || $router.replace('/my/notifications') || $router.replace('/my/messaging'))">
+		<button v-if="$route.name === 'index' || $router.replace('/my/notifications')" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
+		<button v-if="$router.replace('/my/messaging')" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
