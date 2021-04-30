@@ -27,7 +27,7 @@
 
 	<div class="floatbtn" v-if="isMobile && ($route.name === 'index' || $route.name === 'notifications' || $route.name === 'messaging')">
 		<button v-if="$route.name === 'index' || $route.name === 'notifications'" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
-		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createRoom()"><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()"><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -71,6 +71,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
+import EventBus from "@client/kokonect/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -151,8 +152,8 @@ export default defineComponent({
 			os.post();
 		},
 
-		createRoom() {
-			//EventBus.$emit('kn-messaging-room-create', createMessagingRoom);
+		createMessagingRoom() {
+			EventBus.$emit('kn-messaging-room-create');
 			console.log("이벤트 송신");
 		},
 

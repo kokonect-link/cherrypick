@@ -43,6 +43,7 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+import EventBus from "@client/kokonect/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -67,14 +68,12 @@ export default defineComponent({
 		};
 	},
 
-	/*created() {
-    EventBus.$on('kn-messaging-room-create', createMessagingRoom => {
-			if (createMessagingRoom == true) {
-				this.start();
-				console.log("이벤트 수신");
-			}
+	created() {
+    EventBus.$on('kn-messaging-room-create', () => {
+			this.start();
+			console.log("이벤트 수신");
     });
-  }*/
+  }
 
 	mounted() {
 		this.connection = os.stream.useSharedConnection('messagingIndex');
