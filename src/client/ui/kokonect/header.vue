@@ -12,8 +12,9 @@
 		<div class="buttons_L">
 			<template v-if="isMobile">
 				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/></button>
-				<button class="_button button_L" v-if="$route.name === 'notifications' || $route.name === 'messaging'" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/></button>
+				<button class="_button button_L" v-else-if="$route.name === 'notifications' || $route.name === 'messaging'" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
+				<MkAvatar class="avatar" v-else-if="$route.name === 'notifications' || $route.name === 'messaging'" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 			</template>
 		</div>
