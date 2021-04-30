@@ -155,7 +155,7 @@ export default defineComponent({
 		createMessagingRoom() {
 			//EventBus.$emit('kn-messaging-room-create', createMessagingRoom);
 			console.log("이벤트 송신");
-		}
+		},
 
 		search() {
 			search();
