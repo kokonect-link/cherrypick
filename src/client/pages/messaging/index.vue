@@ -1,6 +1,7 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
-	<MkButton @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<!-- <MkButton @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton> -->
+	<Kokonect @kn-messaging-room-create="start"></Kokonect>
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -43,10 +44,12 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+import Kokonect from '@client/ui/kokonect/kokonect.vue';
 
 export default defineComponent({
 	components: {
-		MkButton
+		MkButton,
+		Kokonect
 	},
 
 	data() {
