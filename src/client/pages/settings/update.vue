@@ -17,6 +17,15 @@
 		</FormKeyValueView>
 	</FormGroup>
 	<FormGroup>
+		<template #label>Kokonect</template>
+		<FormKeyValueView>
+			<template #key>{{ $ts.latestVersion }}</template>
+			<template #value v-if="releasesKokonect">{{ releasesKokonect[0].tag_name }}</template>
+			<template #value v-else><MkEllipsis/></template>
+		</FormKeyValueView>
+		<template #caption v-if="releasesKokonect"><MkTime :time="releasesKokonect[0].published_at" mode="detail"/></template>
+	</FormGroup>
+	<FormGroup>
 		<template #label>Misskey</template>
 		<FormKeyValueView>
 			<template #key>{{ $ts.latestVersion }}</template>
@@ -64,6 +73,7 @@ export default defineComponent({
 			},
 			version,
 			instanceName,
+			releasesKokonect: null,
 			releases: null,
 			meta: null
 		}
@@ -77,6 +87,14 @@ export default defineComponent({
 		}).then(meta => {
 			this.meta = meta;
 			localStorage.setItem('v', meta.version);
+		});
+
+		fetch('https://api.github.com/repos/kokonect-link/misskey/releases', {
+			method: 'GET',
+		})
+		.then(res => res.json())
+		.then(res => {
+			this.releasesKokonect = res;
 		});
 
 		fetch('https://api.github.com/repos/misskey-dev/misskey/releases', {
