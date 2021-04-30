@@ -65,6 +65,7 @@ export default defineComponent({
 
 	created() {
     EventBus.$on('kn-messaging-room-create', () => {
+			console.log("이벤트 수신");
       this.start();
     });
   }
