@@ -71,6 +71,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
+import EventBus from "@client/kokonect/eventBus.vue";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -94,6 +95,7 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
+			createMessagingRoom: false,
 		};
 	},
 
@@ -152,7 +154,7 @@ export default defineComponent({
 		},
 
 		createMessagingRoom() {
-			this.$emit('kn-messaging-room-create');
+			EventBus.$emit("kn-messaging-room-create", this.createMessagingRoom);
 		}
 
 		search() {

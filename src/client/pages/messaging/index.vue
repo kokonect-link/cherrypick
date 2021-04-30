@@ -1,7 +1,7 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
 	<!-- <MkButton @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton> -->
-	<kokonect @kn-messaging-room-create="start"></kokonect>
+	{{recivedCreateMessagingRoom}}
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -44,12 +44,11 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import Kokonect from '@client/ui/kokonect/kokonect.vue';
+import EventBus from "@client/kokonect/eventBus.vue";
 
 export default defineComponent({
 	components: {
-		MkButton,
-		Kokonect
+		MkButton
 	},
 
 	data() {
@@ -64,6 +63,12 @@ export default defineComponent({
 			connection: null,
 		};
 	},
+
+	created() {
+    EventBus.$on("kn-messaging-room-create", createMessagingRoom => {
+      this.receivedCreateMessagingRoom = createMessagingRoom;
+    });
+  }
 
 	mounted() {
 		this.connection = os.stream.useSharedConnection('messagingIndex');
