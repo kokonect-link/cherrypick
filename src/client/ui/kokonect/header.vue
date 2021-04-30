@@ -24,7 +24,8 @@
 		</div>
 	</template>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
-		<button class="_button back" v-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
+		<button class="_button back" v-if="withBack && canBack && !($route.name === 'notifications' || $route.name === 'messaging')" @click.stop="back()" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
+		<button class="_button back" v-else-if="withBack && canBack" @click.stop="back()" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
 	</transition>
 </div>
 </template>
