@@ -56,7 +56,7 @@ import { defineComponent } from 'vue';
 import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
-import { sidebarDef } from '@client/sidebar';
+import { sidebarDef } from '@client/kokonect/sidebar-mobile';
 import { getAccounts, addAccount, login } from '@client/account';
 
 export default defineComponent({
