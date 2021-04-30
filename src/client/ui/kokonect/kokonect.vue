@@ -27,7 +27,7 @@
 
 	<div class="floatbtn" v-if="isMobile && ($route.name === 'index' || $route.name === 'notifications' || $route.name === 'messaging')">
 		<button v-if="$route.name === 'index' || $route.name === 'notifications'" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
-		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="start()"><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()"><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -151,48 +151,9 @@ export default defineComponent({
 			os.post();
 		},
 
-		start(ev) {
-			os.modalMenu([{
-				text: this.$ts.messagingWithUser,
-				icon: 'fas fa-user',
-				action: () => { this.startUser() }
-			}, {
-				text: this.$ts.messagingWithGroup,
-				icon: 'fas fa-users',
-				action: () => { this.startGroup() }
-			}], ev.currentTarget || ev.target);
-		},
-
-		async startUser() {
-			os.selectUser().then(user => {
-				this.$router.push(`/my/messaging/${getAcct(user)}`);
-			});
-		},
-
-		async startGroup() {
-			const groups1 = await os.api('users/groups/owned');
-			const groups2 = await os.api('users/groups/joined');
-			if (groups1.length === 0 && groups2.length === 0) {
-				os.dialog({
-					type: 'warning',
-					title: this.$ts.youHaveNoGroups,
-					text: this.$ts.joinOrCreateGroup,
-				});
-				return;
-			}
-			const { canceled, result: group } = await os.dialog({
-				type: null,
-				title: this.$ts.group,
-				select: {
-					items: groups1.concat(groups2).map(group => ({
-						value: group, text: group.name
-					}))
-				},
-				showCancelButton: true
-			});
-			if (canceled) return;
-			this.$router.push(`/my/messaging/group/${group.id}`);
-		},
+		createMessagingRoom() {
+			this.$emit('kn-messaging-room-create');
+		}
 
 		search() {
 			search();
