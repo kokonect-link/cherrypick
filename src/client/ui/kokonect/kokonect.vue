@@ -95,7 +95,6 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
-			createMessagingRoom: true,
 		};
 	},
 
@@ -154,7 +153,7 @@ export default defineComponent({
 		},
 
 		createMessagingRoom() {
-			EventBus.$emit('kn-messaging-room-create', this.createMessagingRoom);
+			EventBus.$emit('kn-messaging-room-create');
 		}
 
 		search() {
