@@ -1,4 +1,6 @@
-import Vue from 'vue';
-
-const EventBus = new Vue();
-export default EventBus;
+<script>
+	import Vue from 'vue';
+		
+	const eventBus = new Vue();
+	export default EventBus;
+</script>
