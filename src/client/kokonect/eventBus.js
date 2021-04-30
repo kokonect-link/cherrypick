@@ -1,1 +1,0 @@
-var eventBus = new Vue();

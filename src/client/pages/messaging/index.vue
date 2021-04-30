@@ -43,7 +43,7 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import EventBus from "@client/kokonect/eventBus";
+import EventBus from "@client/kokonect/eventBus.vue";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
