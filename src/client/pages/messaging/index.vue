@@ -66,7 +66,7 @@ export default defineComponent({
 
 	created() {
     EventBus.$on("kn-messaging-room-create", createMessagingRoom => {
-      this.receivedCreateMessagingRoom = createMessagingRoom;
+      if (createMessagingRoom == true) this.start();
     });
   }
 
