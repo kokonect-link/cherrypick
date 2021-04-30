@@ -46,7 +46,7 @@ export const router = createRouter({
 		{ path: '/channels/:channelId/edit', component: page('channel-editor'), props: true },
 		{ path: '/channels/:channelId', component: page('channel'), props: route => ({ channelId: route.params.channelId }) },
 		{ path: '/clips/:clipId', component: page('clip'), props: route => ({ clipId: route.params.clipId }) },
-		{ path: '/my/notifications', component: page('notifications') },
+		{ path: '/my/notifications', name: 'notifications', component: page('notifications') },
 		{ path: '/my/favorites', component: page('favorites') },
 		{ path: '/my/messages', component: page('messages') },
 		{ path: '/my/mentions', component: page('mentions') },
