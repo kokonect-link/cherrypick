@@ -71,7 +71,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
-import EventBus from "@client/kokonect/eventBus";
+import EventBus from '@client/kokonect/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -95,6 +95,7 @@ export default defineComponent({
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
+			createMessagingRoom: true,
 		};
 	},
 
@@ -153,7 +154,7 @@ export default defineComponent({
 		},
 
 		createMessagingRoom() {
-			EventBus.$emit('kn-messaging-room-create');
+			EventBus.$emit('kn-messaging-room-create', createMessagingRoom);
 			console.log("이벤트 송신");
 		}
 

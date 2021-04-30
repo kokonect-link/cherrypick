@@ -43,7 +43,6 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import EventBus from "@client/kokonect/eventBus";
 
 export default defineComponent({
 	components: {
@@ -64,9 +63,11 @@ export default defineComponent({
 	},
 
 	created() {
-    EventBus.$on('kn-messaging-room-create', () => {
-			console.log("이벤트 수신");
-      this.start();
+    this.$eventBus.$on('kn-messaging-room-create', createMessagingRoom => {
+			if (createMessagingRoom == true) {
+				this.start();
+				console.log("이벤트 수신");
+			}
     });
   }
 
