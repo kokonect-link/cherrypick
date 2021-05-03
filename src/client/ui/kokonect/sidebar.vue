@@ -40,7 +40,7 @@
 				</button> -->
 				<template v-if="$i.isPatron">
 					<div class="divider"></div>
-					<button class="patron" @click="patron">
+					<button class="item _button patron" @click="patron">
 						<i class="fas fa-heart"></i><span class="text">{{ $ts.youArePatron }}</span>
 					</button>
 				</template>
