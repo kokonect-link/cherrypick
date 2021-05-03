@@ -68,8 +68,8 @@ export default defineComponent({
 		};
 	},
 	
-	created(ev) {
-		eventBus.on('test', () => { this.start(); console.log(ev.currentTarget); });
+	created() {
+		eventBus.on('test', () => this.startMobile());
 	},
 
 	mounted() {
@@ -125,7 +125,20 @@ export default defineComponent({
 			}
 		},
 
-		start() {
+		// 모바일 환경에서의 채팅 작성 버튼
+		startMobile() {
+			os.modalMenu([{
+				text: this.$ts.messagingWithUser,
+				icon: 'fas fa-user',
+				action: () => { this.startUser() }
+			}, {
+				text: this.$ts.messagingWithGroup,
+				icon: 'fas fa-users',
+				action: () => { this.startGroup() }
+			}]);
+		},
+
+		start(ev) {
 			os.modalMenu([{
 				text: this.$ts.messagingWithUser,
 				icon: 'fas fa-user',
