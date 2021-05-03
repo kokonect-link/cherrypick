@@ -153,8 +153,7 @@ export default defineComponent({
 		},
 
 		createMessagingRoom() {
-			console.log("이벤트 송신");
-			eventBus.emit('test');
+			eventBus.emit('kn-createmsg');
 		},
 
 		search() {

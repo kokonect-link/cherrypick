@@ -404,8 +404,9 @@ export default Component;
 			}
 		}
 	}
+}
 
-	> footer {
+> footer {
 		width: 100%;
 		position: relative;
 
@@ -453,7 +454,6 @@ export default Component;
 			}
 		}
 	}
-}
 
 .fade-enter-active, .fade-leave-active {
 	transition: opacity 0.1s;

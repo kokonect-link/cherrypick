@@ -69,7 +69,7 @@ export default defineComponent({
 	},
 	
 	created() {
-		eventBus.on('test', () => this.startMobile());
+		eventBus.on('kn-createmsg', () => this.startMobile());
 	},
 
 	mounted() {
