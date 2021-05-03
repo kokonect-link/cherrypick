@@ -26,8 +26,8 @@
 	</div>
 
 	<div class="floatbtn" v-if="isMobile && ($route.name === 'index' || $route.name === 'notifications' || $route.name === 'messaging')">
-		<button v-if="$route.name === 'index' || $route.name === 'notifications'" class="post _buttonPrimary" @click="post()"><i class="fas fa-pencil-alt"/></button>
-		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()"><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'index' || $route.name === 'notifications'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
+		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
