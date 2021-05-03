@@ -69,7 +69,7 @@ export default defineComponent({
 	},
 	
 	created() {
-		eventBus.on('test', (ev) => this.startMobile(ev));
+		eventBus.on('test', (ev) => this.start(ev));
 	},
 
 	mounted() {
