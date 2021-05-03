@@ -3,6 +3,7 @@
 	<button class="item _button account" @click="openAccountMenu" v-click-anime>
 		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i" v-if="!iconOnly"/>
 	</button>
+	<span class="patron" v-if="$i.isPatron"><i class="fas fa-heart"></i></span>
 	<div class="post" @click="post">
 		<MkButton class="button" primary full>
 			<i class="fas fa-pencil-alt fa-fw"></i><span class="text" v-if="!iconOnly">{{ $ts.note }}</span>
@@ -260,6 +261,11 @@ export default defineComponent({
 		> .button {
 			min-width: 0;
 		}
+	}
+
+	> .patron {
+		margin-left: 0.5em;
+		color: var(--patron);
 	}
 
 	> .about {
