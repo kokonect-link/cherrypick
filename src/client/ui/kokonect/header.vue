@@ -217,7 +217,7 @@ export default defineComponent({
 		}
 
 		> .patron {
-			margin-right: 0.5em;
+			margin-left: 0.5em;
 			color: var(--patron);
 		}
 	}
