@@ -89,7 +89,7 @@ export default defineComponent({
 
 	> .patron {
 		margin-right: 0.5em;
-		color: #ffee99;
+		color: var(--patron);
 	}
 
 	> .username {
