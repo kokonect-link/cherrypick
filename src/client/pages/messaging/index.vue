@@ -68,13 +68,6 @@ export default defineComponent({
 		};
 	},
 
-	created() {
-    EventBus.$on('kn-messaging-room-create', () => {
-			this.start();
-			console.log("이벤트 수신");
-    });
-  }
-
 	mounted() {
 		this.connection = os.stream.useSharedConnection('messagingIndex');
 
@@ -89,6 +82,12 @@ export default defineComponent({
 				this.fetching = false;
 			});
 		});
+
+		var self = this;
+		EventBus.$on('kn-messaging-room-create', function() {
+      self.start();
+			console.log("이벤트 수신");
+    });
 	},
 
 	beforeUnmount() {
