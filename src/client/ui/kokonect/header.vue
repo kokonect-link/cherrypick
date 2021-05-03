@@ -15,7 +15,7 @@
 				<MkAvatar class="avatar" v-if="!(withBack && canBack) || $route.name === 'notifications' || $route.name === 'messaging'" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<span class="patron" v-if="$i.isPatron"><i class="fas fa-heart"></i></span>
-				<span class="patron_back" v-if="$i.isPatron || !(withBack && canBack)"><i class="fas fa-heart"></i></span>
+				<span class="patron_back" v-if="$i.isPatron && !(withBack && canBack)"><i class="fas fa-heart"></i></span>
 			</template>
 		</div>
 		<div class="buttons_R">
