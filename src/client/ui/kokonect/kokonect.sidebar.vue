@@ -280,7 +280,6 @@ export default defineComponent({
 		}
 
 		> .patron {
-			margin-left: 0.5em;
 			color: var(--patron);
 		}
 	}
