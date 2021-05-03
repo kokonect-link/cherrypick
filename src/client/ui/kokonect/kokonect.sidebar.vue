@@ -251,6 +251,7 @@ export default defineComponent({
 			}
 
 			> .patron {
+				margin: 0;
 				color: var(--patron);
 			}
 		}
