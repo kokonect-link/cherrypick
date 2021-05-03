@@ -68,8 +68,8 @@ export default defineComponent({
 		};
 	},
 	
-	created() {
-		eventBus.on('test', () => this.start());
+	created(ev) {
+		eventBus.on('test', () => { this.start(); console.log(ev.currentTarget); });
 	},
 
 	mounted() {
