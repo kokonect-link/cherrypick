@@ -249,6 +249,10 @@ export default defineComponent({
 				.patron-text {
 				display: none;
 			}
+
+			> .patron {
+				color: var(--patron);
+			}
 		}
 	}
 

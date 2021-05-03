@@ -295,6 +295,10 @@ export default defineComponent({
 							display: none;
 						}
 
+						> .patron {
+							color: var(--patron);
+						}
+
 						> .name {
 							margin-left: 10px;
 							font-weight: bold;
