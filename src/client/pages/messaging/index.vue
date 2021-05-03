@@ -69,10 +69,7 @@ export default defineComponent({
 	},
 	
 	created() {
-		eventBus.on('test', () => {
-      this.start();
-			console.log("이벤트 수신");
-    });
+		eventBus.on('test', () => console.log("이벤트 수신"));
 	},
 
 	mounted() {
