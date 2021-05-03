@@ -40,6 +40,7 @@
 				</button> -->
 				<div class="divider"></div>
 				<div class="about">
+					<span class="patron" v-if="$i.isPatron"><i class="fas fa-heart"></i></span>
 					<MkA class="link" to="/about" v-click-anime>
 						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
 					</MkA>
