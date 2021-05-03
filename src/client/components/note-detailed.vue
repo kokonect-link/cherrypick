@@ -44,6 +44,7 @@
 					<span class="is-bot" v-if="appearNote.user.isBot">bot</span>
 					<span class="admin" v-if="appearNote.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
+					<span class="locked" v-if="appearNote.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 					<span class="patron" v-if="appearNote.user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
 					<span class="visibility" v-if="appearNote.visibility !== 'public'">
 						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
@@ -1018,6 +1019,10 @@ export default defineComponent({
 					> .moderator {
 						margin-right: 0.5em;
 						color: var(--badge);
+					}
+
+					> .locked {
+						margin-right: 0.5em;
 					}
 
 					> .patron {

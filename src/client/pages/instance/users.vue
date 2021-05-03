@@ -49,6 +49,7 @@
 						<span class="acct">@{{ acct(user) }}</span>
 						<span class="staff" v-if="user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 						<span class="staff" v-if="user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
+						<span class="locked" v-if="user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 						<span class="patron" v-if="user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
 						<span class="punished" v-if="user.isSilenced"><i class="fas fa-microphone-slash"></i></span>
 						<span class="punished" v-if="user.isSuspended"><i class="fas fa-snowflake"></i></span>
@@ -223,6 +224,10 @@ export default defineComponent({
 						> .staff {
 							margin-left: 0.5em;
 							color: var(--badge);
+						}
+
+						> .locked {
+							margin-left: 0.5em;
 						}
 
 						> .patron {
