@@ -41,6 +41,7 @@ export const meta = {
 				'admin',
 				'moderator',
 				'adminOrModerator',
+				'patron',
 				'alive'
 			]),
 			default: 'all'
@@ -75,6 +76,7 @@ export default define(meta, async (ps, me) => {
 		case 'admin': query.andWhere('user.isAdmin = TRUE'); break;
 		case 'moderator': query.andWhere('user.isModerator = TRUE'); break;
 		case 'adminOrModerator': query.andWhere('user.isAdmin = TRUE OR user.isModerator = TRUE'); break;
+		case 'patron': query.andWhere('user.isPatron = TRUE'); break;
 		case 'alive': query.andWhere('user.updatedAt > :date', { date: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5) }); break;
 	}
 

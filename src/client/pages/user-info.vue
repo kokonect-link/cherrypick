@@ -21,6 +21,7 @@
 
 		<FormGroup v-if="iAmModerator">
 			<FormSwitch v-if="user.host == null && $i.isAdmin && (moderator || !user.isAdmin)" @update:value="toggleModerator" v-model:value="moderator">{{ $ts.moderator }}</FormSwitch>
+			<FormSwitch v-if="user.host == null && $i.isAdmin && (moderator || !user.isAdmin)" @update:value="togglePatron" v-model:value="patron">{{ $ts.patron }}</FormSwitch>
 			<FormSwitch @update:value="toggleSilence" v-model:value="silenced">{{ $ts.silence }}</FormSwitch>
 			<FormSwitch @update:value="toggleSuspend" v-model:value="suspended">{{ $ts.suspend }}</FormSwitch>
 		</FormGroup>
@@ -145,6 +146,7 @@ export default defineComponent({
 					this.user = user;
 					this.info = info;
 					this.moderator = this.info.isModerator;
+					this.patron = this.info.isPatron;
 					this.silenced = this.info.isSilenced;
 					this.suspended = this.info.isSuspended;
 				});
@@ -207,6 +209,11 @@ export default defineComponent({
 
 		async toggleModerator(v) {
 			await os.api(v ? 'admin/moderators/add' : 'admin/moderators/remove', { userId: this.user.id });
+			await this.refreshUser();
+		},
+
+		async togglePatron(v) {
+			await os.api(v ? 'admin/patron/add' : 'admin/patron/remove', { userId: this.user.id });
 			await this.refreshUser();
 		},
 

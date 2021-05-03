@@ -43,6 +43,7 @@ export class comments1605408971051 implements MigrationInterface {
         await queryRunner.query(`COMMENT ON COLUMN "user"."isCat" IS 'Whether the User is a cat.'`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isAdmin" IS 'Whether the User is the admin.'`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isModerator" IS 'Whether the User is a moderator.'`);
+				await queryRunner.query(`COMMENT ON COLUMN "user"."isPatron" IS 'Whether the User is a patron.'`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."host" IS 'The host of the User. It will be null if the origin of the user is local.'`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."inbox" IS 'The inbox URL of the User. It will be null if the origin of the user is local.'`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."sharedInbox" IS 'The sharedInbox URL of the User. It will be null if the origin of the user is local.'`);
@@ -392,6 +393,7 @@ export class comments1605408971051 implements MigrationInterface {
         await queryRunner.query(`COMMENT ON COLUMN "user"."host" IS NULL`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isModerator" IS NULL`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isAdmin" IS NULL`);
+				await queryRunner.query(`COMMENT ON COLUMN "user"."isPatron" IS NULL`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isCat" IS NULL`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isBot" IS NULL`);
         await queryRunner.query(`COMMENT ON COLUMN "user"."isLocked" IS NULL`);

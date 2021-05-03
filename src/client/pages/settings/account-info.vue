@@ -126,6 +126,10 @@
 			<template #key>isAdmin</template>
 			<template #value>{{ $i.isAdmin ? $ts.yes : $ts.no }}</template>
 		</FormKeyValueView>
+		<FormKeyValueView>
+			<template #key>isPatron</template>
+			<template #value>{{ $i.isPatron ? $ts.yes : $ts.no }}</template>
+		</FormKeyValueView>
 	</FormGroup>
 </FormBase>
 </template>

@@ -20,6 +20,7 @@
 				<option value="available">{{ $ts.normal }}</option>
 				<option value="admin">{{ $ts.administrator }}</option>
 				<option value="moderator">{{ $ts.moderator }}</option>
+				<option value="patron">{{ $ts.patron }}</option>
 				<option value="silenced">{{ $ts.silence }}</option>
 				<option value="suspended">{{ $ts.suspend }}</option>
 			</MkSelect>
@@ -48,6 +49,7 @@
 						<span class="acct">@{{ acct(user) }}</span>
 						<span class="staff" v-if="user.isAdmin"><i class="fas fa-bookmark"></i></span>
 						<span class="staff" v-if="user.isModerator"><i class="far fa-bookmark"></i></span>
+						<span class="staff" v-if="user.isPatron"><i class="far fa-star"></i></span>
 						<span class="punished" v-if="user.isSilenced"><i class="fas fa-microphone-slash"></i></span>
 						<span class="punished" v-if="user.isSuspended"><i class="fas fa-snowflake"></i></span>
 					</header>

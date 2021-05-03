@@ -123,6 +123,10 @@ export const meta = {
 				type: 'boolean' as const,
 				nullable: false as const, optional: false as const
 			},
+			isPatron: {
+				type: 'boolean' as const,
+				nullable: false as const, optional: false as const
+			},
 			isAdmin: {
 				type: 'boolean' as const,
 				nullable: false as const, optional: false as const

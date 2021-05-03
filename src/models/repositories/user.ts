@@ -193,6 +193,7 @@ export class UserRepository extends Repository<User> {
 			avatarColor: null, // 後方互換性のため
 			isAdmin: user.isAdmin || falsy,
 			isModerator: user.isModerator || falsy,
+			isPatron: user.isPatron || falsy,
 			isBot: user.isBot || falsy,
 			isCat: user.isCat || falsy,
 			instance: user.host ? Instances.findOne({ host: user.host }).then(instance => instance ? {
@@ -386,6 +387,12 @@ export const packedUserSchema = {
 			type: 'boolean' as const,
 			nullable: false as const, optional: false as const,
 			description: 'Whether this account is a moderator.',
+			default: false
+		},
+		isPatron: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: false as const,
+			description: 'Whether this account is a patron.',
 			default: false
 		},
 		isBot: {
