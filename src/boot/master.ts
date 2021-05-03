@@ -30,7 +30,7 @@ function greet() {
 
 		console.log(' Misskey is an open-source decentralized microblogging platform.');
 		console.log(chalk.keyword('orange')(' If you like Misskey, please donate to support development. https://www.patreon.com/syuilo'));
-		console.log(chalk.hex('#ffa9c3').bold(' KOKO') + chalk.hex('#b4f1fc').bold('NECT') + chalk.hex('#ffa9c3')(' with') + chalk.hex('#b4f1fc').bold(' NoriDev.'));
+		console.log(chalk.hex('#ffa9c3').bold(' KOKO') + chalk.hex('#a3faff').bold('NECT') + chalk.hex('#ffa9c3')(' with') + chalk.hex('#a3faff').bold(' NoriDev.'));
 
 		console.log('');
 		console.log(chalk`--- ${os.hostname()} {gray (PID: ${process.pid.toString()})} ---`);
