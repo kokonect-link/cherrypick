@@ -43,7 +43,7 @@
 					</MkA>
 					<span class="is-bot" v-if="appearNote.user.isBot">bot</span>
 					<span class="admin" v-if="appearNote.user.isAdmin"><i class="fas fa-crown"></i></span>
-					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator"><i class="far fa-chess-queen"></i></span>
+					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator"><i class="fas fa-chess-queen"></i></span>
 					<span class="patron" v-if="appearNote.user.isPatron"><i class="fas fa-heart"></i></span>
 					<span class="visibility" v-if="appearNote.visibility !== 'public'">
 						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
