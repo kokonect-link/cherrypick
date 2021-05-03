@@ -749,6 +749,7 @@ recentPosts: "Recent posts"
 popularPosts: "Popular posts"
 shareWithNote: "Share with note"
 patron: "Patron"
+youArePatron: "You're patron a server!"
 _gallery:
   my: "My Gallery"
   liked: "Liked Posts"

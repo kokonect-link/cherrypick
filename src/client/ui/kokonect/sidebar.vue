@@ -38,9 +38,14 @@
 				<!-- <button class="item _button post" @click="post">
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button> -->
+				<template v-if="$i.isPatron">
+					<div class="divider"></div>
+					<button class="patron" @click="patron">
+						<i class="fas fa-heart"></i><span class="text">{{ $ts.youArePatron }}</span>
+					</button>
+				</template>
 				<div class="divider"></div>
 				<div class="about">
-					<span class="patron" v-if="$i.isPatron"><i class="fas fa-heart"></i></span>
 					<MkA class="link" to="/about" v-click-anime>
 						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
 					</MkA>
@@ -140,6 +145,10 @@ export default defineComponent({
 
 		search() {
 			search();
+		},
+		
+		patron() {
+			// 대충 사이트 여는 구문 넣기
 		},
 
 		async openAccountMenu(ev) {

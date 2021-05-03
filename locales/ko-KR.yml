@@ -750,6 +750,7 @@ recentPosts: "최근 포스트"
 popularPosts: "인기 포스트"
 shareWithNote: "노트로 공유"
 patron: "후원자"
+youArePatron: "서버를 후원하고 있어요!"
 
 _gallery:
   my: "내 갤러리"
