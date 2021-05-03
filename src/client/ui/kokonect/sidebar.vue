@@ -290,7 +290,8 @@ export default defineComponent({
 							left: 10px;
 						}
 
-						> .text {
+						> .text,
+							.patron-text {
 							display: none;
 						}
 
@@ -370,10 +371,6 @@ export default defineComponent({
 				box-sizing: border-box;
 				color: var(--navFg);
 
-				> .item2 {
-					font-size: 0.9em;
-				}
-
 				> i {
 					width: 32px;
 				}
@@ -402,6 +399,10 @@ export default defineComponent({
 					margin-left: 6px;
 					margin-right: 12px;
 					color: var(--patron);
+				}
+
+				> .patron-text {
+					font-size: 0.9em;
 				}
 
 				&:hover {
