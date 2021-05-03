@@ -11,7 +11,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/></button>
+				<button class="_button button_L" v-if="!(withBack && canBack)" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button>
 				<button class="_button button_L" v-else-if="$route.name === 'notifications' || $route.name === 'messaging'" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar" v-else-if="$route.name === 'notifications' || $route.name === 'messaging'" :user="$i" :disable-preview="true" :show-indicator="true"/>
@@ -77,6 +77,14 @@ export default defineComponent({
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
 			if (this.info.share != null) return true;
+			return false;
+		},
+
+		navIndicated(): boolean {
+			for (const def in this.menuDef) {
+				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
+				if (this.menuDef[def].indicated) return true;
+			}
 			return false;
 		}
 	},
@@ -197,6 +205,15 @@ export default defineComponent({
 			height: $avatar-size;
 			vertical-align: middle;
 		}
+
+		> .indicator {
+				position: absolute;
+				top: 0;
+				left: 0;
+				color: var(--indicator);
+				font-size: 13px;
+				animation: blink 1s infinite;
+			}
 	}
 
 	> .buttons_R {

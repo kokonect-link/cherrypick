@@ -428,7 +428,7 @@ export default defineComponent({
 				top: 0;
 				left: 0;
 				color: var(--indicator);
-				font-size: 16px;
+				font-size: 13px;
 				animation: blink 1s infinite;
 			}
 
