@@ -40,8 +40,8 @@
 				</button> -->
 				<template v-if="$i.isPatron">
 					<div class="divider"></div>
-					<MkA class="item item2" to="https://kokonect.link">
-						<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="text">{{ $ts.youArePatron }}</span>
+					<MkA class="item" to="https://kokonect.link">
+						<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
 					</MkA>
 				</template>
 				<div class="divider"></div>
