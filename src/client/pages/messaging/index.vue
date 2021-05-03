@@ -67,6 +67,13 @@ export default defineComponent({
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
+	
+	created() {
+		eventBus.$on('kn-messaging-room-create', () => {
+      this.start();
+			console.log("이벤트 수신");
+    });
+	},
 
 	mounted() {
 		this.connection = os.stream.useSharedConnection('messagingIndex');
@@ -82,12 +89,6 @@ export default defineComponent({
 				this.fetching = false;
 			});
 		});
-
-		var self = this;
-		eventBus.$on('kn-messaging-room-create', function() {
-      self.start();
-			console.log("이벤트 수신");
-    });
 	},
 
 	beforeUnmount() {
