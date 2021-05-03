@@ -127,6 +127,7 @@ export default defineComponent({
 
 		test() {
 			console.log("테스트");
+			this.start();
 		},
 
 		start(ev) {
