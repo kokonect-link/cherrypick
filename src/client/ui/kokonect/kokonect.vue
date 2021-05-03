@@ -153,7 +153,7 @@ export default defineComponent({
 		},
 
 		createMessagingRoom() {
-			eventBus.$emit('test');
+			eventBus.emit('test');
 			console.log("이벤트 송신");
 		},
 
