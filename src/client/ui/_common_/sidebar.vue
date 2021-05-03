@@ -38,6 +38,12 @@
 				<button class="item _button post" @click="post">
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button>
+				<template v-if="$i.isPatron">
+					<div class="divider"></div>
+					<MkA class="item" to="https://kokonect.link">
+						<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+					</MkA>
+				</template>
 				<div class="divider"></div>
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
@@ -284,8 +290,14 @@ export default defineComponent({
 							left: 10px;
 						}
 
-						> .text {
+						> .text,
+							.patron-text {
 							display: none;
+						}
+
+						> .patron {
+							margin: 0;
+							color: var(--patron);
 						}
 
 						&:first-child {
@@ -381,6 +393,16 @@ export default defineComponent({
 					color: var(--navIndicator);
 					font-size: 8px;
 					animation: blink 1s infinite;
+				}
+
+				> .patron {
+					margin-left: 6px;
+					margin-right: 12px;
+					color: var(--patron);
+				}
+
+				> .patron-text {
+					font-size: 0.9em;
 				}
 
 				&:hover {
