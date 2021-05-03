@@ -7,7 +7,7 @@
 	<span class="username"><MkAcct :user="note.user"/></span>
 	<span class="admin" v-if="note.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
-	<span class="locked" v-if="note.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
+	<span class="locked" v-if="$i.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 	<span class="patron" v-if="note.user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
 	<div class="info">
 		<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
