@@ -32,9 +32,9 @@
 	</MkA>
 	<template v-if="$i.isPatron">
 		<div class="divider"></div>
-		<button class="item _button patron" @click="patron">
+		<MkA class="item patron" to="https://kokonect.link">
 			<i class="fas fa-heart"></i><span class="text">{{ $ts.youArePatron }}</span>
-		</button>
+		</MkA>
 	</template>
 	<div class="divider"></div>
 	<div class="about">
@@ -283,10 +283,6 @@ export default defineComponent({
 				width: 100%;
 			}
 		}
-
-		> .patron {
-			color: var(--patron);
-		}
 	}
 
 	> .item {
@@ -328,6 +324,10 @@ export default defineComponent({
 			color: var(--navIndicator);
 			font-size: 8px;
 			animation: blink 1s infinite;
+		}
+
+		> .patron {
+			color: var(--patron);
 		}
 
 		&:hover {
