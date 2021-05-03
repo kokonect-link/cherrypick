@@ -349,6 +349,10 @@ export default defineComponent({
 						width: 100%;
 					}
 				}
+
+				> .patron {
+					color: var(--patron);
+				}
 			}
 
 			> .item {
