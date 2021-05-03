@@ -217,12 +217,8 @@ export default defineComponent({
 		}
 
 		> .patron {
-			position: absolute;
-			top: 0;
-			right: 0;
+			margin-left: 0.5em;
 			color: var(--patron);
-			font-size: 13px;
-			animation: blink 1s infinite;
 		}
 	}
 
