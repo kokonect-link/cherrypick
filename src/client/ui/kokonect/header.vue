@@ -17,6 +17,7 @@
 				<MkAvatar class="avatar" v-else-if="$route.name === 'notifications' || $route.name === 'messaging'" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 			</template>
+			<span class="patron" v-if="note.user.isPatron"><i class="fas fa-heart"></i></span>
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
