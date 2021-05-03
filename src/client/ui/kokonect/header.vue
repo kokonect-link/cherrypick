@@ -208,13 +208,18 @@ export default defineComponent({
 		}
 
 		> .indicator {
-				position: absolute;
-				top: 0;
-				left: 0;
-				color: var(--indicator);
-				font-size: 13px;
-				animation: blink 1s infinite;
-			}
+			position: absolute;
+			top: 0;
+			left: 0;
+			color: var(--indicator);
+			font-size: 13px;
+			animation: blink 1s infinite;
+		}
+
+		> .patron {
+			margin-right: 0.5em;
+			color: var(--patron);
+		}
 	}
 
 	> .buttons_R {
