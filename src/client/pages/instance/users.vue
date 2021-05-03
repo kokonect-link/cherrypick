@@ -47,9 +47,9 @@
 					<header>
 						<MkUserName class="name" :user="user"/>
 						<span class="acct">@{{ acct(user) }}</span>
-						<span class="staff" v-if="user.isAdmin"><i class="fas fa-crown"></i></span>
-						<span class="staff" v-if="user.isModerator"><i class="fas fa-chess-queen"></i></span>
-						<span class="patron" v-if="user.isPatron"><i class="fas fa-heart"></i></span>
+						<span class="staff" v-if="user.isAdmin" v-tooltip="$ts.administrator"><i class="fas fa-crown"></i></span>
+						<span class="staff" v-if="user.isModerator" v-tooltip="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
+						<span class="patron" v-if="user.isPatron" v-tooltip="$ts.patron"><i class="fas fa-heart"></i></span>
 						<span class="punished" v-if="user.isSilenced"><i class="fas fa-microphone-slash"></i></span>
 						<span class="punished" v-if="user.isSuspended"><i class="fas fa-snowflake"></i></span>
 					</header>

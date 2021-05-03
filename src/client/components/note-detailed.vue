@@ -42,9 +42,9 @@
 						<MkUserName :user="appearNote.user"/>
 					</MkA>
 					<span class="is-bot" v-if="appearNote.user.isBot">bot</span>
-					<span class="admin" v-if="appearNote.user.isAdmin"><i class="fas fa-crown"></i></span>
-					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator"><i class="fas fa-chess-queen"></i></span>
-					<span class="patron" v-if="appearNote.user.isPatron"><i class="fas fa-heart"></i></span>
+					<span class="admin" v-if="appearNote.user.isAdmin" v-tooltip="$ts.administrator"><i class="fas fa-crown"></i></span>
+					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator" v-tooltip="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
+					<span class="patron" v-if="appearNote.user.isPatron" v-tooltip="$ts.patron"><i class="fas fa-heart"></i></span>
 					<span class="visibility" v-if="appearNote.visibility !== 'public'">
 						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
 						<i v-else-if="appearNote.visibility === 'followers'" class="fas fa-unlock"></i>

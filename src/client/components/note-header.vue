@@ -5,9 +5,9 @@
 	</MkA>
 	<span class="is-bot" v-if="note.user.isBot">bot</span>
 	<span class="username"><MkAcct :user="note.user"/></span>
-	<span class="admin" v-if="note.user.isAdmin"><i class="fas fa-crown"></i></span>
-	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator"><i class="fas fa-chess-queen"></i></span>
-	<span class="patron" v-if="note.user.isPatron"><i class="fas fa-heart"></i></span>
+	<span class="admin" v-if="note.user.isAdmin" v-tooltip="$ts.administrator"><i class="fas fa-crown"></i></span>
+	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" v-tooltip="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
+	<span class="patron" v-if="note.user.isPatron" v-tooltip="$ts.patron"><i class="fas fa-heart"></i></span>
 	<div class="info">
 		<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 		<MkA class="created-at" :to="notePage(note)">
