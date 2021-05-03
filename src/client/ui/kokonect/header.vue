@@ -14,7 +14,7 @@
 				<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-tooltip="$ts.menu"><i class="fas fa-bars"/><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack) || $route.name === 'notifications' || $route.name === 'messaging'" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
-				<span class="patron" v-if="$i.isPatron && !(withBack && canBack)"><i class="fas fa-heart"></i></span>
+				<span class="patron" v-if="$i.isPatron && !(withBack && canBack) || $route.name === 'notifications' || $route.name === 'messaging'"><i class="fas fa-heart"></i></span>
 				<span class="patron_back" v-else-if="$i.isPatron && withBack && canBack"><i class="fas fa-heart"></i></span>
 			</template>
 		</div>
