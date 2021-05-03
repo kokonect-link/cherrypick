@@ -71,7 +71,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
-import EventBus from "@client/kokonect/eventBus.vue";
+import EventBus from "@client/kokonect/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
