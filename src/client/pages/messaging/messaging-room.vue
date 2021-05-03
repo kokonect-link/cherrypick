@@ -15,24 +15,24 @@
 				<XMessage :message="message" :is-group="group != null" :key="message.id"/>
 			</XList>
 		</div>
-		<footer>
-			<div class="typers" v-if="typers.length > 0">
-				<I18n :src="$ts.typingUsers" text-tag="span" class="users">
-					<template #users>
-						<b v-for="user in typers" :key="user.id" class="user">{{ user.username }}</b>
-					</template>
-				</I18n>
-				<MkEllipsis/>
-			</div>
-			<transition name="fade">
-				<div class="new-message" v-show="showIndicator">
-					<button class="_buttonPrimary" @click="onIndicatorClick"><i class="fas fa-arrow-circle-down"></i>{{ $ts.newMessageExists }}</button>
-				</div>
-			</transition>
-			<XForm v-if="!fetching" :user="user" :group="group" ref="form"/>
-		</footer>
 	</div>
 </div>
+<footer>
+	<div class="typers" v-if="typers.length > 0">
+		<I18n :src="$ts.typingUsers" text-tag="span" class="users">
+			<template #users>
+				<b v-for="user in typers" :key="user.id" class="user">{{ user.username }}</b>
+			</template>
+		</I18n>
+		<MkEllipsis/>
+	</div>
+	<transition name="fade">
+		<div class="new-message" v-show="showIndicator">
+			<button class="_buttonPrimary" @click="onIndicatorClick"><i class="fas fa-arrow-circle-down"></i>{{ $ts.newMessageExists }}</button>
+		</div>
+	</transition>
+	<XForm v-if="!fetching" :user="user" :group="group" ref="form"/>
+</footer>
 </template>
 
 <script lang="ts">
