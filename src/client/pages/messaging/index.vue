@@ -69,7 +69,7 @@ export default defineComponent({
 	},
 	
 	created() {
-		eventBus.on('test', () => this.test());
+		eventBus.on('test', () => this.start());
 	},
 
 	mounted() {
@@ -125,12 +125,7 @@ export default defineComponent({
 			}
 		},
 
-		test() {
-			console.log("테스트");
-			this.start(ev);
-		},
-
-		start(ev) {
+		start() {
 			os.modalMenu([{
 				text: this.$ts.messagingWithUser,
 				icon: 'fas fa-user',
@@ -139,7 +134,7 @@ export default defineComponent({
 				text: this.$ts.messagingWithGroup,
 				icon: 'fas fa-users',
 				action: () => { this.startGroup() }
-			}], ev.currentTarget || ev.target);
+			}]);
 		},
 
 		async startUser() {
