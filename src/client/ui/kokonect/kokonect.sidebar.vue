@@ -35,7 +35,7 @@
 		<MkA class="link" to="/about" v-click-anime>
 			<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
 		</MkA>
-		<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #b4f1fc;">NECT</span></b></p>
+		<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #a3faff;">NECT</span></b></p>
 	</div>
 	<!--<MisskeyLogo class="misskey"/>-->
 </div>
