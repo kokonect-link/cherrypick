@@ -16,7 +16,7 @@
 				<MkAvatar class="avatar" v-if="!(withBack && canBack)" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar" v-else-if="$route.name === 'notifications' || $route.name === 'messaging'" :user="$i" :disable-preview="true" :show-indicator="true"/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true"/>
-				<span style="color: var(--patron);"><i class="fas fa-heart"></i></span>
+				<span class="patron" v-if="$i.isPatron"><i class="fas fa-heart"></i></span>
 			</template>
 		</div>
 		<div class="buttons_R">
@@ -214,6 +214,11 @@ export default defineComponent({
 			color: var(--indicator);
 			font-size: 13px;
 			animation: blink 1s infinite;
+		}
+
+		> .patron {
+			margin-right: 0.5em;
+			color: var(--patron);
 		}
 	}
 
