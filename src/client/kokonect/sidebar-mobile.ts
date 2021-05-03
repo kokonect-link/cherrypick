@@ -49,11 +49,11 @@ export const sidebarDef = {
 		indicated: computed(() => $i != null && $i.hasUnreadAnnouncement),
 		to: '/announcements',
 	},
-	search: {
+	/* search: {
 		title: 'search',
 		icon: 'fas fa-search',
 		action: () => search(),
-	},
+	}, */
 	lists: {
 		title: 'lists',
 		icon: 'fas fa-list-ul',
