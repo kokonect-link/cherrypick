@@ -7,7 +7,7 @@
 				<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 				<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
-				<span class="patron" v-if="info.isPatron && info.avatar"><i class="fas fa-heart"></i></span>
+				<span class="patron" v-if="$user.isPatron && info.avatar"><i class="fas fa-heart"></i></span>
 			</div>
 		</div>
 		<div class="buttons_L">
