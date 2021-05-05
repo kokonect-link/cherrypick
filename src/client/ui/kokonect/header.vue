@@ -11,7 +11,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime><i class="fas fa-bars"/><span v-if="$i.indicated" class="indicator"><i class="fas fa-circle"></i></span></button>
+				<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime><i class="fas fa-bars"/><span v-if="menuDef[item].indicated" class="indicator"><i class="fas fa-circle"></i></span></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 				<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
@@ -19,9 +19,9 @@
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
-				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text"><i :class="action.icon"></i></button>
+				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
 			</template>
-			<button v-if="showMenu" class="_button button_R" @click.stop="menu"><i class="fas fa-ellipsis-h"></i></button>
+			<button v-if="showMenu" class="_button button_R" @click.stop="menu" v-click-anime><i class="fas fa-ellipsis-h"></i></button>
 		</div>
 	</template>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
