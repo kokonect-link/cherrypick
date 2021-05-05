@@ -174,15 +174,6 @@ export default defineComponent({
 		left: 0;
 		height: var(--height);
 		width: var(--height);
-
-		> .indicator {
-			position: absolute;
-			top: 0;
-			left: 20px;
-			color: var(--navIndicator);
-			font-size: 8px;
-			animation: blink 1s infinite;
-		}
 	}
 
 	> .buttons_L {
@@ -194,6 +185,15 @@ export default defineComponent({
 		> .button_L {
 			height: var(--height);
 			width: var(--height);
+
+			> .indicator {
+			position: absolute;
+			top: 0;
+			left: 20px;
+			color: var(--navIndicator);
+			font-size: 8px;
+			animation: blink 1s infinite;
+		}
 		}
 
 		> .avatar {
