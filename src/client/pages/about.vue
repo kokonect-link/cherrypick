@@ -19,6 +19,14 @@
 	</FormGroup>
 
 	<FormGroup>
+		<FormLink to="https://www.patreon.com/noridev" external>
+			<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+			{{ $ts._aboutMisskey._kokonect.donate }}
+			<template #suffix>Patreon</template>
+		</FormLink>
+	</FormGroup>
+
+	<FormGroup>
 		<FormKeyValueView>
 			<template #key>{{ $ts.administrator }}</template>
 			<template #value>{{ $instance.maintainerName }}</template>
