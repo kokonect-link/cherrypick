@@ -393,10 +393,10 @@ export default defineComponent({
 
 				> .indicator {
 					position: absolute;
-					top: 0;
-					left: 20px;
+					bottom: 8px;
+					left: 25px;
 					color: var(--navIndicator);
-					font-size: 8px;
+					font-size: 6px;
 					animation: blink 1s infinite;
 				}
 

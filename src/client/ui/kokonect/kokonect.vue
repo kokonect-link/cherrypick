@@ -424,10 +424,10 @@ export default defineComponent({
 
 			> .indicator {
 				position: absolute;
-				top: 0;
-				left: 0;
+				top: 5px;
+				//left: 0;
 				color: var(--indicator);
-				font-size: 13px;
+				font-size: 10px;
 				animation: blink 1s infinite;
 			}
 

@@ -250,6 +250,15 @@ export default defineComponent({
 				display: none;
 			}
 
+			> .indicator {
+				position: absolute;
+				bottom: 11px;
+				left: 33px;
+				color: var(--navIndicator);
+				font-size: 7px;
+				animation: blink 1s infinite;
+			}
+
 			> .patron {
 				margin: 0;
 				color: var(--patron);

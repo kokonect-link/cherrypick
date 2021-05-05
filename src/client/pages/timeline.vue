@@ -269,8 +269,8 @@ export default defineComponent({
 
 				> .i {
 					position: absolute;
-					top: 16px;
-					right: 8px;
+					top: 12px;
+					//right: 8px;
 					color: var(--indicator);
 					font-size: 8px;
 					animation: blink 1s infinite;
