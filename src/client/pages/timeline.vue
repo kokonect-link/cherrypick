@@ -272,7 +272,7 @@ export default defineComponent({
 					top: 12px;
 					//right: 8px;
 					color: var(--indicator);
-					font-size: 8px;
+					font-size: 7px;
 					animation: blink 1s infinite;
 				}
 			}

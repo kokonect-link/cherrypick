@@ -191,7 +191,7 @@ export default defineComponent({
 			bottom: 13px;
 			left: 35px;
 			color: var(--navIndicator);
-			font-size: 8px;
+			font-size: 7px;
 			animation: blink 1s infinite;
 			}
 		}

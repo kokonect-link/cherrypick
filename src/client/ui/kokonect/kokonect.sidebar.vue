@@ -337,7 +337,7 @@ export default defineComponent({
 			bottom: 10px;
 			left: 0;
 			color: var(--navIndicator);
-			font-size: 6px;
+			font-size: 7px;
 			animation: blink 1s infinite;
 		}
 
