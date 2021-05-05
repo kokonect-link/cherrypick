@@ -315,14 +315,13 @@ export default defineComponent({
 
 		> i {
 			width: 32px;
-		}
-
-		> i,
-		> .avatar {
+			margin-left: 3px;
 			margin-right: $avatar-margin;
 		}
 
 		> .avatar {
+			margin-left: unset;
+			margin-right: $avatar-margin;
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
@@ -335,10 +334,10 @@ export default defineComponent({
 
 		> .indicator {
 			position: absolute;
-			top: 0;
-			left: 20px;
+			bottom: 10px;
+			left: 0;
 			color: var(--navIndicator);
-			font-size: 8px;
+			font-size: 6px;
 			animation: blink 1s infinite;
 		}
 
