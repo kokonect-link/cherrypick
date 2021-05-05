@@ -9,13 +9,16 @@
 				<span v-else-if="info.title" class="text">{{ info.title }}</span>
 			</div>
 		</div>
-		<div class="buttons_L">
-			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime><i class="fas fa-bars"/><span v-if="menuDef[item].indicated" class="indicator"><i class="fas fa-circle"></i></span></button>
-				<MkAvatar class="avatar" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
-				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
-				<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
-			</template>
+		<div class="buttons_L" v-if="isMobile">
+			<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime>
+				<i class="fas fa-bars"/>
+				<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator">
+					<i class="fas fa-circle"></i>
+				</span>
+			</button>
+			<MkAvatar class="avatar" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
+			<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
+			<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
 		</div>
 		<div class="buttons_R">
 			<template v-if="info.actions && showActions">
