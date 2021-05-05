@@ -42,6 +42,15 @@
 				<template #icon><i class="fas fa-tachometer-alt"></i></template>
 				{{ $ts._aboutMisskey._kokonect.serverStatus }}
 			</FormLink>
+			<FormLink to="https://relay.kokonect.link" external>
+				<template #icon><i class="fas fa-network-wired"></i></template>
+				{{ $ts._aboutMisskey._kokonect.relayServer }}
+			</FormLink>
+			<FormLink to="https://www.patreon.com/noridev" external>
+				<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+				{{ $ts._aboutMisskey._kokonect.donate }}
+				<template #suffix>Patreon</template>
+			</FormLink>
 			<template #caption>{{ $ts._aboutMisskey._kokonect.about }}</template>
 		</FormGroup>
 		<FormGroup>

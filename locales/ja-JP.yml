@@ -801,8 +801,10 @@ _aboutMisskey:
   morePatrons: "他にも多くの方が支援してくれています。ありがとうございます🥰"
   patrons: "支援者"
   _kokonect:
-    about: "このMisskeyはKokonectインスタンスを駆動するため、NoriDevによってカスタムされました。"
+    about: "このMisskeyはNoriDevによってカスタムされました。"
     serverStatus: "サーバ状態"
+    donate: "ココネクトに寄付"
+    relayServer: "リレーサーバー"
 
 _nsfw:
   respect: "閲覧注意のメディアは隠す"

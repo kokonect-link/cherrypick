@@ -795,8 +795,10 @@ _aboutMisskey:
   morePatrons: "We really appreciate the support of many other helpers not listed here. Thank you! 🥰"
   patrons: "Backers"
   _kokonect:
-    about: "This Misskey was customized by NoriDev to run Kokonect instances."
+    about: "This Misskey was customized by NoriDev."
     serverStatus: "Server Status"
+    donate: "Donate to Kokonect"
+    relayServer: "Relay Server"
 _nsfw:
   respect: "Hide NSFW media"
   ignore: "Don't hide NSFW media"
