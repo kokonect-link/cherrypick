@@ -188,8 +188,8 @@ export default defineComponent({
 
 			> .indicator {
 			position: absolute;
-			top: 0;
-			left: 20px;
+			bottom: 13px;
+			left: 35px;
 			color: var(--navIndicator);
 			font-size: 8px;
 			animation: blink 1s infinite;
