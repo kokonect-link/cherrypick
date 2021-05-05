@@ -11,7 +11,7 @@
 		</div>
 		<div class="buttons_L">
 			<template v-if="isMobile">
-				<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime><i class="fas fa-bars"/><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button>
+				<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime><i class="fas fa-bars"/><span v-if="$i.indicated" class="indicator"><i class="fas fa-circle"></i></span></button>
 				<MkAvatar class="avatar" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 				<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 				<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
@@ -76,14 +76,6 @@ export default defineComponent({
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
 			if (this.info.share != null) return true;
-			return false;
-		},
-
-		navIndicated(): boolean {
-			for (const def in this.menuDef) {
-				if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
-				if (this.menuDef[def].indicated) return true;
-			}
 			return false;
 		}
 	},
