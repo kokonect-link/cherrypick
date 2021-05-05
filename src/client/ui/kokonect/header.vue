@@ -174,6 +174,15 @@ export default defineComponent({
 		left: 0;
 		height: var(--height);
 		width: var(--height);
+
+		> .indicator {
+			position: absolute;
+			top: 0;
+			left: 20px;
+			color: var(--navIndicator);
+			font-size: 8px;
+			animation: blink 1s infinite;
+		}
 	}
 
 	> .buttons_L {
@@ -198,15 +207,6 @@ export default defineComponent({
 			width: $avatar-size;
 			height: $avatar-size;
 			vertical-align: middle;
-		}
-
-		> .indicator {
-			position: absolute;
-			top: 0;
-			left: 0;
-			color: var(--indicator);
-			font-size: 13px;
-			animation: blink 1s infinite;
 		}
 
 		> .patron {
