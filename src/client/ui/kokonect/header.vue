@@ -193,7 +193,7 @@ export default defineComponent({
 			color: var(--navIndicator);
 			font-size: 8px;
 			animation: blink 1s infinite;
-		}
+			}
 		}
 
 		> .avatar {
