@@ -2,7 +2,7 @@
 <FormBase>
 	<template v-if="meta">
 		<!-- <FormInfo v-else-if="version === meta.version">{{ $ts.youAreRunningUpToDateClient }}</FormInfo> -->
-		<FormInfo v-if="version === (meta.version || releasesKokonect[0].tag_name)">{{ $ts.youAreRunningUpToDateClient }}</FormInfo>
+		<FormInfo v-if="version === (meta.version && releasesKokonect[0].tag_name)">{{ $ts.youAreRunningUpToDateClient }}</FormInfo>
 		<FormInfo v-else warn>{{ $ts.newVersionOfClientAvailable }}</FormInfo>
 	</template>
 	<FormGroup>
