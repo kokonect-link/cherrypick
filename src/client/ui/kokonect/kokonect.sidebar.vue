@@ -252,6 +252,7 @@ export default defineComponent({
 
 			> .indicator {
 				position: absolute;
+				top: unset;
 				bottom: 11px;
 				left: 33px;
 				color: var(--navIndicator);
@@ -311,10 +312,6 @@ export default defineComponent({
 		width: 100%;
 		text-align: left;
 		box-sizing: border-box;
-
-		> .item2 {
-			font-size: 0.9em;
-		}
 
 		> i {
 			width: 32px;
