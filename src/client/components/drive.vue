@@ -134,7 +134,7 @@ export default defineComponent({
 	},
 
 	created() {
-		eventBus.on('kn-drivegetmenu', (e) => this.contextMenu(e));
+		eventBus.on('kn-drivegetmenu', (e) => (this.contextMenu(), e));
 	},
 
 	mounted() {
