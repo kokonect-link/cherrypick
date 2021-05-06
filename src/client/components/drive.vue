@@ -134,7 +134,7 @@ export default defineComponent({
 	},
 
 	created() {
-		eventBus.on('kn-drivemenu', () => this.onContextmenu());
+		eventBus.on('kn-drivemenu', () => this.onContextmenuMobile());
 	},
 
 	mounted() {
@@ -632,8 +632,37 @@ export default defineComponent({
 			}];
 		},
 
+		onContextmenuMobile() {
+			os.modalMenu ([{
+				text: this.$ts.addFile,
+				type: 'label'
+			}, {
+				text: this.$ts.upload,
+				icon: 'fas fa-upload',
+				action: () => { this.selectLocalFile(); }
+			}, {
+				text: this.$ts.fromUrl,
+				icon: 'fas fa-link',
+				action: () => { this.urlUpload(); }
+			}, null, {
+				text: this.folder ? this.folder.name : this.$ts.drive,
+				type: 'label'
+			}, this.folder ? {
+				text: this.$ts.renameFolder,
+				icon: 'fas fa-i-cursor',
+				action: () => { this.renameFolder(this.folder); }
+			} : undefined, this.folder ? {
+				text: this.$ts.deleteFolder,
+				icon: 'fas fa-trash-alt',
+				action: () => { this.deleteFolder(this.folder); }
+			} : undefined, {
+				text: this.$ts.createFolder,
+				icon: 'fas fa-folder-plus',
+				action: () => { this.createFolder(); }
+			}]);
+		},
+
 		onContextmenu(e) {
-			console.log("이벤트 수신");
 			os.contextMenu(this.getMenu(), e);
 		},
 	}
