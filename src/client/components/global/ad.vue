@@ -109,6 +109,7 @@ export default defineComponent({
 				top: 0;
 				right: 0;
 				background: var(--panel);
+				padding: revert;
 			}
 		}
 
