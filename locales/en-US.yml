@@ -761,6 +761,7 @@ middle: "Medium"
 low: "Low"
 emailNotConfiguredWarning: "Email address not set"
 youAreRunningBetaClient: "Unreleased version of Misskey in use!"
+showAds: "View Advertisements"
 _forgotPassword:
   enterEmail: "Enter the email address you used to register. A link with which you can reset your password will then be sent to it."
   ifNoEmail: "If you did not use an email during registration, please contact the administrator instead."

@@ -1,6 +1,7 @@
 <template>
 <FormBase>
 	<FormSwitch v-model:value="showFixedPostForm">{{ $ts.showFixedPostForm }}</FormSwitch>
+	<FormSwitch v-if="$i.isPatron" v-model:value="showAds">{{ $ts.showAds }}</FormSwitch>
 
 	<FormSelect v-model:value="lang">
 		<template #label>{{ $ts.uiLanguage }}</template>
@@ -143,6 +144,7 @@ export default defineComponent({
 		instanceTicker: defaultStore.makeGetterSetter('instanceTicker'),
 		enableInfiniteScroll: defaultStore.makeGetterSetter('enableInfiniteScroll'),
 		useReactionPickerForContextMenu: defaultStore.makeGetterSetter('useReactionPickerForContextMenu'),
+		showAds: defaultStore.makeGetterSetter('showAds'),
 	},
 
 	watch: {
