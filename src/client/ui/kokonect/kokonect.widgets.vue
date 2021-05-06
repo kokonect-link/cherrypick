@@ -1,7 +1,8 @@
 <template>
 <div class="ddiqwdnk">
 	<XWidgets class="widgets" :edit="editMode" :widgets="$store.reactiveState.widgets.value" @add-widget="addWidget" @remove-widget="removeWidget" @update-widget="updateWidget" @update-widgets="updateWidgets" @exit="editMode = false"/>
-	<MkAd v-if="$store.state.showAds" class="a" prefer="square"/>
+	<MkAd v-if="$i.isPatron && $store.state.showAds" class="a" prefer="square"/>
+	<MkAd v-else-if="!$i.isPatron" class="a" prefer="square"/>
 
 	<button v-if="editMode" @click="editMode = false" class="_textButton edit" style="font-size: 0.9em;"><i class="fas fa-check"></i> {{ $ts.editWidgetsExit }}</button>
 	<button v-else @click="editMode = true" class="_textButton edit" style="font-size: 0.9em;"><i class="fas fa-pencil-alt"></i> {{ $ts.editWidgets }}</button>
