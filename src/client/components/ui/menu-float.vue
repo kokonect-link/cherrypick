@@ -99,8 +99,8 @@ export default defineComponent({
 		}
 
 		if (this.contextmenuEvent) {
-			this.$el.style.bottom = this.contextmenuEvent.pageY + 'px';
-			this.$el.style.right = this.contextmenuEvent.pageX + 'px';
+			this.$el.style.top = this.contextmenuEvent.pageY + 'px';
+			this.$el.style.left = this.contextmenuEvent.pageX + 'px';
 
 			for (const el of Array.from(document.querySelectorAll('body *'))) {
 				el.addEventListener('mousedown', this.onMousedown);
