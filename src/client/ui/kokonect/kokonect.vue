@@ -429,6 +429,7 @@ export default defineComponent({
 
 			&.active {
 					color: var(--accent);
+			}
 
 			> .indicator {
 				position: absolute;
