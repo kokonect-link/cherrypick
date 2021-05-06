@@ -157,9 +157,9 @@ export default defineComponent({
 			eventBus.emit('kn-createmsgroom');
 		},
 
-		driveMenu() {
+		driveMenu(e) {
 			console.log("이벤트 전송");
-			eventBus.emit('kn-drivemenu');
+			eventBus.emit('kn-drivemenu', e.target.value);
 		},
 
 		search() {
