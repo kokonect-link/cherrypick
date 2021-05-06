@@ -52,6 +52,7 @@ import XFolder from './drive.folder.vue';
 import XFile from './drive.file.vue';
 import MkButton from './ui/button.vue';
 import * as os from '@client/os';
+import { eventBus } from '@client/kokonect/eventBus';
 
 export default defineComponent({
 	components: {
@@ -130,6 +131,10 @@ export default defineComponent({
 		folder() {
 			this.$emit('cd', this.folder);
 		}
+	},
+
+	created() {
+		eventBus.on('kn-drivegetmenu', (e) => this.contextMenu(e));
 	},
 
 	mounted() {
