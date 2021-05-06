@@ -157,8 +157,8 @@ export default defineComponent({
 			eventBus.emit('kn-createmsgroom');
 		},
 
-		driveGetMenu(e) {
-			eventBus.emit('kn-drivegetmenu', e);
+		driveGetMenu($event) {
+			eventBus.emit('kn-drivegetmenu', $event);
 		},
 
 		search() {
