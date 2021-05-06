@@ -158,7 +158,7 @@ export default defineComponent({
 		},
 
 		driveGetMenu($event) {
-			eventBus.emit('kn-drivegetmenu', $event);
+			eventBus.emit('kn-drivegetmenu');
 		},
 
 		search() {

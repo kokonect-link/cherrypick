@@ -134,7 +134,7 @@ export default defineComponent({
 	},
 
 	created() {
-		eventBus.on('kn-drivegetmenu', ($event) => (this.onContextmenu(), $event));
+		eventBus.on('kn-drivegetmenu', () => this.onContextmenuMobile());
 	},
 
 	mounted() {
@@ -630,6 +630,10 @@ export default defineComponent({
 				icon: 'fas fa-folder-plus',
 				action: () => { this.createFolder(); }
 			}];
+		},
+
+		onContextmenuMobile() {
+			this.getMenu();
 		},
 
 		onContextmenu(e) {
