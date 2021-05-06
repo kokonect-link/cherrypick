@@ -127,7 +127,7 @@ export default defineComponent({
 
 		// 모바일 환경에서의 채팅 작성 버튼
 		startMobile() {
-			os.modalMenu([{
+			os.modalMenuFloat([{
 				text: this.$ts.messagingWithUser,
 				icon: 'fas fa-user',
 				action: () => { this.startUser() }

@@ -385,6 +385,25 @@ export function modalMenu(items: any[], src?: HTMLElement, options?: { align?: s
 	});
 }
 
+export function modalMenuFloat(items: any[], src?: HTMLElement, options?: { align?: string; viaKeyboard?: boolean }) {
+	return new Promise((resolve, reject) => {
+		let dispose;
+		popup(import('@client/components/ui/modal-menu-float.vue'), {
+			items,
+			src,
+			align: options?.align,
+			viaKeyboard: options?.viaKeyboard
+		}, {
+			closed: () => {
+				resolve();
+				dispose();
+			},
+		}).then(res => {
+			dispose = res.dispose;
+		});
+	});
+}
+
 export function contextMenu(items: any[], ev: MouseEvent) {
 	ev.preventDefault();
 	return new Promise((resolve, reject) => {

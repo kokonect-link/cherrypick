@@ -633,7 +633,7 @@ export default defineComponent({
 		},
 
 		onContextmenuMobile() {
-			os.modalMenu ([{
+			os.modalMenuFloat([{
 				text: this.$ts.addFile,
 				type: 'label'
 			}, {
