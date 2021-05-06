@@ -28,7 +28,7 @@
 	<div class="floatbtn" v-if="isMobile">
 		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
 		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveGetMenu()" v-click-anime><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -157,8 +157,8 @@ export default defineComponent({
 			eventBus.emit('kn-createmsgroom');
 		},
 
-		driveGetMenu($event) {
-			eventBus.emit('kn-drivegetmenu');
+		driveMenu() {
+			eventBus.emit('kn-drivemenu');
 		},
 
 		search() {
