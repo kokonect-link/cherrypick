@@ -763,6 +763,7 @@ low: "낮음"
 emailNotConfiguredWarning: "메일 주소가 설정되어 있지 않아요."
 youAreRunningBetaClient: "아직 출시되지 않은 버전의 Misskey를 이용하고 있어요!"
 showAds: "광고 표시"
+friendly: "Friendly"
 
 _forgotPassword:
   enterEmail: "여기에 계정에 등록한 메일 주소를 입력하면, 비밀번호를 재설정할 수 있는 링크를 메일로 보내드릴게요!"

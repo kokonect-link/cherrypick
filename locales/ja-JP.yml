@@ -763,6 +763,7 @@ low: "低"
 emailNotConfiguredWarning: "メールアドレスの設定がされていません。"
 youAreRunningBetaClient: "未発売バージョンのMisskeyを利用しています！"
 showAds: "広告表示"
+friendly: "Friendly"
 
 _forgotPassword:
   enterEmail: "アカウントに登録したメールアドレスを入力してください。そのアドレス宛てに、パスワードリセット用のリンクが送信されます。"

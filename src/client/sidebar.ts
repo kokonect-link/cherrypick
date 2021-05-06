@@ -134,9 +134,9 @@ export const sidebarDef = {
 		icon: 'fas fa-columns',
 		action: (ev) => {
 			os.modalMenu([{
-				text: i18n.locale.kokonect + ' (β)',
+				text: i18n.locale.friendly + ' (β)',
 				action: () => {
-					localStorage.setItem('ui', 'kokonect');
+					localStorage.setItem('ui', 'friendly');
 					unisonReload();
 				}
 			}, {
