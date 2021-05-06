@@ -158,6 +158,7 @@ export default defineComponent({
 		},
 
 		driveMenu() {
+			console.log("이벤트 전송");
 			eventBus.emit('kn-drivemenu');
 		},
 

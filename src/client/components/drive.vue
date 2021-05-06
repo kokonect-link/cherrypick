@@ -134,7 +134,7 @@ export default defineComponent({
 	},
 
 	created() {
-		eventBus.on('kn-drivemenu', () => this.getMenu());
+		eventBus.on('kn-drivemenu', () => this.onContextmenu());
 	},
 
 	mounted() {
@@ -633,6 +633,7 @@ export default defineComponent({
 		},
 
 		onContextmenu(e) {
+			console.log("이벤트 수신");
 			os.contextMenu(this.getMenu(), e);
 		},
 	}
