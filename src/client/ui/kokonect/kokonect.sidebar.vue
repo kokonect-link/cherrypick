@@ -30,15 +30,13 @@
 	<MkA class="item" active-class="active" to="/settings" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
 		<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 	</MkA>
-	<template>
-		<div class="divider"></div>
-		<MkA v-if="$i.isPatron" class="item" v-click-anime>
-			<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-		</MkA>
-		<MkA v-else class="item" v-click-anime>
-			<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
-		</MkA>
-	</template>
+	<div class="divider"></div>
+	<MkA v-if="$i.isPatron" class="item" v-click-anime>
+		<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+	</MkA>
+	<MkA v-else class="item" v-click-anime>
+		<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
+	</MkA>
 	<div class="divider"></div>
 	<div class="about">
 		<MkA class="link" to="/about" v-click-anime>
