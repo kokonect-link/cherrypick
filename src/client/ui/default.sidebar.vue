@@ -30,6 +30,15 @@
 	<MkA class="item" active-class="active" to="/settings" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
 		<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 	</MkA>
+	<template>
+		<div class="divider"></div>
+		<MkA v-if="$i.isPatron" class="item" v-click-anime>
+			<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+		</MkA>
+		<MkA v-else class="item" v-click-anime>
+			<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
+		</MkA>
+	</template>
 	<div class="divider"></div>
 	<div class="about">
 		<MkA class="link" to="/about" v-click-anime>
@@ -239,8 +248,18 @@ export default defineComponent({
 				left: 10px;
 			}
 
-			> .text {
+			> .text,
+				.patron-text {
 				display: none;
+			}
+
+			> .patron,
+				.not-patron {
+				margin: 0;
+			}
+
+			> .patron {
+				color: var(--patron);
 			}
 
 		}
@@ -314,6 +333,20 @@ export default defineComponent({
 			color: var(--navIndicator);
 			font-size: 8px;
 			animation: blink 1s infinite;
+		}
+
+		> .patron,
+			.not-patron {
+			margin-left: 6px;
+			margin-right: 12px;
+		}
+
+		> .patron {
+			color: var(--patron);
+		}
+
+		> .patron-text {
+			font-size: 0.9em;
 		}
 
 		&:hover {

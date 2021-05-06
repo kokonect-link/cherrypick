@@ -38,10 +38,15 @@
 				<button class="item _button post" @click="post">
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button>
-				<template v-if="$i.isPatron">
+				<template>
 					<div class="divider"></div>
 					<MkA class="item">
-						<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+						<template v-if="$i.isPatron">
+							<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+						</template>
+						<template v-else>
+							<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
+						</template>
 					</MkA>
 				</template>
 				<div class="divider"></div>
@@ -295,8 +300,12 @@ export default defineComponent({
 							display: none;
 						}
 
-						> .patron {
+						> .patron,
+							.not-patron {
 							margin: 0;
+						}
+
+						> .patron {
 							color: var(--patron);
 						}
 
@@ -395,9 +404,13 @@ export default defineComponent({
 					animation: blink 1s infinite;
 				}
 
-				> .patron {
+				> .patron,
+					.not-patron {
 					margin-left: 6px;
 					margin-right: 12px;
+				}
+
+				> .patron {
 					color: var(--patron);
 				}
 
