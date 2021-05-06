@@ -40,13 +40,11 @@
 				</button> -->
 				<template>
 					<div class="divider"></div>
-					<MkA class="item">
-						<template v-if="$i.isPatron">
-							<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-						</template>
-						<template v-else>
-							<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
-						</template>
+					<MkA v-if="$i.isPatron" class="item" v-click-anime>
+						<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+					</MkA>
+					<MkA v-else class="item" v-click-anime>
+						<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
 					</MkA>
 				</template>
 				<div class="divider"></div>
