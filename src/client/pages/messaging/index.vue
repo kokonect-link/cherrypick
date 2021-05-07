@@ -66,7 +66,7 @@ export default defineComponent({
 			connection: null,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
-			isFriendlyUI: 'friendly',
+			isFriendlyUI: localStorage.getItem('ui') == 'friendly',
 		};
 	},
 	
