@@ -8,13 +8,13 @@
 						<div class="left">
 							<MkAvatar :user="$i" class="avatar"/>
 						</div>
-						<div class="name">
-							<div class="left">
+						<div class="left">
+							<div class="name">
 								<MkUserName class="name" :user="$i"/>
 							</div>
-							<div class="left">
-								<MkAcct :user="$i" :detail="true" class="acct"/>
-							</div>
+						</div>
+						<div class="left">
+							<MkAcct :user="$i" :detail="true" class="acct"/>
 						</div>
 					</div>
 				</div>
@@ -251,9 +251,9 @@ export default defineComponent({
 		left: 10px;
 		}
 
-		> .left {
+		> .name {
 			margin-left: 10px;
-
+			
 			> .name {
 				font-weight: bold;
 				font-size: 20px;
