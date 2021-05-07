@@ -66,7 +66,7 @@ export default defineComponent({
 			connection: null,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
-			isFriendlyUI: localStorage.getItem('ui') == 'friendly',
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 	
@@ -75,8 +75,6 @@ export default defineComponent({
 	},
 
 	mounted() {
-		this.isFriendlyUI = localStorage.getItem('ui');
-
 		this.connection = os.stream.useSharedConnection('messagingIndex');
 
 		this.connection.on('message', this.onMessage);
