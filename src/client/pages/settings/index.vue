@@ -254,7 +254,9 @@ export default defineComponent({
 	}
 
 	> .left-name {
-		margin-left: 10px;
+		position: relative;
+		top: 15px;
+		margin-left: 25px;
 
 		> .name {
 			> .name {
