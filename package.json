@@ -1,7 +1,7 @@
 {
 	"name": "misskey",
 	"author": "noridev <support@kokonect.link>, syuilo <syuilotan@yahoo.co.jp>",
-	"version": "12.80.3-hina-1.3",
+	"version": "12.80.3-hina-1.4",
 	"codename": "indigo",
 	"repository": {
 		"type": "git",
