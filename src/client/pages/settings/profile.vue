@@ -284,7 +284,7 @@ export default defineComponent({
 			margin: auto;
 			box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.5);
 		}
-	]
+	}
 
 	> .user-info {
 		position: relative;
