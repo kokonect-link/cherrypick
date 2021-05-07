@@ -18,12 +18,6 @@
 					</transition>
 				</router-view>
 			</div>
-			<div class="floatbtn" v-if="$route.name === 'drive'">
-				<template v-if="isDesktop">
-					<button class="post-Desktop _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
-				</template>
-				<button v-else class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
-			</div>
 		</main>
 
 		<div v-if="isDesktop" class="widgets" ref="widgets">
@@ -34,6 +28,7 @@
 	<div class="floatbtn" v-if="isMobile">
 		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
 		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -327,37 +322,6 @@ export default defineComponent({
 			> .content {
 				background: var(--bg);
 				--stickyTop: #{$header-height};
-			}
-
-			> .floatbtn {
-				position: fixed;
-				z-index: 1000;
-				bottom: 77px;
-				box-sizing: border-box;
-				padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px);
-
-				> .post {
-					position: fixed;
-					z-index: 1000;
-					width: 55px;
-					height: 55px;
-					border-radius: 100%;
-					box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-					font-size: 22px;
-					right: 15px;
-				}
-
-				> .post-Desktop {
-					position: fixed;
-					z-index: 1000;
-					width: 55px;
-					height: 55px;
-					border-radius: 100%;
-					box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-					font-size: 22px;
-					right: 630px;
-					bottom: 50px;
-				}
 			}
 
 			@media (max-width: 850px) {

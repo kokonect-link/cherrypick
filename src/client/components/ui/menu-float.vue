@@ -1,44 +1,5 @@
 <template>
-<div v-if="isDesktop" class="rrevdjwt-Desktop" :class="{ left: align === 'left' }"
-	ref="items"
-	@contextmenu.self="e => e.preventDefault()"
-	v-hotkey="keymap"
->
-	<template v-for="(item, i) in _items">
-		<div v-if="item === null" class="divider"></div>
-		<span v-else-if="item.type === 'label'" class="label item">
-			<span>{{ item.text }}</span>
-		</span>
-		<span v-else-if="item.type === 'pending'" :tabindex="i" class="pending item">
-			<span><MkEllipsis/></span>
-		</span>
-		<MkA v-else-if="item.type === 'link'" :to="item.to" @click.passive="close()" :tabindex="i" class="_button item">
-			<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
-			<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
-			<span>{{ item.text }}</span>
-			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-		</MkA>
-		<a v-else-if="item.type === 'a'" :href="item.href" :target="item.target" :download="item.download" @click="close()" :tabindex="i" class="_button item">
-			<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
-			<span>{{ item.text }}</span>
-			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-		</a>
-		<button v-else-if="item.type === 'user'" @click="clicked(item.action, $event)" :tabindex="i" class="_button item">
-			<MkAvatar :user="item.user" class="avatar"/><MkUserName :user="item.user"/>
-			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-		</button>
-		<button v-else @click="clicked(item.action, $event)" :tabindex="i" class="_button item" :class="{ danger: item.danger }">
-			<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
-			<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
-			<span>{{ item.text }}</span>
-			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-		</button>
-	</template>
-	<span v-if="_items.length === 0" class="none item">
-		<span>{{ $ts.none }}</span>
-	</span>
-</div>
-<div v-else class="rrevdjwt" :class="{ left: align === 'left' }"
+<div class="rrevdjwt" :class="{ left: align === 'left' }"
 	ref="items"
 	@contextmenu.self="e => e.preventDefault()"
 	v-hotkey="keymap"
@@ -84,9 +45,6 @@ import { defineComponent, ref } from 'vue';
 import { focusPrev, focusNext } from '@client/scripts/focus';
 import contains from '@client/scripts/contains';
 
-const DESKTOP_THRESHOLD = 1100;
-const MOBILE_THRESHOLD = 600;
-
 export default defineComponent({
 	props: {
 		items: {
@@ -106,8 +64,6 @@ export default defineComponent({
 	data() {
 		return {
 			_items: [],
-			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
-			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 	computed: {
@@ -150,11 +106,6 @@ export default defineComponent({
 				el.addEventListener('mousedown', this.onMousedown);
 			}
 		}
-
-		window.addEventListener('resize', () => {
-			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
-			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
-		}, { passive: true });
 	},
 	beforeUnmount() {
 		for (const el of Array.from(document.querySelectorAll('body *'))) {
@@ -184,19 +135,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .rrevdjwt {
-	bottom: 130px;
-	right: 10px;
-}
-
-.rrevdjwt-Desktop {
-	right: 630px;
-	bottom: 120px;
-}
-
-.rrevdjwt,
-.rrevdjwt-Desktop {
 	padding: 8px 0;
 	position: absolute;
+	bottom: 130px;
+	right: 10px;
 
 	&.left {
 		> .item {
