@@ -5,9 +5,9 @@
 			<FormGroup>
 				<div class="_formItem">
 					<div class="_formPanel lwjxoukj">
-						<div class="left">
+						<div class="user">
 							<MkAvatar :user="$i" class="avatar"/>
-							<div class="left-name">
+							<div class="user-info">
 								<MkUserName class="name" :user="$i"/>
 								<MkAcct :user="$i" :detail="true" class="acct"/>
 							</div>
@@ -236,7 +236,7 @@ export default defineComponent({
 .lwjxoukj {
 	padding: 16px;
 
-	> .left {
+	> .user {
 		display: flex;
 		
 		> .avatar {
@@ -245,7 +245,7 @@ export default defineComponent({
 			height: 60px;
 		}
 
-		> .left-name {
+		> .user-info {
 			> .name {
 				font-weight: bold;
 				font-size: 20px;
