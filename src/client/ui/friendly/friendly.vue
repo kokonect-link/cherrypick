@@ -63,7 +63,7 @@
 import { defineComponent, defineAsyncComponent } from 'vue';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
-import XSidebar from './kokonect.sidebar.vue';
+import XSidebar from './friendly.sidebar.vue';
 import XDrawerSidebar from './sidebar.vue';
 import XCommon from '../_common_/common.vue';
 import XHeader from './header.vue';
@@ -72,7 +72,7 @@ import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { search } from '@client/scripts/search';
-import { eventBus } from '@client/kokonect/eventBus';
+import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;

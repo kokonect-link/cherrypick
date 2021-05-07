@@ -173,7 +173,7 @@ const app = createApp(await (
 	ui === 'chat'                     ? import('@client/ui/chat/index.vue') :
 	ui === 'pope'                     ? import('@client/ui/universal.vue') :
 	ui === 'misskey'                  ? import('@client/ui/default.vue') :
-	import('@client/ui/kokonect/kokonect.vue')
+	import('@client/ui/friendly/friendly.vue')
 ).then(x => x.default));
 
 if (_DEV_) {
@@ -275,7 +275,7 @@ stream.on('_disconnected_', async () => {
 		if (!canceled) {
 			location.reload();
 		}
-	}
+	} else if (defaultStore.state.serverDisconnectedBehavior === 'none') {}
 });
 
 stream.on('emojiAdded', data => {

@@ -28,6 +28,7 @@
 		<option value="reload">{{ $ts._serverDisconnectedBehavior.reload }}</option>
 		<option value="dialog">{{ $ts._serverDisconnectedBehavior.dialog }}</option>
 		<option value="quiet">{{ $ts._serverDisconnectedBehavior.quiet }}</option>
+		<option value="none">{{ $ts._serverDisconnectedBehavior.none }}</option>
 	</FormSelect>
 
 	<FormGroup>
