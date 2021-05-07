@@ -269,33 +269,41 @@ export default defineComponent({
 		pointer-events: none;
 	}
 
-	> .avatar {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 20px;
-		//right: 0;
-		display: block;
-		width: 96px;
-		height: 96px;
-		margin: auto;
-		box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.5);
-	}
+	> .user {
+		display: flex;
+
+		> .avatar {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 20px;
+			//right: 0;
+			display: block;
+			width: 96px;
+			height: 96px;
+			margin: auto;
+			box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.5);
+		}
+	]
 
 	> .user-info {
+		position: relative;
+		top: 40px;
+		left: 120px;
+
 		> .name {
 			font-weight: bold;
-			font-size: 20px;
+			font-size: 30px;
 			position: relative;
 			top: 10px;
 			left: 10px;
 		}
 
 		> .acct {
-			font-size: 13px;
+			font-size: 16px;
 			position: relative;
-			top: 30px;
-			right: 35px;
+			top: 35px;
+			right: 57px;
 		}
 	}
 }
