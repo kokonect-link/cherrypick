@@ -126,9 +126,9 @@
 				<div class="title">
 					<MkUserName :user="user" :nowrap="false" class="name"/>
 					<div class="bottom">
-						<span class="username"><MkAcct :user="user" :detail="true" /></span>
+						<span class="username-mobile"><MkAcct :user="user" :detail="true" /></span>
 					</div>
-					<div class="bottom">
+					<div class="bottom-mobile">
 						<span v-if="user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 						<span v-if="user.isAdmin" :title="$ts.isAdmin" style="color: var(--badge);"><i class="fas fa-crown"></i></span>
 						<span v-if="!user.isAdmin && user.isModerator" :title="$ts.isModerator" style="color: var(--badge);"><i class="far fa-chess-queen"></i></span>
@@ -682,8 +682,15 @@ export default defineComponent({
 				> .bottom {
 					> * {
 						display: inline-block;
-						margin-right: 8px;
 						opacity: 0.8;
+					}
+				}
+
+				> .bottom-mobile {
+					> * {
+						display: inline-block;
+						opacity: 0.8;
+						margin: 0 4px;
 					}
 				}
 			}
