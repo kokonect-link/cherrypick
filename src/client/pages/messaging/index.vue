@@ -1,6 +1,7 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
-	<MkButton v-if="!(localStorage.getItem('ui') == 'friendly')" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<MkButton v-if="!isMobile && isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<MkButton v-else-if="!isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -65,6 +66,7 @@ export default defineComponent({
 			connection: null,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			isFriendlyUI: 'friendly',
 		};
 	},
 	
@@ -73,6 +75,8 @@ export default defineComponent({
 	},
 
 	mounted() {
+		this.isFriendlyUI = localStorage.getItem('ui');
+
 		this.connection = os.stream.useSharedConnection('messagingIndex');
 
 		this.connection.on('message', this.onMessage);
