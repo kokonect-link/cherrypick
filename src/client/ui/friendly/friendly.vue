@@ -84,7 +84,7 @@ export default defineComponent({
 		XDrawerSidebar,
 		XHeader,
 		XTimeline,
-		XWidgets: defineAsyncComponent(() => import('./kokonect.widgets.vue'))
+		XWidgets: defineAsyncComponent(() => import('./friendly.widgets.vue'))
 	},
 
 	data() {

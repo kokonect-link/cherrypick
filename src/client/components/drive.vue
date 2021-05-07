@@ -52,7 +52,7 @@ import XFolder from './drive.folder.vue';
 import XFile from './drive.file.vue';
 import MkButton from './ui/button.vue';
 import * as os from '@client/os';
-import { eventBus } from '@client/kokonect/eventBus';
+import { eventBus } from '@client/friendly/eventBus';
 
 export default defineComponent({
 	components: {
