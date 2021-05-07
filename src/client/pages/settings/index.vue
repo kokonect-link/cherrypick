@@ -5,10 +5,16 @@
 			<FormGroup>
 				<div class="_formItem">
 					<div class="_formPanel lwjxoukj">
-						<MkAvatar :user="$i" class="avatar"/>
+						<div class="left">
+							<MkAvatar :user="$i" class="avatar"/>
+						</div>
 						<div class="name">
-							<MkUserName class="name" :user="$i"/>
-							<MkAcct :user="$i" :detail="true" class="acct"/>
+							<div class="left">
+								<MkUserName class="name" :user="$i"/>
+							</div>
+							<div class="left">
+								<MkAcct :user="$i" :detail="true" class="acct"/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -234,17 +240,25 @@ export default defineComponent({
 .lwjxoukj {
 	padding: 16px;
 
-	> .avatar {
+	> .left {
+		float: left;
+
+		> .avatar {
 		display: block;
 		//margin: auto;
 		width: 42px;
 		height: 42px;
 		left: 10px;
-	}
+		}
 
-	> .name {
+		> .left {
 			margin-left: 10px;
-			font-weight: bold;
+
+			> .name {
+				font-weight: bold;
+				font-size: 20px;
+			}
+		}
 	}
 }
 </style>
