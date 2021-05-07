@@ -9,9 +9,7 @@
 							<MkAvatar :user="$i" class="avatar"/>
 						</div>
 						<div class="left-name">
-							<div class="name">
-								<MkUserName class="name" :user="$i"/>
-							</div>
+							<MkUserName class="name" :user="$i"/>
 							<MkAcct :user="$i" :detail="true" class="acct"/>
 						</div>
 					</div>
@@ -246,23 +244,23 @@ export default defineComponent({
 	> .left {
 		> .avatar {
 			display: block;
-			//margin: auto;
 			width: 60px;
 			height: 60px;
-			left: 10px;
 		}
 	}
 
 	> .left-name {
-		position: absolute;
-		top: 110px;
-		margin-left: 25px;
+		position: relative;
+		top: 15px;
+		left: 10px;
 
 		> .name {
-			> .name {
-				font-weight: bold;
-				font-size: 20px;
-			}
+			font-weight: bold;
+			font-size: 20px;
+		}
+
+		> .acct {
+			font-size: 13px;
 		}
 	}
 }
