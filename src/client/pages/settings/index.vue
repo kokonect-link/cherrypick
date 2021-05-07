@@ -5,8 +5,11 @@
 			<FormGroup>
 				<div class="_formItem">
 					<div class="_formPanel lwjxoukj">
-						<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
-						<MkAcct :user="$i" :detail="true" class="acct"/>
+						<MkAvatar :user="$i" class="avatar"/>
+						<div class="name">
+							<MkUserName class="name" :user="$i"/>
+							<MkAcct :user="$i" :detail="true" class="acct"/>
+						</div>
 					</div>
 				</div>
 				<FormLink :active="page === 'accounts'" replace to="/settings/accounts"><template #icon><i class="fas fa-users"></i></template>{{ $ts.accounts }}</FormLink>
@@ -233,9 +236,15 @@ export default defineComponent({
 
 	> .avatar {
 		display: block;
-		margin: auto;
+		//margin: auto;
 		width: 42px;
 		height: 42px;
+		left: 10px;
+	}
+
+	> .name {
+			margin-left: 10px;
+			font-weight: bold;
 	}
 }
 </style>
