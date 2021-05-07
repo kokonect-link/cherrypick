@@ -305,11 +305,6 @@ export default defineComponent({
 							color: var(--patron);
 						}
 
-						> .name {
-							margin-left: 10px;
-							font-weight: bold;
-						}
-
 						&:first-child {
 							margin-bottom: 8px;
 						}
@@ -394,6 +389,11 @@ export default defineComponent({
 					width: $avatar-size;
 					height: $avatar-size;
 					vertical-align: middle;
+				}
+
+				> .name {
+					margin-left: 5px;
+					font-weight: bold;
 				}
 
 				> .indicator {
