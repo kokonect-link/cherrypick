@@ -660,12 +660,13 @@ export default defineComponent({
 					> .bottom {
 						> * {
 							display: inline-block;
-							margin-right: 16px;
+							margin-right: 8px;
 							line-height: 20px;
 							opacity: 0.8;
 
 							&.username {
 								font-weight: bold;
+								margin-right: 16px;
 							}
 						}
 					}
