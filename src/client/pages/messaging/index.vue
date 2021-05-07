@@ -1,6 +1,6 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
-	<MkButton v-if="!isMobile" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<MkButton v-if="!(localStorage.getItem('ui', 'friendly'))" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -43,7 +43,7 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import { eventBus } from '@client/kokonect/eventBus';
+import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
