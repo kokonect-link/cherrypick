@@ -270,7 +270,7 @@ export default defineComponent({
 				> .i {
 					position: absolute;
 					top: 12px;
-					//right: 8px;
+					right: 5px;
 					color: var(--indicator);
 					font-size: 7px;
 					animation: blink 1s infinite;
