@@ -7,10 +7,10 @@
 					<div class="_formPanel lwjxoukj">
 						<div class="left">
 							<MkAvatar :user="$i" class="avatar"/>
-						</div>
-						<div class="left-name">
-							<MkUserName class="name" :user="$i"/>
-							<MkAcct :user="$i" :detail="true" class="acct"/>
+							<div class="left-name">
+								<MkUserName class="name" :user="$i"/>
+								<MkAcct :user="$i" :detail="true" class="acct"/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -238,7 +238,7 @@ export default defineComponent({
 
 	> .left,
 		.left-name {
-		display: inline-block;
+		display: flex;
 	}
 
 	> .left {
@@ -247,22 +247,21 @@ export default defineComponent({
 			width: 60px;
 			height: 60px;
 		}
-	}
 
-	> .left-name {
-		position: relative;
-		top: 15px;
-		left: 10px;
+		> .left-name {
+			top: 15px;
+			left: 10px;
 
-		> .name {
-			font-weight: bold;
-			font-size: 20px;
-			position: absolute;
-			bottom: 20px;
-		}
+			> .name {
+				font-weight: bold;
+				font-size: 20px;
+				position: absolute;
+				bottom: 20px;
+			}
 
-		> .acct {
-			font-size: 13px;
+			> .acct {
+				font-size: 13px;
+			}
 		}
 	}
 }
