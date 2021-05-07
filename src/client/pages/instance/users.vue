@@ -47,7 +47,8 @@
 					<header>
 						<MkUserName class="name" :user="user"/>
 						<span class="acct">@{{ acct(user) }}</span>
-						<span class="locked" v-if="user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
+						<span class="icon" v-if="user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
+						<span class="icon" v-if="user.isBot" :title="$ts.isBot"><i class="fas fa-robot"></i></span>
 						<span class="staff" v-if="user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 						<span class="staff" v-if="user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
 						<span class="patron" v-if="user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
@@ -226,7 +227,7 @@ export default defineComponent({
 							color: var(--badge);
 						}
 
-						> .locked {
+						> .icon {
 							margin-left: 0.5em;
 						}
 
