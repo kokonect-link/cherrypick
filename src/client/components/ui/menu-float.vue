@@ -84,6 +84,9 @@ import { defineComponent, ref } from 'vue';
 import { focusPrev, focusNext } from '@client/scripts/focus';
 import contains from '@client/scripts/contains';
 
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
+
 export default defineComponent({
 	props: {
 		items: {
@@ -103,6 +106,8 @@ export default defineComponent({
 	data() {
 		return {
 			_items: [],
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 	computed: {
@@ -145,6 +150,11 @@ export default defineComponent({
 				el.addEventListener('mousedown', this.onMousedown);
 			}
 		}
+
+		window.addEventListener('resize', () => {
+			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
+			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
+		}, { passive: true });
 	},
 	beforeUnmount() {
 		for (const el of Array.from(document.querySelectorAll('body *'))) {
