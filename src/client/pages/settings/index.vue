@@ -8,12 +8,10 @@
 						<div class="left">
 							<MkAvatar :user="$i" class="avatar"/>
 						</div>
-						<div class="left">
+						<div class="left-name">
 							<div class="name">
 								<MkUserName class="name" :user="$i"/>
 							</div>
-						</div>
-						<div class="left">
 							<MkAcct :user="$i" :detail="true" class="acct"/>
 						</div>
 					</div>
@@ -240,20 +238,25 @@ export default defineComponent({
 .lwjxoukj {
 	padding: 16px;
 
-	> .left {
-		float: left;
+	> .left,
+		.left-name {
+		display: inline-block;
+	}
 
+	> .left {
 		> .avatar {
-		display: block;
-		//margin: auto;
-		width: 42px;
-		height: 42px;
-		left: 10px;
+			display: block;
+			//margin: auto;
+			width: 60px;
+			height: 60px;
+			left: 10px;
 		}
+	}
+
+	> .left-name {
+		margin-left: 10px;
 
 		> .name {
-			margin-left: 10px;
-			
 			> .name {
 				font-weight: bold;
 				font-size: 20px;
