@@ -1,14 +1,9 @@
 <template>
 <FormBase>
 	<FormGroup>
-		<div class="_formItem _formPanel llvierxe">
+		<div class="_formItem _formPanel llvierxe" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : null }">
 			<MkAvatar class="avatar" :user="$i"/>
-			<div class="user-info">
-				<MkUserName class="name" :user="$i"/>
-				<MkAcct :user="$i" :detail="true" class="acct"/>
-			</div>
 		</div>
-		<div class="_formItem _formPanel llvierxe" :style="{ backgroundImage: $i.bannerUrl ? `url(${ $i.bannerUrl })` : null }"></div>
 		<FormButton @click="changeAvatar" primary>{{ $ts._profile.changeAvatar }}</FormButton>
 		<FormButton @click="changeBanner" primary>{{ $ts._profile.changeBanner }}</FormButton>
 	</FormGroup>
@@ -273,34 +268,13 @@ export default defineComponent({
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		left: 20px;
-		//right: 0;
+		left: 0;
+		right: 0;
 		display: block;
-		width: 96px;
-		height: 96px;
+		width: 72px;
+		height: 72px;
 		margin: auto;
 		box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.5);
-	}
-
-	> .user-info {
-		position: relative;
-		top: 40px;
-		left: 120px;
-
-		> .name {
-			font-weight: bold;
-			font-size: 30px;
-			position: relative;
-			top: 10px;
-			left: 10px;
-		}
-
-		> .acct {
-			font-size: 16px;
-			position: relative;
-			top: 35px;
-			right: 57px;
-		}
 	}
 }
 </style>
