@@ -332,6 +332,17 @@ export default defineComponent({
 				bottom: 77px;
 				box-sizing: border-box;
 				padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px);
+
+				> .post {
+					position: fixed;
+					z-index: 1000;
+					width: 55px;
+					height: 55px;
+					border-radius: 100%;
+					box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+					font-size: 22px;
+					right: 15px;
+				}
 			}
 
 			@media (max-width: 850px) {
