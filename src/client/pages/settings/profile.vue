@@ -2,7 +2,9 @@
 <FormBase>
 	<FormGroup>
 		<div class="_formItem _formPanel llvierxe">
-			<MkAvatar class="avatar" :user="$i"/>
+			<div class="user">
+				<MkAvatar class="avatar" :user="$i"/>
+			</div>
 			<div class="user-info">
 				<MkUserName class="name" :user="$i"/>
 				<MkAcct :user="$i" :detail="true" class="acct"/>
