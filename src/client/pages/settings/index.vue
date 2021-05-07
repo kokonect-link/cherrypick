@@ -236,12 +236,9 @@ export default defineComponent({
 .lwjxoukj {
 	padding: 16px;
 
-	> .left,
-		.left-name {
-		display: flex;
-	}
-
 	> .left {
+		display: flex;
+		
 		> .avatar {
 			display: block;
 			width: 60px;
@@ -249,18 +246,19 @@ export default defineComponent({
 		}
 
 		> .left-name {
-			top: 15px;
-			left: 10px;
-
 			> .name {
 				font-weight: bold;
 				font-size: 20px;
-				position: absolute;
-				bottom: 20px;
+				position: relative;
+				top: 10px;
+				left: 10px;
 			}
 
 			> .acct {
 				font-size: 13px;
+				position: relative;
+				top: 30px;
+				right: 35px;
 			}
 		}
 	}
