@@ -269,6 +269,11 @@ export default defineComponent({
 			> .patron {
 				color: var(--patron);
 			}
+
+			> .name {
+				margin-left: 5px;
+				font-weight: bold;
+			}
 			
 		}
 	}

@@ -18,6 +18,9 @@
 					</transition>
 				</router-view>
 			</div>
+			<div class="floatbtn">
+				<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
+			</div>
 		</main>
 
 		<div v-if="isDesktop" class="widgets" ref="widgets">
@@ -25,12 +28,9 @@
 		</div>
 	</div>
 
-	<div class="floatbtn">
-		<template v-if="isMobile">
-			<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
-			<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
-		</template>
-		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
+	<div class="floatbtn" v-if="isMobile">
+		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
+		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -324,6 +324,14 @@ export default defineComponent({
 			> .content {
 				background: var(--bg);
 				--stickyTop: #{$header-height};
+			}
+
+			> .floatbtn {
+				position: fixed;
+				z-index: 1000;
+				bottom: 77px;
+				box-sizing: border-box;
+				padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px);
 			}
 
 			@media (max-width: 850px) {
