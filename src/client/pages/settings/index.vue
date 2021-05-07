@@ -5,7 +5,8 @@
 			<FormGroup>
 				<div class="_formItem">
 					<div class="_formPanel lwjxoukj">
-						<MkAvatar :user="$i" class="avatar"/>
+						<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+						<MkAcct :user="$i" :detail="true" class="acct"/>
 					</div>
 				</div>
 				<FormLink :active="page === 'accounts'" replace to="/settings/accounts"><template #icon><i class="fas fa-users"></i></template>{{ $ts.accounts }}</FormLink>
