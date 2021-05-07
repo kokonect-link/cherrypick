@@ -2,9 +2,7 @@
 <FormBase>
 	<FormGroup>
 		<div class="_formItem _formPanel llvierxe">
-			<div class="user">
-				<MkAvatar class="avatar" :user="$i"/>
-			</div>
+			<MkAvatar class="avatar" :user="$i"/>
 			<div class="user-info">
 				<MkUserName class="name" :user="$i"/>
 				<MkAcct :user="$i" :detail="true" class="acct"/>
@@ -271,21 +269,17 @@ export default defineComponent({
 		pointer-events: none;
 	}
 
-	> .user {
-		display: flex;
-
-		> .avatar {
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			left: 20px;
-			//right: 0;
-			display: block;
-			width: 96px;
-			height: 96px;
-			margin: auto;
-			box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.5);
-		}
+	> .avatar {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 20px;
+		//right: 0;
+		display: block;
+		width: 96px;
+		height: 96px;
+		margin: auto;
+		box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.5);
 	}
 
 	> .user-info {
