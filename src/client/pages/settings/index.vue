@@ -257,6 +257,8 @@ export default defineComponent({
 		> .name {
 			font-weight: bold;
 			font-size: 20px;
+			position: absolute;
+			bottom: 20px;
 		}
 
 		> .acct {
