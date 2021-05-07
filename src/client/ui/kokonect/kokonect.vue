@@ -369,7 +369,8 @@ export default defineComponent({
 		z-index: 1000;
 		bottom: 77px;
 		box-sizing: border-box;
-		padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px);
+		padding: 18px 0 calc(constant(safe-area-inset-bottom) + 43px); /* iOS 11.0 */
+		padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px); /* iOS 11.2 */
 		
 		@media (min-width: ($nav-hide-threshold + 1px)) {
 			display: none;
@@ -409,7 +410,8 @@ export default defineComponent({
 			//border-radius: 8px;
 			background: var(--panel);
 			color: var(--fg);
-			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
+			padding: 15px 0 calc(constant(safe-area-inset-bottom) + 30px); /* iOS 11.0 */
+			padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px); /* iOS 11.2 */
 
 			&:not(:last-child) {
 				//margin-right: 12px;

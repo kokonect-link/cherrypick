@@ -248,7 +248,8 @@ export default defineComponent({
 			padding: 16px;
 			-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16px, rgba(0,0,0,1) calc(100% - 16px), rgba(0,0,0,0) 100%);
 			mask-image: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 16px, rgba(0,0,0,1) calc(100% - 16px), rgba(0,0,0,0) 100%);
-			margin: 0 0 calc(env(safe-area-inset-bottom));
+			margin: 0 0 calc(constant(safe-area-inset-bottom)); /* iOS 11.0 */
+			margin: 0 0 calc(env(safe-area-inset-bottom)); /* iOS 11.2 */
 		}
 
 		> ::v-deep(*) {
