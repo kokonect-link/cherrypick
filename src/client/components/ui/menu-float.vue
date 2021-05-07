@@ -1,44 +1,42 @@
 <template>
-<div class="float">
-	<div class="rrevdjwt" :class="{ left: align === 'left' }"
+<div class="rrevdjwt" :class="{ left: align === 'left' }"
 	ref="items"
 	@contextmenu.self="e => e.preventDefault()"
 	v-hotkey="keymap"
-	>
-		<template v-for="(item, i) in _items">
-			<div v-if="item === null" class="divider"></div>
-			<span v-else-if="item.type === 'label'" class="label item">
-				<span>{{ item.text }}</span>
-			</span>
-			<span v-else-if="item.type === 'pending'" :tabindex="i" class="pending item">
-				<span><MkEllipsis/></span>
-			</span>
-			<MkA v-else-if="item.type === 'link'" :to="item.to" @click.passive="close()" :tabindex="i" class="_button item">
-				<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
-				<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
-				<span>{{ item.text }}</span>
-				<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-			</MkA>
-			<a v-else-if="item.type === 'a'" :href="item.href" :target="item.target" :download="item.download" @click="close()" :tabindex="i" class="_button item">
-				<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
-				<span>{{ item.text }}</span>
-				<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-			</a>
-			<button v-else-if="item.type === 'user'" @click="clicked(item.action, $event)" :tabindex="i" class="_button item">
-				<MkAvatar :user="item.user" class="avatar"/><MkUserName :user="item.user"/>
-				<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-			</button>
-			<button v-else @click="clicked(item.action, $event)" :tabindex="i" class="_button item" :class="{ danger: item.danger }">
-				<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
-				<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
-				<span>{{ item.text }}</span>
-				<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
-			</button>
-		</template>
-		<span v-if="_items.length === 0" class="none item">
-			<span>{{ $ts.none }}</span>
+>
+	<template v-for="(item, i) in _items">
+		<div v-if="item === null" class="divider"></div>
+		<span v-else-if="item.type === 'label'" class="label item">
+			<span>{{ item.text }}</span>
 		</span>
-	</div>
+		<span v-else-if="item.type === 'pending'" :tabindex="i" class="pending item">
+			<span><MkEllipsis/></span>
+		</span>
+		<MkA v-else-if="item.type === 'link'" :to="item.to" @click.passive="close()" :tabindex="i" class="_button item">
+			<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
+			<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
+			<span>{{ item.text }}</span>
+			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
+		</MkA>
+		<a v-else-if="item.type === 'a'" :href="item.href" :target="item.target" :download="item.download" @click="close()" :tabindex="i" class="_button item">
+			<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
+			<span>{{ item.text }}</span>
+			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
+		</a>
+		<button v-else-if="item.type === 'user'" @click="clicked(item.action, $event)" :tabindex="i" class="_button item">
+			<MkAvatar :user="item.user" class="avatar"/><MkUserName :user="item.user"/>
+			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
+		</button>
+		<button v-else @click="clicked(item.action, $event)" :tabindex="i" class="_button item" :class="{ danger: item.danger }">
+			<i v-if="item.icon" class="fa-fw" :class="item.icon"></i>
+			<MkAvatar v-if="item.avatar" :user="item.avatar" class="avatar"/>
+			<span>{{ item.text }}</span>
+			<span v-if="item.indicate" class="indicator"><i class="fas fa-circle"></i></span>
+		</button>
+	</template>
+	<span v-if="_items.length === 0" class="none item">
+		<span>{{ $ts.none }}</span>
+	</span>
 </div>
 </template>
 
@@ -136,109 +134,105 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.float {
-	padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px);
+.rrevdjwt {
+	padding: 8px 0;
+	position: absolute;
+	bottom: 130px;
+	right: 10px;
 
-	.rrevdjwt {
-		padding: 8px 0;
-		position: absolute;
-		bottom: 130px;
-		right: 10px;
-
-		&.left {
-			> .item {
-				text-align: left;
-			}
-		}
-
+	&.left {
 		> .item {
-			display: block;
-			position: relative;
-			padding: 8px 16px;
-			width: 100%;
-			box-sizing: border-box;
-			white-space: nowrap;
-			font-size: 0.9em;
-			line-height: 20px;
-			text-align: center;
-			overflow: hidden;
-			text-overflow: ellipsis;
+			text-align: left;
+		}
+	}
 
-			&.danger {
-				color: #ff2a2a;
+	> .item {
+		display: block;
+		position: relative;
+		padding: 8px 16px;
+		width: 100%;
+		box-sizing: border-box;
+		white-space: nowrap;
+		font-size: 0.9em;
+		line-height: 20px;
+		text-align: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
 
-				&:hover {
-					color: #fff;
-					background: #ff4242;
-				}
-
-				&:active {
-					color: #fff;
-					background: #d42e2e;
-				}
-			}
+		&.danger {
+			color: #ff2a2a;
 
 			&:hover {
 				color: #fff;
-				background: var(--accent);
-				text-decoration: none;
+				background: #ff4242;
 			}
 
 			&:active {
 				color: #fff;
-				background: var(--accentDarken);
-			}
-
-			&:not(:active):focus {
-				box-shadow: 0 0 0 2px var(--focus) inset;
-			}
-
-			&.label {
-				pointer-events: none;
-				font-size: 0.7em;
-				padding-bottom: 4px;
-
-				> span {
-					opacity: 0.7;
-				}
-			}
-
-			&.pending {
-				pointer-events: none;
-				opacity: 0.7;
-			}
-
-			&.none {
-				pointer-events: none;
-				opacity: 0.7;
-			}
-
-			> i {
-				margin-right: 4px;
-				width: 20px;
-			}
-
-			> .avatar {
-				margin-right: 4px;
-				width: 20px;
-				height: 20px;
-			}
-
-			> .indicator {
-				position: absolute;
-				top: 5px;
-				left: 13px;
-				color: var(--indicator);
-				font-size: 12px;
-				animation: blink 1s infinite;
+				background: #d42e2e;
 			}
 		}
 
-		> .divider {
-			margin: 8px 0;
-			height: 1px;
-			background: var(--divider);
+		&:hover {
+			color: #fff;
+			background: var(--accent);
+			text-decoration: none;
 		}
+
+		&:active {
+			color: #fff;
+			background: var(--accentDarken);
+		}
+
+		&:not(:active):focus {
+			box-shadow: 0 0 0 2px var(--focus) inset;
+		}
+
+		&.label {
+			pointer-events: none;
+			font-size: 0.7em;
+			padding-bottom: 4px;
+
+			> span {
+				opacity: 0.7;
+			}
+		}
+
+		&.pending {
+			pointer-events: none;
+			opacity: 0.7;
+		}
+
+		&.none {
+			pointer-events: none;
+			opacity: 0.7;
+		}
+
+		> i {
+			margin-right: 4px;
+			width: 20px;
+		}
+
+		> .avatar {
+			margin-right: 4px;
+			width: 20px;
+			height: 20px;
+		}
+
+		> .indicator {
+			position: absolute;
+			top: 5px;
+			left: 13px;
+			color: var(--indicator);
+			font-size: 12px;
+			animation: blink 1s infinite;
+		}
+	}
+
+	> .divider {
+		margin: 8px 0;
+		height: 1px;
+		background: var(--divider);
 	}
 }
 </style>
