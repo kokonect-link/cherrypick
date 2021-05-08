@@ -246,19 +246,18 @@ export default defineComponent({
 		}
 
 		> .user-info {
+			padding: 10px;
+
 			> .name {
 				font-weight: bold;
 				font-size: 20px;
-				position: relative;
-				top: 10px;
-				left: 10px;
+				display: flex;
+				margin: -3px 0;
 			}
 
 			> .acct {
 				font-size: 13px;
-				position: relative;
-				top: 30px;
-				right: 35px;
+				display: flex;
 			}
 		}
 	}
