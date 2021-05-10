@@ -77,6 +77,8 @@ import { eventBus } from '@client/friendly/eventBus';
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
 
+localStorage.setItem('ui', 'friendly');
+
 export default defineComponent({
 	components: {
 		XCommon,
