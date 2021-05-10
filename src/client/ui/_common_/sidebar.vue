@@ -35,7 +35,7 @@
 				<MkA class="item" active-class="active" to="/settings">
 					<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 				</MkA>
-				<button class="item _button post" @click="post">
+				<button class="item-post _button post" @click="post">
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button>
 				<div class="divider"></div>
@@ -349,12 +349,12 @@ export default defineComponent({
 				fill: currentColor;
 				padding: 8px 0 16px 0;
 				text-align: center;
-				
+
 				> .link {
 					//display: block;
 					width: 32px;
 					margin: 0 auto;
-					
+
 					img {
 						display: block;
 						width: 100%;
@@ -401,7 +401,7 @@ export default defineComponent({
 				}
 
 				> .patron,
-					.not-patron {
+				.not-patron {
 					margin-left: 6px;
 					margin-right: 12px;
 				}
@@ -443,6 +443,41 @@ export default defineComponent({
 					bottom: 0;
 					margin-top: 16px;
 					border-top: solid 0.5px var(--divider);
+				}
+			}
+
+			.item-post {
+				display: block;
+				padding-left: 24px;
+				font-size: $ui-font-size;
+				line-height: 3rem;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				width: 100%;
+				text-align: left;
+				box-sizing: border-box;
+				color: var(--navFg);
+
+				position: sticky;
+				z-index: 1;
+				padding-top: 8px;
+				padding-bottom: 8px;
+				background: var(--X14);
+				-webkit-backdrop-filter: blur(8px);
+				backdrop-filter: blur(8px);
+				bottom: 0;
+				margin-top: 16px;
+				border-top: solid 0.5px var(--divider);
+
+				> i {
+					width: 32px;
+					margin-right: $avatar-margin;
+				}
+
+				&:hover {
+					text-decoration: none;
+					color: var(--navHoverFg);
 				}
 			}
 		}

@@ -239,6 +239,7 @@ export default defineComponent({
 .mk-app {
 	$nav-hide-threshold: 650px;
 	$header-height: 50px;
+	$header-height-stickyTop: 110px;
 	$ui-font-size: 1em;
 	$widgets-hide-threshold: 1200px;
 	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
@@ -321,7 +322,7 @@ export default defineComponent({
 
 			> .content {
 				background: var(--bg);
-				--stickyTop: #{$header-height};
+				--stickyTop: #{$header-height-stickyTop};
 			}
 
 			@media (max-width: 850px) {

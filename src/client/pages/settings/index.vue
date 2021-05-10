@@ -246,17 +246,17 @@ export default defineComponent({
 		}
 
 		> .user-info {
-			padding: 10px;
+			padding: 15px 10px;
 
 			> .name {
 				font-weight: bold;
-				font-size: 20px;
+				font-size: 16px;
 				display: flex;
-				margin: -3px 0;
+				margin: -2px 0;
 			}
 
 			> .acct {
-				font-size: 13px;
+				font-size: 12px;
 				display: flex;
 			}
 		}

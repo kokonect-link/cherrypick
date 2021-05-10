@@ -1,8 +1,24 @@
 <template>
-<div class="cmuxhskf _root" v-hotkey.global="keymap">
+<div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div class="tabs _block">
+	<div v-if="isFriendlyUI" class="tabs-friendly _block">
+		<div class="left">
+			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
+			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
+			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
+			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
+			<span class="divider"></span>
+			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
+		</div>
+		<div class="right">
+			<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><i class="fas fa-satellite-dish"></i><i v-if="$i.hasUnreadChannel" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="chooseAntenna" :class="{ active: src === 'antenna' }" v-tooltip="$ts.antennas"><i class="fas fa-satellite"></i><i v-if="$i.hasUnreadAntenna" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
+		</div>
+	</div>
+	<div v-else class="tabs _block">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -43,6 +59,9 @@ import { scroll } from '@client/scripts/scroll';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
+
 export default defineComponent({
 	name: 'timeline',
 
@@ -69,7 +88,17 @@ export default defineComponent({
 					handler: this.timetravel
 				}]
 			})),
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
+	},
+
+	mounted() {
+		window.addEventListener('resize', () => {
+			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
+			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
+		}, { passive: true });
 	},
 
 	computed: {
@@ -225,7 +254,18 @@ export default defineComponent({
 		}
 	}
 
-	> .tabs {
+	&.isMobile {
+		> .tabs-friendly {
+			> .left, > .right {
+				> .tab {
+					padding: 0 10px;
+				}
+			}
+		}
+	}
+
+	> .tabs,
+		.tabs-friendly {
 		display: flex;
 		box-sizing: border-box;
 		padding: 0 8px;
@@ -286,6 +326,19 @@ export default defineComponent({
 				background: var(--divider);
 			}
 		}
+	}
+
+	> .tabs-friendly {
+		position: sticky;
+		z-index: 1000;
+		background: var(--header);
+		-webkit-backdrop-filter: blur(32px);
+		backdrop-filter: blur(32px);
+		top: calc(-50px + var(--stickyTop, 0px));
+		// Rounded Design
+		border-radius: var(--radius);
+		margin: 8px;
+		border: solid 0.5px var(--divider);
 	}
 }
 </style>

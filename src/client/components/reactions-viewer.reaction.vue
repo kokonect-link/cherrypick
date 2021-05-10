@@ -171,6 +171,7 @@ export default defineComponent({
 
 		> span {
 			color: #fff;
+			margin-left: 3px;
 		}
 	}
 

@@ -206,7 +206,7 @@ export default defineComponent({
 .npcljfve {
 	$ui-font-size: 1em; // TODO: どこかに集約したい
 	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
-	$avatar-size: 32px;
+	$avatar-size: 50px;
 	$avatar-margin: 8px;
 
 	padding: 0 16px;
@@ -313,7 +313,7 @@ export default defineComponent({
 		font-size: $ui-font-size;
 		line-height: 2.6rem;
 		text-overflow: ellipsis;
-		overflow: hidden;
+		//overflow: hidden;
 		white-space: nowrap;
 		width: 100%;
 		text-align: left;
