@@ -1,6 +1,7 @@
-[![Misskey](/assets/about/banner.svg)](https://join.misskey.page/)
+[![Misskey](/assets/about/banner-kokonect.svg)](https://join.misskey.page/)
 
 <h1 align="center">Misskey</h1>
+<p style="margin-top: -10px" align="center">with <span style="font-weight: bold; color: #ffa9c3">KOKO</span><span style="font-weight: bold; color: #a3faff">NECT.</span></p>
 
 <div align="center">
 
@@ -95,9 +96,23 @@ Please see the [Contribution Guide](./CONTRIBUTING.md).
 	</tr>
 </table>
 
+To receive updates of this repo, follow [@repo@misskey.io](https://misskey.io/@repo) on fediverse.
+
 ---
 
-To receive updates of this repo, follow [@repo@misskey.io](https://misskey.io/@repo) on fediverse.
+### Customizer
+<table>
+	<tr>
+		<td><img src="https://avatars.githubusercontent.com/u/11006910?v=4" alt="noridev" width="100"></td>
+	</tr>
+	<tr>
+		<td align="center"><a href="https://github.com/noridev">@noridev</a></td>
+	</tr>
+</table>
+
+These people are helping to use <span style="color: #9ec23f">Misskey</span> in <span style="font-weight: bold; color: #ffa9c3">KOKO</span><span style="font-weight: bold; color: #a3faff">NECT.</span>
+
+---
 
 :heart: Backers
 ----------------------------------------------------------------
@@ -202,7 +217,7 @@ To receive updates of this repo, follow [@repo@misskey.io](https://misskey.io/@r
 <td><a href="https://www.patreon.com/user?u=12531784">Takashi Shibuya</a></td>
 </tr></table>
 
-**Last updated:** Sun, 26 Jul 2020 07:00:10 UTC
+**Last updated:** Mon, 10 May 2021 05:12:36 UTC
 <!-- PATREON_END -->
 
 [backer-url]: #backers
@@ -215,3 +230,6 @@ To receive updates of this repo, follow [@repo@misskey.io](https://misskey.io/@r
 
 [syuilo-link]:      https://syuilo.com
 [syuilo-icon]:      https://avatars2.githubusercontent.com/u/4439005?v=3&s=70
+
+[noridev-link]:			https://kokonect.link
+[noridev-icon]:			https://avatars.githubusercontent.com/u/11006910?v=4
