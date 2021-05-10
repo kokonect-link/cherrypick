@@ -173,6 +173,10 @@ export default defineComponent({
 			this.reloadAsk();
 		},
 
+		showAds() {
+			this.reloadAsk();
+		},
+
 		enableInfiniteScroll() {
 			this.reloadAsk();
 		},
