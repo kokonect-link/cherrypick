@@ -178,6 +178,7 @@ export default defineComponent({
 	> span {
 		font-size: 0.9em;
 		line-height: 32px;
+		margin-left: 3px;
 	}
 }
 </style>
