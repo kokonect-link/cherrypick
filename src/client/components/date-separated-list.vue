@@ -105,6 +105,8 @@ export default defineComponent({
 
 <style lang="scss">
 .sqadhkmv {
+	--stickyTop: 110px;
+
 	> *:empty {
 		display: none;
 	}

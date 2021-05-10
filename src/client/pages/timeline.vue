@@ -34,7 +34,8 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div class="new" v-if="queue > 0"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
+	<div class="new-friendly" v-if="queue > 0 && isFriendlyUI"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
+	<div class="new" v-else-if="queue > 0 && !isFriendlyUI"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
@@ -240,7 +241,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .cmuxhskf {
-	> .new {
+	> .new,
+		.new-friendly {
 		position: sticky;
 		top: calc(var(--stickyTop, 0px) + 16px);
 		z-index: 1000;
@@ -251,6 +253,10 @@ export default defineComponent({
 			margin: var(--margin) auto 0 auto;
 			padding: 8px 16px;
 			border-radius: 32px;
+		}
+
+		> .new-friendly {
+			--stickyTop: 110px;
 		}
 	}
 
@@ -330,6 +336,7 @@ export default defineComponent({
 
 	> .tabs-friendly {
 		position: sticky;
+		--stickyTop: 110px;
 		z-index: 1000;
 		background: var(--header);
 		-webkit-backdrop-filter: blur(32px);
