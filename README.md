@@ -1,7 +1,9 @@
 [![Misskey](/assets/about/banner-kokonect.svg)](https://join.misskey.page/)
 
-<h1 align="center">Misskey</h1>
-<p style="margin-top: -10px" align="center">with <span style="font-weight: bold; color: #ffa9c3">KOKO</span><span style="font-weight: bold; color: #a3faff">NECT.</span></p>
+<div align="center">
+<h1>Misskey</h1>
+<p style="margin-top: -10px">with <span style="font-weight: bold; color: #ffa9c3">KOKO</span><span style="font-weight: bold; color: #a3faff">NECT.</span></p>
+</div>
 
 <div align="center">
 
