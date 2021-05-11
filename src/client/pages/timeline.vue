@@ -34,7 +34,7 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div class="new-friendly" v-if="queue > 0 && isFriendlyUI && isDesktop"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+	<div class="new-friendly" v-if="queue > 0 && isFriendlyUI"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<div class="new" v-else-if="queue > 0 && !isFriendlyUI"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
