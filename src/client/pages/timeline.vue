@@ -34,8 +34,8 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div class="new-friendly" v-if="queue > 0 && isFriendlyUI"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
-	<div class="new" v-else-if="queue > 0 && !isFriendlyUI"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
+	<div class="new-friendly" v-if="queue > 0 && isFriendlyUI && isDesktop"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+	<div class="new" v-else-if="queue > 0 && !isFriendlyUI"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
@@ -253,11 +253,15 @@ export default defineComponent({
 			margin: var(--margin) auto 0 auto;
 			padding: 8px 16px;
 			border-radius: 32px;
-		}
 
-		> .new-friendly {
-			--stickyTop: 110px;
+			> i {
+				margin-right: 5px;
+			}
 		}
+	}
+
+	> .new-friendly {
+		--stickyTop: 100px;
 	}
 
 	&.isMobile {
