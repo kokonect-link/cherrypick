@@ -46,18 +46,20 @@
 					<XCwButton v-model:value="showContent" :note="appearNote"/>
 				</p>
 				<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
-					<div class="text">
-						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
-						<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
-						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-						<a class="rp" v-if="appearNote.renote != null">RN:</a>
-					</div>
-					<div class="files" v-if="appearNote.files.length > 0">
-						<XMediaList :media-list="appearNote.files"/>
-					</div>
-					<XPoll v-if="appearNote.poll" :note="appearNote" ref="pollViewer" class="poll"/>
-					<MkUrlPreview v-for="url in urls" :url="url" :key="url" :compact="true" :detail="false" class="url-preview"/>
-					<div class="renote" v-if="appearNote.renote"><XNotePreview :note="appearNote.renote"/></div>
+					<MkA class="content-in" :to="notePage(note)">
+						<div class="text">
+							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
+							<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
+							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+							<a class="rp" v-if="appearNote.renote != null">RN:</a>
+						</div>
+						<div class="files" v-if="appearNote.files.length > 0">
+							<XMediaList :media-list="appearNote.files"/>
+						</div>
+						<XPoll v-if="appearNote.poll" :note="appearNote" ref="pollViewer" class="poll"/>
+						<MkUrlPreview v-for="url in urls" :url="url" :key="url" :compact="true" :detail="false" class="url-preview"/>
+						<div class="renote" v-if="appearNote.renote"><XNotePreview :note="appearNote.renote"/></div>
+					</MkA>
 					<button v-if="collapsed" class="fade _button" @click="collapsed = false">
 						<span>{{ $ts.showMore }}</span>
 					</button>
@@ -118,6 +120,7 @@ import { url } from '@client/config';
 import copyToClipboard from '@client/scripts/copy-to-clipboard';
 import { checkWordMute } from '@client/scripts/check-word-mute';
 import { userPage } from '@client/filters/user';
+import notePage from '../filters/note';
 import * as os from '@client/os';
 import { noteActions, noteViewInterruptors } from '@client/store';
 import { reactionPicker } from '@client/scripts/reaction-picker';
@@ -843,7 +846,8 @@ export default defineComponent({
 			focusNext(this.$el);
 		},
 
-		userPage
+		userPage,
+		notePage
 	}
 });
 </script>
@@ -1040,36 +1044,38 @@ export default defineComponent({
 						}
 					}
 
-					> .text {
-						overflow-wrap: break-word;
+					> .content-in {
+						> .text {
+							overflow-wrap: break-word;
 
-						> .reply {
-							color: var(--accent);
-							margin-right: 0.5em;
+							> .reply {
+								color: var(--accent);
+								margin-right: 0.5em;
+							}
+
+							> .rp {
+								margin-left: 4px;
+								font-style: oblique;
+								color: var(--renote);
+							}
 						}
 
-						> .rp {
-							margin-left: 4px;
-							font-style: oblique;
-							color: var(--renote);
+						> .url-preview {
+							margin-top: 8px;
 						}
-					}
 
-					> .url-preview {
-						margin-top: 8px;
-					}
+						> .poll {
+							font-size: 80%;
+						}
 
-					> .poll {
-						font-size: 80%;
-					}
+						> .renote {
+							padding: 8px 0;
 
-					> .renote {
-						padding: 8px 0;
-
-						> * {
-							padding: 16px;
-							border: dashed 1px var(--renote);
-							border-radius: 8px;
+							> * {
+								padding: 16px;
+								border: dashed 1px var(--renote);
+								border-radius: 8px;
+							}
 						}
 					}
 				}

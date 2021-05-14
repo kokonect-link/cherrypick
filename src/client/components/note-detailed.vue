@@ -1003,6 +1003,7 @@ export default defineComponent({
 				> .top {
 					> .name {
 						font-weight: bold;
+						margin-right: 0.5em;
 					}
 
 					> .is-bot {
@@ -1093,6 +1094,10 @@ export default defineComponent({
 					margin: 16px 0;
 					opacity: 0.7;
 					font-size: 0.9em;
+
+					> .mobile {
+						margin-right: 0.5em;
+					}
 				}
 
 				> .button {
