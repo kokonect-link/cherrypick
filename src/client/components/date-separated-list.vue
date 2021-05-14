@@ -30,6 +30,12 @@ export default defineComponent({
 		},
 	},
 
+	data() {
+		return {
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+		};
+	},
+
 	methods: {
 		focus() {
 			this.$slots.default[0].elm.focus();
@@ -48,65 +54,118 @@ export default defineComponent({
 	render() {
 		if (this.items.length === 0) return;
 
-		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-			class: 'sqadhkmv' + (this.noGap ? ' noGap _block' : ''),
-			name: 'list',
-			tag: 'div',
-			'data-direction': this.direction,
-			'data-reversed': this.reversed ? 'true' : 'false',
-		} : {
-			class: 'sqadhkmv' + (this.noGap ? ' noGap _block' : ''),
-		}, this.items.map((item, i) => {
-			const el = this.$slots.default({
-				item: item
-			})[0];
-			if (el.key == null && item.id) el.key = item.id;
+		if (this.isFriendlyUI && this.$route.name === 'index') {
+			return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
+				class: 'sqadhkmv-friendly' + (this.noGap ? ' noGap _block' : ''),
+				name: 'list',
+				tag: 'div',
+				'data-direction': this.direction,
+				'data-reversed': this.reversed ? 'true' : 'false',
+			} : {
+				class: 'sqadhkmv-friendly' + (this.noGap ? ' noGap _block' : ''),
+			}, this.items.map((item, i) => {
+				const el = this.$slots.default({
+					item: item
+				})[0];
+				if (el.key == null && item.id) el.key = item.id;
 
-			if (
-				i != this.items.length - 1 &&
-				new Date(item.createdAt).getDate() != new Date(this.items[i + 1].createdAt).getDate()
-			) {
-				const separator = h('div', {
-					class: 'separator',
-					key: item.id + ':separator',
-				}, h('p', {
-					class: 'date'
-				}, [
-					h('span', [
-						h('i', {
-							class: 'fas fa-angle-up icon',
-						}),
-						this.getDateText(item.createdAt)
-					]),
-					h('span', [
-						this.getDateText(this.items[i + 1].createdAt),
-						h('i', {
-							class: 'fas fa-angle-down icon',
-						})
-					])
-				]));
+				if (
+					i != this.items.length - 1 &&
+					new Date(item.createdAt).getDate() != new Date(this.items[i + 1].createdAt).getDate()
+				) {
+					const separator = h('div', {
+						class: 'separator',
+						key: item.id + ':separator',
+					}, h('p', {
+						class: 'date'
+					}, [
+						h('span', [
+							h('i', {
+								class: 'fas fa-angle-up icon',
+							}),
+							this.getDateText(item.createdAt)
+						]),
+						h('span', [
+							this.getDateText(this.items[i + 1].createdAt),
+							h('i', {
+								class: 'fas fa-angle-down icon',
+							})
+						])
+					]));
 
-				return [el, separator];
-			} else {
-				if (this.ad && item._shouldInsertAd_) {
-					return [h(MkAd, {
-						class: 'a', // advertiseの意(ブロッカー対策)
-						key: item.id + ':ad',
-						prefer: ['horizontal', 'horizontal-big'],
-					}), el];
+					return [el, separator];
 				} else {
-					return el;
+					if (this.ad && item._shouldInsertAd_) {
+						return [h(MkAd, {
+							class: 'a', // advertiseの意(ブロッカー対策)
+							key: item.id + ':ad',
+							prefer: ['horizontal', 'horizontal-big'],
+						}), el];
+					} else {
+						return el;
+					}
 				}
-			}
-		}));
+			}));
+		} else {
+			return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
+				class: 'sqadhkmv' + (this.noGap ? ' noGap _block' : ''),
+				name: 'list',
+				tag: 'div',
+				'data-direction': this.direction,
+				'data-reversed': this.reversed ? 'true' : 'false',
+			} : {
+				class: 'sqadhkmv' + (this.noGap ? ' noGap _block' : ''),
+			}, this.items.map((item, i) => {
+				const el = this.$slots.default({
+					item: item
+				})[0];
+				if (el.key == null && item.id) el.key = item.id;
+
+				if (
+					i != this.items.length - 1 &&
+					new Date(item.createdAt).getDate() != new Date(this.items[i + 1].createdAt).getDate()
+				) {
+					const separator = h('div', {
+						class: 'separator',
+						key: item.id + ':separator',
+					}, h('p', {
+						class: 'date'
+					}, [
+						h('span', [
+							h('i', {
+								class: 'fas fa-angle-up icon',
+							}),
+							this.getDateText(item.createdAt)
+						]),
+						h('span', [
+							this.getDateText(this.items[i + 1].createdAt),
+							h('i', {
+								class: 'fas fa-angle-down icon',
+							})
+						])
+					]));
+
+					return [el, separator];
+				} else {
+					if (this.ad && item._shouldInsertAd_) {
+						return [h(MkAd, {
+							class: 'a', // advertiseの意(ブロッカー対策)
+							key: item.id + ':ad',
+							prefer: ['horizontal', 'horizontal-big'],
+						}), el];
+					} else {
+						return el;
+					}
+				}
+			}));
+		}
 	},
 });
 </script>
 
 <style lang="scss">
-.sqadhkmv {
-	--stickyTop: 110px;
-
+.sqadhkmv,
+.sqadhkmv-friendly {
 	> *:empty {
 		display: none;
 	}
@@ -182,5 +241,9 @@ export default defineComponent({
 			}
 		}
 	}
+}
+
+.sqadhkmv-friendly {
+	--stickyTop: 110px;
 }
 </style>
