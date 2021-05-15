@@ -73,8 +73,8 @@
                     <use xlink:href="#_Image2" x="618.087" y="355.389" width="303.176px" height="221.833px" transform="matrix(0.997291,0,0,0.999247,0,0)"/>
                 </g>
             </g>
-						<text style="fill:rgb(163,250,255);" font-family="roboto" font-size="30" x="920" y="450">with</text>
-						<text style="fill:rgb(255,169,195);" font-family="roboto" font-size="30" font-weight="bold" x="990" y="450">KOKONECT</text>
+						<text style="fill:rgb(163,250,255);" font-size="30" x="920" y="450">with</text>
+						<text style="fill:rgb(255,169,195);" font-size="30" font-weight="bold" x="990" y="450">KOKONECT</text>
         </g>
     </g>
     <defs>
