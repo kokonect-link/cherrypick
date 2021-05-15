@@ -273,6 +273,14 @@ export default defineComponent({
 				}
 			}
 		}
+
+		> .buttons {
+			> .button {
+				&:hover {
+					background: var(--panel);
+				}
+			}
+		}
 	}
 
 	> .columns {
