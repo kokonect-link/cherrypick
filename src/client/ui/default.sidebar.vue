@@ -31,12 +31,12 @@
 		<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 	</MkA>
 	<div class="divider"></div>
-	<MkA v-if="$i.isPatron" class="item" v-click-anime>
+	<button v-if="$i.isPatron" class="patron-button" @click="patron" v-click-anime>
 		<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-	</MkA>
-	<MkA v-else class="item" v-click-anime>
+	</button>
+	<button v-else class="patron-button" @click="patron" v-click-anime>
 		<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
-	</MkA>
+	</button>
 	<div class="divider"></div>
 	<div class="about">
 		<MkA class="link" to="/about" v-click-anime>
@@ -198,6 +198,10 @@ export default defineComponent({
 		switchAccountWithToken(token: string) {
 			login(token);
 		},
+
+		patron() {
+			window.open("https://www.patreon.com/noridev", "_blank");
+		},
 	}
 });
 </script>
@@ -297,7 +301,8 @@ export default defineComponent({
 		}
 	}
 
-	> .item {
+	> .item,
+		.patron-button {
 		position: relative;
 		display: block;
 		font-size: $ui-font-size;
@@ -355,6 +360,11 @@ export default defineComponent({
 		&.active {
 			color: var(--navActive);
 		}
+	}
+
+	> .patron-button {
+		background: unset;
+		border: unset;
 	}
 }
 </style>
