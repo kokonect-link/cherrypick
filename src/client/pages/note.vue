@@ -8,15 +8,15 @@
 			</div>
 			-->
 
-			<div class="main _gap">
+			<div class="main">
 				<!-- <MkButton v-if="!showNext && hasNext" class="load next" @click="showNext = true"><i class="fas fa-chevron-up"></i></MkButton> -->
-				<div class="_content _gap">
-					<MkRemoteCaution v-if="note.user.host != null" :href="note.url || note.uri" class="_gap"/>
-					<XNoteDetailed v-model:note="note" :key="note.id" class="_gap"/>
+				<div class="_content">
+					<MkRemoteCaution v-if="note.user.host != null" :href="note.url || note.uri"/>
+					<XNoteDetailed v-model:note="note" :key="note.id"/>
 				</div>
-				<div class="_content clips _gap" v-if="clips && clips.length > 0">
+				<div class="_content clips" v-if="clips && clips.length > 0">
 					<div class="title">{{ $ts.clip }}</div>
-					<MkA v-for="item in clips" :key="item.id" :to="`/clips/${item.id}`" class="item _panel _gap">
+					<MkA v-for="item in clips" :key="item.id" :to="`/clips/${item.id}`" class="item _panel">
 						<b>{{ item.name }}</b>
 						<div v-if="item.description" class="description">{{ item.description }}</div>
 						<div class="user">
