@@ -45,7 +45,7 @@
 				<div><i class="far fa-clock"></i> {{ $ts.createdAt }}: <MkTime :time="page.createdAt" mode="detail"/></div>
 				<div v-if="page.createdAt != page.updatedAt"><i class="far fa-clock"></i> {{ $ts.updatedAt }}: <MkTime :time="page.updatedAt" mode="detail"/></div>
 			</div>
-			<MkAd v-if="$i.isPatron && $store.state.showAds" :prefer="['horizontal', 'horizontal-big']"/>
+			<MkAd v-if="$i.isPatron && $store.state.showAds.value" :prefer="['horizontal', 'horizontal-big']"/>
 			<MkAd v-else-if="!$i.isPatron" :prefer="['horizontal', 'horizontal-big']"/>
 			<MkContainer :max-height="300" :foldable="true" class="other">
 				<template #header><i class="fas fa-clock"></i> {{ $ts.recentPosts }}</template>
