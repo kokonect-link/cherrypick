@@ -10,7 +10,9 @@
 					<XCwButton v-model:value="showContent" :note="note"/>
 				</p>
 				<div class="content" v-show="note.cw == null || showContent">
-					<XSubNote-content class="text" :note="note"/>
+					<MkA class="text-group" :to="notePage(note)">
+						<XSubNote-content class="text" :note="note"/>
+					</MkA>
 				</div>
 			</div>
 		</div>
@@ -25,6 +27,7 @@ import XNoteHeader from './note-header.vue';
 import XSubNoteContent from './sub-note-content.vue';
 import XCwButton from './cw-button.vue';
 import * as os from '@client/os';
+import notePage from "@client/filters/note";
 
 export default defineComponent({
 	name: 'XSub',
@@ -73,6 +76,10 @@ export default defineComponent({
 				this.replies = replies;
 			});
 		}
+	},
+
+	methods: {
+		notePage
 	},
 });
 </script>
@@ -129,9 +136,13 @@ export default defineComponent({
 				}
 
 				> .content {
-					> .text {
-						margin: 0;
-						padding: 0;
+					> .text-group {
+						text-decoration: none;
+
+						> .text {
+							margin: 0;
+							padding: 0;
+						}
 					}
 				}
 			}

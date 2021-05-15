@@ -1,106 +1,106 @@
 <template>
-<div
-	class="tkcbzcuz"
-	v-if="!muted"
-	v-show="!isDeleted"
-	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote }"
-	v-hotkey="keymap"
-	v-size="{ max: [500, 450, 350, 300] }"
->
-	<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
-	<div class="info" v-if="pinned"><i class="fas fa-thumbtack"></i> {{ $ts.pinnedNote }}</div>
-	<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
-	<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
-	<div class="renote" v-if="isRenote">
-		<MkAvatar class="avatar" :user="note.user"/>
-		<i class="fas fa-retweet"></i>
-		<I18n :src="$ts.renotedBy" tag="span">
-			<template #user>
-				<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
-					<MkUserName :user="note.user"/>
-				</MkA>
-			</template>
-		</I18n>
-		<div class="info">
-			<button class="_button time" @click="showRenoteMenu()" ref="renoteTime">
-				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
-				<MkTime :time="note.createdAt"/>
-			</button>
-			<span class="visibility" v-if="note.visibility !== 'public'">
+	<div
+		class="tkcbzcuz"
+		v-if="!muted"
+		v-show="!isDeleted"
+		:tabindex="!isDeleted ? '-1' : null"
+		:class="{ renote: isRenote }"
+		v-hotkey="keymap"
+		v-size="{ max: [500, 450, 350, 300] }"
+	>
+		<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
+		<div class="info" v-if="pinned"><i class="fas fa-thumbtack"></i> {{ $ts.pinnedNote }}</div>
+		<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
+		<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
+		<div class="renote" v-if="isRenote">
+			<MkAvatar class="avatar" :user="note.user"/>
+			<i class="fas fa-retweet"></i>
+			<I18n :src="$ts.renotedBy" tag="span">
+				<template #user>
+					<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
+						<MkUserName :user="note.user"/>
+					</MkA>
+				</template>
+			</I18n>
+			<div class="info">
+				<button class="_button time" @click="showRenoteMenu()" ref="renoteTime">
+					<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
+					<MkTime :time="note.createdAt"/>
+				</button>
+				<span class="visibility" v-if="note.visibility !== 'public'">
 				<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
 				<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
 				<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
 			</span>
-			<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
+				<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
+			</div>
 		</div>
-	</div>
-	<article class="article" @contextmenu.stop="onContextmenu">
-		<MkAvatar class="avatar" :user="appearNote.user"/>
-		<div class="main">
-			<XNoteHeader class="header" :note="appearNote" :mini="true"/>
-			<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
-			<div class="body">
-				<p v-if="appearNote.cw != null" class="cw">
-					<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-					<XCwButton v-model:value="showContent" :note="appearNote"/>
-				</p>
-				<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
-					<MkA class="content-in" :to="notePage(note)">
-						<div class="text">
-							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
-							<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
-							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-							<a class="rp" v-if="appearNote.renote != null">RN:</a>
-						</div>
+		<article class="article" @contextmenu.stop="onContextmenu">
+			<MkAvatar class="avatar" :user="appearNote.user"/>
+			<div class="main">
+				<XNoteHeader class="header" :note="appearNote" :mini="true"/>
+				<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
+				<div class="body">
+					<p v-if="appearNote.cw != null" class="cw">
+						<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+						<XCwButton v-model:value="showContent" :note="appearNote"/>
+					</p>
+					<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
+						<MkA class="text-group" :to="notePage(note)">
+							<div class="text">
+								<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
+								<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
+								<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+								<a class="rp" v-if="appearNote.renote != null">RN:</a>
+							</div>
+						</MkA>
 						<div class="files" v-if="appearNote.files.length > 0">
 							<XMediaList :media-list="appearNote.files"/>
 						</div>
 						<XPoll v-if="appearNote.poll" :note="appearNote" ref="pollViewer" class="poll"/>
 						<MkUrlPreview v-for="url in urls" :url="url" :key="url" :compact="true" :detail="false" class="url-preview"/>
 						<div class="renote" v-if="appearNote.renote"><XNotePreview :note="appearNote.renote"/></div>
-					</MkA>
-					<button v-if="collapsed" class="fade _button" @click="collapsed = false">
-						<span>{{ $ts.showMore }}</span>
-					</button>
+						<button v-if="collapsed" class="fade _button" @click="collapsed = false">
+							<span>{{ $ts.showMore }}</span>
+						</button>
+					</div>
+					<MkA v-if="appearNote.channel && !inChannel" class="channel" :to="`/channels/${appearNote.channel.id}`"><i class="fas fa-satellite-dish"></i> {{ appearNote.channel.name }}</MkA>
 				</div>
-				<MkA v-if="appearNote.channel && !inChannel" class="channel" :to="`/channels/${appearNote.channel.id}`"><i class="fas fa-satellite-dish"></i> {{ appearNote.channel.name }}</MkA>
+				<footer class="footer">
+					<XReactionsViewer :note="appearNote" ref="reactionsViewer"/>
+					<button @click="reply()" class="button _button">
+						<template v-if="appearNote.reply"><i class="fas fa-reply-all"></i></template>
+						<template v-else><i class="fas fa-reply"></i></template>
+						<p class="count" v-if="appearNote.repliesCount > 0">{{ appearNote.repliesCount }}</p>
+					</button>
+					<button v-if="canRenote" @click="renote()" class="button _button" ref="renoteButton">
+						<i class="fas fa-retweet"></i><p class="count" v-if="appearNote.renoteCount > 0">{{ appearNote.renoteCount }}</p>
+					</button>
+					<button v-else class="button _button">
+						<i class="fas fa-ban"></i>
+					</button>
+					<button v-if="appearNote.myReaction == null" class="button _button" @click="react()" ref="reactButton">
+						<i class="fas fa-plus"></i>
+					</button>
+					<button v-if="appearNote.myReaction != null" class="button _button reacted" @click="undoReact(appearNote)" ref="reactButton">
+						<i class="fas fa-minus"></i>
+					</button>
+					<button class="button _button" @click="menu()" ref="menuButton">
+						<i class="fas fa-ellipsis-h"></i>
+					</button>
+				</footer>
 			</div>
-			<footer class="footer">
-				<XReactionsViewer :note="appearNote" ref="reactionsViewer"/>
-				<button @click="reply()" class="button _button">
-					<template v-if="appearNote.reply"><i class="fas fa-reply-all"></i></template>
-					<template v-else><i class="fas fa-reply"></i></template>
-					<p class="count" v-if="appearNote.repliesCount > 0">{{ appearNote.repliesCount }}</p>
-				</button>
-				<button v-if="canRenote" @click="renote()" class="button _button" ref="renoteButton">
-					<i class="fas fa-retweet"></i><p class="count" v-if="appearNote.renoteCount > 0">{{ appearNote.renoteCount }}</p>
-				</button>
-				<button v-else class="button _button">
-					<i class="fas fa-ban"></i>
-				</button>
-				<button v-if="appearNote.myReaction == null" class="button _button" @click="react()" ref="reactButton">
-					<i class="fas fa-plus"></i>
-				</button>
-				<button v-if="appearNote.myReaction != null" class="button _button reacted" @click="undoReact(appearNote)" ref="reactButton">
-					<i class="fas fa-minus"></i>
-				</button>
-				<button class="button _button" @click="menu()" ref="menuButton">
-					<i class="fas fa-ellipsis-h"></i>
-				</button>
-			</footer>
-		</div>
-	</article>
-</div>
-<div v-else class="muted" @click="muted = false">
-	<I18n :src="$ts.userSaysSomething" tag="small">
-		<template #name>
-			<MkA class="name" :to="userPage(appearNote.user)" v-user-preview="appearNote.userId">
-				<MkUserName :user="appearNote.user"/>
-			</MkA>
-		</template>
-	</I18n>
-</div>
+		</article>
+	</div>
+	<div v-else class="muted" @click="muted = false">
+		<I18n :src="$ts.userSaysSomething" tag="small">
+			<template #name>
+				<MkA class="name" :to="userPage(appearNote.user)" v-user-preview="appearNote.userId">
+					<MkUserName :user="appearNote.user"/>
+				</MkA>
+			</template>
+		</I18n>
+	</div>
 </template>
 
 <script lang="ts">
@@ -120,11 +120,11 @@ import { url } from '@client/config';
 import copyToClipboard from '@client/scripts/copy-to-clipboard';
 import { checkWordMute } from '@client/scripts/check-word-mute';
 import { userPage } from '@client/filters/user';
-import notePage from '../filters/note';
 import * as os from '@client/os';
 import { noteActions, noteViewInterruptors } from '@client/store';
 import { reactionPicker } from '@client/scripts/reaction-picker';
 import { extractUrlFromMfm } from '@/misc/extract-url-from-mfm';
+import notePage from "@client/filters/note";
 
 export default defineComponent({
 	components: {
@@ -592,84 +592,84 @@ export default defineComponent({
 						window.open(this.appearNote.url || this.appearNote.uri, '_blank');
 					}
 				} : undefined,
-				{
-					icon: 'fas fa-share-alt',
-					text: this.$ts.share,
-					action: this.share
-				},
-				null,
-				statePromise.then(state => state.isFavorited ? {
-					icon: 'fas fa-star',
-					text: this.$ts.unfavorite,
-					action: () => this.toggleFavorite(false)
-				} : {
-					icon: 'fas fa-star',
-					text: this.$ts.favorite,
-					action: () => this.toggleFavorite(true)
-				}),
-				{
-					icon: 'fas fa-paperclip',
-					text: this.$ts.clip,
-					action: () => this.clip()
-				},
-				(this.appearNote.userId != this.$i.id) ? statePromise.then(state => state.isWatching ? {
-					icon: 'fas fa-eye-slash',
-					text: this.$ts.unwatch,
-					action: () => this.toggleWatch(false)
-				} : {
-					icon: 'fas fa-eye',
-					text: this.$ts.watch,
-					action: () => this.toggleWatch(true)
-				}) : undefined,
-				this.appearNote.userId == this.$i.id ? (this.$i.pinnedNoteIds || []).includes(this.appearNote.id) ? {
-					icon: 'fas fa-thumbtack',
-					text: this.$ts.unpin,
-					action: () => this.togglePin(false)
-				} : {
-					icon: 'fas fa-thumbtack',
-					text: this.$ts.pin,
-					action: () => this.togglePin(true)
-				} : undefined,
-				...(this.$i.isModerator || this.$i.isAdmin ? [
-					null,
 					{
-						icon: 'fas fa-bullhorn',
-						text: this.$ts.promote,
-						action: this.promote
-					}]
-					: []
-				),
-				...(this.appearNote.userId != this.$i.id ? [
+						icon: 'fas fa-share-alt',
+						text: this.$ts.share,
+						action: this.share
+					},
 					null,
+					statePromise.then(state => state.isFavorited ? {
+						icon: 'fas fa-star',
+						text: this.$ts.unfavorite,
+						action: () => this.toggleFavorite(false)
+					} : {
+						icon: 'fas fa-star',
+						text: this.$ts.favorite,
+						action: () => this.toggleFavorite(true)
+					}),
 					{
-						icon: 'fas fa-exclamation-circle',
-						text: this.$ts.reportAbuse,
-						action: () => {
-							const u = `${url}/notes/${this.appearNote.id}`;
-							os.popup(import('@client/components/abuse-report-window.vue'), {
-								user: this.appearNote.user,
-								initialComment: `Note: ${u}\n-----\n`
-							}, {}, 'closed');
-						}
-					}]
-					: []
-				),
-				...(this.appearNote.userId == this.$i.id || this.$i.isModerator || this.$i.isAdmin ? [
-					null,
-					this.appearNote.userId == this.$i.id ? {
-						icon: 'fas fa-edit',
-						text: this.$ts.deleteAndEdit,
-						action: this.delEdit
+						icon: 'fas fa-paperclip',
+						text: this.$ts.clip,
+						action: () => this.clip()
+					},
+					(this.appearNote.userId != this.$i.id) ? statePromise.then(state => state.isWatching ? {
+						icon: 'fas fa-eye-slash',
+						text: this.$ts.unwatch,
+						action: () => this.toggleWatch(false)
+					} : {
+						icon: 'fas fa-eye',
+						text: this.$ts.watch,
+						action: () => this.toggleWatch(true)
+					}) : undefined,
+					this.appearNote.userId == this.$i.id ? (this.$i.pinnedNoteIds || []).includes(this.appearNote.id) ? {
+						icon: 'fas fa-thumbtack',
+						text: this.$ts.unpin,
+						action: () => this.togglePin(false)
+					} : {
+						icon: 'fas fa-thumbtack',
+						text: this.$ts.pin,
+						action: () => this.togglePin(true)
 					} : undefined,
-					{
-						icon: 'fas fa-trash-alt',
-						text: this.$ts.delete,
-						danger: true,
-						action: this.del
-					}]
-					: []
-				)]
-				.filter(x => x !== undefined);
+					...(this.$i.isModerator || this.$i.isAdmin ? [
+								null,
+								{
+									icon: 'fas fa-bullhorn',
+									text: this.$ts.promote,
+									action: this.promote
+								}]
+							: []
+					),
+					...(this.appearNote.userId != this.$i.id ? [
+								null,
+								{
+									icon: 'fas fa-exclamation-circle',
+									text: this.$ts.reportAbuse,
+									action: () => {
+										const u = `${url}/notes/${this.appearNote.id}`;
+										os.popup(import('@client/components/abuse-report-window.vue'), {
+											user: this.appearNote.user,
+											initialComment: `Note: ${u}\n-----\n`
+										}, {}, 'closed');
+									}
+								}]
+							: []
+					),
+					...(this.appearNote.userId == this.$i.id || this.$i.isModerator || this.$i.isAdmin ? [
+								null,
+								this.appearNote.userId == this.$i.id ? {
+									icon: 'fas fa-edit',
+									text: this.$ts.deleteAndEdit,
+									action: this.delEdit
+								} : undefined,
+								{
+									icon: 'fas fa-trash-alt',
+									text: this.$ts.delete,
+									danger: true,
+									action: this.del
+								}]
+							: []
+					)]
+					.filter(x => x !== undefined);
 			} else {
 				menu = [{
 					icon: 'fas fa-copy',
@@ -686,7 +686,7 @@ export default defineComponent({
 						window.open(this.appearNote.url || this.appearNote.uri, '_blank');
 					}
 				} : undefined]
-				.filter(x => x !== undefined);
+					.filter(x => x !== undefined);
 			}
 
 			if (noteActions.length > 0) {
@@ -865,7 +865,7 @@ export default defineComponent({
 	// 今度はその処理自体がパフォーマンス低下の原因にならないか懸念される。また、被リアクションでも高さは変化するため、やはり多少のズレは生じる
 	// 一度レンダリングされた要素はブラウザがよしなにサイズを覚えておいてくれるような実装になるまで待った方が良さそう(なるのか？)
 	//content-visibility: auto;
-  //contain-intrinsic-size: 0 128px;
+	//contain-intrinsic-size: 0 128px;
 
 	&:focus {
 		outline: none;
@@ -1044,7 +1044,9 @@ export default defineComponent({
 						}
 					}
 
-					> .content-in {
+					> .text-group {
+						text-decoration: none;
+
 						> .text {
 							overflow-wrap: break-word;
 
@@ -1059,23 +1061,23 @@ export default defineComponent({
 								color: var(--renote);
 							}
 						}
+					}
 
-						> .url-preview {
-							margin-top: 8px;
-						}
+					> .url-preview {
+						margin-top: 8px;
+					}
 
-						> .poll {
-							font-size: 80%;
-						}
+					> .poll {
+						font-size: 80%;
+					}
 
-						> .renote {
-							padding: 8px 0;
+					> .renote {
+						padding: 8px 0;
 
-							> * {
-								padding: 16px;
-								border: dashed 1px var(--renote);
-								border-radius: 8px;
-							}
+						> * {
+							padding: 16px;
+							border: dashed 1px var(--renote);
+							border-radius: 8px;
 						}
 					}
 				}
