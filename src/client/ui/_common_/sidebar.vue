@@ -39,10 +39,10 @@
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button>
 				<div class="divider"></div>
-				<button v-if="$i.isPatron" class="patron-button" @click="patron" v-click-anime>
+				<button v-if="$i.isPatron" class="patron-button _button" @click="patron" v-click-anime>
 					<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
 				</button>
-				<button v-else class="patron-button" @click="patron" v-click-anime>
+				<button v-else class="patron-button _button" @click="patron" v-click-anime>
 					<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
 				</button>
 				<div class="divider"></div>
