@@ -9,7 +9,16 @@
 			<header class="header">
 				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo"/>
 			</header>
-			<div class="content" :class="{ _flat_: !fullView }">
+			<div class="content" v-if="isMobile" :class="{ _flat_: !fullView }">
+				<router-view v-slot="{ Component }">
+					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
+						<keep-alive :include="['timeline']">
+							<component :is="Component" :ref="changePage"/>
+						</keep-alive>
+					</transition>
+				</router-view>
+			</div>
+			<div class="content" v-else :class="{ _flat_friendly_: !fullView }">
 				<router-view v-slot="{ Component }">
 					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
 						<keep-alive :include="['timeline']">
@@ -244,8 +253,6 @@ export default defineComponent({
 	$ui-font-size: 1em;
 	$widgets-hide-threshold: 1200px;
 	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
-
-	--panelShadow: none;
 
 	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 	min-height: calc(var(--vh, 1vh) * 100);

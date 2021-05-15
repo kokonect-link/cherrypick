@@ -139,4 +139,9 @@ export default defineComponent({
 	text-align: center;
 	color: var(--fg);
 }
+
+.notifications {
+	--stickyTop: unset;
+	margin: 0;
+}
 </style>

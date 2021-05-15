@@ -349,7 +349,7 @@ export default defineComponent({
 		// Rounded Design
 		border-radius: var(--radius);
 		margin: 8px;
-		border: solid 0.5px var(--divider);
+		box-shadow: var(--panelShadow);
 	}
 }
 </style>

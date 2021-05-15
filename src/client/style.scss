@@ -353,10 +353,9 @@ hr {
 	}
 }
 
-._flat_ {
+._flat_ ,._flat_friendly_{
 	--root-margin: 0px;
 	--baseContentWidth: 100%;
-	--panelShadow: none;
 
 	._block {
 		//border-top: solid 0.5px var(--divider);
@@ -377,6 +376,17 @@ hr {
 		._root {
 			--root-margin: 0px;
 		}
+	}
+}
+
+._flat_ {
+	--panelShadow: none;
+}
+
+._flat_friendly_ {
+	._block {
+		border-radius: var(--radius);
+		box-shadow: var(--panelShadow);
 	}
 }
 

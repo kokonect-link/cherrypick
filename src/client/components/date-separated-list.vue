@@ -2,6 +2,9 @@
 import { defineComponent, h, TransitionGroup } from 'vue';
 import MkAd from '@client/components/global/ad.vue';
 
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
+
 export default defineComponent({
 	props: {
 		items: {
@@ -33,7 +36,16 @@ export default defineComponent({
 	data() {
 		return {
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
+	},
+
+	mounted() {
+		window.addEventListener('resize', () => {
+			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
+			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
+		}, { passive: true });
 	},
 
 	methods: {
@@ -54,118 +66,65 @@ export default defineComponent({
 	render() {
 		if (this.items.length === 0) return;
 
-		if (this.isFriendlyUI && this.$route.name === 'index') {
-			return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-				class: 'sqadhkmv-friendly' + (this.noGap ? ' noGap _block' : ''),
-				name: 'list',
-				tag: 'div',
-				'data-direction': this.direction,
-				'data-reversed': this.reversed ? 'true' : 'false',
-			} : {
-				class: 'sqadhkmv-friendly' + (this.noGap ? ' noGap _block' : ''),
-			}, this.items.map((item, i) => {
-				const el = this.$slots.default({
-					item: item
-				})[0];
-				if (el.key == null && item.id) el.key = item.id;
+		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
+			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			name: 'list',
+			tag: 'div',
+			'data-direction': this.direction,
+			'data-reversed': this.reversed ? 'true' : 'false',
+		} : {
+			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+		}, this.items.map((item, i) => {
+			const el = this.$slots.default({
+				item: item
+			})[0];
+			if (el.key == null && item.id) el.key = item.id;
 
-				if (
-					i != this.items.length - 1 &&
-					new Date(item.createdAt).getDate() != new Date(this.items[i + 1].createdAt).getDate()
-				) {
-					const separator = h('div', {
-						class: 'separator',
-						key: item.id + ':separator',
-					}, h('p', {
-						class: 'date'
-					}, [
-						h('span', [
-							h('i', {
-								class: 'fas fa-angle-up icon',
-							}),
-							this.getDateText(item.createdAt)
-						]),
-						h('span', [
-							this.getDateText(this.items[i + 1].createdAt),
-							h('i', {
-								class: 'fas fa-angle-down icon',
-							})
-						])
-					]));
+			if (
+				i != this.items.length - 1 &&
+				new Date(item.createdAt).getDate() != new Date(this.items[i + 1].createdAt).getDate()
+			) {
+				const separator = h('div', {
+					class: 'separator',
+					key: item.id + ':separator',
+				}, h('p', {
+					class: 'date'
+				}, [
+					h('span', [
+						h('i', {
+							class: 'fas fa-angle-up icon',
+						}),
+						this.getDateText(item.createdAt)
+					]),
+					h('span', [
+						this.getDateText(this.items[i + 1].createdAt),
+						h('i', {
+							class: 'fas fa-angle-down icon',
+						})
+					])
+				]));
 
-					return [el, separator];
+				return [el, separator];
+			} else {
+				if (this.ad && item._shouldInsertAd_) {
+					return [h(MkAd, {
+						class: 'a', // advertiseの意(ブロッカー対策)
+						key: item.id + ':ad',
+						prefer: ['horizontal', 'horizontal-big'],
+					}), el];
 				} else {
-					if (this.ad && item._shouldInsertAd_) {
-						return [h(MkAd, {
-							class: 'a', // advertiseの意(ブロッカー対策)
-							key: item.id + ':ad',
-							prefer: ['horizontal', 'horizontal-big'],
-						}), el];
-					} else {
-						return el;
-					}
+					return el;
 				}
-			}));
-		} else {
-			return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-				class: 'sqadhkmv' + (this.noGap ? ' noGap _block' : ''),
-				name: 'list',
-				tag: 'div',
-				'data-direction': this.direction,
-				'data-reversed': this.reversed ? 'true' : 'false',
-			} : {
-				class: 'sqadhkmv' + (this.noGap ? ' noGap _block' : ''),
-			}, this.items.map((item, i) => {
-				const el = this.$slots.default({
-					item: item
-				})[0];
-				if (el.key == null && item.id) el.key = item.id;
-
-				if (
-					i != this.items.length - 1 &&
-					new Date(item.createdAt).getDate() != new Date(this.items[i + 1].createdAt).getDate()
-				) {
-					const separator = h('div', {
-						class: 'separator',
-						key: item.id + ':separator',
-					}, h('p', {
-						class: 'date'
-					}, [
-						h('span', [
-							h('i', {
-								class: 'fas fa-angle-up icon',
-							}),
-							this.getDateText(item.createdAt)
-						]),
-						h('span', [
-							this.getDateText(this.items[i + 1].createdAt),
-							h('i', {
-								class: 'fas fa-angle-down icon',
-							})
-						])
-					]));
-
-					return [el, separator];
-				} else {
-					if (this.ad && item._shouldInsertAd_) {
-						return [h(MkAd, {
-							class: 'a', // advertiseの意(ブロッカー対策)
-							key: item.id + ':ad',
-							prefer: ['horizontal', 'horizontal-big'],
-						}), el];
-					} else {
-						return el;
-					}
-				}
-			}));
-		}
+			}
+		}));
 	},
 });
 </script>
 
 <style lang="scss">
 .sqadhkmv,
-.sqadhkmv-friendly {
+.sqadhkmv-friendly,
+.sqadhkmv-friendly-mobile {
 	> *:empty {
 		display: none;
 	}
@@ -243,7 +202,12 @@ export default defineComponent({
 	}
 }
 
-.sqadhkmv-friendly {
+.sqadhkmv-friendly,
+.sqadhkmv-friendly-mobile {
 	--stickyTop: 110px;
+}
+
+.sqadhkmv-friendly {
+	margin: 8px;
 }
 </style>
