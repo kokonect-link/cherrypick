@@ -2,12 +2,14 @@
 <div class="fcuexfpr _root">
 	<transition name="fade" mode="out-in">
 		<div v-if="note" class="note">
+			<!--
 			<div class="_gap" v-if="showNext">
 				<XNotes class="_content" :pagination="next" :no-gap="true"/>
 			</div>
+			-->
 
 			<div class="main _gap">
-				<MkButton v-if="!showNext && hasNext" class="load next" @click="showNext = true"><i class="fas fa-chevron-up"></i></MkButton>
+				<!-- <MkButton v-if="!showNext && hasNext" class="load next" @click="showNext = true"><i class="fas fa-chevron-up"></i></MkButton> -->
 				<div class="_content _gap">
 					<MkRemoteCaution v-if="note.user.host != null" :href="note.url || note.uri" class="_gap"/>
 					<XNoteDetailed v-model:note="note" :key="note.id" class="_gap"/>
@@ -22,12 +24,14 @@
 						</div>
 					</MkA>
 				</div>
-				<MkButton v-if="!showPrev && hasPrev" class="load prev" @click="showPrev = true"><i class="fas fa-chevron-down"></i></MkButton>
+				<!-- <MkButton v-if="!showPrev && hasPrev" class="load prev" @click="showPrev = true"><i class="fas fa-chevron-down"></i></MkButton> -->
 			</div>
 
+			<!--
 			<div class="_gap" v-if="showPrev">
 				<XNotes class="_content" :pagination="prev" :no-gap="true"/>
 			</div>
+			-->
 		</div>
 		<MkError v-else-if="error" @retry="fetch()"/>
 		<MkLoading v-else/>
