@@ -1,106 +1,106 @@
 <template>
-	<div
-		class="tkcbzcuz"
-		v-if="!muted"
-		v-show="!isDeleted"
-		:tabindex="!isDeleted ? '-1' : null"
-		:class="{ renote: isRenote }"
-		v-hotkey="keymap"
-		v-size="{ max: [500, 450, 350, 300] }"
-	>
-		<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
-		<div class="info" v-if="pinned"><i class="fas fa-thumbtack"></i> {{ $ts.pinnedNote }}</div>
-		<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
-		<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
-		<div class="renote" v-if="isRenote">
-			<MkAvatar class="avatar" :user="note.user"/>
-			<i class="fas fa-retweet"></i>
-			<I18n :src="$ts.renotedBy" tag="span">
-				<template #user>
-					<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
-						<MkUserName :user="note.user"/>
-					</MkA>
-				</template>
-			</I18n>
-			<div class="info">
-				<button class="_button time" @click="showRenoteMenu()" ref="renoteTime">
-					<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
-					<MkTime :time="note.createdAt"/>
-				</button>
-				<span class="visibility" v-if="note.visibility !== 'public'">
-				<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
-				<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
-				<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
-			</span>
-				<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
-			</div>
-		</div>
-		<article class="article" @contextmenu.stop="onContextmenu">
-			<MkAvatar class="avatar" :user="appearNote.user"/>
-			<div class="main">
-				<XNoteHeader class="header" :note="appearNote" :mini="true"/>
-				<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
-				<div class="body">
-					<p v-if="appearNote.cw != null" class="cw">
-						<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-						<XCwButton v-model:value="showContent" :note="appearNote"/>
-					</p>
-					<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
-						<MkA class="text-group" :to="notePage(note)">
-							<div class="text">
-								<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
-								<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
-								<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-								<a class="rp" v-if="appearNote.renote != null">RN:</a>
-							</div>
-						</MkA>
-						<div class="files" v-if="appearNote.files.length > 0">
-							<XMediaList :media-list="appearNote.files"/>
-						</div>
-						<XPoll v-if="appearNote.poll" :note="appearNote" ref="pollViewer" class="poll"/>
-						<MkUrlPreview v-for="url in urls" :url="url" :key="url" :compact="true" :detail="false" class="url-preview"/>
-						<div class="renote" v-if="appearNote.renote"><XNotePreview :note="appearNote.renote"/></div>
-						<button v-if="collapsed" class="fade _button" @click="collapsed = false">
-							<span>{{ $ts.showMore }}</span>
-						</button>
-					</div>
-					<MkA v-if="appearNote.channel && !inChannel" class="channel" :to="`/channels/${appearNote.channel.id}`"><i class="fas fa-satellite-dish"></i> {{ appearNote.channel.name }}</MkA>
-				</div>
-				<footer class="footer">
-					<XReactionsViewer :note="appearNote" ref="reactionsViewer"/>
-					<button @click="reply()" class="button _button">
-						<template v-if="appearNote.reply"><i class="fas fa-reply-all"></i></template>
-						<template v-else><i class="fas fa-reply"></i></template>
-						<p class="count" v-if="appearNote.repliesCount > 0">{{ appearNote.repliesCount }}</p>
-					</button>
-					<button v-if="canRenote" @click="renote()" class="button _button" ref="renoteButton">
-						<i class="fas fa-retweet"></i><p class="count" v-if="appearNote.renoteCount > 0">{{ appearNote.renoteCount }}</p>
-					</button>
-					<button v-else class="button _button">
-						<i class="fas fa-ban"></i>
-					</button>
-					<button v-if="appearNote.myReaction == null" class="button _button" @click="react()" ref="reactButton">
-						<i class="fas fa-plus"></i>
-					</button>
-					<button v-if="appearNote.myReaction != null" class="button _button reacted" @click="undoReact(appearNote)" ref="reactButton">
-						<i class="fas fa-minus"></i>
-					</button>
-					<button class="button _button" @click="menu()" ref="menuButton">
-						<i class="fas fa-ellipsis-h"></i>
-					</button>
-				</footer>
-			</div>
-		</article>
-	</div>
-	<div v-else class="muted" @click="muted = false">
-		<I18n :src="$ts.userSaysSomething" tag="small">
-			<template #name>
-				<MkA class="name" :to="userPage(appearNote.user)" v-user-preview="appearNote.userId">
-					<MkUserName :user="appearNote.user"/>
+<div
+	class="tkcbzcuz"
+	v-if="!muted"
+	v-show="!isDeleted"
+	:tabindex="!isDeleted ? '-1' : null"
+	:class="{ renote: isRenote }"
+	v-hotkey="keymap"
+	v-size="{ max: [500, 450, 350, 300] }"
+>
+	<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
+	<div class="info" v-if="pinned"><i class="fas fa-thumbtack"></i> {{ $ts.pinnedNote }}</div>
+	<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
+	<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
+	<div class="renote" v-if="isRenote">
+		<MkAvatar class="avatar" :user="note.user"/>
+		<i class="fas fa-retweet"></i>
+		<I18n :src="$ts.renotedBy" tag="span">
+			<template #user>
+				<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
+					<MkUserName :user="note.user"/>
 				</MkA>
 			</template>
 		</I18n>
+		<div class="info">
+			<button class="_button time" @click="showRenoteMenu()" ref="renoteTime">
+				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
+				<MkTime :time="note.createdAt"/>
+			</button>
+			<span class="visibility" v-if="note.visibility !== 'public'">
+			<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
+			<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
+			<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
+		</span>
+			<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
+		</div>
 	</div>
+	<article class="article" @contextmenu.stop="onContextmenu">
+		<MkAvatar class="avatar" :user="appearNote.user"/>
+		<div class="main">
+			<XNoteHeader class="header" :note="appearNote" :mini="true"/>
+			<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
+			<div class="body">
+				<p v-if="appearNote.cw != null" class="cw">
+					<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+					<XCwButton v-model:value="showContent" :note="appearNote"/>
+				</p>
+				<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
+					<MkA class="text-group" :to="notePage(note)">
+						<div class="text">
+							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
+							<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
+							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+							<a class="rp" v-if="appearNote.renote != null">RN:</a>
+						</div>
+					</MkA>
+					<div class="files" v-if="appearNote.files.length > 0">
+						<XMediaList :media-list="appearNote.files"/>
+					</div>
+					<XPoll v-if="appearNote.poll" :note="appearNote" ref="pollViewer" class="poll"/>
+					<MkUrlPreview v-for="url in urls" :url="url" :key="url" :compact="true" :detail="false" class="url-preview"/>
+					<div class="renote" v-if="appearNote.renote"><XNotePreview :note="appearNote.renote"/></div>
+					<button v-if="collapsed" class="fade _button" @click="collapsed = false">
+						<span>{{ $ts.showMore }}</span>
+					</button>
+				</div>
+				<MkA v-if="appearNote.channel && !inChannel" class="channel" :to="`/channels/${appearNote.channel.id}`"><i class="fas fa-satellite-dish"></i> {{ appearNote.channel.name }}</MkA>
+			</div>
+			<footer class="footer">
+				<XReactionsViewer :note="appearNote" ref="reactionsViewer"/>
+				<button @click="reply()" class="button _button">
+					<template v-if="appearNote.reply"><i class="fas fa-reply-all"></i></template>
+					<template v-else><i class="fas fa-reply"></i></template>
+					<p class="count" v-if="appearNote.repliesCount > 0">{{ appearNote.repliesCount }}</p>
+				</button>
+				<button v-if="canRenote" @click="renote()" class="button _button" ref="renoteButton">
+					<i class="fas fa-retweet"></i><p class="count" v-if="appearNote.renoteCount > 0">{{ appearNote.renoteCount }}</p>
+				</button>
+				<button v-else class="button _button">
+					<i class="fas fa-ban"></i>
+				</button>
+				<button v-if="appearNote.myReaction == null" class="button _button" @click="react()" ref="reactButton">
+					<i class="fas fa-plus"></i>
+				</button>
+				<button v-if="appearNote.myReaction != null" class="button _button reacted" @click="undoReact(appearNote)" ref="reactButton">
+					<i class="fas fa-minus"></i>
+				</button>
+				<button class="button _button" @click="menu()" ref="menuButton">
+					<i class="fas fa-ellipsis-h"></i>
+				</button>
+			</footer>
+		</div>
+	</article>
+</div>
+<div v-else class="muted" @click="muted = false">
+	<I18n :src="$ts.userSaysSomething" tag="small">
+		<template #name>
+			<MkA class="name" :to="userPage(appearNote.user)" v-user-preview="appearNote.userId">
+				<MkUserName :user="appearNote.user"/>
+			</MkA>
+		</template>
+	</I18n>
+</div>
 </template>
 
 <script lang="ts">
