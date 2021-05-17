@@ -882,6 +882,7 @@ export default defineComponent({
 	overflow: hidden;
 	contain: content;
 	outline: none;
+	border-radius: 0;
 
 	&:focus-visible {
 		outline: none;

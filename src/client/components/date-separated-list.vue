@@ -67,13 +67,13 @@ export default defineComponent({
 		if (this.items.length === 0) return;
 
 		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.$route.name !== 'index' ? '-not-timeline' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
 			name: 'list',
 			tag: 'div',
 			'data-direction': this.direction,
 			'data-reversed': this.reversed ? 'true' : 'false',
 		} : {
-			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.$route.name !== 'index' ? '-not-timeline' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
 		}, this.items.map((item, i) => {
 			const el = this.$slots.default({
 				item: item
@@ -124,7 +124,8 @@ export default defineComponent({
 <style lang="scss">
 .sqadhkmv,
 .sqadhkmv-friendly,
-.sqadhkmv-friendly-mobile {
+.sqadhkmv-friendly-mobile,
+.sqadhkmv-friendly-not-timeline {
 	> *:empty {
 		display: none;
 	}
@@ -207,7 +208,8 @@ export default defineComponent({
 	--stickyTop: 110px;
 }
 
-.sqadhkmv-friendly {
+.sqadhkmv-friendly,
+.sqadhkmv-friendly-not-timeline {
 	margin: 8px;
 }
 </style>
