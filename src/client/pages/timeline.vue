@@ -4,13 +4,13 @@
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
 	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI }">
 		<div class="left">
-			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
-			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
-			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
-			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
+			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
+			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
+			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); queueReset(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
+			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); queueReset(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
 			<span class="divider"></span>
-			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); queueReset(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); queueReset(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
 		</div>
 		<div class="right">
 			<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><i class="fas fa-satellite-dish"></i><i v-if="$i.hasUnreadChannel" class="fas fa-circle i"></i></button>
@@ -144,6 +144,10 @@ export default defineComponent({
 
 		queueUpdated(q) {
 			this.queue = q;
+		},
+
+		queueReset() {
+			this.queue = 0;
 		},
 
 		top() {
