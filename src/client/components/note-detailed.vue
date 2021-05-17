@@ -881,6 +881,7 @@ export default defineComponent({
 	transition: box-shadow 0.1s ease;
 	overflow: hidden;
 	contain: content;
+	outline: none;
 
 	&:focus-visible {
 		outline: none;
