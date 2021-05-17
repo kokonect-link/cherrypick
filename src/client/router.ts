@@ -67,7 +67,7 @@ export const router = createRouter({
 		{ path: '/instance/:page(.*)?', component: page('instance/index'), props: route => ({ initialPage: route.params.page || null }) },
 		{ path: '/instance', component: page('instance/index') },
 		{ path: '/notes/:note', name: 'note', component: page('note'), props: route => ({ noteId: route.params.note }) },
-		{ path: '/tags/:tag', component: page('tag'), props: route => ({ tag: route.params.tag }) },
+		{ path: '/tags/:tag', name: 'tags',component: page('tag'), props: route => ({ tag: route.params.tag }) },
 		{ path: '/user-info/:user', component: page('user-info'), props: route => ({ userId: route.params.user }) },
 		{ path: '/user-ap-info/:user', component: page('user-ap-info'), props: route => ({ userId: route.params.user }) },
 		{ path: '/instance-info/:host', component: page('instance-info'), props: route => ({ host: route.params.host }) },

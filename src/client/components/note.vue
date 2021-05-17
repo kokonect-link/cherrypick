@@ -4,7 +4,7 @@
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote }"
+	:class="{ renote: isRenote, isSticky }"
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
@@ -167,6 +167,7 @@ export default defineComponent({
 			collapsed: false,
 			isDeleted: false,
 			muted: false,
+			isSticky: this.$route.name === 'tags',
 		};
 	},
 
@@ -866,6 +867,10 @@ export default defineComponent({
 	// 一度レンダリングされた要素はブラウザがよしなにサイズを覚えておいてくれるような実装になるまで待った方が良さそう(なるのか？)
 	//content-visibility: auto;
 	//contain-intrinsic-size: 0 128px;
+
+	&.isSticky {
+		--stickyTop: 50px;
+	}
 
 	&:focus {
 		outline: none;
