@@ -2,7 +2,7 @@
 <div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div v-if="isFriendlyUI" class="tabs-friendly _block">
+	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, tabs: !isFriendlyUI }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -18,24 +18,7 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div v-else class="tabs _block">
-		<div class="left">
-			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
-			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
-			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
-			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
-			<span class="divider"></span>
-			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
-		</div>
-		<div class="right">
-			<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><i class="fas fa-satellite-dish"></i><i v-if="$i.hasUnreadChannel" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="chooseAntenna" :class="{ active: src === 'antenna' }" v-tooltip="$ts.antennas"><i class="fas fa-satellite"></i><i v-if="$i.hasUnreadAntenna" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
-		</div>
-	</div>
-	<div class="new-friendly" v-if="queue > 0 && isFriendlyUI"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
-	<div class="new" v-else-if="queue > 0 && !isFriendlyUI"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+	<div :class="{ 'new-friendly': isFriendlyUI, new: !isFriendlyUI }" v-if="queue > 0"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"

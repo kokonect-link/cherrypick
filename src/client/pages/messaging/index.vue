@@ -1,7 +1,6 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
-	<MkButton v-if="!isMobile && isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
-	<MkButton v-else-if="!isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<MkButton v-if="!isMobile && isFriendlyUI || !isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
