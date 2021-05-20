@@ -49,8 +49,8 @@
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
 						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+						<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #a3faff;">NECT</span></b></p>
 					</MkA>
-					<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #a3faff;">NECT</span></b></p>
 				</div>
 			</div>
 		</nav>
@@ -279,7 +279,8 @@ export default defineComponent({
 						width: calc(100% - 32px);
 					}
 
-					> .item {
+					> .item,
+						.patron-button {
 						padding-left: 0;
 						width: 100%;
 						text-align: center;
@@ -356,12 +357,16 @@ export default defineComponent({
 				
 				> .link {
 					display: block;
-					width: 32px;
+					//width: 32px;
 					margin: 0 auto;
 					
 					img {
 						display: block;
 						width: 100%;
+					}
+
+					&:hover {
+						text-decoration: none;
 					}
 				}
 			}

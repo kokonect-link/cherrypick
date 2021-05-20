@@ -62,7 +62,7 @@ export const router = createRouter({
 		{ path: '/my/groups', component: page('my-groups/index') },
 		{ path: '/my/groups/:group', component: page('my-groups/group'), props: route => ({ groupId: route.params.group }) },
 		{ path: '/my/antennas', component: page('my-antennas/index') },
-		{ path: '/my/clips', component: page('my-clips/index') },
+		{ path: '/my/clips', name: 'clips', component: page('my-clips/index') },
 		{ path: '/scratchpad', component: page('scratchpad') },
 		{ path: '/instance/:page(.*)?', component: page('instance/index'), props: route => ({ initialPage: route.params.page || null }) },
 		{ path: '/instance', component: page('instance/index') },

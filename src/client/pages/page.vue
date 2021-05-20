@@ -2,7 +2,7 @@
 <div class="_root">
 	<transition name="fade" mode="out-in">
 		<div v-if="page" class="xcukqgmh" :key="page.id" v-size="{ max: [450] }">
-			<div class="_block main">
+			<div class="_block main" :class="{ isFriendlyUI }">
 				<!--
 				<div class="header">
 					<h1>{{ page.title }}</h1>
@@ -113,6 +113,7 @@ export default defineComponent({
 					userId: this.page.user.id
 				})
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 
@@ -211,6 +212,11 @@ export default defineComponent({
 
 	> .main {
 		padding: var(--padding);
+
+		&.isFriendlyUI {
+			border-radius: 0;
+			box-shadow: unset;
+		}
 
 		> .header {
 			padding: 16px;

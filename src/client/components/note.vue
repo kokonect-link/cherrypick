@@ -1052,6 +1052,10 @@ export default defineComponent({
 					> .text-group {
 						text-decoration: none;
 
+						&:hover {
+							color: var(--accent);
+						}
+
 						> .text {
 							overflow-wrap: break-word;
 

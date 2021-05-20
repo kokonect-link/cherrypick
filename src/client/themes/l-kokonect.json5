@@ -13,6 +13,7 @@
 		divider: 'rgb(223, 223, 223)',
 		header: ':alpha<0.7<@panel',
 		navBg: '#fff',
+		navHoverFg: '@accent',
 		panel: '#fff',
 		panelShadow: '" 0 8px 24px rgb(21 43 75 / 8%)',
 		panelHeaderDivider: '@divider',

@@ -125,7 +125,8 @@ export default defineComponent({
 .sqadhkmv,
 .sqadhkmv-friendly,
 .sqadhkmv-friendly-mobile,
-.sqadhkmv-friendly-not-timeline {
+.sqadhkmv-friendly-not-timeline,
+.sqadhkmv-friendly-not-timeline-mobile {
 	> *:empty {
 		display: none;
 	}
@@ -206,10 +207,5 @@ export default defineComponent({
 .sqadhkmv-friendly,
 .sqadhkmv-friendly-mobile {
 	--stickyTop: 110px;
-}
-
-.sqadhkmv-friendly,
-.sqadhkmv-friendly-not-timeline {
-	margin: 8px;
 }
 </style>

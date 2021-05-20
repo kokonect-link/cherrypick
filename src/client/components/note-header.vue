@@ -2,9 +2,9 @@
 <header class="kkwtjztg">
 	<MkA class="name" :to="userPage(note.user)" v-user-preview="note.user.id">
 		<MkUserName :user="note.user"/>
+		<MkAcct class="username" :user="note.user"/>
 	</MkA>
 	<span class="is-bot" v-if="note.user.isBot">bot</span>
-	<span class="username"><MkAcct :user="note.user"/></span>
 	<span class="locked" v-if="$i.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 	<span class="admin" v-if="note.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
@@ -67,7 +67,14 @@ export default defineComponent({
 		text-overflow: ellipsis;
 
 		&:hover {
-			text-decoration: underline;
+			text-decoration: none;
+			color: var(--accent);
+		}
+
+		> .username {
+			margin: 0 0 0 .5em;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 	}
 
@@ -94,12 +101,6 @@ export default defineComponent({
 	> .patron {
 		margin-right: 0.5em;
 		color: var(--patron);
-	}
-
-	> .username {
-		margin: 0 .5em 0 0;
-		overflow: hidden;
-		text-overflow: ellipsis;
 	}
 
 	> .info {

@@ -1,12 +1,16 @@
 <template>
 <div class="_section qtcaoidl">
-	<MkButton @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+	<MkButton v-if="!isMobile && isFriendlyUI || !isFriendlyUI" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
 
 	<div class="_content">
 		<MkPagination :pagination="pagination" #default="{items}" ref="list" class="list">
 			<MkA v-for="item in items" :key="item.id" :to="`/clips/${item.id}`" class="item _panel _gap">
 				<b>{{ item.name }}</b>
 				<div v-if="item.description" class="description">{{ item.description }}</div>
+				<footer>
+					<img class="icon" :src="item.user.avatarUrl"/>
+					<p>{{ userName(item.user) }}</p>
+				</footer>
 			</MkA>
 		</MkPagination>
 	</div>
@@ -19,6 +23,11 @@ import MkPagination from '@client/components/ui/pagination.vue';
 import MkButton from '@client/components/ui/button.vue';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+import { eventBus } from "../../friendly/eventBus";
+import { userName } from '@client/filters/user';
+
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -41,7 +50,14 @@ export default defineComponent({
 				limit: 10,
 			},
 			draft: null,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
+	},
+
+	created() {
+		eventBus.on('kn-createclip', () => this.create());
 	},
 
 	methods: {
@@ -76,6 +92,8 @@ export default defineComponent({
 		onClipDeleted() {
 			this.$refs.list.reload();
 		},
+
+		userName,
 	}
 });
 </script>
@@ -83,7 +101,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .qtcaoidl {
 	> .add {
-		margin: 0 auto 16px auto;
+		margin: 16px auto;
 	}
 
 	> ._content {
@@ -92,10 +110,37 @@ export default defineComponent({
 				display: block;
 				padding: 16px;
 
+				&:hover {
+					text-decoration: none;
+					color: var(--accent);
+				}
+
 				> .description {
 					margin-top: 8px;
 					padding-top: 8px;
 					border-top: solid 0.5px var(--divider);
+				}
+
+				> footer {
+					margin-top: 8px;
+					height: 16px;
+
+					> img {
+						display: inline-block;
+						width: 16px;
+						height: 16px;
+						margin-right: 4px;
+						vertical-align: top;
+					}
+
+					> p {
+						display: inline-block;
+						margin: 0;
+						color: var(--urlPreviewInfo);
+						font-size: 0.8em;
+						line-height: 16px;
+						vertical-align: top;
+					}
 				}
 			}
 		}

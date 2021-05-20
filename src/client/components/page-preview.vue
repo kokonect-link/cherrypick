@@ -35,6 +35,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .vhpxefrj {
 	display: block;
+	border-radius: 0;
+	box-shadow: unset;
+	margin: 12px 0;
 
 	&:hover {
 		text-decoration: none;

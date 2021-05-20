@@ -29,6 +29,7 @@
 		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
 		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
 		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'clips'" class="post _buttonPrimary" @click="createClip()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -161,6 +162,10 @@ export default defineComponent({
 
 		driveMenu() {
 			eventBus.emit('kn-drivemenu');
+		},
+
+		createClip() {
+			eventBus.emit('kn-createclip');
 		},
 
 		search() {

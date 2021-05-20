@@ -353,7 +353,7 @@ hr {
 	}
 }
 
-._flat_ ,._flat_friendly_{
+._flat_ ,._flat_friendly_ {
 	--root-margin: 0px;
 	--baseContentWidth: 100%;
 
@@ -381,9 +381,16 @@ hr {
 
 ._flat_ {
 	--panelShadow: none;
+
+	._block, ._card, ._panel {
+		border-radius: 0;
+		box-shadow: unset;
+	}
 }
 
 ._flat_friendly_ {
+	margin: 8px;
+
 	._block {
 		border-radius: var(--radius);
 		box-shadow: var(--panelShadow);

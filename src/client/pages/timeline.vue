@@ -2,7 +2,7 @@
 <div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI }">
+	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isMobile }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -262,7 +262,8 @@ export default defineComponent({
 	}
 
 	> .tabs,
-		.tabs-friendly {
+		.tabs-friendly,
+		.tabs-friendly-mobile {
 		display: flex;
 		box-sizing: border-box;
 		padding: 0 8px;
@@ -325,7 +326,8 @@ export default defineComponent({
 		}
 	}
 
-	> .tabs-friendly {
+	> .tabs-friendly,
+		.tabs-friendly-mobile {
 		position: sticky;
 		--stickyTop: 110px;
 		z-index: 1000;
@@ -335,8 +337,11 @@ export default defineComponent({
 		top: calc(-50px + var(--stickyTop, 0px));
 		// Rounded Design
 		border-radius: var(--radius);
-		margin: 8px;
 		box-shadow: var(--panelShadow);
+	}
+
+	> .tabs-friendly-mobile {
+		margin: 8px;
 	}
 }
 </style>
