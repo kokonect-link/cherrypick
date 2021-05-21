@@ -306,10 +306,6 @@ export default defineComponent({
 							margin: 0;
 						}
 
-						> .patron {
-							color: var(--patron);
-						}
-
 						&:first-child {
 							margin-bottom: 8px;
 						}
@@ -418,6 +414,10 @@ export default defineComponent({
 
 				> .patron {
 					color: var(--patron);
+
+					> i {
+						animation: 1s linear 0s infinite normal both running mfm-rubberBand;
+					}
 				}
 
 				> .patron-text {

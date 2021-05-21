@@ -271,10 +271,6 @@ export default defineComponent({
 				.not-patron {
 				margin: 0;
 			}
-
-			> .patron {
-				color: var(--patron);
-			}
 			
 		}
 	}
@@ -367,6 +363,10 @@ export default defineComponent({
 
 		> .patron {
 			color: var(--patron);
+
+			> i {
+				animation: 1s linear 0s infinite normal both running mfm-rubberBand;
+			}
 		}
 
 		> .patron-text {
