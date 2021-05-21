@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="_section" style="padding: 0;" v-if="$i">
-		<MkTab class="_content" v-model:value="tab">
+		<MkTab class="_content" :class="{ 'friendly': isFriendlyUI && !isMobile }" v-model:value="tab">
 			<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._channel.featured }}</option>
 			<option value="following"><i class="fas fa-heart"></i> {{ $ts._channel.following }}</option>
 			<option value="owned"><i class="fas fa-edit"></i> {{ $ts._channel.owned }}</option>
@@ -39,6 +39,9 @@ import MkButton from '@client/components/ui/button.vue';
 import MkTab from '@client/components/tab.vue';
 import * as symbols from '@client/symbols';
 
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
+
 export default defineComponent({
 	components: {
 		MkChannelPreview, MkPagination, MkButton, MkTab
@@ -66,6 +69,9 @@ export default defineComponent({
 				endpoint: 'channels/owned',
 				limit: 5,
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 	methods: {
@@ -75,3 +81,9 @@ export default defineComponent({
 	}
 });
 </script>
+
+<style lang="scss" scoped>
+._section .friendly {
+	margin: -8px -8px auto;
+}
+</style>

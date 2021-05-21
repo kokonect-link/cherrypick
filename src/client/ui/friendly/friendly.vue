@@ -30,6 +30,7 @@
 		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
 		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
 		<button v-if="$route.name === 'clips'" class="post _buttonPrimary" @click="createClip()" v-click-anime><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'pages'" class="post _buttonPrimary" @click="createPage()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -166,6 +167,10 @@ export default defineComponent({
 
 		createClip() {
 			eventBus.emit('kn-createclip');
+		},
+
+		createPage() {
+			eventBus.emit('kn-createpage');
 		},
 
 		search() {
