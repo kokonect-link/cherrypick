@@ -4,7 +4,7 @@
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote }"
+	:class="{ renote: isRenote, 'friendly': isFriendlyUI }"
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
@@ -180,6 +180,7 @@ export default defineComponent({
 			showContent: false,
 			isDeleted: false,
 			muted: false,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 
@@ -1196,5 +1197,9 @@ export default defineComponent({
 	padding: 8px;
 	text-align: center;
 	opacity: 0.7;
+}
+
+.friendly {
+	border-radius: var(--radius);
 }
 </style>

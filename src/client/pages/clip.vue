@@ -1,6 +1,6 @@
 <template>
 <div v-if="clip" class="_section">
-	<div class="okzinsic _content _panel" :class="{ isFriendlyUI, isMisskeyUI }">
+	<div class="okzinsic _content _panel" :class="{ isFriendlyUI, isMisskeyUI, 'is-desktop': isDesktop }">
 		<div class="description" v-if="clip.description">
 			<Mfm :text="clip.description" :is-note="false" :i="$i"/>
 		</div>
@@ -20,6 +20,9 @@ import XPostForm from '@client/components/post-form.vue';
 import XNotes from '@client/components/notes.vue';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -55,6 +58,8 @@ export default defineComponent({
 			},
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isMisskeyUI: localStorage.getItem('ui') == "misskey",
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 
@@ -137,7 +142,6 @@ export default defineComponent({
 .okzinsic {
 	position: relative;
 	text-align: center;
-	margin: -8px -8px auto;
 
 	&.isFriendlyUI,
 	&.isMisskeyUI {
@@ -160,5 +164,9 @@ export default defineComponent({
 			height: $height;
 		}
 	}
+}
+
+.is-desktop {
+	margin: -8px -8px auto;
 }
 </style>

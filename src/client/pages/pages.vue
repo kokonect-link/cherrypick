@@ -1,6 +1,6 @@
 <template>
 <div>
-	<MkTab v-model:value="tab" v-if="$i" class="tab">
+	<MkTab v-model:value="tab" v-if="$i" :class="{ 'tab': isFriendlyUI && !isMobile }">
 		<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._pages.featured }}</option>
 		<option value="my"><i class="fas fa-edit"></i> {{ $ts._pages.my }}</option>
 		<option value="liked"><i class="fas fa-heart"></i> {{ $ts._pages.liked }}</option>
@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="rknalgpo _content my" v-if="tab === 'my'">
-			<MkButton class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
+			<MkButton v-if="!isMobile && isFriendlyUI || !isFriendlyUI" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
 			<MkPagination :pagination="myPagesPagination" #default="{items}">
 				<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
 			</MkPagination>
@@ -36,6 +36,10 @@ import MkPagination from '@client/components/ui/pagination.vue';
 import MkButton from '@client/components/ui/button.vue';
 import MkTab from '@client/components/tab.vue';
 import * as symbols from '@client/symbols';
+import {eventBus} from "../friendly/eventBus";
+
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -65,8 +69,16 @@ export default defineComponent({
 				endpoint: 'i/page-likes',
 				limit: 5,
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
+
+	created() {
+		eventBus.on('kn-createpage', () => this.create());
+	},
+
 	methods: {
 		create() {
 			this.$router.push(`/pages/new`);
