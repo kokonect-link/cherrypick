@@ -1,6 +1,6 @@
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
-	<button class="item _button account" @click="openAccountMenu" v-click-anime>
+	<button class="item _button account" @click="openProfile" @contextmenu.stop.prevent="openAccountMenu" v-click-anime>
 		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i" v-if="!iconOnly"/>
 	</button>
 	<div class="post" @click="post">
@@ -127,6 +127,10 @@ export default defineComponent({
 
 		search() {
 			search();
+		},
+
+		openProfile() {
+			this.$router.push({ path: `/@${ this.$i.username }` })
 		},
 
 		async openAccountMenu(ev) {
