@@ -4,13 +4,13 @@
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
 	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isMobile }">
 		<div class="left">
-			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
-			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
-			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); queueReset(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
-			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); queueReset(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
+			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
+			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
+			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
+			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
 			<span class="divider"></span>
-			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); queueReset(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); queueReset(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
+			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
 		</div>
 		<div class="right">
 			<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><i class="fas fa-satellite-dish"></i><i v-if="$i.hasUnreadChannel" class="fas fa-circle i"></i></button>
@@ -162,6 +162,8 @@ export default defineComponent({
 					this.list = list;
 					this.src = 'list';
 					this.saveSrc();
+					this.queueReset();
+					this.top();
 				}
 			}));
 			os.modalMenu(items, ev.currentTarget || ev.target);
@@ -176,6 +178,8 @@ export default defineComponent({
 					this.antenna = antenna;
 					this.src = 'antenna';
 					this.saveSrc();
+					this.queueReset();
+					this.top();
 				}
 			}));
 			os.modalMenu(items, ev.currentTarget || ev.target);
@@ -192,6 +196,8 @@ export default defineComponent({
 					//this.src = 'channel';
 					//this.saveSrc();
 					this.$router.push(`/channels/${channel.id}`);
+					this.queueReset();
+					this.top();
 				}
 			}));
 			os.modalMenu(items, ev.currentTarget || ev.target);
