@@ -41,6 +41,8 @@ export default defineComponent({
 	display: block;
 	position: relative;
 	height: 200px;
+	border-radius: var(--radius);
+	box-shadow: var(--panelShadow);
 
 	&:hover {
 		text-decoration: none;

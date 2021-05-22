@@ -1,5 +1,5 @@
 <template>
-<div class="xprsixdl _root">
+<div class="xprsixdl _root" :class="{ isFriendlyUI }">
 	<MkTab v-model:value="tab" v-if="$i">
 		<option value="explore"><i class="fas fa-icons"></i> {{ $ts.gallery }}</option>
 		<option value="liked"><i class="fas fa-heart"></i> {{ $ts._gallery.liked }}</option>
@@ -97,6 +97,7 @@ export default defineComponent({
 				limit: 5,
 			},
 			tags: [],
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 
@@ -137,6 +138,10 @@ export default defineComponent({
 .xprsixdl {
 	max-width: 1400px;
 	margin: 0 auto;
+
+	&.isFriendlyUI {
+		margin: -8px;
+	}
 }
 
 .vfpdbgtk {
