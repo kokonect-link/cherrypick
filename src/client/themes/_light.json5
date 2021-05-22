@@ -41,6 +41,7 @@
 		mention: '@accent',
 		mentionMe: '@mention',
 		renote: '#229e82',
+		renoteHover: ':lighten<5<@renote',
 		modalBg: 'rgba(0, 0, 0, 0.3)',
 		scrollbarHandle: 'rgba(0, 0, 0, 0.2)',
 		scrollbarHandleHover: 'rgba(0, 0, 0, 0.4)',

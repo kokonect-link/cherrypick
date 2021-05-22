@@ -67,7 +67,6 @@ export default defineComponent({
 		text-overflow: ellipsis;
 
 		&:hover {
-			text-decoration: none;
 			color: var(--accent);
 		}
 
@@ -75,6 +74,7 @@ export default defineComponent({
 			margin: 0 0 0 .5em;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			font-weight: normal;
 		}
 	}
 

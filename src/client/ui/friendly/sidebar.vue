@@ -259,7 +259,7 @@ export default defineComponent({
 	}
 
 	> .nav {
-		$avatar-size: 32px;
+		$avatar-size: 38px;
 		$avatar-margin: 8px;
 
 		flex: 0 0 $nav-width;

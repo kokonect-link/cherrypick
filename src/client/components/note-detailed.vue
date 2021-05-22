@@ -12,14 +12,14 @@
 	<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
 	<div class="renote" v-if="isRenote">
 		<MkAvatar class="avatar" :user="note.user"/>
-		<i class="fas fa-retweet"></i>
-		<I18n :src="$ts.renotedBy" tag="span">
-			<template #user>
-				<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
-					<MkUserName :user="note.user"/>
-				</MkA>
-			</template>
-		</I18n>
+		<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
+			<i class="fas fa-retweet"></i>
+			<I18n :src="$ts.renotedBy" tag="span">
+				<template #user>
+					<MkUserName class="username" :user="note.user"/>
+				</template>
+			</I18n>
+		</MkA>
 		<div class="info">
 			<button class="_button time" @click="showRenoteMenu()" ref="renoteTime">
 				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
@@ -937,18 +937,26 @@ export default defineComponent({
 			border-radius: 6px;
 		}
 
-		> i {
-			margin-right: 4px;
-		}
+		> .name {
+			text-decoration: none;
 
-		> span {
-			overflow: hidden;
-			flex-shrink: 1;
-			text-overflow: ellipsis;
-			white-space: nowrap;
+			&:hover {
+				color: var(--renoteHover);
+			}
 
-			> .name {
-				font-weight: bold;
+			> i {
+				margin-right: 4px;
+			}
+
+			> span {
+				overflow: hidden;
+				flex-shrink: 1;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+
+				> .username {
+					font-weight: bold;
+				}
 			}
 		}
 
@@ -1007,6 +1015,11 @@ export default defineComponent({
 					> .name {
 						font-weight: bold;
 						margin-right: 0.5em;
+						text-decoration: none;
+					}
+
+					&:hover {
+						color: var(--accent);
 					}
 
 					> .is-bot {

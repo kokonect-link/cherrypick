@@ -14,24 +14,24 @@
 	<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
 	<div class="renote" v-if="isRenote">
 		<MkAvatar class="avatar" :user="note.user"/>
-		<i class="fas fa-retweet"></i>
-		<I18n :src="$ts.renotedBy" tag="span">
-			<template #user>
-				<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
-					<MkUserName :user="note.user"/>
-				</MkA>
-			</template>
-		</I18n>
+		<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
+			<i class="fas fa-retweet"></i>
+			<I18n :src="$ts.renotedBy" tag="span">
+				<template #user>
+					<MkUserName class="nickname" :user="note.user"/>
+				</template>
+			</I18n>
+		</MkA>
 		<div class="info">
 			<button class="_button time" @click="showRenoteMenu()" ref="renoteTime">
 				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
 				<MkTime :time="note.createdAt"/>
 			</button>
 			<span class="visibility" v-if="note.visibility !== 'public'">
-			<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
-			<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
-			<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
-		</span>
+				<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
+				<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
+				<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
+			</span>
 			<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
 		</div>
 	</div>
@@ -943,18 +943,26 @@ export default defineComponent({
 			border-radius: 6px;
 		}
 
-		> i {
-			margin-right: 4px;
-		}
+		> .name {
+			text-decoration: none;
 
-		> span {
-			overflow: hidden;
-			flex-shrink: 1;
-			text-overflow: ellipsis;
-			white-space: nowrap;
+			&:hover {
+				color: var(--renoteHover);
+			}
 
-			> .name {
-				font-weight: bold;
+			> i {
+				margin-right: 4px;
+			}
+
+			> span {
+				overflow: hidden;
+				flex-shrink: 1;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+
+				> .nickname {
+					font-weight: bold;
+				}
 			}
 		}
 

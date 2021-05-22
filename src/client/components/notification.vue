@@ -255,6 +255,12 @@ export default defineComponent({
 				white-space: nowrap;
 				min-width: 0;
 				overflow: hidden;
+				text-decoration: none;
+				font-weight: bold;
+
+				&:hover {
+					color: var(--accent);
+				}
 			}
 
 			> .time {
@@ -267,6 +273,11 @@ export default defineComponent({
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			text-decoration: none;
+
+			&:hover {
+				color: var(--accent);
+			}
 
 			> i {
 				vertical-align: super;
