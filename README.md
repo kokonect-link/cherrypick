@@ -116,6 +116,11 @@ These people are helping to use <span style="color: #9ec23f">Misskey</span> in <
 
 ---
 
+Related projects
+----------------------------------------------------------------
+- [misskey.js](https://github.com/misskey-dev/misskey.js) - Misskey SDK for JavaScript
+- [mfm.js](https://github.com/misskey-dev/mfm.js) - MFM parser
+
 :heart: Backers
 ----------------------------------------------------------------
 <!-- PATREON_START -->
