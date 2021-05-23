@@ -945,6 +945,8 @@ export default defineComponent({
 
 		> .name {
 			text-decoration: none;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			&:hover {
 				color: var(--renoteHover);
@@ -955,9 +957,7 @@ export default defineComponent({
 			}
 
 			> span {
-				overflow: hidden;
 				flex-shrink: 1;
-				text-overflow: ellipsis;
 				white-space: nowrap;
 
 				> .nickname {
