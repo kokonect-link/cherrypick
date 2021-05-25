@@ -245,11 +245,14 @@ export default defineComponent({
 			width: $avatar-size;
 			height: $avatar-size;
 			border-radius: 100px;
-			vertical-align: middle;
 			line-height: 0;
-			border: 2px solid var(--patron);
+			// border: 2px solid var(--patron);
 			background: transparent;
 			margin-top: 10px;
+
+			i {
+				color: var(--panelHeaderFg)
+			}
 		}
 	}
 
