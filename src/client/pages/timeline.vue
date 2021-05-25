@@ -2,7 +2,7 @@
 <div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isMobile && isFriendlyUI }">
+	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isFriendlyUI && isMobile }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
