@@ -18,7 +18,7 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div :class="{ 'new-friendly': isFriendlyUI, 'new': !isFriendlyUI }" v-if="queue > 0"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+	<div :class="{ 'new-friendly': isFriendlyUI && isDesktop, 'new': !isFriendlyUI }" v-if="queue > 0"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
@@ -42,6 +42,7 @@ import XPostForm from '@client/components/post-form.vue';
 import { scroll } from '@client/scripts/scroll';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+import {eventBus} from "@client/friendly/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -144,6 +145,7 @@ export default defineComponent({
 
 		queueUpdated(q) {
 			this.queue = q;
+			eventBus.emit('kn-header-new', q);
 		},
 
 		queueReset() {
@@ -151,7 +153,8 @@ export default defineComponent({
 		},
 
 		top() {
-			scroll(this.$el, 0);
+			// scroll(this.$el, 0);
+			window.scroll({ top: 0, behavior: 'smooth' });
 		},
 
 		async chooseList(ev) {

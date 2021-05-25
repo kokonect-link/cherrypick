@@ -21,6 +21,7 @@
 			<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
 		</div>
 		<div class="buttons_R">
+			<button v-if="queue > 0 && !isDesktop" class="new _buttonPrimary" @click="onHeaderClick" v-click-anime><i class="fas fa-arrow-up"></i></button>
 			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
 			</template>
@@ -38,6 +39,7 @@
 import { defineComponent } from 'vue';
 import { modalMenu } from '@client/os';
 import { url } from '@client/config';
+import { eventBus } from "../../friendly/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -71,6 +73,7 @@ export default defineComponent({
 			showActions: false,
 			height: 0,
 			key: 0,
+			queue: 0,
 		};
 	},
 
@@ -94,6 +97,10 @@ export default defineComponent({
 			},
 			immediate: true
 		},
+	},
+
+	created() {
+		eventBus.on('kn-header-new', (q) => this.queueUpdated(q));
 	},
 
 	mounted() {
@@ -148,6 +155,10 @@ export default defineComponent({
 				});
 			}
 			modalMenu(menu, ev.currentTarget || ev.target);
+		},
+
+		queueUpdated(q) {
+			this.queue = q;
 		}
 	}
 });
@@ -224,6 +235,21 @@ export default defineComponent({
 		> .button_R {
 			height: var(--height);
 			width: var(--height);
+		}
+
+		> .new {
+			position: absolute;
+			z-index: 1;
+			right: 50px;
+
+			width: $avatar-size;
+			height: $avatar-size;
+			border-radius: 100px;
+			vertical-align: middle;
+			line-height: 0;
+			border: 2px solid var(--patron);
+			background: transparent;
+			margin-top: 10px;
 		}
 	}
 
