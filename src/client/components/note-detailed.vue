@@ -4,7 +4,7 @@
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote, 'friendly': isFriendlyUI, 'friendly': isVisitor }"
+	:class="{ renote: isRenote, 'friendly': isFriendlyUI || isVisitor }"
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
@@ -181,7 +181,7 @@ export default defineComponent({
 			isDeleted: false,
 			muted: false,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isVisitor: localStorage.getItem('ui') != "friendly || misskey || pope || chat || desktop || deck || ?zen",
+			isVisitor: localStorage.getItem('ui') !== "friendly || misskey || pope || chat || desktop || deck || ?zen",
 		};
 	},
 
