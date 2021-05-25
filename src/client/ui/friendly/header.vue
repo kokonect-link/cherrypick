@@ -241,14 +241,11 @@ export default defineComponent({
 			position: absolute;
 			z-index: 1;
 			right: 50px;
-
 			width: $avatar-size;
 			height: $avatar-size;
 			border-radius: 100px;
-			line-height: 0;
 			// border: 2px solid var(--patron);
 			background: transparent;
-			margin-top: 10px;
 
 			i {
 				color: var(--panelHeaderFg)
