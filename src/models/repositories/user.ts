@@ -194,6 +194,7 @@ export class UserRepository extends Repository<User> {
 			isAdmin: user.isAdmin || falsy,
 			isModerator: user.isModerator || falsy,
 			isPatron: user.isPatron || falsy,
+			isLocked: user.isLocked,
 			isBot: user.isBot || falsy,
 			isCat: user.isCat || falsy,
 			instance: user.host ? Instances.findOne({ host: user.host }).then(instance => instance ? {

@@ -5,7 +5,7 @@
 		<MkAcct class="username" :user="note.user"/>
 	</MkA>
 	<span class="is-bot" v-if="note.user.isBot">bot</span>
-	<span class="locked" v-if="$i.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
+	<span class="locked" v-if="note.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 	<span class="admin" v-if="note.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
 	<span class="patron" v-if="note.user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
