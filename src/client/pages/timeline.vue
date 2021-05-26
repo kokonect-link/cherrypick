@@ -153,8 +153,7 @@ export default defineComponent({
 		},
 
 		top() {
-			// scroll(this.$el, 0);
-			window.scroll({ top: 0, behavior: 'smooth' });
+			scroll(this.$el, 0);
 		},
 
 		async chooseList(ev) {
