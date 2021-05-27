@@ -1,9 +1,9 @@
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
-	<button class="item _button account" @click="openProfile" @contextmenu.stop.prevent="openAccountMenu" v-click-anime>
+	<button class="item _button account profile" @click="openProfile" @contextmenu.stop.prevent="openAccountMenu" v-click-anime>
 		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i" v-if="!iconOnly"/>
 	</button>
-	<div class="post" @click="post">
+	<div v-if="!iconOnly" class="post" @click="post">
 		<MkButton class="button" primary full>
 			<i class="fas fa-pencil-alt fa-fw"></i><span class="text" v-if="!iconOnly">{{ $ts.note }}</span>
 		</MkButton>
@@ -286,7 +286,7 @@ export default defineComponent({
 
 	> .post {
 		position: sticky;
-		top: 0;
+		top: 65px;
 		z-index: 1;
 		padding: 16px 0;
 		background: var(--bg);
@@ -390,6 +390,14 @@ export default defineComponent({
 	> .patron-button {
 		background: unset;
 		border: unset;
+	}
+
+	> .profile {
+		position: sticky;
+		top: 0;
+		z-index: 2;
+		background: var(--bg);
+		padding: 15px 0 0 0;
 	}
 }
 </style>
