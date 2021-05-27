@@ -140,6 +140,11 @@ export default defineComponent({
 	bottom: 130px;
 	right: 10px;
 
+	@media (min-width: (600px) + 1px) {
+		bottom: 105px;
+		right: 20px;
+	}
+
 	&.left {
 		> .item {
 			text-align: left;

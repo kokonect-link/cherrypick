@@ -25,12 +25,13 @@
 		</div>
 	</div>
 
-	<div class="floatbtn" v-if="isMobile">
+	<div class="floatbtn" v-if="!isDesktop">
 		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
 		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
 		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
 		<button v-if="$route.name === 'clips'" class="post _buttonPrimary" @click="createClip()" v-click-anime><i class="fas fa-plus"/></button>
 		<button v-if="$route.name === 'pages'" class="post _buttonPrimary" @click="createPage()" v-click-anime><i class="fas fa-plus"/></button>
+		<button v-if="$route.name === 'ads'" class="post _buttonPrimary" @click="createAd()" v-click-anime><i class="fas fa-plus"/></button>
   </div>
 
 	<div class="buttons" v-if="isMobile">
@@ -171,6 +172,10 @@ export default defineComponent({
 
 		createPage() {
 			eventBus.emit('kn-createpage');
+		},
+
+		createAd() {
+			eventBus.emit('kn-createad');
 		},
 
 		search() {
@@ -389,10 +394,6 @@ export default defineComponent({
 		box-sizing: border-box;
 		padding: 18px 0 calc(constant(safe-area-inset-bottom) + 43px); /* iOS 11.0 */
 		padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px); /* iOS 11.2 */
-		
-		@media (min-width: ($nav-hide-threshold + 1px)) {
-			display: none;
-		}
 
 		> .post {
 			position: fixed;
@@ -403,6 +404,18 @@ export default defineComponent({
 			box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 			font-size: 22px;
 			right: 15px;
+		}
+
+		@media (min-width: (850px) + 1px) {
+			display: none;
+		}
+
+		@media (min-width: (600px) + 1px) {
+			bottom: 50px;
+
+			> .post {
+				right: 30px;
+			}
 		}
 	}
 

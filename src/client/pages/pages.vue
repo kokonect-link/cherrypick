@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="rknalgpo _content my" v-if="tab === 'my'">
-			<MkButton v-if="!isMobile && isFriendlyUI || !isFriendlyUI" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
+			<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
 			<MkPagination :pagination="myPagesPagination" #default="{items}">
 				<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
 			</MkPagination>
@@ -39,6 +39,7 @@ import * as symbols from '@client/symbols';
 import {eventBus} from "../friendly/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
 const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
@@ -69,9 +70,10 @@ export default defineComponent({
 				endpoint: 'i/page-likes',
 				limit: 5,
 			},
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 

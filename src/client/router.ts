@@ -66,6 +66,7 @@ export const router = createRouter({
 		{ path: '/scratchpad', component: page('scratchpad') },
 		{ path: '/instance/:page(.*)?', component: page('instance/index'), props: route => ({ initialPage: route.params.page || null }) },
 		{ path: '/instance', component: page('instance/index') },
+		{ path: '/instance/ads', name: 'ads', component: page('instance/ads') },
 		{ path: '/notes/:note', name: 'note', component: page('note'), props: route => ({ noteId: route.params.note }) },
 		{ path: '/tags/:tag', name: 'tags',component: page('tag'), props: route => ({ tag: route.params.tag }) },
 		{ path: '/user-info/:user', component: page('user-info'), props: route => ({ userId: route.params.user }) },

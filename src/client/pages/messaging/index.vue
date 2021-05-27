@@ -1,6 +1,6 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
-	<MkButton v-if="!isMobile && isFriendlyUI || !isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -46,6 +46,7 @@ import * as symbols from '@client/symbols';
 import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
 const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
@@ -64,6 +65,7 @@ export default defineComponent({
 			messages: [],
 			connection: null,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};

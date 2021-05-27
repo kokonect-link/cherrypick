@@ -1,6 +1,6 @@
 <template>
 <div class="_section qtcaoidl">
-	<MkButton v-if="!isMobile && isFriendlyUI || !isFriendlyUI" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
 
 	<div class="_content">
 		<MkPagination :pagination="pagination" #default="{items}" ref="list" class="list">
@@ -27,6 +27,7 @@ import { eventBus } from "../../friendly/eventBus";
 import { userName } from '@client/filters/user';
 
 const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
 const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
@@ -51,6 +52,7 @@ export default defineComponent({
 			},
 			draft: null,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
