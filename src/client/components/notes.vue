@@ -17,11 +17,7 @@
 			</MkButton>
 		</div>
 
-		<XList v-if="$i.isPatron && $store.state.showAds" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
-			<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
-		</XList>
-
-		<XList v-else-if="!$i.isPatron" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
+		<XList v-if="($i.isPatron && $store.state.showAds) || !$i.isPatron" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
 			<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
 		</XList>
 
