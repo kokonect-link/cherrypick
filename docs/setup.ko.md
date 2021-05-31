@@ -25,7 +25,7 @@ adduser --disabled-password --disabled-login misskey
 아래 패키지를 설치 및 설정해 주세요:
 
 #### 종속성 :package:
-* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x, 15.x)
+* **[Node.js](https://nodejs.org/en/)** (12.x, 14.x, 15.x, 16.x)
 * **[PostgreSQL](https://www.postgresql.org/)** (10以上)
 * **[Redis](https://redis.io/)**
 
