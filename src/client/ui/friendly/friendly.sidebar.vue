@@ -275,7 +275,6 @@ export default defineComponent({
 				.not-patron {
 				margin: 0;
 			}
-			
 		}
 	}
 
