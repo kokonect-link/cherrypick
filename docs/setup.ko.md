@@ -42,7 +42,7 @@ adduser --disabled-password --disabled-login misskey
 
 	`su - misskey`
 
-2. master 브랜치에서 Misskey 저장소를 클론
+2. master 브랜치에서 Misskey 저장소 클론
 
 	`git clone -b master git://github.com/kokonect-link/misskey.git`
 
@@ -50,7 +50,7 @@ adduser --disabled-password --disabled-login misskey
 
 	`cd misskey`
 
-4. [최신 릴리즈](https://github.com/kokonect-link/misskey/releases/latest)를 확인
+4. [최신 릴리즈](https://github.com/kokonect-link/misskey/releases/latest) 확인
 
 	`git checkout master`
 

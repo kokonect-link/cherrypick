@@ -8,6 +8,9 @@ Docs for users are located in `src/docs`.
 这些文档是为 Misskey 的贡献者，或是 Misskey 实例的管理者准备的。
 为用户准备的文档放置在 `src/docs` 文件夹中。
 
+이 문서는 Misskey의 개발자 또는 Misskey 인스턴스 운영자용입니다.
+이용자용 문서는 `src/docs`에 있습니다.
+
 ## 日本語版
 
 - [Misskey構築の手引き](./setup.ja.md)
@@ -31,3 +34,9 @@ Docs for users are located in `src/docs`.
 - [Misskey 设置和安装指南](./setup.zh.md)
 - [运营指南](./manage.zh.md)
 - [Docker 部署指南](./docker.zh.md)
+
+## 한국어 버전
+
+- [Misskey 설치 가이드](./setup.ko.md)
+- [운영 가이드](./manage.ko.md)
+- [Docker 가이드](./docker.ko.md)

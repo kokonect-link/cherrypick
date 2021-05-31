@@ -5,6 +5,7 @@ Dockerを使ったMisskey構築方法
 
 - [英語版もあります - English version also available](./docker.en.md)
 - [简体中文版同样可用 - Simplified Chinese version also available](./docker.zh.md)
+- [韓国語版もあります - Korean version also available](./docker.ko.md)
 
 ----------------------------------------------------------------
 
@@ -12,13 +13,13 @@ Dockerを使ったMisskey構築方法
 ----------------------------------------------------------------
 1. masterブランチからMisskeyレポジトリをクローン
 
-	`git clone -b master git://github.com/misskey-dev/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/misskey.git`
 
 2. misskeyディレクトリに移動
 
 	`cd misskey`
 
-3. [最新のリリース](https://github.com/misskey-dev/misskey/releases/latest)を確認
+3. [最新のリリース](https://github.com/kokonect-link/misskey/releases/latest)を確認
 
 	`git checkout master`
 
