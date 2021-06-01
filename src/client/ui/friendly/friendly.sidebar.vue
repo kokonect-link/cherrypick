@@ -329,7 +329,7 @@ export default defineComponent({
 		font-size: $ui-font-size;
 		line-height: 2.6rem;
 		text-overflow: ellipsis;
-		//overflow: hidden;
+		overflow: hidden;
 		white-space: nowrap;
 		width: 100%;
 		text-align: left;

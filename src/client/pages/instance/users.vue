@@ -207,12 +207,17 @@ export default defineComponent({
 					margin-left: 0.3em;
 					padding: 0 8px;
 					flex: 1;
+					overflow: hidden;
+					text-overflow: ellipsis;
 
 					@media (max-width: 500px) {
 						font-size: 14px;
 					}
 
 					> header {
+						overflow: hidden;
+						text-overflow: ellipsis;
+
 						> .name {
 							font-weight: bold;
 						}

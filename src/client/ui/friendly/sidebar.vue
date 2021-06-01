@@ -371,7 +371,7 @@ export default defineComponent({
 				.patron-button {
 				position: relative;
 				display: block;
-				padding-left: 24px;
+				padding: 0 24px;
 				font-size: $ui-font-size;
 				line-height: 3rem;
 				text-overflow: ellipsis;
