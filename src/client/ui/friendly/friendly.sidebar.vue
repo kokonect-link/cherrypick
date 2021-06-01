@@ -250,6 +250,7 @@ export default defineComponent({
 			text-align: center;
 			font-size: $ui-font-size * 1.1;
 			line-height: 3.7rem;
+			overflow: unset;
 
 			> i,
 			> .avatar {
