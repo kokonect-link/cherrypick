@@ -1346,7 +1346,7 @@ _pages:
   nameAlreadyExists: "지정한 페이지 URL은 이미 존재하는 URL이에요."
   invalidNameTitle: "유효하지 않은 페이지 URL이에요"
   invalidNameText: "항목이 비어있지 않은지 확인해 주세요!"
-  editThisPage: "이 페이지를 편집"
+  editThisPage: "이 페이지 편집"
   viewSource: "소스 보기"
   viewPage: "페이지 보기"
   like: "좋아요"
