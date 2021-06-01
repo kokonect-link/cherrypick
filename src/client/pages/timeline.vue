@@ -132,6 +132,7 @@ export default defineComponent({
 		} else if (this.src === 'channel') {
 			this.channel = this.$store.state.tl.arg;
 		}
+		eventBus.on('kn-header-new-queue-reset', () => this.queue = 0);
 	},
 
 	methods: {
@@ -145,11 +146,12 @@ export default defineComponent({
 
 		queueUpdated(q) {
 			this.queue = q;
-			eventBus.emit('kn-header-new', q);
+			eventBus.emit('kn-timeline-new', q);
 		},
 
 		queueReset() {
 			this.queue = 0;
+			eventBus.emit('kn-timeline-new-queue-reset', 0);
 		},
 
 		top() {
