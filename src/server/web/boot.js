@@ -140,6 +140,8 @@
 			alert(
 				'Misskeyの新しいバージョンがあります。ページを再度読み込みします。' +
 				'\n\n' +
+				'Misskey가 새 버전으로 업데이트 되었습니다. 페이지를 다시 불러옵니다.' +
+				'\n\n' +
 				'New version of Misskey available. The page will be reloaded.');
 			refresh();
 		}
