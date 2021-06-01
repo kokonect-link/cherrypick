@@ -7,8 +7,8 @@
 
 <div align="center">
 
-[![CircleCI](https://img.shields.io/circleci/project/github/misskey-dev/misskey.svg?style=for-the-badge&logo=circleci)](https://circleci.com/gh/misskey-dev/misskey)
-[![Dependencies](https://img.shields.io/david/misskey-dev/misskey.svg?style=for-the-badge&logo=npm)](https://david-dm.org/misskey-dev/misskey)
+[![CircleCI](https://img.shields.io/circleci/project/github/kokonect-link/misskey.svg?style=for-the-badge&logo=circleci)](https://circleci.com/gh/kokonect-link/misskey)
+[![Dependencies](https://img.shields.io/david/kokonect-link/misskey.svg?style=for-the-badge&logo=npm)](https://david-dm.org/kokonect-link/misskey)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&logo=github)](http://makeapullrequest.com)
 [![Awesome Humane Tech](https://raw.githubusercontent.com/humanetech-community/awesome-humane-tech/main/humane-tech-badge.svg?sanitize=true)](https://github.com/humanetech-community/awesome-humane-tech)
 
@@ -19,7 +19,7 @@ Since it exists within the Fediverse (a universe where various social media plat
 it is mutually linked with other social media platforms.
 Why don't you take a short break from the hustle and bustle of the city, and dive into a new Internet? <a href="https://join.misskey.page/">Find an instance!</a>
 
-<a href="https://www.patreon.com/syuilo"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Become a Patron!" width="160" /></a>
+<a href="https://www.patreon.com/noridev"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" alt="Become a Patron!" width="160" /></a>
 
 </div>
 
@@ -224,7 +224,7 @@ Related projects
 <td><a href="https://www.patreon.com/user?u=12531784">Takashi Shibuya</a></td>
 </tr></table>
 
-**Last updated:** Mon, 10 May 2021 05:12:36 UTC
+**Last updated:** Tue, 01 Jun 2021 12:56:56 UTC
 <!-- PATREON_END -->
 
 [backer-url]: #backers
