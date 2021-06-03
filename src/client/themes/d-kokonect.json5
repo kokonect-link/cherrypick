@@ -8,7 +8,7 @@
 	base: 'dark',
 
 	props: {
-		bg: '#131313',
+		bg: '#232323',
 		fg: 'rgb(199, 209, 216)',
 		fgHighlighted: '#fff',
 		divider: 'rgba(255, 255, 255, 0.14)',
@@ -18,7 +18,7 @@
 		panelHeaderDivider: '@divider',
 		infoFg: '@accent',
 		infoBg: 'rgb(0, 0, 0)',
-		header: ':alpha<0.7<@panel',
+		header: ':alpha<0.7<@bg',
 		navBg: '@panel',
 		navHoverFg: '#a3faff',
 		renote: '@accent',
