@@ -134,9 +134,15 @@ export const sidebarDef = {
 		icon: 'fas fa-columns',
 		action: (ev) => {
 			os.modalMenu([{
-				text: i18n.locale.friendly + ' (β)',
+				text: i18n.locale.friendly,
 				action: () => {
 					localStorage.setItem('ui', 'friendly');
+					unisonReload();
+				}
+			}, {
+				text: i18n.locale.friendly + ' (β)',
+				action: () => {
+					localStorage.setItem('ui', 'friendly-beta');
 					unisonReload();
 				}
 			}, {
