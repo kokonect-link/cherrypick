@@ -10,6 +10,7 @@ import MkPostFormDialog from '@client/components/post-form-dialog.vue';
 import MkWaitingDialog from '@client/components/waiting-dialog.vue';
 import { resolve } from '@client/router';
 import { $i } from '@client/account';
+import * as Account from '@client/account';
 import { defaultStore } from '@client/store';
 
 export const stream = markRaw(new Misskey.Stream(url, $i));
@@ -494,6 +495,25 @@ export function upload(file: File, folder?: any, name?: string) {
 		};
 		reader.readAsArrayBuffer(file);
 	});
+}
+
+let accounts: Record<string, unknown>[] = [];
+const lastAccountsFetchedAt: number = 0;
+
+export async function getAccounts() {
+	// 前回取得時から5分以上経っている
+	const expired = Date.now() - lastAccountsFetchedAt > 1000 * 60 * 5;
+	// キャッシュが不一致
+	// TODO 現状は配列の長さで判定しているが、よりディープに判定したい
+	const tokens = Account.getAccounts();
+	const cacheMismatch = accounts.length !== tokens.length;
+	if (cacheMismatch || expired) {
+		accounts = (await api('users/show', { userIds: tokens.map(x => x.id) }) as Record<string, any>[])
+			.map((x, i) => ({ ...x, token: tokens[i].token  }))
+			.filter(x => !$i || x.id !== $i.id);
+	}
+
+	return Object.freeze([...accounts]);
 }
 
 /*
