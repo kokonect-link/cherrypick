@@ -80,7 +80,7 @@ export default defineComponent({
 
 		for (let i = 0; i < items.value.length; i++) {
 			const item = items.value[i];
-			
+
 			if (item && item.then) { // if item is Promise
 				items.value[i] = { type: 'pending' };
 				item.then(actualItem => {
