@@ -132,10 +132,12 @@ export default defineComponent({
 				return {
 					title: this.$ts.timeline,
 					tabs,
-					action: {
-						icon: 'fas fa-pencil-alt',
-						handler: () => os.post(),
-					}
+					icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+					actions: [{
+						icon: 'fas fa-calendar-alt',
+						text: this.$ts.jumpToSpecifiedDate,
+						handler: this.timetravel
+					}]
 				};
 			}),
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",

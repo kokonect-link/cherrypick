@@ -1,5 +1,5 @@
 <template>
-<div class="npcljfve">
+<div class="npcljfve" :class="{ iconOnly }">
 	<transition name="nav-back">
 		<div class="nav-back _modalBg"
 			v-if="showing"
@@ -9,13 +9,13 @@
 	</transition>
 
 	<transition name="nav">
-		<nav class="nav" :class="{ iconOnly, hidden }">
+		<nav class="nav">
 			<div class="profile">
-				<button class="item _button account" @click="openProfile" v-click-anime>
+				<button v-if="!iconOnly" class="item _button account" @click="openProfile" v-click-anime>
 					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 				</button>
-				<button v-if="iconOnly && !hidden" class="item _button" @click="openAccountMenu">
-					<i class="fas fa-ellipsis-v"/>
+				<button v-if="iconOnly" class="item _button account" @click="openAccountMenu" v-click-anime>
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 				</button>
 				<button v-else class="_button toggler" @click="toggleMenuMode">
 					<i v-if="isAccountMenuMode" class="fas fa-chevron-up"/>
@@ -286,11 +286,11 @@ export default defineComponent({
 	box-sizing: border-box;
 	width: 260px;
 
-	> .nav {
-		&.iconOnly {
-			flex: 0 0 $nav-icon-only-width;
-			width: $nav-icon-only-width !important;
+	&.iconOnly {
+		flex: 0 0 $nav-icon-only-width;
+		width: $nav-icon-only-width !important;
 
+		> .nav {
 			> .divider {
 				margin: 8px auto;
 				width: calc(100% - 32px);
@@ -348,7 +348,9 @@ export default defineComponent({
 				}
 			}
 		}
+	}
 
+	> .nav {
 		> .divider {
 			margin: 10px 0;
 			border-top: solid 0.5px var(--divider);
