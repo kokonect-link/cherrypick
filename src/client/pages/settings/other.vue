@@ -2,9 +2,11 @@
 <FormBase>
 	<FormLink to="/settings/update">Misskey Update</FormLink>
 
+	<!--
 	<FormSwitch :value="$i.injectFeaturedNote" @update:value="onChangeInjectFeaturedNote">
 		{{ $ts.showFeaturedNotesInTimeline }}
 	</FormSwitch>
+	-->
 
 	<FormSwitch v-model:value="reportError">{{ $ts.sendErrorReports }}<template #desc>{{ $ts.sendErrorReportsDescription }}</template></FormSwitch>
 

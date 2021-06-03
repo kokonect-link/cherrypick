@@ -21,6 +21,13 @@ export function signout() {
 	location.href = '/';
 }
 
+export function signoutAll() {
+	localStorage.removeItem('account');
+	localStorage.removeItem('accounts');
+	document.cookie = `igi=; path=/`;
+	location.href = '/';
+}
+
 export function getAccounts() {
 	const accountsData = localStorage.getItem('accounts');
 	const accounts: { id: Account['id'], token: Account['token'] }[] = accountsData ? JSON.parse(accountsData) : [];

@@ -31,6 +31,7 @@
 			<FormGroup>
 				<template #label>{{ $ts.clientSettings }}</template>
 				<FormLink :active="page === 'general'" replace to="/settings/general"><template #icon><i class="fas fa-cogs"></i></template>{{ $ts.general }}</FormLink>
+				<FormLink :active="page === 'timeline'" replace to="/settings/timeline"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.timeline }}</FormLink>
 				<FormLink :active="page === 'theme'" replace to="/settings/theme"><template #icon><i class="fas fa-palette"></i></template>{{ $ts.theme }}</FormLink>
 				<FormLink :active="page === 'sidebar'" replace to="/settings/sidebar"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.sidebar }}</FormLink>
 				<FormLink :active="page === 'sounds'" replace to="/settings/sounds"><template #icon><i class="fas fa-music"></i></template>{{ $ts.sounds }}</FormLink>
@@ -49,6 +50,7 @@
 			</FormGroup>
 			<FormGroup>
 				<FormButton @click="logout" danger>{{ $ts.logout }}</FormButton>
+				<FormButton @click="logoutAll" danger>{{ $ts.logoutAll }}</FormButton>
 			</FormGroup>
 		</FormBase>
 	</div>
@@ -67,11 +69,12 @@ import FormBase from '@client/components/form/base.vue';
 import FormButton from '@client/components/form/button.vue';
 import FormInfo from '@client/components/form/info.vue';
 import { scroll } from '@client/scripts/scroll';
-import { signout } from '@client/account';
+import { signout, signoutAll } from '@client/account';
 import { unisonReload } from '@client/scripts/unison-reload';
 import * as symbols from '@client/symbols';
 import { instance } from '@client/instance';
 import { $i } from '@client/account';
+import { dialog } from '@client/os';
 
 export default defineComponent({
 	components: {
@@ -121,6 +124,7 @@ export default defineComponent({
 				case 'apps': return defineAsyncComponent(() => import('./apps.vue'));
 				case 'other': return defineAsyncComponent(() => import('./other.vue'));
 				case 'general': return defineAsyncComponent(() => import('./general.vue'));
+				case 'timeline': return defineAsyncComponent(() => import('./timeline.vue'));
 				case 'email': return defineAsyncComponent(() => import('./email.vue'));
 				case 'email/address': return defineAsyncComponent(() => import('./email-address.vue'));
 				case 'email/notification': return defineAsyncComponent(() => import('./email-notification.vue'));
@@ -184,6 +188,17 @@ export default defineComponent({
 			}
 		});
 
+		const logoutAll = () => {
+			dialog({
+				type: 'warning',
+				text: i18n.locale.logoutAllConfirm,
+				showCancelButton: true
+			}).then(({ canceled }) => {
+				if (canceled) return;
+				signoutAll();
+			});
+		};
+
 		const emailNotConfigured = computed(() => instance.enableEmail && ($i.email == null || !$i.emailVerified));
 
 		return {
@@ -199,6 +214,7 @@ export default defineComponent({
 			logout: () => {
 				signout();
 			},
+			logoutAll,
 			clear: () => {
 				localStorage.removeItem('locale');
 				localStorage.removeItem('theme');
