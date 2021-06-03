@@ -256,16 +256,13 @@ export default defineComponent({
 		}
 
 		> .new {
-			position: absolute;
-			z-index: 1;
+			position: relative;
 			width: $avatar-size;
-			right: 50px;
-			border-radius: 100px;
-			// border: 2px solid var(--patron);
-			background: transparent;
+			top: 55px;
+			right: -46px;
 
 			i {
-				color: var(--panelHeaderFg)
+				color: var(--accent)
 			}
 		}
 	}
