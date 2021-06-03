@@ -2,7 +2,7 @@
 <div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isFriendlyUI && isMobile }">
+	<div v-if="!isFriendlyUIBeta" class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isFriendlyUI && isMobile }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -35,14 +35,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, computed } from 'vue';
+import { defineComponent, defineAsyncComponent, computed, ComputedRef } from 'vue';
 import Progress from '@client/scripts/loading';
 import XTimeline from '@client/components/timeline.vue';
 import XPostForm from '@client/components/post-form.vue';
 import { scroll } from '@client/scripts/scroll';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import {eventBus} from "@client/friendly/eventBus";
+import { eventBus } from '@client/friendly/eventBus';
+import { timelineMenuItems, timelineMenuMap } from '@client/friendly/timeline';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -64,16 +65,80 @@ export default defineComponent({
 			channel: null,
 			menuOpened: false,
 			queue: 0,
-			[symbols.PAGE_INFO]: computed(() => ({
-				title: this.$ts.timeline,
-				icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
-				actions: [{
-					icon: 'fas fa-calendar-alt',
-					text: this.$ts.jumpToSpecifiedDate,
-					handler: this.timetravel
-				}]
-			})),
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			width: 0,
+			announcements: [],
+			hasUnreadAnnouncements: false,
+			[symbols.PAGE_INFO]: computed(() => {
+				type Tab = {
+					id: string,
+					title?: string | null,
+					tooltip?: string | null,
+					icon?: any,
+					onClick?: () => void,
+					selected?: ComputedRef<boolean> | boolean,
+					indicate?: ComputedRef<boolean> | boolean,
+				};
+				const tabs: Tab[] = [];
+				for (const item of (this.$store.state.timelineTabItems as []).map(src => timelineMenuItems.find(it => it.src === src))) {
+					if (!item) continue;
+					if (item.show && !item.show()) continue;
+					tabs.push({
+						id: item.src,
+						title: null,
+						tooltip: item.name,
+						icon: item.icon,
+						onClick: () => { this.src = item.src; this.saveSrc(); },
+						selected: computed(() => this.src === item.src),
+					});
+				}
+				if (!this.$store.state.timelineTabItems.includes(this.src)) {
+					tabs.push({
+						id: this.src,
+						title: null,
+						icon: this.src === 'antenna' ? 'fas fa-satellite' : this.src === 'list' ? 'fas fa-list-ul' : timelineMenuMap[this.src] ? timelineMenuMap[this.src].icon : null,
+						selected: true,
+					});
+				}
+				tabs.push({
+					id: 'other',
+					title: null,
+					icon: 'fas fa-ellipsis-h',
+					onClick: this.choose,
+					indicate: computed(() => this.$i.hasUnreadAntenna || this.$i.hasUnreadChannel)
+				});
+				if (this.announcements.length > 0) {
+					tabs.push({
+						id: 'announcements',
+						title: null,
+						icon: 'fas fa-bullhorn',
+						onClick: () => {
+							os.popup(import('@client/components/announcements-window.vue'), {
+								announcements: this.announcements
+							}, {
+								read: ann => {
+									this.announcements = this.announcements.map(a => {
+										const newA = a;
+										newA.isRead = newA.isRead || a.id === ann.id;
+										return newA;
+									});
+									this.hasUnreadAnnouncements = this.announcements.some(a => !a.isRead);
+									os.api('i/read-announcement', { announcementId: ann.id })
+								},
+							}, 'closed');
+						},
+						indicate: computed(() => this.hasUnreadAnnouncements)
+					});
+				};
+				return {
+					title: this.$ts.timeline,
+					tabs,
+					action: {
+						icon: 'fas fa-pencil-alt',
+						handler: () => os.post(),
+					}
+				};
+			}),
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
@@ -84,6 +149,8 @@ export default defineComponent({
 			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
 			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
 		}, { passive: true });
+
+		this.width = this.$el.offsetWidth;
 	},
 
 	computed: {
@@ -91,6 +158,10 @@ export default defineComponent({
 			return {
 				't': this.focus
 			};
+		},
+
+		meta() {
+			return this.$instance;
 		},
 
 		isLocalTimelineAvailable(): boolean {
@@ -135,6 +206,13 @@ export default defineComponent({
 		eventBus.on('kn-header-new-queue-reset', () => this.queue = 0);
 	},
 
+	async activated() {
+		this.announcements = (await os.api('announcements', {
+			limit: 100,
+		}));
+		this.hasUnreadAnnouncements = this.announcements.some(a => !a.isRead);
+	},
+
 	methods: {
 		before() {
 			Progress.start();
@@ -145,6 +223,7 @@ export default defineComponent({
 		},
 
 		queueUpdated(q) {
+			if (this.$el.offsetWidth !== 0) this.width = this.$el.offsetWidth;
 			this.queue = q;
 			eventBus.emit('kn-timeline-new', q);
 		},
@@ -156,6 +235,65 @@ export default defineComponent({
 
 		top() {
 			scroll(this.$el, 0);
+		},
+
+		async choose(ev) {
+			if (this.meta == null) return;
+			const antennaPromise = os.api('antennas/list').then((antennas: any[]) => antennas.length === 0 ? [] : [null, ...antennas.map(antenna => ({
+				text: antenna.name,
+				icon: 'fas fa-satellite',
+				indicate: antenna.hasUnreadNote,
+				action: () => {
+					this.antenna = antenna;
+					this.src = 'antenna';
+					this.saveSrc();
+					this.queueReset();
+					this.top();
+				}
+			}))]);
+			const listPromise = os.api('users/lists/list').then((lists: any[]) => lists.length === 0 ? [] : [null, ...lists.map(list => ({
+				text: list.name,
+				icon: 'fas fa-list-ul',
+				action: () => {
+					this.list = list;
+					this.src = 'list';
+					this.saveSrc();
+					this.queueReset();
+					this.top();
+				}
+			}))]);
+			const channelPromise = os.api('channels/followed').then((channels: any[]) => channels.length === 0 ? [] : [null, ...channels.map(channel => ({
+				text: channel.name,
+				icon: 'fas fa-satellite-dish',
+				indicate: channel.hasUnreadNote,
+				action: () => {
+					// NOTE: チャンネルタイムラインをこのコンポーネントで表示するようにすると投稿フォームはどうするかなどの問題が生じるのでとりあえずページ遷移で
+					//this.channel = channel;
+					//this.src = 'channel';
+					//this.saveSrc();
+					this.$router.push(`/channels/${channel.id}`);
+					this.queueReset();
+					this.top();
+				}
+			}))]);
+			const timelines = timelineMenuItems
+				.filter(it => !(this.$store.state.timelineTabItems as string[]).includes(it.src))
+				.map(it => ({
+					text: it.name,
+					icon: it.icon,
+					action: () => {
+						this.src = it.src;
+						this.saveSrc();
+						this.queueReset();
+						this.top();
+					},
+			}));
+			os.modalMenu([
+				timelines,
+				antennaPromise,
+				listPromise,
+				channelPromise,
+			], ev.currentTarget || ev.target);
 		},
 
 		async chooseList(ev) {
