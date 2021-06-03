@@ -28,7 +28,7 @@
 			</button>
 		</div>
 		<div class="buttons_R">
-			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary" @click="top" v-click-anime><i class="fas fa-arrow-up"></i></button>
+			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _button button_R" @click="top" v-click-anime><i class="fas fa-arrow-up"></i></button>
 			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
 			</template>
@@ -258,9 +258,8 @@ export default defineComponent({
 		> .new {
 			position: absolute;
 			z-index: 1;
-			right: 50px;
 			width: $avatar-size;
-			height: $avatar-size;
+			right: 50px;
 			border-radius: 100px;
 			// border: 2px solid var(--patron);
 			background: transparent;
