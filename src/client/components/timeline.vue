@@ -105,8 +105,11 @@ export default defineComponent({
 			this.connection2.on('follow', onChangeFollowing);
 			this.connection2.on('unfollow', onChangeFollowing);
 		} else if (this.src == 'local') {
-			endpoint = 'notes/local-timeline';
-			this.connection = os.stream.useChannel('localTimeline');
+			const [ ep, con ] = this.$store.state.injectUnlistedNoteInLTL
+				? [ 'notes/local-hybrid-timeline', 'localHybridTimeline' ]
+				: [ 'notes/local-timeline', 'localTimeline' ];
+			endpoint = ep;
+			this.connection = os.stream.useSharedConnection(con);
 			this.connection.on('note', prepend);
 		} else if (this.src == 'social') {
 			endpoint = 'notes/hybrid-timeline';

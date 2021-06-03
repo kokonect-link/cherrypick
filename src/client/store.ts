@@ -197,6 +197,17 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true
 	},
+
+	//#region CherryPick
+
+	timelineTabItems: {
+		where: 'device',
+		default: ['home', 'local']
+	},
+	injectUnlistedNoteInLTL: {
+		where: 'account',
+		default: false
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期
