@@ -345,6 +345,10 @@ export default defineComponent({
 			> .content {
 				background: var(--bg);
 				--stickyTop: #{$header-height};
+
+				&._flat_friendly_ {
+					margin: 0 8px;
+				}
 			}
 
 			@media (max-width: 850px) {

@@ -138,6 +138,7 @@ export default defineComponent({
 					}
 				};
 			}),
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
