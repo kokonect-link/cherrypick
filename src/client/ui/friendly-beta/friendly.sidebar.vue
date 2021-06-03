@@ -68,14 +68,14 @@
 				<!--<MisskeyLogo class="misskey"/>-->
 			</template>
 			<template v-else>
-				<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item _button account" v-click-anime>
+				<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item-switch-acct _button account" v-click-anime>
 					<MkAvatar :user="acct" class="avatar"/><MkUserName class="name" :user="acct"/>
 				</button>
-				<MkEllipsis v-if="loadingAccounts" class="item" />
+				<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
 				<div class="divider" v-if="accounts.length > 0"></div>
-				<button class="item _button" @click="addAccount" v-text="$ts.addAccount"/>
-				<button class="item _button" @click="createAccount" v-text="$ts.createAccount"/>
-				<button class="item danger _button" @click="signout" v-text="$ts.logout"/>
+				<button class="item-switch-acct _button" @click="addAccount" v-text="$ts.addAccount"/>
+				<button class="item-switch-acct _button" @click="createAccount" v-text="$ts.createAccount"/>
+				<button class="item-switch-acct danger _button" @click="signout" v-text="$ts.logout"/>
 			</template>
 		</nav>
 	</transition>
@@ -389,7 +389,7 @@ export default defineComponent({
 		}
 
 		> .item,
-		.patron-button {
+			.patron-button {
 			position: relative;
 			display: block;
 			font-size: $ui-font-size;
@@ -430,7 +430,7 @@ export default defineComponent({
 			}
 
 			> .patron,
-			.not-patron {
+				.not-patron {
 				margin-left: 6px;
 				margin-right: 12px;
 			}
@@ -450,6 +450,52 @@ export default defineComponent({
 			&:hover {
 				text-decoration: none;
 				color: var(--navHoverFg);
+			}
+
+			&.active {
+				color: var(--navActive);
+			}
+		}
+
+		> .item-switch-acct {
+			position: relative;
+			display: block;
+			font-size: $ui-font-size;
+			line-height: 3rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			width: 100%;
+			text-align: left;
+			box-sizing: border-box;
+			padding-left: 12px;
+
+			> i {
+				width: 32px;
+				margin-left: 3px;
+				margin-right: $avatar-margin;
+			}
+
+			> .avatar {
+				margin-left: unset;
+				margin-right: $avatar-margin;
+				width: $avatar-size;
+				height: $avatar-size;
+				vertical-align: middle;
+			}
+
+			> .name {
+				margin-left: 10px;
+				font-weight: bold;
+			}
+
+			&:hover {
+				text-decoration: none;
+				color: var(--navHoverFg);
+			}
+
+			&:last-child {
+				margin-top: 8px;
 			}
 
 			&.active {
@@ -504,13 +550,13 @@ export default defineComponent({
 					font-weight: bold;
 				}
 
+				&.active {
+					color: var(--navActive);
+				}
+
 				&:hover {
 					text-decoration: none;
 					color: var(--navHoverFg);
-				}
-
-				&.active {
-					color: var(--navActive);
 				}
 			}
 

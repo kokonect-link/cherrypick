@@ -64,14 +64,14 @@
 					</div>
 				</template>
 				<template v-else>
-					<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item _button account" v-click-anime>
+					<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item-switch-acct _button account" v-click-anime>
 						<MkAvatar :user="acct" class="avatar"/><MkUserName class="name" :user="acct"/>
 					</button>
-					<MkEllipsis v-if="loadingAccounts" class="item" />
+					<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
 					<div class="divider" v-if="accounts.length > 0"></div>
-					<button class="item _button" @click="addAccount" v-text="$ts.addAccount"/>
-					<button class="item _button" @click="createAccount" v-text="$ts.createAccount"/>
-					<button class="item danger _button" @click="signout" v-text="$ts.logout"/>
+					<button class="item-switch-acct _button" @click="addAccount" v-text="$ts.addAccount"/>
+					<button class="item-switch-acct _button" @click="createAccount" v-text="$ts.createAccount"/>
+					<button class="item-switch-acct danger _button" @click="signout" v-text="$ts.logout"/>
 				</template>
 			</div>
 		</nav>
@@ -496,6 +496,54 @@ export default defineComponent({
 					-webkit-backdrop-filter: blur(8px);
 					backdrop-filter: blur(8px);
 				}
+			}
+
+			> .item-switch-acct {
+				position: relative;
+				display: block;
+				padding: 0 24px;
+				font-size: $ui-font-size;
+				line-height: 3rem;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				width: 100%;
+				text-align: left;
+				box-sizing: border-box;
+				color: var(--navFg);
+
+				> i {
+					width: 32px;
+				}
+
+				> i,
+				> .avatar {
+					margin-right: $avatar-margin;
+				}
+
+				> .avatar {
+					width: $avatar-size;
+					height: $avatar-size;
+					vertical-align: middle;
+				}
+
+				> .name {
+					margin-left: 5px;
+					font-weight: bold;
+				}
+
+				&:hover {
+					text-decoration: none;
+					color: var(--navHoverFg);
+				}
+
+				&.active {
+					color: var(--navActive);
+				}
+
+				&:last-child {
+					margin-top: 8px;
+				}
 
 				&.danger {
 					color: red;
@@ -548,13 +596,13 @@ export default defineComponent({
 						font-weight: bold;
 					}
 
+					&.active {
+						color: var(--navActive);
+					}
+
 					&:hover {
 						text-decoration: none;
 						color: var(--navHoverFg);
-					}
-
-					&.active {
-						color: var(--navActive);
 					}
 				}
 
