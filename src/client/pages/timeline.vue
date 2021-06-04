@@ -99,13 +99,15 @@ export default defineComponent({
 						selected: true,
 					});
 				}
-				tabs.push({
-					id: 'other',
-					title: null,
-					icon: 'fas fa-ellipsis-h',
-					onClick: this.choose,
-					indicate: computed(() => this.$i.hasUnreadAntenna || this.$i.hasUnreadChannel)
-				});
+				if (timelineMenuItems.filter(it => !(this.$store.state.timelineTabItems as string[]).includes(it.src)).length > 0) {
+					tabs.push({
+						id: 'other',
+						title: null,
+						icon: 'fas fa-ellipsis-h',
+						onClick: this.choose,
+						indicate: computed(() => this.$i.hasUnreadAntenna || this.$i.hasUnreadChannel)
+					});
+				}
 				if (this.announcements.length > 0) {
 					tabs.push({
 						id: 'announcements',
@@ -242,7 +244,7 @@ export default defineComponent({
 
 		async choose(ev) {
 			if (this.meta == null) return;
-			const antennaPromise = os.api('antennas/list').then((antennas: any[]) => antennas.length === 0 ? [] : [null, ...antennas.map(antenna => ({
+			const antennaPromise = await os.api('antennas/list').then((antennas: any[]) => antennas.length === 0 ? [] : [null, ...antennas.map(antenna => ({
 				text: antenna.name,
 				icon: 'fas fa-satellite',
 				indicate: antenna.hasUnreadNote,
@@ -254,7 +256,7 @@ export default defineComponent({
 					this.top();
 				}
 			}))]);
-			const listPromise = os.api('users/lists/list').then((lists: any[]) => lists.length === 0 ? [] : [null, ...lists.map(list => ({
+			const listPromise = await os.api('users/lists/list').then((lists: any[]) => lists.length === 0 ? [] : [null, ...lists.map(list => ({
 				text: list.name,
 				icon: 'fas fa-list-ul',
 				action: () => {
@@ -265,7 +267,7 @@ export default defineComponent({
 					this.top();
 				}
 			}))]);
-			const channelPromise = os.api('channels/followed').then((channels: any[]) => channels.length === 0 ? [] : [null, ...channels.map(channel => ({
+			const channelPromise = await os.api('channels/followed').then((channels: any[]) => channels.length === 0 ? [] : [null, ...channels.map(channel => ({
 				text: channel.name,
 				icon: 'fas fa-satellite-dish',
 				indicate: channel.hasUnreadNote,
@@ -291,12 +293,13 @@ export default defineComponent({
 						this.top();
 					},
 			}));
-			os.modalMenu([
-				timelines,
-				antennaPromise,
-				listPromise,
-				channelPromise,
-			], ev.currentTarget || ev.target);
+			const items = [
+				...timelines,
+				...antennaPromise,
+				...listPromise,
+				...channelPromise
+			]
+			await os.modalMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseList(ev) {
@@ -311,7 +314,7 @@ export default defineComponent({
 					this.top();
 				}
 			}));
-			os.modalMenu(items, ev.currentTarget || ev.target);
+			await os.modalMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseAntenna(ev) {
@@ -327,7 +330,7 @@ export default defineComponent({
 					this.top();
 				}
 			}));
-			os.modalMenu(items, ev.currentTarget || ev.target);
+			await os.modalMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseChannel(ev) {
@@ -345,7 +348,7 @@ export default defineComponent({
 					this.top();
 				}
 			}));
-			os.modalMenu(items, ev.currentTarget || ev.target);
+			await os.modalMenu(items, ev.currentTarget || ev.target);
 		},
 
 		saveSrc() {
