@@ -5,7 +5,9 @@
 		<XNoteHeader class="header" :note="note" :mini="true"/>
 		<div class="body">
 			<p v-if="note.cw != null" class="cw">
-				<span class="text" v-if="note.cw != ''">{{ note.cw }}</span>
+				<MkA class="text-group" :to="notePage(note)">
+					<span class="text" v-if="note.cw != ''">{{ note.cw }}</span>
+				</MkA>
 				<XCwButton v-model:value="showContent" :note="note"/>
 			</p>
 			<div class="content" v-show="note.cw == null || showContent">
@@ -22,6 +24,7 @@ import XNoteHeader from './note-header.vue';
 import XSubNoteContent from './sub-note-content.vue';
 import XCwButton from './cw-button.vue';
 import * as os from '@client/os';
+import notePage from "@client/filters/note";
 
 export default defineComponent({
 	components: {
@@ -41,6 +44,10 @@ export default defineComponent({
 		return {
 			showContent: false
 		};
+	},
+
+	methods: {
+		notePage
 	}
 });
 </script>
@@ -95,8 +102,16 @@ export default defineComponent({
 				padding: 0;
 				overflow-wrap: break-word;
 
-				> .text {
-					margin-right: 8px;
+				> .text-group {
+					text-decoration: none;
+
+					> .text {
+						margin-right: 8px;
+					}
+
+					&:hover {
+						color: var(--accent);
+					}
 				}
 			}
 
