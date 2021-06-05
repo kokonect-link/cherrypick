@@ -263,7 +263,7 @@ export default defineComponent({
 			height: $avatar-size;
 			border-radius: 100px;
 			line-height: 0;
-			background: #95e3e8;
+			background: var(--nect);
 			margin-top: 10px;
 
 			&:hover {
