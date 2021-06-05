@@ -72,7 +72,7 @@ export default defineComponent({
 						height = parent.getBoundingClientRect().width * 9 / 16;
 					}
 
-					this.gridInnerStyle = { height: `${height}px` };
+					// this.gridInnerStyle = { height: `${height}px` };
 				} else {
 					this.gridInnerStyle = {};
 				}
