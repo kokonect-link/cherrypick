@@ -88,7 +88,12 @@ export default defineComponent({
 						title: null,
 						tooltip: item.name,
 						icon: item.icon,
-						onClick: () => { this.src = item.src; this.saveSrc(); },
+						onClick: () => {
+							this.src = item.src;
+							this.saveSrc();
+							this.queueReset();
+							this.top();
+						},
 						selected: computed(() => this.src === item.src),
 					});
 				}
