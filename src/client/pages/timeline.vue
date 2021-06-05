@@ -18,7 +18,7 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div :class="{ 'new-friendly': isFriendlyUI && isDesktop, 'new': !isFriendlyUI }" v-if="queue > 0 && !isFriendlyUIBeta"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+	<div :class="{ 'new-friendly': isFriendlyUI && isDesktop, 'new': !isFriendlyUI }" v-if="queue > 0 && (!isFriendlyUIBeta || (isFriendlyUIBeta && isDesktop))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
