@@ -776,6 +776,10 @@ pinnedTimeline: "ピン留めするタイムライン"
 pinnedTimelineDescription: "ドラッグ&ドロップして、並び替えられます。"
 pinnedTimelineDescription2: "ここからピン留めしたいタイムラインをタップして追加できます。"
 pinnedTimelineEverything: "ほう、全部乗せですか…たいしたものですね"
+renoteCount: "{count} リノート"
+quoteCount: "{count} 引用ノート"
+renoteQuoteCount: "{count} リノートと引用ノート"
+quotes: "引用ノート"
 
 _ad:
   back: "戻る"

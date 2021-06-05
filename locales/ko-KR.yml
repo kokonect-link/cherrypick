@@ -776,6 +776,10 @@ pinnedTimeline: "타임라인 고정"
 pinnedTimelineDescription: "드래그&드롭하여 정렬할 수 있어요."
 pinnedTimelineDescription2: "여기에서 고정하고 싶은 타임라인을 탭해서 추가할 수 있어요!"
 pinnedTimelineEverything: "와우, 전부 다 고정하셨군요! 대단해요!"
+renoteCount: "{count} 리노트"
+quoteCount: "{count} 인용한 노트"
+renoteQuoteCount: "{count} 리노트 및 인용한 노트"
+quotes: "인용한 노트"
 
 _ad:
   back: "뒤로 가기"

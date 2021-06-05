@@ -84,6 +84,15 @@
 					<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 					<MkTime class="created-at" :time="note.createdAt" mode="detail"/>
 				</div>
+				<div class="renotes" v-if="renoteState">
+					<MkA :to="`/notes/${appearNote.id}/renotes`">
+						<I18n :src="renoteState.isQuoted && renoteState.isRenoted ? $ts.renoteQuoteCount : renoteState.isQuoted ? $ts.quoteCount : $ts.renoteCount" tag="span">
+							<template #count>
+								<strong>{{ appearNote.renoteCount }}</strong>
+							</template>
+						</I18n>
+					</MkA>
+				</div>
 				<XReactionsViewer :note="appearNote" ref="reactionsViewer"/>
 				<button @click="reply()" class="button _button">
 					<template v-if="appearNote.reply"><i class="fas fa-reply-all"></i></template>
@@ -180,6 +189,10 @@ export default defineComponent({
 			showContent: false,
 			isDeleted: false,
 			muted: false,
+			renoteState: null as {
+				isRenoted: boolean;
+				isQuoted: boolean;
+			} | null,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isVisitor: localStorage.getItem('ui') !== "friendly || misskey || pope || chat || desktop || deck || ?zen",
 		};
@@ -265,6 +278,12 @@ export default defineComponent({
 		}
 
 		this.muted = await checkWordMute(this.appearNote, this.$i, this.$store.state.mutedWords);
+
+		if (this.appearNote.renoteCount > 0) {
+			this.renoteState = await os.api('notes/is-renoted', {
+				noteId: this.appearNote.id,
+			});
+		}
 
 		// plugin
 		if (noteViewInterruptors.length > 0) {
@@ -1114,6 +1133,20 @@ export default defineComponent({
 
 					> .mobile {
 						margin-right: 0.5em;
+					}
+				}
+
+				> .renotes {
+					opacity: 0.8;
+					margin: 8px 0;
+					font-size: 0.9em;
+
+					> a {
+						text-decoration: none;
+					}
+
+					&:hover {
+						color: var(--fgHighlighted);
 					}
 				}
 

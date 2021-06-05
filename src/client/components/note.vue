@@ -42,7 +42,9 @@
 			<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
 			<div class="body">
 				<p v-if="appearNote.cw != null" class="cw">
-					<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+					<MkA class="text-group" :to="notePage(note)">
+						<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+					</MkA>
 					<XCwButton v-model:value="showContent" :note="appearNote"/>
 				</p>
 				<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
@@ -168,6 +170,7 @@ export default defineComponent({
 			isDeleted: false,
 			muted: false,
 			isSticky: this.$route.name === 'tags',
+			renoteState: null,
 		};
 	},
 
@@ -1020,8 +1023,16 @@ export default defineComponent({
 					padding: 0;
 					overflow-wrap: break-word;
 
-					> .text {
-						margin-right: 8px;
+					> .text-group {
+						text-decoration: none;
+
+						> .text {
+							margin-right: 8px;
+						}
+
+						&:hover {
+							color: var(--accent);
+						}
 					}
 				}
 
