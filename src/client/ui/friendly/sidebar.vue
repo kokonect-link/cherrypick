@@ -49,7 +49,7 @@
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
 						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
-						<p style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #a3faff;">NECT</span></b></p>
+						<p style="font-size:10px;"><b><span style="color: var(--koko);">KOKO</span><span style="color: var(--nect);">NECT</span></b></p>
 					</MkA>
 				</div>
 			</div>

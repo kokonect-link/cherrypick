@@ -61,8 +61,8 @@
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
 						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
-						<p v-if="iconOnly" style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><br/><span style="color: #a3faff;">NECT</span></b></p>
-						<p v-else style="font-size:10px;"><b><span style="color: #ffa9c3;">KOKO</span><span style="color: #a3faff;">NECT</span></b></p>
+						<p v-if="iconOnly" style="font-size:10px;"><b><span style="color: var(--koko);">KOKO</span><br/><span style="color: var(--nect);">NECT</span></b></p>
+						<p v-else style="font-size:10px;"><b><span style="color: var(--koko);">KOKO</span><span style="color: var(--nect);">NECT</span></b></p>
 					</MkA>
 				</div>
 				<!--<MisskeyLogo class="misskey"/>-->
