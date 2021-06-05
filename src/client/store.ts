@@ -193,13 +193,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false
 	},
+
+	//#region CherryPick
+
 	showAds: {
 		where: 'device',
 		default: true
 	},
-
-	//#region CherryPick
-
 	timelineTabItems: {
 		where: 'device',
 		default: ['home', 'local']
@@ -207,6 +207,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	injectUnlistedNoteInLTL: {
 		where: 'account',
 		default: false
+	},
+	showMediaDetails: {
+		where: 'device',
+		default: true
 	},
 }));
 

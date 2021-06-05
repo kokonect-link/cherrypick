@@ -781,6 +781,8 @@ quoteCount: "{count} 引用ノート"
 renoteQuoteCount: "{count} リノートと引用ノート"
 quotes: "引用ノート"
 renoteQuote: "リノートと引用"
+showMediaDetails: "自動的に項目を開く"
+showMediaDetailsDesc: "引用されたノートの項目（メディア、投票など）を自動的に広げて表示します。"
 
 _ad:
   back: "戻る"

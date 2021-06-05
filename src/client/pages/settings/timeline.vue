@@ -10,6 +10,12 @@
 		</FormSwitch>
 	</FormGroup>
 	<FormGroup>
+		<FormSwitch v-model:value="showMediaDetails">
+			{{ $ts.showMediaDetails }}
+			<template #desc>{{ $ts.showMediaDetailsDesc }}</template>
+		</FormSwitch>
+	</FormGroup>
+	<FormGroup>
 		<div class="_formItem _formPanel" style="padding: 16px;">
 			<h2>{{ $ts.pinnedTimeline }}</h2>
 			<div class="_caption" v-if="items.length > 0" style="padding-bottom: 8px;">{{ $ts.pinnedTimelineDescription }}</div>
@@ -72,6 +78,7 @@ export default defineComponent({
 		},
 
 		injectUnlistedNoteInLTL: defaultStore.makeGetterSetter('injectUnlistedNoteInLTL'),
+		showMediaDetails: defaultStore.makeGetterSetter('showMediaDetails'),
 	},
 
 	watch: {
@@ -134,7 +141,7 @@ export default defineComponent({
 	border-bottom: none;
 	cursor: move;
 
-	> .icon {
+	> i {
 		margin: 0 8px;
 	}
 

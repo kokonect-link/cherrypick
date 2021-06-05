@@ -781,6 +781,8 @@ quoteCount: "{count} Quote"
 renoteQuoteCount: "{count} Renote and Quote"
 quotes: "Quote Note"
 renoteQuote: "Renote or Quote"
+showMediaDetails: "Automatically expand items"
+showMediaDetailsDesc: "Automatically expands and displays items(media, poll, etc.) in quoted notes."
 _ad:
   back: "Back"
   reduceFrequencyOfThisAd: "Show this ad less"
