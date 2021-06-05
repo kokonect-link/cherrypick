@@ -8,11 +8,11 @@
 	base: 'dark',
 
 	props: {
-		bg: '#232323',
+		bg: '#373940',
 		fg: 'rgb(199, 209, 216)',
 		fgHighlighted: '#fff',
 		divider: 'rgba(255, 255, 255, 0.14)',
-		panel: '#1a1a1a',
+		panel: '#3e3f47',
 		panelShadow: '" 0 8px 24px rgb(0 0 0 / 25%)',
 		panelHeaderBg: '@panel',
 		panelHeaderDivider: '@divider',
