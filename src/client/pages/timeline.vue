@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, computed, ComputedRef } from 'vue';
+import { computed, ComputedRef, defineAsyncComponent, defineComponent } from 'vue';
 import Progress from '@client/scripts/loading';
 import XTimeline from '@client/components/timeline.vue';
 import XPostForm from '@client/components/post-form.vue';
@@ -68,6 +68,7 @@ export default defineComponent({
 			width: 0,
 			announcements: [],
 			hasUnreadAnnouncements: false,
+			menuItems: [],
 			[symbols.PAGE_INFO]: computed(() => {
 				type Tab = {
 					id: string,
@@ -99,7 +100,7 @@ export default defineComponent({
 						selected: true,
 					});
 				}
-				if (timelineMenuItems.filter(it => !(this.$store.state.timelineTabItems as string[]).includes(it.src)).length > 0) {
+				if ((timelineMenuItems.filter(it => !(this.$store.state.timelineTabItems as string[]).includes(it.src)).length > 0) || (this.menuItems.length > 0)) {
 					tabs.push({
 						id: 'other',
 						title: null,
@@ -130,7 +131,7 @@ export default defineComponent({
 						},
 						indicate: computed(() => this.hasUnreadAnnouncements)
 					});
-				};
+				}
 				return {
 					title: this.$ts.timeline,
 					tabs,
@@ -156,6 +157,8 @@ export default defineComponent({
 		}, { passive: true });
 
 		this.width = this.$el.offsetWidth;
+
+		this.menuItemArray();
 	},
 
 	computed: {
@@ -242,6 +245,36 @@ export default defineComponent({
 			scroll(this.$el, 0);
 		},
 
+		menuItemArray() {
+			this.menuItemArrayLists()
+			this.menuItemArrayAntenna()
+			this.menuItemArrayChannel()
+		},
+
+		async menuItemArrayLists() {
+			const lists = await os.api('users/lists/list');
+			const items = lists.map(list => ({
+				text: list.name
+			}));
+			this.menuItems = [...items];
+		},
+
+		async menuItemArrayAntenna() {
+			const antennas = await os.api('antennas/list');
+			const items = antennas.map(antenna => ({
+				text: antenna.name,
+			}));
+			this.menuItems = [...items];
+		},
+
+		async menuItemArrayChannel() {
+			const channels = await os.api('channels/followed');
+			const items = channels.map(channel => ({
+				text: channel.name,
+			}));
+			this.menuItems = [...items];
+		},
+
 		async choose(ev) {
 			if (this.meta == null) return;
 			const antennaPromise = await os.api('antennas/list').then((antennas: any[]) => antennas.length === 0 ? [] : [null, ...antennas.map(antenna => ({
@@ -293,13 +326,12 @@ export default defineComponent({
 						this.top();
 					},
 			}));
-			const items = [
+			await os.modalMenu([
 				...timelines,
 				...antennaPromise,
 				...listPromise,
 				...channelPromise
-			]
-			await os.modalMenu(items, ev.currentTarget || ev.target);
+			], ev.currentTarget || ev.target);
 		},
 
 		async chooseList(ev) {
