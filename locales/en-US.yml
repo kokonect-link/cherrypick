@@ -780,6 +780,7 @@ renoteCount: "{count} Renote"
 quoteCount: "{count} Quote"
 renoteQuoteCount: "{count} Renote and Quote"
 quotes: "Quote Note"
+renoteQuote: "Renote or Quote"
 _ad:
   back: "Back"
   reduceFrequencyOfThisAd: "Show this ad less"

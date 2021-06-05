@@ -780,6 +780,7 @@ renoteCount: "{count} 리노트"
 quoteCount: "{count} 인용한 노트"
 renoteQuoteCount: "{count} 리노트 및 인용한 노트"
 quotes: "인용한 노트"
+renoteQuote: "리노트 또는 인용함"
 
 _ad:
   back: "뒤로 가기"

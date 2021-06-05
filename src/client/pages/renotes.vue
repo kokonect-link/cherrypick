@@ -18,6 +18,7 @@ import XNotes from '@client/components/notes.vue';
 import XUsers from '@client/components/users.vue';
 import MkTab from '@client/components/tab.vue';
 import * as os from '@client/os';
+import * as symbols from '@client/symbols';
 
 export default defineComponent({
 	components: {
@@ -58,6 +59,10 @@ export default defineComponent({
 	},
 	data() {
 		return {
+			[symbols.PAGE_INFO]: {
+				title: this.$ts.renoteQuote,
+				icon: 'fas fa-retweet'
+			},
 			error: null,
 			tab: 'renotes',
 			renoteState: null as { isRenoted: boolean, isQuoted: boolean } | null,

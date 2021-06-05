@@ -780,6 +780,7 @@ renoteCount: "{count} リノート"
 quoteCount: "{count} 引用ノート"
 renoteQuoteCount: "{count} リノートと引用ノート"
 quotes: "引用ノート"
+renoteQuote: "リノートと引用"
 
 _ad:
   back: "戻る"
