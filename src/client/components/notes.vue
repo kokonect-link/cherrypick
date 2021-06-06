@@ -17,13 +17,21 @@
 			</MkButton>
 		</div>
 
-		<XList v-if="($i.isPatron && $store.state.showAds) || !$i.isPatron" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
-			<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
-		</XList>
+		<template v-if="isUser">
+			<XList v-if="($i.isPatron && $store.state.showAds) || !$i.isPatron" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
+				<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
+			</XList>
 
-		<XList v-else ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="false">
-			<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
-		</XList>
+			<XList v-else ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="false">
+				<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
+			</XList>
+		</template>
+
+		<template v-else>
+			<XList ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
+				<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
+			</XList>
+		</template>
 
 		<div v-show="more && !reversed" style="margin-top: var(--margin);">
 			<MkButton style="margin: 0 auto;" v-appear="$store.state.enableInfiniteScroll ? fetchMore : null" @click="fetchMore" :disabled="moreFetching" :style="{ cursor: moreFetching ? 'wait' : 'pointer' }">
@@ -41,6 +49,7 @@ import paging from '@client/scripts/paging';
 import XNote from './note.vue';
 import XList from './date-separated-list.vue';
 import MkButton from '@client/components/ui/button.vue';
+import { $i } from "@client/account";
 
 export default defineComponent({
 	components: {
@@ -75,6 +84,12 @@ export default defineComponent({
 	},
 
 	emits: ['before', 'after'],
+
+	data() {
+		return {
+			isUser: localStorage.getItem('account')
+		};
+	},
 
 	computed: {
 		notes(): any[] {
