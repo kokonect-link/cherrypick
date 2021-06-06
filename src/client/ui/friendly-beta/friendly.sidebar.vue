@@ -309,7 +309,7 @@ export default defineComponent({
 			}
 
 			> .item,
-			.patron-button {
+				.patron-button {
 				padding-left: 0;
 				width: 100%;
 				text-align: center;
@@ -327,8 +327,8 @@ export default defineComponent({
 				}
 
 				> .text,
-				.name,
-				.patron-text {
+					.name,
+					.patron-text {
 					display: none;
 				}
 
@@ -563,7 +563,7 @@ export default defineComponent({
 			}
 
 			> .account {
-				padding: 10px 0 0;
+				padding: 10px 20px 0 0;
 			}
 
 			> .toggler {
