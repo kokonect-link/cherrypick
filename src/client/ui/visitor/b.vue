@@ -213,7 +213,7 @@ export default defineComponent({
 
 		> .contents {
 			position: relative;
-			z-index: 1;
+			//z-index: 1;
 
 			> .powered-by {
 				padding: 28px;

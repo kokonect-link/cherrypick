@@ -254,7 +254,6 @@ export default defineComponent({
 
 			> .fg {
 				position: relative;
-				z-index: 1;
 
 				> h1 {
 					display: block;
@@ -311,6 +310,7 @@ export default defineComponent({
 					width: 32px;
 					height: 32px;
 					border-radius: 8px;
+					z-index: 11;
 				}
 			}
 		}
