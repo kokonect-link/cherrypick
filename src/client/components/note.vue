@@ -8,10 +8,6 @@
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
-	<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
-	<div class="info" v-if="pinned"><i class="fas fa-thumbtack"></i> {{ $ts.pinnedNote }}</div>
-	<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
-	<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
 	<div class="renote" v-if="isRenote">
 		<MkAvatar class="avatar" :user="note.user"/>
 		<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
@@ -35,6 +31,10 @@
 			<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
 		</div>
 	</div>
+	<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>
+	<div class="info" v-if="pinned"><i class="fas fa-thumbtack"></i> {{ $ts.pinnedNote }}</div>
+	<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
+	<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
 	<article class="article" @contextmenu.stop="onContextmenu">
 		<MkAvatar class="avatar" :user="appearNote.user"/>
 		<div class="main">
@@ -932,7 +932,7 @@ export default defineComponent({
 	> .renote {
 		display: flex;
 		align-items: center;
-		padding: 16px 32px 8px 32px;
+		padding: 16px 32px 8px;
 		line-height: 28px;
 		white-space: pre;
 		color: var(--renote);
@@ -950,6 +950,7 @@ export default defineComponent({
 			text-decoration: none;
 			overflow: hidden;
 			text-overflow: ellipsis;
+			padding-right: 10px;
 
 			&:hover {
 				color: var(--renoteHover);
