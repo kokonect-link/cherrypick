@@ -28,6 +28,10 @@
 		<FormSuspense :p="fetchServerInfo" v-slot="{ result: serverInfo }">
 			<FormGroup>
 				<FormKeyValueView>
+					<template #key>CherryPick</template>
+					<template #value>v{{ version }}</template>
+				</FormKeyValueView>
+				<FormKeyValueView>
 					<template #key>Node.js</template>
 					<template #value>{{ serverInfo.node }}</template>
 				</FormKeyValueView>
