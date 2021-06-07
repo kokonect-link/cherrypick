@@ -20,7 +20,7 @@
 		infoBg: 'rgb(0, 0, 0)',
 		header: ':alpha<0.7<@bg',
 		navBg: '@panel',
-		navHoverFg: '#a3faff',
+		navHoverFg: '@nect',
 		renote: '@accent',
 		mention: '#da6d35',
 		mentionMe: '#d44c4c',
