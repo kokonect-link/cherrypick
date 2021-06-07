@@ -9,12 +9,12 @@
 		</MkA>
 		<MkA class="rp" v-if="note.renoteId" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 	</div>
-	<XMediaList v-if="note.files.length > 0 && $store.state.showMediaDetails" :media-list="note.files"/>
+	<XMediaList v-if="note.files.length > 0 && $store.state.showItemDetails" :media-list="note.files"/>
 	<details v-else-if="note.files.length > 0">
 		<summary>({{ $t('withNFiles', { n: note.files.length }) }})</summary>
 		<XMediaList :media-list="note.files"/>
 	</details>
-	<XPoll v-if="note.poll && $store.state.showMediaDetails" :note="note"/>
+	<XPoll v-if="note.poll && $store.state.showItemDetails" :note="note"/>
 	<details v-else-if="note.poll">
 		<summary>{{ $ts.poll }}</summary>
 		<XPoll :note="note"/>

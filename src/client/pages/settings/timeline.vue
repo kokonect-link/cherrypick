@@ -10,9 +10,9 @@
 		</FormSwitch>
 	</FormGroup>
 	<FormGroup>
-		<FormSwitch v-model:value="showMediaDetails">
-			{{ $ts.showMediaDetails }}
-			<template #desc>{{ $ts.showMediaDetailsDesc }}</template>
+		<FormSwitch v-model:value="showItemDetails">
+			{{ $ts.showItemDetails }}
+			<template #desc>{{ $ts.showItemDetailsDesc }}</template>
 		</FormSwitch>
 	</FormGroup>
 	<FormGroup>
@@ -78,7 +78,7 @@ export default defineComponent({
 		},
 
 		injectUnlistedNoteInLTL: defaultStore.makeGetterSetter('injectUnlistedNoteInLTL'),
-		showMediaDetails: defaultStore.makeGetterSetter('showMediaDetails'),
+		showItemDetails: defaultStore.makeGetterSetter('showItemDetails'),
 	},
 
 	watch: {
