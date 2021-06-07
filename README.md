@@ -1,8 +1,8 @@
-[![CherryPick](/assets/about/banner-kokonect.svg)](https://join.misskey.page/)
+[![CherryPick](/assets/about/banner.svg)](https://join.misskey.page/)
 
 <div align="center">
 <h1>CherryPick</h1>
-<p style="margin-top: -10px">with <span style="font-weight: bold; color: #9ec23f">Misskey.</span></p>
+<p style="margin-top: -10px;">with <span style="font-weight: bold; color: #9ec23f;">Misskey.</span></p>
 </div>
 
 <div align="center">
