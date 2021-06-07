@@ -1,11 +1,11 @@
 {
-	"name": "misskey",
+	"name": "cherrypick",
 	"author": "noridev <support@kokonect.link>",
-	"version": "12.82.0-hina-1.7.1",
+	"version": "12.82.0-cp-1.7.1-beta",
 	"codename": "indigo",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kokonect-link/misskey.git"
+		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
 	"main": "./index.js",
 	"private": true,
