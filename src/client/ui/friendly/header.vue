@@ -21,7 +21,7 @@
 			<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
 		</div>
 		<div class="buttons_R">
-			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary" @click="top" v-click-anime><i class="fas fa-arrow-up"></i></button>
+			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
 			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
 			</template>
