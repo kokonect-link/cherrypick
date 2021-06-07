@@ -1,6 +1,6 @@
 <template>
 <div class="bgvwxkhb" v-if="!matching">
-	<h1>Misskey {{ $ts._reversi.reversi }}</h1>
+	<h1>CherryPick {{ $ts._reversi.reversi }}</h1>
 
 	<div class="play">
 		<MkButton primary round @click="match" style="margin: var(--margin) auto 0 auto;">{{ $ts.invite }}</MkButton>

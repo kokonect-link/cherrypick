@@ -1,6 +1,6 @@
 # Mute
 
-If you mute a user, the following contents related to that user will not be displayed by Misskey anymore:
+If you mute a user, the following contents related to that user will not be displayed by CherryPick anymore:
 
 * Posts of that user on the timeline or in the search results (including Renotes or replies to related to these posts)
 * Notifications from that user

@@ -1,5 +1,5 @@
 # New Plugin
-If you use the plugin function of the Misskey web client, you can expand the web client with a variety of different functionality. This page will list metadata definitions for plugin creation as well as an AiScript API reference for plugins.
+If you use the plugin function of the CherryPick web client, you can expand the web client with a variety of different functionality. This page will list metadata definitions for plugin creation as well as an AiScript API reference for plugins.
 
 ## Metadata
 Plugins must define default plugin metadata via the AiScript metadata format. Metadata is an object containing the following properties:
@@ -17,7 +17,7 @@ Plugin version.Please enter a number.
 Plugin description
 
 ### permissions
-Permissions required by the plugin.Used when making requests to the Misskey API.
+Permissions required by the plugin.Used when making requests to the CherryPick API.
 
 ### config
 An object representing the plugin's settings. Keys represent setting names and values are any of the below properties.
@@ -44,7 +44,7 @@ Display a dialog.You can select one of the below types. info success warn error 
 Display a confirmation dialog.You can select one of the below types. info success warn error question If no type is selected, "question" is chosen by default. If the user presses "OK" true will be returned, if they press "Cancel" false will be returned.
 
 ### Mk:api(endpoint params)
-Sends a request to the Misskey API.Specify the endpoint name as the first parameter and the request parameters as the second argument.
+Sends a request to the CherryPick API.Specify the endpoint name as the first parameter and the request parameters as the second argument.
 
 ### Mk:save(key value)
 Persistently saves any given value under a given key.The saved value will remain even after the AiScript context ends and can be loaded with Mk:load.

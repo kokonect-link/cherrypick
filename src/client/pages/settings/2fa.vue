@@ -209,7 +209,7 @@ export default defineComponent({
 							challenge: byteify(registration.challenge, 'base64'),
 							rp: {
 								id: hostname,
-								name: 'Misskey'
+								name: 'CherryPick'
 							},
 							user: {
 								id: byteify(this.$i.id, 'ascii'),

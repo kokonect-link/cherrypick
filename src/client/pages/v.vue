@@ -3,7 +3,7 @@
 	<section class="_section">
 		<div class="_content" style="text-align: center;">
 			<img src="/static-assets/icons/512.png" alt="" style="display: block; width: 100px; margin: 0 auto; border-radius: 16px;"/>
-			<div style="margin-top: 0.75em;">Misskey</div>
+			<div style="margin-top: 0.75em;">CherryPick</div>
 			<div style="opacity: 0.5;">v{{ version }}</div>
 		</div>
 	</section>
@@ -19,7 +19,7 @@ export default defineComponent({
 	data() {
 		return {
 			[symbols.PAGE_INFO]: {
-				title: 'Misskey',
+				title: 'CherryPick',
 				icon: null
 			},
 			version,

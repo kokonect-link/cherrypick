@@ -1,6 +1,6 @@
-# Misskey API
+# CherryPick API
 
-您可以使用Misskey API来开发Misskey客户端、与Misskey链接的Web服务、Bot等应用（以下称为“应用程序”）。 另外还有一个流式API，因此还可以用来创建实时性的应用程序。
+您可以使用CherryPick API来开发CherryPick客户端、与CherryPick链接的Web服务、Bot等应用（以下称为“应用程序”）。 另外还有一个流式API，因此还可以用来创建实时性的应用程序。
 
 开始使用API前​​，您首先需要获取访问令牌。 本文档将引导您完成获取访问令牌的步骤，然后介绍API的基本使用方法。
 

@@ -1,6 +1,6 @@
 <template>
 <FormBase>
-	<FormLink to="/settings/update">Misskey Update</FormLink>
+	<FormLink to="/settings/update">CherryPick Update</FormLink>
 
 	<!--
 	<FormSwitch :value="$i.injectFeaturedNote" @update:value="onChangeInjectFeaturedNote">

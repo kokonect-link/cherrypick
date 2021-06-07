@@ -35,7 +35,7 @@ export const packedHashtagSchema = {
 			type: 'string' as const,
 			optional: false as const, nullable: false as const,
 			description: 'The hashtag name. No # prefixed.',
-			example: 'misskey',
+			example: 'cherrypick',
 		},
 		mentionedUsersCount: {
 			type: 'number' as const,

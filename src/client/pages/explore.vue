@@ -8,7 +8,7 @@
 		<XUserList v-if="query" class="_gap" :pagination="searchPagination" ref="search"/>
 
 		<div class="localfedi7 _block _isolated" v-if="meta && stats && tag == null" :style="{ backgroundImage: meta.bannerUrl ? `url(${meta.bannerUrl})` : null }">
-			<header><span>{{ $t('explore', { host: meta.name || 'Misskey' }) }}</span></header>
+			<header><span>{{ $t('explore', { host: meta.name || 'CherryPick' }) }}</span></header>
 			<div><span>{{ $t('exploreUsersCount', { count: num(stats.originalUsersCount) }) }}</span></div>
 		</div>
 

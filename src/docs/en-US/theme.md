@@ -1,6 +1,6 @@
 # Themes
 
-You can change the appearance of the Misskey client by setting a theme.
+You can change the appearance of the CherryPick client by setting a theme.
 
 ## Theme settings
 Settings > Themes
@@ -43,7 +43,7 @@ Theme codes are saved as a JSON5 object of theme options. Themes are composed of
 * `props` ... The style definitions of the theme.These will be explained in the following.
 
 ### Theme style definitions
-Define the style of the theme within `props`. The keys will become CSS variables names, and the value specifies the content. In addition, the default `props` options are inherited from the base theme. If this theme's `base` is `light`, they will be copied from [_light.json5](https://github.com/misskey-dev/misskey/blob/develop/src/client/themes/_light.json5), and  if it is `dark`, they will be copied from [_dark.json5](https://github.com/misskey-dev/misskey/blob/develop/src/client/themes/_dark.json5). In other words, if there is for example no `panel` key contained in `props`, then the value of `panel` from the base theme will be used.
+Define the style of the theme within `props`. The keys will become CSS variables names, and the value specifies the content. In addition, the default `props` options are inherited from the base theme. If this theme's `base` is `light`, they will be copied from [_light.json5](https://github.com/kokonect-link/cherrypick/blob/develop/src/client/themes/_light.json5), and  if it is `dark`, they will be copied from [_dark.json5](https://github.com/kokonect-link/cherrypick/blob/develop/src/client/themes/_dark.json5). In other words, if there is for example no `panel` key contained in `props`, then the value of `panel` from the base theme will be used.
 
 #### Syntax for values
 * Hex colors

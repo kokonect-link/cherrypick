@@ -5,7 +5,7 @@
 
 	name: 'Dark',
 	author: 'noridev',
-	desc: 'Kokonect default dark theme',
+	desc: 'CherryPick default dark theme',
 	kind: 'dark',
 
 	props: {
@@ -66,8 +66,8 @@
 		error: '#ec4137',
 		warn: '#ecb637',
 		htmlThemeColor: '@bg',
-		koko: 'ffa9c3',
-		nect: '#95e3e8',
+		cherry: 'ffa9c3',
+		pick: '#95e3e8',
 		X2: ':darken<2<@panel',
 		X3: 'rgba(255, 255, 255, 0.05)',
 		X4: 'rgba(255, 255, 255, 0.1)',

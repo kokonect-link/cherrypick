@@ -1,5 +1,5 @@
-# Entwicklung eines Misskey Reversi-Bots
-Auf dieser Seite wird die Entwicklung eines Bots für Misskey Reversi erläutert.
+# Entwicklung eines CherryPick Reversi-Bots
+Auf dieser Seite wird die Entwicklung eines Bots für CherryPick Reversi erläutert.
 
 1. Verbinde dich unter Verwendung folgender Parameter mit dem `games/reversi`-Stream:
     * `i`: API-Schlüssel des Bot-Kontos

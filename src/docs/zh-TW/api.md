@@ -1,6 +1,6 @@
-# Misskey API
+# CherryPick API
 
-使用MisskeyAPI以開發Misskey客戶端、Misskey連接的網路服務平台及機器人等（以下簡稱 「應用程式」）。 此外，還有串流媒體API，讓使用者建立具有實時性的應用程式。
+使用CherryPickAPI以開發CherryPick客戶端、CherryPick連接的網路服務平台及機器人等（以下簡稱 「應用程式」）。 此外，還有串流媒體API，讓使用者建立具有實時性的應用程式。
 
 要開始使用API​​，你首先需要獲得一個存取權杖。 本說明文件將介紹獲得存取權杖的步驟，及解釋基本的API使用方法。
 

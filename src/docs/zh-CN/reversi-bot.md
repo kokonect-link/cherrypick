@@ -1,5 +1,5 @@
-# Misskey的黑白棋Bot开发
-本页会说明如何为Misskey的黑白棋功能开发一个Bot机器人。
+# CherryPick的黑白棋Bot开发
+本页会说明如何为CherryPick的黑白棋功能开发一个Bot机器人。
 
 1. 使用以下参数来连接`games/reversi`流式API：
     * `i`: bot账号的API key

@@ -1,5 +1,5 @@
 /**
- * Misskey Entry Point!
+ * CherryPick Entry Point!
  */
 
 Error.stackTraceLimit = Infinity;

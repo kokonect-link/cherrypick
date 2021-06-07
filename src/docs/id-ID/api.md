@@ -1,8 +1,8 @@
-# Misskey API
+# CherryPick API
 
-Dengan menggunakan Misskey API kamu dapat mengembangkan klien Misskey, Webservice yang terintegrasi dengan Misskey, Bots (nantinya akan disebut "Aplikasi" disini), dll. Terdapat juga streaming API, yang memungkinan untuk membuat aplikasi real-time.
+Dengan menggunakan CherryPick API kamu dapat mengembangkan klien CherryPick, Webservice yang terintegrasi dengan CherryPick, Bots (nantinya akan disebut "Aplikasi" disini), dll. Terdapat juga streaming API, yang memungkinan untuk membuat aplikasi real-time.
 
-Untuk memulai menggunakin API, kamu harus memiliki access token terlebih dahulu. Halaman ini akan menjelaskan bagaimana untuk mendapatkan access token dan menjelaskan instruksi penggunaan dasar dari Misskey API.
+Untuk memulai menggunakin API, kamu harus memiliki access token terlebih dahulu. Halaman ini akan menjelaskan bagaimana untuk mendapatkan access token dan menjelaskan instruksi penggunaan dasar dari CherryPick API.
 
 ## Mendapatkan access token
 Pada dasarnya, semua request API membutuhkan access token. Metode untuk mendapatkan sebuah access token bermacam-macam bergantung pada kamu sendiri yang mengirim request API atau request tersebut dikirim melalui aplikasi yang dipakai oleh pengguna akhir.

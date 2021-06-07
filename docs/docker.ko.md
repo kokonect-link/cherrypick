@@ -1,7 +1,7 @@
-Docker를 사용해서 Misskey 구축
+Docker를 사용해서 CherryPick 구축
 ================================================================
 
-이 가이드는 Docker를 사용해서 Misskey를 설정하는 방법에 대해 설명합니다.
+이 가이드는 Docker를 사용해서 CherryPick을 설정하는 방법에 대해 설명합니다.
 
 - [일본어 버전도 있어요 - Japanese version also available - 日本語版もあります](./docker.ja.md)
 - [영어 버전도 있어요 - English version also available - 英語版もあります](./docker.en.md)
@@ -9,17 +9,17 @@ Docker를 사용해서 Misskey 구축
 
 ----------------------------------------------------------------
 
-*1.* Misskey 다운로드
+*1.* CherryPick 다운로드
 ----------------------------------------------------------------
-1. master 브랜치에서 Misskey 저장소 클론
+1. master 브랜치에서 CherryPick 저장소 클론
 
-	`git clone -b master git://github.com/kokonect-link/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/cherrypick.git`
 
-2. misskey 디렉토리로 이동
+2. cherrypick 디렉토리로 이동
 
-	`cd misskey`
+	`cd cherrypick`
 
-3. [최신 릴리즈](https://github.com/kokonect-link/misskey/releases/latest) 확인
+3. [최신 릴리즈](https://github.com/kokonect-link/cherrypick/releases/latest) 확인
 
 	`git checkout master`
 
@@ -61,9 +61,9 @@ cp docker_example.env docker.env
 ----------------------------------------------------------------
 `docker-compose.yml`를 편집합니다.
 
-*4.* Misskey 빌드
+*4.* CherryPick 빌드
 ----------------------------------------------------------------
-다음 명령으로 Misskey를 빌드할 수 있습니다:
+다음 명령으로 CherryPick을 빌드할 수 있습니다:
 
 `docker-compose build`
 
@@ -75,12 +75,12 @@ docker-compose run --rm web yarn run init
 
 *6.* 끝났어요!
 ----------------------------------------------------------------
-수고 많으셨습니다. 이것으로 Misskey를 사용할 준비가 되었습니다.
+수고 많으셨습니다. 이것으로 CherryPick을 사용할 준비가 되었습니다.
 
 ### 실행
 `docker-compose up -d`만 입력하면 됩니다. GLHF!
 
-### Misskey를 최신 버전으로 업데이트 하는 방법:
+### CherryPick을 최신 버전으로 업데이트 하는 방법:
 1. `git stash`
 2. `git checkout master`
 3. `git pull`

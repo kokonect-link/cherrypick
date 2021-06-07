@@ -1,6 +1,6 @@
 # Silenziare
 
-Quando si silenzia un utente, i successivi contenuti che lo riguardano non saranno più visualizzati su Misskey:
+Quando si silenzia un utente, i successivi contenuti che lo riguardano non saranno più visualizzati su CherryPick:
 
 * le pubblicazioni dell'utente sia nelle timeline che nei risultati di ricerca, così come le sue risposte e Rinote;
 * le notifiche riguardo all'utente;

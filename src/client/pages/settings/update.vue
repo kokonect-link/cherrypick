@@ -2,8 +2,8 @@
 <FormBase>
 	<template v-if="meta">
 		<!-- <FormInfo v-else-if="version === meta.version">{{ $ts.youAreRunningUpToDateClient }}</FormInfo> -->
-		<FormInfo v-if="version > (releasesKokonect[0].tag_name)">{{ $ts.youAreRunningBetaClient }}</FormInfo>
-		<FormInfo v-else-if="version === (meta.version && releasesKokonect[0].tag_name)">{{ $ts.youAreRunningUpToDateClient }}</FormInfo>
+		<FormInfo v-if="version > (releasesCherryPick[0].tag_name)">{{ $ts.youAreRunningBetaClient }}</FormInfo>
+		<FormInfo v-else-if="version === (meta.version && releasesCherryPick[0].tag_name)">{{ $ts.youAreRunningUpToDateClient }}</FormInfo>
 		<FormInfo v-else warn>{{ $ts.newVersionOfClientAvailable }}</FormInfo>
 	</template>
 	<FormGroup>
@@ -19,13 +19,13 @@
 		</FormKeyValueView>
 	</FormGroup>
 	<FormGroup>
-		<template #label>Kokonect</template>
+		<template #label>CherryPick</template>
 		<FormKeyValueView>
 			<template #key>{{ $ts.latestVersion }}</template>
-			<template #value v-if="releasesKokonect">{{ releasesKokonect[0].tag_name }}</template>
+			<template #value v-if="releasesCherryPick">{{ releasesCherryPick[0].tag_name }}</template>
 			<template #value v-else><MkEllipsis/></template>
 		</FormKeyValueView>
-		<template #caption v-if="releasesKokonect"><MkTime :time="releasesKokonect[0].published_at" mode="detail"/></template>
+		<template #caption v-if="releasesCherryPick"><MkTime :time="releasesCherryPick[0].published_at" mode="detail"/></template>
 	</FormGroup>
 	<FormGroup>
 		<template #label>Misskey</template>
@@ -70,12 +70,12 @@ export default defineComponent({
 	data() {
 		return {
 			[symbols.PAGE_INFO]: {
-				title: 'Misskey Update',
+				title: 'CherryPick Update',
 				icon: 'fas fa-sync-alt'
 			},
 			version,
 			instanceName,
-			releasesKokonect: null,
+			releasesCherryPick: null,
 			releases: null,
 			meta: null
 		}
@@ -91,12 +91,12 @@ export default defineComponent({
 			localStorage.setItem('v', meta.version);
 		});
 
-		fetch('https://api.github.com/repos/kokonect-link/misskey/releases', {
+		fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 			method: 'GET',
 		})
 		.then(res => res.json())
 		.then(res => {
-			this.releasesKokonect = res;
+			this.releasesCherryPick = res;
 		});
 
 		fetch('https://api.github.com/repos/misskey-dev/misskey/releases', {

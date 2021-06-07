@@ -1,19 +1,55 @@
 <template>
 <div style="overflow: clip;">
 	<FormBase class="znqjceqz">
-		<div id="debug"></div>
-		<section class="_formItem about">
-			<div class="_formPanel panel" :class="{ playing: easterEggEngine != null }" ref="about">
-				<img src="/static-assets/client/about-icon.png" alt="" class="icon" ref="icon" @load="iconLoaded" draggable="false"/>
-				<div class="misskey">Misskey</div>
-				<div class="version">v{{ version }}</div>
-				<span class="emoji" v-for="emoji in easterEggEmojis" :key="emoji.id" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }"><MkEmoji class="emoji" :emoji="emoji.emoji" :custom-emojis="$instance.emojis" :is-reaction="false" :normal="true" :no-style="true"/></span>
-			</div>
-		</section>
+		<FormGroup>
+			<div id="debug"></div>
+			<section class="_formItem about">
+				<div class="_formPanel panel" :class="{ playing: easterEggEngine != null }" ref="about">
+					<img src="/static-assets/client/about-icon.png" alt="" class="icon" ref="icon" @load="iconLoaded" draggable="false"/>
+					<div class="cherrypick">CherryPick</div>
+					<div class="version">v{{ version }}</div>
+					<span class="emoji" v-for="emoji in easterEggEmojis" :key="emoji.id" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }"><MkEmoji class="emoji" :emoji="emoji.emoji" :custom-emojis="$instance.emojis" :is-reaction="false" :normal="true" :no-style="true"/></span>
+				</div>
+			</section>
+			<FormLink :to="`https://github.com/kokonect-link/cherrypick/releases/tag/${version}`" external>
+				{{ $ts._aboutMisskey.releaseNote }}
+			</FormLink>
+		</FormGroup>
 		<section class="_formItem" style="text-align: center; padding: 0 16px;" @click="gravity">
 			{{ $ts._aboutMisskey.about }}
 		</section>
 		<FormGroup>
+			<template #label>{{ $ts.cherrypick }}</template>
+			<FormLink to="https://github.com/kokonect-link/cherrypick" external>
+				<template #icon><i class="fas fa-code"></i></template>
+				{{ $ts._aboutMisskey.source }}
+				<template #suffix>GitHub</template>
+			</FormLink>
+			<FormLink to="https://relay.kokonect.link" external>
+				<template #icon><i class="fas fa-network-wired"></i></template>
+				{{ $ts._aboutMisskey._cherrypick.relayServer }}
+			</FormLink>
+			<FormLink to="https://www.patreon.com/noridev" external>
+				<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+				{{ $ts._aboutMisskey._cherrypick.donate }}
+				<template #suffix>Patreon</template>
+			</FormLink>
+			<template #caption>{{ $ts._aboutMisskey._cherrypick.about }}</template>
+		</FormGroup>
+		<FormGroup v-if="isKokonect">
+			<template #label>{{ $ts.kokonect }}</template>
+			<FormLink to="https://status.kokonect.link" external>
+				<template #icon><i class="fas fa-tachometer-alt"></i></template>
+				{{ $ts._aboutMisskey._kokonect.serverStatus }}
+			</FormLink>
+			<FormLink to="https://www.patreon.com/noridev" external>
+				<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+				{{ $ts._aboutMisskey._kokonect.donate }}
+				<template #suffix>Patreon</template>
+			</FormLink>
+		</FormGroup>
+		<FormGroup>
+			<template #label>Misskey</template>
 			<FormLink to="https://github.com/misskey-dev/misskey" external>
 				<template #icon><i class="fas fa-code"></i></template>
 				{{ $ts._aboutMisskey.source }}
@@ -31,30 +67,12 @@
 			</FormLink>
 		</FormGroup>
 		<FormGroup>
-			<template #label><Mfm text="[jelly 🍮]"/> {{ $ts.kokonect }}</template>
+			<template #label>{{ $ts._aboutMisskey.contributors }}</template>
 			<FormLink to="https://github.com/noridev" external>@noridev</FormLink>
-			<FormLink to="https://github.com/kokonect-link/misskey" external>
-				<template #icon><i class="fas fa-code"></i></template>
-				{{ $ts._aboutMisskey.source }}
-				<template #suffix>GitHub</template>
-			</FormLink>
-			<FormLink to="https://status.kokonect.link" external>
-				<template #icon><i class="fas fa-tachometer-alt"></i></template>
-				{{ $ts._aboutMisskey._kokonect.serverStatus }}
-			</FormLink>
-			<FormLink to="https://relay.kokonect.link" external>
-				<template #icon><i class="fas fa-network-wired"></i></template>
-				{{ $ts._aboutMisskey._kokonect.relayServer }}
-			</FormLink>
-			<FormLink to="https://www.patreon.com/noridev" external>
-				<template #icon><i class="fas fa-hand-holding-medical"></i></template>
-				{{ $ts._aboutMisskey._kokonect.donate }}
-				<template #suffix>Patreon</template>
-			</FormLink>
-			<template #caption>{{ $ts._aboutMisskey._kokonect.about }}</template>
+			<template #caption><MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ $ts._aboutMisskey.allContributors }}</MkLink></template>
 		</FormGroup>
 		<FormGroup>
-			<template #label>{{ $ts._aboutMisskey.contributors }}</template>
+			<template #label>{{ $ts._aboutMisskey.contributorsMisskey }}</template>
 			<FormLink to="https://github.com/syuilo" external>@syuilo</FormLink>
 			<FormLink to="https://github.com/AyaMorisawa" external>@AyaMorisawa</FormLink>
 			<FormLink to="https://github.com/mei23" external>@mei23</FormLink>
@@ -66,9 +84,14 @@
 			<FormLink to="https://github.com/marihachi" external>@marihachi</FormLink>
 			<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ $ts._aboutMisskey.allContributors }}</MkLink></template>
 		</FormGroup>
-		<FormGroup>
+		<FormGroup v-if="patrons.length > 0">
 			<template #label><Mfm text="[jelly ❤]"/> {{ $ts._aboutMisskey.patrons }}</template>
 			<FormKeyValueView v-for="patron in patrons" :key="patron"><template #key>{{ patron }}</template></FormKeyValueView>
+			<template #caption>{{ $ts._aboutMisskey.morePatrons }}</template>
+		</FormGroup>
+		<FormGroup v-if="patronsMisskey.length > 0">
+			<template #label><Mfm text="[jelly ❤]"/> {{ $ts._aboutMisskey.patronsMisskey }}</template>
+			<FormKeyValueView v-for="patron in patronsMisskey" :key="patron"><template #key>{{ patron }}</template></FormKeyValueView>
 			<template #caption>{{ $ts._aboutMisskey.morePatrons }}</template>
 		</FormGroup>
 	</FormBase>
@@ -88,7 +111,8 @@ import { physics } from '@client/scripts/physics.ts';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
-const patrons = [
+const patrons = [];
+const patronsMisskey = [
 	'Satsuki Yanagi',
 	'noellabo',
 	'Gargron',
@@ -144,9 +168,11 @@ export default defineComponent({
 			},
 			version,
 			patrons,
+			patronsMisskey,
 			easterEggReady: false,
 			easterEggEmojis: [],
 			easterEggEngine: null,
+			isKokonect: null
 		}
 	},
 
@@ -157,6 +183,8 @@ export default defineComponent({
 			scale: 1.125,
 			speed: 1000,
 		});
+
+		this.init();
 	},
 
 	beforeUnmount() {
@@ -188,6 +216,11 @@ export default defineComponent({
 			this.easterEggReady = false;
 			this.$refs.icon.vanillaTilt.destroy();
 			this.easterEggEngine = physics(this.$refs.about);
+		},
+
+		async init() {
+			const meta = await os.api('meta', { detail: true });
+			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
 		}
 	}
 });
@@ -199,7 +232,7 @@ export default defineComponent({
 	box-sizing: border-box;
 	margin: 0 auto;
 
-	> .about {
+	.about {
 		> .panel {
 			position: relative;
 			text-align: center;
@@ -226,7 +259,7 @@ export default defineComponent({
 				border-radius: 16px;
 			}
 
-			> .misskey {
+			> .cherrypick {
 				margin: 0.75em auto 0 auto;
 				width: max-content;
 			}

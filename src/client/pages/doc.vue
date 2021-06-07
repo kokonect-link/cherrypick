@@ -3,7 +3,7 @@
 	<div class="title">{{ title }}</div>
 	<div class="body" v-html="body"></div>
 	<div class="footer">
-		<MkLink :url="`https://github.com/misskey-dev/misskey/blob/master/src/docs/${lang}/${doc}.md`" class="at">{{ $ts.docSource }}</MkLink>
+		<MkLink :url="`https://github.com/kokonect-link/cherrypick/blob/master/src/docs/${lang}/${doc}.md`" class="at">{{ $ts.docSource }}</MkLink>
 	</div>
 </div>
 </template>

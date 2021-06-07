@@ -1,6 +1,6 @@
-# Misskey API
+# CherryPick API
 
-MisskeyAPIを使ってMisskeyクライアント、Misskey連携Webサービス、Bot等(以下「アプリケーション」と呼びます)を開発できます。
+CherryPickAPIを使ってCherryPickクライアント、CherryPick連携Webサービス、Bot等(以下「アプリケーション」と呼びます)を開発できます。
 ストリーミングAPIもあるので、リアルタイム性のあるアプリケーションを作ることも可能です。
 
 APIを使い始めるには、まずアクセストークンを取得する必要があります。

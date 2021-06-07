@@ -1,5 +1,5 @@
 # 插件开发
-Misskey Web客户端插件功能使您可以扩展客户端并添加各种功能。 我们在这里给出用于创建插件的元数据定义和AiScript API参考。
+CherryPick Web客户端插件功能使您可以扩展客户端并添加各种功能。 我们在这里给出用于创建插件的元数据定义和AiScript API参考。
 
 ## 元数据
 插件必须使用AiScript的元数据嵌入功能将插件的元数据定义为默认值。 元数据是一个包含以下属性的对象：
@@ -17,7 +17,7 @@ Misskey Web客户端插件功能使您可以扩展客户端并添加各种功能
 插件说明
 
 ### permissions
-插件要求的权限。在发送Misskey API请求时需要使用。
+插件要求的权限。在发送CherryPick API请求时需要使用。
 
 ### config
 表示插件设置信息的对象。 在键名中包含设置名称，在键值中包含以下属性。
@@ -44,7 +44,7 @@ AiScript标准的内置API不会发布。
 显示确认对话框。type可以设置为以下值： info success warn error question 默认值为question。 如果用户选择“OK”，则返回true；如果用户选择“取消”，则返回false。
 
 ### Mk:api(endpoint params)
-Misskey API请求在第一个参数中传递终端名称，在第二个参数中传递参数对象。
+CherryPick API请求在第一个参数中传递终端名称，在第二个参数中传递参数对象。
 
 ### Mk:save(key value)
 给任何名称赋任何值并使其持久化。所谓的持久化的值，指的是该值即使在AiScript上下文结束后仍然保留，并且可以通过Mk:load读取。

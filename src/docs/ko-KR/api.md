@@ -1,11 +1,9 @@
-# Misskey API
+# CherryPick API
 
-<<<<<<< HEAD
-Misskey API를 사용하여 Misskey 클라이언트, Misskey 연계 웹 서비스, 봇 등(이하 "애플리케이션"이라고 부릅니다)을 개발할 수 있습니다.
+CherryPick API를 사용하여 CherryPick 클라이언트, CherryPick 연계 웹 서비스, 봇 등(이하 "애플리케이션"이라고 부릅니다)을 개발할 수 있습니다.
 스트리밍 API도 있기 때문에 실시간 애플리케이션을 만들 수도 있습니다.
-=======
-Misskey API를 사용하여 Misskey 클라이언트, Misskey 연계 웹 서비스, 봇 등(이하 "애플리케이션"이라고 부릅니다)을 개발할 수 있습니다. 스트리밍 API도 있기 때문에 실시간 애플리케이션을 만들 수도 있습니다.
->>>>>>> upstream/develop
+
+CherryPick API를 사용하여 CherryPick 클라이언트, CherryPick 연계 웹 서비스, 봇 등(이하 "애플리케이션"이라고 부릅니다)을 개발할 수 있습니다. 스트리밍 API도 있기 때문에 실시간 애플리케이션을 만들 수도 있습니다.
 
 API를 사용하려면 먼저 액세스 토큰을 취득해야 합니다. 이 문서에서는 액세스 토큰을 취득하는 절차를 설명한 후 기본적인 API 사용법을 설명합니다.
 

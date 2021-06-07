@@ -1,6 +1,6 @@
-# API de Misskey
+# API de CherryPick
 
-Vous pouvez utiliser l'API de Misskey pour développer des clients Misskey, des services web s'intégrant à Misskey, des Bots (que nous appellerons plus loin "Applications"), etc. Comme l'API streaming est aussi implémenté, vous avez la possibilité de créer des applications de temps réel.
+Vous pouvez utiliser l'API de CherryPick pour développer des clients CherryPick, des services web s'intégrant à CherryPick, des Bots (que nous appellerons plus loin "Applications"), etc. Comme l'API streaming est aussi implémenté, vous avez la possibilité de créer des applications de temps réel.
 
 Pour pouvoir vous servir de l'API, il vous faudra d'abord obtenir un jeton d'accès. Ce guide a été conçu pour vous accompagner dans le processus d'obtention du jeton d'accès, puis donner des instructions de base sur l'utilisation de l'API.
 
@@ -40,7 +40,7 @@ En ouvrant cette URL, vous pourrez configurer un certain nombre d'options pour l
 * `permission` :  permissions requises par l'application
     * > Ex. : `write:notes,write:following,read:drive`
     * Listez les permissions requises en utilisant une `,` pour les séparer.
-    * Vous pouvez vérifier quelles sont les permissions disponibles sur [les références API de Misskey](/api-doc).
+    * Vous pouvez vérifier quelles sont les permissions disponibles sur [les références API de CherryPick](/api-doc).
 
 #### Étape 3
 Si vous envoyez une requête POST à `{_URL_}/api/miauth/{session}/check` une fois que l'utilisateur a validé le jeton d'accès, la réponse arrivera sous forme de fichier JSON contenant ce jeton.
@@ -54,5 +54,5 @@ Propriétés incluses dans la réponse :
 ## Utiliser l'API
 **L'API utilise seulement la méthode POST, et toutes les requêtes / réponses sont au format JSON. REST n'est pas pris en charge. ** Le jeton d'accès s'insère dans le paramètre de requête nommé `i`.
 
-* [Références API de Misskey](/api-doc)
+* [Références API de CherryPick](/api-doc)
 * [API streaming](./stream)

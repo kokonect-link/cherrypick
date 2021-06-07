@@ -30,7 +30,7 @@ export async function sendEmail(to: string, subject: string, html: string, text:
 		const info = await transporter.sendMail({
 			from: meta.email!,
 			to: to,
-			subject: subject,
+			subject: subject || 'CherryPick',
 			text: text,
 			html: `<!doctype html>
 			<html>

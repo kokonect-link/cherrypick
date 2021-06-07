@@ -1,7 +1,7 @@
 Guide Docker
 ================================================================
 
-Ce guide explique comment installer et configurer Misskey avec Docker.
+Ce guide explique comment installer et configurer CherryPick avec Docker.
 
 - [Version japonaise également disponible - Japanese version also available - 日本語版もあります](./docker.ja.md)  
 - [Version anglaise également disponible - English version also available - 英語版もあります](./docker.en.md)
@@ -10,21 +10,21 @@ Ce guide explique comment installer et configurer Misskey avec Docker.
 
 ----------------------------------------------------------------
 
-*1.* Télécharger Misskey
+*1.* Télécharger CherryPick
 ----------------------------------------------------------------
-1. Clone le dépôt de Misskey sur la branche master.
+1. Clone le dépôt de CherryPick sur la branche master.
 
-	`git clone -b master git://github.com/kokonect-link/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/cherrypick.git`
 
 2. Naviguez dans le dossier du dépôt.
 
-	`cd misskey`
+	`cd cherrypick`
 
-3. Checkout sur le tag de la [dernière version](https://github.com/kokonect-link/misskey/releases/latest).
+3. Checkout sur le tag de la [dernière version](https://github.com/kokonect-link/cherrypick/releases/latest).
 
 	`git checkout master`
 
-*2.* Configuration de Misskey
+*2.* Configuration de CherryPick
 ----------------------------------------------------------------
 1. `cp .config/example.yml .config/default.yml` Copiez le fichier `.config/example.yml` et renommez-le `default.yml`.
 2. `cp .config/mongo_initdb_example.js .config/mongo_initdb.js` Copie le fichier `.config/mongo_initdb_example.js` et le renomme en `mongo_initdb.js`.
@@ -34,7 +34,7 @@ Ce guide explique comment installer et configurer Misskey avec Docker.
 ----------------------------------------------------------------
 Editez `docker-compose.yml`.
 
-*4.* Contruire Misskey
+*4.* Contruire CherryPick
 ----------------------------------------------------------------
 Contruire l'image Docker avec:
 
@@ -42,12 +42,12 @@ Contruire l'image Docker avec:
 
 *5.* C'est tout !
 ----------------------------------------------------------------
-Parfait, Vous avez un environnement prêt pour démarrer Misskey.
+Parfait, Vous avez un environnement prêt pour démarrer CherryPick.
 
 ### Lancer normalement
 Utilisez la commande `docker-compose up -d`. GLHF!
 
-### How to update your Misskey server to the latest version
+### How to update your CherryPick server to the latest version
 1. `git stash`
 2. `git checkout master`
 3. `git pull`
@@ -82,7 +82,7 @@ Utilisez la commande `docker-compose up -d`. GLHF!
 
 3. Création de la base ES
 
-	`curl -X PUT "es:9200/misskey" -H 'Content-Type: application/json' -d'{ "settings" : { "index" : { } }}'`
+	`curl -X PUT "es:9200/cherrypick" -H 'Content-Type: application/json' -d'{ "settings" : { "index" : { } }}'`
 
 4. `exit`
 

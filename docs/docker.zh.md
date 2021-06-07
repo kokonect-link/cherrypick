@@ -1,28 +1,28 @@
 Docker 部署指南
 ================================================================
 
-这份指南描述了如何使用Docker安装并设置 Misskey 。
+这份指南描述了如何使用Docker安装并设置 CherryPick 。
 
 - [日本語版もあります - Japanese version also available](./docker.ja.md)
 - [英語版もあります - English version also available](./docker.en.md)
 
 ----------------------------------------------------------------
 
-*1.* 下载 Misskey
+*1.* 下载 CherryPick
 ----------------------------------------------------------------
 1. 克隆 Misskey 项目的 master 分支。
 
-	`git clone -b master git://github.com/kokonect-link/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/cherrypick.git`
 
-2. 进入 misskey 文件夹。
+2. 进入 cherrypick 文件夹。
 
-	`cd misskey`
+	`cd cherrypick`
 
-3. 检查 [最新发布版](https://github.com/kokonect-link/misskey/releases/latest) 标签。
+3. 检查 [最新发布版](https://github.com/kokonect-link/cherrypick/releases/latest) 标签。
 
 	`git checkout master`
 
-*2.* 配置 Misskey
+*2.* 配置 CherryPick
 ----------------------------------------------------------------
 
 可以按照如下方式创建配置文件：
@@ -60,9 +60,9 @@ cp docker_example.env docker.env
 ----------------------------------------------------------------
 编辑 `docker-compose.yml` 文件。
 
-*4.* 构建 Misskey
+*4.* 构建 CherryPick
 ----------------------------------------------------------------
-使用如下的方式构建Misskey：
+使用如下的方式构建CherryPick：
 
 `docker-compose build`
 
@@ -74,12 +74,12 @@ docker-compose run --rm web yarn run init
 
 *6.* 完成了！
 ----------------------------------------------------------------
-干得不错！现在您拥有了一个可以运行Misskey的环境啦。
+干得不错！现在您拥有了一个可以运行CherryPick的环境啦。
 
 ### 正常启动
 只需要 `docker-compose up -d` 即可。玩得愉快!
 
-### 如何将您的 Misskey 服务器升级至最新版本
+### 如何将您的 CherryPick 服务器升级至最新版本
 1. `git stash`
 2. `git checkout master`
 3. `git pull`

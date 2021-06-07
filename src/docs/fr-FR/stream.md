@@ -4,7 +4,7 @@ L'API Streaming permet d'implémenter l'exécution d'opérations variées et la 
 
 ## Se connecter aux flux
 
-Pour utiliser l'API de streaming, vous devez d'abord effectuer une connexion **websocket**  au serveur Misskey.
+Pour utiliser l'API de streaming, vous devez d'abord effectuer une connexion **websocket**  au serveur CherryPick.
 
 Veuillez vous connecter à l'URL suivante avec le nom de paramètre `i` et inclure les informations d'authentification dans la connexion websocket.Par exemple :
 ```
@@ -32,7 +32,7 @@ Une fois que vous êtes connecté au flux, vous pouvez utiliser l'API comme déc
 **Toutes les interactions dans le flux sont JSON.**
 
 ## Canaux
-L'API de streaming de Misskey possède le concept de canaux.Il s'agit d'un mécanisme permettant de séparer les informations que vous envoyez et recevez. Si vous vous connectez simplement à un flux Misskey, vous ne pourrez pas encore recevoir les messages de votre timeline en temps réel. En vous connectant aux canaux du flux, vous pourrez recevoir diverses informations et en envoyer.
+L'API de streaming de CherryPick possède le concept de canaux.Il s'agit d'un mécanisme permettant de séparer les informations que vous envoyez et recevez. Si vous vous connectez simplement à un flux CherryPick, vous ne pourrez pas encore recevoir les messages de votre timeline en temps réel. En vous connectant aux canaux du flux, vous pourrez recevoir diverses informations et en envoyer.
 
 ### Se connecter à un canal
 Pour se connecter à un canal, envoyez les données suivantes au flux en JSON :
@@ -164,13 +164,13 @@ Ici,
 
 ## Capture de message
 
-Misskey propose un mécanisme appelé post-capture.Il s'agit de la possibilité de recevoir un flux d'événements pour un message donné.
+CherryPick propose un mécanisme appelé post-capture.Il s'agit de la possibilité de recevoir un flux d'événements pour un message donné.
 
 Par exemple, supposons une situation dans laquelle le fil est affichée pour un utilisateur.Supposons maintenant que quelqu'un réagisse à l'un des messages de ce fil.
 
 Cependant, comme le client n'a aucun moyen de savoir qu'un message a reçu une réaction, il n'est pas possible de refléter la réaction en temps réel sur le message dans le fil.
 
-Pour résoudre ce problème, Misskey fournit un mécanisme de post-capture.Lorsque vous capturez un message, vous recevez des événements liés à ce message, ce qui vous permet de refléter les réactions en temps réel.
+Pour résoudre ce problème, CherryPick fournit un mécanisme de post-capture.Lorsque vous capturez un message, vous recevez des événements liés à ce message, ce qui vous permet de refléter les réactions en temps réel.
 
 ### Capturer un message
 
@@ -188,7 +188,7 @@ Pour capturer un message, envoyez un message comme le suivant au flux :
 Ici,
 * Définissez `id` comme l'`id` du message que vous voulez capturer.
 
-Lorsque vous envoyez ce message, vous demandez à Misskey de le saisir, et les événements liés à ce message se succéderont à partir de ce moment-là.
+Lorsque vous envoyez ce message, vous demandez à CherryPick de le saisir, et les événements liés à ce message se succéderont à partir de ce moment-là.
 
 Par exemple, lorsqu'un message suscite une réaction, vous verrez apparaître un message du type suivant :
 

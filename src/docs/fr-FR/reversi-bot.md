@@ -1,5 +1,5 @@
-# Développement du bot Reversi de Misskey
-Cette page explique comment développer un bot pour la fonction Reversi de Misskey.
+# Développement du bot Reversi de CherryPick
+Cette page explique comment développer un bot pour la fonction Reversi de CherryPick.
 
 1. Connectez-vous au flux `games/reversi` avec les paramètres suivants :
     * `i` : Clé API pour le compte du bot

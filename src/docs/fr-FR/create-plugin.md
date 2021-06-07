@@ -1,5 +1,5 @@
 # Création d'un plugin
-En utilisant la fonction plugin du client web Misskey, vous pouvez étendre et y ajouter de nouvelles fonctionnalités. Cette page liste la définition des métadonnées et les références de l'API AIScript pour la création des plugins.
+En utilisant la fonction plugin du client web CherryPick, vous pouvez étendre et y ajouter de nouvelles fonctionnalités. Cette page liste la définition des métadonnées et les références de l'API AIScript pour la création des plugins.
 
 ## Métadonnées
 Les plugins doivent définir des métadonnées de plugin par défaut via le format de métadonnées AiScript. Les métadonnées sont un objet contenant les propriétés suivantes :
@@ -17,7 +17,7 @@ Version du plugin.Cette valeur doit être un nombre.
 Description du plugin.
 
 ### permissions
-Permissions requises par le plugin.Utilisé pour les requêtes de l'API Misskey.
+Permissions requises par le plugin.Utilisé pour les requêtes de l'API CherryPick.
 
 ### config
 Un objet représentant les paramètres du plugin. Les clés représentent les noms des paramètres et les valeurs sont l'une des propriétés ci-dessous.
@@ -34,7 +34,7 @@ Description du paramètre
 #### default
 Valeur par défaut du paramètre
 
-## Références API de Misskey
+## Références API de CherryPick
 L'API intégrée directement dans la norme AiScript elle-même ne sera pas répertoriée.
 
 ### Mk:dialog(title text type)
@@ -44,7 +44,7 @@ Affiche la boîte de dialogue.type peut être défini par les valeurs suivantes.
 Affiche une boîte de dialogue de confirmation.Le type peut être défini par les valeurs suivantes. info success warn error question Si elle est omise, c'est "question" qui est utilisé par défaut. Si l'utilisateur sélectionne "OK", true est renvoyé, si l'utilisateur sélectionne "Cancel", false est renvoyé.
 
 ### Mk:api(endpoint params)
-Envoie une requête à l'API Misskey.Le premier paramètre spécifie le point de terminaison de l'API, le second spécifie les paramètres de la requête sous forme d'objet.
+Envoie une requête à l'API CherryPick.Le premier paramètre spécifie le point de terminaison de l'API, le second spécifie les paramètres de la requête sous forme d'objet.
 
 ### Mk:save(key value)
 Fait persister une valeur arbitraire avec un nom arbitraire.La valeur persistante reste après la fin du contexte AiScript et peut être lue par Mk:load.

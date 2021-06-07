@@ -8,7 +8,7 @@
   - 温度感高めで見てほしいものは責付いてください。
 
 ## Issues
-Feature suggestions and bug reports are filed in https://github.com/misskey-dev/misskey/issues .
+Feature suggestions and bug reports are filed in https://github.com/kokonect-link/cherrypick/issues .
 
 * Please search existing issues to avoid duplication. If your issue is already filed, please add your reaction or comment to the existing one.
 * If you have multiple independent issues, please submit them separately.
@@ -19,7 +19,7 @@ Feature suggestions and bug reports are filed in https://github.com/misskey-dev/
 * **l10n_develop** branch is reserved for localization management.
 
 ## Localization (l10n)
-Misskey uses [Crowdin](https://crowdin.com/project/misskey) for localization management.
+CherryPick uses [Crowdin](https://crowdin.com/project/misskey) for localization management.
 You can improve our translations with your Crowdin account.
 Your changes in Crowdin are automatically submitted as a PR (with the title "New Crowdin translations") to the repository.
 The owner [@syuilo](https://github.com/syuilo) merges the PR into the develop branch before the next release.
@@ -29,7 +29,7 @@ If your language is not listed in Crowdin, please open an issue.
 ![Crowdin](https://d322cqt584bo4o.cloudfront.net/misskey/localized.svg)
 
 ## Internationalization (i18n)
-Misskey uses the Vue.js plugin [Vue I18n](https://github.com/kazupon/vue-i18n).
+CherryPick uses the Vue.js plugin [Vue I18n](https://github.com/kazupon/vue-i18n).
 Documentation of Vue I18n is available at http://kazupon.github.io/vue-i18n/introduction.html .
 
 ## Documentation
@@ -41,10 +41,10 @@ Documentation of Vue I18n is available at http://kazupon.github.io/vue-i18n/intr
 * Test codes are located in [`/test`](/test).
 
 ## Continuous integration
-Misskey uses CircleCI for executing automated tests.
+CherryPick uses CircleCI for executing automated tests.
 Configuration files are located in [`/.circleci`](/.circleci).
 
-## Adding MisskeyRoom items
+## Adding CherryPickRoom items
 * Use English for material, object and texture names.
 * Use meter for unit of length.
 * Your PR should include all source files (e.g. `.png`, `.blend`) of your models (for later editing).
@@ -153,7 +153,7 @@ export function something(foo: string): string {
 src ... Source code
 	@types ... Type definitions
 	prelude ... Independence utils for coding JavaScript without side effects
-	misc ... Independence utils for Misskey without side effects
+	misc ... Independence utils for CherryPick without side effects
 	service ... Common functions with side effects
 	queue ... Job queues and Jobs
 	server ... Web Server

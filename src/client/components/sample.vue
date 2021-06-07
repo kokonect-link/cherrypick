@@ -9,6 +9,7 @@
 		</MkSwitch>
 		<div style="margin: 32px 0;">
 			<MkRadio v-model="radio" value="misskey">Misskey</MkRadio>
+			<MkRadio v-model="radio" value="cherrypick">CherryPick</MkRadio>
 			<MkRadio v-model="radio" value="mastodon">Mastodon</MkRadio>
 			<MkRadio v-model="radio" value="pleroma">Pleroma</MkRadio>
 		</div>
@@ -50,7 +51,7 @@ export default defineComponent({
 		return {
 			text: '',
 			flag: true,
-			radio: 'misskey',
+			radio: 'cherrypick',
 			mfm: `Hello world! This is an @example mention. BTW you are @${this.$i ? this.$i.username : 'guest'}.\nAlso, here is ${config.url} and [example link](${config.url}). for more details, see https://example.com.\nAs you know #misskey is open-source software.`
 		}
 	},
@@ -78,7 +79,7 @@ export default defineComponent({
 				},
 				baz: {
 					type: 'string',
-					default: 'Misskey makes you happy.',
+					default: 'CherryPick makes you happier than Misskey.',
 					label: 'This is a string property'
 				},
 			});

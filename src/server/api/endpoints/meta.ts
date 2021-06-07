@@ -38,7 +38,7 @@ export const meta = {
 			version: {
 				type: 'string' as const,
 				optional: false as const, nullable: false as const,
-				description: 'The version of Misskey of this instance.',
+				description: 'The version of CherryPick of this instance.',
 				example: config.version
 			},
 			name: {
@@ -50,7 +50,7 @@ export const meta = {
 				type: 'string' as const,
 				optional: false as const, nullable: false as const,
 				format: 'url',
-				example: 'https://misskey.example.com'
+				example: 'https://cherrypick.example.com'
 			},
 			description: {
 				type: 'string' as const,
@@ -72,12 +72,12 @@ export const meta = {
 			repositoryUrl: {
 				type: 'string' as const,
 				optional: false as const, nullable: false as const,
-				default: 'https://github.com/misskey-dev/misskey'
+				default: 'https://github.com/kokonect-link/cherrypick'
 			},
 			feedbackUrl: {
 				type: 'string' as const,
 				optional: false as const, nullable: false as const,
-				default: 'https://github.com/misskey-dev/misskey/issues/new'
+				default: 'https://github.com/kokonect-link/cherrypick/issues/new'
 			},
 			secure: {
 				type: 'boolean' as const,

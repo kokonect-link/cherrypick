@@ -3,23 +3,20 @@ block vars
 doctype html
 
 != '\n'
-!= '<!-- Thank you for using Misskey! -->\n'
-!= '<!-- If you are reading this message... how about joining the development of Misskey? -->\n'
-!= '<!-- https://github.com/misskey-dev/misskey -->\n'
-!= '\n'
-!= '<!-- This Misskey has been customized by NoriDev. -->\n'
-!= '<!-- https://github.com/kokonect-link/misskey -->'
+!= '<!-- Thank you for using CherryPick! -->\n'
+!= '<!-- If you are reading this message... how about joining the development of CherryPick? -->\n'
+!= '<!-- https://github.com/kokonect-link/cherrypick -->'
 != '\n'
 
 html
 
 	head
 		meta(charset='utf-8')
-		meta(name='application-name' content='Misskey')
+		meta(name='application-name' content='CherryPick')
 		meta(name='referrer' content='origin')
 		meta(name='theme-color' content='#ffa9c3')
 		meta(name='theme-color-orig' content='#ffa9c3')
-		meta(property='og:site_name' content= instanceName || 'Misskey')
+		meta(property='og:site_name' content= instanceName || 'CherryPick')
 		meta(name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover')
 		link(rel='icon' href= icon || '/favicon.ico')
 		link(rel='apple-touch-icon' href= icon || '/apple-touch-icon.png')
@@ -32,7 +29,7 @@ html
 
 		title
 			block title
-				= title || 'Misskey'
+				= title || 'CherryPick'
 
 		block desc
 			meta(name='description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨')

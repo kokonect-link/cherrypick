@@ -138,11 +138,11 @@
 		if (meta.version != v) {
 			localStorage.setItem('v', meta.version);
 			alert(
-				'Misskeyの新しいバージョンがあります。ページを再度読み込みします。' +
+				'CherryPickの新しいバージョンがあります。ページを再度読み込みします。' +
 				'\n' +
-				'Misskey가 새 버전으로 업데이트 되었습니다. 페이지를 다시 불러옵니다.' +
+				'CherryPick이 새 버전으로 업데이트 되었습니다. 페이지를 다시 불러옵니다.' +
 				'\n' +
-				'New version of Misskey available. The page will be reloaded.');
+				'New version available of CherryPick. The page will be reloaded.');
 			refresh();
 		}
 	}

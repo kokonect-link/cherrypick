@@ -1,6 +1,6 @@
-# Misskey API
+# CherryPick API
 
-Durch die Verwendung des Misskey APIs können Misskey Clients, mit Misskey kompatible Web-Services, Bots (ab sofort "Anwendungen" genannt) und mehr entwickelt werden. Ebenso existiert ein Streaming-API, um Echtzeit-Anwendungen zu erstellen.
+Durch die Verwendung des CherryPick APIs können CherryPick Clients, mit CherryPick kompatible Web-Services, Bots (ab sofort "Anwendungen" genannt) und mehr entwickelt werden. Ebenso existiert ein Streaming-API, um Echtzeit-Anwendungen zu erstellen.
 
 Um mit der Verwendung des APIs zu beginnen, wird zuerst ein Zugriffstoken benötigt. Wie ein solcher Token erhalten werden kann, und wie die API dann hiermit verwendet werden kann, wird auf dieser Seite erklärt.
 

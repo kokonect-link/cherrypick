@@ -225,7 +225,7 @@ router.get(['/@:user', '/@:user/:sub'], async (ctx, next) => {
 		await ctx.render('user', {
 			user, profile, me,
 			sub: ctx.params.sub,
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'CherryPick',
 			icon: meta.iconUrl
 		});
 		ctx.set('Cache-Control', 'public, max-age=30');
@@ -264,7 +264,7 @@ router.get('/notes/:note', async (ctx, next) => {
 			profile,
 			// TODO: Let locale changeable by instance setting
 			summary: getNoteSummary(_note, locales['ja-JP']),
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'CherryPick',
 			icon: meta.iconUrl
 		});
 
@@ -302,7 +302,7 @@ router.get('/@:user/pages/:page', async (ctx, next) => {
 		await ctx.render('page', {
 			page: _page,
 			profile,
-			instanceName: meta.name || 'Misskey'
+			instanceName: meta.name || 'CherryPick'
 		});
 
 		if (['public'].includes(page.visibility)) {
@@ -331,7 +331,7 @@ router.get('/clips/:clip', async (ctx, next) => {
 		await ctx.render('clip', {
 			clip: _clip,
 			profile,
-			instanceName: meta.name || 'Misskey'
+			instanceName: meta.name || 'CherryPick'
 		});
 
 		ctx.set('Cache-Control', 'public, max-age=180');
@@ -353,7 +353,7 @@ router.get('/gallery/:post', async (ctx, next) => {
 		await ctx.render('gallery-post', {
 			post: _post,
 			profile,
-			instanceName: meta.name || 'Misskey',
+			instanceName: meta.name || 'CherryPick',
 			icon: meta.iconUrl
 		});
 
@@ -376,7 +376,7 @@ router.get('/channels/:channel', async (ctx, next) => {
 		const meta = await fetchMeta();
 		await ctx.render('channel', {
 			channel: _channel,
-			instanceName: meta.name || 'Misskey'
+			instanceName: meta.name || 'CherryPick'
 		});
 
 		ctx.set('Cache-Control', 'public, max-age=180');
@@ -448,8 +448,8 @@ router.get('(.*)', async ctx => {
 	const meta = await fetchMeta();
 	await ctx.render('base', {
 		img: meta.bannerUrl,
-		title: meta.name || 'Misskey',
-		instanceName: meta.name || 'Misskey',
+		title: meta.name || 'CherryPick',
+		instanceName: meta.name || 'CherryPick',
 		desc: meta.description,
 		icon: meta.iconUrl
 	});

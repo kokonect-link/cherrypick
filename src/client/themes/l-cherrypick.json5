@@ -1,9 +1,9 @@
 {
 	id: '7540fce3-218f-4e1b-8182-b9481d977078',
 
-	name: 'Kokonect Light',
+	name: 'CherryPick Light',
 	author: 'noridev',
-	desc: 'Kokonect default light theme',
+	desc: 'CherryPick default light theme',
 
 	base: 'light',
 
@@ -13,7 +13,7 @@
 		divider: 'rgb(223, 223, 223)',
 		header: ':alpha<0.7<@bg',
 		navBg: '#fff',
-		navHoverFg: '@nect',
+		navHoverFg: '@pick',
 		panel: '#fff',
 		panelShadow: '" 0 8px 24px rgb(21 43 75 / 8%)',
 		panelHeaderDivider: '@divider',

@@ -13,7 +13,7 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP Note => Misskey Note in DB
+	 * AP Note => CherryPick Note in DB
 	 */
 	public async getNoteFromApId(value: string | IObject): Promise<Note | null> {
 		const parsed = this.parseUri(value);
@@ -52,7 +52,7 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP Person => Misskey User in DB
+	 * AP Person => CherryPick User in DB
 	 */
 	public async getUserFromApId(value: string | IObject): Promise<User | null> {
 		const parsed = this.parseUri(value);
@@ -73,7 +73,7 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP KeyId => Misskey User and Key
+	 * AP KeyId => CherryPick User and Key
 	 */
 	public async getAuthUserFromKeyId(keyId: string): Promise<AuthUser | null> {
 		const key = await UserPublickeys.findOne({
@@ -91,7 +91,7 @@ export default class DbResolver {
 	}
 
 	/**
-	 * AP Actor id => Misskey User and Key
+	 * AP Actor id => CherryPick User and Key
 	 */
 	public async getAuthUserFromApId(uri: string): Promise<AuthUser | null> {
 		const user = await resolvePerson(uri) as IRemoteUser;

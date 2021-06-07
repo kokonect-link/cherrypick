@@ -4,7 +4,7 @@ Durch die Verwendung des Streaming-APIs können verschiedene Daten (z.B. darübe
 
 ## Eine Verbindung zum Stream aufbauen
 
-Um das Streaming-API zu benutzen, muss zuerst eine Verbindung zu Misskey's **websocket** Server aufgebaut werden.
+Um das Streaming-API zu benutzen, muss zuerst eine Verbindung zu CherryPick's **websocket** Server aufgebaut werden.
 
 Baue bitte mit Hilfe der unten stehenden URL eine websocket-Verbindung auf, wobei die Anmeldedaten als `i`-Parameter enthalten sind.z.B.:
 ```
@@ -32,7 +32,7 @@ Eine Verbindung zum Stream kann durch die später erläuterte API oder durch das
 **Alle Nachrichten an den sowie vom Stream sind in JSON-Format.**
 
 ## Kanäle
-Innerhalb des Misskey Streaming-APIs existiert das Konzept von Kanälen.Diese werden zur Abspaltung der Informationen, die erhalten werden sollen, verwendet. Wird eine Verbindung zum Misskey Stream aufgebaut, so ist es noch nicht möglich, sofort Echtzeit-Aktualisierungen zu empfangen. Durch den Verbindungsaufbau zu Kanälen des Streams wird beidseitige Kommunikation bezüglich Informationen dieses Kanals ermöglicht.
+Innerhalb des CherryPick Streaming-APIs existiert das Konzept von Kanälen.Diese werden zur Abspaltung der Informationen, die erhalten werden sollen, verwendet. Wird eine Verbindung zum CherryPick Stream aufgebaut, so ist es noch nicht möglich, sofort Echtzeit-Aktualisierungen zu empfangen. Durch den Verbindungsaufbau zu Kanälen des Streams wird beidseitige Kommunikation bezüglich Informationen dieses Kanals ermöglicht.
 
 ### Verbindungen zu Kanälen aufbauen
 Um eine Verbindung zu einem Kanal aufzubauen, sende die folgende Nachricht:
@@ -164,7 +164,7 @@ Hier,
 
 ## Beitragserfassung
 
-Misskey stellt eine sogenannte Beitragserfassung zur Verfügung.Hierdurch können dem angegebenen Beitrag zugehörige Events über den Stream empfangen werden.
+CherryPick stellt eine sogenannte Beitragserfassung zur Verfügung.Hierdurch können dem angegebenen Beitrag zugehörige Events über den Stream empfangen werden.
 
 Sei beispielsweise eine Situation, in der einem Benutzer eine Chronik angezeigt wird.Nun wird von jemanden auf einen der Beiträge dieser Chronik reagiert.
 
@@ -188,7 +188,7 @@ Um einen Beitrag zu erfassen, sende folgende Nachricht an den Stream:
 Hier,
 * `id` enthält die `id` des Beitrags der erfasst werden soll.
 
-Sobald diese Nachricht gesendet wurde wird dieser Beitrag von Misskey erfasst und es können von nun an diesen Beitrag betreffende Events empfangen werden.
+Sobald diese Nachricht gesendet wurde wird dieser Beitrag von CherryPick erfasst und es können von nun an diesen Beitrag betreffende Events empfangen werden.
 
 Beispielsweise wird das folgende Event empfangen, sobald einem erfassten Beitrag eine Reaktion hinzugefügt wurde:
 

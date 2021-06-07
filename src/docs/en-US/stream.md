@@ -4,7 +4,7 @@ By using the streaming API, you can receive various data (such as new posts arri
 
 ## Connecting to streams
 
-To use the streaming API, you must first connect to the **websocket** of the Misskey server.
+To use the streaming API, you must first connect to the **websocket** of the CherryPick server.
 
 Connect to the websocket located at the below URL, including your credentials within the `i` parameter.E.g.:
 ```
@@ -32,7 +32,7 @@ To connect to the stream, using the later-mentioned API or subscribing to indivi
 **All interactions of sending to and receiving from the Stream are done in JSON format.**
 
 ## Channels
-Within the Misskey Streaming API, a concept called Channels exists.These are used for the purpose of separating which data to receive. When first connecting to the Misskey Stream, you can not receive real-time updates yet. By connecting to channels in the stream, both sending and receiving various information related to said channels becomes possible.
+Within the CherryPick Streaming API, a concept called Channels exists.These are used for the purpose of separating which data to receive. When first connecting to the CherryPick Stream, you can not receive real-time updates yet. By connecting to channels in the stream, both sending and receiving various information related to said channels becomes possible.
 
 ### Connecting to a channel
 To connect to a channel, send a message in JSON format like the following to the stream:
@@ -164,13 +164,13 @@ Here,
 
 ## Post capturing
 
-Misskey provides a structure called Post capturing".This structure makes it possible to receive events about a targeted post from the stream.
+CherryPick provides a structure called Post capturing".This structure makes it possible to receive events about a targeted post from the stream.
 
 For example, assume a situation in which a timeline is displayed to a user.Imagine that someone reacts to a post on this timeline.
 
 Since the client does not have any way of knowing that a certain post has received a reaction, it is not possible to reflect the reaction on this post in real-time.
 
-To solve this problem, Misskey introduced the feature of Post capturing.If you capture a post, events related to said post will be transmitted in real-time, allowing you to reflect the reaction to it on the timeline immediately.
+To solve this problem, CherryPick introduced the feature of Post capturing.If you capture a post, events related to said post will be transmitted in real-time, allowing you to reflect the reaction to it on the timeline immediately.
 
 ### Capturing a post
 
@@ -188,7 +188,7 @@ To capture a post, send a message like the following to the stream:
 Here,
 * the value of `id` must be the `id` of the post to capture.
 
-Sending this message requests Misskey to capture it and thus events related to this post will start to be emitted.
+Sending this message requests CherryPick to capture it and thus events related to this post will start to be emitted.
 
 For example, when a reaction is added to the post, the following message will be emitted:
 

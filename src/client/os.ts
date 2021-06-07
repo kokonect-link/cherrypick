@@ -431,7 +431,7 @@ export function post(props: Record<string, any>) {
 		// NOTE: ただ、dynamic importしない場合、MkPostFormDialogインスタンスが使いまわされ、
 		//       Vueが渡されたコンポーネントに内部的に__propsというプロパティを生やす影響で、
 		//       複数のpost formを開いたときに場合によってはエラーになる
-		//       もちろん複数のpost formを開けること自体Misskeyサイドのバグなのだが
+		//       もちろん複数のpost formを開けること自体CherryPickサイドのバグなのだが
 		let dispose;
 		popup(MkPostFormDialog, props, {
 			closed: () => {

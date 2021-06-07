@@ -1,8 +1,8 @@
-Misskey 设置和安装指南
+CherryPick 设置和安装指南
 ================================================================
 
-非常感谢您对构建 Misskey 服务器的关注！
-这份指南描述了 Misskey 的安装与设置流程。
+非常感谢您对构建 CherryPick 服务器的关注！
+这份指南描述了 CherryPick 的安装与设置流程。
 
 - [日本語版もあります - Japanese version also available](./setup.ja.md)
 - [英語版もあります - English version also available](./setup.en.md)
@@ -10,13 +10,13 @@ Misskey 设置和安装指南
 
 ----------------------------------------------------------------
 
-*1.* 创建 Misskey 用户
+*1.* 创建 CherryPick 用户
 ----------------------------------------------------------------
-直接使用 root 用户来运行 misskey 也许并不是一个好主意，因此我们有必要创建一个专用的用户。
+直接使用 root 用户来运行 cherrypick 也许并不是一个好主意，因此我们有必要创建一个专用的用户。
 以 Debian 为例：
 
 ``` bash
-adduser --disabled-password --disabled-login misskey
+adduser --disabled-password --disabled-login cherrypick
 ```
 
 *2.* 安装依赖
@@ -33,29 +33,29 @@ adduser --disabled-password --disabled-login misskey
 * [Elasticsearch](https://www.elastic.co/) - 为了启用搜索功能，这个搜索引擎是有必要的。
 * [FFmpeg](https://www.ffmpeg.org/)
 
-*3.* 安装 Misskey
+*3.* 安装 CherryPick
 ----------------------------------------------------------------
-1. 连接至 misskey 用户.
+1. 连接至 cherrypick 用户.
 
-	`su - misskey`
+	`su - cherrypick`
 
-2. 克隆 Misskey 项目的 master 分支。
+2. 克隆 CherryPick 项目的 master 分支。
 
-	`git clone -b master git://github.com/kokonect-link/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/cherrypick.git`
 
-3. 进入 misskey 文件夹。
+3. 进入 cherrypick 文件夹。
 
-	`cd misskey`
+	`cd cherrypick`
 
-4. 检查 [最新发布版](https://github.com/kokonect-link/misskey/releases/latest) 标签。
+4. 检查 [最新发布版](https://github.com/kokonect-link/cherrypick/releases/latest) 标签。
 
 	`git checkout master`
 
-5. 安装 Misskey 的依赖。
+5. 安装 CherryPick 的依赖。
 
 	`yarn`
 
-*4.* 配置 Misskey
+*4.* 配置 CherryPick
 ----------------------------------------------------------------
 1. 复制 `.config/example.yml` 并重命名为 `default.yml`。
 
@@ -63,10 +63,10 @@ adduser --disabled-password --disabled-login misskey
 
 2. 编辑 `default.yml`
 
-*5.* 构建 Misskey
+*5.* 构建 CherryPick
 ----------------------------------------------------------------
 
-使用如下的指令构建 Misskey ：
+使用如下的指令构建 CherryPick ：
 
 `NODE_ENV=production yarn build`
 
@@ -86,7 +86,7 @@ yarn run init
 
 *7.* 完成了！
 ----------------------------------------------------------------
-干得不错！现在您拥有了一个可以运行Misskey的环境啦。
+干得不错！现在您拥有了一个可以运行CherryPick的环境啦。
 
 ### 正常启动
 只需要 `NODE_ENV=production npm start` 即可。玩得愉快!
@@ -95,47 +95,47 @@ yarn run init
 
 1. 在此处创建一个 systemd 服务：
 
-	`/etc/systemd/system/misskey.service`
+	`/etc/systemd/system/cherrypick.service`
 
 2. 编辑它，粘贴如下内容并保存：
 
 	```
 	[Unit]
-	Description=Misskey daemon
+	Description=CherryPick daemon
 
 	[Service]
 	Type=simple
-	User=misskey
+	User=cherrypick
 	ExecStart=/usr/bin/npm start
-	WorkingDirectory=/home/misskey/misskey
+	WorkingDirectory=/home/cherrypick/cherrypick
 	Environment="NODE_ENV=production"
 	TimeoutSec=60
 	StandardOutput=syslog
 	StandardError=syslog
-	SyslogIdentifier=misskey
+	SyslogIdentifier=cherrypick
 	Restart=always
 
 	[Install]
 	WantedBy=multi-user.target
 	```
 
-3. 重启 systemd 并设置 misskey 服务自动启动：
+3. 重启 systemd 并设置 cherrypick 服务自动启动：
 
-	`systemctl daemon-reload ; systemctl enable misskey`
+	`systemctl daemon-reload ; systemctl enable cherrypick`
 
-4. 启动 misskey 服务：
+4. 启动 cherrypick 服务：
 
-	`systemctl start misskey`
+	`systemctl start cherrypick`
 
-您可以使用 `systemctl status misskey` 来检查服务是否正在运行。
+您可以使用 `systemctl status cherrypick` 来检查服务是否正在运行。
 
-### 如何将您的 Misskey 服务器升级至最新版本
+### 如何将您的 CherryPick 服务器升级至最新版本
 1. `git checkout master`
 2. `git pull`
 3. `yarn install`
 4. `NODE_ENV=production yarn build`
 5. `yarn migrate`
-6. 重启您的 Misskey 进程来应用改变。
+6. 重启您的 CherryPick 进程来应用改变。
 7. 尽情享受吧！
 
 如果您在更新时遇到任何问题，请尝试以下操作：

@@ -12,13 +12,13 @@
 
 	<FormGroup>
 		<FormKeyValueView>
-			<template #key>Misskey</template>
+			<template #key>CherryPick</template>
 			<template #value>v{{ version }}</template>
 		</FormKeyValueView>
 		<FormLink to="/about-misskey">{{ $ts.aboutMisskey }}</FormLink>
 	</FormGroup>
 
-	<FormGroup>
+	<FormGroup v-if="isKokonect">
 		<FormLink to="https://www.patreon.com/noridev" external>
 			<template #icon><i class="fas fa-hand-holding-medical"></i></template>
 			{{ $ts._aboutMisskey._kokonect.donate }}
@@ -77,6 +77,7 @@ import * as os from '@client/os';
 import number from '@client/filters/number';
 import * as symbols from '@client/symbols';
 import { host } from '@client/config';
+import VanillaTilt from "vanilla-tilt";
 
 export default defineComponent({
 	components: {
@@ -101,12 +102,22 @@ export default defineComponent({
 			initStats: () => os.api('stats', {
 			}).then((stats) => {
 				this.stats = stats;
-			})
+			}),
+			isKokonect: null
 		}
 	},
 
+	mounted() {
+		this.init();
+	},
+
 	methods: {
-		number
+		number,
+
+		async init() {
+			const meta = await os.api('meta', { detail: true });
+			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
+		}
 	}
 });
 </script>

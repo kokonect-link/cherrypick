@@ -232,8 +232,8 @@ type Plugin = {
  */
 export class ColdDeviceStorage {
 	public static default = {
-		lightTheme: require('@client/themes/l-kokonect.json5') as Theme,
-		darkTheme: require('@client/themes/d-kokonect.json5') as Theme,
+		lightTheme: require('@client/themes/l-cherrypick.json5') as Theme,
+		darkTheme: require('@client/themes/d-cherrypick.json5') as Theme,
 		syncDeviceDarkMode: true,
 		chatOpenBehavior: 'page' as 'page' | 'window' | 'popout',
 		plugins: [] as Plugin[],

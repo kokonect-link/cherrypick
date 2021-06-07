@@ -1,6 +1,6 @@
 # Tema
 
-Puoi utilizzare i temi per cambiare l'aspetto del client Misskey.
+Puoi utilizzare i temi per cambiare l'aspetto del client CherryPick.
 
 ## Impostazioni tema
 Impostazioni > Tema
@@ -38,28 +38,28 @@ Il codice dei temi è scritto a forma di oggetti JSON5. I temi contengono gli og
 * `author` ... Autore/Autrice del tema
 * `desc` ... Descrizione tema (facoltativa)
 * `base` ... Imposta tema chiaro o tema scuro
-    * Scegli `light` per impostare un tema chiaro, e `dark` per impostare un tema scuro.
-    * Il tema erediterà dalle caratteristiche del tema di base impostato qui.
+	* Scegli `light` per impostare un tema chiaro, e `dark` per impostare un tema scuro.
+	* Il tema erediterà dalle caratteristiche del tema di base impostato qui.
 * `props` ... Imposta uno stile di tema. (Vedi spiegazioni sotto.)
 
 ### Impostare uno stile di tema
-Puoi configurare lo stile del tema dentro le `props`. Le chiavi diventeranno nomi di variabili CSS, il cui contenuto verrà definito dai valori associati ad esse. Inoltre, gli oggetti presenti in `props` per impostazione predefinita vengono ereditati dal tema di base. Il tema di base sarà [_light.json5](https://github.com/misskey-dev/misskey/blob/develop/src/client/themes/_light.json5) per una `base` `chiara`, e [_dark.json5](https://github.com/misskey-dev/misskey/blob/develop/src/client/themes/_dark.json5) per una `base` `scura`. Cioè, se non viene definita una chiave `panel` nelle `props` del tema, si terrà conto del valore <0>panel</0> predefinito del tema usato.
+Puoi configurare lo stile del tema dentro le `props`. Le chiavi diventeranno nomi di variabili CSS, il cui contenuto verrà definito dai valori associati ad esse. Inoltre, gli oggetti presenti in `props` per impostazione predefinita vengono ereditati dal tema di base. Il tema di base sarà [_light.json5](https://github.com/kokonect-link/cherrypick/blob/develop/src/client/themes/_light.json5) per una `base` `chiara`, e [_dark.json5](https://github.com/kokonect-link/cherrypick/blob/develop/src/client/themes/_dark.json5) per una `base` `scura`. Cioè, se non viene definita una chiave `panel` nelle `props` del tema, si terrà conto del valore <0>panel</0> predefinito del tema usato.
 
 #### Sintassi dei valori
 * Colori HEX
-    * Es.: `#00ff00`
+	* Es.: `#00ff00`
 * Colori `RGB(r, g, b)`
-    * Es.: `rgb(0, 255, 0)`
+	* Es.: `rgb(0, 255, 0)`
 * Colori `RGBA(r, g, b, a)`
-    * Es.: `rgba(0, 255, 0, 0.5)`
+	* Es.: `rgba(0, 255, 0, 0.5)`
 * Chiamare valori di altre chiavi
-    * Inserisci `@{keyname}` per chiamare il valore di un'altra chiave. Bisogna sostituire il testo `{keyname}` col nome della chiave che vuoi chiamare.
-    * Es.: `@panel`
+	* Inserisci `@{keyname}` per chiamare il valore di un'altra chiave. Bisogna sostituire il testo `{keyname}` col nome della chiave che vuoi chiamare.
+	* Es.: `@panel`
 * Costanti (vedi sotto)
-    * Inserisci `${constantname}` per chiamare una costante.Bisogna sostituire il testo `{constantname}` col nome della costante che vuoi chiamare.
-    * Es.: `$main`
+	* Inserisci `${constantname}` per chiamare una costante.Bisogna sostituire il testo `{constantname}` col nome della costante che vuoi chiamare.
+	* Es.: `$main`
 * Funzioni (vedi sotto)
-    * `:{functionname}<{argument}<{color}`
+	* `:{functionname}<{argument}<{color}`
 
 #### Costanti
 Può essere vantaggioso usare una costante nei casi in cui non vuoi che un valore produca una variabile CSS, perché lo vuoi utilizzare come valore di un'altra variabile CSS. In tal caso, basta aggiungere `$` davanti al nome della chiave affinché non generi variabile CSS.

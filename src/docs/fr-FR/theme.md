@@ -1,6 +1,6 @@
 # Thème
 
-Vous pouvez modifier l'apparence de votre client Misskey à l'aide de thèmes.
+Vous pouvez modifier l'apparence de votre client CherryPick à l'aide de thèmes.
 
 ## Paramètres de thème
 Paramètres > Thèmes
@@ -43,7 +43,7 @@ Le code des thèmes est écrit sous forme d'objets JSON5. Les thèmes comprennen
 * `props` ... Définir un style de thème.Voir les explications ci-après.
 
 ### Définir un style de thème
-C'est dans `props` que vous définirez le style du thème. Les clés deviendront des noms de variables CSS dont le contenu sera spécifié par les valeurs associées. Par ailleurs, les objets présents par défaut dans `props` sont hérités du thème de base. Ainsi, si le thème de `base` est `clair`, ce sera le fichier [_light.json5](https://github.com/misskey-dev/misskey/blob/develop/src/client/themes/_light.json5) ; et s'il est `sombre`, le fichier [_dark.json5](https://github.com/misskey-dev/misskey/blob/develop/src/client/themes/_dark.json5). En bref, s'il n'y a, par exemple, pas de clé `panel` définie dans les `props` du thème, alors ce sera la valeur `panel` du thème de base qui sera prise en compte.
+C'est dans `props` que vous définirez le style du thème. Les clés deviendront des noms de variables CSS dont le contenu sera spécifié par les valeurs associées. Par ailleurs, les objets présents par défaut dans `props` sont hérités du thème de base. Ainsi, si le thème de `base` est `clair`, ce sera le fichier [_light.json5](https://github.com/kokonect-link/cherrypick/blob/develop/src/client/themes/_light.json5) ; et s'il est `sombre`, le fichier [_dark.json5](https://github.com/kokonect-link/cherrypick/blob/develop/src/client/themes/_dark.json5). En bref, s'il n'y a, par exemple, pas de clé `panel` définie dans les `props` du thème, alors ce sera la valeur `panel` du thème de base qui sera prise en compte.
 
 #### Syntaxe des valeurs
 * Codes de couleur Hex

@@ -1,5 +1,5 @@
 # Erstellen von Plugins
-Durch die Verwendung der Plugin-Funktionalität des Misskey Web-Clients kann dieser mit verschiedenen Funktionen erweitert werden. Diese Seite beinhaltet Definitionen von Metadaten für die Erstellung von Plugins sowie eine AiScript API-Referenz für Plugins.
+Durch die Verwendung der Plugin-Funktionalität des CherryPick Web-Clients kann dieser mit verschiedenen Funktionen erweitert werden. Diese Seite beinhaltet Definitionen von Metadaten für die Erstellung von Plugins sowie eine AiScript API-Referenz für Plugins.
 
 ## Metadaten
 Plugins müssen benötigte Metadaten im AiScript Metadata-Format angeben. Bei diesen Metadaten handelt es sich um ein Objekt mit folgenden Attributen:
@@ -17,7 +17,7 @@ Version des Plugins.Muss eine Zahl sein.
 Beschreibung des Plugins
 
 ### permissions
-Die vom Plugin geforderten Berechtigungen.Werden bei Anfragen der Misskey API verwendet.
+Die vom Plugin geforderten Berechtigungen.Werden bei Anfragen der CherryPick API verwendet.
 
 ### config
 Ein Objekt, dass die Einstellungen des Plugins enthält. Schlüssel representieren Namen von Einstellungen, und Werte sind einer der unten genannten Attribute.
@@ -44,7 +44,7 @@ Zeigt ein Dialogfenster an.type muss aus einem der folgenden Werte gewählt werd
 Zeigt ein Bestätigungsfenster an.type muss aus einem der folgenden Werte gewählt werden. info success warn error question Falls kein Typ angegeben wird, wird dieser zu question gesetzt. Drückt der Benutzer "OK" wird true zurückgegeben, drückt er "Cancel" wird false zurückgegeben.
 
 ### Mk:api(endpoint params)
-Sendet eine Misskey API-Anfrage.Der erste Parameter gibt den API-Endpunkt an, der zweite die Anfrageparameter als Objekt.
+Sendet eine CherryPick API-Anfrage.Der erste Parameter gibt den API-Endpunkt an, der zweite die Anfrageparameter als Objekt.
 
 ### Mk:save(key value)
 Speichert einen beliebigen Wert dauerhaft unter einem beliebigen Namen.Der gespeicherte Wert bleibt auch nach Verlassen des AiScript-Kontexts erhalten und kann mit Mk:load ausgelesen werden.

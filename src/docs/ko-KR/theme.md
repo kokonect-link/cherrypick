@@ -1,6 +1,6 @@
 # 테마
 
-테마를 설정하여 Misskey 클라이언트의 외형을 변경할 수 있습니다.
+테마를 설정하여 CherryPick 클라이언트의 외형을 변경할 수 있습니다.
 
 ## 테마 설정
 설정 > 테마
@@ -43,7 +43,7 @@
 * `props` ... 테마 스타일 정의. 이제부터 설명하겠습니다.
 
 ### 테마 스타일 정의
-`props`에서는 테마의 스타일을 정의합니다. 키가 CSS 변수명이 되고, 값으로 내용을 지정합니다. 덧붙여, 이 `props` 객체는 베이스 테마로부터 상속됩니다. 베이스 테마는, 이 테마의 `base`가 `light`인 경우, [_light.json5](https://github.com/kokonect-link/misskey/blob/noridev/src/client/themes/_light.json5)이고, `dark`라면 [_dark.json5](https://github.com/kokonect-link/misskey/blob/noridev/src/client/themes/_dark.json5) 입니다. 즉, 만들려는 테마의 `props`에 `panel`라는 키가 없어도 베이스 테마로부터 상속되므로, `panel`이 존재한다고 볼 수 있습니다.
+`props`에서는 테마의 스타일을 정의합니다. 키가 CSS 변수명이 되고, 값으로 내용을 지정합니다. 덧붙여, 이 `props` 객체는 베이스 테마로부터 상속됩니다. 베이스 테마는, 이 테마의 `base`가 `light`인 경우, [_light.json5](https://github.com/kokonect-link/cherrypick/blob/noridev/src/client/themes/_light.json5) 이고, `dark`라면 [_dark.json5](https://github.com/kokonect-link/cherrypick/blob/noridev/src/client/themes/_dark.json5) 입니다. 즉, 만들려는 테마의 `props`에 `panel`라는 키가 없어도 베이스 테마로부터 상속되므로, `panel`이 존재한다고 볼 수 있습니다.
 
 #### 값으로 사용할 수 있는 구문
 * 16진수로 표현된 색

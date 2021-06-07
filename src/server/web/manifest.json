@@ -1,6 +1,6 @@
 {
-	"short_name": "Misskey",
-	"name": "Misskey",
+	"short_name": "CherryPick",
+	"name": "CherryPick",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#313a42",

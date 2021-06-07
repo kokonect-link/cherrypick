@@ -362,7 +362,7 @@ export const packedUserSchema = {
 		host: {
 			type: 'string' as const,
 			nullable: true as const, optional: false as const,
-			example: 'misskey.example.com'
+			example: 'cherrypick.example.com'
 		},
 		avatarUrl: {
 			type: 'string' as const,
@@ -446,7 +446,7 @@ export const packedUserSchema = {
 			type: 'string' as const,
 			nullable: false as const, optional: true as const,
 			format: 'date-time',
-			description: 'The date that the user account was created on Misskey.'
+			description: 'The date that the user account was created on CherryPick.'
 		},
 		updatedAt: {
 			type: 'string' as const,

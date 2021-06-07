@@ -1,7 +1,7 @@
 Docker Guide
 ================================================================
 
-This guide describes how to install and setup Misskey with Docker.
+This guide describes how to install and setup CherryPick with Docker.
 
 - [Japanese version also available - 日本語版もあります](./docker.ja.md)
 - [Simplified Chinese version also available - 简体中文版同样可用](./docker.zh.md)
@@ -9,21 +9,21 @@ This guide describes how to install and setup Misskey with Docker.
 
 ----------------------------------------------------------------
 
-*1.* Download Misskey
+*1.* Download CherryPick
 ----------------------------------------------------------------
-1. Clone Misskey repository's master branch.
+1. Clone CherryPick repository's master branch.
 
-	`git clone -b master git://github.com/kokonect-link/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/cherrypick.git`
 
-2. Move to misskey directory.
+2. Move to cherrypick directory.
 
-	`cd misskey`
+	`cd cherrypick`
 
-3. Checkout to the [latest release](https://github.com/kokonect-link/misskey/releases/latest) tag.
+3. Checkout to the [latest release](https://github.com/kokonect-link/cherrypick/releases/latest) tag.
 
 	`git checkout master`
 
-*2.* Configure Misskey
+*2.* Configure CherryPick
 ----------------------------------------------------------------
 
 Create configuration files with following:
@@ -61,9 +61,9 @@ The minimum required settings are:
 ----------------------------------------------------------------
 Edit `docker-compose.yml`.
 
-*4.* Build Misskey
+*4.* Build CherryPick
 ----------------------------------------------------------------
-Build misskey with the following:
+Build cherrypick with the following:
 
 `docker-compose build`
 
@@ -75,12 +75,12 @@ docker-compose run --rm web yarn run init
 
 *6.* That is it.
 ----------------------------------------------------------------
-Well done! Now you have an environment to run Misskey.
+Well done! Now you have an environment to run CherryPick.
 
 ### Launch normally
 Just `docker-compose up -d`. GLHF!
 
-### How to update your Misskey server to the latest version
+### How to update your CherryPick server to the latest version
 1. `git stash`
 2. `git checkout master`
 3. `git pull`

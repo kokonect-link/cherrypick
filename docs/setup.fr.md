@@ -1,8 +1,8 @@
-Guide d'installation et de configuration de Misskey
+Guide d'installation et de configuration de CherryPick
 ================================================================
 
-Nous vous remerçions de l'intrêt que vous manifestez pour l'installation de votre propre instance Misskey !
-Ce guide décrit les étapes à suivre afin d'installer et de configurer une instance Misskey.
+Nous vous remerçions de l'intrêt que vous manifestez pour l'installation de votre propre instance CherryPick !
+Ce guide décrit les étapes à suivre afin d'installer et de configurer une instance CherryPick.
 
 - [La version en japonnais est également disponible sur - 日本語版もあります](./setup.ja.md)
 - [Version anglaise également disponible - English version also available - 英語版もあります](./setup.en.md)
@@ -11,13 +11,13 @@ Ce guide décrit les étapes à suivre afin d'installer et de configurer une ins
 
 ----------------------------------------------------------------
 
-*1.* Création de l'utilisateur Misskey
+*1.* Création de l'utilisateur CherryPick
 ----------------------------------------------------------------
 Executer misskey en tant que super-utilisateur étant une mauvaise idée, nous allons créer un utilisateur dédié.
 Sous Debian, par exemple :
 
 ```
-adduser --disabled-password --disabled-login misskey
+adduser --disabled-password --disabled-login cherrypick
 ```
 
 *2.* Installation des dépendances
@@ -34,25 +34,25 @@ Installez les paquets suivants :
 * [Elasticsearch](https://www.elastic.co/) - *requis pour pouvoir activer la fonctionnalité de recherche.*
 * [FFmpeg](https://www.ffmpeg.org/)
 
-*3.* Installation de Misskey
+*3.* Installation de CherryPick
 ----------------------------------------------------------------
-1. Basculez vers l'utilisateur misskey.
+1. Basculez vers l'utilisateur cherrypick.
 
-	`su - misskey`
+	`su - cherrypick`
 
-2. Clonez la branche master du dépôt misskey.
+2. Clonez la branche master du dépôt cherrypick.
 
-	`git clone -b master git://github.com/kokonect-link/misskey.git`
+	`git clone -b master git://github.com/kokonect-link/cherrypick.git`
 
-3. Accédez au dossier misskey.
+3. Accédez au dossier cherrypick.
 
-	`cd misskey`
+	`cd cherrypick`
 
-4. Checkout sur le tag de la [version la plus récente](https://github.com/kokonect-link/misskey/releases/latest)
+4. Checkout sur le tag de la [version la plus récente](https://github.com/kokonect-link/cherrypick/releases/latest)
 
 	`git checkout master`
  
-5. Installez les dépendances de misskey.
+5. Installez les dépendances de CherryPick.
 
 	`yarn install`
 
@@ -64,10 +64,10 @@ Installez les paquets suivants :
 
 2. Editez le fichier `default.yml`
 
-*5.* Construction de Misskey
+*5.* Construction de CherryPick
 ----------------------------------------------------------------
 
-Construisez Misskey comme ceci :
+Construisez CherryPick comme ceci :
 
 `NODE_ENV=production yarn build`
 
@@ -81,7 +81,7 @@ Si vous rencontrez des erreurs concernant certains modules, utilisez node-gyp:
 
 *6.* C'est tout.
 ----------------------------------------------------------------
-Excellent ! Maintenant, vous avez un environnement prêt pour lancer Misskey
+Excellent ! Maintenant, vous avez un environnement prêt pour lancer CherryPick
 
 ### Lancement conventionnel
 Lancez tout simplement `NODE_ENV=production yarn start`. Bonne chance et amusez-vous bien !
@@ -90,41 +90,41 @@ Lancez tout simplement `NODE_ENV=production yarn start`. Bonne chance et amusez-
 
 1. Créez un service systemd sur
 
-	`/etc/systemd/system/misskey.service`
+	`/etc/systemd/system/cherrypick.service`
 
 2. Editez-le puis copiez et coller ceci dans le fichier :
 
 	```
 	[Unit]
-	Description=Misskey daemon
+	Description=CherryPick daemon
 
 	[Service]
 	Type=simple
-	User=misskey
+	User=cherrypick
 	ExecStart=/usr/bin/npm start
-	WorkingDirectory=/home/misskey/misskey
+	WorkingDirectory=/home/cherrypick/cherrypick
 	Environment="NODE_ENV=production"
 	TimeoutSec=60
 	StandardOutput=syslog
 	StandardError=syslog
-	SyslogIdentifier=misskey
+	SyslogIdentifier=cherrypick
 	Restart=always
 
 	[Install]
 	WantedBy=multi-user.target
 	```
 
-3. Redémarre systemd et active le service misskey.
+3. Redémarre systemd et active le service cherrypick.
 
-	`systemctl daemon-reload ; systemctl enable misskey`
+	`systemctl daemon-reload ; systemctl enable cherrypick`
 
-4. Démarre le service misskey.
+4. Démarre le service cherrypick.
 
-	`systemctl start misskey`
+	`systemctl start cherrypick`
 
-Vous pouvez vérifier si le service a démarré en utilisant la commande `systemctl status misskey`.
+Vous pouvez vérifier si le service a démarré en utilisant la commande `systemctl status cherrypick`.
 
-### Méthode de mise à jour vers la plus récente version de Misskey
+### Méthode de mise à jour vers la plus récente version de CherryPick
 1. `git checkout master`
 2. `git pull`
 3. `yarn install`

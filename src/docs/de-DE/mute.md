@@ -1,6 +1,6 @@
 # Stummschaltung
 
-Sobald du einen Benutzer stummschaltest, werden die folgenden Arten von mit diesem Benutzer verbundenen Beiträge von Misskey nicht mehr angezeigt:
+Sobald du einen Benutzer stummschaltest, werden die folgenden Arten von mit diesem Benutzer verbundenen Beiträge von CherryPick nicht mehr angezeigt:
 
 * Beiträge dieses Nutzers in Chroniken sowie Suchergebnissen (inklusive Renotes und Antworten auf diese)
 * Benachrichtigungen von diesem Benutzer

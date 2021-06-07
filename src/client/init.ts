@@ -28,7 +28,7 @@ import { initializeSw } from '@client/scripts/initialize-sw';
 import { reloadChannel } from '@client/scripts/unison-reload';
 import { reactionPicker } from '@client/scripts/reaction-picker';
 
-console.info(`Misskey v${version}`);
+console.info(`CherryPick v${version}`);
 
 // boot.jsのやつを解除
 window.onerror = null;
@@ -37,8 +37,8 @@ window.onunhandledrejection = null;
 // 後方互換性のため。
 // TODO: そのうち消す
 if ((typeof ColdDeviceStorage.get('lightTheme') === 'string') || (typeof ColdDeviceStorage.get('darkTheme') === 'string')) {
-	ColdDeviceStorage.set('lightTheme', require('@client/themes/l-kokonect.json5'));
-	ColdDeviceStorage.set('darkTheme', require('@client/themes/d-kokonect.json5'));
+	ColdDeviceStorage.set('lightTheme', require('@client/themes/l-cherrypick.json5'));
+	ColdDeviceStorage.set('darkTheme', require('@client/themes/d-cherrypick.json5'));
 }
 const link = document.createElement('link');
 link.rel = 'stylesheet';
@@ -81,7 +81,7 @@ if (defaultStore.state.reportError && !_DEV_) {
 		tracesSampleRate: 1.0,
 	});
 
-	Sentry.setTag('misskey_version', version);
+	Sentry.setTag('cherrypick_version', version);
 	Sentry.setTag('ui', ui);
 	Sentry.setTag('lang', lang);
 	Sentry.setTag('host', host);
@@ -359,7 +359,7 @@ if ($i) {
 	});
 
 	// トークンが再生成されたとき
-	// このままではMisskeyが利用できないので強制的にサインアウトさせる
+	// このままではCherryPickが利用できないので強制的にサインアウトさせる
 	main.on('myTokenRegenerated', () => {
 		signout();
 	});

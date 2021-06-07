@@ -188,7 +188,7 @@ router.get('/dc/cb', async ctx => {
 			.getOne();
 
 		if (profile == null) {
-			ctx.throw(404, `@${username}#${discriminator}と連携しているMisskeyアカウントはありませんでした...`);
+			ctx.throw(404, `@${username}#${discriminator}と連携しているCherryPickアカウントはありませんでした...`);
 			return;
 		}
 
@@ -273,7 +273,7 @@ router.get('/dc/cb', async ctx => {
 			}
 		});
 
-		ctx.body = `Discord: @${username}#${discriminator} を、Misskey: @${user.username} に接続しました！`;
+		ctx.body = `Discord: @${username}#${discriminator} を、CherryPick: @${user.username} に接続しました！`;
 
 		// Publish i updated event
 		publishMainStream(user.id, 'meUpdated', await Users.pack(user, user, {

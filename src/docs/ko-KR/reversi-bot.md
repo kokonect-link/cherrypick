@@ -1,5 +1,5 @@
-# Misskey 리버시 봇 개발
-Misskey의 리버시 기능을 지원하는 봇의 개발 방법을 소개합니다.
+# CherryPick 리버시 봇 개발
+CherryPick의 리버시 기능을 지원하는 봇의 개발 방법을 소개합니다.
 
 1. `games/reversi` 스트림에 다음 매개변수를 붙여 접속합니다:
     * `i`: 봇 계정의 API 키
