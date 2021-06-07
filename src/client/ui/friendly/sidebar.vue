@@ -48,8 +48,13 @@
 				<div class="divider"></div>
 				<div class="about">
 					<MkA class="link" to="/about" v-click-anime>
-						<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
-						<p style="font-size:10px;"><b><span style="color: var(--koko);">KOKO</span><span style="color: var(--nect);">NECT</span></b></p>
+						<template v-if="isKokonect">
+							<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+							<p style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
+						</template>
+						<template v-else>
+							<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+						</template>
 					</MkA>
 				</div>
 			</div>
@@ -84,6 +89,7 @@ export default defineComponent({
 			menuDef: sidebarDef,
 			iconOnly: false,
 			hidden: this.defaultHidden,
+			isKokonect: null
 		};
 	},
 
@@ -126,6 +132,10 @@ export default defineComponent({
 	created() {
 		window.addEventListener('resize', this.calcViewState);
 		this.calcViewState();
+	},
+
+	mounted() {
+		this.init();
 	},
 
 	methods: {
@@ -222,6 +232,11 @@ export default defineComponent({
 		patron() {
 			window.open("https://www.patreon.com/noridev", "_blank");
 		},
+
+		async init() {
+			const meta = await os.api('meta', { detail: true });
+			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
+		}
 	}
 });
 </script>
