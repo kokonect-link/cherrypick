@@ -263,11 +263,11 @@ export default defineComponent({
 			height: $avatar-size;
 			border-radius: 100px;
 			line-height: 0;
-			background: var(--nect);
+			background: var(--pick);
 			margin-top: 10px;
 
 			&:hover {
-				background: var(--navHoverFg);
+				background: var(--pickLighten);
 			}
 		}
 	}
