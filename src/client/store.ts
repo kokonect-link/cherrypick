@@ -208,7 +208,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false
 	},
-	showMediaDetails: {
+	showItemDetails: {
 		where: 'device',
 		default: true
 	},
