@@ -1,8 +1,14 @@
 <template>
 	<div class="mk-note-page">
 		<div class="_section" v-if="renoteState">
-			<XNotes v-if="tab === 'quotes'" ref="quotes" :pagination="quotes"/>
-			<XUsers v-else-if="tab === 'renotes'" ref="renotes" :pagination="renotedUsers"/>
+			<template v-if="tab ==='renotesQuotes'">
+				<XNotes ref="quotes" :pagination="quotes"/>
+				<XUsers ref="renotes" :pagination="renotedUsers"/>
+			</template>
+			<template v-else>
+				<XNotes v-if="tab === 'quotes'" ref="quotes" :pagination="quotes"/>
+				<XUsers v-else-if="tab === 'renotes'" ref="renotes" :pagination="renotedUsers"/>
+			</template>
 		</div>
 
 		<div v-if="error">
@@ -93,8 +99,12 @@ export default defineComponent({
 			try {
 				Progress.start();
 				const state = this.renoteState = await os.api('notes/is-renoted', { noteId: this.noteId }) as { isRenoted: boolean, isQuoted: boolean };
-				if (state.isQuoted) {
+				if (state.isRenoted && state.isQuoted) {
+					this.tab = 'renotesQuotes';
+					console.log("리노트와 인용");
+				} else if (state.isQuoted) {
 					this.tab = 'quotes';
+					console.log("인용");
 				}
 			} catch(e) {
 				this.error = e;
