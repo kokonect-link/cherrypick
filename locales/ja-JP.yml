@@ -785,6 +785,12 @@ quotes: "引用ノート"
 renoteQuote: "リノートと引用"
 showItemDetails: "自動的に項目を開く"
 showItemDetailsDesc: "引用されたノートの項目（メディア、投票など）を自動的に広げて表示します。"
+newNoteNoti: "新しいノート通知"
+
+_newNoteNotiBehavior:
+  default: "デフォルト"
+  smail: "小さく"
+  none: "無効化"
 
 _ad:
   back: "戻る"

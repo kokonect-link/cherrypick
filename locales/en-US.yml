@@ -784,7 +784,12 @@ renoteQuoteCount: "{count} Renote and Quote"
 quotes: "Quote Note"
 renoteQuote: "Renote or Quote"
 showItemDetails: "Automatically expand items"
-showItemDetailsDesc: "Automatically expands and displays items(media, poll, etc.) in quoted notes."
+showItemDetailsDesc: "Automatically expands and displays items (media, poll, etc.) in quoted notes."
+newNoteNoti: "새 노트 알림"
+_newNoteNotiBehavior:
+  default: "Default"
+  smail: "Smail"
+  none: "None"
 _ad:
   back: "Back"
   reduceFrequencyOfThisAd: "Show this ad less"

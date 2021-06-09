@@ -212,6 +212,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true
 	},
+	newNoteNotiBehavior: {
+		where: 'device',
+		default: 'default' as 'default' | 'smail' | 'none'
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期

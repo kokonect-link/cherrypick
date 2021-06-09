@@ -785,6 +785,12 @@ quotes: "인용한 노트"
 renoteQuote: "리노트 및 인용"
 showItemDetails: "자동으로 항목 펼치기"
 showItemDetailsDesc: "인용된 노트의 항목(미디어, 투표 등)을 자동으로 펼쳐서 표시해요."
+newNoteNoti: "새 노트 알림"
+
+_newNoteNotiBehavior:
+  default: "기본"
+  smail: "작게"
+  none: "표시하지 않음"
 
 _ad:
   back: "뒤로 가기"

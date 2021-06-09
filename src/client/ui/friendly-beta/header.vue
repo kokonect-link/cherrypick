@@ -28,7 +28,7 @@
 			</button>
 		</div>
 		<div class="buttons_R">
-			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary button_R" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
+			<button v-if="queue > 0 && $route.name === 'index' && $store.state.newNoteNotiBehavior === 'smail'" class="new _buttonPrimary button_R" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
 			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
 			</template>
@@ -37,7 +37,6 @@
 	</template>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
 		<button class="_button back" v-if="withBack && canBack && isMobile && !($route.name === 'notifications' || $route.name === 'messaging')" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
-		<button class="_button back" v-else-if="withBack && canBack && !isMobile" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
 	</transition>
 </div>
 </template>

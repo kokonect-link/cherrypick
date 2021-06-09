@@ -1,7 +1,9 @@
 <template>
 <FormBase>
-	<FormSwitch v-model:value="showFixedPostForm">{{ $ts.showFixedPostForm }}</FormSwitch>
-	<FormSwitch v-if="$i.isPatron" v-model:value="showAds">{{ $ts.showAds }}</FormSwitch>
+	<FormGroup>
+		<FormSwitch v-model:value="showFixedPostForm">{{ $ts.showFixedPostForm }}</FormSwitch>
+		<FormSwitch v-if="$i.isPatron" v-model:value="showAds">{{ $ts.showAds }}</FormSwitch>
+	</FormGroup>
 
 	<FormSelect v-model:value="lang">
 		<template #label>{{ $ts.uiLanguage }}</template>
@@ -44,6 +46,13 @@
 			<div><Mfm text="🍮🍦🍭🍩🍰🍫🍬🥞🍪" :key="useOsNativeEmojis"/></div>
 		</FormSwitch>
 	</FormGroup>
+
+	<FormSelect v-if="isFriendlyUIBeta" v-model:value="newNoteNotiBehavior">
+		<template #label>{{ $ts.newNoteNoti }}</template>
+		<option value="default">{{ $ts._newNoteNotiBehavior.default }}</option>
+		<option value="smail">{{ $ts._newNoteNotiBehavior.smail }}</option>
+		<option value="none">{{ $ts._newNoteNotiBehavior.none }}</option>
+	</FormSelect>
 
 	<FormRadios v-model="fontSize">
 		<template #desc>{{ $ts.fontSize }}</template>
@@ -124,6 +133,7 @@ export default defineComponent({
 			lang: localStorage.getItem('lang'),
 			fontSize: localStorage.getItem('fontSize'),
 			useSystemFont: localStorage.getItem('useSystemFont') != null,
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 		}
 	},
 
@@ -146,6 +156,7 @@ export default defineComponent({
 		enableInfiniteScroll: defaultStore.makeGetterSetter('enableInfiniteScroll'),
 		useReactionPickerForContextMenu: defaultStore.makeGetterSetter('useReactionPickerForContextMenu'),
 		showAds: defaultStore.makeGetterSetter('showAds'),
+		newNoteNotiBehavior: defaultStore.makeGetterSetter('newNoteNotiBehavior'),
 	},
 
 	watch: {
