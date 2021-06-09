@@ -6,19 +6,29 @@
 				<template #label>{{ $ts.selectWidget }}</template>
 				<option v-for="widget in widgetDefs" :value="widget" :key="widget">{{ $t(`_widgets.${widget}`) }}</option>
 			</MkSelect>
-			<MkButton inline @click="addWidget" primary><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
-			<MkButton inline @click="$emit('exit')">{{ $ts.close }}</MkButton>
+			<MkButton class="btn" @click="addWidget" primary><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+			<MkButton class="btn" @click="$emit('exit')">{{ $ts.close }}</MkButton>
 		</header>
 		<XDraggable
 			v-model="_widgets"
 			item-key="id"
+			handle=".handle"
 			animation="150"
+			class="sortable"
 		>
 			<template #item="{element}">
-				<div class="customize-container">
-					<button class="config _button" @click.prevent.stop="configWidget(element.id)"><i class="fas fa-cog"></i></button>
-					<button class="remove _button" @click.prevent.stop="removeWidget(element)"><i class="fas fa-times"></i></button>
-					<component :is="`mkw-${element.name}`" :widget="element" :setting-callback="setting => settings[element.id] = setting" :column="column" @updateProps="updateWidget(element.id, $event)"/>
+				<div class="customize-container _panel">
+					<header>
+						<span class="handle"><i class="fas fa-bars"/></span>
+						<div style="position: absolute; top: 0; left: 35px; font-size: 14px; font-weight: bold; line-height: 32.5px;">
+							{{ $t('_widgets.' + element.name) }}
+						</div>
+						<button class="config _button" @click.prevent.stop="configWidget(element.id)"><i class="fas fa-cog"></i></button>
+						<button class="remove _button" @click.prevent.stop="removeWidget(element)"><i class="fas fa-times"/></button>
+					</header>
+					<div @click="configWidget(element.id)">
+						<component :is="`mkw-${element.name}`" :widget="element" :setting-callback="setting => settings[element.id] = setting" :column="column" @updateProps="updateWidget(element.id, $event)"/>
+					</div>
 				</div>
 			</template>
 		</XDraggable>
@@ -109,6 +119,11 @@ export default defineComponent({
 			width: 100%;
 			padding: 4px;
 		}
+
+		> .btn {
+			margin: -5px 0;
+			padding: 6px;
+		}
 	}
 
 	> .widget, .customize-container {
@@ -121,30 +136,40 @@ export default defineComponent({
 
 	.customize-container {
 		position: relative;
-		cursor: move;
 
-		> *:not(.remove):not(.config) {
-			pointer-events: none;
+		> header {
+			position: relative;
+			line-height: 25px;
+
+			> .handle {
+				padding: 0 10px;
+				cursor: move;
+				line-height: 32px;
+			}
+
+			> .config,
+			> .remove {
+				position: absolute;
+				top: 0;
+				padding: 0 8px;
+				line-height: 32px;
+			}
+
+			> .config {
+				right: 30px;
+			}
+
+			> .remove {
+				right: 5px;
+			}
 		}
 
-		> .config,
-		> .remove {
-			position: absolute;
-			z-index: 10000;
-			top: 8px;
-			width: 32px;
-			height: 32px;
-			color: #fff;
-			background: rgba(#000, 0.7);
-			border-radius: 4px;
-		}
+		> div {
+			padding: 8px;
 
-		> .config {
-			right: 8px + 8px + 32px;
-		}
-
-		> .remove {
-			right: 8px;
+			> * {
+				pointer-events: none;
+			}
 		}
 	}
 }

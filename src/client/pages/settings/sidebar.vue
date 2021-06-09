@@ -1,29 +1,42 @@
 <template>
-<FormBase>
-	<FormTextarea v-model:value="items" tall>
-		<span>{{ $ts.sidebar }}</span>
-		<template #desc><button class="_textButton" @click="addItem">{{ $ts.addItem }}</button></template>
-	</FormTextarea>
+	<FormBase>
+		<FormRadios v-model="sidebarDisplay">
+			<template #desc>{{ $ts.display }}</template>
+			<option value="full">{{ $ts._sidebar.full }}</option>
+			<option value="icon">{{ $ts._sidebar.icon }}</option>
+			<!-- <MkRadio v-model="sidebarDisplay" value="hide" disabled>{{ $ts._sidebar.hide }}</MkRadio>--> <!-- TODO: サイドバーを完全に隠せるようにすると、別途ハンバーガーボタンのようなものをUIに表示する必要があり面倒 -->
+		</FormRadios>
 
-	<FormRadios v-model="sidebarDisplay">
-		<template #desc>{{ $ts.display }}</template>
-		<option value="full">{{ $ts._sidebar.full }}</option>
-		<option value="icon">{{ $ts._sidebar.icon }}</option>
-		<!-- <MkRadio v-model="sidebarDisplay" value="hide" disabled>{{ $ts._sidebar.hide }}</MkRadio>--> <!-- TODO: サイドバーを完全に隠せるようにすると、別途ハンバーガーボタンのようなものをUIに表示する必要があり面倒 -->
-	</FormRadios>
+		<div class="mcc329a0 _formItem _formPanel">
+			<XDraggable class="draggable" v-model="items" :item-key="item => item" animation="150" delay="100" delay-on-touch-only="true">
+				<template #item="{element: item}">
+					<div class="item">
+						<i v-if="!item.startsWith('-:')" :class="menuDef[item].icon" />
+						<template v-if="item.startsWith('-:')">
+							<i class="fas fa-minus" />
+							<span v-text="$ts.divider"/>
+						</template>
+						<span v-else v-text="$t(menuDef[item] ? menuDef[item].title : item)"/>
+						<div class="del" @click="del(item)"><i class="fas fa-times" /></div>
+					</div>
+				</template>
+			</XDraggable>
+		</div>
 
-	<FormButton @click="save()" primary><i class="fas fa-save"></i> {{ $ts.save }}</FormButton>
-	<FormButton @click="reset()" danger><i class="fas fa-redo"></i> {{ $ts.default }}</FormButton>
-</FormBase>
+		<FormTuple>
+			<FormButton @click="addItem" primary><i class="fas fa-plus"/> {{ $ts.add }}</FormButton>
+			<FormButton @click="reset()" danger><i class="fas fa-redo"/> {{ $ts.default }}</FormButton>
+		</FormTuple>
+	</FormBase>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineAsyncComponent, defineComponent } from 'vue';
+import { v4 as uuid } from 'uuid';
 import FormSwitch from '@client/components/form/switch.vue';
-import FormTextarea from '@client/components/form/textarea.vue';
 import FormRadios from '@client/components/form/radios.vue';
 import FormBase from '@client/components/form/base.vue';
-import FormGroup from '@client/components/form/group.vue';
+import FormTuple from '@client/components/form/tuple.vue';
 import FormButton from '@client/components/form/button.vue';
 import * as os from '@client/os';
 import { sidebarDef } from '@client/sidebar';
@@ -33,38 +46,46 @@ import * as symbols from '@client/symbols';
 export default defineComponent({
 	components: {
 		FormBase,
+		FormSwitch,
 		FormButton,
-		FormTextarea,
 		FormRadios,
+		FormTuple,
+		XDraggable: defineAsyncComponent(() => import('vuedraggable').then(x => x.default)),
 	},
 
 	emits: ['info'],
-	
+
 	data() {
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.sidebar,
-				icon: 'fas fa-list-ul'
+				icon: "fas fa-list-ul"
 			},
 			menuDef: sidebarDef,
-			items: '',
+			items: []
 		}
 	},
 
 	computed: {
-		splited(): string[] {
-			return this.items.trim().split('\n').filter(x => x.trim() !== '');
-		},
-
 		sidebarDisplay: defaultStore.makeGetterSetter('sidebarDisplay')
 	},
 
 	created() {
-		this.items = this.$store.state.menu.join('\n');
+		this.items = this.$store.state.menu.map(it => it === '-' ? '-:' + uuid() : it);
 	},
 
 	mounted() {
 		this.$emit('info', this[symbols.PAGE_INFO]);
+	},
+
+	watch: {
+		items: {
+			handler() {
+				console.log('save');
+				this.save();
+			},
+			deep: true,
+		}
 	},
 
 	methods: {
@@ -77,37 +98,65 @@ export default defineComponent({
 					items: [...menu.map(k => ({
 						value: k, text: this.$ts[this.menuDef[k].title]
 					})), ...[{
-						value: '-', text: this.$ts.divider
+						value: '-:' + uuid(), text: this.$ts.divider
 					}]]
 				},
 				showCancelButton: true
 			});
 			if (canceled) return;
-			this.items = [...this.splited, item].join('\n');
-			this.save();
+			this.items = [...this.items, item];
+		},
+
+		del(item) {
+			this.items = this.items.filter(it => it !== item);
 		},
 
 		save() {
-			this.$store.set('menu', this.splited);
-			this.reloadAsk();
+			this.$store.set('menu', this.items.map(it => it.startsWith('-:') ? '-' : it));
 		},
 
 		reset() {
 			this.$store.reset('menu');
-			this.items = this.$store.state.menu.join('\n');
-			this.reloadAsk();
+			this.items = this.$store.state.menu.map(it => it === '-' ? '-:' + uuid() : it);
 		},
-
-		async reloadAsk() {
-			const { canceled } = await os.dialog({
-				type: 'info',
-				text: this.$ts.reloadToApplySetting,
-				showCancelButton: true
-			});
-			if (canceled) return;
-
-			location.reload();
-		}
 	},
 });
 </script>
+
+<style lang="scss" scoped>
+
+.mcc329a0 {
+	padding: 16px;
+	> .draggable {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.item, .otherItem {
+	display: flex;
+	align-items: center;
+	border: solid 1px var(--divider);
+	border-bottom: none;
+	cursor: move;
+
+	> i {
+		margin: 0 8px;
+	}
+
+	> .del {
+		display: flex;
+		align-items: center;
+		color: var(--error);
+		justify-content: center;
+		margin-left: auto;
+		cursor: pointer;
+		width: 36px;
+		height: 36px;
+	}
+
+	&:last-child {
+		border-bottom: solid 1px var(--divider);
+	}
+}
+</style>
