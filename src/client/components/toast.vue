@@ -41,6 +41,10 @@ export default defineComponent({
 .notification-slide-enter-from, .notification-slide-leave-to {
 	opacity: 0;
 	transform: translateX(-250px);
+
+	@media (max-width: 850px) {
+		transform: translateY(-250px);
+	}
 }
 
 .mk-toast {
@@ -52,15 +56,13 @@ export default defineComponent({
 	padding: 0 32px;
 	pointer-events: none;
 
-	@media (max-width: 700px) {
-		top: initial;
-		bottom: 112px;
-		padding: 0 16px;
-	}
-
-	@media (max-width: 500px) {
-		bottom: 92px;
+	@media (max-width: 850px) {
+		top: 72px;
+		bottom: initial;
 		padding: 0 8px;
+		width: 95%;
+		right: 0;
+		margin: 0 auto;
 	}
 
 	> .notification {
