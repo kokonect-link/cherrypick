@@ -1,6 +1,6 @@
 <template>
 <header class="kkwtjztg">
-	<MkA class="name" :to="userPage(note.user)" v-user-preview="note.user.id">
+	<MkA class="name" :to="userPage(note.user)" v-user-preview="isDesktop ? note.user.id : undefined">
 		<MkUserName :user="note.user"/>
 		<MkAcct class="username" :user="note.user"/>
 	</MkA>
@@ -30,6 +30,8 @@ import notePage from '../filters/note';
 import { userPage } from '../filters/user';
 import * as os from '@client/os';
 
+const DESKTOP_THRESHOLD = 1100;
+
 export default defineComponent({
 	props: {
 		note: {
@@ -40,6 +42,7 @@ export default defineComponent({
 
 	data() {
 		return {
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 

@@ -9,8 +9,8 @@
 	v-size="{ max: [500, 450, 350, 300] }"
 >
 	<div class="renote" v-if="isRenote">
-		<MkAvatar class="avatar" :user="note.user"/>
-		<MkA class="name" :to="userPage(note.user)" v-user-preview="note.userId">
+		<MkAvatar class="avatar" :user="note.user" :disable-preview="!isDesktop"/>
+		<MkA class="name" :to="userPage(note.user)" v-user-preview="isDesktop ? note.userId : undefined">
 			<i class="fas fa-retweet"></i>
 			<I18n :src="$ts.renotedBy" tag="span">
 				<template #user>
@@ -36,7 +36,7 @@
 	<div class="info" v-if="appearNote._prId_"><i class="fas fa-bullhorn"></i> {{ $ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ $ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
 	<div class="info" v-if="appearNote._featuredId_"><i class="fas fa-bolt"></i> {{ $ts.featured }}</div>
 	<article class="article" @contextmenu.stop="onContextmenu">
-		<MkAvatar class="avatar" :user="appearNote.user"/>
+		<MkAvatar class="avatar" :user="appearNote.user" :disable-preview="!isDesktop"/>
 		<div class="main">
 			<XNoteHeader class="header" :note="appearNote" :mini="true"/>
 			<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
@@ -128,6 +128,8 @@ import { reactionPicker } from '@client/scripts/reaction-picker';
 import { extractUrlFromMfm } from '@/misc/extract-url-from-mfm';
 import notePage from "@client/filters/note";
 
+const DESKTOP_THRESHOLD = 1100;
+
 export default defineComponent({
 	components: {
 		XSub,
@@ -171,6 +173,7 @@ export default defineComponent({
 			muted: false,
 			isSticky: this.$route.name === 'tags',
 			renoteState: null,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD
 		};
 	},
 
