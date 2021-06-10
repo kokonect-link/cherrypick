@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="buttons_L" v-if="isMobile">
-			<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime>
+			<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'explore' || $route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime>
 				<i class="fas fa-bars"/>
 				<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator">
 					<i class="fas fa-circle"></i>
@@ -36,7 +36,8 @@
 		</div>
 	</template>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
-		<button class="_button back" v-if="withBack && canBack && isMobile && !($route.name === 'notifications' || $route.name === 'messaging')" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
+		<button class="_button back" v-if="withBack && canBack && isMobile && !($route.name === 'explore' || $route.name === 'notifications' || $route.name === 'messaging')" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
+		<button class="_button back" v-else-if="withBack && canBack && !isMobile" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
 	</transition>
 </div>
 </template>
