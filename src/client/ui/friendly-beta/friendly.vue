@@ -25,7 +25,7 @@
 		</div>
 	</div>
 
-	<button v-if="fabButton" class="fab _buttonPrimary" :class="{ navHidden }" @click="onFabClicked" v-click-anime><i :key="fabIcon" :class="fabIcon"/></button>
+	<button v-if="fabButton && !(isDesktop || isWideTablet)" class="fab _buttonPrimary" :class="{ navHidden }" @click="onFabClicked" v-click-anime><i :key="fabIcon" :class="fabIcon"/></button>
 
 	<div class="buttons" v-if="isMobile">
 		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
@@ -70,6 +70,7 @@ import XTimeline from '@client/components/timeline.vue';
 import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
 const MOBILE_THRESHOLD = 600;
 
 localStorage.setItem('ui', 'friendly-beta');
@@ -90,6 +91,7 @@ export default defineComponent({
 			menuDef: sidebarDef,
 			navHidden: false,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			widgetsShowing: false,
 			fullView: false,
