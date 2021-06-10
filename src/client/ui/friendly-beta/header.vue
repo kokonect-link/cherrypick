@@ -217,7 +217,7 @@ export default defineComponent({
 			> .indicator {
 			position: absolute;
 			bottom: 13px;
-			right: 45px;
+			left: 43px;
 			color: var(--navIndicator);
 			font-size: 7px;
 			animation: blink 1s infinite;
