@@ -10,9 +10,7 @@
 					<XCwButton v-model:value="showContent" :note="note"/>
 				</p>
 				<div class="content" v-show="note.cw == null || showContent">
-					<MkA class="text-group" :to="notePage(note)">
-						<XSubNote-content class="text" :note="note"/>
-					</MkA>
+					<XSubNote-content class="text" :note="note"/>
 				</div>
 			</div>
 		</div>
@@ -136,13 +134,9 @@ export default defineComponent({
 				}
 
 				> .content {
-					> .text-group {
-						text-decoration: none;
-
-						> .text {
-							margin: 0;
-							padding: 0;
-						}
+					> .text {
+						margin: 0;
+						padding: 0;
 					}
 				}
 			}

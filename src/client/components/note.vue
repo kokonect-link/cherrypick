@@ -42,20 +42,16 @@
 			<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
 			<div class="body">
 				<p v-if="appearNote.cw != null" class="cw">
-					<MkA class="text-group" :to="notePage(note)">
-						<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-					</MkA>
+					<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
 					<XCwButton v-model:value="showContent" :note="appearNote"/>
 				</p>
 				<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
-					<MkA class="text-group" :to="notePage(note)">
-						<div class="text">
-							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
-							<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
-							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-							<a class="rp" v-if="appearNote.renote != null">RN:</a>
-						</div>
-					</MkA>
+					<div class="text">
+						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
+						<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
+						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
+						<a class="rp" v-if="appearNote.renote != null">RN:</a>
+					</div>
 					<div class="files" v-if="appearNote.files.length > 0">
 						<XMediaList :media-list="appearNote.files"/>
 					</div>
@@ -1027,16 +1023,12 @@ export default defineComponent({
 					padding: 0;
 					overflow-wrap: break-word;
 
-					> .text-group {
-						text-decoration: none;
+					> .text {
+						margin-right: 8px;
+					}
 
-						> .text {
-							margin-right: 8px;
-						}
-
-						&:hover {
-							color: var(--accent);
-						}
+					&:hover {
+						color: var(--accent);
 					}
 				}
 
@@ -1072,26 +1064,18 @@ export default defineComponent({
 						}
 					}
 
-					> .text-group {
-						text-decoration: none;
+					> .text {
+						overflow-wrap: break-word;
 
-						&:hover {
+						> .reply {
 							color: var(--accent);
+							margin-right: 0.5em;
 						}
 
-						> .text {
-							overflow-wrap: break-word;
-
-							> .reply {
-								color: var(--accent);
-								margin-right: 0.5em;
-							}
-
-							> .rp {
-								margin-left: 4px;
-								font-style: oblique;
-								color: var(--renote);
-							}
+						> .rp {
+							margin-left: 4px;
+							font-style: oblique;
+							color: var(--renote);
 						}
 					}
 

@@ -5,9 +5,7 @@
 		<XNoteHeader class="header" :note="note" :mini="true"/>
 		<div class="body">
 			<p v-if="note.cw != null" class="cw">
-				<MkA class="text-group" :to="notePage(note)">
-					<span class="text" v-if="note.cw != ''">{{ note.cw }}</span>
-				</MkA>
+				<span class="text" v-if="note.cw != ''">{{ note.cw }}</span>
 				<XCwButton v-model:value="showContent" :note="note"/>
 			</p>
 			<div class="content" v-show="note.cw == null || showContent">
@@ -102,16 +100,8 @@ export default defineComponent({
 				padding: 0;
 				overflow-wrap: break-word;
 
-				> .text-group {
-					text-decoration: none;
-
-					> .text {
-						margin-right: 8px;
-					}
-
-					&:hover {
-						color: var(--accent);
-					}
+				> .text {
+					margin-right: 8px;
 				}
 			}
 

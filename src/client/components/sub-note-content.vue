@@ -4,9 +4,7 @@
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ $ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ $ts.deleted }})</span>
 		<MkA class="reply" v-if="note.replyId" :to="`/notes/${note.replyId}`"><i class="fas fa-reply"></i></MkA>
-		<MkA class="text-group" :to="notePage(note)">
-			<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :custom-emojis="note.emojis"/>
-		</MkA>
+    <Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :custom-emojis="note.emojis"/>
 		<MkA class="rp" v-if="note.renoteId" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 	</div>
 	<XMediaList v-if="note.files.length > 0 && $store.state.showItemDetails" :media-list="note.files"/>
@@ -58,14 +56,6 @@ export default defineComponent({
 		> .reply {
 			margin-right: 6px;
 			color: var(--accent);
-		}
-
-		> .text-group {
-			text-decoration: none;
-
-			&:hover {
-				color: var(--accent);
-			}
 		}
 
 		> .rp {
