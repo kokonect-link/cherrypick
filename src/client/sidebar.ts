@@ -6,6 +6,11 @@ import { $i } from './account';
 import { unisonReload } from '@client/scripts/unison-reload';
 
 export const sidebarDef = {
+	explore: {
+		title: 'explore',
+		icon: 'fas fa-hashtag',
+		to: '/explore',
+	},
 	notifications: {
 		title: 'notifications',
 		icon: 'fas fa-bell',
@@ -37,11 +42,6 @@ export const sidebarDef = {
 		title: 'featured',
 		icon: 'fas fa-fire-alt',
 		to: '/featured',
-	},
-	explore: {
-		title: 'explore',
-		icon: 'fas fa-hashtag',
-		to: '/explore',
 	},
 	announcements: {
 		title: 'announcements',

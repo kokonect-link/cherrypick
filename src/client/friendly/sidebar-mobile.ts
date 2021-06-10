@@ -6,7 +6,13 @@ import { $i } from '../account';
 import { unisonReload } from '@client/scripts/unison-reload';
 
 export const sidebarDef = {
-	/* notifications: {
+	/*
+	explore: {
+		title: 'explore',
+		icon: 'fas fa-hashtag',
+		to: '/explore',
+	},
+	notifications: {
 		title: 'notifications',
 		icon: 'fas fa-bell',
 		show: computed(() => $i != null),
@@ -38,22 +44,17 @@ export const sidebarDef = {
 		icon: 'fas fa-fire-alt',
 		to: '/featured',
 	},
-	explore: {
-		title: 'explore',
-		icon: 'fas fa-hashtag',
-		to: '/explore',
-	},
 	announcements: {
 		title: 'announcements',
 		icon: 'fas fa-broadcast-tower',
 		indicated: computed(() => $i != null && $i.hasUnreadAnnouncement),
 		to: '/announcements',
 	},
-	/* search: {
+	search: {
 		title: 'search',
 		icon: 'fas fa-search',
 		action: () => search(),
-	}, */
+	},
 	lists: {
 		title: 'lists',
 		icon: 'fas fa-list-ul',

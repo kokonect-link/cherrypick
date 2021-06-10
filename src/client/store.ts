@@ -64,6 +64,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	menu: {
 		where: 'deviceAccount',
 		default: [
+			'explore',
 			'notifications',
 			'messaging',
 			'drive',
@@ -71,9 +72,7 @@ export const defaultStore = markRaw(new Storage('base', {
 			'-',
 			'gallery',
 			'featured',
-			'explore',
 			'announcements',
-			'search',
 			'-',
 			'ui',
 		]
