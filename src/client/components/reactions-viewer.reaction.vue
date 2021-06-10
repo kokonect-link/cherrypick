@@ -147,8 +147,8 @@ export default defineComponent({
 	display: inline-block;
 	height: 32px;
 	margin: 2px;
-	padding: 0 6px;
-	border-radius: 4px;
+	padding: 0 12px;
+	border-radius: 999px;
 
 	&.canToggle {
 		background: rgba(0, 0, 0, 0.05);
