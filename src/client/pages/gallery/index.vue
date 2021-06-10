@@ -32,7 +32,7 @@
 		</MkPagination>
 	</div>
 	<div v-else-if="tab === 'my'">
-		<MkA to="/gallery/new" class="_link" style="margin: 16px;"><i class="fas fa-plus"></i> {{ $ts.postToGallery }}</MkA>
+		<MkA v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" to="/gallery/new" class="_link" style="margin: 16px;"><i class="fas fa-plus"></i> {{ $ts.postToGallery }}</MkA>
 		<MkPagination :pagination="myPostsPagination" #default="{items}">
 			<div class="vfpdbgtk">
 				<MkGalleryPostPreview v-for="post in items" :post="post" :key="post.id" class="post"/>
@@ -54,6 +54,10 @@ import MkGalleryPostPreview from '@client/components/gallery-post-preview.vue';
 import number from '@client/filters/number';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+
+const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
+const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -77,7 +81,13 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.gallery,
-				icon: 'fas fa-icons'
+				icon: 'fas fa-icons',
+				action: {
+					icon: 'fas fa-plus',
+					handler: () => {
+						this.$router.push('/gallery/new');
+					}
+				}
 			},
 			tab: 'explore',
 			recentPostsPagination: {
@@ -97,7 +107,11 @@ export default defineComponent({
 				limit: 5,
 			},
 			tags: [],
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 		};
 	},
 
@@ -124,9 +138,7 @@ export default defineComponent({
 		},
 	},
 
-	created() {
-
-	},
+	created() {},
 
 	methods: {
 
@@ -149,9 +161,5 @@ export default defineComponent({
 	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 	grid-gap: 12px;
 	margin: 0 var(--margin);
-
-	> .post {
-
-	}
 }
 </style>

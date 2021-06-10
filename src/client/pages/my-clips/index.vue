@@ -1,6 +1,6 @@
 <template>
 <div class="_section qtcaoidl">
-	<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
 
 	<div class="_content">
 		<MkPagination :pagination="pagination" #default="{items}" ref="list" class="list">
@@ -23,7 +23,6 @@ import MkPagination from '@client/components/ui/pagination.vue';
 import MkButton from '@client/components/ui/button.vue';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import { eventBus } from "../../friendly/eventBus";
 import { userName } from '@client/filters/user';
 
 const DESKTOP_THRESHOLD = 1100;
@@ -55,11 +54,8 @@ export default defineComponent({
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 		};
-	},
-
-	created() {
-		eventBus.on('kn-createclip', () => this.create());
 	},
 
 	methods: {

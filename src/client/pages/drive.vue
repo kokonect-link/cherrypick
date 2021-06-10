@@ -20,10 +20,20 @@ export default defineComponent({
 			[symbols.PAGE_INFO]: {
 				title: computed(() => this.folder ? this.folder.name : this.$ts.drive),
 				icon: 'fas fa-cloud',
-				menu: () => this.$refs.drive.getMenu()
+				menu: () => this.$refs.drive.getMenu(),
+				action: {
+					icon: 'fas fa-plus',
+					handler: this.menu
+				}
 			},
 			folder: null,
 		};
 	},
+
+	methods: {
+		menu(ev) {
+			os.modalMenu(this.$refs.drive.getMenu(), ev.currentTarget || ev.target);
+		}
+	}
 });
 </script>

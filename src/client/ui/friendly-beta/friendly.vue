@@ -25,14 +25,7 @@
 		</div>
 	</div>
 
-	<div class="floatbtn" v-if="!isDesktop">
-		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
-		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'clips'" class="post _buttonPrimary" @click="createClip()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'pages'" class="post _buttonPrimary" @click="createPage()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'ads'" class="post _buttonPrimary" @click="createAd()" v-click-anime><i class="fas fa-plus"/></button>
-  </div>
+	<button v-if="fabButton" class="fab _buttonPrimary" :class="{ navHidden }" @click="onFabClicked" v-click-anime><i :key="fabIcon" :class="fabIcon"/></button>
 
 	<div class="buttons" v-if="isMobile">
 		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
@@ -95,12 +88,26 @@ export default defineComponent({
 		return {
 			pageInfo: null,
 			menuDef: sidebarDef,
+			navHidden: false,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
 			queue: 0,
+			routeList: [
+				'index',
+				'explore',
+				'notifications',
+				'messaging',
+				'user',
+				'drive',
+				'clips',
+				'pages',
+				'ads',
+				'gallery'
+			],
+			fabButton: false
 		};
 	},
 
@@ -111,7 +118,11 @@ export default defineComponent({
 				if (this.menuDef[def].indicated) return true;
 			}
 			return false;
-		}
+		},
+
+		fabIcon() {
+			return this.pageInfo && this.pageInfo.action ? this.pageInfo.action.icon : 'fas fa-pencil-alt';
+		},
 	},
 
 	created() {
@@ -139,6 +150,8 @@ export default defineComponent({
 			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
 			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
 		}, { passive: true });
+
+		this.navHidden = this.isMobile;
 	},
 
 	methods: {
@@ -147,6 +160,7 @@ export default defineComponent({
 			if (page[symbols.PAGE_INFO]) {
 				this.pageInfo = page[symbols.PAGE_INFO];
 				document.title = `${this.pageInfo.title} | ${instanceName}`;
+				this.fabButton = this.routeList.includes(this.$route.name);
 			}
 		},
 
@@ -155,30 +169,6 @@ export default defineComponent({
 			window.addEventListener('scroll', () => {
 				sticky.calc(window.scrollY);
 			}, { passive: true });
-		},
-
-		post() {
-			os.post();
-		},
-
-		createMessagingRoom() {
-			eventBus.emit('kn-createmsgroom');
-		},
-
-		driveMenu() {
-			eventBus.emit('kn-drivemenu');
-		},
-
-		createClip() {
-			eventBus.emit('kn-createclip');
-		},
-
-		createPage() {
-			eventBus.emit('kn-createpage');
-		},
-
-		createAd() {
-			eventBus.emit('kn-createad');
 		},
 
 		top() {
@@ -233,6 +223,14 @@ export default defineComponent({
 		queueReset() {
 			this.queue = 0;
 		},
+
+		onFabClicked(e) {
+			if (this.pageInfo && this.pageInfo.action) {
+				this.pageInfo.action.handler(e);
+			} else {
+				os.post();
+			}
+		},
 	}
 });
 </script>
@@ -261,7 +259,7 @@ export default defineComponent({
 }
 
 .mk-app {
-	$nav-hide-threshold: 650px;
+	$nav-hide-threshold: 600px;
 	$header-height: 60px;
 	$ui-font-size: 1em;
 	$widgets-hide-threshold: 1200px;
@@ -398,22 +396,26 @@ export default defineComponent({
 		}
 	}
 
-	> .floatbtn {
+	> .fab {
+		display: block;
 		position: fixed;
 		z-index: 1000;
-		bottom: 77px;
-		box-sizing: border-box;
-		padding: 18px 0 calc(constant(safe-area-inset-bottom) + 43px); /* iOS 11.0 */
-		padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px); /* iOS 11.2 */
+		right: calc(32px + var(--margin) * 2 + 300px);
+		bottom: 32px;
+		width: 55px;
+		height: 55px;
+		border-radius: 100%;
+		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+		font-size: 22px;
+		background: var(--accent);
+		color: white;
 
-		> .post {
-			position: fixed;
-			z-index: 1000;
-			width: 55px;
-			height: 55px;
-			border-radius: 100%;
-			box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-			font-size: 22px;
+		@media (max-width: $widgets-hide-threshold) {
+			right: 30px;
+		}
+
+		@media (max-width: $nav-hide-threshold) {
+			bottom: calc(66px + env(safe-area-inset-bottom));
 			right: 15px;
 		}
 
@@ -422,11 +424,7 @@ export default defineComponent({
 		}
 
 		@media (min-width: (600px) + 1px) {
-			bottom: 50px;
-
-			> .post {
-				right: 30px;
-			}
+			bottom: calc(45px + env(safe-area-inset-bottom));
 		}
 	}
 

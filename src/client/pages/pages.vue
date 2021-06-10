@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="rknalgpo _content my" v-if="tab === 'my'">
-			<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
+			<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
 			<MkPagination :pagination="myPagesPagination" #default="{items}">
 				<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
 			</MkPagination>
@@ -36,7 +36,6 @@ import MkPagination from '@client/components/ui/pagination.vue';
 import MkButton from '@client/components/ui/button.vue';
 import MkTab from '@client/components/tab.vue';
 import * as symbols from '@client/symbols';
-import {eventBus} from "../friendly/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const WIDE_TABLET_THRESHOLD = 850;
@@ -51,11 +50,11 @@ export default defineComponent({
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.pages,
 				icon: 'fas fa-sticky-note',
-				actions: [{
+				actions: {
 					icon: 'fas fa-plus',
 					text: this.$ts.create,
 					handler: this.create
-				}]
+				}
 			},
 			tab: 'featured',
 			featuredPagesPagination: {
@@ -74,11 +73,8 @@ export default defineComponent({
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 		};
-	},
-
-	created() {
-		eventBus.on('kn-createpage', () => this.create());
 	},
 
 	methods: {

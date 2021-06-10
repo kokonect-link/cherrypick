@@ -1,6 +1,6 @@
 <template>
 <div class="yweeujhr _root" v-size="{ max: [400] }">
-	<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" @click="start" primary class="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
 
 	<div class="history" v-if="messages.length > 0">
 		<MkA v-for="(message, i) in messages"
@@ -43,7 +43,6 @@ import MkButton from '@client/components/ui/button.vue';
 import { acct } from '../../filters/user';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
 const WIDE_TABLET_THRESHOLD = 850;
@@ -58,7 +57,11 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.messaging,
-				icon: 'fas fa-comments'
+				icon: 'fas fa-comments',
+				action: {
+					icon: 'fas fa-plus',
+					handler: this.menu
+				}
 			},
 			fetching: true,
 			moreFetching: false,
@@ -68,11 +71,8 @@ export default defineComponent({
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 		};
-	},
-	
-	created() {
-		eventBus.on('kn-createmsgroom', () => this.startMobile());
 	},
 
 	mounted() {
@@ -128,19 +128,6 @@ export default defineComponent({
 			}
 		},
 
-		// 모바일 환경에서의 채팅 작성 버튼
-		startMobile() {
-			os.modalMenuFloat([{
-				text: this.$ts.messagingWithUser,
-				icon: 'fas fa-user',
-				action: () => { this.startUser() }
-			}, {
-				text: this.$ts.messagingWithGroup,
-				icon: 'fas fa-users',
-				action: () => { this.startGroup() }
-			}]);
-		},
-
 		start(ev) {
 			os.modalMenu([{
 				text: this.$ts.messagingWithUser,
@@ -182,6 +169,10 @@ export default defineComponent({
 			});
 			if (canceled) return;
 			this.$router.push(`/my/messaging/group/${group.id}`);
+		},
+
+		menu(ev) {
+			this.start(ev);
 		},
 
 		acct

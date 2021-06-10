@@ -1,6 +1,6 @@
 <template>
 <div class="uqshojas">
-	<MkButton v-if="(isWideTablet || isDesktop) && isFriendlyUI || !isFriendlyUI" @click="add()" primary style="margin: 0 auto 16px auto;"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" @click="add()" primary style="margin: 0 auto 16px auto;"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
 	<section class="_card _gap ads" :class="{ 'friendly': isFriendlyUI }" v-for="ad in ads">
 		<div class="_content ad">
 			<MkAd v-if="ad.url" :specify="ad"/>
@@ -49,7 +49,6 @@ import MkTextarea from '@client/components/ui/textarea.vue';
 import MkRadio from '@client/components/ui/radio.vue';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-import {eventBus} from "../../friendly/eventBus";
 
 const DESKTOP_THRESHOLD = 1100;
 const WIDE_TABLET_THRESHOLD = 850;
@@ -69,13 +68,18 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.ads,
-				icon: 'fas fa-audio-description'
+				icon: 'fas fa-audio-description',
+				action: {
+					icon: 'fas fa-plus',
+					handler: this.add
+				}
 			},
 			ads: [],
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
 		}
 	},
 
@@ -83,7 +87,6 @@ export default defineComponent({
 		os.api('admin/ad/list').then(ads => {
 			this.ads = ads;
 		});
-		eventBus.on('kn-createad', () => this.add());
 	},
 
 	mounted() {
