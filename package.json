@@ -1,7 +1,7 @@
 {
 	"name": "cherrypick",
 	"author": "noridev <support@kokonect.link>",
-	"version": "12.82.0-cp-1.7.1-beta",
+	"version": "12.83.0-cp-2.0.0-beta",
 	"codename": "indigo",
 	"repository": {
 		"type": "git",
