@@ -1,6 +1,7 @@
 import { markRaw, ref } from 'vue';
 import { Storage } from './pizzax';
 import { Theme } from './scripts/theme';
+import defaultFaces from './scripts/default-faces';
 
 export const postFormActions = [];
 export const userActions = [];
@@ -215,6 +216,18 @@ export const defaultStore = markRaw(new Storage('base', {
 	newNoteNotiBehavior: {
 		where: 'device',
 		default: 'default' as 'default' | 'smail' | 'none'
+	},
+	confirmBeforePost: {
+		where: 'account',
+		default: false
+	},
+	faces: {
+		where: 'account',
+		default: defaultFaces
+	},
+	showPostPreview: {
+		where: 'device',
+		default: true
 	},
 }));
 

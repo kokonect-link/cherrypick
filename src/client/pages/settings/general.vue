@@ -23,6 +23,9 @@
 		<FormSwitch v-model:value="enableInfiniteScroll">{{ $ts.enableInfiniteScroll }}</FormSwitch>
 		<FormSwitch v-model:value="useReactionPickerForContextMenu">{{ $ts.useReactionPickerForContextMenu }}</FormSwitch>
 		<FormSwitch v-model:value="disablePagesScript">{{ $ts.disablePagesScript }}</FormSwitch>
+		<FormSwitch v-model:value="confirmBeforePost">{{ $ts.confirmBeforePost }}
+			<template #desc>{{$ts.confirmBeforePostDesc}}</template>
+		</FormSwitch>
 	</FormGroup>
 
 	<FormSelect v-model:value="serverDisconnectedBehavior">
@@ -157,6 +160,7 @@ export default defineComponent({
 		useReactionPickerForContextMenu: defaultStore.makeGetterSetter('useReactionPickerForContextMenu'),
 		showAds: defaultStore.makeGetterSetter('showAds'),
 		newNoteNotiBehavior: defaultStore.makeGetterSetter('newNoteNotiBehavior'),
+		confirmBeforePost: defaultStore.makeGetterSetter('confirmBeforePost'),
 	},
 
 	watch: {

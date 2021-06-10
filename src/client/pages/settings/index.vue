@@ -36,6 +36,7 @@
 				<FormLink :active="page === 'sidebar'" replace to="/settings/sidebar"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.sidebar }}</FormLink>
 				<FormLink :active="page === 'sounds'" replace to="/settings/sounds"><template #icon><i class="fas fa-music"></i></template>{{ $ts.sounds }}</FormLink>
 				<FormLink :active="page === 'plugin'" replace to="/settings/plugin"><template #icon><i class="fas fa-plug"></i></template>{{ $ts.plugins }}</FormLink>
+				<FormLink :active="page === 'gacha'" replace to="/settings/gacha"><template #icon><i class="fas fa-fish"></i></template>{{ $ts.gacha }}</FormLink>
 			</FormGroup>
 			<FormGroup>
 				<template #label>{{ $ts.otherSettings }}</template>
@@ -142,6 +143,7 @@ export default defineComponent({
 				case 'update': return defineAsyncComponent(() => import('./update.vue'));
 				case 'registry': return defineAsyncComponent(() => import('./registry.vue'));
 				case 'experimental-features': return defineAsyncComponent(() => import('./experimental-features.vue'));
+				case 'gacha': return defineAsyncComponent(() => import('./gacha.vue'));
 			}
 			if (page.value.startsWith('registry/keys/system/')) {
 				return defineAsyncComponent(() => import('./registry.keys.vue'));

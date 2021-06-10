@@ -9,7 +9,13 @@
 	<header>
 		<button v-if="!fixed" class="cancel _button" @click="cancel"><i class="fas fa-times"></i></button>
 		<div>
-			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
+			<button class="_button" @click="insert('> ')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-quote-right"/></button>
+			<button class="_button" @click="link" v-tooltip="$ts._mfmpad.link"><i class="fas fa-link"/></button>
+			<button class="_button function" @click="insertFunction" v-tooltip="$ts._mfmpad.functions"><code style="font-weight: bold">[]</code></button>
+			<button class="_button" @click="insertMention" v-tooltip="$ts.mention"><i class="fas fa-at"></i></button>
+			<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
+			<div class="divider"></div>
+			<button class="_button help" v-tooltip="$ts.help" @click="help"><i class="fas fa-question-circle"/></button>
 			<span class="local-only" v-if="localOnly"><i class="fas fa-biohazard"></i></span>
 			<button class="_button visibility" @click="setVisibility" ref="visibilityButton" v-tooltip="$ts.visibility" :disabled="channel != null">
 				<span v-if="visibility === 'public'"><i class="fas fa-globe"></i></span>
@@ -17,7 +23,6 @@
 				<span v-if="visibility === 'followers'"><i class="fas fa-unlock"></i></span>
 				<span v-if="visibility === 'specified'"><i class="fas fa-envelope"></i></span>
 			</button>
-			<button class="submit _buttonPrimary" :disabled="!canPost" @click="post">{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</div>
 	</header>
 	<div class="form" :class="{ fixed }">
@@ -37,16 +42,26 @@
 		<MkInfo warn v-if="hasNotSpecifiedMentions" class="hasNotSpecifiedMentions">{{ $ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ $ts.add }}</button></MkInfo>
 		<input v-show="useCw" ref="cw" class="cw" v-model="cw" :placeholder="$ts.annotation" @keydown="onKeydown">
 		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd" />
+		<input v-show="useBroadcast" ref="broadcastText" class="broadcastText" v-model="broadcastText" :placeholder="$ts.broadcastTextDescription" @keydown="onKeydown">
 		<XPostFormAttaches class="attaches" :files="files" @updated="updateFiles" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
 		<XPollEditor v-if="poll" :poll="poll" @destroyed="poll = null" @updated="onPollUpdate"/>
 		<footer>
-			<button class="_button" @click="chooseFileFrom" v-tooltip="$ts.attachFile"><i class="fas fa-photo-video"></i></button>
+			<button :disabled="!currentAccountIsMyself" class="_button" @click="chooseFileFrom" v-tooltip="$ts.attachFile"><i class="fas fa-photo-video"></i></button>
 			<button class="_button" @click="togglePoll" :class="{ active: poll }" v-tooltip="$ts.poll"><i class="fas fa-poll-h"></i></button>
 			<button class="_button" @click="useCw = !useCw" :class="{ active: useCw }" v-tooltip="$ts.useCw"><i class="fas fa-eye-slash"></i></button>
-			<button class="_button" @click="insertMention" v-tooltip="$ts.mention"><i class="fas fa-at"></i></button>
-			<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
+			<button class="_button" @click="useBroadcast = !useBroadcast" :class="{ active: useBroadcast }" v-tooltip="$ts.broadcastMode"><i class="fas fa-bullhorn"/></button>
+			<button class="_button" @click="insertFace" v-tooltip="$ts.gacha"><i class="fas fa-fish"/></button>
+			<button v-if="currentAccount && accounts.length > 1" class="_button switch-user" @click="switchUser" v-tooltip="$ts.switchUser">
+				<MkAvatar class="avatar" :user="currentAccount" disable-link disable-preview />
+			</button>
 			<button class="_button" @click="showActions" v-tooltip="$ts.plugin" v-if="postFormActions.length > 0"><i class="fas fa-plug"></i></button>
+			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
+			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk">{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</footer>
+		<details v-if="text" class="preview" :open="isPreviewOpened" @toggle="isPreviewOpened = $event.target.open">
+			<summary>{{ $ts.preview }}</summary>
+			<XNotePreview class="note" :note="previewNote"/>
+		</details>
 	</div>
 </div>
 </template>
@@ -59,7 +74,7 @@ import { toASCII } from 'punycode/';
 import XNotePreview from './note-preview.vue';
 import * as mfm from 'mfm-js';
 import { host, url } from '@client/config';
-import { erase, unique } from '../../prelude/array';
+import { erase, unique } from '@/prelude/array';
 import { extractMentions } from '@/misc/extract-mentions';
 import getAcct from '@/misc/acct/render';
 import { formatTimeString } from '@/misc/format-time-string';
@@ -67,10 +82,13 @@ import { Autocomplete } from '@client/scripts/autocomplete';
 import { noteVisibilities } from '../../types';
 import * as os from '@client/os';
 import { selectFile } from '@client/scripts/select-file';
-import { notePostInterruptors, postFormActions } from '@client/store';
+import { FormItem } from '../scripts/form';
+import { defaultStore, notePostInterruptors, postFormActions } from '@client/store';
 import { isMobile } from '@client/scripts/is-mobile';
 import { throttle } from 'throttle-debounce';
 import MkInfo from '@client/components/ui/info.vue';
+import MkSwitch from '@client/components/ui/switch.vue';
+import {unisonReload} from "@client/scripts/unison-reload";
 
 export default defineComponent({
 	components: {
@@ -78,6 +96,7 @@ export default defineComponent({
 		XPostFormAttaches: defineAsyncComponent(() => import('./post-form-attaches.vue')),
 		XPollEditor: defineAsyncComponent(() => import('./poll-editor.vue')),
 		MkInfo,
+		MkSwitch
 	},
 
 	inject: ['modal'],
@@ -153,6 +172,13 @@ export default defineComponent({
 				}
 			}),
 			postFormActions,
+			currentAccount: {} as Record<string, unknown>,
+			currentAccountRegistry: {} as Record<string, unknown>,
+			accounts: [] as Record<string, unknown>[],
+			accountRegistries: [] as Record<string, unknown>[],
+			requiredConfirmation: this.$store.state.confirmBeforePost,
+			useBroadcast: false,
+			broadcastText: '',
 		};
 	},
 
@@ -212,7 +238,27 @@ export default defineComponent({
 
 		max(): number {
 			return this.$instance ? this.$instance.maxNoteTextLength : 1000;
-		}
+		},
+
+		previewNote() {
+			return {
+				id: '',
+				createdAt: new Date(),
+				text: this.text + (this.useBroadcast ? ' ' + this.broadcastText : ''),
+				cw: this.useCw ? this.cw : undefined,
+				visibility: this.visibility,
+				user: this.currentAccount,
+				localOnly: this.localOnly,
+				remoteFollowersOnly: this.remoteFollowersOnly,
+				files: [],
+			};
+		},
+
+		isPreviewOpened: defaultStore.makeGetterSetter('showPostPreview'),
+
+		currentAccountIsMyself(): boolean {
+			return this.$i.id === this.currentAccount.id;
+		},
 	},
 
 	watch: {
@@ -228,6 +274,14 @@ export default defineComponent({
 	},
 
 	mounted() {
+		this.currentAccount = this.$i;
+		os.getAccounts().then(accts => {
+			this.accounts = [
+				this.currentAccount,
+				...accts
+			];
+		});
+
 		if (this.initialText) {
 			this.text = this.initialText;
 		}
@@ -312,6 +366,8 @@ export default defineComponent({
 					this.text = draft.data.text;
 					this.useCw = draft.data.useCw;
 					this.cw = draft.data.cw;
+					this.useBroadcast = draft.data.useBroadcast;
+					this.broadcastText = draft.data.broadcastText;
 					this.visibility = draft.data.visibility;
 					this.localOnly = draft.data.localOnly;
 					this.files = (draft.data.files || []).filter(e => e);
@@ -345,6 +401,8 @@ export default defineComponent({
 			this.$watch('text', () => this.saveDraft());
 			this.$watch('useCw', () => this.saveDraft());
 			this.$watch('cw', () => this.saveDraft());
+			this.$watch('useBroadcast', this.saveDraft);
+			this.$watch('broadcastText', this.saveDraft);
 			this.$watch('poll', () => this.saveDraft());
 			this.$watch('files', () => this.saveDraft(), { deep: true });
 			this.$watch('visibility', () => this.saveDraft());
@@ -476,6 +534,11 @@ export default defineComponent({
 			this.quoteId = null;
 		},
 
+		help() {
+			this.cancel();
+			this.$router.push('/docs/post')
+		},
+
 		onKeydown(e: KeyboardEvent) {
 			if ((e.which === 10 || e.which === 13) && (e.ctrlKey || e.metaKey) && this.canPost) this.post();
 			if (e.which === 27) this.$emit('esc');
@@ -572,6 +635,8 @@ export default defineComponent({
 					text: this.text,
 					useCw: this.useCw,
 					cw: this.cw,
+					useBroadcast: this.useBroadcast,
+					broadcastText: this.broadcastText,
 					visibility: this.visibility,
 					localOnly: this.localOnly,
 					files: this.files,
@@ -590,9 +655,23 @@ export default defineComponent({
 			localStorage.setItem('drafts', JSON.stringify(data));
 		},
 
+		async postAsk() {
+			if (this.requiredConfirmation) {
+				const { canceled } = await os.dialog({
+					type: 'info',
+					text: this.$ts.confirmBeforePostLabel,
+					showCancelButton: true
+				});
+				if (canceled) return;
+				await this.post();
+			} else {
+				await this.post()
+			}
+		},
+
 		async post() {
 			let data = {
-				text: this.text == '' ? undefined : this.text,
+				text: this.text == '' ? undefined : this.text + (this.useBroadcast ? ' ' + this.broadcastText : ''),
 				fileIds: this.files.length > 0 ? this.files.map(f => f.id) : undefined,
 				replyId: this.reply ? this.reply.id : undefined,
 				renoteId: this.renote ? this.renote.id : this.quoteId ? this.quoteId : undefined,
@@ -638,6 +717,11 @@ export default defineComponent({
 			this.$emit('cancel');
 		},
 
+		insertFace() {
+			const faces = this.$store.state.faces;
+			this.insert(faces.length > 0 ? faces[Math.floor(Math.random() * faces.length)] : '');
+		},
+
 		insertMention() {
 			os.selectUser().then(user => {
 				insertTextAtCursor(this.$refs.text, '@' + getAcct(user) + ' ');
@@ -645,7 +729,59 @@ export default defineComponent({
 		},
 
 		async insertEmoji(ev) {
-			os.openEmojiPicker(ev.currentTarget || ev.target, {}, this.$refs.text);
+			// os.openEmojiPicker(ev.currentTarget || ev.target, {}, this.$refs.text);
+			os.pickEmoji(ev.currentTarget || ev.target).then(emoji => {
+				this.insert(emoji);
+			});
+		},
+
+		insert(text: string) {
+			insertTextAtCursor(this.$refs.text, text);
+		},
+
+		async link() {
+			const form: Record<string, FormItem> = {
+				url: {
+					type: 'string',
+					default: 'https://',
+					label: 'URL',
+				},
+				desc: {
+					type: 'string',
+					default: '',
+					label: this.$ts.description.toString(),
+				},
+				noUrlPreview: {
+					type: 'boolean',
+					default: false,
+					label: this.$ts._mfmpad.noUrlPreview.toString(),
+					description: this.$ts._mfmpad.noUrlPreviewDesc.toString(),
+				},
+			};
+			const { canceled, result } = await os.form(this.$ts._mfmpad.setInsertLink, form);
+			if (canceled) return;
+			this.insert(`${result.noUrlPreview ? '?' : ''}[${result.desc}](${result.url})`);
+		},
+
+		async switchUser(ev) {
+			const accountItems = this.accounts.map(account => ({
+				type: 'user',
+				user: account,
+				action: () => {
+					this.currentAccount = account;
+					if (this.currentAccountIsMyself) {
+						this.requiredConfirmation = this.$store.state.confirmBeforePost;
+					} else {
+						os.api('i/registry/get-all', {
+							scope: ['client', 'base'],
+						}, this.currentAccount.token)
+							.then((dat) => this.requiredConfirmation = dat.confirmBeforePost);
+					}
+
+				},
+			}));
+
+			os.modalMenu(accountItems, ev.currentTarget || ev.target, { align: 'left' });
 		},
 
 		showActions(ev) {
@@ -659,7 +795,12 @@ export default defineComponent({
 					});
 				}
 			})), ev.currentTarget || ev.target);
-		}
+		},
+
+		insertFunction() {
+			os.popup(import('./function-builder-window.vue'), {
+			}, { done: this.insert }, 'closed');
+		},
 	}
 });
 </script>
@@ -676,6 +817,7 @@ export default defineComponent({
 	> header {
 		z-index: 1000;
 		height: 66px;
+		position: relative;
 
 		> .cancel {
 			padding: 0;
@@ -685,52 +827,82 @@ export default defineComponent({
 		}
 
 		> div {
+			display: flex;
 			position: absolute;
 			top: 0;
 			right: 0;
+			padding-right: 8px;
+			height: 100%;
 
-			> .text-count {
-				opacity: 0.7;
-				line-height: 66px;
+			> button {
+				font-size: 16px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				padding: 8px;
+				margin: auto 0;
+				width: 32px;
+				height: 32px;
+				border-radius: 4px;
+
+				&:hover {
+					background: var(--X5);
+				}
+
+				&.active {
+					color: var(--accent);
+				}
+
+				&:not(:last-child) {
+					margin-right: 4px;
+				}
+
+				&:nth-child(6) {
+					margin-right: 0;
+				}
+			}
+
+			> .spacer {
+				width: 8px;
+			}
+
+			> .divider {
+				height: 32px;
+				width: 1px;
+				margin: auto 8px;
+				background: var(--divider);
 			}
 
 			> .visibility {
-				height: 34px;
-				width: 34px;
-				margin: 0 8px;
+				min-width: 32px;
+				width: auto;
 
 				& + .localOnly {
-					margin-left: 0 !important;
+					margin-left: 8px;
 				}
 			}
 			
 			> .local-only {
-				margin: 0 0 0 12px;
+				display: flex;
+				align-items: center;
+				padding: 5px 10px 5px 5px;
+				margin: auto 0;
 				opacity: 0.7;
-			}
-
-			> .submit {
-				margin: 16px 16px 16px 0;
-				padding: 0 12px;
-				line-height: 34px;
-				font-weight: bold;
-				vertical-align: bottom;
-				border-radius: 4px;
-
-				&:disabled {
-					opacity: 0.7;
-				}
-
-				> i {
-					margin-left: 6px;
-				}
 			}
 		}
 	}
 
 	> .form {
 		> .preview {
-			padding: 16px;
+			padding: 0 16px 16px;
+
+			> summary {
+				margin-bottom: 8px;
+			}
+
+			> .note {
+				padding-top: 10px;
+			}
 		}
 
 		> .with-quote {
@@ -785,7 +957,8 @@ export default defineComponent({
 		}
 
 		> .cw,
-		> .text {
+		> .text,
+		> .broadcastText {
 			display: block;
 			box-sizing: border-box;
 			padding: 0 24px;
@@ -813,6 +986,12 @@ export default defineComponent({
 			border-bottom: solid 0.5px var(--divider);
 		}
 
+		> .broadcastText {
+			z-index: 1;
+			padding: 8px 16px;
+			border-bottom: solid 1px var(--divider);
+		}
+
 		> .text {
 			max-width: 100%;
 			min-width: 100%;
@@ -824,16 +1003,29 @@ export default defineComponent({
 		}
 
 		> footer {
-			padding: 0 16px 16px 16px;
+			display: flex;
+			padding: 0 16px;
+			align-items: center;
+
+			> .switch-user {
+				> .avatar {
+					width: 24px;
+					height: 24px;
+				}
+			}
 
 			> button {
-				display: inline-block;
+				display: block;
 				padding: 0;
 				margin: 0;
 				font-size: 16px;
-				width: 48px;
-				height: 48px;
-				border-radius: 6px;
+				width: 32px;
+				height: 32px;
+				border-radius: 4px;
+
+				&:not(:first-child) {
+					margin-left: 8px;
+				}
 
 				&:hover {
 					background: var(--X5);
@@ -843,6 +1035,39 @@ export default defineComponent({
 					color: var(--accent);
 				}
 			}
+
+			> .text-count {
+				margin: 0 5px 0 auto;
+				opacity: 0.7;
+				line-height: 66px;
+
+				@media (max-width: 500px) {
+					line-height: 50px;
+				}
+			}
+
+			> .submit {
+				padding: 0 8px;
+				font-weight: bold;
+				border-radius: 4px;
+				width: auto;
+
+				&:disabled {
+					opacity: 0.7;
+				}
+
+				&:hover {
+					background: var(--accentLighten);
+				}
+
+				> i {
+					margin-left: 6px;
+				}
+			}
+		}
+
+		> .confirm-switch {
+			margin: 0 1rem 1rem;
 		}
 	}
 

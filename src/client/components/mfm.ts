@@ -10,6 +10,7 @@ import MkCode from '@client/components/code.vue';
 import MkGoogle from '@client/components/google.vue';
 import MkA from '@client/components/global/a.vue';
 import { host } from '@client/config';
+import { mfmFunctions, MfmFunctionStyleProp } from './mfm.functions';
 
 export default defineComponent({
 	props: {
