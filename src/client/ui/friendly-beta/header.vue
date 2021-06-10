@@ -261,7 +261,7 @@ export default defineComponent({
 			right: 14px;
 			width: $avatar-size;
 			height: $avatar-size;
-			border-radius: 100px;
+			border-radius: 999px;
 			line-height: 0;
 			background: var(--pick);
 			margin-top: 10px;
