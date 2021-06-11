@@ -65,6 +65,9 @@ Stands for _**M**isskey **F**lavored **M**arkdown_.
 ### Mk
 Stands for _**M**iss**k**ey_.
 
+### Cp
+Stands for _**C**herry**p**ick_.
+
 ### SW
 Stands for _**S**ervice**W**orker_.
 
