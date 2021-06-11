@@ -59,6 +59,7 @@
 
 	<FormRadios v-model="fontSize">
 		<template #desc>{{ $ts.fontSize }}</template>
+		<option value="verySmall"><span style="font-size: 12px;">Aa</span></option>
 		<option value="small"><span style="font-size: 14px;">Aa</span></option>
 		<option :value="null"><span style="font-size: 16px;">Aa</span></option>
 		<option value="large"><span style="font-size: 18px;">Aa</span></option>
@@ -106,8 +107,7 @@ import FormLink from '@client/components/form/link.vue';
 import FormButton from '@client/components/form/button.vue';
 import MkLink from '@client/components/link.vue';
 import { langs } from '@client/config';
-import { defaultStore } from '@client/store';
-import { ColdDeviceStorage } from '@client/store';
+import { defaultStore, ColdDeviceStorage } from '@client/store';
 import * as os from '@client/os';
 import { unisonReload } from '@client/scripts/unison-reload';
 import * as symbols from '@client/symbols';
