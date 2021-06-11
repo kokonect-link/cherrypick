@@ -623,10 +623,10 @@ export default defineComponent({
 
 				> .toggler {
 					position: absolute;
-					right: 24px;
-					top: 20px;
-					width: 24px;
-					height: 24px;
+					right: 15px;
+					top: 15px;
+					width: 36px;
+					height: 36px;
 					z-index: 400;
 				}
 			}
