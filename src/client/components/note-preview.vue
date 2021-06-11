@@ -1,6 +1,6 @@
 <template>
 <div class="yohlumlk" v-size="{ min: [350, 500] }">
-	<MkAvatar class="avatar" :user="note.user"/>
+	<MkAvatar class="avatar" :user="note.user" :disable-preview="!isDesktop"/>
 	<div class="main">
 		<XNoteHeader class="header" :note="note" :mini="true"/>
 		<div class="body">
@@ -24,6 +24,8 @@ import XCwButton from './cw-button.vue';
 import * as os from '@client/os';
 import notePage from "@client/filters/note";
 
+const DESKTOP_THRESHOLD = 1100;
+
 export default defineComponent({
 	components: {
 		XNoteHeader,
@@ -40,7 +42,8 @@ export default defineComponent({
 
 	data() {
 		return {
-			showContent: false
+			showContent: false,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD
 		};
 	},
 
