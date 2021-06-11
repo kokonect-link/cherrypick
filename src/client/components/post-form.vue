@@ -58,7 +58,7 @@
 			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
 			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk">{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</footer>
-		<details v-if="text" class="preview" :open="isPreviewOpened" @toggle="isPreviewOpened = $event.target.open">
+		<details v-if="text" class="note-preview" :open="isPreviewOpened" @toggle="isPreviewOpened = $event.target.open">
 			<summary>{{ $ts.preview }}</summary>
 			<XNotePreview class="note" :note="previewNote"/>
 		</details>
@@ -893,8 +893,9 @@ export default defineComponent({
 	}
 
 	> .form {
-		> .preview {
-			padding: 0 16px 16px;
+		> .preview,
+		> .note-preview {
+			padding: 16px;
 
 			> summary {
 				margin-bottom: 8px;
@@ -903,6 +904,10 @@ export default defineComponent({
 			> .note {
 				padding-top: 10px;
 			}
+		}
+
+		> .note-preview {
+			padding: 0 16px 16px;
 		}
 
 		> .with-quote {
