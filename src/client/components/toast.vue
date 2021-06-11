@@ -57,7 +57,7 @@ export default defineComponent({
 	pointer-events: none;
 
 	@media (max-width: 850px) {
-		top: 72px;
+		top: 10px;
 		bottom: initial;
 		padding: 0 8px;
 		width: 95%;
@@ -68,8 +68,10 @@ export default defineComponent({
 	> .notification {
 		height: 100%;
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-		border-radius: 8px;
+		border-radius: 12px;
 		overflow: hidden;
+		// border: 1px solid var(--cherryLighten);
+		padding: 16px;
 	}
 }
 </style>
