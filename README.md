@@ -84,9 +84,9 @@ Please see the [Contribution Guide](./CONTRIBUTING.md).
 	</tr>
 </table>
 
-<!-- To receive updates of this repo, follow [@repo@misskey.io](https://misskey.io/@repo) on fediverse. -->
-
 ---
+
+To receive updates of this repo, follow [@repo@kokonect.link](https://kokonect.link/@repo) on fediverse.
 
 Related projects
 ----------------------------------------------------------------
