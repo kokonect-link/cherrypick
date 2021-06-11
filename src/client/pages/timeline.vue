@@ -110,7 +110,7 @@ export default defineComponent({
 					tabs.push({
 						id: 'other',
 						title: null,
-						icon: 'fas fa-ellipsis-h',
+						icon: 'fas fa-chevron-down',
 						onClick: this.choose,
 						indicate: computed(() => this.$i.hasUnreadAntenna || this.$i.hasUnreadChannel)
 					});

@@ -12,7 +12,7 @@
 			<template v-else>
 				<div class="title">
 					<!-- <i v-if="info.icon" class="icon" :class="info.icon"></i> -->
-					<MkAvatar v-if="info.avatar && !($route.name === 'note' || 'renotes')" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
+					<MkAvatar v-if="info.avatar && !($route.name === 'note')" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 					<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 					<span v-else-if="info.title" class="text">{{ info.title }}</span>
 				</div>
@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="buttons_L" v-if="isMobile">
-			<button class="_button button_L" v-if="!(withBack && canBack) || ($route.name === 'explore' || $route.name === 'notifications' || $route.name === 'messaging')" @click="showDrawerNav" v-click-anime>
+			<button class="_button button_L" v-if="!(withBack && canBack) || fabButton" @click="showDrawerNav" v-click-anime>
 				<i class="fas fa-bars"/>
 				<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator">
 					<i class="fas fa-circle"></i>
@@ -36,7 +36,7 @@
 		</div>
 	</template>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
-		<button class="_button back" v-if="withBack && canBack && isMobile && !($route.name === 'explore' || $route.name === 'notifications' || $route.name === 'messaging')" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
+		<button class="_button back" v-if="withBack && canBack && isMobile && !fabButton" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
 		<button class="_button back" v-else-if="withBack && canBack && !isMobile" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
 	</transition>
 </div>
@@ -81,6 +81,12 @@ export default defineComponent({
 			height: 0,
 			key: 0,
 			queue: 0,
+			routeList: [
+				'explore',
+				'notifications',
+				'messaging'
+			],
+			fabButton: false
 		};
 	},
 
@@ -88,8 +94,7 @@ export default defineComponent({
 		showMenu() {
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
-			if (this.info.share != null) return true;
-			return false;
+			return this.info.share != null;
 		}
 	},
 
@@ -101,6 +106,7 @@ export default defineComponent({
 		$route: {
 			handler(to, from) {
 				this.canBack = (window.history.length > 0 && !['index'].includes(to.name));
+				this.fabButton = this.routeList.includes(this.$route.name);
 			},
 			immediate: true
 		},
@@ -261,7 +267,7 @@ export default defineComponent({
 			right: 14px;
 			width: $avatar-size;
 			height: $avatar-size;
-			border-radius: 999px;
+			border-radius: 100%;
 			line-height: 0;
 			background: var(--pick);
 			margin-top: 10px;
