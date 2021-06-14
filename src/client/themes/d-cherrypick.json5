@@ -19,7 +19,7 @@
 		infoFg: '@accent',
 		infoBg: 'rgb(0, 0, 0)',
 		acrylicPanel: ':alpha<0.9<@panel',
-		header: '@bg',
+		header: ':alpha<0.7<@bg',
 		navBg: '@panel',
 		navHoverFg: '@pick',
 		renote: '@accent',
