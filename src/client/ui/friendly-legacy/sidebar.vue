@@ -3,81 +3,60 @@
 	<transition name="nav-back">
 		<div class="nav-back _modalBg"
 			v-if="showing"
-			@click="showing = isAccountMenuMode = false"
-			@touchstart.passive="showing = isAccountMenuMode = false"
+			@click="showing = false"
+			@touchstart.passive="showing = false"
 		></div>
 	</transition>
 
 	<transition name="nav">
 		<nav class="nav" :class="{ iconOnly, hidden }" v-show="showing">
 			<div>
-				<div class="profile">
-					<button class="item _button account" @click="openProfile" v-click-anime>
-						<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
-					</button>
-					<button v-if="iconOnly && !hidden" class="item _button" @click="openAccountMenu">
-						<i class="fas fa-ellipsis-v"/>
-					</button>
-					<button v-else class="_button toggler" @click="toggleMenuMode">
-						<i v-if="isAccountMenuMode" class="fas fa-chevron-up"/>
-						<i v-else class="fas fa-chevron-down"/>
-					</button>
+				<button class="item _button account" @click="openAccountMenu">
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+				</button>
+				<MkA class="item index" active-class="active" to="/" exact>
+					<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
+				</MkA>
+				<template v-for="item in menu">
+					<div v-if="item === '-'" class="divider"></div>
+					<component v-else-if="menuDef[item] && (menuDef[item].show !== false)" :is="menuDef[item].to ? 'MkA' : 'button'" class="item _button" :class="item" active-class="active" v-on="menuDef[item].action ? { click: menuDef[item].action } : {}" :to="menuDef[item].to">
+						<i class="fa-fw" :class="menuDef[item].icon"></i><span class="text">{{ $ts[menuDef[item].title] }}</span>
+						<span v-if="menuDef[item].indicated" class="indicator"><i class="fas fa-circle"></i></span>
+					</component>
+				</template>
+				<div class="divider"></div>
+				<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance">
+					<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
+				</MkA>
+				<button class="item _button" @click="more">
+					<i class="fa fa-ellipsis-h fa-fw"></i><span class="text">{{ $ts.more }}</span>
+					<span v-if="otherNavItemIndicated" class="indicator"><i class="fas fa-circle"></i></span>
+				</button>
+				<MkA class="item" active-class="active" to="/settings">
+					<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
+				</MkA>
+				<!-- <button class="item _button post" @click="post">
+					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
+				</button> -->
+				<div class="divider"></div>
+				<button v-if="$i.isPatron" class="patron-button _button" @click="patron" v-click-anime>
+					<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+				</button>
+				<button v-else class="patron-button _button" @click="patron" v-click-anime>
+					<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
+				</button>
+				<div class="divider"></div>
+				<div class="about">
+					<MkA class="link" to="/about" v-click-anime>
+						<template v-if="isKokonect">
+							<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+							<p style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
+						</template>
+						<template v-else>
+							<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+						</template>
+					</MkA>
 				</div>
-				<template v-if="!isAccountMenuMode">
-					<MkA class="item index" active-class="active" to="/" exact>
-						<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
-					</MkA>
-					<template v-for="item in menu">
-						<div v-if="item === '-'" class="divider"></div>
-						<component v-else-if="menuDef[item] && (menuDef[item].show !== false)" :is="menuDef[item].to ? 'MkA' : 'button'" class="item _button" :class="item" active-class="active" v-on="menuDef[item].action ? { click: menuDef[item].action } : {}" :to="menuDef[item].to">
-							<i class="fa-fw" :class="menuDef[item].icon"></i><span class="text">{{ $ts[menuDef[item].title] }}</span>
-							<span v-if="menuDef[item].indicated" class="indicator"><i class="fas fa-circle"></i></span>
-						</component>
-					</template>
-					<div class="divider"></div>
-					<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance">
-						<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
-					</MkA>
-					<button class="item _button" @click="more">
-						<i class="fa fa-ellipsis-h fa-fw"></i><span class="text">{{ $ts.more }}</span>
-						<span v-if="otherNavItemIndicated" class="indicator"><i class="fas fa-circle"></i></span>
-					</button>
-					<MkA class="item" active-class="active" to="/settings">
-						<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
-					</MkA>
-					<!-- <button class="item _button post" @click="post">
-						<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
-					</button> -->
-					<div class="divider"></div>
-					<button v-if="$i.isPatron" class="patron-button _button" @click="patron" v-click-anime>
-						<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-					</button>
-					<button v-else class="patron-button _button" @click="patron" v-click-anime>
-						<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
-					</button>
-					<div class="divider"></div>
-					<div class="about">
-						<MkA class="link" to="/about" v-click-anime>
-							<template v-if="isKokonect">
-								<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
-								<p style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
-							</template>
-							<template v-else>
-								<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
-							</template>
-						</MkA>
-					</div>
-				</template>
-				<template v-else>
-					<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item-switch-acct _button account" v-click-anime>
-						<MkAvatar :user="acct" class="avatar"/><MkUserName class="name" :user="acct"/>
-					</button>
-					<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
-					<div class="divider" v-if="accounts.length > 0"></div>
-					<button class="item-switch-acct _button" @click="addAccount" v-text="$ts.addAccount"/>
-					<button class="item-switch-acct _button" @click="createAccount" v-text="$ts.createAccount"/>
-					<button class="item-switch-acct danger _button" @click="signout" v-text="$ts.logout"/>
-				</template>
 			</div>
 		</nav>
 	</transition>
@@ -90,7 +69,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { sidebarDef } from '@client/friendly/sidebar-mobile';
-import { getAccounts, addAccount, login, signout } from '@client/account';
+import { getAccounts, addAccount, login } from '@client/account';
 
 export default defineComponent({
 	props: {
@@ -110,8 +89,6 @@ export default defineComponent({
 			menuDef: sidebarDef,
 			iconOnly: false,
 			hidden: this.defaultHidden,
-			isAccountMenuMode: false,
-			loadingAccounts: false,
 			isKokonect: null
 		};
 	},
@@ -181,23 +158,6 @@ export default defineComponent({
 			search();
 		},
 
-		openProfile() {
-			this.$router.push({ path: `/@${ this.$i.username }` })
-		},
-
-		async fetchAccounts() {
-			this.loadingAccounts = true;
-			this.accounts = await os.getAccounts();
-			this.loadingAccounts = false;
-		},
-
-		toggleMenuMode() {
-			this.isAccountMenuMode = !this.isAccountMenuMode;
-			if (this.isAccountMenuMode) {
-				this.fetchAccounts();
-			}
-		},
-
 		async openAccountMenu(ev) {
 			const storedAccounts = getAccounts().filter(x => x.id !== this.$i.id);
 			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
@@ -229,18 +189,12 @@ export default defineComponent({
 					}, {
 						text: this.$ts.createAccount,
 						action: () => { this.createAccount(); },
-					}, {
-						text: this.$ts.logout,
-						action: this.signout,
-						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
 			}]], ev.currentTarget || ev.target, {
 				align: 'left'
 			});
 		},
-
-		signout,
 
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
@@ -499,135 +453,26 @@ export default defineComponent({
 					color: var(--navActive);
 				}
 
-				&:last-child {
+				&:first-child, &:last-child {
 					position: sticky;
 					z-index: 1;
-					bottom: 0;
-					margin-top: 16px;
-					border-top: solid 0.5px var(--divider);
 					padding-top: 8px;
 					padding-bottom: 8px;
 					background: var(--X14);
 					-webkit-backdrop-filter: blur(8px);
 					backdrop-filter: blur(8px);
 				}
-			}
 
-			> .item-switch-acct {
-				position: relative;
-				display: block;
-				padding: 0 24px;
-				font-size: $ui-font-size;
-				line-height: 3rem;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				white-space: nowrap;
-				width: 100%;
-				text-align: left;
-				box-sizing: border-box;
-				color: var(--navFg);
-
-				> i {
-					width: 32px;
-				}
-
-				> i,
-				> .avatar {
-					margin-right: $avatar-margin;
-				}
-
-				> .avatar {
-					width: $avatar-size;
-					height: $avatar-size;
-					vertical-align: middle;
-				}
-
-				> .name {
-					margin-left: 5px;
-					font-weight: bold;
-				}
-
-				&:hover {
-					text-decoration: none;
-					color: var(--navHoverFg);
-				}
-
-				&.active {
-					color: var(--navActive);
+				&:first-child {
+					top: 0;
+					margin-bottom: 16px;
+					border-bottom: solid 0.5px var(--divider);
 				}
 
 				&:last-child {
-					margin-top: 8px;
-				}
-
-				&.danger {
-					color: red;
-				}
-			}
-
-			> .profile {
-				position: sticky;
-				z-index: 1;
-				top: 0;
-				margin-bottom: 16px;
-				border-bottom: solid 0.5px var(--divider);
-				padding-top: 8px;
-				padding-bottom: 8px;
-				background: var(--X14);
-				-webkit-backdrop-filter: blur(8px);
-				backdrop-filter: blur(8px);
-
-				> .item {
-					position: relative;
-					display: block;
-					padding: 0 24px;
-					font-size: $ui-font-size;
-					line-height: 3rem;
-					text-overflow: ellipsis;
-					overflow: hidden;
-					white-space: nowrap;
-					width: 100%;
-					text-align: left;
-					box-sizing: border-box;
-					color: var(--navFg);
-
-					> i {
-						width: 32px;
-					}
-
-					> i,
-					> .avatar {
-						margin-right: $avatar-margin;
-					}
-
-					> .avatar {
-						width: $avatar-size;
-						height: $avatar-size;
-						vertical-align: middle;
-					}
-
-					> .name {
-						margin-left: 5px;
-						font-weight: bold;
-					}
-
-					&.active {
-						color: var(--navActive);
-					}
-
-					&:hover {
-						text-decoration: none;
-						color: var(--navHoverFg);
-					}
-				}
-
-				> .toggler {
-					position: absolute;
-					right: 15px;
-					top: 15px;
-					width: 36px;
-					height: 36px;
-					z-index: 400;
+					bottom: 0;
+					margin-top: 16px;
+					border-top: solid 0.5px var(--divider);
 				}
 			}
 

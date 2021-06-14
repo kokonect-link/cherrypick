@@ -1,6 +1,6 @@
 <template>
 <div class="_section qtcaoidl">
-	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
 
 	<div class="_content">
 		<MkPagination :pagination="pagination" #default="{items}" ref="list" class="list">
@@ -54,7 +54,7 @@ export default defineComponent({
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

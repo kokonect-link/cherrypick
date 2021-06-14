@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="_section" style="padding: 0;" v-if="$i">
-		<MkTab class="_content" :class="{ 'friendly': isFriendlyUI && !isMobile }" v-model:value="tab">
+		<MkTab class="_content" :class="{ 'friendly': isFriendlyUI || isFriendlyUILegacy }" v-model:value="tab">
 			<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._channel.featured }}</option>
 			<option value="following"><i class="fas fa-heart"></i> {{ $ts._channel.following }}</option>
 			<option value="owned"><i class="fas fa-edit"></i> {{ $ts._channel.owned }}</option>
@@ -70,6 +70,7 @@ export default defineComponent({
 				limit: 5,
 			},
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
@@ -83,7 +84,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-._section .friendly {
-	margin: -8px -8px auto;
+._section {
+	> .friendly {
+		@media (min-width: 601px) {
+			margin: -8px -8px auto;
+		}
+	}
 }
 </style>

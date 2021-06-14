@@ -1,56 +1,89 @@
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
-	<button class="item _button account profile" @click="openProfile" @contextmenu.stop.prevent="openAccountMenu" v-click-anime>
-		<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
-	</button>
-	<div class="post" @click="post">
-		<MkButton class="button" primary full>
-			<i class="fas fa-pencil-alt fa-fw"></i><span class="text" v-if="!iconOnly">{{ $ts.note }}</span>
-		</MkButton>
-	</div>
-	<div class="divider"></div>
-	<MkA class="item index" active-class="active" to="/" exact v-click-anime>
-		<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
-	</MkA>
-	<template v-for="item in menu">
-		<div v-if="item === '-'" class="divider"></div>
-		<component v-else-if="menuDef[item] && (menuDef[item].show !== false)" :is="menuDef[item].to ? 'MkA' : 'button'" class="item _button" :class="item" active-class="active" v-on="menuDef[item].action ? { click: menuDef[item].action } : {}" :to="menuDef[item].to" v-click-anime>
-			<i class="fa-fw" :class="menuDef[item].icon"></i><span class="text">{{ $ts[menuDef[item].title] }}</span>
-			<span v-if="menuDef[item].indicated" class="indicator"><i class="fas fa-circle"></i></span>
-		</component>
-	</template>
-	<div class="divider"></div>
-	<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
-		<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
-	</MkA>
-	<button class="item _button" @click="more" v-click-anime>
-		<i class="fas fa-ellipsis-h fa-fw"></i><span class="text">{{ $ts.more }}</span>
-		<span v-if="otherNavItemIndicated" class="indicator"><i class="fas fa-circle"></i></span>
-	</button>
-	<MkA class="item" active-class="active" to="/settings" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
-		<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
-	</MkA>
-	<div class="divider"></div>
-	<button v-if="$i.isPatron" class="patron-button _button" @click="patron" v-click-anime>
-		<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-	</button>
-	<button v-else class="patron-button _button" @click="patron" v-click-anime>
-		<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
-	</button>
-	<div class="divider"></div>
-	<div class="about">
-		<MkA class="link" to="/about" v-click-anime>
-			<template v-if="isKokonect">
-				<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
-				<p v-if="iconOnly" style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><br/><span style="color: var(--pick);">NECT</span></b></p>
-				<p v-else style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
+	<transition name="nav-back">
+		<div class="nav-back _modalBg"
+			v-if="showing"
+			@click="showing = isAccountMenuMode = false"
+			@touchstart.passive="showing = isAccountMenuMode = false"
+		></div>
+	</transition>
+
+	<transition name="nav">
+		<nav class="nav">
+			<div class="profile">
+				<button v-if="!iconOnly" class="item _button account" @click="openProfile" v-click-anime>
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+				</button>
+				<button v-if="iconOnly" class="item _button account" @click="openAccountMenu" v-click-anime>
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+				</button>
+				<button v-else class="_button toggler" @click="toggleMenuMode">
+					<i v-if="isAccountMenuMode" class="fas fa-chevron-up"/>
+					<i v-else class="fas fa-chevron-down"/>
+				</button>
+			</div>
+			<template v-if="!isAccountMenuMode">
+				<div class="post" @click="post">
+					<MkButton class="button" primary full>
+						<i class="fas fa-pencil-alt fa-fw"></i><span class="text" v-if="!iconOnly">{{ $ts.note }}</span>
+					</MkButton>
+				</div>
+				<div class="divider"></div>
+				<MkA class="item index" active-class="active" to="/" exact v-click-anime>
+					<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
+				</MkA>
+				<template v-for="item in menu">
+					<div v-if="item === '-'" class="divider"></div>
+					<component v-else-if="menuDef[item] && (menuDef[item].show !== false)" :is="menuDef[item].to ? 'MkA' : 'button'" class="item _button" :class="item" active-class="active" v-on="menuDef[item].action ? { click: menuDef[item].action } : {}" :to="menuDef[item].to" v-click-anime>
+						<i class="fa-fw" :class="menuDef[item].icon"></i><span class="text">{{ $ts[menuDef[item].title] }}</span>
+						<span v-if="menuDef[item].indicated" class="indicator"><i class="fas fa-circle"></i></span>
+					</component>
+				</template>
+				<div class="divider"></div>
+				<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
+					<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
+				</MkA>
+				<button class="item _button" @click="more" v-click-anime>
+					<i class="fas fa-ellipsis-h fa-fw"></i><span class="text">{{ $ts.more }}</span>
+					<span v-if="otherNavItemIndicated" class="indicator"><i class="fas fa-circle"></i></span>
+				</button>
+				<MkA class="item" active-class="active" to="/settings" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
+					<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
+				</MkA>
+				<div class="divider"></div>
+				<button v-if="$i.isPatron" class="patron-button _button" @click="patron" v-click-anime>
+					<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+				</button>
+				<button v-else class="patron-button _button" @click="patron" v-click-anime>
+					<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
+				</button>
+				<div class="divider"></div>
+				<div class="about">
+					<MkA class="link" to="/about" v-click-anime>
+						<template v-if="isKokonect">
+							<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+							<p v-if="iconOnly" style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><br/><span style="color: var(--pick);">NECT</span></b></p>
+							<p v-else style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
+						</template>
+						<template v-else>
+							<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+						</template>
+					</MkA>
+				</div>
+				<!--<MisskeyLogo class="misskey"/>-->
 			</template>
 			<template v-else>
-				<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+				<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item-switch-acct _button account" v-click-anime>
+					<MkAvatar :user="acct" class="avatar"/><MkUserName class="name" :user="acct"/>
+				</button>
+				<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
+				<div class="divider" v-if="accounts.length > 0"></div>
+				<button class="item-switch-acct _button" @click="addAccount" v-text="$ts.addAccount"/>
+				<button class="item-switch-acct _button" @click="createAccount" v-text="$ts.createAccount"/>
+				<button class="item-switch-acct danger _button" @click="signout" v-text="$ts.logout"/>
 			</template>
-		</MkA>
-	</div>
-	<!--<MisskeyLogo class="misskey"/>-->
+		</nav>
+	</transition>
 </div>
 </template>
 
@@ -60,7 +93,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { sidebarDef } from '@client/sidebar';
-import { getAccounts, addAccount, login } from '@client/account';
+import { getAccounts, addAccount, login, signout } from '@client/account';
 import MkButton from '@client/components/ui/button.vue';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import MisskeyLogo from '@/../assets/client/misskey.svg';
@@ -79,6 +112,9 @@ export default defineComponent({
 			menuDef: sidebarDef,
 			iconOnly: false,
 			settingsWindowed: false,
+			isAccountMenuMode: false,
+			loadingAccounts: false,
+			showing: false,
 			isKokonect: null
 		};
 	},
@@ -98,11 +134,16 @@ export default defineComponent({
 	},
 
 	watch: {
+		$route(to, from) {
+			this.showing = false;
+		},
+
 		'$store.reactiveState.sidebarDisplay.value'() {
 			this.calcViewState();
 		},
 
 		iconOnly() {
+			this.isAccountMenuMode = false;
 			this.$nextTick(() => {
 				this.$emit('change-view-mode');
 			});
@@ -129,6 +170,10 @@ export default defineComponent({
 			this.settingsWindowed = (window.innerWidth > 1400);
 		},
 
+		show() {
+			this.showing = true;
+		},
+
 		post() {
 			os.post();
 		},
@@ -139,6 +184,19 @@ export default defineComponent({
 
 		openProfile() {
 			this.$router.push({ path: `/@${ this.$i.username }` })
+		},
+
+		async fetchAccounts() {
+			this.loadingAccounts = true;
+			this.accounts = await os.getAccounts();
+			this.loadingAccounts = false;
+		},
+
+		toggleMenuMode() {
+			this.isAccountMenuMode = !this.isAccountMenuMode;
+			if (this.isAccountMenuMode) {
+				this.fetchAccounts();
+			}
 		},
 
 		async openAccountMenu(ev) {
@@ -172,12 +230,18 @@ export default defineComponent({
 					}, {
 						text: this.$ts.createAccount,
 						action: () => { this.createAccount(); },
+					}, {
+						text: this.$ts.logout,
+						action: this.signout,
+						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
 			}]], ev.currentTarget || ev.target, {
 				align: 'left'
 			});
 		},
+
+		signout,
 
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
@@ -239,52 +303,142 @@ export default defineComponent({
 		flex: 0 0 $nav-icon-only-width;
 		width: $nav-icon-only-width !important;
 
+		> .nav {
+			> .divider {
+				margin: 8px auto;
+				width: calc(100% - 32px);
+			}
+
+			> .post {
+				> .button {
+					width: 46px;
+					height: 46px;
+					padding: 0;
+				}
+
+				@media (max-width: (850px)) {
+					display: none;
+				}
+			}
+
+			> .item,
+				.patron-button {
+				padding-left: 0;
+				width: 100%;
+				text-align: center;
+				font-size: $ui-font-size * 1.1;
+				line-height: 3.7rem;
+				overflow: unset;
+
+				> i,
+				> .avatar {
+					margin-right: 0;
+				}
+
+				> i {
+					left: 10px;
+				}
+
+				> .text,
+					.name,
+					.patron-text {
+					display: none;
+				}
+
+				> .indicator {
+					position: absolute;
+					top: unset;
+					bottom: 11px;
+					left: 33px;
+					color: var(--navIndicator);
+					font-size: 7px;
+					animation: blink 1s infinite;
+				}
+
+				> .patron,
+				.not-patron {
+					margin: 0;
+				}
+			}
+		}
+	}
+
+	> .nav {
 		> .divider {
-			margin: 8px auto;
-			width: calc(100% - 32px);
+			margin: 10px 0;
+			border-top: solid 0.5px var(--divider);
 		}
 
 		> .post {
-			> .button {
-				width: 46px;
-				height: 46px;
-				padding: 0;
-			}
+			position: sticky;
+			top: 65px;
+			z-index: 1;
+			padding: 16px 0;
+			background: var(--bg);
 
-			@media (max-width: (850px)) {
-				display: none;
+			> .button {
+				min-width: 0;
+			}
+		}
+
+		> .about {
+			fill: currentColor;
+			padding: 8px 0 16px 0;
+			text-align: center;
+
+			> .link {
+				display: block;
+				//width: 32px;
+				margin: 0 auto;
+
+				img {
+					display: block;
+					width: 100%;
+				}
+
+				&:hover {
+					text-decoration: none;
+					color: var(--navHoverFg);
+				}
 			}
 		}
 
 		> .item,
 			.patron-button {
-			padding-left: 0;
+			position: relative;
+			display: block;
+			font-size: $ui-font-size;
+			line-height: 2.6rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
 			width: 100%;
-			text-align: center;
-			font-size: $ui-font-size * 1.1;
-			line-height: 3.7rem;
-			overflow: unset;
-
-			> i,
-			> .avatar {
-				margin-right: 0;
-			}
+			text-align: left;
+			box-sizing: border-box;
 
 			> i {
-				left: 10px;
+				width: 32px;
+				margin-left: 3px;
+				margin-right: $avatar-margin;
 			}
 
-			> .text,
-				.name,
-				.patron-text {
-				display: none;
+			> .avatar {
+				margin-left: unset;
+				margin-right: $avatar-margin;
+				width: $avatar-size;
+				height: $avatar-size;
+				vertical-align: middle;
+			}
+
+			> .name {
+				margin-left: 10px;
+				font-weight: bold;
 			}
 
 			> .indicator {
 				position: absolute;
-				top: unset;
-				bottom: 11px;
-				left: 33px;
+				bottom: 10px;
+				left: 0;
 				color: var(--navIndicator);
 				font-size: 7px;
 				animation: blink 1s infinite;
@@ -292,130 +446,152 @@ export default defineComponent({
 
 			> .patron,
 				.not-patron {
-				margin: 0;
+				margin-left: 6px;
+				margin-right: 12px;
 			}
-		}
-	}
 
-	> .divider {
-		margin: 10px 0;
-		border-top: solid 0.5px var(--divider);
-	}
+			> .patron {
+				color: var(--patron);
 
-	> .post {
-		position: sticky;
-		top: 65px;
-		z-index: 1;
-		padding: 16px 0;
-		background: var(--bg);
+				> i {
+					animation: 1s linear 0s infinite normal both running mfm-rubberBand;
+				}
+			}
 
-		> .button {
-			min-width: 0;
-		}
-	}
-
-	> .about {
-		fill: currentColor;
-		padding: 8px 0 16px 0;
-		text-align: center;
-
-		> .link {
-			display: block;
-			//width: 32px;
-			margin: 0 auto;
-
-			img {
-				display: block;
-				width: 100%;
+			> .patron-text {
+				font-size: 0.9em;
 			}
 
 			&:hover {
 				text-decoration: none;
 				color: var(--navHoverFg);
 			}
-		}
-	}
 
-	> .item,
-		.patron-button {
-		position: relative;
-		display: block;
-		font-size: $ui-font-size;
-		line-height: 2.6rem;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		white-space: nowrap;
-		width: 100%;
-		text-align: left;
-		box-sizing: border-box;
-
-		> i {
-			width: 32px;
-			margin-left: 3px;
-			margin-right: $avatar-margin;
-		}
-
-		> .avatar {
-			margin-left: unset;
-			margin-right: $avatar-margin;
-			width: $avatar-size;
-			height: $avatar-size;
-			vertical-align: middle;
-		}
-
-		> .name {
-			margin-left: 10px;
-			font-weight: bold;
-		}
-
-		> .indicator {
-			position: absolute;
-			bottom: 10px;
-			left: 0;
-			color: var(--navIndicator);
-			font-size: 7px;
-			animation: blink 1s infinite;
-		}
-
-		> .patron,
-			.not-patron {
-			margin-left: 6px;
-			margin-right: 12px;
-		}
-
-		> .patron {
-			color: var(--patron);
-
-			> i {
-				animation: 1s linear 0s infinite normal both running mfm-rubberBand;
+			&.active {
+				color: var(--navActive);
 			}
 		}
 
-		> .patron-text {
-			font-size: 0.9em;
+		> .item-switch-acct {
+			position: relative;
+			display: block;
+			font-size: $ui-font-size;
+			line-height: 3rem;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			width: 100%;
+			text-align: left;
+			box-sizing: border-box;
+			padding-left: 12px;
+
+			> i {
+				width: 32px;
+				margin-left: 3px;
+				margin-right: $avatar-margin;
+			}
+
+			> .avatar {
+				margin-left: unset;
+				margin-right: $avatar-margin;
+				width: $avatar-size;
+				height: $avatar-size;
+				vertical-align: middle;
+			}
+
+			> .name {
+				margin-left: 10px;
+				font-weight: bold;
+			}
+
+			&:hover {
+				text-decoration: none;
+				color: var(--navHoverFg);
+			}
+
+			&:last-child {
+				margin-top: 8px;
+			}
+
+			&.active {
+				color: var(--navActive);
+			}
+
+			&.danger {
+				color: red;
+			}
 		}
 
-		&:hover {
-			text-decoration: none;
-			color: var(--navHoverFg);
+		> .patron-button {
+			background: unset;
+			border: unset;
 		}
 
-		&.active {
-			color: var(--navActive);
+		> .profile {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+			background: var(--bg);
+			padding: 10px 0 0 0;
+
+			> .item {
+				position: relative;
+				display: block;
+				font-size: $ui-font-size;
+				line-height: 2.6rem;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+				width: 100%;
+				text-align: left;
+				box-sizing: border-box;
+
+				> i {
+					width: 32px;
+					margin-left: 3px;
+					margin-right: $avatar-margin;
+				}
+
+				> .avatar {
+					margin-left: unset;
+					margin-right: $avatar-margin;
+					width: $avatar-size;
+					height: $avatar-size;
+					vertical-align: middle;
+				}
+
+				> .name {
+					margin-left: 10px;
+					font-weight: bold;
+				}
+
+				&.active {
+					color: var(--navActive);
+				}
+
+				&:hover {
+					text-decoration: none;
+					color: var(--navHoverFg);
+				}
+			}
+
+			> .account {
+				padding: 10px 20px 0 0;
+			}
+
+			> .toggler {
+				position: absolute;
+				right: 0;
+				top: 25px;
+				width: 36px;
+				height: 36px;
+				z-index: 400;
+			}
 		}
-	}
 
-	> .patron-button {
-		background: unset;
-		border: unset;
-	}
-
-	> .profile {
-		position: sticky;
-		top: 0;
-		z-index: 2;
-		background: var(--bg);
-		padding: 15px 0 0 0;
+		> .account {
+			padding: 10px 0 0;
+		}
 	}
 }
 </style>

@@ -141,13 +141,13 @@ export const sidebarDef = {
 					unisonReload();
 				}
 			}, {
-				text: i18n.locale.friendly + ' (β)',
+				text: i18n.locale.friendly + ' (legacy)',
 				action: () => {
-					localStorage.setItem('ui', 'friendly-beta');
+					localStorage.setItem('ui', 'friendly-legacy');
 					unisonReload();
 				}
 			}, {
-				text: i18n.locale.default,
+				text: i18n.locale.misskey,
 				action: () => {
 					localStorage.setItem('ui', 'misskey');
 					unisonReload();

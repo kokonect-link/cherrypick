@@ -797,6 +797,7 @@ gachaSettings: "Kaomoji-Gacha Settings"
 gachaFaces: "Faces"
 gachaSettingDescription: "Customize kaomoji-gacha items (separated by line breaks)"
 input: "Input..."
+misskey: "Misskey"
 _newNoteNotiBehavior:
   default: "Default"
   header: "Show in header"

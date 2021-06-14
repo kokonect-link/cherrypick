@@ -1,6 +1,6 @@
 <template>
 <div v-if="clip" class="_section">
-	<div class="okzinsic _content _panel" :class="{ isFriendlyUI, isMisskeyUI, 'is-desktop': isDesktop }">
+	<div class="okzinsic _content _panel" :class="{ isFriendlyUI, isFriendlyUILegacy,isMisskeyUI, 'is-desktop': isDesktop && (isFriendlyUI || isFriendlyUILegacy) }">
 		<div class="description" v-if="clip.description">
 			<Mfm :text="clip.description" :is-note="false" :i="$i"/>
 		</div>
@@ -57,6 +57,7 @@ export default defineComponent({
 				})
 			},
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 			isMisskeyUI: localStorage.getItem('ui') == "misskey",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
@@ -144,6 +145,7 @@ export default defineComponent({
 	text-align: center;
 
 	&.isFriendlyUI,
+	&.isFriendlyUILegacy,
 	&.isMisskeyUI {
 		border-radius: 0;
 		box-shadow: unset;
@@ -156,7 +158,7 @@ export default defineComponent({
 	> .user {
 		$height: 32px;
 		padding: 16px;
-		border-bottom: solid 0.5px var(--divider);
+		// border-bottom: solid 0.5px var(--divider);
 		line-height: $height;
 
 		> .avatar {

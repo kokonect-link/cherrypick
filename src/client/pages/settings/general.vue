@@ -50,7 +50,7 @@
 		</FormSwitch>
 	</FormGroup>
 
-	<FormSelect v-if="isFriendlyUIBeta" v-model:value="newNoteNotiBehavior">
+	<FormSelect v-if="isFriendlyUI" v-model:value="newNoteNotiBehavior">
 		<template #label>{{ $ts.newNoteNoti }}</template>
 		<option value="default">{{ $ts._newNoteNotiBehavior.default }}</option>
 		<option value="header">{{ $ts._newNoteNotiBehavior.header }}</option>
@@ -137,7 +137,7 @@ export default defineComponent({
 			lang: localStorage.getItem('lang'),
 			fontSize: localStorage.getItem('fontSize'),
 			useSystemFont: localStorage.getItem('useSystemFont') != null,
-			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		}
 	},
 

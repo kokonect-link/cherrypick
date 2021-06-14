@@ -171,8 +171,8 @@ const app = createApp(await (
 	ui === 'chat'                     ? import('@client/ui/chat/index.vue') :
 	ui === 'pope'                     ? import('@client/ui/universal.vue') :
 	ui === 'misskey'                  ? import('@client/ui/default.vue') :
-	ui === 'friendly-beta'            ? import('@client/ui/friendly-beta/friendly.vue') :
-	import('@client/ui/friendly/friendly.vue')
+	ui === 'friendly-legacy'            ? import('@client/ui/friendly/friendly.vue') :
+	import('@client/ui/friendly-beta/friendly.vue')
 ).then(x => x.default));
 
 if (_DEV_) {

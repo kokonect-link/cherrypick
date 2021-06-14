@@ -194,7 +194,7 @@ export default defineComponent({
 				isQuoted: boolean;
 			} | null,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isVisitor: localStorage.getItem('ui') !== "friendly || friendly-beta || misskey || pope || chat || desktop || deck || ?zen",
+			isVisitor: localStorage.getItem('ui') !== "friendly || friendly-legacy || misskey || pope || chat || desktop || deck || ?zen",
 		};
 	},
 

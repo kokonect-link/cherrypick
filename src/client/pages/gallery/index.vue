@@ -1,5 +1,5 @@
 <template>
-<div class="xprsixdl _root" :class="{ isFriendlyUI }">
+<div class="xprsixdl _root" :class="{ isFriendlyUILegacy }">
 	<MkTab v-model:value="tab" v-if="$i">
 		<option value="explore"><i class="fas fa-icons"></i> {{ $ts.gallery }}</option>
 		<option value="liked"><i class="fas fa-heart"></i> {{ $ts._gallery.liked }}</option>
@@ -32,7 +32,7 @@
 		</MkPagination>
 	</div>
 	<div v-else-if="tab === 'my'">
-		<MkA v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" to="/gallery/new" class="_link" style="margin: 16px;"><i class="fas fa-plus"></i> {{ $ts.postToGallery }}</MkA>
+		<MkA v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" to="/gallery/new" class="_link" style="margin: 16px;"><i class="fas fa-plus"></i> {{ $ts.postToGallery }}</MkA>
 		<MkPagination :pagination="myPostsPagination" #default="{items}">
 			<div class="vfpdbgtk">
 				<MkGalleryPostPreview v-for="post in items" :post="post" :key="post.id" class="post"/>
@@ -111,7 +111,7 @@ export default defineComponent({
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 
@@ -150,9 +150,11 @@ export default defineComponent({
 .xprsixdl {
 	max-width: 1400px;
 	margin: 0 auto;
+}
 
-	&.isFriendlyUI {
-		margin: -8px;
+.friendly {
+	@media (min-width: 601px) {
+		margin: -8px -8px auto;
 	}
 }
 

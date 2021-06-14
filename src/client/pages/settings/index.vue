@@ -31,7 +31,7 @@
 			<FormGroup>
 				<template #label>{{ $ts.clientSettings }}</template>
 				<FormLink :active="page === 'general'" replace to="/settings/general"><template #icon><i class="fas fa-cogs"></i></template>{{ $ts.general }}</FormLink>
-				<FormLink v-if="isFriendlyUIBeta" :active="page === 'timeline'" replace to="/settings/timeline"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.timeline }}</FormLink>
+				<FormLink v-if="isFriendlyUI" :active="page === 'timeline'" replace to="/settings/timeline"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.timeline }}</FormLink>
 				<FormLink :active="page === 'theme'" replace to="/settings/theme"><template #icon><i class="fas fa-palette"></i></template>{{ $ts.theme }}</FormLink>
 				<FormLink :active="page === 'sidebar'" replace to="/settings/sidebar"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.sidebar }}</FormLink>
 				<FormLink :active="page === 'sounds'" replace to="/settings/sounds"><template #icon><i class="fas fa-music"></i></template>{{ $ts.sounds }}</FormLink>
@@ -222,7 +222,7 @@ export default defineComponent({
 				localStorage.removeItem('theme');
 				unisonReload();
 			},
-			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 });

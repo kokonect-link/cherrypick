@@ -1,6 +1,6 @@
 <template>
 <div>
-	<MkTab v-model:value="tab" v-if="$i" :class="{ 'tab': isFriendlyUI && !isMobile }">
+	<MkTab v-model:value="tab" v-if="$i" :class="{ 'friendly': isFriendlyUI || isFriendlyUILegacy }">
 		<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._pages.featured }}</option>
 		<option value="my"><i class="fas fa-edit"></i> {{ $ts._pages.my }}</option>
 		<option value="liked"><i class="fas fa-heart"></i> {{ $ts._pages.liked }}</option>
@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="rknalgpo _content my" v-if="tab === 'my'">
-			<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUIBeta) || !(isFriendlyUI || isFriendlyUIBeta)" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
+			<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
 			<MkPagination :pagination="myPagesPagination" #default="{items}">
 				<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
 			</MkPagination>
@@ -73,7 +73,7 @@ export default defineComponent({
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 
@@ -86,12 +86,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.tab {
-	margin: -8px -8px 8px;
+.friendly {
+	@media (min-width: 601px) {
+		margin: -8px -8px auto;
+	}
 }
 
 .rknalgpo {
-
 	.ckltabjg {
 		margin: 0;
 	}

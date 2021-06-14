@@ -25,19 +25,12 @@
 		</div>
 	</div>
 
-	<div class="floatbtn" v-if="!isDesktop">
-		<button v-if="$route.name === 'index' || $route.name === 'notifications' || $route.name === 'user'" class="post _buttonPrimary" @click="post()" v-click-anime><i class="fas fa-pencil-alt"/></button>
-		<button v-if="$route.name === 'messaging'" class="post _buttonPrimary" @click="createMessagingRoom()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'drive'" class="post _buttonPrimary" @click="driveMenu()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'clips'" class="post _buttonPrimary" @click="createClip()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'pages'" class="post _buttonPrimary" @click="createPage()" v-click-anime><i class="fas fa-plus"/></button>
-		<button v-if="$route.name === 'ads'" class="post _buttonPrimary" @click="createAd()" v-click-anime><i class="fas fa-plus"/></button>
-  </div>
+	<button v-if="fabButton && !(isDesktop || isWideTablet)" class="fab _buttonPrimary" :class="{ navHidden }" @click="onFabClicked" v-click-anime><i :key="fabIcon" :class="fabIcon"/></button>
 
 	<div class="buttons" v-if="isMobile">
 		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
-		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.replace('/')" :class="{ active: $route.name === 'index' }"><i class="fas fa-home"></i></button>
-		<button class="button search _button" @click="search"><i class="fas fa-search"/></button>
+		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.replace('/')" :class="{ active: $route.name === 'index' }"><i class="fas fa-home"></i><span v-if="queue > 0" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button explore _button" @click="$route.name === 'explore' ? top() : $router.replace('/explore')" :class="{ active: $route.name === 'explore' }"><i class="fas fa-hashtag"/></button>
 		<button class="button notifications _button" @click="$route.name === 'notifications' ? top() : $router.replace('/my/notifications')" :class="{ active: $route.name === 'notifications' }"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
 		<button class="button tab _button" @click="$route.name === 'messaging' ? top() : $router.replace('/my/messaging')" :class="{ active: $route.name === 'messaging' }"><i class="fas fa-comments"></i><span v-if="$i.hasUnreadMessagingMessage" class="indicator"><i class="fas fa-circle"></i></span></button>
 		<button class="button widget _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
@@ -74,10 +67,10 @@ import * as os from '@client/os';
 import { sidebarDef } from '@client/sidebar';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
-import { search } from '@client/scripts/search';
 import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
 const MOBILE_THRESHOLD = 600;
 
 localStorage.setItem('ui', 'friendly');
@@ -96,11 +89,27 @@ export default defineComponent({
 		return {
 			pageInfo: null,
 			menuDef: sidebarDef,
+			navHidden: false,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			widgetsShowing: false,
 			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
+			queue: 0,
+			routeList: [
+				'index',
+				'explore',
+				'notifications',
+				'messaging',
+				'user',
+				'drive',
+				'clips',
+				'pages',
+				'ads',
+				'gallery'
+			],
+			fabButton: false
 		};
 	},
 
@@ -111,7 +120,11 @@ export default defineComponent({
 				if (this.menuDef[def].indicated) return true;
 			}
 			return false;
-		}
+		},
+
+		fabIcon() {
+			return this.pageInfo && this.pageInfo.action ? this.pageInfo.action.icon : 'fas fa-pencil-alt';
+		},
 	},
 
 	created() {
@@ -129,6 +142,9 @@ export default defineComponent({
 				id: 'c', place: 'right', data: {}
 			}]);
 		}
+
+		eventBus.on('kn-timeline-new', (q) => this.queueUpdated(q));
+		eventBus.on('kn-timeline-new-queue-reset', () => this.queueReset());
 	},
 
 	mounted() {
@@ -136,6 +152,8 @@ export default defineComponent({
 			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
 			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
 		}, { passive: true });
+
+		this.navHidden = this.isMobile;
 	},
 
 	methods: {
@@ -144,6 +162,7 @@ export default defineComponent({
 			if (page[symbols.PAGE_INFO]) {
 				this.pageInfo = page[symbols.PAGE_INFO];
 				document.title = `${this.pageInfo.title} | ${instanceName}`;
+				this.fabButton = this.routeList.includes(this.$route.name);
 			}
 		},
 
@@ -152,34 +171,6 @@ export default defineComponent({
 			window.addEventListener('scroll', () => {
 				sticky.calc(window.scrollY);
 			}, { passive: true });
-		},
-
-		post() {
-			os.post();
-		},
-
-		createMessagingRoom() {
-			eventBus.emit('kn-createmsgroom');
-		},
-
-		driveMenu() {
-			eventBus.emit('kn-drivemenu');
-		},
-
-		createClip() {
-			eventBus.emit('kn-createclip');
-		},
-
-		createPage() {
-			eventBus.emit('kn-createpage');
-		},
-
-		createAd() {
-			eventBus.emit('kn-createad');
-		},
-
-		search() {
-			search();
 		},
 
 		top() {
@@ -226,6 +217,22 @@ export default defineComponent({
 				}
 			}], e);
 		},
+
+		queueUpdated(q) {
+			this.queue = q;
+		},
+
+		queueReset() {
+			this.queue = 0;
+		},
+
+		onFabClicked(e) {
+			if (this.pageInfo && this.pageInfo.action) {
+				this.pageInfo.action.handler(e);
+			} else {
+				os.post();
+			}
+		},
 	}
 });
 </script>
@@ -254,8 +261,8 @@ export default defineComponent({
 }
 
 .mk-app {
-	$nav-hide-threshold: 650px;
-	$header-height: 50px;
+	$nav-hide-threshold: 600px;
+	$header-height: 60px;
 	$ui-font-size: 1em;
 	$widgets-hide-threshold: 1200px;
 	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
@@ -339,12 +346,16 @@ export default defineComponent({
 				-webkit-backdrop-filter: blur(32px);
 				backdrop-filter: blur(32px);
 				background-color: var(--header);
-				border-bottom: solid 0.5px var(--divider);
+				// border-bottom: solid 0.5px var(--divider);
 			}
 
 			> .content {
 				background: var(--bg);
 				--stickyTop: #{$header-height};
+
+				&._flat_friendly_ {
+					margin: 0 8px;
+				}
 			}
 
 			@media (max-width: 850px) {
@@ -387,22 +398,26 @@ export default defineComponent({
 		}
 	}
 
-	> .floatbtn {
+	> .fab {
+		display: block;
 		position: fixed;
 		z-index: 1000;
-		bottom: 77px;
-		box-sizing: border-box;
-		padding: 18px 0 calc(constant(safe-area-inset-bottom) + 43px); /* iOS 11.0 */
-		padding: 18px 0 calc(env(safe-area-inset-bottom) + 43px); /* iOS 11.2 */
+		right: calc(32px + var(--margin) * 2 + 300px);
+		bottom: 32px;
+		width: 55px;
+		height: 55px;
+		border-radius: 100%;
+		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+		font-size: 22px;
+		background: var(--accent);
+		color: white;
 
-		> .post {
-			position: fixed;
-			z-index: 1000;
-			width: 55px;
-			height: 55px;
-			border-radius: 100%;
-			box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-			font-size: 22px;
+		@media (max-width: $widgets-hide-threshold) {
+			right: 30px;
+		}
+
+		@media (max-width: $nav-hide-threshold) {
+			bottom: calc(66px + env(safe-area-inset-bottom));
 			right: 15px;
 		}
 
@@ -411,11 +426,7 @@ export default defineComponent({
 		}
 
 		@media (min-width: (600px) + 1px) {
-			bottom: 50px;
-
-			> .post {
-				right: 30px;
-			}
+			bottom: calc(45px + env(safe-area-inset-bottom));
 		}
 	}
 

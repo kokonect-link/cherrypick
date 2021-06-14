@@ -797,6 +797,7 @@ gachaSettings: "카오모지 뽑기 설정"
 gachaFaces: "카오모지"
 gachaSettingDescription: "뽑기에서 출현시킬 카오모지를 줄바꿈으로 구분해서 설정해 주세요."
 input: "입력..."
+misskey: "Misskey"
 
 _newNoteNotiBehavior:
   default: "기본"

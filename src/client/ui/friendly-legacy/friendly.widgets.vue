@@ -70,7 +70,7 @@ export default defineComponent({
 
 	> .edit {
 		display: block;
-		margin: 28px auto;
+		margin: 16px auto;
 	}
 }
 </style>

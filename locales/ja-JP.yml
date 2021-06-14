@@ -797,6 +797,7 @@ gachaSettings: "顔文字ガチャの設定"
 gachaFaces: "顔文字"
 gachaSettingDescription: "顔文字ガチャで出現する顔文字を改行で区切って設定します。"
 input: "入力..."
+misskey: "ミスキー"
 
 _newNoteNotiBehavior:
   default: "デフォルト"

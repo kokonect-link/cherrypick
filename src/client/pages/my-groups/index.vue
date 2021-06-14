@@ -1,7 +1,7 @@
 <template>
 <div class="">
 	<div class="_section" style="padding: 0;">
-		<MkTab v-model:value="tab">
+		<MkTab v-model:value="tab" :class="{ 'friendly': isFriendlyUI || isFriendlyUILegacy }">
 			<option value="owned">{{ $ts.ownedGroups }}</option>
 			<option value="joined">{{ $ts.joinedGroups }}</option>
 			<option value="invites"><i class="fas fa-envelope-open-text"></i> {{ $ts.invites }}</option>
@@ -83,6 +83,8 @@ export default defineComponent({
 				endpoint: 'i/user-group-invites',
 				limit: 10,
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 
@@ -118,4 +120,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.friendly {
+	@media (min-width: 601px) {
+		margin: -8px -8px auto;
+	}
+}
 </style>

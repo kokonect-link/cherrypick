@@ -2,7 +2,7 @@
 <div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div v-if="!isFriendlyUIBeta" class="_block" :class="{ 'tabs-friendly': isFriendlyUI, 'tabs': !isFriendlyUI, 'tabs-friendly-mobile': isFriendlyUI && isMobile }">
+	<div v-if="!isFriendlyUI" class="_block" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs': !isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -18,8 +18,8 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
-	<div v-if="isFriendlyUIBeta && $store.state.newNoteNotiBehavior !== 'default'"></div>
-	<div :class="{ 'new-friendly': isFriendlyUI && isDesktop, 'new': !isFriendlyUI }" v-else-if="queue > 0 && ((isFriendlyUIBeta && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUI && isDesktop) || !(isFriendlyUI || isFriendlyUIBeta))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+	<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
+	<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
 		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
@@ -150,7 +150,7 @@ export default defineComponent({
 				};
 			}),
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUIBeta: localStorage.getItem('ui') == "friendly-beta",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD
 		};
@@ -420,7 +420,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .cmuxhskf {
 	> .new,
-		.new-friendly {
+		.new-friendly-legacy {
 		position: sticky;
 		top: calc(var(--stickyTop, 0px) + 16px);
 		z-index: 1000;
@@ -439,12 +439,12 @@ export default defineComponent({
 		}
 	}
 
-	> .new-friendly {
+	> .new-friendly-legacy {
 		--stickyTop: 100px;
 	}
 
 	&.isMobile {
-		> .tabs-friendly {
+		> .tabs-friendly-legacy {
 			> .left, > .right {
 				> .tab {
 					padding: 0 10px;
@@ -454,8 +454,8 @@ export default defineComponent({
 	}
 
 	> .tabs,
-		.tabs-friendly,
-		.tabs-friendly-mobile {
+		.tabs-friendly-legacy,
+		.tabs-friendly-legacy-mobile {
 		display: flex;
 		box-sizing: border-box;
 		padding: 0 8px;
@@ -518,8 +518,8 @@ export default defineComponent({
 		}
 	}
 
-	> .tabs-friendly,
-		.tabs-friendly-mobile {
+	> .tabs-friendly-legacy,
+		.tabs-friendly-legacy-mobile {
 		position: sticky;
 		--stickyTop: 110px;
 		z-index: 1000;
@@ -532,7 +532,7 @@ export default defineComponent({
 		box-shadow: var(--panelShadow);
 	}
 
-	> .tabs-friendly-mobile {
+	> .tabs-friendly-legacy-mobile {
 		margin: 8px;
 	}
 }

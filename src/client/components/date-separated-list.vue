@@ -35,7 +35,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
@@ -67,13 +67,13 @@ export default defineComponent({
 		if (this.items.length === 0) return;
 
 		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.$route.name !== 'index' ? '-not-timeline' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
 			name: 'list',
 			tag: 'div',
 			'data-direction': this.direction,
 			'data-reversed': this.reversed ? 'true' : 'false',
 		} : {
-			class: 'sqadhkmv' + (this.isFriendlyUI ? '-friendly' : '') + (this.isFriendlyUI && this.$route.name !== 'index' ? '-not-timeline' : '') + (this.isFriendlyUI && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
 		}, this.items.map((item, i) => {
 			const el = this.$slots.default({
 				item: item
@@ -122,11 +122,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.sqadhkmv,
-.sqadhkmv-friendly,
-.sqadhkmv-friendly-mobile,
-.sqadhkmv-friendly-not-timeline,
-.sqadhkmv-friendly-not-timeline-mobile {
+.sqadhkmv {
 	> *:empty {
 		display: none;
 	}
@@ -204,8 +200,8 @@ export default defineComponent({
 	}
 }
 
-.sqadhkmv-friendly,
-.sqadhkmv-friendly-mobile {
+.friendly-legacy,
+.friendly-legacy-mobile {
 	--stickyTop: 110px;
 }
 </style>
