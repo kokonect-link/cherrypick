@@ -74,8 +74,9 @@
 						<span>{{ $ts.pages }}</span>
 					</MkA>
 					<div class="actions">
-						<button @click="menu" class="menu _button"><i class="fas fa-ellipsis-h"></i></button>
+						<!-- <button @click="menu" class="menu _button"><i class="fas fa-ellipsis-h"></i></button> -->
 						<MkFollowButton v-if="!$i || $i.id != user.id" :user="user" :inline="true" :transparent="false" :full="true" large class="koudoku"/>
+						<MkA v-else-if="$i && $i.id == user.id" to="/settings/profile" class="edit-profile _button">{{ $ts.editProfile }}</MkA>
 					</div>
 				</div>
 				<template v-if="page === 'index'">
@@ -118,8 +119,9 @@
 					</div>
 					<span class="followed" v-if="$i && $i.id != user.id && user.isFollowed">{{ $ts.followsYou }}</span>
 					<div class="actions" v-if="$i">
-						<button @click="menu" class="menu _button"><i class="fas fa-ellipsis-h"></i></button>
+						<!-- <button @click="menu" class="menu _button"><i class="fas fa-ellipsis-h"></i></button> -->
 						<MkFollowButton v-if="$i.id != user.id" :user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
+						<MkA v-else-if="$i && $i.id == user.id" to="/settings/profile" class="edit-profile _button">{{ $ts.editProfile }}</MkA>
 					</div>
 				</div>
 				<MkAvatar class="avatar" :user="user" :disable-preview="true" :show-indicator="true"/>
@@ -636,6 +638,23 @@ export default defineComponent({
 					> .koudoku {
 						margin-left: 4px;
 						vertical-align: bottom;
+					}
+
+					> .edit-profile {
+						display: inline-flex;
+						font-weight: bold;
+						color: #fff;
+						background: var(--accent);
+						padding: 0 16px;
+						height: 31px;
+						border-radius: 32px;
+						align-items: center;
+						justify-content: center;
+
+						&:hover {
+							background: var(--accentLighten);
+							text-decoration: none;
+						}
 					}
 				}
 
