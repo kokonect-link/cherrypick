@@ -11,7 +11,7 @@
 			</template>
 			<template v-else>
 				<div class="title">
-					<!-- <i v-if="info.icon" class="icon" :class="info.icon"></i> -->
+					<i v-if="info.icon" class="icon" :class="info.icon"></i>
 					<MkAvatar v-if="info.avatar && !($route.name === 'note')" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 					<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 					<span v-else-if="info.title" class="text">{{ info.title }}</span>
