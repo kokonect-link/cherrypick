@@ -1,6 +1,6 @@
 <template>
 <div class="ieepwinx _section">
-	<MkButton @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
+	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" @click="create" primary class="add"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
 
 	<div class="_content">
 		<XAntenna v-if="draft" :antenna="draft" @created="onAntennaCreated" style="margin-bottom: var(--margin);"/>
@@ -18,6 +18,9 @@ import MkPagination from '@client/components/ui/pagination.vue';
 import MkButton from '@client/components/ui/button.vue';
 import XAntenna from './index.antenna.vue';
 import * as symbols from '@client/symbols';
+
+const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
 
 export default defineComponent({
 	components: {
@@ -41,6 +44,10 @@ export default defineComponent({
 				limit: 10,
 			},
 			draft: null,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

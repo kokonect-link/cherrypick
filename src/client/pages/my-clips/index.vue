@@ -27,7 +27,6 @@ import { userName } from '@client/filters/user';
 
 const DESKTOP_THRESHOLD = 1100;
 const WIDE_TABLET_THRESHOLD = 850;
-const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -50,7 +49,6 @@ export default defineComponent({
 				limit: 10,
 			},
 			draft: null,
-			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",

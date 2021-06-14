@@ -22,7 +22,7 @@
 		</div>
 
 		<div class="_content grwlizim owned" v-if="tab === 'owned'">
-			<MkButton class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
+			<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
 			<MkPagination :pagination="ownedPagination" #default="{items}">
 				<MkChannelPreview v-for="channel in items" class="_gap" :channel="channel" :key="channel.id"/>
 			</MkPagination>
@@ -40,7 +40,7 @@ import MkTab from '@client/components/tab.vue';
 import * as symbols from '@client/symbols';
 
 const DESKTOP_THRESHOLD = 1100;
-const MOBILE_THRESHOLD = 600;
+const WIDE_TABLET_THRESHOLD = 850;
 
 export default defineComponent({
 	components: {
@@ -69,10 +69,10 @@ export default defineComponent({
 				endpoint: 'channels/owned',
 				limit: 5,
 			},
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
-			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
-			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 		};
 	},
 	methods: {

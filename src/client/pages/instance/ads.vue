@@ -52,7 +52,6 @@ import * as symbols from '@client/symbols';
 
 const DESKTOP_THRESHOLD = 1100;
 const WIDE_TABLET_THRESHOLD = 850;
-const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -75,7 +74,6 @@ export default defineComponent({
 				}
 			},
 			ads: [],
-			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",

@@ -107,7 +107,10 @@ export default defineComponent({
 				'clips',
 				'pages',
 				'ads',
-				'gallery'
+				'gallery',
+				'channels',
+				'groups',
+				'antennas'
 			],
 			fabButton: false
 		};

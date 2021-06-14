@@ -10,7 +10,7 @@
 
 	<div class="_section">
 		<div class="_content" v-if="tab === 'owned'">
-			<MkButton @click="create" primary style="margin: 0 auto var(--margin) auto;"><i class="fas fa-plus"></i> {{ $ts.createGroup }}</MkButton>
+			<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" @click="create" primary style="margin: 0 auto var(--margin) auto;"><i class="fas fa-plus"></i> {{ $ts.createGroup }}</MkButton>
 
 			<MkPagination :pagination="ownedPagination" #default="{items}" ref="owned">
 				<div class="_card" v-for="group in items" :key="group.id">
@@ -55,6 +55,9 @@ import MkTab from '@client/components/tab.vue';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
+const DESKTOP_THRESHOLD = 1100;
+const WIDE_TABLET_THRESHOLD = 850;
+
 export default defineComponent({
 	components: {
 		MkPagination,
@@ -68,7 +71,11 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.groups,
-				icon: 'fas fa-users'
+				icon: 'fas fa-users',
+				action: {
+					icon: 'fas fa-plus',
+					handler: this.create
+				}
 			},
 			tab: 'owned',
 			ownedPagination: {
@@ -83,6 +90,8 @@ export default defineComponent({
 				endpoint: 'i/user-group-invites',
 				limit: 10,
 			},
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
