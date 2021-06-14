@@ -800,6 +800,7 @@ input: "입력..."
 
 _newNoteNotiBehavior:
   default: "기본"
+  header: "헤더에 표시"
   smail: "작게"
   none: "표시하지 않음"
 

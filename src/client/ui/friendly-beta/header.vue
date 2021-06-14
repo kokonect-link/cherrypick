@@ -1,7 +1,7 @@
 <template>
 <div class="fdidabkb" :class="{ center }" :style="`--height:${height};`" :key="key">
 	<template v-if="info">
-		<div class="titleContainer" @click="onHeaderClick">
+		<div class="titleContainer" :class="{ isShowHeader: $store.state.newNoteNotiBehavior === 'header' }" @click="onHeaderClick">
 			<template v-if="info.tabs">
 				<div class="title" v-for="tab in info.tabs" :key="tab.id" :class="{ _button: tab.onClick, selected: tab.selected }" @click.stop="tab.onClick" v-tooltip="tab.tooltip">
 					<i v-if="tab.icon" class="fa-fw" :class="tab.icon" :key="tab.icon"/>
@@ -12,7 +12,7 @@
 			<template v-else>
 				<div class="title">
 					<i v-if="info.icon" class="icon" :class="info.icon"></i>
-					<MkAvatar v-if="info.avatar && !($route.name === 'note')" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
+					<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 					<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="text"/>
 					<span v-else-if="info.title" class="text">{{ info.title }}</span>
 				</div>
@@ -28,7 +28,7 @@
 			</button>
 		</div>
 		<div class="buttons_R">
-			<button v-if="queue > 0 && $route.name === 'index' && $store.state.newNoteNotiBehavior === 'smail'" class="new _buttonPrimary button_R" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
+			<button v-if="queue > 0 && $route.name === 'index' && ($store.state.newNoteNotiBehavior === 'smail' || $store.state.newNoteNotiBehavior === 'header')" :class="{ 'new _button': $store.state.newNoteNotiBehavior === 'header', 'new-hover _buttonPrimary': $store.state.newNoteNotiBehavior === 'smail' }" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
 			<template v-if="info.actions && showActions">
 				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
 			</template>
@@ -230,24 +230,6 @@ export default defineComponent({
 			animation: blink 1s infinite;
 			}
 		}
-
-		> .avatar {
-			width: $avatar-size;
-			height: $avatar-size;
-			vertical-align: middle;
-		}
-
-		> .avatar_back {
-			margin-left: 50px;
-			width: $avatar-size;
-			height: $avatar-size;
-			vertical-align: middle;
-		}
-
-		> .patron {
-			margin-left: 0.5em;
-			color: var(--patron);
-		}
 	}
 
 	> .buttons_R {
@@ -262,12 +244,18 @@ export default defineComponent({
 		}
 
 		> .new {
+			width: $avatar-size;
+			height: var(--height);
+		}
+
+		> .new-hover {
 			position: absolute;
-			top: 55px;
-			right: 14px;
 			width: $avatar-size;
 			height: $avatar-size;
+			top: 55px;
+			right: 14px;
 			border-radius: 100%;
+			// border: 2px solid var(--patron);
 			line-height: 0;
 			background: var(--pick);
 			margin-top: 10px;
@@ -283,6 +271,10 @@ export default defineComponent({
 		overflow: auto;
 		white-space: nowrap;
 		width: calc(100% - (var(--height) * 2));
+
+		&.isShowHeader {
+			width: calc(85% - (var(--height) * 2));
+		}
 
 		> .title {
 			display: inline-block;

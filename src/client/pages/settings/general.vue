@@ -53,6 +53,7 @@
 	<FormSelect v-if="isFriendlyUIBeta" v-model:value="newNoteNotiBehavior">
 		<template #label>{{ $ts.newNoteNoti }}</template>
 		<option value="default">{{ $ts._newNoteNotiBehavior.default }}</option>
+		<option value="header">{{ $ts._newNoteNotiBehavior.header }}</option>
 		<option value="smail">{{ $ts._newNoteNotiBehavior.smail }}</option>
 		<option value="none">{{ $ts._newNoteNotiBehavior.none }}</option>
 	</FormSelect>

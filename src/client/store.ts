@@ -214,7 +214,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	newNoteNotiBehavior: {
 		where: 'device',
-		default: 'default' as 'default' | 'smail' | 'none'
+		default: 'default' as 'default' | 'header' | 'smail' | 'none'
 	},
 	confirmBeforePost: {
 		where: 'account',

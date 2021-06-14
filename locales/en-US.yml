@@ -799,6 +799,7 @@ gachaSettingDescription: "Customize kaomoji-gacha items (separated by line break
 input: "Input..."
 _newNoteNotiBehavior:
   default: "Default"
+  header: "Show in header"
   smail: "Smail"
   none: "None"
 _ad:

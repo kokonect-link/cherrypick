@@ -800,6 +800,7 @@ input: "入力..."
 
 _newNoteNotiBehavior:
   default: "デフォルト"
+  header: "ヘッダに表示"
   smail: "小さく"
   none: "無効化"
 
