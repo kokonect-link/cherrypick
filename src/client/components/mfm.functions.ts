@@ -123,16 +123,13 @@ export const mfmFunctions: Record<string, MfmFunctionDefinition> = {
 		noAnimatedMfmStyle: true,
 		isCherryPickExtension: true,
 	},
+	 */
 	font: {
 		props: {
-			size: genProp(ts._mfmpad._functions.size, ts._mfmpad._functions.fontSizeDescription),
-			color: genProp(ts._mfmpad._functions.color, ts._mfmpad._functions.fontColorDescription),
 			serif: genFlagProp(ts._mfmpad._functions.serif),
 			monospace: genFlagProp(ts._mfmpad._functions.monospace),
 			cursive: genFlagProp(ts._mfmpad._functions.cursive),
 			fantasy: genFlagProp(ts._mfmpad._functions.fantasy),
-			emoji: genFlagProp(ts._mfmpad._functions.emoji),
-			math: genFlagProp(ts._mfmpad._functions.math),
 		},
 		style: prop => {
 			const family =
@@ -140,15 +137,12 @@ export const mfmFunctions: Record<string, MfmFunctionDefinition> = {
 					prop.monospace ? 'font-family: monospace' :
 						prop.cursive ? 'font-family: cursive' :
 							prop.fantasy ? 'font-family: fantasy' :
-								prop.emoji ? 'font-family: emoji' :
-									prop.math ? 'font-family: math' :
 										null;
-			return `font-size: ${prop.size || 'unset'}; color: ${prop.color || 'unset'}; ${family}`
+			return `${family};`;
 		},
 		noAnimatedMfmStyle: true,
 		isCherryPickExtension: true,
 	},
-	 */
 	x2: 'font-size: 200%',
 	x3: 'font-size: 400%',
 	x4: 'font-size: 600%',

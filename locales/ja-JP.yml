@@ -876,7 +876,7 @@ _mfmpad:
     args: "引数"
     text: "テキスト"
     speed: "速度"
-    spinSpeedDescription: "1回転に要する時間。単位にsを使うと秒, msを使うとミリ秒を意味します。"
+    spinSpeedDescription: "1回転に要する時間。単位にsを使うと秒を意味します。"
     angle: "角度"
     rotateAngleDescription: "回転させる角度を数値で指定します。"
     color: "カラー"
