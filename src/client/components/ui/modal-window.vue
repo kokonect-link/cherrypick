@@ -143,7 +143,6 @@ export default defineComponent({
 
 	> .body {
 		overflow: auto;
-		padding: 15px;
 	}
 }
 </style>
