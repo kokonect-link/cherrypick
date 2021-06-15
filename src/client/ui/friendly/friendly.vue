@@ -29,7 +29,7 @@
 
 	<div class="buttons" v-if="isMobile">
 		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
-		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.replace('/')" :class="{ active: $route.name === 'index' }"><i class="fas fa-home"></i><span v-if="queue > 0" class="indicator"><i class="fas fa-circle"></i></span></button>
+		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.replace('/')" :class="{ active: $route.name === 'index' }"><i class="fas fa-home"></i><span v-if="queue > 0" class="indicator-home"><i class="fas fa-circle"></i></span></button>
 		<button class="button explore _button" @click="$route.name === 'explore' ? top() : $router.replace('/explore')" :class="{ active: $route.name === 'explore' }"><i class="fas fa-hashtag"/></button>
 		<button class="button notifications _button" @click="$route.name === 'notifications' ? top() : $router.replace('/my/notifications')" :class="{ active: $route.name === 'notifications' }"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
 		<button class="button tab _button" @click="$route.name === 'messaging' ? top() : $router.replace('/my/messaging')" :class="{ active: $route.name === 'messaging' }"><i class="fas fa-comments"></i><span v-if="$i.hasUnreadMessagingMessage" class="indicator"><i class="fas fa-circle"></i></span></button>
@@ -478,13 +478,21 @@ export default defineComponent({
 					color: var(--accent);
 			}
 
-			> .indicator {
+			> .indicator,
+				.indicator-home {
 				position: absolute;
 				top: 7px;
 				right: 20px;
 				color: var(--indicator);
 				font-size: 8px;
 				animation: blink 1s infinite;
+			}
+
+			> .indicator-home {
+				top: 8px;
+				right: 25px;
+				font-size: 6px;
+				animation: none;
 			}
 
 			&:first-child {
