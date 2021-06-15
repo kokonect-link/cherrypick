@@ -153,6 +153,7 @@ export default defineComponent({
 	overflow-wrap: break-word;
 	display: flex;
 	contain: content;
+	max-height: 150px;
 
 	&.max-width_600px {
 		padding: 16px;
