@@ -40,7 +40,8 @@ export default defineComponent({
 	position: relative;
 	display: flex;
 	padding: 16px;
-	border-bottom: solid 1px var(--divider);
+	// border-bottom: solid 1px var(--divider);
+	margin: 10px 0;
 
 	&:last-child {
 		border-bottom: none;
@@ -80,6 +81,9 @@ export default defineComponent({
 
 		> .description {
 			font-size: 90%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-height: 100px;
 
 			> .empty {
 				opacity: 0.7;
