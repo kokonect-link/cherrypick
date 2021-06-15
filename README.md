@@ -96,15 +96,13 @@ Related projects
 :heart: Backers
 ----------------------------------------------------------------
 <!-- PATREON_START -->
-<!--
 <table><tr>
-<td><img src="https://c8.patreon.com/2/200/20832595" alt="Roujo " width="100"></td>
+<td><img src="https://c10.patreonusercontent.com/3/eyJ3IjoyMDB9/patreon-media/p/user/26341498/f7e9e83da5af4d91b07cc84d72425c11/2.png?token-time=2145916800&token-hash=SFLXj1MMqd-SuX_fkuSvxrgOF8igNmH1qGpYDqbzI-o%3D" alt="lapy. " width="100"></td>
 </tr><tr>
-<td><a href="https://www.patreon.com/user?u=20832595">Roujo </a></td>
+<td><a href="https://www.patreon.com/user?u=26341498">lapy. </a></td>
 </tr></table>
--->
 
-**Last updated:** Mon, 07 Jun 2021 08:01:20 UTC
+**Last updated:** Mon, 15 Tue 2021 10:00:27 UTC
 <!-- PATREON_END -->
 
 [backer-url]: #backers
@@ -115,5 +113,5 @@ Related projects
 [sponsors-image]: https://opencollective.com/misskey/sponsors.svg
 [support-url]: https://opencollective.com/misskey#support
 
-[noridev-link]:			https://kokonect.link
-[noridev-icon]:			https://avatars.githubusercontent.com/u/11006910?v=4
+[noridev-link]:	https://kokonect.link
+[noridev-icon]:	https://avatars.githubusercontent.com/u/11006910?v=4
