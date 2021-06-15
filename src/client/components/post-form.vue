@@ -41,7 +41,14 @@
 		</div>
 		<MkInfo warn v-if="hasNotSpecifiedMentions" class="hasNotSpecifiedMentions">{{ $ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ $ts.add }}</button></MkInfo>
 		<input v-show="useCw" ref="cw" class="cw" v-model="cw" :placeholder="$ts.annotation" @keydown="onKeydown">
-		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd" />
+		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+		<div class="text-func">
+			<button class="_button" @click="insert('**')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-bold"/></button>
+			<button class="_button" @click="insert('<small></small>')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-text-height"/></button>
+			<button class="_button" @click="insert('<center></center>')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-align-center"/></button>
+			<button class="_button" @click="insert(' search')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-search"/></button>
+			<button class="_button" @click="insert('```')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-code"/></button>
+		</div>
 		<input v-show="useBroadcast" ref="broadcastText" class="broadcastText" v-model="broadcastText" :placeholder="$ts.broadcastTextDescription" @keydown="onKeydown">
 		<XPostFormAttaches class="attaches" :files="files" @updated="updateFiles" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
 		<XPollEditor v-if="poll" :poll="poll" @destroyed="poll = null" @updated="onPollUpdate"/>
@@ -993,7 +1000,7 @@ export default defineComponent({
 
 		> .broadcastText {
 			z-index: 1;
-			padding: 8px 16px;
+			padding: 8px 24px;
 			border-bottom: solid 1px var(--divider);
 		}
 
@@ -1004,6 +1011,36 @@ export default defineComponent({
 
 			&.withCw {
 				padding-top: 8px;
+			}
+		}
+
+		> .text-func {
+			display: flex;
+			position: relative;
+			padding: 0 16px;
+
+			> button {
+				font-size: 14px;
+				justify-content: center;
+				align-items: center;
+				width: 32px;
+				height: 32px;
+				border-radius: 4px;
+
+				&:hover {
+					background: var(--X5);
+				}
+			}
+
+			> .spacer {
+				width: 8px;
+			}
+
+			> .divider {
+				height: 32px;
+				width: 1px;
+				margin: auto 8px;
+				background: var(--divider);
 			}
 		}
 
@@ -1069,10 +1106,6 @@ export default defineComponent({
 					margin-left: 6px;
 				}
 			}
-		}
-
-		> .confirm-switch {
-			margin: 0 1rem 1rem;
 		}
 	}
 
