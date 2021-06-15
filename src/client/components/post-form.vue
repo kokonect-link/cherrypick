@@ -43,11 +43,12 @@
 		<input v-show="useCw" ref="cw" class="cw" v-model="cw" :placeholder="$ts.annotation" @keydown="onKeydown">
 		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div class="text-func">
-			<button class="_button" @click="insert('**')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-bold"/></button>
-			<button class="_button" @click="insert('<small></small>')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-text-height"/></button>
-			<button class="_button" @click="insert('<center></center>')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-align-center"/></button>
-			<button class="_button" @click="insert(' search')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-search"/></button>
-			<button class="_button" @click="insert('```')" v-tooltip="$ts._mfmpad.quote"><i class="fas fa-code"/></button>
+			<button class="_button" @click="insert('**')" v-tooltip="$ts._mfm.bold"><i class="fas fa-bold"/></button>
+			<button class="_button" @click="insert('<small></small>')" v-tooltip="$ts._mfm.small"><i class="fas fa-text-height"/></button>
+			<button class="_button" @click="insert('<center></center>')" v-tooltip="$ts._mfm.center"><i class="fas fa-align-center"/></button>
+			<button class="_button" @click="insert(' search')" v-tooltip="$ts._mfm.search"><i class="fas fa-search"/></button>
+			<button class="_button" @click="insert('`')" v-tooltip="$ts._mfm.inlineCode"><i class="fas fa-code"/></button>
+			<button class="_button" @click="insert('```')" v-tooltip="$ts._mfm.blockCode"><i class="fas fa-file-code"/></button>
 		</div>
 		<input v-show="useBroadcast" ref="broadcastText" class="broadcastText" v-model="broadcastText" :placeholder="$ts.broadcastTextDescription" @keydown="onKeydown">
 		<XPostFormAttaches class="attaches" :files="files" @updated="updateFiles" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
