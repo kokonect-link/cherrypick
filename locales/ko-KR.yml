@@ -798,6 +798,8 @@ gachaFaces: "카오모지"
 gachaSettingDescription: "뽑기에서 출현시킬 카오모지를 줄바꿈으로 구분해서 설정해 주세요."
 input: "입력..."
 misskey: "Misskey"
+themeStoreError: "테마 스토어에 접속하지 못했어요."
+themeStoreError2: "대신, {link}를 이용해 주세요."
 
 _newNoteNotiBehavior:
   default: "기본"

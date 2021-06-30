@@ -130,6 +130,7 @@ export default defineComponent({
 				case 'email/address': return defineAsyncComponent(() => import('./email-address.vue'));
 				case 'email/notification': return defineAsyncComponent(() => import('./email-notification.vue'));
 				case 'theme': return defineAsyncComponent(() => import('./theme.vue'));
+				case 'theme/store': return defineAsyncComponent(() => import('./theme.store.vue'));
 				case 'theme/install': return defineAsyncComponent(() => import('./theme.install.vue'));
 				case 'theme/manage': return defineAsyncComponent(() => import('./theme.manage.vue'));
 				case 'sidebar': return defineAsyncComponent(() => import('./sidebar.vue'));

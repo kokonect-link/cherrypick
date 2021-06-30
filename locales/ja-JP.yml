@@ -798,6 +798,8 @@ gachaFaces: "顔文字"
 gachaSettingDescription: "顔文字ガチャで出現する顔文字を改行で区切って設定します。"
 input: "入力..."
 misskey: "ミスキー"
+themeStoreError: "Theme Storeに接続できませんでした。"
+themeStoreError2: "代わりに、{link}をお使いください。"
 
 _newNoteNotiBehavior:
   default: "デフォルト"

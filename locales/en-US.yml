@@ -798,6 +798,8 @@ gachaFaces: "Faces"
 gachaSettingDescription: "Customize kaomoji-gacha items (separated by line breaks)"
 input: "Input..."
 misskey: "Misskey"
+themeStoreError: "Could not connect to Theme Store."
+themeStoreError2: "Please use {link} instead."
 _newNoteNotiBehavior:
   default: "Default"
   header: "Show in header"
