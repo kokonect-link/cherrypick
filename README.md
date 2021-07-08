@@ -11,6 +11,7 @@
 [![Dependencies](https://img.shields.io/david/kokonect-link/cherrypick.svg?style=for-the-badge&logo=npm)](https://david-dm.org/kokonect-link/cherrypick)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&logo=github)](http://makeapullrequest.com)
 [![Awesome Humane Tech](https://raw.githubusercontent.com/humanetech-community/awesome-humane-tech/main/humane-tech-badge.svg?sanitize=true)](https://github.com/humanetech-community/awesome-humane-tech)
+[![CherryPick Discord Invite](https://img.shields.io/discord/862737022192189440?color=%237289DA&logo=discord&logoColor=white)](https://discord.gg/V8qghB28Aj)
 
 **A forever evolving, interplanetary microblogging platform.**
 
