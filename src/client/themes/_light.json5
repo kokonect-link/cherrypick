@@ -66,7 +66,7 @@
 		error: '#ec4137',
 		warn: '#ecb637',
 		htmlThemeColor: '@bg',
-		cherry: 'ffa9c3',
+		cherry: '#ffa9c3',
 		pick: '#95e3e8',
 		pickLighten: ':lighten<10<@pick',
 		X2: ':darken<2<@panel',
