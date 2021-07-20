@@ -26,7 +26,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import Progress from '@client/scripts/loading';
-import parseAcct from '@/misc/acct/parse';
+import { parseAcct } from '@/misc/acct';
 import XNotes from '@client/components/notes.vue';
 import XNote from '@client/components/note.vue';
 import XUser from '@client/components/user.vue';

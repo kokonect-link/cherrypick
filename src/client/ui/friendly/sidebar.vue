@@ -89,7 +89,7 @@ import { defineComponent } from 'vue';
 import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
-import { sidebarDef } from '@client/friendly/sidebar-mobile';
+import { menuDef } from '@client/friendly/menu-mobile';
 import { getAccounts, addAccount, login, signout } from '@client/account';
 
 export default defineComponent({
@@ -107,7 +107,7 @@ export default defineComponent({
 			showing: false,
 			accounts: [],
 			connection: null,
-			menuDef: sidebarDef,
+			menuDef: menuDef,
 			iconOnly: false,
 			hidden: this.defaultHidden,
 			isAccountMenuMode: false,
@@ -135,7 +135,7 @@ export default defineComponent({
 			this.showing = false;
 		},
 
-		'$store.reactiveState.sidebarDisplay.value'() {
+		'$store.reactiveState.menuDisplay.value'() {
 			this.calcViewState();
 		},
 
@@ -163,7 +163,7 @@ export default defineComponent({
 
 	methods: {
 		calcViewState() {
-			this.iconOnly = (window.innerWidth <= 1279) || (this.$store.state.sidebarDisplay === 'icon');
+			this.iconOnly = (window.innerWidth <= 1279) || (this.$store.state.menuDisplay === 'sideIcon');
 			if (!this.defaultHidden) {
 				this.hidden = (window.innerWidth <= 650);
 			}

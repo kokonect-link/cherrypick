@@ -1,9 +1,16 @@
 <template>
 <div class="mk-app" :class="{ wallpaper, isMobile }">
-	<div class="columns" :class="{ fullView }">
-		<div class="sidebar" ref="sidebar" v-if="!isMobile">
-			<XSidebar/>
-		</div>
+	<XHeaderMenu v-if="showMenuOnTop"/>
+
+	<div class="columns" :class="{ fullView, withGlobalHeader: showMenuOnTop }">
+		<template v-if="!isMobile">
+			<div class="sidebar" v-if="!showMenuOnTop">
+				<XSidebar/>
+			</div>
+			<div class="widgets left" ref="widgetsLeft" v-else>
+				<XWidgets @mounted="attachSticky('widgetsLeft')" :place="'left'"/>
+			</div>
+		</template>
 
 		<main class="main _panel" @contextmenu.stop="onContextmenu">
 			<header class="header">
@@ -20,8 +27,8 @@
 			</div>
 		</main>
 
-		<div v-if="isDesktop" class="widgets" ref="widgets">
-			<XWidgets @mounted="attachSticky"/>
+		<div v-if="isDesktop" class="widgets right" ref="widgetsRight">
+			<XWidgets @mounted="attachSticky('widgetsRight')" :place="null"/>
 		</div>
 	</div>
 
@@ -64,7 +71,7 @@ import XDrawerSidebar from './sidebar.vue';
 import XCommon from '../_common_/common.vue';
 import XHeader from './header.vue';
 import * as os from '@client/os';
-import { sidebarDef } from '@client/sidebar';
+import { menuDef } from '@client/menu';
 import * as symbols from '@client/symbols';
 import XTimeline from '@client/components/timeline.vue';
 import { eventBus } from '@client/friendly/eventBus';
@@ -82,13 +89,14 @@ export default defineComponent({
 		XDrawerSidebar,
 		XHeader,
 		XTimeline,
+		XHeaderMenu: defineAsyncComponent(() => import('../default.header.vue')),
 		XWidgets: defineAsyncComponent(() => import('./friendly.widgets.vue'))
 	},
 
 	data() {
 		return {
 			pageInfo: null,
-			menuDef: sidebarDef,
+			menuDef: menuDef,
 			navHidden: false,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
@@ -127,6 +135,10 @@ export default defineComponent({
 
 		fabIcon() {
 			return this.pageInfo && this.pageInfo.action ? this.pageInfo.action.icon : 'fas fa-pencil-alt';
+		},
+
+		showMenuOnTop(): boolean {
+			return !this.isMobile && this.$store.state.menuDisplay === 'top';
 		},
 	},
 
@@ -169,8 +181,8 @@ export default defineComponent({
 			}
 		},
 
-		attachSticky() {
-			const sticky = new StickySidebar(this.$refs.widgets, 16);
+		attachSticky(ref) {
+			const sticky = new StickySidebar(this.$refs[ref], this.$store.state.menuDisplay === 'top' ? 0 : 16, this.$store.state.menuDisplay === 'top' ? 60 : 0); // TODO: ヘッダーの高さを60pxと決め打ちしているのを直す
 			window.addEventListener('scroll', () => {
 				sticky.calc(window.scrollY);
 			}, { passive: true });
@@ -343,18 +355,17 @@ export default defineComponent({
 			> .header {
 				position: sticky;
 				z-index: 1000;
-				top: 0;
+				top: var(--globalHeaderHeight, 0px);
 				height: $header-height;
 				line-height: $header-height;
 				-webkit-backdrop-filter: blur(32px);
 				backdrop-filter: blur(32px);
 				background-color: var(--header);
-				// border-bottom: solid 0.5px var(--divider);
 			}
 
 			> .content {
 				background: var(--bg);
-				--stickyTop: #{$header-height};
+				--stickyTop: calc(var(--globalHeaderHeight, 0px) + #{$header-height});
 
 				&._flat_friendly_ {
 					margin: 0 8px;
@@ -379,10 +390,29 @@ export default defineComponent({
 			@media (max-width: $widgets-hide-threshold) {
 				display: none;
 			}
+
+			&.left {
+				margin-right: 16px;
+			}
 		}
 
 		> .sidebar {
 			margin-top: 16px;
+		}
+
+		&.withGlobalHeader {
+			--globalHeaderHeight: 60px; // TODO: 60pxと決め打ちしているのを直す
+
+			> .main {
+				margin-top: 1px;
+				border-radius: var(--radius);
+				box-shadow: 0 0 0 1px var(--divider);
+			}
+
+			> .widgets {
+				--stickyTop: var(--globalHeaderHeight);
+				margin-top: 1px;
+			}
 		}
 
 		@media (max-width: 850px) {

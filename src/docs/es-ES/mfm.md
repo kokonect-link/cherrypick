@@ -1,3 +1,2 @@
 # MFM
-MFMは、Misskey Flavored Markdownの略で、CherryPickの様々な場所で使用できる専用のマークアップ言語です。
-MFMで使用可能な構文は[MFMチートシート](/mfm-cheat-sheet)で確認できます。
+MFM es la abreviación de CheryPick Flavored Markdown. Es un lenguaje Markdown exclusivo que puede usarse en varios lugares de CherryPick. Para ver la sintaxis permitida de MFM, consulte su [lista de códigos](/mfm-cheat-sheet)

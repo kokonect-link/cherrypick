@@ -44,6 +44,7 @@
 		<FormSwitch v-model:value="showGapBetweenNotesInTimeline">{{ $ts.showGapBetweenNotesInTimeline }}</FormSwitch>
 		<FormSwitch v-model:value="loadRawImages">{{ $ts.loadRawImages }}</FormSwitch>
 		<FormSwitch v-model:value="disableShowingAnimatedImages">{{ $ts.disableShowingAnimatedImages }}</FormSwitch>
+		<FormSwitch v-model:value="squareAvatars">{{ $ts.squareAvatars }}</FormSwitch>
 		<FormSwitch v-model:value="useSystemFont">{{ $ts.useSystemFont }}</FormSwitch>
 		<FormSwitch v-model:value="useOsNativeEmojis">{{ $ts.useOsNativeEmojis }}
 			<div><Mfm text="🍮🍦🍭🍩🍰🍫🍬🥞🍪" :key="useOsNativeEmojis"/></div>
@@ -94,6 +95,8 @@
 	</FormSelect>
 
 	<FormLink to="/settings/deck">{{ $ts.deck }}</FormLink>
+
+	<FormLink to="/settings/custom-css"><template #icon><i class="fas fa-code"></i></template>{{ $ts.customCss }}</FormLink>
 </FormBase>
 </template>
 
@@ -108,7 +111,8 @@ import FormLink from '@client/components/form/link.vue';
 import FormButton from '@client/components/form/button.vue';
 import MkLink from '@client/components/link.vue';
 import { langs } from '@client/config';
-import { defaultStore, ColdDeviceStorage } from '@client/store';
+import { defaultStore } from '@client/store';
+import { ColdDeviceStorage } from '@client/store';
 import * as os from '@client/os';
 import { unisonReload } from '@client/scripts/unison-reload';
 import * as symbols from '@client/symbols';
@@ -162,6 +166,7 @@ export default defineComponent({
 		showAds: defaultStore.makeGetterSetter('showAds'),
 		newNoteNotiBehavior: defaultStore.makeGetterSetter('newNoteNotiBehavior'),
 		confirmBeforePost: defaultStore.makeGetterSetter('confirmBeforePost'),
+		squareAvatars: defaultStore.makeGetterSetter('squareAvatars'),
 	},
 
 	watch: {
@@ -190,6 +195,10 @@ export default defineComponent({
 		},
 
 		enableInfiniteScroll() {
+			this.reloadAsk();
+		},
+
+		squareAvatars() {
 			this.reloadAsk();
 		},
 

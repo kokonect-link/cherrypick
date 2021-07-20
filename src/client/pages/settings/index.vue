@@ -33,7 +33,7 @@
 				<FormLink :active="page === 'general'" replace to="/settings/general"><template #icon><i class="fas fa-cogs"></i></template>{{ $ts.general }}</FormLink>
 				<FormLink v-if="isFriendlyUI" :active="page === 'timeline'" replace to="/settings/timeline"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.timeline }}</FormLink>
 				<FormLink :active="page === 'theme'" replace to="/settings/theme"><template #icon><i class="fas fa-palette"></i></template>{{ $ts.theme }}</FormLink>
-				<FormLink :active="page === 'sidebar'" replace to="/settings/sidebar"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.sidebar }}</FormLink>
+				<FormLink :active="page === 'menu'" replace to="/settings/menu"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.menu }}</FormLink>
 				<FormLink :active="page === 'sounds'" replace to="/settings/sounds"><template #icon><i class="fas fa-music"></i></template>{{ $ts.sounds }}</FormLink>
 				<FormLink :active="page === 'plugin'" replace to="/settings/plugin"><template #icon><i class="fas fa-plug"></i></template>{{ $ts.plugins }}</FormLink>
 				<FormLink :active="page === 'gacha'" replace to="/settings/gacha"><template #icon><i class="fas fa-fish"></i></template>{{ $ts.gacha }}</FormLink>
@@ -133,8 +133,9 @@ export default defineComponent({
 				case 'theme/store': return defineAsyncComponent(() => import('./theme.store.vue'));
 				case 'theme/install': return defineAsyncComponent(() => import('./theme.install.vue'));
 				case 'theme/manage': return defineAsyncComponent(() => import('./theme.manage.vue'));
-				case 'sidebar': return defineAsyncComponent(() => import('./sidebar.vue'));
+				case 'menu': return defineAsyncComponent(() => import('./menu.vue'));
 				case 'sounds': return defineAsyncComponent(() => import('./sounds.vue'));
+				case 'custom-css': return defineAsyncComponent(() => import('./custom-css.vue'));
 				case 'deck': return defineAsyncComponent(() => import('./deck.vue'));
 				case 'plugin': return defineAsyncComponent(() => import('./plugin.vue'));
 				case 'plugin/install': return defineAsyncComponent(() => import('./plugin.install.vue'));

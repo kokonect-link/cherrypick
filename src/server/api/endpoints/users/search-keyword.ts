@@ -5,7 +5,7 @@ import { Brackets } from 'typeorm';
 import { ID } from '@/misc/cafy-id';
 import { makePaginationQuery } from '../../common/make-pagination-query';
 import { generateMutedUserQueryForUsers } from '../../common/generate-muted-user-query';
-import parseAcct from '../../../../misc/acct/parse';
+import { parseAcct } from '@/misc/acct';
 
 export const meta = {
 	tags: ['users'],

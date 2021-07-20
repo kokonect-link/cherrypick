@@ -532,7 +532,7 @@ removeAllFollowing: "모든 팔로잉 해제"
 removeAllFollowingDescription: "{host}(으)로부터 모든 팔로잉을 해제할 거예요. 해당 인스턴스가 더 이상 존재하지 않게 된 경우에만 실행해 주세요."
 userSuspended: "이 계정은 정지된 상태에요."
 userSilenced: "이 계정은 사일런스된 상태에요."
-sidebar: "사이드바"
+menu: "메뉴"
 divider: "구분선"
 addItem: "항목 추가"
 rooms: "방"
@@ -737,7 +737,6 @@ hideOnlineStatusDescription: "온라인 상태를 숨기면, 검색과 같은 �
 online: "온라인"
 active: "최근에 활동함"
 offline: "오프라인"
-menu: "메뉴"
 notRecommended: "추천하지 않음"
 botProtection: "봇 방어"
 instanceBlocking: "인스턴스 차단"
@@ -800,6 +799,10 @@ input: "입력..."
 misskey: "Misskey"
 themeStoreError: "테마 스토어에 접속하지 못했어요."
 themeStoreError2: "대신, {link}를 이용해 주세요."
+customCss: "CSS 사용자화"
+customCssWarn: "이 설정은 기능을 알고 있는 경우에만 사용해야 해요. 잘못된 값을 입력하면 클라이언트가 정상적으로 작동하지 않을 수 있어요."
+global: "글로벌"
+squareAvatars: "프로필 아이콘을 사각형으로 표시"
 
 _newNoteNotiBehavior:
   default: "기본"
@@ -821,7 +824,7 @@ _gallery:
   liked: "좋아요 한 갤러리"
   like: "좋아요!"
   unlike: "좋아요 취소"
-  
+
 _email:
   _follow:
     title: "새로운 팔로워가 있어요!"
@@ -1014,9 +1017,10 @@ _channel:
   usersCount: "{n}명 참여 중"
   notesCount: "{n}노트"
 
-_sidebar:
-  full: "전체"
-  icon: "아이콘"
+_menuDisplay:
+  sideFull: "가로"
+  sideIcon: "가로(아이콘)"
+  top: "상단"
   hide: "숨기기"
 
 _wordMute:
@@ -1167,7 +1171,7 @@ _2fa:
   step3: "앱에 표시된 토큰을 입력하면 완료돼요!"
   step4: "다음 로그인부터는 토큰을 입력해야 로그인할 수 있어요."
   securityKeyInfo: "FIDO2를 지원하는 하드웨어 보안 키 혹은 디바이스의 지문 인식이나 화면 잠금 PIN을 이용해서 로그인하도록 설정할 수 있어요."
-  
+
 _permissions:
   "read:account": "계정의 정보를 봅니다"
   "write:account": "계정의 정보를 변경합니다"
@@ -1746,7 +1750,7 @@ _notification:
     followRequestAccepted: "팔로우 요청이 승인되었을 때"
     groupInvited: "그룹에 초대되었을 때"
     app: "연동된 앱을 통한 알림"
-    
+
 _deck:
   alwaysShowMainColumn: "메인 칼럼 항상 표시"
   columnAlign: "칼럼 정렬"

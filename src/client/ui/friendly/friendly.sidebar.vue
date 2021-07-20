@@ -92,7 +92,7 @@ import { defineComponent } from 'vue';
 import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
-import { sidebarDef } from '@client/sidebar';
+import { menuDef } from '@client/menu';
 import { getAccounts, addAccount, login, signout } from '@client/account';
 import MkButton from '@client/components/ui/button.vue';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
@@ -109,7 +109,7 @@ export default defineComponent({
 			host: host,
 			accounts: [],
 			connection: null,
-			menuDef: sidebarDef,
+			menuDef: menuDef,
 			iconOnly: false,
 			settingsWindowed: false,
 			isAccountMenuMode: false,
@@ -138,7 +138,7 @@ export default defineComponent({
 			this.showing = false;
 		},
 
-		'$store.reactiveState.sidebarDisplay.value'() {
+		'$store.reactiveState.menuDisplay.value'() {
 			this.calcViewState();
 		},
 
@@ -166,7 +166,7 @@ export default defineComponent({
 
 	methods: {
 		calcViewState() {
-			this.iconOnly = (window.innerWidth <= 1400) || (this.$store.state.sidebarDisplay === 'icon');
+			this.iconOnly = (window.innerWidth <= 1400) || (this.$store.state.menuDisplay === 'sideIcon');
 			this.settingsWindowed = (window.innerWidth > 1400);
 		},
 
