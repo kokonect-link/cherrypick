@@ -862,6 +862,7 @@ _aboutMisskey:
     about: "이 Misskey는 NoriDev에 의해 커스텀 되었어요!"
     donate: "CherryPick에 기부하기"
     relayServer: "릴레이 서버"
+    community: "커뮤니티"
 
 _nsfw:
   respect: "열람 주의로 설정된 미디어 숨기기"

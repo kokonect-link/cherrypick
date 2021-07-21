@@ -25,6 +25,11 @@
 				{{ $ts._aboutMisskey.source }}
 				<template #suffix>GitHub</template>
 			</FormLink>
+			<FormLink to="https://discord.gg/V8qghB28Aj" external>
+				<template #icon><i class="fab fa-discord"></i></template>
+				{{ $ts._aboutMisskey._cherrypick.community }}
+				<template #suffix>Discord</template>
+			</FormLink>
 			<FormLink to="https://relay.kokonect.link" external>
 				<template #icon><i class="fas fa-network-wired"></i></template>
 				{{ $ts._aboutMisskey._cherrypick.relayServer }}
