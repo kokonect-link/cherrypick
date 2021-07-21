@@ -6,14 +6,14 @@
 				<p v-text="$ts.themeStoreError"/>
 				<I18n :src="$ts.themeStoreError2" tag="p">
 					<template #link>
-						<MkLink url="https://assets.msky.cafe">Misskey Assets Store</MkLink>
+						<MkLink url="https://assets.misskey.io">Misskey Assets Store</MkLink>
 					</template>
 				</I18n>
 			</div>
 			<MkLoading v-else-if="list === null"/>
 			<template v-else>
 				<h1 style="text-align: center">CherryPick Theme Store</h1>
-				<small>Powered by <MkLink url="https://assets.msky.cafe">Misskey Assets Store</MkLink></small>
+				<small>Powered by <MkLink url="https://assets.misskey.io">MiAS</MkLink></small>
 				<div class="themes">
 					<div v-for="item in list" class="theme _card" :key="item.id" :style="genStyleFrom(item.theme)">
 						<div class="_content content">
