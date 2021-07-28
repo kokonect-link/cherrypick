@@ -4,6 +4,7 @@
 		<div class="header">
 			<button class="_button" v-if="withOkButton" @click="$emit('close')"><i class="fas fa-times"></i></button>
 			<span class="title">
+				<i class="fas fa-broadcast-tower"/>
 				<slot name="header"></slot>
 			</span>
 			<button class="_button" v-if="!withOkButton" @click="$emit('close')"><i class="fas fa-times"></i></button>
@@ -131,12 +132,16 @@ $height-narrow: 50px;
 		> .title {
 			flex: 1;
 			line-height: $height;
-			padding-left: 32px;
+			padding-left: 24px;
 			font-weight: bold;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
 			pointer-events: none;
+
+			i {
+				margin-right: 10px;
+			}
 
 			@media (max-width: 500px) {
 				line-height: $height-narrow;

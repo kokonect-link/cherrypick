@@ -5,7 +5,8 @@
 	:with-ok-button="false"
 	:canClose="true"
 	@close="$refs.window.close()"
-	@closed="$emit('closed')">
+	@closed="$emit('closed')"
+>
 	<template #header>{{ $ts.announcements }}</template>
 	<div class="vnue729s">
 		<div class="title">{{ currentAnnouncement.title }}</div>
