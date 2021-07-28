@@ -25,8 +25,12 @@
 			<MkA class="item" active-class="active" to="/settings" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime v-tooltip="$ts.settings">
 				<i class="fas fa-cog fa-fw"></i>
 			</MkA>
-			<button class="item _button account" @click="openAccountMenu" v-click-anime>
-				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
+			<button class="item _button account" @click="openProfile" v-click-anime>
+				<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+			</button>
+			<button class="_button toggler" @click="openAccountMenu">
+				<i v-if="isAccountMenuMode" class="fas fa-chevron-up"/>
+				<i v-else class="fas fa-chevron-down"/>
 			</button>
 			<div class="post" @click="post">
 				<MkButton class="button" primary full>
@@ -59,6 +63,7 @@ export default defineComponent({
 			connection: null,
 			menuDef: menuDef,
 			settingsWindowed: false,
+			isAccountMenuMode: false,
 		};
 	},
 
@@ -100,7 +105,12 @@ export default defineComponent({
 			search();
 		},
 
+		openProfile() {
+			this.$router.push({ path: `/@${ this.$i.username }` })
+		},
+
 		async openAccountMenu(ev) {
+			this.isAccountMenuMode = !this.isAccountMenuMode;
 			const storedAccounts = getAccounts().filter(x => x.id !== this.$i.id);
 			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
 
@@ -258,11 +268,18 @@ export default defineComponent({
 				display: inline-flex;
 				align-items: center;
 				vertical-align: top;
-				margin-right: 8px;
 
-				> .acct {
-					margin-left: 8px;
+				> .name {
+					margin-left: 10px;
+					font-weight: bold;
 				}
+			}
+
+			> .toggler {
+				position: relative;
+				right: 5px;
+				width: 36px;
+				height: 36px;
 			}
 		}
 
