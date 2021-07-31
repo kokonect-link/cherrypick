@@ -10,6 +10,7 @@
 			<span class="separator" v-if="folder != null"><i class="fas fa-angle-right"></i></span>
 			<span class="folder current" v-if="folder != null">{{ folder.name }}</span>
 		</div>
+		<button @click="showMenu" class="menu _button"><i class="fas fa-ellipsis-h"></i></button>
 	</nav>
 	<div class="main" :class="{ uploading: uploadings.length > 0, fetching }"
 		ref="main"
@@ -627,38 +628,12 @@ export default defineComponent({
 			}];
 		},
 
-		onContextmenuMobile() {
-			os.modalMenuFloat([{
-				text: this.$ts.addFile,
-				type: 'label'
-			}, {
-				text: this.$ts.upload,
-				icon: 'fas fa-upload',
-				action: () => { this.selectLocalFile(); }
-			}, {
-				text: this.$ts.fromUrl,
-				icon: 'fas fa-link',
-				action: () => { this.urlUpload(); }
-			}, null, {
-				text: this.folder ? this.folder.name : this.$ts.drive,
-				type: 'label'
-			}, this.folder ? {
-				text: this.$ts.renameFolder,
-				icon: 'fas fa-i-cursor',
-				action: () => { this.renameFolder(this.folder); }
-			} : undefined, this.folder ? {
-				text: this.$ts.deleteFolder,
-				icon: 'fas fa-trash-alt',
-				action: () => { this.deleteFolder(this.folder); }
-			} : undefined, {
-				text: this.$ts.createFolder,
-				icon: 'fas fa-folder-plus',
-				action: () => { this.createFolder(); }
-			}]);
+		showMenu(ev) {
+			os.modalMenu(this.getMenu(), ev.currentTarget || ev.target);
 		},
 
-		onContextmenu(e) {
-			os.contextMenu(this.getMenu(), e);
+		onContextmenu(ev) {
+			os.contextMenu(this.getMenu(), ev);
 		},
 	}
 });
@@ -671,7 +646,7 @@ export default defineComponent({
 	height: 100%;
 
 	> nav {
-		display: block;
+		display: flex;
 		z-index: 2;
 		width: 100%;
 		padding: 0 8px;
@@ -725,6 +700,10 @@ export default defineComponent({
 					}
 				}
 			}
+		}
+
+		> .menu {
+			margin-left: auto;
 		}
 	}
 
