@@ -47,6 +47,24 @@
 		<FormSwitch v-model:value="enableGlobalTimeline">{{ $ts.enableGlobalTimeline }}</FormSwitch>
 		<FormInfo>{{ $ts.disablingTimelinesInfo }}</FormInfo>
 
+		<div class="_formItem _formNoConcat" v-sticky-container>
+			<div class="_formLabel">{{ $ts.emojiSuggestionLimitation }}</div>
+			<div class="main">
+				<FormSwitch v-model:value="emojiLimit">{{ $ts.limit }}</FormSwitch>
+				<FormInput v-if="emojiLimit" v-model:value="emojiLimitValue" type="number">
+					<span>{{ $ts.maxSuggestion }}</span>
+					<template #desc>{{ $ts.limitDescription }}</template>
+				</FormInput>
+				<!--
+				<FormSwitch v-model:value="emojiLimitPremium">{{ $ts.limitPremium }}</FormSwitch>
+				<FormInput v-if="emojiLimitPremium" v-model:value="emojiLimitValuePremium" type="number">
+					<span>{{ $ts.maxSuggestion }}</span>
+					<template #desc>{{ $ts.limitDescription }}</template>
+				</FormInput>
+				-->
+			</div>
+		</div>
+
 		<FormButton @click="save" primary><i class="fas fa-save"></i> {{ $ts.save }}</FormButton>
 	</FormSuspense>
 </FormBase>
@@ -97,6 +115,10 @@ export default defineComponent({
 			maxNoteTextLength: 0,
 			enableLocalTimeline: false,
 			enableGlobalTimeline: false,
+			emojiLimit: true,
+			emojiLimitPremium: false,
+			emojiLimitValue: 10,
+			emojiLimitValuePremium: 10,
 		}
 	},
 
@@ -118,6 +140,10 @@ export default defineComponent({
 			this.maxNoteTextLength = meta.maxNoteTextLength;
 			this.enableLocalTimeline = !meta.disableLocalTimeline;
 			this.enableGlobalTimeline = !meta.disableGlobalTimeline;
+			this.emojiLimit = meta.emojiSuggestionLimitation >= 0;
+			this.emojiLimitPremium = meta.emojiSuggestionLimitationPremium >= 0;
+			if (this.emojiLimit) this.emojiLimitValue = meta.emojiSuggestionLimitation;
+			if (this.emojiLimitPremium) this.emojiLimitValuePremium = meta.emojiSuggestionLimitationPremium;
 		},
 
 		save() {
@@ -133,6 +159,8 @@ export default defineComponent({
 				maxNoteTextLength: this.maxNoteTextLength,
 				disableLocalTimeline: !this.enableLocalTimeline,
 				disableGlobalTimeline: !this.enableGlobalTimeline,
+				emojiSuggestionLimitation: this.emojiLimit ? this.emojiLimitValue : -1,
+				emojiSuggestionLimitationPremium: this.emojiLimitPremium ? this.emojiLimitValuePremium : -1,
 			}).then(() => {
 				fetchInstance();
 			});

@@ -62,6 +62,8 @@ import { ChannelNotePining } from './entities/channel-note-pining';
 import { RegistryItem } from './entities/registry-item';
 import { Ad } from './entities/ad';
 import { PasswordResetRequest } from './entities/password-reset-request';
+import { EmojiRepository } from './repositories/emoji';
+import { EmojiRequestRepository } from './repositories/emoji-request';
 
 export const Announcements = getRepository(Announcement);
 export const AnnouncementReads = getRepository(AnnouncementRead);
@@ -126,3 +128,4 @@ export const ChannelNotePinings = getRepository(ChannelNotePining);
 export const RegistryItems = getRepository(RegistryItem);
 export const Ads = getRepository(Ad);
 export const PasswordResetRequests = getRepository(PasswordResetRequest);
+export const EmojiRequests = getCustomRepository(EmojiRequestRepository);

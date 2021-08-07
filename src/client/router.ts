@@ -65,6 +65,7 @@ export const router = createRouter({
 		{ path: '/my/antennas', name: 'antennas', component: page('my-antennas/index') },
 		{ path: '/my/clips', name: 'clips', component: page('my-clips/index') },
 		{ path: '/scratchpad', component: page('scratchpad') },
+		{ path: '/emoji-suggestion', component: page('emoji-suggestion') },
 		{ path: '/instance/:page(.*)?', component: page('instance/index'), props: route => ({ initialPage: route.params.page || null }) },
 		{ path: '/instance', component: page('instance/index') },
 		{ path: '/instance/ads', name: 'ads', component: page('instance/ads') },

@@ -179,4 +179,9 @@ export const menuDef = {
 			}], ev.currentTarget || ev.target);
 		},
 	},
+	emojiSuggestion: {
+		title: 'emojiSuggestion',
+		icon: 'fas fa-laugh',
+		to: '/emoji-suggestion',
+	},
 };

@@ -2,6 +2,7 @@
 <div class="ogwlenmc">
 	<MkTab v-model:value="tab">
 		<option value="local">{{ $ts.local }}</option>
+		<option value="suggestion">{{ $ts.emojiSuggestion }}</option>
 		<option value="remote">{{ $ts.remote }}</option>
 	</MkTab>
 
@@ -19,6 +20,41 @@
 							<div class="info">{{ emoji.category }}</div>
 						</div>
 					</button>
+				</div>
+			</template>
+		</MkPagination>
+	</div>
+
+	<div class="suggestions" v-else-if="tab === 'suggestion'">
+		<MkSwitch v-model:value="pendingOnly">{{ $ts.pendingOnly }}</MkSwitch>
+		<MkPagination :pagination="suggestionPagination" class="emojis" ref="suggestions">
+			<template #empty><span>{{ $ts.noSuggestions }}</span></template>
+			<template #default="{items}">
+				<div class="emoji" v-for="req in items" :key="req.id">
+					<img :src="req.file.url" class="img" :alt="req.name"/>
+					<div class="body">
+						<div>
+							<span class="name">{{ req.name }}</span>
+							<span class="alias" v-for="a in req.aliases" :key="a" v-text="a"/>
+						</div>
+						<div class="proposer">
+							{{ $ts.proposer }}:
+							<MkA :to="userPage(req.proposer)"><MkAcct :user="req.proposer"/></MkA>
+						</div>
+						<Mfm class="description" :text="req.description"/>
+						<span class="state" v-if="req.state !== 'pending'">
+								<i :class="req.state === 'accepted' ? 'fas fa-check' : 'fas fa-times'"/>
+								{{ $t(req.state) }}
+							</span>
+						<MkButton inline primary v-if="req.state !== 'accepted'" @click="accept(req.id)">
+							<i class="fas fa-check"/>
+							{{ $ts.accept }}
+						</MkButton>
+						<MkButton inline v-if="req.state === 'pending'" @click="reject(req.id)">
+							<i class="fas fa-times"/>
+							{{ $ts.reject }}
+						</MkButton>
+					</div>
 				</div>
 			</template>
 		</MkPagination>
@@ -49,17 +85,20 @@
 import { computed, defineComponent } from 'vue';
 import MkButton from '@client/components/ui/button.vue';
 import MkInput from '@client/components/ui/input.vue';
+import MkSwitch from '@client/components/ui/switch.vue';
 import MkPagination from '@client/components/ui/pagination.vue';
 import MkTab from '@client/components/tab.vue';
 import { selectFile } from '@client/scripts/select-file';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
+import { userPage } from '@client/filters/user';
 
 export default defineComponent({
 	components: {
 		MkTab,
 		MkButton,
 		MkInput,
+		MkSwitch,
 		MkPagination,
 	},
 
@@ -92,6 +131,14 @@ export default defineComponent({
 				params: computed(() => ({
 					query: (this.queryRemote && this.queryRemote !== '') ? this.queryRemote : null,
 					host: (this.host && this.host !== '') ? this.host : null
+				}))
+			},
+			pendingOnly: true,
+			suggestionPagination: {
+				endpoint: 'suggestions/emojis/list',
+				limit: 10,
+				params: computed(() => ({
+					includingStates: this.pendingOnly ? [ 'pending' ] : [],
 				}))
 			},
 		}
@@ -146,7 +193,27 @@ export default defineComponent({
 				icon: 'fas fa-plus',
 				action: () => { this.im(emoji) }
 			}], ev.currentTarget || ev.target);
-		}
+		},
+
+		async accept(suggestionId: string) {
+			await os.api('admin/suggestions/emojis/accept', { suggestionId });
+			this.$refs.suggestions.reload();
+		},
+
+		async reject(suggestionId: string) {
+			const { canceled, result: comment } = await os.dialog({
+				title: this.$ts.writeRejectReason,
+				input: true,
+				autoComplete: true
+			});
+
+			if (canceled) return;
+
+			await os.api('admin/suggestions/emojis/reject', { suggestionId, comment });
+			this.$refs.suggestions.reload();
+		},
+
+		userPage,
 	}
 });
 </script>
@@ -189,6 +256,55 @@ export default defineComponent({
 						opacity: 0.5;
 						text-overflow: ellipsis;
 						overflow: hidden;
+					}
+				}
+			}
+		}
+	}
+
+	> .suggestions {
+		> .emojis {
+			display: flex;
+			flex-direction: column;
+
+			> .emoji {
+				display: flex;
+				align-items: center;
+
+				> .img {
+					width: 50px;
+					height: 50px;
+				}
+
+				> .body {
+					padding: 8px;
+
+					div {
+						> .name {
+							font-weight: bold;
+						}
+
+						> .alias {
+							opacity: 0.5;
+							margin: 0 0.25em;
+						}
+					}
+
+					> .proposer {
+						opacity: 0.5;
+					}
+
+					> .description {
+						display: block;
+						margin: 8px;
+						padding: 6px 0 6px 12px;
+						color: var(--fg);
+						border-left: solid 3px var(--fg);
+						opacity: 0.7;
+					}
+
+					> .state {
+						opacity: 0.5;
 					}
 				}
 			}
