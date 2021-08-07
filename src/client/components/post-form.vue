@@ -13,6 +13,7 @@
 			<button class="_button" @click="link" v-tooltip="$ts._mfmpad.link"><i class="fas fa-link"/></button>
 			<button class="_button function" @click="insertFunction" v-tooltip="$ts._mfmpad.functions"><code style="font-weight: bold">[]</code></button>
 			<button class="_button" @click="insertMention" v-tooltip="$ts.mention"><i class="fas fa-at"></i></button>
+			<button class="_button" @click="withHashtags = !withHashtags" v-tooltip="$ts.hashtags"><i class="fas fa-hashtag"></i></button>
 			<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
 			<div class="divider"></div>
 			<button class="_button help" v-tooltip="$ts.help" @click="help"><i class="fas fa-question-circle"/></button>
@@ -42,6 +43,7 @@
 		<MkInfo warn v-if="hasNotSpecifiedMentions" class="hasNotSpecifiedMentions">{{ $ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ $ts.add }}</button></MkInfo>
 		<input v-show="useCw" ref="cw" class="cw" v-model="cw" :placeholder="$ts.annotation" @keydown="onKeydown">
 		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+		<input v-show="withHashtags" ref="hashtags" class="hashtags" v-model="hashtags" :placeholder="$ts.hashtags" list="hashtags">
 		<div class="text-func">
 			<button class="_button" @click="insert('**')" v-tooltip="$ts._mfm.bold"><i class="fas fa-bold"/></button>
 			<button class="_button" @click="insert('<small></small>')" v-tooltip="$ts._mfm.small"><i class="fas fa-text-height"/></button>
@@ -66,6 +68,9 @@
 			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
 			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk">{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</footer>
+		<datalist id="hashtags">
+			<option v-for="hashtag in recentHashtags" :value="hashtag" :key="hashtag"/>
+		</datalist>
 		<details v-if="text" class="note-preview" :open="isPreviewOpened" @toggle="isPreviewOpened = $event.target.open">
 			<summary>{{ $ts.preview }}</summary>
 			<XNotePreview class="note" :note="previewNote"/>
@@ -96,7 +101,7 @@ import { isMobile } from '@client/scripts/is-mobile';
 import { throttle } from 'throttle-debounce';
 import MkInfo from '@client/components/ui/info.vue';
 import MkSwitch from '@client/components/ui/switch.vue';
-import {unisonReload} from "@client/scripts/unison-reload";
+import { defaultStore } from '@client/store';
 
 export default defineComponent({
 	components: {
@@ -248,6 +253,9 @@ export default defineComponent({
 			return this.$instance ? this.$instance.maxNoteTextLength : 1000;
 		},
 
+		withHashtags: defaultStore.makeGetterSetter('postFormWithHashtags'),
+		hashtags: defaultStore.makeGetterSetter('postFormHashtags'),
+
 		previewNote() {
 			return {
 				id: '',
@@ -365,6 +373,7 @@ export default defineComponent({
 		// TODO: detach when unmount
 		new Autocomplete(this.$refs.text, this, { model: 'text' });
 		new Autocomplete(this.$refs.cw, this, { model: 'cw' });
+		new Autocomplete(this.$refs.hashtags, this, { model: 'hashtags' });
 
 		this.$nextTick(() => {
 			// 書きかけの投稿を復元
@@ -692,6 +701,11 @@ export default defineComponent({
 				viaMobile: isMobile
 			};
 
+			if (this.withHashtags) {
+				const hashtags = this.hashtags.trim().split(' ').map(x => x.startsWith('#') ? x : '#' + x).join(' ');
+				data.text = data.text ? `${data.text} ${hashtags}` : hashtags;
+			}
+
 			// plugin
 			if (notePostInterruptors.length > 0) {
 				for (const interruptor of notePostInterruptors) {
@@ -705,8 +719,8 @@ export default defineComponent({
 				this.$nextTick(() => {
 					this.deleteDraft();
 					this.$emit('posted');
-					if (this.text && this.text != '') {
-						const hashtags = mfm.parse(this.text).filter(x => x.type === 'hashtag').map(x => x.props.hashtag);
+					if (data.text && data.text != '') {
+						const hashtags = mfm.parse(data.text).filter(x => x.type === 'hashtag').map(x => x.props.hashtag);
 						const history = JSON.parse(localStorage.getItem('hashtags') || '[]') as string[];
 						localStorage.setItem('hashtags', JSON.stringify(unique(hashtags.concat(history))));
 					}
@@ -970,6 +984,7 @@ export default defineComponent({
 		}
 
 		> .cw,
+		> .hashtags,
 		> .text,
 		> .broadcastText {
 			display: block;
@@ -1005,6 +1020,13 @@ export default defineComponent({
 			border-bottom: solid 1px var(--divider);
 		}
 
+		> .hashtags {
+			z-index: 1;
+			padding-top: 8px;
+			padding-bottom: 8px;
+			border-top: solid 0.5px var(--divider);
+		}
+
 		> .text {
 			max-width: 100%;
 			min-width: 100%;
@@ -1018,7 +1040,8 @@ export default defineComponent({
 		> .text-func {
 			display: flex;
 			position: relative;
-			padding: 0 16px;
+			padding: 8px 16px 0;
+			border-top: .5px solid var(--divider);
 
 			> button {
 				font-size: 14px;
@@ -1136,6 +1159,7 @@ export default defineComponent({
 			}
 
 			> .cw,
+			> .hashtags,
 			> .text {
 				padding: 0 16px;
 			}

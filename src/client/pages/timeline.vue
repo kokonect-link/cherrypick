@@ -1,8 +1,8 @@
 <template>
 <div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
-	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
-	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div v-if="!isFriendlyUI" class="_block" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs': !isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
+	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block _isolated"/>
+	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block _isolated" fixed/>
+	<div v-if="!isFriendlyUI" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs': !isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -21,7 +21,6 @@
 	<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
 	<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
-		class="_gap"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
 		:src="src"
 		:list="list ? list.id : null"
@@ -36,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineAsyncComponent, defineComponent } from 'vue';
+import { defineComponent, defineAsyncComponent, computed, ComputedRef } from 'vue';
 import Progress from '@client/scripts/loading';
 import XTimeline from '@client/components/timeline.vue';
 import XPostForm from '@client/components/post-form.vue';
@@ -141,6 +140,7 @@ export default defineComponent({
 				}
 				return {
 					title: this.$ts.timeline,
+					subtitle: this.src === 'local' ? this.$ts._timelines.local : this.src === 'social' ? this.$ts._timelines.social : this.src === 'global' ? this.$ts._timelines.global : this.$ts._timelines.home,
 					tabs,
 					icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
 					actions: [{
@@ -420,6 +420,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .cmuxhskf {
+	background: var(--bg);
+
 	> .new,
 		.new-friendly-legacy {
 		position: sticky;

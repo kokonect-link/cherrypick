@@ -26,8 +26,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import notePage from '../filters/note';
-import { userPage } from '../filters/user';
+import notePage from '@client/filters/note';
+import { userPage } from '@client/filters/user';
 import * as os from '@client/os';
 
 const DESKTOP_THRESHOLD = 1100;

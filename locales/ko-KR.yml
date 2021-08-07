@@ -829,6 +829,10 @@ suggestionRemaining: "신청 가능한 제안 수"
 suggestionEmojiWarnNameMalform: "이모지의 이름은 영어 소문자, 숫자, 밑줄 문자(_) 조합이어야 해요.(예: cat_cute1) 이모지의 이름이 해당 조건에 부합하지 않는 경우, 승인이 거절될 수 있어요."
 suggestionEmojiWarnFileSize: "50KB를 초과하는 이미지는 사용 환경에 따라 지원되지 않을 수 있어요. 이미지의 크기가 큰 경우, 승인이 거절될 수 있어요."
 suggestionEmojiWarnFileType: "PNG, GIF 이외의 포맷은 사용 환경에 따라 지원되지 않을 수 있기 때문에, 포맷이 조건에 부합하지 않으면 승인이 거절될 수 있어요."
+sent: "전송"
+hashtags: "해시태그"
+_docs:
+  admin: "관리"
 
 _newNoteNotiBehavior:
   default: "기본"

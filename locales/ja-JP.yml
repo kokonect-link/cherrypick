@@ -829,6 +829,18 @@ suggestionRemaining: "残り申請可能数"
 suggestionEmojiWarnNameMalform: "絵文字の名前は通常、英小文字、数字、アンダースコア(_)の組み合わせである必要があります。この提案は名前を理由に拒否されるおそれがあります。"
 suggestionEmojiWarnFileSize: "50KBを超える画像は、環境によっては非対応とされます。この提案は画像サイズを理由に却下されるおそれがあります。"
 suggestionEmojiWarnFileType: "PNG形式、GIF形式以外の画像フォーマットは、環境によっては非対応のため、この提案はフォーマットを理由に却下されるおそれがあります。"
+sent: "送信"
+received: "受信"
+searchResult: "検索結果"
+hashtags: "ハッシュタグ"
+troubleshooting: "トラブルシューティング"
+
+_docs:
+  continueReading: "続きを読む"
+  features: "機能"
+  generalTopics: "一般的なトピック"
+  advancedTopics: "高度なトピック"
+  admin: "管理"
 
 _newNoteNotiBehavior:
   default: "デフォルト"
@@ -987,6 +999,8 @@ _mfm:
   blurDescription: "内容をぼかすことができます。ポインターを上に乗せるとはっきり見えるようになります。"
   font: "フォント"
   fontDescription: "内容のフォントを指定することができます。"
+  rainbow: "レインボー"
+  rainbowDescription: "内容をレインボーにします。"
 
 _reversi:
   reversi: "リバーシ"

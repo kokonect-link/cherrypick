@@ -3,7 +3,10 @@
 	<div>
 		<div class="_isolated">
 			<!-- 기존 Misskey 방식 유저 검색
-			<MkInput v-model:value="query" :debounce="true" type="search"><template #icon><i class="fas fa-search"></i></template><span>{{ $ts.searchUser }}</span></MkInput>
+			<MkInput v-model="query" :debounce="true" type="search">
+				<template #prefix><i class="fas fa-search"></i></template>
+				<template #label>{{ $ts.searchUser }}</template>
+			</MkInput>
 			-->
 			<XSearch v-model:value="query" @search="search"/>
 		</div>
