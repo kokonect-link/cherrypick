@@ -66,15 +66,7 @@ export default defineComponent({
 	render() {
 		if (this.items.length === 0) return;
 
-		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
-			name: 'list',
-			tag: 'div',
-			'data-direction': this.direction,
-			'data-reversed': this.reversed ? 'true' : 'false',
-		} : {
-			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
-		}, this.items.map((item, i) => {
+		const renderChildren = () => this.items.map((item, i) => {
 			const el = this.$slots.default({
 				item: item
 			})[0];
@@ -116,7 +108,19 @@ export default defineComponent({
 					return el;
 				}
 			}
-		}));
+		});
+
+		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
+			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			name: 'list',
+			tag: 'div',
+			'data-direction': this.direction,
+			'data-reversed': this.reversed ? 'true' : 'false',
+		} : {
+			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+		}, {
+			default: renderChildren
+		});
 	},
 });
 </script>

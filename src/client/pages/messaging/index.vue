@@ -129,7 +129,7 @@ export default defineComponent({
 		},
 
 		start(ev) {
-			os.modalMenu([{
+			os.popupMenu([{
 				text: this.$ts.messagingWithUser,
 				icon: 'fas fa-user',
 				action: () => { this.startUser() }

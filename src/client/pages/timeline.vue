@@ -352,7 +352,7 @@ export default defineComponent({
 					this.top();
 				}
 			}));
-			await os.modalMenu(items, ev.currentTarget || ev.target);
+			await os.popupMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseAntenna(ev) {
@@ -368,7 +368,7 @@ export default defineComponent({
 					this.top();
 				}
 			}));
-			await os.modalMenu(items, ev.currentTarget || ev.target);
+			await os.popupMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseChannel(ev) {
@@ -386,7 +386,7 @@ export default defineComponent({
 					this.top();
 				}
 			}));
-			await os.modalMenu(items, ev.currentTarget || ev.target);
+			await os.popupMenu(items, ev.currentTarget || ev.target);
 		},
 
 		saveSrc() {

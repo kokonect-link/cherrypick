@@ -148,7 +148,7 @@ export default defineComponent({
 	height: 32px;
 	margin: 2px;
 	padding: 0 12px;
-	border-radius: 999px;
+	border-radius: 100%;
 
 	&.canToggle {
 		background: rgba(0, 0, 0, 0.05);
@@ -170,7 +170,7 @@ export default defineComponent({
 		}
 
 		> span {
-			color: #fff;
+			color: var(--fgOnAccent);
 			margin-left: 3px;
 		}
 	}

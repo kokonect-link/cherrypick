@@ -13,7 +13,7 @@
 			<button class="_button" @click="link" v-tooltip="$ts._mfmpad.link"><i class="fas fa-link"/></button>
 			<button class="_button function" @click="insertFunction" v-tooltip="$ts._mfmpad.functions"><code style="font-weight: bold">[]</code></button>
 			<button class="_button" @click="insertMention" v-tooltip="$ts.mention"><i class="fas fa-at"></i></button>
-			<button class="_button" @click="withHashtags = !withHashtags" v-tooltip="$ts.hashtags"><i class="fas fa-hashtag"></i></button>
+			<button class="_button" @click="withHashtags = !withHashtags" :class="{ active: withHashtags }" v-tooltip="$ts.hashtags"><i class="fas fa-hashtag"></i></button>
 			<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
 			<div class="divider"></div>
 			<button class="_button help" v-tooltip="$ts.help" @click="help"><i class="fas fa-question-circle"/></button>
@@ -701,7 +701,7 @@ export default defineComponent({
 				viaMobile: isMobile
 			};
 
-			if (this.withHashtags) {
+			if (this.withHashtags && this.hashtags && this.hashtags.trim() !== '') {
 				const hashtags = this.hashtags.trim().split(' ').map(x => x.startsWith('#') ? x : '#' + x).join(' ');
 				data.text = data.text ? `${data.text} ${hashtags}` : hashtags;
 			}
@@ -807,7 +807,7 @@ export default defineComponent({
 		},
 
 		showActions(ev) {
-			os.modalMenu(postFormActions.map(action => ({
+			os.popupMenu(postFormActions.map(action => ({
 				text: action.title,
 				action: () => {
 					action.handler({

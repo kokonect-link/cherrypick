@@ -27,13 +27,13 @@
 						<button class="remove _button" @click.prevent.stop="removeWidget(element)"><i class="fas fa-times"/></button>
 					</header>
 					<div @click="configWidget(element.id)">
-						<component :is="`mkw-${element.name}`" :widget="element" :setting-callback="setting => settings[element.id] = setting" :column="column" @updateProps="updateWidget(element.id, $event)"/>
+						<component :is="`mkw-${element.name}`" :widget="element" :setting-callback="setting => settings[element.id] = setting" @updateProps="updateWidget(element.id, $event)"/>
 					</div>
 				</div>
 			</template>
 		</XDraggable>
 	</template>
-	<component v-else class="widget" v-for="widget in widgets" :is="`mkw-${widget.name}`" :key="widget.id" :widget="widget" :column="column" @updateProps="updateWidget(widget.id, $event)"/>
+	<component v-else class="widget" v-for="widget in widgets" :is="`mkw-${widget.name}`" :key="widget.id" :widget="widget" @updateProps="updateWidget(widget.id, $event)"/>
 </div>
 </template>
 

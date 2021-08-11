@@ -174,7 +174,7 @@ export default defineComponent({
 				});
 			}));
 
-			os.modalMenu([...[{
+			os.popupMenu([...[{
 				type: 'link',
 				text: this.$ts.profile,
 				to: `/@${ this.$i.username }`,
@@ -183,7 +183,7 @@ export default defineComponent({
 				icon: 'fas fa-plus',
 				text: this.$ts.addAccount,
 				action: () => {
-					os.modalMenu([{
+					os.popupMenu([{
 						text: this.$ts.existingAccount,
 						action: () => { this.addAccount(); },
 					}, {
@@ -454,8 +454,8 @@ export default defineComponent({
 					padding-top: 8px;
 					padding-bottom: 8px;
 					background: var(--X14);
-					-webkit-backdrop-filter: blur(8px);
-					backdrop-filter: blur(8px);
+					-webkit-backdrop-filter: var(--blur, blur(8px));
+					backdrop-filter: var(--blur, blur(8px));
 				}
 
 				&:first-child {

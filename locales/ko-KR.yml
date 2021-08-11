@@ -132,6 +132,7 @@ editWidgets: "위젯 편집"
 editWidgetsExit: "편집 종료"
 customEmojis: "커스텀 이모지"
 emoji: "이모지"
+emojis: "이모지"
 emojiName: "이모지 이름"
 emojiUrl: "이모지 URL"
 addEmoji: "이모지 추가"
@@ -834,6 +835,7 @@ received: "수신"
 searchResult: "검색 결과"
 hashtags: "해시태그"
 troubleshooting: "문제 해결"
+useBlurEffect: "UI에 흐림 효과 사용"
 
 _docs:
   continueReading: "계속 읽기"
@@ -841,6 +843,7 @@ _docs:
   generalTopics: "일반 주제"
   advancedTopics: "심화 주제"
   admin: "관리"
+  translateWarn: "이 문서는 번역되었기 때문에 원본과는 내용이 다를 수 있어요."
 
 _newNoteNotiBehavior:
   default: "기본"
