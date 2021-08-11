@@ -830,8 +830,16 @@ suggestionEmojiWarnNameMalform: "이모지의 이름은 영어 소문자, 숫자
 suggestionEmojiWarnFileSize: "50KB를 초과하는 이미지는 사용 환경에 따라 지원되지 않을 수 있어요. 이미지의 크기가 큰 경우, 승인이 거절될 수 있어요."
 suggestionEmojiWarnFileType: "PNG, GIF 이외의 포맷은 사용 환경에 따라 지원되지 않을 수 있기 때문에, 포맷이 조건에 부합하지 않으면 승인이 거절될 수 있어요."
 sent: "전송"
+received: "수신"
+searchResult: "검색 결과"
 hashtags: "해시태그"
+troubleshooting: "문제 해결"
+
 _docs:
+  continueReading: "계속 읽기"
+  features: "기능"
+  generalTopics: "일반 주제"
+  advancedTopics: "심화 주제"
   admin: "관리"
 
 _newNoteNotiBehavior:
@@ -991,6 +999,8 @@ _mfm:
   blurDescription: "내용이 흐리게 보여요. 마우스를 위에 올려두면 내용이 보여요."
   font: "폰트"
   fontDescription: "내용의 글꼴을 지정할 수 있어요."
+  rainbow: "무지개"
+  rainbowDescription: "내용을 무지개로 표시해요."
 
 _reversi:
   reversi: "리버시"
