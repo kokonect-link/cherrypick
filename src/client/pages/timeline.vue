@@ -332,7 +332,7 @@ export default defineComponent({
 						this.top();
 					},
 			}));
-			await os.modalMenu([
+			await os.popupMenu([
 				...timelines,
 				...antennaPromise,
 				...listPromise,

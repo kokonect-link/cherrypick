@@ -803,7 +803,7 @@ export default defineComponent({
 				},
 			}));
 
-			os.modalMenu(accountItems, ev.currentTarget || ev.target, { align: 'left' });
+			os.popupMenu(accountItems, ev.currentTarget || ev.target, { align: 'left' });
 		},
 
 		showActions(ev) {

@@ -157,7 +157,7 @@ export default defineComponent({
 				});
 			}));
 
-			os.modalMenu([...[{
+			os.popupMenu([...[{
 				type: 'link',
 				text: this.$ts.profile,
 				to: `/@${ this.$i.username }`,
@@ -166,7 +166,7 @@ export default defineComponent({
 				icon: 'fas fa-plus',
 				text: this.$ts.addAccount,
 				action: () => {
-					os.modalMenu([{
+					os.popupMenu([{
 						text: this.$ts.existingAccount,
 						action: () => { this.addAccount(); },
 					}, {

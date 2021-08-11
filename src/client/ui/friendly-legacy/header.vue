@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { modalMenu } from '@client/os';
+import { popupMenu } from '@client/os';
 import { url } from '@client/config';
 import { eventBus } from "../../friendly/eventBus";
 
@@ -155,7 +155,7 @@ export default defineComponent({
 					action: this.share
 				});
 			}
-			modalMenu(menu, ev.currentTarget || ev.target);
+			popupMenu(menu, ev.currentTarget || ev.target);
 		},
 
 		queueUpdated(q) {

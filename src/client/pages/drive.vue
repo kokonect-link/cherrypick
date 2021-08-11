@@ -31,7 +31,7 @@ export default defineComponent({
 
 	methods: {
 		menu(ev) {
-			os.modalMenu(this.$refs.drive.getMenu(), ev.currentTarget || ev.target);
+			os.popupMenu(this.$refs.drive.getMenu(), ev.currentTarget || ev.target);
 		}
 	}
 });
