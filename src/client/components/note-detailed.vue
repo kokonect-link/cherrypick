@@ -25,7 +25,8 @@
 				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
 				<MkTime :time="note.createdAt"/>
 			</button>
-			<span class="visibility" v-if="note.visibility !== 'public'">
+			<span class="visibility">
+				<i v-if="appearNote.visibility === 'public'" class="fas fa-globe"></i>
 				<i v-if="note.visibility === 'home'" class="fas fa-home"></i>
 				<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
 				<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
@@ -47,13 +48,6 @@
 					<span class="admin" v-if="appearNote.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
 					<span class="patron" v-if="appearNote.user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
-					<span class="visibility" v-if="appearNote.visibility !== 'public'">
-						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
-						<i v-else-if="appearNote.visibility === 'followers'" class="fas fa-unlock"></i>
-						<i v-else-if="appearNote.visibility === 'specified'" class="fas fa-envelope"></i>
-					</span>
-					<span class="localOnly" v-if="appearNote.localOnly"><i class="fas fa-network-wired"></i></span>
-					<span class="remoteFollowersOnly" v-if="appearNote.remoteFollowersOnly"><i class="fas fa-heartbeat"></i></span>
 				</div>
 				<div class="username"><MkAcct :user="appearNote.user"/></div>
 				<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>
@@ -85,6 +79,16 @@
 				<div class="info">
 					<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 					<MkTime class="created-at" :time="note.createdAt" mode="detail"/>
+					<span class="divider">|</span>
+					<span class="visibility">
+						<i v-if="appearNote.visibility === 'public'" class="fas fa-globe"></i>
+						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
+						<i v-else-if="appearNote.visibility === 'followers'" class="fas fa-unlock"></i>
+						<i v-else-if="appearNote.visibility === 'specified'" class="fas fa-envelope"></i>
+					</span>
+					<I18n class="visibility-title" :src="appearNote.visibility === 'home' ? $ts._visibility.home : appearNote.visibility === 'followers' ? $ts._visibility.followers : appearNote.visibility === 'specified' ? $ts._visibility.specified : $ts._visibility.pubilc" tag="span"></I18n>
+					<span class="localOnly" v-if="appearNote.localOnly"> ({{ $ts._visibility.localOnly }})</span>
+					<span class="remoteFollowersOnly" v-if="appearNote.remoteFollowersOnly"> ({{ $ts._visibility.remoteFollowersOnly }})</span>
 				</div>
 				<div class="renotes" v-if="renoteState">
 					<MkA :to="`/notes/${appearNote.id}/renotes`">
@@ -1135,6 +1139,14 @@ export default defineComponent({
 
 					> .mobile {
 						margin-right: 0.5em;
+					}
+
+					> .divider {
+						margin: 0 5px;
+					}
+
+					> .visibility-title {
+						margin-left: 5px;
 					}
 				}
 
