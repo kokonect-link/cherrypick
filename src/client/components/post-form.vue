@@ -43,7 +43,7 @@
 		</div>
 		<MkInfo warn v-if="hasNotSpecifiedMentions" class="hasNotSpecifiedMentions">{{ $ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ $ts.add }}</button></MkInfo>
 		<input v-show="useCw" ref="cw" class="cw" v-model="cw" :placeholder="$ts.annotation" @keydown="onKeydown">
-		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd" data-cy-post-form-text/>
 		<input v-show="withHashtags" ref="hashtags" class="hashtags" v-model="hashtags" :placeholder="$ts.hashtags" list="hashtags">
 		<div class="text-func">
 			<button class="_button" @click="insert('**')" v-tooltip="$ts._mfm.bold"><i class="fas fa-bold"/></button>
@@ -67,7 +67,7 @@
 			</button>
 			<button class="_button" @click="showActions" v-tooltip="$ts.plugin" v-if="postFormActions.length > 0"><i class="fas fa-plug"></i></button>
 			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
-			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk">{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
+			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk" data-cy-open-post-form-submit>{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</footer>
 		<datalist id="hashtags">
 			<option v-for="hashtag in recentHashtags" :value="hashtag" :key="hashtag"/>
