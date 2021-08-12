@@ -112,9 +112,12 @@ import FormGroup from '@client/components/form/group.vue';
 import FormKeyValueView from '@client/components/form/key-value-view.vue';
 import MkLink from '@client/components/link.vue';
 import { physics } from '@client/scripts/physics.ts';
+import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
-const patrons = [];
+const patrons = [
+	'lapy.',
+];
 const patronsMisskey = [
 	'Satsuki Yanagi',
 	'noellabo',
@@ -241,7 +244,7 @@ export default defineComponent({
 	box-sizing: border-box;
 	margin: 0 auto;
 
-	> .about {
+	.about {
 		> .panel {
 			position: relative;
 			text-align: center;
