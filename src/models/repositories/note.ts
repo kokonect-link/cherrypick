@@ -181,6 +181,7 @@ export class NoteRepository extends Repository<Note> {
 			cw: note.cw,
 			visibility: note.visibility,
 			localOnly: note.localOnly || undefined,
+			remoteFollowersOnly: note.remoteFollowersOnly || undefined,
 			visibleUserIds: note.visibility === 'specified' ? note.visibleUserIds : undefined,
 			viaMobile: note.viaMobile || undefined,
 			renoteCount: note.renoteCount,
@@ -400,6 +401,10 @@ export const packedNoteSchema = {
 			ref: 'Channel'
 		},
 		localOnly: {
+			type: 'boolean' as const,
+			optional: false as const, nullable: true as const,
+		},
+		remoteFollowersOnly: {
 			type: 'boolean' as const,
 			optional: false as const, nullable: true as const,
 		},

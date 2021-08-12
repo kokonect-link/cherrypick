@@ -67,6 +67,11 @@ export const meta = {
 			default: false,
 		},
 
+		remoteFollowersOnly: {
+			validator: $.optional.bool,
+			default: false,
+		},
+
 		noExtractMentions: {
 			validator: $.optional.bool,
 			default: false,
@@ -257,6 +262,7 @@ export default define(meta, async (ps, user) => {
 		cw: ps.cw,
 		viaMobile: ps.viaMobile,
 		localOnly: ps.localOnly,
+		remoteFollowersOnly: ps.remoteFollowersOnly,
 		visibility: ps.visibility,
 		visibleUsers,
 		channel,

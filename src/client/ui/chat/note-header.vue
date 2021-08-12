@@ -18,7 +18,8 @@
 			<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
 			<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
 		</span>
-		<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
+		<span class="localOnly" v-if="note.localOnly"><i class="fas fa-network-wired"></i></span>
+		<span class="remoteFollowersOnly" v-if="note.remoteFollowersOnly"><i class="fas fa-heartbeat"></i></span>
 	</div>
 </header>
 </template>

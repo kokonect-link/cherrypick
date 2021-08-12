@@ -6,7 +6,7 @@ const ts = i18n.locale;
 
 export type TimelineMenuitem = {
 	src: string,
-	icon: any,
+	icon: string,
 	name: string,
 	show?: () => boolean,
 };
@@ -31,6 +31,19 @@ export const timelineMenuItems: TimelineMenuitem[] = [
 		icon: 'fas fa-globe',
 		name: ts._timelines.global,
 		show: () => !instance.disableGlobalTimeline || $i.isModerator || $i.isAdmin,
+	}, {
+		src: 'cat',
+		icon: 'fas fa-cat',
+		name: ts._timelines.cat,
+		show: () => !instance.disableCatTimeline || $i.isModerator || $i.isAdmin,
+	}, {
+		src: 'remoteFollowing',
+		icon: 'fas fa-project-diagram',
+		name: ts._timelines.remoteFollowing,
+	}, {
+		src: 'followers',
+		icon: 'fas fa-comment-alt',
+		name: ts._timelines.followers,
 	}, {
 		src: 'mentions',
 		icon: 'fas fa-at',

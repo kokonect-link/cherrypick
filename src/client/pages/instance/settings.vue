@@ -45,6 +45,7 @@
 
 		<FormSwitch v-model:value="enableLocalTimeline">{{ $ts.enableLocalTimeline }}</FormSwitch>
 		<FormSwitch v-model:value="enableGlobalTimeline">{{ $ts.enableGlobalTimeline }}</FormSwitch>
+		<FormSwitch v-model:value="enableCatTimeline">{{ $ts.enableCatTimeline }}</FormSwitch>
 		<FormInfo>{{ $ts.disablingTimelinesInfo }}</FormInfo>
 
 		<div class="_formItem _formNoConcat" v-sticky-container>
@@ -115,6 +116,7 @@ export default defineComponent({
 			maxNoteTextLength: 0,
 			enableLocalTimeline: false,
 			enableGlobalTimeline: false,
+			enableCatTimeline: false,
 			emojiLimit: true,
 			emojiLimitPremium: false,
 			emojiLimitValue: 10,
@@ -140,6 +142,7 @@ export default defineComponent({
 			this.maxNoteTextLength = meta.maxNoteTextLength;
 			this.enableLocalTimeline = !meta.disableLocalTimeline;
 			this.enableGlobalTimeline = !meta.disableGlobalTimeline;
+			this.enableCatTimeline = !meta.disableCatTimeline;
 			this.emojiLimit = meta.emojiSuggestionLimitation >= 0;
 			this.emojiLimitPremium = meta.emojiSuggestionLimitationPremium >= 0;
 			if (this.emojiLimit) this.emojiLimitValue = meta.emojiSuggestionLimitation;
@@ -159,6 +162,7 @@ export default defineComponent({
 				maxNoteTextLength: this.maxNoteTextLength,
 				disableLocalTimeline: !this.enableLocalTimeline,
 				disableGlobalTimeline: !this.enableGlobalTimeline,
+				disableCatTimeline: !this.enableCatTimeline,
 				emojiSuggestionLimitation: this.emojiLimit ? this.emojiLimitValue : -1,
 				emojiSuggestionLimitationPremium: this.emojiLimitPremium ? this.emojiLimitValuePremium : -1,
 			}).then(() => {

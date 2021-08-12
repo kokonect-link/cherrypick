@@ -32,7 +32,8 @@
 			</div>
 			<div class="right">
 				<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
-				<span class="local-only" v-if="localOnly"><i class="fas fa-biohazard"></i></span>
+				<span class="local-only" v-if="localOnly"><i class="fas fa-network-wired"></i></span>
+				<span class="local-only" v-if="remoteFollowersOnly"><i class="fas fa-heartbeat"></i></span>
 				<button class="_button visibility" @click="setVisibility" ref="visibilityButton" v-tooltip="$ts.visibility" :disabled="channel != null">
 					<span v-if="visibility === 'public'"><i class="fas fa-globe"></i></span>
 					<span v-if="visibility === 'home'"><i class="fas fa-home"></i></span>

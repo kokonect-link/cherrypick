@@ -100,6 +100,7 @@ type Option = {
 	poll?: IPoll | null;
 	viaMobile?: boolean | null;
 	localOnly?: boolean | null;
+	remoteFollowersOnly?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
 	visibleUsers?: User[] | null;
@@ -133,6 +134,7 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	if (data.visibility == null) data.visibility = 'public';
 	if (data.viaMobile == null) data.viaMobile = false;
 	if (data.localOnly == null) data.localOnly = false;
+	if (data.remoteFollowersOnly == null) data.remoteFollowersOnly = false;
 	if (data.channel != null) data.visibility = 'public';
 	if (data.channel != null) data.visibleUsers = [];
 	if (data.channel != null) data.localOnly = true;
@@ -145,6 +147,11 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	// Renote対象が「ホームまたは全体」以外の公開範囲ならreject
 	if (data.renote && data.renote.visibility !== 'public' && data.renote.visibility !== 'home' && data.renote.userId !== user.id) {
 		return rej('Renote target is not public or home');
+	}
+
+	// localOnly と remoteFollowersOnly は共存できない
+	if (data.localOnly && data.remoteFollowersOnly) {
+		return rej('You can\'t specify both localOnly and remoteFollowersOnly flags');
 	}
 
 	// Renote対象がpublicではないならhomeにする
@@ -167,8 +174,18 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 		data.localOnly = true;
 	}
 
+	// リモートフォロワー限定をRenoteしたらローカルのみにする
+	if (data.renote && data.renote.remoteFollowersOnly) {
+		data.localOnly = true;
+	}
+
 	// ローカルのみにリプライしたらローカルのみにする
 	if (data.reply && data.reply.localOnly && data.channel == null) {
+		data.localOnly = true;
+	}
+
+	// リモートフォロワー限定にリプライしたらローカルのみにする
+	if (data.reply && data.reply.remoteFollowersOnly) {
 		data.localOnly = true;
 	}
 
@@ -466,6 +483,7 @@ async function insertNote(user: { id: User['id']; host: User['host']; }, data: O
 		userId: user.id,
 		viaMobile: data.viaMobile!,
 		localOnly: data.localOnly!,
+		remoteFollowersOnly: data.remoteFollowersOnly!,
 		visibility: data.visibility as any,
 		visibleUserIds: data.visibility == 'specified'
 			? data.visibleUsers

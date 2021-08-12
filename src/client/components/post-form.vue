@@ -17,7 +17,8 @@
 			<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
 			<div class="divider"></div>
 			<button class="_button help" v-tooltip="$ts.help" @click="help"><i class="fas fa-question-circle"/></button>
-			<span class="local-only" v-if="localOnly"><i class="fas fa-biohazard"></i></span>
+			<span class="local-only" v-if="localOnly"><i class="fas fa-network-wired"></i></span>
+			<span class="local-only" v-if="remoteFollowersOnly"><i class="fas fa-heartbeat"></i></span>
 			<button class="_button visibility" @click="setVisibility" ref="visibilityButton" v-tooltip="$ts.visibility" :disabled="channel != null">
 				<span v-if="visibility === 'public'"><i class="fas fa-globe"></i></span>
 				<span v-if="visibility === 'home'"><i class="fas fa-home"></i></span>
@@ -171,6 +172,7 @@ export default defineComponent({
 			useCw: false,
 			cw: null,
 			localOnly: this.$store.state.rememberNoteVisibility ? this.$store.state.localOnly : this.$store.state.defaultNoteLocalOnly,
+			remoteFollowersOnly: this.$store.state.rememberNoteVisibility ? this.$store.state.remoteFollowersOnly : this.$store.state.defaultNoteRemoteFollowersOnly,
 			visibility: this.$store.state.rememberNoteVisibility ? this.$store.state.visibility : this.$store.state.defaultNoteVisibility,
 			visibleUsers: [],
 			autocomplete: null,
@@ -331,6 +333,7 @@ export default defineComponent({
 		if (this.channel) {
 			this.visibility = 'public';
 			this.localOnly = true; // TODO: チャンネルが連合するようになった折には消す
+			this.remoteFollowersOnly = false;
 		}
 
 		// 公開以外へのリプライ時は元の公開範囲を引き継ぐ
@@ -387,6 +390,7 @@ export default defineComponent({
 					this.broadcastText = draft.data.broadcastText;
 					this.visibility = draft.data.visibility;
 					this.localOnly = draft.data.localOnly;
+					this.remoteFollowersOnly = draft.data.remoteFollowersOnly;
 					this.files = (draft.data.files || []).filter(e => e);
 					if (draft.data.poll) {
 						this.poll = draft.data.poll;
@@ -406,6 +410,7 @@ export default defineComponent({
 				}
 				this.visibility = init.visibility;
 				this.localOnly = init.localOnly;
+				this.remoteFollowersOnly = init.remoteFollowersOnly;
 				this.quoteId = init.renote ? init.renote.id : null;
 			}
 
@@ -424,6 +429,7 @@ export default defineComponent({
 			this.$watch('files', () => this.saveDraft(), { deep: true });
 			this.$watch('visibility', () => this.saveDraft());
 			this.$watch('localOnly', () => this.saveDraft());
+			this.$watch('remoteFollowersOnly', this.saveDraft);
 		},
 
 		checkMissingMention() {
@@ -517,6 +523,7 @@ export default defineComponent({
 			os.popup(import('./visibility-picker.vue'), {
 				currentVisibility: this.visibility,
 				currentLocalOnly: this.localOnly,
+				currentRemoteFollowersOnly: this.remoteFollowersOnly,
 				src: this.$refs.visibilityButton
 			}, {
 				changeVisibility: visibility => {
@@ -529,6 +536,12 @@ export default defineComponent({
 					this.localOnly = localOnly;
 					if (this.$store.state.rememberNoteVisibility) {
 						this.$store.set('localOnly', localOnly);
+					}
+				},
+				changeRemoteFollowersOnly: remoteFollowersOnly => {
+					this.remoteFollowersOnly = remoteFollowersOnly;
+					if (this.$store.state.rememberNoteVisibility) {
+						this.$store.set('remoteFollowersOnly', remoteFollowersOnly);
 					}
 				}
 			}, 'closed');
@@ -656,6 +669,7 @@ export default defineComponent({
 					broadcastText: this.broadcastText,
 					visibility: this.visibility,
 					localOnly: this.localOnly,
+					remoteFollowersOnly: this.remoteFollowersOnly,
 					files: this.files,
 					poll: this.poll
 				}
@@ -696,6 +710,7 @@ export default defineComponent({
 				poll: this.poll,
 				cw: this.useCw ? this.cw || '' : undefined,
 				localOnly: this.localOnly,
+				remoteFollowersOnly: this.remoteFollowersOnly,
 				visibility: this.visibility,
 				visibleUserIds: this.visibility == 'specified' ? this.visibleUsers.map(u => u.id) : undefined,
 				viaMobile: isMobile

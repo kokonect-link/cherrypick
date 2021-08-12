@@ -18,6 +18,11 @@ export default async function renderNote(note: Note, dive = true, isTalk = false
 		return ids.map(id => items.find(item => item.id === id)).filter(item => item != null) as DriveFile[];
 	};
 
+	note = { ...note };
+	if (note.remoteFollowersOnly) {
+		note.visibility = 'followers';
+	}
+
 	let inReplyTo;
 	let inReplyToNote: Note | undefined;
 

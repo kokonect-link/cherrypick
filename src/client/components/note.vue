@@ -28,7 +28,8 @@
 				<i v-else-if="note.visibility === 'followers'" class="fas fa-unlock"></i>
 				<i v-else-if="note.visibility === 'specified'" class="fas fa-envelope"></i>
 			</span>
-			<span class="localOnly" v-if="note.localOnly"><i class="fas fa-biohazard"></i></span>
+			<span class="localOnly" v-if="note.localOnly"><i class="fas fa-network-wired"></i></span>
+			<span class="localOnly" v-if="note.remoteFollowersOnly"><i class="fas fa-heartbeat"/></span>
 		</div>
 	</div>
 	<XSub :note="appearNote.reply" class="reply-to" v-if="appearNote.reply"/>

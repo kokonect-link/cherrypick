@@ -119,6 +119,19 @@ export default defineComponent({
 			endpoint = 'notes/global-timeline';
 			this.connection = markRaw(os.stream.useChannel('globalTimeline'));
 			this.connection.on('note', prepend);
+		} else if (this.src == 'cat') {
+			endpoint = 'notes/cat-timeline';
+			this.connection = markRaw(os.stream.useChannel('catTimeline'));
+			this.connection.on('note', prepend);
+		} else if (this.src == 'remoteFollowing') {
+			endpoint = 'notes/timeline';
+			this.query = { remoteOnly: true };
+			this.connection = markRaw(os.stream.useChannel('remoteFollowingTimeline'));
+			this.connection.on('note', prepend);
+		} else if (this.src == 'followers') {
+			endpoint = 'notes/followers-timeline';
+			this.connection = markRaw(os.stream.useChannel('followersTimeline'));
+			this.connection.on('note', prepend);
 		} else if (this.src == 'mentions') {
 			endpoint = 'notes/mentions';
 			this.connection = markRaw(os.stream.useChannel('main'));

@@ -25,6 +25,10 @@ export const meta = {
 			validator: $.optional.nullable.bool,
 		},
 
+		disableCatTimeline: {
+			validator: $.optional.nullable.bool,
+		},
+
 		useStarForReactionFallback: {
 			validator: $.optional.nullable.bool,
 		},
@@ -308,6 +312,10 @@ export default define(meta, async (ps, me) => {
 
 	if (typeof ps.disableGlobalTimeline === 'boolean') {
 		set.disableGlobalTimeline = ps.disableGlobalTimeline;
+	}
+
+	if (typeof ps.disableCatTimeline === 'boolean') {
+		set.disableCatTimeline = ps.disableCatTimeline;
 	}
 
 	if (typeof ps.useStarForReactionFallback === 'boolean') {

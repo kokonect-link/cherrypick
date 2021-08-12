@@ -320,6 +320,7 @@ connectService: "계정 연동"
 disconnectService: "계정 연동 해제"
 enableLocalTimeline: "로컬 타임라인 활성화"
 enableGlobalTimeline: "연합 타임라인 활성화"
+enableCatTimeline: "고양이 타임라인 활성화"
 disablingTimelinesInfo: "특정 타임라인을 비활성화하더라도 관리자와 모더레이터는 계속 사용할 수 있어요."
 registration: "등록"
 enableRegistration: "신규 회원가입 활성화"
@@ -1330,6 +1331,8 @@ _visibility:
   specifiedDescription: "지정한 유저에게만 공개"
   localOnly: "로컬에만"
   localOnlyDescription: "리모트 유저에게 보이지 않기"
+  remoteFollowersOnly: "리모트 팔로워 및 로컬"
+  remoteFollowersOnlyDescription: "리모트에서 2차 확산을 방지"
 
 _postForm:
   replyPlaceholder: "이 노트에 답글..."
@@ -1396,6 +1399,9 @@ _timelines:
   local: "로컬"
   social: "소셜"
   global: "글로벌"
+  cat: "고양이"
+  remoteFollowing: "리모트 팔로잉"
+  followers: "팔로워"
 
 _rooms:
   roomOf: "{user}의 방"

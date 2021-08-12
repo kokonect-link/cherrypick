@@ -31,12 +31,20 @@
 		</button>
 		<div class="divider"></div>
 		<button class="_button localOnly" @click="localOnly = !localOnly" :class="{ active: localOnly }" data-index="5" key="localOnly">
-			<div><i class="fas fa-biohazard"></i></div>
+			<div><i class="fas fa-network-wired"></i></div>
 			<div>
 				<span>{{ $ts._visibility.localOnly }}</span>
 				<span>{{ $ts._visibility.localOnlyDescription }}</span>
 			</div>
 			<div><i :class="localOnly ? 'fas fa-toggle-on' : 'fas fa-toggle-off'"></i></div>
+		</button>
+		<button class="_button remoteFollowersOnly" @click="remoteFollowersOnly = !remoteFollowersOnly" :class="{ active: remoteFollowersOnly }" data-index="7" key="remoteFollowersOnly">
+			<div><i class="fas fa-heartbeat"></i></div>
+			<div>
+				<span>{{ $ts._visibility.remoteFollowersOnly }}</span>
+				<span>{{ $ts._visibility.remoteFollowersOnlyDescription }}</span>
+			</div>
+			<div><i :class="remoteFollowersOnly ? 'fas fa-toggle-on' : 'fas fa-toggle-off'"></i></div>
 		</button>
 	</div>
 </MkModal>
@@ -59,20 +67,37 @@ export default defineComponent({
 			type: Boolean,
 			required: true
 		},
+		currentRemoteFollowersOnly: {
+			type: Boolean,
+			required: false
+		},
 		src: {
 			required: false
 		},
 	},
-	emits: ['change-visibility', 'change-local-only', 'closed'],
+	emits: ['change-visibility', 'change-local-only', 'change-remote-followers-only', 'closed'],
 	data() {
 		return {
 			v: this.currentVisibility,
 			localOnly: this.currentLocalOnly,
+			remoteFollowersOnly: this.currentRemoteFollowersOnly,
 		}
 	},
 	watch: {
 		localOnly() {
 			this.$emit('change-local-only', this.localOnly);
+			if (this.localOnly && this.remoteFollowersOnly) {
+				this.remoteFollowersOnly = false;
+				this.$emit('change-remote-followers-only', this.remoteFollowersOnly);
+			}
+		},
+
+		remoteFollowersOnly() {
+			this.$emit('change-remote-followers-only', this.remoteFollowersOnly);
+			if (this.remoteFollowersOnly && this.localOnly) {
+				this.localOnly = false;
+				this.$emit('change-local-only', this.localOnly);
+			}
 		}
 	},
 	methods: {
@@ -118,7 +143,7 @@ export default defineComponent({
 			background: var(--accent);
 		}
 
-		&.localOnly.active {
+		&.localOnly.active, &.remoteFollowersOnly.active {
 			color: var(--accent);
 			background: inherit;
 		}
