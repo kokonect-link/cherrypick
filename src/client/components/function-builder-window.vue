@@ -10,7 +10,7 @@
 	<template #header>{{ $ts._mfmpad.functionsBuilder }}</template>
 	<section class="_section">
 		<div class="_content">
-			<MkSelect v-model:value="funcName">
+			<MkSelect v-model="funcName">
 				<template #label>{{ $ts._mfmpad._functions.kind }}</template>
 				<option v-for="(fn, name) in funcs" :value="name" :key="name" v-text="$ts._mfm[`${name}`]"/>
 			</MkSelect>
@@ -22,17 +22,17 @@
 	<section class="_section" v-if="args.length > 0">
 		<div class="_content">
 			<template v-for="arg in args" :key="arg.key">
-				<MkSwitch v-model:value="arg.enabled">
+				<MkSwitch v-model="arg.enabled">
 					{{ getProp(arg.key).label || arg.key }}
 					<template #desc>{{ getProp(arg.key).description }}</template>
 				</MkSwitch>
-				<MkInput v-model:value="arg.value" v-if="getProp(arg.key).hasValue && arg.enabled"><span v-text="$ts.input"/></MkInput>
+				<MkInput v-model="arg.value" v-if="getProp(arg.key).hasValue && arg.enabled"><span v-text="$ts.input"/></MkInput>
 			</template>
 		</div>
 	</section>
 	<section class="_section" v-if="funcName">
 		<div class="_content">
-			<MkInput v-model:value="body"><span v-text="$ts._mfmpad._functions.text"/></MkInput>
+			<MkInput v-model="body"><span v-text="$ts._mfmpad._functions.text"/></MkInput>
 		</div>
 	</section>
 	<section class="_section" v-if="gpfm">

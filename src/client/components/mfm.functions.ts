@@ -149,4 +149,5 @@ export const mfmFunctions: Record<string, MfmFunctionDefinition> = {
 	blur: {
 		class: '_mfm_blur_',
 	},
+	rainbow: 'animation: mfm-rainbow 1s linear infinite',
 };
