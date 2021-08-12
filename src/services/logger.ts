@@ -95,6 +95,7 @@ export default class Logger {
 					null as never;
 
 				send.bind(this.syslogClient)(message).catch(() => {});
+				/*
 			} else {
 				const Logs = getRepository(Log);
 				Logs.insert({
@@ -107,6 +108,7 @@ export default class Logger {
 					message: message.substr(0, 1000), // 1024を超えるとログが挿入できずエラーになり無限ループする
 					data: data,
 				} as Log).catch(() => {});
+				 */
 			}
 		}
 	}
