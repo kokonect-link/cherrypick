@@ -74,7 +74,7 @@ export default defineComponent({
 					id: string,
 					title?: string | null,
 					tooltip?: string | null,
-					icon?: any,
+					icon?: string,
 					onClick?: () => void,
 					selected?: ComputedRef<boolean> | boolean,
 					indicate?: ComputedRef<boolean> | boolean,
@@ -109,6 +109,7 @@ export default defineComponent({
 					tabs.push({
 						id: 'other',
 						title: null,
+						tooltip: this.$ts.showMore,
 						icon: 'fas fa-chevron-down',
 						onClick: this.choose,
 						indicate: computed(() => this.$i.hasUnreadAntenna || this.$i.hasUnreadChannel)
@@ -325,6 +326,7 @@ export default defineComponent({
 				.map(it => ({
 					text: it.name,
 					icon: it.icon,
+					show: it.show,
 					action: () => {
 						this.src = it.src;
 						this.saveSrc();
