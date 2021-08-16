@@ -12,7 +12,7 @@
 		</button>
 	</div>
 	<template v-if="info">
-		<div class="titleContainer" :class="{ isShowHeader: $store.state.newNoteNotiBehavior === 'header' }">
+		<div class="titleContainer">
 			<template v-if="info.tabs">
 				<div class="title" v-for="tab in info.tabs" :key="tab.id" :class="{ _button: tab.onClick, selected: tab.selected }" @click.stop="tab.onClick" v-tooltip="tab.tooltip">
 					<i v-if="tab.icon" class="fa-fw" :class="tab.icon" :key="tab.icon"/>
@@ -293,10 +293,6 @@ export default defineComponent({
 		overflow: auto;
 		white-space: nowrap;
 		text-align: left;
-
-		&.isShowHeader {
-			width: calc(85% - (var(--height) * 2));
-		}
 
 		> .title {
 			display: inline-block;
