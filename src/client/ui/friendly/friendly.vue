@@ -14,7 +14,7 @@
 
 		<main class="main _panel" @contextmenu.stop="onContextmenu">
 			<header class="header">
-				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo"/>
+				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo" :back-button="true" @back="back()"/>
 			</header>
 			<div class="content" :class="{ '_flat_': isMobile && !fullView, '_flat_friendly_': !isMobile && !fullView }">
 				<router-view v-slot="{ Component }">
@@ -190,6 +190,10 @@ export default defineComponent({
 
 		top() {
 			window.scroll({ top: 0, behavior: 'smooth' });
+		},
+
+		back() {
+			history.back();
 		},
 
 		showDrawerNav() {
