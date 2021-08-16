@@ -111,13 +111,13 @@ export default defineComponent({
 		});
 
 		return h(this.$store.state.animation ? TransitionGroup : 'div', this.$store.state.animation ? {
-			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap' : ''),
 			name: 'list',
 			tag: 'div',
 			'data-direction': this.direction,
 			'data-reversed': this.reversed ? 'true' : 'false',
 		} : {
-			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap _block' : ''),
+			class: 'sqadhkmv' + (this.isFriendlyUILegacy ? ' friendly-legacy' : '') + (this.isFriendlyUILegacy && this.isMobile ? '-mobile' : '') + (this.noGap ? ' noGap' : ''),
 		}, {
 			default: renderChildren
 		});

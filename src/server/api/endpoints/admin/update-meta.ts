@@ -149,6 +149,10 @@ export const meta = {
 			validator: $.optional.nullable.str,
 		},
 
+		deeplAuthKey: {
+			validator: $.optional.nullable.str,
+		},
+
 		enableTwitterIntegration: {
 			validator: $.optional.bool,
 		},
@@ -584,6 +588,14 @@ export default define(meta, async (ps, me) => {
 
 	if (ps.emojiSuggestionLimitationPremium !== undefined) {
 		set.emojiSuggestionLimitationPremium = ps.emojiSuggestionLimitationPremium;
+	}
+
+	if (ps.deeplAuthKey !== undefined) {
+		if (ps.deeplAuthKey === '') {
+			set.deeplAuthKey = null;
+		} else {
+			set.deeplAuthKey = ps.deeplAuthKey;
+		}
 	}
 
 	await getConnection().transaction(async transactionalEntityManager => {

@@ -1,5 +1,5 @@
 <template>
-<div class="cmuxhskf _root" :class="{ isMobile }" v-hotkey.global="keymap">
+<div class="cmuxhskf" :class="{ isMobile }" v-hotkey.global="keymap">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block _isolated"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block _isolated" fixed/>
 	<div v-if="!isFriendlyUI" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs': !isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
@@ -21,6 +21,7 @@
 	<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
 	<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
 	<XTimeline ref="tl"
+		:class="{ 'tl': !isFriendlyUI }"
 		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
 		:src="src"
 		:list="list ? list.id : null"
@@ -422,8 +423,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .cmuxhskf {
-	background: var(--bg);
-
 	> .new,
 		.new-friendly-legacy {
 		position: sticky;
@@ -495,10 +494,9 @@ export default defineComponent({
 						left: 0;
 						right: 0;
 						margin: 0 auto;
-						width: calc(100% - 16px);
-						height: 4px;
+						width: 100%;
+						height: 2px;
 						background: var(--accent);
-						border-radius: 8px 8px 0 0;
 					}
 				}
 
@@ -539,6 +537,10 @@ export default defineComponent({
 
 	> .tabs-friendly-legacy-mobile {
 		margin: 8px;
+	}
+
+	> .tl {
+		border-top: solid 0.5px var(--divider);
 	}
 }
 </style>

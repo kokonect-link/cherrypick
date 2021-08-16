@@ -232,6 +232,10 @@ export const meta = {
 				type: 'boolean' as const,
 				optional: false as const, nullable: false as const
 			},
+			translatorAvailable: {
+				type: 'boolean' as const,
+				optional: false as const, nullable: false as const
+			},
 			proxyAccountName: {
 				type: 'string' as const,
 				optional: false as const, nullable: true as const
@@ -515,6 +519,8 @@ export default define(meta, async (ps, me) => {
 
 		emojiSuggestionLimitation: instance.emojiSuggestionLimitation,
 		emojiSuggestionLimitationPremium: instance.emojiSuggestionLimitationPremium,
+
+		translatorAvailable: instance.deeplAuthKey != null,
 
 		...(ps.detail ? {
 			pinnedPages: instance.pinnedPages,

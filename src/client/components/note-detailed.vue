@@ -1,6 +1,6 @@
 <template>
 <div
-	class="note _block"
+	class="lxwezrsl _block"
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
@@ -65,6 +65,13 @@
 						<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
 						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
 						<a class="rp" v-if="appearNote.renote != null">RN:</a>
+						<div class="translation" v-if="translating || translation">
+							<MkLoading v-if="translating" mini/>
+							<div class="translated" v-else>
+								<b>{{ $t('translatedFrom', { x: translation.sourceLang }) }}:</b>
+								{{ translation.text }}
+							</div>
+						</div>
 					</div>
 					<div class="files" v-if="appearNote.files.length > 0">
 						<XMediaList :media-list="appearNote.files"/>
@@ -77,8 +84,8 @@
 			</div>
 			<footer class="footer">
 				<div class="info">
-					<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
-					<MkTime class="created-at" :time="note.createdAt" mode="detail"/>
+					<span class="mobile" v-if="appearNote.viaMobile"><i class="fas fa-mobile-alt"></i></span>
+					<MkTime class="created-at" :time="appearNote.createdAt" mode="detail"/>
 					<span class="divider">|</span>
 					<span class="visibility">
 						<i v-if="appearNote.visibility === 'public'" class="fas fa-globe"></i>
@@ -86,7 +93,7 @@
 						<i v-else-if="appearNote.visibility === 'followers'" class="fas fa-unlock"></i>
 						<i v-else-if="appearNote.visibility === 'specified'" class="fas fa-envelope"></i>
 					</span>
-					<I18n class="visibility-title" :src="appearNote.visibility === 'home' ? $ts._visibility.home : appearNote.visibility === 'followers' ? $ts._visibility.followers : appearNote.visibility === 'specified' ? $ts._visibility.specified : $ts._visibility.pubilc" tag="span"></I18n>
+					<span class="visibility-title">{{ $t('_visibility.' + note.visibility) }}</span>
 					<span class="localOnly" v-if="appearNote.localOnly"> ({{ $ts._visibility.localOnly }})</span>
 					<span class="remoteFollowersOnly" v-if="appearNote.remoteFollowersOnly"> ({{ $ts._visibility.remoteFollowersOnly }})</span>
 				</div>
@@ -201,6 +208,8 @@ export default defineComponent({
 			} | null,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isVisitor: localStorage.getItem('ui') !== "friendly || friendly-legacy || misskey || pope || chat || desktop || deck || ?zen",
+			translation: null,
+			translating: false,
 		};
 	},
 
@@ -648,6 +657,11 @@ export default defineComponent({
 					text: this.$ts.share,
 					action: this.share
 				},
+				this.$instance.translatorAvailable ? {
+					icon: 'fas fa-language',
+					text: this.$ts.translate,
+					action: this.translate
+				} : undefined,
 				null,
 				statePromise.then(state => state.isFavorited ? {
 					icon: 'fas fa-star',
@@ -881,6 +895,17 @@ export default defineComponent({
 			});
 		},
 
+		async translate() {
+			if (this.translation != null) return;
+			this.translating = true;
+			const res = await os.api('notes/translate', {
+				noteId: this.appearNote.id,
+				targetLang: localStorage.getItem('lang') || navigator.language,
+			});
+			this.translating = false;
+			this.translation = res;
+		},
+
 		focus() {
 			this.$el.focus();
 		},
@@ -903,7 +928,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.note {
+.lxwezrsl {
 	position: relative;
 	transition: box-shadow 0.1s ease;
 	overflow: hidden;
@@ -1103,6 +1128,13 @@ export default defineComponent({
 							margin-left: 4px;
 							font-style: oblique;
 							color: var(--renote);
+						}
+
+						> .translation {
+							border: solid 0.5px var(--divider);
+							border-radius: var(--radius);
+							padding: 12px;
+							margin-top: 8px;
 						}
 					}
 

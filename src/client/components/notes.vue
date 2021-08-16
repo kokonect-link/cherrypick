@@ -9,7 +9,7 @@
 		<div>{{ $ts.noNotes }}</div>
 	</div>
 
-	<div v-else>
+	<div v-else class="giivymft" :class="{ noGap }">
 		<div v-show="more && reversed" style="margin-bottom: var(--margin);">
 			<MkButton style="margin: 0 auto;" @click="fetchMoreFeature" :disabled="moreFetching" :style="{ cursor: moreFetching ? 'wait' : 'pointer' }">
 				<template v-if="!moreFetching">{{ $ts.loadMore }}</template>
@@ -18,18 +18,18 @@
 		</div>
 
 		<template v-if="isUser">
-			<XList v-if="($i.isPatron && $store.state.showAds) || !$i.isPatron" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
-				<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
+			<XList v-if="($i.isPatron && $store.state.showAds) || !$i.isPatron" ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true" class="notes">
+				<XNote class="qtqtichx" :note="note" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
 			</XList>
 
-			<XList v-else ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="false">
-				<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
+			<XList v-else ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="false" class="notes">
+				<XNote class="qtqtichx" :note="note" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
 			</XList>
 		</template>
 
 		<template v-else>
-			<XList ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true">
-				<XNote :note="note" class="_block" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
+			<XList ref="notes" :items="notes" v-slot="{ item: note }" :direction="reversed ? 'up' : 'down'" :reversed="reversed" :no-gap="noGap" :ad="true" class="notes">
+				<XNote class="qtqtichx" :note="note" @update:note="updated(note, $event)" :key="note._featuredId_ || note._prId_ || note.id"/>
 			</XList>
 		</template>
 
@@ -126,5 +126,22 @@ export default defineComponent({
 .fade-enter-from,
 .fade-leave-to {
 	opacity: 0;
+}
+
+.giivymft {
+	&.noGap {
+		> .notes {
+			background: var(--panel);
+		}
+	}
+
+	&:not(.noGap) {
+		> .notes {
+			.qtqtichx {
+				background: var(--panel);
+				border-radius: var(--radius);
+			}
+		}
+	}
 }
 </style>

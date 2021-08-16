@@ -52,6 +52,13 @@
 						<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
 						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
 						<a class="rp" v-if="appearNote.renote != null">RN:</a>
+						<div class="translation" v-if="translating || translation">
+							<MkLoading v-if="translating" mini/>
+							<div class="translated" v-else>
+								<b>{{ $t('translatedFrom', { x: translation.sourceLang }) }}:</b>
+								{{ translation.text }}
+							</div>
+						</div>
 					</div>
 					<div class="files" v-if="appearNote.files.length > 0">
 						<XMediaList :media-list="appearNote.files"/>
@@ -170,7 +177,9 @@ export default defineComponent({
 			muted: false,
 			isSticky: this.$route.name === 'tags',
 			renoteState: null,
-			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			translation: null,
+			translating: false,
 		};
 	},
 
@@ -601,6 +610,11 @@ export default defineComponent({
 						text: this.$ts.share,
 						action: this.share
 					},
+					this.$instance.translatorAvailable ? {
+						icon: 'fas fa-language',
+						text: this.$ts.translate,
+						action: this.translate
+					} : undefined,
 					null,
 					statePromise.then(state => state.isFavorited ? {
 						icon: 'fas fa-star',
@@ -834,6 +848,17 @@ export default defineComponent({
 			});
 		},
 
+		async translate() {
+			if (this.translation != null) return;
+			this.translating = true;
+			const res = await os.api('notes/translate', {
+				noteId: this.appearNote.id,
+				targetLang: localStorage.getItem('lang') || navigator.language,
+			});
+			this.translating = false;
+			this.translation = res;
+		},
+
 		focus() {
 			this.$el.focus();
 		},
@@ -869,7 +894,7 @@ export default defineComponent({
 	// 今度はその処理自体がパフォーマンス低下の原因にならないか懸念される。また、被リアクションでも高さは変化するため、やはり多少のズレは生じる
 	// 一度レンダリングされた要素はブラウザがよしなにサイズを覚えておいてくれるような実装になるまで待った方が良さそう(なるのか？)
 	//content-visibility: auto;
-	//contain-intrinsic-size: 0 128px;
+  //contain-intrinsic-size: 0 128px;
 
 	&.isSticky {
 		--stickyTop: 50px;
@@ -1077,6 +1102,13 @@ export default defineComponent({
 							margin-left: 4px;
 							font-style: oblique;
 							color: var(--renote);
+						}
+
+						> .translation {
+							border: solid 0.5px var(--divider);
+							border-radius: var(--radius);
+							padding: 12px;
+							margin-top: 8px;
 						}
 					}
 
