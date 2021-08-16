@@ -4,7 +4,7 @@
 		<div class="header">
 			<button class="_button" v-if="withOkButton" @click="$emit('close')"><i class="fas fa-times"></i></button>
 			<span class="title">
-				<i class="fas fa-broadcast-tower"/>
+				<i class="fas fa-bullhorn"/>
 				<slot name="header"></slot>
 			</span>
 			<button class="_button" v-if="!withOkButton" @click="$emit('close')"><i class="fas fa-times"></i></button>

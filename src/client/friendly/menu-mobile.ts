@@ -46,7 +46,7 @@ export const menuDef = {
 	},
 	announcements: {
 		title: 'announcements',
-		icon: 'fas fa-broadcast-tower',
+		icon: 'fas fa-bullhorn',
 		indicated: computed(() => $i != null && $i.hasUnreadAnnouncement),
 		to: '/announcements',
 	},

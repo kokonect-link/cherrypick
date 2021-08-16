@@ -121,7 +121,7 @@ export default defineComponent({
 						id: 'announcements',
 						title: null,
 						tooltip: this.$ts.announcements,
-						icon: 'fas fa-broadcast-tower',
+						icon: 'fas fa-bullhorn',
 						onClick: () => {
 							os.popup(import('@client/components/announcements-window.vue'), {
 								announcements: this.announcements
