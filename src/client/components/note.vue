@@ -4,7 +4,7 @@
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote, isSticky, isFriendlyUI }"
+	:class="{ renote: isRenote, isSticky, 'friendly': isFriendlyUI && !isMobile, 'friendly-mobile': isFriendlyUI && isMobile }"
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
@@ -133,6 +133,7 @@ import { extractUrlFromMfm } from '@/misc/extract-url-from-mfm';
 import notePage from "@client/filters/note";
 
 const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
@@ -178,6 +179,7 @@ export default defineComponent({
 			isSticky: this.$route.name === 'tags',
 			renoteState: null,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			translation: null,
 			translating: false,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
@@ -927,8 +929,14 @@ export default defineComponent({
 		opacity: 1;
 	}
 
-	&.isFriendlyUI {
+	&.friendly{
 		border: solid 1px var(--divider);
+	}
+
+	&.friendly-mobile {
+		border-radius: 0 !important;
+		border-top: solid 1px var(--divider);
+		border-bottom: solid 1px var(--divider);
 	}
 
 	> .info {

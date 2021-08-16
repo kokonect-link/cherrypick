@@ -1294,5 +1294,6 @@ export default defineComponent({
 
 .friendly {
 	border-radius: var(--radius);
+	border: solid 1px var(--divider);
 }
 </style>

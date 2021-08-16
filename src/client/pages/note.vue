@@ -12,7 +12,7 @@
 				<!-- <MkButton v-if="!showNext && hasNext" class="load next" @click="showNext = true"><i class="fas fa-chevron-up"></i></MkButton> -->
 				<div class="note _gap">
 					<MkRemoteCaution v-if="note.user.host != null" :href="note.url || note.uri" class="_isolated"/>
-					<XNoteDetailed v-model:note="note" :key="note.id" class="_isolated note"/>
+					<XNoteDetailed v-model:note="note" :key="note.id" class="note" :class="{ '_isolated': !isFriendlyUI }"/>
 				</div>
 				<div class="_content clips" v-if="clips && clips.length > 0">
 					<div class="title">{{ $ts.clip }}</div>
@@ -98,6 +98,7 @@ export default defineComponent({
 					sinceId: this.note.id,
 				})
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 	watch: {
