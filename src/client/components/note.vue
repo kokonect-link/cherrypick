@@ -4,7 +4,7 @@
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote, isSticky }"
+	:class="{ renote: isRenote, isSticky, isFriendlyUI }"
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
@@ -180,6 +180,7 @@ export default defineComponent({
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			translation: null,
 			translating: false,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 		};
 	},
 
@@ -924,6 +925,10 @@ export default defineComponent({
 
 	&:hover > .article > .main > .footer > .button {
 		opacity: 1;
+	}
+
+	&.isFriendlyUI {
+		border: solid 1px var(--divider);
 	}
 
 	> .info {
