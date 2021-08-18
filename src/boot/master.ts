@@ -30,7 +30,7 @@ function greet() {
 		//#endregion
 
 		console.log(chalk.hex('#ffa9c3').bold(' Cherry') + chalk.hex('#95e3e8').bold('Pick') + (' is an open-source decentralized microblogging platform based from') + (chalk.hex('#9ec23f').bold(' Misskey') + ('.')));
-		console.log(chalk.keyword('orange')(' If you like CherryPick, please donate to support development. https://www.patreon.com/noridev'));
+		console.log(chalk.keyword('orange')(' If you like ') + chalk.hex('#ffa9c3').bold('Cherry') + chalk.hex('#95e3e8').bold('Pick') + chalk.keyword('orange')(', please donate to support development. https://www.patreon.com/noridev'));
 		// console.log(chalk.hex('#ffa9c3').bold(' KOKO') + chalk.hex('#95e3e8').bold('NECT') + chalk.hex('#ffa9c3')(' with') + chalk.hex('#95e3e8').bold(' NoriDev.'));
 
 		console.log('');
