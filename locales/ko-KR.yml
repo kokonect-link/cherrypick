@@ -841,6 +841,7 @@ learnMore: "자세히"
 misskeyUpdated: "CherryPick이 업데이트 되었어요!"
 whatIsNew: "패치 정보 보기"
 translate: "번역"
+translateThisNote: "이 노트 번역하기"
 translatedFrom: "{x}에서 번역"
 
 _docs:

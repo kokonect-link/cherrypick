@@ -83,6 +83,9 @@
 				<MkA v-if="appearNote.channel && !inChannel" class="channel" :to="`/channels/${appearNote.channel.id}`"><i class="fas fa-satellite-dish"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
 			<footer class="footer">
+				<button v-if="$instance.translatorAvailable" @click="translate()" class="translation _button">
+					<i class="fas fa-language"></i><span>{{ $ts.translateThisNote }}</span>
+				</button>
 				<div class="info">
 					<span class="mobile" v-if="appearNote.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 					<MkTime class="created-at" :time="appearNote.createdAt" mode="detail"/>
@@ -1217,6 +1220,15 @@ export default defineComponent({
 
 					&.reacted {
 						color: var(--accent);
+					}
+				}
+
+				> .translation {
+					color: var(--cherry);
+					font-size: smaller;
+
+					i {
+						margin-right: 5px;
 					}
 				}
 			}
