@@ -7,6 +7,16 @@
 
 -->
 
+## 12.x.x (unreleased)
+
+### Improvements
+- 依存関係の更新
+- localStorageのaccountsはindexedDBで保持するように
+- ActivityPub: ジョブキューの試行タイミングを調整 (#7635)
+
+### Bugfixes
+- チャンネルを作成しているとアカウントを削除できないのを修正
+
 ## 12.88.0 (2021/08/17)
 
 ### Features
