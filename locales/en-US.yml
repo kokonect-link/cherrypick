@@ -843,6 +843,7 @@ whatIsNew: "Show changes"
 translate: "Translate"
 translateThisNote: "Translate this note"
 translatedFrom: "Translated from {x}"
+disableRightClick: "Prohibit right click"
 _docs:
   continueReading: "Read more"
   features: "Features"

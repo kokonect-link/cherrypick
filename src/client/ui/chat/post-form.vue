@@ -26,6 +26,7 @@
 				<button class="_button" @click="chooseFileFrom" v-tooltip="$ts.attachFile"><i class="fas fa-photo-video"></i></button>
 				<button class="_button" @click="togglePoll" :class="{ active: poll }" v-tooltip="$ts.poll"><i class="fas fa-poll-h"></i></button>
 				<button class="_button" @click="useCw = !useCw" :class="{ active: useCw }" v-tooltip="$ts.useCw"><i class="fas fa-eye-slash"></i></button>
+				<button class="_button" @click="disableRightClick = !disableRightClick" :class="{ active: disableRightClick }" v-tooltip="$ts.disableRightClick"><i class="fas fa-mouse"></i></button>
 				<button class="_button" @click="insertMention" v-tooltip="$ts.mention"><i class="fas fa-at"></i></button>
 				<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
 				<button class="_button" @click="showActions" v-tooltip="$ts.plugin" v-if="postFormActions.length > 0"><i class="fas fa-plug"></i></button>
@@ -137,6 +138,7 @@ export default defineComponent({
 				}
 			}),
 			postFormActions,
+			disableRightClick: false,
 		};
 	},
 
@@ -284,6 +286,7 @@ export default defineComponent({
 					this.text = draft.data.text;
 					this.useCw = draft.data.useCw;
 					this.cw = draft.data.cw;
+					this.disableRightClick = draft.data.disableRightClick;
 					this.visibility = draft.data.visibility;
 					this.localOnly = draft.data.localOnly;
 					this.files = (draft.data.files || []).filter(e => e);
@@ -306,6 +309,7 @@ export default defineComponent({
 				this.visibility = init.visibility;
 				this.localOnly = init.localOnly;
 				this.quoteId = init.renote ? init.renote.id : null;
+				this.disableRightClick = init.disableRightClick != null;
 			}
 
 			this.$nextTick(() => this.watch());
@@ -317,6 +321,7 @@ export default defineComponent({
 			this.$watch('text', () => this.saveDraft());
 			this.$watch('useCw', () => this.saveDraft());
 			this.$watch('cw', () => this.saveDraft());
+			this.$watch('disableRightClick', () => this.saveDraft());
 			this.$watch('poll', () => this.saveDraft());
 			this.$watch('files', () => this.saveDraft(), { deep: true });
 			this.$watch('visibility', () => this.saveDraft());
@@ -518,6 +523,7 @@ export default defineComponent({
 					text: this.text,
 					useCw: this.useCw,
 					cw: this.cw,
+					disableRightClick: this.disableRightClick,
 					visibility: this.visibility,
 					localOnly: this.localOnly,
 					files: this.files,
@@ -548,7 +554,8 @@ export default defineComponent({
 				localOnly: this.localOnly,
 				visibility: this.visibility,
 				visibleUserIds: this.visibility == 'specified' ? this.visibleUsers.map(u => u.id) : undefined,
-				viaMobile: isMobile
+				viaMobile: isMobile,
+				disableRightClick: this.disableRightClick,
 			};
 
 			// plugin

@@ -65,6 +65,11 @@
 						<MkA class="reply" v-if="appearNote.replyId" :to="`/notes/${appearNote.replyId}`"><i class="fas fa-reply"></i></MkA>
 						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
 						<a class="rp" v-if="appearNote.renote != null">RN:</a>
+						<div class="translator">
+							<button v-if="$instance.translatorAvailable" @click="translate()" class="_button">
+								<i class="fas fa-language"></i><span>{{ $ts.translateThisNote }}</span>
+							</button>
+						</div>
 						<div class="translation" v-if="translating || translation">
 							<MkLoading v-if="translating" mini/>
 							<div class="translated" v-else>
@@ -74,7 +79,8 @@
 						</div>
 					</div>
 					<div class="files" v-if="appearNote.files.length > 0">
-						<XMediaList :media-list="appearNote.files"/>
+						<XMediaList v-if="appearNote.disableRightClick" @contextmenu.prevent :media-list="appearNote.files"/>
+						<XMediaList v-else :media-list="appearNote.files"/>
 					</div>
 					<XPoll v-if="appearNote.poll" :note="appearNote" ref="pollViewer" class="poll"/>
 					<MkUrlPreview v-for="url in urls" :url="url" :key="url" :compact="true" :detail="true" class="url-preview"/>
@@ -83,13 +89,10 @@
 				<MkA v-if="appearNote.channel && !inChannel" class="channel" :to="`/channels/${appearNote.channel.id}`"><i class="fas fa-satellite-dish"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
 			<footer class="footer">
-				<button v-if="$instance.translatorAvailable" @click="translate()" class="translation _button">
-					<i class="fas fa-language"></i><span>{{ $ts.translateThisNote }}</span>
-				</button>
 				<div class="info">
 					<span class="mobile" v-if="appearNote.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 					<MkTime class="created-at" :time="appearNote.createdAt" mode="detail"/>
-					<span class="divider">|</span>
+					<div class="divider"></div>
 					<span class="visibility">
 						<i v-if="appearNote.visibility === 'public'" class="fas fa-globe"></i>
 						<i v-if="appearNote.visibility === 'home'" class="fas fa-home"></i>
@@ -167,10 +170,12 @@ import * as os from '@client/os';
 import { noteActions, noteViewInterruptors } from '@client/store';
 import { reactionPicker } from '@client/scripts/reaction-picker';
 import { extractUrlFromMfm } from '@/misc/extract-url-from-mfm';
+import Button from "../widgets/button.vue";
 
 // TODO: note.vueとほぼ同じなので共通化したい
 export default defineComponent({
 	components: {
+		Button,
 		XSub,
 		XNoteHeader,
 		XNotePreview,
@@ -1133,6 +1138,17 @@ export default defineComponent({
 							color: var(--renote);
 						}
 
+						> .translator {
+							button {
+								color: var(--pick);
+								font-size: smaller;
+
+								i {
+									margin-right: 5px;
+								}
+							}
+						}
+
 						> .translation {
 							border: solid 0.5px var(--divider);
 							border-radius: var(--radius);
@@ -1177,7 +1193,10 @@ export default defineComponent({
 					}
 
 					> .divider {
-						margin: 0 5px;
+						height: 32px;
+						width: 1px;
+						margin: auto 8px;
+						background: var(--divider);
 					}
 
 					> .visibility-title {
@@ -1220,15 +1239,6 @@ export default defineComponent({
 
 					&.reacted {
 						color: var(--accent);
-					}
-				}
-
-				> .translation {
-					color: var(--cherry);
-					font-size: smaller;
-
-					i {
-						margin-right: 5px;
 					}
 				}
 			}

@@ -88,6 +88,11 @@ export class Note {
 	@Column('boolean', {
 		default: false
 	})
+	public disableRightClick: boolean;
+
+	@Column('boolean', {
+		default: false
+	})
 	public remoteFollowersOnly: boolean;
 
 	@Column('smallint', {

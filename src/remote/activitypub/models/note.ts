@@ -251,6 +251,7 @@ export async function createNote(value: string | IObject, resolver?: Resolver, s
 		text,
 		viaMobile: false,
 		localOnly: false,
+		disableRightClick: false,
 		visibility,
 		visibleUsers,
 		apMentions,

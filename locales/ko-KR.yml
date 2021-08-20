@@ -843,6 +843,7 @@ whatIsNew: "패치 정보 보기"
 translate: "번역"
 translateThisNote: "이 노트 번역하기"
 translatedFrom: "{x}에서 번역"
+disableRightClick: "우클릭 방지"
 
 _docs:
   continueReading: "계속 읽기"

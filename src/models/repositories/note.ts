@@ -184,6 +184,7 @@ export class NoteRepository extends Repository<Note> {
 			remoteFollowersOnly: note.remoteFollowersOnly || undefined,
 			visibleUserIds: note.visibility === 'specified' ? note.visibleUserIds : undefined,
 			viaMobile: note.viaMobile || undefined,
+			disableRightClick: note.disableRightClick || undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
 			reactions: convertLegacyReactions(note.reactions),
@@ -330,6 +331,10 @@ export const packedNoteSchema = {
 			ref: 'Note'
 		},
 		viaMobile: {
+			type: 'boolean' as const,
+			optional: true as const, nullable: false as const,
+		},
+		disableRightClick: {
 			type: 'boolean' as const,
 			optional: true as const, nullable: false as const,
 		},

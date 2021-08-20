@@ -100,6 +100,7 @@ type Option = {
 	poll?: IPoll | null;
 	viaMobile?: boolean | null;
 	localOnly?: boolean | null;
+	disableRightClick?: boolean | null;
 	remoteFollowersOnly?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
@@ -134,6 +135,7 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	if (data.visibility == null) data.visibility = 'public';
 	if (data.viaMobile == null) data.viaMobile = false;
 	if (data.localOnly == null) data.localOnly = false;
+	if (data.disableRightClick == null) data.disableRightClick = false;
 	if (data.remoteFollowersOnly == null) data.remoteFollowersOnly = false;
 	if (data.channel != null) data.visibility = 'public';
 	if (data.channel != null) data.visibleUsers = [];
@@ -485,6 +487,8 @@ async function insertNote(user: { id: User['id']; host: User['host']; }, data: O
 		userId: user.id,
 		viaMobile: data.viaMobile!,
 		localOnly: data.localOnly!,
+		disableRightClick: data.disableRightClick!,
+
 		remoteFollowersOnly: data.remoteFollowersOnly!,
 		visibility: data.visibility as any,
 		visibleUserIds: data.visibility == 'specified'

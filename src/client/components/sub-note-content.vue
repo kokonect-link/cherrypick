@@ -10,7 +10,8 @@
 	<XMediaList v-if="note.files.length > 0 && $store.state.showItemDetails" :media-list="note.files"/>
 	<details v-else-if="note.files.length > 0">
 		<summary>({{ $t('withNFiles', { n: note.files.length }) }})</summary>
-		<XMediaList :media-list="note.files"/>
+		<XMediaList v-if="note.disableRightClick" @contextmenu.prevent :media-list="note.files"/>
+		<XMediaList v-else :media-list="note.files"/>
 	</details>
 	<XPoll v-if="note.poll && $store.state.showItemDetails" :note="note"/>
 	<details v-else-if="note.poll">

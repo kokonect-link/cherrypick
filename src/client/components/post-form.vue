@@ -61,6 +61,7 @@
 			<button class="_button" @click="togglePoll" :class="{ active: poll }" v-tooltip="$ts.poll"><i class="fas fa-poll-h"></i></button>
 			<button class="_button" @click="useCw = !useCw" :class="{ active: useCw }" v-tooltip="$ts.useCw"><i class="fas fa-eye-slash"></i></button>
 			<button class="_button" @click="useBroadcast = !useBroadcast" :class="{ active: useBroadcast }" v-tooltip="$ts.broadcastMode"><i class="fas fa-bullhorn"/></button>
+			<button class="_button" @click="disableRightClick = !disableRightClick" :class="{ active: disableRightClick }" v-tooltip="$ts.disableRightClick"><i class="fas fa-mouse"></i></button>
 			<button class="_button" @click="insertFace" v-tooltip="$ts.gacha"><i class="fas fa-fish"/></button>
 			<button v-if="currentAccount && accounts.length > 1" class="_button switch-user" @click="switchUser" v-tooltip="$ts.switchUser">
 				<MkAvatar class="avatar" :user="currentAccount" disable-link disable-preview />
@@ -194,6 +195,7 @@ export default defineComponent({
 			requiredConfirmation: this.$store.state.confirmBeforePost,
 			useBroadcast: false,
 			broadcastText: '',
+			disableRightClick: false,
 		};
 	},
 
@@ -386,6 +388,7 @@ export default defineComponent({
 					this.text = draft.data.text;
 					this.useCw = draft.data.useCw;
 					this.cw = draft.data.cw;
+					this.disableRightClick = draft.data.disableRightClick;
 					this.useBroadcast = draft.data.useBroadcast;
 					this.broadcastText = draft.data.broadcastText;
 					this.visibility = draft.data.visibility;
@@ -412,6 +415,7 @@ export default defineComponent({
 				this.localOnly = init.localOnly;
 				this.remoteFollowersOnly = init.remoteFollowersOnly;
 				this.quoteId = init.renote ? init.renote.id : null;
+				this.disableRightClick = init.disableRightClick != null;
 			}
 
 			this.$nextTick(() => this.watch());
@@ -423,6 +427,7 @@ export default defineComponent({
 			this.$watch('text', () => this.saveDraft());
 			this.$watch('useCw', () => this.saveDraft());
 			this.$watch('cw', () => this.saveDraft());
+			this.$watch('disableRightClick', () => this.saveDraft());
 			this.$watch('useBroadcast', this.saveDraft);
 			this.$watch('broadcastText', this.saveDraft);
 			this.$watch('poll', () => this.saveDraft());
@@ -665,6 +670,7 @@ export default defineComponent({
 					text: this.text,
 					useCw: this.useCw,
 					cw: this.cw,
+					disableRightClick: this.disableRightClick,
 					useBroadcast: this.useBroadcast,
 					broadcastText: this.broadcastText,
 					visibility: this.visibility,
@@ -713,7 +719,8 @@ export default defineComponent({
 				remoteFollowersOnly: this.remoteFollowersOnly,
 				visibility: this.visibility,
 				visibleUserIds: this.visibility == 'specified' ? this.visibleUsers.map(u => u.id) : undefined,
-				viaMobile: isMobile
+				viaMobile: isMobile,
+				disableRightClick: this.disableRightClick,
 			};
 
 			if (this.withHashtags && this.hashtags && this.hashtags.trim() !== '') {
@@ -918,7 +925,7 @@ export default defineComponent({
 					margin-left: 8px;
 				}
 			}
-			
+
 			> .local-only {
 				display: flex;
 				align-items: center;

@@ -843,6 +843,7 @@ whatIsNew: "更新情報を見る"
 translate: "翻訳"
 translateThisNote: "このノートを翻訳する"
 translatedFrom: "{x}から翻訳"
+disableRightClick: "右クリックを禁止"
 
 _docs:
   continueReading: "続きを読む"

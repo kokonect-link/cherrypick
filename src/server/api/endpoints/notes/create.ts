@@ -67,6 +67,11 @@ export const meta = {
 			default: false,
 		},
 
+		disableRightClick: {
+			validator: $.optional.bool,
+			default: false,
+		},
+
 		remoteFollowersOnly: {
 			validator: $.optional.bool,
 			default: false,
@@ -290,6 +295,7 @@ export default define(meta, async (ps, user) => {
 		cw: ps.cw,
 		viaMobile: ps.viaMobile,
 		localOnly: ps.localOnly,
+		disableRightClick: ps.disableRightClick,
 		remoteFollowersOnly: ps.remoteFollowersOnly,
 		visibility: ps.visibility,
 		visibleUsers,
