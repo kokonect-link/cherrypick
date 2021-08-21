@@ -10,12 +10,14 @@
 ## 12.x.x (unreleased)
 
 ### Improvements
-- 依存関係の更新
+- 絵文字オートコンプリートの挙動を改修
 - localStorageのaccountsはindexedDBで保持するように
 - ActivityPub: ジョブキューの試行タイミングを調整 (#7635)
+- 依存関係の更新
 
 ### Bugfixes
 - チャンネルを作成しているとアカウントを削除できないのを修正
+- ノートの「削除して編集」をするとアンケートの選択肢が[object Object]になる問題を修正
 
 ## 12.88.0 (2021/08/17)
 
