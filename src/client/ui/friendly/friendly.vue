@@ -249,7 +249,7 @@ export default defineComponent({
 			if (this.pageInfo && this.pageInfo.action) {
 				this.pageInfo.action.handler(e);
 			} else {
-				os.post();
+				os.post_form();
 			}
 		},
 	}

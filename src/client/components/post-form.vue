@@ -1,5 +1,5 @@
 <template>
-<div class="gafaadew" :class="{ modal, _popup: modal }"
+<div class="gafaadew" :class="{ modal, _popup: modal, isMobile }"
 	v-size="{ max: [500] }"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
@@ -16,7 +16,7 @@
 			<button class="_button" @click="withHashtags = !withHashtags" :class="{ active: withHashtags }" v-tooltip="$ts.hashtags"><i class="fas fa-hashtag"></i></button>
 			<button class="_button" @click="insertEmoji" v-tooltip="$ts.emoji"><i class="fas fa-laugh-squint"></i></button>
 			<div class="divider"></div>
-			<button class="_button help" v-tooltip="$ts.help" @click="help"><i class="fas fa-question-circle"/></button>
+			<!-- <button class="_button help" v-tooltip="$ts.help" @click="help"><i class="fas fa-question-circle"/></button> -->
 			<span class="local-only" v-if="localOnly"><i class="fas fa-network-wired"></i></span>
 			<span class="local-only" v-if="remoteFollowersOnly"><i class="fas fa-heartbeat"></i></span>
 			<button class="_button visibility" @click="setVisibility" ref="visibilityButton" v-tooltip="$ts.visibility" :disabled="channel != null">
@@ -27,7 +27,13 @@
 			</button>
 		</div>
 	</header>
-	<div class="form" :class="{ fixed }">
+
+	<MkTab v-model:value="tab" style="display: initial !important;">
+		<option value="edit">{{ $ts.edit }}</option>
+		<option value="preview">{{ $ts.preview }}</option>
+	</MkTab>
+
+	<div class="form" :class="{ fixed }" v-if="tab === 'edit'">
 		<XNotePreview class="preview" v-if="reply" :note="reply"/>
 		<XNotePreview class="preview" v-if="renote" :note="renote"/>
 		<div class="with-quote" v-if="quoteId"><i class="fas fa-quote-left"></i> {{ $ts.quoteAttached }}<button @click="quoteId = null"><i class="fas fa-times"></i></button></div>
@@ -52,6 +58,7 @@
 			<button class="_button" @click="insert(' search')" v-tooltip="$ts._mfm.search"><i class="fas fa-search"/></button>
 			<button class="_button" @click="insert('`')" v-tooltip="$ts._mfm.inlineCode"><i class="fas fa-code"/></button>
 			<button class="_button" @click="insert('```')" v-tooltip="$ts._mfm.blockCode"><i class="fas fa-file-code"/></button>
+			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
 		</div>
 		<input v-show="useBroadcast" ref="broadcastText" class="broadcastText" v-model="broadcastText" :placeholder="$ts.broadcastTextDescription" @keydown="onKeydown">
 		<XPostFormAttaches class="attaches" :files="files" @updated="updateFiles" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
@@ -67,16 +74,22 @@
 				<MkAvatar class="avatar" :user="currentAccount" disable-link disable-preview />
 			</button>
 			<button class="_button" @click="showActions" v-tooltip="$ts.plugin" v-if="postFormActions.length > 0"><i class="fas fa-plug"></i></button>
-			<span class="text-count" :class="{ over: textLength > max }">{{ max - textLength }}</span>
+		</footer>
+		<footer>
+			<div style="height: 50px;"></div>
 			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk" data-cy-open-post-form-submit>{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
 		</footer>
 		<datalist id="hashtags">
 			<option v-for="hashtag in recentHashtags" :value="hashtag" :key="hashtag"/>
 		</datalist>
-		<details v-if="text" class="note-preview" :open="isPreviewOpened" @toggle="isPreviewOpened = $event.target.open">
-			<summary>{{ $ts.preview }}</summary>
-			<XNotePreview class="note" :note="previewNote"/>
-		</details>
+	</div>
+
+	<div class="form" v-else-if="tab === 'preview'">
+		<XNotePreview class="note-preview" :note="previewNote"/>
+		<footer>
+			<div style="height: 40px;"></div>
+			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk" data-cy-open-post-form-submit>{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
+		</footer>
 	</div>
 </div>
 </template>
@@ -103,15 +116,21 @@ import { isMobile } from '@client/scripts/is-mobile';
 import { throttle } from 'throttle-debounce';
 import MkInfo from '@client/components/ui/info.vue';
 import MkSwitch from '@client/components/ui/switch.vue';
+import MkTab from '@client/components/tab-post-form.vue';
 import { defaultStore } from '@client/store';
+import Preview from "@client/pages/preview.vue";
+
+const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
+		Preview,
 		XNotePreview,
 		XPostFormAttaches: defineAsyncComponent(() => import('./post-form-attaches.vue')),
 		XPollEditor: defineAsyncComponent(() => import('./poll-editor.vue')),
 		MkInfo,
-		MkSwitch
+		MkSwitch,
+		MkTab
 	},
 
 	inject: ['modal'],
@@ -196,6 +215,8 @@ export default defineComponent({
 			useBroadcast: false,
 			broadcastText: '',
 			disableRightClick: false,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			tab: 'edit',
 		};
 	},
 
@@ -863,6 +884,12 @@ export default defineComponent({
 		max-width: 520px;
 	}
 
+	&.isMobile {
+		margin: initial !important;
+		padding: initial !important;
+		border-radius: initial !important;
+	}
+
 	> header {
 		z-index: 1000;
 		height: 66px;
@@ -942,21 +969,10 @@ export default defineComponent({
 	}
 
 	> .form {
-		> .preview,
-		> .note-preview {
+		margin-top: 16px;
+
+		> .preview {
 			padding: 16px;
-
-			> summary {
-				margin-bottom: 8px;
-			}
-
-			> .note {
-				padding-top: 10px;
-			}
-		}
-
-		> .note-preview {
-			padding: 0 16px 16px;
 		}
 
 		> .with-quote {
@@ -1067,8 +1083,9 @@ export default defineComponent({
 		> .text-func {
 			display: flex;
 			position: relative;
-			padding: 8px 16px 0;
+			padding: 0 16px;
 			border-top: .5px solid var(--divider);
+			align-items: center;
 
 			> button {
 				font-size: 14px;
@@ -1093,6 +1110,16 @@ export default defineComponent({
 				margin: auto 8px;
 				background: var(--divider);
 			}
+
+			> .text-count {
+				margin: 0 5px 0 auto;
+				opacity: 0.7;
+				line-height: 50px;
+			}
+		}
+
+		> .note-preview {
+			padding: 16px;
 		}
 
 		> footer {
@@ -1129,21 +1156,14 @@ export default defineComponent({
 				}
 			}
 
-			> .text-count {
-				margin: 0 5px 0 auto;
-				opacity: 0.7;
-				line-height: 66px;
-
-				@media (max-width: 500px) {
-					line-height: 50px;
-				}
-			}
-
 			> .submit {
-				padding: 0 8px;
+				padding: 0 16px;
 				font-weight: bold;
-				border-radius: 4px;
+				border-radius: 999px;
 				width: auto;
+				position: absolute;
+				right: 15px;
+				bottom: 15px;
 
 				&:disabled {
 					opacity: 0.7;
@@ -1151,6 +1171,10 @@ export default defineComponent({
 
 				&:hover {
 					background: var(--accentLighten);
+				}
+
+				@media (max-width: 600px) {
+					bottom: initial;
 				}
 
 				> i {
