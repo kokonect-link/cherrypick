@@ -7,12 +7,16 @@
 
 -->
 
-## 12.x.x (unreleased)
+## 12.89.0 (2021/08/21)
 
 ### Improvements
+- アカウント削除の安定性を向上
 - 絵文字オートコンプリートの挙動を改修
 - localStorageのaccountsはindexedDBで保持するように
 - ActivityPub: ジョブキューの試行タイミングを調整 (#7635)
+- API: sw/unregisterを追加
+- ワードミュートのドキュメントを追加
+- クライアントのデザインの調整
 - 依存関係の更新
 
 ### Bugfixes

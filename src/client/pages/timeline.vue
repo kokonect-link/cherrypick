@@ -1,5 +1,5 @@
 <template>
-<div class="cmuxhskf" :class="{ isMobile }" v-hotkey.global="keymap">
+<div class="cmuxhskf" :class="{ isMobile }" v-hotkey.global="keymap" v-size="{ min: [800] }">
 	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block _isolated"/>
 	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block _isolated" fixed/>
 	<div v-if="!isFriendlyUI" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs': !isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
@@ -20,18 +20,20 @@
 	</div>
 	<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
 	<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
-	<XTimeline ref="tl"
-		:class="{ 'tl': !isFriendlyUI }"
-		:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
-		:src="src"
-		:list="list ? list.id : null"
-		:antenna="antenna ? antenna.id : null"
-		:channel="channel ? channel.id : null"
-		:sound="true"
-		@before="before()"
-		@after="after()"
-		@queue="queueUpdated"
-	/>
+	<div class="tl">
+		<XTimeline ref="tl"
+			:class="{ 'tl': !isFriendlyUI }"
+			:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
+			:src="src"
+			:list="list ? list.id : null"
+			:antenna="antenna ? antenna.id : null"
+			:channel="channel ? channel.id : null"
+			:sound="true"
+			@before="before()"
+			@after="after()"
+			@queue="queueUpdated"
+		/>
+	</div>
 </div>
 </template>
 
@@ -465,6 +467,7 @@ export default defineComponent({
 		padding: 0 8px;
 		white-space: nowrap;
 		overflow: auto;
+		border-bottom: solid 0.5px var(--divider);
 
 		// 影の都合上
 		position: relative;
@@ -517,6 +520,18 @@ export default defineComponent({
 				vertical-align: middle;
 				margin: 0 8px;
 				background: var(--divider);
+			}
+		}
+	}
+
+	&.min-width_800px {
+		> .tl {
+			background: var(--bg);
+			padding: 32px 0;
+
+			> .tl {
+				max-width: 800px;
+				margin: 0 auto;
 			}
 		}
 	}
