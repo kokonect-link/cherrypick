@@ -1184,6 +1184,7 @@ export default defineComponent({
 
 			> .footer {
 				> .info {
+					display: flex;
 					margin: 16px 0;
 					opacity: 0.7;
 					font-size: 0.9em;
@@ -1193,10 +1194,10 @@ export default defineComponent({
 					}
 
 					> .divider {
-						height: 32px;
+						height: 16px;
 						width: 1px;
 						margin: auto 8px;
-						background: var(--divider);
+						background: var(--fg);
 					}
 
 					> .visibility-title {
