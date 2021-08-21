@@ -354,6 +354,7 @@ export default defineComponent({
 			background: var(--bg);
 			box-shadow: 0 0 0 1px var(--divider);
 			border-radius: 0;
+			border: initial;
 			--margin: 12px;
 
 			> .header {
