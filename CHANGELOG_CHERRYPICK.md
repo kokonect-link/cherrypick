@@ -1,11 +1,20 @@
 <!--
-## 12.x.x (unreleased)
+## 12.x.x-cp-2.x.x (unreleased)
 
 ### Improvements
 
 ### Bugfixes
 
 -->
+
+## 12.x.x-cp-2.x.x (unreleased)
+
+### Improvements
+- 클라이언트 디자인 조정
+
+### Bugfixes
+
+---
 
 ## 12.89.0-cp-2.1.0 (2021/08/23)
 
