@@ -148,7 +148,7 @@ export default defineComponent({
 	height: 32px;
 	margin: 2px;
 	padding: 0 12px;
-	border-radius: 100%;
+	border-radius: 999px;
 
 	&.canToggle {
 		background: rgba(0, 0, 0, 0.05);
