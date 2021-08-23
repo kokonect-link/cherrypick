@@ -845,6 +845,7 @@ translateThisNote: "이 노트 번역하기"
 translatedFrom: "{x}에서 번역"
 disableRightClick: "우클릭 방지"
 accountDeletionInProgress: "계정 삭제 작업을 진행하고 있어요"
+usernameInfo: "서버상에서 계정을 식별하기 위한 이름. 알파벳(a~z, A~Z), 숫자(0~9) 및 언더바(_)를 사용할 수 있어요. 사용자명은 나중에 변경할 수 없어요."
 
 _accountDelete:
   accountDelete: "계정 삭제"
