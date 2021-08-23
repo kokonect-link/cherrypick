@@ -111,7 +111,7 @@ export default defineComponent({
 
 		async openAccountMenu(ev) {
 			this.isAccountMenuMode = !this.isAccountMenuMode;
-			const storedAccounts = getAccounts().filter(x => x.id !== this.$i.id);
+			const storedAccounts = (await getAccounts()).filter(x => x.id !== this.$i.id);
 			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
 
 			const accountItemPromises = storedAccounts.map(a => new Promise(res => {
@@ -126,10 +126,10 @@ export default defineComponent({
 				});
 			}));
 
-			os.popupMenu([...[{
+			await os.popupMenu([...[{
 				type: 'link',
 				text: this.$ts.profile,
-				to: `/@${ this.$i.username }`,
+				to: `/@${this.$i.username}`,
 				avatar: this.$i,
 			}, null, ...accountItemPromises, {
 				icon: 'fas fa-plus',
@@ -137,10 +137,14 @@ export default defineComponent({
 				action: () => {
 					os.popupMenu([{
 						text: this.$ts.existingAccount,
-						action: () => { this.addAccount(); },
+						action: () => {
+							this.addAccount();
+						},
 					}, {
 						text: this.$ts.createAccount,
-						action: () => { this.createAccount(); },
+						action: () => {
+							this.createAccount();
+						},
 					}], ev.currentTarget || ev.target);
 				},
 			}]], ev.currentTarget || ev.target, {
