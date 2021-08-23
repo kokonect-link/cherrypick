@@ -92,7 +92,6 @@
 		<FormGroup v-if="patrons.length > 0">
 			<template #label><Mfm text="$[jelly ❤]"/> {{ $ts._aboutMisskey.patrons }}</template>
 			<FormKeyValueView v-for="patron in patrons" :key="patron"><template #key>{{ patron }}</template></FormKeyValueView>
-			<template #caption>{{ $ts._aboutMisskey.morePatrons }}</template>
 		</FormGroup>
 		<FormGroup v-if="patronsMisskey.length > 0">
 			<template #label><Mfm text="$[jelly ❤]"/> {{ $ts._aboutMisskey.patronsMisskey }}</template>
