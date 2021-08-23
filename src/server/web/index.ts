@@ -34,7 +34,7 @@ const markdown = MarkdownIt({
 	html: true
 });
 
-const changelog = fs.readFileSync(`${_dirname}/../../../CHANGELOG.md`, { encoding: 'utf8' });
+const changelog = fs.readFileSync(`${_dirname}/../../../CHANGELOG_CHERRYPICK.md`, { encoding: 'utf8' });
 function genDoc(path: string): string {
 	let md = fs.readFileSync(path, { encoding: 'utf8' });
 	md = md.replace('<!--[CHANGELOG]-->', changelog);

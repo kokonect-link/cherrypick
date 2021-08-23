@@ -11,6 +11,7 @@
 
 ### Improvements
 - 클라이언트 디자인 조정
+- 업데이트 내역 문서 개선
 
 ### Bugfixes
 
