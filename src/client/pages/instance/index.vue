@@ -43,7 +43,7 @@
 			<FormGroup>
 				<template #label>{{ $ts.info }}</template>
 				<FormLink :active="page === 'database'" replace to="/instance/database"><template #icon><i class="fas fa-database"></i></template>{{ $ts.database }}</FormLink>
-				<!-- <FormLink :active="page === 'logs'" replace to="/instance/logs"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.logs }}</FormLink> -->
+				<FormLink :active="page === 'logs'" replace to="/instance/logs"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.logs }}</FormLink>
 			</FormGroup>
 		</FormBase>
 	</div>

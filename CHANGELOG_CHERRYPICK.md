@@ -9,6 +9,9 @@
 
 ## 12.x.x-cp-2.x.x (unreleased)
 
+## Features
+- 로그 탭 복원
+
 ### Improvements
 - 클라이언트 디자인 조정
 - 업데이트 내역 문서 개선
