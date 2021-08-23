@@ -90,7 +90,6 @@
 			</div>
 			<footer class="footer">
 				<div class="info">
-					<span class="mobile" v-if="appearNote.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 					<MkTime class="created-at" :time="appearNote.createdAt" mode="detail"/>
 					<div class="divider"></div>
 					<span class="visibility">
@@ -102,6 +101,8 @@
 					<span class="visibility-title">{{ $t('_visibility.' + note.visibility) }}</span>
 					<span class="localOnly" v-if="appearNote.localOnly"> ({{ $ts._visibility.localOnly }})</span>
 					<span class="remoteFollowersOnly" v-if="appearNote.remoteFollowersOnly"> ({{ $ts._visibility.remoteFollowersOnly }})</span>
+					<div class="divider"></div>
+					<span class="mobile" v-if="appearNote.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 				</div>
 				<div class="renotes" v-if="renoteState">
 					<MkA :to="`/notes/${appearNote.id}/renotes`">
@@ -1188,10 +1189,6 @@ export default defineComponent({
 					margin: 16px 0;
 					opacity: 0.7;
 					font-size: 0.9em;
-
-					> .mobile {
-						margin-right: 0.5em;
-					}
 
 					> .divider {
 						height: 16px;
