@@ -90,12 +90,12 @@
 			<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ $ts._aboutMisskey.allContributors }}</MkLink></template>
 		</FormGroup>
 		<FormGroup v-if="patrons.length > 0">
-			<template #label><Mfm text="[jelly ❤]"/> {{ $ts._aboutMisskey.patrons }}</template>
+			<template #label><Mfm text="$[jelly ❤]"/> {{ $ts._aboutMisskey.patrons }}</template>
 			<FormKeyValueView v-for="patron in patrons" :key="patron"><template #key>{{ patron }}</template></FormKeyValueView>
 			<template #caption>{{ $ts._aboutMisskey.morePatrons }}</template>
 		</FormGroup>
 		<FormGroup v-if="patronsMisskey.length > 0">
-			<template #label><Mfm text="[jelly ❤]"/> {{ $ts._aboutMisskey.patronsMisskey }}</template>
+			<template #label><Mfm text="$[jelly ❤]"/> {{ $ts._aboutMisskey.patronsMisskey }}</template>
 			<FormKeyValueView v-for="patron in patronsMisskey" :key="patron"><template #key>{{ patron }}</template></FormKeyValueView>
 			<template #caption>{{ $ts._aboutMisskey.morePatrons }}</template>
 		</FormGroup>
