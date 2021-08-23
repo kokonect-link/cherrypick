@@ -1,6 +1,7 @@
 <template>
 <transition :name="$store.state.animation ? popup ? 'modal-popup' : 'modal' : ''" :duration="$store.state.animation ? popup ? 500 : 300 : 0" appear @after-leave="onClosed" @enter="$emit('opening')" @after-enter="childRendered">
 	<div v-show="manualShowing != null ? manualShowing : showing" class="qzhlnise" :class="{ front }" v-hotkey.global="keymap" :style="{ pointerEvents: (manualShowing != null ? manualShowing : showing) ? 'auto' : 'none', '--transformOrigin': transformOrigin }">
+		<div v-if="!isMobile" class="bg _modalBg" @click="onBgClick" @contextmenu.prevent.stop="() => {}"></div>
 		<div class="content" :class="{ popup, fixed, top: position === 'top' }" @click.self="onBgClick" ref="content">
 			<slot></slot>
 		</div>
@@ -10,6 +11,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+
+const MOBILE_THRESHOLD = 600;
 
 function getFixedContainer(el: Element | null): Element | null {
 	if (el == null || el.tagName === 'BODY') return null;
@@ -54,6 +57,7 @@ export default defineComponent({
 			fixed: false,
 			transformOrigin: 'center',
 			contentClicking: false,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 		};
 	},
 	computed: {
