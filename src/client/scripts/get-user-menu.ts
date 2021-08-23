@@ -134,7 +134,7 @@ export function getUserMenu(user) {
 		icon: 'fas fa-envelope',
 		text: i18n.locale.sendMessage,
 		action: () => {
-			os.post({ specified: user });
+			os.post_form({ specified: user });
 		}
 	}, meId != user.id ? {
 		type: 'link',

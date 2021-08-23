@@ -438,7 +438,7 @@ export default defineComponent({
 
 		reply(viaKeyboard = false) {
 			pleaseLogin();
-			os.post({
+			os.post_form({
 				reply: this.appearNote,
 				animation: !viaKeyboard,
 			}, () => {

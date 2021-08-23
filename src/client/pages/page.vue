@@ -154,7 +154,7 @@ export default defineComponent({
 		},
 
 		shareWithNote() {
-			os.post({
+			os.post_form({
 				initialText: `${this.page.title || this.page.name} ${url}/@${this.page.user.username}/pages/${this.page.name}`
 			});
 		},

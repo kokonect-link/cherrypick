@@ -150,7 +150,7 @@ export default defineComponent({
 		},
 
 		post() {
-			os.post();
+			os.post_form();
 		},
 
 		top() {

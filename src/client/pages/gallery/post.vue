@@ -133,7 +133,7 @@ export default defineComponent({
 		},
 
 		shareWithNote() {
-			os.post({
+			os.post_form({
 				initialText: `${this.post.title} ${url}/gallery/${this.post.id}`
 			});
 		},
