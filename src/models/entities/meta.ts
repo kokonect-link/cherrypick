@@ -324,6 +324,11 @@ export class Meta {
 	})
 	public deeplAuthKey: string | null;
 
+	@Column('boolean', {
+		default: false,
+	})
+	public deeplIsPro: boolean;
+
 	@Column('varchar', {
 		length: 512,
 		nullable: true

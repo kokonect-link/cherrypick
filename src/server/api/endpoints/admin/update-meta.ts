@@ -153,6 +153,10 @@ export const meta = {
 			validator: $.optional.nullable.str,
 		},
 
+		deeplIsPro: {
+			validator: $.optional.bool,
+		},
+
 		enableTwitterIntegration: {
 			validator: $.optional.bool,
 		},
@@ -596,6 +600,10 @@ export default define(meta, async (ps, me) => {
 		} else {
 			set.deeplAuthKey = ps.deeplAuthKey;
 		}
+	}
+
+	if (ps.deeplIsPro !== undefined) {
+		set.deeplIsPro = ps.deeplIsPro;
 	}
 
 	await getConnection().transaction(async transactionalEntityManager => {
