@@ -121,7 +121,9 @@ export default defineComponent({
 					res({
 						type: 'user',
 						user: account,
-						action: () => { this.switchAccount(account); }
+						action: () => {
+							this.switchAccount(account);
+						}
 					});
 				});
 			}));
