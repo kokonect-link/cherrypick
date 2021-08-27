@@ -7,8 +7,9 @@
 	</transition>
 	<div class="buttons left" v-if="isMobile">
 		<button class="_button button" v-if="!(backButton && canBack) || fabButton" @click="showDrawerNav">
-			<i class="fas fa-bars"/>
-			<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></span>
+			<MkAvatar class="avatar" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
+			<!-- <i class="fas fa-bars"/>
+			<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></span> -->
 		</button>
 	</div>
 	<template v-if="info">
@@ -247,6 +248,12 @@ export default defineComponent({
 					color: var(--navIndicator);
 					font-size: 7px;
 					animation: blink 1s infinite;
+				}
+
+				> .avatar {
+					width: $avatar-size;
+					height: $avatar-size;
+					vertical-align: middle;
 				}
 			}
 		}
