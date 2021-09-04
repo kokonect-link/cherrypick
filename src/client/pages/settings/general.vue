@@ -59,6 +59,10 @@
 		<option value="smail">{{ $ts._newNoteNotiBehavior.smail }}</option>
 		<option value="none">{{ $ts._newNoteNotiBehavior.none }}</option>
 	</FormSelect>
+	
+	<FormGroup>
+		<FormSwitch v-model:value="aiChanMode">{{ $ts.aiChanMode }}</FormSwitch>
+	</FormGroup>
 
 	<FormRadios v-model="fontSize">
 		<template #desc>{{ $ts.fontSize }}</template>
@@ -169,6 +173,7 @@ export default defineComponent({
 		newNoteNotiBehavior: defaultStore.makeGetterSetter('newNoteNotiBehavior'),
 		confirmBeforePost: defaultStore.makeGetterSetter('confirmBeforePost'),
 		squareAvatars: defaultStore.makeGetterSetter('squareAvatars'),
+		aiChanMode: defaultStore.makeGetterSetter('aiChanMode'),
 	},
 
 	watch: {
@@ -201,6 +206,10 @@ export default defineComponent({
 		},
 
 		squareAvatars() {
+			this.reloadAsk();
+		},
+
+		aiChanMode() {
 			this.reloadAsk();
 		},
 

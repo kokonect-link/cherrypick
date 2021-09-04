@@ -210,6 +210,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: ''
 	},
+	aiChanMode: {
+		where: 'device',
+		default: false
+	},
 
 	//#region CherryPick
 

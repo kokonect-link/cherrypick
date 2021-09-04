@@ -135,10 +135,11 @@ yarn run init
 ### CherryPick을 최신 버전으로 업데이트 하는 방법:
 1. `git checkout master`
 2. `git pull`
-3. `yarn install`
-4. `NODE_ENV=production yarn build`
-5. `yarn migrate`
-6. CherryPick 프로세스를 다시 시작하여 수정된 내용을 반영합니다.
+3. `git submodule update --init`
+4. `yarn install`
+5. `NODE_ENV=production yarn build`
+6. `yarn migrate`
+7. CherryPick 프로세스를 다시 시작하여 수정된 내용을 반영합니다.
 
 업데이트에 문제가 발생한 경우, 아래 항목을 따라주십시오.
 1. `yarn clean` 또는 `yarn cleanall` 입력
