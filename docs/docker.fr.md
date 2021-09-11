@@ -54,7 +54,7 @@ Utilisez la commande `docker-compose up -d`. GLHF!
 4. `git submodule update --init`
 5. `git stash pop`
 6. `docker-compose build`
-7. Consultez le [ChangeLog](../CHANGELOG.md) pour avoir les éventuelles informations de migration
+7. Consultez le [ChangeLog](../CHANGELOG_CHERRYPICK.md) pour avoir les éventuelles informations de migration
 8. `docker-compose stop && docker-compose up -d`
 
 ### Comment exécuter des [commandes](manage.fr.md)

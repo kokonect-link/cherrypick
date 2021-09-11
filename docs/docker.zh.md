@@ -86,7 +86,7 @@ docker-compose run --rm web yarn run init
 4. `git submodule update --init`
 5. `git stash pop`
 6. `docker-compose build`
-7. 检查 [更新日志](../CHANGELOG.md) 以获取升级迁移信息。
+7. 检查 [更新日志](../CHANGELOG_CHERRYPICK.md) 以获取升级迁移信息。
 8. `docker-compose stop && docker-compose up -d`
 
 ### 如何执行 [控制台指令](manage.zh.md):

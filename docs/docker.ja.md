@@ -87,7 +87,7 @@ docker-compose run --rm web yarn run init
 4. `git submodule update --init`
 5. `git stash pop`
 6. `docker-compose build`
-7. [ChangeLog](../CHANGELOG.md)でマイグレーション情報を確認する
+7. [ChangeLog](../CHANGELOG_CHERRYPICK.md)でマイグレーション情報を確認する
 8. `docker-compose stop && docker-compose up -d`
 
 ### cliコマンドを実行する方法:

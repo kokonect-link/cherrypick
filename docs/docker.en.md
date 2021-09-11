@@ -87,7 +87,7 @@ Just `docker-compose up -d`. GLHF!
 4. `git submodule update --init`
 5. `git stash pop`
 6. `docker-compose build`
-7. Check [ChangeLog](../CHANGELOG.md) for migration information
+7. Check [ChangeLog](../CHANGELOG_CHERRYPICK.md) for migration information
 8. `docker-compose stop && docker-compose up -d`
 
 ### How to execute [cli commands](manage.en.md):

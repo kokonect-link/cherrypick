@@ -84,10 +84,11 @@ docker-compose run --rm web yarn run init
 1. `git stash`
 2. `git checkout master`
 3. `git pull`
-4. `git stash pop`
-5. `docker-compose build`
-6. [ChangeLog](../CHANGELOG.md)에서 마이그레이션 정보 확인
-7. `docker-compose stop && docker-compose up -d`
+4. `git submodule update --init`
+5. `git stash pop`
+6. `docker-compose build`
+7. [ChangeLog](../CHANGELOG_CHERRYPICK.md)에서 마이그레이션 정보 확인
+8. `docker-compose stop && docker-compose up -d`
 
 ### [cli 명령](manage.ko.md)을 실행하는 방법:
 `docker-compose run --rm web node built/tools/mark-admin @example`
