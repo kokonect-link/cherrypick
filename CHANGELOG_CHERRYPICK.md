@@ -11,6 +11,7 @@
 
 ### Improvements
 - 리모트 유저를 Delete 하는 작업 지원
+- 후원자 목록 갱신
 
 ### Bugfixes
 - Dockerfile 수정

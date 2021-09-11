@@ -101,8 +101,10 @@
 					<span class="visibility-title">{{ $t('_visibility.' + note.visibility) }}</span>
 					<span class="localOnly" v-if="appearNote.localOnly"> ({{ $ts._visibility.localOnly }})</span>
 					<span class="remoteFollowersOnly" v-if="appearNote.remoteFollowersOnly"> ({{ $ts._visibility.remoteFollowersOnly }})</span>
-					<div class="divider"></div>
-					<span class="mobile" v-if="appearNote.viaMobile"><i class="fas fa-mobile-alt"></i></span>
+					<template v-if="appearNote.viaMobile">
+						<div class="divider"></div>
+						<span class="mobile"><i class="fas fa-mobile-alt"></i></span>
+					</template>
 				</div>
 				<div class="renotes" v-if="renoteState">
 					<MkA :to="`/notes/${appearNote.id}/renotes`">

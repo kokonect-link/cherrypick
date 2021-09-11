@@ -98,12 +98,14 @@ Related projects
 ----------------------------------------------------------------
 <!-- PATREON_START -->
 <table><tr>
-<td><img src="https://c10.patreonusercontent.com/3/eyJ3IjoyMDB9/patreon-media/p/user/26341498/f7e9e83da5af4d91b07cc84d72425c11/2.png?token-time=2145916800&token-hash=SFLXj1MMqd-SuX_fkuSvxrgOF8igNmH1qGpYDqbzI-o%3D" alt="lapy. " width="100"></td>
+<td><img src="https://c10.patreonusercontent.com/3/eyJ3IjoyMDB9/patreon-media/p/user/26341498/f7e9e83da5af4d91b07cc84d72425c11/2.png?token-time=2145916800&token-hash=SFLXj1MMqd-SuX_fkuSvxrgOF8igNmH1qGpYDqbzI-o%3D" alt="lapy." width="100"></td>
+<td><img src="https://c8.patreon.com/2/200/41157862" alt="Evelyn Kelly" width="100"></td>
 </tr><tr>
-<td><a href="https://www.patreon.com/user?u=26341498">lapy. </a></td>
+<td><a href="https://www.patreon.com/user?u=26341498">lapy.</a></td>
+<td><a href="https://www.patreon.com/user?u=41157862">Evelyn Kelly</a></td>
 </tr></table>
 
-**Last updated:** Mon, 15 Tue 2021 10:00:27 UTC
+**Last updated:** Sat, 11 Sep 2021 06:01:04 UTC
 <!-- PATREON_END -->
 
 [backer-url]: #backers

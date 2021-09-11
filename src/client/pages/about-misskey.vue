@@ -116,6 +116,7 @@ import * as symbols from '@client/symbols';
 
 const patrons = [
 	'lapy.',
+	'Evelyn Kelly',
 ];
 const patronsMisskey = [
 	'Satsuki Yanagi',
