@@ -1215,6 +1215,10 @@ export default defineComponent({
 				padding: 0 16px;
 			}
 
+			> .hashtags {
+				padding: 8px 16px;
+			}
+
 			> .text {
 				min-height: 80px;
 			}
