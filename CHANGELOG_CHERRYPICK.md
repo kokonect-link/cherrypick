@@ -7,6 +7,17 @@
 
 -->
 
+## 12.x.x (unreleased)
+
+### Improvements
+- 리모트 유저를 Delete 하는 작업 지원
+
+### Bugfixes
+- Dockerfile 수정
+- 노트 번역 시 공개 범위를 고려하지 않는 문제 수정
+
+---
+
 ## 12.90.0-cp-2.1.1 (2021/09/05)
 
 ## Features
