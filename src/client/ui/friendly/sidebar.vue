@@ -12,7 +12,7 @@
 		<nav class="nav" :class="{ iconOnly, hidden }" v-show="showing">
 			<div>
 				<div class="profile">
-					<button class="item _button account" @click="openProfile" v-click-anime>
+					<button class="item _button account" @click="openProfile">
 						<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 					</button>
 					<button v-if="iconOnly && !hidden" class="item _button" @click="openAccountMenu">
@@ -24,6 +24,7 @@
 					</button>
 				</div>
 				<template v-if="!isAccountMenuMode">
+					<div class="divider"></div>
 					<MkA class="item index" active-class="active" to="/" exact>
 						<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
 					</MkA>
@@ -79,9 +80,8 @@
 					</button>
 					<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
 					<div class="divider" v-if="accounts.length > 0"></div>
-					<button class="item-switch-acct _button" @click="addAccount" v-text="$ts.addAccount"/>
-					<button class="item-switch-acct _button" @click="createAccount" v-text="$ts.createAccount"/>
-					<button class="item-switch-acct danger _button" @click="signout" v-text="$ts.logout"/>
+					<button class="item-button _button" @click="openDrawerAccountMenu"><i class="fas fa-plus"></i>{{ $ts.addAccount }}</button>
+					<button class="item-button danger _button" @click="openSignoutMenu"><i class="fas fa-sign-out-alt"></i>{{ $ts.logout }}</button>
 				</template>
 			</div>
 		</nav>
@@ -95,7 +95,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { menuDef } from '@client/friendly/menu-mobile';
-import { getAccounts, addAccount, login, signout } from '@client/account';
+import { getAccounts, addAccount, login, signout, signoutAll } from '@client/account';
 
 export default defineComponent({
 	props: {
@@ -204,7 +204,7 @@ export default defineComponent({
 		},
 
 		async openAccountMenu(ev) {
-			const storedAccounts = getAccounts().filter(x => x.id !== this.$i.id);
+			const storedAccounts = await getAccounts().then(accounts => accounts.filter(x => x.id !== this.$i.id));
 			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
 
 			const accountItemPromises = storedAccounts.map(a => new Promise(res => {
@@ -225,8 +225,8 @@ export default defineComponent({
 				to: `/@${ this.$i.username }`,
 				avatar: this.$i,
 			}, null, ...accountItemPromises, {
-				icon: 'fas fa-plus',
 				text: this.$ts.addAccount,
+				icon: 'fas fa-plus',
 				action: () => {
 					os.popupMenu([{
 						text: this.$ts.existingAccount,
@@ -234,18 +234,27 @@ export default defineComponent({
 					}, {
 						text: this.$ts.createAccount,
 						action: () => { this.createAccount(); },
-					}, {
+					}], ev.currentTarget || ev.target);
+				},
+			}, {
+				text: this.$ts.logout,
+				icon: 'fas fa-sign-out-alt',
+				action: () => {
+					os.popupMenu([{
 						text: this.$ts.logout,
-						action: this.signout,
+						action: () => { this.signout(); },
+						danger: true,
+					}, {
+						text: this.$ts.logoutAll,
+						action: () => { this.signoutAll(); },
 						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
+				danger: true,
 			}]], ev.currentTarget || ev.target, {
 				align: 'left'
 			});
 		},
-
-		signout,
 
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
@@ -270,8 +279,8 @@ export default defineComponent({
 			}, 'closed');
 		},
 
-		switchAccount(account: any) {
-			const storedAccounts = getAccounts();
+		async switchAccount(account: any) {
+			const storedAccounts = await getAccounts();
 			const token = storedAccounts.find(x => x.id === account.id).token;
 			this.switchAccountWithToken(token);
 		},
@@ -287,7 +296,36 @@ export default defineComponent({
 		async init() {
 			const meta = await os.api('meta', { detail: true });
 			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
-		}
+		},
+
+		async openDrawerAccountMenu(ev) {
+			os.popupMenu([...[{
+				text: this.$ts.existingAccount,
+				action: () => { this.addAccount(); },
+			}, {
+				text: this.$ts.createAccount,
+				action: () => { this.createAccount(); },
+			}]], ev.currentTarget || ev.target, {
+				align: 'left'
+			});
+		},
+
+		async openSignoutMenu(ev) {
+			os.popupMenu([...[{
+				text: this.$ts.logout,
+				action: () => { this.signout(); },
+				danger: true,
+			}, {
+				text: this.$ts.logoutAll,
+				action: () => { this.signoutAll(); },
+				danger: true,
+			}]], ev.currentTarget || ev.target, {
+				align: 'left'
+			});
+		},
+
+		signout,
+		signoutAll,
 	}
 });
 </script>
@@ -514,10 +552,11 @@ export default defineComponent({
 				}
 			}
 
-			> .item-switch-acct {
+			> .item-switch-acct,
+			> .item-button {
 				position: relative;
 				display: block;
-				padding: 0 24px;
+				padding: 12px 24px 0;
 				font-size: $ui-font-size;
 				line-height: 3rem;
 				text-overflow: ellipsis;
@@ -557,23 +596,23 @@ export default defineComponent({
 					color: var(--navActive);
 				}
 
-				&:last-child {
-					margin-top: 8px;
-				}
-
 				&.danger {
 					color: red;
 				}
+			}
+
+			> .item-button {
+				padding: 0 24px;
 			}
 
 			> .profile {
 				position: sticky;
 				z-index: 1;
 				top: 0;
-				margin-bottom: 16px;
-				border-bottom: solid 0.5px var(--divider);
-				padding-top: 8px;
-				padding-bottom: 8px;
+				display: flex;
+				text-align: center;
+				justify-content: center;
+				align-items: center;
 				background: var(--X14);
 				-webkit-backdrop-filter: blur(8px);
 				backdrop-filter: blur(8px);
@@ -581,7 +620,7 @@ export default defineComponent({
 				> .item {
 					position: relative;
 					display: block;
-					padding: 0 24px;
+					padding: 12px 24px 0;
 					font-size: $ui-font-size;
 					line-height: 3rem;
 					text-overflow: ellipsis;
@@ -623,11 +662,12 @@ export default defineComponent({
 				}
 
 				> .toggler {
-					position: absolute;
-					right: 15px;
-					top: 15px;
+					//position: absolute;
+					//right: 15px;
 					width: 36px;
 					height: 36px;
+					margin: 12px 15px 0 0;
+					padding: 10px;
 					z-index: 400;
 				}
 			}

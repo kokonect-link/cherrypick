@@ -11,10 +11,10 @@
 	<transition name="nav">
 		<nav class="nav">
 			<div class="profile">
-				<button v-if="!iconOnly" class="item _button account" @click="openProfile" v-click-anime>
+				<button v-if="!iconOnly" class="item _button account" @click="openProfile">
 					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 				</button>
-				<button v-if="iconOnly" class="item _button account" @click="openAccountMenu" v-click-anime>
+				<button v-if="iconOnly" class="item _button account" @click="openAccountMenu">
 					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 				</button>
 				<button v-else class="_button toggler" @click="toggleMenuMode">
@@ -82,10 +82,9 @@
 					<MkAvatar :user="acct" class="avatar"/><MkUserName class="name" :user="acct"/>
 				</button>
 				<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
-				<div class="divider" v-if="accounts.length > 0"></div>
-				<button class="item-switch-acct _button" @click="addAccount" v-text="$ts.addAccount"/>
-				<button class="item-switch-acct _button" @click="createAccount" v-text="$ts.createAccount"/>
-				<button class="item-switch-acct danger _button" @click="signout" v-text="$ts.logout"/>
+				<div class="divider"></div>
+				<button class="item-switch-acct _button" @click="openDrawerAccountMenu"><i class="fas fa-plus"></i>{{ $ts.addAccount }}</button>
+				<button class="item-switch-acct danger _button" @click="openSignoutMenu"><i class="fas fa-sign-out-alt"></i>{{ $ts.logout }}</button>
 			</template>
 		</nav>
 	</transition>
@@ -232,11 +231,9 @@ export default defineComponent({
 					os.popupMenu([{
 						text: this.$ts.existingAccount,
 						action: () => { this.addAccount(); },
-						danger: true,
 					}, {
 						text: this.$ts.createAccount,
 						action: () => { this.createAccount(); },
-						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
 			}, {
@@ -299,6 +296,32 @@ export default defineComponent({
 		async init() {
 			const meta = await os.api('meta', { detail: true });
 			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
+		},
+
+		async openDrawerAccountMenu(ev) {
+			os.popupMenu([...[{
+				text: this.$ts.existingAccount,
+				action: () => { this.addAccount(); },
+			}, {
+				text: this.$ts.createAccount,
+				action: () => { this.createAccount(); },
+			}]], ev.currentTarget || ev.target, {
+				align: 'left'
+			});
+		},
+
+		async openSignoutMenu(ev) {
+			os.popupMenu([...[{
+				text: this.$ts.logout,
+				action: () => { this.signout(); },
+				danger: true,
+			}, {
+				text: this.$ts.logoutAll,
+				action: () => { this.signoutAll(); },
+				danger: true,
+			}]], ev.currentTarget || ev.target, {
+				align: 'left'
+			});
 		},
 
 		signout,
@@ -524,10 +547,6 @@ export default defineComponent({
 				color: var(--navHoverFg);
 			}
 
-			&:last-child {
-				margin-top: 8px;
-			}
-
 			&.active {
 				color: var(--navActive);
 			}
@@ -605,7 +624,7 @@ export default defineComponent({
 		}
 
 		> .account {
-			padding: 10px 0 0;
+			padding: 20px 0 0;
 		}
 	}
 }
