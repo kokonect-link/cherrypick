@@ -529,11 +529,11 @@ export async function getAccounts() {
 	const expired = Date.now() - lastAccountsFetchedAt > 1000 * 60 * 5;
 	// キャッシュが不一致
 	// TODO 現状は配列の長さで判定しているが、よりディープに判定したい
-	const tokens = Account.getAccounts();
-	const cacheMismatch = accounts.length !== tokens.length;
+	const cacheMismatch = accounts.find(x => x.id);
+	const storedAccounts = await Account.getAccounts().then(accounts => accounts.filter(x => x.id));
 	if (cacheMismatch || expired) {
-		accounts = (await api('users/show', { userIds: tokens.map(x => x.id) }) as Record<string, any>[])
-			.map((x, i) => ({ ...x, token: tokens[i].token  }))
+		accounts = (await api('users/show', { userIds: storedAccounts.map(x => x.id) }) as Record<string, any>[])
+			.map((x, i) => ({ ...x }))
 			.filter(x => !$i || x.id !== $i.id);
 	}
 
