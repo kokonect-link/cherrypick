@@ -10,6 +10,7 @@
 ## 12.x.x (unreleased)
 
 ### Improvements
+- UI(Friendly): 계정 전환 팝업에서 현재 로그인된 계정 또는 로그인된 모든 계정을 로그아웃하는 기능 추가
 - 리모트 유저를 Delete 하는 작업 지원
 - 후원자 목록 갱신
 

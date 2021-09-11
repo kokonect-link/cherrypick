@@ -48,7 +48,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
-import { getAccounts, addAccount, login } from '@client/account';
+import { getAccounts, addAccount, login, signout, signoutAll } from '@client/account';
 import MkButton from '@client/components/ui/button.vue';
 
 export default defineComponent({
@@ -132,8 +132,8 @@ export default defineComponent({
 				to: `/@${ this.$i.username }`,
 				avatar: this.$i,
 			}, null, ...accountItemPromises, {
-				icon: 'fas fa-plus',
 				text: this.$ts.addAccount,
+				icon: 'fas fa-plus',
 				action: () => {
 					os.popupMenu([{
 						text: this.$ts.existingAccount,
@@ -141,12 +141,23 @@ export default defineComponent({
 					}, {
 						text: this.$ts.createAccount,
 						action: () => { this.createAccount(); },
-					}, {
+					}], ev.currentTarget || ev.target);
+				},
+			}, {
+				text: this.$ts.logout,
+				icon: 'fas fa-sign-out-alt',
+				action: () => {
+					os.popupMenu([{
 						text: this.$ts.logout,
 						action: () => { this.signout(); },
 						danger: true,
+					}, {
+						text: this.$ts.logoutAll,
+						action: () => { this.signoutAll(); },
+						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
+				danger: true,
 			}]], ev.currentTarget || ev.target, {
 				align: 'left'
 			});
@@ -184,6 +195,9 @@ export default defineComponent({
 		switchAccountWithToken(token: string) {
 			login(token);
 		},
+
+		signout,
+		signoutAll,
 	}
 });
 </script>

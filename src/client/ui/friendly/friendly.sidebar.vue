@@ -93,7 +93,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
-import { getAccounts, addAccount, login, signout } from '@client/account';
+import { getAccounts, addAccount, login, signout, signoutAll } from '@client/account';
 import MkButton from '@client/components/ui/button.vue';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import MisskeyLogo from '@/../assets/client/misskey.svg';
@@ -221,23 +221,38 @@ export default defineComponent({
 				to: `/@${ this.$i.username }`,
 				avatar: this.$i,
 			}, null, ...accountItemPromises, {
-				icon: 'fas fa-plus',
 				text: this.$ts.addAccount,
+				icon: 'fas fa-plus',
 				action: () => {
 					os.popupMenu([{
 						text: this.$ts.existingAccount,
 						action: () => { this.addAccount(); },
+						danger: true,
 					}, {
 						text: this.$ts.createAccount,
 						action: () => { this.createAccount(); },
+						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
+			}, {
+				text: this.$ts.logout,
+				icon: 'fas fa-sign-out-alt',
+				action: () => {
+					os.popupMenu([{
+						text: this.$ts.logout,
+						action: () => { this.signout(); },
+						danger: true,
+					}, {
+						text: this.$ts.logoutAll,
+						action: () => { this.signoutAll(); },
+						danger: true,
+					}], ev.currentTarget || ev.target);
+				},
+				danger: true,
 			}]], ev.currentTarget || ev.target, {
 				align: 'left'
 			});
 		},
-
-		signout,
 
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
@@ -279,7 +294,10 @@ export default defineComponent({
 		async init() {
 			const meta = await os.api('meta', { detail: true });
 			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
-		}
+		},
+
+		signout,
+		signoutAll,
 	}
 });
 </script>
