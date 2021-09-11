@@ -58,12 +58,14 @@
 		<XWidgets v-if="widgetsShowing" class="tray"/>
 	</transition>
 
+	<iframe v-if="$store.state.aiChanMode" class="ivnzpscs" ref="live2d" src="https://misskey-dev.github.io/mascot-web/?scale=2&y=1.4"></iframe>
+
 	<XCommon/>
 </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from 'vue';
+import { defineComponent, defineAsyncComponent, markRaw } from 'vue';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import XSidebar from './friendly.sidebar.vue';
@@ -169,6 +171,19 @@ export default defineComponent({
 		}, { passive: true });
 
 		this.navHidden = this.isMobile;
+
+		if (this.$store.state.aiChanMode) {
+			const iframeRect = this.$refs.live2d.getBoundingClientRect();
+			window.addEventListener('mousemove', ev => {
+				this.$refs.live2d.contentWindow.postMessage({
+					type: 'moveCursor',
+					body: {
+						x: ev.clientX - iframeRect.left,
+						y: ev.clientY - iframeRect.top,
+					}
+				}, '*');
+			}, { passive: true });
+		}
 	},
 
 	methods: {
@@ -252,6 +267,10 @@ export default defineComponent({
 				os.post_form();
 			}
 		},
+
+		onAiClick(ev) {
+			//if (this.live2d) this.live2d.click(ev);
+		}
 	}
 });
 </script>
@@ -567,6 +586,16 @@ export default defineComponent({
 		box-sizing: border-box;
 		overflow: auto;
 		background: var(--bg);
+	}
+
+	> .ivnzpscs {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		width: 300px;
+		height: 600px;
+		border: none;
+		pointer-events: none;
 	}
 }
 </style>
