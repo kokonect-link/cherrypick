@@ -174,6 +174,12 @@ export class User {
 	})
 	public isPatron: boolean;
 
+	@Column('boolean', {
+		default: false,
+		comment: 'Whether the User is a vip.'
+	})
+	public isVip: boolean;
+
 	@Index()
 	@Column('boolean', {
 		default: true,

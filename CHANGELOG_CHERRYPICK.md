@@ -9,6 +9,9 @@
 
 ## 12.x.x (unreleased)
 
+## Features
+- VIP 추가
+
 ### Improvements
 - UI(Friendly): 계정 전환 팝업에서 현재 로그인된 계정 또는 로그인된 모든 계정을 로그아웃하는 기능 추가
 - UI: 모바일 환경에서 노트 작성 폼의 해시태그 영역 여백 조정

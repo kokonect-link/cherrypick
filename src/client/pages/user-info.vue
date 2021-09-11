@@ -27,6 +27,7 @@
 
 		<FormGroup v-if="iAmModerator">
 			<FormSwitch @update:value="togglePatron" v-model:value="patron">{{ $ts.patron }}</FormSwitch>
+			<FormSwitch v-if="patron" @update:value="toggleVip" v-model:value="vip">{{ $ts.vip }}</FormSwitch>
 		</FormGroup>
 
 		<FormGroup>
@@ -114,6 +115,7 @@ export default defineComponent({
 			info: null,
 			moderator: false,
 			patron: false,
+			vip: false,
 			silenced: false,
 			suspended: false,
 		}
@@ -151,6 +153,7 @@ export default defineComponent({
 					this.info = info;
 					this.moderator = this.info.isModerator;
 					this.patron = this.info.isPatron;
+					this.vip = this.info.isVip;
 					this.silenced = this.info.isSilenced;
 					this.suspended = this.info.isSuspended;
 				});
@@ -218,6 +221,11 @@ export default defineComponent({
 
 		async togglePatron(v) {
 			await os.api(v ? 'admin/patron/add' : 'admin/patron/remove', { userId: this.user.id });
+			await this.refreshUser();
+		},
+
+		async toggleVip(v) {
+			await os.api(v ? 'admin/patron/vip/add' : 'admin/patron/vip/remove', { userId: this.user.id });
 			await this.refreshUser();
 		},
 

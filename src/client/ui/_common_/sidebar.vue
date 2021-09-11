@@ -39,9 +39,14 @@
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button>
 				<div class="divider"></div>
-				<button v-if="$i.isPatron" class="patron-button _button" @click="patron" v-click-anime>
-					<span class="patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-				</button>
+				<template v-if="$i.isPatron">
+					<button v-if="$i.isVip" class="patron-button _button" @click="patron" v-click-anime>
+						<span class="patron"><i class="fas fa-gem fa-fw"></i></span><span class="patron-text">{{ $ts.youAreVip }}</span>
+					</button>
+					<button v-else class="patron-button _button" @click="patron" v-click-anime>
+						<span class="patron"><i class="fas fa-heart fa-fw" style="animation: 1s linear 0s infinite normal both running mfm-rubberBand;"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+					</button>
+				</template>
 				<button v-else class="patron-button _button" @click="patron" v-click-anime>
 					<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
 				</button>
@@ -429,10 +434,6 @@ export default defineComponent({
 
 				> .patron {
 					color: var(--patron);
-
-					> i {
-						animation: 1s linear 0s infinite normal both running mfm-rubberBand;
-					}
 				}
 
 				> .patron-text {

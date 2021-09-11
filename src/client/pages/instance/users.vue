@@ -21,6 +21,7 @@
 				<option value="admin">{{ $ts.administrator }}</option>
 				<option value="moderator">{{ $ts.moderator }}</option>
 				<option value="patron">{{ $ts.patron }}</option>
+				<option value="vip">{{ $ts.vip }}</option>
 				<option value="silenced">{{ $ts.silence }}</option>
 				<option value="suspended">{{ $ts.suspend }}</option>
 			</MkSelect>
@@ -51,7 +52,10 @@
 						<span class="icon" v-if="user.isBot" :title="$ts.isBot"><i class="fas fa-robot"></i></span>
 						<span class="staff" v-if="user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 						<span class="staff" v-if="user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
-						<span class="patron" v-if="user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
+						<template v-if="user.isPatron">
+							<span class="patron" v-if="user.isVip" :title="$ts.vip"><i class="fas fa-gem"></i></span>
+							<span class="patron" v-else :title="$ts.patron"><i class="fas fa-heart"></i></span>
+						</template>
 						<span class="punished" v-if="user.isSilenced"><i class="fas fa-microphone-slash"></i></span>
 						<span class="punished" v-if="user.isSuspended"><i class="fas fa-snowflake"></i></span>
 					</header>

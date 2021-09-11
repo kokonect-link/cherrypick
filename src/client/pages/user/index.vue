@@ -113,7 +113,10 @@
 							<span v-if="user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 							<span v-if="user.isAdmin" :title="$ts.isAdmin" style="color: var(--badge);" v-tooltip="$ts.administrator"><i class="fas fa-crown"></i></span>
 							<span v-if="!user.isAdmin && user.isModerator" :title="$ts.isModerator" style="color: var(--badge);" v-tooltip="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
-							<span v-if="user.isPatron" :title="$ts.isPatron" style="color: var(--patron);" v-tooltip="$ts.patron"><i class="fas fa-heart"></i></span>
+							<template v-if="user.isPatron">
+								<span v-if="user.isVip" :title="$ts.isVip" style="color: var(--patron);" v-tooltip="$ts.vip"><i class="fas fa-gem"></i></span>
+								<span v-else :title="$ts.isPatron" style="color: var(--patron);" v-tooltip="$ts.patron"><i class="fas fa-heart"></i></span>
+							</template>
 							<span v-if="user.isBot" :title="$ts.isBot"><i class="fas fa-robot"></i></span>
 						</div>
 					</div>
@@ -134,7 +137,10 @@
 						<span v-if="user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 						<span v-if="user.isAdmin" :title="$ts.isAdmin" style="color: var(--badge);"><i class="fas fa-crown"></i></span>
 						<span v-if="!user.isAdmin && user.isModerator" :title="$ts.isModerator" style="color: var(--badge);"><i class="far fa-chess-queen"></i></span>
-						<span v-if="user.isPatron" :title="$ts.isPatron" style="color: var(--patron);"><i class="fas fa-heart"></i></span>
+						<template v-if="user.isPatron">
+							<span v-if="user.isVip" :title="$ts.isVip" style="color: var(--patron);"><i class="fas fa-gem"></i></span>
+							<span v-else :title="$ts.isPatron" style="color: var(--patron);"><i class="fas fa-heart"></i></span>
+						</template>
 						<span v-if="user.isBot" :title="$ts.isBot"><i class="fas fa-robot"></i></span>
 					</div>
 				</div>

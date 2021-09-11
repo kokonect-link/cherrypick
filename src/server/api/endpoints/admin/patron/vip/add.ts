@@ -1,7 +1,7 @@
 import $ from 'cafy';
 import { ID } from '@/misc/cafy-id';
-import define from '../../../define';
-import { Users } from '../../../../../models';
+import define from '../../../../define';
+import { Users } from '../../../../../../models';
 
 export const meta = {
 
@@ -25,10 +25,10 @@ export default define(meta, async (ps) => {
 	}
 
 	/* if (user.isAdmin) {
-		throw new Error('cannot mark as patron if admin user');
+		throw new Error('cannot mark as vip if admin user');
 	} */
 
 	await Users.update(user.id, {
-		isPatron: true
+		isVip: true
 	});
 });

@@ -8,7 +8,10 @@
 	<span class="locked" v-if="note.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 	<span class="admin" v-if="note.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
-	<span class="patron" v-if="note.user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
+	<template v-if="note.user.isPatron">
+		<span class="patron" v-if="note.user.isVip" :title="$ts.vip"><i class="fas fa-gem"></i></span>
+		<span class="patron" v-else :title="$ts.patron"><i class="fas fa-heart"></i></span>
+	</template>
 	<div class="info">
 		<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 		<MkA class="created-at" :to="notePage(note)">

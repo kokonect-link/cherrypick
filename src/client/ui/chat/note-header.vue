@@ -7,7 +7,10 @@
 	<span class="username"><MkAcct :user="note.user"/></span>
 	<span class="admin" v-if="note.user.isAdmin"><i class="fas fa-bookmark"></i></span>
 	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator"><i class="far fa-bookmark"></i></span>
-	<span class="patron" v-if="note.user.isPatron"><i class="fas fa-heart"></i></span>
+	<template v-if="note.user.isPatron">
+		<span class="patron" v-if="note.user.isVip"><i class="fas fa-gem"></i></span>
+		<span class="patron" v-else><i class="fas fa-heart"></i></span>
+	</template>
 	<div class="info">
 		<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
 		<MkA class="created-at" :to="notePage(note)">

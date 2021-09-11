@@ -18,7 +18,12 @@
 			</button>
 			<MkAvatar class="avatar" v-if="!(withBack && canBack) || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 			<MkAvatar class="avatar_back" v-else-if="withBack && canBack && !(info.avatar)" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
-			<!-- <span class="patron" v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')"><i class="fas fa-heart"></i></span> -->
+			<!--
+			<template v-if="$i.isPatron && !(info.avatar) || ($route.name === 'notifications' || $route.name === 'messaging')">
+				<span class="patron" v-if="$i.isVip"><i class="fas fa-gem"></i></span>
+				<span class="patron" v-else><i class="fas fa-heart"></i></span>
+			</template>
+			-->
 		</div>
 		<div class="buttons_R">
 			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>

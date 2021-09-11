@@ -47,7 +47,10 @@
 					<span class="locked" v-if="appearNote.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
 					<span class="admin" v-if="appearNote.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
 					<span class="moderator" v-if="!appearNote.user.isAdmin && appearNote.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
-					<span class="patron" v-if="appearNote.user.isPatron" :title="$ts.patron"><i class="fas fa-heart"></i></span>
+					<template v-if="appearNote.user.isPatron">
+						<span class="patron" v-if="appearNote.user.isVip" :title="$ts.vip"><i class="fas fa-gem"></i></span>
+						<span class="patron" v-else :title="$ts.patron"><i class="fas fa-heart"></i></span>
+					</template>
 				</div>
 				<div class="username"><MkAcct :user="appearNote.user"/></div>
 				<MkInstanceTicker v-if="showTicker" class="ticker" :instance="appearNote.user.instance"/>

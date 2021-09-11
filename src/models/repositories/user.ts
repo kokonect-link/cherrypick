@@ -194,6 +194,7 @@ export class UserRepository extends Repository<User> {
 			isAdmin: user.isAdmin || falsy,
 			isModerator: user.isModerator || falsy,
 			isPatron: user.isPatron || falsy,
+			isVip: user.isVip || falsy,
 			isLocked: user.isLocked,
 			isBot: user.isBot || falsy,
 			isCat: user.isCat || falsy,
@@ -386,6 +387,11 @@ export const packedUserSchema = {
 			default: false
 		},
 		isPatron: {
+			type: 'boolean' as const,
+			nullable: false as const, optional: false as const,
+			default: false
+		},
+		isVip: {
 			type: 'boolean' as const,
 			nullable: false as const, optional: false as const,
 			default: false

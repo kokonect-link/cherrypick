@@ -4,10 +4,6 @@ import define from '../../../define';
 import { Users } from '../../../../../models';
 
 export const meta = {
-	desc: {
-		'ja-JP': '指定したユーザーを後援者解除します。',
-		'en-US': 'Unmark a user as patron.'
-	},
 
 	tags: ['admin'],
 
@@ -17,10 +13,6 @@ export const meta = {
 	params: {
 		userId: {
 			validator: $.type(ID),
-			desc: {
-				'ja-JP': '対象のユーザーID',
-				'en-US': 'The user ID'
-			}
 		},
 	}
 };

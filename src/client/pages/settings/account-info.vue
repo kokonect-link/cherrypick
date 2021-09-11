@@ -130,6 +130,10 @@
 			<template #key>isPatron</template>
 			<template #value>{{ $i.isPatron ? $ts.yes : $ts.no }}</template>
 		</FormKeyValueView>
+		<FormKeyValueView>
+			<template #key>isVip</template>
+			<template #value>{{ $i.isVip ? $ts.yes : $ts.no }}</template>
+		</FormKeyValueView>
 	</FormGroup>
 </FormBase>
 </template>
