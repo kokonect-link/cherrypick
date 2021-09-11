@@ -217,9 +217,9 @@ export const defaultStore = markRaw(new Storage('base', {
 
 	//#region CherryPick
 
-	showAds: {
+	removeAds: {
 		where: 'device',
-		default: true
+		default: false
 	},
 	timelineTabItems: {
 		where: 'device',

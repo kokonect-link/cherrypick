@@ -2,7 +2,7 @@
 <FormBase>
 	<FormGroup>
 		<FormSwitch v-model:value="showFixedPostForm">{{ $ts.showFixedPostForm }}</FormSwitch>
-		<FormSwitch v-if="$i.isPatron" v-model:value="showAds">{{ $ts.showAds }}</FormSwitch>
+		<FormSwitch v-if="$i.isPatron" v-model:value="removeAds">{{ $ts.removeAds }}</FormSwitch>
 	</FormGroup>
 
 	<FormSelect v-model:value="lang">
@@ -169,7 +169,7 @@ export default defineComponent({
 		instanceTicker: defaultStore.makeGetterSetter('instanceTicker'),
 		enableInfiniteScroll: defaultStore.makeGetterSetter('enableInfiniteScroll'),
 		useReactionPickerForContextMenu: defaultStore.makeGetterSetter('useReactionPickerForContextMenu'),
-		showAds: defaultStore.makeGetterSetter('showAds'),
+		removeAds: defaultStore.makeGetterSetter('removeAds'),
 		newNoteNotiBehavior: defaultStore.makeGetterSetter('newNoteNotiBehavior'),
 		confirmBeforePost: defaultStore.makeGetterSetter('confirmBeforePost'),
 		squareAvatars: defaultStore.makeGetterSetter('squareAvatars'),
