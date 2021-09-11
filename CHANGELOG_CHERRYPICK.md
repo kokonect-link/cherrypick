@@ -15,6 +15,7 @@
 
 ### Bugfixes
 - UI(Friendly): 아이 모드를 대응하지 않는 문제 수정
+- UI(Friendly): 계정을 전환할 수 없던 문제 수정
 - Dockerfile 수정
 - 노트 번역 시 공개 범위를 고려하지 않는 문제 수정
 
