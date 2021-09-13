@@ -132,6 +132,38 @@ export default defineComponent({
 			border-radius: 75% 0 75% 75%;
 			transform: rotate(-37.5deg) skew(-30deg);
 		}
+
+		&:hover {
+			@mixin earwiggle($lr: left) {
+				@keyframes kf-#{$lr} {
+					$invert: 1;
+					$frame1: 25%;
+					$frame2: 50%;
+					$frame3: 75%;
+					@if $lr == right {
+						$invert: -1;
+						$frame1: $frame1 + 5%;
+						$frame2: $frame2 + 5%;
+					}
+
+				  from { transform: rotate(calc(#{$invert} * 37.6deg)) skew(calc(#{$invert} * 30deg)); }
+				  #{$frame1} { transform: rotate(calc(#{$invert} * 10deg)) skew(calc(#{$invert} * 30deg)); }
+				  #{$frame2} { transform: rotate(calc(#{$invert} * 20deg)) skew(calc(#{$invert} * 30deg)); }
+				  #{$frame3} { transform: rotate(calc(#{$invert} * 0deg)) skew(calc(#{$invert} * 30deg)); }
+				  to { transform: rotate(calc(#{$invert} * 37.6deg)) skew(calc(#{$invert} * 30deg)); }
+				}
+
+				animation: kf-#{$lr} 1s infinite;
+			}
+
+			&::before {
+				@include earwiggle(left);
+			}
+
+			&::after {
+				@include earwiggle(right);
+			}
+		}
 	}
 }
 </style>
