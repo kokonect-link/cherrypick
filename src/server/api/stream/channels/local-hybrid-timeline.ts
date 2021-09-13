@@ -2,9 +2,10 @@ import autobind from 'autobind-decorator';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import Channel from '../channel';
 import { fetchMeta } from '@/misc/fetch-meta';
-import { Notes } from '../../../../models';
-import { PackedNote } from '../../../../models/repositories/note';
+import { Notes } from '@/models/index';
+import { PackedNote } from '@/models/repositories/note';
 import { checkWordMute } from '@/misc/check-word-mute';
+import { isBlockerUserRelated } from '@/misc/is-blocker-user-related';
 
 export default class extends Channel {
 	public readonly chName = 'localHybridTimeline';
@@ -14,7 +15,9 @@ export default class extends Channel {
 	@autobind
 	public async init(params: any) {
 		const meta = await fetchMeta();
-		if (meta.disableLocalTimeline && !this.user!.isAdmin && !this.user!.isModerator) return;
+		if (meta.disableLocalTimeline) {
+			if (this.user == null || (!this.user.isAdmin && !this.user.isModerator)) return;
+		}
 
 		// Subscribe events
 		this.subscriber.on('notesStream', this.onNote);
@@ -25,7 +28,7 @@ export default class extends Channel {
 		// チャンネルの投稿ではなく、自分自身の投稿 または
 		// チャンネルの投稿ではなく、その投稿のユーザーがローカルであり、フォローしている または
 		// チャンネルの投稿ではなく、全体公開のローカルの投稿 または
-		// フォローしているチャンネルの投稿 の場合だけ
+		// フォローしているチャンネルの投稿の場合だけ
 		if (!(
 			(note.channelId == null && this.user!.id === note.userId) ||
 			(note.channelId == null && (note.user.host == null && this.following.has(note.userId))) ||
@@ -34,7 +37,7 @@ export default class extends Channel {
 		)) return;
 
 		if (['followers', 'specified'].includes(note.visibility)) {
-			note = await Notes.pack(note.id, this.user!, {
+			note = await Notes.pack(note.id, this.user, {
 				detail: true
 			});
 
@@ -44,13 +47,13 @@ export default class extends Channel {
 		} else {
 			// リプライなら再pack
 			if (note.replyId != null) {
-				note.reply = await Notes.pack(note.replyId, this.user!, {
+				note.reply = await Notes.pack(note.replyId, this.user, {
 					detail: true
 				});
 			}
 			// Renoteなら再pack
 			if (note.renoteId != null) {
-				note.renote = await Notes.pack(note.renoteId, this.user!, {
+				note.renote = await Notes.pack(note.renoteId, this.user, {
 					detail: true
 				});
 			}
@@ -66,6 +69,8 @@ export default class extends Channel {
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
 		if (isMutedUserRelated(note, this.muting)) return;
 		// if (isMutedUserRelated(note, this.renoteMuting)) return;
+		// 流れてきたNoteがブロックされているユーザーが関わるものだったら無視する
+		if (isBlockerUserRelated(note, this.blocking)) return;
 
 		// 流れてきたNoteがミュートすべきNoteだったら無視する
 		// TODO: 将来的には、単にMutedNoteテーブルにレコードがあるかどうかで判定したい(以下の理由により難しそうではある)

@@ -1,10 +1,11 @@
 import autobind from 'autobind-decorator';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import Channel from '../channel';
-import { fetchMeta } from '../../../../misc/fetch-meta';
-import { Notes } from '../../../../models';
-import { PackedNote } from '../../../../models/repositories/note';
+import { fetchMeta } from '@/misc/fetch-meta';
+import { Notes } from '@/models/index';
+import { PackedNote } from '@/models/repositories/note';
 import { checkWordMute } from '@/misc/check-word-mute';
+import { isBlockerUserRelated } from '@/misc/is-blocker-user-related';
 
 export default class extends Channel {
 	public readonly chName = 'catTimeline';
@@ -48,8 +49,9 @@ export default class extends Channel {
 
 
 		// 流れてきたNoteがミュートしているユーザーが関わるものだったら無視する
-		if (isMutedUserRelated(note, this.muting, false)) return;
+		if (isMutedUserRelated(note, this.muting)) return;
 		// if (isMutedUserRelated(note, this.renoteMuting, true)) return;
+		if (isBlockerUserRelated(note, this.blocking)) return;
 
 		// 流れてきたNoteがミュートすべきNoteだったら無視する
 		// TODO: 将来的には、単にMutedNoteテーブルにレコードがあるかどうかで判定したい(以下の理由により難しそうではある)

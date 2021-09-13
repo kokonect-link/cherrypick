@@ -1,8 +1,8 @@
 import autobind from 'autobind-decorator';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import Channel from '../channel';
-import { Notes, Users } from '../../../../models';
-import { PackedNote } from '../../../../models/repositories/note';
+import { Notes, Users } from '@/models/index';
+import { PackedNote } from '@/models/repositories/note';
 import { checkWordMute } from '@/misc/check-word-mute';
 
 export default class extends Channel {
