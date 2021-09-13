@@ -4,10 +4,12 @@
 		<FormSwitch v-model:value="$i.injectFeaturedNote" @update:value="onChangeInjectFeaturedNote">
 			{{ $ts.showFeaturedNotesInTimeline }}
 		</FormSwitch>
+		<!--
 		<FormSwitch v-model:value="injectUnlistedNoteInLTL">
 			{{ $ts.showUnlistedNotesInLTL }}
 			<template #desc>{{ $ts.showUnlistedNotesInLTLDesc }}</template>
 		</FormSwitch>
+		-->
 	</FormGroup>
 	<FormGroup>
 		<FormSwitch v-model:value="showItemDetails">
