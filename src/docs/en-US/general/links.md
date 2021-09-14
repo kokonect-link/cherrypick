@@ -1,11 +1,11 @@
 # Links
 
 ## Websites
-- [Official Discord](https://discord.gg/Wp8gVStHW3) - The official Discord server for Misskey
+- [Official Discord](https://discord.gg/V8qghB28Aj) - The official Discord server for CherryPick
 - [Misskey Forum](https://forum.misskey.io/) - A forum used for questions surrounding Misskey
 
 ## Accounts
-- [@repo@misskey.io](https://misskey.io/@repo) - A bot that publishes posts about updates to the Misskey repository
+- [@repo@kokonect.link](https://kokonect.link/@repo) - A bot that publishes posts about updates to the CherryPick repository
 
 ## Libraries
 - [misskey-dev/misskey.js](https://github.com/misskey-dev/misskey.js) - A Misskey SDK for JavaScript

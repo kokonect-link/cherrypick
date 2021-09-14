@@ -1,11 +1,11 @@
 # リンク集
 
 ## Webサイト
-- [Oficiala Discord](https://discord.gg/Wp8gVStHW3) - Servilo Discord'a oficiala de Misskey
+- [Oficiala Discord](https://discord.gg/V8qghB28Aj) - Servilo Discord'a oficiala de CherryPick
 - [Misskey Forum](https://forum.misskey.io/) - Misskeyに関する話題を扱うフォーラム
 
 ## Kontoj
-- [@repo@misskey.io](https://misskey.io/@repo) - Misskeyのリポジトリの更新を投稿するbot
+- [@repo@kokonect.link](https://kokonect.link/@repo) - CherryPickのリポジトリの更新を投稿するbot
 
 ## ライブラリ
 - [misskey-dev/misskey.js](https://github.com/misskey-dev/misskey.js) - JavaScriptのMisskey SDK
