@@ -2,7 +2,7 @@ FROM node:16.6.2-alpine3.13 AS base
 
 ENV NODE_ENV=production
 
-WORKDIR /misskey
+WORKDIR /cherrypick
 
 ENV BUILD_DEPS autoconf automake file g++ gcc libc-dev libtool make nasm pkgconfig python3 zlib-dev git
 
@@ -24,8 +24,8 @@ RUN apk add --no-cache \
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
-COPY --from=builder /misskey/node_modules ./node_modules
-COPY --from=builder /misskey/built ./built
+COPY --from=builder /cherrypick/node_modules ./node_modules
+COPY --from=builder /cherrypick/built ./built
 COPY . ./
 
 CMD ["npm", "run", "migrateandstart"]

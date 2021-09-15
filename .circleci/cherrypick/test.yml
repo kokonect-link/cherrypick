@@ -1,9 +1,9 @@
-url: 'http://misskey.local'
+url: 'http://cherrypick.local'
 port: 8080
 db:
   host: localhost
   port: 5432
-  db: test-misskey
+  db: test-cherrypick
   user: postgres
   pass: ''
 redis:

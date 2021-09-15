@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Build
           command: |
-            docker build -t misskey/misskey .
+            docker build -t noridev/cherrypick .
       - when:
           condition: <<parameters.with_deploy>>
           steps:
@@ -30,9 +30,9 @@ jobs:
                   if [ "$DOCKERHUB_USERNAME$DOCKERHUB_PASSWORD" ]
                    then
                     apk update && apk add jq
-                    docker tag misskey/misskey misskey/misskey:$(cat package.json | jq -r .version)
+                    docker tag noridev/cherrypick noridev/cherrypick:$(cat package.json | jq -r .version)
                     docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-                    docker push -a misskey/misskey
+                    docker push -a noridev/cherrypick
                    else
                     echo -e '\033[0;33mAborted deploying to Docker Hub\033[0;39m'
                   fi
