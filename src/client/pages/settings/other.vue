@@ -2,10 +2,6 @@
 <FormBase>
 	<FormLink to="/settings/update">CherryPick Update</FormLink>
 
-	<FormSwitch :value="$i.injectFeaturedNote" @update:value="onChangeInjectFeaturedNote">
-		{{ $ts.showFeaturedNotesInTimeline }}
-	</FormSwitch>
-
 	<FormSwitch v-model:value="reportError">{{ $ts.sendErrorReports }}<template #desc>{{ $ts.sendErrorReportsDescription }}</template></FormSwitch>
 
 	<FormLink to="/settings/account-info">{{ $ts.accountInfo }}</FormLink>
