@@ -73,6 +73,22 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@keyframes earwiggleleft {
+	from { transform: rotate(37.6deg) skew(30deg); }
+	25% { transform: rotate(10deg) skew(30deg); }
+	50% { transform: rotate(20deg) skew(30deg); }
+	75% { transform: rotate(0deg) skew(30deg); }
+	to { transform: rotate(37.6deg) skew(30deg); }
+}
+
+@keyframes earwiggleright {
+	from { transform: rotate(-37.6deg) skew(-30deg); }
+	30% { transform: rotate(-10deg) skew(-30deg); }
+	55% { transform: rotate(-20deg) skew(-30deg); }
+	75% { transform: rotate(0deg) skew(-30deg); }
+	to { transform: rotate(-37.6deg) skew(-30deg); }
+}
+
 .eiwwqkts {
 	position: relative;
 	display: inline-block;
@@ -134,34 +150,12 @@ export default defineComponent({
 		}
 
 		&:hover {
-			@mixin earwiggle($lr: left) {
-				@keyframes kf-#{$lr} {
-					$invert: 1;
-					$frame1: 25%;
-					$frame2: 50%;
-					$frame3: 75%;
-					@if $lr == right {
-						$invert: -1;
-						$frame1: $frame1 + 5%;
-						$frame2: $frame2 + 5%;
-					}
-
-				  from { transform: rotate(calc(#{$invert} * 37.6deg)) skew(calc(#{$invert} * 30deg)); }
-				  #{$frame1} { transform: rotate(calc(#{$invert} * 10deg)) skew(calc(#{$invert} * 30deg)); }
-				  #{$frame2} { transform: rotate(calc(#{$invert} * 20deg)) skew(calc(#{$invert} * 30deg)); }
-				  #{$frame3} { transform: rotate(calc(#{$invert} * 0deg)) skew(calc(#{$invert} * 30deg)); }
-				  to { transform: rotate(calc(#{$invert} * 37.6deg)) skew(calc(#{$invert} * 30deg)); }
-				}
-
-				animation: kf-#{$lr} 1s infinite;
+			&:before {
+				animation: earwiggleleft 1s infinite;
 			}
 
-			&::before {
-				@include earwiggle(left);
-			}
-
-			&::after {
-				@include earwiggle(right);
+			&:after {
+				animation: earwiggleright 1s infinite;
 			}
 		}
 	}

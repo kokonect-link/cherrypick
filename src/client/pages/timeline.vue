@@ -1,8 +1,8 @@
 <template>
 <div class="cmuxhskf" :class="{ isMobile }" v-hotkey.global="keymap" v-size="{ min: [800] }">
-	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block _isolated"/>
-	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block _isolated" fixed/>
-	<div v-if="!isFriendlyUI" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs': !isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
+	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
+	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
+	<div v-if="isFriendlyUILegacy" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
 		<div class="left">
 			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
 			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
@@ -18,9 +18,10 @@
 			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
 		</div>
 	</div>
+
 	<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
 	<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
-	<div class="tl">
+	<div class="tl _block">
 		<XTimeline ref="tl"
 			:class="{ 'tl': !isFriendlyUI }"
 			:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
@@ -142,17 +143,55 @@ export default defineComponent({
 						indicate: computed(() => this.hasUnreadAnnouncements)
 					});
 				}
-				return {
+				if (this.isFriendlyUI) {
+					return {
 					title: this.$ts.timeline,
-					subtitle: this.src === 'local' ? this.$ts._timelines.local : this.src === 'social' ? this.$ts._timelines.social : this.src === 'global' ? this.$ts._timelines.global : this.$ts._timelines.home,
 					tabs,
 					icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+					bg: 'var(--bg)',
 					actions: [{
 						icon: 'fas fa-calendar-alt',
 						text: this.$ts.jumpToSpecifiedDate,
 						handler: this.timetravel
+					}],
+				};
+			} else {
+				return {
+					title: this.$ts.timeline,
+					icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+					bg: 'var(--bg)',
+					actions: [{
+						icon: 'fas fa-calendar-alt',
+						text: this.$ts.jumpToSpecifiedDate,
+						handler: this.timetravel
+					}],
+					tabs: [{
+						active: this.src === 'home',
+						title: this.$ts._timelines.home,
+						icon: 'fas fa-home',
+						iconOnly: true,
+						onClick: () => { this.src = 'home'; this.saveSrc(); },
+					}, {
+						active: this.src === 'local',
+						title: this.$ts._timelines.local,
+						icon: 'fas fa-comments',
+						iconOnly: true,
+						onClick: () => { this.src = 'local'; this.saveSrc(); },
+					}, {
+						active: this.src === 'social',
+						title: this.$ts._timelines.social,
+						icon: 'fas fa-share-alt',
+						iconOnly: true,
+						onClick: () => { this.src = 'social'; this.saveSrc(); },
+					}, {
+						active: this.src === 'global',
+						title: this.$ts._timelines.global,
+						icon: 'fas fa-globe',
+						iconOnly: true,
+						onClick: () => { this.src = 'global'; this.saveSrc(); },
 					}]
 				};
+			}
 			}),
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
@@ -524,16 +563,15 @@ export default defineComponent({
 		}
 	}
 
-	&.min-width_800px {
-		> .tl {
-			background: var(--bg);
-			padding: 32px 0;
+	> .tl {
+		background: var(--bg);
+		border-radius: var(--radius);
+		overflow: clip;
+	}
 
-			> .tl {
-				max-width: 800px;
-				margin: 0 auto;
-			}
-		}
+	&.min-width_800px {
+		max-width: 800px;
+		margin: 0 auto;
 	}
 
 	> .tabs-friendly-legacy,
@@ -552,10 +590,6 @@ export default defineComponent({
 
 	> .tabs-friendly-legacy-mobile {
 		margin: 8px;
-	}
-
-	> .tl {
-		border-top: solid 0.5px var(--divider);
 	}
 }
 </style>

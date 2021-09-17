@@ -12,7 +12,7 @@
 			</div>
 		</template>
 
-		<main class="main _panel" @contextmenu.stop="onContextmenu">
+		<main class="main _panel" @contextmenu.stop="onContextmenu" :style="{ background: pageInfo?.bg }">
 			<header class="header">
 				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo" :back-button="true" @back="back()"/>
 			</header>
@@ -180,6 +180,15 @@ export default defineComponent({
 					body: {
 						x: ev.clientX - iframeRect.left,
 						y: ev.clientY - iframeRect.top,
+					}
+				}, '*');
+			}, { passive: true });
+			window.addEventListener('touchmove', ev => {
+				this.$refs.live2d.contentWindow.postMessage({
+					type: 'moveCursor',
+					body: {
+						x: ev.touches[0].clientX - iframeRect.left,
+						y: ev.touches[0].clientY - iframeRect.top,
 					}
 				}, '*');
 			}, { passive: true });

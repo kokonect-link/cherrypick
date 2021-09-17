@@ -12,7 +12,7 @@
 			</div>
 		</template>
 
-		<main class="main _panel" @contextmenu.stop="onContextmenu">
+		<main class="main _panel" @contextmenu.stop="onContextmenu" :style="{ background: pageInfo?.bg }">
 			<header class="header">
 				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo"/>
 			</header>
