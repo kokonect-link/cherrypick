@@ -25,6 +25,7 @@
 - 클라이언트 디자인 조정
 - Docker Hub에 Image push 대응
 - Sentry 대응
+- UI 개선
 
 ### Bugfixes
 - UI(Friendly): 아이 모드를 대응하지 않는 문제 수정
