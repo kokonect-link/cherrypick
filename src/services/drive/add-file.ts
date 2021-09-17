@@ -338,7 +338,7 @@ export default async function(
 		const usage = await DriveFiles.calcDriveUsageOf(user);
 
 		const instance = await fetchMeta();
-		const driveCapacity = 1024 * 1024 * (Users.isLocalUser(user) ? instance.localDriveCapacityMb : instance.remoteDriveCapacityMb);
+		const driveCapacity = 1024 * 1024 * (Users.isLocalUser(user) ? (User.isVip ? instance.vipDriveCapacityMb : instance.localDriveCapacityMb) : instance.remoteDriveCapacityMb);
 
 		logger.debug(`drive usage is ${usage} (max: ${driveCapacity})`);
 

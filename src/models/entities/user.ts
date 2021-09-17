@@ -243,6 +243,7 @@ export class User {
 		comment: 'The native access token of the User. It will be null if the origin of the user is local.'
 	})
 	public token: string | null;
+	static isVip: any;
 
 	constructor(data: Partial<User>) {
 		if (data == null) return;

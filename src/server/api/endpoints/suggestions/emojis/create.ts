@@ -63,7 +63,7 @@ export default define(meta, async (ps, user) => {
 
 	// 上限に達していればエラー
 	const count = await EmojiRequests.count({ where: { proposerId: user.id, state: 'pending' } }) + 1;
-	const max = user.isAdmin || user.isModerator ? -1 : user.isPremium ? instance.emojiSuggestionLimitationPremium : instance.emojiSuggestionLimitation;
+	const max = user.isAdmin || user.isModerator ? -1 : user.isVip ? instance.emojiSuggestionLimitationVip : instance.emojiSuggestionLimitation;
 	if (max >= 0 && count > max) throw new ApiError(meta.errors.tooManySuggestions);
 
 	await EmojiRequests.insert({

@@ -92,6 +92,10 @@ export const meta = {
 				type: 'number' as const,
 				optional: false as const, nullable: false as const
 			},
+			driveCapacityPerVipUserMb: {
+				type: 'number' as const,
+				optional: false as const, nullable: false as const
+			},
 			driveCapacityPerRemoteUserMb: {
 				type: 'number' as const,
 				optional: false as const, nullable: false as const
@@ -488,6 +492,7 @@ export default define(meta, async (ps, me) => {
 		disableGlobalTimeline: instance.disableGlobalTimeline,
 		disableCatTimeline: instance.disableCatTimeline,
 		driveCapacityPerLocalUserMb: instance.localDriveCapacityMb,
+		driveCapacityPerVipUserMb: instance.vipDriveCapacityMb,
 		driveCapacityPerRemoteUserMb: instance.remoteDriveCapacityMb,
 		enableHcaptcha: instance.enableHcaptcha,
 		hcaptchaSiteKey: instance.hcaptchaSiteKey,
@@ -518,7 +523,7 @@ export default define(meta, async (ps, me) => {
 		enableServiceWorker: instance.enableServiceWorker,
 
 		emojiSuggestionLimitation: instance.emojiSuggestionLimitation,
-		emojiSuggestionLimitationPremium: instance.emojiSuggestionLimitationPremium,
+		emojiSuggestionLimitationVip: instance.emojiSuggestionLimitationVip,
 
 		translatorAvailable: instance.deeplAuthKey != null,
 

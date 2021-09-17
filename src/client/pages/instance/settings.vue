@@ -52,17 +52,14 @@
 			<div class="_formLabel">{{ $ts.emojiSuggestionLimitation }}</div>
 			<div class="main">
 				<FormSwitch v-model:value="emojiLimit">{{ $ts.limit }}</FormSwitch>
+				<FormSwitch v-model:value="emojiLimitVip">{{ $ts.limitVip }}</FormSwitch>
 				<FormInput v-if="emojiLimit" v-model:value="emojiLimitValue" type="number">
 					<span>{{ $ts.maxSuggestion }}</span>
-					<template #desc>{{ $ts.limitDescription }}</template>
 				</FormInput>
-				<!--
-				<FormSwitch v-model:value="emojiLimitPremium">{{ $ts.limitPremium }}</FormSwitch>
-				<FormInput v-if="emojiLimitPremium" v-model:value="emojiLimitValuePremium" type="number">
-					<span>{{ $ts.maxSuggestion }}</span>
-					<template #desc>{{ $ts.limitDescription }}</template>
+				<FormInput v-if="emojiLimitVip" v-model:value="emojiLimitValueVip" type="number">
+					<span>{{ $ts.maxSuggestion + " (VIP)"}}</span>
 				</FormInput>
-				-->
+				<div v-if="emojiLimit || emojiLimitVip" class="_formCaption">{{ $ts.limitDescription }}</div>
 			</div>
 		</div>
 
@@ -117,10 +114,10 @@ export default defineComponent({
 			enableLocalTimeline: false,
 			enableGlobalTimeline: false,
 			enableCatTimeline: false,
-			emojiLimit: true,
-			emojiLimitPremium: false,
+			emojiLimit: false,
+			emojiLimitVip: false,
 			emojiLimitValue: 10,
-			emojiLimitValuePremium: 10,
+			emojiLimitValueVip: 20,
 		}
 	},
 
@@ -144,9 +141,9 @@ export default defineComponent({
 			this.enableGlobalTimeline = !meta.disableGlobalTimeline;
 			this.enableCatTimeline = !meta.disableCatTimeline;
 			this.emojiLimit = meta.emojiSuggestionLimitation >= 0;
-			this.emojiLimitPremium = meta.emojiSuggestionLimitationPremium >= 0;
+			this.emojiLimitVip = meta.emojiSuggestionLimitationVip >= 0;
 			if (this.emojiLimit) this.emojiLimitValue = meta.emojiSuggestionLimitation;
-			if (this.emojiLimitPremium) this.emojiLimitValuePremium = meta.emojiSuggestionLimitationPremium;
+			if (this.emojiLimitVip) this.emojiLimitValueVip = meta.emojiSuggestionLimitationVip;
 		},
 
 		save() {
@@ -164,7 +161,7 @@ export default defineComponent({
 				disableGlobalTimeline: !this.enableGlobalTimeline,
 				disableCatTimeline: !this.enableCatTimeline,
 				emojiSuggestionLimitation: this.emojiLimit ? this.emojiLimitValue : -1,
-				emojiSuggestionLimitationPremium: this.emojiLimitPremium ? this.emojiLimitValuePremium : -1,
+				emojiSuggestionLimitationVip: this.emojiLimitVip ? this.emojiLimitValueVip: -1,
 			}).then(() => {
 				fetchInstance();
 			});

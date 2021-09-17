@@ -17,6 +17,12 @@
 			<template #desc>{{ $ts.inMb }}</template>
 		</FormInput>
 
+		<FormInput v-model:value="vipDriveCapacityMb" type="number">
+			<span>{{ $ts.driveCapacityPerVipAccount }}</span>
+			<template #suffix>MB</template>
+			<template #desc>{{ $ts.inMb }}</template>
+		</FormInput>
+
 		<FormInput v-model:value="remoteDriveCapacityMb" type="number" :disabled="!cacheRemoteFiles">
 			<span>{{ $ts.driveCapacityPerRemoteAccount }}</span>
 			<template #suffix>MB</template>
@@ -61,6 +67,7 @@ export default defineComponent({
 			cacheRemoteFiles: false,
 			proxyRemoteFiles: false,
 			localDriveCapacityMb: 0,
+			VipDriveCapacityMb: 0,
 			remoteDriveCapacityMb: 0,
 		}
 	},
@@ -75,6 +82,7 @@ export default defineComponent({
 			this.cacheRemoteFiles = meta.cacheRemoteFiles;
 			this.proxyRemoteFiles = meta.proxyRemoteFiles;
 			this.localDriveCapacityMb = meta.driveCapacityPerLocalUserMb;
+			this.vipDriveCapacityMb = meta.driveCapacityPerVipUserMb;
 			this.remoteDriveCapacityMb = meta.driveCapacityPerRemoteUserMb;
 		},
 		save() {
@@ -82,6 +90,7 @@ export default defineComponent({
 				cacheRemoteFiles: this.cacheRemoteFiles,
 				proxyRemoteFiles: this.proxyRemoteFiles,
 				localDriveCapacityMb: parseInt(this.localDriveCapacityMb, 10),
+				vipDriveCapacityMb: parseInt(this.vipDriveCapacityMb, 10),
 				remoteDriveCapacityMb: parseInt(this.remoteDriveCapacityMb, 10),
 			}).then(() => {
 				fetchInstance();

@@ -15,7 +15,7 @@ export default define(meta, async (_, user) => {
 	const instance = await fetchMeta();
 
 	const current = await EmojiRequests.count({ where: { proposerId: user.id, state: 'pending' } });
-	const max = user.isAdmin || user.isModerator ? -1 : user.isPremium ? instance.emojiSuggestionLimitationPremium : instance.emojiSuggestionLimitation;
+	const max = user.isAdmin || user.isModerator ? -1 : user.isVip ? instance.emojiSuggestionLimitationVip : instance.emojiSuggestionLimitation;
 
 	return {
 		limit: max < 0 ? null : max - current,

@@ -31,8 +31,15 @@ export default define(meta, async (ps, user) => {
 	// Calculate drive usage
 	const usage = await DriveFiles.calcDriveUsageOf(user.id);
 
-	return {
-		capacity: 1024 * 1024 * instance.localDriveCapacityMb,
-		usage: usage
-	};
+	if (user.isVip) {
+		return {
+			capacity: 1024 * 1024 * instance.vipDriveCapacityMb,
+			usage: usage
+		};
+	} else {
+		return {
+			capacity: 1024 * 1024 * instance.localDriveCapacityMb,
+			usage: usage
+		};
+	}
 });

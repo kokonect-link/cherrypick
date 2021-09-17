@@ -5,12 +5,12 @@ export class suggestionLimitationSettings1627917125000 implements MigrationInter
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE "meta" ADD "emojiSuggestionLimitation" integer NOT NULL DEFAULT '10'`);
-        await queryRunner.query(`ALTER TABLE "meta" ADD "emojiSuggestionLimitationPremium" integer NOT NULL DEFAULT '-1'`);
+        await queryRunner.query(`ALTER TABLE "meta" ADD "emojiSuggestionLimitationVip" integer NOT NULL DEFAULT '-1'`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "emojiSuggestionLimitationPremium"`);
-        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "emojiSuggestionLimitation"`);
+				await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "emojiSuggestionLimitation"`);
+        await queryRunner.query(`ALTER TABLE "meta" DROP COLUMN "emojiSuggestionLimitationVip"`);
     }
 
 }

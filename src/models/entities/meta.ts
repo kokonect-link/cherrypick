@@ -194,6 +194,12 @@ export class Meta {
 	public localDriveCapacityMb: number;
 
 	@Column('integer', {
+		default: 2048,
+		comment: 'Drive capacity of a vip user (MB)'
+	})
+	public vipDriveCapacityMb: number;
+
+	@Column('integer', {
 		default: 32,
 		comment: 'Drive capacity of a remote user (MB)'
 	})
@@ -429,5 +435,5 @@ export class Meta {
 	@Column('integer', {
 		default: -1,
 	})
-	public emojiSuggestionLimitationPremium: number;
+	public emojiSuggestionLimitationVip: number;
 }

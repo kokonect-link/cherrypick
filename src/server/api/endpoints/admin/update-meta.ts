@@ -85,6 +85,10 @@ export const meta = {
 			validator: $.optional.num.min(0),
 		},
 
+		vipDriveCapacityMb: {
+			validator: $.optional.num.min(0),
+		},
+
 		remoteDriveCapacityMb: {
 			validator: $.optional.num.min(0),
 		},
@@ -301,7 +305,7 @@ export const meta = {
 			validator: $.optional.num,
 		},
 
-		emojiSuggestionLimitationPremium: {
+		emojiSuggestionLimitationVip: {
 			validator: $.optional.num,
 		},
 	}
@@ -376,6 +380,10 @@ export default define(meta, async (ps, me) => {
 
 	if (ps.localDriveCapacityMb !== undefined) {
 		set.localDriveCapacityMb = ps.localDriveCapacityMb;
+	}
+
+	if (ps.vipDriveCapacityMb !== undefined) {
+		set.vipDriveCapacityMb = ps.vipDriveCapacityMb;
 	}
 
 	if (ps.remoteDriveCapacityMb !== undefined) {
@@ -590,8 +598,8 @@ export default define(meta, async (ps, me) => {
 		set.emojiSuggestionLimitation = ps.emojiSuggestionLimitation;
 	}
 
-	if (ps.emojiSuggestionLimitationPremium !== undefined) {
-		set.emojiSuggestionLimitationPremium = ps.emojiSuggestionLimitationPremium;
+	if (ps.emojiSuggestionLimitationVip !== undefined) {
+		set.emojiSuggestionLimitationVip = ps.emojiSuggestionLimitationVip;
 	}
 
 	if (ps.deeplAuthKey !== undefined) {
