@@ -5,15 +5,15 @@
 			<button class="_button button back" @click.stop="$emit('back')" @touchstart="preventDrag" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
 		</div>
 	</transition>
-	<div class="buttons left" v-if="isMobile">
-		<button class="_button button" v-if="!(backButton && canBack) || fabButton" @click="showDrawerNav">
+	<div class="buttons left" v-if="isMobile && !(backButton && canBack) || fabButton">
+		<button class="_button button" @click="showDrawerNav">
 			<MkAvatar class="avatar" v-if="!canBack || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 			<!-- <i class="fas fa-bars"/>
 			<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></span> -->
 		</button>
 	</div>
 	<template v-if="info">
-		<div class="titleContainer" @click="showTabsPopup">
+		<div class="titleContainer" :class="{ center: $route.name === 'index' }" @click="showTabsPopup">
 			<template v-if="info.tabs">
 				<template v-if="$route.name === 'user'">
 					<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
@@ -36,7 +36,7 @@
 				</div>
 			</template>
 		</div>
-		<div class="tabs" v-if="!narrow">
+		<div class="tabs" v-if="!narrow && $route.name !== 'index'">
 			<button class="tab _button" v-for="tab in info.tabs" :class="{ active: tab.active }" @click="tab.onClick" v-tooltip="tab.title">
 				<i v-if="tab.icon" class="icon" :class="tab.icon"></i>
 				<span v-if="!tab.iconOnly" class="title">{{ tab.title }}</span>
@@ -147,16 +147,11 @@ export default defineComponent({
 
 	mounted() {
 		this.height = this.$el.parentElement.offsetHeight + 'px';
-		this.narrow = this.titleOnly || this.$el.parentElement.offsetWidth < 500;
+		this.narrow = this.titleOnly || window.innerWidth < 600;
 		new ResizeObserver((entries, observer) => {
 			this.height = this.$el.parentElement.offsetHeight + 'px';
-			this.narrow = this.titleOnly || this.$el.parentElement.offsetWidth < 500;
+			this.narrow = this.titleOnly || window.innerWidth < 600;
 		}).observe(this.$el);
-
-		window.addEventListener('resize', () => {
-			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
-			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
-		}, { passive: true });
 	},
 
 	methods: {
@@ -258,7 +253,7 @@ export default defineComponent({
 		}
 
 		&.left {
-			position: absolute;
+			position: relative;
 			z-index: 1;
 			top: 0;
 			left: 0;
@@ -281,6 +276,10 @@ export default defineComponent({
 					height: $avatar-size;
 					vertical-align: middle;
 				}
+			}
+
+			@media (max-width: 600px) {
+				position: absolute;
 			}
 		}
 
@@ -340,6 +339,10 @@ export default defineComponent({
 
 		> .title,
 			.title_user {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
 			> .indicator {
 				position: absolute;
 				top: 13px;
@@ -408,10 +411,11 @@ export default defineComponent({
 
 		> .title_user {
 			min-width: 0;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
 			line-height: 1.1;
+		}
+
+		&.center {
+			margin: 0 auto;
 		}
 	}
 
