@@ -456,7 +456,7 @@ youHaveNoGroups: "그룹이 없어요"
 joinOrCreateGroup: "다른 그룹의 초대를 받거나, 직접 새 그룹을 만들 수 있어요!"
 noHistory: "기록이 없어요"
 signinHistory: "로그인 기록"
-disableAnimatedMfm: "움직임이 있는 MFM을 비활성화"
+disableAnimatedMfm: "움직임이 있는 MFM 비활성화"
 doing: "잠시만요.."
 category: "카테고리"
 tags: "태그"
@@ -973,6 +973,8 @@ _mfmpad:
     emoji: "이모지"
     math: "수학"
     warnCherryPickExtension: "CherryPick의 확장 기능이에요. 다른 Misskey 인스턴스에는 정상적으로 나타나지 않을 수 있어요."
+    particleCount: "입자 수"
+    particleCountDescription: "입자의 수를 지정해요. 최대 100개까지 나타낼 수 있어요."
 
 _mfm:
   cheatSheet: "MFM 도움말"
@@ -1034,6 +1036,8 @@ _mfm:
   fontDescription: "내용의 글꼴을 지정할 수 있어요."
   rainbow: "무지개"
   rainbowDescription: "내용을 무지개로 표시해요."
+  sparkle: "반짝반짝"
+  sparkleDescription: "반짝이는 파티클 효과를 추가해요."
 
 _reversi:
   reversi: "리버시"

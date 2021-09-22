@@ -47,10 +47,10 @@
 <script lang="ts">
 import { computed, defineComponent, markRaw, ref, SetupContext, watchEffect } from 'vue';
 import XModalWindow from '@client/components/ui/modal-window.vue';
-import MkSelect from './ui/select.vue';
-import MkSwitch from './ui/switch.vue';
-import MkInput from './ui/input.vue';
-import MkInfo from './ui/info.vue';
+import MkSelect from '@client/components/ui/select.vue';
+import MkSwitch from '@client/components/ui/switch.vue';
+import MkInput from '@client/components/ui/input.vue';
+import MkInfo from '@client/components/ui/info.vue';
 import { mfmFunctions } from './mfm.functions';
 
 export default defineComponent({

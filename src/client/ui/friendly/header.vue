@@ -34,16 +34,16 @@
 				</div>
 			</template>
 		</div>
-
-		<div class="buttons right">
-			<button v-if="queue > 0 && $route.name === 'index' && ($store.state.newNoteNotiBehavior === 'smail' || $store.state.newNoteNotiBehavior === 'header')" :class="{ 'new _button': $store.state.newNoteNotiBehavior === 'header', 'new-hover _buttonPrimary': $store.state.newNoteNotiBehavior === 'smail' }" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
-			<template v-if="info.actions && showActions">
-				<button v-for="action in info.actions" class="_button button" :class="{ highlighted: action.highlighted }" @click.stop="action.handler" @touchstart="preventDrag" v-tooltip="action.text"><i :class="action.icon"></i></button>
-			</template>
-			<button v-if="shouldShowMenu" class="_button button" @click.stop="showMenu" @touchstart="preventDrag" v-tooltip="$ts.menu"><i class="fas fa-ellipsis-h"></i></button>
-			<button v-if="closeButton" class="_button button" @click.stop="$emit('close')" @touchstart="preventDrag" v-tooltip="$ts.close"><i class="fas fa-times"></i></button>
-		</div>
 	</template>
+
+	<div class="buttons right">
+		<button v-if="queue > 0 && $route.name === 'index' && ($store.state.newNoteNotiBehavior === 'smail' || $store.state.newNoteNotiBehavior === 'header')" :class="{ 'new _button': $store.state.newNoteNotiBehavior === 'header', 'new-hover _buttonPrimary': $store.state.newNoteNotiBehavior === 'smail' }" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
+		<template v-if="info && info.actions && showActions">
+			<button v-for="action in info.actions" class="_button button" :class="{ highlighted: action.highlighted }" @click.stop="action.handler" @touchstart="preventDrag" v-tooltip="action.text"><i :class="action.icon"></i></button>
+		</template>
+		<button v-if="shouldShowMenu" class="_button button" @click.stop="showMenu" @touchstart="preventDrag" v-tooltip="$ts.menu"><i class="fas fa-ellipsis-h"></i></button>
+		<button v-if="closeButton" class="_button button" @click.stop="$emit('close')" @touchstart="preventDrag" v-tooltip="$ts.close"><i class="fas fa-times"></i></button>
+	</div>
 </div>
 </template>
 
@@ -105,6 +105,7 @@ export default defineComponent({
 
 	computed: {
 		shouldShowMenu() {
+			if (this.info == null) return false;
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
 			if (this.info.share != null) return true;

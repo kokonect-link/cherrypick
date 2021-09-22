@@ -973,6 +973,8 @@ _mfmpad:
     emoji: "絵文字"
     math: "数学"
     warnCherryPickExtension: "CherryPickの拡張機能です。他のMisskeyインスタンスでは正常に表示されない可能性があります。"
+    particleCount: "粒の数"
+    particleCountDescription: "粒の数を指定します。最大100個まで表すことができます。"
 
 _mfm:
   cheatSheet: "MFMチートシート"

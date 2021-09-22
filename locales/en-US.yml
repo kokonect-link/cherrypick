@@ -959,6 +959,8 @@ _mfmpad:
     emoji: "Emoji"
     math: "Mathematics"
     warnCherryPickExtension: "It's an extension of CherryPick. It may not appear normally in other Misskey instances."
+    particleCount: "Number of particles"
+    particleCountDescription: "Specifies the number of particles. It can display up to 100."
 _mfm:
   cheatSheet: "MFM Cheatsheet"
   intro: "MFM is an exclusive markup language that can be used in many places. Here you can view a list of all available MFM syntax."

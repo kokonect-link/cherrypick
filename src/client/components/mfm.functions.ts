@@ -94,13 +94,6 @@ export const mfmFunctions: Record<string, MfmFunctionDefinition> = {
 		style: _ => 'animation: mfm-bounce 0.75s linear infinite; transform-origin: center bottom',
 		noAnimatedMfmStyle: true,
 	},
-	/*
-	rainbow: {
-		style: _ => 'color: var(--accent); animation: mfm-rainbow 1s linear infinite both',
-		noAnimatedMfmStyle: true,
-		isCherryPickExtension: true,
-	},
-	 */
 	flip: {
 		props: {
 			h: genFlagProp(ts._mfmpad._functions.hflip),
@@ -141,7 +134,6 @@ export const mfmFunctions: Record<string, MfmFunctionDefinition> = {
 			return `${family};`;
 		},
 		noAnimatedMfmStyle: true,
-		isCherryPickExtension: true,
 	},
 	x2: 'font-size: 200%',
 	x3: 'font-size: 400%',
@@ -150,4 +142,11 @@ export const mfmFunctions: Record<string, MfmFunctionDefinition> = {
 		class: '_mfm_blur_',
 	},
 	rainbow: 'animation: mfm-rainbow 1s linear infinite',
+	sparkle: {
+		props: {
+			count: genProp(ts._mfmpad._functions.particleCount, ts._mfmpad._functions.particleCountDescription),
+			speed: genProp(ts._mfmpad._functions.speed),
+		},
+		style: args => `${args.count || '10'} ${args.speed || '1'};`
+	},
 };

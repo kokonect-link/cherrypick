@@ -25,14 +25,14 @@
 			</template>
 			-->
 		</div>
-		<div class="buttons_R">
-			<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
-			<template v-if="info.actions && showActions">
-				<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
-			</template>
-			<button v-if="showMenu" class="_button button_R" @click.stop="menu" v-click-anime><i class="fas fa-ellipsis-h"></i></button>
-		</div>
 	</template>
+	<div class="buttons_R">
+		<button v-if="queue > 0 && $route.name === 'index' && !isDesktop" class="new _buttonPrimary" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
+		<template v-if="info && info.actions && showActions">
+			<button v-for="action in info.actions" class="_button button_R" @click.stop="action.handler" v-tooltip="action.text" v-click-anime><i :class="action.icon"></i></button>
+		</template>
+		<button v-if="showMenu" class="_button button_R" @click.stop="menu" v-click-anime><i class="fas fa-ellipsis-h"></i></button>
+	</div>
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
 		<button class="_button back" v-if="withBack && canBack && isMobile && !($route.name === 'notifications' || $route.name === 'messaging')" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
 		<button class="_button back" v-else-if="withBack && canBack && !isMobile" @click.stop="back()" v-click-anime><i class="fas fa-chevron-left"></i></button>
@@ -84,6 +84,7 @@ export default defineComponent({
 
 	computed: {
 		showMenu() {
+			if (this.info == null) return false;
 			if (this.info.actions != null && !this.showActions) return true;
 			if (this.info.menu != null) return true;
 			if (this.info.share != null) return true;
