@@ -301,7 +301,7 @@ export default defineComponent({
 
 					> .item,
 						.patron-button {
-						padding: 10px 0;
+						padding: 18px 0;
 						width: 100%;
 						text-align: center;
 						font-size: $ui-font-size * 1.1;
@@ -318,26 +318,19 @@ export default defineComponent({
 						}
 
 						> .text,
-							.patron-text{
-							display: inline-block;
-							font-size: 0.5em;
-							line-height: initial;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-							max-width: 100%;
-							opacity: 0.7;
+							.patron-text {
+							display: none;
+						}
+
+						> .patron,
+							.not-patron {
+							margin: 0;
 						}
 
 						&:hover, &.active {
 							> i, > .text {
 								opacity: 1;
 							}
-						}
-
-						> .patron,
-							.not-patron {
-							margin: 0;
 						}
 
 						&:first-child {
@@ -448,7 +441,7 @@ export default defineComponent({
 				}
 
 				> .patron,
-				.not-patron {
+					.not-patron {
 					margin-left: 6px;
 					margin-right: 12px;
 				}
