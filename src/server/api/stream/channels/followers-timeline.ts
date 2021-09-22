@@ -2,7 +2,7 @@ import autobind from 'autobind-decorator';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import Channel from '../channel';
 import { Notes, Users } from '@/models/index';
-import { PackedNote } from '@/models/repositories/note';
+import { Packed } from '@/misc/schema';
 import { checkWordMute } from '@/misc/check-word-mute';
 
 export default class extends Channel {
@@ -17,7 +17,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
+	private async onNote(note: Packed<'Note'>) {
 		const user = await Users.pack(note.userId, this.user!, { detail: true });
 		if (this.user!.id !== note.userId && !user.isFollowed ) return;
 

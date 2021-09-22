@@ -2,7 +2,7 @@ import autobind from 'autobind-decorator';
 import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import Channel from '../channel';
 import { Notes } from '@/models/index';
-import { PackedNote } from '@/models/repositories/note';
+import { Packed } from '@/misc/schema';
 import { checkWordMute } from '@/misc/check-word-mute';
 
 export default class extends Channel {
@@ -17,7 +17,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
+	private async onNote(note: Packed<'Note'>) {
 		// その投稿のユーザーをフォローしていなかったら弾く
 		if (this.user!.id !== note.userId && !this.following.has(note.userId)) return;
 		// ローカルなら弾く

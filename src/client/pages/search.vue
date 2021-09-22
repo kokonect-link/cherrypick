@@ -33,17 +33,16 @@ import XUser from '@client/components/user.vue';
 import XUsers from '@client/components/users.vue';
 import XSearch from '@client/components/search.vue';
 import MkTab from '@client/components/tab.vue';
-import { PackedNote } from '@/models/repositories/note';
-import { PackedUser } from '@/models/repositories/user';
+import { Packed } from '@/misc/schema';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
 
 type SmartCard = {
 	type: 'note',
-	note: PackedNote,
+	note: Packed<'Note'>,
 } | {
 	type: 'user',
-	user: PackedUser,
+	user: Packed<'User'>,
 } | {
 	type: 'custom',
 	icon?: 'fas fa-search',

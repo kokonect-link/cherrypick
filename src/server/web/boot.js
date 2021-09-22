@@ -48,8 +48,8 @@
 		} else if (localeOutdated) {
 			// nop
 		} else {
+			await checkUpdate();
 			renderError('LOCALE_FETCH_FAILED');
-			checkUpdate();
 			return;
 		}
 	}
@@ -65,8 +65,8 @@
 	script.setAttribute('async', 'true');
 	script.setAttribute('defer', 'true');
 	script.addEventListener('error', async () => {
+		await checkUpdate();
 		renderError('APP_FETCH_FAILED');
-		checkUpdate();
 	});
 	document.head.appendChild(script);
 	//#endregion
@@ -142,12 +142,6 @@
 
 		if (meta.version != v) {
 			localStorage.setItem('v', meta.version);
-			alert(
-				'CherryPickの新しいバージョンがあります。ページを再度読み込みします。' +
-				'\n' +
-				'CherryPick이 새 버전으로 업데이트 되었습니다. 페이지를 다시 불러옵니다.' +
-				'\n' +
-				'New version available of CherryPick. The page will be reloaded.');
 			refresh();
 		}
 	}

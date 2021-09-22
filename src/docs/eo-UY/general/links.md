@@ -1,7 +1,7 @@
 # リンク集
 
 ## Webサイト
-- [Oficiala Discord](https://discord.gg/V8qghB28Aj) - Servilo Discord'a oficiala de CherryPick
+- [Oficiala Discord](https://discord.gg/V8qghB28Aj) - la Servilo Discord'a oficiala de CherryPick
 - [Misskey Forum](https://forum.misskey.io/) - Misskeyに関する話題を扱うフォーラム
 
 ## Kontoj

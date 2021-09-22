@@ -3,7 +3,7 @@ import { isMutedUserRelated } from '@/misc/is-muted-user-related';
 import Channel from '../channel';
 import { fetchMeta } from '@/misc/fetch-meta';
 import { Notes } from '@/models/index';
-import { PackedNote } from '@/models/repositories/note';
+import { Packed } from '@/misc/schema';
 import { checkWordMute } from '@/misc/check-word-mute';
 import { isBlockerUserRelated } from '@/misc/is-blocker-user-related';
 
@@ -24,7 +24,7 @@ export default class extends Channel {
 	}
 
 	@autobind
-	private async onNote(note: PackedNote) {
+	private async onNote(note: Packed<'Note'>) {
 		// チャンネルの投稿ではなく、自分自身の投稿 または
 		// チャンネルの投稿ではなく、その投稿のユーザーがローカルであり、フォローしている または
 		// チャンネルの投稿ではなく、全体公開のローカルの投稿 または
