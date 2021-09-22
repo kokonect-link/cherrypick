@@ -136,7 +136,7 @@ export default defineComponent({
 						indicate: computed(() => this.hasUnreadAnnouncements)
 					});
 				}
-				if (this.isFriendlyUI) {
+				if (this.isFriendlyUI || this.isFriendlyUILegacy) {
 					return {
 					title: this.$ts.timeline,
 					tabs,
