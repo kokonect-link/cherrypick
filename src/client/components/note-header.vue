@@ -4,13 +4,13 @@
 		<MkUserName :user="note.user"/>
 		<MkAcct class="username" :user="note.user"/>
 	</MkA>
-	<span class="is-bot" v-if="note.user.isBot">bot</span>
-	<span class="locked" v-if="note.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></span>
-	<span class="admin" v-if="note.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></span>
-	<span class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></span>
+	<div class="is-bot" v-if="note.user.isBot">bot</div>
+	<div class="locked" v-if="note.user.isLocked" :title="$ts.isLocked"><i class="fas fa-lock"></i></div>
+	<div class="admin" v-if="note.user.isAdmin" :title="$ts.administrator"><i class="fas fa-crown"></i></div>
+	<div class="moderator" v-if="!note.user.isAdmin && note.user.isModerator" :title="$ts.moderator"><i class="fas fa-chess-queen"></i></div>
 	<template v-if="note.user.isPatron">
-		<span class="patron" v-if="note.user.isVip" :title="$ts.vip"><i class="fas fa-gem"></i></span>
-		<span class="patron" v-else :title="$ts.patron"><i class="fas fa-heart"></i></span>
+		<div class="patron" v-if="note.user.isVip" :title="$ts.vip"><i class="fas fa-gem"></i></div>
+		<div class="patron" v-else :title="$ts.patron"><i class="fas fa-heart"></i></div>
 	</template>
 	<div class="info">
 		<span class="mobile" v-if="note.viaMobile"><i class="fas fa-mobile-alt"></i></span>
@@ -64,6 +64,7 @@ export default defineComponent({
 	white-space: nowrap;
 
 	> .name {
+		flex-shrink: 1;
 		display: block;
 		margin: 0 .5em 0 0;
 		padding: 0;
@@ -78,6 +79,7 @@ export default defineComponent({
 		}
 
 		> .username {
+			flex-shrink: 9999999;
 			margin: 0 0 0 .5em;
 			overflow: hidden;
 			text-overflow: ellipsis;
@@ -97,6 +99,7 @@ export default defineComponent({
 
 	> .admin,
 	> .moderator {
+		flex-shrink: 0;
 		margin-right: 0.5em;
 		color: var(--badge);
 	}
@@ -111,6 +114,7 @@ export default defineComponent({
 	}
 
 	> .info {
+		flex-shrink: 0;
 		margin-left: auto;
 		font-size: 0.9em;
 
