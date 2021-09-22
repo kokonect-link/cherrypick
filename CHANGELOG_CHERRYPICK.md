@@ -7,7 +7,7 @@
 
 -->
 
-## 12.x.x-cp-2.x.x (unreleased)
+## 12.91.0-cp-2.2.2 (2021/09/23)
 
 ### Bugfixes
 - UI(friendly): 헤더 디자인 버그 수정
