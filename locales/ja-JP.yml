@@ -930,6 +930,7 @@ _aboutMisskey:
     donate: "ココネクトに寄付"
   _cherrypick:
     about: "このMisskeyはNoriDevによってカスタムされました！"
+    translation: "CherryPickを翻訳"
     donate: "CherryPickに寄付"
     relayServer: "リレーサーバー"
     community: "コミュニティー"

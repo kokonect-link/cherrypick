@@ -11,7 +11,7 @@
 		<template #caption>
 			<I18n :src="$ts.i18nInfo" tag="span">
 				<template #link>
-					<MkLink url="https://crowdin.com/project/misskey">Crowdin</MkLink>
+					<MkLink url="https://gitlocalize.com/repo/6464">GitLocalize</MkLink>
 				</template>
 			</I18n>
 		</template>

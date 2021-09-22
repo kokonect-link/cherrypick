@@ -918,6 +918,7 @@ _aboutMisskey:
     donate: "Donate to Kokonect"
   _cherrypick:
     about: "This Misskey was customized by NoriDev!"
+    translation: "Translate CherryPick"
     donate: "Donate to CherryPick"
     relayServer: "Relay Server"
     community: "Community"

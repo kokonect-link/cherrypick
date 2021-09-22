@@ -25,6 +25,11 @@
 				{{ $ts._aboutMisskey.source }}
 				<template #suffix>GitHub</template>
 			</FormLink>
+			<FormLink to="https://gitlocalize.com/repo/6464" external>
+				<template #icon><i class="fas fa-language"></i></template>
+				{{ $ts._aboutMisskey._cherrypick.translation }}
+				<template #suffix>GitLocalize</template>
+			</FormLink>
 			<FormLink to="https://discord.gg/V8qghB28Aj" external>
 				<template #icon><i class="fab fa-discord"></i></template>
 				{{ $ts._aboutMisskey._cherrypick.community }}
