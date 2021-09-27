@@ -15,6 +15,7 @@
 - 클라이언트: UI 애니메이션 줄이기 옵션을 내비게이션 메뉴의 애니메이션에도 적용
 - 클라이언트: MFM 함수 구문의 제안 구현
 - ActivityPub: HTML -> MFM 변환 강화
+- Docker: Node.js를 16.10.0으로 업데이트
 
 ### Bugfixes
 - UI(friendly): 헤더에 타이틀이 표시되지 않는 문제 수정
