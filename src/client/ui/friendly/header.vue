@@ -5,11 +5,11 @@
 			<button class="_button button back" @click.stop="$emit('back')" @touchstart="preventDrag" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
 		</div>
 	</transition>
-	<div class="buttons left" v-if="isMobile && !(backButton && canBack) || fabButton">
-		<button class="_button button" @click="showDrawerNav">
-			<MkAvatar class="avatar" v-if="!canBack || ($route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
-			<!-- <i class="fas fa-bars"/>
-			<span v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></span> -->
+	<div class="buttons left" v-if="isMobile">
+		<button class="_button button" v-if="!(backButton && canBack) || fabButton" @click="showDrawerNav">
+			<MkAvatar class="avatar" v-if="!canBack || ($route.name === 'explore' || $route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
+			<!-- <i class="fas fa-bars"/> -->
+			<div v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></div>
 		</button>
 	</div>
 	<template v-if="info">
@@ -19,7 +19,6 @@
 					<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
 					<div class="title_user">
 						<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="title"/>
-						<div v-else-if="info.title" class="title">{{ info.title }}</div>
 						<div class="subtitle" v-if="!narrow && info.subtitle">
 							{{ info.subtitle }}
 						</div>
@@ -29,10 +28,17 @@
 						</div>
 					</div>
 				</template>
-				<div class="title" v-else v-for="tab in info.tabs" :key="tab.id" :class="{ _button: tab.onClick, selected: tab.selected }" @click.stop="tab.onClick" v-tooltip="tab.tooltip">
+				<div class="title tabs" v-else v-for="tab in info.tabs" :key="tab.id" :class="{ _button: tab.onClick, selected: tab.selected }" @click.stop="tab.onClick" v-tooltip="tab.tooltip">
 					<i v-if="tab.icon" class="fa-fw" :class="tab.icon" :key="tab.icon"/>
-					<span v-if="tab.title" class="text">{{ tab.title }}</span>
+					<span v-if="tab.title" class="title">{{ tab.title }}</span>
 					<i class="fas fa-circle indicator" v-if="tab.indicate"/>
+				</div>
+			</template>
+
+			<template v-else>
+				<i v-if="info.icon" class="icon" :class="info.icon"></i>
+				<div class="title">
+					<div v-if="info.title" class="title">{{ info.title }}</div>
 				</div>
 			</template>
 		</div>
@@ -234,7 +240,6 @@ export default defineComponent({
 	$avatar-margin: 10px;
 
 	display: flex;
-	height: var(--height);
 
 	&.slim {
 		text-align: center;
@@ -326,6 +331,7 @@ export default defineComponent({
 		white-space: nowrap;
 		text-align: left;
 		font-weight: bold;
+		height: var(--height);
 
 		> .avatar {
 			$size: 32px;
@@ -335,6 +341,10 @@ export default defineComponent({
 			vertical-align: bottom;
 			margin: 0 8px;
 			pointer-events: none;
+		}
+
+		> .icon {
+			margin-right: 8px;
 		}
 
 		> .title,
@@ -350,20 +360,6 @@ export default defineComponent({
 				color: var(--indicator);
 				font-size: 7px;
 				animation: blink 1s infinite;
-			}
-
-			> .icon {
-				margin-right: 8px;
-			}
-
-			> .avatar {
-				$size: 32px;
-				display: inline-block;
-				width: $size;
-				height: $size;
-				vertical-align: bottom;
-				margin: calc((var(--height) - #{$size}) / 2) 8px calc((var(--height) - #{$size}) / 2) 0;
-				pointer-events: none;
 			}
 
 			> .patron {
@@ -404,9 +400,7 @@ export default defineComponent({
 		> .title {
 			display: inline-block;
 			vertical-align: bottom;
-			padding: 0 16px;
 			position: relative;
-			height: var(--height);
 		}
 
 		> .title_user {
@@ -416,6 +410,10 @@ export default defineComponent({
 
 		&.center {
 			margin: 0 auto;
+		}
+
+		> .tabs {
+			padding: 0 16px;
 		}
 	}
 

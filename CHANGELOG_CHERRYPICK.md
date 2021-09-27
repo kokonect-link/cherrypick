@@ -7,6 +7,17 @@
 
 -->
 
+## 12.x.x-cp-2.x.x (unreleased)
+
+### Improvements
+- UI(friendly): 내비게이션 메뉴 버튼에 알림 인디케이터 추가
+- UI(friendly): 발견하기 탭에서 내비게이션 메뉴에 접근할 수 있도록 개선
+
+### Bugfixes
+- UI(friendly): 헤더에 타이틀이 표시되지 않는 문제 수정
+
+---
+
 ## 12.91.0-cp-2.2.2 (2021/09/23)
 
 ### Bugfixes
