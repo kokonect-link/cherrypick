@@ -7,7 +7,7 @@
 	</transition>
 	<div class="buttons left" v-if="isMobile">
 		<button class="_button button" v-if="!(backButton && canBack) || fabButton" @click="showDrawerNav">
-			<MkAvatar class="avatar" v-if="!canBack || ($route.name === 'explore' || $route.name === 'notifications' || $route.name === 'messaging')" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
+			<MkAvatar class="avatar" v-if="!canBack || menuBar" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 			<!-- <i class="fas fa-bars"/> -->
 			<div v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></div>
 		</button>
@@ -114,6 +114,7 @@ export default defineComponent({
 				'messaging'
 			],
 			fabButton: false,
+			menuBar: false,
 		};
 	},
 
@@ -141,6 +142,7 @@ export default defineComponent({
 			handler(to, from) {
 				this.canBack = (window.history.length > 0 && !['index'].includes(to.name));
 				this.fabButton = this.routeList.includes(this.$route.name);
+				this.menuBar = this.routeList.includes(this.$route.name);
 			},
 			immediate: true
 		},
