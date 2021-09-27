@@ -13,7 +13,7 @@
 		</button>
 	</div>
 	<template v-if="info">
-		<div class="titleContainer" :class="{ center: $route.name === 'index' }" @click="showTabsPopup">
+		<div class="titleContainer" :class="{ center: $route.name !== 'user' }" @click="showTabsPopup">
 			<template v-if="info.tabs">
 				<template v-if="$route.name === 'user'">
 					<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
