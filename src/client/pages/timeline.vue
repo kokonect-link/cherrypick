@@ -24,8 +24,11 @@
 	<div class="tl _block">
 		<XTimeline ref="tl"
 			:class="{ 'tl': !isFriendlyUI }"
-			:key="src"
+			:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
 			:src="src"
+			:list="list ? list.id : null"
+			:antenna="antenna ? antenna.id : null"
+			:channel="channel ? channel.id : null"
 			:sound="true"
 			@before="before()"
 			@after="after()"
@@ -61,6 +64,9 @@ export default defineComponent({
 	data() {
 		return {
 			src: 'home',
+			list: null,
+			antenna: null,
+			channel: null,
 			queue: 0,
 			width: 0,
 			announcements: [],
@@ -239,10 +245,33 @@ export default defineComponent({
 		src() {
 			this.showNav = false;
 		},
+
+		list(x) {
+			this.showNav = false;
+			if (x != null) this.antenna = null;
+			if (x != null) this.channel = null;
+		},
+		antenna(x) {
+			this.showNav = false;
+			if (x != null) this.list = null;
+			if (x != null) this.channel = null;
+		},
+		channel(x) {
+			this.showNav = false;
+			if (x != null) this.antenna = null;
+			if (x != null) this.list = null;
+		},
 	},
 
 	created() {
 		this.src = this.$store.state.tl.src;
+		if (this.src === 'list') {
+			this.list = this.$store.state.tl.arg;
+		} else if (this.src === 'antenna') {
+			this.antenna = this.$store.state.tl.arg;
+		} else if (this.src === 'channel') {
+			this.channel = this.$store.state.tl.arg;
+		}
 
 		eventBus.on('kn-header-new-queue-reset', () => this.queue = 0);
 	},
@@ -375,7 +404,7 @@ export default defineComponent({
 				text: list.name,
 				to: `/timeline/list/${list.id}`
 			}));
-			os.popupMenu(items, ev.currentTarget || ev.target);
+			await os.popupMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseAntenna(ev) {
@@ -386,7 +415,7 @@ export default defineComponent({
 				indicate: antenna.hasUnreadNote,
 				to: `/timeline/antenna/${antenna.id}`
 			}));
-			os.popupMenu(items, ev.currentTarget || ev.target);
+			await os.popupMenu(items, ev.currentTarget || ev.target);
 		},
 
 		async chooseChannel(ev) {
@@ -397,7 +426,7 @@ export default defineComponent({
 				indicate: channel.hasUnreadNote,
 				to: `/channels/${channel.id}`
 			}));
-			os.popupMenu(items, ev.currentTarget || ev.target);
+			await os.popupMenu(items, ev.currentTarget || ev.target);
 		},
 
 		saveSrc() {
