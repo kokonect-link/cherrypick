@@ -226,10 +226,10 @@ export default defineComponent({
 
 		> .indicator {
 			position: absolute;
-			top: 5px;
-			left: 13px;
+			top: 0;
+			left: 15px;
 			color: var(--indicator);
-			font-size: 12px;
+			font-size: 7px;
 			animation: blink 1s infinite;
 		}
 	}
