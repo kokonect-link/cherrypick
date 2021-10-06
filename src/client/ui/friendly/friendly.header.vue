@@ -29,8 +29,7 @@
 				<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 			</button>
 			<button class="_button toggler" @click="openAccountMenu">
-				<i v-if="isAccountMenuMode" class="fas fa-chevron-up"/>
-				<i v-else class="fas fa-chevron-down"/>
+				<i class="fas fa-chevron-down"/>
 			</button>
 			<div class="post" @click="post">
 				<MkButton class="button" primary full>
@@ -63,7 +62,6 @@ export default defineComponent({
 			connection: null,
 			menuDef: menuDef,
 			settingsWindowed: false,
-			isAccountMenuMode: false,
 		};
 	},
 
@@ -110,7 +108,6 @@ export default defineComponent({
 		},
 
 		async openAccountMenu(ev) {
-			this.isAccountMenuMode = !this.isAccountMenuMode;
 			const storedAccounts = await getAccounts().then(accounts => accounts.filter(x => x.id !== this.$i.id));
 			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
 
@@ -126,10 +123,10 @@ export default defineComponent({
 				});
 			}));
 
-			os.popupMenu([...[{
+			await os.popupMenu([...[{
 				type: 'link',
 				text: this.$ts.profile,
-				to: `/@${ this.$i.username }`,
+				to: `/@${this.$i.username}`,
 				avatar: this.$i,
 			}, null, ...accountItemPromises, {
 				text: this.$ts.addAccount,
@@ -137,10 +134,14 @@ export default defineComponent({
 				action: () => {
 					os.popupMenu([{
 						text: this.$ts.existingAccount,
-						action: () => { this.addAccount(); },
+						action: () => {
+							this.addAccount();
+						},
 					}, {
 						text: this.$ts.createAccount,
-						action: () => { this.createAccount(); },
+						action: () => {
+							this.createAccount();
+						},
 					}], ev.currentTarget || ev.target);
 				},
 			}, {
@@ -149,11 +150,15 @@ export default defineComponent({
 				action: () => {
 					os.popupMenu([{
 						text: this.$ts.logout,
-						action: () => { this.signout(); },
+						action: () => {
+							this.signout();
+						},
 						danger: true,
 					}, {
 						text: this.$ts.logoutAll,
-						action: () => { this.signoutAll(); },
+						action: () => {
+							this.signoutAll();
+						},
 						danger: true,
 					}], ev.currentTarget || ev.target);
 				},
