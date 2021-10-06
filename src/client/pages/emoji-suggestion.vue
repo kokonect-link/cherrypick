@@ -85,16 +85,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import MkButton from '@client/components/ui/button.vue';
-import MkInput from '@client/components/ui/input.vue';
-import MkTextarea from '@client/components/ui/textarea.vue';
-import MkSwitch from '@client/components/ui/switch.vue';
+import MkInput from '@client/components/form/input.vue';
+import MkTextarea from '@client/components/form/textarea.vue';
+import MkSwitch from '@client/components/form/switch.vue';
 import MkPagination from '@client/components/ui/pagination.vue';
 import MkTab from '@client/components/tab.vue';
 import MkInfo from '@client/components/ui/info.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormButton from '@client/components/form/button.vue';
-import FormInput from '@client/components/form/input.vue';
-import FormTextarea from '@client/components/form/textarea.vue';
+import FormBase from '@client/components/debobigego/base.vue';
+import FormButton from '@client/components/debobigego/button.vue';
+import FormInput from '@client/components/debobigego/input.vue';
+import FormTextarea from '@client/components/debobigego/textarea.vue';
 import { PackedDriveFile } from '@/models/repositories/drive-file';
 import { selectFile } from '@client/scripts/select-file';
 import { PackedEmojiRequest } from '@/models/repositories/emoji-request';

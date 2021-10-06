@@ -1,6 +1,6 @@
 <template>
 	<FormBase>
-		<FormTextarea v-model:value="faces" :max="500">
+		<FormTextarea v-model="faces" :max="500">
 			<span>{{ $ts.gachaFaces }}</span>
 			<template #desc>{{ $ts.gachaSettingDescription }}</template>
 		</FormTextarea>
@@ -14,10 +14,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import FormTextarea from '@client/components/form/textarea.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormGroup from '@client/components/form/group.vue';
-import FormTuple from '@client/components/form/tuple.vue';
-import FormButton from '@client/components/form/button.vue';
+import FormBase from '@client/components/debobigego/base.vue';
+import FormGroup from '@client/components/debobigego/group.vue';
+import FormTuple from '@client/components/debobigego/tuple.vue';
+import FormButton from '@client/components/debobigego/button.vue';
 import defaultFaces from '@client/scripts/default-faces';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';

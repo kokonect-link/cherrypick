@@ -247,3 +247,6 @@ export const packedDriveFileSchema = {
 		}
 	},
 };
+
+export class PackedDriveFile {
+}

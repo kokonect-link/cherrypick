@@ -32,7 +32,8 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.announcements,
-				icon: 'fas fa-bullhorn'
+				icon: 'fas fa-bullhorn',
+				bg: 'var(--bg)',
 			},
 			pagination: {
 				endpoint: 'announcements',

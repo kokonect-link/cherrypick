@@ -1,18 +1,18 @@
 <template>
 <FormBase>
 	<FormGroup>
-		<FormSwitch v-model:value="$i.injectFeaturedNote" @update:value="onChangeInjectFeaturedNote">
+		<FormSwitch :value="$i.injectFeaturedNote" @update:value="onChangeInjectFeaturedNote">
 			{{ $ts.showFeaturedNotesInTimeline }}
 		</FormSwitch>
 		<!--
-		<FormSwitch v-model:value="injectUnlistedNoteInLTL">
+		<FormSwitch :value="injectUnlistedNoteInLTL">
 			{{ $ts.showUnlistedNotesInLTL }}
 			<template #desc>{{ $ts.showUnlistedNotesInLTLDesc }}</template>
 		</FormSwitch>
 		-->
 	</FormGroup>
 	<FormGroup>
-		<FormSwitch v-model:value="showItemDetails">
+		<FormSwitch v-model="showItemDetails">
 			{{ $ts.showItemDetails }}
 			<template #desc>{{ $ts.showItemDetailsDesc }}</template>
 		</FormSwitch>
@@ -43,10 +43,10 @@
 
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from 'vue';
-import FormGroup from '@client/components/form/group.vue';
-import FormSwitch from '@client/components/form/switch.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormButton from '@client/components/form/button.vue';
+import FormGroup from '@client/components/debobigego/group.vue';
+import FormSwitch from '@client/components/debobigego/switch.vue';
+import FormBase from '@client/components/debobigego/base.vue';
+import FormButton from '@client/components/debobigego/button.vue';
 import { timelineMenuMap, timelineMenuSources } from '@client/friendly/timeline';
 import { defaultStore } from '@client/store';
 import * as os from '@client/os';

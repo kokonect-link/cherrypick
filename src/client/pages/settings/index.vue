@@ -1,59 +1,50 @@
 <template>
 <div class="vvcocwet" :class="{ wide: !narrow }" ref="el">
 	<div class="nav" v-if="!narrow || page == null">
-		<FormBase>
-			<FormGroup>
-				<div class="_formItem">
-					<div class="_formPanel lwjxoukj">
-						<div class="user">
-							<MkAvatar :user="$i" class="avatar"/>
-							<div class="user-info">
-								<MkUserName class="name" :user="$i"/>
-								<MkAcct :user="$i" :detail="true" class="acct"/>
-							</div>
-						</div>
-					</div>
+		<div class="group accounts">
+			<div class="user">
+				<MkAvatar :user="$i" class="avatar"/>
+				<div class="user-info">
+					<MkUserName class="name" :user="$i"/>
+					<MkAcct :user="$i" :detail="true" class="acct"/>
 				</div>
-				<FormLink :active="page === 'accounts'" replace to="/settings/accounts"><template #icon><i class="fas fa-users"></i></template>{{ $ts.accounts }}</FormLink>
-			</FormGroup>
-			<FormInfo v-if="emailNotConfigured" warn>{{ $ts.emailNotConfiguredWarning }} <MkA to="/settings/email" class="_link">{{ $ts.configure }}</MkA></FormInfo>
-			<FormGroup>
-				<template #label>{{ $ts.basicSettings }}</template>
-				<FormLink :active="page === 'profile'" replace to="/settings/profile"><template #icon><i class="fas fa-user"></i></template>{{ $ts.profile }}</FormLink>
-				<FormLink :active="page === 'privacy'" replace to="/settings/privacy"><template #icon><i class="fas fa-lock-open"></i></template>{{ $ts.privacy }}</FormLink>
-				<FormLink :active="page === 'reaction'" replace to="/settings/reaction"><template #icon><i class="fas fa-laugh"></i></template>{{ $ts.reaction }}</FormLink>
-				<FormLink :active="page === 'drive'" replace to="/settings/drive"><template #icon><i class="fas fa-cloud"></i></template>{{ $ts.drive }}</FormLink>
-				<FormLink :active="page === 'notifications'" replace to="/settings/notifications"><template #icon><i class="fas fa-bell"></i></template>{{ $ts.notifications }}</FormLink>
-				<FormLink :active="page === 'email'" replace to="/settings/email"><template #icon><i class="fas fa-envelope"></i></template>{{ $ts.email }}</FormLink>
-				<FormLink :active="page === 'integration'" replace to="/settings/integration"><template #icon><i class="fas fa-share-alt"></i></template>{{ $ts.integration }}</FormLink>
-				<FormLink :active="page === 'security'" replace to="/settings/security"><template #icon><i class="fas fa-lock"></i></template>{{ $ts.security }}</FormLink>
-			</FormGroup>
-			<FormGroup>
-				<template #label>{{ $ts.clientSettings }}</template>
-				<FormLink :active="page === 'general'" replace to="/settings/general"><template #icon><i class="fas fa-cogs"></i></template>{{ $ts.general }}</FormLink>
-				<FormLink v-if="isFriendlyUI" :active="page === 'timeline'" replace to="/settings/timeline"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.timeline }}</FormLink>
-				<FormLink :active="page === 'theme'" replace to="/settings/theme"><template #icon><i class="fas fa-palette"></i></template>{{ $ts.theme }}</FormLink>
-				<FormLink :active="page === 'menu'" replace to="/settings/menu"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.menu }}</FormLink>
-				<FormLink :active="page === 'sounds'" replace to="/settings/sounds"><template #icon><i class="fas fa-music"></i></template>{{ $ts.sounds }}</FormLink>
-				<FormLink :active="page === 'plugin'" replace to="/settings/plugin"><template #icon><i class="fas fa-plug"></i></template>{{ $ts.plugins }}</FormLink>
-				<FormLink :active="page === 'gacha'" replace to="/settings/gacha"><template #icon><i class="fas fa-fish"></i></template>{{ $ts.gacha }}</FormLink>
-			</FormGroup>
-			<FormGroup>
-				<template #label>{{ $ts.otherSettings }}</template>
-				<FormLink :active="page === 'import-export'" replace to="/settings/import-export"><template #icon><i class="fas fa-boxes"></i></template>{{ $ts.importAndExport }}</FormLink>
-				<FormLink :active="page === 'mute-block'" replace to="/settings/mute-block"><template #icon><i class="fas fa-ban"></i></template>{{ $ts.muteAndBlock }}</FormLink>
-				<FormLink :active="page === 'word-mute'" replace to="/settings/word-mute"><template #icon><i class="fas fa-comment-slash"></i></template>{{ $ts.wordMute }}</FormLink>
-				<FormLink :active="page === 'api'" replace to="/settings/api"><template #icon><i class="fas fa-key"></i></template>API</FormLink>
-				<FormLink :active="page === 'other'" replace to="/settings/other"><template #icon><i class="fas fa-ellipsis-h"></i></template>{{ $ts.other }}</FormLink>
-			</FormGroup>
-			<FormGroup>
-				<FormButton @click="clear">{{ $ts.clearCache }}</FormButton>
-			</FormGroup>
-			<FormGroup>
-				<FormButton @click="logout" danger>{{ $ts.logout }}</FormButton>
-				<FormButton @click="logoutAll" danger>{{ $ts.logoutAll }}</FormButton>
-			</FormGroup>
-		</FormBase>
+			</div>
+			<XLink :active="page === 'accounts'" replace to="/settings/accounts"><template #icon><i class="fas fa-users"></i></template>{{ $ts.accounts }}</XLink>
+		</div>
+		<MkInfo v-if="emailNotConfigured" warn class="info">{{ $ts.emailNotConfiguredWarning }} <MkA to="/settings/email" class="_link">{{ $ts.configure }}</MkA></MkInfo>
+		<div class="group">
+			<div class="label">{{ $ts.basicSettings }}</div>
+			<XLink :active="page === 'profile'" replace to="/settings/profile"><template #icon><i class="fas fa-user"></i></template>{{ $ts.profile }}</XLink>
+			<XLink :active="page === 'privacy'" replace to="/settings/privacy"><template #icon><i class="fas fa-lock-open"></i></template>{{ $ts.privacy }}</XLink>
+			<XLink :active="page === 'reaction'" replace to="/settings/reaction"><template #icon><i class="fas fa-laugh"></i></template>{{ $ts.reaction }}</XLink>
+			<XLink :active="page === 'drive'" replace to="/settings/drive"><template #icon><i class="fas fa-cloud"></i></template>{{ $ts.drive }}</XLink>
+			<XLink :active="page === 'notifications'" replace to="/settings/notifications"><template #icon><i class="fas fa-bell"></i></template>{{ $ts.notifications }}</XLink>
+			<XLink :active="page === 'email'" replace to="/settings/email"><template #icon><i class="fas fa-envelope"></i></template>{{ $ts.email }}</XLink>
+			<XLink :active="page === 'integration'" replace to="/settings/integration"><template #icon><i class="fas fa-share-alt"></i></template>{{ $ts.integration }}</XLink>
+			<XLink :active="page === 'security'" replace to="/settings/security"><template #icon><i class="fas fa-lock"></i></template>{{ $ts.security }}</XLink>
+		</div>
+		<div class="group">
+			<div class="label">{{ $ts.clientSettings }}</div>
+			<XLink :active="page === 'general'" replace to="/settings/general"><template #icon><i class="fas fa-cogs"></i></template>{{ $ts.general }}</XLink>
+			<XLink v-if="isFriendlyUI" :active="page === 'timeline'" replace to="/settings/timeline"><template #icon><i class="fas fa-stream"></i></template>{{ $ts.timeline }}</XLink>
+			<XLink :active="page === 'theme'" replace to="/settings/theme"><template #icon><i class="fas fa-palette"></i></template>{{ $ts.theme }}</XLink>
+			<XLink :active="page === 'menu'" replace to="/settings/menu"><template #icon><i class="fas fa-list-ul"></i></template>{{ $ts.menu }}</XLink>
+			<XLink :active="page === 'sounds'" replace to="/settings/sounds"><template #icon><i class="fas fa-music"></i></template>{{ $ts.sounds }}</XLink>
+			<XLink :active="page === 'plugin'" replace to="/settings/plugin"><template #icon><i class="fas fa-plug"></i></template>{{ $ts.plugins }}</XLink>
+			<XLink :active="page === 'gacha'" replace to="/settings/gacha"><template #icon><i class="fas fa-fish"></i></template>{{ $ts.gacha }}</XLink>
+		</div>
+		<div class="group">
+			<div class="label">{{ $ts.otherSettings }}</div>
+			<XLink :active="page === 'import-export'" replace to="/settings/import-export"><template #icon><i class="fas fa-boxes"></i></template>{{ $ts.importAndExport }}</XLink>
+			<XLink :active="page === 'mute-block'" replace to="/settings/mute-block"><template #icon><i class="fas fa-ban"></i></template>{{ $ts.muteAndBlock }}</XLink>
+			<XLink :active="page === 'word-mute'" replace to="/settings/word-mute"><template #icon><i class="fas fa-comment-slash"></i></template>{{ $ts.wordMute }}</XLink>
+			<XLink :active="page === 'api'" replace to="/settings/api"><template #icon><i class="fas fa-key"></i></template>API</XLink>
+			<XLink :active="page === 'other'" replace to="/settings/other"><template #icon><i class="fas fa-ellipsis-h"></i></template>{{ $ts.other }}</XLink>
+		</div>
+		<div class="group">
+			<XLink @click="clear"><template #icon><i class="fas fa-trash"></i></template>{{ $ts.clearCache }}</XLink>
+			<XLink @click="logout" danger><template #icon><i class="fas fa-sign-in-alt fa-flip-horizontal"></i></template>{{ $ts.logout }}</XLink>
+		</div>
 	</div>
 	<div class="main">
 		<component :is="component" :key="page" @info="onInfo" v-bind="pageProps"/>
@@ -64,11 +55,8 @@
 <script lang="ts">
 import { computed, defineAsyncComponent, defineComponent, nextTick, onMounted, reactive, ref, watch } from 'vue';
 import { i18n } from '@client/i18n';
-import FormLink from '@client/components/form/link.vue';
-import FormGroup from '@client/components/form/group.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormButton from '@client/components/form/button.vue';
-import FormInfo from '@client/components/form/info.vue';
+import XLink from './index.link.vue';
+import MkInfo from '@client/components/ui/info.vue';
 import { scroll } from '@client/scripts/scroll';
 import { signout, signoutAll } from '@client/account';
 import { unisonReload } from '@client/scripts/unison-reload';
@@ -76,14 +64,12 @@ import * as symbols from '@client/symbols';
 import { instance } from '@client/instance';
 import { $i } from '@client/account';
 import { dialog } from '@client/os';
+import * as os from "@client/os";
 
 export default defineComponent({
 	components: {
-		FormBase,
-		FormLink,
-		FormGroup,
-		FormButton,
-		FormInfo,
+		XLink,
+		MkInfo,
 	},
 
 	props: {
@@ -194,15 +180,25 @@ export default defineComponent({
 			}
 		});
 
-		const logoutAll = () => {
-			dialog({
-				type: 'warning',
-				text: i18n.locale.logoutAllConfirm,
-				showCancelButton: true
-			}).then(({ canceled }) => {
-				if (canceled) return;
-				signoutAll();
-			});
+		const logout = (ev) => {
+			os.popupMenu([{
+				text: i18n.locale.logout,
+				action: () => { signout(); },
+				danger: true,
+			}, {
+				text: i18n.locale.logoutAll,
+				action: () => {
+					dialog({
+						type: 'warning',
+						text: i18n.locale.logoutAllConfirm,
+						showCancelButton: true
+					}).then(({ canceled }) => {
+						if (canceled) return;
+						signoutAll();
+					});
+				},
+				danger: true,
+			}], ev.currentTarget || ev.target);
 		};
 
 		const emailNotConfigured = computed(() => instance.enableEmail && ($i.email == null || !$i.emailVerified));
@@ -217,10 +213,7 @@ export default defineComponent({
 			pageProps,
 			component,
 			emailNotConfigured,
-			logout: () => {
-				signout();
-			},
-			logoutAll,
+			logout,
 			clear: () => {
 				localStorage.removeItem('locale');
 				localStorage.removeItem('theme');
@@ -234,16 +227,59 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .vvcocwet {
+	> .nav {
+		> .group {
+			padding: 16px;
+
+			> .label {
+				font-size: 0.9em;
+				opacity: 0.7;
+				margin: 0 0 8px 12px;
+			}
+		}
+
+		> .info {
+			margin: 0 16px;
+		}
+
+		> .accounts {
+			> .user {
+				display: flex;
+
+				> .avatar {
+					display: block;
+					width: 60px;
+					height: 60px;
+				}
+
+				> .user-info {
+					padding: 15px 10px;
+
+					> .name {
+						font-weight: bold;
+						font-size: 16px;
+						display: flex;
+						margin: -2px 0;
+					}
+
+					> .acct {
+						font-size: 12px;
+						display: flex;
+					}
+				}
+			}
+		}
+	}
+
 	&.wide {
 		display: flex;
-		max-width: 1100px;
+		max-width: 1000px;
 		margin: 0 auto;
 		height: 100%;
 
 		> .nav {
 			width: 32%;
 			box-sizing: border-box;
-			border-right: solid 0.5px var(--divider);
 			overflow: auto;
 		}
 
@@ -252,36 +288,6 @@ export default defineComponent({
 			min-width: 0;
 			overflow: auto;
 			--baseContentWidth: 100%;
-		}
-	}
-}
-
-.lwjxoukj {
-	padding: 16px;
-
-	> .user {
-		display: flex;
-		
-		> .avatar {
-			display: block;
-			width: 60px;
-			height: 60px;
-		}
-
-		> .user-info {
-			padding: 15px 10px;
-
-			> .name {
-				font-weight: bold;
-				font-size: 16px;
-				display: flex;
-				margin: -2px 0;
-			}
-
-			> .acct {
-				font-size: 12px;
-				display: flex;
-			}
 		}
 	}
 }

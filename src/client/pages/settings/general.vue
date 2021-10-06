@@ -1,11 +1,11 @@
 <template>
 <FormBase>
 	<FormGroup>
-		<FormSwitch v-model:value="showFixedPostForm">{{ $ts.showFixedPostForm }}</FormSwitch>
-		<FormSwitch v-if="$i.isPatron" v-model:value="removeAds">{{ $ts.removeAds }}</FormSwitch>
+		<FormSwitch v-model="showFixedPostForm">{{ $ts.showFixedPostForm }}</FormSwitch>
+		<FormSwitch v-if="$i.isPatron" v-model="removeAds">{{ $ts.removeAds }}</FormSwitch>
 	</FormGroup>
 
-	<FormSelect v-model:value="lang">
+	<FormSelect v-model="lang">
 		<template #label>{{ $ts.uiLanguage }}</template>
 		<option v-for="x in langs" :value="x[0]" :key="x[0]">{{ x[1] }}</option>
 		<template #caption>
@@ -19,16 +19,16 @@
 
 	<FormGroup>
 		<template #label>{{ $ts.behavior }}</template>
-		<FormSwitch v-model:value="imageNewTab">{{ $ts.openImageInNewTab }}</FormSwitch>
-		<FormSwitch v-model:value="enableInfiniteScroll">{{ $ts.enableInfiniteScroll }}</FormSwitch>
-		<FormSwitch v-model:value="useReactionPickerForContextMenu">{{ $ts.useReactionPickerForContextMenu }}</FormSwitch>
-		<FormSwitch v-model:value="disablePagesScript">{{ $ts.disablePagesScript }}</FormSwitch>
-		<FormSwitch v-model:value="confirmBeforePost">{{ $ts.confirmBeforePost }}
+		<FormSwitch v-model="imageNewTab">{{ $ts.openImageInNewTab }}</FormSwitch>
+		<FormSwitch v-model="enableInfiniteScroll">{{ $ts.enableInfiniteScroll }}</FormSwitch>
+		<FormSwitch v-model="useReactionPickerForContextMenu">{{ $ts.useReactionPickerForContextMenu }}</FormSwitch>
+		<FormSwitch v-model="disablePagesScript">{{ $ts.disablePagesScript }}</FormSwitch>
+		<FormSwitch v-model="confirmBeforePost">{{ $ts.confirmBeforePost }}
 			<template #desc>{{$ts.confirmBeforePostDesc}}</template>
 		</FormSwitch>
 	</FormGroup>
 
-	<FormSelect v-model:value="serverDisconnectedBehavior">
+	<FormSelect v-model="serverDisconnectedBehavior">
 		<template #label>{{ $ts.whenServerDisconnected }}</template>
 		<option value="reload">{{ $ts._serverDisconnectedBehavior.reload }}</option>
 		<option value="dialog">{{ $ts._serverDisconnectedBehavior.dialog }}</option>
@@ -38,30 +38,30 @@
 
 	<FormGroup>
 		<template #label>{{ $ts.appearance }}</template>
-		<FormSwitch v-model:value="disableAnimatedMfm">{{ $ts.disableAnimatedMfm }}</FormSwitch>
-		<FormSwitch v-model:value="reduceAnimation">{{ $ts.reduceUiAnimation }}</FormSwitch>
-		<FormSwitch v-model:value="useBlurEffect">{{ $ts.useBlurEffect }}</FormSwitch>
-		<FormSwitch v-model:value="useBlurEffectForModal">{{ $ts.useBlurEffectForModal }}</FormSwitch>
-		<FormSwitch v-model:value="showGapBetweenNotesInTimeline">{{ $ts.showGapBetweenNotesInTimeline }}</FormSwitch>
-		<FormSwitch v-model:value="loadRawImages">{{ $ts.loadRawImages }}</FormSwitch>
-		<FormSwitch v-model:value="disableShowingAnimatedImages">{{ $ts.disableShowingAnimatedImages }}</FormSwitch>
-		<FormSwitch v-model:value="squareAvatars">{{ $ts.squareAvatars }}</FormSwitch>
-		<FormSwitch v-model:value="useSystemFont">{{ $ts.useSystemFont }}</FormSwitch>
-		<FormSwitch v-model:value="useOsNativeEmojis">{{ $ts.useOsNativeEmojis }}
+		<FormSwitch v-model="disableAnimatedMfm">{{ $ts.disableAnimatedMfm }}</FormSwitch>
+		<FormSwitch v-model="reduceAnimation">{{ $ts.reduceUiAnimation }}</FormSwitch>
+		<FormSwitch v-model="useBlurEffect">{{ $ts.useBlurEffect }}</FormSwitch>
+		<FormSwitch v-model="useBlurEffectForModal">{{ $ts.useBlurEffectForModal }}</FormSwitch>
+		<FormSwitch v-model="showGapBetweenNotesInTimeline">{{ $ts.showGapBetweenNotesInTimeline }}</FormSwitch>
+		<FormSwitch v-model="loadRawImages">{{ $ts.loadRawImages }}</FormSwitch>
+		<FormSwitch v-model="disableShowingAnimatedImages">{{ $ts.disableShowingAnimatedImages }}</FormSwitch>
+		<FormSwitch v-model="squareAvatars">{{ $ts.squareAvatars }}</FormSwitch>
+		<FormSwitch v-model="useSystemFont">{{ $ts.useSystemFont }}</FormSwitch>
+		<FormSwitch v-model="useOsNativeEmojis">{{ $ts.useOsNativeEmojis }}
 			<div><Mfm text="🍮🍦🍭🍩🍰🍫🍬🥞🍪" :key="useOsNativeEmojis"/></div>
 		</FormSwitch>
 	</FormGroup>
 
-	<FormSelect v-if="isFriendlyUI" v-model:value="newNoteNotiBehavior">
+	<FormSelect v-if="isFriendlyUI" v-model="newNoteNotiBehavior">
 		<template #label>{{ $ts.newNoteNoti }}</template>
 		<option value="default">{{ $ts._newNoteNotiBehavior.default }}</option>
 		<option value="header">{{ $ts._newNoteNotiBehavior.header }}</option>
 		<option value="smail">{{ $ts._newNoteNotiBehavior.smail }}</option>
 		<option value="none">{{ $ts._newNoteNotiBehavior.none }}</option>
 	</FormSelect>
-	
+
 	<FormGroup>
-		<FormSwitch v-model:value="aiChanMode">{{ $ts.aiChanMode }}</FormSwitch>
+		<FormSwitch v-model="aiChanMode">{{ $ts.aiChanMode }}</FormSwitch>
 	</FormGroup>
 
 	<FormRadios v-model="fontSize">
@@ -73,14 +73,14 @@
 		<option value="veryLarge"><span style="font-size: 20px;">Aa</span></option>
 	</FormRadios>
 
-	<FormSelect v-model:value="instanceTicker">
+	<FormSelect v-model="instanceTicker">
 		<template #label>{{ $ts.instanceTicker }}</template>
 		<option value="none">{{ $ts._instanceTicker.none }}</option>
 		<option value="remote">{{ $ts._instanceTicker.remote }}</option>
 		<option value="always">{{ $ts._instanceTicker.always }}</option>
 	</FormSelect>
 
-	<FormSelect v-model:value="nsfw">
+	<FormSelect v-model="nsfw">
 		<template #label>{{ $ts.nsfw }}</template>
 		<option value="respect">{{ $ts._nsfw.respect }}</option>
 		<option value="ignore">{{ $ts._nsfw.ignore }}</option>
@@ -89,10 +89,10 @@
 
 	<FormGroup>
 		<template #label>{{ $ts.defaultNavigationBehaviour }}</template>
-		<FormSwitch v-model:value="defaultSideView">{{ $ts.openInSideView }}</FormSwitch>
+		<FormSwitch v-model="defaultSideView">{{ $ts.openInSideView }}</FormSwitch>
 	</FormGroup>
 
-	<FormSelect v-model:value="chatOpenBehavior">
+	<FormSelect v-model="chatOpenBehavior">
 		<template #label>{{ $ts.chatOpenBehavior }}</template>
 		<option value="page">{{ $ts.showInPage }}</option>
 		<option value="window">{{ $ts.openInWindow }}</option>
@@ -107,13 +107,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FormSwitch from '@client/components/form/switch.vue';
-import FormSelect from '@client/components/form/select.vue';
-import FormRadios from '@client/components/form/radios.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormGroup from '@client/components/form/group.vue';
-import FormLink from '@client/components/form/link.vue';
-import FormButton from '@client/components/form/button.vue';
+import FormSwitch from '@client/components/debobigego/switch.vue';
+import FormSelect from '@client/components/debobigego/select.vue';
+import FormRadios from '@client/components/debobigego/radios.vue';
+import FormBase from '@client/components/debobigego/base.vue';
+import FormGroup from '@client/components/debobigego/group.vue';
+import FormLink from '@client/components/debobigego/link.vue';
+import FormButton from '@client/components/debobigego/button.vue';
 import MkLink from '@client/components/link.vue';
 import { langs } from '@client/config';
 import { defaultStore } from '@client/store';
@@ -140,7 +140,8 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.general,
-				icon: 'fas fa-cogs'
+				icon: 'fas fa-cogs',
+				bg: 'var(--bg)'
 			},
 			langs,
 			lang: localStorage.getItem('lang'),

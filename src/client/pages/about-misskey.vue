@@ -3,8 +3,8 @@
 	<FormBase class="znqjceqz">
 		<FormGroup>
 			<div id="debug"></div>
-			<section class="_formItem about">
-				<div class="_formPanel panel" :class="{ playing: easterEggEngine != null }" ref="about">
+			<section class="_debobigegoItem about">
+				<div class="_debobigegoPanel panel" :class="{ playing: easterEggEngine != null }" ref="about">
 					<img src="/static-assets/client/about-icon.png" alt="" class="icon" @load="iconLoaded" draggable="false" @click="gravity"/>
 					<div class="cherrypick">CherryPick</div>
 					<div class="version">v{{ version }}</div>
@@ -15,7 +15,7 @@
 				{{ $ts._aboutMisskey.releaseNote }}
 			</FormLink>
 		</FormGroup>
-		<section class="_formItem" style="text-align: center; padding: 0 16px;">
+		<section class="_debobigegoItem" style="text-align: center; padding: 0 16px;">
 			{{ $ts._aboutMisskey.about }}<br><MkA class="_link" to="/docs/general/misskey">{{ $ts.learnMore }}</MkA>
 		</section>
 		<FormGroup>
@@ -110,10 +110,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { version } from '@client/config';
-import FormLink from '@client/components/form/link.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormGroup from '@client/components/form/group.vue';
-import FormKeyValueView from '@client/components/form/key-value-view.vue';
+import FormLink from '@client/components/debobigego/link.vue';
+import FormBase from '@client/components/debobigego/base.vue';
+import FormGroup from '@client/components/debobigego/group.vue';
+import FormKeyValueView from '@client/components/debobigego/key-value-view.vue';
 import MkLink from '@client/components/link.vue';
 import { physics } from '@client/scripts/physics';
 import * as os from '@client/os';
@@ -201,7 +201,7 @@ export default defineComponent({
 			easterEggReady: false,
 			easterEggEmojis: [],
 			easterEggEngine: null,
-			isKokonect: null
+			isKokonect: false
 		}
 	},
 
@@ -237,7 +237,7 @@ export default defineComponent({
 
 		async init() {
 			const meta = await os.api('meta', { detail: true });
-			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
+			this.isKokonect = (meta.uri == 'https://kokonect.link' || 'http://localhost:3000');
 		}
 	}
 });

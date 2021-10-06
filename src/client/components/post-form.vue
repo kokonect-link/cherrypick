@@ -115,7 +115,7 @@ import { defaultStore, notePostInterruptors, postFormActions } from '@client/sto
 import { isMobile } from '@client/scripts/is-mobile';
 import { throttle } from 'throttle-debounce';
 import MkInfo from '@client/components/ui/info.vue';
-import MkSwitch from '@client/components/ui/switch.vue';
+import MkSwitch from '@client/components/form/switch.vue';
 import MkTab from '@client/components/tab-post-form.vue';
 import { defaultStore } from '@client/store';
 import Preview from "@client/pages/preview.vue";
@@ -1042,7 +1042,7 @@ export default defineComponent({
 			color: var(--fg);
 			font-family: inherit;
 
-			&:focus {
+			&:focus-visible {
 				outline: none;
 			}
 

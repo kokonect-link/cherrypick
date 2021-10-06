@@ -8,7 +8,7 @@
 				<template #label>{{ $ts.searchUser }}</template>
 			</MkInput>
 			-->
-			<XSearch v-model:value="query" @search="search"/>
+			<XSearch v-model="query" @search="search"/>
 		</div>
 
 		<MkFolder :foldable="true" :expanded="false" ref="tags" class="_gap">
@@ -80,7 +80,7 @@
 import { computed, defineComponent } from 'vue';
 import XUserList from '@client/components/user-list.vue';
 import MkFolder from '@client/components/ui/folder.vue';
-import MkInput from '@client/components/ui/input.vue';
+import MkInput from '@client/components/form/input.vue';
 import XSearch from '@client/components/search.vue';
 import number from '@client/filters/number';
 import * as os from '@client/os';

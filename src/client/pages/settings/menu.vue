@@ -34,11 +34,11 @@
 <script lang="ts">
 import { defineAsyncComponent, defineComponent } from 'vue';
 import { v4 as uuid } from 'uuid';
-import FormSwitch from '@client/components/form/switch.vue';
-import FormRadios from '@client/components/form/radios.vue';
-import FormBase from '@client/components/form/base.vue';
-import FormTuple from '@client/components/form/tuple.vue';
-import FormButton from '@client/components/form/button.vue';
+import FormSwitch from '@client/components/debobigego/switch.vue';
+import FormRadios from '@client/components/debobigego/radios.vue';
+import FormBase from '@client/components/debobigego/base.vue';
+import FormTuple from '@client/components/debobigego/tuple.vue';
+import FormButton from '@client/components/debobigego/button.vue';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
 import { defaultStore } from '@client/store';
@@ -61,7 +61,8 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.menu,
-				icon: 'fas fa-list-ul'
+				icon: 'fas fa-list-ul',
+				bg: 'var(--bg)',
 			},
 			menuDef: menuDef,
 			items: [],
@@ -133,6 +134,7 @@ export default defineComponent({
 				showCancelButton: true
 			});
 			if (canceled) return;
+
 			unisonReload();
 		}
 	},

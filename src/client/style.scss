@@ -182,7 +182,7 @@ hr {
 		pointer-events: none;
 	}
 
-	&:focus {
+	&:focus-visible {
 		outline: none;
 	}
 
@@ -447,12 +447,18 @@ hr {
 	}
 }
 
-._inputNoTopMargin {
-	margin-top: 0 !important;
+._formBlock {
+	margin: 20px 0;
 }
 
-._inputNoBottomMargin {
-	margin-bottom: 0 !important;
+._formRoot {
+	> ._formBlock:first-child {
+		margin-top: 0;
+	}
+
+	> ._formBlock:last-child {
+		margin-bottom: 0;
+	}
 }
 
 ._table {
@@ -525,7 +531,7 @@ hr {
 	padding: 5px;
 }
 
-.prism-editor__textarea:focus {
+.prism-editor__textarea:focus-visible {
 	outline: none;
 }
 

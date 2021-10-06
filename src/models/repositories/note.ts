@@ -274,6 +274,7 @@ export class NoteRepository extends Repository<Note> {
 			const tokens = packed.text ? mfm.parse(packed.text) : [];
 			mfm.inspect(tokens, node => {
 				if (node.type === 'text') {
+					// TODO: quoteなtextはskip
 					node.props.text = nyaize(node.props.text);
 				}
 			});

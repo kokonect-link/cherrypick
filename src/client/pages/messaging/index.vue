@@ -58,6 +58,7 @@ export default defineComponent({
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.messaging,
 				icon: 'fas fa-comments',
+				bg: 'var(--bg)',
 				action: {
 					icon: 'fas fa-plus',
 					handler: this.menu

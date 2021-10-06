@@ -1,6 +1,6 @@
 <template>
 <div class="ogwlenmc">
-	<MkTab v-model:value="tab">
+	<MkTab v-model="tab">
 		<option value="local">{{ $ts.local }}</option>
 		<option value="suggestion">{{ $ts.emojiSuggestion }}</option>
 		<option value="remote">{{ $ts.remote }}</option>
@@ -29,7 +29,7 @@
 	</div>
 
 	<div class="suggestions" v-else-if="tab === 'suggestion'">
-		<MkSwitch v-model:value="pendingOnly">{{ $ts.pendingOnly }}</MkSwitch>
+		<MkSwitch v-model="pendingOnly">{{ $ts.pendingOnly }}</MkSwitch>
 		<MkPagination :pagination="suggestionPagination" class="emojis" ref="suggestions">
 			<template #empty><span>{{ $ts.noSuggestions }}</span></template>
 			<template #default="{items}">
@@ -92,8 +92,8 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
 import MkButton from '@client/components/ui/button.vue';
-import MkInput from '@client/components/ui/input.vue';
-import MkSwitch from '@client/components/ui/switch.vue';
+import MkInput from '@client/components/form/input.vue';
+import MkSwitch from '@client/components/form/switch.vue';
 import MkPagination from '@client/components/ui/pagination.vue';
 import MkTab from '@client/components/tab.vue';
 import { selectFile } from '@client/scripts/select-file';
@@ -117,6 +117,7 @@ export default defineComponent({
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.customEmojis,
 				icon: 'fas fa-laugh',
+				bg: 'var(--bg)',
 				action: {
 					icon: 'fas fa-plus',
 					handler: this.add
@@ -166,7 +167,7 @@ export default defineComponent({
 			promise.then(() => {
 				this.$refs.emojis.reload();
 			});
-			os.promiseDialog(promise);
+			await os.promiseDialog(promise);
 		},
 
 		edit(emoji) {

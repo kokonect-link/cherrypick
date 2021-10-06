@@ -44,7 +44,7 @@
 			<div class="body">
 				<p v-if="appearNote.cw != null" class="cw">
 					<Mfm v-if="appearNote.cw != ''" class="text" :text="appearNote.cw" :author="appearNote.user" :i="$i" :custom-emojis="appearNote.emojis"/>
-					<XCwButton v-model:value="showContent" :note="appearNote"/>
+					<XCwButton v-model="showContent" :note="appearNote"/>
 				</p>
 				<div class="content" :class="{ collapsed }" v-show="appearNote.cw == null || showContent">
 					<div class="text">
@@ -708,7 +708,7 @@ export default defineComponent({
 						window.open(this.appearNote.url || this.appearNote.uri, '_blank');
 					}
 				} : undefined]
-					.filter(x => x !== undefined);
+				.filter(x => x !== undefined);
 			}
 
 			if (noteActions.length > 0) {
@@ -904,7 +904,7 @@ export default defineComponent({
 		--stickyTop: 50px;
 	}
 
-	&:focus {
+	&:focus-visible {
 		outline: none;
 
 		&:after {
