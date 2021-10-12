@@ -141,7 +141,7 @@ export default defineComponent({
 	}
 }
 
-._flat_, ._flat_friendly_ {
+._flat_, ._flat_friendly_legacy_ {
 	.ssazuxis {
 		> header {
 			padding: 0 16px;

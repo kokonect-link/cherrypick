@@ -142,6 +142,7 @@ export default defineComponent({
 			.qtqtichx {
 				background: var(--panel);
 				border-radius: var(--radius);
+				border: solid 1px var(--divider);
 			}
 		}
 	}

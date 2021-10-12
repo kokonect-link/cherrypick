@@ -16,7 +16,7 @@
 			<header class="header">
 				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo" :back-button="true" @back="back()"/>
 			</header>
-			<div class="content" :class="{ '_flat_': isMobile && !fullView, '_flat_friendly_': !isMobile && !fullView }">
+			<div class="content" :class="{ '_flat_': isMobile && !fullView }">
 				<router-view v-slot="{ Component }">
 					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
 						<keep-alive :include="['timeline']">
@@ -399,10 +399,6 @@ export default defineComponent({
 			> .content {
 				background: var(--bg);
 				--stickyTop: calc(var(--globalHeaderHeight, 0px) + #{$header-height});
-
-				&._flat_friendly_ {
-					margin: 0 8px;
-				}
 			}
 
 			@media (max-width: 850px) {

@@ -15,6 +15,7 @@
 - UI(friendly): 내비게이션 메뉴 버튼에 알림 인디케이터 추가
 - UI(friendly): 발견하기 탭에서 내비게이션 메뉴에 접근할 수 있도록 개선
 - UI(friendly): 타임라인 헤더의 모달 팝업에 표시되는 인디케이터의 디자인 조정
+- UI(friendly): 타임라인의 노트 디자인을 Misskey 기본 테마와 병합하고 디자인 개선
 - ActivityPub: HTML -> MFM 변환 강화
 - Docker: Node.js를 16.10.0으로 업데이트
 - API: ap계열의 엔드포인트 로그인 필수화 + 속도 제한 추가

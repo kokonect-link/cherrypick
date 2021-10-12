@@ -4,7 +4,7 @@
 	v-if="!muted"
 	v-show="!isDeleted"
 	:tabindex="!isDeleted ? '-1' : null"
-	:class="{ renote: isRenote, isSticky, 'friendly': isFriendlyUI && !isMobile, 'friendly-mobile': isFriendlyUI && isMobile }"
+	:class="{ renote: isRenote, isSticky, 'friendly': isFriendlyUI && !isMobile, 'friendly-legacy-mobile': isFriendlyUILegacy && isMobile }"
 	v-hotkey="keymap"
 	v-size="{ max: [500, 450, 350, 300] }"
 >
@@ -184,6 +184,7 @@ export default defineComponent({
 			translation: null,
 			translating: false,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 
@@ -934,7 +935,7 @@ export default defineComponent({
 		border: solid 1px var(--divider);
 	}
 
-	&.friendly-mobile {
+	&.friendly-legacy-mobile {
 		border-radius: 0 !important;
 		border-top: solid 1px var(--divider);
 		border-bottom: solid 1px var(--divider);
