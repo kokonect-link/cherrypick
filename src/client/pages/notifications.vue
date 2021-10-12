@@ -1,6 +1,9 @@
 <template>
-<div class="clupoqwt" v-size="{ min: [800] }">
-	<XNotifications class="notifications" @before="before" @after="after" page/>
+<div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<div class="clupoqwt" v-size="{ min: [800] }">
+		<XNotifications class="notifications" @before="before" @after="after" page/>
+	</div>
 </div>
 </template>
 
@@ -22,6 +25,11 @@ export default defineComponent({
 				title: this.$ts.notifications,
 				icon: 'fas fa-bell',
 				bg: 'var(--bg)',
+			},
+			header: {
+				title: this.$ts.notifications,
+				icon: 'fas fa-bell',
+				bg: 'var(--bg)',
 				actions: [{
 					text: this.$ts.markAllAsRead,
 					icon: 'fas fa-check',
@@ -30,6 +38,8 @@ export default defineComponent({
 					}
 				}]
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

@@ -1,77 +1,82 @@
 <template>
-<div class="lznhrdub _root">
-	<div>
-		<div class="_isolated">
-			<!-- 기존 Misskey 방식 유저 검색
-			<MkInput v-model="query" :debounce="true" type="search">
-				<template #prefix><i class="fas fa-search"></i></template>
-				<template #label>{{ $ts.searchUser }}</template>
-			</MkInput>
-			-->
-			<XSearch v-model="query" @search="search"/>
-		</div>
+<div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
 
-		<MkFolder :foldable="true" :expanded="false" ref="tags" class="_gap">
-			<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularTags }}</template>
+	<div class="lznhrdub _root">
+		<div>
+			<div class="_isolated">
+				<!-- 기존 Misskey 방식 유저 검색
+				<MkInput v-model="query" :debounce="true" type="search">
+					<template #prefix><i class="fas fa-search"></i></template>
+					<template #label>{{ $ts.searchUser }}</template>
+				</MkInput>
+				-->
 
-			<div class="vxjfqztj"> <!-- Misskey Default: :to="`/explore/tags/${tag.tag}`" -->
-				<MkA v-for="tag in tagsLocal" :to="`/tags/${tag.tag}`" :key="'local:' + tag.tag" class="local">{{ tag.tag }}</MkA>
-				<MkA v-for="tag in tagsRemote" :to="`/tags/${tag.tag}`" :key="'remote:' + tag.tag">{{ tag.tag }}</MkA>
+				<XSearch v-model="query" @search="search"/>
 			</div>
-		</MkFolder>
 
-		<MkFolder v-if="tag != null" :key="`${tag}`" class="_gap">
-			<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ tag }}</template>
-			<XUserList :pagination="tagUsers"/>
-		</MkFolder>
+			<MkFolder :foldable="true" :expanded="false" ref="tags" class="_gap">
+				<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularTags }}</template>
 
-		<!-- 기존 Misskey 방식 유저 검색
-		<XUserList v-if="query" class="_gap" :pagination="searchPagination" ref="search"/>
-		-->
+				<div class="vxjfqztj"> <!-- Misskey Default: :to="`/explore/tags/${tag.tag}`" -->
+					<MkA v-for="tag in tagsLocal" :to="`/tags/${tag.tag}`" :key="'local:' + tag.tag" class="local">{{ tag.tag }}</MkA>
+					<MkA v-for="tag in tagsRemote" :to="`/tags/${tag.tag}`" :key="'remote:' + tag.tag">{{ tag.tag }}</MkA>
+				</div>
+			</MkFolder>
 
-		<div class="localfedi7 _block _isolated" v-if="meta && stats && tag == null" :style="{ backgroundImage: meta.bannerUrl ? `url(${meta.bannerUrl})` : null }">
-			<header><span>{{ $t('explore', { host: meta.name || 'CherryPick' }) }}</span></header>
-			<div><span>{{ $t('exploreUsersCount', { count: num(stats.originalUsersCount) }) }}</span></div>
+			<MkFolder v-if="tag != null" :key="`${tag}`" class="_gap">
+				<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ tag }}</template>
+				<XUserList :pagination="tagUsers"/>
+			</MkFolder>
+
+			<!-- 기존 Misskey 방식 유저 검색
+			<XUserList v-if="query" class="_gap" :pagination="searchPagination" ref="search"/>
+			-->
+
+			<div class="localfedi7 _block _isolated" v-if="meta && stats && tag == null" :style="{ backgroundImage: meta.bannerUrl ? `url(${meta.bannerUrl})` : null }">
+				<header><span>{{ $t('explore', { host: meta.name || 'CherryPick' }) }}</span></header>
+				<div><span>{{ $t('exploreUsersCount', { count: num(stats.originalUsersCount) }) }}</span></div>
+			</div>
+
+			<template v-if="tag == null">
+				<MkFolder class="_gap" persist-key="explore-pinned-users">
+					<template #header><i class="fas fa-bookmark fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.pinnedUsers }}</template>
+					<XUserList :pagination="pinnedUsers"/>
+				</MkFolder>
+				<MkFolder class="_gap" persist-key="explore-popular-users">
+					<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
+					<XUserList :pagination="popularUsers"/>
+				</MkFolder>
+				<MkFolder class="_gap" persist-key="explore-recently-updated-users">
+					<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
+					<XUserList :pagination="recentlyUpdatedUsers"/>
+				</MkFolder>
+				<MkFolder class="_gap" persist-key="explore-recently-registered-users">
+					<template #header><i class="fas fa-plus fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyRegisteredUsers }}</template>
+					<XUserList :pagination="recentlyRegisteredUsers"/>
+				</MkFolder>
+			</template>
 		</div>
+		<div>
+			<div class="localfedi7 _block _isolated" v-if="tag == null" :style="{ backgroundImage: `url(/static-assets/client/fedi.jpg)` }">
+				<header><span>{{ $ts.exploreFediverse }}</span></header>
+			</div>
 
-		<template v-if="tag == null">
-			<MkFolder class="_gap" persist-key="explore-pinned-users">
-				<template #header><i class="fas fa-bookmark fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.pinnedUsers }}</template>
-				<XUserList :pagination="pinnedUsers"/>
-			</MkFolder>
-			<MkFolder class="_gap" persist-key="explore-popular-users">
-				<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
-				<XUserList :pagination="popularUsers"/>
-			</MkFolder>
-			<MkFolder class="_gap" persist-key="explore-recently-updated-users">
-				<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
-				<XUserList :pagination="recentlyUpdatedUsers"/>
-			</MkFolder>
-			<MkFolder class="_gap" persist-key="explore-recently-registered-users">
-				<template #header><i class="fas fa-plus fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyRegisteredUsers }}</template>
-				<XUserList :pagination="recentlyRegisteredUsers"/>
-			</MkFolder>
-		</template>
-	</div>
-	<div>
-		<div class="localfedi7 _block _isolated" v-if="tag == null" :style="{ backgroundImage: `url(/static-assets/client/fedi.jpg)` }">
-			<header><span>{{ $ts.exploreFediverse }}</span></header>
+			<template v-if="tag == null">
+				<MkFolder class="_gap">
+					<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
+					<XUserList :pagination="popularUsersF"/>
+				</MkFolder>
+				<MkFolder class="_gap">
+					<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
+					<XUserList :pagination="recentlyUpdatedUsersF"/>
+				</MkFolder>
+				<MkFolder class="_gap">
+					<template #header><i class="fas fa-rocket fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyDiscoveredUsers }}</template>
+					<XUserList :pagination="recentlyRegisteredUsersF"/>
+				</MkFolder>
+			</template>
 		</div>
-
-		<template v-if="tag == null">
-			<MkFolder class="_gap">
-				<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
-				<XUserList :pagination="popularUsersF"/>
-			</MkFolder>
-			<MkFolder class="_gap">
-				<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
-				<XUserList :pagination="recentlyUpdatedUsersF"/>
-			</MkFolder>
-			<MkFolder class="_gap">
-				<template #header><i class="fas fa-rocket fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyDiscoveredUsers }}</template>
-				<XUserList :pagination="recentlyRegisteredUsersF"/>
-			</MkFolder>
-		</template>
 	</div>
 </div>
 </template>
@@ -116,6 +121,10 @@ export default defineComponent({
 				title: this.$ts.explore,
 				icon: 'fas fa-hashtag'
 			},
+			header: {
+				title: this.$ts.explore,
+				icon: 'fas fa-hashtag'
+			},
 			pinnedUsers: { endpoint: 'pinned-users' },
 			popularUsers: { endpoint: 'users', limit: 10, noPaging: true, params: {
 				state: 'alive',
@@ -156,6 +165,8 @@ export default defineComponent({
 			stats: null,
 			query: null,
 			num: number,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

@@ -861,6 +861,12 @@ resolved: "해결됨"
 unresolved: "해결되지 않음"
 itsOn: "켜져 있습니다"
 itsOff: "꺼져 있습니다"
+emailRequiredForSignup: "계정 등록에 메일 주소를 필수로 입력"
+
+_signup:
+  almostThere: "거의 완료되었어요"
+  emailAddressInfo: "사용하고자 하는 메일 주소를 입력해 주세요"
+  emailSent: "입력하신 메일 주소 ({email})로 확인 메일이 발송되었어요. 메일에 첨부된 링크로 접속하면 계정 생성이 완료돼요."
 
 _accountDelete:
   accountDelete: "계정 삭제"

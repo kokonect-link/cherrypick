@@ -1,9 +1,6 @@
 <template>
 <div class="lknzcolw">
-	<div class="actions">
-		<MkButton inline primary @click="addUser()"><i class="fas fa-plus"></i> {{ $ts.addUser }}</MkButton>
-		<MkButton inline primary @click="lookupUser()"><i class="fas fa-search"></i> {{ $ts.lookup }}</MkButton>
-	</div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
 
 	<div class="users">
 		<div class="inputs">
@@ -99,10 +96,26 @@ export default defineComponent({
 				title: this.$ts.users,
 				icon: 'fas fa-users',
 				bg: 'var(--bg)',
-				action: {
+			},
+			header: {
+				title: this.$ts.users,
+				icon: 'fas fa-users',
+				bg: 'var(--bg)',
+				actions: [{
 					icon: 'fas fa-search',
+					text: this.$ts.search,
 					handler: this.searchUser
-				}
+				}, {
+					asFullButton: true,
+					icon: 'fas fa-plus',
+					text: this.$ts.addUser,
+					handler: this.addUser
+				}, {
+					asFullButton: true,
+					icon: 'fas fa-search',
+					text: this.$ts.lookup,
+					handler: this.lookupUser
+				}]
 			},
 			sort: '+createdAt',
 			state: 'all',
@@ -121,6 +134,8 @@ export default defineComponent({
 				}),
 				offsetMode: true
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		}
 	},
 
@@ -181,10 +196,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .lknzcolw {
-	> .actions {
-		margin: var(--margin);
-	}
-
 	> .users {
 		margin: var(--margin);
 

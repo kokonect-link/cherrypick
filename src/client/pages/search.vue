@@ -1,9 +1,11 @@
 <template>
+<div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
 	<div class="_section">
 		<div class="_content">
-			<XSearch class="search" v-model:value="inputQuery" @search="search"/>
+			<XSearch class="search" v-model="inputQuery" @search="search"/>
 			<div class="tab _section _noPad" style="padding: 0">
-				<MkTab v-model:value="tab">
+				<MkTab v-model="tab">
 					<option value="notes">{{ $ts.notes }}</option>
 					<option value="users">{{ $ts.users }}</option>
 				</MkTab>
@@ -21,6 +23,7 @@
 			<XUsers v-if="tab === 'users'" ref="users" :pagination="usersPagination"/>
 		</div>
 	</div>
+</div>
 </template>
 
 <script lang="ts">
@@ -84,12 +87,18 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: computed(() => this.$t('searchWith', { q: this.query })),
-				icon: 'fas fa-search'
+				icon: 'fas fa-search',
+			},
+			header: {
+				title: computed(() => this.$t('searchWith', { q: this.query.q })),
+				icon: 'fas fa-search',
 			},
 			query: this.q,
 			inputQuery: this.q,
 			tab: this.f || 'notes',
 			smartCard: null as SmartCard | null,
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

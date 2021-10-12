@@ -11,7 +11,7 @@ import Logger from '@/services/logger';
 import loadConfig from '@/config/load';
 import { Config } from '@/config/types';
 import { lessThan } from '@/prelude/array';
-import { program } from '../argv';
+import { envOption } from '../env';
 import { showMachineInfo } from '@/misc/show-machine-info';
 import { initDb } from '../db/postgre';
 
@@ -25,7 +25,7 @@ const logger = new Logger('core', 'cyan');
 const bootLogger = logger.createSubLogger('boot', 'magenta', false);
 
 function greet() {
-	if (!program.quiet) {
+	if (!envOption.quiet) {
 		//#region CherryPick logo
 		const v = `v${meta.version}`;
 		console.log(chalk.hex('#ffa9c3').bold('  _________ .__                                ') + chalk.hex('#95e3e8').bold('__________.__        __    '));
@@ -75,13 +75,13 @@ export async function masterMain() {
 
 	bootLogger.succ('CherryPick initialized');
 
-	if (!program.disableClustering) {
+	if (!envOption.disableClustering) {
 		await spawnWorkers(config.clusterLimit);
 	}
 
 	bootLogger.succ(`Now listening on port ${config.port} on ${config.url}`, null, true);
 
-	if (!program.noDaemons) {
+	if (!envOption.noDaemons) {
 		require('../daemons/server-stats').default();
 		require('../daemons/queue-stats').default();
 		require('../daemons/janitor').default();

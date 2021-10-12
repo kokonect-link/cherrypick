@@ -1,6 +1,9 @@
 <template>
-<div class="_section">
-	<XNotes class="_content" :pagination="pagination" @before="before()" @after="after()"/>
+<div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<div class="_section">
+		<XNotes class="_content" :pagination="pagination" @before="before()" @after="after()"/>
+	</div>
 </div>
 </template>
 
@@ -19,12 +22,20 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.mentions,
-				icon: 'fas fa-at'
+				icon: 'fas fa-at',
+				bg: 'var(--bg)',
+			},
+			header: {
+				title: this.$ts.mentions,
+				icon: 'fas fa-at',
+				bg: 'var(--bg)',
 			},
 			pagination: {
 				endpoint: 'notes/mentions',
 				limit: 10,
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

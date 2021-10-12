@@ -370,7 +370,7 @@ hr {
 	}
 }
 
-._flat_, ._flat_friendly_ {
+._flat_, ._flat_friendly_legacy_ {
 	--root-margin: 0px;
 	--baseContentWidth: 100%;
 	--panelBorder: none;
@@ -406,7 +406,7 @@ hr {
 	}
 }
 
-._flat_friendly_ {
+._flat_friendly_legacy_ {
 	margin: 8px;
 
 	._block {

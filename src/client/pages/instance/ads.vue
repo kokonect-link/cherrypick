@@ -1,43 +1,45 @@
 <template>
-<div class="uqshojas">
-	<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" @click="add()" primary style="margin: 0 auto 16px auto;"><i class="fas fa-plus"></i> {{ $ts.add }}</MkButton>
-	<section class="_card _gap ads" :class="{ 'friendly': isFriendlyUI || isFriendlyUILegacy }" v-for="ad in ads">
-		<div class="_content ad">
-			<MkAd v-if="ad.url" :specify="ad"/>
-			<MkInput v-model="ad.url" type="url">
-				<template #label>URL</template>
-			</MkInput>
-			<MkInput v-model="ad.imageUrl">
-				<template #label>{{ $ts.imageUrl }}</template>
-			</MkInput>
-			<div style="margin: 32px 0;">
-				<MkRadio v-model="ad.place" value="square">square</MkRadio>
-				<MkRadio v-model="ad.place" value="horizontal">horizontal</MkRadio>
-				<MkRadio v-model="ad.place" value="horizontal-big">horizontal-big</MkRadio>
+<div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<div class="uqshojas">
+		<section class="_card _gap ads" v-for="ad in ads">
+			<div class="_content ad">
+				<MkAd v-if="ad.url" :specify="ad"/>
+				<MkInput v-model="ad.url" type="url">
+					<template #label>URL</template>
+				</MkInput>
+				<MkInput v-model="ad.imageUrl">
+					<template #label>{{ $ts.imageUrl }}</template>
+				</MkInput>
+				<div style="margin: 32px 0;">
+					<MkRadio v-model="ad.place" value="square">square</MkRadio>
+					<MkRadio v-model="ad.place" value="horizontal">horizontal</MkRadio>
+					<MkRadio v-model="ad.place" value="horizontal-big">horizontal-big</MkRadio>
+				</div>
+				<!--
+				<div style="margin: 32px 0;">
+					{{ $ts.priority }}
+					<MkRadio v-model="ad.priority" value="high">{{ $ts.high }}</MkRadio>
+					<MkRadio v-model="ad.priority" value="middle">{{ $ts.middle }}</MkRadio>
+					<MkRadio v-model="ad.priority" value="low">{{ $ts.low }}</MkRadio>
+				</div>
+				-->
+				<MkInput v-model="ad.ratio" type="number">
+					<template #label>{{ $ts.ratio }}</template>
+				</MkInput>
+				<MkInput v-model="ad.expiresAt" type="date">
+					<template #label>{{ $ts.expiration }}</template>
+				</MkInput>
+				<MkTextarea v-model="ad.memo">
+					<template #label>{{ $ts.memo }}</template>
+				</MkTextarea>
+				<div class="buttons">
+					<MkButton class="button" inline @click="save(ad)" primary><i class="fas fa-save"></i> {{ $ts.save }}</MkButton>
+					<MkButton class="button" inline @click="remove(ad)" danger><i class="fas fa-trash-alt"></i> {{ $ts.remove }}</MkButton>
+				</div>
 			</div>
-			<!--
-			<div style="margin: 32px 0;">
-				{{ $ts.priority }}
-				<MkRadio v-model="ad.priority" value="high">{{ $ts.high }}</MkRadio>
-				<MkRadio v-model="ad.priority" value="middle">{{ $ts.middle }}</MkRadio>
-				<MkRadio v-model="ad.priority" value="low">{{ $ts.low }}</MkRadio>
-			</div>
-			-->
-			<MkInput v-model="ad.ratio" type="number">
-				<template #label>{{ $ts.ratio }}</template>
-			</MkInput>
-			<MkInput v-model="ad.expiresAt" type="date">
-				<template #label>{{ $ts.expiration }}</template>
-			</MkInput>
-			<MkTextarea v-model="ad.memo">
-				<template #label>{{ $ts.memo }}</template>
-			</MkTextarea>
-			<div class="buttons">
-				<MkButton class="button" inline @click="save(ad)" primary><i class="fas fa-save"></i> {{ $ts.save }}</MkButton>
-				<MkButton class="button" inline @click="remove(ad)" danger><i class="fas fa-trash-alt"></i> {{ $ts.remove }}</MkButton>
-			</div>
-		</div>
-	</section>
+		</section>
+	</div>
 </div>
 </template>
 
@@ -49,9 +51,6 @@ import MkTextarea from '@client/components/form/textarea.vue';
 import MkRadio from '@client/components/form/radio.vue';
 import * as os from '@client/os';
 import * as symbols from '@client/symbols';
-
-const DESKTOP_THRESHOLD = 1100;
-const WIDE_TABLET_THRESHOLD = 850;
 
 export default defineComponent({
 	components: {
@@ -74,9 +73,18 @@ export default defineComponent({
 					handler: this.add
 				}
 			},
+			header: {
+				title: this.$ts.ads,
+				icon: 'fas fa-audio-description',
+				bg: 'var(--bg)',
+				actions: [{
+					asFullButton: true,
+					icon: 'fas fa-plus',
+					text: this.$ts.add,
+					handler: this.add,
+				}],
+			},
 			ads: [],
-			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
-			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		}
@@ -140,10 +148,5 @@ export default defineComponent({
 <style lang="scss" scoped>
 .uqshojas {
 	margin: var(--margin);
-
-	.friendly {
-		border-radius: var(--radius);
-		box-shadow: var(--panelShadow);
-	}
 }
 </style>

@@ -1,7 +1,10 @@
 <template>
-<div class="jmelgwjh">
-	<div class="body">
-		<XNotes class="notes" :pagination="pagination" :detail="true" :prop="'note'" @before="before()" @after="after()"/>
+<div>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<div class="jmelgwjh">
+		<div class="body">
+			<XNotes class="notes" :pagination="pagination" :detail="true" :prop="'note'" @before="before()" @after="after()"/>
+		</div>
 	</div>
 </div>
 </template>
@@ -25,12 +28,19 @@ export default defineComponent({
 				icon: 'fas fa-star',
 				bg: 'var(--bg)',
 			},
+			header: {
+				title: this.$ts.favorites,
+				icon: 'fas fa-star',
+				bg: 'var(--bg)',
+			},
 			pagination: {
 				endpoint: 'i/favorites',
 				limit: 10,
 				params: () => ({
 				})
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

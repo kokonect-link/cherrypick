@@ -1,39 +1,42 @@
 <template>
-<div class="cmuxhskf" :class="{ isMobile }" v-hotkey.global="keymap" v-size="{ min: [800] }">
-	<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
-	<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-	<div v-if="isFriendlyUILegacy" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
-		<div class="left">
-			<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
-			<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
-			<button class="_button tab" @click="() => { src = 'social'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
-			<button class="_button tab" @click="() => { src = 'global'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
-			<span class="divider"></span>
-			<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
-		</div>
-		<div class="right">
-			<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><i class="fas fa-satellite-dish"></i><i v-if="$i.hasUnreadChannel" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="chooseAntenna" :class="{ active: src === 'antenna' }" v-tooltip="$ts.antennas"><i class="fas fa-satellite"></i><i v-if="$i.hasUnreadAntenna" class="fas fa-circle i"></i></button>
-			<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
-		</div>
-	</div>
+<div v-hotkey.global="keymap">
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<div class="cmuxhskf" :class="{ isMobile }" v-size="{ min: [800] }">
+		<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
+		<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
 
-	<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
-	<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
-	<div class="tl _block">
-		<XTimeline ref="tl"
-			:class="{ 'tl': !isFriendlyUI }"
-			:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
-			:src="src"
-			:list="list ? list.id : null"
-			:antenna="antenna ? antenna.id : null"
-			:channel="channel ? channel.id : null"
-			:sound="true"
-			@before="before()"
-			@after="after()"
-			@queue="queueUpdated"
-		/>
+		<div v-if="isFriendlyUILegacy" :class="{ 'tabs-friendly-legacy': isFriendlyUILegacy, 'tabs-friendly-legacy-mobile': isFriendlyUILegacy && isMobile }">
+			<div class="left">
+				<button class="_button tab" @click="() => { src = 'home'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'home' }" v-tooltip="$ts._timelines.home"><i class="fas fa-home"></i></button>
+				<button class="_button tab" @click="() => { src = 'local'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'local' }" v-tooltip="$ts._timelines.local" v-if="isLocalTimelineAvailable"><i class="fas fa-comments"></i></button>
+				<button class="_button tab" @click="() => { src = 'social'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'social' }" v-tooltip="$ts._timelines.social" v-if="isLocalTimelineAvailable"><i class="fas fa-share-alt"></i></button>
+				<button class="_button tab" @click="() => { src = 'global'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'global' }" v-tooltip="$ts._timelines.global" v-if="isGlobalTimelineAvailable"><i class="fas fa-globe"></i></button>
+				<span class="divider"></span>
+				<button class="_button tab" @click="() => { src = 'mentions'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'mentions' }" v-tooltip="$ts.mentions"><i class="fas fa-at"></i><i v-if="$i.hasUnreadMentions" class="fas fa-circle i"></i></button>
+				<button class="_button tab" @click="() => { src = 'directs'; saveSrc(); queueReset(); top(); }" :class="{ active: src === 'directs' }" v-tooltip="$ts.directNotes"><i class="fas fa-envelope"></i><i v-if="$i.hasUnreadSpecifiedNotes" class="fas fa-circle i"></i></button>
+			</div>
+			<div class="right">
+				<button class="_button tab" @click="chooseChannel" :class="{ active: src === 'channel' }" v-tooltip="$ts.channel"><i class="fas fa-satellite-dish"></i><i v-if="$i.hasUnreadChannel" class="fas fa-circle i"></i></button>
+				<button class="_button tab" @click="chooseAntenna" :class="{ active: src === 'antenna' }" v-tooltip="$ts.antennas"><i class="fas fa-satellite"></i><i v-if="$i.hasUnreadAntenna" class="fas fa-circle i"></i></button>
+				<button class="_button tab" @click="chooseList" :class="{ active: src === 'list' }" v-tooltip="$ts.lists"><i class="fas fa-list-ul"></i></button>
+			</div>
+		</div>
+
+		<div v-if="isFriendlyUI && $store.state.newNoteNotiBehavior !== 'default'"></div>
+		<div :class="{ 'new-friendly-legacy': isFriendlyUILegacy && isDesktop, 'new': !isFriendlyUILegacy }" v-else-if="queue > 0 && ((isFriendlyUI && (isDesktop || (!isDesktop && $store.state.newNoteNotiBehavior === 'default'))) || (isFriendlyUILegacy && isDesktop) || !(isFriendlyUILegacy || isFriendlyUI))"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ $ts.newNoteRecived }}</button></div>
+		<div class="tl _block">
+			<XTimeline ref="tl" class="tl"
+				:key="src === 'list' ? `list:${list.id}` : src === 'antenna' ? `antenna:${antenna.id}` : src === 'channel' ? `channel:${channel.id}` : src"
+				:src="src"
+				:list="list ? list.id : null"
+				:antenna="antenna ? antenna.id : null"
+				:channel="channel ? channel.id : null"
+				:sound="true"
+				@before="before()"
+				@after="after()"
+				@queue="queueUpdated"
+			/>
+		</div>
 	</div>
 </div>
 </template>
@@ -155,55 +158,60 @@ export default defineComponent({
 					}],
 				};
 			} else {
-				return {
-					title: this.$ts.timeline,
-					icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
-					bg: 'var(--bg)',
-					actions: [{
-						icon: 'fas fa-list-ul',
-						text: this.$ts.lists,
-						handler: this.chooseList
-					}, {
-						icon: 'fas fa-satellite',
-						text: this.$ts.antennas,
-						handler: this.chooseAntenna
-					}, {
-						icon: 'fas fa-satellite-dish',
-						text: this.$ts.channel,
-						handler: this.chooseChannel
-					}, {
-						icon: 'fas fa-calendar-alt',
-						text: this.$ts.jumpToSpecifiedDate,
-						handler: this.timetravel
-					}],
-					tabs: [{
-						active: this.src === 'home',
-						title: this.$ts._timelines.home,
-						icon: 'fas fa-home',
-						iconOnly: true,
-						onClick: () => { this.src = 'home'; this.saveSrc(); },
-					}, {
-						active: this.src === 'local',
-						title: this.$ts._timelines.local,
-						icon: 'fas fa-comments',
-						iconOnly: true,
-						onClick: () => { this.src = 'local'; this.saveSrc(); },
-					}, {
-						active: this.src === 'social',
-						title: this.$ts._timelines.social,
-						icon: 'fas fa-share-alt',
-						iconOnly: true,
-						onClick: () => { this.src = 'social'; this.saveSrc(); },
-					}, {
-						active: this.src === 'global',
-						title: this.$ts._timelines.global,
-						icon: 'fas fa-globe',
-						iconOnly: true,
-						onClick: () => { this.src = 'global'; this.saveSrc(); },
-					}]
-				};
-			}
+					return {
+						title: this.$ts.timeline,
+						icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+						bg: 'var(--bg)',
+					};
+				}
 			}),
+			header: computed(() => ({
+				title: this.$ts.timeline,
+				icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+				bg: 'var(--bg)',
+				actions: [{
+					icon: 'fas fa-list-ul',
+					text: this.$ts.lists,
+					handler: this.chooseList
+				}, {
+					icon: 'fas fa-satellite',
+					text: this.$ts.antennas,
+					handler: this.chooseAntenna
+				}, {
+					icon: 'fas fa-satellite-dish',
+					text: this.$ts.channel,
+					handler: this.chooseChannel
+				}, {
+					icon: 'fas fa-calendar-alt',
+					text: this.$ts.jumpToSpecifiedDate,
+					handler: this.timetravel
+				}],
+				tabs: [{
+					active: this.src === 'home',
+					title: this.$ts._timelines.home,
+					icon: 'fas fa-home',
+					iconOnly: true,
+					onClick: () => { this.src = 'home'; this.saveSrc(); },
+				}, {
+					active: this.src === 'local',
+					title: this.$ts._timelines.local,
+					icon: 'fas fa-comments',
+					iconOnly: true,
+					onClick: () => { this.src = 'local'; this.saveSrc(); },
+				}, {
+					active: this.src === 'social',
+					title: this.$ts._timelines.social,
+					icon: 'fas fa-share-alt',
+					iconOnly: true,
+					onClick: () => { this.src = 'social'; this.saveSrc(); },
+				}, {
+					active: this.src === 'global',
+					title: this.$ts._timelines.global,
+					icon: 'fas fa-globe',
+					iconOnly: true,
+					onClick: () => { this.src = 'global'; this.saveSrc(); },
+				}]
+			})),
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
@@ -304,7 +312,7 @@ export default defineComponent({
 		},
 
 		top() {
-			scroll(this.$el, 0);
+			scroll(this.$el, { top: 0 });
 		},
 
 		menuItemArray() {
@@ -456,6 +464,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .cmuxhskf {
+	padding: var(--margin);
+
 	> .new,
 		.new-friendly-legacy {
 		position: sticky;

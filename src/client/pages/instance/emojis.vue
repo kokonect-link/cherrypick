@@ -1,13 +1,8 @@
 <template>
 <div class="ogwlenmc">
-	<MkTab v-model="tab">
-		<option value="local">{{ $ts.local }}</option>
-		<option value="suggestion">{{ $ts.emojiSuggestion }}</option>
-		<option value="remote">{{ $ts.remote }}</option>
-	</MkTab>
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
 
 	<div class="local" v-if="tab === 'local'">
-		<MkButton primary @click="add" style="margin: var(--margin) auto;"><i class="fas fa-plus"></i> {{ $ts.addEmoji }}</MkButton>
 		<MkInput v-model="query" :debounce="true" type="search" style="margin: var(--margin);">
 			<template #prefix><i class="fas fa-search"></i></template>
 			<template #label>{{ $ts.search }}</template>
@@ -118,11 +113,31 @@ export default defineComponent({
 				title: this.$ts.customEmojis,
 				icon: 'fas fa-laugh',
 				bg: 'var(--bg)',
-				action: {
-					icon: 'fas fa-plus',
-					handler: this.add
-				}
 			},
+			header: computed(() => ({
+				title: this.$ts.customEmojis,
+				icon: 'fas fa-laugh',
+				bg: 'var(--bg)',
+				actions: [{
+					asFullButton: true,
+					icon: 'fas fa-plus',
+					text: this.$ts.addEmoji,
+					handler: this.add,
+				}],
+				tabs: [{
+					active: this.tab === 'local',
+					title: this.$ts.local,
+					onClick: () => { this.tab = 'local'; },
+				}, {
+					active: this.tab === 'suggestion',
+					title: this.$ts.emojiSuggestion,
+					onClick: () => { this.tab = 'suggestion'; },
+				}, {
+					active: this.tab === 'remote',
+					title: this.$ts.remote,
+					onClick: () => { this.tab = 'remote'; },
+				},]
+			})),
 			tab: 'local',
 			query: null,
 			queryRemote: null,
@@ -150,6 +165,8 @@ export default defineComponent({
 					includingStates: this.pendingOnly ? [ 'pending' ] : [],
 				}))
 			},
+			isFriendlyUI: localStorage.getItem('ui') == "friendly",
+			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		}
 	},
 

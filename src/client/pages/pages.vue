@@ -1,6 +1,9 @@
 <template>
 <div>
-	<MkTab v-model="tab" v-if="$i" :class="{ 'friendly': isFriendlyUI || isFriendlyUILegacy }">
+	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+
+	<!-- TODO: MkHeaderに統合 -->
+	<MkTab v-model="tab" v-if="$i">
 		<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._pages.featured }}</option>
 		<option value="my"><i class="fas fa-edit"></i> {{ $ts._pages.my }}</option>
 		<option value="liked"><i class="fas fa-heart"></i> {{ $ts._pages.liked }}</option>
@@ -49,11 +52,22 @@ export default defineComponent({
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.pages,
 				icon: 'fas fa-sticky-note',
+				bg: 'var(--bg)',
 				action: {
 					icon: 'fas fa-plus',
 					text: this.$ts.create,
-					handler: this.create
+					handler: this.create,
 				}
+			},
+			header: {
+				title: this.$ts.pages,
+				icon: 'fas fa-sticky-note',
+				bg: 'var(--bg)',
+				actions: [{
+					icon: 'fas fa-plus',
+					text: this.$ts.create,
+					handler: this.create,
+				}],
 			},
 			tab: 'featured',
 			featuredPagesPagination: {
@@ -84,17 +98,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.friendly {
-	@media (min-width: 601px) {
-		margin: -8px -8px auto;
-	}
-}
-
 .rknalgpo {
-	.ckltabjg {
-		margin: 0;
-	}
-
 	&.my .ckltabjg:first-child {
 		margin-top: 16px;
 	}
