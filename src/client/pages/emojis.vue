@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 	<div :class="$style.root">
 		<XCategory v-if="tab === 'category'"/>
 	</div>

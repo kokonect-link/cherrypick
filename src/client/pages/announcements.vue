@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 	<div class="_section">
 		<MkPagination :pagination="pagination" #default="{items}" class="ruryvtyk _content">
 			<section class="_card announcement _gap" v-for="(announcement, i) in items" :key="announcement.id">

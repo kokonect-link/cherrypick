@@ -862,6 +862,10 @@ unresolved: "해결되지 않음"
 itsOn: "켜져 있습니다"
 itsOff: "꺼져 있습니다"
 emailRequiredForSignup: "계정 등록에 메일 주소를 필수로 입력"
+unread: "읽지 않음"
+filter: "필터"
+controllPanel: "제어판"
+manageAccounts: "계정 관리"
 
 _signup:
   almostThere: "거의 완료되었어요"

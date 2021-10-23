@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 	<div class="_section">
 		<div class="_content">
 			<XSearch class="search" v-model="inputQuery" @search="search"/>

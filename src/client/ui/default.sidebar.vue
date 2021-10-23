@@ -65,7 +65,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
-import { getAccounts, addAccount, login } from '@client/account';
+import { getAccounts, addAccount, login, openAccountMenu } from '@client/account';
 import MkButton from '@client/components/ui/button.vue';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
 import MisskeyLogo from '@/../assets/client/misskey.svg';
@@ -142,44 +142,6 @@ export default defineComponent({
 			search();
 		},
 
-		async openAccountMenu(ev) {
-			const storedAccounts = await getAccounts().then(accounts => accounts.filter(x => x.id !== this.$i.id));
-			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
-
-			const accountItemPromises = storedAccounts.map(a => new Promise(res => {
-				accountsPromise.then(accounts => {
-					const account = accounts.find(x => x.id === a.id);
-					if (account == null) return res(null);
-					res({
-						type: 'user',
-						user: account,
-						action: () => { this.switchAccount(account); }
-					});
-				});
-			}));
-
-			os.popupMenu([...[{
-				type: 'link',
-				text: this.$ts.profile,
-				to: `/@${ this.$i.username }`,
-				avatar: this.$i,
-			}, null, ...accountItemPromises, {
-				icon: 'fas fa-plus',
-				text: this.$ts.addAccount,
-				action: () => {
-					os.popupMenu([{
-						text: this.$ts.existingAccount,
-						action: () => { this.addAccount(); },
-					}, {
-						text: this.$ts.createAccount,
-						action: () => { this.createAccount(); },
-					}], ev.currentTarget || ev.target);
-				},
-			}]], ev.currentTarget || ev.target, {
-				align: 'left'
-			});
-		},
-
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
 			}, 'closed');
@@ -220,7 +182,9 @@ export default defineComponent({
 		async init() {
 			const meta = await os.api('meta', { detail: true });
 			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
-		}
+		},
+
+		openAccountMenu,
 	}
 });
 </script>

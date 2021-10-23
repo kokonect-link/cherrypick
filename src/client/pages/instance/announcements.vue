@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 
 	<div class="ztgjmzrw">
 		<section class="_card _gap announcements" v-for="announcement in announcements">

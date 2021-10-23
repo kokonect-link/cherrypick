@@ -1,6 +1,7 @@
 <template>
 <div class="ogwlenmc">
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 
 	<div class="local" v-if="tab === 'local'">
 		<MkInput v-model="query" :debounce="true" type="search" style="margin: var(--margin);">

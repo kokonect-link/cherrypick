@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 
 	<!-- TODO: MkHeaderに統合 -->
 	<MkTab v-model="tab" v-if="$i">

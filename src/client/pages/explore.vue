@@ -1,16 +1,17 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 
-	<div class="lznhrdub _root">
-		<div>
-			<div class="_isolated">
-				<!-- 기존 Misskey 방식 유저 검색
-				<MkInput v-model="query" :debounce="true" type="search">
-					<template #prefix><i class="fas fa-search"></i></template>
-					<template #label>{{ $ts.searchUser }}</template>
-				</MkInput>
-				-->
+		<div class="lznhrdub _root">
+			<div v-if="tab === 'local'">
+				<div class="_isolated">
+					<!-- 기존 Misskey 방식 유저 검색
+					<MkInput v-model="query" :debounce="true" type="search">
+						<template #prefix><i class="fas fa-search"></i></template>
+						<template #label>{{ $ts.searchUser }}</template>
+					</MkInput>
+					-->
 
 				<XSearch v-model="query" @search="search"/>
 			</div>
@@ -57,7 +58,7 @@
 				</MkFolder>
 			</template>
 		</div>
-		<div>
+		<div v-else-if="tab === 'remote'">
 			<div class="localfedi7 _block _isolated" v-if="tag == null" :style="{ backgroundImage: `url(/static-assets/client/fedi.jpg)` }">
 				<header><span>{{ $ts.exploreFediverse }}</span></header>
 			</div>
@@ -76,6 +77,16 @@
 					<XUserList :pagination="recentlyRegisteredUsersF"/>
 				</MkFolder>
 			</template>
+		</div>
+		<div v-else-if="tab === 'search'">
+			<div class="_isolated">
+				<MkInput v-model="query" :debounce="true" type="search">
+					<template #prefix><i class="fas fa-search"></i></template>
+					<template #label>{{ $ts.searchUser }}</template>
+				</MkInput>
+			</div>
+
+			<XUserList v-if="query" class="_gap" :pagination="searchPagination" ref="search"/>
 		</div>
 	</div>
 </div>
@@ -119,12 +130,28 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.explore,
-				icon: 'fas fa-hashtag'
+				icon: 'fas fa-hashtag',
+				bg: 'var(--bg)',
 			},
-			header: {
+			tab: 'local',
+			header: computed(() => ({
 				title: this.$ts.explore,
-				icon: 'fas fa-hashtag'
-			},
+				icon: 'fas fa-hashtag',
+				bg: 'var(--bg)',
+				tabs: [{
+					active: this.tab === 'local',
+					title: this.$ts.local,
+					onClick: () => { this.tab = 'local'; },
+				}, {
+					active: this.tab === 'remote',
+					title: this.$ts.remote,
+					onClick: () => { this.tab = 'remote'; },
+				}, {
+					active: this.tab === 'search',
+					title: this.$ts.search,
+					onClick: () => { this.tab = 'search'; },
+				},]
+			})),
 			pinnedUsers: { endpoint: 'pinned-users' },
 			popularUsers: { endpoint: 'users', limit: 10, noPaging: true, params: {
 				state: 'alive',
@@ -241,6 +268,7 @@ export default defineComponent({
 .lznhrdub {
 	max-width: 1400px;
 	margin: 0 auto;
+	padding: 16px;
 }
 
 .localfedi7 {

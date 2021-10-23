@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- MkHeaderCP v-else :info="header"/> -->
 	<div class="uqshojas">
 		<section class="_card _gap ads" v-for="ad in ads">
 			<div class="_content ad">

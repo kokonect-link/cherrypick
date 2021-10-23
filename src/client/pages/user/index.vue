@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 	<transition name="fade" mode="out-in">
 		<div class="ftskorzw wide" v-if="user && narrow === false">
 			<MkRemoteCaution v-if="user.host != null" :href="user.url"/>

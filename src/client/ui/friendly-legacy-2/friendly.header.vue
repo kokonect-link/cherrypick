@@ -25,11 +25,14 @@
 			<MkA class="item" active-class="active" to="/settings" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime v-tooltip="$ts.settings">
 				<i class="fas fa-cog fa-fw"></i>
 			</MkA>
-			<button class="item _button account" @click="openAccountMenu" v-click-anime>
-				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
+			<button class="item _button account" @click="openProfile" v-click-anime>
+				<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+			</button>
+			<button class="_button toggler" @click="openAccountMenu">
+				<i class="fas fa-chevron-down"/>
 			</button>
 			<div class="post" @click="post">
-				<MkButton class="button" primary full rounded>
+				<MkButton class="button" primary full>
 					<i class="fas fa-pencil-alt fa-fw"></i>
 				</MkButton>
 			</div>
@@ -44,7 +47,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
-import { openAccountMenu } from '@client/account';
+import { getAccounts, addAccount, login, signout, signoutAll } from '@client/account';
 import MkButton from '@client/components/ui/button.vue';
 
 export default defineComponent({
@@ -100,12 +103,106 @@ export default defineComponent({
 			search();
 		},
 
+		openProfile() {
+			this.$router.push({ path: `/@${ this.$i.username }` })
+		},
+
+		async openAccountMenu(ev) {
+			const storedAccounts = await getAccounts().then(accounts => accounts.filter(x => x.id !== this.$i.id));
+			const accountsPromise = os.api('users/show', { userIds: storedAccounts.map(x => x.id) });
+
+			const accountItemPromises = storedAccounts.map(a => new Promise(res => {
+				accountsPromise.then(accounts => {
+					const account = accounts.find(x => x.id === a.id);
+					if (account == null) return res(null);
+					res({
+						type: 'user',
+						user: account,
+						action: () => { this.switchAccount(account); }
+					});
+				});
+			}));
+
+			await os.popupMenu([...[{
+				type: 'link',
+				text: this.$ts.profile,
+				to: `/@${this.$i.username}`,
+				avatar: this.$i,
+			}, null, ...accountItemPromises, {
+				text: this.$ts.addAccount,
+				icon: 'fas fa-plus',
+				action: () => {
+					os.popupMenu([{
+						text: this.$ts.existingAccount,
+						action: () => {
+							this.addAccount();
+						},
+					}, {
+						text: this.$ts.createAccount,
+						action: () => {
+							this.createAccount();
+						},
+					}], ev.currentTarget || ev.target);
+				},
+			}, {
+				text: this.$ts.logout,
+				icon: 'fas fa-sign-out-alt',
+				action: () => {
+					os.popupMenu([{
+						text: this.$ts.logout,
+						action: () => {
+							this.signout();
+						},
+						danger: true,
+					}, {
+						text: this.$ts.logoutAll,
+						action: () => {
+							this.signoutAll();
+						},
+						danger: true,
+					}], ev.currentTarget || ev.target);
+				},
+				danger: true,
+			}]], ev.currentTarget || ev.target, {
+				align: 'left'
+			});
+		},
+
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
 			}, 'closed');
 		},
 
-		openAccountMenu,
+		addAccount() {
+			os.popup(import('@client/components/signin-dialog.vue'), {}, {
+				done: res => {
+					addAccount(res.id, res.i);
+					os.success();
+				},
+			}, 'closed');
+		},
+
+		createAccount() {
+			os.popup(import('@client/components/signup-dialog.vue'), {}, {
+				done: res => {
+					addAccount(res.id, res.i);
+					this.switchAccountWithToken(res.i);
+				},
+			}, 'closed');
+		},
+
+		async switchAccount(account: any) {
+			const storedAccounts = await getAccounts();
+			const token = storedAccounts.find(x => x.id === account.id).token;
+			this.switchAccountWithToken(token);
+		},
+
+		switchAccountWithToken(token: string) {
+			login(token);
+		},
+
+		signout,
+		signoutAll,
 	}
 });
 </script>
@@ -155,10 +252,10 @@ export default defineComponent({
 
 				> .indicator {
 					position: absolute;
-					top: 0;
-					left: 0;
+					bottom: 10px;
+					right: 0;
 					color: var(--navIndicator);
-					font-size: 8px;
+					font-size: 7px;
 					animation: blink 1s infinite;
 				}
 
@@ -194,11 +291,18 @@ export default defineComponent({
 				display: inline-flex;
 				align-items: center;
 				vertical-align: top;
-				margin-right: 8px;
 
-				> .acct {
-					margin-left: 8px;
+				> .name {
+					margin-left: 10px;
+					font-weight: bold;
 				}
+			}
+
+			> .toggler {
+				position: relative;
+				right: 5px;
+				width: 36px;
+				height: 36px;
 			}
 		}
 

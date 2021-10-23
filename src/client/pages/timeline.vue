@@ -1,6 +1,7 @@
 <template>
 <div v-hotkey.global="keymap">
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="headerCP"/> -->
 	<div class="cmuxhskf" :class="{ isMobile }" v-size="{ min: [800] }">
 		<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 		<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
@@ -147,17 +148,17 @@ export default defineComponent({
 				}
 				if (this.isFriendlyUI || this.isFriendlyUILegacy) {
 					return {
-					title: this.$ts.timeline,
-					tabs,
-					icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
-					bg: 'var(--bg)',
-					actions: [{
-						icon: 'fas fa-calendar-alt',
-						text: this.$ts.jumpToSpecifiedDate,
-						handler: this.timetravel
-					}],
-				};
-			} else {
+						title: this.$ts.timeline,
+						tabs,
+						icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',
+						bg: 'var(--bg)',
+						actions: [{
+							icon: 'fas fa-calendar-alt',
+							text: this.$ts.jumpToSpecifiedDate,
+							handler: this.timetravel
+						}],
+					};
+				} else {
 					return {
 						title: this.$ts.timeline,
 						icon: this.src === 'local' ? 'fas fa-comments' : this.src === 'social' ? 'fas fa-share-alt' : this.src === 'global' ? 'fas fa-globe' : 'fas fa-home',

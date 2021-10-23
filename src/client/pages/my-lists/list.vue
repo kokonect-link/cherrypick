@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="header && (!isFriendlyUI && !isFriendlyUILegacy)" :info="header"/>
+	<!-- <MkHeaderCP v-else-if="header" :info="header"/> -->
 	<div class="mk-list-page">
 		<transition name="zoom" mode="out-in">
 			<div v-if="list" class="_section">

@@ -1,6 +1,7 @@
 <template>
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
+	<!-- <MkHeaderCP v-else :info="header"/> -->
 	<div class="jmelgwjh">
 		<div class="body">
 			<XNotes class="notes" :pagination="pagination" :detail="true" :prop="'note'" @before="before()" @after="after()"/>

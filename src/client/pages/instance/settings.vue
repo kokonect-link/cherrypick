@@ -38,6 +38,11 @@
 			<span>{{ $ts.maintainerEmail }}</span>
 		</FormInput>
 
+		<FormTextarea v-model="pinnedUsers">
+			<span>{{ $ts.pinnedUsers }}</span>
+			<template #desc>{{ $ts.pinnedUsersDescription }}</template>
+		</FormTextarea>
+
 		<FormInput v-model="maxNoteTextLength" type="number">
 			<template #prefix><i class="fas fa-pencil-alt"></i></template>
 			<span>{{ $ts.maxNoteTextLength }}</span>
@@ -100,7 +105,8 @@ export default defineComponent({
 		return {
 			[symbols.PAGE_INFO]: {
 				title: this.$ts.general,
-				icon: 'fas fa-cog'
+				icon: 'fas fa-cog',
+				bg: 'var(--bg)',
 			},
 			name: null,
 			description: null,
@@ -118,6 +124,7 @@ export default defineComponent({
 			emojiLimitVip: false,
 			emojiLimitValue: 10,
 			emojiLimitValueVip: 20,
+			pinnedUsers: '',
 		}
 	},
 
@@ -144,6 +151,7 @@ export default defineComponent({
 			this.emojiLimitVip = meta.emojiSuggestionLimitationVip >= 0;
 			if (this.emojiLimit) this.emojiLimitValue = meta.emojiSuggestionLimitation;
 			if (this.emojiLimitVip) this.emojiLimitValueVip = meta.emojiSuggestionLimitationVip;
+			this.pinnedUsers = meta.pinnedUsers.join('\n');
 		},
 
 		save() {
@@ -162,6 +170,7 @@ export default defineComponent({
 				disableCatTimeline: !this.enableCatTimeline,
 				emojiSuggestionLimitation: this.emojiLimit ? this.emojiLimitValue : -1,
 				emojiSuggestionLimitationVip: this.emojiLimitVip ? this.emojiLimitValueVip: -1,
+				pinnedUsers: this.pinnedUsers.split('\n'),
 			}).then(() => {
 				fetchInstance();
 			});

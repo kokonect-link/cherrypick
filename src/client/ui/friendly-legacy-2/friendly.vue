@@ -1,6 +1,6 @@
 <template>
-<div class="mk-app" :class="{ wallpaper, isMobile }" :style="`--globalHeaderHeight:${globalHeaderHeight}px`">
-	<XHeaderMenu v-if="showMenuOnTop" v-get-size="(w, h) => globalHeaderHeight = h"/>
+<div class="mk-app" :class="{ wallpaper, isMobile }">
+	<XHeaderMenu v-if="showMenuOnTop"/>
 
 	<div class="columns" :class="{ fullView, withGlobalHeader: showMenuOnTop }">
 		<template v-if="!isMobile">
@@ -14,9 +14,9 @@
 
 		<main class="main _panel" @contextmenu.stop="onContextmenu" :style="{ background: pageInfo?.bg }">
 			<header class="header">
-				<XHeader :info="pageInfo" :back-button="true" @back="back()"/>
+				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo" :back-button="true" @back="back()"/>
 			</header>
-			<div class="content" :class="{ _flat_: !fullView }">
+			<div class="content" :class="{ '_flat_': isMobile && !fullView }">
 				<router-view v-slot="{ Component }">
 					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
 						<keep-alive :include="['timeline']">
@@ -99,7 +99,6 @@ export default defineComponent({
 		return {
 			pageInfo: null,
 			menuDef: menuDef,
-			globalHeaderHeight: 0,
 			navHidden: false,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
@@ -161,7 +160,6 @@ export default defineComponent({
 			}]);
 		}
 
-		eventBus.on('kn-drawernav', () => this.showDrawerNav());
 		eventBus.on('kn-timeline-new', (q) => this.queueUpdated(q));
 		eventBus.on('kn-timeline-new-queue-reset', () => this.queueReset());
 	},
@@ -242,7 +240,7 @@ export default defineComponent({
 				}
 			};
 			if (isLink(e.target)) return;
-			if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(e.target.tagName) || e.target.attributes['contenteditable']) return;
+			if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO'].includes(e.target.tagName) || e.target.attributes['contenteditable']) return;
 			if (window.getSelection().toString() !== '') return;
 			const path = this.$route.path;
 			os.contextMenu([{
@@ -322,7 +320,7 @@ export default defineComponent({
 
 	&.wallpaper {
 		background: var(--wallpaperOverlay);
-		//backdrop-filter: var(--blur, blur(4px));
+		//backdrop-filter: blur(4px);
 	}
 
 	&.isMobile {
@@ -381,11 +379,10 @@ export default defineComponent({
 			min-width: 0;
 			width: 750px;
 			margin: 0 16px 0 0;
-			background: var(--panel);
-			border-left: solid 1px var(--divider);
-			border-right: solid 1px var(--divider);
+			background: var(--bg);
+			box-shadow: 0 0 0 1px var(--divider);
 			border-radius: 0;
-			overflow: clip;
+			border: initial;
 			--margin: 12px;
 
 			> .header {
@@ -397,6 +394,20 @@ export default defineComponent({
 				-webkit-backdrop-filter: blur(32px);
 				backdrop-filter: blur(32px);
 				background-color: var(--header);
+			}
+
+			> .content {
+				background: var(--bg);
+				--stickyTop: calc(var(--globalHeaderHeight, 0px) + #{$header-height});
+			}
+
+			@media (max-width: 850px) {
+				padding-top: $header-height;
+
+				> .header {
+					position: fixed;
+					width: calc(100% - #{$nav-icon-only-width});
+				}
 			}
 		}
 
@@ -419,16 +430,17 @@ export default defineComponent({
 		}
 
 		&.withGlobalHeader {
+			--globalHeaderHeight: 60px; // TODO: 60pxと決め打ちしているのを直す
+
 			> .main {
-				margin-top: 0;
-				border: solid 1px var(--divider);
+				margin-top: 1px;
 				border-radius: var(--radius);
-				--stickyTop: var(--globalHeaderHeight);
+				box-shadow: 0 0 0 1px var(--divider);
 			}
 
 			> .widgets {
 				--stickyTop: var(--globalHeaderHeight);
-				margin-top: 0;
+				margin-top: 1px;
 			}
 		}
 
@@ -488,8 +500,8 @@ export default defineComponent({
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
-		-webkit-backdrop-filter: var(--blur, blur(32px));
-		backdrop-filter: var(--blur, blur(32px));
+		-webkit-backdrop-filter: blur(32px);
+		backdrop-filter: blur(32px);
 		background-color: var(--header);
 		border-top: solid 0.5px var(--divider);
 
