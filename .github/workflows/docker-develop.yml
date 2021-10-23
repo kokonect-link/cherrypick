@@ -29,5 +29,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: misskey/misskey:develop
+          tags: noridev/cherrypick:develop
           labels: develop
