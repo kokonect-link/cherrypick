@@ -153,12 +153,4 @@ export default defineComponent({
 		}
 	}
 }
-
-._fitSide_, ._fitSide_friendly_legacy_ {
-	.ssazuxis {
-		> header {
-			padding: 0 16px;
-		}
-	}
-}
 </style>

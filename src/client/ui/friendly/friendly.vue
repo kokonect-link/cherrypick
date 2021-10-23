@@ -16,7 +16,7 @@
 			<header class="header">
 				<XHeader :info="pageInfo" :back-button="true" @back="back()"/>
 			</header>
-			<div class="content" :class="{ _fitSide_: !fullView }">
+			<div class="content">
 				<router-view v-slot="{ Component }">
 					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
 						<keep-alive :include="['timeline']">
