@@ -4,7 +4,7 @@
 		<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
 	</button>
 	<div class="post" @click="post" data-cy-open-post-form>
-		<MkButton class="button" primary full>
+		<MkButton class="button" gradate full rounded>
 			<i class="fas fa-pencil-alt fa-fw"></i><span class="text" v-if="!iconOnly">{{ $ts.note }}</span>
 		</MkButton>
 	</div>
@@ -20,7 +20,7 @@
 		</component>
 	</template>
 	<div class="divider"></div>
-	<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
+	<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime>
 		<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
 	</MkA>
 	<button class="item _button" @click="more" v-click-anime>

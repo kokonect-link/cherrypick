@@ -49,7 +49,7 @@ export default defineComponent({
 
 	setup(props, context) {
 		const indexInfo = {
-			title: i18n.locale.controllPanel,
+			title: i18n.locale.settings,
 			icon: 'fas fa-cog',
 			bg: 'var(--bg)',
 		};
@@ -317,6 +317,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .vvcocwet {
 	> .nav {
+		> .title {
+			margin: 16px;
+			font-size: 1.5em;
+			font-weight: bold;
+		}
+
 		> .info {
 			margin: 0 16px;
 		}
@@ -360,6 +366,10 @@ export default defineComponent({
 			width: 32%;
 			box-sizing: border-box;
 			overflow: auto;
+
+			> .title {
+				margin: 24px;
+			}
 		}
 
 		> .main {

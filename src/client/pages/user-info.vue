@@ -26,8 +26,8 @@
 		</FormGroup>
 
 		<FormGroup v-if="iAmModerator">
-			<FormSwitch @update:value="togglePatron" v-model:value="patron">{{ $ts.patron }}</FormSwitch>
-			<FormSwitch v-if="patron" @update:value="toggleVip" v-model:value="vip">{{ $ts.vip }}</FormSwitch>
+			<FormSwitch @update:value="togglePatron" v-model="patron">{{ $ts.patron }}</FormSwitch>
+			<FormSwitch v-if="patron" @update:value="toggleVip" v-model="vip">{{ $ts.vip }}</FormSwitch>
 		</FormGroup>
 
 		<FormGroup>

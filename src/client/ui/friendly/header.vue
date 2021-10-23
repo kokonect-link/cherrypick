@@ -1,5 +1,5 @@
 <template>
-<div class="fdidabkb" :class="{ slim: narrow, thin }" :style="`--height:${height};`" :key="key" ref="el">
+<div class="fdidabkb" :class="{ slim: narrow, thin: thin_ }" :style="`--height:${height};`" :key="key" ref="el">
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
 		<div class="buttons left" v-if="backButton && canBack && !fabButton">
 			<button class="_button button back" @click.stop="$emit('back')" @touchstart="preventDrag" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
@@ -13,7 +13,7 @@
 		</button>
 	</div>
 	<template v-if="info">
-		<div class="titleContainer" :class="{ center: $route.name !== 'user' }" @click="showTabsPopup">
+		<div class="titleContainer" :class="{ center: $route.name !== 'user' }" @click="showTabsPopup" v-if="!hideTitle">
 			<template v-if="info.tabs || $route.name === 'user'">
 				<template v-if="$route.name === 'user'">
 					<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
@@ -43,7 +43,7 @@
 			</template>
 		</div>
 
-		<div class="tabs" v-if="!narrow && $route.name !== 'index'">
+		<div class="tabs" v-if="!narrow && $route.name !== 'index' || hideTitle">
 			<button class="tab _button" v-for="tab in info.tabs" :class="{ active: tab.active }" @click="tab.onClick" v-tooltip="tab.title">
 				<i v-if="tab.icon" class="icon" :class="tab.icon"></i>
 				<span v-if="!tab.iconOnly" class="title">{{ tab.title }}</span>
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, watch, PropType, ref } from 'vue';
+import { computed, defineComponent, onMounted, onUnmounted, watch, PropType, ref, inject } from 'vue';
 import * as tinycolor from 'tinycolor2';
 import { eventBus } from "@client/friendly/eventBus";
 import { popupMenu } from '@client/os';
@@ -138,19 +138,8 @@ export default defineComponent({
 		const canBack = ref(false);
 		const key = ref(0);
 		const queue = ref(0);
-		const routeList = ref([
-			'explore',
-			'notifications',
-			'messaging'
-		]);
 		const fabButton = ref(false);
 		const menuBar = ref(false);
-		const isMobile = computed(() => {
-			return window.innerWidth <= MOBILE_THRESHOLD;
-		});
-		const isDesktop = computed(() => {
-			return window.innerWidth >= DESKTOP_THRESHOLD;
-		});
 
 		const share = () => {
 			navigator.share({
@@ -268,12 +257,9 @@ export default defineComponent({
 			height,
 			hasTabs,
 			shouldShowMenu,
-			isMobile,
-			isDesktop,
 			canBack,
 			key,
 			queue,
-			routeList,
 			fabButton,
 			menuBar,
 			share,
@@ -286,6 +272,15 @@ export default defineComponent({
 			queueUpdated,
 			queueReset,
 			top,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			routeList: [
+				'explore',
+				'notifications',
+				'messaging'
+			],
+			hideTitle: inject('shouldOmitHeaderTitle', false),
+			thin_: props.thin || inject('shouldHeaderThin', false),
 		};
 	},
 

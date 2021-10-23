@@ -13,7 +13,7 @@
 				</component>
 			</template>
 			<div class="divider"></div>
-			<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime v-tooltip="$ts.instance">
+			<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null" v-click-anime v-tooltip="$ts.instance">
 				<i class="fas fa-server fa-fw"></i>
 			</MkA>
 			<button class="item _button" @click="more" v-click-anime>
@@ -29,7 +29,7 @@
 				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
 			</button>
 			<div class="post" @click="post">
-				<MkButton class="button" primary full rounded>
+				<MkButton class="button" gradate full rounded>
 					<i class="fas fa-pencil-alt fa-fw"></i>
 				</MkButton>
 			</div>

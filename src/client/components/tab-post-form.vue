@@ -3,7 +3,7 @@ import { defineComponent, h, resolveDirective, withDirectives } from 'vue';
 
 export default defineComponent({
 	props: {
-		value: {
+		modelValue: {
 			required: true,
 		},
 	},
@@ -12,16 +12,14 @@ export default defineComponent({
 
 		return withDirectives(h('div', {
 			class: 'pxhvhrfw',
-		}, options.map(option => withDirectives(h('button', {
-			class: ['_button', { active: this.value === option.props.value }],
+		}, options.map(option => (h('button', {
+			class: ['_button', { active: this.modelValue === option.props.value }],
 			key: option.key,
-			disabled: this.value === option.props.value,
+			disabled: this.modelValue === option.props.value,
 			onClick: () => {
-				this.$emit('update:value', option.props.value);
+				this.$emit('update:modelValue', option.props.value);
 			}
-		}, option.children), [
-			[resolveDirective('click-anime')]
-		]))), [
+		}, option.children)))), [
 			[resolveDirective('size'), { max: [500] }]
 		]);
 	}

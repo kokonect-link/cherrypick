@@ -16,7 +16,7 @@
 			<header class="header">
 				<XHeader @kn-drawernav="showDrawerNav" :info="pageInfo" :back-button="true" @back="back()"/>
 			</header>
-			<div class="content" :class="{ '_flat_': isMobile && !fullView }">
+			<div class="content" :class="{ '_fitSide_': isMobile && !fullView }">
 				<router-view v-slot="{ Component }">
 					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
 						<keep-alive :include="['timeline']">
@@ -93,6 +93,12 @@ export default defineComponent({
 		XTimeline,
 		XHeaderMenu: defineAsyncComponent(() => import('./friendly.header.vue')),
 		XWidgets: defineAsyncComponent(() => import('./friendly.widgets.vue'))
+	},
+
+	provide() {
+		return {
+			shouldHeaderThin: this.showMenuOnTop,
+		};
 	},
 
 	data() {

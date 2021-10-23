@@ -25,7 +25,7 @@
 					</component>
 				</template>
 				<div class="divider"></div>
-				<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/instance" v-click-anime>
+				<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/admin" v-click-anime>
 					<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
 				</MkA>
 				<button class="item _button" @click="more" v-click-anime>
@@ -519,7 +519,7 @@ export default defineComponent({
 						right: 0;
 						bottom: 0;
 						border-radius: 999px;
-						background: var(--accent);
+						background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 					}
 
 					&:hover, &.active {

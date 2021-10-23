@@ -9,9 +9,9 @@ It will also allow the reader to use the translation tool of their preference if
 ## Issues
 Before creating an issue, please check the following:
 - To avoid duplication, please search for similar issues before creating a new issue.
-- Do not use Issues as a question.
-	- Issues should only be used to feature requests, suggestions, and report problems.
-	- Please ask questions in the [Misskey Forum](https://forum.misskey.io/) or [Discord](https://discord.gg/V8qghB28Aj).
+- Do not use Issues to ask questions or troubleshooting.
+	- Issues should only be used to feature requests, suggestions, and bug tracking.
+	- Please ask questions or troubleshooting in the [Misskey Forum](https://forum.misskey.io/) or [Discord](https://discord.gg/V8qghB28Aj).
 
 ## Before implementation
 When you want to add a feature or fix a bug, **first have the design and policy reviewed in an Issue** (if it is not there, please make one). Without this step, there is a high possibility that the PR will not be merged even if it is implemented.
@@ -57,6 +57,17 @@ If your language is not listed in GitLocalize, please open an issue.
 - Test codes are located in [`/test`](/test).
 
 ### Run test
+Create a config file.
+```
+cp test/test.yml .config/
+```
+Prepare DB/Redis for testing.
+```
+docker-compose -f test/docker-compose.yml up
+```
+Alternatively, prepare an empty (data can be erased) DB and edit `.config/test.yml`. 
+
+Run all test.
 ```
 npm run test
 ```
@@ -159,6 +170,9 @@ const users = userIds.length > 0 ? await Users.find({
 ### 配列のインデックス in SQL
 SQLでは配列のインデックスは**1始まり**。
 `[a, b, c]`の `a`にアクセスしたいなら`[0]`ではなく`[1]`と書く
+
+### null IN
+nullが含まれる可能性のあるカラムにINするときは、そのままだとおかしくなるのでORなどでnullのハンドリングをしよう。
 
 ### `undefined`にご用心
 MongoDBの時とは違い、findOneでレコードを取得する時に対象レコードが存在しない場合 **`undefined`** が返ってくるので注意。

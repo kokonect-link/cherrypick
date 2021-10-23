@@ -566,6 +566,10 @@ export default defineComponent({
 		}
 	}
 
+	> .post-form {
+		border-radius: var(--radius);
+	}
+
 	> .tl {
 		background: var(--bg);
 		border-radius: var(--radius);

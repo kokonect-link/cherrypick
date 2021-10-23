@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<MkTab v-model:value="tab" style="border-bottom: solid 1px var(--divider);">
+		<MkTab v-model="tab" style="border-bottom: solid 1px var(--divider);">
 			<option value="form">
 				{{ $ts.emojiSuggestion }}
 			</option>
@@ -29,14 +29,14 @@
 				{{ $ts.suggestionEmojiWarnFileType }}
 			</MkInfo>
 			<template v-if="file">
-				<FormInput v-model:value="name">
+				<FormInput v-model="name">
 					<span>{{ $ts.name }}</span>
 				</FormInput>
-				<FormInput v-model:value="aliases">
+				<FormInput v-model="aliases">
 					<span>{{ $ts.tags }}</span>
 					<template #desc>{{ $ts.tagsDescription }}</template>
 				</FormInput>
-				<FormTextarea v-model:value="description" :use-autocomplete="true" :max="500">
+				<FormTextarea v-model="description" :use-autocomplete="true" :max="500">
 					<span>{{ $ts.emojiSuggestionMessage }}</span>
 					<template #desc>{{ $ts.emojiSuggestionMessageDescription }}</template>
 				</FormTextarea>
@@ -47,9 +47,9 @@
 		</FormBase>
 		<section v-if="tab === 'history'">
 			<div class="_section _inputs filter">
-				<MkSwitch v-model:value="includesPending"><i class="fas fa-clock" fixed-width/>{{ $ts.pending }}</MkSwitch>
-				<MkSwitch v-model:value="includesRejected"><i class="fas fa-times-circle" fixed-width/>{{ $ts.rejected }}</MkSwitch>
-				<MkSwitch v-model:value="includesAccepted"><i class="fas fa-check-circle" fixed-width/>{{ $ts.accepted }}</MkSwitch>
+				<MkSwitch v-model="includesPending"><i class="fas fa-clock" fixed-width/>{{ $ts.pending }}</MkSwitch>
+				<MkSwitch v-model="includesRejected"><i class="fas fa-times-circle" fixed-width/>{{ $ts.rejected }}</MkSwitch>
+				<MkSwitch v-model="includesAccepted"><i class="fas fa-check-circle" fixed-width/>{{ $ts.accepted }}</MkSwitch>
 			</div>
 			<div class="_section">
 				<MkPagination :pagination="pagination" class="suggestions" ref="pagination">

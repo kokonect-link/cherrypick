@@ -3,92 +3,89 @@
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
 	<!-- <MkHeaderCP v-else :info="header"/> -->
 
+	<MkSpacer :content-max="1200">
 		<div class="lznhrdub _root">
 			<div v-if="tab === 'local'">
+				<div class="localfedi7 _block _isolated" v-if="meta && stats && tag == null" :style="{ backgroundImage: meta.bannerUrl ? `url(${meta.bannerUrl})` : null }">
+					<header><span>{{ $t('explore', { host: meta.name || 'Misskey' }) }}</span></header>
+					<div><span>{{ $t('exploreUsersCount', { count: num(stats.originalUsersCount) }) }}</span></div>
+				</div>
+
+				<template v-if="tag == null">
+					<MkFolder class="_gap" persist-key="explore-pinned-users">
+						<template #header><i class="fas fa-bookmark fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.pinnedUsers }}</template>
+						<XUserList :pagination="pinnedUsers"/>
+					</MkFolder>
+					<MkFolder class="_gap" persist-key="explore-popular-users">
+						<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
+						<XUserList :pagination="popularUsers"/>
+					</MkFolder>
+					<MkFolder class="_gap" persist-key="explore-recently-updated-users">
+						<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
+						<XUserList :pagination="recentlyUpdatedUsers"/>
+					</MkFolder>
+					<MkFolder class="_gap" persist-key="explore-recently-registered-users">
+						<template #header><i class="fas fa-plus fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyRegisteredUsers }}</template>
+						<XUserList :pagination="recentlyRegisteredUsers"/>
+					</MkFolder>
+				</template>
+			</div>
+			<div v-else-if="tab === 'remote'">
+				<div class="localfedi7 _block _isolated" v-if="tag == null" :style="{ backgroundImage: `url(/static-assets/client/fedi.jpg)` }">
+					<header><span>{{ $ts.exploreFediverse }}</span></header>
+				</div>
+
+				<MkFolder :foldable="true" :expanded="false" ref="tags" class="_gap">
+					<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularTags }}</template>
+
+					<div class="vxjfqztj"> <!-- Misskey Default: :to="`/explore/tags/${tag.tag}`" -->
+						<MkA v-for="tag in tagsLocal" :to="`/tags/${tag.tag}`" :key="'local:' + tag.tag" class="local">{{ tag.tag }}</MkA>
+						<MkA v-for="tag in tagsRemote" :to="`/tags/${tag.tag}`" :key="'remote:' + tag.tag">{{ tag.tag }}</MkA>
+					</div>
+				</MkFolder>
+
+				<MkFolder v-if="tag != null" :key="`${tag}`" class="_gap">
+					<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ tag }}</template>
+					<XUserList :pagination="tagUsers"/>
+				</MkFolder>
+
+				<template v-if="tag == null">
+					<MkFolder class="_gap">
+						<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
+						<XUserList :pagination="popularUsersF"/>
+					</MkFolder>
+					<MkFolder class="_gap">
+						<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
+						<XUserList :pagination="recentlyUpdatedUsersF"/>
+					</MkFolder>
+					<MkFolder class="_gap">
+						<template #header><i class="fas fa-rocket fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyDiscoveredUsers }}</template>
+						<XUserList :pagination="recentlyRegisteredUsersF"/>
+					</MkFolder>
+				</template>
+			</div>
+			<div v-else-if="tab === 'search'">
 				<div class="_isolated">
 					<!-- 기존 Misskey 방식 유저 검색
-					<MkInput v-model="query" :debounce="true" type="search">
+					<MkInput v-model="searchQuery" :debounce="true" type="search">
 						<template #prefix><i class="fas fa-search"></i></template>
 						<template #label>{{ $ts.searchUser }}</template>
 					</MkInput>
 					-->
-
-				<XSearch v-model="query" @search="search"/>
-			</div>
-
-			<MkFolder :foldable="true" :expanded="false" ref="tags" class="_gap">
-				<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularTags }}</template>
-
-				<div class="vxjfqztj"> <!-- Misskey Default: :to="`/explore/tags/${tag.tag}`" -->
-					<MkA v-for="tag in tagsLocal" :to="`/tags/${tag.tag}`" :key="'local:' + tag.tag" class="local">{{ tag.tag }}</MkA>
-					<MkA v-for="tag in tagsRemote" :to="`/tags/${tag.tag}`" :key="'remote:' + tag.tag">{{ tag.tag }}</MkA>
+					<XSearch v-model="searchQuery" @search="search"/>
+					<MkRadios v-model="searchOrigin">
+						<option value="local">{{ $ts.local }}</option>
+						<option value="remote">{{ $ts.remote }}</option>
+						<option value="both">{{ $ts.both }}</option>
+					</MkRadios>
 				</div>
-			</MkFolder>
 
-			<MkFolder v-if="tag != null" :key="`${tag}`" class="_gap">
-				<template #header><i class="fas fa-hashtag fa-fw" style="margin-right: 0.5em;"></i>{{ tag }}</template>
-				<XUserList :pagination="tagUsers"/>
-			</MkFolder>
-
-			<!-- 기존 Misskey 방식 유저 검색
-			<XUserList v-if="query" class="_gap" :pagination="searchPagination" ref="search"/>
-			-->
-
-			<div class="localfedi7 _block _isolated" v-if="meta && stats && tag == null" :style="{ backgroundImage: meta.bannerUrl ? `url(${meta.bannerUrl})` : null }">
-				<header><span>{{ $t('explore', { host: meta.name || 'CherryPick' }) }}</span></header>
-				<div><span>{{ $t('exploreUsersCount', { count: num(stats.originalUsersCount) }) }}</span></div>
+				<!-- 기존 Misskey 방식 유저 검색
+				<XUserList v-if="searchQuery" class="_gap" :pagination="searchPagination" ref="search"/>
+				-->
 			</div>
-
-			<template v-if="tag == null">
-				<MkFolder class="_gap" persist-key="explore-pinned-users">
-					<template #header><i class="fas fa-bookmark fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.pinnedUsers }}</template>
-					<XUserList :pagination="pinnedUsers"/>
-				</MkFolder>
-				<MkFolder class="_gap" persist-key="explore-popular-users">
-					<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
-					<XUserList :pagination="popularUsers"/>
-				</MkFolder>
-				<MkFolder class="_gap" persist-key="explore-recently-updated-users">
-					<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
-					<XUserList :pagination="recentlyUpdatedUsers"/>
-				</MkFolder>
-				<MkFolder class="_gap" persist-key="explore-recently-registered-users">
-					<template #header><i class="fas fa-plus fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyRegisteredUsers }}</template>
-					<XUserList :pagination="recentlyRegisteredUsers"/>
-				</MkFolder>
-			</template>
 		</div>
-		<div v-else-if="tab === 'remote'">
-			<div class="localfedi7 _block _isolated" v-if="tag == null" :style="{ backgroundImage: `url(/static-assets/client/fedi.jpg)` }">
-				<header><span>{{ $ts.exploreFediverse }}</span></header>
-			</div>
-
-			<template v-if="tag == null">
-				<MkFolder class="_gap">
-					<template #header><i class="fas fa-chart-line fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.popularUsers }}</template>
-					<XUserList :pagination="popularUsersF"/>
-				</MkFolder>
-				<MkFolder class="_gap">
-					<template #header><i class="fas fa-comment-alt fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyUpdatedUsers }}</template>
-					<XUserList :pagination="recentlyUpdatedUsersF"/>
-				</MkFolder>
-				<MkFolder class="_gap">
-					<template #header><i class="fas fa-rocket fa-fw" style="margin-right: 0.5em;"></i>{{ $ts.recentlyDiscoveredUsers }}</template>
-					<XUserList :pagination="recentlyRegisteredUsersF"/>
-				</MkFolder>
-			</template>
-		</div>
-		<div v-else-if="tab === 'search'">
-			<div class="_isolated">
-				<MkInput v-model="query" :debounce="true" type="search">
-					<template #prefix><i class="fas fa-search"></i></template>
-					<template #label>{{ $ts.searchUser }}</template>
-				</MkInput>
-			</div>
-
-			<XUserList v-if="query" class="_gap" :pagination="searchPagination" ref="search"/>
-		</div>
-	</div>
+	</MkSpacer>
 </div>
 </template>
 
@@ -97,6 +94,7 @@ import { computed, defineComponent } from 'vue';
 import XUserList from '@client/components/user-list.vue';
 import MkFolder from '@client/components/ui/folder.vue';
 import MkInput from '@client/components/form/input.vue';
+import MkRadios from '@client/components/form/radios.vue';
 import XSearch from '@client/components/search.vue';
 import number from '@client/filters/number';
 import * as os from '@client/os';
@@ -107,6 +105,7 @@ export default defineComponent({
 		XUserList,
 		MkFolder,
 		MkInput,
+		MkRadios,
 		XSearch,
 	},
 
@@ -183,14 +182,16 @@ export default defineComponent({
 			searchPagination: {
 				endpoint: 'users/search',
 				limit: 10,
-				params: computed(() => (this.query && this.query !== '') ? {
-					query: this.query
+				params: computed(() => (this.searchQuery && this.searchQuery !== '') ? {
+					query: this.searchQuery,
+					origin: this.searchOrigin,
 				} : null)
 			},
 			tagsLocal: [],
 			tagsRemote: [],
 			stats: null,
-			query: null,
+			searchQuery: null,
+			searchOrigin: 'combined',
 			num: number,
 			isFriendlyUI: localStorage.getItem('ui') == "friendly",
 			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
@@ -265,12 +266,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.lznhrdub {
-	max-width: 1400px;
-	margin: 0 auto;
-	padding: 16px;
-}
-
 .localfedi7 {
 	color: #fff;
 	padding: 16px;

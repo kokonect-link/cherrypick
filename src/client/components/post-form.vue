@@ -1,6 +1,6 @@
 <template>
 <div class="gafaadew" :class="{ modal, _popup: modal, isMobile }"
-	v-size="{ max: [500] }"
+	v-size="{ max: [310, 500] }"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"
@@ -28,14 +28,14 @@
 		</div>
 	</header>
 
-	<MkTab v-model:value="tab" style="display: initial !important;">
+	<MkTab v-model="tab" style="display: initial !important;">
 		<option value="edit">{{ $ts.edit }}</option>
 		<option value="preview">{{ $ts.preview }}</option>
 	</MkTab>
 
 	<div class="form" :class="{ fixed }" v-if="tab === 'edit'">
-		<XNotePreview class="preview" v-if="reply" :note="reply"/>
-		<XNotePreview class="preview" v-if="renote" :note="renote"/>
+		<XNoteSimple class="preview" v-if="reply" :note="reply"/>
+		<XNoteSimple class="preview" v-if="renote" :note="renote"/>
 		<div class="with-quote" v-if="quoteId"><i class="fas fa-quote-left"></i> {{ $ts.quoteAttached }}<button @click="quoteId = null"><i class="fas fa-times"></i></button></div>
 		<div v-if="visibility === 'specified'" class="to-specified">
 			<span style="margin-right: 8px;">{{ $ts.recipient }}</span>
@@ -52,7 +52,8 @@
 		<textarea v-model="text" class="text" :class="{ withCw: useCw }" ref="text" :disabled="posting" :placeholder="placeholder" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd" data-cy-post-form-text/>
 		<input v-show="withHashtags" ref="hashtags" class="hashtags" v-model="hashtags" :placeholder="$ts.hashtags" list="hashtags">
 		<div class="text-func">
-			<button class="_button" @click="insert('**')" v-tooltip="$ts._mfm.bold"><i class="fas fa-bold"/></button>
+			<button class="_button" @click="insert('<b></b>')" v-tooltip="$ts._mfm.bold"><i class="fas fa-bold"/></button>
+			<button class="_button" @click="insert('<s></s>')" v-tooltip="$ts._mfm.strikethrough"><i class="fas fa-strikethrough"/></button>
 			<button class="_button" @click="insert('<small></small>')" v-tooltip="$ts._mfm.small"><i class="fas fa-text-height"/></button>
 			<button class="_button" @click="insert('<center></center>')" v-tooltip="$ts._mfm.center"><i class="fas fa-align-center"/></button>
 			<button class="_button" @click="insert(' search')" v-tooltip="$ts._mfm.search"><i class="fas fa-search"/></button>
@@ -85,7 +86,7 @@
 	</div>
 
 	<div class="form" v-else-if="tab === 'preview'">
-		<XNotePreview class="note-preview" :note="previewNote"/>
+		<XNoteSimple class="preview" :note="previewNote"/>
 		<footer>
 			<div style="height: 40px;"></div>
 			<button class="submit _buttonPrimary" :disabled="!canPost" @click="postAsk" data-cy-open-post-form-submit>{{ submitText }}<i :class="reply ? 'fas fa-reply' : renote ? 'fas fa-quote-right' : 'fas fa-paper-plane'"></i></button>
@@ -99,6 +100,7 @@ import { defineComponent, defineAsyncComponent } from 'vue';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { length } from 'stringz';
 import { toASCII } from 'punycode/';
+import XNoteSimple from './note-simple.vue';
 import XNotePreview from './note-preview.vue';
 import * as mfm from 'mfm-js';
 import { host, url } from '@client/config';
@@ -107,7 +109,7 @@ import { extractMentions } from '@/misc/extract-mentions';
 import { getAcct } from '@/misc/acct';
 import { formatTimeString } from '@/misc/format-time-string';
 import { Autocomplete } from '@client/scripts/autocomplete';
-import { noteVisibilities } from '../../types';
+import { noteVisibilities } from '@/types';
 import * as os from '@client/os';
 import { selectFile } from '@client/scripts/select-file';
 import { FormItem } from '../scripts/form';
@@ -124,6 +126,7 @@ const MOBILE_THRESHOLD = 600;
 
 export default defineComponent({
 	components: {
+		XNoteSimple,
 		Preview,
 		XNotePreview,
 		XPostFormAttaches: defineAsyncComponent(() => import('./post-form-attaches.vue')),
@@ -160,11 +163,28 @@ export default defineComponent({
 			type: String,
 			required: false
 		},
+		initialVisibility: {
+			type: String,
+			required: false
+		},
+		initialFiles: {
+			type: Array,
+			required: false
+		},
+		initialLocalOnly: {
+			type: Boolean,
+			required: false
+		},
+		visibleUsers: {
+			type: Array,
+			required: false,
+			default: () => []
+		},
 		initialNote: {
 			type: Object,
 			required: false
 		},
-		instant: {
+		share: {
 			type: Boolean,
 			required: false,
 			default: false
@@ -190,10 +210,11 @@ export default defineComponent({
 			files: [],
 			poll: null,
 			useCw: false,
+			showPreview: false,
 			cw: null,
 			localOnly: this.$store.state.rememberNoteVisibility ? this.$store.state.localOnly : this.$store.state.defaultNoteLocalOnly,
 			remoteFollowersOnly: this.$store.state.rememberNoteVisibility ? this.$store.state.remoteFollowersOnly : this.$store.state.defaultNoteRemoteFollowersOnly,
-			visibility: this.$store.state.rememberNoteVisibility ? this.$store.state.visibility : this.$store.state.defaultNoteVisibility,
+			visibility: (this.$store.state.rememberNoteVisibility ? this.$store.state.visibility : this.$store.state.defaultNoteVisibility) as typeof noteVisibilities[number],
 			visibleUsers: [],
 			autocomplete: null,
 			draghover: false,
@@ -327,6 +348,18 @@ export default defineComponent({
 			this.text = this.initialText;
 		}
 
+		if (this.initialVisibility) {
+			this.visibility = this.initialVisibility;
+		}
+
+		if (this.initialFiles) {
+			this.files = this.initialFiles;
+		}
+
+		if (typeof this.initialLocalOnly === 'boolean') {
+			this.localOnly = this.initialLocalOnly;
+		}
+
 		if (this.mention) {
 			this.text = this.mention.host ? `@${this.mention.username}@${toASCII(this.mention.host)}` : `@${this.mention.username}`;
 			this.text += ' ';
@@ -403,7 +436,7 @@ export default defineComponent({
 
 		this.$nextTick(() => {
 			// 書きかけの投稿を復元
-			if (!this.instant && !this.mention && !this.specified) {
+			if (!this.share && !this.mention && !this.specified) {
 				const draft = JSON.parse(localStorage.getItem('drafts') || '{}')[this.draftKey];
 				if (draft) {
 					this.text = draft.data.text;
@@ -686,8 +719,6 @@ export default defineComponent({
 		},
 
 		saveDraft() {
-			if (this.instant) return;
-
 			const data = JSON.parse(localStorage.getItem('drafts') || '{}');
 
 			data[this.draftKey] = {
@@ -1118,10 +1149,6 @@ export default defineComponent({
 			}
 		}
 
-		> .note-preview {
-			padding: 16px;
-		}
-
 		> footer {
 			display: flex;
 			padding: 0 16px;
@@ -1225,6 +1252,18 @@ export default defineComponent({
 
 			> footer {
 				padding: 0 8px 8px 8px;
+			}
+		}
+	}
+
+	&.max-width_310px {
+		> .form {
+			> footer {
+				> button {
+					font-size: 14px;
+					width: 44px;
+				height: 44px;
+				}
 			}
 		}
 	}

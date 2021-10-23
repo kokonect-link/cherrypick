@@ -2,14 +2,16 @@
 <div>
 	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
 	<!-- <MkHeaderCP v-else :info="header"/> -->
-	<div class="clupoqwt" v-size="{ min: [800] }">
-		<XNotifications class="notifications" @before="before" @after="after" :include-types="includeTypes" :unread-only="tab === 'unread'"/>
-	</div>
+	<MkSpacer :content-max="800">
+		<div class="clupoqwt">
+			<XNotifications class="notifications" @before="before" @after="after" :include-types="includeTypes" :unread-only="tab === 'unread'"/>
+		</div>
+	</MkSpacer>
 </div>
 </template>
 
 <script lang="ts">
-import {computed, ComputedRef, defineComponent} from 'vue';
+import { computed, ComputedRef, defineComponent } from 'vue';
 import Progress from '@client/scripts/loading';
 import XNotifications from '@client/components/notifications.vue';
 import * as os from '@client/os';
@@ -133,14 +135,5 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .clupoqwt {
-	&.min-width_800px {
-		background: var(--bg);
-		padding: 32px 0;
-
-		> .notifications {
-			max-width: 800px;
-			margin: 0 auto;
-		}
-	}
 }
 </style>

@@ -21,12 +21,15 @@ export const builtinThemes = [
 	require('@client/themes/syuilo/l-apricot.json5'),
 	require('@client/themes/syuilo/l-rainy.json5'),
 	require('@client/themes/syuilo/l-vivid.json5'),
+	require('@client/themes/syuilo/l-sushi.json5'),
 
 	require('@client/themes/noridev/d-cherrypick.json5'),
 	require('@client/themes/syuilo/d-dark.json5'),
 	require('@client/themes/syuilo/d-persimmon.json5'),
 	require('@client/themes/syuilo/d-astro.json5'),
 	require('@client/themes/syuilo/d-future.json5'),
+	require('@client/themes/syuilo/d-botanical.json5'),
+	require('@client/themes/syuilo/d-pumpkin.json5'),
 	require('@client/themes/syuilo/d-black.json5'),
 ] as Theme[];
 
@@ -93,6 +96,8 @@ function compile(theme: Theme): Record<string, string> {
 				case 'darken': return color.darken(arg);
 				case 'lighten': return color.lighten(arg);
 				case 'alpha': return color.setAlpha(arg);
+				case 'hue': return color.spin(arg);
+				case 'saturate': return color.saturate(arg);
 			}
 		}
 
