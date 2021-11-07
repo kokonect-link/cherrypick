@@ -44,7 +44,7 @@
 			<template #header><i class="fas fa-info-circle"></i> {{ $ts.info }}</template>
 			<div class="cfcdecdf">
 				<div class="number _panel">
-					<div class="label">Misskey</div>
+					<div class="label">CherryPick</div>
 					<div class="value _monospace">{{ version }}</div>
 				</div>
 				<div class="number _panel" v-if="serverInfo">
