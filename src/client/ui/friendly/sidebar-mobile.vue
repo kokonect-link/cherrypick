@@ -70,7 +70,7 @@ import { defineComponent } from 'vue';
 import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
-import { menuDef } from '@client/menu';
+import { menuDef } from '@client/friendly/menu-mobile';
 import { getAccounts, addAccount, login, signout, signoutAll } from '@client/account';
 
 export default defineComponent({

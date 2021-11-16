@@ -1,34 +1,41 @@
 <template>
-<div class="mk-app" :class="{ wallpaper }">
-	<XSidebar v-if="!isMobile" ref="nav" class="sidebar"/>
-	<XSidebarMobile v-if="isMobile" ref="nav" class="sidebar"/>
+<div class="mk-app" :class="{ wallpaper, isMobile }" :style="`--globalHeaderHeight:${globalHeaderHeight}px`">
+	<XHeaderMenu v-if="showMenuOnTop" v-get-size="(w, h) => globalHeaderHeight = h"/>
 
-	<div class="contents" ref="contents" @contextmenu.stop="onContextmenu" :style="{ background: pageInfo?.bg }">
-		<main ref="main">
-			<div class="content">
-				<MkStickyContainer>
-					<template #header><MkHeaderCP v-if="pageInfo && !pageInfo.hideHeader" :info="pageInfo" @back="back()"/></template>
-					<router-view v-slot="{ Component }">
-						<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
-							<keep-alive :include="['timeline']">
-								<component :is="Component" :ref="changePage"/>
-							</keep-alive>
-						</transition>
-					</router-view>
-				</MkStickyContainer>
+	<div class="columns" :class="{ fullView, withGlobalHeader: showMenuOnTop }">
+		<template v-if="!isMobile">
+			<div class="sidebar" v-if="!showMenuOnTop">
+				<XSidebar/>
 			</div>
-			<div class="spacer"></div>
+			<div class="widgets left" ref="widgetsLeft" v-else>
+				<XWidgets @mounted="attachSticky('widgetsLeft')" :place="'left'"/>
+			</div>
+		</template>
+
+		<main class="main _panel" @contextmenu.stop="onContextmenu" :style="{ background: pageInfo?.bg }">
+			<header class="header">
+				<XHeader :info="pageInfo" :back-button="true" @back="back()"/>
+			</header>
+			<div class="content">
+				<router-view v-slot="{ Component }">
+					<transition :name="$store.state.animation ? 'page' : ''" mode="out-in" @enter="onTransition">
+						<keep-alive :include="['timeline']">
+							<component :is="Component" :ref="changePage"/>
+						</keep-alive>
+					</transition>
+				</router-view>
+			</div>
 		</main>
+
+		<div v-if="isDesktop" class="widgets right" ref="widgetsRight">
+			<XWidgets @mounted="attachSticky('widgetsRight')" :place="null"/>
+		</div>
 	</div>
 
-	<XSide v-if="isDesktop" class="side" ref="side"/>
+	<button v-if="fabButton && !(isDesktop || isWideTablet)" class="fab _buttonPrimary" :class="{ navHidden }" @click="onFabClicked" v-click-anime><i :key="fabIcon" :class="fabIcon"/></button>
 
-	<div v-if="isDesktop" class="widgets" ref="widgets">
-		<XWidgets @mounted="attachSticky"/>
-	</div>
-
-	<div class="buttons" :class="{ navHidden }">
-		<!-- <button class="button nav _button" @click="showNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
+	<div class="buttons" v-if="isMobile">
+		<!-- <button class="button nav _button" @click="showDrawerNav" ref="navButton"><i class="fas fa-bars"></i><span v-if="navIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
 		<button class="button home _button" @click="$route.name === 'index' ? top() : $router.replace('/')" :class="{ active: $route.name === 'index' }"><i class="fas fa-home"></i><span v-if="queue > 0" class="indicator-home"><i class="fas fa-circle"></i></span></button>
 		<button class="button explore _button" @click="$route.name === 'explore' ? top() : $router.replace('/explore')" :class="{ active: $route.name === 'explore' }"><i class="fas fa-hashtag"/></button>
 		<button class="button notifications _button" @click="$route.name === 'notifications' ? top() : $router.replace('/my/notifications')" :class="{ active: $route.name === 'notifications' }"><i class="fas fa-bell"></i><span v-if="$i.hasUnreadNotification" class="indicator"><i class="fas fa-circle"></i></span></button>
@@ -37,9 +44,7 @@
 		<!-- <button class="button post _button" @click="post"><i class="fas fa-pencil-alt"></i></button> -->
 	</div>
 
-	<button v-if="fabButton && !isMobile" class="fab _buttonPrimary" :class="{ navHidden }" @click="onFabClicked" v-click-anime><i :key="fabIcon" :class="fabIcon"/></button>
-
-	<button class="widgetButton _button" :class="{ navHidden }" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
+	<XDrawerSidebar ref="drawerNav" class="sidebar" v-if="isMobile"/>
 
 	<transition name="tray-back">
 		<div class="tray-back _modalBg"
@@ -53,21 +58,24 @@
 		<XWidgets v-if="widgetsShowing" class="tray"/>
 	</transition>
 
+	<iframe v-if="$store.state.aiChanMode" class="ivnzpscs" ref="live2d" src="https://misskey-dev.github.io/mascot-web/?scale=2&y=1.4"></iframe>
+
 	<XCommon/>
 </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from 'vue';
+import { defineComponent, defineAsyncComponent, markRaw } from 'vue';
 import { instanceName } from '@client/config';
 import { StickySidebar } from '@client/scripts/sticky-sidebar';
-import XSidebar from './sidebar.vue';
-import XSidebarMobile from './sidebar-mobile.vue';
+import XSidebar from './friendly.sidebar.vue';
+import XDrawerSidebar from './sidebar.vue';
 import XCommon from '../_common_/common.vue';
-import XSide from './friendly.side.vue';
+import XHeader from './header.vue';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
 import * as symbols from '@client/symbols';
+import XTimeline from '@client/components/timeline.vue';
 import { eventBus } from '@client/friendly/eventBus';
 
 const DESKTOP_THRESHOLD = 1100;
@@ -80,28 +88,30 @@ export default defineComponent({
 	components: {
 		XCommon,
 		XSidebar,
-		XSidebarMobile,
-		XWidgets: defineAsyncComponent(() => import('./friendly.widgets.vue')),
-		XSide, // NOTE: dynamic importするとAsyncComponentWrapperが間に入るせいでref取得できなくて面倒になる
+		XDrawerSidebar,
+		XHeader,
+		XTimeline,
+		XHeaderMenu: defineAsyncComponent(() => import('./friendly.header.vue')),
+		XWidgets: defineAsyncComponent(() => import('./friendly.widgets.vue'))
 	},
 
 	provide() {
 		return {
-			sideViewHook: this.isDesktop ? (url) => {
-				this.$refs.side.navigate(url);
-			} : null
+			shouldHeaderThin: this.showMenuOnTop,
 		};
 	},
 
 	data() {
 		return {
 			pageInfo: null,
-			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
-			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
-			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			menuDef: menuDef,
+			globalHeaderHeight: 0,
 			navHidden: false,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isWideTablet: window.innerWidth >= WIDE_TABLET_THRESHOLD,
+			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
 			widgetsShowing: false,
+			fullView: false,
 			wallpaper: localStorage.getItem('wallpaper') != null,
 			queue: 0,
 			routeList: [
@@ -135,6 +145,10 @@ export default defineComponent({
 		fabIcon() {
 			return this.pageInfo && this.pageInfo.action ? this.pageInfo.action.icon : 'fas fa-pencil-alt';
 		},
+
+		showMenuOnTop(): boolean {
+			return !this.isMobile && this.$store.state.menuDisplay === 'top';
+		},
 	},
 
 	created() {
@@ -143,35 +157,48 @@ export default defineComponent({
 		if (this.$store.state.widgets.length === 0) {
 			this.$store.set('widgets', [{
 				name: 'calendar',
-				id: 'a', place: 'right', data: {}
+				id: 'a', place: null, data: {}
 			}, {
 				name: 'notifications',
-				id: 'b', place: 'right', data: {}
+				id: 'b', place: null, data: {}
 			}, {
 				name: 'trends',
-				id: 'c', place: 'right', data: {}
+				id: 'c', place: null, data: {}
 			}]);
 		}
 
-		eventBus.on('kn-drawernav', () => this.showNav());
+		eventBus.on('kn-drawernav', () => this.showDrawerNav());
 		eventBus.on('kn-timeline-new', (q) => this.queueUpdated(q));
 		eventBus.on('kn-timeline-new-queue-reset', () => this.queueReset());
 	},
 
 	mounted() {
-		this.adjustUI();
+		window.addEventListener('resize', () => {
+			this.isMobile = (window.innerWidth <= MOBILE_THRESHOLD);
+			this.isDesktop = (window.innerWidth >= DESKTOP_THRESHOLD);
+		}, { passive: true });
 
-		const ro = new ResizeObserver((entries, observer) => {
-			this.adjustUI();
-		});
+		this.navHidden = this.isMobile;
 
-		ro.observe(this.$refs.contents);
-
-		window.addEventListener('resize', this.adjustUI, { passive: true });
-
-		if (!this.isDesktop) {
-			window.addEventListener('resize', () => {
-				if (window.innerWidth >= DESKTOP_THRESHOLD) this.isDesktop = true;
+		if (this.$store.state.aiChanMode) {
+			const iframeRect = this.$refs.live2d.getBoundingClientRect();
+			window.addEventListener('mousemove', ev => {
+				this.$refs.live2d.contentWindow.postMessage({
+					type: 'moveCursor',
+					body: {
+						x: ev.clientX - iframeRect.left,
+						y: ev.clientY - iframeRect.top,
+					}
+				}, '*');
+			}, { passive: true });
+			window.addEventListener('touchmove', ev => {
+				this.$refs.live2d.contentWindow.postMessage({
+					type: 'moveCursor',
+					body: {
+						x: ev.touches[0].clientX - iframeRect.left,
+						y: ev.touches[0].clientY - iframeRect.top,
+					}
+				}, '*');
 			}, { passive: true });
 		}
 	},
@@ -186,24 +213,11 @@ export default defineComponent({
 			}
 		},
 
-		adjustUI() {
-			const navWidth = this.$refs.nav.$el.offsetWidth;
-			this.navHidden = navWidth === 0;
-		},
-
-		showNav() {
-			this.$refs.nav.show();
-		},
-
-		attachSticky(el) {
-			const sticky = new StickySidebar(this.$refs.widgets);
+		attachSticky(ref) {
+			const sticky = new StickySidebar(this.$refs[ref], this.$store.state.menuDisplay === 'top' ? 0 : 16, this.$store.state.menuDisplay === 'top' ? 60 : 0); // TODO: ヘッダーの高さを60pxと決め打ちしているのを直す
 			window.addEventListener('scroll', () => {
 				sticky.calc(window.scrollY);
 			}, { passive: true });
-		},
-
-		post() {
-			os.post_form();
 		},
 
 		top() {
@@ -214,8 +228,16 @@ export default defineComponent({
 			history.back();
 		},
 
+		showDrawerNav() {
+			this.$refs.drawerNav.show();
+		},
+
 		onTransition() {
 			if (window._scroll) window._scroll();
+		},
+
+		onHeaderClick() {
+			window.scroll({ top: 0, behavior: 'smooth' });
 		},
 
 		onContextmenu(e) {
@@ -233,10 +255,10 @@ export default defineComponent({
 				type: 'label',
 				text: path,
 			}, {
-				icon: 'fas fa-columns',
-				text: this.$ts.openInSideView,
+				icon: this.fullView ? 'fas fa-compress' : 'fas fa-expand',
+				text: this.fullView ? this.$ts.quitFullView : this.$ts.fullView,
 				action: () => {
-					this.$refs.side.navigate(path);
+					this.fullView = !this.fullView;
 				}
 			}, {
 				icon: 'fas fa-window-maximize',
@@ -262,6 +284,10 @@ export default defineComponent({
 				os.post_form();
 			}
 		},
+
+		onAiClick(ev) {
+			//if (this.live2d) this.live2d.click(ev);
+		}
 	}
 });
 </script>
@@ -290,76 +316,173 @@ export default defineComponent({
 }
 
 .mk-app {
-	$ui-font-size: 1em; // TODO: どこかに集約したい
-	$widgets-hide-threshold: 1090px;
 	$nav-hide-threshold: 600px;
+	$header-height: 60px;
+	$ui-font-size: 1em;
+	$widgets-hide-threshold: 1200px;
+	$nav-icon-only-width: 78px; // TODO: どこかに集約したい
 
 	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 	min-height: calc(var(--vh, 1vh) * 100);
 	box-sizing: border-box;
-	display: flex;
 
 	&.wallpaper {
 		background: var(--wallpaperOverlay);
 		//backdrop-filter: var(--blur, blur(4px));
 	}
 
-	> .sidebar {
-	}
+	&.isMobile {
+		> .columns {
+			display: block;
+			margin: 0;
 
-	> .contents {
-		width: 100%;
-		min-width: 0;
-		background: var(--panel);
+			> .main {
+				margin: 0;
+				padding-bottom: 92px;
+				border: none;
+				width: 100%;
+				border-radius: 0;
 
-		> main {
-			min-width: 0;
+				> .header {
+					width: 100%;
+				}
+			}
+		}
 
-			> .spacer {
-				height: 82px;
-
-				@media (min-width: ($widgets-hide-threshold + 1px)) {
-					display: none;
+		> .buttons {
+			> .button {
+				&:hover {
+					background: var(--panel);
 				}
 			}
 		}
 	}
 
-	> .side {
-		min-width: 370px;
-		max-width: 370px;
-		border-left: solid 0.5px var(--divider);
-	}
+	> .columns {
+		display: flex;
+		justify-content: center;
+		max-width: 100%;
+		//margin: 32px 0;
 
-	> .widgets {
-		padding: 0 var(--margin);
-		border-left: solid 0.5px var(--divider);
-		background: var(--bg);
+		&.fullView {
+			margin: 0;
+		
+			> .sidebar {
+				display: none;
+			}
 
-		@media (max-width: $widgets-hide-threshold) {
-			display: none;
+			> .widgets {
+				display: none;
+			}
+
+			> .main {
+				margin: 0;
+				border-radius: 0;
+				box-shadow: none;
+				width: 100%;
+			}
+		}
+
+		> .main {
+			min-width: 0;
+			width: 750px;
+			margin: 0 16px 0 0;
+			background: var(--panel);
+			border-left: solid 1px var(--divider);
+			border-right: solid 1px var(--divider);
+			border-radius: 0;
+			overflow: clip;
+			--margin: 12px;
+
+			> .header {
+				position: sticky;
+				z-index: 1000;
+				top: var(--globalHeaderHeight, 0px);
+				height: $header-height;
+				line-height: $header-height;
+				-webkit-backdrop-filter: blur(32px);
+				backdrop-filter: blur(32px);
+				background-color: var(--header);
+			}
+		}
+
+		> .widgets {
+			//--panelShadow: none;
+			width: 300px;
+			margin-top: 16px;
+
+			@media (max-width: $widgets-hide-threshold) {
+				display: none;
+			}
+
+			&.left {
+				margin-right: 16px;
+			}
+		}
+
+		> .sidebar {
+			margin-top: 16px;
+		}
+
+		&.withGlobalHeader {
+			> .main {
+				margin-top: 0;
+				border: solid 1px var(--divider);
+				border-radius: var(--radius);
+				--stickyTop: var(--globalHeaderHeight);
+			}
+
+			> .widgets {
+				--stickyTop: var(--globalHeaderHeight);
+				margin-top: 0;
+			}
+		}
+
+		@media (max-width: 850px) {
+			margin: 0;
+
+			> .sidebar {
+				border-right: solid 0.5px var(--divider);
+			}
+
+			> .main {
+				margin: 0;
+				border-radius: 0;
+				box-shadow: none;
+				width: 100%;
+			}
 		}
 	}
 
-	> .widgetButton {
+	> .fab {
 		display: block;
 		position: fixed;
 		z-index: 1000;
+		right: calc(32px + var(--margin) * 2 + 300px);
 		bottom: 32px;
-		right: 32px;
-		width: 64px;
-		height: 64px;
+		width: 55px;
+		height: 55px;
 		border-radius: 100%;
-		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+		// box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
 		font-size: 22px;
-		background: var(--panel);
+		background: var(--accent);
+		color: white;
 
-		&.navHidden {
+		@media (max-width: $widgets-hide-threshold) {
+			right: 30px;
+		}
+
+		@media (max-width: $nav-hide-threshold) {
+			bottom: calc(66px + env(safe-area-inset-bottom));
+			right: 15px;
+		}
+
+		@media (min-width: (850px) + 1px) {
 			display: none;
 		}
 
-		@media (min-width: ($widgets-hide-threshold + 1px)) {
-			display: none;
+		@media (min-width: (600px) + 1px) {
+			bottom: calc(45px + env(safe-area-inset-bottom));
 		}
 	}
 
@@ -375,10 +498,6 @@ export default defineComponent({
 		backdrop-filter: var(--blur, blur(32px));
 		background-color: var(--header);
 		border-top: solid 0.5px var(--divider);
-
-		&:not(.navHidden) {
-			display: none;
-		}
 
 		> .button {
 			position: relative;
@@ -409,7 +528,7 @@ export default defineComponent({
 			}
 
 			&.active {
-				color: var(--accent);
+					color: var(--accent);
 			}
 
 			> .indicator,
@@ -451,38 +570,6 @@ export default defineComponent({
 		}
 	}
 
-	> .fab {
-		display: block;
-		position: fixed;
-		z-index: 1000;
-		right: calc(32px + var(--margin) * 2 + 300px);
-		bottom: 32px;
-		width: 55px;
-		height: 55px;
-		border-radius: 100%;
-		// box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
-		font-size: 22px;
-		background: var(--accent);
-		color: white;
-
-		@media (max-width: $widgets-hide-threshold) {
-			right: 30px;
-		}
-
-		@media (max-width: $nav-hide-threshold) {
-			bottom: calc(66px + env(safe-area-inset-bottom));
-			right: 15px;
-		}
-
-		@media (min-width: (850px) + 1px) {
-			display: none;
-		}
-
-		@media (min-width: (600px) + 1px) {
-			bottom: calc(45px + env(safe-area-inset-bottom));
-		}
-	}
-
 	> .tray-back {
 		z-index: 1001;
 	}
@@ -499,8 +586,15 @@ export default defineComponent({
 		overflow: auto;
 		background: var(--bg);
 	}
-}
-</style>
 
-<style lang="scss">
+	> .ivnzpscs {
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		width: 300px;
+		height: 600px;
+		border: none;
+		pointer-events: none;
+	}
+}
 </style>

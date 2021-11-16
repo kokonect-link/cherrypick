@@ -4,7 +4,7 @@
 		<div class="nav-back _modalBg"
 			v-if="showing"
 			@click="showing = isAccountMenuMode = false"
-			@touchstart.passive="showing = false"
+			@touchstart.passive="showing = isAccountMenuMode = false"
 		></div>
 	</transition>
 
@@ -24,7 +24,7 @@
 					</button>
 				</div>
 				<template v-if="!isAccountMenuMode">
-					<div style="margin: 15px"></div>
+					<div class="divider"></div>
 					<MkA class="item index" active-class="active" to="/" exact v-click-anime>
 						<i class="fas fa-home fa-fw"></i><span class="text">{{ $ts.timeline }}</span>
 					</MkA>
@@ -37,7 +37,7 @@
 					</template>
 					<div class="divider"></div>
 					<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/admin" v-click-anime>
-						<i class="fas fa-door-open fa-fw"></i><span class="text">{{ $ts.controlPanel }}</span>
+						<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
 					</MkA>
 					<button class="item _button" @click="more" v-click-anime>
 						<i class="fa fa-ellipsis-h fa-fw"></i><span class="text">{{ $ts.more }}</span>
@@ -46,16 +46,40 @@
 					<MkA class="item" active-class="active" to="/settings" v-click-anime>
 						<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 					</MkA>
-					<button class="item _button post" @click="post" data-cy-open-post-form>
+					<!-- <button class="item _button post" @click="post">
 						<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
+					</button> -->
+					<div class="divider"></div>
+					<template v-if="$i.isPatron">
+						<button v-if="$i.isVip" class="patron-button _button" @click="patron" v-click-anime>
+							<span class="patron"><i class="fas fa-gem fa-fw"></i></span><span class="patron-text">{{ $ts.youAreVip }}</span>
+						</button>
+						<button v-else class="patron-button _button" @click="patron" v-click-anime>
+							<span class="patron"><i class="fas fa-heart fa-fw" style="animation: 1s linear 0s infinite normal both running mfm-rubberBand;"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
+						</button>
+					</template>
+					<button v-else class="patron-button _button" @click="patron" v-click-anime>
+						<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
 					</button>
+					<div class="divider"></div>
+					<div class="about">
+						<MkA class="link" to="/about" v-click-anime>
+							<template v-if="isKokonect">
+								<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
+								<p style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
+							</template>
+							<template v-else>
+								<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
+							</template>
+						</MkA>
+					</div>
 				</template>
 				<template v-else>
 					<button v-for="acct in accounts" :key="acct.id" @click="switchAccount(acct)" class="item-switch-acct _button account" v-click-anime>
 						<MkAvatar :user="acct" class="avatar"/><MkUserName class="name" :user="acct"/>
 					</button>
 					<MkEllipsis v-if="loadingAccounts" class="item-switch-acct" />
-					<div class="divider"></div>
+					<div class="divider" v-if="accounts.length > 0"></div>
 					<button class="item-button _button" @click="openDrawerAccountMenu"><i class="fas fa-plus"></i>{{ $ts.addAccount }}</button>
 					<button class="item-button danger _button" @click="openSignoutMenu"><i class="fas fa-sign-out-alt"></i>{{ $ts.logout }}</button>
 				</template>
@@ -70,7 +94,7 @@ import { defineComponent } from 'vue';
 import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
-import { menuDef } from '@client/menu';
+import { menuDef } from '@client/friendly/menu-mobile';
 import { getAccounts, addAccount, login, signout, signoutAll } from '@client/account';
 
 export default defineComponent({
@@ -93,6 +117,7 @@ export default defineComponent({
 			hidden: this.defaultHidden,
 			isAccountMenuMode: false,
 			loadingAccounts: false,
+			isKokonect: null
 		};
 	},
 
@@ -137,6 +162,10 @@ export default defineComponent({
 		this.calcViewState();
 	},
 
+	mounted() {
+		this.init();
+	},
+
 	methods: {
 		calcViewState() {
 			this.iconOnly = (window.innerWidth <= 1279) || (this.$store.state.menuDisplay === 'sideIcon');
@@ -155,11 +184,6 @@ export default defineComponent({
 
 		search() {
 			search();
-		},
-
-		more(ev) {
-			os.popup(import('@client/components/launch-pad.vue'), {}, {
-			}, 'closed');
 		},
 
 		openProfile() {
@@ -232,6 +256,11 @@ export default defineComponent({
 			});
 		},
 
+		more(ev) {
+			os.popup(import('@client/components/launch-pad.vue'), {}, {
+			}, 'closed');
+		},
+
 		addAccount() {
 			os.popup(import('@client/components/signin-dialog.vue'), {}, {
 				done: res => {
@@ -258,6 +287,15 @@ export default defineComponent({
 
 		switchAccountWithToken(token: string) {
 			login(token);
+		},
+
+		patron() {
+			window.open("https://www.patreon.com/noridev", "_blank");
+		},
+
+		async init() {
+			const meta = await os.api('meta', { detail: true });
+			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
 		},
 
 		async openDrawerAccountMenu(ev) {
@@ -325,7 +363,7 @@ export default defineComponent({
 	}
 
 	> .nav {
-		$avatar-size: 32px;
+		$avatar-size: 38px;
 		$avatar-margin: 8px;
 
 		flex: 0 0 $nav-width;
@@ -345,8 +383,8 @@ export default defineComponent({
 						width: calc(100% - 32px);
 					}
 
-					> .item {
-						padding-left: 0;
+					> .item,
+						.patron-button {
 						padding: 18px 0;
 						width: 100%;
 						text-align: center;
@@ -363,8 +401,14 @@ export default defineComponent({
 							opacity: 0.7;
 						}
 
-						> .text {
+						> .text,
+							.patron-text {
 							display: none;
+						}
+
+						> .patron,
+							.not-patron {
+							margin: 0;
 						}
 
 						&:hover, &.active {
@@ -410,14 +454,36 @@ export default defineComponent({
 			background: var(--navBg);
 
 			> .divider {
-				margin: 16px 16px;
+				margin: 16px;
 				border-top: solid 0.5px var(--divider);
 			}
 
-			> .item {
+			> .about {
+				fill: currentColor;
+				padding: 8px 0 16px 0;
+				text-align: center;
+				
+				> .link {
+					display: block;
+					//width: 32px;
+					margin: 0 auto;
+					
+					img {
+						display: block;
+						width: 100%;
+					}
+
+					&:hover {
+						text-decoration: none;
+					}
+				}
+			}
+
+			> .item,
+				.patron-button {
 				position: relative;
 				display: block;
-				padding-left: 24px;
+				padding: 0 24px;
 				font-size: $ui-font-size;
 				line-height: 2.85rem;
 				text-overflow: ellipsis;
@@ -444,17 +510,36 @@ export default defineComponent({
 					vertical-align: middle;
 				}
 
+				> .name {
+					margin-left: 5px;
+					font-weight: bold;
+				}
+
 				> .indicator {
 					position: absolute;
-					top: 0;
+					bottom: 8px;
 					left: 20px;
 					color: var(--navIndicator);
-					font-size: 8px;
+					font-size: 7px;
 					animation: blink 1s infinite;
 				}
 
 				> .text {
 					position: relative;
+					font-size: 0.9em;
+				}
+
+				> .patron,
+					.not-patron {
+					margin-left: 6px;
+					margin-right: 12px;
+				}
+
+				> .patron {
+					color: var(--patron);
+				}
+
+				> .patron-text {
 					font-size: 0.9em;
 				}
 
@@ -479,33 +564,22 @@ export default defineComponent({
 						left: 0;
 						right: 0;
 						bottom: 0;
-						border-radius: 999px;
+						border-radius: 8px;
 						background: var(--accentedBg);
 					}
 				}
 
-				&:first-child, &:last-child {
+				&:last-child {
 					position: sticky;
 					z-index: 1;
+					bottom: 0;
+					margin-top: 16px;
+					border-top: solid 0.5px var(--divider);
 					padding-top: 8px;
 					padding-bottom: 8px;
 					background: var(--X14);
-					-webkit-backdrop-filter: var(--blur, blur(8px));
-					backdrop-filter: var(--blur, blur(8px));
-				}
-
-				&:first-child {
-					top: 0;
-
-					&:hover, &.active {
-						&:before {
-							content: none;
-						}
-					}
-				}
-
-				&:last-child {
-					bottom: 0;
+					-webkit-backdrop-filter: blur(8px);
+					backdrop-filter: blur(8px);
 					color: var(--fgOnAccent);
 
 					&:before {
@@ -522,7 +596,7 @@ export default defineComponent({
 						border-radius: 999px;
 						background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 					}
-					
+
 					&:hover, &.active {
 						&:before {
 							background: var(--accentLighten);
@@ -649,6 +723,11 @@ export default defineComponent({
 					padding: 10px;
 					z-index: 400;
 				}
+			}
+
+			> .patron-button {
+				background: unset;
+				border: unset;
 			}
 		}
 	}

@@ -1,26 +1,20 @@
 <template>
-<div class="ddiqwdnk">
-	<XWidgets class="widgets" :edit="editMode" :widgets="$store.reactiveState.widgets.value.filter(w => w.place === place)" @add-widget="addWidget" @remove-widget="removeWidget" @update-widget="updateWidget" @update-widgets="updateWidgets" @exit="editMode = false"/>
-	<MkAd v-if="($i.isPatron && !$store.state.removeAds) || !$i.isPatron" class="a" :prefer="['square']"/>
+<div class="efzpzdvf">
+	<XWidgets :edit="editMode" :widgets="$store.reactiveState.widgets.value" @add-widget="addWidget" @remove-widget="removeWidget" @update-widget="updateWidget" @update-widgets="updateWidgets" @exit="editMode = false"/>
 
-	<button v-if="editMode" @click="editMode = false" class="_textButton edit" style="font-size: 0.9em;"><i class="fas fa-check"></i> {{ $ts.editWidgetsExit }}</button>
-	<button v-else @click="editMode = true" class="_textButton edit" style="font-size: 0.9em;"><i class="fas fa-pencil-alt"></i> {{ $ts.editWidgets }}</button>
+	<button v-if="editMode" @click="editMode = false" class="_textButton" style="font-size: 0.9em;"><i class="fas fa-check"></i> {{ $ts.editWidgetsExit }}</button>
+	<button v-else @click="editMode = true" class="_textButton" style="font-size: 0.9em;"><i class="fas fa-pencil-alt"></i> {{ $ts.editWidgets }}</button>
 </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, defineAsyncComponent } from 'vue';
 import XWidgets from '@client/components/widgets.vue';
+import * as os from '@client/os';
 
 export default defineComponent({
 	components: {
 		XWidgets
-	},
-
-	props: {
-		place: {
-			type: String,
-		}
 	},
 
 	emits: ['mounted'],
@@ -39,7 +33,7 @@ export default defineComponent({
 		addWidget(widget) {
 			this.$store.set('widgets', [{
 				...widget,
-				place: this.place,
+				place: null,
 			}, ...this.$store.state.widgets]);
 		},
 
@@ -55,30 +49,31 @@ export default defineComponent({
 		},
 
 		updateWidgets(widgets) {
-			this.$store.set('widgets', [
-				...this.$store.state.widgets.filter(w => w.place !== this.place),
-				...widgets
-			]);
+			this.$store.set('widgets', widgets);
 		}
 	}
 });
 </script>
 
 <style lang="scss" scoped>
-.ddiqwdnk {
+.efzpzdvf {
 	position: sticky;
 	height: min-content;
+	min-height: 100vh;
+	padding: var(--margin) 0;
 	box-sizing: border-box;
-	padding-bottom: 8px;
 
-	> .widgets,
-	> .a {
+	> * {
+		margin: var(--margin) 0;
 		width: 300px;
+
+		&:first-child {
+			margin-top: 0;
+		}
 	}
 
-	> .edit {
-		display: block;
-		margin: 28px auto;
+	> .add {
+		margin: 0 auto;
 	}
 }
 </style>

@@ -96,7 +96,7 @@ export default defineComponent({
 		XDrawerSidebar,
 		XHeader,
 		XTimeline,
-		XHeaderMenu: defineAsyncComponent(() => import('../default.header.vue')),
+		XHeaderMenu: defineAsyncComponent(() => import('../classic.header.vue')),
 		XWidgets: defineAsyncComponent(() => import('./friendly.widgets.vue'))
 	},
 

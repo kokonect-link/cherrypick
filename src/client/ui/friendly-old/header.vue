@@ -1,42 +1,58 @@
 <template>
-<div class="fdidabkb" :class="{ slim: narrow, thin: thin_ }" :style="{ background: bg }" @click="onClick" ref="el">
+<div class="fdidabkb" :class="{ slim: narrow, thin: thin_ }" :style="`--height:${height};`" :key="key" ref="el">
 	<transition :name="$store.state.animation ? 'header' : ''" mode="out-in" appear>
-		<div class="buttons left" v-if="canBack && !fabButton">
+		<div class="buttons left" v-if="backButton && canBack && !fabButton">
 			<button class="_button button back" @click.stop="$emit('back')" @touchstart="preventDrag" v-tooltip="$ts.goBack"><i class="fas fa-chevron-left"></i></button>
 		</div>
 	</transition>
 	<div class="buttons left" v-if="isMobile && !canBack">
-		<button class="_button button" v-if="!canBack || fabButton" @click="showNav">
-			<MkAvatar class="avatar" v-if="!canBack" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
+		<button class="_button button" v-if="!(backButton && canBack) || fabButton" @click="showDrawerNav">
+			<MkAvatar class="avatar" v-if="!canBack || menuBar" :user="$i" :disable-preview="true" :show-indicator="true" v-click-anime/>
 			<!-- <i class="fas fa-bars"/> -->
 			<div v-if="$i.hasPendingReceivedFollowRequest || $i.hasUnreadAnnouncement || $i.hasUnreadMentions || $i.hasUnreadSpecifiedNotes" class="indicator"><i class="fas fa-circle"></i></div>
 		</button>
 	</div>
 	<template v-if="info">
-		<div class="titleContainer" @click="showTabsPopup" v-if="!hideTitle">
-			<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
-			<i v-else-if="info.icon" class="icon" :class="info.icon"></i>
+		<div class="titleContainer" :class="{ center: $route.name !== 'user' }" @click="showTabsPopup" v-if="!hideTitle">
+			<template v-if="info.tabs || $route.name === 'user'">
+				<template v-if="$route.name === 'user'">
+					<MkAvatar v-if="info.avatar" class="avatar" :user="info.avatar" :disable-preview="true" :show-indicator="true"/>
+					<div class="title_user">
+						<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="title"/>
+						<div class="subtitle" v-if="!narrow && info.subtitle">
+							{{ info.subtitle }}
+						</div>
+						<div class="subtitle activeTab" v-if="narrow && hasTabs">
+							{{ info.tabs.find(tab => tab.active)?.title }}
+							<i class="chevron fas fa-chevron-down"></i>
+						</div>
+					</div>
+				</template>
+				<div class="title tabs" v-else v-for="tab in info.tabs" :key="tab.id" :class="{ _button: tab.onClick, selected: tab.selected }" @click.stop="tab.onClick" v-tooltip="tab.tooltip">
+					<i v-if="tab.icon" class="fa-fw" :class="tab.icon" :key="tab.icon"/>
+					<span v-if="tab.title" class="title">{{ tab.title }}</span>
+					<i class="fas fa-circle indicator" v-if="tab.indicate"/>
+				</div>
+			</template>
 
-			<div class="title">
-				<MkUserName v-if="info.userName" :user="info.userName" :nowrap="false" class="title"/>
-				<div v-else-if="info.title" class="title">{{ info.title }}</div>
-				<div class="subtitle" v-if="!narrow && info.subtitle">
-					{{ info.subtitle }}
+			<template v-else>
+				<i v-if="info.icon" class="icon" :class="info.icon"></i>
+				<div class="title">
+					<div v-if="info.title" class="title">{{ info.title }}</div>
 				</div>
-				<div class="subtitle activeTab" v-if="narrow && hasTabs">
-					{{ info.tabs.find(tab => tab.active)?.title }}
-					<i class="chevron fas fa-chevron-down"></i>
-				</div>
-			</div>
+			</template>
 		</div>
-		<div class="tabs" v-if="!narrow || hideTitle">
+
+		<div class="tabs" v-if="!narrow && $route.name !== 'index' || hideTitle">
 			<button class="tab _button" v-for="tab in info.tabs" :class="{ active: tab.active }" @click="tab.onClick" v-tooltip="tab.title">
 				<i v-if="tab.icon" class="icon" :class="tab.icon"></i>
 				<span v-if="!tab.iconOnly" class="title">{{ tab.title }}</span>
 			</button>
 		</div>
 	</template>
+
 	<div class="buttons right">
+		<button v-if="queue > 0 && $route.name === 'index' && ($store.state.newNoteNotiBehavior === 'smail' || $store.state.newNoteNotiBehavior === 'header')" :class="{ 'new _button': $store.state.newNoteNotiBehavior === 'header', 'new-hover _buttonPrimary': $store.state.newNoteNotiBehavior === 'smail' }" @click="top" v-click-anime><i class="fas fa-chevron-up"></i></button>
 		<template v-if="info && info.actions && !narrow">
 			<template v-for="action in info.actions">
 				<MkButton class="fullButton" v-if="action.asFullButton" @click.stop="action.handler" primary><i :class="action.icon" style="margin-right: 6px;"></i>{{ action.text }}</MkButton>
@@ -49,16 +65,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, inject, watch } from 'vue';
+import { computed, defineComponent, onMounted, onUnmounted, watch, PropType, ref, inject } from 'vue';
 import * as tinycolor from 'tinycolor2';
+import { eventBus } from "@client/friendly/eventBus";
 import { popupMenu } from '@client/os';
 import { url } from '@client/config';
 import { scrollToTop } from '@client/scripts/scroll';
 import MkButton from '@client/components/ui/button.vue';
 import { i18n } from '@client/i18n';
 import { globalEvents } from '@client/events';
-import { eventBus } from "@client/friendly/eventBus";
-import {useRoute} from "vue-router";
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 600;
@@ -83,6 +98,25 @@ export default defineComponent({
 			required: false,
 			default: false
 		},
+		backButton: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+		closeButton: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+		titleOnly: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+		showIndicator: {
+			required: false,
+			default: false
+		}
 	},
 
 	setup(props) {
@@ -102,14 +136,10 @@ export default defineComponent({
 			return false;
 		});
 		const canBack = ref(false);
+		const key = ref(0);
+		const queue = ref(0);
 		const fabButton = ref(false);
-		const routeList = ref([
-			'/',
-			'/explore',
-			'/my/notifications',
-			'/my/messaging'
-		]);
-		const route = useRoute();
+		const menuBar = ref(false);
 
 		const share = () => {
 			navigator.share({
@@ -170,16 +200,27 @@ export default defineComponent({
 			bg.value = tinyBg.toRgbString();
 		};
 
-		const showNav = () => {
+		const showDrawerNav = () => {
 			eventBus.emit('kn-drawernav');
 		};
 
-		watch(
-			route, (to, from) => {
-				canBack.value = (window.history.length > 0 && !(routeList.value.includes(to.path)));
-				fabButton.value = routeList.value.includes(to.path);
-			}, { immediate: true }
-		)
+		const onHeaderClick = () => {
+			window.scroll({ top: 0, behavior: 'smooth' });
+		};
+
+		const queueUpdated = (q) => {
+			this.queue = q;
+		};
+
+		const queueReset = () => {
+			this.queue = 0;
+		};
+
+		const top = () => {
+			this.onHeaderClick();
+			this.queueReset();
+			eventBus.emit('kn-header-new-queue-reset', 0);
+		};
 
 		onMounted(() => {
 			calcBg();
@@ -187,11 +228,13 @@ export default defineComponent({
 			onUnmounted(() => {
 				globalEvents.off('themeChanged', calcBg);
 			});
-		
+
 			if (el.value.parentElement) {
+				height.value = el.value.parentElement.offsetHeight + 'px';
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 				const ro = new ResizeObserver((entries, observer) => {
 					if (el.value) {
+						height.value = el.value.parentElement.offsetHeight + 'px';
 						narrow.value = el.value.parentElement.offsetWidth < 500;
 					}
 				});
@@ -199,11 +242,12 @@ export default defineComponent({
 				onUnmounted(() => {
 					ro.disconnect();
 				});
+				setTimeout(() => {
+					const currentStickyTop = getComputedStyle(el.value.parentElement).getPropertyValue('--stickyTop') || '0px';
+					el.value.style.setProperty('--stickyTop', currentStickyTop);
+					el.value.parentElement.style.setProperty('--stickyTop', `calc(${currentStickyTop} + ${el.value.offsetHeight}px)`);
+				}, 100); // レンダリング順序の関係で親のstickyTopの設定が少し遅れることがあるため
 			}
-
-			console.log(canBack.value)
-			console.log(fabButton.value)
-			console.log(routeList.value)
 		});
 
 		return {
@@ -214,43 +258,70 @@ export default defineComponent({
 			hasTabs,
 			shouldShowMenu,
 			canBack,
+			key,
+			queue,
 			fabButton,
-			routeList,
+			menuBar,
 			share,
 			showMenu,
 			showTabsPopup,
 			preventDrag,
 			onClick,
-			showNav,
-			hideTitle: inject('shouldOmitHeaderTitle', false),
-			thin_: props.thin || inject('shouldHeaderThin', false),
+			showDrawerNav,
+			onHeaderClick,
+			queueUpdated,
+			queueReset,
+			top,
 			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
 			isDesktop: window.innerWidth >= DESKTOP_THRESHOLD,
+			routeList: [
+				'explore',
+				'notifications',
+				'messaging'
+			],
+			hideTitle: inject('shouldOmitHeaderTitle', false),
+			thin_: props.thin || inject('shouldHeaderThin', false),
 		};
+	},
+
+	watch: {
+		$route: {
+			handler(to, from) {
+				this.canBack = (window.history.length > 0 && !['index'].includes(to.name));
+				this.fabButton = this.routeList.includes(this.$route.name);
+				this.menuBar = this.routeList.includes(this.$route.name);
+			},
+			immediate: true
+		},
+	},
+
+	created() {
+		eventBus.on('kn-timeline-new', (q) => this.queueUpdated(q));
+		eventBus.on('kn-timeline-new-queue-reset', () => this.queueReset());
+		console.log(this.fabButton);
 	},
 });
 </script>
 
 <style lang="scss" scoped>
 .fdidabkb {
+	$ui-font-size: 1em;
 	$avatar-size: 32px;
 	$avatar-margin: 10px;
-	--height: 60px;
 	display: flex;
-	position: sticky;
-	top: var(--stickyTop, 0);
-	z-index: 1000;
-	width: 100%;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	border-bottom: solid 0.5px var(--divider);
 
 	&.thin {
 		--height: 50px;
 
-		> .buttons {
-			> .button {
-				font-size: 0.9em;
+		> .titleContainer {
+			> .buttons {
+				&.left, &.right {
+					> .button {
+						$size: 50px;
+						height: $size;
+						width: $size;
+					}
+				}
 			}
 		}
 	}
@@ -259,26 +330,27 @@ export default defineComponent({
 		text-align: center;
 
 		> .titleContainer {
-			flex: 1;
 			margin: 0 auto;
-			margin-left: var(--height);
+		}
 
-			> *:first-child {
-				margin-left: auto;
-			}
-
-			> *:last-child {
-				margin-right: auto;
+		> .buttons {
+			&.right {
+				margin-left: 0;
 			}
 		}
 	}
 
 	> .buttons {
-		--margin: 8px;
-		display: flex;
-    align-items: center;
-		height: var(--height);
-		margin: 0 var(--margin);
+		&:empty {
+			width: var(--height);
+		}
+
+		&.left, &.right {
+			>.button {
+				height: var(--height);
+				width: var(--height);
+			}
+		}
 
 		&.left {
 			position: relative;
@@ -309,29 +381,33 @@ export default defineComponent({
 		}
 
 		&.right {
-			margin-left: auto;
-		}
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			right: 0;
+			margin-left: 0;
 
-		&:empty {
-			width: var(--height);
-		}
-
-		> .button {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: calc(var(--height) - (var(--margin) * 2));
-			width: calc(var(--height) - (var(--margin) * 2));
-			box-sizing: border-box;
-			position: relative;
-			border-radius: 5px;
-
-			&:hover {
-				background: rgba(0, 0, 0, 0.05);
+			> .new {
+				width: $avatar-size;
+				height: var(--height);
 			}
 
-			&.highlighted {
-				color: var(--accent);
+			> .new-hover {
+				position: absolute;
+				width: $avatar-size;
+				height: $avatar-size;
+				top: 55px;
+				right: 14px;
+				border-radius: 100%;
+				// border: 2px solid var(--patron);
+				line-height: 0;
+				background: var(--pick);
+				margin-top: 10px;
+				// box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+				&:hover {
+					background: var(--pickLighten);
+				}
 			}
 		}
 
@@ -349,8 +425,8 @@ export default defineComponent({
 		white-space: nowrap;
 		text-align: left;
 		font-weight: bold;
+		height: var(--height);
 		flex-shrink: 0;
-		margin-left: 24px;
 
 		> .avatar {
 			$size: 32px;
@@ -366,12 +442,25 @@ export default defineComponent({
 			margin-right: 8px;
 		}
 
-		> .title {
-			min-width: 0;
+		> .title,
+			.title_user {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
-			line-height: 1.1;
+
+			> .indicator {
+				position: absolute;
+				top: 13px;
+				right: 7px;
+				color: var(--indicator);
+				font-size: 7px;
+				animation: blink 1s infinite;
+			}
+
+			> .patron {
+				margin-left: 0.5em;
+				color: var(--patron);
+			}
 
 			> .subtitle {
 				opacity: 0.6;
@@ -390,6 +479,36 @@ export default defineComponent({
 					}
 				}
 			}
+
+			&._button {
+				&:hover {
+					color: var(--fgHighlighted);
+				}
+			}
+
+			&.selected {
+				box-shadow: 0 -2px 0 0 var(--accent) inset;
+				color: var(--fgHighlighted);
+			}
+		}
+
+		> .title {
+			display: inline-block;
+			vertical-align: bottom;
+			position: relative;
+		}
+
+		> .title_user {
+			min-width: 0;
+			line-height: 1.1;
+		}
+
+		&.center {
+			margin: 0 auto;
+		}
+
+		> .tabs {
+			padding: 0 16px;
 		}
 	}
 

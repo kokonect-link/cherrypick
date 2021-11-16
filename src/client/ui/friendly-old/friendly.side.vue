@@ -4,10 +4,9 @@
 		<header class="header" @contextmenu.prevent.stop="onContextmenu">
 			<button class="_button" @click="back()" v-if="history.length > 0"><i class="fas fa-chevron-left"></i></button>
 			<button class="_button" style="pointer-events: none;" v-else><!-- マージンのバランスを取るためのダミー --></button>
-			<span class="title">{{ pageInfo.title }}</span>
+			<XHeader class="title" :info="pageInfo" :with-back="false"/>
 			<button class="_button" @click="close()"><i class="fas fa-times"></i></button>
 		</header>
-		<MkHeader class="pageHeader" :info="pageInfo"/>
 		<component :is="component" v-bind="props" :ref="changePage"/>
 	</div>
 </div>
@@ -15,6 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import XHeader from './friendly/header.vue';
 import * as os from '@client/os';
 import copyToClipboard from '@client/scripts/copy-to-clipboard';
 import { resolve } from '@client/router';
@@ -22,6 +22,10 @@ import { url } from '@client/config';
 import * as symbols from '@client/symbols';
 
 export default defineComponent({
+	components: {
+		XHeader
+	},
+
 	provide() {
 		return {
 			navHook: (path) => {
@@ -134,8 +138,8 @@ export default defineComponent({
 			text-align: center;
 			font-weight: bold;
 			//background-color: var(--panel);
-			-webkit-backdrop-filter: var(--blur, blur(32px));
-			backdrop-filter: var(--blur, blur(32px));
+			-webkit-backdrop-filter: blur(32px);
+			backdrop-filter: blur(32px);
 			background-color: var(--header);
 
 			> ._button {

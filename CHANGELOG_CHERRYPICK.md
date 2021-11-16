@@ -29,6 +29,7 @@
 - UI(friendly): 타임라인 헤더의 모달 팝업에 표시되는 인디케이터의 디자인 조정
 - UI(friendly): 타임라인의 노트 디자인을 Misskey 기본 테마와 병합하고 디자인 개선
 - UI(friendly): 헤더 작동 방식 최적화
+- UI(friendly): 전반적인 UI를 Misskey 기본 테마와 병합
 - ActivityPub: HTML -> MFM 변환 강화
 - API: 그룹에서의 users/groups/leave 엔드포인트 구현
 - API: i/notifications 에 unreadOnly 옵션 추가
