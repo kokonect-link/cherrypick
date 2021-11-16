@@ -1,10 +1,6 @@
 <template>
-<div>
-	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
-	<!-- <MkHeaderCP v-else :info="header"/> -->
-	<div :class="$style.root">
-		<XCategory v-if="tab === 'category'"/>
-	</div>
+<div :class="$style.root">
+	<XCategory v-if="tab === 'category'"/>
 </div>
 </template>
 
@@ -26,14 +22,7 @@ export default defineComponent({
 				icon: 'fas fa-laugh',
 				bg: 'var(--bg)',
 			})),
-			header: computed(() => ({
-				title: this.$ts.customEmojis,
-				icon: 'fas fa-laugh',
-				bg: 'var(--bg)',
-			})),
 			tab: 'category',
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		}
 	},
 });

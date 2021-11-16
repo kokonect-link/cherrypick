@@ -1,28 +1,23 @@
 <template>
-<div>
-	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
-	<!-- <MkHeaderCP v-else :info="header"/> -->
-
-	<div class="ztgjmzrw">
-		<section class="_card _gap announcements" v-for="announcement in announcements">
-			<div class="_content announcement">
-				<MkInput v-model="announcement.title">
-					<template #label>{{ $ts.title }}</template>
-				</MkInput>
-				<MkTextarea v-model="announcement.text">
-					<template #label>{{ $ts.text }}</template>
-				</MkTextarea>
-				<MkInput v-model="announcement.imageUrl">
-					<template #label>{{ $ts.imageUrl }}</template>
-				</MkInput>
-				<p v-if="announcement.reads">{{ $t('nUsersRead', { n: announcement.reads }) }}</p>
-				<div class="buttons">
-					<MkButton class="button" inline @click="save(announcement)" primary><i class="fas fa-save"></i> {{ $ts.save }}</MkButton>
-					<MkButton class="button" inline @click="remove(announcement)"><i class="fas fa-trash-alt"></i> {{ $ts.remove }}</MkButton>
-				</div>
+<div class="ztgjmzrw">
+	<section class="_card _gap announcements" v-for="announcement in announcements">
+		<div class="_content announcement">
+			<MkInput v-model="announcement.title">
+				<template #label>{{ $ts.title }}</template>
+			</MkInput>
+			<MkTextarea v-model="announcement.text">
+				<template #label>{{ $ts.text }}</template>
+			</MkTextarea>
+			<MkInput v-model="announcement.imageUrl">
+				<template #label>{{ $ts.imageUrl }}</template>
+			</MkInput>
+			<p v-if="announcement.reads">{{ $t('nUsersRead', { n: announcement.reads }) }}</p>
+			<div class="buttons">
+				<MkButton class="button" inline @click="save(announcement)" primary><i class="fas fa-save"></i> {{ $ts.save }}</MkButton>
+				<MkButton class="button" inline @click="remove(announcement)"><i class="fas fa-trash-alt"></i> {{ $ts.remove }}</MkButton>
 			</div>
-		</section>
-	</div>
+		</div>
+	</section>
 </div>
 </template>
 
@@ -49,11 +44,6 @@ export default defineComponent({
 				title: this.$ts.announcements,
 				icon: 'fas fa-bullhorn',
 				bg: 'var(--bg)',
-			},
-			header: {
-				title: this.$ts.announcements,
-				icon: 'fas fa-broadcast-tower',
-				bg: 'var(--bg)',
 				actions: [{
 					asFullButton: true,
 					icon: 'fas fa-plus',
@@ -62,8 +52,6 @@ export default defineComponent({
 				}],
 			},
 			announcements: [],
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		}
 	},
 

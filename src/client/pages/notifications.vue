@@ -1,17 +1,13 @@
 <template>
-<div>
-	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
-	<!-- <MkHeaderCP v-else :info="header"/> -->
-	<MkSpacer :content-max="800">
-		<div class="clupoqwt">
-			<XNotifications class="notifications" @before="before" @after="after" :include-types="includeTypes" :unread-only="tab === 'unread'"/>
-		</div>
-	</MkSpacer>
-</div>
+<MkSpacer :content-max="800">
+	<div class="clupoqwt">
+		<XNotifications class="notifications" @before="before" @after="after" :include-types="includeTypes" :unread-only="tab === 'unread'"/>
+	</div>
+</MkSpacer>
 </template>
 
 <script lang="ts">
-import { computed, ComputedRef, defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import Progress from '@client/scripts/loading';
 import XNotifications from '@client/components/notifications.vue';
 import * as os from '@client/os';
@@ -25,54 +21,7 @@ export default defineComponent({
 
 	data() {
 		return {
-			[symbols.PAGE_INFO]: computed(() => {
-				type Tab = {
-					title?: string | null,
-					onClick?: () => void,
-					selected?: ComputedRef<boolean> | boolean,
-					indicate?: ComputedRef<boolean> | boolean,
-				};
-				const tabs: Tab[] = [];
-				tabs.push({
-					active: this.tab === 'all',
-					title: this.$ts.all,
-					onClick: () => { this.tab = 'all'; },
-				});
-				tabs.push({
-					active: this.tab === 'unread',
-					title: this.$ts.unread,
-					onClick: () => { this.tab = 'unread'; },
-				});
-				if (this.isFriendlyUI || this.isFriendlyUILegacy) {
-					return {
-						title: this.$ts.notifications,
-						icon: 'fas fa-bell',
-						bg: 'var(--bg)',
-						actions: [{
-							text: this.$ts.filter,
-							icon: 'fas fa-filter',
-							highlighted: this.includeTypes != null,
-							handler: this.setFilter,
-						}, {
-							text: this.$ts.markAllAsRead,
-							icon: 'fas fa-check',
-							handler: () => {
-								os.apiWithDialog('notifications/mark-all-as-read');
-							},
-						}],
-						tabs,
-					};
-				} else {
-					return {
-						title: this.$ts.notifications,
-						icon: 'fas fa-bell',
-						bg: 'var(--bg)',
-					}
-				}
-			}),
-			tab: 'all',
-			includeTypes: null,
-			header: computed(() => ({
+			[symbols.PAGE_INFO]: computed(() => ({
 				title: this.$ts.notifications,
 				icon: 'fas fa-bell',
 				bg: 'var(--bg)',
@@ -96,10 +45,10 @@ export default defineComponent({
 					active: this.tab === 'unread',
 					title: this.$ts.unread,
 					onClick: () => { this.tab = 'unread'; },
-				}]
+				},]
 			})),
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
+			tab: 'all',
+			includeTypes: null,
 		};
 	},
 

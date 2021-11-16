@@ -7,7 +7,6 @@
 
 <div align="center">
 
-[![CircleCI](https://img.shields.io/circleci/project/github/kokonect-link/cherrypick.svg?style=for-the-badge&logo=circleci)](https://circleci.com/gh/kokonect-link/cherrypick)
 [![Dependencies](https://img.shields.io/david/kokonect-link/cherrypick.svg?style=for-the-badge&logo=npm)](https://david-dm.org/kokonect-link/cherrypick)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&logo=github)](http://makeapullrequest.com)
 [![Awesome Humane Tech](https://raw.githubusercontent.com/humanetech-community/awesome-humane-tech/main/humane-tech-badge.svg?sanitize=true)](https://github.com/humanetech-community/awesome-humane-tech)
@@ -106,13 +105,11 @@ Sponsors
 <!-- PATREON_START -->
 <table><tr>
 <td><img src="https://c10.patreonusercontent.com/3/eyJ3IjoyMDB9/patreon-media/p/user/26341498/f7e9e83da5af4d91b07cc84d72425c11/2.png?token-time=2145916800&token-hash=SFLXj1MMqd-SuX_fkuSvxrgOF8igNmH1qGpYDqbzI-o%3D" alt="lapy." width="100"></td>
-<td><img src="https://c8.patreon.com/2/200/41157862" alt="Evelyn Kelly" width="100"></td>
 </tr><tr>
 <td><a href="https://www.patreon.com/user?u=26341498">lapy.</a></td>
-<td><a href="https://www.patreon.com/user?u=41157862">Evelyn Kelly</a></td>
 </tr></table>
 
-**Last updated:** Sat, 11 Sep 2021 06:01:04 UTC
+**Last updated:** Sun, 07 Nov 2021 06:34:17 UTC
 <!-- PATREON_END -->
 
 [backer-url]: #backers

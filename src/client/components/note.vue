@@ -588,6 +588,12 @@ export default defineComponent({
 			});
 		},
 
+		toggleThreadMute(mute: boolean) {
+			os.apiWithDialog(mute ? 'notes/thread-muting/create' : 'notes/thread-muting/delete', {
+				noteId: this.appearNote.id
+			});
+		},
+
 		getMenu() {
 			let menu;
 			if (this.$i) {
@@ -610,89 +616,98 @@ export default defineComponent({
 						window.open(this.appearNote.url || this.appearNote.uri, '_blank');
 					}
 				} : undefined,
-					{
-						icon: 'fas fa-share-alt',
-						text: this.$ts.share,
-						action: this.share
-					},
-					this.$instance.translatorAvailable ? {
-						icon: 'fas fa-language',
-						text: this.$ts.translate,
-						action: this.translate
-					} : undefined,
+				{
+					icon: 'fas fa-share-alt',
+					text: this.$ts.share,
+					action: this.share
+				},
+				this.$instance.translatorAvailable ? {
+					icon: 'fas fa-language',
+					text: this.$ts.translate,
+					action: this.translate
+				} : undefined,
+				null,
+				statePromise.then(state => state.isFavorited ? {
+					icon: 'fas fa-star',
+					text: this.$ts.unfavorite,
+					action: () => this.toggleFavorite(false)
+				} : {
+					icon: 'fas fa-star',
+					text: this.$ts.favorite,
+					action: () => this.toggleFavorite(true)
+				}),
+				{
+					icon: 'fas fa-paperclip',
+					text: this.$ts.clip,
+					action: () => this.clip()
+				},
+				(this.appearNote.userId != this.$i.id) ? statePromise.then(state => state.isWatching ? {
+					icon: 'fas fa-eye-slash',
+					text: this.$ts.unwatch,
+					action: () => this.toggleWatch(false)
+				} : {
+					icon: 'fas fa-eye',
+					text: this.$ts.watch,
+					action: () => this.toggleWatch(true)
+				}) : undefined,
+				statePromise.then(state => state.isMutedThread ? {
+					icon: 'fas fa-comment-slash',
+					text: this.$ts.unmuteThread,
+					action: () => this.toggleThreadMute(false)
+				} : {
+					icon: 'fas fa-comment-slash',
+					text: this.$ts.muteThread,
+					action: () => this.toggleThreadMute(true)
+				}),
+				this.appearNote.userId == this.$i.id ? (this.$i.pinnedNoteIds || []).includes(this.appearNote.id) ? {
+					icon: 'fas fa-thumbtack',
+					text: this.$ts.unpin,
+					action: () => this.togglePin(false)
+				} : {
+					icon: 'fas fa-thumbtack',
+					text: this.$ts.pin,
+					action: () => this.togglePin(true)
+				} : undefined,
+				...(this.$i.isModerator || this.$i.isAdmin ? [
 					null,
-					statePromise.then(state => state.isFavorited ? {
-						icon: 'fas fa-star',
-						text: this.$ts.unfavorite,
-						action: () => this.toggleFavorite(false)
-					} : {
-						icon: 'fas fa-star',
-						text: this.$ts.favorite,
-						action: () => this.toggleFavorite(true)
-					}),
 					{
-						icon: 'fas fa-paperclip',
-						text: this.$ts.clip,
-						action: () => this.clip()
-					},
-					(this.appearNote.userId != this.$i.id) ? statePromise.then(state => state.isWatching ? {
-						icon: 'fas fa-eye-slash',
-						text: this.$ts.unwatch,
-						action: () => this.toggleWatch(false)
-					} : {
-						icon: 'fas fa-eye',
-						text: this.$ts.watch,
-						action: () => this.toggleWatch(true)
-					}) : undefined,
-					this.appearNote.userId == this.$i.id ? (this.$i.pinnedNoteIds || []).includes(this.appearNote.id) ? {
-						icon: 'fas fa-thumbtack',
-						text: this.$ts.unpin,
-						action: () => this.togglePin(false)
-					} : {
-						icon: 'fas fa-thumbtack',
-						text: this.$ts.pin,
-						action: () => this.togglePin(true)
+						icon: 'fas fa-bullhorn',
+						text: this.$ts.promote,
+						action: this.promote
+					}]
+					: []
+				),
+				...(this.appearNote.userId != this.$i.id ? [
+					null,
+					{
+						icon: 'fas fa-exclamation-circle',
+						text: this.$ts.reportAbuse,
+						action: () => {
+							const u = `${url}/notes/${this.appearNote.id}`;
+							os.popup(import('@client/components/abuse-report-window.vue'), {
+								user: this.appearNote.user,
+								initialComment: `Note: ${u}\n-----\n`
+							}, {}, 'closed');
+						}
+					}]
+					: []
+				),
+				...(this.appearNote.userId == this.$i.id || this.$i.isModerator || this.$i.isAdmin ? [
+					null,
+					this.appearNote.userId == this.$i.id ? {
+						icon: 'fas fa-edit',
+						text: this.$ts.deleteAndEdit,
+						action: this.delEdit
 					} : undefined,
-					...(this.$i.isModerator || this.$i.isAdmin ? [
-								null,
-								{
-									icon: 'fas fa-bullhorn',
-									text: this.$ts.promote,
-									action: this.promote
-								}]
-							: []
-					),
-					...(this.appearNote.userId != this.$i.id ? [
-								null,
-								{
-									icon: 'fas fa-exclamation-circle',
-									text: this.$ts.reportAbuse,
-									action: () => {
-										const u = `${url}/notes/${this.appearNote.id}`;
-										os.popup(import('@client/components/abuse-report-window.vue'), {
-											user: this.appearNote.user,
-											initialComment: `Note: ${u}\n-----\n`
-										}, {}, 'closed');
-									}
-								}]
-							: []
-					),
-					...(this.appearNote.userId == this.$i.id || this.$i.isModerator || this.$i.isAdmin ? [
-								null,
-								this.appearNote.userId == this.$i.id ? {
-									icon: 'fas fa-edit',
-									text: this.$ts.deleteAndEdit,
-									action: this.delEdit
-								} : undefined,
-								{
-									icon: 'fas fa-trash-alt',
-									text: this.$ts.delete,
-									danger: true,
-									action: this.del
-								}]
-							: []
-					)]
-					.filter(x => x !== undefined);
+					{
+						icon: 'fas fa-trash-alt',
+						text: this.$ts.delete,
+						danger: true,
+						action: this.del
+					}]
+					: []
+				)]
+				.filter(x => x !== undefined);
 			} else {
 				menu = [{
 					icon: 'fas fa-copy',

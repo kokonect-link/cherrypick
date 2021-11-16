@@ -37,6 +37,8 @@ import { isMobile } from '@client/scripts/is-mobile';
 import { initializeSw } from '@client/scripts/initialize-sw';
 import { reloadChannel } from '@client/scripts/unison-reload';
 import { reactionPicker } from '@client/scripts/reaction-picker';
+import { getUrlWithoutLoginId } from '@client/scripts/login-id';
+import { getAccountFromId } from '@client/scripts/get-account-from-id';
 
 console.info(`CherryPick v${version}`);
 
@@ -116,6 +118,25 @@ const html = document.documentElement;
 html.setAttribute('lang', lang);
 //#endregion
 
+//#region loginId
+const params = new URLSearchParams(location.search);
+const loginId = params.get('loginId');
+
+if (loginId) {
+	const target = getUrlWithoutLoginId(location.href);
+
+	if (!$i || $i.id !== loginId) {
+		const account = await getAccountFromId(loginId);
+		if (account) {
+			await login(account.token, target);
+		}
+	}
+
+	history.replaceState({ misskey: 'loginId' }, '', target);
+}
+
+//#endregion
+
 //#region Fetch user
 if ($i && $i.token) {
 	if (_DEV_) {
@@ -166,8 +187,8 @@ const app = createApp(await (
 	ui === 'deck'                     ? import('@client/ui/deck.vue') :
 	ui === 'desktop'                  ? import('@client/ui/desktop.vue') :
 	ui === 'chat'                     ? import('@client/ui/chat/index.vue') :
-	ui === 'pope'                     ? import('@client/ui/universal.vue') :
-	ui === 'misskey'                  ? import('@client/ui/default.vue') :
+	ui === 'classic'                  ? import('@client/ui/classic.vue') :
+	ui === 'misskey'                  ? import('@client/ui/universal.vue') :
 	ui === 'friendly-legacy'          ? import('@client/ui/friendly-legacy/friendly.vue') :
 	import('@client/ui/friendly/friendly.vue')
 ).then(x => x.default));

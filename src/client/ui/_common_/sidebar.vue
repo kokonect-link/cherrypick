@@ -26,7 +26,7 @@
 				</template>
 				<div class="divider"></div>
 				<MkA v-if="$i.isAdmin || $i.isModerator" class="item" active-class="active" to="/admin" v-click-anime>
-					<i class="fas fa-server fa-fw"></i><span class="text">{{ $ts.instance }}</span>
+					<i class="fas fa-door-open fa-fw"></i><span class="text">{{ $ts.controlPanel }}</span>
 				</MkA>
 				<button class="item _button" @click="more" v-click-anime>
 					<i class="fa fa-ellipsis-h fa-fw"></i><span class="text">{{ $ts.more }}</span>
@@ -35,33 +35,9 @@
 				<MkA class="item" active-class="active" to="/settings" v-click-anime>
 					<i class="fas fa-cog fa-fw"></i><span class="text">{{ $ts.settings }}</span>
 				</MkA>
-				<button class="item-post _button post" @click="post">
+				<button class="item _button post" @click="post" data-cy-open-post-form>
 					<i class="fas fa-pencil-alt fa-fw"></i><span class="text">{{ $ts.note }}</span>
 				</button>
-				<div class="divider"></div>
-				<template v-if="$i.isPatron">
-					<button v-if="$i.isVip" class="patron-button _button" @click="patron" v-click-anime>
-						<span class="patron"><i class="fas fa-gem fa-fw"></i></span><span class="patron-text">{{ $ts.youAreVip }}</span>
-					</button>
-					<button v-else class="patron-button _button" @click="patron" v-click-anime>
-						<span class="patron"><i class="fas fa-heart fa-fw" style="animation: 1s linear 0s infinite normal both running mfm-rubberBand;"></i></span><span class="patron-text">{{ $ts.youArePatron }}</span>
-					</button>
-				</template>
-				<button v-else class="patron-button _button" @click="patron" v-click-anime>
-					<span class="not-patron"><i class="fas fa-heart fa-fw"></i></span><span class="patron-text">{{ $ts.youAreNotPatron }}</span>
-				</button>
-				<div class="divider"></div>
-				<div class="about">
-					<MkA class="link" to="/about" v-click-anime>
-						<template v-if="isKokonect">
-							<MkEmoji :normal="true" :no-style="true" emoji="🍮"/>
-							<p style="font-size:10px;"><b><span style="color: var(--cherry);">KOKO</span><span style="color: var(--pick);">NECT</span></b></p>
-						</template>
-						<template v-else>
-							<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" class="_ghost"/>
-						</template>
-					</MkA>
-				</div>
 			</div>
 		</nav>
 	</transition>
@@ -74,7 +50,7 @@ import { host } from '@client/config';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { menuDef } from '@client/menu';
-import { getAccounts, addAccount, login, openAccountMenu } from '@client/account';
+import { openAccountMenu } from '@client/account';
 
 export default defineComponent({
 	props: {
@@ -94,7 +70,6 @@ export default defineComponent({
 			menuDef: menuDef,
 			iconOnly: false,
 			hidden: this.defaultHidden,
-			isKokonect: null
 		};
 	},
 
@@ -139,10 +114,6 @@ export default defineComponent({
 		this.calcViewState();
 	},
 
-	mounted() {
-		this.init();
-	},
-
 	methods: {
 		calcViewState() {
 			this.iconOnly = (window.innerWidth <= 1279) || (this.$store.state.menuDisplay === 'sideIcon');
@@ -166,43 +137,6 @@ export default defineComponent({
 		more(ev) {
 			os.popup(import('@client/components/launch-pad.vue'), {}, {
 			}, 'closed');
-		},
-
-		addAccount() {
-			os.popup(import('@client/components/signin-dialog.vue'), {}, {
-				done: res => {
-					addAccount(res.id, res.i);
-					os.success();
-				},
-			}, 'closed');
-		},
-
-		createAccount() {
-			os.popup(import('@client/components/signup-dialog.vue'), {}, {
-				done: res => {
-					addAccount(res.id, res.i);
-					this.switchAccountWithToken(res.i);
-				},
-			}, 'closed');
-		},
-
-		async switchAccount(account: any) {
-			const storedAccounts = await getAccounts();
-			const token = storedAccounts.find(x => x.id === account.id).token;
-			this.switchAccountWithToken(token);
-		},
-
-		switchAccountWithToken(token: string) {
-			login(token);
-		},
-
-		patron() {
-			window.open("https://www.patreon.com/noridev", "_blank");
-		},
-
-		async init() {
-			const meta = await os.api('meta', { detail: true });
-			this.isKokonect = meta.uri == 'https://kokonect.link' || 'http://localhost:3000';
 		},
 
 		openAccountMenu,
@@ -263,8 +197,8 @@ export default defineComponent({
 						width: calc(100% - 32px);
 					}
 
-					> .item,
-						.patron-button {
+					> .item {
+						padding-left: 0;
 						padding: 18px 0;
 						width: 100%;
 						text-align: center;
@@ -281,14 +215,8 @@ export default defineComponent({
 							opacity: 0.7;
 						}
 
-						> .text,
-							.patron-text {
+						> .text {
 							display: none;
-						}
-
-						> .patron,
-							.not-patron {
-							margin: 0;
 						}
 
 						&:hover, &.active {
@@ -338,29 +266,7 @@ export default defineComponent({
 				border-top: solid 0.5px var(--divider);
 			}
 
-			> .about {
-				fill: currentColor;
-				padding: 8px 0 16px 0;
-				text-align: center;
-
-				> .link {
-					display: block;
-					//width: 32px;
-					margin: 0 auto;
-
-					img {
-						display: block;
-						width: 100%;
-					}
-
-					&:hover {
-						text-decoration: none;
-					}
-				}
-			}
-
-			> .item,
-				.patron-button {
+			> .item {
 				position: relative;
 				display: block;
 				padding-left: 24px;
@@ -401,20 +307,6 @@ export default defineComponent({
 
 				> .text {
 					position: relative;
-					font-size: 0.9em;
-				}
-
-				> .patron,
-					.not-patron {
-					margin-left: 6px;
-					margin-right: 12px;
-				}
-
-				> .patron {
-					color: var(--patron);
-				}
-
-				> .patron-text {
 					font-size: 0.9em;
 				}
 
@@ -482,52 +374,12 @@ export default defineComponent({
 						border-radius: 999px;
 						background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 					}
-
+					
 					&:hover, &.active {
 						&:before {
 							background: var(--accentLighten);
 						}
 					}
-				}
-			}
-
-			> .patron-button {
-				background: unset;
-				border: unset;
-			}
-
-			.item-post {
-				display: block;
-				padding-left: 24px;
-				font-size: $ui-font-size;
-				line-height: 3rem;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				white-space: nowrap;
-				width: 100%;
-				text-align: left;
-				box-sizing: border-box;
-				color: var(--navFg);
-
-				position: sticky;
-				z-index: 1;
-				padding-top: 8px;
-				padding-bottom: 8px;
-				background: var(--X14);
-				-webkit-backdrop-filter: blur(8px);
-				backdrop-filter: blur(8px);
-				bottom: 0;
-				margin-top: 16px;
-				border-top: solid 0.5px var(--divider);
-
-				> i {
-					width: 32px;
-					margin-right: $avatar-margin;
-				}
-
-				&:hover {
-					text-decoration: none;
-					color: var(--navHoverFg);
 				}
 			}
 		}

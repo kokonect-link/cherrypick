@@ -2,6 +2,7 @@ import { computed, ref } from 'vue';
 import { search } from '@client/scripts/search';
 import * as os from '@client/os';
 import { i18n } from '@client/i18n';
+import { ui } from '@client/config';
 import { $i } from './account';
 import { unisonReload } from '@client/scripts/unison-reload';
 import { router } from './router';
@@ -184,47 +185,54 @@ export const menuDef = {
 		action: (ev) => {
 			os.popupMenu([{
 				text: i18n.locale.friendly,
+				active: ui === 'friendly' || ui === null,
 				action: () => {
 					localStorage.setItem('ui', 'friendly');
 					unisonReload();
 				}
 			}, {
 				text: i18n.locale.friendly + ' (legacy)',
+				active: ui === 'friendly-legacy',
 				action: () => {
 					localStorage.setItem('ui', 'friendly-legacy');
 					unisonReload();
 				}
 			}, {
 				text: i18n.locale.misskey,
+				active: ui === 'misskey',
 				action: () => {
 					localStorage.setItem('ui', 'misskey');
 					unisonReload();
 				}
 			}, {
 				text: i18n.locale.deck,
+				active: ui === 'deck',
 				action: () => {
 					localStorage.setItem('ui', 'deck');
 					unisonReload();
 				}
 			}, {
-				text: 'pope',
+				text: i18n.locale.classic,
+				active: ui === 'classic',
 				action: () => {
-					localStorage.setItem('ui', 'pope');
+					localStorage.setItem('ui', 'classic');
 					unisonReload();
 				}
 			}, {
 				text: 'Chat (β)',
+				active: ui === 'chat',
 				action: () => {
 					localStorage.setItem('ui', 'chat');
 					unisonReload();
 				}
-			}, {
+			}, /*{
 				text: i18n.locale.desktop + ' (β)',
+				active: ui === 'desktop',
 				action: () => {
 					localStorage.setItem('ui', 'desktop');
 					unisonReload();
 				}
-			}], ev.currentTarget || ev.target);
+			}*/], ev.currentTarget || ev.target);
 		},
 	},
 	emojiSuggestion: {

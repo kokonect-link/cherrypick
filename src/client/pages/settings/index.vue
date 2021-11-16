@@ -1,18 +1,22 @@
 <template>
 <div class="vvcocwet" :class="{ wide: !narrow }" ref="el">
 	<div class="nav" v-if="!narrow || page == null">
-		<div class="title">{{ $ts.settings }}</div>
-		<div class="group accounts">
-			<div class="user">
-				<MkAvatar :user="$i" class="avatar"/>
-				<div class="user-info">
-					<MkUserName class="name" :user="$i"/>
-					<MkAcct :user="$i" :detail="true" class="acct"/>
+		<MkSpacer :content-max="700">
+			<div class="baaadecd">
+				<div class="title">{{ $ts.settings }}</div>
+				<MkInfo v-if="emailNotConfigured" warn class="info">{{ $ts.emailNotConfiguredWarning }} <MkA to="/settings/email" class="_link">{{ $ts.configure }}</MkA></MkInfo>
+				<div class="group accounts">
+					<div class="user">
+						<MkAvatar :user="$i" class="avatar"/>
+						<div class="user-info">
+							<MkUserName class="name" :user="$i"/>
+							<MkAcct :user="$i" :detail="true" class="acct"/>
+						</div>
+					</div>
 				</div>
+				<MkSuperMenu :def="menuDef" :grid="page == null"></MkSuperMenu>
 			</div>
-		</div>
-		<MkInfo v-if="emailNotConfigured" warn class="info">{{ $ts.emailNotConfiguredWarning }} <MkA to="/settings/email" class="_link">{{ $ts.configure }}</MkA></MkInfo>
-		<MkSuperMenu :def="menuDef" :grid="page == null"></MkSuperMenu>
+		</MkSpacer>
 	</div>
 	<div class="main">
 		<component :is="component" :key="page" v-bind="pageProps"/>
@@ -52,6 +56,7 @@ export default defineComponent({
 			title: i18n.locale.settings,
 			icon: 'fas fa-cog',
 			bg: 'var(--bg)',
+			hideHeader: true,
 		};
 		const INFO = ref(indexInfo);
 		const page = ref(props.initialPage);
@@ -317,39 +322,52 @@ export default defineComponent({
 <style lang="scss" scoped>
 .vvcocwet {
 	> .nav {
-		> .title {
-			margin: 16px;
-			font-size: 1.5em;
-			font-weight: bold;
-		}
+		.baaadecd {
+			> .title {
+				margin: 16px;
+				font-size: 1.5em;
+				font-weight: bold;
+			}
 
-		> .info {
-			margin: 0 16px;
-		}
+			> .info {
+				margin: 0 16px;
+			}
 
-		> .accounts {
-			> .user {
-				display: flex;
+			> .accounts {
+				margin: 16px;
 
-				> .avatar {
-					display: block;
-					width: 60px;
-					height: 60px;
-				}
+				> .user {
+					display: flex;
 
-				> .user-info {
-					padding: 15px 10px;
-
-					> .name {
-						font-weight: bold;
-						font-size: 16px;
-						display: flex;
-						margin: -2px 0;
+					> .avatar {
+						display: block;
+						width: 60px;
+						height: 60px;
 					}
 
-					> .acct {
-						font-size: 12px;
-						display: flex;
+					/*
+					> .avatar {
+						display: block;
+						width: 50px;
+						height: 50px;
+						margin: 8px auto 16px auto;
+					}
+					*/
+
+					> .user-info {
+						padding: 15px 10px;
+
+						> .name {
+							font-weight: bold;
+							font-size: 16px;
+							display: flex;
+							margin: -2px 0;
+						}
+
+						> .acct {
+							font-size: 12px;
+							display: flex;
+						}
 					}
 				}
 			}
@@ -367,8 +385,10 @@ export default defineComponent({
 			box-sizing: border-box;
 			overflow: auto;
 
-			> .title {
-				margin: 24px;
+			.baaadecd {
+				> .title {
+					margin: 24px 0;
+				}
 			}
 		}
 

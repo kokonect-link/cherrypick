@@ -1,11 +1,7 @@
 <template>
-<div>
-	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
-	<!-- <MkHeaderCP v-else :info="header"/> -->
-	<div>
-		<XNotes :pagination="pagination" @before="before()" @after="after()"/>
-	</div>
-</div>
+<MkSpacer :content-max="800">
+	<XNotes :pagination="pagination" @before="before()" @after="after()"/>
+</MkSpacer>
 </template>
 
 <script lang="ts">
@@ -26,11 +22,6 @@ export default defineComponent({
 				icon: 'fas fa-envelope',
 				bg: 'var(--bg)',
 			},
-			header: {
-				title: this.$ts.directNotes,
-				icon: 'fas fa-envelope',
-				bg: 'var(--bg)',
-			},
 			pagination: {
 				endpoint: 'notes/mentions',
 				limit: 10,
@@ -38,8 +29,6 @@ export default defineComponent({
 					visibility: 'specified'
 				})
 			},
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 

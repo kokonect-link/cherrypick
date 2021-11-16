@@ -1,0 +1,15 @@
+url: 'http://cherrypick.local'
+
+# ローカルでテストするときにポートを被らないようにするためデフォルトのものとは変える(以下同じ)
+port: 61812
+
+db:
+  host: localhost
+  port: 54312
+  db: test-cherrypick
+  user: postgres
+  pass: ''
+redis:
+  host: localhost
+  port: 56312
+id: aid

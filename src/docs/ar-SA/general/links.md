@@ -4,7 +4,7 @@
 - [Official Discord](https://discord.gg/V8qghB28Aj) - CherryPick公式Discordサーバー
 - [Misskey Forum](https://forum.misskey.io/) - Misskeyに関する話題を扱うフォーラム
 
-## アカウント
+## الحسابات
 - [@repo@kokonect.link](https://kokonect.link/@repo) - CherryPickのリポジトリの更新を投稿するbot
 
 ## ライブラリ

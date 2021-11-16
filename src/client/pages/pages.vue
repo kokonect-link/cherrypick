@@ -1,38 +1,33 @@
 <template>
-<div>
-	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
-	<!-- <MkHeaderCP v-else :info="header"/> -->
+<MkSpacer>
+	<!-- TODO: MkHeaderに統合 -->
+	<MkTab v-model="tab" v-if="$i">
+		<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._pages.featured }}</option>
+		<option value="my"><i class="fas fa-edit"></i> {{ $ts._pages.my }}</option>
+		<option value="liked"><i class="fas fa-heart"></i> {{ $ts._pages.liked }}</option>
+	</MkTab>
 
-	<MkSpacer>
-		<!-- TODO: MkHeaderに統合 -->
-		<MkTab v-model="tab" v-if="$i">
-			<option value="featured"><i class="fas fa-fire-alt"></i> {{ $ts._pages.featured }}</option>
-			<option value="my"><i class="fas fa-edit"></i> {{ $ts._pages.my }}</option>
-			<option value="liked"><i class="fas fa-heart"></i> {{ $ts._pages.liked }}</option>
-		</MkTab>
-
-		<div class="_section">
-			<div class="rknalgpo _content" v-if="tab === 'featured'">
-				<MkPagination :pagination="featuredPagesPagination" #default="{items}">
-					<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
-				</MkPagination>
-			</div>
-
-			<div class="rknalgpo _content my" v-if="tab === 'my'">
-				<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
-				<MkPagination :pagination="myPagesPagination" #default="{items}">
-					<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
-				</MkPagination>
-			</div>
-
-			<div class="rknalgpo _content" v-if="tab === 'liked'">
-				<MkPagination :pagination="likedPagesPagination" #default="{items}">
-					<MkPagePreview v-for="like in items" class="ckltabjg" :page="like.page" :key="like.page.id"/>
-				</MkPagination>
-			</div>
+	<div class="_section">
+		<div class="rknalgpo _content" v-if="tab === 'featured'">
+			<MkPagination :pagination="featuredPagesPagination" #default="{items}">
+				<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
+			</MkPagination>
 		</div>
-	</MkSpacer>
-</div>
+
+		<div class="rknalgpo _content my" v-if="tab === 'my'">
+			<MkButton v-if="(isWideTablet || isDesktop) && (isFriendlyUI || isFriendlyUILegacy) || !(isFriendlyUI || isFriendlyUILegacy)" class="new" @click="create()"><i class="fas fa-plus"></i></MkButton>
+			<MkPagination :pagination="myPagesPagination" #default="{items}">
+				<MkPagePreview v-for="page in items" class="ckltabjg" :page="page" :key="page.id"/>
+			</MkPagination>
+		</div>
+
+		<div class="rknalgpo _content" v-if="tab === 'liked'">
+			<MkPagination :pagination="likedPagesPagination" #default="{items}">
+				<MkPagePreview v-for="like in items" class="ckltabjg" :page="like.page" :key="like.page.id"/>
+			</MkPagination>
+		</div>
+	</div>
+</MkSpacer>
 </template>
 
 <script lang="ts">
@@ -60,12 +55,7 @@ export default defineComponent({
 					icon: 'fas fa-plus',
 					text: this.$ts.create,
 					handler: this.create,
-				}
-			},
-			header: {
-				title: this.$ts.pages,
-				icon: 'fas fa-sticky-note',
-				bg: 'var(--bg)',
+				},
 				actions: [{
 					icon: 'fas fa-plus',
 					text: this.$ts.create,

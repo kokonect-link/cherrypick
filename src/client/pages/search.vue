@@ -1,28 +1,24 @@
 <template>
-<div>
-	<MkHeader v-if="!isFriendlyUI && !isFriendlyUILegacy" :info="header"/>
-	<!-- <MkHeaderCP v-else :info="header"/> -->
-	<div class="_section">
-		<div class="_content">
-			<XSearch class="search" v-model="inputQuery" @search="search"/>
-			<div class="tab _section _noPad" style="padding: 0">
-				<MkTab v-model="tab">
-					<option value="notes">{{ $ts.notes }}</option>
-					<option value="users">{{ $ts.users }}</option>
-				</MkTab>
-			</div>
-			<template v-if="smartCard">
-				<XNote class="smart-card" :note="smartCard.note" v-if="smartCard.type === 'note'"/>
-				<XUser class="smart-card" :user="smartCard.user" v-else-if="smartCard.type === 'user'"/>
-				<div class="_panel smart-card" v-else-if="smartCard.type === 'custom'">
-					<Fa class="icon" :icon="smartCard.icon"/>
-					<h1 class="header" v-text="smartCard.header"/>
-					<div class="body" v-text="smartCard.body"/>
-				</div>
-			</template>
-			<XNotes v-if="tab === 'notes'" ref="notes" :pagination="notesPagination"/>
-			<XUsers v-if="tab === 'users'" ref="users" :pagination="usersPagination"/>
+<div class="_section">
+	<div class="_content">
+		<XSearch class="search" v-model="inputQuery" @search="search"/>
+		<div class="tab _section _noPad" style="padding: 0">
+			<MkTab v-model="tab">
+				<option value="notes">{{ $ts.notes }}</option>
+				<option value="users">{{ $ts.users }}</option>
+			</MkTab>
 		</div>
+		<template v-if="smartCard">
+			<XNote class="smart-card" :note="smartCard.note" v-if="smartCard.type === 'note'"/>
+			<XUser class="smart-card" :user="smartCard.user" v-else-if="smartCard.type === 'user'"/>
+			<div class="_panel smart-card" v-else-if="smartCard.type === 'custom'">
+				<Fa class="icon" :icon="smartCard.icon"/>
+				<h1 class="header" v-text="smartCard.header"/>
+				<div class="body" v-text="smartCard.body"/>
+			</div>
+		</template>
+		<XNotes v-if="tab === 'notes'" ref="notes" :pagination="notesPagination" @before="before" @after="after"/>
+		<XUsers v-if="tab === 'users'" ref="users" :pagination="usersPagination" @before="before" @after="after"/>
 	</div>
 </div>
 </template>
@@ -90,16 +86,10 @@ export default defineComponent({
 				title: computed(() => this.$t('searchWith', { q: this.query })),
 				icon: 'fas fa-search',
 			},
-			header: {
-				title: computed(() => this.$t('searchWith', { q: this.query.q })),
-				icon: 'fas fa-search',
-			},
 			query: this.q,
 			inputQuery: this.q,
 			tab: this.f || 'notes',
 			smartCard: null as SmartCard | null,
-			isFriendlyUI: localStorage.getItem('ui') == "friendly",
-			isFriendlyUILegacy: localStorage.getItem('ui') == "friendly-legacy",
 		};
 	},
 
