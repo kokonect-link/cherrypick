@@ -41,8 +41,8 @@ Thanks for your cooperation 🤗
 
 ## Localization (l10n)
 CherryPick uses [GitLocalize](https://gitlocalize.com/repo/6464) for localization management.
-You can improve our translations with your GitLocalize account.
-Your changes in GitLocalize are automatically submitted as a PR (with the title "Translate <locale>.json via GitLocalize") to the repository.
+You can improve our translations by signing in to GitLocalize using your GitHub account.
+Your translations added on GitLocalize are **not** submitted automatically as a PR. When finished translating, please make sure you create a Review Request on GitLocalize so that we can see your submission. Your translation will then be reviewed and if all looks good, we will create a Pull Request (with the title "Translate <locale>.json via GitLocalize") to the repository. Your added translations will be displayed as commits authored by you in the Pull Request.
 The owner [@noridev](https://github.com/noridev) merges the PR into the develop branch before the next release.
 
 If your language is not listed in GitLocalize, please open an issue.
