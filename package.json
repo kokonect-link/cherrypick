@@ -96,7 +96,7 @@
 		"@types/sharp": "0.29.2",
 		"@types/sinonjs__fake-timers": "6.0.4",
 		"@types/speakeasy": "2.0.6",
-		"@types/throttle-debounce": "2.1.0",
+		"@types/throttle-debounce": "4.0.0",
 		"@types/tinycolor2": "1.4.3",
 		"@types/tmp": "0.2.2",
 		"@types/uuid": "8.3.1",
