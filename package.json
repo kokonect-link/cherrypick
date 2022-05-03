@@ -73,7 +73,7 @@
 		"@types/koa__multer": "2.0.4",
 		"@types/koa__router": "8.0.8",
 		"@types/markdown-it": "12.2.3",
-		"@types/matter-js": "0.17.6",
+		"@types/matter-js": "0.17.7",
 		"@types/mocha": "8.2.3",
 		"@types/node": "16.11.4",
 		"@types/node-fetch": "2.5.12",
