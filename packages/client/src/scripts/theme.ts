@@ -35,6 +35,7 @@ export const getBuiltinThemes = () => Promise.all(
 		'd-ice',
 		'd-pumpkin',
 		'd-black',
+		'd-qdon'
 	].map(name => import(`../themes/${name}.json5`).then(({ default: _default }): Theme => _default))
 );
 
