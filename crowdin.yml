@@ -1,4 +1,4 @@
 files:
-  - source: /locales/ja-JP.yml
+  - source: /locales/ko-KR.yml
     translation: /locales/%locale%.yml
     update_option: update_as_unapproved
