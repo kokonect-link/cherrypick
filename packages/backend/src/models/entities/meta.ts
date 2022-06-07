@@ -223,7 +223,7 @@ export class Meta {
 	public smtpSecure: boolean;
 
 	@Column('varchar', {
-		length: 128,
+		length: 256,
 		nullable: true,
 	})
 	public smtpHost: string | null;
@@ -234,13 +234,13 @@ export class Meta {
 	public smtpPort: number | null;
 
 	@Column('varchar', {
-		length: 128,
+		length: 256,
 		nullable: true,
 	})
 	public smtpUser: string | null;
 
 	@Column('varchar', {
-		length: 128,
+		length: 256,
 		nullable: true,
 	})
 	public smtpPass: string | null;
