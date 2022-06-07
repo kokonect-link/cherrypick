@@ -1,3 +1,4 @@
+
 /**
  * BOOT LOADER
  * サーバーからレスポンスされるHTMLに埋め込まれるスクリプトで、以下の役割を持ちます。
@@ -105,18 +106,55 @@
 	// eslint-disable-next-line no-inner-declarations
 	function renderError(code, details) {
 		document.documentElement.innerHTML = `
-			<h1>⚠エラーが発生しました</h1>
-			<p>問題が解決しない場合は管理者までお問い合わせください。以下のオプションを試すこともできます:</p>
-			<ul>
-				<li><a href="/cli">簡易クライアント</a>を起動</li>
-				<li><a href="/bios">BIOS</a>で修復を試みる</li>
-				<li><a href="/flush">キャッシュをクリア</a>する</li>
-			</ul>
+			<h1>⚠문제가 발생했습니다 / エラーが発生しました</h1>
+
+			Language:
+			<input type="radio" name="lang" id="ko-KR" value="ko-KR" checked>
+			<label for="korean">한국어</label>
+			<input type="radio" name="lang" id="ja-JP" value="ko-KR">
+			<label for="korean">日本語</label>
+			<input type="radio" name="lang" id="en" value="en">
+			<label for="korean">English</label>
+			
+			<main lang="ja-JP">
+					<p>問題が解決しない場合は管理者までお問い合わせください。以下のオプションを試すこともできます:</p>
+					<ul>
+							<li><a href="/cli">簡易クライアント</a>を起動</li>
+							<li><a href="/bios">BIOS</a>で修復を試みる</li>
+							<li><a href="/flush">キャッシュをクリア</a>する</li>
+					</ul>
+			</main>
+			
+			<main lang="ko-KR">
+					<p>계속해서 문제가 해결되지 않는 경우 관리자에게 문의해 주십시오. 혹은 다음 방법을 시도하실 수 있습니다:</p>
+					<ul>
+							<li><a href="/cli">간이 클라이언트</a>를 실행</li>
+							<li><a href="/bios">BIOS</a>에서 복구 시도</li>
+							<li><a href="/flush">캐시 초기화</a></li>
+					</ul>
+			</main>
+			
+			<main lang="en">
+					<p>If you have troubles on loading the web app, Please contact to the instance maintainer. Or you can try:</p>
+					<ul>
+							<li>Run <a href="/cli">Minimal Client</a></li>
+							<li>Recover settings from <a href="/bios">BIOS</a></li>
+							<li><a href="/flush">Flush local cache</a></li>
+					</ul>
+			</main>
+			
 			<hr>
 			<code>ERROR CODE: ${code}</code>
 			<details>
-				${details}
+					${details}
 			</details>
+			
+			<style>
+					[lang] { display: none; }
+					#ko-KR:checked ~ [lang~="ko-KR"] { display: block; }
+					#ja-JP:checked ~ [lang~="ja-JP"] { display: block; }
+					#en:checked ~ [lang~="en"] { display: block; }
+			</style>
 		`;
 	}
 
