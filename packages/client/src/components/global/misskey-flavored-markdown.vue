@@ -173,9 +173,9 @@ const props = withDefaults(defineProps<{
 		display: block;
 		margin: 8px;
 		padding: 6px 0 6px 12px;
-		color: var(--fg);
-		border-left: solid 3px var(--fg);
-		opacity: 0.7;
+		color: var(--quote, var(--fg));
+		border-left: solid 3px var(--quote, var(--fg));
+		opacity: var(--quote, 0.7);
 	}
 
 	::v-deep(pre) {
