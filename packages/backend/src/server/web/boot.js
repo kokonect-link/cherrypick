@@ -15,10 +15,10 @@
 // ブロックの中に入れないと、定義した変数がブラウザのグローバルスコープに登録されてしまい邪魔なので
 (async () => {
 	window.onerror = (e) => {
-		renderError('SOMETHING_HAPPENED', e.toString());
+		renderError('SOMETHING_HAPPENED', e);
 	};
 	window.onunhandledrejection = (e) => {
-		renderError('SOMETHING_HAPPENED_IN_PROMISE', e.toString());
+		renderError('SOMETHING_HAPPENED_IN_PROMISE', e);
 	};
 
 	const v = localStorage.getItem('v') || VERSION;
@@ -58,7 +58,7 @@
 	import(`/assets/${CLIENT_ENTRY}`)
 		.catch(async e => {
 			await checkUpdate();
-			renderError('APP_FETCH_FAILED', JSON.stringify(e));
+			renderError('APP_FETCH_FAILED', e);
 		})
 	//#endregion
 
@@ -105,16 +105,24 @@
 
 	// eslint-disable-next-line no-inner-declarations
 	function renderError(code, details) {
-		document.documentElement.innerHTML = `
-			<h1>⚠문제가 발생했습니다 / エラーが発生しました</h1>
+		let errorsElement = document.getElementById('errors');
+		if (!errorsElement) {
+			document.documentElement.innerHTML = `
+			<style>
+				[lang] { display: none; }
+				#ko-KR:checked ~ [lang~="ko-KR"] { display: block; }
+				#ja-JP:checked ~ [lang~="ja-JP"] { display: block; }
+				#en:checked ~ [lang~="en"] { display: block; }
+			</style>
+			<h1>⚠ An error has occurred. ⚠</h1>
 
 			Language:
+			<input type="radio" name="lang" id="en" value="en">
+			<label for="korean">English</label>
 			<input type="radio" name="lang" id="ko-KR" value="ko-KR" checked>
 			<label for="korean">한국어</label>
 			<input type="radio" name="lang" id="ja-JP" value="ko-KR">
 			<label for="korean">日本語</label>
-			<input type="radio" name="lang" id="en" value="en">
-			<label for="korean">English</label>
 			
 			<main lang="ja-JP">
 					<p>問題が解決しない場合は管理者までお問い合わせください。以下のオプションを試すこともできます:</p>
@@ -135,27 +143,24 @@
 			</main>
 			
 			<main lang="en">
-					<p>If you have troubles on loading the web app, Please contact to the instance maintainer. Or you can try:</p>
+				<p>If the problem persists, please contact the administrator. You may also try the following options:</p>
 					<ul>
-							<li>Run <a href="/cli">Minimal Client</a></li>
-							<li>Recover settings from <a href="/bios">BIOS</a></li>
-							<li><a href="/flush">Flush local cache</a></li>
+					<li>Start <a href="/cli">the simple client</a></li>
+					<li>Attempt to repair in <a href="/bios">BIOS</a></li>
+					<li><a href="/flush">Flush preferences and cache</a></li>
 					</ul>
 			</main>
-			
 			<hr>
-			<code>ERROR CODE: ${code}</code>
-			<details>
-					${details}
-			</details>
-			
-			<style>
-					[lang] { display: none; }
-					#ko-KR:checked ~ [lang~="ko-KR"] { display: block; }
-					#ja-JP:checked ~ [lang~="ja-JP"] { display: block; }
-					#en:checked ~ [lang~="en"] { display: block; }
-			</style>
-		`;
+			<div id="errors"></div>
+			`;
+
+			errorsElement = document.getElementById('errors');
+		}
+
+		const detailsElement = document.createElement('details');
+		detailsElement.innerHTML = `<summary><code>ERROR CODE: ${code}</code></summary>${JSON.stringify(details)}`;
+
+		errorsElement.appendChild(detailsElement);
 	}
 
 	// eslint-disable-next-line no-inner-declarations
