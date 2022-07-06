@@ -1,5 +1,5 @@
 <template>
-<div class="_formRoot root">
+<div class="_formRoot rsljpzjq">
 	<div v-adaptive-border class="rfqxtzch _panel _formBlock">
 		<div class="toggle">
 			<div class="toggleWrapper">
@@ -97,7 +97,10 @@ const darkThemeId = computed({
 		return darkTheme.value.id;
 	},
 	set(id) {
-		ColdDeviceStorage.set('darkTheme', themes.value.find(x => x.id === id));
+		const t = themes.value.find(x => x.id === id);
+		if (t) { // テーマエディタでテーマを作成したときなどは、themesに反映されないため undefined になる
+			ColdDeviceStorage.set('darkTheme', t);
+		}
 	},
 });
 const lightTheme = ColdDeviceStorage.ref('lightTheme');
@@ -106,7 +109,10 @@ const lightThemeId = computed({
 		return lightTheme.value.id;
 	},
 	set(id) {
-		ColdDeviceStorage.set('lightTheme', themes.value.find(x => x.id === id));
+		const t = themes.value.find(x => x.id === id);
+		if (t) { // テーマエディタでテーマを作成したときなどは、themesに反映されないため undefined になる
+			ColdDeviceStorage.set('lightTheme', t);
+		}
 	},
 });
 const darkMode = computed(defaultStore.makeGetterSetter('darkMode'));
@@ -152,7 +158,6 @@ const headerTabs = $computed(() => []);
 definePageMetadata({
 	title: i18n.ts.theme,
 	icon: 'fas fa-palette',
-	bg: 'var(--bg)',
 });
 </script>
 
@@ -176,7 +181,7 @@ definePageMetadata({
 		> .toggleWrapper {
 			display: inline-block;
 			text-align: left;
-			overflow: clip;
+			overflow: hidden; overflow: clip;
 			padding: 0 100px;
 
 			input {
@@ -385,7 +390,7 @@ definePageMetadata({
 	}
 }
 
-.root {
+.rsljpzjq {
 	> .selects {
 		display: flex;
 		gap: 1.5em var(--margin);
