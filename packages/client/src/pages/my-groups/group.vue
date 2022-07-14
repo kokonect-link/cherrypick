@@ -3,7 +3,7 @@
 		<MkSpacer :content-max="700">
 	<div class="mk-group-page">
 		<transition :name="$store.state.animation ? 'zoom' : ''" mode="out-in">
-			<div v-if="group" class="_section">
+			<div v-if="group && $i.id === group.ownerId" class="_section">
 				<div class="_content" style="">
 					<MkButton inline @click="invite()">{{ $ts.invite }}</MkButton>
 					<MkButton inline @click="renameGroup()">{{ $ts.rename }}</MkButton>
@@ -90,7 +90,7 @@ async function renameGroup() {
 	});
 	if (canceled) return;
 
-	await os.api('users/groups/update', {
+	await os.apiWithDialog('users/groups/update', {
 		groupId: group.id,
 		name: name,
 	});
