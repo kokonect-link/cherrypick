@@ -6,7 +6,7 @@
 			<div class="track">
 				<div class="highlight" :style="{ width: (steppedRawValue * 100) + '%' }"></div>
 			</div>
-			<div v-if="steps" class="ticks">
+			<div v-if="steps && showTicks" class="ticks">
 				<div v-for="i in (steps + 1)" class="tick" :style="{ left: (((i - 1) / steps) * 100) + '%' }"></div>
 			</div>
 			<div ref="thumbEl" v-tooltip="textConverter(finalValue)" class="thumb" :style="{ left: thumbPosition + 'px' }" @mousedown="onMousedown" @touchstart="onMousedown"></div>
@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<{
 	max: number;
 	step?: number;
 	textConverter?: (value: number) => string,
+	showTicks?: boolean;
 }>(), {
 	step: 1,
 	textConverter: (v) => v.toString(),
@@ -197,7 +198,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 					height: 100%;
 					background: var(--accent);
 					opacity: 0.5;
-					transition: width 0.2s cubic-bezier(0,0,0,1);
+					//transition: width 0.2s cubic-bezier(0,0,0,1);
 				}
 			}
 
@@ -230,7 +231,7 @@ const onMousedown = (ev: MouseEvent | TouchEvent) => {
 				cursor: grab;
 				background: var(--accent);
 				border-radius: 999px;
-				transition: left 0.2s cubic-bezier(0,0,0,1);
+				//transition: left 0.2s cubic-bezier(0,0,0,1);
 
 				&:hover {
 					background: var(--accentLighten);

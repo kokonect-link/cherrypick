@@ -1,5 +1,5 @@
 <template>
-<div ref="rootEl" class="root">
+<div ref="rootEl" class="meijqfqm">
 	<canvas :id="idForCanvas" ref="canvasEl" class="canvas" :width="width" height="300" @contextmenu.prevent="() => {}"></canvas>
 	<div :id="idForTags" ref="tagsEl" class="tags">
 		<ul>
@@ -12,8 +12,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch, PropType, onBeforeUnmount } from 'vue';
 import tinycolor from 'tinycolor2';
-
-const props = defineProps<{}>();
 
 const loaded = !!window.TagCanvas;
 const SAFE_FOR_HTML_ID = 'abcdefghijklmnopqrstuvwxyz';
@@ -71,7 +69,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-.root {
+.meijqfqm {
 	position: relative;
 	overflow: clip;
 	display: grid;

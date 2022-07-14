@@ -21,6 +21,7 @@ module.exports = {
 		}],
 		'eol-last': ['error', 'always'],
 		'semi': ['error', 'always'],
+		'semi-spacing': ['error', { 'before': false, 'after': true }],
 		'quotes': ['warn', 'single'],
 		'comma-dangle': ['warn', 'always-multiline'],
 		'keyword-spacing': ['error', {
@@ -52,7 +53,6 @@ module.exports = {
 		'no-empty-pattern': ['warn'],
 		'no-async-promise-executor': ['off'],
 		'no-useless-escape': ['off'],
-		'no-multi-spaces': ['warn'],
 		'no-multiple-empty-lines': ['error', { 'max': 1 }],
 		'no-control-regex': ['warn'],
 		'no-empty': ['warn'],

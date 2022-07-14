@@ -355,7 +355,7 @@ async function renderChart() {
 		plugins: [{
 			id: 'vLine',
 			beforeDraw(chart, args, options) {
-				if (chart.tooltip._active && chart.tooltip._active.length) {
+				if (chart.tooltip?._active?.length) {
 					const activePoint = chart.tooltip._active[0];
 					const ctx = chart.ctx;
 					const x = activePoint.element.x;
@@ -468,7 +468,6 @@ const headerTabs = $computed(() => []);
 definePageMetadata({
 	title: i18n.ts.dashboard,
 	icon: 'fas fa-tachometer-alt',
-	bg: 'var(--bg)',
 });
 </script>
 

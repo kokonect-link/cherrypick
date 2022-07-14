@@ -172,15 +172,14 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .fdidabkb {
-	--height: 60px;
+	--height: 55px;
 	display: flex;
-	position: sticky;
-	top: var(--stickyTop, 0);
-	z-index: 1000;
 	width: 100%;
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 	border-bottom: solid 0.5px var(--divider);
+	contain: strict;
+	height: var(--height);
 
 	&.thin {
 		--height: 45px;

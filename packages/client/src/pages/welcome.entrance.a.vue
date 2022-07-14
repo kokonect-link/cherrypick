@@ -23,6 +23,7 @@
 					<span class="text">{{ instanceName }}</span>
 				</h1>
 				<div class="about">
+					<!-- eslint-disable-next-line vue/no-v-html -->
 					<div class="desc" v-html="meta.description || i18n.ts.headlineMisskey"></div>
 				</div>
 				<div class="action">
@@ -47,8 +48,8 @@
 <script lang="ts" setup>
 import { } from 'vue';
 import { toUnicode } from 'punycode/';
-import MarqueeText from 'vue-marquee-text-component';
 import XTimeline from './welcome.timeline.vue';
+import MarqueeText from '@/components/marquee.vue';
 import XSigninDialog from '@/components/signin-dialog.vue';
 import XSignupDialog from '@/components/signup-dialog.vue';
 import MkButton from '@/components/ui/button.vue';
