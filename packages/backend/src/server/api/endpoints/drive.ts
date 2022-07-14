@@ -37,7 +37,7 @@ export default define(meta, paramDef, async (ps, user) => {
 
 	// Calculate drive usage and capacity
 	const usage = await DriveFiles.calcDriveUsageOf(user.id);
-	const capacity = await user.driveCapacityOverrideMb || instance.localDriveCapacityMb;
+	const capacity = user.driveCapacityOverrideMb || instance.localDriveCapacityMb;
 
 	return {
 		capacity: 1024 * 1024 * capacity,
