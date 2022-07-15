@@ -24,10 +24,10 @@
 								<MkUserName :user="user" class="name"/>
 								<MkAcct :user="user" class="acct"/>
 							</div>
-							<div v-if="group && $i.id === group.ownerId && user.id !== group.ownerId" class="action">
-								<button class="_button" @click="removeUser(user)"><i class="fas fa-times"></i></button>
+							<div v-if="user.id === group.ownerId" :title="$ts.leader" style="color: var(--badge);"><i class="fas fa-crown"></i></div>
+							<div v-else-if="group && $i.id === group.ownerId" class="action">
+								<button class="_button" :title="$ts.banish" @click="removeUser(user)"><i class="fas fa-times"></i></button>
 							</div>
-							<div v-else :title="$ts.administrator" style="color: var(--badge);"><i class="fas fa-crown"></i></div>
 						</div>
 					</div>
 				</div>
@@ -74,8 +74,14 @@ function invite() {
 	});
 }
 
-function removeUser(user) {
-	os.api('users/groups/pull', {
+async function removeUser(user) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.t('banishConfirm', { name: user.name || user.username }),
+	});
+	if (canceled) return;
+
+	os.apiWithDialog('users/groups/pull', {
 		groupId: group.id,
 		userId: user.id,
 	}).then(() => {
