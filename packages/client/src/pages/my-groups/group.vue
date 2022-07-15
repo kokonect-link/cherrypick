@@ -3,12 +3,12 @@
 		<MkSpacer :content-max="700">
 	<div class="mk-group-page">
 		<transition :name="$store.state.animation ? 'zoom' : ''" mode="out-in">
-			<div v-if="group && $i.id === group.ownerId" class="_section">
+			<div v-if="group && $i.id === group.ownerId" class="_section actions">
 				<div class="_content" style="">
 					<MkButton inline @click="invite()">{{ $ts.invite }}</MkButton>
 					<MkButton inline @click="renameGroup()">{{ $ts.rename }}</MkButton>
 					<MkButton inline @click="transfer()">{{ $ts.transfer }}</MkButton>
-					<MkButton inline @click="deleteGroup()">{{ $ts.delete }}</MkButton>
+					<MkButton inline danger @click="deleteGroup()">{{ $ts.delete }}</MkButton>
 				</div>
 			</div>
 		</transition>
@@ -24,9 +24,10 @@
 								<MkUserName :user="user" class="name"/>
 								<MkAcct :user="user" class="acct"/>
 							</div>
-							<div v-if="group && $i.id === group.ownerId" class="action">
+							<div v-if="group && $i.id === group.ownerId && user.id !== group.ownerId" class="action">
 								<button class="_button" @click="removeUser(user)"><i class="fas fa-times"></i></button>
 							</div>
+							<div v-else :title="$ts.administrator" style="color: var(--badge);"><i class="fas fa-crown"></i></div>
 						</div>
 					</div>
 				</div>
@@ -134,12 +135,25 @@ definePageMetadata(computed(() => group ? {
 
 <style lang="scss" scoped>
 .mk-group-page {
+	> .actions {
+		._content {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--margin);
+		}
+	}
 	> .members {
 		> ._content {
 			display: flex;
 			gap: var(--margin);
 			flex-wrap: wrap;
 			> .users {
+				margin-top: var(--margin);
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+				grid-gap: 12px;
+				width: 100%;
+
 				> .user {
 					display: flex;
 					align-items: center;
@@ -153,6 +167,9 @@ definePageMetadata(computed(() => group ? {
 					> .body {
 						flex: 1;
 						padding: 8px;
+						width: 100%;
+						white-space: nowrap;
+						overflow: hidden;
 
 						> .name {
 							display: block;
