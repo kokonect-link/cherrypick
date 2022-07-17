@@ -9,6 +9,28 @@
 You should also include the user name that made the change.
 -->
 
+## 12.116.1 (2022/07/17)
+
+### Bugfixes
+- Client: デッキUI時に ページで表示 ボタンが機能しない問題を修正 @syuilo
+- Error During Migration Run to 12.111.x
+
+## 12.116.0 (2022/07/16)
+
+### Improvements
+- Client: registry editor @syuilo
+- Client: UIのブラッシュアップ @syuilo
+
+### Bugfixes
+- Error During Migration Run to 12.111.x
+- Server: TypeError: Cannot convert undefined or null to object @syuilo
+
+## 12.115.0 (2022/07/16)
+
+### Improvements
+- Client: Deckのプロファイル切り替えを簡単に @syuilo
+- Client: UIのブラッシュアップ @syuilo
+
 ## 12.114.0 (2022/07/15)
 
 ### Improvements
