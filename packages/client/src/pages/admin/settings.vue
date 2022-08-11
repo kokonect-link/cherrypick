@@ -130,15 +130,24 @@
 					</FormSection>
 
 					<FormSection>
-						<template #label>DeepL Translation</template>
+						<template #label>Translation</template>
 
-						<FormInput v-model="deeplAuthKey" class="_formBlock">
-							<template #prefix><i class="fas fa-key"></i></template>
-							<template #label>DeepL Auth Key</template>
-						</FormInput>
-						<FormSwitch v-model="deeplIsPro" class="_formBlock">
-							<template #label>Pro account</template>
-						</FormSwitch>
+						<FormRadios v-model="translatorType" class="_formBlock">
+							<template #label>Translator type</template>
+							<option :value="null">{{ i18n.ts.none }}</option>
+							<option value="DeepL">DeepL</option>
+							<option value="GoogleNoAPI">Google Translate(without API)</option>
+						</FormRadios>
+
+						<template v-if="translatorType === 'DeepL'">
+							<FormInput v-model="deeplAuthKey" class="_formBlock">
+								<template #prefix><i class="fas fa-key"></i></template>
+								<template #label>DeepL Auth Key</template>
+							</FormInput>
+							<FormSwitch v-model="deeplIsPro" class="_formBlock">
+								<template #label>Pro account</template>
+							</FormSwitch>
+						</template>
 					</FormSection>
 				</div>
 			</FormSuspense>
@@ -157,6 +166,7 @@ import FormInfo from '@/components/ui/info.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
 import FormSuspense from '@/components/form/suspense.vue';
+import FormRadios from '@/components/form/radios.vue'
 import * as os from '@/os';
 import { fetchInstance } from '@/instance';
 import { i18n } from '@/i18n';
@@ -184,6 +194,7 @@ let emailRequiredForSignup: boolean = $ref(false);
 let enableServiceWorker: boolean = $ref(false);
 let swPublicKey: any = $ref(null);
 let swPrivateKey: any = $ref(null);
+let translatorType: string | null = $ref(null);
 let deeplAuthKey: string = $ref('');
 let deeplIsPro: boolean = $ref(false);
 
@@ -211,6 +222,7 @@ async function init() {
 	enableServiceWorker = meta.enableServiceWorker;
 	swPublicKey = meta.swPublickey;
 	swPrivateKey = meta.swPrivateKey;
+	translatorType = meta.translatorType;
 	deeplAuthKey = meta.deeplAuthKey;
 	deeplIsPro = meta.deeplIsPro;
 }
@@ -239,6 +251,7 @@ function save() {
 		enableServiceWorker,
 		swPublicKey,
 		swPrivateKey,
+		translatorType,
 		deeplAuthKey,
 		deeplIsPro,
 	}).then(() => {

@@ -336,6 +336,12 @@ export class Meta {
 	public discordClientSecret: string | null;
 
 	@Column('varchar', {
+		length: 32,
+		nullable: true,
+	})
+	public translatorType: string | null;
+
+	@Column('varchar', {
 		length: 128,
 		nullable: true,
 	})

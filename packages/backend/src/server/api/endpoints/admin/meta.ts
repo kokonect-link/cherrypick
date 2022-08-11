@@ -155,6 +155,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			translatorType: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			proxyAccountName: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -380,7 +384,9 @@ export default define(meta, paramDef, async (ps, me) => {
 		enableGithubIntegration: instance.enableGithubIntegration,
 		enableDiscordIntegration: instance.enableDiscordIntegration,
 		enableServiceWorker: instance.enableServiceWorker,
-		translatorAvailable: instance.deeplAuthKey != null,
+		// translatorAvailable: instance.deeplAuthKey != null,
+		translatorAvailable: instance.translatorType != null,
+		translatorType: instance.translatorType,
 		pinnedPages: instance.pinnedPages,
 		pinnedClipId: instance.pinnedClipId,
 		cacheRemoteFiles: instance.cacheRemoteFiles,
