@@ -6,11 +6,11 @@
 	desc: 'CherryPick default dark theme',
 
 	props: {
-		bg: '#373940',
-		fg: 'rgb(199, 209, 216)',
+		bg: 'rgb(28, 28, 37)',
+		fg: 'rgb(236, 239, 244)',
 		fgHighlighted: '#fff',
-		divider: 'rgba(255, 255, 255, 0.14)',
-		panel: '#3e3f47',
+		divider: 'rgb(63, 63, 80)',
+		panel: 'rgb(35, 35, 47)',
 		panelHeaderBg: '@panel',
 		panelHeaderDivider: '@divider',
 		infoFg: '@accent',
