@@ -51,12 +51,11 @@ import { host } from '@/config';
 import { search } from '@/scripts/search';
 import * as os from '@/os';
 import { navbarItemDef } from '@/navbar';
-import { openAccountMenu as openAccountMenu_ } from '@/account';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { defaultStore } from '@/store';
 import { instance } from '@/instance';
 import { i18n } from '@/i18n';
 import { mainRouter } from '@/router';
-import { $i } from '@/account';
 
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {

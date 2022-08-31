@@ -78,7 +78,7 @@ import { mainRouter } from '@/router';
 import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/scripts/page-metadata';
 import { deviceKind } from '@/scripts/device-kind';
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
-const XSidebar = defineAsyncComponent(() => import('@/ui/_common_/navbar.vue'));
+const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 
 const DESKTOP_THRESHOLD = 1100;
