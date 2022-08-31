@@ -1,0 +1,44 @@
+# Visual Studio Code
+/.vscode
+!/.vscode/extensions.json
+
+# Intelij-IDEA
+/.idea
+
+# Node.js
+node_modules
+report.*.json
+
+# Cypress
+cypress/screenshots
+cypress/videos
+
+# config
+/.config/*
+!/.config/example.yml
+!/.config/docker_example.env
+
+# misskey
+/build
+built
+/data
+/.cache-loader
+/db
+/elasticsearch
+npm-debug.log
+*.pem
+run.bat
+api-docs.json
+*.log
+/redis
+*.code-workspace
+.DS_Store
+/files
+ormconfig.json
+
+# blender backups
+*.blend1
+*.blend2
+*.blend3
+*.blend4
+*.blend5

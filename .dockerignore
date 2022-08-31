@@ -1,0 +1,15 @@
+.autogen
+.github
+.travis
+.vscode
+.config
+Dockerfile
+build/
+built/
+db/
+docker-compose.yml
+elasticsearch/
+node_modules/
+redis/
+files/
+misskey-assets/
