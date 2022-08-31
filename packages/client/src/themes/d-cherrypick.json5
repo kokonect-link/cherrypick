@@ -1,0 +1,28 @@
+{
+	id: 'da73e355-3f13-4f0d-8202-d0946716601a',
+	base: 'dark',
+	name: 'CherryPick Dark',
+	author: 'noridev',
+	desc: 'CherryPick default dark theme',
+
+	props: {
+		bg: '#373940',
+		fg: 'rgb(199, 209, 216)',
+		fgHighlighted: '#fff',
+		divider: 'rgba(255, 255, 255, 0.14)',
+		panel: '#3e3f47',
+		panelHeaderBg: '@panel',
+		panelHeaderDivider: '@divider',
+		infoFg: '@accent',
+		infoBg: 'rgb(0, 0, 0)',
+		acrylicPanel: ':alpha<0.9<@panel',
+		header: '@bg',
+		navBg: '@panel',
+		navHoverFg: '@pick',
+		renote: '@accent',
+		mention: '#da6d35',
+		mentionMe: '#d44c4c',
+		hashtag: '#4cb8d4',
+		link: '@accent',
+	},
+}

@@ -15,6 +15,7 @@ import MkLoading from './global/loading.vue';
 import MkError from './global/error.vue';
 import MkAd from './global/ad.vue';
 import MkPageHeader from './global/page-header.vue';
+import CPPageHeader from './global/CPPageHeader.vue';
 import MkSpacer from './global/spacer.vue';
 import MkStickyContainer from './global/sticky-container.vue';
 
@@ -34,6 +35,7 @@ export default function(app: App) {
 	app.component('MkError', MkError);
 	app.component('MkAd', MkAd);
 	app.component('MkPageHeader', MkPageHeader);
+	app.component('CPPageHeader', CPPageHeader);
 	app.component('MkSpacer', MkSpacer);
 	app.component('MkStickyContainer', MkStickyContainer);
 }
@@ -55,6 +57,7 @@ declare module '@vue/runtime-core' {
 		MkError: typeof MkError;
 		MkAd: typeof MkAd;
 		MkPageHeader: typeof MkPageHeader;
+		CPPageHeader: typeof CPPageHeader;
 		MkSpacer: typeof MkSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
 	}

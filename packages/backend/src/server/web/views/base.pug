@@ -7,26 +7,26 @@ doctype html
 
 //
 	-
-	  _____ _         _           
-	 |     |_|___ ___| |_ ___ _ _ 
-	 | | | | |_ -|_ -| '_| -_| | |
-	 |_|_|_|_|___|___|_,_|___|_  |
-	                         |___|
-	 Thank you for using Misskey!
-	 If you are reading this message... how about joining the development?
-	 https://github.com/misskey-dev/misskey
-	 
+		_________ .__                                __________.__        __
+		\_   ___ \|  |__   __________________ ___.__.\______   \__| ____ |  | __
+		/    \  \/|  |  \_/ __ \_  __ \_  __ <   |  | |     ___/  |/ ___\|  |/ /
+		\     \___|   Y  \  ___/|  | \/|  | \/\___  | |    |   |  \  \___|    <
+		\______  /___|  /\___  >__|   |__|   / ____| |____|   |__|\___  >__|_ \
+			\/     \/     \/              \/                       \/     \/
+		Thank you for using CherryPick!
+		If you are reading this message... how about joining the development?
+		https://github.com/kokonect-link/cherrypick
 
 html
 
 	head
 		meta(charset='utf-8')
-		meta(name='application-name' content='Misskey')
+		meta(name='application-name' content='CherryPick')
 		meta(name='referrer' content='origin')
 		meta(name='theme-color' content= themeColor || '#86b300')
 		meta(name='theme-color-orig' content= themeColor || '#86b300')
 		meta(property='twitter:card' content='summary')
-		meta(property='og:site_name' content= instanceName || 'Misskey')
+		meta(property='og:site_name' content= instanceName || 'CherryPick')
 		meta(name='viewport' content='width=device-width, initial-scale=1')
 		link(rel='icon' href= icon || '/favicon.ico')
 		link(rel='apple-touch-icon' href= icon || '/apple-touch-icon.png')
@@ -45,7 +45,7 @@ html
 
 		title
 			block title
-				= title || 'Misskey'
+				= title || 'CherryPick'
 
 		block desc
 			meta(name='description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨')
@@ -53,8 +53,8 @@ html
 		block meta
 
 		block og
-			meta(property='og:title'       content= title || 'Misskey') 
-			meta(property='og:description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨') 
+			meta(property='og:title'       content= title || 'CherryPick')
+			meta(property='og:description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨')
 			meta(property='og:image'       content= img)
 
 		style
@@ -76,13 +76,13 @@ html
 			img#splashIcon(src= icon || '/static-assets/splash.png')
 			div#splashSpinner
 				<svg class="spinner bg" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
-					<g transform="matrix(1,0,0,1,12,12)">
-						<circle cx="64" cy="64" r="64" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
-					</g>
+				<g transform="matrix(1,0,0,1,12,12)">
+				<circle cx="64" cy="64" r="64" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
+				</g>
 				</svg>
 				<svg class="spinner fg" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
-					<g transform="matrix(1,0,0,1,12,12)">
-						<path d="M128,64C128,28.654 99.346,0 64,0C99.346,0 128,28.654 128,64Z" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
-					</g>
+				<g transform="matrix(1,0,0,1,12,12)">
+				<path d="M128,64C128,28.654 99.346,0 64,0C99.346,0 128,28.654 128,64Z" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
+				</g>
 				</svg>
 		block content

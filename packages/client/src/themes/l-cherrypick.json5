@@ -1,0 +1,20 @@
+{
+	id: '7540fce3-218f-4e1b-8182-b9481d977078',
+	base: 'light',
+	name: 'CherryPick Light',
+	author: 'noridev',
+	desc: 'CherryPick default light theme',
+
+	props: {
+		bg: '#f9f9f9',
+		fg: '#676767',
+		divider: 'rgb(223, 223, 223)',
+		acrylicPanel: ':alpha<0.9<@panel',
+		header: '@bg',
+		navBg: '#fff',
+		navHoverFg: '@pick',
+		panel: '#fff',
+		panelHeaderDivider: '@divider',
+		messageBg: '#dedede',
+	},
+}

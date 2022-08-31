@@ -103,6 +103,13 @@ export const navbarItemDef = reactive({
 		action: (ev) => {
 			os.popupMenu([{
 				text: i18n.ts.default,
+				active: ui === 'friendly' || ui === null,
+				action: () => {
+					localStorage.setItem('ui', 'friendly');
+					unisonReload();
+				},
+			}, {
+				text: i18n.ts.default,
 				active: ui === 'default' || ui === null,
 				action: () => {
 					localStorage.setItem('ui', 'default');

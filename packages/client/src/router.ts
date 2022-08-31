@@ -198,6 +198,7 @@ export const routes = [{
 	component: page(() => import('./pages/explore.vue')),
 }, {
 	path: '/explore',
+	name: 'explore',
 	component: page(() => import('./pages/explore.vue')),
 }, {
 	path: '/search',
@@ -374,6 +375,7 @@ export const routes = [{
 	}],
 }, {
 	path: '/my/notifications',
+	name: 'my-notifications',
 	component: page(() => import('./pages/notifications.vue')),
 	loginRequired: true,
 }, {
