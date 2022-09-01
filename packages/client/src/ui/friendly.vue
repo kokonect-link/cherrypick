@@ -290,6 +290,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		font-size: 22px;
 		background: var(--accent);
 		opacity: 0.7;
+		border-radius: 20%;
 
 		i {
 			color: white;
@@ -339,8 +340,9 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		box-sizing: border-box;
 		-webkit-backdrop-filter: var(--blur, blur(32px));
 		backdrop-filter: var(--blur, blur(32px));
-		background-color: var(--header);
+		background-color: var(--panel);
 		border-top: solid 0.5px var(--divider);
+		padding: 0 15px;
 
 		> .button {
 			position: relative;

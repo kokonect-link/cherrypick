@@ -110,7 +110,7 @@ export const navbarItemDef = reactive({
 				},
 			}, {
 				text: i18n.ts.default,
-				active: ui === 'default' || ui === null,
+				active: ui === 'default',
 				action: () => {
 					localStorage.setItem('ui', 'default');
 					unisonReload();
