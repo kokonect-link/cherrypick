@@ -127,7 +127,7 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 const calcBg = () => {
 	const rawBg = metadata?.bg || 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	tinyBg.setAlpha(0.85);
+	tinyBg.setAlpha(1);
 	bg.value = tinyBg.toRgbString();
 };
 
