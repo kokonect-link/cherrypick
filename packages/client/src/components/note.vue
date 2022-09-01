@@ -9,20 +9,16 @@
 	:tabindex="!isDeleted ? '-1' : null"
 	:class="{ renote: isRenote }"
 >
-	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" class="reply-to"/>
-	<div v-if="pinned" class="info"><i class="fas fa-thumbtack"></i> {{ i18n.ts.pinnedNote }}</div>
-	<div v-if="appearNote._prId_" class="info"><i class="fas fa-bullhorn"></i> {{ i18n.ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ i18n.ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
-	<div v-if="appearNote._featuredId_" class="info"><i class="fas fa-bolt"></i> {{ i18n.ts.featured }}</div>
 	<div v-if="isRenote" class="renote">
 		<MkAvatar class="avatar" :user="note.user"/>
-		<i class="fas fa-retweet"></i>
-		<I18n :src="i18n.ts.renotedBy" tag="span">
-			<template #user>
-				<MkA v-user-preview="note.userId" class="name" :to="userPage(note.user)">
-					<MkUserName :user="note.user"/>
-				</MkA>
-			</template>
-		</I18n>
+		<MkA v-user-preview="note.userId" class="name" :to="userPage(note.user)">
+			<i class="fas fa-retweet"></i>
+			<I18n :src="i18n.ts.renotedBy" tag="span">
+				<template #user>
+					<MkUserName class="username" :user="note.user"/>
+				</template>
+			</I18n>
+		</MkA>
 		<div class="info">
 			<button ref="renoteTime" class="_button time" @click="showRenoteMenu()">
 				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
@@ -31,6 +27,10 @@
 			<MkVisibility :note="note"/>
 		</div>
 	</div>
+	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" class="reply-to"/>
+	<div v-if="pinned" class="info"><i class="fas fa-thumbtack"></i> {{ i18n.ts.pinnedNote }}</div>
+	<div v-if="appearNote._prId_" class="info"><i class="fas fa-bullhorn"></i> {{ i18n.ts.promotion }}<button class="_textButton hide" @click="readPromo()">{{ i18n.ts.hideThisNote }} <i class="fas fa-times"></i></button></div>
+	<div v-if="appearNote._featuredId_" class="info"><i class="fas fa-bolt"></i> {{ i18n.ts.featured }}</div>
 	<article class="article" @contextmenu.stop="onContextmenu">
 		<MkAvatar class="avatar" :user="appearNote.user"/>
 		<div class="main">
@@ -365,7 +365,7 @@ function readPromo() {
 	> .renote {
 		display: flex;
 		align-items: center;
-		padding: 16px 32px 8px 32px;
+		padding: 16px 32px 8px;
 		line-height: 28px;
 		white-space: pre;
 		color: var(--renote);
@@ -383,14 +383,27 @@ function readPromo() {
 			margin-right: 4px;
 		}
 
-		> span {
+		> .name {
+			text-decoration: none;
 			overflow: hidden;
-			flex-shrink: 1;
 			text-overflow: ellipsis;
-			white-space: nowrap;
+			padding-right: 10px;
 
-			> .name {
-				font-weight: bold;
+			&:hover {
+				color: var(--renoteHover);
+			}
+
+			> i {
+				margin-right: 4px;
+			}
+
+			> span {
+				flex-shrink: 1;
+				white-space: nowrap;
+
+				> .username {
+					font-weight: bold;
+				}
 			}
 		}
 

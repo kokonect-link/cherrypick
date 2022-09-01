@@ -9,18 +9,16 @@
 	:tabindex="!isDeleted ? '-1' : null"
 	:class="{ renote: isRenote }"
 >
-	<MkNoteSub v-for="note in conversation" :key="note.id" class="reply-to-more" :note="note"/>
-	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" class="reply-to"/>
 	<div v-if="isRenote" class="renote">
 		<MkAvatar class="avatar" :user="note.user"/>
-		<i class="fas fa-retweet"></i>
-		<I18n :src="i18n.ts.renotedBy" tag="span">
-			<template #user>
-				<MkA v-user-preview="note.userId" class="name" :to="userPage(note.user)">
-					<MkUserName :user="note.user"/>
-				</MkA>
-			</template>
-		</I18n>
+		<MkA v-user-preview="note.userId" class="name" :to="userPage(note.user)">
+			<i class="fas fa-retweet"></i>
+			<I18n :src="i18n.ts.renotedBy" tag="span">
+				<template #user>
+					<MkUserName class="username" :user="note.user"/>
+				</template>
+			</I18n>
+		</MkA>
 		<div class="info">
 			<button ref="renoteTime" class="_button time" @click="showRenoteMenu()">
 				<i v-if="isMyRenote" class="fas fa-ellipsis-h dropdownIcon"></i>
@@ -29,6 +27,8 @@
 			<MkVisibility :note="note"/>
 		</div>
 	</div>
+	<MkNoteSub v-for="note in conversation" :key="note.id" class="reply-to-more" :note="note"/>
+	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" class="reply-to"/>
 	<article class="article" @contextmenu.stop="onContextmenu">
 		<header class="header">
 			<MkAvatar class="avatar" :user="appearNote.user" :show-indicator="true"/>
@@ -358,14 +358,26 @@ if (appearNote.replyId) {
 			margin-right: 4px;
 		}
 
-		> span {
-			overflow: hidden;
-			flex-shrink: 1;
-			text-overflow: ellipsis;
-			white-space: nowrap;
+		> .name {
+			text-decoration: none;
 
-			> .name {
-				font-weight: bold;
+			&:hover {
+				color: var(--renoteHover);
+			}
+
+			> i {
+				margin-right: 4px;
+			}
+
+			> span {
+				overflow: hidden;
+				flex-shrink: 1;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+
+				> .username {
+					font-weight: bold;
+				}
 			}
 		}
 

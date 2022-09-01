@@ -43,7 +43,7 @@
 		hashtag: '#ff9156',
 		mention: '@accent',
 		mentionMe: '@mention',
-		renote: '#229e82',
+		renote: '@accent',
 		renoteHover: ':lighten<5<@renote',
 		modalBg: 'rgba(0, 0, 0, 0.5)',
 		scrollbarHandle: 'rgba(255, 255, 255, 0.2)',
