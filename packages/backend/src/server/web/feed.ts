@@ -26,7 +26,7 @@ export default async function(user: User) {
 		id: author.link,
 		title: `${author.name} (@${user.username}@${config.host})`,
 		updated: notes[0].createdAt,
-		generator: 'Misskey',
+		generator: 'CherryPick',
 		description: `${user.notesCount} Notes, ${profile.ffVisibility === 'public' ? user.followingCount : '?'} Following, ${profile.ffVisibility === 'public' ? user.followersCount : '?'} Followers${profile.description ? ` · ${profile.description}` : ''}`,
 		link: author.link,
 		image: await Users.getAvatarUrl(user),
