@@ -9,13 +9,13 @@ export function genOpenapiSpec() {
 
 		info: {
 			version: 'v1',
-			title: 'Misskey API',
+			title: 'CherryPick API',
 			'x-logo': { url: '/static-assets/api-doc.png' },
 		},
 
 		externalDocs: {
 			description: 'Repository',
-			url: 'https://github.com/misskey-dev/misskey',
+			url: 'https://github.com/kokonect-link/cherrypick',
 		},
 
 		servers: [{
@@ -77,7 +77,7 @@ export function genOpenapiSpec() {
 			description: desc,
 			externalDocs: {
 				description: 'Source code',
-				url: `https://github.com/misskey-dev/misskey/blob/develop/packages/backend/src/server/api/endpoints/${endpoint.name}.ts`,
+				url: `https://github.com/kokonect-link/cherrypick/blob/develop/packages/backend/src/server/api/endpoints/${endpoint.name}.ts`,
 			},
 			...(endpoint.meta.tags ? {
 				tags: [endpoint.meta.tags[0]],
