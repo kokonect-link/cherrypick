@@ -1,7 +1,21 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<div ref="rootEl" v-hotkey.global="keymap" v-size="{ min: [800] }" class="tqmomfks">
+	<div v-if="isFriendly" ref="rootEl" v-hotkey.global="keymap" class="tqmomfks">
+		<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
+		<div class="tl _block">
+			<XTimeline
+				ref="tlEl" :key="antennaId"
+				class="tl"
+				src="antenna"
+				:antenna="antennaId"
+				:sound="true"
+				@queue="queueUpdated"
+			/>
+		</div>
+	</div>
+
+	<div v-else ref="rootEl" v-hotkey.global="keymap" v-size="{ min: [800] }" class="tqmomfks">
 		<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
 		<div class="tl _block">
 			<XTimeline
@@ -25,6 +39,8 @@ import * as os from '@/os';
 import { useRouter } from '@/router';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const router = useRouter();
 

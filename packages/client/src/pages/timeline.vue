@@ -1,7 +1,24 @@
 <template>
 <MkStickyContainer>
 	<template #header><CPPageHeader v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="800">
+	<MkSpacer v-if="isFriendly">
+		<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
+			<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
+			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
+
+			<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div class="tl _block">
+				<XTimeline
+					ref="tl" :key="src"
+					class="tl"
+					:src="src"
+					:sound="true"
+					@queue="queueUpdated"
+				/>
+			</div>
+		</div>
+	</MkSpacer>
+	<MkSpacer v-else :content-max="800">
 		<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
 			<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
@@ -32,6 +49,8 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
