@@ -344,7 +344,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		backdrop-filter: var(--blur, blur(32px));
 		background-color: var(--panel);
 		border-top: solid 0.5px var(--divider);
-		padding: 0 15px;
+		padding: 0 10px;
 
 		> .button {
 			position: relative;

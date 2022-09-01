@@ -1,7 +1,46 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="800">
+	<MkSpacer v-if="isFriendly">
+		<div v-size="{ max: [400] }" class="yweeujhr">
+			<MkButton primary class="start" @click="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
+
+			<div v-if="messages.length > 0" class="history">
+				<MkA
+					v-for="(message, i) in messages"
+					:key="message.id"
+					v-anim="i"
+					class="message _block"
+					:class="{ isMe: isMe(message), isRead: message.groupId ? message.reads.includes($i.id) : message.isRead }"
+					:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
+					:data-index="i"
+				>
+					<div>
+						<MkAvatar class="avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" :show-indicator="true"/>
+						<header v-if="message.groupId">
+							<span class="name">{{ message.group.name }}</span>
+							<MkTime :time="message.createdAt" class="time"/>
+						</header>
+						<header v-else>
+							<span class="name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
+							<span class="username">@{{ acct(isMe(message) ? message.recipient : message.user) }}</span>
+							<MkTime :time="message.createdAt" class="time"/>
+						</header>
+						<div class="body">
+							<p class="text"><span v-if="isMe(message)" class="me">{{ $ts.you }}:</span>{{ message.text }}</p>
+						</div>
+					</div>
+				</MkA>
+			</div>
+			<div v-if="!fetching && messages.length == 0" class="_fullinfo">
+				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
+				<div>{{ $ts.noHistory }}</div>
+			</div>
+			<MkLoading v-if="fetching"/>
+		</div>
+	</MkSpacer>
+
+	<MkSpacer v-else :content-max="800">
 		<div v-size="{ max: [400] }" class="yweeujhr">
 			<MkButton primary class="start" @click="start"><i class="fas fa-plus"></i> {{ $ts.startMessaging }}</MkButton>
 
@@ -53,6 +92,8 @@ import { useRouter } from '@/router';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { $i } from '@/account';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const router = useRouter();
 

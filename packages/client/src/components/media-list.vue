@@ -1,7 +1,7 @@
 <template>
 <div class="hoawjimk">
 	<XBanner v-for="media in mediaList.filter(media => !previewable(media))" :key="media.id" :media="media"/>
-	<div v-if="mediaList.filter(media => previewable(media)).length > 0" class="gird-container">
+	<div v-if="mediaList.filter(media => previewable(media)).length > 0" class="gird-container" :class="{ isFriendly }">
 		<div ref="gallery" :data-count="mediaList.filter(media => previewable(media)).length">
 			<template v-for="media in mediaList.filter(media => previewable(media))">
 				<XVideo v-if="media.type.startsWith('video')" :key="media.id" :video="media"/>
@@ -24,6 +24,8 @@ import XVideo from './media-video.vue';
 import * as os from '@/os';
 import { FILE_TYPE_BROWSERSAFE } from '@/const';
 import { defaultStore } from '@/store';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const props = defineProps<{
 	mediaList: misskey.entities.DriveFile[];
@@ -175,6 +177,12 @@ const previewable = (file: misskey.entities.DriveFile): boolean => {
 				grid-column: 2 / 3;
 				grid-row: 2 / 3;
 			}
+		}
+	}
+
+	.isFriendly {
+		@media (min-width: 1500px) {
+			width: 50%;
 		}
 	}
 }
