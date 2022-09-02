@@ -267,7 +267,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 	}
 
 	> .tl-noti {
-		max-width: 25%;
+		max-width: 27%;
 		width: 100%;
 		padding: 0;
 	}
