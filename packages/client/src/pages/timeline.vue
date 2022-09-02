@@ -5,7 +5,7 @@
 		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/>
 	</template>
 
-	<MkSpacer v-if="isFriendly"> <!-- if notification view added, style="width: 70%" -->
+	<MkSpacer v-if="isFriendly">
 		<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
 			<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
@@ -22,12 +22,6 @@
 			</div>
 		</div>
 	</MkSpacer>
-
-	<!--
-	<MkContainer v-if="isFriendly" :scrollable="true">
-		<XNotifications :include-types="includeTypes" style="width: 30%; padding: 24px 24px 24px 0"/>
-	</MkContainer>
-	-->
 
 	<MkSpacer v-else :content-max="800">
 		<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
@@ -60,9 +54,7 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import XNotifications from '@/components/notifications.vue';
 import MkStickyContainerTL from '@/components/global/sticky-container-timeline.vue';
-import MkContainer from '@/components/ui/container.vue';
 
 const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 const DESKTOP_THRESHOLD = 1100;

@@ -12,11 +12,15 @@
 		</main>
 	</MkStickyContainer>
 
+	<div v-if="isDesktop" ref="widgetsEl" class="widgets tl-noti">
+		<XNotifications style="height: 100%;" @mounted="attachSticky"/>
+	</div>
+
 	<div v-if="isDesktop" ref="widgetsEl" class="widgets">
 		<XWidgets @mounted="attachSticky"/>
 	</div>
 
-	<button v-if="isMobile" class="navButton nav _button" @click="drawerMenuShowing = true"><MkAvatar class="avatar" v-if="!canBack" :user="$i" :disable-preview="true" :show-indicator="true"/></button>
+	<button v-if="isMobile" class="navButton nav _button" @click="drawerMenuShowing = true"><CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/></button>
 
 	<button v-if="isMobile" class="postButton post _button" @click="os.post()"><i class="fas fa-pencil-alt"></i></button>
 
@@ -77,9 +81,11 @@ import { Router } from '@/nirax';
 import { mainRouter } from '@/router';
 import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/scripts/page-metadata';
 import { deviceKind } from '@/scripts/device-kind';
+import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
+const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 
 localStorage.setItem('ui', 'friendly');
 
@@ -228,7 +234,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 .dkgtipfy {
 	$ui-font-size: 1em; // TODO: どこかに集約したい
 	$widgets-hide-threshold: 1090px;
-	$float-button-size: 58px;
+	$float-button-size: 70px;
 
 	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 	min-height: calc(var(--vh, 1vh) * 100);
@@ -245,7 +251,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 	}
 
 	> .contents {
-		width: 100%;
+		width: 70%;
 		min-width: 0;
 		background: var(--bg);
 	}
@@ -260,23 +266,31 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		}
 	}
 
+	> .tl-noti {
+		width: 30%;
+		padding: 0;
+	}
+
 	> .navButton {
 		display: block;
 		position: fixed;
 		z-index: 1000;
-		bottom: calc(70px + env(safe-area-inset-bottom));
-		left: 10px;
+		bottom: calc(40px + env(safe-area-inset-bottom));
+		left: -10px;
 		width: $float-button-size;
 		height: $float-button-size;
-		// box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-		font-size: 22px;
-		// background: var(--panel);
+		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 0 10px 6px rgba(0, 0, 0, 0.14), 0 0 18px 1px rgba(0, 0, 0, 0.12);
+		background: var(--panel);
+		// opacity: 0.7;
+		border-radius: 0 80% 0 0;
+		-webkit-backdrop-filter: var(--blur, blur(15px));
+		backdrop-filter: var(--blur, blur(15px));
 
 		> .avatar {
-			width: $float-button-size;
-			height: $float-button-size;
+			width: 100%;
+			height: 100%;
 			vertical-align: middle;
-			opacity: 0.7;
+			border-radius: 0 80% 0 0;
 		}
 	}
 
@@ -284,15 +298,17 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		display: block;
 		position: fixed;
 		z-index: 1000;
-		bottom: calc(70px + env(safe-area-inset-bottom));
-		right: 0;
+		bottom: calc(40px + env(safe-area-inset-bottom));
+		right: -10px;
 		width: $float-button-size;
 		height: $float-button-size;
 		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-		font-size: 22px;
+		font-size: 18px;
 		background: var(--accent);
-		opacity: 0.7;
-		border-radius: 20%;
+		// opacity: 0.7;
+		border-radius: 80% 0 0 0;
+		-webkit-backdrop-filter: var(--blur, blur(15px));
+		backdrop-filter: var(--blur, blur(15px));
 
 		i {
 			color: white;
