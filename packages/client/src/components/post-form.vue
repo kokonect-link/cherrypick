@@ -1,7 +1,7 @@
 <template>
 <div
 	v-size="{ max: [310, 500] }" class="gafaadew"
-	:class="{ modal, _popup: modal }"
+	:class="{ modal, _popup: modal, friendly: isFriendly }"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"
@@ -89,6 +89,8 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account';
 import { uploadFile } from '@/scripts/upload';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const modal = inject('modal');
 
@@ -716,6 +718,10 @@ onMounted(() => {
 	&.modal {
 		width: 100%;
 		max-width: 520px;
+	}
+
+	&.friendly {
+		max-width: 800px;
 	}
 
 	> header {
