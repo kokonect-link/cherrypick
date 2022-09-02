@@ -83,12 +83,13 @@ watch(() => props.user.avatarBlurhash, () => {
 		left: 0;
 		right: 0;
 		top: 0;
-		border-radius: 0 80% 0 0;
+		border-radius: 28px;
 		z-index: 1;
 		overflow: hidden;
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+		opacity: .7;
 	}
 
 	> .indicator {

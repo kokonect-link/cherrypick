@@ -22,7 +22,7 @@
 
 	<button v-if="isMobile" class="navButton nav _button" @click="drawerMenuShowing = true"><CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/></button>
 
-	<button v-if="isMobile" class="postButton post _button" @click="os.post()"><i class="fas fa-pencil-alt"></i></button>
+	<button v-if="isMobile" class="postButton post _button" @click="os.post()"><span class="bg"></span><i class="fas fa-pencil-alt"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" class="widgetButton _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
 
@@ -234,7 +234,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 .dkgtipfy {
 	$ui-font-size: 1em; // TODO: どこかに集約したい
 	$widgets-hide-threshold: 1090px;
-	$float-button-size: 70px;
+	$float-button-size: 65px;
 
 	// ほんとは単に 100vh と書きたいところだが... https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
 	min-height: calc(var(--vh, 1vh) * 100);
@@ -251,7 +251,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 	}
 
 	> .contents {
-		width: 70%;
+		width: 100%;
 		min-width: 0;
 		background: var(--bg);
 	}
@@ -267,7 +267,7 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 	}
 
 	> .tl-noti {
-		width: 30%;
+		width: 400px;
 		padding: 0;
 	}
 
@@ -275,14 +275,14 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		display: block;
 		position: fixed;
 		z-index: 1000;
-		bottom: calc(40px + env(safe-area-inset-bottom));
-		left: -10px;
+		bottom: calc(70px + env(safe-area-inset-bottom));
+		left: 15px;
 		width: $float-button-size;
 		height: $float-button-size;
-		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 0 10px 6px rgba(0, 0, 0, 0.14), 0 0 18px 1px rgba(0, 0, 0, 0.12);
-		background: var(--panel);
+		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+		// background: var(--panel);
 		// opacity: 0.7;
-		border-radius: 0 80% 0 0;
+		border-radius: 28px;
 		-webkit-backdrop-filter: var(--blur, blur(15px));
 		backdrop-filter: var(--blur, blur(15px));
 
@@ -290,7 +290,6 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 			width: 100%;
 			height: 100%;
 			vertical-align: middle;
-			border-radius: 0 80% 0 0;
 		}
 	}
 
@@ -298,19 +297,31 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		display: block;
 		position: fixed;
 		z-index: 1000;
-		bottom: calc(40px + env(safe-area-inset-bottom));
-		right: -10px;
+		bottom: calc(70px + env(safe-area-inset-bottom));
+		right: 15px;
 		width: $float-button-size;
 		height: $float-button-size;
 		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 		font-size: 18px;
-		background: var(--accent);
+		// background: var(--accent);
 		// opacity: 0.7;
-		border-radius: 80% 0 0 0;
+		border-radius: 28px;
 		-webkit-backdrop-filter: var(--blur, blur(15px));
 		backdrop-filter: var(--blur, blur(15px));
 
+		> .bg {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			right: 0;
+			bottom: 0;
+			background: var(--accent);
+			opacity: .7;
+			border-radius: 28px;
+		}
+
 		i {
+			position: relative;
 			color: white;
 		}
 	}
