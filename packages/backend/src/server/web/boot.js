@@ -171,8 +171,11 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
+		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
+		@import url("https://cdn.jsdelivr.net/npm/jetbrains-mono/css/jetbrains-mono.css");
+		
 		* {
-			font-family: BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
+			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
 		}
 
 		#misskey_app,
@@ -255,7 +258,7 @@
 		}
 
 		code {
-			font-family: Fira, FiraCode, monospace;
+			font-family: "JetBrains Mono", Fira, FiraCode, monospace;
 		}
 
 		details {

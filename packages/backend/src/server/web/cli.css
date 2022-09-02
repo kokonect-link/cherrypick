@@ -1,5 +1,8 @@
+@import url("https://cdn.jsdelivr.net/npm/jetbrains-mono/css/jetbrains-mono.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
+
 * {
-	font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+	font-family: "Pretendard JP", "JetBrains Mono", Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
 }
 
 html {
