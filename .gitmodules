@@ -1,3 +1,4 @@
 [submodule "misskey-assets"]
 	path = misskey-assets
 	url = https://github.com/misskey-dev/assets.git
+	branch = main
