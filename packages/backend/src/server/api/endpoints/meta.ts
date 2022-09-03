@@ -377,7 +377,8 @@ export default define(meta, paramDef, async (ps, me) => {
 
 		enableServiceWorker: instance.enableServiceWorker,
 
-		translatorAvailable: instance.deeplAuthKey != null,
+		// translatorAvailable: instance.deeplAuthKey != null,
+		translatorAvailable: instance.translatorType != null,
 
 		...(ps.detail ? {
 			pinnedPages: instance.pinnedPages,

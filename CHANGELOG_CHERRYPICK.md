@@ -7,7 +7,14 @@
 
 -->
 
-## 12.x.x-cp-2.x.x (unreleased)
+## 12.x.x-cp-2.3.0 (unreleased)
+이 버전부터는 기존 버전과 연결되지 않고, 새로 포크되어 작업되고 있습니다.
+
+### Improvements
+- 클라이언트: Google Translate 서비스 추가 (thanks lapy)
+- 클라이언트: DeepL과 Google Translate를 선택할 수 있는 옵션 추가
+
+## 12.x.x-cp-2.x.x (unreleased)_legacy
 
 ### Improvements
 - 클라이언트: 전반적인 UI의 브러시 업
