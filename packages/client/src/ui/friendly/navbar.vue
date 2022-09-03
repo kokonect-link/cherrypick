@@ -45,10 +45,13 @@
 				<i class="icon fas fa-pencil-alt fa-fw"></i><span class="text">{{ i18n.ts.note }}</span>
 			</button>
 			<div class="profile">
-				<button v-click-anime v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="item _button account" @click="openProfile">
+				<button v-if="iconOnly" v-click-anime v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="item _button account" @click="openAccountMenu">
+					<MkAvatar :user="$i" class="avatar"/>
+				</button>
+				<button v-else v-click-anime v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="item _button account" @click="openProfile">
 					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
 				</button>
-				<button class="item _button drawer" @click="openAccountMenu"><i class="fas fa-chevron-up"/></button>
+				<button v-if="!iconOnly" class="item _button drawer" @click="openAccountMenu"><i class="fas fa-chevron-up"/></button>
 			</div>
 		</div>
 	</div>
@@ -465,19 +468,17 @@ function openProfile() {
 					}
 				}
 
-				> .account {
-					display: block;
-					text-align: center;
-					width: 100%;
+				> .profile {
+					> .account {
+						display: block;
+						text-align: center;
+						width: 100%;
 
-					> .avatar {
-						display: inline-block;
-						width: 38px;
-						aspect-ratio: 1;
-					}
-
-					> .text {
-						display: none;
+						> .avatar {
+							display: inline-block;
+							width: 38px;
+							aspect-ratio: 1;
+						}
 					}
 				}
 			}
