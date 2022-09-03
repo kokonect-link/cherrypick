@@ -28,7 +28,8 @@
 				</div>
 				<div class="action">
 					<MkButton inline rounded gradate data-cy-signup style="margin-right: 12px;" @click="signup()">{{ i18n.ts.signup }}</MkButton>
-					<MkButton inline rounded data-cy-signin @click="signin()">{{ i18n.ts.login }}</MkButton>
+					<MkButton inline rounded data-cy-signin style="margin-right: 12px;" @click="signin()">{{ i18n.ts.login }}</MkButton>
+					<MkButton inline rounded @click="mainRouter.push('/explore')">{{ i18n.ts.explore }}</MkButton>
 				</div>
 			</div>
 		</div>
@@ -59,6 +60,7 @@ import { host, instanceName } from '@/config';
 import * as os from '@/os';
 import number from '@/filters/number';
 import { i18n } from '@/i18n';
+import { mainRouter } from '@/router';
 
 let meta = $ref();
 let stats = $ref();
