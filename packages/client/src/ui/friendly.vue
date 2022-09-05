@@ -12,10 +12,6 @@
 		</main>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop" ref="widgetsEl" class="widgets tl-noti">
-		<XNotifications style="height: 100%;" @mounted="attachSticky"/>
-	</div>
-
 	<div v-if="isDesktop" ref="widgetsEl" class="widgets">
 		<XWidgets @mounted="attachSticky"/>
 	</div>
@@ -85,7 +81,6 @@ import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
-const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 
 localStorage.setItem('ui', 'friendly');
 
