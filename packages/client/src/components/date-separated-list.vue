@@ -13,22 +13,22 @@ export default defineComponent({
 		direction: {
 			type: String,
 			required: false,
-			default: 'down'
+			default: 'down',
 		},
 		reversed: {
 			type: Boolean,
 			required: false,
-			default: false
+			default: false,
 		},
 		noGap: {
 			type: Boolean,
 			required: false,
-			default: false
+			default: false,
 		},
 		ad: {
 			type: Boolean,
 			required: false,
-			default: false
+			default: false,
 		},
 	},
 
@@ -38,7 +38,7 @@ export default defineComponent({
 			const month = new Date(time).getMonth() + 1;
 			return i18n.t('monthAndDay', {
 				month: month.toString(),
-				day: date.toString()
+				day: date.toString(),
 			});
 		}
 
@@ -48,7 +48,7 @@ export default defineComponent({
 			if (!slots || !slots.default) return;
 
 			const el = slots.default({
-				item: item
+				item: item,
 			})[0];
 			if (el.key == null && item.id) el.key = item.id;
 
@@ -60,20 +60,20 @@ export default defineComponent({
 					class: 'separator',
 					key: item.id + ':separator',
 				}, h('p', {
-					class: 'date'
+					class: 'date',
 				}, [
 					h('span', [
 						h('i', {
 							class: 'fas fa-angle-up icon',
 						}),
-						getDateText(item.createdAt)
+						getDateText(item.createdAt),
 					]),
 					h('span', [
 						getDateText(props.items[i + 1].createdAt),
 						h('i', {
 							class: 'fas fa-angle-down icon',
-						})
-					])
+						}),
+					]),
 				]));
 
 				return [el, separator];
@@ -102,7 +102,7 @@ export default defineComponent({
 					class: 'sqadhkmv' + (props.noGap ? ' noGap' : ''),
 				},
 			{ default: renderChildren });
-	}
+	},
 });
 </script>
 
