@@ -1,11 +1,11 @@
 <template>
-<MkStickyContainerTL>
+<MkStickyContainer>
 	<template #header>
 		<CPPageHeader v-if="isFriendly && !isDesktop" v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/>
 		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/>
 	</template>
 
-	<MkSpacer v-if="isFriendly">
+	<MkSpacer :content-max="800">
 		<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
 			<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
@@ -22,25 +22,7 @@
 			</div>
 		</div>
 	</MkSpacer>
-
-	<MkSpacer v-else :content-max="800">
-		<div ref="rootEl" v-hotkey.global="keymap" class="cmuxhskf">
-			<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
-			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
-
-			<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
-			<div class="tl _block">
-				<XTimeline
-					ref="tl" :key="src"
-					class="tl"
-					:src="src"
-					:sound="true"
-					@queue="queueUpdated"
-				/>
-			</div>
-		</div>
-	</MkSpacer>
-</MkStickyContainerTL>
+</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
@@ -54,7 +36,6 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import MkStickyContainerTL from '@/components/global/sticky-container-timeline.vue';
 
 const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 const DESKTOP_THRESHOLD = 1100;

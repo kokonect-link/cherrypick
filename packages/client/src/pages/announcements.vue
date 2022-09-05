@@ -1,22 +1,7 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer v-if="isFriendly">
-		<MkPagination v-slot="{items}" :pagination="pagination" class="ruryvtyk _content">
-			<section v-for="(announcement, i) in items" :key="announcement.id" class="_card announcement">
-				<div class="_title"><span v-if="$i && !announcement.isRead">🆕 </span>{{ announcement.title }}</div>
-				<div class="_content">
-					<Mfm :text="announcement.text"/>
-					<img v-if="announcement.imageUrl" :src="announcement.imageUrl"/>
-				</div>
-				<div v-if="$i && !announcement.isRead" class="_footer">
-					<MkButton primary @click="read(items, announcement, i)"><i class="fas fa-check"></i> {{ $ts.gotIt }}</MkButton>
-				</div>
-			</section>
-		</MkPagination>
-	</MkSpacer>
-
-	<MkSpacer v-else :content-max="800">
+	<MkSpacer :content-max="800">
 		<MkPagination v-slot="{items}" :pagination="pagination" class="ruryvtyk _content">
 			<section v-for="(announcement, i) in items" :key="announcement.id" class="_card announcement">
 				<div class="_title"><span v-if="$i && !announcement.isRead">🆕 </span>{{ announcement.title }}</div>
@@ -40,8 +25,6 @@ import MkButton from '@/components/ui/button.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
-
-const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const pagination = {
 	endpoint: 'announcements' as const,

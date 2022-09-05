@@ -1,19 +1,7 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer v-if="isFriendly">
-		<div v-if="tab === 'all' || tab === 'unread'">
-			<XNotifications class="notifications" :include-types="includeTypes" :unread-only="unreadOnly"/>
-		</div>
-		<div v-else-if="tab === 'mentions'">
-			<XNotes :pagination="mentionsPagination"/>
-		</div>
-		<div v-else-if="tab === 'directNotes'">
-			<XNotes :pagination="directNotesPagination"/>
-		</div>
-	</MkSpacer>
-
-	<MkSpacer v-else :content-max="800">
+	<MkSpacer :content-max="800">
 		<div v-if="tab === 'all' || tab === 'unread'">
 			<XNotifications class="notifications" :include-types="includeTypes" :unread-only="unreadOnly"/>
 		</div>
@@ -30,13 +18,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { notificationTypes } from 'misskey-js';
-import XNotifications from '@/components/notifications.vue';
+import XNotifications from '@/components/notifications-pages.vue';
 import XNotes from '@/components/notes.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
-
-const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 let tab = $ref('all');
 let includeTypes = $ref<string[] | null>(null);

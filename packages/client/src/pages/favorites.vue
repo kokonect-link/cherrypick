@@ -1,24 +1,7 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader/></template>
-	<MkSpacer v-if="isFriendly">
-		<MkPagination ref="pagingComponent" :pagination="pagination">
-			<template #empty>
-				<div class="_fullinfo">
-					<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
-					<div>{{ i18n.ts.noNotes }}</div>
-				</div>
-			</template>
-
-			<template #default="{ items }">
-				<XList v-slot="{ item }" :items="items" :direction="'down'" :no-gap="false" :ad="false">
-					<XNote :key="item.id" :note="item.note" :class="$style.note"/>
-				</XList>
-			</template>
-		</MkPagination>
-	</MkSpacer>
-
-	<MkSpacer v-else :content-max="800">
+	<MkSpacer :content-max="800">
 		<MkPagination ref="pagingComponent" :pagination="pagination">
 			<template #empty>
 				<div class="_fullinfo">
@@ -44,8 +27,6 @@ import XNote from '@/components/note.vue';
 import XList from '@/components/date-separated-list.vue';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
-
-const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const pagination = {
 	endpoint: 'i/favorites' as const,
