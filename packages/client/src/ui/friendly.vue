@@ -16,9 +16,9 @@
 		<XWidgets @mounted="attachSticky"/>
 	</div>
 
-	<button v-if="isMobile" class="navButton nav _button" @click="drawerMenuShowing = true"><CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" class="navButton nav _button" @click="drawerMenuShowing = true"><CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/></button>
 
-	<button v-if="isMobile" class="postButton post _button" @click="os.post()"><span class="bg"></span><i class="fas fa-pencil-alt"></i></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" class="postButton post _button" @click="os.post()"><span class="bg"></span><i class="fas fa-pencil-alt"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" class="widgetButton _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
 

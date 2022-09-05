@@ -388,10 +388,12 @@ export const routes = [{
 	component: page(() => import('./pages/messaging/index.vue')),
 	loginRequired: true,
 }, {
+	name: 'messaging-room',
 	path: '/my/messaging/:userAcct',
 	component: page(() => import('./pages/messaging/messaging-room.vue')),
 	loginRequired: true,
 }, {
+	name: 'messaging-room-group',
 	path: '/my/messaging/group/:groupId',
 	component: page(() => import('./pages/messaging/messaging-room.vue')),
 	loginRequired: true,
