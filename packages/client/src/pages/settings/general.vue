@@ -56,10 +56,12 @@
 
 		<FormRadios v-model="fontSize" class="_formBlock">
 			<template #label>{{ i18n.ts.fontSize }}</template>
+			<option value="1"><span style="font-size: 12px;">Aa</span></option>
+			<option value="2"><span style="font-size: 13px;">Aa</span></option>
 			<option :value="null"><span style="font-size: 14px;">Aa</span></option>
-			<option value="1"><span style="font-size: 15px;">Aa</span></option>
-			<option value="2"><span style="font-size: 16px;">Aa</span></option>
-			<option value="3"><span style="font-size: 17px;">Aa</span></option>
+			<option value="3"><span style="font-size: 15px;">Aa</span></option>
+			<option value="4"><span style="font-size: 16px;">Aa</span></option>
+			<option value="5"><span style="font-size: 17px;">Aa</span></option>
 		</FormRadios>
 	</FormSection>
 
