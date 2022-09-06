@@ -29,7 +29,7 @@
 				</template>
 			</MkPagination>
 		</div>
-		<footer :class="{friendly: isFriendly }">
+		<footer :class="{ friendly: isFriendly, 'friendly-not-mobile': !isMobile }">
 			<div v-if="typers.length > 0" class="typers">
 				<I18n :src="i18n.ts.typingUsers" text-tag="span" class="users">
 					<template #users>
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted, nextTick, onBeforeUnmount } from 'vue';
+import { computed, watch, onMounted, nextTick, onBeforeUnmount, ref } from 'vue';
 import * as Misskey from 'misskey-js';
 import * as Acct from 'misskey-js/built/acct';
 import XMessage from './messaging-room.message.vue';
@@ -65,8 +65,15 @@ import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { definePageMetadata } from '@/scripts/page-metadata';
+import { deviceKind } from '@/scripts/device-kind';
 
 const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
+
+const MOBILE_THRESHOLD = 500;
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 const props = defineProps<{
 	userAcct?: string;
@@ -346,6 +353,10 @@ definePageMetadata(computed(() => !fetching ? user ? {
 		&.friendly {
 			padding-top: 64px;
 			bottom: calc(env(safe-area-inset-bottom, 0px) + 50px);
+		}
+
+		&.friendly-not-mobile {
+			bottom: 0;
 		}
 
 		> .new-message {
