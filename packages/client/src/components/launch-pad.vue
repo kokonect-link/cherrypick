@@ -116,7 +116,7 @@ function close() {
 			> .indicator {
 				position: absolute;
 				top: 32px;
-				left: 32px;
+				left: 16px;
 				color: var(--indicator);
 				font-size: 8px;
 				animation: blink 1s infinite;
