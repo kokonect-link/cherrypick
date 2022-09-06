@@ -356,6 +356,7 @@ definePageMetadata(computed(() => !fetching ? user ? {
 		}
 
 		&.friendly-not-mobile {
+			padding-top: 8px;
 			bottom: 0;
 		}
 
