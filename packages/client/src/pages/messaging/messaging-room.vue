@@ -5,7 +5,7 @@
 	@dragover.prevent.stop="onDragover"
 	@drop.prevent.stop="onDrop"
 >
-	<div class="_content mk-messaging-room">
+	<div class="_content mk-messaging-room" :class="{ friendly: isFriendly }">
 		<div class="body">
 			<MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
 				<template #empty>
@@ -29,7 +29,7 @@
 				</template>
 			</MkPagination>
 		</div>
-		<footer>
+		<footer :class="{friendly: isFriendly }">
 			<div v-if="typers.length > 0" class="typers">
 				<I18n :src="i18n.ts.typingUsers" text-tag="span" class="users">
 					<template #users>
@@ -65,6 +65,8 @@ import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { definePageMetadata } from '@/scripts/page-metadata';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 const props = defineProps<{
 	userAcct?: string;
@@ -292,7 +294,11 @@ definePageMetadata(computed(() => !fetching ? user ? {
 <style lang="scss" scoped>
 .mk-messaging-room {
 	position: relative;
-	// overflow: auto;
+	overflow: auto;
+
+	&.friendly {
+		overflow: initial;
+	}
 
 	> .body {
 		.more {
@@ -334,9 +340,13 @@ definePageMetadata(computed(() => !fetching ? user ? {
 		width: 100%;
 		position: sticky;
 		z-index: 2;
-		bottom: 0;
 		padding-top: 8px;
-		// bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+		bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
+
+		&.friendly {
+			padding-top: 64px;
+			bottom: calc(env(safe-area-inset-bottom, 0px) + 50px);
+		}
 
 		> .new-message {
 			width: 100%;

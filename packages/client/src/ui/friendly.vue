@@ -8,7 +8,7 @@
 			<div :class="$style.content">
 				<RouterView/>
 			</div>
-			<div :class="$style.spacer"></div>
+			<div v-if="!(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="$style.spacer"></div>
 		</main>
 	</MkStickyContainer>
 
