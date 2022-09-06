@@ -102,7 +102,7 @@ export const navbarItemDef = reactive({
 		icon: 'fas fa-columns',
 		action: (ev) => {
 			os.popupMenu([{
-				text: i18n.ts.friendly,
+				text: 'Friendly',
 				active: ui === 'friendly' || ui === null,
 				action: () => {
 					localStorage.setItem('ui', 'friendly');
