@@ -317,7 +317,7 @@ import { getAccountFromId } from '@/scripts/get-account-from-id';
 			if (!canceled) {
 				location.reload();
 			}
-		}
+		} else if (defaultStore.state.serverDisconnectedBehavior === 'none') {}
 	});
 
 	stream.on('emojiAdded', emojiData => {

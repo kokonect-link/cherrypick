@@ -1047,6 +1047,7 @@ _serverDisconnectedBehavior:
   reload: "자동으로 새로고침"
   dialog: "경고창 표시"
   quiet: "조용히 경고"
+  none: "알리지 않음"
 _channel:
   create: "채널 생성"
   edit: "채널 편집"
