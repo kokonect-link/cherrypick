@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+useEnterToSend: "Enterキーを押して送信"
+useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
 headlineMisskey: "ノートでつながるネットワーク"
 introMisskey: "ようこそ！Misskeyは、オープンソースの分散型マイクロブログサービスです。\n「ノート」を作成して、いま起こっていることを共有したり、あなたについて皆に発信しよう📡\n「リアクション」機能で、皆のノートに素早く反応を追加することもできます👍\n新しい世界を探検しよう🚀"
 monthAndDay: "{month}月 {day}日"

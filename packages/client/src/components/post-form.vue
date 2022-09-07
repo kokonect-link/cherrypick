@@ -430,7 +430,12 @@ function clear() {
 }
 
 function onKeydown(ev: KeyboardEvent) {
-	if ((ev.which === 10 || ev.which === 13) && (ev.ctrlKey || ev.metaKey) && canPost) post();
+	if (defaultStore.state.useEnterToSend && !ev.shiftKey) {
+		if ((ev.which === 10 || ev.which === 13) && canPost) post();
+	} else {
+		if ((ev.which === 10 || ev.which === 13) && (ev.ctrlKey || ev.metaKey) && canPost) post();
+	}
+
 	if (ev.which === 27) emit('esc');
 	typing();
 }

@@ -13,6 +13,7 @@
 ### Improvements
 - 클라이언트: Google Translate 서비스 추가 (thanks lapy)
 - 클라이언트: DeepL과 Google Translate를 선택할 수 있는 옵션 추가
+- 클라이언트: Enter 키를 눌러 보내기 옵션 추가
 
 ## 12.x.x-cp-2.x.x (unreleased)_legacy
 

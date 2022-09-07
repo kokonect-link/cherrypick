@@ -28,6 +28,10 @@
 		<FormSwitch v-model="enableInfiniteScroll" class="_formBlock">{{ i18n.ts.enableInfiniteScroll }}</FormSwitch>
 		<FormSwitch v-model="useReactionPickerForContextMenu" class="_formBlock">{{ i18n.ts.useReactionPickerForContextMenu }}</FormSwitch>
 		<FormSwitch v-model="disablePagesScript" class="_formBlock">{{ i18n.ts.disablePagesScript }}</FormSwitch>
+		<FormSwitch v-model="useEnterToSend" class="_formBlock">
+			<template #label>{{ i18n.ts.useEnterToSend }}</template>
+			<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
+		</FormSwitch>
 
 		<FormSelect v-model="serverDisconnectedBehavior" class="_formBlock">
 			<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -145,6 +149,7 @@ const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfin
 const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('useReactionPickerForContextMenu'));
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
 const aiChanMode = computed(defaultStore.makeGetterSetter('aiChanMode'));
+const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
 
 watch(lang, () => {
 	localStorage.setItem('lang', lang.value as string);

@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+useEnterToSend: "Enter 키를 눌러 보내기"
+useEnterToSendDescription: "옵션을 활성화하면 줄 바꿈은 Shift + Enter 키로 할 수 있어요."
 headlineMisskey: "노트로 연결되는 네트워크"
 introMisskey: "어서오세요! CherryPick은 오픈 소스 분산형 마이크로 블로그 서비스에요.\n\"노트\" 를 작성해서, 지금 일어나고 있는 일을 공유하거나, 당신만의 이야기를 모두에게 발신할 수 있어요📡\n\"리액션\" 기능으로, 친구의 노트에 총알같이 반응을 추가할 수도 있어요👍\n새로운 세계를 탐험해 보세요🚀"
 monthAndDay: "{month}월 {day}일"
