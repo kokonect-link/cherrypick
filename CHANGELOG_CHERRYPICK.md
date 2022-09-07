@@ -12,13 +12,13 @@
 
 ### Improvements
 - 클라이언트: (friendly) 모바일 환경에서 서버와 연결이 끊어졌을 때 표시되는 경고창의 UI 개선
-- 클라이언트: Google Translate 서비스 추가 (thanks @ltlapy)
+- 클라이언트: Google Translate 서비스 추가 (thanks to @ltlapy)
 - 클라이언트: DeepL과 Google Translate를 선택할 수 있는 옵션 추가
 - 클라이언트: Enter 키를 눌러 보내기 옵션 추가
 - 클라이언트: 서버와 연결이 끊어졌을 때 경고를 표시하지 않는 옵션 추가
 - 클라이언트: 미디어 우클릭 방지 기능 추가
 - 클라이언트: welcomeBack 알림에 프로필 아이콘 추가
-- 클라이언트: 알림을 옆으로 스와이프 하거나 x 버튼을 눌러(데스크톱 전용) 지울 수 있도록 개선
+- 클라이언트: 알림을 옆으로 스와이프 하거나 x 버튼을 눌러(데스크톱 전용) 지울 수 있도록 개선 (thanks to @groundpolis)
 - 클라이언트: 알림 디자인 개선
 
 <!--
