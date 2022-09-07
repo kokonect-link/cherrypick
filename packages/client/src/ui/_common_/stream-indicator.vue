@@ -1,6 +1,6 @@
 <template>
-<div v-if="hasDisconnected && $store.state.serverDisconnectedBehavior === 'quiet'" class="nsbbhtug" @click="resetDisconnected">
-	<div>{{ i18n.ts.disconnectedFromServer }}</div>
+<div v-if="hasDisconnected && $store.state.serverDisconnectedBehavior === 'quiet'" class="nsbbhtug" :class="{ friendly: isFriendly }" @click="resetDisconnected">
+	<div class="text">{{ i18n.ts.disconnectedFromServer }}</div>
 	<div class="command">
 		<button class="_textButton" @click="reload">{{ i18n.ts.reload }}</button>
 		<button class="_textButton">{{ i18n.ts.doNothing }}</button>
@@ -9,9 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { stream } from '@/stream';
 import { i18n } from '@/i18n';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
 let hasDisconnected = $ref(false);
 
@@ -45,9 +47,30 @@ onUnmounted(() => {
 	font-size: 0.9em;
 	color: #fff;
 	background: #000;
-	opacity: 0.8;
+	opacity: 0.7;
 	border-radius: 4px;
 	max-width: 320px;
+
+	&.friendly {
+		@media (max-width: 1099px) {
+			display: flex;
+			width: 100%;
+			max-width: initial;
+			top: 55px;
+			bottom: initial;
+			right: initial;
+			border-radius: initial;
+
+			> .text {
+				padding: 0.7em;
+			}
+
+			> .command {
+				position: fixed;
+				right: 0;
+			}
+		}
+	}
 
 	> .command {
 		display: flex;
