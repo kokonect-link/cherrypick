@@ -2,6 +2,7 @@
 <div class="mk-toast">
 	<transition :name="$store.state.animation ? 'toast' : ''" appear @after-leave="emit('closed')">
 		<div v-if="showing" class="body _acrylic" :style="{ zIndex }">
+			<CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/>
 			<div class="message">
 				{{ message }}
 			</div>
@@ -13,6 +14,8 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import * as os from '@/os';
+import { $i } from '@/account';
+import CPAvatar from '@/components/global/toast-avatar.vue';
 
 defineProps<{
 	message: string;
@@ -57,6 +60,19 @@ onMounted(() => {
 		overflow: clip;
 		text-align: center;
 		pointer-events: none;
+
+		@media (max-width: 500px) {
+			width: 100%;
+		}
+
+		> .avatar {
+			position: relative;
+			vertical-align: bottom;
+			border-radius: 100%;
+			width: 64px;
+			height: 64px;
+			margin-top: 16px;
+		}
 
 		> .message {
 			padding: 16px 24px;
