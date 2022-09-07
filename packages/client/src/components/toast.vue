@@ -1,10 +1,12 @@
 <template>
 <div class="mk-toast">
 	<transition :name="$store.state.animation ? 'toast' : ''" appear @after-leave="emit('closed')">
-		<div v-if="showing" class="body _acrylic" :style="{ zIndex }">
-			<CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/>
-			<div class="message">
-				{{ message }}
+		<div v-if="showing" class="body _acrylic" :style="[ isMoving ? `transition: none; transform: translateX(${x}px)` : '', { zIndex }]" @mousedown="startSwipe" @touchstart="startSwipe">
+			<div class="inner">
+				<CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/>
+				<div class="message">
+					{{ message }}
+				</div>
 			</div>
 		</div>
 	</transition>
@@ -12,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onBeforeUnmount, nextTick, ref } from 'vue';
 import * as os from '@/os';
 import { $i } from '@/account';
 import CPAvatar from '@/components/global/toast-avatar.vue';
@@ -28,16 +30,87 @@ const emit = defineEmits<{
 const zIndex = os.claimZIndex('high');
 let showing = $ref(true);
 
+let isMoving = $ref(false);
+let x = $ref(0);
+let currentTimeout = $ref(0);
+let previousTouchX = $ref(0);
+
 onMounted(() => {
+	/*
 	window.setTimeout(() => {
 		showing = false;
 	}, 4000);
+	 */
+
+	autoTimeout();
+
+	window.addEventListener('mouseup', endSwipe, { passive: false });
+	window.addEventListener('touchend', endSwipe, { passive: false });
+	window.addEventListener('mousemove', onMouseMove, { passive: false });
+	window.addEventListener('touchmove', onTouchMove, { passive: false });
 });
+
+onBeforeUnmount(() => {
+	window.removeEventListener('mouseup', endSwipe);
+	window.removeEventListener('touchend', endSwipe);
+	window.removeEventListener('mousemove', onMouseMove);
+	window.removeEventListener('touchmove', onTouchMove);
+});
+
+function autoTimeout() {
+	currentTimeout = window.setTimeout(() => {
+		showing = false;
+	}, 4000);
+}
+
+function clearTimeout() {
+	window.clearTimeout(currentTimeout);
+}
+
+function timeout() {
+	clearTimeout();
+	currentTimeout = window.setTimeout(() => {
+		showing = false;
+	}, 4000);
+}
+function onMouseMove(ev: MouseEvent) {
+	processSwipe(ev.movementX);
+}
+
+function onTouchMove(ev: TouchEvent) {
+	if (previousTouchX === 0) {
+		previousTouchX = ev.touches[0].clientX;
+	}
+	processSwipe(ev.touches[0].clientX - previousTouchX);
+	previousTouchX = ev.touches[0].clientX;
+}
+
+function startSwipe() {
+	isMoving = true;
+	clearTimeout();
+}
+
+function processSwipe(movementX: number) {
+	if (!isMoving) return;
+	x = Math.max(0, x + movementX);
+}
+
+function endSwipe() {
+	isMoving = false;
+	if (x > 150) {
+		x = 0;
+		nextTick(() => showing = false);
+	} else {
+		x = 0;
+		timeout();
+	}
+	previousTouchX = 0;
+}
 </script>
 
 <style lang="scss" scoped>
 .toast-enter-active, .toast-leave-active {
-	transition: opacity 0.3s, transform 0.3s !important;
+	// transition: opacity 0.3s, transform 0.3s !important;
 }
 .toast-enter-from, .toast-leave-to {
 	opacity: 0;
@@ -59,23 +132,27 @@ onMounted(() => {
 		border-radius: 8px;
 		overflow: clip;
 		text-align: center;
-		pointer-events: none;
+		transition: opacity 0.5s, transform 0.5s;
 
 		@media (max-width: 500px) {
 			width: 100%;
 		}
 
-		> .avatar {
-			position: relative;
-			vertical-align: bottom;
-			border-radius: 100%;
-			width: 64px;
-			height: 64px;
-			margin-top: 16px;
-		}
+		> .inner {
+			pointer-events: none;
 
-		> .message {
-			padding: 16px 24px;
+			> .avatar {
+				position: relative;
+				vertical-align: bottom;
+				border-radius: 100%;
+				width: 64px;
+				height: 64px;
+				margin-top: 16px;
+			}
+
+			> .message {
+				padding: 16px 24px;
+			}
 		}
 	}
 }
