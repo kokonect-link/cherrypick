@@ -16,11 +16,11 @@
 		<XWidgets @mounted="attachSticky"/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" class="navButton nav _button" @click="drawerMenuShowing = true"><CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" class="navButton nav _button" :class="{ 'showEl': showEl }" @click="drawerMenuShowing = true"><CPAvatar class="avatar" :user="$i" :disable-preview="true" :show-indicator="false"/></button>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" class="postButton post _button" @click="os.post()"><span class="bg"></span><i class="fas fa-pencil-alt"></i></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" class="postButton post _button" :class="{ 'showEl': showEl }" @click="os.post()"><span class="bg"></span><i class="fas fa-pencil-alt"></i></button>
 
-	<button v-if="!isDesktop && !isMobile" class="widgetButton _button" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
+	<button v-if="!isDesktop && !isMobile" class="widgetButton _button" :class="{ 'showEl': showEl }" @click="widgetsShowing = true"><i class="fas fa-layer-group"></i></button>
 
 	<div v-if="isMobile" class="buttons">
 		<!-- <button class="button nav _button" @click="drawerMenuShowing = true"><i class="fas fa-bars"></i><span v-if="menuIndicated" class="indicator"><i class="fas fa-circle"></i></span></button> -->
@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref, watch, ComputedRef } from 'vue';
+import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef } from 'vue';
 import XCommon from './_common_/common.vue';
 import { instanceName } from '@/config';
 import { StickySidebar } from '@/scripts/sticky-sidebar';
@@ -93,6 +93,9 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
+
+let showEl = $ref(false);
+let lastScrollPosition = $ref(0);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsEl = $ref<HTMLElement>();
@@ -142,7 +145,28 @@ onMounted(() => {
 			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
 		}, { passive: true });
 	}
+
+	window.addEventListener('scroll', onScroll);
 });
+
+onBeforeUnmount(() => {
+	window.removeEventListener('scroll', onScroll);
+});
+
+function onScroll () {
+	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
+	if (currentScrollPosition < 0) {
+		return;
+	}
+	// Stop executing this function if the difference between
+	// current scroll position and last scroll position is less than some offset
+	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
+		return;
+	}
+	showEl = currentScrollPosition < lastScrollPosition;
+	lastScrollPosition = currentScrollPosition;
+	showEl = !showEl;
+}
 
 const onContextmenu = (ev) => {
 	const isLink = (el: HTMLElement) => {
@@ -281,6 +305,11 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		border-radius: 28px;
 		-webkit-backdrop-filter: var(--blur, blur(15px));
 		backdrop-filter: var(--blur, blur(15px));
+		transition: opacity 0.5s, transform 0.5s;
+
+		&.showEl {
+			transform: translateX(-250px);
+		}
 
 		> .avatar {
 			width: 100%;
@@ -304,6 +333,11 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		border-radius: 28px;
 		-webkit-backdrop-filter: var(--blur, blur(15px));
 		backdrop-filter: var(--blur, blur(15px));
+		transition: opacity 0.5s, transform 0.5s;
+
+		&.showEl {
+			transform: translateX(250px);
+		}
 
 		> .bg {
 			position: absolute;
@@ -334,6 +368,11 @@ const wallpaper = localStorage.getItem('wallpaper') != null;
 		box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 		font-size: 22px;
 		background: var(--panel);
+		transition: opacity 0.5s, transform 0.5s;
+
+		&.showEl {
+			transform: translateX(250px);
+		}
 	}
 
 	> .widgetsDrawer-back {
