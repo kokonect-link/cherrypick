@@ -56,7 +56,8 @@
 						</div>
 					</div>
 					<div v-if="appearNote.files.length > 0" class="files">
-						<XMediaList :media-list="appearNote.files"/>
+						<XMediaList v-if="appearNote.disableRightClick" :media-list="appearNote.files" @contextmenu.prevent/>
+						<XMediaList v-else :media-list="appearNote.files"/>
 					</div>
 					<XPoll v-if="appearNote.poll" ref="pollViewer" :note="appearNote" class="poll"/>
 					<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" class="url-preview"/>

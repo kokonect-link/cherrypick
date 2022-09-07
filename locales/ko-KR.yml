@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+disableRightClick: "우클릭 방지"
 useEnterToSend: "Enter 키를 눌러 보내기"
 useEnterToSendDescription: "옵션을 활성화하면 줄 바꿈은 Shift + Enter 키로 할 수 있어요."
 headlineMisskey: "노트로 연결되는 네트워크"

@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+disableRightClick: "Prohibit right click"
 useEnterToSend: "Press Enter to send"
 useEnterToSendDescription: "When the option is enabled, you can use the Shift+Enter key for line break."
 headlineMisskey: "A network connected by notes"

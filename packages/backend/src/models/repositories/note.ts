@@ -234,6 +234,7 @@ export const NoteRepository = db.getRepository(Note).extend({
 			visibility: note.visibility,
 			localOnly: note.localOnly || undefined,
 			visibleUserIds: note.visibility === 'specified' ? note.visibleUserIds : undefined,
+			disableRightClick: note.disableRightClick || undefined,
 			renoteCount: note.renoteCount,
 			repliesCount: note.repliesCount,
 			reactions: convertLegacyReactions(note.reactions),

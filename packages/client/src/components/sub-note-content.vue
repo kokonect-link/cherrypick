@@ -9,6 +9,7 @@
 	</div>
 	<details v-if="note.files.length > 0">
 		<summary>({{ $t('withNFiles', { n: note.files.length }) }})</summary>
+		<XMediaList v-if="note.disableRightClick" :media-list="note.files" @contextmenu.prevent/>
 		<XMediaList :media-list="note.files"/>
 	</details>
 	<details v-if="note.poll">

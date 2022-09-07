@@ -114,6 +114,7 @@ type Option = {
 	files?: DriveFile[] | null;
 	poll?: IPoll | null;
 	localOnly?: boolean | null;
+	disableRightClick?: boolean | null;
 	cw?: string | null;
 	visibility?: string;
 	visibleUsers?: MinimumUser[] | null;
@@ -146,6 +147,7 @@ export default async (user: { id: User['id']; username: User['username']; host: 
 	if (data.createdAt == null) data.createdAt = new Date();
 	if (data.visibility == null) data.visibility = 'public';
 	if (data.localOnly == null) data.localOnly = false;
+	if (data.disableRightClick == null) data.disableRightClick = false;
 	if (data.channel != null) data.visibility = 'public';
 	if (data.channel != null) data.visibleUsers = [];
 	if (data.channel != null) data.localOnly = true;
@@ -520,6 +522,7 @@ async function insertNote(user: { id: User['id']; host: User['host']; }, data: O
 		emojis,
 		userId: user.id,
 		localOnly: data.localOnly!,
+		disableRightClick: data.disableRightClick!,
 		visibility: data.visibility as any,
 		visibleUserIds: data.visibility === 'specified'
 			? data.visibleUsers

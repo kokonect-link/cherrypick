@@ -86,6 +86,11 @@ export class Note {
 	})
 	public localOnly: boolean;
 
+	@Column('boolean', {
+		default: false,
+	})
+	public disableRightClick: boolean;
+
 	@Column('smallint', {
 		default: 0,
 	})

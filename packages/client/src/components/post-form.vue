@@ -53,6 +53,7 @@
 			<button v-tooltip="i18n.ts.mention" class="_button" @click="insertMention"><i class="fas fa-at"></i></button>
 			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="{ active: withHashtags }" @click="withHashtags = !withHashtags"><i class="fas fa-hashtag"></i></button>
 			<button v-tooltip="i18n.ts.emoji" class="_button" @click="insertEmoji"><i class="fas fa-laugh-squint"></i></button>
+			<button v-tooltip="$ts.disableRightClick" class="_button" :class="{ active: disableRightClick }" @click="disableRightClick = !disableRightClick"><i class="fas fa-mouse"></i></button>
 			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" @click="showActions"><i class="fas fa-plug"></i></button>
 		</footer>
 		<datalist id="hashtags">
@@ -149,6 +150,7 @@ let quoteId = $ref(null);
 let hasNotSpecifiedMentions = $ref(false);
 let recentHashtags = $ref(JSON.parse(localStorage.getItem('hashtags') || '[]'));
 let imeText = $ref('');
+let disableRightClick = $ref(false);
 
 const typing = throttle(3000, () => {
 	if (props.channel) {
@@ -294,6 +296,7 @@ function watchForDraft() {
 	watch($$(text), () => saveDraft());
 	watch($$(useCw), () => saveDraft());
 	watch($$(cw), () => saveDraft());
+	watch($$(disableRightClick), () => saveDraft());
 	watch($$(poll), () => saveDraft());
 	watch($$(files), () => saveDraft(), { deep: true });
 	watch($$(visibility), () => saveDraft());
@@ -542,6 +545,7 @@ function saveDraft() {
 			text: text,
 			useCw: useCw,
 			cw: cw,
+			disableRightClick: disableRightClick,
 			visibility: visibility,
 			localOnly: localOnly,
 			files: files,
@@ -572,6 +576,7 @@ async function post() {
 		localOnly: localOnly,
 		visibility: visibility,
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
+		disableRightClick: disableRightClick,
 	};
 
 	if (withHashtags && hashtags && hashtags.trim() !== '') {
@@ -682,6 +687,7 @@ onMounted(() => {
 				text = draft.data.text;
 				useCw = draft.data.useCw;
 				cw = draft.data.cw;
+				disableRightClick = draft.data.disableRightClick;
 				visibility = draft.data.visibility;
 				localOnly = draft.data.localOnly;
 				files = (draft.data.files || []).filter(draftFile => draftFile);
@@ -709,6 +715,7 @@ onMounted(() => {
 			visibility = init.visibility;
 			localOnly = init.localOnly;
 			quoteId = init.renote ? init.renote.id : null;
+			disableRightClick = init.disableRightClick != null;
 		}
 
 		nextTick(() => watchForDraft());

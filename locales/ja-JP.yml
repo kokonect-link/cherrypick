@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+disableRightClick: "右クリックを禁止"
 useEnterToSend: "Enterキーを押して送信"
 useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
 headlineMisskey: "ノートでつながるネットワーク"
