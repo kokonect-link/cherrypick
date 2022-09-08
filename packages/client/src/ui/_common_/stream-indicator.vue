@@ -1,6 +1,6 @@
 <template>
-<transition v-if="showing && hasDisconnected && $store.state.serverDisconnectedBehavior === 'quiet'" :name="$store.state.animation && isFriendly ? 'friendly' : ''" appear>
-	<div class="nsbbhtug" :class="{ friendly: isFriendly }" @click="resetDisconnected">
+<transition v-if="hasDisconnected && $store.state.serverDisconnectedBehavior === 'quiet'" :name="$store.state.animation && isFriendly ? 'friendly' : ''" appear>
+	<div v-if="showing" class="nsbbhtug" :class="{ friendly: isFriendly }" @click="resetDisconnected">
 		<div class="text">{{ i18n.ts.disconnectedFromServer }}</div>
 		<div class="command">
 			<button class="_textButton" @click="reload">{{ i18n.ts.reload }}</button>
@@ -29,6 +29,7 @@ function timeout() {
 
 function clearTimeout() {
 	window.clearTimeout(currentTimeout);
+	showing = true;
 }
 
 function onDisconnected() {
