@@ -1,28 +1,44 @@
 <template>
-<div v-if="hasDisconnected && $store.state.serverDisconnectedBehavior === 'quiet'" class="nsbbhtug" :class="{ friendly: isFriendly }" @click="resetDisconnected">
-	<div class="text">{{ i18n.ts.disconnectedFromServer }}</div>
-	<div class="command">
-		<button class="_textButton" @click="reload">{{ i18n.ts.reload }}</button>
-		<button class="_textButton">{{ i18n.ts.doNothing }}</button>
+<transition v-if="showing && hasDisconnected && $store.state.serverDisconnectedBehavior === 'quiet'" :name="$store.state.animation && isFriendly ? 'friendly' : ''" appear>
+	<div class="nsbbhtug" :class="{ friendly: isFriendly }" @click="resetDisconnected">
+		<div class="text">{{ i18n.ts.disconnectedFromServer }}</div>
+		<div class="command">
+			<button class="_textButton" @click="reload">{{ i18n.ts.reload }}</button>
+			<button class="_textButton">{{ i18n.ts.doNothing }}</button>
+		</div>
 	</div>
-</div>
+</transition>
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { stream } from '@/stream';
 import { i18n } from '@/i18n';
 
 const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
+let showing = $ref(true);
 let hasDisconnected = $ref(false);
+let currentTimeout = $ref(0);
+
+function timeout() {
+	currentTimeout = window.setTimeout(() => {
+		showing = !isFriendly;
+	}, 10000);
+}
+
+function clearTimeout() {
+	window.clearTimeout(currentTimeout);
+}
 
 function onDisconnected() {
 	hasDisconnected = true;
+	timeout();
 }
 
 function resetDisconnected() {
 	hasDisconnected = false;
+	clearTimeout();
 }
 
 function reload() {
@@ -37,6 +53,14 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.friendly-enter-active, .friendly-leave-active {
+	// transition: opacity 0.3s, transform 0.3s !important;
+}
+.friendly-enter-from, .friendly-leave-to {
+	opacity: 0;
+	transform: translateY(-250px);
+}
+
 .nsbbhtug {
 	position: fixed;
 	z-index: 16385;
@@ -60,6 +84,7 @@ onUnmounted(() => {
 			bottom: initial;
 			right: initial;
 			border-radius: initial;
+			transition: opacity 0.5s, transform 0.5s;
 
 			> .text {
 				padding: 0.7em;

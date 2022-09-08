@@ -1,5 +1,8 @@
 <template>
 <div v-if="show" ref="el" class="fdidabkb" :class="{ slim: narrow, thin: thin_ }" :style="{ background: bg }" @click="onClick">
+	<div v-if="hasDisconnected && isMobile && narrow && hasTabs" class="buttons left">
+		<button v-tooltip.noDelay="i18n.ts.reload" class="_button button disconnected" @click.stop="reload" @touchstart="preventDrag"><i class="fa-solid fa-bolt"></i></button>
+	</div>
 	<template v-if="metadata">
 		<div v-if="!hideTitle" class="titleContainer" @click="showTabsPopup">
 			<MkAvatar v-if="metadata.avatar" class="avatar" :user="metadata.avatar" :disable-preview="true" :show-indicator="true"/>
@@ -29,6 +32,7 @@
 		<template v-for="action in actions">
 			<button v-tooltip.noDelay="action.text" class="_button button" :class="{ highlighted: action.highlighted }" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 		</template>
+		<button v-if="hasDisconnected && !isMobile && (!narrow || hideTitle)" v-tooltip.noDelay="i18n.ts.reload" class="_button button disconnected disconnected-right" @click="reload" @touchstart="preventDrag"><i class="fa-solid fa-bolt"></i></button>
 	</div>
 </div>
 </template>
@@ -41,6 +45,15 @@ import { scrollToTop } from '@/scripts/scroll';
 import { i18n } from '@/i18n';
 import { globalEvents } from '@/events';
 import { injectPageMetadata } from '@/scripts/page-metadata';
+import { deviceKind } from '@/scripts/device-kind';
+import { stream } from '@/stream';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 type Tab = {
 	key?: string | null;
@@ -124,12 +137,23 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 	}
 }
 
+function reload() {
+	location.reload();
+}
+
 const calcBg = () => {
 	const rawBg = metadata?.bg || 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	tinyBg.setAlpha(1);
 	bg.value = tinyBg.toRgbString();
 };
+
+let hasDisconnected = $ref(false);
+
+function onDisconnected() {
+	hasDisconnected = true;
+}
+stream.on('_disconnected_', onDisconnected);
 
 let ro: ResizeObserver | null;
 
@@ -167,6 +191,8 @@ onMounted(() => {
 onUnmounted(() => {
 	globalEvents.off('themeChanged', calcBg);
 	if (ro) ro.disconnect();
+
+	stream.off('_disconnected_', onDisconnected);
 });
 </script>
 
@@ -216,12 +242,28 @@ onUnmounted(() => {
 		height: var(--height);
 		margin: 0 var(--margin);
 
-		&.right {
-			margin-left: auto;
+		&.left {
+			margin-right: auto;
+
+			> .disconnected {
+				transition: opacity 1s, transform 1s;
+			}
 		}
 
-		&:empty {
-			width: var(--height);
+		&.right {
+			margin-left: auto;
+
+			&:empty {
+				width: var(--height);
+			}
+
+			> .disconnected {
+				transition: opacity 1s, transform 1s;
+			}
+
+			> .disconnected-right {
+				margin-left: 15px;
+			}
 		}
 
 		> .button {
