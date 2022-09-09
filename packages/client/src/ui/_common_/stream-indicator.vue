@@ -17,14 +17,19 @@ import { i18n } from '@/i18n';
 
 const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
 
+const DESKTOP_THRESHOLD = 1100;
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+
 let showing = $ref(true);
 let hasDisconnected = $ref(false);
 let currentTimeout = $ref(0);
 
 function timeout() {
-	currentTimeout = window.setTimeout(() => {
-		showing = !isFriendly;
-	}, 10000);
+	if (!isDesktop.value) {
+		currentTimeout = window.setTimeout(() => {
+			showing = !isFriendly;
+		}, 10000);
+	}
 }
 
 function clearTimeout() {
