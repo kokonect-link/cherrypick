@@ -10,7 +10,8 @@
 			<XTutorial v-if="$store.reactiveState.tutorial.value != -1" class="tutorial _block"/>
 			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" class="post-form _block" fixed/>
 
-			<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" class="new"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" class="new"><button class="_buttonPrimary" @click="top()"><i class="fas fa-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 			<div class="tl _block">
 				<XTimeline
 					ref="tl" :key="src"

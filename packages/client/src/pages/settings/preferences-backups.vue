@@ -83,6 +83,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'numberOfPageCache',
 	'aiChanMode',
 	'useEnterToSend',
+	'newNoteRecivedNotificationBehavior',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+newNoteRecivedNotification: "新しいノート通知"
 disableRightClick: "右クリックを禁止"
 useEnterToSend: "Enterキーを押して送信"
 useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
@@ -896,6 +897,11 @@ navbar: "ナビゲーションバー"
 shuffle: "シャッフル"
 account: "アカウント"
 move: "移動"
+
+_newNoteRecivedNotificationBehavior:
+  default: "デフォルト"
+  count: "ノート数表示"
+  none: "表示なし"
 
 _sensitiveMediaDetection:
   description: "機械学習を使って自動でセンシティブなメディアを検出し、モデレーションに役立てることができます。サーバーの負荷が少し増えます。"

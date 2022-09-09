@@ -59,6 +59,13 @@
 		</FormSwitch>
 		<FormSwitch v-model="disableDrawer" class="_formBlock">{{ i18n.ts.disableDrawer }}</FormSwitch>
 
+		<FormSelect v-model="newNoteRecivedNotificationBehavior" class="_formBlock">
+			<template #label>{{ $ts.newNoteRecivedNotification }}</template>
+			<option value="default">{{ $ts._newNoteRecivedNotificationBehavior.default }}</option>
+			<option value="count">{{ $ts._newNoteRecivedNotificationBehavior.count }}</option>
+			<option value="none">{{ $ts._newNoteRecivedNotificationBehavior.none }}</option>
+		</FormSelect>
+
 		<FormRadios v-model="fontSize" class="_formBlock">
 			<template #label>{{ i18n.ts.fontSize }}</template>
 			<option value="1"><span style="font-size: 12px;">Aa</span></option>
@@ -151,6 +158,7 @@ const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
 const aiChanMode = computed(defaultStore.makeGetterSetter('aiChanMode'));
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
+const newNoteRecivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteRecivedNotificationBehavior'));
 
 watch(lang, () => {
 	localStorage.setItem('lang', lang.value as string);
