@@ -103,6 +103,12 @@ onUnmounted(() => {
 		}
 	}
 
+	> .text {
+		display: flex;
+		justify-content: center;
+		padding: 0.3em;
+	}
+
 	> .command {
 		display: flex;
 		justify-content: space-around;
