@@ -27,9 +27,9 @@
 					<div class="desc" v-html="meta.description || i18n.ts.headlineMisskey"></div>
 				</div>
 				<div class="action">
-					<MkButton inline rounded gradate data-cy-signup style="margin-right: 12px;" @click="signup()">{{ i18n.ts.signup }}</MkButton>
-					<MkButton inline rounded data-cy-signin style="margin-right: 12px;" @click="signin()">{{ i18n.ts.login }}</MkButton>
-					<MkButton inline rounded @click="mainRouter.push('/explore')">{{ i18n.ts.explore }}</MkButton>
+					<MkButton inline rounded gradate data-cy-signup class="button" @click="signup()">{{ i18n.ts.signup }}</MkButton>
+					<MkButton inline rounded data-cy-signin class="button" @click="signin()">{{ i18n.ts.login }}</MkButton>
+					<MkButton inline rounded class="button" @click="mainRouter.push('/explore')">{{ i18n.ts.explore }}</MkButton>
 				</div>
 			</div>
 		</div>
@@ -263,6 +263,23 @@ function showMenu(ev) {
 
 					> * {
 						line-height: 28px;
+					}
+
+					@media (min-width: 501px) {
+						button:not(:last-child) {
+							margin-right: 12px;
+						}
+					}
+
+					@media (max-width: 500px) {
+						button:not(:first-child) {
+							margin-top: 10px;
+						}
+
+						> .button {
+							width: 90%;
+							margin-right: initial;
+						}
 					}
 				}
 			}
