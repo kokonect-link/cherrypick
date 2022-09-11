@@ -2,7 +2,7 @@
 <MkStickyContainer>
 	<template #header>
 		<CPPageHeader v-if="isFriendly && !isDesktop" v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/>
-		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/>
+		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="headerTabs" :display-my-avatar="true"/>
 	</template>
 
 	<MkSpacer :content-max="800">
@@ -28,8 +28,8 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, watch, ref } from 'vue';
-import XTimeline from '@/components/timeline.vue';
-import XPostForm from '@/components/post-form.vue';
+import XTimeline from '@/components/MkTimeline.vue';
+import XPostForm from '@/components/MkPostForm.vue';
 import { scroll } from '@/scripts/scroll';
 import * as os from '@/os';
 import { defaultStore } from '@/store';

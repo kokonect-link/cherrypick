@@ -18,8 +18,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { notificationTypes } from 'misskey-js';
-import XNotifications from '@/components/notifications-pages.vue';
-import XNotes from '@/components/notes.vue';
+import XNotifications from '@/components/MkNotifications-Pages.vue';
+import XNotes from '@/components/MkNotes.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
