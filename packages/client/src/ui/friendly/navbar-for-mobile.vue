@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineAsyncComponent, defineComponent, provide, ref, toRef, watch} from 'vue';
+import { computed, defineAsyncComponent, defineComponent, provide, ref, toRef, watch } from 'vue';
 import { host } from '@/config';
 import { search } from '@/scripts/search';
 import * as os from '@/os';
@@ -129,7 +129,7 @@ function openInstanceMenu(ev: MouseEvent) {
 }
 
 function more() {
-	os.popup(defineAsyncComponent(() => import('@/components/launch-pad.vue')), {}, {
+	os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {}, {
 	}, 'closed');
 }
 
