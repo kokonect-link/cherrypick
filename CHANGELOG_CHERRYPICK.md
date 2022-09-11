@@ -15,6 +15,7 @@
 - 클라이언트: (friendly) 모바일 환경에서 스크롤을 내리면 플로팅 버튼이 감춰지도록 변경
 - 클라이언트: (friendly) 서버와 연결이 끊어졌을 때 10초간 경고를 표시한 후 자동으로 숨기기
 - 클라이언트: (friendly) 서버와 연결이 끊어졌을 때 헤더에 연결 끊김 표시
+- 클라이언트: (friendly) 모바일 환경에서 노트 작성 폼의 디자인 개선
 - 클라이언트: Google Translate 서비스 추가 (thanks to @ltlapy)
 - 클라이언트: DeepL과 Google Translate를 선택할 수 있는 옵션 추가
 - 클라이언트: Enter 키를 눌러 보내기 옵션 추가

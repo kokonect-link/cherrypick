@@ -2,7 +2,7 @@
 <transition :name="$store.state.animation ? (type === 'drawer') ? 'modal-drawer' : (type === 'popup') ? 'modal-popup' : 'modal' : ''" :duration="$store.state.animation ? 200 : 0" appear @after-leave="emit('closed')" @enter="emit('opening')" @after-enter="onOpened">
 	<div v-show="manualShowing != null ? manualShowing : showing" v-hotkey.global="keymap" class="qzhlnise" :class="{ drawer: type === 'drawer', dialog: type === 'dialog' || type === 'dialog:top', popup: type === 'popup' }" :style="{ zIndex, pointerEvents: (manualShowing != null ? manualShowing : showing) ? 'auto' : 'none', '--transformOrigin': transformOrigin }">
 		<div class="bg _modalBg" :class="{ transparent: transparentBg && (type === 'popup') }" :style="{ zIndex }" @click="onBgClick" @contextmenu.prevent.stop="() => {}"></div>
-		<div ref="content" class="content" :class="{ fixed, top: type === 'dialog:top' }" :style="{ zIndex }" @click.self="onBgClick">
+		<div ref="content" class="content" :class="{ fixed, top: type === 'dialog:top', friendly: isFriendly && !isDesktop }" :style="{ zIndex }" @click.self="onBgClick">
 			<slot :max-height="maxHeight" :type="type"></slot>
 		</div>
 	</div>
@@ -10,11 +10,22 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, watch, provide } from 'vue';
+import { nextTick, onMounted, watch, provide, ref } from 'vue';
 import * as os from '@/os';
 import { isTouchUsing } from '@/scripts/touch';
 import { defaultStore } from '@/store';
 import { deviceKind } from '@/scripts/device-kind';
+
+const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 500;
+
+// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 function getFixedContainer(el: Element | null): Element | null {
 	if (el == null || el.tagName === 'BODY') return null;
@@ -246,6 +257,12 @@ onMounted(() => {
 			align();
 		}).observe(content!);
 	});
+
+	if (!isDesktop.value) {
+		window.addEventListener('resize', () => {
+			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
+		}, { passive: true });
+	}
 });
 
 defineExpose({
@@ -367,6 +384,11 @@ defineExpose({
 				> ::v-deep(*) {
 					margin-top: 0;
 				}
+			}
+
+			&.friendly {
+				padding: initial;
+				mask-image: initial;
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <template>
 <div
 	v-size="{ max: [310, 500] }" class="gafaadew"
-	:class="{ modal, _popup: modal, friendly: isFriendly }"
+	:class="{ modal, _popup: modal, friendly: isFriendly, 'friendly-not-desktop': isFriendly && !isDesktop }"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"
@@ -41,7 +41,7 @@
 		</div>
 		<MkInfo v-if="hasNotSpecifiedMentions" warn class="hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 		<input v-show="useCw" ref="cwInputEl" v-model="cw" class="cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
-		<textarea ref="textareaEl" v-model="text" class="text" :class="{ withCw: useCw }" :disabled="posting" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+		<textarea ref="textareaEl" v-model="text" class="text" :class="{ withCw: useCw, 'friendly-not-desktop': isFriendly && !isDesktop }" :disabled="posting" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" class="hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 		<XPostFormAttaches class="attaches" :files="files" @updated="updateFiles" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
 		<XPollEditor v-if="poll" v-model="poll" @destroyed="poll = null"/>
@@ -64,7 +64,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, defineAsyncComponent } from 'vue';
+import { inject, watch, nextTick, onMounted, defineAsyncComponent, ref } from 'vue';
 import * as mfm from 'mfm-js';
 import * as misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -90,8 +90,18 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account';
 import { uploadFile } from '@/scripts/upload';
+import { deviceKind } from '@/scripts/device-kind';
 
 const isFriendly = $ref(localStorage.getItem('ui') === 'friendly');
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 500;
+
+// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 const modal = inject('modal');
 
@@ -720,6 +730,12 @@ onMounted(() => {
 
 		nextTick(() => watchForDraft());
 	});
+
+	if (!isDesktop.value) {
+		window.addEventListener('resize', () => {
+			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
+		}, { passive: true });
+	}
 });
 </script>
 
@@ -734,6 +750,13 @@ onMounted(() => {
 
 	&.friendly {
 		max-width: 800px;
+	}
+
+	&.friendly-not-desktop {
+		margin: initial !important;
+		padding: initial !important;
+		border-radius: initial !important;
+		max-width: 100% !important;
 	}
 
 	> header {
@@ -924,6 +947,10 @@ onMounted(() => {
 			&.withCw {
 				padding-top: 8px;
 			}
+
+			&.friendly-not-desktop {
+				min-height: 200px !important;
+			}
 		}
 
 		> footer {
@@ -982,6 +1009,10 @@ onMounted(() => {
 
 			> .text {
 				min-height: 80px;
+			}
+
+			&.friendly-not-desktop {
+				min-height: 200px !important;
 			}
 
 			> footer {
