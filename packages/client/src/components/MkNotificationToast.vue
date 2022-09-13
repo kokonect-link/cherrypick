@@ -1,7 +1,7 @@
 <template>
 <div class="mk-notification-toast" :style="{ zIndex }">
 	<transition :name="$store.state.animation ? 'notification-toast' : ''" appear @after-leave="$emit('closed')">
-		<div v-if="showing" class="notification _acrylic" :style="isMoving ? `transition: none; transform: translateX(${x}px)` : ''" @mousedown="startSwipe" @touchstart="startSwipe">
+		<div ref="noti" v-if="showing" class="notification _acrylic" :style="isMoving ? `transition: none; transform: translateX(${x}px)` : ''" @mousedown="startSwipe" @touchstart="startSwipe">
 			<XNotification class="inner" :notification="notification"/>
 			<button class="_button x _shadow" @click="showing = false">
 				<i class="fas fa-times"></i>
@@ -25,10 +25,12 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex('high');
+const noti = $ref<HTMLElement>();
 let showing = $ref(true);
 let isMoving = $ref(false);
 let x = $ref(0);
 let currentTimeout = $ref(0);
+let globalWidth = $ref(0);
 let previousTouchX = $ref(0);
 
 onMounted(() => {
@@ -83,6 +85,7 @@ function onTouchMove(ev: TouchEvent) {
 
 function startSwipe() {
 	isMoving = true;
+	globalWidth = noti.clientWidth;
 	clearTimeout();
 }
 
@@ -93,7 +96,7 @@ function processSwipe(movementX: number) {
 
 function endSwipe() {
 	isMoving = false;
-	if (x > 150) {
+	if (x > globalWidth / 5 * 2) {
 		x = 0;
 		nextTick(() => showing = false);
 	} else {
