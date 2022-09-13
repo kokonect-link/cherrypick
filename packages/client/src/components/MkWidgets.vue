@@ -6,20 +6,27 @@
 				<template #label>{{ i18n.ts.selectWidget }}</template>
 				<option v-for="widget in widgetDefs" :key="widget" :value="widget">{{ i18n.t(`_widgets.${widget}`) }}</option>
 			</MkSelect>
-			<MkButton inline primary class="mk-widget-add" @click="addWidget"><i class="fas fa-plus"></i> {{ i18n.ts.add }}</MkButton>
-			<MkButton inline @click="$emit('exit')">{{ i18n.ts.close }}</MkButton>
+			<MkButton primary class="mk-widget-add btn" @click="addWidget"><i class="fas fa-plus"></i> {{ i18n.ts.add }}</MkButton>
+			<MkButton class="btn" @click="$emit('exit')">{{ i18n.ts.close }}</MkButton>
 		</header>
 		<XDraggable
 			v-model="widgets_"
 			item-key="id"
 			handle=".handle"
 			animation="150"
+			class="sortable"
 		>
 			<template #item="{element}">
-				<div class="customize-container">
-					<button class="config _button" @click.prevent.stop="configWidget(element.id)"><i class="fas fa-cog"></i></button>
-					<button class="remove _button" @click.prevent.stop="removeWidget(element)"><i class="fas fa-times"></i></button>
-					<div class="handle">
+				<div class="customize-container _panel">
+					<header>
+						<span class="handle"><i class="fas fa-bars"/></span>
+						<div style="position: absolute; top: 0; left: 35px; font-size: 14px; font-weight: bold; line-height: 32.5px;">
+							{{ $t('_widgets.' + element.name) }}
+						</div>
+						<button class="config _button" @click.prevent.stop="configWidget(element.id)"><i class="fas fa-cog"></i></button>
+						<button class="remove _button" @click.prevent.stop="removeWidget(element)"><i class="fas fa-times"></i></button>
+					</header>
+					<div @click="configWidget(element.id)">
 						<component :is="`mkw-${element.name}`" :ref="el => widgetRefs[element.id] = el" class="widget" :widget="element" @updateProps="updateWidget(element.id, $event)"/>
 					</div>
 				</div>
@@ -122,6 +129,11 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 			width: 100%;
 			padding: 4px;
 		}
+
+		> .btn {
+			margin: 5px 0;
+			padding: 6px;
+		}
 	}
 
 	> .widget, .customize-container {
@@ -135,26 +147,33 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 
 	.customize-container {
 		position: relative;
-		cursor: move;
+		// cursor: move;
 
-		> .config,
-		> .remove {
-			position: absolute;
-			z-index: 10000;
-			top: 8px;
-			width: 32px;
-			height: 32px;
-			color: #fff;
-			background: rgba(#000, 0.7);
-			border-radius: 4px;
-		}
+		> header {
+			position: relative;
+			line-height: 25px;
 
-		> .config {
-			right: 8px + 8px + 32px;
-		}
+			> .handle {
+				padding: 0 10px;
+				cursor: move;
+				line-height: 32px;
+			}
 
-		> .remove {
-			right: 8px;
+			> .config,
+			> .remove {
+				position: absolute;
+				top: 0;
+				padding: 0 8px;
+				line-height: 32px;
+			}
+
+			> .config {
+				right: 30px;
+			}
+
+			> .remove {
+				right: 5px;
+			}
 		}
 
 		> .handle {
