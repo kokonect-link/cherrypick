@@ -24,9 +24,11 @@
 		</XDraggable>
 	</div>
 
-	<FormButton class="_formBlock" @click="addItem"><i class="fas fa-plus"></i> {{ i18n.ts.addItem }}</FormButton>
-	<FormButton v-if="isChanged" class="_formBlock" @click="save"><i class="fas fa-save"></i> {{ i18n.ts.save }}</FormButton>
-	<FormButton danger class="_formBlock" @click="reset()"><i class="fas fa-redo"></i> {{ i18n.ts.default }}</FormButton>
+	<div class="wthhikgt">
+		<FormButton class="_formBlock" @click="addItem"><i class="fas fa-plus"></i> {{ i18n.ts.addItem }}</FormButton>
+		<FormButton v-if="isChanged" class="_formBlock" @click="save"><i class="fas fa-save"></i> {{ i18n.ts.save }}</FormButton>
+		<FormButton danger class="_formBlock" @click="reset()"><i class="fas fa-redo"></i> {{ i18n.ts.default }}</FormButton>
+	</div>
 </div>
 </template>
 
@@ -121,6 +123,30 @@ definePageMetadata({
 	> .draggable {
 		display: flex;
 		flex-direction: column;
+	}
+}
+
+.wthhikgt {
+	position: relative;
+	display: flex;
+
+	> ::v-deep(*) {
+		flex: 1;
+		margin: 0;
+
+		&:not(:last-child) {
+			margin-right: 16px;
+		}
+	}
+
+	@media (max-width: 500px) {
+		display: block;
+
+		> ::v-deep(*) {
+			margin: 0 0 10px 0;
+			width: 100%;
+			padding: var(--margin);
+		}
 	}
 }
 
