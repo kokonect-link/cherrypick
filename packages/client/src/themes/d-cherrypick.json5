@@ -15,7 +15,7 @@
 		panelHeaderDivider: '@divider',
 		infoFg: '@accent',
 		infoBg: 'rgb(0, 0, 0)',
-		acrylicPanel: ':alpha<0.9<@panel',
+		acrylicPanel: ':alpha<0.5<@panel',
 		header: '@bg',
 		navBg: '@panel',
 		navHoverFg: '@pick',
