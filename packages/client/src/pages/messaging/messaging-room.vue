@@ -351,12 +351,12 @@ definePageMetadata(computed(() => !fetching ? user ? {
 		bottom: calc(env(safe-area-inset-bottom, 0px) + 8px);
 
 		&.friendly {
-			padding-top: 64px;
+			margin-top: 64px;
 			bottom: calc(env(safe-area-inset-bottom, 0px) + 45px);
 		}
 
 		&.friendly-not-mobile {
-			padding-top: 8px;
+			margin-top: 8px;
 			bottom: 0;
 		}
 
