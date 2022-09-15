@@ -58,6 +58,41 @@ export async function signout() {
 	else unisonReload('/');
 }
 
+export async function signoutAll() {
+	waiting();
+	localStorage.removeItem('account');
+	localStorage.removeItem('accounts');
+
+	await del('accounts');
+
+	//#region Remove service worker registration
+	try {
+		if (navigator.serviceWorker.controller) {
+			const registration = await navigator.serviceWorker.ready;
+			const push = await registration.pushManager.getSubscription();
+			if (push) {
+				await fetch(`${apiUrl}/sw/unregister`, {
+					method: 'POST',
+					body: JSON.stringify({
+						i: $i.token,
+						endpoint: push.endpoint,
+					}),
+				});
+			}
+		}
+
+		await navigator.serviceWorker.getRegistrations()
+			.then(registrations => {
+				return Promise.all(registrations.map(registration => registration.unregister()));
+			});
+	} catch (err) {}
+	//#endregion
+
+	document.cookie = 'igi=; path=/';
+
+	unisonReload('/');
+}
+
 export async function getAccounts(): Promise<{ id: Account['id'], token: Account['token'] }[]> {
 	return (await get('accounts')) || [];
 }

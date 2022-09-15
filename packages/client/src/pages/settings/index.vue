@@ -27,7 +27,7 @@ import { i18n } from '@/i18n';
 import MkInfo from '@/components/MkInfo.vue';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import { scroll } from '@/scripts/scroll';
-import { signout , $i } from '@/account';
+import { signout, signoutAll, $i } from '@/account';
 import { unisonReload } from '@/scripts/unison-reload';
 import { instance } from '@/instance';
 import { useRouter } from '@/router';
@@ -195,6 +195,19 @@ const menuDef = computed(() => [{
 			});
 			if (canceled) return;
 			signout();
+		},
+		danger: true,
+	}, {
+		type: 'button',
+		icon: 'fas fa-sign-in-alt fa-flip-horizontal',
+		text: i18n.ts.logoutAll,
+		action: async () => {
+			const { canceled } = await os.confirm({
+				type: 'warning',
+				text: i18n.ts.logoutAllConfirm,
+			});
+			if (canceled) return;
+			signoutAll();
 		},
 		danger: true,
 	}],
