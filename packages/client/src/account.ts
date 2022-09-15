@@ -6,6 +6,7 @@ import { del, get, set } from '@/scripts/idb-proxy';
 import { apiUrl } from '@/config';
 import { waiting, api, popup, popupMenu, success, alert } from '@/os';
 import { unisonReload, reloadChannel } from '@/scripts/unison-reload';
+import * as os from '@/os';
 
 // TODO: 他のタブと永続化されたstateを同期
 
@@ -256,6 +257,19 @@ export async function openAccountMenu(opts: {
 			icon: 'fas fa-users',
 			text: i18n.ts.manageAccounts,
 			to: '/settings/accounts',
+		}, {
+			type: 'button',
+			icon: 'fas fa-sign-in-alt fa-flip-horizontal',
+			text: i18n.ts.logout,
+			action: async () => {
+				const { canceled } = await os.confirm({
+					type: 'warning',
+					text: i18n.ts.logoutConfirm,
+				});
+				if (canceled) return;
+				signout();
+			},
+			danger: true,
 		}]], ev.currentTarget ?? ev.target, {
 			align: 'left',
 		});
