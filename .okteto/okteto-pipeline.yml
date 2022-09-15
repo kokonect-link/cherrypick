@@ -1,6 +1,6 @@
 build:
-  misskey:
+  cherrypick:
     args:
       - NODE_ENV=development
 deploy:
-  - helm upgrade --install misskey chart --set image=${OKTETO_BUILD_MISSKEY_IMAGE} --set url="https://misskey-$(kubectl config view --minify -o jsonpath='{..namespace}').cloud.okteto.net" --set environment=development
+  - helm upgrade --install cherrypick chart --set image=${OKTETO_BUILD_CHERRYPICK_IMAGE} --set url="https://cherrypick-$(kubectl config view --minify -o jsonpath='{..namespace}').cloud.okteto.net" --set environment=development

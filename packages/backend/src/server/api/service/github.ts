@@ -181,7 +181,7 @@ router.get('/gh/cb', async ctx => {
 			.getOne();
 
 		if (link == null) {
-			ctx.throw(404, `@${login}と連携しているMisskeyアカウントはありませんでした...`);
+			ctx.throw(404, `@${login}と連携しているCherryPickアカウントはありませんでした...`);
 			return;
 		}
 
@@ -246,7 +246,7 @@ router.get('/gh/cb', async ctx => {
 			},
 		});
 
-		ctx.body = `GitHub: @${login} を、Misskey: @${user.username} に接続しました！`;
+		ctx.body = `GitHub: @${login} を、CherryPick: @${user.username} に接続しました！`;
 
 		// Publish i updated event
 		publishMainStream(user.id, 'meUpdated', await Users.pack(user, user, {

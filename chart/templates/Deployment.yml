@@ -15,14 +15,14 @@ spec:
 				{{- include "misskey.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: misskey
+        - name: cherrypick
           image: {{ .Values.image }}
           env:
             - name: NODE_ENV
               value: {{ .Values.environment }}
           volumeMounts:
             - name: {{ include "misskey.fullname" . }}-configuration
-              mountPath: /misskey/.config
+              mountPath: /cherrypick/.config
               readOnly: true
           ports:
             - containerPort: 3000
@@ -30,11 +30,11 @@ spec:
           image: postgres:14-alpine
           env:
             - name: POSTGRES_USER
-              value: "example-misskey-user"
+              value: "example-cherrypick-user"
             - name: POSTGRES_PASSWORD
-              value: "example-misskey-pass"
+              value: "example-cherrypick-pass"
             - name: POSTGRES_DB
-              value: "misskey"
+              value: "cherrypick"
           ports:
             - containerPort: 5432
         - name: redis

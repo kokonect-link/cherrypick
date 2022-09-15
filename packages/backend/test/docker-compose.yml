@@ -11,5 +11,5 @@ services:
     ports:
       - "127.0.0.1:54312:5432"
     environment:
-      POSTGRES_DB: "test-misskey"
+      POSTGRES_DB: "test-cherrypick"
       POSTGRES_HOST_AUTH_METHOD: trust

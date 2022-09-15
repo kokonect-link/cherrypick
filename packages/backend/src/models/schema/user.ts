@@ -20,7 +20,7 @@ export const packedUserLiteSchema = {
 		host: {
 			type: 'string',
 			nullable: true, optional: false,
-			example: 'misskey.example.com',
+			example: 'cherrypick.example.com',
 			description: 'The local host is represented with `null`.',
 		},
 		avatarUrl: {

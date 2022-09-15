@@ -37,6 +37,6 @@ Please include errors from the developer console and/or server log files if you 
 
 <!-- Tell us where on the platform it happens -->
 
-Misskey version:
+CherryPick version:
 Your OS:
 Your browser:

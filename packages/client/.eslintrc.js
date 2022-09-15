@@ -71,7 +71,7 @@ module.exports = {
 		'$shallowRef': false,
 		'$computed': false,
 
-		// Misskey
+		// CherryPick
 		'_DEV_': false,
 		'_LANGS_': false,
 		'_VERSION_': false,

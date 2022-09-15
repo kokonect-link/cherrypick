@@ -36,7 +36,7 @@ export default defineConfig(({ command, mode }) => {
 			_LANGS_: JSON.stringify(Object.entries(locales).map(([k, v]) => [k, v._lang_])),
 			_ENV_: JSON.stringify(process.env.NODE_ENV),
 			_DEV_: process.env.NODE_ENV !== 'production',
-			_PERF_PREFIX_: JSON.stringify('Misskey:'),
+			_PERF_PREFIX_: JSON.stringify('CherryPick:'),
 			_DATA_TRANSFER_DRIVE_FILE_: JSON.stringify('mk_drive_file'),
 			_DATA_TRANSFER_DRIVE_FOLDER_: JSON.stringify('mk_drive_folder'),
 			_DATA_TRANSFER_DECK_COLUMN_: JSON.stringify('mk_deck_column'),

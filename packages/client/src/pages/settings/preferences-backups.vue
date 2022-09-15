@@ -103,13 +103,13 @@ const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 
 const scope = ['clientPreferencesProfiles'];
 
-const profileProps = ['name', 'createdAt', 'updatedAt', 'misskeyVersion', 'settings'];
+const profileProps = ['name', 'createdAt', 'updatedAt', 'cherrypickVersion', 'settings'];
 
 type Profile = {
 	name: string;
 	createdAt: string;
 	updatedAt: string | null;
-	misskeyVersion: string;
+	cherrypickVersion: string;
 	host: string;
 	settings: {
 		hot: Record<keyof typeof defaultStoreSaveKeys, unknown>;
@@ -140,7 +140,7 @@ function validate(profile: unknown): void {
 	if (Object.keys(profile).some(key => !profileProps.includes(key))) throw new Error('Unnecessary properties exist');
 
 	if (!profile.name) throw new Error('Missing required prop: name');
-	if (!profile.misskeyVersion) throw new Error('Missing required prop: misskeyVersion');
+	if (!profile.cherrypickVersion) throw new Error('Missing required prop: cherrypickVersion');
 	
 	// Check if createdAt and updatedAt is Date
 	// https://zenn.dev/lollipop_onl/articles/eoz-judge-js-invalid-date
@@ -197,7 +197,7 @@ async function saveNew(): Promise<void> {
 		name,
 		createdAt: (new Date()).toISOString(),
 		updatedAt: null,
-		misskeyVersion: version,
+		cherrypickVersion: version,
 		host,
 		settings: getSettings(),
 	};
@@ -338,7 +338,7 @@ async function save(id: string): Promise<void> {
 		name,
 		createdAt,
 		updatedAt: (new Date()).toISOString(),
-		misskeyVersion: version,
+		cherrypickVersion: version,
 		host,
 		settings: getSettings(),
 	};

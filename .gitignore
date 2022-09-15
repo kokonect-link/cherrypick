@@ -21,7 +21,7 @@ coverage
 !/.config/example.yml
 !/.config/docker_example.env
 
-# misskey
+# cherrypick
 /build
 built
 /data

@@ -17,9 +17,57 @@
 				<div class="_formBlock" style="text-align: center;">
 					<MkButton primary rounded inline @click="iLoveCherryPick">I <Mfm text="$[jelly ❤]"/> #CherryPick</MkButton>
 				</div>
+				<FormSection v-if="isKokonect">
+					<template #label>_KOKONECT_</template>
+					<div class="_formLinks">
+						<FormLink to="https://status.kokonect.link" external>
+							<template #icon><i class="fas fa-tachometer-alt"></i></template>
+							{{ i18n.ts._aboutMisskey._kokonect.serverStatus }}
+							<template #suffix>GitHub</template>
+						</FormLink>
+					</div>
+				</FormSection>
 				<FormSection>
+					<template #label>CherryPick</template>
 					<div class="_formLinks">
 						<FormLink to="https://github.com/kokonect-link/cherrypick" external>
+							<template #icon><i class="fas fa-code"></i></template>
+							{{ i18n.ts._aboutMisskey.source }}
+							<template #suffix>GitHub</template>
+						</FormLink>
+						<!--
+						<FormLink to="https://crowdin.com/project/misskey" external>
+							<template #icon><i class="fas fa-language"></i></template>
+							{{ i18n.ts._aboutMisskey.translation }}
+							<template #suffix>Crowdin</template>
+						</FormLink>
+						-->
+						<FormLink to="https://discord.gg/V8qghB28Aj" external>
+							<template #icon><i class="fab fa-discord"></i></template>
+							{{ i18n.ts._aboutMisskey._cherrypick.community }}
+							<template #suffix>Discord</template>
+						</FormLink>
+						<FormLink to="https://www.patreon.com/noridev" external>
+							<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+							{{ i18n.ts._aboutMisskey._cherrypick.donate }}
+							<template #suffix>Patreon</template>
+						</FormLink>
+						<FormLink to="https://www.paypal.me/noridev" external>
+							<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+							{{ i18n.ts._aboutMisskey._cherrypick.donate }}
+							<template #suffix>PayPal</template>
+						</FormLink>
+						<FormLink to="https://toss.me/noridev" external>
+							<template #icon><i class="fas fa-hand-holding-medical"></i></template>
+							{{ i18n.ts._aboutMisskey._cherrypick.donate }}
+							<template #suffix>Toss</template>
+						</FormLink>
+					</div>
+				</FormSection>
+				<FormSection>
+					<template #label>Misskey</template>
+					<div class="_formLinks">
+						<FormLink to="https://github.com/misskey-dev/misskey" external>
 							<template #icon><i class="fas fa-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
 							<template #suffix>GitHub</template>
@@ -29,25 +77,19 @@
 							{{ i18n.ts._aboutMisskey.translation }}
 							<template #suffix>Crowdin</template>
 						</FormLink>
-						<FormLink to="https://www.patreon.com/noridev" external>
+						<FormLink to="https://www.patreon.com/syuilo" external>
 							<template #icon><i class="fas fa-hand-holding-medical"></i></template>
 							{{ i18n.ts._aboutMisskey.donate }}
 							<template #suffix>Patreon</template>
 						</FormLink>
 					</div>
+					<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
 				</FormSection>
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
 					<div class="_formLinks">
-						<FormLink to="https://github.com/syuilo" external>@syuilo</FormLink>
-						<FormLink to="https://github.com/AyaMorisawa" external>@AyaMorisawa</FormLink>
-						<FormLink to="https://github.com/mei23" external>@mei23</FormLink>
-						<FormLink to="https://github.com/acid-chicken" external>@acid-chicken</FormLink>
-						<FormLink to="https://github.com/tamaina" external>@tamaina</FormLink>
-						<FormLink to="https://github.com/rinsuki" external>@rinsuki</FormLink>
-						<FormLink to="https://github.com/Xeltica" external>@Xeltica</FormLink>
-						<FormLink to="https://github.com/u1-liquid" external>@u1-liquid</FormLink>
-						<FormLink to="https://github.com/marihachi" external>@marihachi</FormLink>
+						<FormLink to="https://github.com/noridev" external>@noridev (CherryPick)</FormLink>
+						<FormLink to="https://github.com/syuilo" external>@syuilo (Misskey)</FormLink>
 					</div>
 					<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
 				</FormSection>
@@ -156,10 +198,15 @@ const patrons = [
 	'pixeldesu',
 ];
 
+let isKokonect = false;
+
 let easterEggReady = false;
 let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
 const containerEl = $ref<HTMLElement>();
+
+const meta = await os.api('meta', { detail: true });
+if (meta.uri == 'https://kokonect.link' || 'http://localhost:3000') isKokonect = true;
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;
