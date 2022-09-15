@@ -680,7 +680,7 @@ lockedAccountInfo: "フォローを承認制にしても、ノートの公開範
 alwaysMarkSensitive: "デフォルトでメディアを閲覧注意にする"
 loadRawImages: "添付画像のサムネイルをオリジナル画質にする"
 disableShowingAnimatedImages: "アニメーション画像を再生しない"
-verificationEmailSent: "確認のメールを送信しました。メールに記載されたリンクにアクセスして、設定を完了してください。"
+verificationEmailSent: "確認のメールを送信しました。メールに記載されたリンクにアクセスして、設定を完了してください。\nもしメールが来なかったらスパムメールボックスを確認してください。"
 notSet: "未設定"
 emailVerified: "メールアドレスが確認されました"
 noteFavoritesCount: "お気に入りノートの数"
@@ -929,7 +929,7 @@ _ffVisibility:
 _signup:
   almostThere: "ほとんど完了です"
   emailAddressInfo: "あなたが使っているメールアドレスを入力してください。メールアドレスが公開されることはありません。"
-  emailSent: "入力されたメールアドレス({email})宛に確認のメールが送信されました。メールに記載されたリンクにアクセスすると、アカウントの作成が完了します。"
+  emailSent: "入力されたメールアドレス({email})宛に確認のメールが送信されました。メールに記載されたリンクにアクセスすると、アカウントの作成が完了します。\nもしメールが来なかったらスパムメールボックスを確認してください。"
 
 _accountDelete:
   accountDelete: "アカウントの削除"

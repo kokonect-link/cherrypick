@@ -680,7 +680,7 @@ lockedAccountInfo: "Unless you set your note visiblity to \"Followers only\", yo
 alwaysMarkSensitive: "Mark as NSFW by default"
 loadRawImages: "Load original images instead of showing thumbnails"
 disableShowingAnimatedImages: "Don't play animated images"
-verificationEmailSent: "A verification email has been sent. Please follow the included link to complete verification."
+verificationEmailSent: "A verification email has been sent. Please follow the included link to complete verification.\nIf you do not receive an email, please check your spam folder."
 notSet: "Not set"
 emailVerified: "Email has been verified"
 noteFavoritesCount: "Number of favorite notes"
@@ -924,7 +924,7 @@ _ffVisibility:
 _signup:
   almostThere: "Almost there"
   emailAddressInfo: "Please enter your email address. It will not be made public."
-  emailSent: "A confirmation email has been sent to your email address ({email}). Please click the included link to complete account creation."
+  emailSent: "A confirmation email has been sent to your email address ({email}). Please click the included link to complete account creation.\nIf you do not receive an email, please check your spam folder."
 _accountDelete:
   accountDelete: "Delete account"
   mayTakeTime: "As account deletion is a resource-heavy process, it may take some time to complete depending on how much content you have created and how many files you have uploaded."
