@@ -78,6 +78,7 @@ async function addItem() {
 	});
 	if (canceled) return;
 	items.value = [...items.value, item];
+	defaultStore.set('menu', items.value.map(it => it.startsWith('-:') ? '-' : it));
 }
 
 async function del(item) {
@@ -97,6 +98,7 @@ function reset() {
 }
 
 watch(items, async () => {
+	// await save();
 	isChanged = true;
 }, {
 	deep: true,
