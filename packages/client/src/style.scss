@@ -1,5 +1,44 @@
 @charset "utf-8";
 
+@mixin font($font-family, $font-weight, $font-style, $font-local, $font-url) {
+	@font-face {
+		font-family: $font-family;
+		font-weight: $font-weight;
+		font-style: $font-style;
+		font-display: swap;
+		src: local($font-local), url($font-url) format('woff2');
+	}
+}
+
+@include font(
+		'Pretendard JP',
+		400,
+		normal,
+		'Pretendard JP Regular',
+		'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Regular.woff2'
+);
+@include font(
+		'Pretendard JP',
+		700,
+		normal,
+		'Pretendard JP Bold',
+		'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Bold.woff2'
+);
+@include font(
+		'JetBrains Mono',
+		400,
+		normal,
+		'JetBrains Mono Regular',
+		'https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Regular.woff2'
+);
+@include font(
+		'JetBrains Mono',
+		700,
+		normal,
+		'JetBrains Mono Bold',
+		'https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Bold.woff2'
+);
+
 :root {
 	--radius: 12px;
 	--marginFull: 16px;
@@ -12,12 +51,15 @@
 	}
 
 	//--ad: rgb(255 169 0 / 10%);
+
+	--cast: rgb(181, 151, 246);
+	--ella: rgb(150, 198, 234);
 }
 
 ::selection {
 	color: #fff;
 	background-color: var(--accent);
-} 
+}
 
 html {
 	touch-action: manipulation;
@@ -29,7 +71,10 @@ html {
 	accent-color: var(--accent);
 	overflow: auto;
 	overflow-wrap: break-word;
-	font-family: "BIZ UDGothic", Roboto, HelveticaNeue, Arial, sans-serif;
+	font-family: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+								Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo",
+								Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka,
+								"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 	font-size: 14px;
 	line-height: 1.35;
 	text-size-adjust: 100%;
@@ -467,7 +512,7 @@ hr {
 }
 
 ._monospace {
-	font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
+	font-family: "JetBrains Mono", "Pretendard JP", Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
 }
 
 ._code {
@@ -477,6 +522,11 @@ hr {
 	font-size: 14px;
 	line-height: 1.5;
 	padding: 5px;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+	font-family: "JetBrains Mono", "Pretendard JP" , Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
 }
 
 .prism-editor__textarea:focus {
