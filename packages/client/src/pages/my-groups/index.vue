@@ -43,10 +43,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import MkPagination from '@/components/ui/pagination.vue';
-import MkButton from '@/components/ui/button.vue';
+import MkPagination from '@/components/MkPagination.vue';
+import MkButton from '@/components/MkButton.vue';
 // import MkContainer from '@/components/ui/container.vue';
-import MkAvatars from '@/components/avatars.vue';
+import MkAvatars from '@/components/MkAvatars.vue';
 // import MkTab from '@/components/tab.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
