@@ -50,15 +50,11 @@ window.onload = async () => {
 			const text = document.createElement('div');
 			if (note.renoteId !== null) {
 				const renoteTextShrinked = note.renote.text.slice(0, 30).concat('...');
-				text.innerHTML = '<i>';
-				text.textContent = `Renote of @${note.renote.user.username}'s note: ${renoteTextShrinked}\n`;
-				text.innerHTML += '</i>';
+				text.textContent += `Renote of @${note.renote.user.username}'s note: ${renoteTextShrinked}<br>`;
 			}
 			if (note.replyId !== null) {
 				const replyTextShrinked = note.reply.text.slice(0, 30).concat('...');
-				text.innerHTML = '<i>';
-				text.textContent = `Reply of @${note.reply.user.username}'s note: ${replyTextShrinked}\n`;
-				text.innerHTML += '</i>';
+				text.textContent += `Reply of @${note.reply.user.username}'s note: ${replyTextShrinked}<br>`;
 			}
 			text.textContent += `${note.text || ''}`;
 			
