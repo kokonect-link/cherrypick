@@ -43,10 +43,26 @@ window.onload = async () => {
 		const tl = document.getElementById('tl');
 		for (const note of notes) {
 			const el = document.createElement('div');
+			
 			const name = document.createElement('header');
 			name.textContent = `${note.user.name} @${note.user.username}`;
+			
 			const text = document.createElement('div');
-			text.textContent = `${note.text}`;
+			if (note.renoteId !== null) {
+				const renoteTextShrinked = note.renote.text.slice(0, 30).concat('...');
+				text.innerHTML = '<i>';
+				text.textContent = `Renote of @${note.renote.user.username}'s note: ${renoteTextShrinked}\n`;
+				text.innerHTML += '</i>';
+			}
+			if (note.replyId !== null) {
+				const replyTextShrinked = note.reply.text.slice(0, 30).concat('...');
+				text.innerHTML = '<i>';
+				text.textContent = `Reply of @${note.reply.user.username}'s note: ${replyTextShrinked}\n`;
+				text.innerHTML += '</i>';
+			}
+			text.textContent += `${note.text || ''}`;
+			
+			
 			el.appendChild(name);
 			el.appendChild(text);
 			tl.appendChild(el);
