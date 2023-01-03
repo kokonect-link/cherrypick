@@ -1115,6 +1115,8 @@ thisFlashRequiresTheFollowingPermissions: "This Play requires the following perm
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
 enableAbsoluteTime: "Enable Absolute Time"
+inviteRevoke: "Revoke All Invitation Codes"
+inviteRevokeConfirm: "Are you sure that you want to revoke all invitation codes?"
 _group:
   leader: "Group owner"
   banish: "Banish"
