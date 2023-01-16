@@ -10,7 +10,6 @@ import { MetaService } from '@/core/MetaService.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { ApiError } from '../../error.js';
 import { GetterService } from '@/server/api/GetterService.js';
-import { meta } from '../invite.js';
 import { errors } from '../../openapi/errors.js';
 
 export const meta = {

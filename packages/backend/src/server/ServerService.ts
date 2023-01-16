@@ -69,7 +69,7 @@ export class ServerService {
 			fastify.addHook('onRequest', (request, reply, done) => {
 				reply.header('strict-transport-security', 'max-age=15552000; preload');
 				done();
-			});
+			}); 	
 		}
 
 		fastify.register(this.apiServerService.createServer, { prefix: '/api' });
