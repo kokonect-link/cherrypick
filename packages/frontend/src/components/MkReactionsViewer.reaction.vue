@@ -39,7 +39,7 @@ const reactionName = computed(() => {
 	return r.slice(0, r.indexOf('@'));
 });
 
-const alternative: ComputedRef<string | null> = computed(() => (customEmojis).find(it => it.name === reactionName.value)?.name);
+const alternative: ComputedRef<string | null> = computed(() => customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null);
 
 const canToggle = computed(() => !props.reaction.match(/@\w/) && $i);
 
