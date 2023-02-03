@@ -6,6 +6,7 @@ useEnterToSend: "Enter 키를 눌러 보내기"
 useEnterToSendDescription: "옵션을 활성화하면 줄 바꿈은 Shift + Enter 키로 할 수 있어요."
 headlineMisskey: "노트로 연결되는 네트워크"
 introMisskey: "어서오세요! CherryPick은 오픈 소스 분산형 마이크로 블로그 서비스에요.\n\"노트\" 를 작성해서, 지금 일어나고 있는 일을 공유하거나, 당신만의 이야기를 모두에게 발신할 수 있어요📡\n\"리액션\" 기능으로, 친구의 노트에 총알같이 반응을 추가할 수도 있어요👍\n새로운 세계를 탐험해 보세요🚀"
+poweredByMisskeyDescription: "{name}은(는) 오픈소스 플랫폼<b>Misskey</b>를 사용한 서비스(Misskey 인스턴스라고 불립니다) 중 하나입니다."
 monthAndDay: "{month}월 {day}일"
 search: "검색"
 notifications: "알림"
@@ -13,9 +14,10 @@ username: "유저명"
 password: "비밀번호"
 forgotPassword: "비밀번호를 잊었어요!"
 fetchingAsApObject: "연합에서 조회 중"
-ok: "OK"
+ok: "확인"
 gotIt: "알겠어요"
 cancel: "취소"
+noThankYou: "나중에"
 enterUsername: "유저명 입력"
 renotedBy: "{user}님이 리노트 했어요"
 noNotes: "노트가 없어요"
@@ -53,6 +55,7 @@ deleteAndEdit: "삭제 후 편집"
 deleteAndEditConfirm: "이 노트를 삭제한 뒤 다시 편집할까요? 이 노트에 달린 리액션, 리노트, 그리고 답글이 모두 삭제돼요!"
 addToList: "리스트에 추가"
 sendMessage: "메시지 보내기"
+copyRSS: "RSS 복사"
 copyUsername: "유저명 복사"
 searchUser: "사용자 검색"
 reply: "답글"
@@ -113,6 +116,7 @@ clickToShow: "클릭하여 보기"
 sensitive: "열람주의"
 add: "추가"
 reaction: "리액션"
+reactions: "리액션"
 reactionSetting: "선택기에 표시할 리액션"
 reactionSettingDescription2: "끌어서 순서 변경, 클릭해서 삭제, ＋를 눌러서 추가할 수 있어요."
 rememberNoteVisibility: "공개 범위 기억하기"
@@ -170,7 +174,6 @@ annotation: "내용에 대한 주석"
 federation: "연합"
 instances: "인스턴스"
 registeredAt: "등록 날짜"
-latestRequestSentAt: "마지막으로 요청을 보낸 시간"
 latestRequestReceivedAt: "마지막으로 요청을 받은 시간"
 latestStatus: "마지막 상태"
 storageUsage: "스토리지 사용량"
@@ -230,7 +233,7 @@ currentPassword: "현재 비밀번호"
 newPassword: "새 비밀번호"
 newPasswordRetype: "새 비밀번호 (재입력)"
 attachFile: "파일 첨부"
-more: "더보기!"
+more: "더보기"
 featured: "하이라이트"
 usernameOrUserId: "유저명이나 ID"
 noSuchUser: "연합우주 어디에서도 찾을 수 없었어요.."
@@ -354,6 +357,10 @@ recaptcha: "reCAPTCHA"
 enableRecaptcha: "reCAPTCHA 활성화"
 recaptchaSiteKey: "사이트 키"
 recaptchaSecretKey: "시크릿 키"
+turnstile: "Turnstile"
+enableTurnstile: "Turnstile 활성화"
+turnstileSiteKey: "사이트 키"
+turnstileSecretKey: "시크릿 키"
 avoidMultiCaptchaConfirm: "여러 Captcha를 사용하는 경우 충돌이 발생할 수 있어요! 다른 Captcha를 비활성화할까요? 취소를 눌러 여러 Captcha를 활성화한 상태로 두는 것도 가능해요."
 antennas: "안테나"
 manageAntennas: "안테나 관리"
@@ -456,7 +463,8 @@ language: "언어"
 uiLanguage: "UI 표시 언어"
 groupInvited: "그룹에 초대됐어요"
 aboutX: "{x}에 대하여"
-useOsNativeEmojis: "OS 기본 이모지 사용"
+emojiStyle: "이모지 스타일"
+native: "네이티브"
 disableDrawer: "드로어 메뉴를 사용하지 않기"
 youHaveNoGroups: "그룹이 없어요"
 joinOrCreateGroup: "다른 그룹의 초대를 받거나, 직접 새 그룹을 만들 수 있어요!"
@@ -510,6 +518,7 @@ showFixedPostForm: "타임라인 상단에 글 작성란 표시"
 newNoteRecived: "새 노트가 있어요!"
 newNoteRecivedCount: "{n}개의 새 노트가 있어요!"
 sounds: "소리"
+sound: "소리"
 listen: "듣기"
 none: "없음"
 showInPage: "페이지로 보기"
@@ -715,6 +724,7 @@ accentColor: "강조 색상"
 textColor: "문자 색"
 saveAs: "다른 이름으로 저장"
 advanced: "고급"
+advancedSettings: "고급 설정"
 value: "값"
 createdAt: "생성된 날짜"
 updatedAt: "수정한 날짜"
@@ -876,6 +886,7 @@ numberOfPageCache: "페이지 캐시 수"
 numberOfPageCacheDescription: "숫자가 클 수록 편리성이 높아지지만, 시스템 자원과 메모리를 더 많이 사용하게 돼요."
 logoutConfirm: "로그아웃 하시겠어요?"
 lastActiveDate: "마지막 이용"
+statusbar: "상태바"
 pleaseSelect: "선택해 주세요"
 reverse: "플립"
 colored: "색 입히기"
@@ -895,10 +906,339 @@ beta: "베타"
 enableAutoSensitive: "자동으로 NSFW 탐지"
 enableAutoSensitiveDescription: "사용 가능한 경우, 기계학습을 통해 자동으로 미디어에 NSFW를 설정할 거예요. 이 기능을 해제하더라도, 인스턴스 정책에 따라 자동으로 설정될 수 있어요."
 activeEmailValidationDescription: "유저가 입력한 메일 주소가 일회용 메일인지, 실제로 통신할 수 있는 지 엄격하게 검사해요. 해제하면 이메일 형식에 대해서만 검사해요."
-navbar: "네비게이션 바"
+navbar: "내비게이션 바"
 shuffle: "셔플"
 account: "계정"
 move: "이동"
+pushNotification: "푸시 알림"
+subscribePushNotification: "푸시 알림 켜기"
+unsubscribePushNotification: "푸시 알림 끄기"
+pushNotificationAlreadySubscribed: "푸시 알림이 이미 켜져 있습니다"
+pushNotificationNotSupported: "브라우저나 인스턴스에서 푸시 알림이 지원되지 않습니다"
+sendPushNotificationReadMessage: "푸시 알림이나 메시지를 읽은 뒤 푸시 알림을 삭제"
+sendPushNotificationReadMessageCaption: "「{emptyPushNotificationMessage}」이라는 알림이 잠깐 표시됩니다. 기기의 전력 소비량이 증가할 수 있습니다."
+windowMaximize: "최대화"
+windowRestore: "복구"
+caption: "캡션"
+loggedInAsBot: "봇 계정으로 로그인중"
+tools: "도구"
+cannotLoad: "불러오지 못했습니다"
+numberOfProfileView: "프로필 뷰 수"
+like: "좋아요!"
+unlike: "좋아요 취소"
+numberOfLikes: "좋아요 수"
+show: "표시"
+neverShow: "다시 보지 않기"
+remindMeLater: "나중에 알림"
+didYouLikeMisskey: "Misskey가 마음에 드시나요?"
+pleaseDonate: "{host}은(는) 무료 소프트웨어 Misskey를 사용합니다. 후원을 통해 저희의 개발이 이어질 수 있게 도와주세요!"
+roles: "역할"
+role: "역할"
+normalUser: "일반 사용자"
+undefined: "정의되지 않음"
+assign: "할당"
+unassign: "할당 취소"
+color: "색"
+manageCustomEmojis: "커스텀 이모지 관리"
+youCannotCreateAnymore: "더 이상 생성할 수 없습니다."
+cannotPerformTemporary: "일시적으로 사용할 수 없음"
+cannotPerformTemporaryDescription: "조작 횟수 제한을 초과하여 일시적으로 사용이 불가합니다. 잠시 후 다시 시도해 주세요."
+preset: "프리셋"
+selectFromPresets: "프리셋에서 선택"
+achievements: "도전 과제"
+_achievements:
+  earnedAt: "달성 일시"
+  _types:
+    _notes1:
+      title: "미스키 시작했는데요"
+      description: "첫 노트를 작성했습니다"
+      flavor: "Misskey에 오신 것을 환영합니다!"
+    _notes10:
+      title: "노트 조금"
+      description: "10개의 노트를 작성했습니다"
+    _notes100:
+      title: "노트 많이"
+      description: "100개의 노트를 작성했습니다"
+    _notes500:
+      title: "노트로 뒤덮여버렸어"
+      description: "500개의 노트를 작성했습니다"
+    _notes1000:
+      title: "노트만 산더미"
+      description: "1,000개의 노트를 작성했습니다"
+    _notes5000:
+      title: "노트가 어디서 솟아?"
+      description: "5,000개의 노트를 작성했습니다"
+    _notes10000:
+      title: "슈퍼 노트"
+      description: "10,000개의 노트를 작성했습니다"
+    _notes20000:
+      title: "노트 더 없어?"
+      description: "20,000개의 노트를 작성했습니다"
+    _notes30000:
+      title: "노트노트노트"
+      description: "30,000개의 노트를 작성했습니다"
+    _notes40000:
+      title: "노트 공장"
+      description: "40,000개의 노트를 작성했습니다"
+    _notes50000:
+      title: "노트 행성"
+      description: "50,000개의 노트를 작성했습니다"
+    _notes60000:
+      title: "노트 퀘이사"
+      description: "60,000개의 노트를 작성했습니다"
+    _notes70000:
+      title: "노트 블랙홀"
+      description: "70,000개의 노트를 작성했습니다"
+    _notes80000:
+      title: "노트 은하"
+      description: "80,000개의 노트를 작성했습니다"
+    _notes90000:
+      title: "노트 우주"
+      description: "90,000개의 노트를 작성했습니다"
+    _notes100000:
+      title: "ALL YOUR NOTE ARE BELONG TO US"
+      description: "100,000개의 노트를 작성했습니다"
+      flavor: "이만큼 쓸 일도 없겠지만... 다른 할 일이 있진 않으신가요?"
+    _login3:
+      title: "비기너 I"
+      description: "총 3일간 로그인했습니다"
+      flavor: "오늘부터 여러분도 미스키스트에요!"
+    _login7:
+      title: "비기너 II"
+      description: "총 7일간 로그인했습니다"
+      flavor: "슬슬 익숙해지셨나요?"
+    _login15:
+      title: "비기너 III"
+      description: "총 15일간 로그인했습니다"
+    _login30:
+      title: "미스키스트 I"
+      description: "총 30일간 로그인했습니다"
+    _login60:
+      title: "미스키스트 II"
+      description: "총 60일간 로그인했습니다"
+    _login100:
+      title: "미스키스트 III"
+      description: "총 100일간 로그인했습니다"
+      flavor: "그 유저, 미스키스트이다"
+    _login200:
+      title: "단골 I"
+      description: "총 200일간 로그인했습니다"
+    _login300:
+      title: "단골 II"
+      description: "총 300일간 로그인했습니다"
+    _login400:
+      title: "단골 III"
+      description: "총 400일간 로그인했습니다"
+    _login500:
+      title: "베테랑 I"
+      description: "총 500일간 로그인했습니다"
+      flavor: "제군, 나는 노트가 좋다"
+    _login600:
+      title: "베테랑 II"
+      description: "총 600일간 로그인했습니다"
+    _login700:
+      title: "베테랑 III"
+      description: "총 700일간 로그인했습니다"
+    _login800:
+      title: "노트 마스터 I"
+      description: "총 800일간 로그인했습니다"
+    _login900:
+      title: "노트 마스터 II"
+      description: "총 900일간 로그인했습니다"
+    _login1000:
+      title: "노트 마스터 III"
+      description: "총 1,000일간 로그인했습니다"
+      flavor: "Misskey를 사용해 주셔서 감사합니다!"
+    _noteClipped1:
+      title: "클립할 수밖에 없었어"
+      description: "처음으로 노트를 클립했습니다"
+    _noteFavorited1:
+      title: "별을 바라보는 자"
+      description: "처음으로 노트를 즐겨찾기했습니다"
+    _myNoteFavorited1:
+      title: "별을 원하는 자"
+      description: "다른 사람이 당신의 노트를 즐겨찾기했습니다"
+    _profileFilled:
+      title: "준비 완료"
+      description: "프로필 설정을 완료했습니다"
+    _markedAsCat:
+      title: "나는 고양이다냥!"
+      description: "계정을 고양이로 설정했습니다냥"
+      flavor: "냐냐냐냐냐냐아아아아앙!"
+    _following1:
+      title: "첫 팔로우"
+      description: "사용자를 처음으로 팔로우했습니다"
+    _following10:
+      title: "팔로우, 팔로우"
+      description: "10명의 사용자를 팔로우했습니다"
+    _following50:
+      title: "친구 잔뜩"
+      description: "50명의 사용자를 팔로우했습니다"
+    _following100:
+      title: "주소록 한 권으론 부족해"
+      description: "100명의 사용자를 팔로우했습니다"
+    _following300:
+      title: "친구가 넘쳐나"
+      description: "300명의 사용자를 팔로우했습니다"
+    _followers1:
+      title: "첫 팔로워"
+      description: "사용자가 처음으로 팔로잉했습니다"
+    _followers10:
+      title: "팔로우 미!"
+      description: "10명의 사용자가 팔로우했습니다"
+    _followers50:
+      title: "이곳저곳"
+      description: "50명의 사용자가 팔로우했습니다"
+    _followers100:
+      title: "인기왕"
+      description: "100명의 사용자가 팔로우했습니다"
+    _followers300:
+      title: "줄 좀 서봐요"
+      description: "100명의 사용자가 팔로우했습니다"
+    _followers500:
+      title: "기지국"
+      description: "500명의 사용자가 팔로우했습니다"
+    _followers1000:
+      title: "유명인사"
+      description: "1,000명의 사용자가 팔로우했습니다"
+    _collectAchievements30:
+      title: "도전 과제 콜렉터"
+      description: "30개의 도전과제를 획득했습니다"
+    _viewAchievements3min:
+      title: "저 도전과제 좋아해요"
+      description: "도전 과제 목록을 3분 이상 쳐다봤습니다"
+    _iLoveMisskey:
+      title: "I Love Misskey"
+      description: "\"I ❤ #Misskey\"를 포스트했습니다"
+      flavor: "Misskey를 이용해주셔서 감사합니다! - 개발팀 일동"
+    _foundTreasure:
+      title: "보물찾기"
+      description: "숨겨진 보물을 발견했습니다"
+    _client30min:
+      title: "잠깐 쉬어"
+      description: "클라이언트를 시작하고 30분이 경과하였습니다"
+    _noteDeletedWithin1min:
+      title: "있었는데요 없었습니다"
+      description: "노트를 포스트한 후 1분 이내에 삭제했습니다"
+    _postedAtLateNight:
+      title: "올빼미"
+      description: "한밤중에 노트를 포스트했습니다"
+      flavor: "잠 좀 자세요. 걱정돼요."
+    _postedAt0min0sec:
+      title: "정각"
+      description: "0분 0초 정각에 노트를 작성했습니다"
+      flavor: "째깍 째깍 째깍 땡!"
+    _selfQuote:
+      title: "혼잣말"
+      description: "자기 노트를 인용했습니다"
+    _htl20npm:
+      title: "타임라인 폭주 중"
+      description: "1분 사이에 홈 타임라인에 노트가 20개 넘게 생성되었습니다"
+    _viewInstanceChart:
+      title: "애널리스트"
+      description: "인스턴스의 차트를 열었습니다"
+    _outputHelloWorldOnScratchpad:
+      title: "Hello, world!"
+      description: "스크래치패드에서 hello world를 출력했습니다"
+    _open3windows:
+      title: "멀티 윈도우"
+      description: "3개 이상의 창을 열었습니다"
+    _driveFolderCircularReference:
+      title: "순환 참조"
+      description: "드라이브 폴더를 자신을 가리키도록 만드려 시도했습니다"
+    _reactWithoutRead:
+      title: "읽고 답하긴 하시는 건가요?"
+      description: "100자가 넘는 노트가 작성되고 3초 안에 반응했습니다"
+    _clickedClickHere:
+      title: "여길 눌러보세요"
+      description: "여길을 눌러봤습니다"
+    _justPlainLucky:
+      title: "그냥 운이 좋았어"
+      description: "매 10초마다 0.01%의 확률로 달성됩니다"
+    _setNameToSyuilo:
+      title: "신 콤플렉스"
+      description: "이름을 syuilo로 설정했습니다"
+    _passedSinceAccountCreated1:
+      title: "1주년"
+      description: "계정을 생성하고 1년이 지났습니다"
+    _passedSinceAccountCreated2:
+      title: "2주년"
+      description: "계정을 생성하고 2년이 지났습니다"
+    _passedSinceAccountCreated3:
+      title: "3주년"
+      description: "계정을 생성하고 3년이 지났습니다"
+    _loggedInOnBirthday:
+      title: "생일 축하합니다!"
+      description: "생일에 로그인했습니다"
+    _loggedInOnNewYearsDay:
+      title: "새해 복 많이 받으세요"
+      description: "새해 첫 날에 로그인했습니다"
+      flavor: "올해에도 저희 인스턴스에 관심을 가져 주셔서 감사합니다"
+    _cookieClicked:
+      title: "쿠키를 클릭하는 게임"
+      description: "쿠키를 클릭했습니다"
+      flavor: "소프트웨어 착각하지 않으셨나요?"
+    _brainDiver:
+      title: "Brain Diver"
+      description: "Brain Diver로의 링크를 첨부했습니다"
+      flavor: "Misskey-Misskey La-Tu-Ma"
+_role:
+  new: "새 역할 생성"
+  edit: "역할 수정"
+  name: "역할 이름"
+  description: "역할 설명"
+  permission: "역할 권한"
+  descriptionOfPermission: "<b>모더레이터</b>는 기본적인 중재와 관련된 작업을 수행할 수 있습니다.\n<b>관리자</b>는 인스턴스의 모든 설정을 변경할 수 있습니다."
+  assignTarget: "할당 대상"
+  descriptionOfAssignTarget: "<b>수동</b>을 선택하면 누가 이 역할에 포함되는지를 수동으로 관리할 수 있습니다.\n<b>조건부</b>를 선택하면 조건을 설정해 일치하는 사용자를 자동으로 포함되게 할 수 있습니다."
+  manual: "수동"
+  conditional: "조건부"
+  condition: "조건"
+  isConditionalRole: "조건부 역할입니다."
+  isPublic: "역할 공개"
+  descriptionOfIsPublic: "역할에 할당된 사용자를 누구나 볼 수 있습니다. 또한 사용자 프로필에 이 역할이 표시됩니다."
+  options: "옵션"
+  policies: "정책"
+  baseRole: "기본 역할"
+  useBaseValue: "기본값 사용"
+  chooseRoleToAssign: "할당할 역할 선택"
+  canEditMembersByModerator: "모더레이터의 역할 수정 허용"
+  descriptionOfCanEditMembersByModerator: "이 옵션을 켜면 모더레이터도 이 역할에 사용자를 할당하거나 삭제할 수 있습니다. 꺼져 있으면 관리자만 할당이 가능합니다."
+  priority: "우선순위"
+  _priority:
+    low: "낮음"
+    middle: "보통"
+    high: "높음"
+  _options:
+    gtlAvailable: "글로벌 타임라인 보이기"
+    ltlAvailable: "로컬 타임라인 보이기"
+    canPublicNote: "공개 노트 허용"
+    canInvite: "인스턴스 초대 코드 발행"
+    canManageCustomEmojis: "커스텀 이모지 관리"
+    driveCapacity: "드라이브 용량"
+    pinMax: "고정할 수 있는 노트 수"
+    antennaMax: "최대 안테나 생성 허용 수"
+    wordMuteMax: "단어 뮤트할 수 있는 문자 수"
+    webhookMax: "생성할 수 있는 웹훅 수"
+    clipMax: "생성할 수 있는 클립 수"
+    noteEachClipsMax: "각 클립에 추가할 수 있는 노트 수"
+    userListMax: "생성할 수 있는 유저 리스트 수"
+    userEachUserListsMax: "유저 리스트당 최대 사용자 수"
+    rateLimitFactor: "속도 제한"
+    descriptionOfRateLimitFactor: "작을수록 제한이 완화되고, 클수록 제한이 강화됩니다."
+    canHideAds: "광고 숨기기"
+  _condition:
+    isLocal: "로컬 사용자"
+    isRemote: "리모트 사용자"
+    createdLessThan: "가압한 지 다음 일수 이내인 유저"
+    createdMoreThan: "가입한 지 다음 일수 이상인 유저"
+    followersLessThanOrEq: "팔로워 수가 다음 이하인 유저"
+    followersMoreThanOrEq: "팔로워 수가 다음 이상인 유저"
+    followingLessThanOrEq: "팔로잉 수가 다음 이하인 유저"
+    followingMoreThanOrEq: "팔로잉 수가 다음 이상인 유저"
+    and: "다음을 모두 만족"
+    or: "다음을 하나라도 만족"
+    not: "다음을 만족하지 않음"
 _newNoteRecivedNotificationBehavior:
   default: "기본"
   count: "노트 수 표시"
@@ -935,6 +1275,7 @@ _accountDelete:
 _ad:
   back: "뒤로"
   reduceFrequencyOfThisAd: "이 광고의 표시 빈도 낮추기"
+  hide: "보이지 않음"
 _forgotPassword:
   enterEmail: "여기에 계정에 등록한 메일 주소를 입력해 주세요. 입력한 메일 주소로 비밀번호를 재설정할 수 있는 링크를 보내드릴거에요."
   ifNoEmail: "만약 메일 주소를 등록하지 않았다면 관리자에게 문의해 주세요."
@@ -1223,6 +1564,9 @@ _tutorial:
   step7_1: "이것으로 CherryPick의 기본 튜토리얼이 끝났어요. 수고하셨습니다!"
   step7_2: "CherryPick에 대해 더 알고 싶으시다면 {help}를 참고해 주세요."
   step7_3: "그럼 CherryPick을 즐겨주세요! 🚀"
+  step8_1: "마지막으로, 푸시 알림을 활성화해 보지 않으실래요?"
+  step8_2: "푸시 알림을 활성화하면, Misskey를 열지 않았을 때에도 리액션이나 팔로우, 멘션 등을 확인할 수 있습니다."
+  step8_3: "알림 설정은 나중에도 변경할 수 있습니다."
 _2fa:
   alreadyRegistered: "이미 설정되어 있어요!"
   registerDevice: "디바이스 등록"
@@ -1288,6 +1632,8 @@ _weekday:
   friday: "금요일"
   saturday: "토요일"
 _widgets:
+  profile: "프로필"
+  instanceInfo: "인스턴스 정보"
   memo: "스티커 메모"
   notifications: "알림"
   timeline: "타임라인"
@@ -1295,6 +1641,7 @@ _widgets:
   trends: "트렌드"
   clock: "시계"
   rss: "RSS 리더"
+  rssTicker: "RSS Ticker"
   activity: "활동"
   photos: "사진"
   digitalClock: "디지털 시계"
@@ -1308,7 +1655,12 @@ _widgets:
   jobQueue: "작업 대기열"
   serverMetric: "서버 통계"
   aiscript: "AiScript 콘솔"
+  aiscriptApp: "AiScript 앱"
   aichan: "아이"
+  userList: "유저 리스트"
+  _userList:
+    chooseList: "리스트 선택"
+  clicker: "클리커"
 _cw:
   hide: "숨기기"
   show: "더 보기"
@@ -1372,6 +1724,7 @@ _profile:
   changeBanner: "배너 이미지 변경"
 _exportOrImport:
   allNotes: "모든 노트"
+  favoritedNotes: "즐겨찾기한 노트"
   followingList: "팔로잉"
   muteList: "뮤트"
   blockingList: "차단"
@@ -1409,6 +1762,21 @@ _timelines:
   local: "로컬"
   social: "소셜"
   global: "글로벌"
+_play:
+  new: "Play 만들기"
+  edit: "Play 수정하기"
+  created: "Play를 생성했습니다"
+  updated: "Play를 갱신했습니다"
+  deleted: "Play를 삭제했습니다"
+  pageSetting: "Play 설정"
+  editThisPage: "이 Play를 수정"
+  viewSource: "소스 보기"
+  my: "나의 Play"
+  liked: "좋아요 한 Play"
+  featured: "인기"
+  title: "제목"
+  script: "스크립트"
+  summary: "설명"
 _pages:
   newPage: "페이지 만들기"
   editPage: "페이지 수정"
@@ -1444,8 +1812,6 @@ _pages:
   eyeCatchingImageRemove: "아이캐치 이미지를 삭제"
   chooseBlock: "블록 추가"
   selectType: "종류 선택"
-  enterVariableName: "변수명을 지정해 주세요"
-  variableNameIsAlreadyUsed: "해당 변수명은 이미 사용중이에요"
   contentBlocks: "콘텐츠"
   inputBlocks: "입력"
   specialBlocks: "특수"
@@ -1455,249 +1821,11 @@ _pages:
     section: "섹션"
     image: "이미지"
     button: "버튼"
-    if: "조건문"
-    _if:
-      variable: "변수"
-    post: "글 입력란"
-    _post:
-      text: "내용"
-      attachCanvasImage: "캔버스의 이미지와 함께 게시하기"
-      canvasId: "캔버스 ID"
-    textInput: "텍스트 입력"
-    _textInput:
-      name: "변수명"
-      text: "제목"
-      default: "기본값"
-    textareaInput: "여러 줄 텍스트 입력"
-    _textareaInput:
-      name: "변수명"
-      text: "제목"
-      default: "기본값"
-    numberInput: "수치 입력"
-    _numberInput:
-      name: "변수명"
-      text: "제목"
-      default: "기본값"
-    canvas: "캔버스"
-    _canvas:
-      id: "캔버스 ID"
-      width: "폭"
-      height: "높이"
     note: "노트필기"
     _note:
       id: "노트 ID"
       idDescription: "노트 URL을 붙여넣어 설정할 수도 있어요."
       detailed: "세부 정보 보기"
-    switch: "스위치"
-    _switch:
-      name: "변수명"
-      text: "제목"
-      default: "기본값"
-    counter: "카운터"
-    _counter:
-      name: "변수명"
-      text: "제목"
-      inc: "증가치"
-    _button:
-      text: "제목"
-      colored: "색 입히기"
-      action: "버튼을 눌렀을 때의 동작"
-      _action:
-        dialog: "대화상자를 표시"
-        _dialog:
-          content: "내용"
-        resetRandom: "난수를 초기화"
-        pushEvent: "이벤트 보내기"
-        _pushEvent:
-          event: "이벤트 이름"
-          message: "눌렀을 때 표시할 페이지"
-          variable: "보낼 변수"
-          no-variable: "없음"
-        callAiScript: "AiScript 호출"
-        _callAiScript:
-          functionName: "함수명"
-    radioButton: "선택지"
-    _radioButton:
-      name: "변수명"
-      title: "제목"
-      values: "줄바꿈으로 구분된 선택지"
-      default: "기본값"
-  script:
-    categories:
-      flow: "흐름 제어"
-      logical: "논리 연산"
-      operation: "계산"
-      comparison: "비교"
-      random: "랜덤"
-      value: "값"
-      fn: "함수"
-      text: "텍스트 조작"
-      convert: "변환"
-      list: "리스트"
-    blocks:
-      text: "텍스트"
-      multiLineText: "텍스트 (여러 줄)"
-      textList: "텍스트 목록"
-      _textList:
-        info: "각각을 줄바꿈으로 구분해 주세요"
-      strLen: "텍스트의 길이"
-      _strLen:
-        arg1: "텍스트"
-      strPick: "문자 추출"
-      _strPick:
-        arg1: "텍스트"
-        arg2: "문자 위치"
-      strReplace: "텍스트 대체"
-      _strReplace:
-        arg1: "텍스트"
-        arg2: "대체될 텍스트"
-        arg3: "대체할 텍스트"
-      strReverse: "텍스트 뒤집기"
-      _strReverse:
-        arg1: "텍스트"
-      join: "텍스트 합치기"
-      _join:
-        arg1: "리스트"
-        arg2: "구분자"
-      add: "더하기"
-      _add:
-        arg1: "A"
-        arg2: "B"
-      subtract: "빼기"
-      _subtract:
-        arg1: "A"
-        arg2: "B"
-      multiply: "곱하기"
-      _multiply:
-        arg1: "A"
-        arg2: "B"
-      divide: "나누기"
-      _divide:
-        arg1: "A"
-        arg2: "B"
-      mod: "나눈 나머지"
-      _mod:
-        arg1: "A"
-        arg2: "B"
-      round: "소수점을 반올림"
-      _round:
-        arg1: "수치"
-      eq: "A와 B가 동일"
-      _eq:
-        arg1: "A"
-        arg2: "B"
-      notEq: "A와 B가 다름"
-      _notEq:
-        arg1: "A"
-        arg2: "B"
-      and: "A와 B가 둘 다 참"
-      _and:
-        arg1: "A"
-        arg2: "B"
-      or: "A, B중 하나 이상이 참"
-      _or:
-        arg1: "A"
-        arg2: "B"
-      lt: "< A가 B보다 작음"
-      _lt:
-        arg1: "A"
-        arg2: "B"
-      gt: "> A가 B보다 큼"
-      _gt:
-        arg1: "A"
-        arg2: "B"
-      ltEq: "<= A가 B보다 작거나 같음"
-      _ltEq:
-        arg1: "A"
-        arg2: "B"
-      gtEq: ">= A가 B보다 크거나 같음"
-      _gtEq:
-        arg1: "A"
-        arg2: "B"
-      if: "분기"
-      _if:
-        arg1: "조건문"
-        arg2: "참일 경우"
-        arg3: "거짓일 경우"
-      not: "부정"
-      _not:
-        arg1: "부정"
-      random: "랜덤"
-      _random:
-        arg1: "확률"
-      rannum: "난수"
-      _rannum:
-        arg1: "최솟값"
-        arg2: "최댓값"
-      randomPick: "목록에서 임의로 선택"
-      _randomPick:
-        arg1: "리스트"
-      dailyRandom: "랜덤 (하루동안 결과 유지)"
-      _dailyRandom:
-        arg1: "확률"
-      dailyRannum: "난수 (하루동안 결과 유지)"
-      _dailyRannum:
-        arg1: "최솟값"
-        arg2: "최댓값"
-      dailyRandomPick: "목록에서 임의로 선택 (하루동안 결과 유지)"
-      _dailyRandomPick:
-        arg1: "리스트"
-      seedRandom: "무작위 (시드)"
-      _seedRandom:
-        arg1: "시드"
-        arg2: "확률"
-      seedRannum: "난수 (시드)"
-      _seedRannum:
-        arg1: "시드"
-        arg2: "최솟값"
-        arg3: "최댓값"
-      seedRandomPick: "목록에서 무작위로 선택 (시드)"
-      _seedRandomPick:
-        arg1: "시드"
-        arg2: "리스트"
-      DRPWPM: "확률형 목록에서 임의로 선택 (하루동안 결과 유지)"
-      _DRPWPM:
-        arg1: "텍스트 목록"
-      pick: "목록에서 선택"
-      _pick:
-        arg1: "리스트"
-        arg2: "위치"
-      listLen: "리스트의 길이 가져오기"
-      _listLen:
-        arg1: "리스트"
-      number: "수치"
-      stringToNumber: "텍스트를 수치로"
-      _stringToNumber:
-        arg1: "텍스트"
-      numberToString: "수치를 텍스트로"
-      _numberToString:
-        arg1: "수치"
-      splitStrByLine: "텍스트를 행 단위로 분할"
-      _splitStrByLine:
-        arg1: "텍스트"
-      ref: "변수"
-      aiScriptVar: "AiScript 변수"
-      fn: "함수"
-      _fn:
-        slots: "슬롯"
-        slots-info: "각 슬롯을 줄바꿈으로 구분하여 주세요"
-        arg1: "출력"
-      for: "반복"
-      _for:
-        arg1: "횟수"
-        arg2: "처리"
-    typeError: "슬롯 {slot}은 \"{expect}\"를 사용할 수 있지만 \"{actual}이 들어있어요!"
-    thereIsEmptySlot: "슬롯 {slot}이(가) 비어있어요!"
-    types:
-      string: "텍스트"
-      number: "수치"
-      boolean: "플래그"
-      array: "리스트"
-      stringArray: "텍스트 목록"
-    emptySlot: "빈 슬롯"
-    enviromentVariables: "환경 변수"
-    pageVariables: "페이지 요소"
-    argVariables: "입력 슬롯"
 _relayStatus:
   requesting: "대기 중"
   accepted: "승인됨"
@@ -1708,7 +1836,6 @@ _notification:
   youGotReply: "{name} 님이 답글을 달았어요!"
   youGotQuote: "{name} 님이 인용했어요!"
   youRenoted: "{name} 님이 리노트했어요!"
-  youGotPoll: "{name} 님이 투표했어요!"
   youGotMessagingMessageFromUser: "{name} 님이 보낸 채팅이 있어요!"
   youGotMessagingMessageFromGroup: "{name}에서 보낸 채팅이 있어요!"
   youWereFollowed: "새로운 팔로워가 있어요!"
@@ -1716,7 +1843,9 @@ _notification:
   yourFollowRequestAccepted: "팔로우 요청이 수락됐어요!"
   youWereInvitedToGroup: "그룹에 초대됐어요!"
   pollEnded: "투표 결과가 발표됐어요!"
+  unreadAntennaNote: "안테나 {name}"
   emptyPushNotificationMessage: "새 알림이 있어요!"
+  achievementEarned: "도전 과제를 달성했습니다"
   _types:
     all: "전부"
     follow: "팔로잉"
@@ -1725,7 +1854,6 @@ _notification:
     renote: "리노트"
     quote: "인용"
     reaction: "리액션"
-    pollVote: "투표 참여"
     pollEnded: "투표가 종료됨"
     receiveFollowRequest: "팔로우 요청을 받았을 때"
     followRequestAccepted: "팔로우 요청이 승인되었을 때"

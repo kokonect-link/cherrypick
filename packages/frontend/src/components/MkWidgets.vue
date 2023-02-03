@@ -1,0 +1,217 @@
+<template>
+<div :class="$style.root">
+	<template v-if="edit">
+		<header :class="$style['edit-header']">
+			<MkSelect v-model="widgetAdderSelected" style="margin-bottom: var(--margin)" class="mk-widget-select">
+				<template #label>{{ i18n.ts.selectWidget }}</template>
+				<option v-for="widget in widgetDefs" :key="widget" :value="widget">{{ i18n.t(`_widgets.${widget}`) }}</option>
+			</MkSelect>
+			<MkButton primary :class="$style.btn" class="mk-widget-add btn" @click="addWidget"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
+			<MkButton :class="$style.btn" @click="$emit('exit')">{{ i18n.ts.close }}</MkButton>
+		</header>
+		<Sortable
+			:model-value="props.widgets"
+			item-key="id"
+			handle=".handle"
+			:animation="150"
+			:group="{ name: 'SortableMkWidgets' }"
+			:class="$style['edit-editing']"
+			@update:model-value="v => emit('updateWidgets', v)"
+		>
+			<template #item="{element}">
+				<div :class="[$style.widget, $style['customize-container']]" class="data-cy-customize-container">
+					<header class="handle">
+						<span :class="$style['widget-container-handle']"><i class="ti ti-menu-2"/></span>
+						<div style="position: absolute; top: 0; left: 35px; font-size: 14px; font-weight: bold; line-height: 32.5px;">
+							{{ $t('_widgets.' + element.name) }}
+						</div>
+						<button :class="$style['widget-container-config']" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ti ti-settings"></i></button>
+						<button :class="$style['widget-container-remove']" class="_button data-cy-customize-container-remove" @click.prevent.stop="removeWidget(element)"><i class="ti ti-x"></i></button>
+					</header>
+					<div @click="configWidget(element.id)">
+						<component :is="`widget-${element.name}`" :ref="el => widgetRefs[element.id] = el" class="widget" :class="$style['customize-container-handle-widget']" :widget="element" @update-props="updateWidget(element.id, $event)"/>
+					</div>
+				</div>
+			</template>
+		</Sortable>
+	</template>
+	<component :is="`widget-${widget.name}`" v-for="widget in widgets" v-else :key="widget.id" :ref="el => widgetRefs[widget.id] = el" :class="$style.widget" :widget="widget" @update-props="updateWidget(widget.id, $event)" @contextmenu.stop="onContextmenu(widget, $event)"/>
+</div>
+</template>
+<script lang="ts">
+export type Widget = {
+	name: string;
+	id: string;
+	data: Record<string, any>;
+};
+export type DefaultStoredWidget = {
+	place: string | null;
+} & Widget;
+</script>
+<script lang="ts" setup>
+import { defineAsyncComponent, reactive, ref, computed } from 'vue';
+import { v4 as uuid } from 'uuid';
+import MkSelect from '@/components/MkSelect.vue';
+import MkButton from '@/components/MkButton.vue';
+import { widgets as widgetDefs } from '@/widgets';
+import * as os from '@/os';
+import { i18n } from '@/i18n';
+import { deepClone } from '@/scripts/clone';
+
+const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
+
+const props = defineProps<{
+	widgets: Widget[];
+	edit: boolean;
+}>();
+
+const emit = defineEmits<{
+	(ev: 'updateWidgets', widgets: Widget[]): void;
+	(ev: 'addWidget', widget: Widget): void;
+	(ev: 'removeWidget', widget: Widget): void;
+	(ev: 'updateWidget', widget: Partial<Widget>): void;
+	(ev: 'exit'): void;
+}>();
+
+const widgetRefs = {};
+const configWidget = (id: string) => {
+	widgetRefs[id].configure();
+};
+const widgetAdderSelected = ref(null);
+const addWidget = () => {
+	if (widgetAdderSelected.value == null) return;
+
+	emit('addWidget', {
+		name: widgetAdderSelected.value,
+		id: uuid(),
+		data: {},
+	});
+
+	widgetAdderSelected.value = null;
+};
+const removeWidget = (widget) => {
+	emit('removeWidget', widget);
+};
+const updateWidget = (id, data) => {
+	emit('updateWidget', { id, data });
+};
+
+function onContextmenu(widget: Widget, ev: MouseEvent) {
+	const isLink = (el: HTMLElement) => {
+		if (el.tagName === 'A') return true;
+		if (el.parentElement) {
+			return isLink(el.parentElement);
+		}
+	};
+	if (isLink(ev.target)) return;
+	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
+	if (window.getSelection()?.toString() !== '') return;
+
+	os.contextMenu([{
+		type: 'label',
+		text: i18n.t(`_widgets.${widget.name}`),
+	}, {
+		icon: 'ti ti-settings',
+		text: i18n.ts.settings,
+		action: () => {
+			configWidget(widget.id);
+		},
+	}], ev);
+}
+</script>
+
+<style lang="scss" module>
+.root {
+	container-type: inline-size;
+}
+
+.btn {
+	margin: 5px 0;
+	padding: 6px !important;
+}
+
+.widget {
+	contain: content;
+	margin: var(--margin) 0;
+
+	&:first-of-type {
+		margin-top: 0;
+	}
+}
+
+.edit {
+	&-header {
+		margin: 16px 0;
+
+		> * {
+			width: 100%;
+			padding: 4px;
+		}
+	}
+
+	&-editing {
+		min-height: 100px;
+	}
+}
+
+.customize-container {
+	position: relative;
+	// cursor: move;
+	background: var(--panel);
+	margin: var(--margin) 0;
+	border-radius: var(--radius);
+
+	> header {
+		position: relative;
+		line-height: 25px;
+
+		&-config,
+		&-remove {
+			position: absolute;
+			top: 0;
+			padding: 0 8px;
+			line-height: 32px;
+		}
+
+		&-config {
+			right: 30px;
+		}
+
+		&-remove {
+			right: 5px;
+		}
+	}
+
+	&-handle {
+
+		&-widget {
+			pointer-events: none;
+		}
+	}
+
+}
+
+.widget-container-handle {
+	padding: 0 10px;
+	cursor: move;
+	line-height: 32px;
+}
+
+.widget-container-button {
+	position: absolute;
+	top: 0;
+	padding: 0 8px;
+	line-height: 32px;
+}
+
+.widget-container-config {
+	composes: widget-container-button;
+	right: 30px;
+}
+
+.widget-container-remove {
+	composes: widget-container-button;
+	right: 5px;
+}
+
+</style>
