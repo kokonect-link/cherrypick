@@ -6,12 +6,13 @@
 	desc: 'CherryPick default light theme',
 
 	props: {
-		bg: '#f9f9f9',
-		fg: '#676767',
+		accent: '#6ba5e3',
+		bg: '#f6f9ff',
+		fg: '#577096',
 		divider: 'rgb(223, 223, 223)',
 		acrylicPanel: ':alpha<0.5<@panel',
 		header: '@bg',
-		navBg: '#fff',
+		navBg: '#eff4ff',
 		navHoverFg: '@pick',
 		panel: '#fff',
 		panelHeaderDivider: '@divider',
