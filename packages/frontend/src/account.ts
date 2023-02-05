@@ -70,8 +70,8 @@ export async function signout() {
 
 export async function signoutAll() {
 	waiting();
-	localStorage.removeItem('account');
-	localStorage.removeItem('accounts');
+	miLocalStorage.removeItem('account');
+	miLocalStorage.removeItem('accounts');
 
 	await del('accounts');
 
