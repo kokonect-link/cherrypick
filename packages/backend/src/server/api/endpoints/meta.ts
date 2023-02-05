@@ -181,6 +181,10 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
+			mediaProxy: {
+				type: 'string',
+				optional: false, nullable: false,
+			},
 			features: {
 				type: 'object',
 				optional: true, nullable: false,
@@ -307,6 +311,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				translatorAvailable: instance.translatorType != null,
 
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
+
+				mediaProxy: this.config.mediaProxy,
 
 				...(ps.detail ? {
 					pinnedPages: instance.pinnedPages,
