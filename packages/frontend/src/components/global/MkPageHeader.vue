@@ -1,7 +1,7 @@
 <template>
 <div v-if="show" ref="el" :class="[$style.root, { [$style.slim]: narrow, [$style.thin]: thin_ }]" :style="{ background: bg }" @click="onClick">
 	<div v-if="narrow" :class="$style.buttonsLeft">
-		<MkAvatar v-if="props.displayMyAvatar && $i" :class="$style.avatar" :user="$i"/>
+		<MkAvatar v-if="props.displayMyAvatar && $i && !isFriendly" :class="$style.avatar" :user="$i"/>
 	</div>
 	<template v-if="metadata">
 		<div v-if="!hideTitle" :class="$style.titleContainer" @click="showTabsPopup">
@@ -44,6 +44,20 @@ import { scrollToTop } from '@/scripts/scroll';
 import { globalEvents } from '@/events';
 import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i } from '@/account';
+import { miLocalStorage } from '@/local-storage';
+import { deviceKind } from '@/scripts/device-kind';
+
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 500;
+
+// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 type Tab = {
 	key: string;
@@ -135,7 +149,8 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 const calcBg = () => {
 	const rawBg = metadata?.bg || 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	tinyBg.setAlpha(0.85);
+	if (isFriendly.value && isMobile.value) tinyBg.setAlpha(1);
+	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
 

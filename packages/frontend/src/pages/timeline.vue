@@ -1,8 +1,7 @@
 <template>
 <MkStickyContainer>
 	<template #header>
-		<CPPageHeader v-if="isFriendly && !isDesktop" v-model:tab="src" :actions="headerActions" :tabs="headerTabs"/>
-		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="headerTabs" :display-my-avatar="true"/>
+		<MkPageHeader v-model:tab="src" :actions="headerActions" :tabs="headerTabs" :display-my-avatar="true"/>
 	</template>
 
 	<MkSpacer :content-max="800">
@@ -38,10 +37,19 @@ import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { miLocalStorage } from '@/local-storage';
+import { deviceKind } from '@/scripts/device-kind';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+
 const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 500;
+
+// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 let includeTypes = ref<string[] | null>(null);
 

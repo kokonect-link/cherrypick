@@ -1,7 +1,6 @@
 <template>
 <div v-if="show" ref="el" class="fdidabkb" :class="{ slim: narrow, thin: thin_ }" :style="{ background: bg }" @click="onClick">
-	<div v-if="hasDisconnected && isMobile && narrow && hasTabs" class="buttons left">
-		<button v-tooltip.noDelay="i18n.ts.reload" class="_button button disconnected" @click.stop="reload" @touchstart="preventDrag"><i class="fa-solid fa-bolt"></i></button>
+	<div v-if="narrow" :class="$style.buttonsLeft">
 	</div>
 	<template v-if="metadata">
 		<div v-if="!hideTitle" class="titleContainer" @click="showTabsPopup">
