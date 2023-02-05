@@ -271,7 +271,7 @@ export async function openAccountMenu(opts: {
 			to: '/settings/accounts',
 		}, {
 			type: 'button',
-			icon: 'fas fa-sign-in-alt fa-flip-horizontal',
+			icon: 'ti ti-logout',
 			text: i18n.ts.logout,
 			action: async () => {
 				const { canceled } = await os.confirm({
