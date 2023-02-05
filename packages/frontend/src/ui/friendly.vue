@@ -106,6 +106,7 @@ import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/script
 import { deviceKind } from '@/scripts/device-kind';
 import { miLocalStorage } from '@/local-storage';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
@@ -124,6 +125,8 @@ window.addEventListener('resize', () => {
 
 let showEl = $ref(false);
 let lastScrollPosition = $ref(0);
+
+let queue = $ref(0);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsEl = $shallowRef<HTMLElement>();
@@ -185,6 +188,8 @@ onMounted(() => {
 	}
 
 	window.addEventListener('scroll', onScroll);
+
+	eventBus.on('queueUpdated', (q) => queueUpdated(q));
 });
 
 onBeforeUnmount(() => {
@@ -238,6 +243,10 @@ const attachSticky = (el) => {
 
 function top() {
 	window.scroll({ top: 0, behavior: 'smooth' });
+}
+
+function queueUpdated(q: number): void {
+	queue = q;
 }
 
 const wallpaper = miLocalStorage.getItem('wallpaper') != null;
@@ -525,9 +534,6 @@ $float-button-size: 65px;
 
 .navButtonIndicatorHome {
 	composes: navButtonIndicator;
-	top: 8px;
-	right: 25px;
-	font-size: 6px;
 	animation: none;
 }
 

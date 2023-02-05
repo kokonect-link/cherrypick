@@ -38,6 +38,7 @@ import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
@@ -71,6 +72,7 @@ watch ($$(src), () => queue = 0);
 
 function queueUpdated(q: number): void {
 	queue = q;
+	eventBus.emit('queueUpdated', q);
 }
 
 function top(): void {
