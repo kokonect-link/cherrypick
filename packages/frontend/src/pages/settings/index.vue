@@ -187,10 +187,10 @@ const menuDef = computed(() => [{
 		},
 	}, {
 		type: 'button',
-		icon: 'ti ti-power',
+		icon: 'ti ti-logout',
 		text: i18n.ts.logout,
 		action: async () => {
-			const {canceled} = await os.confirm({
+			const { canceled } = await os.confirm({
 				type: 'warning',
 				text: i18n.ts.logoutConfirm,
 			});
