@@ -16,9 +16,9 @@
 		<XWidgets :margin-top="'var(--margin)'" @mounted="attachSticky"/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !$store.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !$store.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, {[$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
@@ -354,6 +354,10 @@ $float-button-size: 65px;
 	backdrop-filter: var(--blur, blur(15px));
 	transition: opacity 0.5s, transform 0.5s;
 
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
+	}
+
 	&.showEl {
 		transform: translateX(-250px);
 	}
@@ -381,6 +385,10 @@ $float-button-size: 65px;
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 	transition: opacity 0.5s, transform 0.5s;
+
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
+	}
 
 	&.showEl {
 		transform: translateX(250px);

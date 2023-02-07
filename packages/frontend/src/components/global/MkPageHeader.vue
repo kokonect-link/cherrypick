@@ -1,5 +1,5 @@
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.showEl]: showEl && isFriendly && isMobile && !isFixedHeader }]" :style="{ background: bg }" @click="onClick">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile && !isFixedHeader }]" :style="{ background: bg }" @click="onClick">
 	<div v-if="narrow" :class="$style.buttonsLeft">
 		<MkAvatar v-if="props.displayMyAvatar && $i && !isFriendly" :class="$style.avatar" :user="$i"/>
 	</div>
@@ -253,6 +253,10 @@ onUnmounted(() => {
 				margin-right: auto;
 			}
 		}
+	}
+
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
 	}
 
 	&.showEl {
