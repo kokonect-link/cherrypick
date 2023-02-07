@@ -1,13 +1,28 @@
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :display-my-avatar="true"/></template>
+	<template #header>
+		<MkPageHeader v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :display-my-avatar="true"/>
+		<transition
+			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
+			:leave-active-class="$store.state.animation ? $style.transition_new_leaveActive : ''"
+			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
+			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
+		>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && !isDesktop }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+		</transition>
+		<transition
+			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
+			:leave-active-class="$store.state.animation ? $style.transition_new_leaveActive : ''"
+			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
+			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
+		>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && !isDesktop }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+		</transition>
+	</template>
 	<MkSpacer :content-max="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
 			<XTutorial v-if="$i && $store.reactiveState.tutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
 			<XPostForm v-if="$store.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
-
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="$style.new"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="$style.new"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 			<div :class="$style.tl">
 				<XTimeline
 					ref="tlComponent"
@@ -23,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, onMounted, onBeforeUnmount } from 'vue';
 import XTimeline from '@/components/MkTimeline.vue';
 import XPostForm from '@/components/MkPostForm.vue';
 import { scroll } from '@/scripts/scroll';
@@ -33,9 +48,24 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+
+const DESKTOP_THRESHOLD = 1100;
+const MOBILE_THRESHOLD = 500;
+
+// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
+
+let showEl = $ref(false);
+let lastScrollPosition = $ref(0);
 
 const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
@@ -61,6 +91,21 @@ function queueUpdated(q: number): void {
 
 function top(): void {
 	scroll(rootEl, { top: 0 });
+}
+
+function onScroll() {
+	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
+	if (currentScrollPosition < 0) {
+		return;
+	}
+	// Stop executing this function if the difference between
+	// current scroll position and last scroll position is less than some offset
+	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
+		return;
+	}
+	showEl = currentScrollPosition < lastScrollPosition;
+	lastScrollPosition = currentScrollPosition;
+	showEl = !showEl;
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
@@ -178,14 +223,36 @@ definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
 	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-whirl' : 'ti ti-home',
 })));
+
+onMounted(() => {
+	window.addEventListener('scroll', onScroll);
+});
+
+onBeforeUnmount(() => {
+	window.removeEventListener('scroll', onScroll);
+});
 </script>
 
 <style lang="scss" module>
+.transition_new_enterActive,
+.transition_new_leaveActive {
+	transition: opacity 0.5s, transform 0.2s;
+	transform: translateY(-64px);
+}
+.transition_new_enterFrom,
+.transition_new_leaveTo {
+}
+
 .new {
 	position: sticky;
-	top: calc(var(--stickyTop, 0px) + 16px);
+	top: 64px;
 	z-index: 1000;
 	width: 100%;
+	transition: opacity 0.5s, transform 0.5s;
+
+	&.showEl {
+		transform: translateY(-50px);
+	}
 
 	> button {
 		display: block;
