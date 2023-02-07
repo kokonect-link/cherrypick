@@ -1,5 +1,5 @@
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.showEl]: showEl && isFriendly && !isDesktop && !isFixedHeader }]" :style="{ background: bg }" @click="onClick">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.showEl]: showEl && isFriendly && isMobile && !isFixedHeader }]" :style="{ background: bg }" @click="onClick">
 	<div v-if="narrow" :class="$style.buttonsLeft">
 		<MkAvatar v-if="props.displayMyAvatar && $i && !isFriendly" :class="$style.avatar" :user="$i"/>
 	</div>
@@ -51,11 +51,8 @@ import { mainRouter } from '@/router';
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isFixedHeader = ref(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group');
 
-const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
 
-// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
-const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;

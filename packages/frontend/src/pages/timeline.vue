@@ -8,7 +8,7 @@
 			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && !isDesktop }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 		</transition>
 		<transition
 			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
@@ -16,7 +16,7 @@
 			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && !isDesktop }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 		</transition>
 	</template>
 	<MkSpacer :content-max="800">
@@ -54,11 +54,8 @@ import { deviceKind } from '@/scripts/device-kind';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
 
-// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
-const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
