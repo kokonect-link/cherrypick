@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
 	window.removeEventListener('scroll', onScroll);
 });
 
-function onScroll () {
+function onScroll() {
 	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
 	if (currentScrollPosition < 0) {
 		return;
