@@ -10,6 +10,7 @@
 이 문서는 CherryPick의 변경 사항만 포함합니다. 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## 13.4.0-cp-3.1.0 (unreleased)
+Misskey v13 버전을 대응합니다.
 
 ### Improvements
 - 클라이언트: (friendly) 새 노트가 있으면 하단 내비게이션 바에 인디케이터 알림이 활성화됨
