@@ -1,5 +1,5 @@
 <template>
-<div v-if="show" ref="el" :class="[$style.root, { [$style.slim]: narrow, [$style.thin]: thin_ }]" :style="{ background: bg }" @click="onClick">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.showEl]: showEl && isFriendly && !isDesktop && !isFixedHeader }]" :style="{ background: bg }" @click="onClick">
 	<div v-if="narrow" :class="$style.buttonsLeft">
 		<MkAvatar v-if="props.displayMyAvatar && $i && !isFriendly" :class="$style.avatar" :user="$i"/>
 	</div>
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, watch, nextTick } from 'vue';
+import { onMounted, onUnmounted, ref, inject, watch, nextTick, onBeforeUnmount } from 'vue';
 import tinycolor from 'tinycolor2';
 import { popupMenu } from '@/os';
 import { scrollToTop } from '@/scripts/scroll';
@@ -46,8 +46,10 @@ import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i } from '@/account';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
+import { mainRouter } from '@/router';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+const isFixedHeader = ref(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group');
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
@@ -58,6 +60,9 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
+
+let showEl = $ref(false);
+let lastScrollPosition = $ref(0);
 
 type Tab = {
 	key: string;
@@ -146,6 +151,21 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 	}
 }
 
+function onScroll() {
+	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
+	if (currentScrollPosition < 0) {
+		return;
+	}
+	// Stop executing this function if the difference between
+	// current scroll position and last scroll position is less than some offset
+	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
+		return;
+	}
+	showEl = currentScrollPosition < lastScrollPosition;
+	lastScrollPosition = currentScrollPosition;
+	showEl = !showEl;
+}
+
 const calcBg = () => {
 	const rawBg = metadata?.bg || 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
@@ -185,6 +205,12 @@ onMounted(() => {
 		});
 		ro.observe(el.parentElement as HTMLElement);
 	}
+
+	window.addEventListener('scroll', onScroll);
+});
+
+onBeforeUnmount(() => {
+	window.removeEventListener('scroll', onScroll);
 });
 
 onUnmounted(() => {
@@ -203,6 +229,7 @@ onUnmounted(() => {
 	border-bottom: solid 0.5px var(--divider);
 	contain: strict;
 	height: var(--height);
+	transition: opacity 0.5s, transform 0.5s;
 
 	&.thin {
 		--height: 42px;
@@ -229,6 +256,10 @@ onUnmounted(() => {
 				margin-right: auto;
 			}
 		}
+	}
+
+	&.showEl {
+		transform: translateY(-50.55px);
 	}
 }
 
