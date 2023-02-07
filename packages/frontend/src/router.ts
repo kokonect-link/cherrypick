@@ -419,6 +419,7 @@ export const routes = [{
 	loginRequired: true,
 }, {
 	path: '/my/favorites',
+	name: 'my-favorites',
 	component: page(() => import('./pages/favorites.vue')),
 	loginRequired: true,
 }, {

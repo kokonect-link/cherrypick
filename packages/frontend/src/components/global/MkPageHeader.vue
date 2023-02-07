@@ -1,5 +1,5 @@
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile && !isFixedHeader }]" :style="{ background: bg }" @click="onClick">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile && isAllowHideHeader }]" :style="{ background: bg }" @click="onClick">
 	<div v-if="narrow" :class="$style.buttonsLeft">
 		<MkAvatar v-if="props.displayMyAvatar && $i && !isFriendly" :class="$style.avatar" :user="$i"/>
 	</div>
@@ -49,7 +49,7 @@ import { deviceKind } from '@/scripts/device-kind';
 import { mainRouter } from '@/router';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
-const isFixedHeader = ref(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group');
+const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
 
 const MOBILE_THRESHOLD = 500;
 
