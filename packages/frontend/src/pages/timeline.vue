@@ -8,7 +8,7 @@
 			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 		</transition>
 		<transition
 			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
@@ -16,7 +16,7 @@
 			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 		</transition>
 	</template>
 	<MkSpacer :content-max="800">
@@ -246,6 +246,10 @@ onBeforeUnmount(() => {
 	z-index: 1000;
 	width: 100%;
 	transition: opacity 0.5s, transform 0.5s;
+
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
+	}
 
 	&.showEl {
 		transform: translateY(-50px);
