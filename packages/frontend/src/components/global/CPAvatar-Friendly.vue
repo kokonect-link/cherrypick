@@ -1,10 +1,10 @@
 <template>
 <span v-if="!link" v-user-preview="preview ? user.id : undefined" :class="$style.root" class="_noSelect" :style="{ color }" :title="acct(user)" @click="onClick">
-	<img :class="$style.inner" :src="url" decoding="async"/>
+	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !$store.state.useBlurEffect}]" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
 </span>
 <MkA v-else v-user-preview="preview ? user.id : undefined" class="_noSelect" :class="$style.root" :style="{ color }" :to="userPage(user)" :title="acct(user)" :target="target">
-	<img :class="$style.inner" :src="url" decoding="async"/>
+	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !$store.state.useBlurEffect}]" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
 </MkA>
 </template>
@@ -91,6 +91,10 @@ watch(() => props.user.avatarBlurhash, () => {
 	width: 100%;
 	height: 100%;
 	opacity: .7;
+
+	&.reduceBlurEffect {
+		opacity: 1;
+	}
 }
 
 .indicator {

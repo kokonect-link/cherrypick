@@ -16,11 +16,11 @@
 		<XWidgets :margin-top="'var(--margin)'" @mounted="attachSticky"/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, { [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, { [$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="$style.floatPostButtonBg"></span><i class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !$store.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
 
-	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
+	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, {[$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
 	<div v-if="isMobile" :class="$style.nav">
 		<!-- <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
@@ -401,6 +401,10 @@ $float-button-size: 65px;
 	background: var(--accent);
 	opacity: .7;
 	border-radius: 28px;
+
+	&.reduceBlurEffect {
+		opacity: 1;
+	}
 }
 
 .widgetButton {

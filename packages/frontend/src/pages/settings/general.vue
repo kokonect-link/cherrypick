@@ -196,6 +196,7 @@ watch(useSystemFont, () => {
 
 watch([
 	lang,
+	useBlurEffect,
 	fontSize,
 	useSystemFont,
 	enableInfiniteScroll,
