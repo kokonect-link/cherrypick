@@ -120,15 +120,15 @@
 					<FormSection>
 						<template #label>Translation</template>
 
-						<FormRadios v-model="translatorType" class="_formBlock">
+						<MkRadios v-model="translatorType">
 							<template #label>Translator type</template>
 							<option :value="null">{{ i18n.ts.none }}</option>
 							<option value="DeepL">DeepL</option>
 							<option value="GoogleNoAPI">Google Translate(without API)</option>
-						</FormRadios>
+						</MkRadios>
 
 						<template v-if="translatorType === 'DeepL'">
-							<FormInput v-model="deeplAuthKey" class="_formBlock">
+							<FormInput v-model="deeplAuthKey">
 								<template #prefix><i class="fas fa-key"></i></template>
 								<template #label>DeepL Auth Key</template>
 							</FormInput>
@@ -150,6 +150,7 @@ import XHeader from './_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
+import MkRadios from '@/components/MkRadios.vue';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';

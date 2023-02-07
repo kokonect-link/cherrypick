@@ -3,38 +3,38 @@
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :content-max="700">
 		<div v-if="tab === 'owned'" class="_content">
-			<MkButton primary style="margin: 0 auto var(--margin) auto;" @click="create"><i class="fas fa-plus"></i> {{ $ts.createGroup }}</MkButton>
+			<MkButton primary style="margin: 0 auto var(--margin) auto;" @click="create"><i class="ti ti-plus"></i> {{ $ts.createGroup }}</MkButton>
 
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination">
-				<div v-for="group in items" :key="group.id" class="_card">
-					<div class="_title"><MkA :to="`/my/groups/${ group.id }`" class="_link">{{ group.name }}</MkA></div>
-					<div class="_content"><MkAvatars :user-ids="group.userIds"/></div>
-				</div>
+				<MkA v-for="group in items" :key="group.id" class="list _panel" :to="`/my/grops/${ group.id }`">
+					<div class="name">{{ group.name }}</div>
+					<MkAvatars :user-ids="group.userIds"/>
+				</MkA>
 			</MkPagination>
 		</div>
 
 		<div v-else-if="tab === 'joined'" class="_content">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination">
-				<div v-for="group in items" :key="group.id" class="_card">
-					<div class="_title">{{ group.name }}</div>
-					<div class="_content"><MkAvatars :user-ids="group.userIds"/></div>
-					<div class="_footer">
+				<MkA v-for="group in items" :key="group.id" class="list _panel" :to="`/my/grops/${ group.id }`">
+					<div class="name">{{ group.name }}</div>
+					<MkAvatars :user-ids="group.userIds"/>
+					<div class="actions">
 						<MkButton danger @click="leave(group)">{{ $ts.leaveGroup }}</MkButton>
 					</div>
-				</div>
+				</MkA>
 			</MkPagination>
 		</div>
 
 		<div v-else-if="tab === 'invites'" class="_content">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="invitationPagination">
-				<div v-for="invitation in items" :key="invitation.id" class="_card">
-					<div class="_title">{{ invitation.group.name }}</div>
-					<div class="_content"><MkAvatars :user-ids="invitation.group.userIds"/></div>
-					<div class="_footer">
-						<MkButton primary inline @click="acceptInvite(invitation)"><i class="fas fa-check"></i> {{ $ts.accept }}</MkButton>
-						<MkButton primary inline @click="rejectInvite(invitation)"><i class="fas fa-ban"></i> {{ $ts.reject }}</MkButton>
+				<MkA v-for="invitation in items" :key="invitation.id" class="list _panel">
+					<div class="name">{{ invitation.group.name }}</div>
+					<MkAvatars :user-ids="invitation.group.userIds"/>
+					<div class="actions">
+						<MkButton primary inline @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ $ts.accept }}</MkButton>
+						<MkButton primary inline @click="rejectInvite(invitation)"><i class="ti ti-na"></i> {{ $ts.reject }}</MkButton>
 					</div>
-				</div>
+				</MkA>
 			</MkPagination>
 		</div>
 	</MkSpacer>
@@ -115,22 +115,22 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'owned',
 	title: i18n.ts.ownedGroups,
-	icon: 'fas fa-user-tie',
+	icon: 'ti ti-flag-alt',
 }, {
 	key: 'joined',
 	title: i18n.ts.joinedGroups,
-	icon: 'fas fa-id-badge',
+	icon: 'ti ti-id-badge',
 }, {
 	key: 'invites',
 	title: i18n.ts.invites,
-	icon: 'fas fa-envelope-open-text',
+	icon: 'ti ti-envelope-open-text',
 }]);
-
+`
 definePageMetadata({
 	title: i18n.ts.groups,
-	icon: 'fas fa-users',
+	icon: 'ti ti-briefcase',
 	actions: [{
-		icon: 'fas fa-plus',
+		icon: 'ti ti-plus',
 		text: i18n.ts.createGroup,
 		handler: create,
 	}],
