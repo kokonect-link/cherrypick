@@ -9,7 +9,7 @@
 
 이 문서는 CherryPick의 변경 사항만 포함합니다. 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## 13.4.0-cp-3.1.0 (unreleased)
+## 13.x.x-cp-3.x.x (unreleased)
 이 버전부터 Misskey v13을 대응합니다.
 
 ### Improvements
