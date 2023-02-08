@@ -275,6 +275,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	postFormVisibilityHotkey: {
+		where: 'device',
+		default: true,
+	},
 	newNoteRecivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',

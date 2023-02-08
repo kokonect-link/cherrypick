@@ -34,6 +34,10 @@
 					<template #label>{{ i18n.ts.useEnterToSend }}</template>
 					<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="postFormVisibilityHotkey">
+					<template #label>{{ i18n.ts.postFormVisibilityHotkey }}</template>
+					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
+				</MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
@@ -171,6 +175,7 @@ const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
 const aiChanMode = computed(defaultStore.makeGetterSetter('aiChanMode'));
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
+const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const newNoteRecivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteRecivedNotificationBehavior'));
 
 watch(lang, () => {

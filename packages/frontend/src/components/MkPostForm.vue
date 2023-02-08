@@ -454,6 +454,14 @@ function onKeydown(ev: KeyboardEvent) {
 		if ((ev.which === 10 || ev.which === 13) && (ev.ctrlKey || ev.metaKey) && canPost) post();
 	}
 
+	if (defaultStore.state.postFormVisibilityHotkey) {
+		if (ev.shiftKey && ev.altKey && (visibility === 'specified')) visibility = 'public';
+		else if (ev.shiftKey && ev.altKey && (visibility === 'public')) visibility = 'home';
+		else if (ev.shiftKey && ev.altKey && (visibility === 'home')) visibility = 'followers';
+		else if (ev.shiftKey && ev.altKey && (visibility === 'followers')) visibility = 'specified';
+		if ((ev.ctrlKey || ev.metaKey) && ev.altKey) localOnly = !localOnly;
+	}
+
 	if (ev.which === 27) emit('esc');
 	typing();
 }

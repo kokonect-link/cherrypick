@@ -85,6 +85,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'numberOfPageCache',
 	'aiChanMode',
 	'useEnterToSend',
+	'postFormVisibilityHotkey',
 	'newNoteRecivedNotificationBehavior',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
