@@ -1849,7 +1849,7 @@ _notification:
   pollEnded: "투표 결과가 발표됐어요!"
   unreadAntennaNote: "안테나 {name}"
   emptyPushNotificationMessage: "새 알림이 있어요!"
-  achievementEarned: "도전 과제를 달성했습니다"
+  achievementEarned: "도전 과제를 달성했어요!"
   _types:
     all: "전부"
     follow: "팔로잉"
