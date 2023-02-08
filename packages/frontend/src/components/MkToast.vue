@@ -8,6 +8,7 @@
 		appear @after-leave="emit('closed')"
 	>
 		<div v-if="showing" class="_acrylic" :class="$style.root" :style="{ zIndex }">
+			<CPAvatar :class="$style.avatar" :user="$i"/>
 			<div style="padding: 16px 24px;">
 				{{ message }}
 			</div>
@@ -19,6 +20,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import * as os from '@/os';
+import CPAvatar from '@/components/global/toast-avatar.vue';
 
 defineProps<{
 	message: string;
@@ -64,5 +66,19 @@ onMounted(() => {
 	overflow: clip;
 	text-align: center;
 	pointer-events: none;
+	transition: opacity 0.5s, transform 0.5s;
+
+	@media (max-width: 500px) {
+		width: 100%;
+	}
+}
+
+.avatar {
+	position: relative;
+	vertical-align: bottom;
+	border-radius: 100%;
+	width: 48px;
+	height: 48px;
+	margin-top: 16px;
 }
 </style>
