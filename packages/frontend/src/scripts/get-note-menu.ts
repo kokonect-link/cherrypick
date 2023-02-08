@@ -65,6 +65,17 @@ export function getNoteMenu(props: {
 		});
 	}
 
+	function copyEdit(): void {
+		os.confirm({
+			type: 'info',
+			text: i18n.ts.copyAndEditConfirm,
+		}).then(({ canceled }) => {
+			if (canceled) return;
+
+			os.post({ initialNote: appearNote, renote: appearNote.renote, reply: appearNote.reply, channel: appearNote.channel });
+		});
+	}
+
 	function toggleFavorite(favorite: boolean): void {
 		claimAchievement('noteFavorited1');
 		os.apiWithDialog(favorite ? 'notes/favorites/create' : 'notes/favorites/delete', {
@@ -244,6 +255,11 @@ export function getNoteMenu(props: {
 				action: () => {
 					window.open(appearNote.url || appearNote.uri, '_blank');
 				},
+			} : undefined,
+			(appearNote.userId === $i.id) ? {
+				icon: 'ti ti-edit',
+				text: i18n.ts.copyAndEdit,
+				action: copyEdit,
 			} : undefined,
 			{
 				icon: 'ti ti-share',
