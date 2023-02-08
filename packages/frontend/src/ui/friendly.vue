@@ -24,7 +24,7 @@
 
 	<div v-if="isMobile" :class="$style.nav">
 		<!-- <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
-		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.replace('/')"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
+		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.replace('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.replace('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.replace('/my/notifications')"><i :class="$style.navButtonIcon" class="ti ti-bell"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'messaging' || mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.replace('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
@@ -99,7 +99,7 @@ import * as os from '@/os';
 import { defaultStore } from '@/store';
 import { navbarItemDef } from '@/navbar';
 import { i18n } from '@/i18n';
-import { $i } from '@/account';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { Router } from '@/nirax';
 import { mainRouter } from '@/router';
 import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/scripts/page-metadata';
@@ -127,6 +127,8 @@ let showEl = $ref(false);
 let lastScrollPosition = $ref(0);
 
 let queue = $ref(0);
+
+let longTouchNavHome = $ref(false);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsEl = $shallowRef<HTMLElement>();
@@ -247,6 +249,21 @@ function top() {
 
 function queueUpdated(q: number): void {
 	queue = q;
+}
+
+function openAccountMenu(ev: MouseEvent) {
+	longTouchNavHome = true;
+	setTimeout(() => {
+		if (longTouchNavHome === true) {
+			openAccountMenu_({
+				withExtraOperation: true,
+			}, ev);
+		}
+	}, 500);
+}
+
+function closeAccountMenu() {
+	longTouchNavHome = false;
 }
 
 const wallpaper = miLocalStorage.getItem('wallpaper') != null;
