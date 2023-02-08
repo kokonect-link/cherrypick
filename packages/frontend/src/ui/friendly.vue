@@ -16,7 +16,7 @@
 		<XWidgets :margin-top="'var(--margin)'" @mounted="attachSticky"/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true" @touchstart="longTouchfloatNavStart" @touchend="longTouchfloatNavEnd"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
 	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !$store.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
 
@@ -129,6 +129,7 @@ let lastScrollPosition = $ref(0);
 let queue = $ref(0);
 
 let longTouchNavHome = $ref(false);
+let longTouchfloatNav = $ref(false);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsEl = $shallowRef<HTMLElement>();
@@ -263,6 +264,19 @@ function openAccountMenu(ev: MouseEvent) {
 }
 
 function closeAccountMenu() {
+	longTouchNavHome = false;
+}
+
+function longTouchfloatNavStart() {
+	longTouchfloatNav = true;
+	setTimeout(() => {
+		if (longTouchfloatNav === true) {
+			location.reload();
+		}
+	}, 500);
+}
+
+function longTouchfloatNavEnd() {
 	longTouchNavHome = false;
 }
 
