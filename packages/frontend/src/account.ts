@@ -282,11 +282,6 @@ export async function openAccountMenu(opts: {
 				signout();
 			},
 			danger: true,
-		}, {
-			type: 'button',
-			icon: 'ti ti-refresh',
-			text: i18n.ts.reload,
-			action: () => { location.reload(); },
 		}]], ev.currentTarget ?? ev.target, {
 			align: 'left',
 		});
