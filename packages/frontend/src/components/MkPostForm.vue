@@ -653,8 +653,8 @@ async function post(ev?: MouseEvent) {
 			}
 
 			const text = postData.text?.toLowerCase() ?? '';
-			if ((text.includes('love') || text.includes('❤')) && text.includes('misskey')) {
-				claimAchievement('iLoveMisskey');
+			if ((text.includes('love') || text.includes('❤')) && text.includes('cherrypick')) {
+				claimAchievement('iLoveCherryPick');
 			}
 			if (text.includes('Efrlqw8ytg4'.toLowerCase()) || text.includes('XVCwzwxdHuA'.toLowerCase())) {
 				claimAchievement('brainDiver');

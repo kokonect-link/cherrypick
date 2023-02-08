@@ -2,7 +2,7 @@
 _lang_: "繁體中文"
 headlineMisskey: "貼文連繫網路"
 introMisskey: "歡迎！ CherryPick是一個開放原始碼且去中心化的社群網路。\n透過「貼文」分享周邊新鮮事，並告訴其他人您的想法！📡\n透過「反應」功能，對大家的貼文表達情感！👍\n一起來探索這個新的世界吧！🚀"
-poweredByMisskeyDescription: "{name}是使用開放原始碼平台<b>Misskey</b>的服務之一（稱為 Misskey 實例）。\n"
+poweredByMisskeyDescription: "{name}是使用開放原始碼平台<b>CherryPick</b>的服務之一（稱為 CherryPick 實例）。\n"
 monthAndDay: "{month}月 {day}日"
 search: "搜尋"
 notifications: "通知"
@@ -923,8 +923,8 @@ numberOfLikes: "讚數"
 show: "檢視"
 neverShow: "不再顯示"
 remindMeLater: "以後再說"
-didYouLikeMisskey: "您是否喜愛Misskey呢？"
-pleaseDonate: "Misskey是由{host}使用的免費軟體。請贊助我們，讓開發能夠持續！"
+didYouLikeMisskey: "您是否喜愛CherryPick呢？"
+pleaseDonate: "CherryPick是由{host}使用的免費軟體。請贊助我們，讓開發能夠持續！"
 roles: "角色"
 role: "角色"
 normalUser: "一般使用者"
@@ -945,7 +945,7 @@ _achievements:
     _notes1:
       title: "just setting up my msky"
       description: "發出了第一則貼文"
-      flavor: "祝您的Misskey生活愉快！"
+      flavor: "祝您的CherryPick生活愉快！"
     _notes10:
       title: "若干貼文"
       description: "發表了10則貼文"
@@ -1041,7 +1041,7 @@ _achievements:
     _login1000:
       title: "貼文大師ⅠⅠⅠ"
       description: "總登入天數為1,000天"
-      flavor: "感謝您使用Misskey！"
+      flavor: "感謝您使用CherryPick！"
     _noteClipped1:
       title: "忍不住要收進摘錄裡"
       description: "第一次將貼文收進摘錄"
@@ -1100,10 +1100,10 @@ _achievements:
     _viewAchievements3min:
       title: "喜愛成就"
       description: "看成就列表要花3分鐘以上"
-    _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "發布「I ❤ #Misskey」"
-      flavor: "感謝您使用Misskey！ by 開發團隊"
+    _iLoveCherryPick:
+      title: "I Love CherryPick"
+      description: "發布「I ❤ #CherryPick」"
+      flavor: "感謝您使用CherryPick！ by 開發團隊"
     _foundTreasure:
       title: "尋寶"
       description: "發現了隱藏的寶藏"
@@ -1174,7 +1174,7 @@ _achievements:
     _brainDiver:
       title: "Brain Driver"
       description: "發佈了Brain Driver的連結"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 _role:
   new: "建立角色"
   edit: "編輯角色"
@@ -1547,7 +1547,7 @@ _tutorial:
   step7_2: "歡迎到{help}來瞭解更多CherryPick相關介紹。"
   step7_3: "那麼，祝您在CherryPick玩的開心~ 🚀"
   step8_1: "最後，要不要試試看啟用推播通知呢？"
-  step8_2: "透過接收推播通知，即使沒有打開Misskey，您也會知道反應、追隨與提及的情況。"
+  step8_2: "透過接收推播通知，即使沒有打開CherryPick，您也會知道反應、追隨與提及的情況。"
   step8_3: "通知的設定可以在之後變更。"
 _2fa:
   alreadyRegistered: "此設備已經被註冊過了"

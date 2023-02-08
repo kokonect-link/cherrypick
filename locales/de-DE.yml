@@ -2,7 +2,7 @@
 _lang_: "Deutsch"
 headlineMisskey: "Ein durch Notizen verbundenes Netzwerk"
 introMisskey: "Willkommen! CherryPick ist eine dezentralisierte Open-Source Microblogging-Platform.\nVerfasse „Notizen“ um mitzuteilen, was gerade passiert oder um Ereignisse mit anderen zu teilen. 📡\nMit „Reaktionen“ kannst du außerdem schnell deine Gefühle über Notizen anderer Benutzer zum Ausdruck bringen. 👍\nEine neue Welt wartet auf dich! 🚀"
-poweredByMisskeyDescription: "{name} ist einer der durch die Open-Source-Plattform <b>Misskey</b> betriebenen Dienste (meist als \"Misskey-Instanz\" bezeichnet)."
+poweredByMisskeyDescription: "{name} ist einer der durch die Open-Source-Plattform <b>CherryPick</b> betriebenen Dienste (meist als \"CherryPick-Instanz\" bezeichnet)."
 monthAndDay: "{day}.{month}."
 search: "Suchen"
 notifications: "Benachrichtigungen"
@@ -923,8 +923,8 @@ numberOfLikes: "\"Gefällt mir\"-Anzahl"
 show: "Anzeigen"
 neverShow: "Nicht wieder anzeigen"
 remindMeLater: "Vielleicht später"
-didYouLikeMisskey: "Gefällt dir Misskey?"
-pleaseDonate: "Misskey ist die kostenlose Software, die von {host} verwendet wird. Wir würden uns über Spenden freuen, damit dessen Entwicklung weitergeführt werden kann!"
+didYouLikeMisskey: "Gefällt dir CherryPick?"
+pleaseDonate: "CherryPick ist die kostenlose Software, die von {host} verwendet wird. Wir würden uns über Spenden freuen, damit dessen Entwicklung weitergeführt werden kann!"
 roles: "Rollen"
 role: "Rolle"
 normalUser: "Standardbenutzer"
@@ -943,9 +943,9 @@ _achievements:
   earnedAt: "Freigeschaltet am"
   _types:
     _notes1:
-      title: "Hallo Misskey!"
+      title: "Hallo CherryPick!"
       description: "Sende deine erste Notiz"
-      flavor: "Hab eine schöne Zeit mit Misskey!"
+      flavor: "Hab eine schöne Zeit mit CherryPick!"
     _notes10:
       title: "Ein paar Notizen"
       description: "10 Notizen gesendet"
@@ -1041,7 +1041,7 @@ _achievements:
     _login1000:
       title: "Meister der Notizen Ⅲ"
       description: "An 1000 Tagen eingeloggt"
-      flavor: "Danke, dass du Misskey nutzt!"
+      flavor: "Danke, dass du CherryPick nutzt!"
     _noteClipped1:
       title: "Muss... clippen..."
       description: "Die erste Notiz geclippt"
@@ -1100,16 +1100,16 @@ _achievements:
     _viewAchievements3min:
       title: "Fan von Errungenschaften"
       description: "Schau dir die Liste deiner Errungenschaften für mindestens 3 Minuten an"
-    _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "Sende \"I ❤ #Misskey\""
-      flavor: "Danke, dass du Misskey verwendest! - vom Entwicklerteam"
+    _iLoveCherryPick:
+      title: "I Love CherryPick"
+      description: "Sende \"I ❤ #CherryPick\""
+      flavor: "Danke, dass du CherryPick verwendest! - vom Entwicklerteam"
     _foundTreasure:
       title: "Schatzsuche"
       description: "Du hast einen verborgenen Schatz gefunden"
     _client30min:
       title: "Kurze Pause"
-      description: "Habe Misskey für 30 Minuten geöffnet"
+      description: "Habe CherryPick für 30 Minuten geöffnet"
     _noteDeletedWithin1min:
       title: "Ups"
       description: "Lösche eine Notiz innerhalb von 1 Minute nachdem sie gesendet wurde"
@@ -1174,7 +1174,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Sende den Link zu Brain Diver"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 _role:
   new: "Rolle erstellen"
   edit: "Rolle bearbeiten"
@@ -1547,7 +1547,7 @@ _tutorial:
   step7_2: "Wenn du mehr über CherryPick lernen möchtest, schau dich im {help}-Bereich um."
   step7_3: "Und nun, viel Spaß mit CherryPick! 🚀"
   step8_1: "Möchtest du abschließend Push-Benachrichtigungen aktivieren?"
-  step8_2: "Push-Benachrichtigungen erlauben es dir, über Reaktionen, Follows oder Erwähnungen usw. zu erfahren, auch wenn Misskey zu dieser Zeit nicht geöffnet ist."
+  step8_2: "Push-Benachrichtigungen erlauben es dir, über Reaktionen, Follows oder Erwähnungen usw. zu erfahren, auch wenn CherryPick zu dieser Zeit nicht geöffnet ist."
   step8_3: "Diese Einstellung kannst du jederzeit ändern."
 _2fa:
   alreadyRegistered: "Du hast bereits ein Gerät für Zwei-Faktor-Authentifizierung registriert."

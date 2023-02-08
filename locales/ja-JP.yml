@@ -8,7 +8,7 @@ postFormVisibilityHotkey: "ショートカットキーで公開範囲を切り�
 postFormVisibilityHotkeyDescription: "ノートを作成する際、Alt(Option) + Shiftキーを押すと公開範囲を切り替えることができます。ローカルのみショートカットキーは、Ctrl(Cmd) + Alt(Option)キーです。"
 headlineMisskey: "ノートでつながるネットワーク"
 introMisskey: "ようこそ！CherryPickは、オープンソースの分散型マイクロブログサービスです。\n「ノート」を作成して、いま起こっていることを共有したり、あなたについて皆に発信しよう📡\n「リアクション」機能で、皆のノートに素早く反応を追加することもできます👍\n新しい世界を探検しよう🚀"
-poweredByMisskeyDescription: "{name}は、オープンソースのプラットフォーム<b>Misskey</b>を使ったサービス(Misskeyインスタンスと呼ばれます)のひとつです。"
+poweredByMisskeyDescription: "{name}は、オープンソースのプラットフォーム<b>CherryPick</b>を使ったサービス(CherryPickインスタンスと呼ばれます)のひとつです。"
 monthAndDay: "{month}月 {day}日"
 search: "検索"
 notifications: "通知"
@@ -931,8 +931,8 @@ numberOfLikes: "いいね数"
 show: "表示"
 neverShow: "今後表示しない"
 remindMeLater: "また後で"
-didYouLikeMisskey: "Misskeyを気に入っていただけましたか？"
-pleaseDonate: "Misskeyは{host}が使用している無料のソフトウェアです。これからも開発を続けられるように、ぜひ寄付をお願いします！"
+didYouLikeMisskey: "CherryPickを気に入っていただけましたか？"
+pleaseDonate: "CherryPickは{host}が使用している無料のソフトウェアです。これからも開発を続けられるように、ぜひ寄付をお願いします！"
 roles: "ロール"
 role: "ロール"
 normalUser: "一般ユーザー"
@@ -952,9 +952,9 @@ _achievements:
   earnedAt: "獲得日時"
   _types:
     _notes1:
-      title: "just setting up my msky"
+      title: "just setting up my crpk"
       description: "初めてノートを投稿した"
-      flavor: "良いMisskeyライフを！"
+      flavor: "良いCherryPickライフを！"
     _notes10:
       title: "いくつかのノート"
       description: "ノートを10回投稿した"
@@ -1050,7 +1050,7 @@ _achievements:
     _login1000:
       title: "ノートマスターⅢ"
       description: "通算ログイン日数が1,000日"
-      flavor: "Misskeyを使ってくれてありがとう！"
+      flavor: "CherryPickを使ってくれてありがとう！"
     _noteClipped1:
       title: "クリップせずにはいられないな"
       description: "初めてノートをクリップした"
@@ -1109,10 +1109,10 @@ _achievements:
     _viewAchievements3min:
       title: "実績好き"
       description: "実績一覧を3分以上眺め続けた"
-    _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "\"I ❤ #Misskey\"を投稿した"
-      flavor: "Misskeyを使ってくださりありがとうございます！ by 開発チーム"
+    _iLoveCherryPick:
+      title: "I Love CherryPick"
+      description: "\"I ❤ #CherryPick\"を投稿した"
+      flavor: "CherryPickを使ってくださりありがとうございます！ by 開発チーム"
     _foundTreasure:
       title: "宝探し"
       description: "隠されたお宝を発見した"
@@ -1183,7 +1183,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diverへのリンクを投稿した"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 
 _role:
   new: "ロールの作成"
@@ -1599,7 +1599,7 @@ _tutorial:
   step7_2: "もっとCherryPickについて知りたいときは、{help}を見てみてください。"
   step7_3: "では、CherryPickをお楽しみください🚀"
   step8_1: "最後に、プッシュ通知を有効化してみませんか？"
-  step8_2: "プッシュ通知を受け取ることで、Misskeyを開いていない時にもリアクションやフォロー、メンションなどに気づけます。"
+  step8_2: "プッシュ通知を受け取ることで、CherryPickを開いていない時にもリアクションやフォロー、メンションなどに気づけます。"
   step8_3: "通知の設定は後から変更できます。"
 
 _2fa:

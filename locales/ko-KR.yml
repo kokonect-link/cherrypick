@@ -8,7 +8,7 @@ postFormVisibilityHotkey: "단축키로 공개 범위 전환하기"
 postFormVisibilityHotkeyDescription: "노트를 작성할 때, Alt(Option) + Shift 키를 누르면 공개 범위를 전환할 수 있어요. 로컬에만 보이게 하는 단축키는 Ctrl(Cmd) + Alt(Option) 키예요."
 headlineMisskey: "노트로 연결되는 네트워크"
 introMisskey: "어서오세요! CherryPick은 오픈 소스 분산형 마이크로 블로그 서비스에요.\n\"노트\" 를 작성해서, 지금 일어나고 있는 일을 공유하거나, 당신만의 이야기를 모두에게 발신할 수 있어요📡\n\"리액션\" 기능으로, 친구의 노트에 총알같이 반응을 추가할 수도 있어요👍\n새로운 세계를 탐험해 보세요🚀"
-poweredByMisskeyDescription: "{name}은(는) 오픈소스 플랫폼<b>Misskey</b>를 사용한 서비스(Misskey 인스턴스라고 불립니다) 중 하나입니다."
+poweredByMisskeyDescription: "{name}은(는) 오픈소스 플랫폼<b>CherryPick</b>를 사용한 서비스 (CherryPick 인스턴스라고 불립니다) 중 하나입니다."
 monthAndDay: "{month}월 {day}일"
 search: "검색"
 notifications: "알림"
@@ -932,8 +932,8 @@ numberOfLikes: "좋아요 수"
 show: "표시"
 neverShow: "다시 보지 않기"
 remindMeLater: "나중에 알림"
-didYouLikeMisskey: "Misskey가 마음에 드시나요?"
-pleaseDonate: "{host}은(는) 무료 소프트웨어 Misskey를 사용합니다. 후원을 통해 저희의 개발이 이어질 수 있게 도와주세요!"
+didYouLikeMisskey: "CherryPick이 마음에 드시나요?"
+pleaseDonate: "{host}은(는) 무료 소프트웨어 CherryPick을 사용합니다. 후원을 통해 저희의 개발이 이어질 수 있게 도와주세요!"
 roles: "역할"
 role: "역할"
 normalUser: "일반 사용자"
@@ -952,9 +952,9 @@ _achievements:
   earnedAt: "달성 일시"
   _types:
     _notes1:
-      title: "미스키 시작했는데요"
+      title: "체리픽 시작했는데요"
       description: "첫 노트를 작성했습니다"
-      flavor: "Misskey에 오신 것을 환영합니다!"
+      flavor: "CherryPick에 오신 것을 환영합니다!"
     _notes10:
       title: "노트 조금"
       description: "10개의 노트를 작성했습니다"
@@ -1050,7 +1050,7 @@ _achievements:
     _login1000:
       title: "노트 마스터 III"
       description: "총 1,000일간 로그인했습니다"
-      flavor: "Misskey를 사용해 주셔서 감사합니다!"
+      flavor: "CherryPick을 사용해 주셔서 감사합니다!"
     _noteClipped1:
       title: "클립할 수밖에 없었어"
       description: "처음으로 노트를 클립했습니다"
@@ -1109,10 +1109,10 @@ _achievements:
     _viewAchievements3min:
       title: "저 도전과제 좋아해요"
       description: "도전 과제 목록을 3분 이상 쳐다봤습니다"
-    _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "\"I ❤ #Misskey\"를 포스트했습니다"
-      flavor: "Misskey를 이용해주셔서 감사합니다! - 개발팀 일동"
+    _iLoveCherryPick:
+      title: "I Love CherryPick"
+      description: "\"I ❤ #CherryPick\"를 포스트했습니다"
+      flavor: "CherryPick을 이용해주셔서 감사합니다! - 개발팀 일동"
     _foundTreasure:
       title: "보물찾기"
       description: "숨겨진 보물을 발견했습니다"
@@ -1183,7 +1183,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diver로의 링크를 첨부했습니다"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 _role:
   new: "새 역할 생성"
   edit: "역할 수정"
@@ -1567,7 +1567,7 @@ _tutorial:
   step7_2: "CherryPick에 대해 더 알고 싶으시다면 {help}를 참고해 주세요."
   step7_3: "그럼 CherryPick을 즐겨주세요! 🚀"
   step8_1: "마지막으로, 푸시 알림을 활성화해 보지 않으실래요?"
-  step8_2: "푸시 알림을 활성화하면, Misskey를 열지 않았을 때에도 리액션이나 팔로우, 멘션 등을 확인할 수 있습니다."
+  step8_2: "푸시 알림을 활성화하면, CherryPick을 열지 않았을 때에도 리액션이나 팔로우, 멘션 등을 확인할 수 있습니다."
   step8_3: "알림 설정은 나중에도 변경할 수 있습니다."
 _2fa:
   alreadyRegistered: "이미 설정되어 있어요!"

@@ -2,7 +2,7 @@
 _lang_: "Polski"
 headlineMisskey: "Sieć połączona wpisami"
 introMisskey: "CherryPick jest serwisem mikroblogowym typu open source.\nCherryPick to opensource'owy serwis mikroblogowy, w którym możesz tworzyć \"notatki\", aby dzielić się tym, co się dzieje i opowiadać wszystkim o sobie.\nMożesz również użyć funkcji \"Reakcje\", aby szybko dodać własne reakcje do notatek innych użytkowników👍.\nOdkrywaj nowy świat🚀!"
-poweredByMisskeyDescription: "{name} jest jedną z usług działającą na otwartoźródłowej platformie <b>Misskey</b> (określana jako \"instancja Misskey\")."
+poweredByMisskeyDescription: "{name} jest jedną z usług działającą na otwartoźródłowej platformie <b>CherryPick</b> (określana jako \"instancja CherryPick\")."
 monthAndDay: "{month}-{day}"
 search: "Szukaj"
 notifications: "Powiadomienia"
@@ -1171,7 +1171,7 @@ _tutorial:
   step7_2: "Jeśli chcesz dowiedzieć się więcej o CherryPick, wypróbuj sekcję {help}."
   step7_3: "A teraz powodzenia i baw się dobrze z CherryPick! 🚀"
   step8_1: "Na sam koniec, czy nie chciał(a)byś włączyć powiadomień push?"
-  step8_2: "Włączenie tej opcji pozwoli ci otrzymywać powiadomienia o reakcjach, śledzeniach i wzmiankach nawet wtedy, gdy Misskey nie będzie otwarty."
+  step8_2: "Włączenie tej opcji pozwoli ci otrzymywać powiadomienia o reakcjach, śledzeniach i wzmiankach nawet wtedy, gdy CherryPick nie będzie otwarty."
   step8_3: "Ustawienia powiadomień można zmienić później."
 _2fa:
   alreadyRegistered: "Zarejestrowałeś już urządzenie do uwierzytelniania dwuskładnikowego."

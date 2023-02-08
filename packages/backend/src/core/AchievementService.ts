@@ -61,7 +61,7 @@ const ACHIEVEMENT_TYPES = [
 	'followers1000',
 	'collectAchievements30',
 	'viewAchievements3min',
-	'iLoveMisskey',
+	'iLoveCherryPick',
 	'foundTreasure',
 	'client30min',
 	'noteDeletedWithin1min',

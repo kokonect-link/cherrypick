@@ -8,7 +8,7 @@ postFormVisibilityHotkey: "Toggle visibility with a hotkey"
 postFormVisibilityHotkeyDescription: "When writing a note, press Alt(Option) + Shift to switch the visibility range. The hotkey to make it Local only is Ctrl(Cmd) + Alt(Option)."
 headlineMisskey: "A network connected by notes"
 introMisskey: "Welcome! CherryPick is an open source, decentralized microblogging service.\nCreate \"notes\" to share your thoughts with everyone around you. 📡\nWith \"reactions\", you can also quickly express your feelings about everyone's notes. 👍\nLet's explore a new world! 🚀"
-poweredByMisskeyDescription: "{name} is one of the services powered by the open source platform <b>Misskey</b> (referred to as a \"Misskey instance\")."
+poweredByMisskeyDescription: "{name} is one of the services powered by the open source platform <b>CherryPick</b> (referred to as a \"CherryPick instance\")."
 monthAndDay: "{month}/{day}"
 search: "Search"
 notifications: "Notifications"
@@ -931,8 +931,8 @@ numberOfLikes: "Likes"
 show: "Show"
 neverShow: "Don't show again"
 remindMeLater: "Maybe later"
-didYouLikeMisskey: "Have you taken a liking to Misskey?"
-pleaseDonate: "{host} uses the free software, Misskey. We would highly appreciate your donations so development of Misskey can continue!"
+didYouLikeMisskey: "Have you taken a liking to CherryPick?"
+pleaseDonate: "{host} uses the free software, CherryPick. We would highly appreciate your donations so development of CherryPick can continue!"
 roles: "Roles"
 role: "Role"
 normalUser: "Normal user"
@@ -951,9 +951,9 @@ _achievements:
   earnedAt: "Unlocked at"
   _types:
     _notes1:
-      title: "just setting up my msky"
+      title: "just setting up my crpk"
       description: "Post your first note"
-      flavor: "Have a good time with Misskey!"
+      flavor: "Have a good time with CherryPick!"
     _notes10:
       title: "Some notes"
       description: "Post 10 notes"
@@ -1049,7 +1049,7 @@ _achievements:
     _login1000:
       title: "Master of Notes III"
       description: "Log in for a total of 1,000 days"
-      flavor: "Thank you for using Misskey!"
+      flavor: "Thank you for using CherryPick!"
     _noteClipped1:
       title: "Must... clip..."
       description: "Clip your first note"
@@ -1108,16 +1108,16 @@ _achievements:
     _viewAchievements3min:
       title: "Likes Achievements"
       description: "Look at your list of achievements for at least 3 minutes"
-    _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "Post \"I ❤ #Misskey\""
-      flavor: "Misskey's development team greatly appreciates your support!"
+    _iLoveCherryPick:
+      title: "I Love CherryPick"
+      description: "Post \"I ❤ #CherryPick\""
+      flavor: "CherryPick's development team greatly appreciates your support!"
     _foundTreasure:
       title: "Treasure Hunt"
       description: "You've found the hidden treasure"
     _client30min:
       title: "Short break"
-      description: "Spend 30 minutes on Misskey"
+      description: "Spend 30 minutes on CherryPick"
     _noteDeletedWithin1min:
       title: "Nevermind"
       description: "Delete a note within a minute of posting it"
@@ -1182,7 +1182,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Post the link to Brain Diver"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 _role:
   new: "New role"
   edit: "Edit role"

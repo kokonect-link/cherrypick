@@ -2,7 +2,7 @@
 _lang_: "中文(简体)"
 headlineMisskey: "通过帖子连接在一起的网络"
 introMisskey: "欢迎！CherryPick是一个开源的、去中心化的“微博客”服务。\n通过编写「帖文」来和大家分享你的以及你周围的事情吧！📡\n通过「回应」功能，可以让你快速地对大家的帖文表达反馈👍\n来探索新的世界吧！🚀"
-poweredByMisskeyDescription: "{name} 由开源平台 <b>Misskey</b> 驱动（也被称为 Misskey 实例）"
+poweredByMisskeyDescription: "{name} 由开源平台 <b>CherryPick</b> 驱动（也被称为 CherryPick 实例）"
 monthAndDay: "{month}月 {day}日"
 search: "搜索"
 notifications: "通知"
@@ -923,8 +923,8 @@ numberOfLikes: "点赞数"
 show: "显示"
 neverShow: "不再显示"
 remindMeLater: "稍后提醒我"
-didYouLikeMisskey: "您喜欢Misskey吗？"
-pleaseDonate: "Misskey是{host}所使用的免费软件。为了今后也能够维持Misskey的开发，请在有余力的情况下进行捐助！"
+didYouLikeMisskey: "您喜欢CherryPick吗？"
+pleaseDonate: "CherryPick是{host}所使用的免费软件。为了今后也能够维持CherryPick的开发，请在有余力的情况下进行捐助！"
 roles: "角色"
 role: "角色"
 normalUser: "普通用户"
@@ -945,7 +945,7 @@ _achievements:
     _notes1:
       title: "初来乍到"
       description: "第一次发帖"
-      flavor: "祝您在Misskey玩的愉快～"
+      flavor: "祝您在CherryPick玩的愉快～"
     _notes10:
       title: "一些帖子"
       description: "发布了10篇帖子"
@@ -1041,7 +1041,7 @@ _achievements:
     _login1000:
       title: "帖子大师Ⅲ"
       description: "总登录天数1000天"
-      flavor: "感谢您使用Misskey！"
+      flavor: "感谢您使用CherryPick！"
     _noteClipped1:
       title: "忍不住要收藏到便签"
       description: "第一次将贴文贴进便签"
@@ -1100,10 +1100,10 @@ _achievements:
     _viewAchievements3min:
       title: "成就爱好者"
       description: "盯着成就看三分钟"
-    _iLoveMisskey:
-      title: "I Love Misskey"
-      description: "发布\"I ❤ #Misskey\"帖子"
-      flavor: "感谢您使用 Misskey ！ by 开发团队"
+    _iLoveCherryPick:
+      title: "I Love CherryPick"
+      description: "发布\"I ❤ #CherryPick\"帖子"
+      flavor: "感谢您使用 CherryPick ！ by 开发团队"
     _foundTreasure:
       title: "寻宝"
       description: "发现了隐藏的宝藏"
@@ -1174,7 +1174,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "发布了包含Brain Diver链接的帖子"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 _role:
   new: "创建角色"
   edit: "编辑角色"
@@ -1547,7 +1547,7 @@ _tutorial:
   step7_2: "如果你想了解更多有关CherryPick的信息，请参见{help}。"
   step7_3: "接下来，享受CherryPick带来的乐趣吧🚀"
   step8_1: "最后，您想要启用推送通知消息吗？"
-  step8_2: "通过接收推送通知消息，即使没开 Misskey，您也可以收到回应、关注、提及等的消息。"
+  step8_2: "通过接收推送通知消息，即使没开 CherryPick，您也可以收到回应、关注、提及等的消息。"
   step8_3: "您也可以稍后再更改通知设置。"
 _2fa:
   alreadyRegistered: "此设备已被注册"

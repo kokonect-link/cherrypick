@@ -2,7 +2,7 @@
 _lang_: "Bahasa Indonesia"
 headlineMisskey: "Jaringan terhubung melalui catatan"
 introMisskey: "Selamat datang! CherryPick adalah perangkat mikroblog tercatu bersifat sumber terbuka.\nMulailah menuliskan catatan, bagikan peristiwa terkini, serta ceritakan segala tentangmu.📡\nTunjukkan juga reaksimu pada catatan pengguna lain.👍\nMari jelajahi dunia baru🚀"
-poweredByMisskeyDescription: "{name} adalah sebuah layanan (instance) yang menggunakan platform sumber terbuka <b>Misskey</b>."
+poweredByMisskeyDescription: "{name} adalah sebuah layanan (instance) yang menggunakan platform sumber terbuka <b>CherryPick</b>."
 monthAndDay: "{day} {month}"
 search: "Penelusuran"
 notifications: "Pemberitahuan"
@@ -923,8 +923,8 @@ numberOfLikes: "Jumlah yang disukai"
 show: "Tampilkan"
 neverShow: "Jangan tampilkan lagi"
 remindMeLater: "Mungkin nanti"
-didYouLikeMisskey: "Apakah kamu mulai menyukai Misskey?"
-pleaseDonate: "{host} menggunakan perangkat lunak bebas yaitu Misskey. Kami sangat mengapresiasi sekali donasi dari kamu agar pengembangan Misskey tetap dapat berlanjut!"
+didYouLikeMisskey: "Apakah kamu mulai menyukai CherryPick?"
+pleaseDonate: "{host} menggunakan perangkat lunak bebas yaitu CherryPick. Kami sangat mengapresiasi sekali donasi dari kamu agar pengembangan CherryPick tetap dapat berlanjut!"
 roles: "Peran"
 role: "Peran"
 color: "Warna"
@@ -974,7 +974,7 @@ _achievements:
     _login1000:
       title: "Sepuh Catatan III"
       description: "Login selama 1000 hari"
-      flavor: "Terima kasih telah menggunakan Misskey!"
+      flavor: "Terima kasih telah menggunakan CherryPick!"
     _noteClipped1:
       title: "Harus... Ngeklip..."
       description: "Klip catatan pertamamu"
@@ -1033,7 +1033,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Posting tautan mengenai Brain Diver"
-      flavor: "Misskey-Misskey La-Tu-Ma"
+      flavor: "CherryPick-CherryPick La-Tu-Ma"
 _role:
   new: "Buat peran"
   edit: "Sunting peran"

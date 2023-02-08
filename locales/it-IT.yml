@@ -2,7 +2,7 @@
 _lang_: "Italiano"
 headlineMisskey: "Rete collegata tramite note"
 introMisskey: "Eccoci! CherryPick è un servizio di microblogging decentralizzato, libero e aperto. \n\n📡 Puoi pubblicare «Note» per condividere ciò che sta succedendo o per dire a tutti qualcosa su di te. \n\n👍 Puoi reagire inviando emoji rapidi alle «Note» provenienti da altri profili nel Fediverso.\n\n🚀 Esplora un nuovo mondo insieme a noi!"
-poweredByMisskeyDescription: "{name} è uno dei servizi (chiamati istanze) che utilizzano la piattaforma open source <b>Misskey</b>."
+poweredByMisskeyDescription: "{name} è uno dei servizi (chiamati istanze) che utilizzano la piattaforma open source <b>CherryPick</b>."
 monthAndDay: "{day}/{month}"
 search: "Cerca"
 notifications: "Notifiche"
@@ -877,7 +877,7 @@ deleteAccount: "Eliminazione profilo"
 document: "Documento"
 numberOfPageCache: "Numero di pagine cache"
 numberOfPageCacheDescription: "Aumenta l'usabilità, ma aumenta anche il carico e l'utilizzo della memoria."
-logoutConfirm: "Vuoi davvero uscire da Misskey? "
+logoutConfirm: "Vuoi davvero uscire da CherryPick? "
 lastActiveDate: "Data dell'ultimo utilizzo"
 statusbar: "Barra di stato"
 pleaseSelect: "Scegli un'opzione"
@@ -923,8 +923,8 @@ numberOfLikes: "Numero di Like"
 show: "Visualizza"
 neverShow: "Non mostrare più"
 remindMeLater: "Rimanda"
-didYouLikeMisskey: "Ti piace Misskey?"
-pleaseDonate: "Misskey è il software libero utilizzato su {host}. Offrendo una donazione è più facile continuare a svilupparlo!"
+didYouLikeMisskey: "Ti piace CherryPick?"
+pleaseDonate: "CherryPick è il software libero utilizzato su {host}. Offrendo una donazione è più facile continuare a svilupparlo!"
 roles: "Ruoli"
 role: "Ruolo"
 normalUser: "Profilo standard"
@@ -943,9 +943,9 @@ _achievements:
   earnedAt: "Data di conseguimento"
   _types:
     _notes1:
-      title: "Hai iniziato a usare Misskey"
+      title: "Hai iniziato a usare CherryPick"
       description: "Hai pubblicato la prima Nota"
-      flavor: "Goditi la vita su Misskey!"
+      flavor: "Goditi la vita su CherryPick!"
     _notes10:
       title: "Alcune Note"
       description: "Hai inserito 10 Note"
@@ -1041,7 +1041,7 @@ _achievements:
     _login1000:
       title: "Maestro di Note III"
       description: "Accedi per un totale di 1.000 giorni"
-      flavor: "Grazie per aver usato Misskey!"
+      flavor: "Grazie per aver usato CherryPick!"
     _noteClipped1:
       title: "Devo clippare!"
       description: "Ho raccolto in Clip la prima Nota"
@@ -1100,16 +1100,16 @@ _achievements:
     _viewAchievements3min:
       title: "Mi piacciono i risultati"
       description: "Guarda la tua collezione di obiettivi per almeno 3 minuti"
-    _iLoveMisskey:
-      title: "I LOVE Misskey"
-      description: "Pubblica «I ♥ #Misskey»"
-      flavor: "Grazie per aver utilizzato Misskey! Dal team di sviluppo"
+    _iLoveCherryPick:
+      title: "I LOVE CherryPick"
+      description: "Pubblica «I ♥ #CherryPick»"
+      flavor: "Grazie per aver utilizzato CherryPick! Dal team di sviluppo"
     _foundTreasure:
       title: "Caccia al tesoro"
       description: "Hai trovato un tesoro nascosto"
     _client30min:
       title: "Piccola pausa"
-      description: "Hai passato più di 30 minuti su Misskey"
+      description: "Hai passato più di 30 minuti su CherryPick"
     _noteDeletedWithin1min:
       title: "Ooops!"
       description: "Hai eliminato una nota entro un minuto dalla sua pubblicazione"
@@ -1544,7 +1544,7 @@ _tutorial:
   step7_2: "Se vuoi saperne di più su CherryPick, puoi dare un'occhiata alla sezione {help}."
   step7_3: "Da ultimo, buon divertimento su CherryPick! 🚀"
   step8_1: "Per concludere, vuoi attivare le notifiche push?"
-  step8_2: "Attivandole, otterrai notifiche di follow, reazioni e menzioni anche quando Misskey è chiuso."
+  step8_2: "Attivandole, otterrai notifiche di follow, reazioni e menzioni anche quando CherryPick è chiuso."
   step8_3: "Puoi anche modificare questa impostazione successivamente."
 _2fa:
   alreadyRegistered: "La configurazione è stata già completata."
