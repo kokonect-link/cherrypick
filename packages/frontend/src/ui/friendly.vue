@@ -277,7 +277,7 @@ function longTouchfloatNavStart() {
 }
 
 function longTouchfloatNavEnd() {
-	longTouchNavHome = false;
+	longTouchfloatNav = false;
 }
 
 const wallpaper = miLocalStorage.getItem('wallpaper') != null;
