@@ -1,10 +1,10 @@
 <template>
-<MkModal ref="modal" :z-priority="'middle'" @click="$refs.modal.close()" @closed="$emit('closed')">
+<MkModal ref="modal" :z-priority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
 		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
 		<div :class="$style.version">✨{{ version }}🚀</div>
 		<MkButton full @click="whatIsNew">{{ i18n.ts.whatIsNew }}</MkButton>
-		<MkButton :class="$style.gotIt" primary full @click="$refs.modal.close()">{{ i18n.ts.gotIt }}</MkButton>
+		<MkButton :class="$style.gotIt" primary full @click="close">{{ i18n.ts.gotIt }}</MkButton>
 	</div>
 </MkModal>
 </template>
@@ -17,13 +17,44 @@ import MkSparkle from '@/components/MkSparkle.vue';
 import { version } from '@/config';
 import { i18n } from '@/i18n';
 import { confetti } from '@/scripts/confetti';
+import { unisonReload } from '@/scripts/unison-reload';
+import * as os from '@/os';
+import { miLocalStorage } from '@/local-storage';
+import { fetchCustomEmojis } from '@/custom-emojis';
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const whatIsNew = () => {
-	modal.value.close();
+	// modal.value.close();
 	window.open(`https://misskey-hub.net/docs/releases.html#_${version.replace(/\./g, '-')}`, '_blank');
 };
+
+const close = async () => {
+	modal.value.close();
+	const { canceled } = await os.confirm({
+		type: 'info',
+		title: i18n.ts.cherrypickUpdatedCacheClearTitle,
+		text: i18n.ts.cherrypickUpdatedCacheClear,
+	});
+	if (canceled) {
+		await os.alert({
+			type: 'info',
+			text: i18n.ts.cherrypickUpdatedCacheClearLater,
+		});
+		return;
+	}
+	cacheClear();
+};
+
+function cacheClear() {
+	os.waiting();
+	miLocalStorage.removeItem('locale');
+	miLocalStorage.removeItem('theme');
+	miLocalStorage.removeItem('emojis');
+	miLocalStorage.removeItem('lastEmojisFetchedAt');
+	fetchCustomEmojis();
+	unisonReload();
+}
 
 onMounted(() => {
 	confetti({
@@ -55,5 +86,9 @@ onMounted(() => {
 
 .gotIt {
 	margin: 8px 0 0 0;
+}
+
+.cacheClear {
+	composes: gotIt;
 }
 </style>
