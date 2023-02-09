@@ -29,6 +29,7 @@
 
 ### Bugfixes
 - 클라이언트: (friendly) 타임라인이 아닌 페이지에서 헤더에 블러가 적용되는 문제
+- 클라이언트: (friendly) iPhone에서 프로필 영역이 safe-area를 침범하는 문제 
 - fix(locale): ko-KR 로케일 일부 개선
 
 ---

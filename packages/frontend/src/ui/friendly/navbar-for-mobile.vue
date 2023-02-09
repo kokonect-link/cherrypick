@@ -95,7 +95,7 @@ function openProfile() {
 			position: sticky;
 			top: 0;
 			z-index: 1;
-			padding: 20px 0;
+			padding: calc(env(safe-area-inset-top) + 20px) 0;
 			background: var(--X14);
 			-webkit-backdrop-filter: var(--blur, blur(8px));
 			backdrop-filter: var(--blur, blur(8px));
@@ -131,7 +131,7 @@ function openProfile() {
 		> .bottom {
 			position: sticky;
 			bottom: 0;
-			padding: 20px 0;
+			padding: 20px 0 calc(env(safe-area-inset-bottom) + 10px);
 			background: var(--X14);
 			-webkit-backdrop-filter: var(--blur, blur(8px));
 			backdrop-filter: var(--blur, blur(8px));
