@@ -273,7 +273,7 @@ function longTouchfloatNavStart() {
 		if (longTouchfloatNav === true) {
 			location.reload();
 		}
-	}, 500);
+	}, 1000);
 }
 
 function longTouchfloatNavEnd() {
