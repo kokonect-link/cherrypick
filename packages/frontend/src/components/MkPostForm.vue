@@ -455,10 +455,10 @@ function onKeydown(ev: KeyboardEvent) {
 	}
 
 	if (defaultStore.state.postFormVisibilityHotkey) {
-		if (ev.shiftKey && ev.altKey && (visibility === 'specified')) visibility = 'public';
-		else if (ev.shiftKey && ev.altKey && (visibility === 'public')) visibility = 'home';
-		else if (ev.shiftKey && ev.altKey && (visibility === 'home')) visibility = 'followers';
-		else if (ev.shiftKey && ev.altKey && (visibility === 'followers')) visibility = 'specified';
+		if (ev.ctrlKey && ev.shiftKey && (visibility === 'specified')) visibility = 'public';
+		else if (ev.ctrlKey && ev.shiftKey && (visibility === 'public')) visibility = 'home';
+		else if (ev.ctrlKey && ev.shiftKey && (visibility === 'home')) visibility = 'followers';
+		else if (ev.ctrlKey && ev.shiftKey && (visibility === 'followers')) visibility = 'specified';
 		if ((ev.ctrlKey || ev.metaKey) && ev.altKey) localOnly = !localOnly;
 	}
 
