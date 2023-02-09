@@ -62,8 +62,6 @@ export async function signout() {
 	} catch (err) {}
 	//#endregion
 
-	document.cookie = 'igi=; path=/';
-
 	if (accounts.length > 0) login(accounts[0].token);
 	else unisonReload('/');
 }
