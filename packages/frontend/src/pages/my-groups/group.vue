@@ -26,7 +26,7 @@
 							</div>
 							<div v-if="user.id === group.ownerId" :title="$ts.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
 							<div v-else-if="group && $i.id === group.ownerId" class="action">
-								<button class="_button" :title="$ts.banish" @click="removeUser(user)"><i class="ti ti-close"></i></button>
+								<button class="_button" :title="$ts.banish" @click="removeUser(user)"><i class="ti ti-x"></i></button>
 							</div>
 						</div>
 					</div>
