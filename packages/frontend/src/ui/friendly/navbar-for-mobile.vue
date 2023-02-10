@@ -36,7 +36,7 @@
 			</button>
 			<div class="profile">
 				<button v-click-anime class="item _button account" @click="openProfile">
-					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name _nowrap" :user="$i"/>
 				</button>
 				<button class="item _button drawer" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 			</div>
@@ -187,14 +187,13 @@ function openProfile() {
 					display: flex;
 					align-items: center;
 					padding-left: 30px;
-					text-overflow: ellipsis;
-					overflow: hidden;
-					white-space: nowrap;
 					width: 100%;
 					text-align: left;
 					box-sizing: border-box;
 
 					> .avatar {
+						display: block;
+						flex-shrink: 0;
 						position: relative;
 						width: 32px;
 						aspect-ratio: 1;
@@ -202,6 +201,9 @@ function openProfile() {
 					}
 
 					> .name {
+						display: block;
+						flex-shrink: 1;
+						padding-right: 8px;
 						margin-left: 5px;
 						font-weight: bold;
 					}

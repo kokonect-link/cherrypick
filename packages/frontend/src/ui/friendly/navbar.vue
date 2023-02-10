@@ -49,7 +49,7 @@
 					<MkAvatar :user="$i" class="avatar"/>
 				</button>
 				<button v-else v-click-anime v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="item _button account" @click="openProfile">
-					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name" :user="$i"/>
+					<MkAvatar :user="$i" class="avatar"/><MkUserName class="name _nowrap" :user="$i"/>
 				</button>
 				<button v-if="!iconOnly" class="item _button drawer" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 			</div>
@@ -234,14 +234,13 @@ function openProfile() {
 						display: flex;
 						align-items: center;
 						padding-left: 30px;
-						text-overflow: ellipsis;
-						overflow: hidden;
-						white-space: nowrap;
 						width: 100%;
 						text-align: left;
 						box-sizing: border-box;
 
 						> .avatar {
+							display: block;
+							flex-shrink: 0;
 							position: relative;
 							width: 32px;
 							aspect-ratio: 1;
@@ -249,6 +248,9 @@ function openProfile() {
 						}
 
 						> .name {
+							display: block;
+							flex-shrink: 1;
+							padding-right: 8px;
 							margin-left: 5px;
 							font-weight: bold;
 						}
