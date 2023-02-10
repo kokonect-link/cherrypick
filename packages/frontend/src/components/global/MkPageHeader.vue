@@ -1,5 +1,5 @@
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile && isAllowHideHeader }]" :style="{ background: bg }" @click="onClick">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader }]" :style="{ background: bg }" @click="onClick">
 	<div v-if="narrow" :class="$style.buttonsLeft">
 		<MkAvatar v-if="props.displayMyAvatar && $i && !isFriendly" :class="$style.avatar" :user="$i"/>
 	</div>
@@ -47,6 +47,7 @@ import { $i } from '@/account';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
 import { mainRouter } from '@/router';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
@@ -148,21 +149,6 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 	}
 }
 
-function onScroll() {
-	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
-	if (currentScrollPosition < 0) {
-		return;
-	}
-	// Stop executing this function if the difference between
-	// current scroll position and last scroll position is less than some offset
-	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
-		return;
-	}
-	showEl = currentScrollPosition < lastScrollPosition;
-	lastScrollPosition = currentScrollPosition;
-	showEl = !showEl;
-}
-
 const calcBg = () => {
 	const rawBg = metadata?.bg || 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
@@ -203,11 +189,9 @@ onMounted(() => {
 		ro.observe(el.parentElement as HTMLElement);
 	}
 
-	window.addEventListener('scroll', onScroll);
-});
-
-onBeforeUnmount(() => {
-	window.removeEventListener('scroll', onScroll);
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
 });
 
 onUnmounted(() => {

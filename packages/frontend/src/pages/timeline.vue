@@ -8,7 +8,7 @@
 			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 		</transition>
 		<transition
 			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
@@ -16,7 +16,7 @@
 			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isFriendly && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 		</transition>
 	</template>
 	<MkSpacer :content-max="800">
@@ -49,10 +49,7 @@ import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
-import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
-
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const MOBILE_THRESHOLD = 500;
 
@@ -88,21 +85,6 @@ function queueUpdated(q: number): void {
 
 function top(): void {
 	scroll(rootEl, { top: 0 });
-}
-
-function onScroll() {
-	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
-	if (currentScrollPosition < 0) {
-		return;
-	}
-	// Stop executing this function if the difference between
-	// current scroll position and last scroll position is less than some offset
-	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
-		return;
-	}
-	showEl = currentScrollPosition < lastScrollPosition;
-	lastScrollPosition = currentScrollPosition;
-	showEl = !showEl;
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
@@ -222,11 +204,9 @@ definePageMetadata(computed(() => ({
 })));
 
 onMounted(() => {
-	window.addEventListener('scroll', onScroll);
-});
-
-onBeforeUnmount(() => {
-	window.removeEventListener('scroll', onScroll);
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
 });
 </script>
 
