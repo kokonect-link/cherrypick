@@ -1,0 +1,18 @@
+{
+  id: 'twitterpuredark',
+  base: 'dark',
+  desc: 'Birdsite Pure Dark mode color',
+  name: 'Birdsite Pure Dark',
+  props: {
+    accent: '#1d9bf0',
+    bg: '#000',
+    link: '#1d9bf0',
+    hashtag: '#1d9bf0',
+    renote: '#71767b',
+    buttonGradateA: '@accent',
+    buttonGradateB: '@accent',
+    error: '#f4212e',
+    infoWarnFg: '#f4212e',
+  },
+  author:'@white@k.lapy.link',
+}

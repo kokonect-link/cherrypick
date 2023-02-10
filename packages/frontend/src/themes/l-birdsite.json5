@@ -1,0 +1,16 @@
+{
+  id: 'twitterpurewhite',
+  base: 'light',
+  desc: 'Birdsite Pure white mode color',
+  name: 'Birdsite Pure white',
+  props: {
+    bg: '#fff',
+    link: '#1d9bf0',
+    accent: '#1d9bf0',
+    renote: '#536472',
+    hashtag: '#1d9bf0',
+    buttonGradateA: '@accent',
+    buttonGradateB: '@accent',
+  },
+  author: '@white@k.lapy.link',
+}
