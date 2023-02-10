@@ -125,7 +125,7 @@ const headerTabs = $computed(() => [{
 	title: i18n.ts.invites,
 	icon: 'ti ti-envelope-open-text',
 }]);
-`
+
 definePageMetadata({
 	title: i18n.ts.groups,
 	icon: 'ti ti-briefcase',
