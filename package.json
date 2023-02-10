@@ -1,6 +1,6 @@
 {
 	"name": "cherrypick",
-	"version": "13.5.5",
+	"version": "13.5.5-cp-3.1.0",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
