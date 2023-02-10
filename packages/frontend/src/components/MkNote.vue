@@ -35,7 +35,7 @@
 		</div>
 	</div>
 	<article :class="$style.article" @contextmenu.stop="onContextmenu">
-		<MkAvatar v-once :class="$style.avatar" :user="appearNote.user" link preview/>
+		<MkAvatar :class="[$style.avatar, {[$style.showEl]: showEl}]" :user="appearNote.user" link preview/>
 		<div :class="$style.main">
 			<MkNoteHeader :class="$style.header" :note="appearNote" :mini="true"/>
 			<MkInstanceTicker v-if="showTicker" :class="$style.ticker" :instance="appearNote.user.instance"/>
@@ -145,6 +145,9 @@ import { useNoteCapture } from '@/scripts/use-note-capture';
 import { deepClone } from '@/scripts/clone';
 import { useTooltip } from '@/scripts/use-tooltip';
 import { claimAchievement } from '@/scripts/achievements';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+
+let showEl = $ref(false);
 
 const props = defineProps<{
 	note: misskey.entities.Note;
@@ -204,6 +207,12 @@ const keymap = {
 	'm|o': () => menu(true),
 	's': () => showContent.value !== showContent.value,
 };
+
+onMounted(() => {
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
+});
 
 useNoteCapture({
 	rootEl: el,
@@ -624,6 +633,11 @@ function readPromo() {
 		width: 46px;
 		height: 46px;
 		top: calc(14px + var(--stickyTop, 0px));
+		transition: top 0.5s;
+
+		&.showEl {
+			top: 14px;
+		}
 	}
 }
 
