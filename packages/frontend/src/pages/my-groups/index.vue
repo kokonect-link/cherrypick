@@ -3,10 +3,10 @@
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :content-max="700">
 		<div v-if="tab === 'owned'" class="_content">
-			<MkButton primary style="margin: 0 auto var(--margin) auto;" @click="create"><i class="ti ti-plus"></i> {{ $ts.createGroup }}</MkButton>
+			<MkButton primary class="add" style="margin: 0 auto var(--margin) auto;" @click="create"><i class="ti ti-plus"></i> {{ $ts.createGroup }}</MkButton>
 
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination">
-				<MkA v-for="group in items" :key="group.id" class="list _panel" :to="`/my/grops/${ group.id }`">
+			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination" class="groups">
+				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
 					<div class="name">{{ group.name }}</div>
 					<MkAvatars :user-ids="group.userIds"/>
 				</MkA>
@@ -14,8 +14,8 @@
 		</div>
 
 		<div v-else-if="tab === 'joined'" class="_content">
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination">
-				<MkA v-for="group in items" :key="group.id" class="list _panel" :to="`/my/grops/${ group.id }`">
+			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination" class="groups">
+				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
 					<div class="name">{{ group.name }}</div>
 					<MkAvatars :user-ids="group.userIds"/>
 					<div class="actions">
@@ -27,12 +27,12 @@
 
 		<div v-else-if="tab === 'invites'" class="_content">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="invitationPagination">
-				<MkA v-for="invitation in items" :key="invitation.id" class="list _panel">
+				<MkA v-for="invitation in items" :key="invitation.id" class="group _panel">
 					<div class="name">{{ invitation.group.name }}</div>
 					<MkAvatars :user-ids="invitation.group.userIds"/>
 					<div class="actions">
 						<MkButton primary inline @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ $ts.accept }}</MkButton>
-						<MkButton primary inline @click="rejectInvite(invitation)"><i class="ti ti-na"></i> {{ $ts.reject }}</MkButton>
+						<MkButton primary inline @click="rejectInvite(invitation)"><i class="ti ti-x"></i> {{ $ts.reject }}</MkButton>
 					</div>
 				</MkA>
 			</MkPagination>
@@ -42,12 +42,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
-// import MkContainer from '@/components/ui/container.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
-// import MkTab from '@/components/tab.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
@@ -115,7 +113,7 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => [{
 	key: 'owned',
 	title: i18n.ts.ownedGroups,
-	icon: 'ti ti-flag-alt',
+	icon: 'ti ti-flag',
 }, {
 	key: 'joined',
 	title: i18n.ts.joinedGroups,
@@ -123,12 +121,12 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'invites',
 	title: i18n.ts.invites,
-	icon: 'ti ti-envelope-open-text',
+	icon: 'ti ti-mail-opened',
 }]);
 
 definePageMetadata({
 	title: i18n.ts.groups,
-	icon: 'ti ti-briefcase',
+	icon: 'ti ti-users',
 	actions: [{
 		icon: 'ti ti-plus',
 		text: i18n.ts.createGroup,
@@ -139,4 +137,27 @@ definePageMetadata({
 </script>
 
 <style lang="scss" scoped>
+._content {
+	> .add {
+		margin: 0 auto var(--margin) auto;
+	}
+
+	> .groups {
+		> .group {
+			display: block;
+			padding: 16px;
+			border: solid 1px var(--divider);
+			border-radius: 6px;
+
+			&:hover {
+				border: solid 1px var(--accent);
+				text-decoration: none;
+			}
+
+			> .name {
+				margin-bottom: 4px;
+			}
+		}
+	}
+}
 </style>
