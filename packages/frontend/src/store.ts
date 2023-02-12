@@ -46,6 +46,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	collapseRenotes: {
+		where: 'account',
+		default: true,
+	},
 	rememberNoteVisibility: {
 		where: 'account',
 		default: false,
@@ -155,6 +159,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: !matchMedia('(prefers-reduced-motion)').matches,
 	},
 	animatedMfm: {
+		where: 'device',
+		default: true,
+	},
+	advancedMfm: {
 		where: 'device',
 		default: true,
 	},

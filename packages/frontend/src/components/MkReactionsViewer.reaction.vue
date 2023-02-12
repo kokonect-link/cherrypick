@@ -107,7 +107,7 @@ useTooltip(buttonEl, async (showing) => {
 	border-radius: 4px;
 
 	&.canToggle {
-		background: var(--buttonBg, rgba(0, 0, 0, 0.05));
+		background: var(--buttonBg);
 
 		&:hover {
 			background: var(--buttonHoverBg, rgba(0, 0, 0, 0.1));
