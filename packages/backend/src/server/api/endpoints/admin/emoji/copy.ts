@@ -86,6 +86,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				driveFile,
 			});
 
+			this.moderationLogService.insertModerationLog(me, 'copyEmoji', {
+				emojiId: emoji.id,
+			});
+
 			return {
 				id: copied.id,
 			};
