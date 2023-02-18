@@ -64,7 +64,7 @@ export class CustomEmojiService {
 			this.cache.set(`${data.name} ${data.host}`, emoji);
 
 			this.globalEventService.publishBroadcastStream('emojiAdded', {
-				emoji: await this.emojiEntityService.pack(emoji.id),
+				emoji: await this.emojiEntityService.packDetailed(emoji.id),
 			});
 		}
 

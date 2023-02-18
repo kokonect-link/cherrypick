@@ -1,6 +1,5 @@
-import { defineAsyncComponent, Ref, inject } from 'vue';
+import { defineAsyncComponent, Ref } from 'vue';
 import * as misskey from 'misskey-js';
-import { pleaseLogin } from './please-login';
 import { claimAchievement } from './achievements';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
@@ -9,7 +8,6 @@ import * as os from '@/os';
 import copyToClipboard from '@/scripts/copy-to-clipboard';
 import { url } from '@/config';
 import { noteActions } from '@/store';
-import { notePage } from '@/filters/note';
 import { miLocalStorage } from '@/local-storage';
 
 export function getNoteMenu(props: {
@@ -292,7 +290,7 @@ export function getNoteMenu(props: {
 		...($i.isModerator || $i.isAdmin ? [
 			null,
 			{
-				icon: 'fas fa-bullhorn',
+				icon: 'ti ti-speakerphone',
 				text: i18n.ts.promote,
 				action: promote
 			}]

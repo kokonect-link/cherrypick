@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, watch } from 'vue';
+import { computed, watch } from 'vue';
 import XTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll';
 import * as os from '@/os';
@@ -72,7 +72,7 @@ watch(() => props.antennaId, async () => {
 }, { immediate: true });
 
 const headerActions = $computed(() => antenna ? [{
-	icon: 'fas fa-calendar-alt',
+	icon: 'ti ti-calendar-time',
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {

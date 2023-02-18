@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, inject } from 'vue';
+import { computed, watch } from 'vue';
 import XTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll';
 import * as os from '@/os';
@@ -65,7 +65,7 @@ async function timetravel() {
 }
 
 const headerActions = $computed(() => list ? [{
-	icon: 'fas fa-calendar-alt',
+	icon: 'ti ti-calendar-time',
 	text: i18n.ts.jumpToSpecifiedDate,
 	handler: timetravel,
 }, {
