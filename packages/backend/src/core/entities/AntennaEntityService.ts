@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { AntennaNotesRepository, AntennasRepository } from '@/models/index.js';
+import type { AntennaNotesRepository, AntennasRepository, UserGroupJoiningsRepository } from '@/models/index.js';
 import type { Packed } from '@/misc/schema.js';
 import type { Antenna } from '@/models/entities/Antenna.js';
 import { bindThis } from '@/decorators.js';
@@ -13,6 +13,9 @@ export class AntennaEntityService {
 
 		@Inject(DI.antennaNotesRepository)
 		private antennaNotesRepository: AntennaNotesRepository,
+
+		@Inject(DI.userGroupJoiningsRepository)
+		private userGroupJoiningsRepository: UserGroupJoiningsRepository,
 	) {
 	}
 
@@ -23,6 +26,7 @@ export class AntennaEntityService {
 		const antenna = typeof src === 'object' ? src : await this.antennasRepository.findOneByOrFail({ id: src });
 
 		const hasUnreadNote = (await this.antennaNotesRepository.findOneBy({ antennaId: antenna.id, read: false })) != null;
+		const userGroupJoining = antenna.userGroupJoiningId ? await this.userGroupJoiningsRepository.findOneBy({ id: antenna.userGroupJoiningId }) : null;
 
 		return {
 			id: antenna.id,
@@ -32,6 +36,7 @@ export class AntennaEntityService {
 			excludeKeywords: antenna.excludeKeywords,
 			src: antenna.src,
 			userListId: antenna.userListId,
+			userGroupId: userGroupJoining ? userGroupJoining.userGroupId : null,
 			users: antenna.users,
 			caseSensitive: antenna.caseSensitive,
 			notify: antenna.notify,

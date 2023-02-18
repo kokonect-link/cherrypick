@@ -32,10 +32,18 @@ export function openAntenna(antennaId: string, loginId: string) {
 	return openClient('push', `/timeline/antenna/${antennaId}`, loginId, { antennaId });
 }
 
+export async function openChat(body: any, loginId: string) {
+	if (body.groupId === null) {
+		return openClient('push', `/my/messaging/${getAcct(body.user)}`, loginId, { body });
+	} else {
+		return openClient('push', `/my/messaging/group/${body.groupId}`, loginId, { body });
+	}
+}
+
 // post-formのオプションから投稿フォームを開く
 export async function openPost(options: any, loginId: string) {
 	// クエリを作成しておく
-	let url = '/share?';
+	let url = `/share?`;
 	if (options.initialText) url += `text=${options.initialText}&`;
 	if (options.reply) url += `replyId=${options.reply.id}&`;
 	if (options.renote) url += `renoteId=${options.renote.id}&`;
