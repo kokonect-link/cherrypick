@@ -60,6 +60,9 @@ export class CustomEmojiService {
 		if (data.host == null) {
 			await this.db.queryResultCache!.remove(['meta_emojis']);
 
+			//this.prefetchEmojis([{name: data.name, host: null}]);
+			this.cache.set(`${data.name} ${data.host}`, emoji);
+
 			this.globalEventService.publishBroadcastStream('emojiAdded', {
 				emoji: await this.emojiEntityService.pack(emoji.id),
 			});
