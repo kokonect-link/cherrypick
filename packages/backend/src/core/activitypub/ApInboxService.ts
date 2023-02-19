@@ -23,7 +23,7 @@ import { MessagingService } from '@/core/MessagingService.js';
 import type { UsersRepository, NotesRepository, FollowingsRepository, MessagingMessagesRepository, AbuseUserReportsRepository, FollowRequestsRepository } from '@/models/index.js';
 import { bindThis } from '@/decorators.js';
 import type { RemoteUser } from '@/models/entities/User.js';
-import { getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isRead, isFlag, isFollow, isLike, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
