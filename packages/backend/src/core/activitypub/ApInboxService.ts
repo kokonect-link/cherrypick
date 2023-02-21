@@ -32,7 +32,7 @@ import { ApAudienceService } from './ApAudienceService.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import { ApQuestionService } from './models/ApQuestionService.js';
 import type { Resolver } from './ApResolverService.js';
-import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IReject, IRemove, IUndo, IUpdate } from './type.js';
+import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate } from './type.js';
 
 @Injectable()
 export class ApInboxService {
