@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { EmojisRepository } from '@/models/index.js';
+import { CustomEmojiService } from '@/core/CustomEmojiService.js';
+import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { IdService } from '@/core/IdService.js';
 import type { DriveFile } from '@/models/entities/DriveFile.js';
 import { DI } from '@/di-symbols.js';
@@ -56,10 +58,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
+		private customEmojiService: CustomEmojiService,
+		private moderationLogService: ModerationLogService,
 
-		private emojiEntityService: EmojiEntityService,
-		private idService: IdService,
-		private globalEventService: GlobalEventService,
+		// private emojiEntityService: EmojiEntityService,
+		// private idService: IdService,
+		// private globalEventService: GlobalEventService,
 		private driveService: DriveService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
