@@ -159,7 +159,7 @@ export function getUserMenu(user, router: Router = mainRouter) {
 		type: 'link',
 		icon: 'ti ti-messages',
 		text: i18n.ts.startMessaging,
-		to: '/my/messaging/' + Acct.toString(user),
+		to: '/my/messaging/${user.id}',
 	} : undefined, null, {
 		icon: 'ti ti-list',
 		text: i18n.ts.addToList,
