@@ -1,16 +1,6 @@
 <template>
 <span v-if="errored">:{{ customEmojiName }}:</span>
-<img v-else 
-	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
-	:src="url"
-	:alt="alt"
-	:title="alt"
-	decoding="async"
-	@error="errored = true"
-	@load="errored = false"
-	@mouseover="mouseOver"
-	@mouseout="mouseOut"
-/>
+<img v-else :class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]" :src="url" :alt="alt" :title="alt" decoding="async" @error="errored = true" @load="errored = false"/>
 </template>
 
 <script lang="ts" setup>
@@ -39,22 +29,11 @@ const rawUrl = computed(() => {
 	return props.host ? `/emoji/${customEmojiName.value}@${props.host}.webp` : `/emoji/${customEmojiName.value}.webp`;
 });
 
-const staticUrl = computed(() => {
+const url = computed(() =>
 	defaultStore.reactiveState.disableShowingAnimatedImages.value && rawUrl.value
-			? getStaticImageUrl(rawUrl.value)
-			: null;
-});
-
-let url = computed(() => {
-	staticUrl.value || rawUrl.value;
-});
-
-const mouseOut = computed(() => {
-	url = staticUrl.value || rawUrl.value;
-});
-const mouseOver = computed(() => {
-	url = rawUrl.value;
-});
+		? getStaticImageUrl(rawUrl.value)
+		: rawUrl.value
+);
 
 const alt = computed(() => `:${customEmojiName.value}:`);
 let errored = $ref(url.value == null);
