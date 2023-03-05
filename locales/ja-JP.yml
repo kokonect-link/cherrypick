@@ -1114,6 +1114,7 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
+enableAbsoluteTime: "絶対時刻表記を使用する"
 
 _group:
   leader: "グループオーナー"

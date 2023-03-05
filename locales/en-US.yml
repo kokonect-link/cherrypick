@@ -1114,6 +1114,7 @@ additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
+enableAbsoluteTime: "Enable Absolute Time"
 _group:
   leader: "Group owner"
   banish: "Banish"
