@@ -45,6 +45,7 @@
 				<button class="_buttonPrimary" style="padding: 4px; border-radius: 8px;" @click="addVisibleUser"><i class="ti ti-plus ti-fw"></i></button>
 			</div>
 		</div>
+		<MkInfo v-if="localOnly && channel == null" warn :class="$style.disableFederationWarn">{{ i18n.ts.disableFederationWarn }}</MkInfo>
 		<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 		<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text, { [$style.withCw]: useCw }]" :disabled="posting || posted" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
@@ -436,8 +437,8 @@ function clear() {
 }
 
 function onKeydown(ev: KeyboardEvent) {
-	if ((ev.which === 10 || ev.which === 13) && (ev.ctrlKey || ev.metaKey) && canPost) post();
-	if (ev.which === 27) emit('esc');
+	if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey) && canPost) post();
+	if (ev.key === 'Escape') emit('esc');
 }
 
 function onCompositionUpdate(ev: CompositionEvent) {
@@ -488,9 +489,9 @@ function onDragover(ev) {
 		switch (ev.dataTransfer.effectAllowed) {
 			case 'all':
 			case 'uninitialized':
-			case 'copy': 
-			case 'copyLink': 
-			case 'copyMove': 
+			case 'copy':
+			case 'copyLink':
+			case 'copyMove':
 				ev.dataTransfer.dropEffect = 'copy';
 				break;
 			case 'linkMove':
@@ -657,7 +658,14 @@ async function post(ev?: MouseEvent) {
 			if ((text.includes('love') || text.includes('❤')) && text.includes('misskey')) {
 				claimAchievement('iLoveMisskey');
 			}
-			if (text.includes('Efrlqw8ytg4'.toLowerCase()) || text.includes('XVCwzwxdHuA'.toLowerCase())) {
+			if (
+				text.includes('https://youtu.be/Efrlqw8ytg4'.toLowerCase()) ||
+				text.includes('https://www.youtube.com/watch?v=Efrlqw8ytg4'.toLowerCase()) ||
+				text.includes('https://m.youtube.com/watch?v=Efrlqw8ytg4'.toLowerCase()) ||
+				text.includes('https://youtu.be/XVCwzwxdHuA'.toLowerCase()) ||
+				text.includes('https://www.youtube.com/watch?v=XVCwzwxdHuA'.toLowerCase()) ||
+				text.includes('https://m.youtube.com/watch?v=XVCwzwxdHuA'.toLowerCase())
+			) {
 				claimAchievement('brainDiver');
 			}
 
@@ -939,6 +947,10 @@ defineExpose({
 	padding: 8px 0 8px 8px;
 	border-radius: 8px;
 	background: var(--X4);
+}
+
+.disableFederationWarn {
+	margin: 0 20px 16px 20px;
 }
 
 .hasNotSpecifiedMentions {
