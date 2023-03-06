@@ -22,18 +22,18 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 	// 		});
 	// 		return;
 	// 	}
-		const { canceled, result: listId } = await os.select({
-			title: t,
-			items: lists.map(list => ({
-				value: list.id, text: list.name,
-			})),
-		});
-		if (canceled) return;
-		os.apiWithDialog('users/lists/push', {
-			listId: listId,
-			userId: user.id,
-		});
-	}
+	// 	const { canceled, result: listId } = await os.select({
+	// 		title: t,
+	// 		items: lists.map(list => ({
+	// 			value: list.id, text: list.name,
+	// 		})),
+	// 	});
+	// 	if (canceled) return;
+	// 	os.apiWithDialog('users/lists/push', {
+	// 		listId: listId,
+	// 		userId: user.id,
+	// 	});
+	// }
 
 	async function inviteGroup() {
 		const groups = await os.api('users/groups/owned');
