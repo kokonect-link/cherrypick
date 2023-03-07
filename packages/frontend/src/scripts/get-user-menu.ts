@@ -156,7 +156,7 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-mail',
 		text: i18n.ts.sendMessage,
 		action: () => {
-			os.post({ specified: user });
+			os.post({ specified: user, initialText: `@${user.username} ` });
 		},
 	}, meId !== user.id ? {
 		type: 'link',
