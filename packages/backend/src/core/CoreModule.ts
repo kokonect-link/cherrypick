@@ -84,6 +84,7 @@ import { InstanceEntityService } from './entities/InstanceEntityService.js';
 import { MessagingMessageEntityService } from './entities/MessagingMessageEntityService.js';
 import { ModerationLogEntityService } from './entities/ModerationLogEntityService.js';
 import { MutingEntityService } from './entities/MutingEntityService.js';
+import { RenoteMutingEntityService } from './entities/RenoteMutingEntityService.js';
 import { NoteEntityService } from './entities/NoteEntityService.js';
 import { NoteFavoriteEntityService } from './entities/NoteFavoriteEntityService.js';
 import { NoteReactionEntityService } from './entities/NoteReactionEntityService.js';
@@ -209,6 +210,7 @@ const $InstanceEntityService: Provider = { provide: 'InstanceEntityService', use
 const $MessagingMessageEntityService: Provider = { provide: 'MessagingMessageEntityService', useExisting: MessagingMessageEntityService };
 const $ModerationLogEntityService: Provider = { provide: 'ModerationLogEntityService', useExisting: ModerationLogEntityService };
 const $MutingEntityService: Provider = { provide: 'MutingEntityService', useExisting: MutingEntityService };
+const $RenoteMutingEntityService: Provider = { provide: 'RenoteMutingEntityService', useExisting: RenoteMutingEntityService };
 const $NoteEntityService: Provider = { provide: 'NoteEntityService', useExisting: NoteEntityService };
 const $NoteFavoriteEntityService: Provider = { provide: 'NoteFavoriteEntityService', useExisting: NoteFavoriteEntityService };
 const $NoteReactionEntityService: Provider = { provide: 'NoteReactionEntityService', useExisting: NoteReactionEntityService };
@@ -335,6 +337,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		MessagingMessageEntityService,
 		ModerationLogEntityService,
 		MutingEntityService,
+		RenoteMutingEntityService,
 		NoteEntityService,
 		NoteFavoriteEntityService,
 		NoteReactionEntityService,
@@ -456,6 +459,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$MessagingMessageEntityService,
 		$ModerationLogEntityService,
 		$MutingEntityService,
+		$RenoteMutingEntityService,
 		$NoteEntityService,
 		$NoteFavoriteEntityService,
 		$NoteReactionEntityService,
@@ -577,6 +581,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		MessagingMessageEntityService,
 		ModerationLogEntityService,
 		MutingEntityService,
+		RenoteMutingEntityService,
 		NoteEntityService,
 		NoteFavoriteEntityService,
 		NoteReactionEntityService,
@@ -697,6 +702,7 @@ const $ApQuestionService: Provider = { provide: 'ApQuestionService', useExisting
 		$MessagingMessageEntityService,
 		$ModerationLogEntityService,
 		$MutingEntityService,
+		$RenoteMutingEntityService,
 		$NoteEntityService,
 		$NoteFavoriteEntityService,
 		$NoteReactionEntityService,
