@@ -189,13 +189,7 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		action: () => {
 			os.post({ specified: user, initialText: `@${user.username} ` });
 		},
-	}, ...(defaultStore.state.nicknameEnabled ? [{
-		icon: 'ti ti-edit',
-		text: i18n.ts.editNickName,
-		action: () => {
-			editNickname(user);
-		},
-	}] : []), meId !== user.id ? {
+	}, meId !== user.id ? {
 		type: 'link',
 		icon: 'ti ti-messages',
 		text: i18n.ts.startMessaging,
@@ -204,7 +198,13 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-users',
 		text: i18n.ts.inviteToGroup,
 		action: inviteGroup,
-	} : undefined, null, {
+	} : undefined, null, ...(defaultStore.state.nicknameEnabled ? [{
+		icon: 'ti ti-edit',
+		text: i18n.ts.editNickName,
+		action: () => {
+			editNickname(user);
+		},
+	}] : []), {
 		icon: 'ti ti-pencil',
 		text: i18n.ts.editMemo,
 		action: () => {
