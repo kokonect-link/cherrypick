@@ -803,57 +803,57 @@ describe('Endpoints', () => {
 		test('メッセージを送信できる', async () => {
 			const res = await api('/messaging/messages/create', {
 				userId: bob.id,
-				text: 'test'
+				text: 'test',
 			}, alice);
 
 			assert.strictEqual(res.status, 200);
 			assert.strictEqual(typeof res.body === 'object' && !Array.isArray(res.body), true);
 			assert.strictEqual(res.body.text, 'test');
-		}));
+		});
 
 		test('自分自身にはメッセージを送信できない', async () => {
 			const res = await api('/messaging/messages/create', {
 				userId: alice.id,
-				text: 'Yo'
+				text: 'Yo',
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
-		}));
+		});
 
 		test('存在しないユーザーにはメッセージを送信できない', async () => {
 			const res = await api('/messaging/messages/create', {
 				userId: '000000000000000000000000',
-				text: 'test'
+				text: 'test',
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
-		}));
+		});
 
 		test('不正なユーザーIDで怒られる', async () => {
 			const res = await api('/messaging/messages/create', {
 				userId: 'foo',
-				text: 'test'
+				text: 'test',
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
-		}));
+		});
 
 		test('テキストが無くて怒られる', async () => {
 			const res = await api('/messaging/messages/create', {
-				userId: bob.id
+				userId: bob.id,
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
-		}));
+		});
 
 		test('文字数オーバーで怒られる', async () => {
 			const res = await api('/messaging/messages/create', {
 				userId: bob.id,
-				text: '!'.repeat(1001)
+				text: '!'.repeat(1001),
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
-		}));
+		});
 	});
 
 	describe('notes/replies', () => {
