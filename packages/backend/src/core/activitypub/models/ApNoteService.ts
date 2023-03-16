@@ -129,7 +129,7 @@ export class ApNoteService {
 			throw new Error('invalid note');
 		}
 	
-		const note: IPost = object as any;
+		const note = object as IPost;
 	
 		this.logger.debug(`Note fetched: ${JSON.stringify(note, null, 2)}`);
 
@@ -187,7 +187,7 @@ export class ApNoteService {
 		const reply: Note | null = note.inReplyTo
 			? await this.resolveNote(note.inReplyTo, resolver).then(x => {
 				if (x == null) {
-					this.logger.warn('Specified inReplyTo, but nout found');
+					this.logger.warn('Specified inReplyTo, but not found');
 					throw new Error('inReplyTo not found');
 				} else {
 					return x;

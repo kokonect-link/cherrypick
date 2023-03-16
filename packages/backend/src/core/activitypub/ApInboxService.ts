@@ -147,7 +147,7 @@ export class ApInboxService {
 		} else if (isFlag(activity)) {
 			await this.flag(actor, activity);
 		} else {
-			this.logger.warn(`unrecognized activity type: ${(activity as any).type}`);
+			this.logger.warn(`unrecognized activity type: ${activity.type}`);
 		}
 	}
 

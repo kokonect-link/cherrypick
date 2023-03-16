@@ -4,7 +4,7 @@ import type { FollowingsRepository, MutingsRepository, RenoteMutingsRepository, 
 import type { AccessToken } from '@/models/entities/AccessToken.js';
 import type { UserProfile } from '@/models/entities/UserProfile.js';
 import type { UserGroup } from '@/models/entities/UserGroup.js';
-import type { Packed } from '@/misc/schema.js';
+import type { Packed } from '@/misc/json-schema.js';
 import type { GlobalEventService } from '@/core/GlobalEventService.js';
 import type { NoteReadService } from '@/core/NoteReadService.js';
 import type { NotificationService } from '@/core/NotificationService.js';
