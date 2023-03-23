@@ -42,6 +42,7 @@ export class AntennaEntityService {
 			notify: antenna.notify,
 			withReplies: antenna.withReplies,
 			withFile: antenna.withFile,
+			isActive: antenna.isActive,
 			hasUnreadNote,
 		};
 	}

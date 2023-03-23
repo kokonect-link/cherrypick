@@ -74,12 +74,14 @@ export class AntennaService implements OnApplicationShutdown {
 					this.antennas.push({
 						...body,
 						createdAt: new Date(body.createdAt),
+						lastUsedAt: new Date(body.lastUsedAt),
 					});
 					break;
 				case 'antennaUpdated':
 					this.antennas[this.antennas.findIndex(a => a.id === body.id)] = {
 						...body,
 						createdAt: new Date(body.createdAt),
+						lastUsedAt: new Date(body.lastUsedAt),
 					};
 					break;
 				case 'antennaDeleted':
@@ -228,7 +230,9 @@ export class AntennaService implements OnApplicationShutdown {
 	@bindThis
 	public async getAntennas() {
 		if (!this.antennasFetched) {
-			this.antennas = await this.antennasRepository.find();
+			this.antennas = await this.antennasRepository.findBy({
+				isActive: true,
+			});
 			this.antennasFetched = true;
 		}
 	

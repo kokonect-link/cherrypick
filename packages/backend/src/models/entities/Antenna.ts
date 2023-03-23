@@ -15,6 +15,10 @@ export class Antenna {
 	public createdAt: Date;
 
 	@Index()
+	@Column('timestamp with time zone')
+	public lastUsedAt: Date;
+
+	@Index()
 	@Column({
 		...id(),
 		comment: 'The owner ID.',
@@ -96,4 +100,10 @@ export class Antenna {
 
 	@Column('boolean')
 	public notify: boolean;
+
+	@Index()
+	@Column('boolean', {
+		default: true,
+	})
+	public isActive: boolean;
 }

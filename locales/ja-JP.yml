@@ -990,6 +990,14 @@ rolesAssignedToMe: "自分に割り当てられたロール"
 resetPasswordConfirm: "パスワードリセットしますか？"
 sensitiveWords: "センシティブワード"
 sensitiveWordsDescription: "設定したワードが含まれるノートの公開範囲をホームにします。改行で区切って複数設定できます。"
+notesSearchNotAvailable: "ノート検索は利用できません。"
+license: "ライセンス"
+unfavoriteConfirm: "お気に入り解除しますか？"
+myClips: "自分のクリップ"
+drivecleaner: "ドライブクリーナー"
+retryAllQueuesNow: "すべてのキューを今すぐ再試行"
+retryAllQueuesConfirmTitle: "今すぐ再試行しますか？"
+retryAllQueuesConfirmText: "一時的にサーバーの負荷が増大することがあります。"
 
 _achievements:
   earnedAt: "獲得日時"
@@ -1940,3 +1948,7 @@ _dialog:
 _disabledTimeline:
   title: "無効化されたタイムライン"
   description: "現在のロールでは、このタイムラインを使用することはできません。"
+
+_drivecleaner:
+  orderBySizeDesc: "サイズが大きい順"
+  orderByCreatedAtAsc: "追加日が古い順"
