@@ -1,9 +1,9 @@
 <template>
 <Transition
-	:enter-active-class="defaultStore.state.animation ? $style.transition_fade_enterActive : ''"
-	:leave-active-class="defaultStore.state.animation ? $style.transition_fade_leaveActive : ''"
-	:enter-from-class="defaultStore.state.animation ? $style.transition_fade_enterFrom : ''"
-	:leave-to-class="defaultStore.state.animation ? $style.transition_fade_leaveTo : ''"
+	:enter-active-class="$store.state.animation ? $style.transition_fade_enterActive : ''"
+	:leave-active-class="$store.state.animation ? $style.transition_fade_leaveActive : ''"
+	:enter-from-class="$store.state.animation ? $style.transition_fade_enterFrom : ''"
+	:leave-to-class="$store.state.animation ? $style.transition_fade_leaveTo : ''"
 	mode="out-in"
 >
 	<MkLoading v-if="fetching"/>
@@ -163,22 +163,21 @@ async function init(): Promise<void> {
 	const params = props.pagination.params ? isRef(props.pagination.params) ? props.pagination.params.value : props.pagination.params : {};
 	await os.api(props.pagination.endpoint, {
 		...params,
-		limit: props.pagination.limit ?? 10,
+		limit: props.pagination.noPaging ? (props.pagination.limit || 10) : (props.pagination.limit || 10) + 1,
 	}).then(res => {
 		for (let i = 0; i < res.length; i++) {
 			const item = res[i];
 			if (i === 3) item._shouldInsertAd_ = true;
 		}
-
-		if (res.length === 0 || props.pagination.noPaging) {
-			items.value = res;
-			more.value = false;
-		} else {
+		if (!props.pagination.noPaging && (res.length > (props.pagination.limit || 10))) {
+			res.pop();
 			if (props.pagination.reversed) moreFetching.value = true;
 			items.value = res;
 			more.value = true;
+		} else {
+			items.value = res;
+			more.value = false;
 		}
-
 		offset.value = res.length;
 		error.value = false;
 		fetching.value = false;
@@ -199,7 +198,7 @@ const fetchMore = async (): Promise<void> => {
 	const params = props.pagination.params ? isRef(props.pagination.params) ? props.pagination.params.value : props.pagination.params : {};
 	await os.api(props.pagination.endpoint, {
 		...params,
-		limit: SECOND_FETCH_LIMIT,
+		limit: SECOND_FETCH_LIMIT + 1,
 		...(props.pagination.offsetMode ? {
 			offset: offset.value,
 		} : {
@@ -228,18 +227,9 @@ const fetchMore = async (): Promise<void> => {
 			});
 		};
 
-		if (res.length === 0) {
-			if (props.pagination.reversed) {
-				reverseConcat(res).then(() => {
-					more.value = false;
-					moreFetching.value = false;
-				});
-			} else {
-				items.value = items.value.concat(res);
-				more.value = false;
-				moreFetching.value = false;
-			}
-		} else {
+		if (res.length > SECOND_FETCH_LIMIT) {
+			res.pop();
+
 			if (props.pagination.reversed) {
 				reverseConcat(res).then(() => {
 					more.value = true;
@@ -248,6 +238,17 @@ const fetchMore = async (): Promise<void> => {
 			} else {
 				items.value = items.value.concat(res);
 				more.value = true;
+				moreFetching.value = false;
+			}
+		} else {
+			if (props.pagination.reversed) {
+				reverseConcat(res).then(() => {
+					more.value = false;
+					moreFetching.value = false;
+				});
+			} else {
+				items.value = items.value.concat(res);
+				more.value = false;
 				moreFetching.value = false;
 			}
 		}
@@ -263,19 +264,20 @@ const fetchMoreAhead = async (): Promise<void> => {
 	const params = props.pagination.params ? isRef(props.pagination.params) ? props.pagination.params.value : props.pagination.params : {};
 	await os.api(props.pagination.endpoint, {
 		...params,
-		limit: SECOND_FETCH_LIMIT,
+		limit: SECOND_FETCH_LIMIT + 1,
 		...(props.pagination.offsetMode ? {
 			offset: offset.value,
 		} : {
 			sinceId: items.value[items.value.length - 1].id,
 		}),
 	}).then(res => {
-		if (res.length === 0) {
-			items.value = items.value.concat(res);
-			more.value = false;
-		} else {
+		if (res.length > SECOND_FETCH_LIMIT) {
+			res.pop();
 			items.value = items.value.concat(res);
 			more.value = true;
+		} else {
+			items.value = items.value.concat(res);
+			more.value = false;
 		}
 		offset.value += res.length;
 		moreFetching.value = false;
