@@ -10,7 +10,6 @@ import type {
 	AdminStreamTypes,
 	AntennaStreamTypes,
 	BroadcastTypes,
-	ChannelStreamTypes,
 	DriveStreamTypes,
 	GroupMessagingStreamTypes,
 	InternalStreamTypes,
@@ -80,11 +79,6 @@ export class GlobalEventService {
 			id: noteId,
 			body: value,
 		});
-	}
-
-	@bindThis
-	public publishChannelStream<K extends keyof ChannelStreamTypes>(channelId: Channel['id'], type: K, value?: ChannelStreamTypes[K]): void {
-		this.publish(`channelStream:${channelId}`, type, typeof value === 'undefined' ? null : value);
 	}
 
 	@bindThis

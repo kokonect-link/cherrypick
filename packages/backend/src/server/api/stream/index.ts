@@ -155,7 +155,6 @@ export default class Connection {
 			// 個々のチャンネルではなくルートレベルでこれらのメッセージを受け取る理由は、
 			// クライアントの事情を考慮したとき、入力フォームはノートチャンネルやメッセージのメインコンポーネントとは別
 			// なこともあるため、それらのコンポーネントがそれぞれ各チャンネルに接続するようにするのは面倒なため。
-			case 'typingOnChannel': this.typingOnChannel(body.channel); break;
 			case 'typingOnMessaging': this.typingOnMessaging(body); break;
 		}
 	}
@@ -326,13 +325,6 @@ export default class Connection {
 		const channel = this.channels.find(c => c.id === data.id);
 		if (channel != null && channel.onMessage != null) {
 			channel.onMessage(data.type, data.body);
-		}
-	}
-
-	@bindThis
-	private typingOnChannel(channel: ChannelModel['id']) {
-		if (this.user) {
-			this.globalEventService.publishChannelStream(channel, 'typing', this.user.id);
 		}
 	}
 

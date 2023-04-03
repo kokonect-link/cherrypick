@@ -3,7 +3,7 @@ import escapeRegexp from 'escape-regexp';
 import { DI } from '@/di-symbols.js';
 import type { MessagingMessagesRepository, NotesRepository, UserPublickeysRepository, UsersRepository } from '@/models/index.js';
 import type { Config } from '@/config.js';
-import { Cache } from '@/misc/cache.js';
+import { KVCache } from '@/misc/cache.js';
 import type { UserPublickey } from '@/models/entities/UserPublickey.js';
 import { UserCacheService } from '@/core/UserCacheService.js';
 import type { Note } from '@/models/entities/Note.js';
@@ -32,8 +32,8 @@ export type UriParseResult = {
 
 @Injectable()
 export class ApDbResolverService {
-	private publicKeyCache: Cache<UserPublickey | null>;
-	private publicKeyByUserIdCache: Cache<UserPublickey | null>;
+	private publicKeyCache: KVCache<UserPublickey | null>;
+	private publicKeyByUserIdCache: KVCache<UserPublickey | null>;
 
 	constructor(
 		@Inject(DI.config)
@@ -54,8 +54,8 @@ export class ApDbResolverService {
 		private userCacheService: UserCacheService,
 		private apPersonService: ApPersonService,
 	) {
-		this.publicKeyCache = new Cache<UserPublickey | null>(Infinity);
-		this.publicKeyByUserIdCache = new Cache<UserPublickey | null>(Infinity);
+		this.publicKeyCache = new KVCache<UserPublickey | null>(Infinity);
+		this.publicKeyByUserIdCache = new KVCache<UserPublickey | null>(Infinity);
 	}
 
 	@bindThis

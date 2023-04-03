@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { AntennaNotesRepository, AntennasRepository, UserGroupJoiningsRepository } from '@/models/index.js';
+import type { AntennasRepository, UserGroupJoiningsRepository } from '@/models/index.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { Antenna } from '@/models/entities/Antenna.js';
 import { bindThis } from '@/decorators.js';
@@ -10,9 +10,6 @@ export class AntennaEntityService {
 	constructor(
 		@Inject(DI.antennasRepository)
 		private antennasRepository: AntennasRepository,
-
-		@Inject(DI.antennaNotesRepository)
-		private antennaNotesRepository: AntennaNotesRepository,
 
 		@Inject(DI.userGroupJoiningsRepository)
 		private userGroupJoiningsRepository: UserGroupJoiningsRepository,
@@ -25,7 +22,6 @@ export class AntennaEntityService {
 	): Promise<Packed<'Antenna'>> {
 		const antenna = typeof src === 'object' ? src : await this.antennasRepository.findOneByOrFail({ id: src });
 
-		const hasUnreadNote = (await this.antennaNotesRepository.findOneBy({ antennaId: antenna.id, read: false })) != null;
 		const userGroupJoining = antenna.userGroupJoiningId ? await this.userGroupJoiningsRepository.findOneBy({ id: antenna.userGroupJoiningId }) : null;
 
 		return {
@@ -43,7 +39,7 @@ export class AntennaEntityService {
 			withReplies: antenna.withReplies,
 			withFile: antenna.withFile,
 			isActive: antenna.isActive,
-			hasUnreadNote,
+			hasUnreadNote: false, // TODO
 		};
 	}
 }
