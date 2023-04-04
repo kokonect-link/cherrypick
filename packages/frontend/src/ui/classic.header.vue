@@ -16,7 +16,7 @@
 				</component>
 			</template>
 			<div class="divider"></div>
-			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null">
+			<MkA v-if="i.isAdmin || i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null">
 				<i class="ti ti-dashboard ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button" @click="more">
@@ -29,7 +29,7 @@
 				<i class="ti ti-settings ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button account" @click="openAccountMenu">
-				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
+				<MkAvatar :user="i" class="avatar"/><MkAcct class="acct" :user="i"/>
 			</button>
 			<div class="post" @click="post">
 				<MkButton class="button" gradate full rounded>
@@ -66,9 +66,9 @@ export default defineComponent({
 			connection: null,
 			navbarItemDef: navbarItemDef,
 			settingsWindowed: false,
+			i: $i,
 			defaultStore,
 			instance,
-			$i,
 			i18n,
 		};
 	},

@@ -1,7 +1,7 @@
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
 	<button v-click-anime class="item _button account" @click="openAccountMenu">
-		<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
+		<MkAvatar :user="i" class="avatar"/><MkAcct class="text" :user="i"/>
 	</button>
 	<div class="post" data-cy-open-post-form @click="post">
 		<MkButton class="button" gradate full rounded>
@@ -20,7 +20,7 @@
 		</component>
 	</template>
 	<div class="divider"></div>
-	<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null">
+	<MkA v-if="i.isAdmin || i.isModerator" v-click-anime class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null">
 		<i class="ti ti-dashboard ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
 	</MkA>
 	<button v-click-anime class="item _button" @click="more">
@@ -71,7 +71,7 @@ export default defineComponent({
 			settingsWindowed: false,
 			defaultStore,
 			instance,
-			$i,
+			i: $i,
 			i18n,
 		};
 	},
