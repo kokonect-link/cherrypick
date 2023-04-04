@@ -2,8 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { EmojisRepository } from '@/models/index.js';
-import { CustomEmojiService } from '@/core/CustomEmojiService.js';
-import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { IdService } from '@/core/IdService.js';
 import type { DriveFile } from '@/models/entities/DriveFile.js';
 import { DI } from '@/di-symbols.js';
@@ -58,12 +56,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
-		private customEmojiService: CustomEmojiService,
-		private moderationLogService: ModerationLogService,
 
-		// private emojiEntityService: EmojiEntityService,
-		// private idService: IdService,
-		// private globalEventService: GlobalEventService,
+		private emojiEntityService: EmojiEntityService,
+		private idService: IdService,
+		private globalEventService: GlobalEventService,
 		private driveService: DriveService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
@@ -82,9 +78,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				throw new ApiError();
 			}
 
-			const copied = await this.customEmojiService.add({
+			const copied = await this.emojisRepository.insert({
+				id: this.idService.genId(),
+				updatedAt: new Date(),
 				name: emoji.name,
-				category: null,
 				host: null,
 				aliases: [],
 				originalUrl: driveFile.url,
@@ -95,8 +92,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			await this.db.queryResultCache?.remove(['meta_emojis']);
 
-			this.moderationLogService.insertModerationLog(me, 'copyEmoji', {
-				emojiId: emoji.id,
+			this.globalEventService.publishBroadcastStream('emojiAdded', {
+				emoji: await this.emojiEntityService.packDetailed(copied.id),
 			});
 
 			return {
