@@ -2,7 +2,7 @@
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
 		<MkSpacer :content-max="700">
 	<div class="mk-group-page">
-		<transition :name="$store.state.animation ? 'zoom' : ''" mode="out-in">
+		<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
 			<div v-if="group && $i.id === group.ownerId" class="_section actions">
 				<div class="_content" style="">
 					<MkButton inline @click="invite()">{{ $ts.invite }}</MkButton>
@@ -13,7 +13,7 @@
 			</div>
 		</transition>
 
-		<transition :name="$store.state.animation ? 'zoom' : ''" mode="out-in">
+		<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
 			<div v-if="group" class="_section members _gap">
 				<div class="_title">{{ $ts.members }}</div>
 				<div class="_content">
@@ -44,6 +44,7 @@ import * as os from '@/os';
 import { mainRouter } from '@/router';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';
+import { defaultStore } from '@/store';
 
 const props = defineProps<{
 	groupId: string;

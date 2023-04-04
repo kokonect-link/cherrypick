@@ -1,9 +1,9 @@
 <template>
 <Transition
-	:enter-active-class="$store.state.animation ? $style.transition_fade_enterActive : ''"
-	:leave-active-class="$store.state.animation ? $style.transition_fade_leaveActive : ''"
-	:enter-from-class="$store.state.animation ? $style.transition_fade_enterFrom : ''"
-	:leave-to-class="$store.state.animation ? $style.transition_fade_leaveTo : ''"
+	:enter-active-class="defaultStore.state.animation ? $style.transition_fade_enterActive : ''"
+	:leave-active-class="defaultStore.state.animation ? $style.transition_fade_leaveActive : ''"
+	:enter-from-class="defaultStore.state.animation ? $style.transition_fade_enterFrom : ''"
+	:leave-to-class="defaultStore.state.animation ? $style.transition_fade_leaveTo : ''"
 	mode="out-in"
 >
 	<MkLoading v-if="fetching"/>
@@ -44,9 +44,9 @@ import * as os from '@/os';
 import { onScrollTop, isTopVisible, getBodyScrollHeight, getScrollContainer, onScrollBottom, scrollToBottom, scroll, isBottomVisible } from '@/scripts/scroll';
 import { useDocumentVisibility } from '@/scripts/use-document-visibility';
 import MkButton from '@/components/MkButton.vue';
-import { defaultStore } from '@/store';
 import { MisskeyEntity } from '@/types/date-separated-list';
 import { i18n } from '@/i18n';
+import { defaultStore } from '@/store';
 
 const SECOND_FETCH_LIMIT = 30;
 const TOLERANCE = 16;
