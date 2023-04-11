@@ -62,6 +62,7 @@ import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { deepClone } from '@/scripts/clone';
+import {MenuItem} from "@/types/menu";
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -85,21 +86,32 @@ async function reloadAsk() {
 	} else eventBus.emit('hasRequireRefresh', true);
 }
 
-async function addItem() {
+async function addItem(e: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !defaultStore.state.menu.includes(k));
-	const { canceled, result: item } = await os.select({
-		title: i18n.ts.addItem,
-		items: [...menu.map(k => ({
-			value: k, text: navbarItemDef[k].title,
+	os.popupMenu([
+		...menu.map(k => ({
+			type: 'button',
+			text: navbarItemDef[k].title,
+			icon: navbarItemDef[k].icon,
+			action() {
+				items.value = [...items.value, {
+					id: Math.random().toString(),
+					type: k,
+				}];
+			},
 		})), {
-			value: '-', text: i18n.ts.divider,
-		}],
-	});
-	if (canceled) return;
-	items.value = [...items.value, {
-		id: Math.random().toString(),
-		type: item,
-	}];
+			type: 'button',
+			text: i18n.ts.divider,
+			// Note: アイコン指定しないとテキストの位置が他の項目とずれる
+			icon: 'ti',
+			action() {
+				items.value = [...items.value, {
+					id: Math.random().toString(),
+					type: '-',
+				}];
+			},
+		},
+	], e.target || e.currentTarget);
 }
 
 function removeItem(index: number) {
