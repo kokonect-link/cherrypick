@@ -9,6 +9,7 @@ import { $i, iAmModerator } from '@/account';
 import { mainRouter } from '@/router';
 import { Router } from '@/nirax';
 import { rolesCache, userListsCache } from '@/cache';
+import { editNickname } from '@/scripts/edit-nickname';
 
 export function getUserMenu(user: misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -188,7 +189,13 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		action: () => {
 			os.post({ specified: user, initialText: `@${user.username} ` });
 		},
-	}, meId !== user.id ? {
+	}, ...(defaultStore.state.nicknameEnabled ? [{
+		icon: 'ti ti-edit',
+		text: 'ニックネームを編集',
+		action: () => {
+			editNickname(user);
+		},
+	}] : []), null, meId !== user.id ? {
 		type: 'link',
 		icon: 'ti ti-messages',
 		text: i18n.ts.startMessaging,

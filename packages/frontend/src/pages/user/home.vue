@@ -16,10 +16,7 @@
 						<div class="fade"></div>
 						<div class="title">
 							<div class="name">
-								<MkUserName :user="user" :nowrap="true"/>
-								<button v-if="defaultStore.reactiveState.nicknameEnabled.value" v-tooltip="'ニックネームを編集…'" class="_button nickname-button" @click="editNickname(props.user)">
-									<i class="ti ti-edit"/>
-								</button>
+								<MkUserName :user="user" :nowrap="true" @click="editNickname(props.user)"/>
 							</div>
 							<div class="bottom">
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
@@ -39,7 +36,7 @@
 					</div>
 					<MkAvatar class="avatar" :user="user" indicator/>
 					<div class="title">
-						<MkUserName :user="user" :nowrap="false" class="name"/>
+						<MkUserName :user="user" :nowrap="false" class="name" @click="editNickname(props.user)"/>
 						<div class="bottom">
 							<span class="username"><MkAcct :user="user" :detail="true"/></span>
 							<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
@@ -474,6 +471,10 @@ onUnmounted(() => {
 							margin-right: 8px;
 							opacity: 0.8;
 						}
+					}
+
+					> .nickname-button {
+						margin-left: 8px;
 					}
 				}
 

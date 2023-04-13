@@ -3,6 +3,7 @@ import {defaultStore} from "@/store";
 import * as os from '@/os';
 
 export async function editNickname(user: User) {
+	if (!defaultStore.state.nicknameEnabled) return;
 	const { result, canceled } = await os.inputText({
 		title: 'ニックネームを編集',
 		placeholder: user.name || user.username,
