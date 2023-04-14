@@ -398,6 +398,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	showFollowingMessageInsteadOfButtonEnabled: {
+		where: 'account',
+		default: true,
+	},
 	// #endregion
 }));
 

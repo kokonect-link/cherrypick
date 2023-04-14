@@ -1,5 +1,6 @@
 <template>
 <button
+	v-if="!disableIfFollowing || !isFollowing"
 	class="_button"
 	:class="[$style.root, { [$style.wait]: wait, [$style.active]: isFollowing || hasPendingFollowRequestFromYou, [$style.full]: full, [$style.large]: large }]"
 	:disabled="wait"
@@ -43,9 +44,15 @@ const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,
 	full?: boolean,
 	large?: boolean,
+
+	// CherryPick
+	disableIfFollowing?: boolean,
 }>(), {
 	full: false,
 	large: false,
+
+	// CherryPick
+	disableIfFollowing: false,
 });
 
 let isFollowing = $ref(props.user.isFollowing);

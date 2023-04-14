@@ -22,6 +22,9 @@
 			</MkSwitch>
 			<MkSwitch v-model="rememberPostFormToggleStateEnabled">{{ i18n.ts._cherrypick.rememberPostFormToggleState }}</MkSwitch>
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
+			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">
+				既にフォローしている場合、通知欄にフォローボタンを表示しない
+			</MkSwitch>
 		</div>
 	</FormSection>
 	<!--
@@ -74,6 +77,7 @@ const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('r
 const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSetter('rememberPostFormToggleStateEnabled'));
 const usePostFormWindow = computed(defaultStore.makeGetterSetter('usePostFormWindow'));
 const ebiNoteViewEnabled = computed(defaultStore.makeGetterSetter('ebiNoteViewEnabledLab'));
+const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
 
 const noteMock: Note = {
 	id: 'abc',
@@ -92,7 +96,6 @@ const noteMock: Note = {
 	repliesCount: 10,
 	emojis: [],
 	localOnly: true,
-
 };
 
 watch([
