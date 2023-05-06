@@ -355,9 +355,11 @@ export function getNoteMenu(props: {
 					text: i18n.ts.reportAbuse,
 					action: () => {
 						const u = appearNote.url ?? appearNote.uri ?? `${url}/notes/${appearNote.id}`;
+						const username = '@' + props.note.user.username;
+						const host = props.note.user.host ? '@' + props.note.user.host : '';
 						os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 							user: appearNote.user,
-							initialComment: `Note: ${u}\nUserID: @${props.note.user.username}\n-----\n`,
+							initialComment: `Note: ${u}\nUser: ${username + host}\n-----\n`,
 						}, {}, 'closed');
 					},
 				}]
