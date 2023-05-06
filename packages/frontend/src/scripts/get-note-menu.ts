@@ -357,7 +357,7 @@ export function getNoteMenu(props: {
 						const u = appearNote.url ?? appearNote.uri ?? `${url}/notes/${appearNote.id}`;
 						os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 							user: appearNote.user,
-							initialComment: `Note: ${u}\n-----\n`,
+							initialComment: `Note: ${u}\nUserID: @${props.note.user.username}\n-----\n`,
 						}, {}, 'closed');
 					},
 				}]
