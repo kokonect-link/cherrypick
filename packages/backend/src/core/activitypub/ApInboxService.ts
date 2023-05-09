@@ -25,7 +25,7 @@ import { MessagingService } from '@/core/MessagingService.js';
 import type { UsersRepository, NotesRepository, FollowingsRepository, MessagingMessagesRepository, AbuseUserReportsRepository, FollowRequestsRepository, } from '@/models/index.js';
 import { bindThis } from '@/decorators.js';
 import type { RemoteUser } from '@/models/entities/User.js';
-import { getApHrefNullable, getApId, getApIds, getApType, getOneApHrefNullable, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { getApHrefNullable, getApId, getApIds, getApType, getOneApHrefNullable, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isRead, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -34,7 +34,7 @@ import { ApAudienceService } from './ApAudienceService.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import { ApQuestionService } from './models/ApQuestionService.js';
 import type { Resolver } from './ApResolverService.js';
-import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IReject, IRemove, IUndo, IUpdate, IMove } from './type.js';
+import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove } from './type.js';
 
 @Injectable()
 export class ApInboxService {
