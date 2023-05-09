@@ -16,7 +16,7 @@
 				</component>
 			</template>
 			<div class="divider"></div>
-			<MkA v-if="i.isAdmin || i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null">
+			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" active-class="active" to="/admin" :behavior="settingsWindowed ? 'modalWindow' : null">
 				<i class="ti ti-dashboard ti-fw"></i>
 			</MkA>
 			<button v-click-anime class="item _button" @click="more">
