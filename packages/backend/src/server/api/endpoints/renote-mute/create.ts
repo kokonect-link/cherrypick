@@ -13,6 +13,7 @@ export const meta = {
 	tags: ['account'],
 
 	requireCredential: true,
+	prohibitMoved: true,
 
 	kind: 'write:mutes',
 
@@ -92,8 +93,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				muterId: muter.id,
 				muteeId: mutee.id,
 			} as RenoteMuting);
-
-		// publishUserEvent(user.id, 'mute', mutee);
 		});
 	}
 }

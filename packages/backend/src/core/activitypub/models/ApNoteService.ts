@@ -1,5 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import promiseLimit from 'promise-limit';
+import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { MessagingMessagesRepository, PollsRepository, EmojisRepository } from '@/models/index.js';
 import type { Config } from '@/config.js';
@@ -32,6 +33,7 @@ import { ApQuestionService } from './ApQuestionService.js';
 import { ApImageService } from './ApImageService.js';
 import type { Resolver } from '../ApResolverService.js';
 import type { IObject, IPost } from '../type.js';
+import { checkHttps } from '@/misc/check-https.js';
 
 @Injectable()
 export class ApNoteService {
@@ -75,7 +77,7 @@ export class ApNoteService {
 	}
 
 	@bindThis
-	public validateNote(object: any, uri: string) {
+	public validateNote(object: IObject, uri: string) {
 		const expectHost = this.utilityService.extractDbHost(uri);
 	
 		if (object == null) {
@@ -89,9 +91,10 @@ export class ApNoteService {
 		if (object.id && this.utilityService.extractDbHost(object.id) !== expectHost) {
 			return new Error(`invalid Note: id has different host. expected: ${expectHost}, actual: ${this.utilityService.extractDbHost(object.id)}`);
 		}
-	
-		if (object.attributedTo && this.utilityService.extractDbHost(getOneApId(object.attributedTo)) !== expectHost) {
-			return new Error(`invalid Note: attributedTo has different host. expected: ${expectHost}, actual: ${this.utilityService.extractDbHost(object.attributedTo)}`);
+
+		const actualHost = object.attributedTo && this.utilityService.extractDbHost(getOneApId(object.attributedTo));
+		if (object.attributedTo && actualHost !== expectHost) {
+			return new Error(`invalid Note: attributedTo has different host. expected: ${expectHost}, actual: ${actualHost}`);
 		}
 	
 		return null;
@@ -133,13 +136,13 @@ export class ApNoteService {
 	
 		this.logger.debug(`Note fetched: ${JSON.stringify(note, null, 2)}`);
 
-		if (note.id && !note.id.startsWith('https://')) {
+		if (note.id && !checkHttps(note.id)) {
 			throw new Error('unexpected shcema of note.id: ' + note.id);
 		}
 
 		const url = getOneApHrefNullable(note.url);
 
-		if (url && !url.startsWith('https://')) {
+		if (url && !checkHttps(url)) {
 			throw new Error('unexpected shcema of note url: ' + url);
 		}
 	
@@ -152,7 +155,7 @@ export class ApNoteService {
 		if (actor.isSuspended) {
 			throw new Error('actor has been suspended');
 		}
-	
+		
 		const noteAudience = await this.apAudienceService.parseAudience(actor, note.to, note.cc, resolver);
 		let visibility = noteAudience.visibility;
 		const visibleUsers = noteAudience.visibleUsers;
@@ -366,15 +369,17 @@ export class ApNoteService {
 		if (!tags) return [];
 	
 		const eomjiTags = toArray(tags).filter(isEmoji);
+
+		const existingEmojis = await this.emojisRepository.findBy({
+			host,
+			name: In(eomjiTags.map(tag => tag.name!.replaceAll(':', ''))),
+		});
 	
 		return await Promise.all(eomjiTags.map(async tag => {
-			const name = tag.name!.replace(/^:/, '').replace(/:$/, '');
+			const name = tag.name!.replaceAll(':', '');
 			tag.icon = toSingle(tag.icon);
 	
-			const exists = await this.emojisRepository.findOneBy({
-				host,
-				name,
-			});
+			const exists = existingEmojis.find(x => x.name === name);
 	
 			if (exists) {
 				if ((tag.updated != null && exists.updatedAt == null)

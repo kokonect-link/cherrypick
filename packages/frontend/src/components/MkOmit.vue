@@ -12,12 +12,12 @@ import { onMounted } from 'vue';
 import { i18n } from '@/i18n';
 
 const props = withDefaults(defineProps<{
-	maxHeight: number;
+	maxHeight?: number;
 }>(), {
 	maxHeight: 200,
 });
 
-let content = $ref<HTMLElement>();
+let content = $shallowRef<HTMLElement>();
 let omitted = $ref(false);
 let ignoreOmit = $ref(false);
 

@@ -28,6 +28,8 @@
 			</MkFoldableSection>
 		</div>
 		<div v-if="channel && tab === 'timeline'" class="_gaps">
+			<MkInfo v-if="channel.isArchived" warn>{{ i18n.ts.thisChannelArchived }}</MkInfo>
+
 			<!-- スマホ・タブレットの場合、キーボードが表示されると投稿が見づらくなるので、デスクトップ場合のみ自動でフォーカスを当てる -->
 			<MkPostForm v-if="$i && defaultStore.reactiveState.showFixedPostFormInChannel.value" :channel="channel" class="post-form _panel" fixed :autofocus="deviceKind === 'desktop'"/>
 
@@ -35,6 +37,17 @@
 		</div>
 		<div v-else-if="tab === 'featured'">
 			<MkNotes :pagination="featuredPagination"/>
+		</div>
+		<div v-else-if="tab === 'search'">
+			<div class="_gaps">
+				<div>
+					<MkInput v-model="searchQuery">
+						<template #prefix><i class="ti ti-search"></i></template>
+					</MkInput>
+					<MkButton primary rounded style="margin-top: 8px;" @click="search()">{{ i18n.ts.search }}</MkButton>
+				</div>
+				<MkNotes v-if="searchPagination" :key="searchQuery" :pagination="searchPagination"/>
+			</div>
 		</div>
 	</MkSpacer>
 	<template #footer>
@@ -63,8 +76,10 @@ import { deviceKind } from '@/scripts/device-kind';
 import MkNotes from '@/components/MkNotes.vue';
 import { url } from '@/config';
 import MkButton from '@/components/MkButton.vue';
+import MkInput from '@/components/MkInput.vue';
 import { defaultStore } from '@/store';
 import MkNote from '@/components/MkNote.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
 const router = useRouter();
@@ -76,6 +91,8 @@ const props = defineProps<{
 let tab = $ref('timeline');
 let channel = $ref(null);
 let favorited = $ref(false);
+let searchQuery = $ref('');
+let searchPagination = $ref();
 const featuredPagination = $computed(() => ({
 	endpoint: 'notes/featured' as const,
 	limit: 10,
@@ -98,9 +115,7 @@ function edit() {
 
 function openPostForm() {
 	os.post({
-		channel: {
-			id: channel.id,
-		},
+		channel,
 	});
 }
 
@@ -123,6 +138,21 @@ async function unfavorite() {
 	}).then(() => {
 		favorited = false;
 	});
+}
+
+async function search() {
+	const query = searchQuery.toString().trim();
+
+	if (query == null) return;
+
+	searchPagination = {
+		endpoint: 'notes/search',
+		limit: 10,
+		params: {
+			query: searchQuery,
+			channelId: channel.id,
+		},
+	};
 }
 
 const headerActions = $computed(() => {
@@ -162,6 +192,10 @@ const headerTabs = $computed(() => [{
 	key: 'featured',
 	title: i18n.ts.featured,
 	icon: 'ti ti-bolt',
+}, {
+	key: 'search',
+	title: i18n.ts.search,
+	icon: 'ti ti-search',
 }]);
 
 definePageMetadata(computed(() => channel ? {
@@ -172,7 +206,7 @@ definePageMetadata(computed(() => channel ? {
 
 <style lang="scss" module>
 .main {
-	min-height: calc(var(--containerHeight) - (var(--stickyTop, 0px) + var(--stickyBottom, 0px)));
+	min-height: calc(100cqh - (var(--stickyTop, 0px) + var(--stickyBottom, 0px)));
 }
 
 .footer {

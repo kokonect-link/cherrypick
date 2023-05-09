@@ -1,7 +1,9 @@
 import path from 'path';
+import pluginReplace from '@rollup/plugin-replace';
 import pluginVue from '@vitejs/plugin-vue';
-import { defineConfig } from 'vite';
-import { configDefaults as vitestConfigDefaults } from 'vitest/config';
+import { type UserConfig, defineConfig } from 'vite';
+// @ts-expect-error https://github.com/sxzz/unplugin-vue-macros/issues/257#issuecomment-1410752890
+import ReactivityTransform from '@vue-macros/reactivity-transform/vite';
 
 import locales from '../../locales';
 import meta from '../../package.json';
@@ -38,15 +40,30 @@ function toBase62(n: number): string {
 	return result;
 }
 
-export default defineConfig(({ command, mode }) => {
+export function getConfig(): UserConfig {
 	return {
 		base: '/vite/',
+
+		server: {
+			port: 5173,
+		},
 
 		plugins: [
 			pluginVue({
 				reactivityTransform: true,
 			}),
+			ReactivityTransform(),
 			pluginJson5(),
+			...process.env.NODE_ENV === 'production'
+				? [
+					pluginReplace({
+						preventAssignment: true,
+						values: {
+							'isChromatic()': JSON.stringify(false),
+						},
+					}),
+				]
+				: [],
 		],
 
 		resolve: {
@@ -62,7 +79,7 @@ export default defineConfig(({ command, mode }) => {
 
 		css: {
 			modules: {
-				generateScopedName: (name, filename, css) => {
+				generateScopedName(name, filename, _css): string {
 					const id = (path.relative(__dirname, filename.split('?')[0]) + '-' + name).replace(/[\\\/\.\?&=]/g, '-').replace(/(src-|vue-)/g, '');
 					if (process.env.NODE_ENV === 'production') {
 						return 'x' + toBase62(hash(id)).substring(0, 4);
@@ -132,4 +149,8 @@ export default defineConfig(({ command, mode }) => {
 			},
 		},
 	};
-});
+}
+
+const config = defineConfig(({ command, mode }) => getConfig());
+
+export default config;

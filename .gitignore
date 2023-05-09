@@ -44,7 +44,7 @@ built
 /data
 /.cache-loader
 /db
-/elasticsearch
+/meili_data
 npm-debug.log
 *.pem
 run.bat
@@ -56,6 +56,7 @@ api-docs.json
 /files
 ormconfig.json
 temp
+/packages/frontend/src/**/*.stories.ts
 
 # blender backups
 *.blend1

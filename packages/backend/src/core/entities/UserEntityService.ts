@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { In, Not } from 'typeorm';
+import * as Redis from 'ioredis';
 import Ajv from 'ajv';
 import { ModuleRef } from '@nestjs/core';
 import { DI } from '@/di-symbols.js';
@@ -8,13 +9,13 @@ import type { Packed } from '@/misc/json-schema.js';
 import type { Promiseable } from '@/misc/prelude/await-all.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
 import { USER_ACTIVE_THRESHOLD, USER_ONLINE_THRESHOLD } from '@/const.js';
-import { KVCache } from '@/misc/cache.js';
-import type { Instance } from '@/models/entities/Instance.js';
-import type { LocalUser, RemoteUser, User } from '@/models/entities/User.js';
+import type { LocalUser, PartialLocalUser, PartialRemoteUser, RemoteUser, User } from '@/models/entities/User.js';
 import { birthdaySchema, descriptionSchema, localUsernameSchema, locationSchema, nameSchema, passwordSchema } from '@/models/entities/User.js';
-import type { UsersRepository, UserSecurityKeysRepository, FollowingsRepository, FollowRequestsRepository, BlockingsRepository, MutingsRepository, DriveFilesRepository, NoteUnreadsRepository, ChannelFollowingsRepository, NotificationsRepository, UserNotePiningsRepository, UserProfilesRepository, InstancesRepository, AnnouncementReadsRepository, MessagingMessagesRepository, UserGroupJoiningsRepository, AnnouncementsRepository, PagesRepository, UserProfile, RenoteMutingsRepository } from '@/models/index.js';
+import type { UsersRepository, UserSecurityKeysRepository, FollowingsRepository, FollowRequestsRepository, BlockingsRepository, MutingsRepository, DriveFilesRepository, NoteUnreadsRepository, ChannelFollowingsRepository, UserNotePiningsRepository, UserProfilesRepository, InstancesRepository, AnnouncementReadsRepository, AnnouncementsRepository, MessagingMessagesRepository, UserGroupJoiningsRepository, PagesRepository, UserProfile, RenoteMutingsRepository, UserMemoRepository } from '@/models/index.js';
 import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
+import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
+import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { AntennaService } from '../AntennaService.js';
 import type { CustomEmojiService } from '../CustomEmojiService.js';
@@ -24,7 +25,7 @@ import type { PageEntityService } from './PageEntityService.js';
 
 type IsUserDetailed<Detailed extends boolean> = Detailed extends true ? Packed<'UserDetailed'> : Packed<'UserLite'>;
 type IsMeAndIsUserDetailed<ExpectsMe extends boolean | null, Detailed extends boolean> =
-	Detailed extends true ? 
+	Detailed extends true ?
 		ExpectsMe extends true ? Packed<'MeDetailed'> :
 		ExpectsMe extends false ? Packed<'UserDetailedNotMe'> :
 		Packed<'UserDetailed'> :
@@ -33,32 +34,36 @@ type IsMeAndIsUserDetailed<ExpectsMe extends boolean | null, Detailed extends bo
 const ajv = new Ajv();
 
 function isLocalUser(user: User): user is LocalUser;
-function isLocalUser<T extends { host: User['host'] }>(user: T): user is T & { host: null; };
+function isLocalUser<T extends { host: User['host'] }>(user: T): user is (T & { host: null; });
 function isLocalUser(user: User | { host: User['host'] }): boolean {
 	return user.host == null;
 }
 
 function isRemoteUser(user: User): user is RemoteUser;
-function isRemoteUser<T extends { host: User['host'] }>(user: T): user is T & { host: string; };
+function isRemoteUser<T extends { host: User['host'] }>(user: T): user is (T & { host: string; });
 function isRemoteUser(user: User | { host: User['host'] }): boolean {
 	return !isLocalUser(user);
 }
 
 @Injectable()
 export class UserEntityService implements OnModuleInit {
+	private apPersonService: ApPersonService;
 	private noteEntityService: NoteEntityService;
 	private driveFileEntityService: DriveFileEntityService;
 	private pageEntityService: PageEntityService;
 	private customEmojiService: CustomEmojiService;
 	private antennaService: AntennaService;
 	private roleService: RoleService;
-	private userInstanceCache: KVCache<Instance | null>;
+	private federatedInstanceService: FederatedInstanceService;
 
 	constructor(
 		private moduleRef: ModuleRef,
 
 		@Inject(DI.config)
 		private config: Config,
+
+		@Inject(DI.redis)
+		private redisClient: Redis.Redis,
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
@@ -90,9 +95,6 @@ export class UserEntityService implements OnModuleInit {
 		@Inject(DI.channelFollowingsRepository)
 		private channelFollowingsRepository: ChannelFollowingsRepository,
 
-		@Inject(DI.notificationsRepository)
-		private notificationsRepository: NotificationsRepository,
-
 		@Inject(DI.userNotePiningsRepository)
 		private userNotePiningsRepository: UserNotePiningsRepository,
 
@@ -116,6 +118,9 @@ export class UserEntityService implements OnModuleInit {
 
 		@Inject(DI.pagesRepository)
 		private pagesRepository: PagesRepository,
+		
+		@Inject(DI.userMemosRepository)
+		private userMemosRepository: UserMemoRepository,
 
 		//private noteEntityService: NoteEntityService,
 		//private driveFileEntityService: DriveFileEntityService,
@@ -124,16 +129,17 @@ export class UserEntityService implements OnModuleInit {
 		//private antennaService: AntennaService,
 		//private roleService: RoleService,
 	) {
-		this.userInstanceCache = new KVCache<Instance | null>(1000 * 60 * 60 * 3);
 	}
 
 	onModuleInit() {
+		this.apPersonService = this.moduleRef.get('ApPersonService');
 		this.noteEntityService = this.moduleRef.get('NoteEntityService');
 		this.driveFileEntityService = this.moduleRef.get('DriveFileEntityService');
 		this.pageEntityService = this.moduleRef.get('PageEntityService');
 		this.customEmojiService = this.moduleRef.get('CustomEmojiService');
 		this.antennaService = this.moduleRef.get('AntennaService');
 		this.roleService = this.moduleRef.get('RoleService');
+		this.federatedInstanceService = this.moduleRef.get('FederatedInstanceService');
 	}
 
 	//#region Validators
@@ -270,34 +276,17 @@ export class UserEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async getHasUnreadChannel(userId: User['id']): Promise<boolean> {
-		const channels = await this.channelFollowingsRepository.findBy({ followerId: userId });
-
-		const unread = channels.length > 0 ? await this.noteUnreadsRepository.findOneBy({
-			userId: userId,
-			noteChannelId: In(channels.map(x => x.followeeId)),
-		}) : null;
-
-		return unread != null;
-	}
-
-	@bindThis
 	public async getHasUnreadNotification(userId: User['id']): Promise<boolean> {
-		const mute = await this.mutingsRepository.findBy({
-			muterId: userId,
-		});
-		const mutedUserIds = mute.map(m => m.muteeId);
+		const latestReadNotificationId = await this.redisClient.get(`latestReadNotification:${userId}`);
 
-		const count = await this.notificationsRepository.count({
-			where: {
-				notifieeId: userId,
-				...(mutedUserIds.length > 0 ? { notifierId: Not(In(mutedUserIds)) } : {}),
-				isRead: false,
-			},
-			take: 1,
-		});
+		const latestNotificationIdsRes = await this.redisClient.xrevrange(
+			`notificationTimeline:${userId}`,
+			'+',
+			'-',
+			'COUNT', 1);
+		const latestNotificationId = latestNotificationIdsRes[0]?.[0];
 
-		return count > 0;
+		return latestNotificationId != null && (latestReadNotificationId == null || latestReadNotificationId < latestNotificationId);
 	}
 
 	@bindThis
@@ -322,34 +311,24 @@ export class UserEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async getAvatarUrl(user: User): Promise<string> {
-		if (user.avatar) {
-			return this.driveFileEntityService.getPublicUrl(user.avatar, 'avatar') ?? this.getIdenticonUrl(user);
-		} else if (user.avatarId) {
-			const avatar = await this.driveFilesRepository.findOneByOrFail({ id: user.avatarId });
-			return this.driveFileEntityService.getPublicUrl(avatar, 'avatar') ?? this.getIdenticonUrl(user);
-		} else {
-			return this.getIdenticonUrl(user);
-		}
-	}
-
-	@bindThis
-	public getAvatarUrlSync(user: User): string {
-		if (user.avatar) {
-			return this.driveFileEntityService.getPublicUrl(user.avatar, 'avatar') ?? this.getIdenticonUrl(user);
-		} else {
-			return this.getIdenticonUrl(user);
-		}
-	}
-
-	@bindThis
 	public getIdenticonUrl(user: User): string {
 		return `${this.config.url}/identicon/${user.username.toLowerCase()}@${user.host ?? this.config.host}`;
 	}
 
+	@bindThis
+	public getUserUri(user: LocalUser | PartialLocalUser | RemoteUser | PartialRemoteUser): string {
+		return this.isRemoteUser(user)
+			? user.uri : this.genLocalUserUri(user.id);
+	}
+
+	@bindThis
+	public genLocalUserUri(userId: string): string {
+		return `${this.config.url}/users/${userId}`;
+	}
+
 	public async pack<ExpectsMe extends boolean | null = null, D extends boolean = false>(
 		src: User['id'] | User,
-		me?: { id: User['id'] } | null | undefined,
+		me?: { id: User['id']; } | null | undefined,
 		options?: {
 			detail?: D,
 			includeSecrets?: boolean,
@@ -361,24 +340,11 @@ export class UserEntityService implements OnModuleInit {
 			includeSecrets: false,
 		}, options);
 
-		let user: User;
-
-		if (typeof src === 'object') {
-			user = src;
-			if (src.avatar === undefined && src.avatarId) src.avatar = await this.driveFilesRepository.findOneBy({ id: src.avatarId }) ?? null;
-			if (src.banner === undefined && src.bannerId) src.banner = await this.driveFilesRepository.findOneBy({ id: src.bannerId }) ?? null;
-		} else {
-			user = await this.usersRepository.findOneOrFail({
-				where: { id: src },
-				relations: {
-					avatar: true,
-					banner: true,
-				},
-			});
-		}
+		const user = typeof src === 'object' ? src : await this.usersRepository.findOneByOrFail({ id: src });
 
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
+		const iAmModerator = me ? await this.roleService.isModerator(me as User) : false;
 
 		const relation = meId && !isMe && opts.detail ? await this.getRelation(meId, user.id) : null;
 		const pins = opts.detail ? await this.userNotePiningsRepository.createQueryBuilder('pin')
@@ -408,14 +374,11 @@ export class UserEntityService implements OnModuleInit {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: this.getAvatarUrlSync(user),
-			avatarBlurhash: user.avatar?.blurhash ?? null,
+			avatarUrl: user.avatarUrl ?? this.getIdenticonUrl(user),
+			avatarBlurhash: user.avatarBlurhash,
 			isBot: user.isBot ?? falsy,
 			isCat: user.isCat ?? falsy,
-			instance: user.host ? this.userInstanceCache.fetch(user.host,
-				() => this.instancesRepository.findOneBy({ host: user.host! }),
-				v => v != null,
-			).then(instance => instance ? {
+			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
 				softwareVersion: instance.softwareVersion,
@@ -435,11 +398,16 @@ export class UserEntityService implements OnModuleInit {
 			...(opts.detail ? {
 				url: profile!.url,
 				uri: user.uri,
+				movedTo: user.movedToUri ? this.apPersonService.resolvePerson(user.movedToUri).then(user => user.id).catch(() => null) : null,
+				alsoKnownAs: user.alsoKnownAs
+					? Promise.all(user.alsoKnownAs.map(uri => this.apPersonService.fetchPerson(uri).then(user => user?.id).catch(() => null)))
+						.then(xs => xs.length === 0 ? null : xs.filter(x => x != null) as string[])
+					: null,
 				createdAt: user.createdAt.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
-				bannerUrl: user.banner ? this.driveFileEntityService.getPublicUrl(user.banner) : null,
-				bannerBlurhash: user.banner?.blurhash ?? null,
+				bannerUrl: user.bannerUrl,
+				bannerBlurhash: user.bannerBlurhash,
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended ?? falsy,
@@ -476,6 +444,11 @@ export class UserEntityService implements OnModuleInit {
 					isAdministrator: role.isAdministrator,
 					displayOrder: role.displayOrder,
 				}))),
+				memo: meId == null ? null : await this.userMemosRepository.findOneBy({
+					userId: meId,
+					targetUserId: user.id,
+				}).then(row => row?.memo ?? null),
+				moderationNote: iAmModerator ? (profile!.moderationNote ?? '') : undefined,
 			} : {}),
 
 			...(opts.detail && isMe ? {
@@ -503,7 +476,7 @@ export class UserEntityService implements OnModuleInit {
 				}).then(count => count > 0),
 				hasUnreadAnnouncement: this.getHasUnreadAnnouncement(user.id),
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
-				hasUnreadChannel: this.getHasUnreadChannel(user.id),
+				hasUnreadChannel: false, // 後方互換性のため
 				hasUnreadMessagingMessage: this.getHasUnreadMessagingMessage(user.id),
 				hasUnreadNotification: this.getHasUnreadNotification(user.id),
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),

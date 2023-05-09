@@ -33,7 +33,6 @@ import { NoteFavorite } from '@/models/entities/NoteFavorite.js';
 import { NoteReaction } from '@/models/entities/NoteReaction.js';
 import { NoteThreadMuting } from '@/models/entities/NoteThreadMuting.js';
 import { NoteUnread } from '@/models/entities/NoteUnread.js';
-import { Notification } from '@/models/entities/Notification.js';
 import { Page } from '@/models/entities/Page.js';
 import { PageLike } from '@/models/entities/PageLike.js';
 import { PasswordResetRequest } from '@/models/entities/PasswordResetRequest.js';
@@ -60,6 +59,7 @@ import { UserPending } from '@/models/entities/UserPending.js';
 import { UserProfile } from '@/models/entities/UserProfile.js';
 import { UserPublickey } from '@/models/entities/UserPublickey.js';
 import { UserSecurityKey } from '@/models/entities/UserSecurityKey.js';
+import { UserMemo } from '@/models/entities/UserMemo.js';
 import { Webhook } from '@/models/entities/Webhook.js';
 import { Channel } from '@/models/entities/Channel.js';
 import { RetentionAggregation } from '@/models/entities/RetentionAggregation.js';
@@ -105,7 +105,6 @@ export {
 	NoteReaction,
 	NoteThreadMuting,
 	NoteUnread,
-	Notification,
 	Page,
 	PageLike,
 	PasswordResetRequest,
@@ -139,6 +138,7 @@ export {
 	RoleAssignment,
 	Flash,
 	FlashLike,
+	UserMemo,
 };
 
 export type AbuseUserReportsRepository = Repository<AbuseUserReport>;
@@ -176,7 +176,6 @@ export type NoteFavoritesRepository = Repository<NoteFavorite>;
 export type NoteReactionsRepository = Repository<NoteReaction>;
 export type NoteThreadMutingsRepository = Repository<NoteThreadMuting>;
 export type NoteUnreadsRepository = Repository<NoteUnread>;
-export type NotificationsRepository = Repository<Notification>;
 export type PagesRepository = Repository<Page>;
 export type PageLikesRepository = Repository<PageLike>;
 export type PasswordResetRequestsRepository = Repository<PasswordResetRequest>;
@@ -210,3 +209,4 @@ export type RolesRepository = Repository<Role>;
 export type RoleAssignmentsRepository = Repository<RoleAssignment>;
 export type FlashsRepository = Repository<Flash>;
 export type FlashLikesRepository = Repository<FlashLike>;
+export type UserMemoRepository = Repository<UserMemo>;

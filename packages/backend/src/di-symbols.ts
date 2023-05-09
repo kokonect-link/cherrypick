@@ -1,8 +1,10 @@
 export const DI = {
 	config: Symbol('config'),
 	db: Symbol('db'),
+	meilisearch: Symbol('meilisearch'),
 	redis: Symbol('redis'),
-	redisSubscriber: Symbol('redisSubscriber'),
+	redisForPub: Symbol('redisForPub'),
+	redisForSub: Symbol('redisForSub'),
 
 	//#region Repositories
 	usersRepository: Symbol('usersRepository'),
@@ -36,7 +38,6 @@ export const DI = {
 	emojisRepository: Symbol('emojisRepository'),
 	driveFilesRepository: Symbol('driveFilesRepository'),
 	driveFoldersRepository: Symbol('driveFoldersRepository'),
-	notificationsRepository: Symbol('notificationsRepository'),
 	metasRepository: Symbol('metasRepository'),
 	mutingsRepository: Symbol('mutingsRepository'),
 	renoteMutingsRepository: Symbol('renoteMutingsRepository'),
@@ -74,5 +75,6 @@ export const DI = {
 	roleAssignmentsRepository: Symbol('roleAssignmentsRepository'),
 	flashsRepository: Symbol('flashsRepository'),
 	flashLikesRepository: Symbol('flashLikesRepository'),
+	userMemosRepository: Symbol('userMemosRepository'),
 	//#endregion
 };

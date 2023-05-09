@@ -41,7 +41,6 @@ import { NoteFavorite } from '@/models/entities/NoteFavorite.js';
 import { NoteReaction } from '@/models/entities/NoteReaction.js';
 import { NoteThreadMuting } from '@/models/entities/NoteThreadMuting.js';
 import { NoteUnread } from '@/models/entities/NoteUnread.js';
-import { Notification } from '@/models/entities/Notification.js';
 import { Page } from '@/models/entities/Page.js';
 import { PageLike } from '@/models/entities/PageLike.js';
 import { PasswordResetRequest } from '@/models/entities/PasswordResetRequest.js';
@@ -75,6 +74,7 @@ import { Role } from '@/models/entities/Role.js';
 import { RoleAssignment } from '@/models/entities/RoleAssignment.js';
 import { Flash } from '@/models/entities/Flash.js';
 import { FlashLike } from '@/models/entities/FlashLike.js';
+import { UserMemo } from '@/models/entities/UserMemo.js';
 
 import { Config } from '@/config.js';
 import MisskeyLogger from '@/logger.js';
@@ -162,7 +162,6 @@ export const entities = [
 	DriveFolder,
 	Poll,
 	PollVote,
-	Notification,
 	Emoji,
 	Hashtag,
 	SwSubscription,
@@ -193,6 +192,7 @@ export const entities = [
 	RoleAssignment,
 	Flash,
 	FlashLike,
+	UserMemo,
 	...charts,
 ];
 
@@ -210,6 +210,22 @@ export function createPostgresDataSource(config: Config) {
 			statement_timeout: 1000 * 10,
 			...config.db.extra,
 		},
+		replication: config.dbReplications ? {
+			master: {
+				host: config.db.host,
+				port: config.db.port,
+				username: config.db.user,
+				password: config.db.pass,
+				database: config.db.db,
+			},
+			slaves: config.dbSlaves!.map(rep => ({
+				host: rep.host,
+				port: rep.port,
+				username: rep.user,
+				password: rep.pass,
+				database: rep.db,
+			})),
+		} : undefined,
 		synchronize: process.env.NODE_ENV === 'test',
 		dropSchema: process.env.NODE_ENV === 'test',
 		cache: !config.db.disableCache && process.env.NODE_ENV !== 'test' ? { // dbをcloseしても何故かredisのコネクションが内部的に残り続けるようで、テストの際に支障が出るため無効にする(キャッシュも含めてテストしたいため本当は有効にしたいが...)

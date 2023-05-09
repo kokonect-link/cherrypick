@@ -1,18 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
+import * as Redis from 'ioredis';
 import { In } from 'typeorm';
 import type { Role, RoleAssignment, RoleAssignmentsRepository, RolesRepository, UsersRepository } from '@/models/index.js';
-import { KVCache } from '@/misc/cache.js';
+import { MemoryKVCache, MemorySingleCache } from '@/misc/cache.js';
 import type { User } from '@/models/entities/User.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import { MetaService } from '@/core/MetaService.js';
-import { UserCacheService } from '@/core/UserCacheService.js';
+import { CacheService } from '@/core/CacheService.js';
 import type { RoleCondFormulaValue } from '@/models/entities/Role.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { StreamMessages } from '@/server/api/stream/types.js';
 import { IdService } from '@/core/IdService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
+import type { Packed } from '@/misc/json-schema';
 import type { OnApplicationShutdown } from '@nestjs/common';
 
 export type RolePolicies = {
@@ -24,6 +25,7 @@ export type RolePolicies = {
 	canSearchNotes: boolean;
 	canHideAds: boolean;
 	driveCapacityMb: number;
+	alwaysMarkNsfw: boolean;
 	pinLimit: number;
 	antennaLimit: number;
 	wordMuteLimit: number;
@@ -44,6 +46,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	canSearchNotes: false,
 	canHideAds: false,
 	driveCapacityMb: 100,
+	alwaysMarkNsfw: false,
 	pinLimit: 5,
 	antennaLimit: 5,
 	wordMuteLimit: 200,
@@ -57,15 +60,18 @@ export const DEFAULT_POLICIES: RolePolicies = {
 
 @Injectable()
 export class RoleService implements OnApplicationShutdown {
-	private rolesCache: KVCache<Role[]>;
-	private roleAssignmentByUserIdCache: KVCache<RoleAssignment[]>;
+	private rolesCache: MemorySingleCache<Role[]>;
+	private roleAssignmentByUserIdCache: MemoryKVCache<RoleAssignment[]>;
 
 	public static AlreadyAssignedError = class extends Error {};
 	public static NotAssignedError = class extends Error {};
 
 	constructor(
-		@Inject(DI.redisSubscriber)
-		private redisSubscriber: Redis.Redis,
+		@Inject(DI.redis)
+		private redisClient: Redis.Redis,
+
+		@Inject(DI.redisForSub)
+		private redisForSub: Redis.Redis,
 
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
@@ -77,17 +83,17 @@ export class RoleService implements OnApplicationShutdown {
 		private roleAssignmentsRepository: RoleAssignmentsRepository,
 
 		private metaService: MetaService,
-		private userCacheService: UserCacheService,
+		private cacheService: CacheService,
 		private userEntityService: UserEntityService,
 		private globalEventService: GlobalEventService,
 		private idService: IdService,
 	) {
 		//this.onMessage = this.onMessage.bind(this);
 
-		this.rolesCache = new KVCache<Role[]>(Infinity);
-		this.roleAssignmentByUserIdCache = new KVCache<RoleAssignment[]>(Infinity);
+		this.rolesCache = new MemorySingleCache<Role[]>(1000 * 60 * 60 * 1);
+		this.roleAssignmentByUserIdCache = new MemoryKVCache<RoleAssignment[]>(1000 * 60 * 60 * 1);
 
-		this.redisSubscriber.on('message', this.onMessage);
+		this.redisForSub.on('message', this.onMessage);
 	}
 
 	@bindThis
@@ -98,7 +104,7 @@ export class RoleService implements OnApplicationShutdown {
 			const { type, body } = obj.message as StreamMessages['internal']['payload'];
 			switch (type) {
 				case 'roleCreated': {
-					const cached = this.rolesCache.get(null);
+					const cached = this.rolesCache.get();
 					if (cached) {
 						cached.push({
 							...body,
@@ -110,7 +116,7 @@ export class RoleService implements OnApplicationShutdown {
 					break;
 				}
 				case 'roleUpdated': {
-					const cached = this.rolesCache.get(null);
+					const cached = this.rolesCache.get();
 					if (cached) {
 						const i = cached.findIndex(x => x.id === body.id);
 						if (i > -1) {
@@ -125,9 +131,9 @@ export class RoleService implements OnApplicationShutdown {
 					break;
 				}
 				case 'roleDeleted': {
-					const cached = this.rolesCache.get(null);
+					const cached = this.rolesCache.get();
 					if (cached) {
-						this.rolesCache.set(null, cached.filter(x => x.id !== body.id));
+						this.rolesCache.set(cached.filter(x => x.id !== body.id));
 					}
 					break;
 				}
@@ -214,9 +220,9 @@ export class RoleService implements OnApplicationShutdown {
 		// 期限切れのロールを除外
 		assigns = assigns.filter(a => a.expiresAt == null || (a.expiresAt.getTime() > now));
 		const assignedRoleIds = assigns.map(x => x.roleId);
-		const roles = await this.rolesCache.fetch(null, () => this.rolesRepository.findBy({}));
+		const roles = await this.rolesCache.fetch(() => this.rolesRepository.findBy({}));
 		const assignedRoles = roles.filter(r => assignedRoleIds.includes(r.id));
-		const user = roles.some(r => r.target === 'conditional') ? await this.userCacheService.findById(userId) : null;
+		const user = roles.some(r => r.target === 'conditional') ? await this.cacheService.findUserById(userId) : null;
 		const matchedCondRoles = roles.filter(r => r.target === 'conditional' && this.evalCond(user!, r.condFormula));
 		return [...assignedRoles, ...matchedCondRoles];
 	}
@@ -231,11 +237,11 @@ export class RoleService implements OnApplicationShutdown {
 		// 期限切れのロールを除外
 		assigns = assigns.filter(a => a.expiresAt == null || (a.expiresAt.getTime() > now));
 		const assignedRoleIds = assigns.map(x => x.roleId);
-		const roles = await this.rolesCache.fetch(null, () => this.rolesRepository.findBy({}));
+		const roles = await this.rolesCache.fetch(() => this.rolesRepository.findBy({}));
 		const assignedBadgeRoles = roles.filter(r => r.asBadge && assignedRoleIds.includes(r.id));
 		const badgeCondRoles = roles.filter(r => r.asBadge && (r.target === 'conditional'));
 		if (badgeCondRoles.length > 0) {
-			const user = roles.some(r => r.target === 'conditional') ? await this.userCacheService.findById(userId) : null;
+			const user = roles.some(r => r.target === 'conditional') ? await this.cacheService.findUserById(userId) : null;
 			const matchedBadgeCondRoles = badgeCondRoles.filter(r => this.evalCond(user!, r.condFormula));
 			return [...assignedBadgeRoles, ...matchedBadgeCondRoles];
 		} else {
@@ -275,6 +281,7 @@ export class RoleService implements OnApplicationShutdown {
 			canSearchNotes: calc('canSearchNotes', vs => vs.some(v => v === true)),
 			canHideAds: calc('canHideAds', vs => vs.some(v => v === true)),
 			driveCapacityMb: calc('driveCapacityMb', vs => Math.max(...vs)),
+			alwaysMarkNsfw: calc('alwaysMarkNsfw', vs => vs.some(v => v === true)),
 			pinLimit: calc('pinLimit', vs => Math.max(...vs)),
 			antennaLimit: calc('antennaLimit', vs => Math.max(...vs)),
 			wordMuteLimit: calc('wordMuteLimit', vs => Math.max(...vs)),
@@ -301,7 +308,7 @@ export class RoleService implements OnApplicationShutdown {
 
 	@bindThis
 	public async getModeratorIds(includeAdmins = true): Promise<User['id'][]> {
-		const roles = await this.rolesCache.fetch(null, () => this.rolesRepository.findBy({}));
+		const roles = await this.rolesCache.fetch(() => this.rolesRepository.findBy({}));
 		const moderatorRoles = includeAdmins ? roles.filter(r => r.isModerator || r.isAdministrator) : roles.filter(r => r.isModerator);
 		const assigns = moderatorRoles.length > 0 ? await this.roleAssignmentsRepository.findBy({
 			roleId: In(moderatorRoles.map(r => r.id)),
@@ -321,7 +328,7 @@ export class RoleService implements OnApplicationShutdown {
 
 	@bindThis
 	public async getAdministratorIds(): Promise<User['id'][]> {
-		const roles = await this.rolesCache.fetch(null, () => this.rolesRepository.findBy({}));
+		const roles = await this.rolesCache.fetch(() => this.rolesRepository.findBy({}));
 		const administratorRoles = roles.filter(r => r.isAdministrator);
 		const assigns = administratorRoles.length > 0 ? await this.roleAssignmentsRepository.findBy({
 			roleId: In(administratorRoles.map(r => r.id)),
@@ -399,7 +406,26 @@ export class RoleService implements OnApplicationShutdown {
 	}
 
 	@bindThis
+	public async addNoteToRoleTimeline(note: Packed<'Note'>): Promise<void> {
+		const roles = await this.getUserRoles(note.userId);
+
+		const redisPipeline = this.redisClient.pipeline();
+
+		for (const role of roles) {
+			redisPipeline.xadd(
+				`roleTimeline:${role.id}`,
+				'MAXLEN', '~', '1000',
+				'*',
+				'note', note.id);
+
+			this.globalEventService.publishRoleTimelineStream(role.id, 'note', note);
+		}
+
+		redisPipeline.exec();
+	}
+
+	@bindThis
 	public onApplicationShutdown(signal?: string | undefined) {
-		this.redisSubscriber.off('message', this.onMessage);
+		this.redisForSub.off('message', this.onMessage);
 	}
 }
