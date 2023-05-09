@@ -206,6 +206,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 								title: t('reject'),
 							},
 						],
+					}];
 						
 				case 'achievementEarned':
 					return [t('_notification.achievementEarned'), {

@@ -177,6 +177,8 @@ export interface GroupMessagingStreamTypes {
 export interface MessagingIndexStreamTypes {
 	read: MessagingMessage['id'][];
 	message: Packed<'MessagingMessage'>;
+}
+
 export interface RoleTimelineStreamTypes {
 	note: Packed<'Note'>;
 }
