@@ -39,17 +39,9 @@ export type Notification = {
 
 	reaction: string | null;
 
-	@Column({
-		...id(),
-		nullable: true,
-	})
-	public userGroupInvitationId: UserGroupInvitation['id'] | null;
+	userGroupInvitationId: UserGroupInvitation['id'] | null;
 
-	@ManyToOne(type => UserGroupInvitation, {
-		onDelete: 'CASCADE',
-	})
-	@JoinColumn()
-	public userGroupInvitation: UserGroupInvitation | null;
+	userGroupInvitation: UserGroupInvitation | null;
 
 	choice: number | null;
 
