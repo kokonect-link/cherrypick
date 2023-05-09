@@ -310,7 +310,7 @@ export class ApRendererService {
 	}
 
 	@bindThis
-	public async renderNote(note: Note, dive = true): Promise<IPost> {
+	public async renderNote(note: Note, dive = true, isTalk = false): Promise<IPost> {
 		const getPromisedFiles = async (ids: string[]) => {
 			if (!ids || ids.length === 0) return [];
 			const items = await this.driveFilesRepository.findBy({ id: In(ids) });
