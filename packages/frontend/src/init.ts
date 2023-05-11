@@ -508,6 +508,15 @@ if ($i) {
 		updateAccount({ hasUnreadSpecifiedNotes: false });
 	});
 
+	main.on('readAllMessagingMessages', () => {
+		updateAccount({ hasUnreadMessagingMessage: false });
+	});
+
+	main.on('unreadMessagingMessage', () => {
+		updateAccount({ hasUnreadMessagingMessage: true });
+		sound.play('chatBg');
+	});
+
 	main.on('readAllAntennas', () => {
 		updateAccount({ hasUnreadAntenna: false });
 	});

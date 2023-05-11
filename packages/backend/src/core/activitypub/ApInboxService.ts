@@ -19,7 +19,8 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository } from '@/models/index.js';
+import { MessagingService } from '@/core/MessagingService.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, MessagingMessagesRepository, AbuseUserReportsRepository, FollowRequestsRepository } from '@/models/index.js';
 import { bindThis } from '@/decorators.js';
 import type { RemoteUser } from '@/models/entities/User.js';
 import { getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isPost, isRead, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
@@ -50,6 +51,9 @@ export class ApInboxService {
 		@Inject(DI.followingsRepository)
 		private followingsRepository: FollowingsRepository,
 
+		@Inject(DI.messagingMessagesRepository)
+		private messagingMessagesRepository: MessagingMessagesRepository,
+
 		@Inject(DI.abuseUserReportsRepository)
 		private abuseUserReportsRepository: AbuseUserReportsRepository,
 
@@ -77,6 +81,7 @@ export class ApInboxService {
 		private apPersonService: ApPersonService,
 		private apQuestionService: ApQuestionService,
 		private queueService: QueueService,
+		private messagingService: MessagingService,
 	) {
 		this.logger = this.apLoggerService.logger;
 	}
@@ -119,6 +124,8 @@ export class ApInboxService {
 			await this.delete(actor, activity);
 		} else if (isUpdate(activity)) {
 			await this.update(actor, activity);
+		} else if (isRead(activity)) {
+			await this.read(actor, activity);
 		} else if (isFollow(activity)) {
 			await this.follow(actor, activity);
 		} else if (isAccept(activity)) {
@@ -176,6 +183,29 @@ export class ApInboxService {
 				throw err;
 			}
 		}).then(() => 'ok');
+	}
+
+	@bindThis
+	private async read(actor: RemoteUser, activity: IRead): Promise<string> {
+		const id = await getApId(activity.object);
+
+		if (!this.utilityService.isSelfHost(this.utilityService.extractDbHost(id))) {
+			return `skip: Read to foreign host (${id})`;
+		}
+
+		const messageId = id.split('/').pop();
+
+		const message = await this.messagingMessagesRepository.findOneBy({ id: messageId });
+		if (message == null) {
+			return 'skip: message not found';
+		}
+
+		if (actor.id !== message.recipientId) {
+			return 'skip: actor is not a message recipient';
+		}
+
+		await this.messagingService.readUserMessagingMessage(message.recipientId!, message.userId, [message.id]);
+		return `ok: mark as read (${message.userId} => ${message.recipientId} ${message.id})`;
 	}
 
 	@bindThis
@@ -474,7 +504,16 @@ export class ApInboxService {
 			const note = await this.apDbResolverService.getNoteFromApId(uri);
 	
 			if (note == null) {
-				return 'message not found';
+				const message = await this.apDbResolverService.getMessageFromApId(uri);
+				if (message == null) return 'message not found';
+	
+				if (message.userId !== actor.id) {
+					return '投稿を削除しようとしているユーザーは投稿の作成者ではありません';
+				}
+	
+				await this.messagingService.deleteMessage(message);
+	
+				return 'ok: message deleted';
 			}
 	
 			if (note.userId !== actor.id) {

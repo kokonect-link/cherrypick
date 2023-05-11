@@ -162,6 +162,12 @@ let recentHashtags = $ref(JSON.parse(miLocalStorage.getItem('hashtags') || '[]')
 let imeText = $ref('');
 let disableRightClick = $ref(false);
 
+const typing = throttle(3000, () => {
+	if (props.channel) {
+		stream.send('typingOnChannel', { channel: props.channel.id });
+	}
+});
+
 const draftKey = $computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
 
@@ -457,10 +463,12 @@ function onKeydown(ev: KeyboardEvent) {
 	}
 
 	if (ev.which === 27) emit('esc');
+	typing();
 }
 
 function onCompositionUpdate(ev: CompositionEvent) {
 	imeText = ev.data;
+	typing();
 }
 
 function onCompositionEnd(ev: CompositionEvent) {

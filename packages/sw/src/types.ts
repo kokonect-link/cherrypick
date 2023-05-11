@@ -13,12 +13,15 @@ export type SwMessage = {
 // Defined also @/core/PushNotificationService.ts#L12
 type pushNotificationDataSourceMap = {
 	notification: Misskey.entities.Notification;
+	unreadMessagingMessage: Misskey.entities.MessagingMessage;
 	unreadAntennaNote: {
 		antenna: { id: string, name: string };
 		note: Misskey.entities.Note;
 	};
 	readNotifications: { notificationIds: string[] };
 	readAllNotifications: undefined;
+	readAllMessagingMessages: undefined;
+	readAllMessagingMessagesOfARoom: { userId: string } | { groupId: string };
 	readAntenna: { antennaId: string };
 	readAllAntennas: undefined;
 };
