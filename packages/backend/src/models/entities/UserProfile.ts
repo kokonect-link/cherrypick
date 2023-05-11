@@ -71,7 +71,7 @@ export class UserProfile {
 	public emailVerified: boolean;
 
 	@Column('jsonb', {
-		default: ['follow', 'receiveFollowRequest'],
+		default: ['follow', 'receiveFollowRequest', 'groupInvited'],
 	})
 	public emailNotificationTypes: string[];
 

@@ -50,6 +50,14 @@ export const navbarItemDef = reactive({
 		show: computed(() => $i != null),
 		to: '/my/lists',
 	},
+	/*
+	groups: {
+		title: i18n.ts.groups,
+		icon: 'ti ti-users',
+		show: computed(() => $i != null),
+		to: '/my/groups',
+	},
+	*/
 	antennas: {
 		title: i18n.ts.antennas,
 		icon: 'ti ti-antenna',
