@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref, onMounted, onBeforeUnmount } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, onMounted, provide } from 'vue';
 import XTimeline from '@/components/MkTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import { scroll } from '@/scripts/scroll';
@@ -48,8 +48,11 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
+import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { deviceKind } from '@/scripts/device-kind';
+
+provide('shouldOmitHeaderTitle', true);
 
 const MOBILE_THRESHOLD = 500;
 
@@ -84,7 +87,7 @@ function queueUpdated(q: number): void {
 }
 
 function top(): void {
-	scroll(rootEl, { top: 0 });
+	if (rootEl) scroll(rootEl, { top: 0 });
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
@@ -181,7 +184,7 @@ const headerTabs = $computed(() => [{
 	title: i18n.ts.channel,
 	iconOnly: true,
 	onClick: chooseChannel,
-}]);
+}] as Tab[]);
 
 const headerTabsWhenNotLogin = $computed(() => [
 	...(isLocalTimelineAvailable ? [{
@@ -196,7 +199,7 @@ const headerTabsWhenNotLogin = $computed(() => [
 		icon: 'ti ti-whirl',
 		iconOnly: true,
 	}] : []),
-]);
+] as Tab[]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
@@ -226,6 +229,11 @@ onMounted(() => {
 	z-index: 1000;
 	width: 100%;
 	transition: opacity 0.5s, transform 0.5s;
+	margin: calc(-0.675em - 8px) 0;
+
+	&:first-child {
+		margin-top: calc(-0.675em - 8px - var(--margin));
+	}
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;

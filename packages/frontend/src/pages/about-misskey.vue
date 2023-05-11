@@ -239,6 +239,7 @@ const patrons = [
 	'蝉暮せせせ',
 	'ThatOneCalculator',
 	'pixeldesu',
+	'あめ玉',
 ];
 
 let isKokonect = false;

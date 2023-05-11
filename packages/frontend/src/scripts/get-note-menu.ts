@@ -308,7 +308,7 @@ export function getNoteMenu(props: {
 		...($i.isModerator || $i.isAdmin ? [
 			null,
 			{
-				icon: 'fas fa-bullhorn',
+				icon: 'ti ti-speakerphone',
 				text: i18n.ts.promote,
 				action: promote
 			}]
