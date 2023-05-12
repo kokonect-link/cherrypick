@@ -2,21 +2,22 @@
 <div ref="content" :class="[$style.content, { [$style.omitted]: omitted }]">
 	<slot></slot>
 	<button v-if="omitted" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
-		<span :class="$style.fadeLabel">{{ $ts.showMore }}</span>
+		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 	</button>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted } from 'vue';
+import { onMounted } from 'vue';
+import { i18n } from '@/i18n';
 
 const props = withDefaults(defineProps<{
-	maxHeight: number;
+	maxHeight?: number;
 }>(), {
 	maxHeight: 200,
 });
 
-let content = $ref<HTMLElement>();
+let content = $shallowRef<HTMLElement>();
 let omitted = $ref(false);
 let ignoreOmit = $ref(false);
 

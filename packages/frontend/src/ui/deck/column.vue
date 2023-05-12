@@ -29,8 +29,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, provide, Ref, watch } from 'vue';
-import { updateColumn, swapLeftColumn, swapRightColumn, swapUpColumn, swapDownColumn, stackLeftColumn, popRightColumn, removeColumn, swapColumn, Column, deckStore } from './deck-store';
+import { onBeforeUnmount, onMounted, provide, watch } from 'vue';
+import { updateColumn, swapLeftColumn, swapRightColumn, swapUpColumn, swapDownColumn, stackLeftColumn, popRightColumn, removeColumn, swapColumn, Column } from './deck-store';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { MenuItem } from '@/types/menu';
@@ -243,7 +243,7 @@ function onDrop(ev) {
 <style lang="scss" module>
 .root {
 	--root-margin: 10px;
-	--deckColumnHeaderHeight: 40px;
+	--deckColumnHeaderHeight: 38px;
 
 	height: 100%;
 	overflow: clip;
@@ -318,10 +318,7 @@ function onDrop(ev) {
 	background: var(--panelHeaderBg);
 	box-shadow: 0 1px 0 0 var(--panelHeaderDivider);
 	cursor: pointer;
-
-	&, * {
-		user-select: none;
-	}
+	user-select: none;
 }
 
 .title {
@@ -365,7 +362,7 @@ function onDrop(ev) {
 	overflow-x: clip;
 	-webkit-overflow-scrolling: touch;
 	box-sizing: border-box;
-	container-type: inline-size;
+	container-type: size;
 	background-color: var(--bg);
 }
 </style>

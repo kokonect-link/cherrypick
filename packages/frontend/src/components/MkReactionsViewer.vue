@@ -1,27 +1,28 @@
 <template>
 <TransitionGroup
-	:enter-active-class="$store.state.animation ? $style.transition_x_enterActive : ''"
-	:leave-active-class="$store.state.animation ? $style.transition_x_leaveActive : ''"
-	:enter-from-class="$store.state.animation ? $style.transition_x_enterFrom : ''"
-	:leave-to-class="$store.state.animation ? $style.transition_x_leaveTo : ''"
-	:move-class="$store.state.animation ? $style.transition_x_move : ''"
+	:enter-active-class="defaultStore.state.animation ? $style.transition_x_enterActive : ''"
+	:leave-active-class="defaultStore.state.animation ? $style.transition_x_leaveActive : ''"
+	:enter-from-class="defaultStore.state.animation ? $style.transition_x_enterFrom : ''"
+	:leave-to-class="defaultStore.state.animation ? $style.transition_x_leaveTo : ''"
+	:move-class="defaultStore.state.animation ? $style.transition_x_move : ''"
 	tag="div" :class="$style.root"
 >
 	<XReaction v-for="[reaction, count] in reactions" :key="reaction" :reaction="reaction" :count="count" :is-initial="initialReactions.has(reaction)" :note="note"/>
-	<slot v-if="hasMoreReactions" name="more" />
+	<slot v-if="hasMoreReactions" name="more"/>
 </TransitionGroup>
 </template>
 
 <script lang="ts" setup>
 import * as misskey from 'misskey-js';
-import XReaction from '@/components/MkReactionsViewer.reaction.vue';
 import { watch } from 'vue';
+import XReaction from '@/components/MkReactionsViewer.reaction.vue';
+import { defaultStore } from '@/store';
 
 const props = withDefaults(defineProps<{
-    note: misskey.entities.Note;
-    maxNumber?: number;
+	note: misskey.entities.Note;
+	maxNumber?: number;
 }>(), {
-    maxNumber: Infinity,
+	maxNumber: Infinity,
 });
 
 const initialReactions = new Set(Object.keys(props.note.reactions));
@@ -51,7 +52,7 @@ watch([() => props.note.reactions, () => props.maxNumber], ([newSource, maxNumbe
 		...Object.entries(newSource)
 			.sort(([, a], [, b]) => b - a)
 			.filter(([y], i) => i < maxNumber && !newReactionsNames.includes(y)),
-	]
+	];
 
 	newReactions = newReactions.slice(0, props.maxNumber);
 

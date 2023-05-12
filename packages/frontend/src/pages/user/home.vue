@@ -7,7 +7,8 @@
 			<!-- <div class="punished" v-if="user.isSilenced"><i class="ti ti-alert-triangle" style="margin-right: 8px;"></i> {{ i18n.ts.userSilenced }}</div> -->
 
 			<div class="profile _gaps">
-				<MkRemoteCaution v-if="user.host != null" :href="user.url" class="warn"/>
+				<MkAccountMoved v-if="user.movedTo" :moved-to="user.movedTo"/>
+				<MkRemoteCaution v-if="user.host != null" :href="user.url ?? user.uri!" class="warn"/>
 
 				<div :key="user.id" class="main _panel">
 					<div class="banner-container" :style="style">
@@ -20,6 +21,9 @@
 								<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ti ti-lock"></i></span>
 								<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
+								<button v-if="!isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
+									<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
+								</button>
 							</div>
 						</div>
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
@@ -44,6 +48,25 @@
 							{{ role.name }}
 						</span>
 					</div>
+					<div v-if="iAmModerator" class="moderationNote">
+						<MkTextarea v-if="editModerationNote || (moderationNote != null && moderationNote !== '')" v-model="moderationNote" manual-save>
+							<template #label>Moderation note</template>
+						</MkTextarea>
+						<div v-else>
+							<MkButton small @click="editModerationNote = true">Add moderation note</MkButton>
+						</div>
+					</div>
+					<div v-if="isEditingMemo || memoDraft" class="memo" :class="{'no-memo': !memoDraft}">
+						<div class="heading" v-text="i18n.ts.memo"/>
+						<textarea
+							ref="memoTextareaEl"
+							v-model="memoDraft"
+							rows="1"
+							@focus="isEditingMemo = true"
+							@blur="updateMemo"
+							@input="adjustMemoTextarea"
+						/>
+					</div>
 					<div class="description">
 						<MkOmit>
 							<Mfm v-if="user.description" :text="user.description" :is-note="false" :author="user" :i="$i"/>
@@ -57,7 +80,7 @@
 						</dl>
 						<dl v-if="user.birthday" class="field">
 							<dt class="name"><i class="ti ti-cake ti-fw"></i> {{ i18n.ts.birthday }}</dt>
-							<dd class="value">{{ user.birthday.replace('-', '/').replace('-', '/') }} ({{ $t('yearsOld', { age }) }})</dd>
+							<dd class="value">{{ user.birthday.replace('-', '/').replace('-', '/') }} ({{ i18n.t('yearsOld', { age }) }})</dd>
 						</dl>
 						<dl class="field">
 							<dt class="name"><i class="ti ti-calendar ti-fw"></i> {{ i18n.ts.registeredDate }}</dt>
@@ -93,14 +116,14 @@
 
 			<div class="contents _gaps">
 				<div v-if="user.pinnedNotes.length > 0" class="_gaps">
-					<XNote v-for="note in user.pinnedNotes" :key="note.id" class="note _panel" :note="note" :pinned="true"/>
+					<MkNote v-for="note in user.pinnedNotes" :key="note.id" class="note _panel" :note="note" :pinned="true"/>
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
 				<template v-if="narrow">
 					<XPhotos :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
-				<XNotes :class="$style.tl" :no-gap="true" :pagination="pagination"/>
+				<MkNotes v-if="!disableNotes" :class="$style.tl" :no-gap="true" :pagination="pagination"/>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
@@ -112,35 +135,39 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, inject, onMounted, onUnmounted, watch } from 'vue';
+import { defineAsyncComponent, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import calcAge from 's-age';
 import * as misskey from 'misskey-js';
-import XNote from '@/components/MkNote.vue';
+import MkNote from '@/components/MkNote.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-import MkContainer from '@/components/MkContainer.vue';
-import MkFoldableSection from '@/components/MkFoldableSection.vue';
+import MkAccountMoved from '@/components/MkAccountMoved.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
-import MkTab from '@/components/MkTab.vue';
+import MkTextarea from '@/components/MkTextarea.vue';
 import MkOmit from '@/components/MkOmit.vue';
 import MkInfo from '@/components/MkInfo.vue';
+import MkButton from '@/components/MkButton.vue';
 import { getScrollPosition } from '@/scripts/scroll';
 import { getUserMenu } from '@/scripts/get-user-menu';
 import number from '@/filters/number';
-import { userPage, acct as getAcct } from '@/filters/user';
+import { userPage } from '@/filters/user';
 import * as os from '@/os';
 import { useRouter } from '@/router';
 import { i18n } from '@/i18n';
-import { $i } from '@/account';
+import { $i, iAmModerator } from '@/account';
 import { dateString } from '@/filters/date';
 import { confetti } from '@/scripts/confetti';
-import XNotes from '@/components/MkNotes.vue';
+import MkNotes from '@/components/MkNotes.vue';
+import { api } from '@/os';
 
 const XPhotos = defineAsyncComponent(() => import('./index.photos.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
 
 const props = withDefaults(defineProps<{
 	user: misskey.entities.UserDetailed;
+	/** Test only; MkNotes currently causes problems in vitest */
+	disableNotes: boolean;
 }>(), {
+	disableNotes: false,
 });
 
 const router = useRouter();
@@ -149,6 +176,15 @@ let parallaxAnimationId = $ref<null | number>(null);
 let narrow = $ref<null | boolean>(null);
 let rootEl = $ref<null | HTMLElement>(null);
 let bannerEl = $ref<null | HTMLElement>(null);
+let memoTextareaEl = $ref<null | HTMLElement>(null);
+let memoDraft = $ref(props.user.memo);
+let isEditingMemo = $ref(false);
+let moderationNote = $ref(props.user.moderationNote);
+let editModerationNote = $ref(false);
+
+watch($$(moderationNote), async () => {
+	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote });
+});
 
 const pagination = {
 	endpoint: 'users/notes' as const,
@@ -191,6 +227,31 @@ function parallax() {
 	banner.style.backgroundPosition = `center calc(50% - ${pos}px)`;
 }
 
+function showMemoTextarea() {
+	isEditingMemo = true;
+	nextTick(() => {
+		memoTextareaEl?.focus();
+	});
+}
+
+function adjustMemoTextarea() {
+	if (!memoTextareaEl) return;
+	memoTextareaEl.style.height = '0px';
+	memoTextareaEl.style.height = `${memoTextareaEl.scrollHeight}px`;
+}
+
+async function updateMemo() {
+	await api('users/update-memo', {
+		memo: memoDraft,
+		userId: props.user.id,
+	});
+	isEditingMemo = false;
+}
+
+watch([props.user], () => {
+	memoDraft = props.user.memo;
+});
+
 onMounted(() => {
 	window.requestAnimationFrame(parallaxLoop);
 	narrow = rootEl!.clientWidth < 1000;
@@ -206,6 +267,9 @@ onMounted(() => {
 			});
 		}
 	}
+	nextTick(() => {
+		adjustMemoTextarea();
+	});
 });
 
 onUnmounted(() => {
@@ -321,6 +385,16 @@ onUnmounted(() => {
 									font-weight: bold;
 								}
 							}
+
+							> .add-note-button {
+								background: rgba(0, 0, 0, 0.2);
+								color: #fff;
+								-webkit-backdrop-filter: var(--blur, blur(8px));
+								backdrop-filter: var(--blur, blur(8px));
+								border-radius: 24px;
+								padding: 4px 8px;
+								font-size: 80%;
+							}
 						}
 					}
 				}
@@ -355,12 +429,52 @@ onUnmounted(() => {
 				> .roles {
 					padding: 24px 24px 0 154px;
 					font-size: 0.95em;
+					display: flex;
+					flex-wrap: wrap;
+					gap: 8px;
 
 					> .role {
 						border: solid 1px var(--color, var(--divider));
 						border-radius: 999px;
 						margin-right: 4px;
 						padding: 3px 8px;
+					}
+				}
+
+				> .moderationNote {
+					margin: 12px 24px 0 154px;
+				}
+
+				> .memo {
+					margin: 12px 24px 0 154px;
+					background: transparent;
+					color: var(--fg);
+					border: 1px solid var(--divider);
+					border-radius: 8px;
+					padding: 8px;
+					line-height: 0;
+
+					> .heading {
+						text-align: left;
+						color: var(--fgTransparent);
+						line-height: 1.5;
+						font-size: 85%;
+					}
+
+					textarea {
+						margin: 0;
+						padding: 0;
+						resize: none;
+						border: none;
+						outline: none;
+						width: 100%;
+						height: auto;
+						min-height: 0;
+						line-height: 1.5;
+						color: var(--fg);
+						overflow: hidden;
+						background: transparent;
+						font-family: inherit;
 					}
 				}
 
@@ -496,7 +610,15 @@ onUnmounted(() => {
 
 				> .roles {
 					padding: 16px 16px 0 16px;
-					text-align: center;
+					justify-content: center;
+				}
+
+				> .moderationNote {
+					margin: 16px 16px 0 16px;
+				}
+
+				> .memo {
+					margin: 16px 16px 0 16px;
 				}
 
 				> .description {

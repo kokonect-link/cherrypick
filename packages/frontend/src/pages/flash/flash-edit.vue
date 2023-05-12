@@ -24,17 +24,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onDeactivated, onUnmounted, Ref, ref, watch } from 'vue';
+import { computed } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
-import { url } from '@/config';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkInput from '@/components/MkInput.vue';
 import { useRouter } from '@/router';
 
-const PRESET_DEFAULT = `/// @ 0.12.4
+const PRESET_DEFAULT = `/// @ 0.13.2
 
 var name = ""
 
@@ -52,7 +51,7 @@ Ui:render([
 ])
 `;
 
-const PRESET_OMIKUJI = `/// @ 0.12.4
+const PRESET_OMIKUJI = `/// @ 0.13.2
 // ユーザーごとに日替わりのおみくじのプリセット
 
 // 選択肢
@@ -95,7 +94,7 @@ Ui:render([
 ])
 `;
 
-const PRESET_SHUFFLE = `/// @ 0.12.4
+const PRESET_SHUFFLE = `/// @ 0.13.2
 // 巻き戻し可能な文字シャッフルのプリセット
 
 let string = "ペペロンチーノ"
@@ -174,7 +173,120 @@ var cursor = 0
 do()
 `;
 
-const PRESET_TIMELINE = `/// @ 0.12.4
+const PRESET_QUIZ = `/// @ 0.13.2
+let title = '地理クイズ'
+
+let qas = [{
+	q: 'オーストラリアの首都は？'
+	choices: ['シドニー' 'キャンベラ' 'メルボルン']
+	a: 'キャンベラ'
+	aDescription: '最大の都市はシドニーですが首都はキャンベラです。'
+} {
+	q: '国土面積2番目の国は？'
+	choices: ['カナダ' 'アメリカ' '中国']
+	a: 'カナダ'
+	aDescription: '大きい順にロシア、カナダ、アメリカ、中国です。'
+} {
+	q: '二重内陸国ではないのは？'
+	choices: ['リヒテンシュタイン' 'ウズベキスタン' 'レソト']
+	a: 'レソト'
+	aDescription: 'レソトは(一重)内陸国です。'
+} {
+	q: '閘門がない運河は？'
+	choices: ['キール運河' 'スエズ運河' 'パナマ運河']
+	a: 'スエズ運河'
+	aDescription: 'スエズ運河は高低差がないので閘門はありません。'
+}]
+
+let qaEls = [Ui:C:container({
+	align: 'center'
+	children: [
+		Ui:C:text({
+			size: 1.5
+			bold: true
+			text: title
+		})
+	]
+})]
+
+var qn = 0
+each (let qa, qas) {
+	qn += 1
+	qa.id = Util:uuid()
+	qaEls.push(Ui:C:container({
+		align: 'center'
+		bgColor: '#000'
+		fgColor: '#fff'
+		padding: 16
+		rounded: true
+		children: [
+			Ui:C:text({
+				text: \`Q{qn} {qa.q}\`
+			})
+			Ui:C:select({
+				items: qa.choices.map(@(c) {{ text: c, value: c }})
+				onChange: @(v) { qa.userAnswer = v }
+			})
+			Ui:C:container({
+				children: []
+			} \`{qa.id}:a\`)
+		]
+	} qa.id))
+}
+
+@finish() {
+	var score = 0
+
+	each (let qa, qas) {
+		let correct = qa.userAnswer == qa.a
+		if (correct) score += 1
+		let el = Ui:get(\`{qa.id}:a\`)
+		el.update({
+			children: [
+				Ui:C:text({
+					size: 1.2
+					bold: true
+					color: if (correct) '#f00' else '#00f'
+					text: if (correct) '🎉正解' else '不正解'
+				})
+				Ui:C:text({
+					text: qa.aDescription
+				})
+			]
+		})
+	}
+
+	let result = \`{title}の結果は{qas.len}問中{score}問正解でした。\`
+	Ui:get('footer').update({
+		children: [
+			Ui:C:postFormButton({
+				text: '結果を共有'
+				rounded: true
+				primary: true
+				form: {
+					text: \`{result}{Str:lf}{THIS_URL}\`
+				}
+			})
+		]
+	})
+}
+
+qaEls.push(Ui:C:container({
+	align: 'center'
+	children: [
+		Ui:C:button({
+			text: '答え合わせ'
+			primary: true
+			rounded: true
+			onClick: finish
+		})
+	]
+} 'footer'))
+
+Ui:render(qaEls)
+`;
+
+const PRESET_TIMELINE = `/// @ 0.13.2
 // APIリクエストを行いローカルタイムラインを表示するプリセット
 
 @fetch() {
@@ -193,6 +305,11 @@ const PRESET_TIMELINE = `/// @ 0.12.4
 	// それぞれのノートごとにUI要素作成
 	let noteEls = []
 	each (let note, notes) {
+		// 表示名を設定していないアカウントはidを表示
+		let userName = if Core:type(note.user.name) == "str" note.user.name else note.user.username
+		// リノートもしくはメディア・投票のみで本文が無いノートに代替表示文を設定
+		let noteText = if Core:type(note.text) == "str" note.text else "（リノートもしくはメディア・投票のみのノート）"
+
 		let el = Ui:C:container({
 			bgColor: "#444"
 			fgColor: "#fff"
@@ -200,11 +317,11 @@ const PRESET_TIMELINE = `/// @ 0.12.4
 			rounded: true
 			children: [
 				Ui:C:mfm({
-					text: note.user.name
+					text: userName
 					bold: true
 				})
 				Ui:C:mfm({
-					text: note.text
+					text: noteText
 				})
 			]
 		})
@@ -258,6 +375,11 @@ function selectPreset(ev: MouseEvent) {
 		text: 'Shuffle',
 		action: () => {
 			script = PRESET_SHUFFLE;
+		},
+	}, {
+		text: 'Quiz',
+		action: () => {
+			script = PRESET_QUIZ;
 		},
 	}, {
 		text: 'Timeline viewer',

@@ -1,15 +1,15 @@
 <template>
-<MkContainer :show-header="widgetProps.showHeader" class="mkw-trends data-cy-mkw-trends">
+<MkContainer :show-header="widgetProps.showHeader" data-cy-mkw-trends class="mkw-trends">
 	<template #icon><i class="ti ti-hash"></i></template>
 	<template #header>{{ i18n.ts._widgets.trends }}</template>
 
 	<div class="wbrkwala">
 		<MkLoading v-if="fetching"/>
-		<TransitionGroup v-else tag="div" :name="$store.state.animation ? 'chart' : ''" class="tags">
+		<TransitionGroup v-else tag="div" :name="defaultStore.state.animation ? 'chart' : ''" class="tags">
 			<div v-for="stat in stats" :key="stat.tag">
 				<div class="tag">
 					<MkA class="a" :to="`/tags/${ encodeURIComponent(stat.tag) }`" :title="stat.tag">#{{ stat.tag }}</MkA>
-					<p>{{ $t('nUsersMentioned', { n: stat.usersCount }) }}</p>
+					<p>{{ i18n.t('nUsersMentioned', { n: stat.usersCount }) }}</p>
 				</div>
 				<MkMiniChart class="chart" :src="stat.chart"/>
 			</div>
@@ -19,14 +19,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue';
-import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget';
+import { ref } from 'vue';
+import { useWidgetPropsManager, Widget, WidgetComponentExpose } from './widget';
 import { GetFormResultType } from '@/scripts/form';
 import MkContainer from '@/components/MkContainer.vue';
 import MkMiniChart from '@/components/MkMiniChart.vue';
 import * as os from '@/os';
 import { useInterval } from '@/scripts/use-interval';
 import { i18n } from '@/i18n';
+import { defaultStore } from '@/store';
 
 const name = 'hashtags';
 

@@ -61,6 +61,13 @@
 			renderError('META_FETCH_V');
 			return;
 		}
+
+		// for https://github.com/misskey-dev/misskey/issues/10202
+		if (lang == null || lang.toString == null || lang.toString() === 'null') {
+			console.error('invalid lang value detected!!!', typeof lang, lang);
+			lang = 'en-US';
+		}
+
 		const localRes = await window.fetch(`/assets/locales/${lang}.${v}.json`);
 		if (localRes.status === 200) {
 			localStorage.setItem('lang', lang);
@@ -192,9 +199,31 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
-		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
-		@import url("https://cdn.jsdelivr.net/npm/jetbrains-mono/css/jetbrains-mono.css");
-		
+		@font-face {
+			font-family: 'Pretendard JP';
+			font-weight: 400;
+			font-display: swap;
+			src: local('Pretendard JP Regular'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Regular.woff2') format('woff2'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Regular.woff') format('woff');
+		}
+		@font-face {
+			font-family: 'Pretendard JP';
+			font-weight: 700;
+			font-display: swap;
+			src: local('Pretendard JP Bold'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Bold.woff2') format('woff2'),
+			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Bold.woff') format('woff');
+		}
+		@font-face {
+			font-family: 'JetBrains Mono';
+			font-style: normal;
+			font-weight: 400;
+			src: local("JetBrains Mono Regular"), local("JetBrainsMono-Regular"),
+			url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");
+			font-display: swap; }
+		}
+
 		* {
 			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
 		}

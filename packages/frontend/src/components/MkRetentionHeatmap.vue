@@ -8,14 +8,11 @@
 </template>
 
 <script lang="ts" setup>
-import { markRaw, version as vueVersion, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { onMounted, nextTick } from 'vue';
 import { Chart } from 'chart.js';
-import tinycolor from 'tinycolor2';
-import { MatrixController, MatrixElement } from 'chartjs-chart-matrix';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip';
-import { chartVLine } from '@/scripts/chart-vline';
 import { alpha } from '@/scripts/color';
 import { initChart } from '@/scripts/init-chart';
 
@@ -39,13 +36,21 @@ async function renderChart() {
 	const wide = rootEl.offsetWidth > 600;
 	const narrow = rootEl.offsetWidth < 400;
 
-	const maxDays = wide ? 15 : narrow ? 5 : 10;
+	const maxDays = wide ? 10 : narrow ? 5 : 7;
 
-	const raw = await os.api('retention', { });
+	let raw = await os.api('retention', { });
+
+	raw = raw.slice(0, maxDays);
 
 	const data = [];
 	for (const record of raw) {
-		let i = 0;
+		data.push({
+			x: 0,
+			y: record.createdAt,
+			v: record.users,
+		});
+
+		let i = 1;
 		for (const date of Object.keys(record.data).sort((a, b) => new Date(a).getTime() - new Date(b).getTime())) {
 			data.push({
 				x: i,
@@ -62,11 +67,16 @@ async function renderChart() {
 
 	const color = defaultStore.state.darkMode ? '#b4e900' : '#86b300';
 
-	// 視覚上の分かりやすさのため上から最も大きい3つの値の平均を最大値とする
-	//const max = raw.readWrite.slice().sort((a, b) => b - a).slice(0, 3).reduce((a, b) => a + b, 0) / 3;
-	const max = 4;
+	const getYYYYMMDD = (date: Date) => {
+		const y = date.getFullYear().toString().padStart(2, '0');
+		const m = (date.getMonth() + 1).toString().padStart(2, '0');
+		const d = date.getDate().toString().padStart(2, '0');
+		return `${y}/${m}/${d}`;
+	};
 
-	const marginEachCell = 6;
+	const max = (createdAt: string) => raw.find(x => x.createdAt === createdAt)!.users;
+
+	const marginEachCell = 12;
 
 	chartInstance = new Chart(chartEl, {
 		type: 'matrix',
@@ -80,7 +90,7 @@ async function renderChart() {
 				borderRadius: 3,
 				backgroundColor(c) {
 					const value = c.dataset.data[c.dataIndex].v;
-					const a = value / max;
+					const a = value / max(c.dataset.data[c.dataIndex].y);
 					return alpha(color, a);
 				},
 				fill: true,
@@ -117,7 +127,7 @@ async function renderChart() {
 						maxRotation: 0,
 						autoSkipPadding: 0,
 						autoSkip: false,
-						callback: (value, index, values) => value + 1,
+						callback: (value, index, values) => value,
 					},
 				},
 				y: {
@@ -152,11 +162,11 @@ async function renderChart() {
 					callbacks: {
 						title(context) {
 							const v = context[0].dataset.data[context[0].dataIndex];
-							return v.d;
+							return getYYYYMMDD(new Date(new Date(v.y).getTime() + (v.x * 86400000)));
 						},
 						label(context) {
 							const v = context.dataset.data[context.dataIndex];
-							return ['Active: ' + v.v];
+							return [`Active: ${v.v} (${Math.round((v.v / max(v.y)) * 100)}%)`];
 						},
 					},
 					//mode: 'index',

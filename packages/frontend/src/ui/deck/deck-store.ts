@@ -2,7 +2,6 @@ import { throttle } from 'throttle-debounce';
 import { markRaw } from 'vue';
 import { notificationTypes } from 'misskey-js';
 import { Storage } from '../../pizzax';
-import { i18n } from '@/i18n';
 import { api } from '@/os';
 import { deepClone } from '@/scripts/clone';
 
@@ -23,6 +22,7 @@ export type Column = {
 	antennaId?: string;
 	listId?: string;
 	channelId?: string;
+	roleId?: string;
 	includingTypes?: typeof notificationTypes[number][];
 	tl?: 'home' | 'local' | 'social' | 'global';
 };

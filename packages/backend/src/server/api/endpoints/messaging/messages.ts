@@ -115,6 +115,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 				const messages = await query.take(ps.limit).getMany();
 
+				if (ps.sinceId !== undefined) {
+					messages.reverse();
+				}
+
 				// Mark all as read
 				if (ps.markAsRead) {
 					this.messagingService.readUserMessagingMessage(me.id, recipient.id, messages.filter(m => m.recipientId === me.id).map(x => x.id));
@@ -150,6 +154,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 					.andWhere('message.groupId = :groupId', { groupId: recipientGroup.id });
 
 				const messages = await query.take(ps.limit).getMany();
+
+				if (ps.sinceId) {
+					messages.reverse();
+				}
 
 				// Mark all as read
 				if (ps.markAsRead) {

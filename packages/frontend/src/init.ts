@@ -6,18 +6,6 @@ import 'vite/modulepreload-polyfill';
 
 import '@/style.scss';
 
-//#region account indexedDB migration
-import { set } from '@/scripts/idb-proxy';
-
-{
-	const accounts = miLocalStorage.getItem('accounts');
-	if (accounts) {
-		set('accounts', JSON.parse(accounts));
-		miLocalStorage.removeItem('accounts');
-	}
-}
-//#endregion
-
 import { computed, createApp, watch, markRaw, version as vueVersion, defineAsyncComponent } from 'vue';
 import { compareVersions } from 'compare-versions';
 import JSON5 from 'json5';
@@ -25,7 +13,7 @@ import JSON5 from 'json5';
 import widgets from '@/widgets';
 import directives from '@/directives';
 import components from '@/components';
-import { version, ui, lang, host, updateLocale } from '@/config';
+import { version, ui, lang, updateLocale } from '@/config';
 import { applyTheme } from '@/scripts/theme';
 import { isDeviceDarkmode } from '@/scripts/is-device-darkmode';
 import { i18n, updateI18n } from '@/i18n';
@@ -36,17 +24,17 @@ import { $i, refreshAccount, login, updateAccount, signout } from '@/account';
 import { defaultStore, ColdDeviceStorage } from '@/store';
 import { fetchInstance, instance } from '@/instance';
 import { makeHotkey } from '@/scripts/hotkey';
-import { search } from '@/scripts/search';
 import { deviceKind } from '@/scripts/device-kind';
 import { initializeSw } from '@/scripts/initialize-sw';
 import { reloadChannel } from '@/scripts/unison-reload';
 import { reactionPicker } from '@/scripts/reaction-picker';
 import { getUrlWithoutLoginId } from '@/scripts/login-id';
 import { getAccountFromId } from '@/scripts/get-account-from-id';
-import { deckStore } from './ui/deck/deck-store';
-import { miLocalStorage } from './local-storage';
-import { claimAchievement, claimedAchievements } from './scripts/achievements';
-import { fetchCustomEmojis } from './custom-emojis';
+import { deckStore } from '@/ui/deck/deck-store';
+import { miLocalStorage } from '@/local-storage';
+import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
+import { fetchCustomEmojis } from '@/custom-emojis';
+import { mainRouter } from '@/router';
 
 console.info(`CherryPick v${version}`);
 
@@ -55,7 +43,9 @@ if (_DEV_) {
 
 	console.info(`vue ${vueVersion}`);
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(window as any).$i = $i;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(window as any).$store = defaultStore;
 
 	window.addEventListener('error', event => {
@@ -184,10 +174,10 @@ fetchInstanceMetaPromise.then(() => {
 
 try {
 	await fetchCustomEmojis();
-} catch (err) {}
+} catch (err) { /* empty */ }
 
 const app = createApp(
-	window.location.search === '?zen' ? defineAsyncComponent(() => import('@/ui/zen.vue')) :
+	new URLSearchParams(window.location.search).has('zen') ? defineAsyncComponent(() => import('@/ui/zen.vue')) :
 	!$i ? defineAsyncComponent(() => import('@/ui/visitor.vue')) :
 	ui === 'deck' ? defineAsyncComponent(() => import('@/ui/deck.vue')) :
 	ui === 'classic' ? defineAsyncComponent(() => import('@/ui/classic.vue')) :
@@ -198,15 +188,6 @@ const app = createApp(
 if (_DEV_) {
 	app.config.performance = true;
 }
-
-// TODO: 廃止
-app.config.globalProperties = {
-	$i,
-	$store: defaultStore,
-	$instance: instance,
-	$t: i18n.t,
-	$ts: i18n.ts,
-};
 
 widgets(app);
 directives(app);
@@ -222,20 +203,20 @@ await deckStore.ready;
 
 // https://github.com/misskey-dev/misskey/pull/8575#issuecomment-1114239210
 // なぜかinit.tsの内容が2回実行されることがあるため、mountするdivを1つに制限する
-const rootEl = (() => {
+const rootEl = ((): HTMLElement => {
 	const MISSKEY_MOUNT_DIV_ID = 'misskey_app';
 
-	const currentEl = document.getElementById(MISSKEY_MOUNT_DIV_ID);
+	const currentRoot = document.getElementById(MISSKEY_MOUNT_DIV_ID);
 
-	if (currentEl) {
+	if (currentRoot) {
 		console.warn('multiple import detected');
-		return currentEl;
+		return currentRoot;
 	}
 
-	const rootEl = document.createElement('div');
-	rootEl.id = MISSKEY_MOUNT_DIV_ID;
-	document.body.appendChild(rootEl);
-	return rootEl;
+	const root = document.createElement('div');
+	root.id = MISSKEY_MOUNT_DIV_ID;
+	document.body.appendChild(root);
+	return root;
 })();
 
 app.mount(rootEl);
@@ -266,8 +247,7 @@ if (lastVersion !== version) {
 				popup(defineAsyncComponent(() => import('@/components/MkUpdated.vue')), {}, {}, 'closed');
 			}
 		}
-	} catch (err) {
-	}
+	} catch (err) { /* empty */ }
 }
 
 await defaultStore.ready;
@@ -346,7 +326,9 @@ stream.on('_disconnected_', async () => {
 });
 
 for (const plugin of ColdDeviceStorage.get('plugins').filter(p => p.active)) {
-	import('./plugin').then(({ install }) => {
+	import('./plugin').then(async ({ install }) => {
+		// Workaround for https://bugs.webkit.org/show_bug.cgi?id=242740
+		await new Promise(r => setTimeout(r, 0));
 		install(plugin);
 	});
 }
@@ -355,12 +337,24 @@ const hotkeys = {
 	'd': (): void => {
 		defaultStore.set('darkMode', !defaultStore.state.darkMode);
 	},
-	's': search,
+	's': (): void => {
+		mainRouter.push('/search');
+	},
 };
 
 if ($i) {
 	// only add post shortcuts if logged in
 	hotkeys['p|n'] = post;
+
+	if (defaultStore.state.accountSetupWizard !== -1) {
+		// このウィザードが実装される前に登録したユーザーには表示させないため
+		// TODO: そのうち消す
+		if (Date.now() - new Date($i.createdAt).getTime() < 1000 * 60 * 60 * 24) {
+			popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
+		} else {
+			defaultStore.set('accountSetupWizard', -1);
+		}
+	}
 
 	if ($i.isDeleted) {
 		alert({
@@ -450,6 +444,10 @@ if ($i) {
 		claimAchievement('client30min');
 	}, 1000 * 60 * 30);
 
+	window.setTimeout(() => {
+		claimAchievement('client60min');
+	}, 1000 * 60 * 60);
+
 	const lastUsed = miLocalStorage.getItem('lastUsed');
 	if (lastUsed) {
 		const lastUsedDate = parseInt(lastUsed, 10);
@@ -464,7 +462,7 @@ if ($i) {
 
 	const latestDonationInfoShownAt = miLocalStorage.getItem('latestDonationInfoShownAt');
 	const neverShowDonationInfo = miLocalStorage.getItem('neverShowDonationInfo');
-	if (neverShowDonationInfo !== 'true' && (new Date($i.createdAt).getTime() < (Date.now() - (1000 * 60 * 60 * 24 * 3)))) {
+	if (neverShowDonationInfo !== 'true' && (new Date($i.createdAt).getTime() < (Date.now() - (1000 * 60 * 60 * 24 * 3))) && !location.pathname.startsWith('/miauth')) {
 		if (latestDonationInfoShownAt == null || (new Date(latestDonationInfoShownAt).getTime() < (Date.now() - (1000 * 60 * 60 * 24 * 30)))) {
 			popup(defineAsyncComponent(() => import('@/components/MkDonation.vue')), {}, {}, 'closed');
 		}
@@ -528,15 +526,6 @@ if ($i) {
 
 	main.on('readAllAnnouncements', () => {
 		updateAccount({ hasUnreadAnnouncement: false });
-	});
-
-	main.on('readAllChannels', () => {
-		updateAccount({ hasUnreadChannel: false });
-	});
-
-	main.on('unreadChannel', () => {
-		updateAccount({ hasUnreadChannel: true });
-		sound.play('channel');
 	});
 
 	// トークンが再生成されたとき

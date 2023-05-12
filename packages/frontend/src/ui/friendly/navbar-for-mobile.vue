@@ -2,9 +2,9 @@
 <div class="kmwsukvl">
 	<div class="body">
 		<div class="top">
-			<div class="banner" :style="{ backgroundImage: `url(${ $instance.bannerUrl })` }"></div>
+			<div class="banner" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 			<button v-click-anime class="item _button instance" @click="openInstanceMenu">
-				<img :src="$instance.iconUrl || $instance.faviconUrl || '/favicon.ico'" alt="" class="icon"/>
+				<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" class="icon"/>
 			</button>
 		</div>
 		<div class="middle">
@@ -53,6 +53,7 @@ import { navbarItemDef } from '@/navbar';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';
+import { instance } from '@/instance';
 import { mainRouter } from '@/router';
 
 const menu = toRef(defaultStore.state, 'menu');

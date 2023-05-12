@@ -4,19 +4,20 @@
 	<MkSpacer :content-max="800">
 		<XQueue v-if="tab === 'deliver'" domain="deliver"/>
 		<XQueue v-else-if="tab === 'inbox'" domain="inbox"/>
+		<br>
+		<MkButton @click="promoteAllQueues"><i class="ti ti-reload"></i> {{ i18n.ts.retryAllQueuesNow }}</MkButton>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import XQueue from './queue.chart.vue';
 import XHeader from './_header_.vue';
-import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
 import * as config from '@/config';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
+import MkButton from '@/components/MkButton.vue';
 
 let tab = $ref('deliver');
 
@@ -29,6 +30,18 @@ function clear() {
 		if (canceled) return;
 
 		os.apiWithDialog('admin/queue/clear');
+	});
+}
+
+function promoteAllQueues() {
+	os.confirm({
+		type: 'warning',
+		title: i18n.ts.retryAllQueuesConfirmTitle,
+		text: i18n.ts.retryAllQueuesConfirmText,
+	}).then(({ canceled }) => {
+		if (canceled) return;
+
+		os.apiWithDialog('admin/queue/promote', { type: tab });
 	});
 }
 

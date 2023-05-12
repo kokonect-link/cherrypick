@@ -9,17 +9,14 @@
 </template>
 
 <script lang="ts" setup>
-import { markRaw, version as vueVersion, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { onMounted } from 'vue';
 import { Chart, ChartDataset } from 'chart.js';
-import tinycolor from 'tinycolor2';
 import * as misskey from 'misskey-js';
 import gradient from 'chartjs-plugin-gradient';
-import { satisfies } from 'compare-versions';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip';
 import { chartVLine } from '@/scripts/chart-vline';
-import { alpha } from '@/scripts/color';
 import { initChart } from '@/scripts/init-chart';
 import { chartLegend } from '@/scripts/chart-legend';
 import MkChartLegend from '@/components/MkChartLegend.vue';
@@ -79,7 +76,10 @@ async function renderChart() {
 			borderRadius: 4,
 			barPercentage: 0.9,
 			fill: true,
-		} satisfies ChartDataset, extra);
+		/* @see <https://github.com/misskey-dev/misskey/pull/10365#discussion_r1155511107>
+		} satisfies ChartData, extra);
+		 */
+		}, extra);
 	}
 
 	chartInstance = new Chart(chartEl, {

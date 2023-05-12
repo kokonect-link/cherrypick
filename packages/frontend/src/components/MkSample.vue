@@ -37,6 +37,7 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkRadio from '@/components/MkRadio.vue';
 import * as os from '@/os';
 import * as config from '@/config';
+import { $i } from '@/account';
 
 export default defineComponent({
 	components: {
@@ -52,6 +53,7 @@ export default defineComponent({
 			text: '',
 			flag: true,
 			radio: 'cherrypick',
+			$i,
 			mfm: `Hello world! This is an @example mention. BTW you are @${this.$i ? this.$i.username : 'guest'}.\nAlso, here is ${config.url} and [example link](${config.url}). for more details, see https://example.com.\nAs you know #cherrypick is open-source software.`,
 		};
 	},
@@ -86,7 +88,7 @@ export default defineComponent({
 		},
 
 		async openDrive() {
-			os.selectDriveFile();
+			os.selectDriveFile(false);
 		},
 
 		async selectUser() {

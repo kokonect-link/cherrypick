@@ -1,12 +1,12 @@
-import { In } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
 import type { NotesRepository } from '@/models/index.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { QueryService } from '@/core/QueryService.js';
+import { SearchService } from '@/core/SearchService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js';
-import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
+import { RoleService } from '@/core/RoleService.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['notes'],
@@ -24,6 +24,11 @@ export const meta = {
 	},
 
 	errors: {
+		unavailable: {
+			message: 'Search of notes unavailable.',
+			code: 'UNAVAILABLE',
+			id: '0b44998d-77aa-4427-80d0-d2c9b8523011',
+		},
 	},
 } as const;
 
@@ -37,8 +42,7 @@ export const paramDef = {
 		offset: { type: 'integer', default: 0 },
 		host: {
 			type: 'string',
-			nullable: true,
-			description: 'The local host is represented with `null`.',
+			description: 'The local host is represented with `.`.',
 		},
 		userId: { type: 'string', format: 'misskey:id', nullable: true, default: null },
 		channelId: { type: 'string', format: 'misskey:id', nullable: true, default: null },
@@ -55,40 +59,25 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		@Inject(DI.config)
 		private config: Config,
 	
-		@Inject(DI.notesRepository)
-		private notesRepository: NotesRepository,
-
 		private noteEntityService: NoteEntityService,
-		private queryService: QueryService,
+		private searchService: SearchService,
+		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), ps.sinceId, ps.untilId);
-
-			if (ps.userId) {
-				query.andWhere('note.userId = :userId', { userId: ps.userId });
-			} else if (ps.channelId) {
-				query.andWhere('note.channelId = :channelId', { channelId: ps.channelId });
+			const policies = await this.roleService.getUserPolicies(me ? me.id : null);
+			if (!policies.canSearchNotes) {
+				throw new ApiError(meta.errors.unavailable);
 			}
-
-			query
-				.andWhere('note.text ILIKE :q', { q: `%${ sqlLikeEscape(ps.query) }%` })
-				.innerJoinAndSelect('note.user', 'user')
-				.leftJoinAndSelect('user.avatar', 'avatar')
-				.leftJoinAndSelect('user.banner', 'banner')
-				.leftJoinAndSelect('note.reply', 'reply')
-				.leftJoinAndSelect('note.renote', 'renote')
-				.leftJoinAndSelect('reply.user', 'replyUser')
-				.leftJoinAndSelect('replyUser.avatar', 'replyUserAvatar')
-				.leftJoinAndSelect('replyUser.banner', 'replyUserBanner')
-				.leftJoinAndSelect('renote.user', 'renoteUser')
-				.leftJoinAndSelect('renoteUser.avatar', 'renoteUserAvatar')
-				.leftJoinAndSelect('renoteUser.banner', 'renoteUserBanner');
-
-			this.queryService.generateVisibilityQuery(query, me);
-			if (me) this.queryService.generateMutedUserQuery(query, me);
-			if (me) this.queryService.generateBlockedUserQuery(query, me);
-
-			const notes = await query.take(ps.limit).getMany();
+	
+			const notes = await this.searchService.searchNote(ps.query, me, {
+				userId: ps.userId,
+				channelId: ps.channelId,
+				host: ps.host,
+			}, {
+				untilId: ps.untilId,
+				sinceId: ps.sinceId,
+				limit: ps.limit,
+			});
 
 			return await this.noteEntityService.packMany(notes, me);
 		});

@@ -4,7 +4,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import type { User } from '@/models/entities/User.js';
-import { UserKeypairStoreService } from '@/core/UserKeypairStoreService.js';
+import { UserKeypairService } from '@/core/UserKeypairService.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { LoggerService } from '@/core/LoggerService.js';
 import { bindThis } from '@/decorators.js';
@@ -28,31 +28,15 @@ type PrivateKey = {
 	keyId: string;
 };
 
-@Injectable()
-export class ApRequestService {
-	private logger: Logger;
-
-	constructor(
-		@Inject(DI.config)
-		private config: Config,
-
-		private userKeypairStoreService: UserKeypairStoreService,
-		private httpRequestService: HttpRequestService,
-		private loggerService: LoggerService,
-	) {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		this.logger = this.loggerService?.getLogger('ap-request'); // なぜか TypeError: Cannot read properties of undefined (reading 'getLogger') と言われる
-	}
-
-	@bindThis
-	private createSignedPost(args: { key: PrivateKey, url: string, body: string, additionalHeaders: Record<string, string> }): Signed {
+export class ApRequestCreator {
+	static createSignedPost(args: { key: PrivateKey, url: string, body: string, additionalHeaders: Record<string, string> }): Signed {
 		const u = new URL(args.url);
 		const digestHeader = `SHA-256=${crypto.createHash('sha256').update(args.body).digest('base64')}`;
 
 		const request: Request = {
 			url: u.href,
 			method: 'POST',
-			headers: this.objectAssignWithLcKey({
+			headers: this.#objectAssignWithLcKey({
 				'Date': new Date().toUTCString(),
 				'Host': u.host,
 				'Content-Type': 'application/activity+json',
@@ -60,7 +44,7 @@ export class ApRequestService {
 			}, args.additionalHeaders),
 		};
 
-		const result = this.signToRequest(request, args.key, ['(request-target)', 'date', 'host', 'digest']);
+		const result = this.#signToRequest(request, args.key, ['(request-target)', 'date', 'host', 'digest']);
 
 		return {
 			request,
@@ -70,21 +54,20 @@ export class ApRequestService {
 		};
 	}
 
-	@bindThis
-	private createSignedGet(args: { key: PrivateKey, url: string, additionalHeaders: Record<string, string> }): Signed {
+	static createSignedGet(args: { key: PrivateKey, url: string, additionalHeaders: Record<string, string> }): Signed {
 		const u = new URL(args.url);
 
 		const request: Request = {
 			url: u.href,
 			method: 'GET',
-			headers: this.objectAssignWithLcKey({
+			headers: this.#objectAssignWithLcKey({
 				'Accept': 'application/activity+json, application/ld+json',
 				'Date': new Date().toUTCString(),
 				'Host': new URL(args.url).host,
 			}, args.additionalHeaders),
 		};
 
-		const result = this.signToRequest(request, args.key, ['(request-target)', 'date', 'host', 'accept']);
+		const result = this.#signToRequest(request, args.key, ['(request-target)', 'date', 'host', 'accept']);
 
 		return {
 			request,
@@ -94,13 +77,12 @@ export class ApRequestService {
 		};
 	}
 
-	@bindThis
-	private signToRequest(request: Request, key: PrivateKey, includeHeaders: string[]): Signed {
-		const signingString = this.genSigningString(request, includeHeaders);
+	static #signToRequest(request: Request, key: PrivateKey, includeHeaders: string[]): Signed {
+		const signingString = this.#genSigningString(request, includeHeaders);
 		const signature = crypto.sign('sha256', Buffer.from(signingString), key.privateKeyPem).toString('base64');
 		const signatureHeader = `keyId="${key.keyId}",algorithm="rsa-sha256",headers="${includeHeaders.join(' ')}",signature="${signature}"`;
 
-		request.headers = this.objectAssignWithLcKey(request.headers, {
+		request.headers = this.#objectAssignWithLcKey(request.headers, {
 			Signature: signatureHeader,
 		});
 		// node-fetch will generate this for us. if we keep 'Host', it won't change with redirects!
@@ -114,9 +96,8 @@ export class ApRequestService {
 		};
 	}
 
-	@bindThis
-	private genSigningString(request: Request, includeHeaders: string[]): string {
-		request.headers = this.lcObjectKey(request.headers);
+	static #genSigningString(request: Request, includeHeaders: string[]): string {
+		request.headers = this.#lcObjectKey(request.headers);
 
 		const results: string[] = [];
 
@@ -131,25 +112,40 @@ export class ApRequestService {
 		return results.join('\n');
 	}
 
-	@bindThis
-	private lcObjectKey(src: Record<string, string>): Record<string, string> {
+	static #lcObjectKey(src: Record<string, string>): Record<string, string> {
 		const dst: Record<string, string> = {};
 		for (const key of Object.keys(src).filter(x => x !== '__proto__' && typeof src[x] === 'string')) dst[key.toLowerCase()] = src[key];
 		return dst;
 	}
 
-	@bindThis
-	private objectAssignWithLcKey(a: Record<string, string>, b: Record<string, string>): Record<string, string> {
-		return Object.assign(this.lcObjectKey(a), this.lcObjectKey(b));
+	static #objectAssignWithLcKey(a: Record<string, string>, b: Record<string, string>): Record<string, string> {
+		return Object.assign(this.#lcObjectKey(a), this.#lcObjectKey(b));
+	}
+}
+
+@Injectable()
+export class ApRequestService {
+	private logger: Logger;
+
+	constructor(
+		@Inject(DI.config)
+		private config: Config,
+
+		private userKeypairService: UserKeypairService,
+		private httpRequestService: HttpRequestService,
+		private loggerService: LoggerService,
+	) {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		this.logger = this.loggerService?.getLogger('ap-request'); // なぜか TypeError: Cannot read properties of undefined (reading 'getLogger') と言われる
 	}
 
 	@bindThis
 	public async signedPost(user: { id: User['id'] }, url: string, object: any) {
 		const body = JSON.stringify(object);
 
-		const keypair = await this.userKeypairStoreService.getUserKeypair(user.id);
+		const keypair = await this.userKeypairService.getUserKeypair(user.id);
 
-		const req = this.createSignedPost({
+		const req = ApRequestCreator.createSignedPost({
 			key: {
 				privateKeyPem: keypair.privateKey,
 				keyId: `${this.config.url}/users/${user.id}#main-key`,
@@ -174,9 +170,9 @@ export class ApRequestService {
 	 */
 	@bindThis
 	public async signedGet(url: string, user: { id: User['id'] }) {
-		const keypair = await this.userKeypairStoreService.getUserKeypair(user.id);
+		const keypair = await this.userKeypairService.getUserKeypair(user.id);
 
-		const req = this.createSignedGet({
+		const req = ApRequestCreator.createSignedGet({
 			key: {
 				privateKeyPem: keypair.privateKey,
 				keyId: `${this.config.url}/users/${user.id}#main-key`,

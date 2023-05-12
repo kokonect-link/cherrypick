@@ -1,8 +1,8 @@
-import { performance } from 'perf_hooks';
 import { pipeline } from 'node:stream';
 import * as fs from 'node:fs';
 import { promisify } from 'node:util';
 import { Inject, Injectable } from '@nestjs/common';
+import { v4 as uuid } from 'uuid';
 import { DI } from '@/di-symbols.js';
 import { getIpHash } from '@/misc/get-ip-hash.js';
 import type { LocalUser, User } from '@/models/entities/User.js';
@@ -75,7 +75,7 @@ export class ApiCallService implements OnApplicationShutdown {
 				}
 				this.send(reply, res);
 			}).catch((err: ApiError) => {
-				this.send(reply, err.httpStatusCode ? err.httpStatusCode : err.kind === 'client' ? 400 : 500, err);
+				this.send(reply, err.httpStatusCode ? err.httpStatusCode : err.kind === 'client' ? 400 : err.kind === 'permission' ? 403 : 500, err);
 			});
 
 			if (user) {
@@ -100,18 +100,21 @@ export class ApiCallService implements OnApplicationShutdown {
 		request: FastifyRequest<{ Body: Record<string, unknown>, Querystring: Record<string, unknown> }>,
 		reply: FastifyReply,
 	) {
-		const multipartData = await request.file();
+		const multipartData = await request.file().catch(() => {
+			/* Fastify throws if the remote didn't send multipart data. Return 400 below. */
+		});
 		if (multipartData == null) {
 			reply.code(400);
+			reply.send();
 			return;
 		}
 
 		const [path] = await createTemp();
 		await pump(multipartData.file, fs.createWriteStream(path));
 
-		const fields = {} as Record<string, string | undefined>;
+		const fields = {} as Record<string, unknown>;
 		for (const [k, v] of Object.entries(multipartData.fields)) {
-			fields[k] = v.value;
+			fields[k] = typeof v === 'object' && 'value' in v ? v.value : undefined;
 		}
 
 		const token = fields['i'];
@@ -126,7 +129,7 @@ export class ApiCallService implements OnApplicationShutdown {
 			}, request).then((res) => {
 				this.send(reply, res);
 			}).catch((err: ApiError) => {
-				this.send(reply, err.httpStatusCode ? err.httpStatusCode : err.kind === 'client' ? 400 : 500, err);
+				this.send(reply, err.httpStatusCode ? err.httpStatusCode : err.kind === 'client' ? 400 : err.kind === 'permission' ? 403 : 500, err);
 			});
 
 			if (user) {
@@ -220,8 +223,8 @@ export class ApiCallService implements OnApplicationShutdown {
 
 			const limit = Object.assign({}, ep.meta.limit);
 
-			if (!limit.key) {
-				limit.key = ep.name;
+			if (limit.key == null) {
+				(limit as any).key = ep.name;
 			}
 
 			// TODO: 毎リクエスト計算するのもあれだしキャッシュしたい
@@ -253,6 +256,17 @@ export class ApiCallService implements OnApplicationShutdown {
 					message: 'Your account has been suspended.',
 					code: 'YOUR_ACCOUNT_SUSPENDED',
 					id: 'a8c724b3-6e9c-4b46-b1a8-bc3ed6258370',
+					httpStatusCode: 403,
+				});
+			}
+		}
+
+		if (ep.meta.prohibitMoved) {
+			if (user?.movedToUri) {
+				throw new ApiError({
+					message: 'You have moved your account.',
+					code: 'YOUR_ACCOUNT_MOVED',
+					id: '56f20ec9-fd06-4fa5-841b-edd6d7d4fa31',
 					httpStatusCode: 403,
 				});
 			}
@@ -318,9 +332,10 @@ export class ApiCallService implements OnApplicationShutdown {
 
 		// API invoking
 		return await ep.exec(data, user, token, file, request.ip, request.headers).catch((err: Error) => {
-			if (err instanceof ApiError) {
+			if (err instanceof ApiError || err instanceof AuthenticationError) {
 				throw err;
 			} else {
+				const errId = uuid();
 				this.logger.error(`Internal error occurred in ${ep.name}: ${err.message}`, {
 					ep: ep.name,
 					ps: data,
@@ -328,14 +343,15 @@ export class ApiCallService implements OnApplicationShutdown {
 						message: err.message,
 						code: err.name,
 						stack: err.stack,
+						id: errId,
 					},
 				});
-				console.error(err);
+				console.error(err, errId);
 				throw new ApiError(null, {
 					e: {
 						message: err.message,
 						code: err.name,
-						stack: err.stack,
+						id: errId,
 					},
 				});
 			}

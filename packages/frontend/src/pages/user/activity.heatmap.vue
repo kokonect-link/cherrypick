@@ -8,14 +8,12 @@
 </template>
 
 <script lang="ts" setup>
-import { markRaw, version as vueVersion, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
+import { onMounted, nextTick, watch } from 'vue';
 import { Chart } from 'chart.js';
-import tinycolor from 'tinycolor2';
 import * as misskey from 'misskey-js';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
 import { useChartTooltip } from '@/scripts/use-chart-tooltip';
-import { chartVLine } from '@/scripts/chart-vline';
 import { alpha } from '@/scripts/color';
 import { initChart } from '@/scripts/init-chart';
 
@@ -115,6 +113,9 @@ async function renderChart() {
 					const a = c.chart.chartArea ?? {};
 					return (a.bottom - a.top) / 7 - marginEachCell;
 				},
+			/* @see <https://github.com/misskey-dev/misskey/pull/10365#discussion_r1155511107>
+			}] satisfies ChartData[],
+			 */
 			}],
 		},
 		options: {

@@ -1,19 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { In } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
+import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { AccessTokensRepository, NoteReactionsRepository, NotificationsRepository, User } from '@/models/index.js';
+import type { AccessTokensRepository, FollowRequestsRepository, NoteReactionsRepository, NotesRepository, User, UsersRepository } from '@/models/index.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
 import type { Notification } from '@/models/entities/Notification.js';
-import type { NoteReaction } from '@/models/entities/NoteReaction.js';
 import type { Note } from '@/models/entities/Note.js';
-import type { Packed } from '@/misc/schema.js';
+import type { Packed } from '@/misc/json-schema.js';
 import { bindThis } from '@/decorators.js';
+import { isNotNull } from '@/misc/is-not-null.js';
+import { notificationTypes } from '@/types.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { CustomEmojiService } from '../CustomEmojiService.js';
 import type { UserEntityService } from './UserEntityService.js';
 import type { NoteEntityService } from './NoteEntityService.js';
 import type { UserGroupInvitationEntityService } from './UserGroupInvitationEntityService.js';
+
+const NOTE_REQUIRED_NOTIFICATION_TYPES = new Set(['mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded'] as (typeof notificationTypes[number])[]);
 
 @Injectable()
 export class NotificationEntityService implements OnModuleInit {
@@ -25,11 +28,17 @@ export class NotificationEntityService implements OnModuleInit {
 	constructor(
 		private moduleRef: ModuleRef,
 
-		@Inject(DI.notificationsRepository)
-		private notificationsRepository: NotificationsRepository,
+		@Inject(DI.notesRepository)
+		private notesRepository: NotesRepository,
+
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
 
 		@Inject(DI.noteReactionsRepository)
 		private noteReactionsRepository: NoteReactionsRepository,
+
+		@Inject(DI.followRequestsRepository)
+		private followRequestsRepository: FollowRequestsRepository,
 
 		@Inject(DI.accessTokensRepository)
 		private accessTokensRepository: AccessTokensRepository,
@@ -50,67 +59,50 @@ export class NotificationEntityService implements OnModuleInit {
 
 	@bindThis
 	public async pack(
-		src: Notification['id'] | Notification,
+		src: Notification,
+		meId: User['id'],
+		// eslint-disable-next-line @typescript-eslint/ban-types
 		options: {
-			_hintForEachNotes_?: {
-				myReactions: Map<Note['id'], NoteReaction | null>;
-			};
+
+		},
+		hint?: {
+			packedNotes: Map<Note['id'], Packed<'Note'>>;
+			packedUsers: Map<User['id'], Packed<'User'>>;
 		},
 	): Promise<Packed<'Notification'>> {
-		const notification = typeof src === 'object' ? src : await this.notificationsRepository.findOneByOrFail({ id: src });
+		const notification = src;
 		const token = notification.appAccessTokenId ? await this.accessTokensRepository.findOneByOrFail({ id: notification.appAccessTokenId }) : null;
+		const noteIfNeed = NOTE_REQUIRED_NOTIFICATION_TYPES.has(notification.type) && notification.noteId != null ? (
+			hint?.packedNotes != null
+				? hint.packedNotes.get(notification.noteId)
+				: this.noteEntityService.pack(notification.noteId!, { id: meId }, {
+					detail: true,
+				})
+		) : undefined;
+		const userIfNeed = notification.notifierId != null ? (
+			hint?.packedUsers != null
+				? hint.packedUsers.get(notification.notifierId)
+				: this.userEntityService.pack(notification.notifierId!, { id: meId }, {
+					detail: false,
+				})
+		) : undefined;
 
 		return await awaitAll({
 			id: notification.id,
-			createdAt: notification.createdAt.toISOString(),
+			createdAt: new Date(notification.createdAt).toISOString(),
 			type: notification.type,
-			isRead: notification.isRead,
 			userId: notification.notifierId,
-			user: notification.notifierId ? this.userEntityService.pack(notification.notifier ?? notification.notifierId) : null,
-			...(notification.type === 'mention' ? {
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
-			} : {}),
-			...(notification.type === 'reply' ? {
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
-			} : {}),
-			...(notification.type === 'renote' ? {
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
-			} : {}),
-			...(notification.type === 'quote' ? {
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
-			} : {}),
+			...(userIfNeed != null ? { user: userIfNeed } : {}),
+			...(noteIfNeed != null ? { note: noteIfNeed } : {}),
 			...(notification.type === 'reaction' ? {
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
 				reaction: notification.reaction,
 			} : {}),
-			...(notification.type === 'pollVote' ? { // TODO: そのうち消す
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
-				choice: notification.choice,
-			} : {}),
-			...(notification.type === 'pollEnded' ? {
-				note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
-					detail: true,
-					_hint_: options._hintForEachNotes_,
-				}),
-			} : {}),
+			// ...(notification.type === 'pollEnded' ? {
+			// 	note: this.noteEntityService.pack(notification.note ?? notification.noteId!, { id: notification.notifieeId }, {
+			// 		detail: true,
+			// 		_hint_: options._hintForEachNotes_,
+			// 	}),
+			// } : {}),
 			...(notification.type === 'groupInvited' ? {
 				invitation: this.userGroupInvitationEntityService.pack(notification.userGroupInvitationId!),
 			} : {}),
@@ -132,26 +124,41 @@ export class NotificationEntityService implements OnModuleInit {
 	) {
 		if (notifications.length === 0) return [];
 
-		const notes = notifications.filter(x => x.note != null).map(x => x.note!);
-		const noteIds = notes.map(n => n.id);
-		const myReactionsMap = new Map<Note['id'], NoteReaction | null>();
-		const renoteIds = notes.filter(n => n.renoteId != null).map(n => n.renoteId!);
-		const targets = [...noteIds, ...renoteIds];
-		const myReactions = await this.noteReactionsRepository.findBy({
-			userId: meId,
-			noteId: In(targets),
-		});
+		let validNotifications = notifications;
 
-		for (const target of targets) {
-			myReactionsMap.set(target, myReactions.find(reaction => reaction.noteId === target) ?? null);
+		const noteIds = validNotifications.map(x => x.noteId).filter(isNotNull);
+		const notes = noteIds.length > 0 ? await this.notesRepository.find({
+			where: { id: In(noteIds) },
+			relations: ['user', 'reply', 'reply.user', 'renote', 'renote.user'],
+		}) : [];
+		const packedNotesArray = await this.noteEntityService.packMany(notes, { id: meId }, {
+			detail: true,
+		});
+		const packedNotes = new Map(packedNotesArray.map(p => [p.id, p]));
+
+		validNotifications = validNotifications.filter(x => x.noteId == null || packedNotes.has(x.noteId));
+
+		const userIds = validNotifications.map(x => x.notifierId).filter(isNotNull);
+		const users = userIds.length > 0 ? await this.usersRepository.find({
+			where: { id: In(userIds) },
+		}) : [];
+		const packedUsersArray = await this.userEntityService.packMany(users, { id: meId }, {
+			detail: false,
+		});
+		const packedUsers = new Map(packedUsersArray.map(p => [p.id, p]));
+
+		// 既に解決されたフォローリクエストの通知を除外
+		const followRequestNotifications = validNotifications.filter(x => x.type === 'receiveFollowRequest');
+		if (followRequestNotifications.length > 0) {
+			const reqs = await this.followRequestsRepository.find({
+				where: { followerId: In(followRequestNotifications.map(x => x.notifierId!)) },
+			});
+			validNotifications = validNotifications.filter(x => (x.type !== 'receiveFollowRequest') || reqs.some(r => r.followerId === x.notifierId));
 		}
 
-		await this.customEmojiService.prefetchEmojis(this.customEmojiService.aggregateNoteEmojis(notes));
-
-		return await Promise.all(notifications.map(x => this.pack(x, {
-			_hintForEachNotes_: {
-				myReactions: myReactionsMap,
-			},
+		return await Promise.all(validNotifications.map(x => this.pack(x, meId, {}, {
+			packedNotes,
+			packedUsers,
 		})));
 	}
 }

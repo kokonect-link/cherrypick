@@ -8,19 +8,19 @@
 		<div style="padding: 8px; text-align: center;">
 			<MkButton primary gradate rounded inline @click="post"><i class="ti ti-pencil"></i></MkButton>
 		</div>
-		<XTimeline ref="timeline" src="channel" :channel="column.channelId" @after="() => emit('loaded')"/>
+		<MkTimeline ref="timeline" src="channel" :channel="column.channelId" @after="() => emit('loaded')"/>
 	</template>
 </XColumn>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import XColumn from './column.vue';
 import { updateColumn, Column } from './deck-store';
-import XTimeline from '@/components/MkTimeline.vue';
+import MkTimeline from '@/components/MkTimeline.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
+import * as misskey from 'misskey-js';
 
 const props = defineProps<{
 	column: Column;
@@ -32,14 +32,17 @@ const emit = defineEmits<{
 	(ev: 'parent-focus', direction: 'up' | 'down' | 'left' | 'right'): void;
 }>();
 
-let timeline = $shallowRef<InstanceType<typeof XTimeline>>();
+let timeline = $shallowRef<InstanceType<typeof MkTimeline>>();
+let channel = $shallowRef<misskey.entities.Channel>();
 
 if (props.column.channelId == null) {
 	setChannel();
 }
 
 async function setChannel() {
-	const channels = await os.api('channels/followed');
+	const channels = await os.api('channels/my-favorites', {
+		limit: 100,
+	});
 	const { canceled, result: channel } = await os.select({
 		title: i18n.ts.selectChannel,
 		items: channels.map(x => ({
@@ -54,12 +57,15 @@ async function setChannel() {
 	});
 }
 
-function post() {
+async function post() {
+	if (!channel || channel.id !== props.column.channelId) {
+		channel = await os.api('channels/show', {
+			channelId: props.column.channelId,
+		});
+	}
+
 	os.post({
-		channel: {
-			id: props.column.channelId,
-		},
-		instant: true,
+		channel,
 	});
 }
 

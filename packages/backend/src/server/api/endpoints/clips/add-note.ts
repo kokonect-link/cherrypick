@@ -13,6 +13,8 @@ export const meta = {
 
 	requireCredential: true,
 
+	prohibitMoved: true,
+
 	kind: 'write:account',
 
 	limit: {
@@ -105,6 +107,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				id: this.idService.genId(),
 				noteId: note.id,
 				clipId: clip.id,
+			});
+
+			await this.clipsRepository.update(clip.id, {
+				lastClippedAt: new Date(),
 			});
 		});
 	}

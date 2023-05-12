@@ -1,10 +1,10 @@
 <template>
 <Transition
 	appear
-	:enter-active-class="$store.state.animation ? $style.transition_fade_enterActive : ''"
-	:leave-active-class="$store.state.animation ? $style.transition_fade_leaveActive : ''"
-	:enter-from-class="$store.state.animation ? $style.transition_fade_enterFrom : ''"
-	:leave-to-class="$store.state.animation ? $style.transition_fade_leaveTo : ''"
+	:enter-active-class="defaultStore.state.animation ? $style.transition_fade_enterActive : ''"
+	:leave-active-class="defaultStore.state.animation ? $style.transition_fade_leaveActive : ''"
+	:enter-from-class="defaultStore.state.animation ? $style.transition_fade_enterFrom : ''"
+	:leave-to-class="defaultStore.state.animation ? $style.transition_fade_leaveTo : ''"
 >
 	<div ref="rootEl" :class="$style.root" :style="{ zIndex }" @contextmenu.prevent.stop="() => {}">
 		<MkMenu :items="items" :align="'left'" @close="$emit('closed')"/>
@@ -17,6 +17,7 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import MkMenu from './MkMenu.vue';
 import { MenuItem } from './types/menu.vue';
 import contains from '@/scripts/contains';
+import { defaultStore } from '@/store';
 import * as os from '@/os';
 
 const props = defineProps<{
@@ -32,6 +33,8 @@ let rootEl = $shallowRef<HTMLDivElement>();
 
 let zIndex = $ref<number>(os.claimZIndex('high'));
 
+const SCROLLBAR_THICKNESS = 16;
+
 onMounted(() => {
 	let left = props.ev.pageX + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
 	let top = props.ev.pageY + 1; // 間違って右ダブルクリックした場合に意図せずアイテムがクリックされるのを防ぐため + 1
@@ -39,12 +42,12 @@ onMounted(() => {
 	const width = rootEl.offsetWidth;
 	const height = rootEl.offsetHeight;
 
-	if (left + width - window.pageXOffset > window.innerWidth) {
-		left = window.innerWidth - width + window.pageXOffset;
+	if (left + width - window.pageXOffset >= (window.innerWidth - SCROLLBAR_THICKNESS)) {
+		left = (window.innerWidth - SCROLLBAR_THICKNESS) - width + window.pageXOffset;
 	}
 
-	if (top + height - window.pageYOffset > window.innerHeight) {
-		top = window.innerHeight - height + window.pageYOffset;
+	if (top + height - window.pageYOffset >= (window.innerHeight - SCROLLBAR_THICKNESS)) {
+		top = (window.innerHeight - SCROLLBAR_THICKNESS) - height + window.pageYOffset;
 	}
 
 	if (top < 0) {

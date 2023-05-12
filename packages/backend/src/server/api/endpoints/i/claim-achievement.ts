@@ -1,10 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { DI } from '@/di-symbols.js';
 import { AchievementService, ACHIEVEMENT_TYPES } from '@/core/AchievementService.js';
 
 export const meta = {
 	requireCredential: true,
+	prohibitMoved: true,
 } as const;
 
 export const paramDef = {

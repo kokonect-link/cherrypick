@@ -2,10 +2,16 @@
 <div>
 	<XBanner v-for="media in mediaList.filter(media => !previewable(media))" :key="media.id" :media="media"/>
 	<div v-if="mediaList.filter(media => previewable(media)).length > 0" :class="$style.container">
-		<div ref="gallery" :class="[$style.medias, count <= 4 ? $style['n' + count] : $style.nMany]">
+		<div
+			ref="gallery"
+			:class="[
+				$style.medias,
+				count <= 4 ? $style['n' + count] : $style.nMany,
+			]"
+		>
 			<template v-for="media in mediaList.filter(media => previewable(media))">
-				<XVideo v-if="media.type.startsWith('video')" :key="media.id" :class="$style.media" :video="media"/>
-				<XImage v-else-if="media.type.startsWith('image')" :key="media.id" :class="$style.media" class="image" :data-id="media.id" :image="media" :raw="raw"/>
+				<XVideo v-if="media.type.startsWith('video')" :key="`video:${media.id}`" :class="$style.media" :video="media"/>
+				<XImage v-else-if="media.type.startsWith('image')" :key="`image:${media.id}`" :class="$style.media" class="image" :data-id="media.id" :image="media" :raw="raw"/>
 			</template>
 		</div>
 	</div>
@@ -13,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useCssModule, watch } from 'vue';
 import * as misskey from 'misskey-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
@@ -30,8 +36,11 @@ const props = defineProps<{
 	raw?: boolean;
 }>();
 
-const gallery = ref(null);
+const $style = useCssModule();
+
+const gallery = ref<HTMLDivElement>();
 const pswpZIndex = os.claimZIndex('middle');
+document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
 const count = $computed(() => props.mediaList.filter(media => previewable(media)).length);
 
 onMounted(() => {
@@ -46,8 +55,8 @@ onMounted(() => {
 					src: media.url,
 					w: media.properties.width,
 					h: media.properties.height,
-					alt: media.comment || media.name,
-					comment: media.comment || media.name,
+					alt: media.comment ?? media.name,
+					comment: media.comment ?? media.name,
 				};
 				if (media.properties.orientation != null && media.properties.orientation >= 5) {
 					[item.w, item.h] = [item.h, item.w];
@@ -55,17 +64,18 @@ onMounted(() => {
 				return item;
 			}),
 		gallery: gallery.value,
+		mainClass: $style.pswp,
 		children: '.image',
 		thumbSelector: '.image',
 		loop: false,
 		padding: window.innerWidth > 500 ? {
 			top: 32,
-			bottom: 32,
+			bottom: 90,
 			left: 32,
 			right: 32,
 		} : {
 			top: 0,
-			bottom: 0,
+			bottom: 78,
 			left: 0,
 			right: 0,
 		},
@@ -83,6 +93,7 @@ onMounted(() => {
 
 		const id = element.dataset.id;
 		const file = props.mediaList.find(media => media.id === id);
+		if (!file) return;
 
 		itemData.src = file.url;
 		itemData.w = Number(file.properties.width);
@@ -91,8 +102,8 @@ onMounted(() => {
 			[itemData.w, itemData.h] = [itemData.h, itemData.w];
 		}
 		itemData.msrc = file.thumbnailUrl;
-		itemData.alt = file.comment || file.name;
-		itemData.comment = file.comment || file.name;
+		itemData.alt = file.comment ?? file.name;
+		itemData.comment = file.comment ?? file.name;
 		itemData.thumbCropped = true;
 	});
 
@@ -114,6 +125,23 @@ onMounted(() => {
 	});
 
 	lightbox.init();
+
+	window.addEventListener('popstate', () => {
+		if (lightbox.pswp && lightbox.pswp.isOpen === true) {
+			lightbox.pswp.close();
+			return;
+		}
+	});
+
+	lightbox.on('beforeOpen', () => {
+		history.pushState(null, '', '#pswp');
+	});
+
+	lightbox.on('close', () => {
+		if (window.location.hash === '#pswp') {
+			history.back();
+		}
+	});
 });
 
 const previewable = (file: misskey.entities.DriveFile): boolean => {
@@ -182,16 +210,14 @@ const previewable = (file: misskey.entities.DriveFile): boolean => {
 	overflow: hidden; // clipにするとバグる
 	border-radius: 8px;
 }
+
+.pswp {
+	--pswp-root-z-index: var(--mk-pswp-root-z-index, 2000700) !important;
+	--pswp-bg: var(--modalBg) !important;
+}
 </style>
 
 <style lang="scss">
-.pswp {
-	// なぜか機能しない
-  //z-index: v-bind(pswpZIndex);
-	z-index: 2000000;
-	--pswp-bg: var(--modalBg);
-}
-
 .pswp__bg {
 	background: var(--modalBg);
 	backdrop-filter: var(--modalBgFilter);
@@ -203,7 +229,7 @@ const previewable = (file: misskey.entities.DriveFile): boolean => {
 	align-items: center;
 
 	position: absolute;
-	bottom: 30px;
+	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
 
@@ -220,5 +246,6 @@ const previewable = (file: misskey.entities.DriveFile): boolean => {
 	max-height: 8em;
 	overflow-y: auto;
 	text-shadow: var(--bg) 0 0 10px, var(--bg) 0 0 3px, var(--bg) 0 0 3px;
+	white-space: pre-line;
 }
 </style>

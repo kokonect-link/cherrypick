@@ -1,4 +1,5 @@
 import { URLSearchParams } from 'node:url';
+import googletr from '@vitalets/google-translate-api';
 import { Inject, Injectable } from '@nestjs/common';
 import type { NotesRepository } from '@/models/index.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
@@ -9,7 +10,6 @@ import { MetaService } from '@/core/MetaService.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { ApiError } from '../../error.js';
-import googletr from '@vitalets/google-translate-api';
 
 export const meta = {
 	tags: ['notes'],
@@ -80,42 +80,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			const instance = await this.metaService.fetch();
 
-			/*
-			if (instance.deeplAuthKey == null) {
-				return 204; // TODO: 良い感じのエラー返す
-			}
-			*/
-
-//			let targetLang = ps.targetLang;
-//			if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
-
-//			const params = new URLSearchParams();
-//			params.append('auth_key', instance.deeplAuthKey);
-//			params.append('text', note.text);
-//			params.append('target_lang', targetLang);
-
-//			const endpoint = instance.deeplIsPro ? 'https://api.deepl.com/v2/translate' : 'https://api-free.deepl.com/v2/translate';
-
-//			const res = await this.httpRequestService.send(endpoint, {
-//				method: 'POST',
-//				headers: {
-//					'Content-Type': 'application/x-www-form-urlencoded',
-//					Accept: 'application/json, */*',
-//				},
-//				body: params.toString(),
-//			});
-
-//			const json = (await res.json()) as {
-//				translations: {
-//					detected_source_language: string;
-//					text: string;
-//				}[];
-//			};
-
-			if (instance.translatorType == null || !translatorServices.includes(instance.translatorType)) {
-				throw new ApiError(meta.errors.noTranslateService);
-			}
-
 			if (instance.translatorType === 'DeepL') {
 				if (instance.deeplAuthKey == null) {
 					return 204; // TODO: 良い感じのエラー返す
@@ -163,14 +127,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 					text: json.text,
 					translator: translatorServices,
 				};
+			} else {
+				throw new ApiError(meta.errors.noTranslateService);
 			}
-
-			/*
-			return {
-				sourceLang: json.translations[0].detected_source_language,
-				text: json.translations[0].text,
-			};
-			 */
 		});
 	}
 }

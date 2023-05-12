@@ -2,9 +2,9 @@
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<div ref="rootEl" v-hotkey.global="keymap" class="tqmomfks">
-		<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()">{{ $ts.newNoteRecived }}</button></div>
+		<div v-if="queue > 0" class="new"><button class="_buttonPrimary" @click="top()">{{ i18n.ts.newNoteRecived }}</button></div>
 		<div class="tl">
-			<XTimeline
+			<MkTimeline
 				ref="tlEl" :key="antennaId"
 				class="tl"
 				src="antenna"
@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, watch } from 'vue';
-import XTimeline from '@/components/MkTimeline.vue';
+import { computed, watch } from 'vue';
+import MkTimeline from '@/components/MkTimeline.vue';
 import { scroll } from '@/scripts/scroll';
 import * as os from '@/os';
 import { useRouter } from '@/router';
@@ -35,7 +35,7 @@ const props = defineProps<{
 let antenna = $ref(null);
 let queue = $ref(0);
 let rootEl = $shallowRef<HTMLElement>();
-let tlEl = $shallowRef<InstanceType<typeof XTimeline>>();
+let tlEl = $shallowRef<InstanceType<typeof MkTimeline>>();
 const keymap = $computed(() => ({
 	't': focus,
 }));

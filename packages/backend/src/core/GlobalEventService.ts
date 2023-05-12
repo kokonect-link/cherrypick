@@ -1,17 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import Redis from 'ioredis';
+import * as Redis from 'ioredis';
 import type { User } from '@/models/entities/User.js';
 import type { Note } from '@/models/entities/Note.js';
 import type { UserList } from '@/models/entities/UserList.js';
 import type { UserGroup } from '@/models/entities/UserGroup.js';
 import type { Antenna } from '@/models/entities/Antenna.js';
-import type { Channel } from '@/models/entities/Channel.js';
 import type {
 	StreamChannels,
 	AdminStreamTypes,
 	AntennaStreamTypes,
 	BroadcastTypes,
-	ChannelStreamTypes,
 	DriveStreamTypes,
 	GroupMessagingStreamTypes,
 	InternalStreamTypes,
@@ -20,12 +18,13 @@ import type {
 	MessagingStreamTypes,
 	NoteStreamTypes,
 	UserListStreamTypes,
-	UserStreamTypes,
+	RoleTimelineStreamTypes,
 } from '@/server/api/stream/types.js';
-import type { Packed } from '@/misc/schema.js';
+import type { Packed } from '@/misc/json-schema.js';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { bindThis } from '@/decorators.js';
+import { Role } from '@/models';
 
 @Injectable()
 export class GlobalEventService {
@@ -33,8 +32,8 @@ export class GlobalEventService {
 		@Inject(DI.config)
 		private config: Config,
 
-		@Inject(DI.redis)
-		private redisClient: Redis.Redis,
+		@Inject(DI.redisForPub)
+		private redisForPub: Redis.Redis,
 	) {
 	}
 
@@ -44,7 +43,7 @@ export class GlobalEventService {
 			{ type: type, body: null } :
 			{ type: type, body: value };
 
-		this.redisClient.publish(this.config.host, JSON.stringify({
+		this.redisForPub.publish(this.config.host, JSON.stringify({
 			channel: channel,
 			message: message,
 		}));
@@ -53,11 +52,6 @@ export class GlobalEventService {
 	@bindThis
 	public publishInternalEvent<K extends keyof InternalStreamTypes>(type: K, value?: InternalStreamTypes[K]): void {
 		this.publish('internal', type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
-	public publishUserEvent<K extends keyof UserStreamTypes>(userId: User['id'], type: K, value?: UserStreamTypes[K]): void {
-		this.publish(`user:${userId}`, type, typeof value === 'undefined' ? null : value);
 	}
 
 	@bindThis
@@ -84,11 +78,6 @@ export class GlobalEventService {
 	}
 
 	@bindThis
-	public publishChannelStream<K extends keyof ChannelStreamTypes>(channelId: Channel['id'], type: K, value?: ChannelStreamTypes[K]): void {
-		this.publish(`channelStream:${channelId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
 	public publishUserListStream<K extends keyof UserListStreamTypes>(listId: UserList['id'], type: K, value?: UserListStreamTypes[K]): void {
 		this.publish(`userListStream:${listId}`, type, typeof value === 'undefined' ? null : value);
 	}
@@ -111,6 +100,11 @@ export class GlobalEventService {
 	@bindThis
 	public publishMessagingIndexStream<K extends keyof MessagingIndexStreamTypes>(userId: User['id'], type: K, value?: MessagingIndexStreamTypes[K]): void {
 		this.publish(`messagingIndexStream:${userId}`, type, typeof value === 'undefined' ? null : value);
+	}
+
+	@bindThis
+	public publishRoleTimelineStream<K extends keyof RoleTimelineStreamTypes>(roleId: Role['id'], type: K, value?: RoleTimelineStreamTypes[K]): void {
+		this.publish(`roleTimelineStream:${roleId}`, type, typeof value === 'undefined' ? null : value);
 	}
 
 	@bindThis

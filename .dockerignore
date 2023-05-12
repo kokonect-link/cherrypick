@@ -8,7 +8,6 @@ build/
 built/
 db/
 docker-compose.yml
-elasticsearch/
 node_modules/
 packages/*/node_modules
 redis/
@@ -25,6 +24,10 @@ fluent-emojis/
 !.yarn/sdks
 !.yarn/versions
 
+.pnpm-store
+
 .idea/
 packages/*/.vscode/
 packages/backend/test/docker-compose.yml
+
+.pnpm-store/

@@ -36,32 +36,25 @@ export const paramDef = {
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
+
+		tag: { type: 'string', minLength: 1 },
+		query: {
+			type: 'array',
+			description: 'The outer arrays are chained with OR, the inner arrays are chained with AND.',
+			items: {
+				type: 'array',
+				items: {
+					type: 'string',
+					minLength: 1,
+				},
+				minItems: 1,
+			},
+			minItems: 1,
+		},
 	},
 	anyOf: [
-		{
-			properties: {
-				tag: { type: 'string', minLength: 1 },
-			},
-			required: ['tag'],
-		},
-		{
-			properties: {
-				query: {
-					type: 'array',
-					description: 'The outer arrays are chained with OR, the inner arrays are chained with AND.',
-					items: {
-						type: 'array',
-						items: {
-							type: 'string',
-							minLength: 1,
-						},
-						minItems: 1,
-					},
-					minItems: 1,
-				},
-			},
-			required: ['query'],
-		},
+		{ required: ['tag'] },
+		{ required: ['query'] },
 	],
 } as const;
 
@@ -78,16 +71,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		super(meta, paramDef, async (ps, me) => {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), ps.sinceId, ps.untilId)
 				.innerJoinAndSelect('note.user', 'user')
-				.leftJoinAndSelect('user.avatar', 'avatar')
-				.leftJoinAndSelect('user.banner', 'banner')
 				.leftJoinAndSelect('note.reply', 'reply')
 				.leftJoinAndSelect('note.renote', 'renote')
 				.leftJoinAndSelect('reply.user', 'replyUser')
-				.leftJoinAndSelect('replyUser.avatar', 'replyUserAvatar')
-				.leftJoinAndSelect('replyUser.banner', 'replyUserBanner')
-				.leftJoinAndSelect('renote.user', 'renoteUser')
-				.leftJoinAndSelect('renoteUser.avatar', 'renoteUserAvatar')
-				.leftJoinAndSelect('renoteUser.banner', 'renoteUserBanner');
+				.leftJoinAndSelect('renote.user', 'renoteUser');
 
 			this.queryService.generateVisibilityQuery(query, me);
 			if (me) this.queryService.generateMutedUserQuery(query, me);

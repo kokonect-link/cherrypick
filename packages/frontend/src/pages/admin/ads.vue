@@ -29,7 +29,7 @@
 					<MkInput v-model="ad.ratio" type="number">
 						<template #label>{{ i18n.ts.ratio }}</template>
 					</MkInput>
-					<MkInput v-model="ad.startAt" type="datetime-local">
+					<MkInput v-model="ad.startsAt" type="datetime-local">
 						<template #label>{{ i18n.ts.startingperiod }}</template>
 					</MkInput>
 					<MkInput v-model="ad.expiresAt" type="datetime-local">
@@ -44,6 +44,9 @@
 					<MkButton class="button" inline danger @click="remove(ad)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }}</MkButton>
 				</div>
 			</div>
+			<MkButton class="button" @click="more()">
+				<i class="ti ti-reload"></i>{{ i18n.ts.more }}
+			</MkButton>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>
@@ -70,13 +73,13 @@ const localTimeDiff = localTime.getTimezoneOffset() * 60 * 1000;
 os.api('admin/ad/list').then(adsResponse => {
 	ads = adsResponse.map(r => {
 		const exdate = new Date(r.expiresAt);
-		const stdate = new Date(r.startAt);
+		const stdate = new Date(r.startsAt);
 		exdate.setMilliseconds(exdate.getMilliseconds() - localTimeDiff);
 		stdate.setMilliseconds(stdate.getMilliseconds() - localTimeDiff);
 		return {
 			...r,
 			expiresAt: exdate.toISOString().slice(0, 16),
-			startAt: stdate.toISOString().slice(0, 16),
+			startsAt: stdate.toISOString().slice(0, 16),
 		};
 	});
 });
@@ -91,7 +94,7 @@ function add() {
 		url: '',
 		imageUrl: null,
 		expiresAt: null,
-		startAt: null,
+		startsAt: null,
 	});
 }
 
@@ -110,19 +113,73 @@ function remove(ad) {
 
 function save(ad) {
 	if (ad.id == null) {
-		os.apiWithDialog('admin/ad/create', {
+		os.api('admin/ad/create', {
 			...ad,
 			expiresAt: new Date(ad.expiresAt).getTime(),
-			startAt: new Date(ad.startAt).getTime(),
+			startsAt: new Date(ad.startsAt).getTime(),
+		}).then(() => {
+			os.alert({
+				type: 'success',
+				text: i18n.ts.saved,
+			});
+			refresh();
+		}).catch(err => {
+			os.alert({
+				type: 'error',
+				text: err,
+			});
 		});
 	} else {
-		os.apiWithDialog('admin/ad/update', {
+		os.api('admin/ad/update', {
 			...ad,
 			expiresAt: new Date(ad.expiresAt).getTime(),
-			startAt: new Date(ad.startAt).getTime(),
+			startsAt: new Date(ad.startsAt).getTime(),
+		}).then(() => {
+			os.alert({
+				type: 'success',
+				text: i18n.ts.saved,
+			});
+		}).catch(err => {
+			os.alert({
+				type: 'error',
+				text: err,
+			});
 		});
 	}
 }
+function more() {
+	os.api('admin/ad/list', { untilId: ads.reduce((acc, ad) => ad.id != null ? ad : acc).id }).then(adsResponse => {
+		ads = ads.concat(adsResponse.map(r => {
+			const exdate = new Date(r.expiresAt);
+			const stdate = new Date(r.startsAt);
+			exdate.setMilliseconds(exdate.getMilliseconds() - localTimeDiff);
+			stdate.setMilliseconds(stdate.getMilliseconds() - localTimeDiff);
+			return {
+				...r,
+				expiresAt: exdate.toISOString().slice(0, 16),
+				startsAt: stdate.toISOString().slice(0, 16),
+			};
+		}));
+	});
+}
+
+function refresh() {
+	os.api('admin/ad/list').then(adsResponse => {
+		ads = adsResponse.map(r => {
+			const exdate = new Date(r.expiresAt);
+			const stdate = new Date(r.startsAt);
+			exdate.setMilliseconds(exdate.getMilliseconds() - localTimeDiff);
+			stdate.setMilliseconds(stdate.getMilliseconds() - localTimeDiff);
+			return {
+				...r,
+				expiresAt: exdate.toISOString().slice(0, 16),
+				startsAt: stdate.toISOString().slice(0, 16),
+			};
+		});
+	});
+}
+
+refresh();
 
 const headerActions = $computed(() => [{
 	asFullButton: true,

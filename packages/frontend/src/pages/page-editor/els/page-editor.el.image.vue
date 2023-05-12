@@ -1,7 +1,7 @@
 <template>
 <!-- eslint-disable vue/no-mutating-props -->
 <XContainer :draggable="true" @remove="() => $emit('remove')">
-	<template #header><i class="ti ti-photo"></i> {{ $ts._pages.blocks.image }}</template>
+	<template #header><i class="ti ti-photo"></i> {{ i18n.ts._pages.blocks.image }}</template>
 	<template #func>
 		<button @click="choose()">
 			<i class="ti ti-folder"></i>
@@ -20,6 +20,7 @@ import { onMounted } from 'vue';
 import XContainer from '../page-editor.container.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import * as os from '@/os';
+import { i18n } from '@/i18n';
 
 const props = defineProps<{
 	modelValue: any
@@ -32,8 +33,8 @@ const emit = defineEmits<{
 let file: any = $ref(null);
 
 async function choose() {
-	os.selectDriveFile(false).then((fileResponse: any) => {
-		file = fileResponse;
+	os.selectDriveFile(false).then((fileResponse) => {
+		file = fileResponse[0];
 		emit('update:modelValue', {
 			...props.modelValue,
 			fileId: fileResponse.id,

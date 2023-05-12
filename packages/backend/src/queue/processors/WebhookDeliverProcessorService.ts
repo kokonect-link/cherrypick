@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IsNull, MoreThan } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { WebhooksRepository } from '@/models/index.js';
 import type { Config } from '@/config.js';
@@ -40,6 +39,7 @@ export class WebhookDeliverProcessorService {
 					'X-Misskey-Host': this.config.host,
 					'X-Misskey-Hook-Id': job.data.webhookId,
 					'X-Misskey-Hook-Secret': job.data.secret,
+					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
 					hookId: job.data.webhookId,

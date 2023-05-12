@@ -13,6 +13,8 @@ export const meta = {
 
 	requireCredential: true,
 
+	prohibitMoved: true,
+
 	kind: 'write:account',
 
 	errors: {
@@ -89,6 +91,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		private globalEventService: GlobalEventService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			if ((ps.keywords.length === 0) || ps.keywords[0].every(x => x === '')) {
+				throw new Error('invalid param');
+			}
+
 			const currentAntennasCount = await this.antennasRepository.countBy({
 				userId: me.id,
 			});
@@ -119,9 +125,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				}
 			}
 
+			const now = new Date();
+
 			const antenna = await this.antennasRepository.insert({
 				id: this.idService.genId(),
-				createdAt: new Date(),
+				createdAt: now,
+				lastUsedAt: now,
 				userId: me.id,
 				name: ps.name,
 				src: ps.src,

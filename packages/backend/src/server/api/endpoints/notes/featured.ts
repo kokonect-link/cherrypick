@@ -9,6 +9,8 @@ export const meta = {
 	tags: ['notes'],
 
 	requireCredential: false,
+	allowGet: true,
+	cacheSec: 3600,
 
 	res: {
 		type: 'array',
@@ -26,6 +28,7 @@ export const paramDef = {
 	properties: {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
+		channelId: { type: 'string', nullable: true, format: 'misskey:id' },
 	},
 	required: [],
 } as const;
@@ -41,7 +44,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		private queryService: QueryService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const max = 30;
 			const day = 1000 * 60 * 60 * 24 * 3; // 3日前まで
 
 			const query = this.notesRepository.createQueryBuilder('note')
@@ -51,23 +53,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				.andWhere('note.createdAt > :date', { date: new Date(Date.now() - day) })
 				.andWhere('note.visibility = \'public\'')
 				.innerJoinAndSelect('note.user', 'user')
-				.leftJoinAndSelect('user.avatar', 'avatar')
-				.leftJoinAndSelect('user.banner', 'banner')
 				.leftJoinAndSelect('note.reply', 'reply')
 				.leftJoinAndSelect('note.renote', 'renote')
 				.leftJoinAndSelect('reply.user', 'replyUser')
-				.leftJoinAndSelect('replyUser.avatar', 'replyUserAvatar')
-				.leftJoinAndSelect('replyUser.banner', 'replyUserBanner')
-				.leftJoinAndSelect('renote.user', 'renoteUser')
-				.leftJoinAndSelect('renoteUser.avatar', 'renoteUserAvatar')
-				.leftJoinAndSelect('renoteUser.banner', 'renoteUserBanner');
+				.leftJoinAndSelect('renote.user', 'renoteUser');
+
+			if (ps.channelId) query.andWhere('note.channelId = :channelId', { channelId: ps.channelId });
 
 			if (me) this.queryService.generateMutedUserQuery(query, me);
 			if (me) this.queryService.generateBlockedUserQuery(query, me);
 
 			let notes = await query
 				.orderBy('note.score', 'DESC')
-				.take(max)
+				.take(100)
 				.getMany();
 
 			notes.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());

@@ -1,6 +1,5 @@
 import { markRaw, ref } from 'vue';
 import { Storage } from './pizzax';
-import { Theme } from './scripts/theme';
 
 interface PostFormAction {
 	title: string,
@@ -25,16 +24,25 @@ interface NotePostInterruptor {
 	handler: (note: FIXME) => unknown;
 }
 
+interface PageViewInterruptor {
+	handler: (page: Page) => unknown;
+}
+
 export const postFormActions: PostFormAction[] = [];
 export const userActions: UserAction[] = [];
 export const noteActions: NoteAction[] = [];
 export const noteViewInterruptors: NoteViewInterruptor[] = [];
 export const notePostInterruptors: NotePostInterruptor[] = [];
+export const pageViewInterruptors: PageViewInterruptor[] = [];
 
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
 export const defaultStore = markRaw(new Storage('base', {
-	tutorial: {
+	accountSetupWizard: {
+		where: 'account',
+		default: 0,
+	},
+	timelineTutorial: {
 		where: 'account',
 		default: 0,
 	},
@@ -81,6 +89,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	reactions: {
 		where: 'account',
 		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
+	},
+	reactionAcceptance: {
+		where: 'account',
+		default: null as 'likeOnly' | 'likeOnlyForRemote' | null,
 	},
 	mutedWords: {
 		where: 'account',
@@ -157,11 +169,11 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	animation: {
 		where: 'device',
-		default: !matchMedia('(prefers-reduced-motion)').matches,
+		default: !window.matchMedia('(prefers-reduced-motion)').matches,
 	},
 	animatedMfm: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	advancedMfm: {
 		where: 'device',
@@ -175,9 +187,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	enableDataSaverMode: {
+		where: 'device',
+		default: false,
+	},
 	disableShowingAnimatedImages: {
 		where: 'device',
-		default: matchMedia('(prefers-reduced-motion)').matches,
+		default: window.matchMedia('(prefers-reduced-motion)').matches,
 	},
 	emojiStyle: {
 		where: 'device',
@@ -189,13 +205,19 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	useBlurEffectForModal: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
+		default: false,  // uses too much resources
+		// default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
 	useBlurEffect: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
+		default: false,  // uses too much resources
+		// default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
 	showFixedPostForm: {
+		where: 'device',
+		default: false,
+	},
+	showFixedPostFormInChannel: {
 		where: 'device',
 		default: false,
 	},
@@ -273,11 +295,43 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	numberOfPageCache: {
 		where: 'device',
-		default: 5,
+		default: 3,
+	},
+	showNoteActionsOnlyHover: {
+		where: 'device',
+		default: false,
+	},
+	showClipButtonInNoteFooter: {
+		where: 'device',
+		default: false,
+	},
+	largeNoteReactions: {
+		where: 'device',
+		default: false,
+	},
+	forceShowAds: {
+		where: 'device',
+		default: false,
 	},
 	aiChanMode: {
 		where: 'device',
 		default: false,
+	},
+	mediaListWithOneImageAppearance: {
+		where: 'device',
+		default: 'expand' as 'expand' | '16_9' | '1_1' | '2_3',
+	},
+	notificationPosition: {
+		where: 'device',
+		default: 'rightBottom' as 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom',
+	},
+	notificationStackAxis: {
+		where: 'device',
+		default: 'horizontal' as 'vertical' | 'horizontal',
+	},
+	enableCondensedLineForAcct: {
+		where: 'device',
+		default: true,
 	},
 	useEnterToSend: {
 		where: 'device',
@@ -297,12 +351,15 @@ export const defaultStore = markRaw(new Storage('base', {
 
 const PREFIX = 'miux:' as const;
 
-type Plugin = {
+export type Plugin = {
 	id: string;
 	name: string;
 	active: boolean;
+	config?: Record<string, { default: any }>;
 	configData: Record<string, any>;
 	token: string;
+	src: string | null;
+	version: string;
 	ast: any[];
 };
 
@@ -317,7 +374,7 @@ interface Watcher {
 import { miLocalStorage } from './local-storage';
 import lightTheme from '@/themes/l-cherrypick.json5';
 import darkTheme from '@/themes/d-cherrypick.json5';
-import { Note, UserDetailed } from 'misskey-js/built/entities';
+import { Note, UserDetailed, Page } from 'misskey-js/built/entities';
 
 export class ColdDeviceStorage {
 	public static default = {
@@ -326,14 +383,14 @@ export class ColdDeviceStorage {
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
-		sound_masterVolume: 0.3,
-		sound_note: { type: 'syuilo/down', volume: 1 },
-		sound_noteMy: { type: 'syuilo/up', volume: 1 },
-		sound_notification: { type: 'syuilo/pope2', volume: 1 },
-		sound_chat: { type: 'syuilo/pope1', volume: 1 },
-		sound_chatBg: { type: 'syuilo/waon', volume: 1 },
-		sound_antenna: { type: 'syuilo/triple', volume: 1 },
-		sound_channel: { type: 'syuilo/square-pico', volume: 1 },
+		sound_masterVolume: 0.5,
+		sound_note: { type: 'syuilo/down', volume: 0.5 },
+		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },
+		sound_notification: { type: 'syuilo/pope2', volume: 0.5 },
+		sound_chat: { type: 'syuilo/pope1', volume: 0.5 },
+		sound_chatBg: { type: 'syuilo/waon', volume: 0.5 },
+		sound_antenna: { type: 'syuilo/triple', volume: 0.5 },
+		sound_channel: { type: 'syuilo/square-pico', volume: 0.5 },
 	};
 
 	public static watchers: Watcher[] = [];

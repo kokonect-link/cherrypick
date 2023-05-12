@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import { Inject, Injectable } from '@nestjs/common';
-import { IsNull, MoreThan } from 'typeorm';
+import { MoreThan } from 'typeorm';
 import { format as dateFormat } from 'date-fns';
 import { DI } from '@/di-symbols.js';
 import type { NoteFavorite, NoteFavoritesRepository, NotesRepository, PollsRepository, User, UsersRepository } from '@/models/index.js';
@@ -13,7 +13,7 @@ import type { Note } from '@/models/entities/Note.js';
 import { bindThis } from '@/decorators.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type Bull from 'bull';
-import type { DbUserJobData } from '../types.js';
+import type { DbJobDataWithUser } from '../types.js';
 
 @Injectable()
 export class ExportFavoritesProcessorService {
@@ -42,7 +42,7 @@ export class ExportFavoritesProcessorService {
 	}
 
 	@bindThis
-	public async process(job: Bull.Job<DbUserJobData>, done: () => void): Promise<void> {
+	public async process(job: Bull.Job<DbJobDataWithUser>, done: () => void): Promise<void> {
 		this.logger.info(`Exporting favorites of ${job.data.user.id} ...`);
 
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
@@ -121,7 +121,7 @@ export class ExportFavoritesProcessorService {
 			this.logger.succ(`Exported to: ${path}`);
 
 			const fileName = 'favorites-' + dateFormat(new Date(), 'yyyy-MM-dd-HH-mm-ss') + '.json';
-			const driveFile = await this.driveService.addFile({ user, path, name: fileName, force: true });
+			const driveFile = await this.driveService.addFile({ user, path, name: fileName, force: true, ext: 'json' });
 
 			this.logger.succ(`Exported to: ${driveFile.id}`);
 		} finally {
@@ -148,6 +148,7 @@ function serialize(favorite: NoteFavorite & { note: Note & { user: User } }, pol
 			visibility: favorite.note.visibility,
 			visibleUserIds: favorite.note.visibleUserIds,
 			localOnly: favorite.note.localOnly,
+			reactionAcceptance: favorite.note.reactionAcceptance,
 			uri: favorite.note.uri,
 			url: favorite.note.url,
 			user: {

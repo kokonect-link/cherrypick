@@ -14,7 +14,7 @@
 		<div :class="$style.text">
 			<I18n :src="i18n.ts.pleaseDonate" tag="span">
 				<template #host>
-					{{ $instance.name ?? host }}
+					{{ instance.name ?? host }}
 				</template>
 			</I18n>
 			<div style="margin-top: 0.2em;">
@@ -31,13 +31,13 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import MkLink from '@/components/MkLink.vue';
 import { host } from '@/config';
 import { i18n } from '@/i18n';
 import * as os from '@/os';
 import { miLocalStorage } from '@/local-storage';
+import { instance } from '@/instance';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -51,7 +51,7 @@ function close() {
 }
 
 function neverShow() {
-	miLocalStorage.setItem('neverShowDonationInfo', 'true')
+	miLocalStorage.setItem('neverShowDonationInfo', 'true');
 	close();
 }
 </script>

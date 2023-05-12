@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import { User, Note, Announcement, AnnouncementRead, App, NoteFavorite, NoteThreadMuting, NoteReaction, NoteUnread, Notification, Poll, PollVote, UserProfile, UserKeypair, UserPending, AttestationChallenge, UserSecurityKey, UserPublickey, UserList, UserListJoining, UserGroup, UserGroupJoining, UserGroupInvitation, UserNotePining, UserIp, UsedUsername, Following, FollowRequest, Instance, Emoji, DriveFile, DriveFolder, Meta, Muting, Blocking, SwSubscription, Hashtag, AbuseUserReport, RegistrationTicket, AuthSession, AccessToken, Signin, MessagingMessage, Page, PageLike, GalleryPost, GalleryLike, ModerationLog, Clip, ClipNote, Antenna, AntennaNote, PromoNote, PromoRead, Relay, MutedNote, Channel, ChannelFollowing, ChannelNotePining, RegistryItem, Webhook, Ad, PasswordResetRequest, RetentionAggregation, FlashLike, Flash, Role, RoleAssignment } from './index.js';
+import { User, Note, Announcement, AnnouncementRead, App, NoteFavorite, NoteThreadMuting, NoteReaction, NoteUnread, Poll, PollVote, UserProfile, UserKeypair, UserPending, AttestationChallenge, UserSecurityKey, UserPublickey, UserList, UserListJoining, UserGroup, UserGroupJoining, UserGroupInvitation, UserNotePining, UserIp, UsedUsername, Following, FollowRequest, Instance, Emoji, DriveFile, DriveFolder, Meta, Muting, RenoteMuting, Blocking, SwSubscription, Hashtag, AbuseUserReport, RegistrationTicket, AuthSession, AccessToken, Signin, MessagingMessage, Page, PageLike, GalleryPost, GalleryLike, ModerationLog, Clip, ClipNote, Antenna, PromoNote, PromoRead, Relay, MutedNote, Channel, ChannelFollowing, ChannelFavorite, RegistryItem, Webhook, Ad, PasswordResetRequest, RetentionAggregation, FlashLike, Flash, Role, RoleAssignment, ClipFavorite, UserMemo } from './index.js';
 import type { DataSource } from 'typeorm';
 import type { Provider } from '@nestjs/common';
 
@@ -190,12 +190,6 @@ const $driveFoldersRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $notificationsRepository: Provider = {
-	provide: DI.notificationsRepository,
-	useFactory: (db: DataSource) => db.getRepository(Notification),
-	inject: [DI.db],
-};
-
 const $metasRepository: Provider = {
 	provide: DI.metasRepository,
 	useFactory: (db: DataSource) => db.getRepository(Meta),
@@ -205,6 +199,12 @@ const $metasRepository: Provider = {
 const $mutingsRepository: Provider = {
 	provide: DI.mutingsRepository,
 	useFactory: (db: DataSource) => db.getRepository(Muting),
+	inject: [DI.db],
+};
+
+const $renoteMutingsRepository: Provider = {
+	provide: DI.renoteMutingsRepository,
+	useFactory: (db: DataSource) => db.getRepository(RenoteMuting),
 	inject: [DI.db],
 };
 
@@ -304,15 +304,15 @@ const $clipNotesRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $antennasRepository: Provider = {
-	provide: DI.antennasRepository,
-	useFactory: (db: DataSource) => db.getRepository(Antenna),
+const $clipFavoritesRepository: Provider = {
+	provide: DI.clipFavoritesRepository,
+	useFactory: (db: DataSource) => db.getRepository(ClipFavorite),
 	inject: [DI.db],
 };
 
-const $antennaNotesRepository: Provider = {
-	provide: DI.antennaNotesRepository,
-	useFactory: (db: DataSource) => db.getRepository(AntennaNote),
+const $antennasRepository: Provider = {
+	provide: DI.antennasRepository,
+	useFactory: (db: DataSource) => db.getRepository(Antenna),
 	inject: [DI.db],
 };
 
@@ -352,9 +352,9 @@ const $channelFollowingsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $channelNotePiningsRepository: Provider = {
-	provide: DI.channelNotePiningsRepository,
-	useFactory: (db: DataSource) => db.getRepository(ChannelNotePining),
+const $channelFavoritesRepository: Provider = {
+	provide: DI.channelFavoritesRepository,
+	useFactory: (db: DataSource) => db.getRepository(ChannelFavorite),
 	inject: [DI.db],
 };
 
@@ -412,6 +412,12 @@ const $roleAssignmentsRepository: Provider = {
 	inject: [DI.db],
 };
 
+const $userMemosRepository: Provider = {
+	provide: DI.userMemosRepository,
+	useFactory: (db: DataSource) => db.getRepository(UserMemo),
+	inject: [DI.db],
+};
+
 @Module({
 	imports: [
 	],
@@ -447,9 +453,9 @@ const $roleAssignmentsRepository: Provider = {
 		$emojisRepository,
 		$driveFilesRepository,
 		$driveFoldersRepository,
-		$notificationsRepository,
 		$metasRepository,
 		$mutingsRepository,
+		$renoteMutingsRepository,
 		$blockingsRepository,
 		$swSubscriptionsRepository,
 		$hashtagsRepository,
@@ -466,15 +472,15 @@ const $roleAssignmentsRepository: Provider = {
 		$moderationLogsRepository,
 		$clipsRepository,
 		$clipNotesRepository,
+		$clipFavoritesRepository,
 		$antennasRepository,
-		$antennaNotesRepository,
 		$promoNotesRepository,
 		$promoReadsRepository,
 		$relaysRepository,
 		$mutedNotesRepository,
 		$channelsRepository,
 		$channelFollowingsRepository,
-		$channelNotePiningsRepository,
+		$channelFavoritesRepository,
 		$registryItemsRepository,
 		$webhooksRepository,
 		$adsRepository,
@@ -484,6 +490,7 @@ const $roleAssignmentsRepository: Provider = {
 		$roleAssignmentsRepository,
 		$flashsRepository,
 		$flashLikesRepository,
+		$userMemosRepository,
 	],
 	exports: [
 		$usersRepository,
@@ -517,9 +524,9 @@ const $roleAssignmentsRepository: Provider = {
 		$emojisRepository,
 		$driveFilesRepository,
 		$driveFoldersRepository,
-		$notificationsRepository,
 		$metasRepository,
 		$mutingsRepository,
+		$renoteMutingsRepository,
 		$blockingsRepository,
 		$swSubscriptionsRepository,
 		$hashtagsRepository,
@@ -536,15 +543,15 @@ const $roleAssignmentsRepository: Provider = {
 		$moderationLogsRepository,
 		$clipsRepository,
 		$clipNotesRepository,
+		$clipFavoritesRepository,
 		$antennasRepository,
-		$antennaNotesRepository,
 		$promoNotesRepository,
 		$promoReadsRepository,
 		$relaysRepository,
 		$mutedNotesRepository,
 		$channelsRepository,
 		$channelFollowingsRepository,
-		$channelNotePiningsRepository,
+		$channelFavoritesRepository,
 		$registryItemsRepository,
 		$webhooksRepository,
 		$adsRepository,
@@ -554,6 +561,7 @@ const $roleAssignmentsRepository: Provider = {
 		$roleAssignmentsRepository,
 		$flashsRepository,
 		$flashLikesRepository,
+		$userMemosRepository,
 	],
 })
 export class RepositoryModule {}

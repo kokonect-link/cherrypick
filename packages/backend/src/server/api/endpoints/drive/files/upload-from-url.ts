@@ -1,7 +1,6 @@
 import ms from 'ms';
 import { Inject, Injectable } from '@nestjs/common';
 import type { DriveFilesRepository } from '@/models/index.js';
-import { DB_MAX_IMAGE_COMMENT_LENGTH } from '@/const.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
@@ -19,6 +18,8 @@ export const meta = {
 	description: 'Request the server to download a new drive file from the specified URL.',
 
 	requireCredential: true,
+
+	prohibitMoved: true,
 
 	kind: 'write:drive',
 } as const;

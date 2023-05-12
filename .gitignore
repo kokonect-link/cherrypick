@@ -20,6 +20,9 @@ packages/frontend/.yarn/cache
 packages/backend/.yarn/cache
 packages/sw/.yarn/cache
 
+# pnpm
+.pnpm-store
+
 # Cypress
 cypress/screenshots
 cypress/videos
@@ -41,7 +44,7 @@ built
 /data
 /.cache-loader
 /db
-/elasticsearch
+/meili_data
 npm-debug.log
 *.pem
 run.bat
@@ -52,6 +55,8 @@ api-docs.json
 .DS_Store
 /files
 ormconfig.json
+temp
+/packages/frontend/src/**/*.stories.ts
 
 # blender backups
 *.blend1
@@ -59,3 +64,6 @@ ormconfig.json
 *.blend3
 *.blend4
 *.blend5
+
+.pnpm-store/
+

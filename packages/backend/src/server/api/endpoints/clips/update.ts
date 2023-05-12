@@ -10,6 +10,8 @@ export const meta = {
 
 	requireCredential: true,
 
+	prohibitMoved: true,
+
 	kind: 'write:account',
 
 	errors: {
@@ -64,7 +66,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				isPublic: ps.isPublic,
 			});
 
-			return await this.clipEntityService.pack(clip.id);
+			return await this.clipEntityService.pack(clip.id, me);
 		});
 	}
 }

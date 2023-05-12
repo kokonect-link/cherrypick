@@ -1,4 +1,4 @@
-import { IsNull, MoreThan } from 'typeorm';
+import { IsNull } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
 import type { EmojisRepository } from '@/models/index.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
@@ -23,24 +23,7 @@ export const meta = {
 				items: {
 					type: 'object',
 					optional: false, nullable: false,
-					properties: {
-						name: {
-							type: 'string',
-							optional: false, nullable: false,
-						},
-						aliases: {
-							type: 'array',
-							optional: false, nullable: false,
-							items: {
-								type: 'string',
-								optional: false, nullable: false,
-							},
-						},
-						category: {
-							type: 'string',
-							optional: false, nullable: true,
-						},
-					},
+					ref: 'EmojiSimple',
 				},
 			},
 		},
@@ -75,18 +58,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 					category: 'ASC',
 					name: 'ASC',
 				},
-				cache: {
-					id: 'meta_emojis',
-					milliseconds: 3600000,	// 1 hour
-				},
 			});
 
 			return {
-				emojis: await this.emojiEntityService.packMany(emojis, {
-					omitId: true,
-					omitHost: true,
-					withUrl: true,
-				}),
+				emojis: await this.emojiEntityService.packSimpleMany(emojis),
 			};
 		});
 	}

@@ -1,7 +1,7 @@
 import { IsNull, LessThanOrEqual, MoreThan } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import type { AdsRepository, EmojisRepository, UsersRepository } from '@/models/index.js';
-import { MAX_NOTE_TEXT_LENGTH, DB_MAX_NOTE_TEXT_LENGTH } from '@/const.js';
+import type { AdsRepository, UsersRepository } from '@/models/index.js';
+import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { MetaService } from '@/core/MetaService.js';
@@ -201,10 +201,6 @@ export const meta = {
 						type: 'boolean',
 						optional: false, nullable: false,
 					},
-					elasticsearch: {
-						type: 'boolean',
-						optional: false, nullable: false,
-					},
 					hcaptcha: {
 						type: 'boolean',
 						optional: false, nullable: false,
@@ -262,7 +258,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			const ads = await this.adsRepository.find({
 				where: {
 					expiresAt: MoreThan(new Date()),
-					startAt: LessThanOrEqual(new Date()),
+					startsAt: LessThanOrEqual(new Date()),
 				},
 			});
 
@@ -276,7 +272,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				uri: this.config.url,
 				description: instance.description,
 				langs: instance.langs,
-				tosUrl: instance.ToSUrl,
+				tosUrl: instance.termsOfServiceUrl,
 				repositoryUrl: instance.repositoryUrl,
 				feedbackUrl: instance.feedbackUrl,
 				disableRegistration: instance.disableRegistration,
@@ -295,7 +291,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				iconUrl: instance.iconUrl,
 				backgroundImageUrl: instance.backgroundImageUrl,
 				logoImageUrl: instance.logoImageUrl,
-				maxNoteTextLength: MAX_NOTE_TEXT_LENGTH, // 後方互換性のため
+				maxNoteTextLength: MAX_NOTE_TEXT_LENGTH,
 				defaultLightTheme: instance.defaultLightTheme,
 				defaultDarkTheme: instance.defaultDarkTheme,
 				ads: ads.map(ad => ({
@@ -311,13 +307,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				// translatorAvailable: instance.deeplAuthKey != null,
 				translatorAvailable: instance.translatorType != null,
 
+				serverRules: instance.serverRules,
+
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 
 				mediaProxy: this.config.mediaProxy,
 
 				...(ps.detail ? {
-					pinnedPages: instance.pinnedPages,
-					pinnedClipId: instance.pinnedClipId,
 					cacheRemoteFiles: instance.cacheRemoteFiles,
 					requireSetup: (await this.usersRepository.countBy({
 						host: IsNull(),
@@ -332,7 +328,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				response.features = {
 					registration: !instance.disableRegistration,
 					emailRequiredForSignup: instance.emailRequiredForSignup,
-					elasticsearch: this.config.elasticsearch ? true : false,
 					hcaptcha: instance.enableHcaptcha,
 					recaptcha: instance.enableRecaptcha,
 					turnstile: instance.enableTurnstile,

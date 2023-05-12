@@ -1,11 +1,9 @@
-import { DeepPartial } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
 import type { NoteReactionsRepository } from '@/models/index.js';
 import type { NoteReaction } from '@/models/entities/NoteReaction.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { NoteReactionEntityService } from '@/core/entities/NoteReactionEntityService.js';
 import { DI } from '@/di-symbols.js';
-import { ApiError } from '../../error.js';
 import type { FindOptionsWhere } from 'typeorm';
 
 export const meta = {
@@ -77,7 +75,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				order: {
 					id: -1,
 				},
-				relations: ['user', 'user.avatar', 'user.banner', 'note'],
+				relations: ['user', 'note'],
 			});
 
 			return await Promise.all(reactions.map(reaction => this.noteReactionEntityService.pack(reaction, me)));

@@ -5,13 +5,11 @@ import MkLink from '@/components/MkLink.vue';
 import MkMention from '@/components/MkMention.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
-import { concat } from '@/scripts/array';
 import MkCode from '@/components/MkCode.vue';
 import MkGoogle from '@/components/MkGoogle.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import MkA from '@/components/global/MkA.vue';
 import { host } from '@/config';
-import { MFM_TAGS } from '@/scripts/mfm-tags';
 import { defaultStore } from '@/store';
 
 const QUOTE_STYLE = `
@@ -53,6 +51,10 @@ export default defineComponent({
 			type: Object,
 			default: null,
 		},
+		rootScale: {
+			type: Number,
+			default: 1,
+		}
 	},
 
 	render() {
@@ -67,7 +69,12 @@ export default defineComponent({
 
 		const useAnim = defaultStore.state.advancedMfm && defaultStore.state.animatedMfm;
 
-		const genEl = (ast: mfm.MfmNode[]) => ast.map((token): VNode | string | (VNode | string)[] => {
+		/**
+		 * Gen Vue Elements from MFM AST
+		 * @param ast MFM AST
+		 * @param scale How times large the text is
+		 */
+		const genEl = (ast: mfm.MfmNode[], scale: number) => ast.map((token): VNode | string | (VNode | string)[] => {
 			switch (token.type) {
 				case 'text': {
 					const text = token.props.text.replace(/(\r\n|\n|\r)/g, '\n');
@@ -86,17 +93,17 @@ export default defineComponent({
 				}
 
 				case 'bold': {
-					return [h('b', genEl(token.children))];
+					return [h('b', genEl(token.children, scale))];
 				}
 
 				case 'strike': {
-					return [h('del', genEl(token.children))];
+					return [h('del', genEl(token.children, scale))];
 				}
 
 				case 'italic': {
 					return h('i', {
 						style: 'font-style: oblique;',
-					}, genEl(token.children));
+					}, genEl(token.children, scale));
 				}
 
 				case 'fn': {
@@ -157,17 +164,17 @@ export default defineComponent({
 						case 'x2': {
 							return h('span', {
 								class: defaultStore.state.advancedMfm ? 'mfm-x2' : '',
-							}, genEl(token.children));
+							}, genEl(token.children, scale * 2));
 						}
 						case 'x3': {
 							return h('span', {
 								class: defaultStore.state.advancedMfm ? 'mfm-x3' : '',
-							}, genEl(token.children));
+							}, genEl(token.children, scale * 3));
 						}
 						case 'x4': {
 							return h('span', {
 								class: defaultStore.state.advancedMfm ? 'mfm-x4' : '',
-							}, genEl(token.children));
+							}, genEl(token.children, scale * 4));
 						}
 						case 'font': {
 							const family =
@@ -184,7 +191,7 @@ export default defineComponent({
 						case 'blur': {
 							return h('span', {
 								class: '_mfm_blur_',
-							}, genEl(token.children));
+							}, genEl(token.children, scale));
 						}
 						case 'rainbow': {
 							const speed = validTime(token.props.args.speed) ?? '1s';
@@ -193,9 +200,9 @@ export default defineComponent({
 						}
 						case 'sparkle': {
 							if (!useAnim) {
-								return genEl(token.children);
+								return genEl(token.children, scale);
 							}
-							return h(MkSparkle, {}, genEl(token.children));
+							return h(MkSparkle, {}, genEl(token.children, scale));
 						}
 						case 'rotate': {
 							const degrees = parseFloat(token.props.args.deg ?? '90');
@@ -216,7 +223,8 @@ export default defineComponent({
 							}
 							const x = Math.min(parseFloat(token.props.args.x ?? '1'), 5);
 							const y = Math.min(parseFloat(token.props.args.y ?? '1'), 5);
-							style = `transform: scale(${x}, ${y});`;
+							style = `transform: scale(${x}, ${y});`; 
+							scale = scale * Math.max(x, y);
 							break;
 						}
 						case 'fg': {
@@ -233,24 +241,24 @@ export default defineComponent({
 						}
 					}
 					if (style == null) {
-						return h('span', {}, ['$[', token.props.name, ' ', ...genEl(token.children), ']']);
+						return h('span', {}, ['$[', token.props.name, ' ', ...genEl(token.children, scale), ']']);
 					} else {
 						return h('span', {
 							style: 'display: inline-block; ' + style,
-						}, genEl(token.children));
+						}, genEl(token.children, scale));
 					}
 				}
 
 				case 'small': {
 					return [h('small', {
 						style: 'opacity: 0.7;',
-					}, genEl(token.children))];
+					}, genEl(token.children, scale))];
 				}
 
 				case 'center': {
 					return [h('div', {
 						style: 'text-align:center;',
-					}, genEl(token.children))];
+					}, genEl(token.children, scale))];
 				}
 
 				case 'url': {
@@ -266,7 +274,7 @@ export default defineComponent({
 						key: Math.random(),
 						url: token.props.url,
 						rel: 'nofollow noopener',
-					}, genEl(token.children))];
+					}, genEl(token.children, scale))];
 				}
 
 				case 'mention': {
@@ -280,7 +288,7 @@ export default defineComponent({
 				case 'hashtag': {
 					return [h(MkA, {
 						key: Math.random(),
-						to: this.isNote ? `/tags/${encodeURIComponent(token.props.hashtag)}` : `/explore/tags/${encodeURIComponent(token.props.hashtag)}`,
+						to: this.isNote ? `/tags/${encodeURIComponent(token.props.hashtag)}` : `/user-tags/${encodeURIComponent(token.props.hashtag)}`,
 						style: 'color:var(--hashtag);',
 					}, `#${token.props.hashtag}`)];
 				}
@@ -305,11 +313,11 @@ export default defineComponent({
 					if (!this.nowrap) {
 						return [h('div', {
 							style: QUOTE_STYLE,
-						}, genEl(token.children))];
+						}, genEl(token.children, scale))];
 					} else {
 						return [h('span', {
 							style: QUOTE_STYLE,
-						}, genEl(token.children))];
+						}, genEl(token.children, scale))];
 					}
 				}
 
@@ -321,6 +329,7 @@ export default defineComponent({
 							name: token.props.name,
 							normal: this.plain,
 							host: null,
+							useOriginalSize: scale >= 2.5,
 						})];
 					} else {
 						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -334,6 +343,7 @@ export default defineComponent({
 								url: this.emojiUrls ? this.emojiUrls[token.props.name] : null,
 								normal: this.plain,
 								host: this.author.host,
+								useOriginalSize: scale >= 2.5,
 							})];
 						}
 					}
@@ -362,7 +372,7 @@ export default defineComponent({
 				}
 
 				case 'plain': {
-					return [h('span', genEl(token.children))];
+					return [h('span', genEl(token.children, scale))];
 				}
 
 				default: {
@@ -375,6 +385,6 @@ export default defineComponent({
 		}).flat(Infinity) as (VNode | string)[];
 
 		// Parse ast to DOM
-		return h('span', genEl(ast));
+		return h('span', genEl(ast, this.rootScale));
 	},
 });

@@ -1,4 +1,4 @@
-import { Entity, Index, JoinColumn, Column, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 import { id } from '../id.js';
 
 type CondFormulaValueAnd = {
@@ -54,6 +54,16 @@ type CondFormulaValueFollowingMoreThanOrEq = {
 	value: number;
 };
 
+type CondFormulaValueNotesLessThanOrEq = {
+	type: 'notesLessThanOrEq';
+	value: number;
+};
+
+type CondFormulaValueNotesMoreThanOrEq = {
+	type: 'notesMoreThanOrEq';
+	value: number;
+};
+
 export type RoleCondFormulaValue =
 	CondFormulaValueAnd |
 	CondFormulaValueOr |
@@ -65,7 +75,9 @@ export type RoleCondFormulaValue =
 	CondFormulaValueFollowersLessThanOrEq |
 	CondFormulaValueFollowersMoreThanOrEq |
 	CondFormulaValueFollowingLessThanOrEq |
-	CondFormulaValueFollowingMoreThanOrEq;
+	CondFormulaValueFollowingMoreThanOrEq |
+	CondFormulaValueNotesLessThanOrEq |
+	CondFormulaValueNotesMoreThanOrEq;
 
 @Entity()
 export class Role {
@@ -142,7 +154,18 @@ export class Role {
 	@Column('boolean', {
 		default: false,
 	})
+	public isExplorable: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
 	public canEditMembersByModerator: boolean;
+
+	// UIに表示する際の並び順用(大きいほど先頭)
+	@Column('integer', {
+		default: 0,
+	})
+	public displayOrder: number;
 
 	@Column('jsonb', {
 		default: { },

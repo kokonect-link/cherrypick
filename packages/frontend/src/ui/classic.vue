@@ -21,7 +21,7 @@
 		</div>
 	</div>
 
-	<Transition :name="$store.state.animation ? 'tray-back' : ''">
+	<Transition :name="defaultStore.state.animation ? 'tray-back' : ''">
 		<div
 			v-if="widgetsShowing"
 			class="tray-back _modalBg"
@@ -30,25 +30,25 @@
 		></div>
 	</Transition>
 
-	<Transition :name="$store.state.animation ? 'tray' : ''">
+	<Transition :name="defaultStore.state.animation ? 'tray' : ''">
 		<XWidgets v-if="widgetsShowing" class="tray"/>
 	</Transition>
 
-	<iframe v-if="$store.state.aiChanMode" ref="live2d" class="ivnzpscs" src="https://misskey-dev.github.io/mascot-web/?scale=2&y=1.4"></iframe>
+	<iframe v-if="defaultStore.state.aiChanMode" ref="live2d" class="ivnzpscs" src="https://misskey-dev.github.io/mascot-web/?scale=2&y=1.4"></iframe>
 
 	<XCommon/>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, markRaw, ComputedRef, ref, onMounted, provide } from 'vue';
+import { defineAsyncComponent, ComputedRef, onMounted, provide } from 'vue';
 import XSidebar from './classic.sidebar.vue';
 import XCommon from './_common_/common.vue';
 import { instanceName } from '@/config';
 import { StickySidebar } from '@/scripts/sticky-sidebar';
 import * as os from '@/os';
 import { mainRouter } from '@/router';
-import { PageMetadata, provideMetadataReceiver, setPageMetadata } from '@/scripts/page-metadata';
+import { PageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';
 import { miLocalStorage } from '@/local-storage';
@@ -124,8 +124,8 @@ function onAiClick(ev) {
 }
 
 if (window.innerWidth < 1024) {
-	const currentUI = miLocalStorage.getItem('ui')
-	miLocalStorage.setItem('ui_temp', currentUI || 'default');
+	const currentUI = miLocalStorage.getItem('ui');
+	miLocalStorage.setItem('ui_temp', currentUI ?? 'default');
 	miLocalStorage.setItem('ui', 'default');
 	location.reload();
 }
@@ -250,6 +250,7 @@ onMounted(() => {
 		> .widgets {
 			//--panelBorder: none;
 			width: 300px;
+			padding-bottom: calc(var(--margin) + env(safe-area-inset-bottom, 0px));
 
 			@media (max-width: $widgets-hide-threshold) {
 				display: none;
@@ -304,7 +305,7 @@ onMounted(() => {
 		right: 0;
 		z-index: 1001;
 		height: 100dvh;
-		padding: var(--margin);
+		padding: var(--margin) var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px));
 		box-sizing: border-box;
 		overflow: auto;
 		background: var(--bg);

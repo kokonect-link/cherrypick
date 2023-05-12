@@ -30,6 +30,7 @@ export const getBuiltinThemes = () => Promise.all(
 		'l-cherry',
 		'l-sushi',
 		'l-u0',
+		'l-birdsite',
 
 		'd-cherrypick',
 		'd-dark',
@@ -42,6 +43,8 @@ export const getBuiltinThemes = () => Promise.all(
 		'd-cherry',
 		'd-ice',
 		'd-u0',
+		'd-qdon',
+		'd-birdsite',
 	].map(name => import(`../themes/${name}.json5`).then(({ default: _default }): Theme => _default)),
 );
 

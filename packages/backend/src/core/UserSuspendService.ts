@@ -35,7 +35,7 @@ export class UserSuspendService {
 	
 		if (this.userEntityService.isLocalUser(user)) {
 			// 知り得る全SharedInboxにDelete配信
-			const content = this.apRendererService.addContext(this.apRendererService.renderDelete(`${this.config.url}/users/${user.id}`, user));
+			const content = this.apRendererService.addContext(this.apRendererService.renderDelete(this.userEntityService.genLocalUserUri(user.id), user));
 	
 			const queue: string[] = [];
 	
@@ -54,7 +54,7 @@ export class UserSuspendService {
 			}
 	
 			for (const inbox of queue) {
-				this.queueService.deliver(user, content, inbox);
+				this.queueService.deliver(user, content, inbox, true);
 			}
 		}
 	}
@@ -65,7 +65,7 @@ export class UserSuspendService {
 	
 		if (this.userEntityService.isLocalUser(user)) {
 			// 知り得る全SharedInboxにUndo Delete配信
-			const content = this.apRendererService.addContext(this.apRendererService.renderUndo(this.apRendererService.renderDelete(`${this.config.url}/users/${user.id}`, user), user));
+			const content = this.apRendererService.addContext(this.apRendererService.renderUndo(this.apRendererService.renderDelete(this.userEntityService.genLocalUserUri(user.id), user), user));
 	
 			const queue: string[] = [];
 	
@@ -84,7 +84,7 @@ export class UserSuspendService {
 			}
 	
 			for (const inbox of queue) {
-				this.queueService.deliver(user as any, content, inbox);
+				this.queueService.deliver(user as any, content, inbox, true);
 			}
 		}
 	}

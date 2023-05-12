@@ -1,10 +1,10 @@
 <template>
 <div>
 	<Transition
-		:enter-active-class="$store.state.animation ? $style.transition_toast_enterActive : ''"
-		:leave-active-class="$store.state.animation ? $style.transition_toast_leaveActive : ''"
-		:enter-from-class="$store.state.animation ? $style.transition_toast_enterFrom : ''"
-		:leave-to-class="$store.state.animation ? $style.transition_toast_leaveTo : ''"
+		:enter-active-class="defaultStore.state.animation ? $style.transition_toast_enterActive : ''"
+		:leave-active-class="defaultStore.state.animation ? $style.transition_toast_leaveActive : ''"
+		:enter-from-class="defaultStore.state.animation ? $style.transition_toast_enterFrom : ''"
+		:leave-to-class="defaultStore.state.animation ? $style.transition_toast_leaveTo : ''"
 		appear @after-leave="emit('closed')"
 	>
 		<div v-if="showing" class="_acrylic" :class="$style.root" :style="{ zIndex }">
@@ -18,8 +18,9 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import * as os from '@/os';
+import { defaultStore } from '@/store';
 import CPAvatar from '@/components/global/toast-avatar.vue';
 
 defineProps<{
@@ -55,7 +56,7 @@ onMounted(() => {
 	position: fixed;
 	left: 0;
 	right: 0;
-	top: 0;
+	top: 50px;
 	margin: 0 auto;
 	margin-top: 16px;
 	min-width: 300px;

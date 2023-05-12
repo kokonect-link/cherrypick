@@ -3,7 +3,7 @@
 	<MkAvatar class="avatar" :user="message.user" indicator link preview/>
 	<div class="content">
 		<div class="balloon" :class="{ noText: message.text == null }">
-			<button v-if="isMe" class="delete-button" :title="$ts.delete" @click="del">
+			<button v-if="isMe" class="delete-button" :title="i18n.delete" @click="del">
 				<img src="/client-assets/remove.png" alt="Delete"/>
 			</button>
 			<div v-if="!message.isDeleted" class="content">
@@ -16,17 +16,17 @@
 				</div>
 			</div>
 			<div v-else class="content">
-				<p class="is-deleted">{{ $ts.deleted }}</p>
+				<p class="is-deleted">{{ i18n.deleted }}</p>
 			</div>
 		</div>
 		<div></div>
 		<MkUrlPreview v-for="url in urls" :key="url" :url="url" style="margin: 8px 0;"/>
 		<footer>
 			<template v-if="isGroup">
-				<span v-if="message.reads.length > 0" class="read">{{ $ts.messageRead }} {{ message.reads.length }}</span>
+				<span v-if="message.reads.length > 0" class="read">{{ i18n.messageRead }} {{ message.reads.length }}</span>
 			</template>
 			<template v-else>
-				<span v-if="isMe && message.isRead" class="read">{{ $ts.messageRead }}</span>
+				<span v-if="isMe && message.isRead" class="read">{{ i18n.messageRead }}</span>
 			</template>
 			<MkTime :time="message.createdAt"/>
 			<template v-if="message.is_edited"><i class="ti ti-pencil"></i></template>
@@ -42,6 +42,7 @@ import * as Misskey from 'misskey-js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import * as os from '@/os';
+import { i18n } from '@/i18n';
 import { $i } from '@/account';
 
 const props = defineProps<{

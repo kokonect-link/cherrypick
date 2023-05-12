@@ -3,28 +3,28 @@
 	<template #header>
 		<MkPageHeader v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :display-my-avatar="true"/>
 		<transition
-			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
-			:leave-active-class="$store.state.animation ? $style.transition_new_leaveActive : ''"
-			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
-			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
+			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
+			:leave-active-class="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
+			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
+			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 		</transition>
 		<transition
-			:enter-active-class="$store.state.animation ? $style.transition_new_enterActive : ''"
-			:leave-active-class="$store.state.animation ? $style.transition_new_leaveActive : ''"
-			:enter-from-class="$store.state.animation ? $style.transition_new_enterFrom : ''"
-			:leave-to-class="$store.state.animation ? $style.transition_new_leaveTo : ''"
+			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
+			:leave-active-class="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
+			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
+			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && $store.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !$store.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 		</transition>
 	</template>
 	<MkSpacer :content-max="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
-			<XTutorial v-if="$i && $store.reactiveState.tutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
-			<MkPostForm v-if="$store.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
+			<XTutorial v-if="$i && defaultStore.reactiveState.timelineTutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
+			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
 			<div :class="$style.tl">
-				<XTimeline
+				<MkTimeline
 					ref="tlComponent"
 					:key="src"
 					:src="src"
@@ -39,7 +39,8 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, watch, ref, onMounted, provide } from 'vue';
-import XTimeline from '@/components/MkTimeline.vue';
+import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
+import MkTimeline from '@/components/MkTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import { scroll } from '@/scripts/scroll';
 import * as os from '@/os';
@@ -48,7 +49,6 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { deviceKind } from '@/scripts/device-kind';
 
@@ -62,7 +62,6 @@ window.addEventListener('resize', () => {
 });
 
 let showEl = $ref(false);
-let lastScrollPosition = $ref(0);
 
 const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
@@ -72,7 +71,7 @@ const keymap = {
 	't': focus,
 };
 
-const tlComponent = $shallowRef<InstanceType<typeof XTimeline>>();
+const tlComponent = $shallowRef<InstanceType<typeof MkTimeline>>();
 const rootEl = $shallowRef<HTMLElement>();
 
 let queue = $ref(0);
@@ -112,7 +111,9 @@ async function chooseAntenna(ev: MouseEvent): Promise<void> {
 }
 
 async function chooseChannel(ev: MouseEvent): Promise<void> {
-	const channels = await os.api('channels/followed');
+	const channels = await os.api('channels/my-favorites', {
+		limit: 100,
+	});
 	const items = channels.map(channel => ({
 		type: 'link' as const,
 		text: channel.name,

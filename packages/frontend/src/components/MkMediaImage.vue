@@ -1,23 +1,29 @@
 <template>
 <div v-if="hide" :class="$style.hidden" @click="hide = false">
-	<ImgWithBlurhash style="filter: brightness(0.5);" :hash="image.blurhash" :title="image.comment" :alt="image.comment"/>
+	<ImgWithBlurhash style="filter: brightness(0.5);" :hash="image.blurhash" :title="image.comment" :alt="image.comment" :width="image.properties.width" :height="image.properties.height" :force-blurhash="defaultStore.state.enableDataSaverMode"/>
 	<div :class="$style.hiddenText">
 		<div :class="$style.hiddenTextWrapper">
-			<b style="display: block;"><i class="ti ti-alert-triangle"></i> {{ $ts.sensitive }}</b>
-			<span style="display: block;">{{ $ts.clickToShow }}</span>
+			<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-alert-triangle"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
+			<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.enableDataSaverMode && image.size ? bytes(image.size) : i18n.ts.image }}</b>
+			<span style="display: block;">{{ i18n.ts.clickToShow }}</span>
 		</div>
 	</div>
 </div>
-<div v-else :class="$style.visible" :style="defaultStore.state.darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'">
+<div v-else :class="$style.visible" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'">
 	<a
 		:class="$style.imageContainer"
 		:href="image.url"
 		:title="image.name"
 	>
-		<ImgWithBlurhash :hash="image.blurhash" :src="url" :alt="image.comment || image.name" :title="image.comment || image.name" :cover="false"/>
-		<div v-if="image.type === 'image/gif'" :class="$style.gif">GIF</div>
+		<ImgWithBlurhash :hash="image.blurhash" :src="url" :alt="image.comment || image.name" :title="image.comment || image.name" :width="image.properties.width" :height="image.properties.height" :cover="false"/>
 	</a>
-	<button v-tooltip="$ts.hide" :class="$style.hide" class="_button" @click="hide = true"><i class="ti ti-eye-off"></i></button>
+	<div :class="$style.indicators">
+		<div v-if="['image/gif', 'image/apng'].includes(image.type)" :class="$style.indicator">GIF</div>
+		<div v-if="image.comment" :class="$style.indicator">ALT</div>
+		<div v-if="image.isSensitive" :class="$style.indicator" style="color: var(--warn);">NSFW</div>
+	</div>
+	<button v-tooltip="i18n.ts.hide" :class="$style.hide" class="_button" @click="hide = true"><i class="ti ti-eye-off"></i></button>
+	<button :class="$style.menu" class="_button" @click.stop="showMenu"><i class="ti ti-dots"></i></button>
 </div>
 </template>
 
@@ -25,8 +31,12 @@
 import { watch } from 'vue';
 import * as misskey from 'misskey-js';
 import { getStaticImageUrl } from '@/scripts/media-proxy';
+import bytes from '@/filters/bytes';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import { defaultStore } from '@/store';
+import { i18n } from '@/i18n';
+import * as os from '@/os';
+import { iAmModerator } from '@/account';
 
 const props = defineProps<{
 	image: misskey.entities.DriveFile;
@@ -34,20 +44,33 @@ const props = defineProps<{
 }>();
 
 let hide = $ref(true);
+let darkMode: boolean = $ref(defaultStore.state.darkMode);
 
-const url = (props.raw || defaultStore.state.loadRawImages)
+const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 	? props.image.url
 	: defaultStore.state.disableShowingAnimatedImages
-		? getStaticImageUrl(props.image.thumbnailUrl)
-		: props.image.thumbnailUrl;
+		? getStaticImageUrl(props.image.url)
+		: props.image.thumbnailUrl,
+);
 
 // Plugin:register_note_view_interruptor を使って書き換えられる可能性があるためwatchする
 watch(() => props.image, () => {
-	hide = (defaultStore.state.nsfw === 'force') ? true : props.image.isSensitive && (defaultStore.state.nsfw !== 'ignore');
+	hide = (defaultStore.state.nsfw === 'force' || defaultStore.state.enableDataSaverMode) ? true : (props.image.isSensitive && defaultStore.state.nsfw !== 'ignore');
 }, {
 	deep: true,
 	immediate: true,
 });
+
+function showMenu(ev: MouseEvent) {
+	os.popupMenu([...(iAmModerator ? [{
+		text: i18n.ts.markAsSensitive,
+		icon: 'ti ti-eye-off',
+		action: () => {
+			os.apiWithDialog('drive/files/update', { fileId: props.image.id, isSensitive: true });
+		},
+	}] : [])], ev.currentTarget ?? ev.target);
+}
+
 </script>
 
 <style lang="scss" module>
@@ -97,6 +120,21 @@ watch(() => props.image, () => {
 	right: 12px;
 }
 
+.menu {
+	display: block;
+	position: absolute;
+	border-radius: 6px;
+	background-color: rgba(0, 0, 0, 0.3);
+	-webkit-backdrop-filter: var(--blur, blur(15px));
+	backdrop-filter: var(--blur, blur(15px));
+	color: #fff;
+	font-size: 0.8em;
+	padding: 6px 8px;
+	text-align: center;
+	bottom: 12px;
+	right: 12px;
+}
+
 .imageContainer {
 	display: block;
 	cursor: zoom-in;
@@ -108,18 +146,26 @@ watch(() => props.image, () => {
 	background-repeat: no-repeat;
 }
 
-.gif {
-	background-color: var(--fg);
+.indicators {
+	display: inline-flex;
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	text-align: center;
+	pointer-events: none;
+	opacity: .5;
+	font-size: 14px;
+	gap: 6px;
+}
+
+.indicator {
+	/* Hardcode to black because either --bg or --fg makes it hard to read in dark/light mode */
+	background-color: black;
 	border-radius: 6px;
 	color: var(--accentLighten);
 	display: inline-block;
-	font-size: 14px;
 	font-weight: bold;
-	left: 12px;
-	opacity: .5;
-	padding: 0 6px;
-	text-align: center;
-	top: 12px;
-	pointer-events: none;
+	font-size: 12px;
+	padding: 2px 6px;
 }
 </style>

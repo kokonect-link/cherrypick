@@ -11,17 +11,17 @@ import type { UserGroup } from '@/models/entities/UserGroup.js';
 import type { AbuseUserReport } from '@/models/entities/AbuseUserReport.js';
 import type { Signin } from '@/models/entities/Signin.js';
 import type { Page } from '@/models/entities/Page.js';
-import type { Packed } from '@/misc/schema.js';
+import type { Packed } from '@/misc/json-schema.js';
 import type { Webhook } from '@/models/entities/Webhook.js';
 import type { Meta } from '@/models/entities/Meta.js';
-import { Following, Role, RoleAssignment } from '@/models';
+import { Role, RoleAssignment } from '@/models';
 import type Emitter from 'strict-event-emitter-types';
 import type { EventEmitter } from 'events';
 
 //#region Stream type-body definitions
 export interface InternalStreamTypes {
 	userChangeSuspendedState: { id: User['id']; isSuspended: User['isSuspended']; };
-	userTokenRegenerated: { id: User['id']; oldToken: User['token']; newToken: User['token']; };
+	userTokenRegenerated: { id: User['id']; oldToken: string; newToken: string; };
 	remoteUserUpdated: { id: User['id']; };
 	follow: { followerId: User['id']; followeeId: User['id']; };
 	unfollow: { followerId: User['id']; followeeId: User['id']; };
@@ -40,14 +40,19 @@ export interface InternalStreamTypes {
 	antennaDeleted: Antenna;
 	antennaUpdated: Antenna;
 	metaUpdated: Meta;
+	followChannel: { userId: User['id']; channelId: Channel['id']; };
+	unfollowChannel: { userId: User['id']; channelId: Channel['id']; };
+	updateUserProfile: UserProfile;
+	mute: { muterId: User['id']; muteeId: User['id']; };
+	unmute: { muterId: User['id']; muteeId: User['id']; };
 }
 
 export interface BroadcastTypes {
 	emojiAdded: {
-		emoji: Packed<'Emoji'>;
+		emoji: Packed<'EmojiDetailed'>;
 	};
 	emojiUpdated: {
-		emojis: Packed<'Emoji'>[];
+		emojis: Packed<'EmojiDetailed'>[];
 	};
 	emojiDeleted: {
 		emojis: {
@@ -56,18 +61,6 @@ export interface BroadcastTypes {
 			[other: string]: any;
 		}[];
 	};
-}
-
-export interface UserStreamTypes {
-	terminate: Record<string, unknown>;
-	followChannel: Channel;
-	unfollowChannel: Channel;
-	updateUserProfile: UserProfile;
-	mute: User;
-	unmute: User;
-	follow: Packed<'UserDetailedNotMe'>;
-	unfollow: Packed<'User'>;
-	userAdded: Packed<'User'>;
 }
 
 export interface MainStreamTypes {
@@ -102,8 +95,6 @@ export interface MainStreamTypes {
 	readAllAntennas: undefined;
 	unreadAntenna: Antenna;
 	readAllAnnouncements: undefined;
-	readAllChannels: undefined;
-	unreadChannel: Note['id'];
 	myTokenRegenerated: undefined;
 	signin: Signin;
 	registryUpdated: {
@@ -188,6 +179,10 @@ export interface MessagingIndexStreamTypes {
 	message: Packed<'MessagingMessage'>;
 }
 
+export interface RoleTimelineStreamTypes {
+	note: Packed<'Note'>;
+}
+
 export interface AdminStreamTypes {
 	newAbuseUserReport: {
 		id: AbuseUserReport['id'];
@@ -208,8 +203,15 @@ type EventUnionFromDictionary<
 > = U[keyof U];
 
 // redis通すとDateのインスタンスはstringに変換されるので
-type Serialized<T> = {
-	[K in keyof T]: T[K] extends Date ? string : T[K] extends Record<string, any> ? Serialized<T[K]> : T[K];
+export type Serialized<T> = {
+	[K in keyof T]:
+		T[K] extends Date
+			? string
+			: T[K] extends (Date | null)
+				? (string | null)
+				: T[K] extends Record<string, any>
+					? Serialized<T[K]>
+					: T[K];
 };
 
 type SerializedAll<T> = {
@@ -225,10 +227,6 @@ export type StreamMessages = {
 	broadcast: {
 		name: 'broadcast';
 		payload: EventUnionFromDictionary<SerializedAll<BroadcastTypes>>;
-	};
-	user: {
-		name: `user:${User['id']}`;
-		payload: EventUnionFromDictionary<SerializedAll<UserStreamTypes>>;
 	};
 	main: {
 		name: `mainStream:${User['id']}`;
@@ -249,6 +247,10 @@ export type StreamMessages = {
 	userList: {
 		name: `userListStream:${UserList['id']}`;
 		payload: EventUnionFromDictionary<SerializedAll<UserListStreamTypes>>;
+	};
+	roleTimeline: {
+		name: `roleTimelineStream:${Role['id']}`;
+		payload: EventUnionFromDictionary<SerializedAll<RoleTimelineStreamTypes>>;
 	};
 	antenna: {
 		name: `antennaStream:${Antenna['id']}`;

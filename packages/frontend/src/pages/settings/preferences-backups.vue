@@ -59,6 +59,8 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'tl',
 	'overridedDeviceKind',
 	'serverDisconnectedBehavior',
+	'collapseRenotes',
+	'showNoteActionsOnlyHover',
 	'nsfw',
 	'animation',
 	'animatedMfm',
@@ -71,6 +73,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'useBlurEffectForModal',
 	'useBlurEffect',
 	'showFixedPostForm',
+	'showFixedPostFormInChannel',
 	'enableInfiniteScroll',
 	'useReactionPickerForContextMenu',
 	'showGapBetweenNotesInTimeline',
@@ -85,6 +88,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'squareAvatars',
 	'numberOfPageCache',
 	'aiChanMode',
+	'mediaListWithOneImageAppearance',
 	'useEnterToSend',
 	'postFormVisibilityHotkey',
 	'newNoteRecivedNotificationBehavior',
@@ -399,7 +403,7 @@ function menu(ev: MouseEvent, profileId: string) {
 		icon: 'ti ti-device-floppy',
 		action: () => save(profileId),
 	}, null, {
-		text: ts._preferencesBackups.delete,
+		text: ts.delete,
 		icon: 'ti ti-trash',
 		action: () => deleteProfile(profileId),
 		danger: true,
@@ -423,7 +427,6 @@ onUnmounted(() => {
 definePageMetadata(computed(() => ({
 	title: ts.preferencesBackups,
 	icon: 'ti ti-device-floppy',
-	bg: 'var(--bg)',
 })));
 </script>
 
