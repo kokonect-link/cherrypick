@@ -285,6 +285,7 @@ const patrons = [
 	'ずも',
 	'binvinyl',
 	'渡志郎',
+	'ぷーざ',
 ];
 
 let isKokonect = false;

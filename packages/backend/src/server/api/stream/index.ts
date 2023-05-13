@@ -7,6 +7,7 @@ import type { NotificationService } from '@/core/NotificationService.js';
 import { bindThis } from '@/decorators.js';
 import { CacheService } from '@/core/CacheService.js';
 import { UserProfile } from '@/models/index.js';
+import type { UserGroup } from '@/models/entities/UserGroup.js';
 import type { ChannelsService } from './ChannelsService.js';
 import type * as websocket from 'websocket';
 import type { EventEmitter } from 'events';
