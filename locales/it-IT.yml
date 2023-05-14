@@ -1854,6 +1854,7 @@ _instanceCharts:
 _timelines:
   home: "Home"
   local: "Locale"
+  media: "Contenuti multimediali"
   social: "Sociale"
   global: "Federata"
 _play:

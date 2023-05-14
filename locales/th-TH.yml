@@ -1880,6 +1880,7 @@ _instanceCharts:
 _timelines:
   home: "หน้าแรก"
   local: "ในพื้นที่"
+  media: "สื่อ"
   social: "โซเชี่ยล"
   global: "ทั่วโลก"
 _play:

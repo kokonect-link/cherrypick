@@ -1831,6 +1831,7 @@ _instanceCharts:
 _timelines:
   home: "Inicio"
   local: "Local"
+  media: "Media"
   social: "Social"
   global: "Global"
 _play:
