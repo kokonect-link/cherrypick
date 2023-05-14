@@ -1489,7 +1489,7 @@ _registry:
   createKey: "Create key"
 _aboutMisskey:
   about: "CherryPick is a customization client based on Misskey that has been in development since 2021."
-  contributors: "Main contributors"
+  contributors: "Main contributors (Misskey)"
   allContributors: "All contributors"
   source: "Source code"
   translation: "Translate Misskey"
@@ -1501,6 +1501,7 @@ _aboutMisskey:
     donate: "Donate to Kokonect"
   _cherrypick:
     about: "This Misskey was customized by NoriDev!"
+    contributors: "Main contributors (CherryPick)"
     translation: "Translate CherryPick"
     donate: "Donate to CherryPick"
     relayServer: "Relay Server"

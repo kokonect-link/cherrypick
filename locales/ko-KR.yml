@@ -1485,7 +1485,7 @@ _registry:
   createKey: "키 생성"
 _aboutMisskey:
   about: "CherryPick은 Misskey를 기반으로 2021년부터 개발되어 오고 있는 커스터마이즈 클라이언트에요."
-  contributors: "주요 기여자"
+  contributors: "주요 기여자 (Misskey)"
   allContributors: "모든 기여자"
   source: "소스 코드"
   translation: "Misskey를 번역하기"
@@ -1497,6 +1497,7 @@ _aboutMisskey:
     donate: "코코넥트에 기부하기"
   _cherrypick:
     about: "이 Misskey는 NoriDev에 의해 커스텀 되었어요!"
+    contributors: "주요 기여자 (CherryPick)"
     translation: "CherryPick 번역하기"
     donate: "CherryPick에 기부하기"
     relayServer: "릴레이 서버"

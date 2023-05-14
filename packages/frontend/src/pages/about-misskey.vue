@@ -70,6 +70,7 @@
 					</div>
 				</FormSection>
 				<FormSection>
+					<template #label>Misskey</template>
 					<div class="_formLinks">
 						<FormLink to="https://github.com/misskey-dev/misskey" external>
 							<template #icon><i class="ti ti-code"></i></template>
@@ -87,6 +88,16 @@
 							<template #suffix>Patreon</template>
 						</FormLink>
 					</div>
+				</FormSection>
+				<FormSection>
+					<template #label>{{ i18n.ts._aboutMisskey._cherrypick.contributors }}</template>
+					<div :class="$style.contributors">
+						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@noridev</span>
+						</a>
+					</div>
+					<template #caption><MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
 				</FormSection>
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
@@ -116,7 +127,7 @@
 							<span :class="$style.contributorUsername">@robflop</span>
 						</a>
 					</div>
-					<template #caption><MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
+					<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
 				</FormSection>
 				<FormSection>
 					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
