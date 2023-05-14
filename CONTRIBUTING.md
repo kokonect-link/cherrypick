@@ -1,5 +1,5 @@
 # Contribution guide
-We're glad you're interested in contributing Misskey! In this document you will find the information you need to contribute to the project.
+We're glad you're interested in contributing CherryPick! In this document you will find the information you need to contribute to the project.
 
 > **Note**
 > This project uses Japanese as its major language, **but you do not need to translate and write the Issues/PRs in Japanese.**
@@ -15,7 +15,7 @@ Before creating an issue, please check the following:
 - To avoid duplication, please search for similar issues before creating a new issue.
 - Do not use Issues to ask questions or troubleshooting.
 	- Issues should only be used to feature requests, suggestions, and bug tracking.
-	- Please ask questions or troubleshooting in ~~the [Misskey Forum](https://forum.misskey.io/)~~ [GitHub Discussions](https://github.com/misskey-dev/misskey/discussions) or [Discord](https://discord.gg/Wp8gVStHW3).
+	- Please ask questions or troubleshooting in ~~the [Misskey Forum](https://forum.misskey.io/)~~ [GitHub Discussions](https://github.com/kokonect-link/cherrypick/discussions) or [Discord](https://discord.gg/V8qghB28Aj).
 
 > **Warning**
 > Do not close issues that are about to be resolved. It should remain open until a commit that actually resolves it is merged.
@@ -77,14 +77,14 @@ An actual domain will be assigned so you can test the federation.
 
 ## Release
 ### Release Instructions
-1. Commit version changes in the `develop` branch ([package.json](https://github.com/misskey-dev/misskey/blob/develop/package.json))
+1. Commit version changes in the `develop` branch ([package.json](https://github.com/kokonect-link/cherrypick/blob/develop/package.json))
 2. Create a release PR.
 	- Into `master` from `develop` branch.
 	- The title must be in the format `Release: x.y.z`.
 		- `x.y.z` is the new version you are trying to release.
 3. Deploy and perform a simple QA check. Also verify that the tests passed.
 4. Merge it. (Do not squash commit)
-5. Create a [release of GitHub](https://github.com/misskey-dev/misskey/releases)
+5. Create a [release of GitHub](https://github.com/kokonect-link/cherrypick/releases)
 	- The target branch must be `master`
 	- The tag name must be the version
 
@@ -144,7 +144,7 @@ pnpm dev
 ### Run test
 Create a config file.
 ```
-cp .github/misskey/test.yml .config/
+cp .github/cherrypick/test.yml .config/
 ```
 Prepare DB/Redis for testing.
 ```
@@ -171,17 +171,17 @@ TODO
 - `MISSKEY_WEBFINGER_USE_HTTP`: If it's set true, WebFinger requests will be http instead of https, useful for testing federation between servers in localhost. NEVER USE IN PRODUCTION.
 
 ## Continuous integration
-Misskey uses GitHub Actions for executing automated tests.
+CherryPick uses GitHub Actions for executing automated tests.
 Configuration files are located in [`/.github/workflows`](/.github/workflows).
 
 ## Vue
-Misskey uses Vue(v3) as its front-end framework.
+CherryPick uses Vue(v3) as its front-end framework.
 - Use TypeScript.
 - **When creating a new component, please use the Composition API (with [setup sugar](https://v3.vuejs.org/api/sfc-script-setup.html) and [ref sugar](https://github.com/vuejs/rfcs/discussions/369)) instead of the Options API.**
 	- Some of the existing components are implemented in the Options API, but it is an old implementation. Refactors that migrate those components to the Composition API are also welcome.
 
 ## nirax
-niraxは、Misskeyで使用しているオリジナルのフロントエンドルーティングシステムです。
+niraxは、CherryPickで使用しているオリジナルのフロントエンドルーティングシステムです。
 **vue-routerから影響を多大に受けているので、まずはvue-routerについて学ぶことをお勧めします。**
 
 ### ルート定義
@@ -210,7 +210,7 @@ vue-routerとの最大の違いは、niraxは複数のルーターが存在す�
 
 ## Storybook
 
-Misskey uses [Storybook](https://storybook.js.org/) for UI development.
+CherryPick uses [Storybook](https://storybook.js.org/) for UI development.
 
 ### Setup & Run
 

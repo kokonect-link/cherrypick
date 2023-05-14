@@ -2,7 +2,7 @@
 This is a release PR.
 
 For more information on the release instructions, please see:
-https://github.com/misskey-dev/misskey/blob/develop/CONTRIBUTING.md#release
+https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md#release
 
 ## For reviewers
 - CHANGELOGに抜け漏れは無いか
