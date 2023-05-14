@@ -12,6 +12,8 @@
 ## 13.x.x-cp-3.x.x (unreleased)
 ### Improvements
 - 클라이언트: (friendly) 모바일에서 스크롤 시 각종 요소들의 유동적인 높이 조절을 변경된 헤더 디자인에 대응
+- 클라이언트: 채팅 및 그룹 기능 유지 (revert: [misskey-dev#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev#9942](https://github.com/misskey-dev/misskey/pull/9942))
+- 클라이언트: 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경
 
 ### Bugfixes
 
