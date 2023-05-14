@@ -1,6 +1,6 @@
 <template>
 <div ref="rootEl">
-	<div ref="headerEl">
+	<div :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]" ref="headerEl">
 		<slot name="header"></slot>
 	</div>
 	<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
@@ -15,6 +15,23 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, provide, inject, Ref, ref, watch } from 'vue';
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';
+import { miLocalStorage } from '@/local-storage';
+import { deviceKind } from '@/scripts/device-kind';
+import { mainRouter } from '@/router';
+import { defaultStore } from '@/store';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
+
+let showEl = $ref(false);
 
 const rootEl = $shallowRef<HTMLElement>();
 const headerEl = $shallowRef<HTMLElement>();
@@ -78,6 +95,10 @@ onMounted(() => {
 
 	observer.observe(headerEl);
 	observer.observe(footerEl);
+
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
 });
 
 onUnmounted(() => {
@@ -86,5 +107,19 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" module>
+.root {
+	transition: opacity 0.5s, transform 0.5s;
 
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
+	}
+
+	&.showEl {
+		transform: translateY(-50.55px);
+	}
+
+	&.showElTl {
+		transform: translateY(-90.55px);
+	}
+}
 </style>

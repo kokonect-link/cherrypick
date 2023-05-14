@@ -1,6 +1,6 @@
 <template>
 <div v-if="show" ref="el" :class="[$style.root]" :style="{ background: bg }">
-	<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader }]">
+	<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 			<MkAvatar :class="$style.avatar" :user="$i"/>
 		</div>
@@ -45,12 +45,9 @@ import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
-const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
 
 const MOBILE_THRESHOLD = 500;
 
@@ -58,9 +55,6 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
-
-let showEl = $ref(false);
-let lastScrollPosition = $ref(0);
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
@@ -138,10 +132,6 @@ onMounted(() => {
 		});
 		ro.observe(el.parentElement as HTMLElement);
 	}
-
-	eventBus.on('showEl', (showEl_receive) => {
-		showEl = showEl_receive;
-	});
 });
 
 onUnmounted(() => {
@@ -156,6 +146,11 @@ onUnmounted(() => {
 	backdrop-filter: var(--blur, blur(15px));
 	border-bottom: solid 0.5px var(--divider);
 	width: 100%;
+	transition: opacity 0.5s, transform 0.5s;
+
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
+	}
 }
 
 .upper,
@@ -169,7 +164,6 @@ onUnmounted(() => {
 	display: flex;
 	gap: var(--margin);
 	height: var(--height);
-	transition: opacity 0.5s, transform 0.5s;
 
 	.tabs:first-child {
 		margin-left: auto;
@@ -200,14 +194,6 @@ onUnmounted(() => {
 			margin: 0 auto;
 			max-width: 100%;
 		}
-	}
-
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
-
-	&.showEl {
-		transform: translateY(-50.55px);
 	}
 }
 

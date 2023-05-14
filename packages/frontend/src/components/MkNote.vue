@@ -42,7 +42,7 @@
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-		<MkAvatar :class="[$style.avatar, {[$style.showEl]: showEl}]" :user="appearNote.user" link preview/>
+		<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
 		<div :class="$style.main">
 			<MkNoteHeader :class="$style.header" :note="appearNote" :mini="true"/>
 			<MkInstanceTicker v-if="showTicker" :class="$style.ticker" :instance="appearNote.user.instance"/>
@@ -167,6 +167,7 @@ import { MenuItem } from '@/types/menu';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { mainRouter } from '@/router';
 
 let showEl = $ref(false);
 
@@ -853,6 +854,10 @@ function showReactions(): void {
 
 		&.showEl {
 			top: 14px;
+		}
+
+		&.showElTab {
+			top: 54px;
 		}
 	}
 }

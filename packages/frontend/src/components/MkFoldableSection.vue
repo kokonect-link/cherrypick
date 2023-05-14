@@ -1,6 +1,6 @@
 <template>
 <div class="ssazuxis">
-	<header class="_button" :style="{ background: bg }" @click="showBody = !showBody">
+	<header :class="{ reduceAnimation: !defaultStore.state.animation, showEl: showEl && isMobile && mainRouter().currentRoute.value.name === 'explore' }" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
 		<div class="title"><div><slot name="header"></slot></div></div>
 		<div class="divider"></div>
 		<button class="_button">
@@ -26,7 +26,11 @@
 import { defineComponent } from 'vue';
 import tinycolor from 'tinycolor2';
 import { miLocalStorage } from '@/local-storage';
+import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+
+const MOBILE_THRESHOLD = 500;
 
 const miLocalStoragePrefix = 'ui:folder:' as const;
 
@@ -48,6 +52,10 @@ export default defineComponent({
 			defaultStore,
 			bg: null,
 			showBody: (this.persistKey && miLocalStorage.getItem(`${miLocalStoragePrefix}${this.persistKey}`)) ? (miLocalStorage.getItem(`${miLocalStoragePrefix}${this.persistKey}`) === 't') : this.expanded,
+			showEl: false,
+			isMobile: window.innerWidth <= MOBILE_THRESHOLD,
+			isFriendly: miLocalStorage.getItem('ui') === 'friendly',
+			isAllowHideHeader: mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites',
 		};
 	},
 	watch: {
@@ -71,8 +79,15 @@ export default defineComponent({
 		const bg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 		bg.setAlpha(0.85);
 		this.bg = bg.toRgbString();
+
+		eventBus.on('showEl', (showEl_receive: boolean) => {
+			this.showEl = showEl_receive;
+		});
 	},
 	methods: {
+		mainRouter() {
+			return mainRouter
+		},
 		toggleContent(show: boolean) {
 			this.showBody = show;
 		},
@@ -122,6 +137,7 @@ export default defineComponent({
 		top: var(--stickyTop, 0px);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(20px));
+		transition: opacity 0.5s, transform 0.5s;
 
 		> .title {
 			display: grid;
@@ -135,6 +151,14 @@ export default defineComponent({
 			margin: auto;
 			height: 1px;
 			background: var(--divider);
+		}
+
+		&.reduceAnimation {
+			transition: opacity 0s, transform 0s;
+		}
+
+		&.showEl {
+			transform: translateY(-50.55px);
 		}
 
 		> button {

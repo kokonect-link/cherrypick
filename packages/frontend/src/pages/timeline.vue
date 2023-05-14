@@ -8,7 +8,7 @@
 			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 		</transition>
 		<transition
 			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -16,7 +16,7 @@
 			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 		</transition>
 	</template>
 	<MkSpacer :content-max="800">
@@ -50,9 +50,12 @@ import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
 
-provide('shouldOmitHeaderTitle', true);
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+
+if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
 
 const MOBILE_THRESHOLD = 500;
 
@@ -60,8 +63,6 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
-
-let showEl = $ref(false);
 
 const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
@@ -206,12 +207,6 @@ definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
 	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-whirl' : 'ti ti-home',
 })));
-
-onMounted(() => {
-	eventBus.on('showEl', (showEl_receive) => {
-		showEl = showEl_receive;
-	});
-});
 </script>
 
 <style lang="scss" module>
@@ -230,7 +225,6 @@ onMounted(() => {
 	z-index: 1000;
 	width: 100%;
 	transition: opacity 0.5s, transform 0.5s;
-	margin: calc(-0.675em - 8px) 0;
 
 	&:first-child {
 		margin-top: calc(-0.675em - 8px - var(--margin));
@@ -238,10 +232,6 @@ onMounted(() => {
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;
-	}
-
-	&.showEl {
-		transform: translateY(-50px);
 	}
 
 	> button {

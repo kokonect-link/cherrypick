@@ -9,7 +9,15 @@
 
 이 문서는 CherryPick의 변경 사항만 포함합니다. 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## 13.5.5-cp-3.1.0 (2023/02/10)
+## 13.x.x-cp-3.x.x (unreleased)
+### Improvements
+- 클라이언트: (friendly) 모바일에서 스크롤 시 각종 요소들의 유동적인 높이 조절을 변경된 헤더 디자인에 대응
+
+### Bugfixes
+
+---
+
+## 13.5.6-cp-3.1.0 (2023/02/10)
 이 버전부터 Misskey v13을 대응합니다.
 
 ### Improvements
