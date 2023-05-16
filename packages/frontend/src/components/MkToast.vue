@@ -72,6 +72,7 @@ onMounted(() => {
 
 	@media (max-width: 500px) {
 		width: 100%;
+		top: 0px;
 	}
 }
 
