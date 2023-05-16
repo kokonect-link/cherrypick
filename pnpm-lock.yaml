@@ -771,6 +771,9 @@ importers:
       syuilo-password-strength:
         specifier: 0.0.1
         version: 0.0.1
+      temml:
+        specifier: 0.10.0
+        version: 0.10.0
       textarea-caret:
         specifier: 3.1.0
         version: 3.1.0
@@ -18833,6 +18836,10 @@ packages:
     dependencies:
       memoizerific: 1.11.3
     dev: true
+
+  /temml@0.10.0:
+    resolution: {integrity: sha512-l3hKkvNYsPAUfUhIgLtlVY5QlSuRtJrnoy74O1aO3Al8PWsmgl97ASRoAanJEviitj/9f+7SjdXn+pEwbSFVoA==}
+    dev: false
 
   /temp-dir@2.0.0:
     resolution: {integrity: sha512-aoBAniQmmwtcKp/7BzsH8Cxzv8OL736p7v1ihGb5e9DJ9kTwGWHrQrVB5+lfVDzfGrdRzXch+ig7LHaY1JTOrg==}
