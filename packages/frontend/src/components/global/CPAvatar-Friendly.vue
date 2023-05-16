@@ -1,17 +1,14 @@
 <template>
-<span v-if="!link" v-user-preview="preview ? user.id : undefined" :class="$style.root" class="_noSelect" :style="{ color }" :title="acct(user)" @click="onClick">
+<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
 	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" decoding="async"/>
 	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
-</span>
-<MkA v-else v-user-preview="preview ? user.id : undefined" class="_noSelect" :class="$style.root" :style="{ color }" :to="userPage(user)" :title="acct(user)" :target="target">
-	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" decoding="async"/>
-	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
-</MkA>
+</component>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue';
+import { watch } from 'vue';
 import * as misskey from 'misskey-js';
+import MkA from './MkA.vue';
 import { getStaticImageUrl } from '@/scripts/media-proxy';
 import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash';
 import { acct, userPage } from '@/filters/user';
@@ -35,15 +32,20 @@ const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;
 }>();
 
+const bound = $computed(() => props.link
+	? { to: userPage(props.user), target: props.target }
+	: {});
+
 const url = $computed(() => defaultStore.state.disableShowingAnimatedImages
 	? getStaticImageUrl(props.user.avatarUrl)
 	: props.user.avatarUrl);
 
-function onClick(ev: MouseEvent) {
+function onClick(ev: MouseEvent): void {
+	if (props.link) return;
 	emit('click', ev);
 }
 
-let color = $ref();
+let color = $ref<string | undefined>();
 
 watch(() => props.user.avatarBlurhash, () => {
 	color = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
