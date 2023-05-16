@@ -530,7 +530,7 @@ objectStoragePrefixDesc: "이 Prefix 의 디렉토리 아래에 파일이 저장
 objectStorageEndpoint: "Endpoint"
 objectStorageEndpointDesc: "AWS S3의 경우 공란, 다른 서비스의 경우 각 서비스의 가이드에 맞게 endpoint를 설정해 주세요. '<host>' 혹은 '<host>:<port>' 와 같이 지정해 주세요."
 objectStorageRegion: "Region"
-objectStorageRegionDesc: "'xx-east-1'와 같이 region을 지정해 주세요. 사용하는 서비스에 region 개념이 없는 경우, 비워 두거나 'us-east-1'으로 설정해 주세요."
+objectStorageRegionDesc: "'xx-east-1'와 같이 region을 지정해 주세요. 사용하는 서비스에 region 개념이 없는 경우 'us-east-1'으로 설정해 주세요. AWS 설정 파일 또는 환경 변수를 참조할 경우에는 비워주세요."
 objectStorageUseSSL: "SSL 사용"
 objectStorageUseSSLDesc: "API 호출시 HTTPS 를 사용하지 않는 경우 OFF 로 설정해 주세요"
 objectStorageUseProxy: "연결에 프록시 사용"
