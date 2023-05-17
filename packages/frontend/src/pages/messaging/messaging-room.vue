@@ -43,7 +43,7 @@
 		<Transition :name="animation ? 'fade' : ''">
 			<div v-show="showIndicator" :class="$style['new-message']">
 				<button class="_buttonPrimary" @click="onIndicatorClick" :class="$style['new-message-button']">
-					<i class="fas ti-fw fa-arrow-circle-down" :class="$style['new-message-icon']"></i>{{ i18n.ts.newMessageExists }}
+					<i class="ti ti-circle-arrow-down-filled" :class="$style['new-message-icon']"></i>{{ i18n.ts.newMessageExists }}
 				</button>
 			</div>
 		</Transition>
@@ -69,6 +69,9 @@ import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { definePageMetadata } from '@/scripts/page-metadata';
+import MkStickyContainer from "@/components/global/MkStickyContainer.vue";
+import MkPageHeader from "@/components/global/MkPageHeader.vue";
+import MkEllipsis from "@/components/global/MkEllipsis.vue";
 
 const props = defineProps<{
 	userAcct?: string;

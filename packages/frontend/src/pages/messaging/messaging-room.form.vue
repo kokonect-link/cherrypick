@@ -43,6 +43,7 @@ import { i18n } from '@/i18n';
 //import { Autocomplete } from '@/scripts/autocomplete';
 import { uploadFile } from '@/scripts/upload';
 import { miLocalStorage } from '@/local-storage';
+import MkLoading from "@/components/global/MkLoading.vue";
 
 const props = defineProps<{
 	user?: Misskey.entities.UserDetailed | null;
