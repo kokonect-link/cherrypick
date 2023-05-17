@@ -16,7 +16,7 @@
 - 클라이언트: 채팅 및 그룹 기능 유지 (revert: [misskey-dev#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev#9942](https://github.com/misskey-dev/misskey/pull/9942))
 - 클라이언트: 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
 - 클라이언트: about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
-- 클라이언트: 노트 수식 삽입 기능 복원
+- 클라이언트: 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev#9754](https://github.com/misskey-dev/misskey/issues/9754)))
 
 ---
 
