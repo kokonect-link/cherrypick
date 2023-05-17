@@ -1510,7 +1510,7 @@ _registry:
 
 _aboutMisskey:
   about: "CherryPickは、Misskeyをベースに2021年から開発中のカスタマイズクライアントです。"
-  contributors: "主なコントリビューター(Misskey)"
+  contributors: "主なコントリビューター"
   allContributors: "全てのコントリビューター"
   source: "ソースコード"
   translation: "Misskeyを翻訳"
@@ -1522,7 +1522,6 @@ _aboutMisskey:
     donate: "ココネクトに寄付"
   _cherrypick:
     about: "このMisskeyはNoriDevによってカスタムされました！"
-    contributors: "主なコントリビューター(CherryPick)"
     translation: "CherryPickを翻訳"
     donate: "CherryPickに寄付"
     relayServer: "リレーサーバー"
