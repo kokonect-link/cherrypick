@@ -245,6 +245,7 @@ export async function login(token: Account['token'], redirect?: string) {
 export async function openAccountMenu(opts: {
 	includeCurrentAccount?: boolean;
 	withExtraOperation: boolean;
+	withExtraOperationFriendly: boolean;
 	active?: misskey.entities.UserDetailed['id'];
 	onChoose?: (account: misskey.entities.UserDetailed) => void;
 }, ev: MouseEvent) {
@@ -347,6 +348,31 @@ export async function openAccountMenu(opts: {
 				signout();
 			},
 			danger: true,
+		}]], ev.currentTarget ?? ev.target, {
+			align: 'left',
+		});
+	} else if (opts.withExtraOperationFriendly) {
+		popupMenu([...[{
+			type: 'link' as const,
+			text: i18n.ts.profile,
+			to: `/@${ $i.username }`,
+			avatar: $i,
+		}, null, ...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises, {
+			type: 'parent' as const,
+			icon: 'ti ti-plus',
+			text: i18n.ts.addAccount,
+			children: [{
+				text: i18n.ts.existingAccount,
+				action: () => { showSigninDialog(); },
+			}, {
+				text: i18n.ts.createAccount,
+				action: () => { createAccount(); },
+			}],
+		}, {
+			type: 'link' as const,
+			icon: 'ti ti-users',
+			text: i18n.ts.manageAccounts,
+			to: '/settings/accounts',
 		}]], ev.currentTarget ?? ev.target, {
 			align: 'left',
 		});

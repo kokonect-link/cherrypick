@@ -259,7 +259,7 @@ function openAccountMenu(ev: MouseEvent) {
 	setTimeout(() => {
 		if (longTouchNavHome === true) {
 			openAccountMenu_({
-				withExtraOperation: true,
+				withExtraOperationFriendly: true,
 			}, ev);
 		}
 	}, 500);
