@@ -100,9 +100,9 @@ function onDragover(ev: DragEvent) {
 		switch (ev.dataTransfer.effectAllowed) {
 			case 'all':
 			case 'uninitialized':
-			case 'copy': 
-			case 'copyLink': 
-			case 'copyMove': 
+			case 'copy':
+			case 'copyLink':
+			case 'copyMove':
 				ev.dataTransfer.dropEffect = 'copy';
 				break;
 			case 'linkMove':
@@ -144,8 +144,14 @@ function onDrop(ev: DragEvent): void {
 
 function onKeydown(ev: KeyboardEvent) {
 	typing();
-	if ((ev.key === 'Enter') && (ev.ctrlKey || ev.metaKey) && canSend) {
-		send();
+	if (defaultStore.state.useEnterToSend && !ev.shiftKey) {
+		if ((ev.key === 'Enter') && canSend) {
+			send();
+		}
+	} else {
+		if ((ev.key === 'Enter') && (ev.ctrlKey || ev.metaKey) && canSend) {
+			send();
+		}
 	}
 }
 
