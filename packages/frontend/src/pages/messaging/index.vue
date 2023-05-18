@@ -27,14 +27,14 @@
 							<MkTime :time="message.createdAt" class="time"/>
 						</header>
 						<div class="body">
-							<p class="text"><span v-if="isMe(message)" class="me">{{ i18n.you }}:</span>{{ message.text }}</p>
+							<p class="text"><span v-if="isMe(message)" class="me">{{ i18n.ts.you }}:</span>{{ message.text }}</p>
 						</div>
 					</div>
 				</MkA>
 			</div>
 			<div v-if="!fetching && messages.length == 0" class="_fullinfo">
 				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
-				<div>{{ i18n.noHistory }}</div>
+				<div>{{ i18n.ts.noHistory }}</div>
 			</div>
 			<MkLoading v-if="fetching"/>
 		</div>
