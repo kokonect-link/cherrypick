@@ -56,9 +56,9 @@ let fileEl = $shallowRef<HTMLInputElement>();
 let text = $ref<string>('');
 let file = $ref<Misskey.entities.DriveFile | null>(null);
 let sending = $ref(false);
-const typing = throttle(3000, () => {
+const typing = () => {
 	stream.send('typingOnMessaging', props.user ? { partner: props.user.id } : { group: props.group?.id });
-});
+};
 
 let draftKey = $computed(() => props.user ? 'user:' + props.user.id : 'group:' + props.group?.id);
 let canSend = $computed(() => (text != null && text !== '') || file != null);
