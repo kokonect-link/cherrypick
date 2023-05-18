@@ -352,10 +352,18 @@ export async function openAccountMenu(opts: {
 			align: 'left',
 		});
 	} else if (opts.withExtraOperationFriendly) {
+		accountListFriendly($i);
+	} else {
+		popupMenu([...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises], ev.currentTarget ?? ev.target, {
+			align: 'left',
+		});
+	}
+
+	function accountListFriendly (account: misskey.entities.UserDetailed) {
 		popupMenu([...[{
 			type: 'link' as const,
-			text: i18n.ts.profile,
-			to: `/@${ $i.username }`,
+			text: account.name,
+			to: `/@${$i.username}`,
 			avatar: $i,
 		}, null, ...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises, {
 			type: 'parent' as const,
@@ -363,10 +371,14 @@ export async function openAccountMenu(opts: {
 			text: i18n.ts.addAccount,
 			children: [{
 				text: i18n.ts.existingAccount,
-				action: () => { showSigninDialog(); },
+				action: () => {
+					showSigninDialog();
+				},
 			}, {
 				text: i18n.ts.createAccount,
-				action: () => { createAccount(); },
+				action: () => {
+					createAccount();
+				},
 			}],
 		}, {
 			type: 'link' as const,
@@ -374,10 +386,6 @@ export async function openAccountMenu(opts: {
 			text: i18n.ts.manageAccounts,
 			to: '/settings/accounts',
 		}]], ev.currentTarget ?? ev.target, {
-			align: 'left',
-		});
-	} else {
-		popupMenu([...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises], ev.currentTarget ?? ev.target, {
 			align: 'left',
 		});
 	}
