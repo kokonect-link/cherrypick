@@ -37,12 +37,14 @@ import { throttle } from 'throttle-debounce';
 import { formatTimeString } from '@/scripts/format-time-string';
 import { selectFile } from '@/scripts/select-file';
 import * as os from '@/os';
-import { stream } from '@/stream';
+import { useStream } from '@/stream';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';
 //import { Autocomplete } from '@/scripts/autocomplete';
 import { uploadFile } from '@/scripts/upload';
 import { miLocalStorage } from '@/local-storage';
+
+const stream = useStream();
 
 const props = defineProps<{
 	user?: Misskey.entities.UserDetailed | null;
