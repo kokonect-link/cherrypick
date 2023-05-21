@@ -1,5 +1,5 @@
 import { URLSearchParams } from 'node:url';
-import googletr from '@vitalets/google-translate-api';
+import { translate } from '@vitalets/google-translate-api';
 import { Inject, Injectable } from '@nestjs/common';
 import type { NotesRepository } from '@/models/index.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
@@ -119,11 +119,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				let targetLang = ps.targetLang;
 				if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 				
-				const json = await googletr(note.text, { to: targetLang });
+				const { text, raw } = await translate(note.text, { to: targetLang });
 				
 				return {
-					sourceLang: json.from.language.iso,
-					text: json.text,
+					sourceLang: raw.src,
+					text: text,
 					translator: translatorServices,
 				};
 			} else {
