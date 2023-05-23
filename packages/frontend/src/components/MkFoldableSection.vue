@@ -1,6 +1,6 @@
 <template>
 <div ref="el" :class="$style.root">
-	<header :class="[$style.header, { reduceAnimation: !defaultStore.state.animation, showEl: showEl && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
+	<header :class="[$style.header, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
 		<div :class="$style.title"><div><slot name="header"></slot></div></div>
 		<div :class="$style.divider"></div>
 		<button class="_button" :class="$style.button">
