@@ -1,6 +1,6 @@
 import { App } from 'vue';
 
-import Mfm from './global/MkMisskeyFlavoredMarkdown.vue';
+import Mfm from './global/MkMisskeyFlavoredMarkdown.ts';
 import MkA from './global/MkA.vue';
 import MkAcct from './global/MkAcct.vue';
 import MkAvatar from './global/MkAvatar.vue';
@@ -17,7 +17,6 @@ import MkLoading from './global/MkLoading.vue';
 import MkError from './global/MkError.vue';
 import MkAd from './global/MkAd.vue';
 import MkPageHeader from './global/MkPageHeader.vue';
-import CPPageHeader from './global/CPPageHeader.vue';
 import MkSpacer from './global/MkSpacer.vue';
 import MkStickyContainer from './global/MkStickyContainer.vue';
 
@@ -45,7 +44,6 @@ export const components = {
 	MkError: MkError,
 	MkAd: MkAd,
 	MkPageHeader: MkPageHeader,
-	CPPageHeader: CPPageHeader,
 	MkSpacer: MkSpacer,
 	MkStickyContainer: MkStickyContainer,
 };
@@ -69,7 +67,6 @@ declare module '@vue/runtime-core' {
 		MkError: typeof MkError;
 		MkAd: typeof MkAd;
 		MkPageHeader: typeof MkPageHeader;
-		CPPageHeader: typeof CPPageHeader;
 		MkSpacer: typeof MkSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
 	}

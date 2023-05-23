@@ -25,7 +25,6 @@ html
 		meta(name='referrer' content='origin')
 		meta(name='theme-color' content= themeColor || '#86b300')
 		meta(name='theme-color-orig' content= themeColor || '#86b300')
-		meta(property='twitter:card' content='summary')
 		meta(property='og:site_name' content= instanceName || 'CherryPick')
 		meta(name='viewport' content='width=device-width, initial-scale=1')
 		link(rel='icon' href= icon || '/favicon.ico')
@@ -59,6 +58,7 @@ html
 			meta(property='og:title'       content= title || 'CherryPick')
 			meta(property='og:description' content= desc || '✨🌎✨ A interplanetary communication platform ✨🚀✨')
 			meta(property='og:image'       content= img)
+			meta(property='twitter:card'   content='summary')
 
 		style
 			include ../style.css
@@ -79,13 +79,13 @@ html
 			img#splashIcon(src= icon || '/static-assets/splash.png')
 			div#splashSpinner
 				<svg class="spinner bg" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
-				<g transform="matrix(1,0,0,1,12,12)">
-				<circle cx="64" cy="64" r="64" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
-				</g>
+					<g transform="matrix(1,0,0,1,12,12)">
+						<circle cx="64" cy="64" r="64" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
+					</g>
 				</svg>
 				<svg class="spinner fg" viewBox="0 0 152 152" xmlns="http://www.w3.org/2000/svg">
-				<g transform="matrix(1,0,0,1,12,12)">
-				<path d="M128,64C128,28.654 99.346,0 64,0C99.346,0 128,28.654 128,64Z" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
-				</g>
+					<g transform="matrix(1,0,0,1,12,12)">
+						<path d="M128,64C128,28.654 99.346,0 64,0C99.346,0 128,28.654 128,64Z" style="fill:none;stroke:currentColor;stroke-width:24px;"/>
+					</g>
 				</svg>
 		block content

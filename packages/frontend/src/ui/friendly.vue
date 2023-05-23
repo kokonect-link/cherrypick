@@ -4,7 +4,7 @@
 
 	<MkStickyContainer :class="$style.contents">
 		<template #header><XStatusBars :class="$style.statusbars"/></template>
-		<main style="min-width: 0;" :style="{ background: pageMetadata?.value?.bg }" @contextmenu.stop="onContextmenu">
+		<main style="min-width: 0;" @contextmenu.stop="onContextmenu">
 			<div :class="$style.content" style="container-type: inline-size;">
 				<RouterView/>
 			</div>
@@ -13,7 +13,7 @@
 	</MkStickyContainer>
 
 	<div v-if="isDesktop" ref="widgetsEl" :class="$style.widgets">
-		<XWidgets :margin-top="'var(--margin)'" @mounted="attachSticky"/>
+		<XWidgets :marginTop="'var(--margin)'" @mounted="attachSticky"/>
 	</div>
 
 	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true" @touchstart="longTouchfloatNavStart" @touchend="longTouchfloatNavEnd"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
@@ -33,10 +33,10 @@
 	</div>
 
 	<Transition
-		:enter-active-class="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterActive : ''"
-		:leave-active-class="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
-		:enter-from-class="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
-		:leave-to-class="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
+		:enterActiveClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterActive : ''"
+		:leaveActiveClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
+		:enterFromClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
+		:leaveToClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="drawerMenuShowing"
@@ -48,10 +48,10 @@
 	</Transition>
 
 	<Transition
-		:enter-active-class="defaultStore.state.animation ? $style.transition_menuDrawer_enterActive : ''"
-		:leave-active-class="defaultStore.state.animation ? $style.transition_menuDrawer_leaveActive : ''"
-		:enter-from-class="defaultStore.state.animation ? $style.transition_menuDrawer_enterFrom : ''"
-		:leave-to-class="defaultStore.state.animation ? $style.transition_menuDrawer_leaveTo : ''"
+		:enterActiveClass="defaultStore.state.animation ? $style.transition_menuDrawer_enterActive : ''"
+		:leaveActiveClass="defaultStore.state.animation ? $style.transition_menuDrawer_leaveActive : ''"
+		:enterFromClass="defaultStore.state.animation ? $style.transition_menuDrawer_enterFrom : ''"
+		:leaveToClass="defaultStore.state.animation ? $style.transition_menuDrawer_leaveTo : ''"
 	>
 		<div v-if="drawerMenuShowing" :class="$style.menuDrawer">
 			<XDrawerMenu/>
@@ -59,10 +59,10 @@
 	</Transition>
 
 	<Transition
-		:enter-active-class="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
-		:leave-active-class="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
-		:enter-from-class="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
-		:leave-to-class="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
+		:enterActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
+		:leaveActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
+		:enterFromClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
+		:leaveToClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="widgetsShowing"
@@ -74,10 +74,10 @@
 	</Transition>
 
 	<Transition
-		:enter-active-class="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterActive : ''"
-		:leave-active-class="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
-		:enter-from-class="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
-		:leave-to-class="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
+		:enterActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterActive : ''"
+		:leaveActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
+		:enterFromClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
+		:leaveToClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
 	>
 		<div v-if="widgetsShowing" :class="$style.widgetsDrawer">
 			<button class="_button" :class="$style.widgetsCloseButton" @click="widgetsShowing = false"><i class="ti ti-x"></i></button>

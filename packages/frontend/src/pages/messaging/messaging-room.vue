@@ -63,7 +63,7 @@ import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import { isBottomVisible, onScrollBottom, scrollToBottom } from '@/scripts/scroll';
 import * as os from '@/os';
-import { stream } from '@/stream';
+import { useStream } from '@/stream';
 import * as sound from '@/scripts/sound';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
@@ -116,7 +116,7 @@ async function fetch() {
 			reversed: true,
 			pageEl: $$(rootEl).value,
 		};
-		connection = stream.useChannel('messaging', {
+		connection = useStream().useChannel('messaging', {
 			otherparty: user.id,
 		});
 	} else {
@@ -132,7 +132,7 @@ async function fetch() {
 			reversed: true,
 			pageEl: $$(rootEl).value,
 		};
-		connection = stream.useChannel('messaging', {
+		connection = useStream().useChannel('messaging', {
 			group: group?.id,
 		});
 	}

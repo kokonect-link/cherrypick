@@ -1,14 +1,14 @@
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkPageHeader v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :display-my-avatar="true"/>
+		<MkPageHeader v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 		<transition
 			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
 			:leave-active-class="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
 			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 		</transition>
 		<transition
 			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -16,10 +16,10 @@
 			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 		>
-			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
 		</transition>
 	</template>
-	<MkSpacer :content-max="800">
+	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
 			<XTutorial v-if="$i && defaultStore.reactiveState.timelineTutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
 			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
@@ -233,16 +233,16 @@ definePageMetadata(computed(() => ({
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;
 	}
+}
 
-	> button {
-		display: block;
-		margin: var(--margin) auto 0 auto;
-		padding: 8px 16px;
-		border-radius: 32px;
+.newButton {
+	display: block;
+	margin: var(--margin) auto 0 auto;
+	padding: 8px 16px;
+	border-radius: 32px;
 
-		> i {
-			margin-right: 5px;
-		}
+	> i {
+		margin-right: 5px;
 	}
 }
 
