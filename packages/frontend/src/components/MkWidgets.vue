@@ -8,8 +8,6 @@
 			</MkSelect>
 			<MkButton primary data-cy-widget-add :class="$style.btn" @click="addWidget"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
 			<MkButton :class="$style.btn" @click="$emit('exit')">{{ i18n.ts.close }}</MkButton>
-			<MkButton inline primary data-cy-widget-add @click="addWidget"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-			<MkButton inline @click="$emit('exit')">{{ i18n.ts.close }}</MkButton>
 		</header>
 		<Sortable
 			:modelValue="props.widgets"
@@ -21,14 +19,14 @@
 			@update:modelValue="v => emit('updateWidgets', v)"
 		>
 			<template #item="{element}">
-				<div :class="[$style.widget, $style['customize-container']]" class="data-cy-customize-container">
+				<div :class="[$style.widget, $style['customize-container']]" data-cy-customize-container>
 					<header class="handle">
 						<span :class="$style['widget-container-handle']"><i class="ti ti-menu-2"/></span>
 						<div style="position: absolute; top: 0; left: 35px; font-size: 14px; font-weight: bold; line-height: 32.5px;">
 							{{ $t('_widgets.' + element.name) }}
 						</div>
 						<button :class="$style['widget-container-config']" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ti ti-settings"></i></button>
-						<button :class="$style['widget-container-remove']" class="_button data-cy-customize-container-remove" @click.prevent.stop="removeWidget(element)"><i class="ti ti-x"></i></button>
+						<button :class="$style['widget-container-remove']" data-cy-customize-container-remove class="_button" @click.prevent.stop="removeWidget(element)"><i class="ti ti-x"></i></button>
 					</header>
 					<div @click="configWidget(element.id)">
 						<component :is="`widget-${element.name}`" :ref="el => widgetRefs[element.id] = el" class="widget" :class="$style['customize-container-handle-widget']" :widget="element" @updateProps="updateWidget(element.id, $event)"/>
