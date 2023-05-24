@@ -19,6 +19,9 @@
 - 클라이언트: about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
 - 클라이언트: 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev#9754](https://github.com/misskey-dev/misskey/issues/9754)))
 
+### Bugfixes
+- 위젯 편집 시 헤더 이외의 영역을 눌렀을 때 위젯 설정이 뜨는 문제
+
 ---
 
 ## 13.5.6-cp-3.1.0 (2023/02/10)

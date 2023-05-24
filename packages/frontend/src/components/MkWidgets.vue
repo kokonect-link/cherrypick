@@ -28,7 +28,7 @@
 						<button :class="$style['widget-container-config']" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ti ti-settings"></i></button>
 						<button :class="$style['widget-container-remove']" data-cy-customize-container-remove class="_button" @click.prevent.stop="removeWidget(element)"><i class="ti ti-x"></i></button>
 					</header>
-					<div @click="configWidget(element.id)">
+					<div>
 						<component :is="`widget-${element.name}`" :ref="el => widgetRefs[element.id] = el" class="widget" :class="$style['customize-container-handle-widget']" :widget="element" @updateProps="updateWidget(element.id, $event)"/>
 					</div>
 				</div>
