@@ -164,7 +164,7 @@
 			<button class="button-big" onclick="location.reload(true);">
 				<span class="button-label-big">Reload / リロード / 새로고침</span>
 			</button>
-			<p><b>The following actions may solve the problem. / 以下を行うと解決する可能性があります。 / 아래 과정을 진행하면 해결될 수도 있어요.</b></p>
+			<p><b>The following actions may solve the problem. / 以下を行うと解決する可能性があります。/ 아래 과정을 진행하면 해결될 수도 있어요.</b></p>
 			<p>Clear the browser cache / ブラウザのキャッシュをクリアする / 브라우저의 캐시 지우기</p>
 			<p>Update your os and browser / ブラウザおよびOSを最新バージョンに更新する / 브라우저와 OS를 최신 버전으로 업데이트 하기</p>
 			<p>Disable an adblocker / アドブロッカーを無効にする / 광고 차단기를 비활성화 하기</p>
