@@ -90,7 +90,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, inject, Ref} from 'vue';
+import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, inject, Ref } from 'vue';
 import XCommon from './_common_/common.vue';
 import { instanceName } from '@/config';
 import { StickySidebar } from '@/scripts/sticky-sidebar';
