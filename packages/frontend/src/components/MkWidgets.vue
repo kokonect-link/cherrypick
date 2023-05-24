@@ -22,8 +22,8 @@
 				<div :class="[$style.widget, $style['customize-container']]" data-cy-customize-container>
 					<header class="handle">
 						<span :class="$style['widget-container-handle']"><i class="ti ti-menu-2"/></span>
-						<div style="position: absolute; top: 0; left: 35px; font-size: 14px; font-weight: bold; line-height: 32.5px;">
-							{{ $t('_widgets.' + element.name) }}
+						<div style="position: absolute; top: 0; left: 35px; font-size: 14px; font-weight: bold; line-height: 33px;">
+							{{ i18n.t('_widgets.' + element.name) }}
 						</div>
 						<button :class="$style['widget-container-config']" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ti ti-settings"></i></button>
 						<button :class="$style['widget-container-remove']" data-cy-customize-container-remove class="_button" @click.prevent.stop="removeWidget(element)"><i class="ti ti-x"></i></button>
