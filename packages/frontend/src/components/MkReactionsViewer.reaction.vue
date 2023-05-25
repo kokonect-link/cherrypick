@@ -130,7 +130,8 @@ useTooltip(buttonEl, async (showing) => {
 	&.large {
 		height: 42px;
 		font-size: 1.5em;
-		border-radius: 6px;
+		padding: 4px 14px;
+		// border-radius: 6px;
 
 		> .count {
 			font-size: 0.7em;
