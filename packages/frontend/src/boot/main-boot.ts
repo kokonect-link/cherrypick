@@ -48,9 +48,7 @@ export async function mainBoot() {
 			if (!canceled) {
 				location.reload();
 			}
-		} else if (defaultStore.state.serverDisconnectedBehavior === 'none') {
-			// none }
-		}
+		} else if (defaultStore.state.serverDisconnectedBehavior === 'none') {}
 	});
 
 	for (const plugin of ColdDeviceStorage.get('plugins').filter(p => p.active)) {
