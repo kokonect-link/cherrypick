@@ -1,27 +1,30 @@
 <!--
 ## 13.x.x-cp-3.x.x (unreleased)
 
-### Improvements
+### General
+-
 
-### Bugfixes
+### Client
+-
+
+### Server
+-
 
 -->
 
 이 문서는 CherryPick의 변경 사항만 포함합니다. 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## 13.x.x-cp-3.x.x (unreleased)
-### Improvements
-- 클라이언트: (friendly) 모바일에서 스크롤 시 각종 요소들의 유동적인 높이 조절을 변경된 헤더 디자인에 대응
-- 클라이언트: (friendly) 모바일에서 하단 바를 길게 눌러 나오는 계정 관리 팝업에서 로그아웃 버튼 제거
-- 클라이언트: (friendly) 모바일에서 하단 바를 길게 눌러 나오는 계정 관리 팝업에서 현재 계정의 이름을 표시하도록
-- 클라이언트: 채팅 및 그룹 기능 유지 (revert: [misskey-dev#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev#9942](https://github.com/misskey-dev/misskey/pull/9942))
-- 클라이언트: 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
-- 클라이언트: about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
-- 클라이언트: 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev#9754](https://github.com/misskey-dev/misskey/issues/9754)))
-
-### Bugfixes
-- 위젯 편집 시 헤더 이외의 영역을 눌렀을 때 위젯 설정이 뜨는 문제
-- 위젯 편집 종료 버튼이 여러 개 있는 문제
+### Client
+- (friendly) 모바일에서 스크롤 시 각종 요소들의 유동적인 높이 조절을 변경된 헤더 디자인에 대응
+- (friendly) 모바일에서 하단 바를 길게 눌러 나오는 계정 관리 팝업에서 로그아웃 버튼 제거
+- (friendly) 모바일에서 하단 바를 길게 눌러 나오는 계정 관리 팝업에서 현재 계정의 이름을 표시하도록
+- 채팅 및 그룹 기능 유지 (revert: [misskey-dev#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev#9942](https://github.com/misskey-dev/misskey/pull/9942))
+- 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
+- about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
+- 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev#9754](https://github.com/misskey-dev/misskey/issues/9754)))
+- Fix: 위젯 편집 시 헤더 이외의 영역을 눌렀을 때 위젯 설정이 뜨는 문제
+- Fix: 위젯 편집 종료 버튼이 여러 개 있는 문제
 
 ---
 
