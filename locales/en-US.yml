@@ -1070,6 +1070,7 @@ preventAiLearning: "Reject usage in Machine Learning (Generative AI)"
 preventAiLearningDescription: "Requests crawlers to not use posted text or image material etc. in machine learning (Predictive / Generative AI) data sets. This is achieved by adding a \"noai\" HTML-Response flag to the respective content. A complete prevention can however not be achieved through this flag, as it may simply be ignored."
 options: "Options"
 specifyUser: "Specific user"
+later: "later"
 _initialAccountSetting:
   accountCreated: "Your account was successfully created!"
   letsStartAccountSetup: "For starters, let's set up your profile."
@@ -1084,6 +1085,7 @@ _initialAccountSetting:
   haveFun: "Enjoy {name}!"
   ifYouNeedLearnMore: "If you'd like to learn more about how to use {name} (Misskey), please visit {link}."
   skipAreYouSure: "Really skip profile setup?"
+  laterAreYouSure: "Would you like to go through the initial setup again later?"
 _serverRules:
   description: "A set of rules to be displayed before registration. Setting a summary of the Terms of Service is recommended."
 _accountMigration:

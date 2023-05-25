@@ -1069,6 +1069,7 @@ displayOfNote: "노트 표시"
 initialAccountSetting: "초기 설정"
 youFollowing: "팔로잉"
 options: "옵션"
+later: "나중에"
 _initialAccountSetting:
   accountCreated: "계정 생성이 완료되었어요!"
   letsStartAccountSetup: "계정의 초기 설정을 진행해 볼까요?"
@@ -1082,6 +1083,7 @@ _initialAccountSetting:
   haveFun: "{name}와 함께 즐거운 시간 보내세요!"
   ifYouNeedLearnMore: "{name}(CherryPick)의 사용 방법에 대해 자세히 알아보려면 {link}를 참고해 주세요."
   skipAreYouSure: "초기 설정을 건너뛸까요?"
+  laterAreYouSure: "초기 설정을 나중에 다시 진행할까요?"
 _serverRules:
   description: "회원 가입 이전에 간단하게 표시할 서버 규칙이에요. 이용 약관의 요약으로 구성하는 것을 추천해요."
 _accountMigration:
