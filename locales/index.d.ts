@@ -1093,9 +1093,9 @@ export interface Locale {
     "cancelReactionConfirm": string;
     "changeReactionConfirm": string;
     "later": string;
-		"goToMisskey": string;
-    "photosensitiveSeizuresWarning": string;
+    "goToMisskey": string;
     "performanceWarning": string;
+    "photosensitiveSeizuresWarning": string;
     "_initialAccountSetting": {
         "accountCreated": string;
         "letsStartAccountSetup": string;
