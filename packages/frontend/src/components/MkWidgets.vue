@@ -146,7 +146,7 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 
 		> * {
 			width: 100%;
-			padding: 4px;
+			padding: 4px 0;
 		}
 	}
 
