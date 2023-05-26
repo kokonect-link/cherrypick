@@ -94,44 +94,78 @@
 					<div :class="$style.contributors">
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@syuilo (Misskey)</span>
+							<span :class="$style.contributorUsername">@syuilo
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/tamaina" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/7973572?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@tamaina (Misskey)</span>
+							<span :class="$style.contributorUsername">@tamaina
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/acid-chicken" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/20679825?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@acid-chicken (Misskey)</span>
+							<span :class="$style.contributorUsername">@acid-chicken
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/rinsuki" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/6533808?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@rinsuki (Misskey)</span>
+							<span :class="$style.contributorUsername">@rinsuki
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@mei23 (Misskey)</span>
+							<span :class="$style.contributorUsername">@mei23
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/robflop" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/8159402?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@robflop (Misskey)</span>
+							<span :class="$style.contributorUsername">@robflop
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@noridev (CherryPick)</span>
+							<span :class="$style.contributorUsername">@noridev
+								<span :class="$style.contributorClient">
+									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
+								</span>
+							</span>
 						</a>
 					</div>
-					<template #caption><MkLink url="https://github.com/misskey-dev/misskey/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
+					<template #caption><MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
 				</FormSection>
 				<FormSection>
 					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
 					<p style="font-weight: bold">CherryPick</p>
+					<div :class="$style.patronsWithIcon">
+						<div v-for="patron in patronsWithIconWithCherryPick" :class="$style.patronWithIcon">
+							<img :src="patron.icon" :class="$style.patronIcon">
+							<span :class="$style.patronName">{{ patron.name }}</span>
+						</div>
+					</div>
 					<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); grid-gap: 12px;">
 						<div v-for="patron in patronsWithCherryPick" :key="patron">{{ patron }}</div>
 					</div>
 					<p style="font-weight: bold; padding-top: 20px"><b>Misskey</b></p>
 					<div :class="$style.patronsWithIcon">
-						<div v-for="patron in patronsWithIcon" :class="$style.patronWithIcon">
+						<div v-for="patron in patronsWithIconWithMisskey" :class="$style.patronWithIcon">
 							<img :src="patron.icon" :class="$style.patronIcon">
 							<span :class="$style.patronName">{{ patron.name }}</span>
 						</div>
@@ -173,7 +207,12 @@ import { definePageMetadata } from '@/scripts/page-metadata';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { $i } from '@/account';
 
-const patronsWithIcon = [{
+const patronsWithIconWithCherryPick = [{
+	name: 'Inger 잉어',
+	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/84216800/918c97c846994764ac3c027ad4b157f6/eyJ3IjoyMDB9/1.png?token-time=2145916800&token-hash=d7ZLPuj9EH99FuOVYFyEJQs94HArBfPxCdJpZqyIwSU%3D',
+}];
+
+const patronsWithIconWithMisskey = [{
 	name: 'カイヤン',
 	icon: 'https://misskey-hub.net/patrons/a2820716883e408cb87773e377ce7c8d.jpg',
 }, {
@@ -209,7 +248,7 @@ const patronsWithIcon = [{
 }];
 
 const patronsWithCherryPick = [
-	'Inger 잉어',
+	'',
 ];
 
 const patronsWithMisskey = [
@@ -483,6 +522,24 @@ definePageMetadata({
 
 .contributorUsername {
 	margin-left: 12px;
+}
+
+.contributorClient {
+	display: block;
+	font-size: 11px;
+	font-weight: bold;
+
+	> .misskey {
+		color: #86b300;
+	}
+
+	> .cherry {
+		color: var(--cherry);
+	}
+
+	> .pick {
+		color: var(--pick);
+	}
 }
 
 .patronsWithIcon {
