@@ -1,6 +1,6 @@
 <template>
 <div v-if="show" ref="el" :class="[$style.root]" :style="{ background: bg }">
-	<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
+	<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_, [$style.slim]: isFriendly }]">
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 			<MkAvatar :class="$style.avatar" :user="$i"/>
 		</div>
@@ -21,7 +21,7 @@
 					</div>
 				</div>
 			</div>
-			<XTabs v-if="!narrow || hideTitle" :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
+			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
 		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
@@ -30,6 +30,9 @@
 		</div>
 	</div>
 	<div v-if="(narrow && !hideTitle) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
+		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
+	</div>
+	<div v-else-if="(!narrow && !hideTitle) && hasTabs && isFriendly" :class="[$style.lower, { [$style.thin]: thin_ }]">
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 	</div>
 </div>
