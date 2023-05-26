@@ -4,6 +4,7 @@
 
 # Intelij-IDEA
 /.idea
+/.run/start.run.xml
 
 # Node.js
 node_modules
