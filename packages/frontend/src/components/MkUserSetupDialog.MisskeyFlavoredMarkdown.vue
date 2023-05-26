@@ -42,7 +42,6 @@ import MkFolder from '@/components/MkFolder.vue';
 import * as os from '@/os';
 import { $i } from '@/account';
 import { defaultStore } from "@/store";
-import MkSpacer from "@/components/global/MkSpacer.vue";
 
 const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
 const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
