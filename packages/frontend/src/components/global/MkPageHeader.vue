@@ -44,16 +44,8 @@ import { globalEvents } from '@/events';
 import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { miLocalStorage } from '@/local-storage';
-import { deviceKind } from '@/scripts/device-kind';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
-
-const MOBILE_THRESHOLD = 500;
-
-const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
-	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
@@ -111,7 +103,7 @@ function onTabClick(): void {
 const calcBg = () => {
 	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (isFriendly.value && isMobile.value) tinyBg.setAlpha(1);
+	if (isFriendly.value && narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
