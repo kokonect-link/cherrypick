@@ -34,7 +34,6 @@
 		popup: ':lighten<3<@panel',
 		accent: '#478384',
 		header: ':alpha<0.7<@panel',
-		headerBg: "@bg",
 		infoBg: '#253142',
 		infoFg: '#fff',
 		renote: '@accent',

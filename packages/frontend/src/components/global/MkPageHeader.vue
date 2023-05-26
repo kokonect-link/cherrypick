@@ -110,7 +110,7 @@ function onTabClick(): void {
 }
 
 const calcBg = () => {
-	const rawBg = 'var(--headerBg)';
+	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	if (isFriendly.value && isMobile.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
@@ -144,7 +144,7 @@ onUnmounted(() => {
 .root {
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
-	// border-bottom: solid 0.5px var(--divider);
+	border-bottom: solid 0.5px var(--divider);
 	width: 100%;
 	transition: opacity 0.5s, transform 0.5s;
 

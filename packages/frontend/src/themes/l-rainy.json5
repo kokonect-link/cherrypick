@@ -13,7 +13,6 @@
 		panel: '#fff',
 		divider: 'rgb(230 233 234)',
 		panelHeaderDivider: '@divider',
-		headerBg: "@bg",
 		renote: '@accent',
 		link: '@accent',
 		mention: '@accent',

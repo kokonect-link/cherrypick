@@ -34,7 +34,6 @@
 		popup: ':lighten<3<@panel',
 		shadow: 'rgba(0, 0, 0, 0.1)',
 		header: ':alpha<0.7<@panel',
-		headerBg: '#fff',
 		navBg: '@panel',
 		navFg: '@fg',
 		navHoverFg: ':darken<17<@fg',

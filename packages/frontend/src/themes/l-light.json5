@@ -12,7 +12,6 @@
 		fg: '#676767',
 		divider: '#e8e8e8',
 		header: ':alpha<0.7<@panel',
-		headerBg: "@bg",
 		navBg: '#fff',
 		panel: '#fff',
 		panelHeaderDivider: '@divider',

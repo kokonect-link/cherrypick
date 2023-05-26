@@ -16,7 +16,6 @@
 		panel: '#192320',
 		panelHeaderDivider: 'rgba(0, 0, 0, 0)',
 		popup: '#293330',
-		headerBg: "@bg",
 		renote: '@accent',
 		mentionMe: '#ffaa00',
 		link: '#24d7ce',

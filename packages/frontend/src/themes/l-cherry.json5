@@ -11,7 +11,6 @@
 		bg: 'rgb(254, 248, 249)',
 		fg: 'rgb(152, 13, 26)',
 		panel: 'rgb(255, 255, 255)',
-		headerBg: "@bg",
 		renote: '@accent',
 		link: 'rgb(156, 187, 5)',
 		mention: '@accent',

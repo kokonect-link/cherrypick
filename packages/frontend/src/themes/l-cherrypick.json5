@@ -7,15 +7,15 @@
 
 	props: {
 		accent: '#6ba5e3',
-		bg: 'rgb(238, 241, 252)',
+		bg: '#f6f9ff',
 		fg: '#577096',
 		divider: 'rgb(223, 223, 223)',
 		acrylicPanel: ':alpha<0.5<@panel',
 		header: '@bg',
-		headerBg: 'rgb(246, 249, 255)',
 		navBg: '#eff4ff',
 		navHoverFg: '@pick',
-		panel: 'rgb(246, 249, 255)',
+		panel: '#fff',
+		panelHeaderDivider: '@divider',
 		messageBg: '#dedede',
 	},
 }
