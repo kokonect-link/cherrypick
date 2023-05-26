@@ -7,6 +7,7 @@
     bg: '#fff',
     link: '#1d9bf0',
     accent: '#1d9bf0',
+		headerBg: "@bg",
     renote: '#536472',
     hashtag: '#1d9bf0',
     buttonGradateA: '@accent',

@@ -11,6 +11,7 @@
 		bg: '#f0eee9',
 		fg: '#5f5f5f',
 		renote: '@accent',
+		headerBg: "@bg",
 		link: '@accent',
 		mention: '@accent',
 		hashtag: '#229e82',

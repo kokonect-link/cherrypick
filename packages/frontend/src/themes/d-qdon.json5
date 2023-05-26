@@ -30,6 +30,7 @@
 		link: '$qdonL1',
 		hashtag: '#87ceeb',
 		mention: '$mstdnHyperLink',
+		headerBg: "@bg",
 		renote: '$mstdnHyperLink',
 		cwBg: '#5e6781',
 		cwFg: '$mstdnUI',

@@ -11,6 +11,7 @@
 		bg: '#e6e5e2',
 		fg: 'rgb(149, 143, 139)',
 		panel: '#EEECE8',
+		headerBg: "@bg",
 		renote: '@accent',
 		link: '@accent',
 		mention: '@accent',

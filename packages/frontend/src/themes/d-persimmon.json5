@@ -15,6 +15,7 @@
 		panel: 'rgb(41, 43, 41)',
 		infoFg: '@fg',
 		infoBg: '#333c3b',
+		headerBg: "@bg",
 		navBg: '#141714',
 		renote: '@accent',
 		mention: '@accent',

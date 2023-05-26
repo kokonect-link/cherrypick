@@ -9,5 +9,6 @@
 	props: {
 		accent: '#47BFE8',
 		bg: '#212526',
+		headerBg: "@bg"
 	},
 }

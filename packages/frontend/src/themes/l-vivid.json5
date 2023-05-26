@@ -21,6 +21,7 @@
 		panel: '#fff',
 		accent: '#008cff',
 		header: ':alpha<0.7<@panel',
+		headerBg: "@bg",
 		infoBg: '#e5f5ff',
 		infoFg: '#72818a',
 		renote: '@accent',
