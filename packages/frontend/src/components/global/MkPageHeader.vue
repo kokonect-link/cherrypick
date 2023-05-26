@@ -45,7 +45,6 @@ import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
