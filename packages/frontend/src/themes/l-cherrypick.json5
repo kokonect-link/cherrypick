@@ -12,7 +12,7 @@
 		divider: 'rgb(223, 223, 223)',
 		acrylicPanel: ':alpha<0.5<@panel',
 		header: '@bg',
-		headerBg: 'rgb(241, 246, 255)',
+		headerBg: 'rgb(246, 249, 255)',
 		navBg: '#eff4ff',
 		navHoverFg: '@pick',
 		panel: 'rgb(246, 249, 255)',
