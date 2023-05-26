@@ -823,6 +823,7 @@ export interface Locale {
     "noBotProtectionWarning": string;
     "configure": string;
     "postToGallery": string;
+    "postToHashtag": string;
     "gallery": string;
     "recentPosts": string;
     "popularPosts": string;
@@ -1092,6 +1093,7 @@ export interface Locale {
     "cancelReactionConfirm": string;
     "changeReactionConfirm": string;
     "later": string;
+		"goToMisskey": string;
     "photosensitiveSeizuresWarning": string;
     "performanceWarning": string;
     "_initialAccountSetting": {

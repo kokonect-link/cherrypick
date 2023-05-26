@@ -820,6 +820,7 @@ noMaintainerInformationWarning: "管理者情報が設定されていません�
 noBotProtectionWarning: "Botプロテクションが設定されていません。"
 configure: "設定する"
 postToGallery: "ギャラリーへ投稿"
+postToHashtag: "このハッシュタグで投稿"
 gallery: "ギャラリー"
 recentPosts: "最近の投稿"
 popularPosts: "人気の投稿"
@@ -1089,6 +1090,7 @@ rolesThatCanBeUsedThisEmojiAsReactionPublicRoleWarn: "ロールは公開ロー�
 cancelReactionConfirm: "リアクションを取り消しますか？"
 changeReactionConfirm: "リアクションを変更しますか？"
 later: "あとで"
+goToMisskey: "Misskeyへ"
 photosensitiveSeizuresWarning: "光敏感性発作を起こす可能性があります"
 performanceWarning: "リソースを多く使用するため、デバイスの温度が高くなり、バッテリーの消耗が速くなる可能性があります"
 

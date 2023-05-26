@@ -79,7 +79,7 @@
 		codeString: '#ffb675',
 		codeNumber: '#cfff9e',
 		codeBoolean: '#c59eff',
-		deckDivider: '#000',
+		deckBg: '#000',
 		htmlThemeColor: '@bg',
 		cherry: '#ffcfe6',
 		cherryX8: ':lighten<5<@cherry',
