@@ -1075,8 +1075,8 @@ preventAiLearningDescription: "Requests crawlers to not use posted text or image
 options: "Options"
 specifyUser: "Specific user"
 later: "later"
-photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
+photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
 _initialAccountSetting:
   accountCreated: "Your account was successfully created!"
   letsStartAccountSetup: "For starters, let's set up your profile."
