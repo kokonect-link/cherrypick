@@ -261,6 +261,7 @@ watch(useSystemFont, () => {
 
 watch([
 	lang,
+	animatedMfm,
 	useBlurEffect,
 	fontSize,
 	useSystemFont,
