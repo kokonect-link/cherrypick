@@ -1,5 +1,5 @@
 <template>
-<img v-if="!useOsNativeEmojis" :class="$style.root" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle"/>
+<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle"/>
 <span v-else-if="useOsNativeEmojis" :alt="props.emoji" @pointerenter="computeTitle">{{ props.emoji }}</span>
 <span v-else>{{ emoji }}</span>
 </template>
@@ -30,7 +30,12 @@ function computeTitle(event: PointerEvent): void {
 
 <style lang="scss" module>
 .root {
-	height: 1.25em;
-	vertical-align: -0.25em;
+	height: 1.1em;
+	vertical-align: -0.235em;
+
+	&.large {
+		height: 1.3em;
+		vertical-align: -0.4em;
+	}
 }
 </style>

@@ -110,7 +110,7 @@ useTooltip(buttonEl, async (showing) => {
 <style lang="scss" module>
 .root {
 	display: inline-block;
-	height: 32px;
+	height: 30px;
 	margin: 2px;
 	padding: 0 12px;
 	border-radius: 999px;
@@ -135,7 +135,8 @@ useTooltip(buttonEl, async (showing) => {
 
 		> .count {
 			font-size: 0.7em;
-			line-height: 42px;
+			line-height: 32px;
+			margin: 0 0 0 8px;
 		}
 	}
 
@@ -158,7 +159,7 @@ useTooltip(buttonEl, async (showing) => {
 
 .count {
 	font-size: 0.9em;
-	line-height: 32px;
-	margin: 0 0 0 4px;
+	line-height: 22px;
+	margin: 0 0 0 5px;
 }
 </style>
