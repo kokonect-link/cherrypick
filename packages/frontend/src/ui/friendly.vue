@@ -380,12 +380,6 @@ $float-button-size: 65px;
 	}
 }
 
-.tl-noti {
-	max-width: 27%;
-	width: 100%;
-	padding: 0;
-}
-
 .floatNavButton {
 	display: block;
 	position: fixed;
