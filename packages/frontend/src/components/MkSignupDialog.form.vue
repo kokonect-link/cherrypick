@@ -59,12 +59,15 @@
 			<MkCaptcha v-if="instance.enableHcaptcha" ref="hcaptcha" v-model="hCaptchaResponse" :class="$style.captcha" provider="hcaptcha" :sitekey="instance.hcaptchaSiteKey"/>
 			<MkCaptcha v-if="instance.enableRecaptcha" ref="recaptcha" v-model="reCaptchaResponse" :class="$style.captcha" provider="recaptcha" :sitekey="instance.recaptchaSiteKey"/>
 			<MkCaptcha v-if="instance.enableTurnstile" ref="turnstile" v-model="turnstileResponse" :class="$style.captcha" provider="turnstile" :sitekey="instance.turnstileSiteKey"/>
-			<MkButton type="submit" :disabled="shouldDisableSubmitting" large gradate rounded data-cy-signup-submit style="margin: 0 auto;">
-				<template v-if="submitting">
-					<MkLoading :em="true" :colored="false"/>
-				</template>
-				<template v-else>{{ i18n.ts.start }}</template>
-			</MkButton>
+			<div class="_buttonsCenter">
+				<MkButton inline rounded data-cy-signup-back @click="goBack"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+				<MkButton type="submit" :disabled="shouldDisableSubmitting" inline gradate rounded data-cy-signup-submit>
+					<template v-if="submitting">
+						<MkLoading :em="true" :colored="false"/>
+					</template>
+					<template v-else>{{ i18n.ts.start }}</template>
+				</MkButton>
+			</div>
 		</form>
 	</MkSpacer>
 </div>
@@ -93,6 +96,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
 	(ev: 'signup', user: Record<string, any>): void;
 	(ev: 'signupEmailPending'): void;
+	(ev: 'back'): void;
 }>();
 
 const host = toUnicode(config.host);
@@ -116,6 +120,8 @@ let reCaptchaResponse = $ref(null);
 let turnstileResponse = $ref(null);
 let usernameAbortController: null | AbortController = $ref(null);
 let emailAbortController: null | AbortController = $ref(null);
+
+let back: boolean = $ref(false);
 
 const shouldDisableSubmitting = $computed((): boolean => {
 	return submitting ||
@@ -211,36 +217,48 @@ function onChangePasswordRetype(): void {
 	passwordRetypeState = password === retypedPassword ? 'match' : 'not-match';
 }
 
+function goBack() {
+	back = true;
+	emit('back');
+}
+
 async function onSubmit(): Promise<void> {
 	if (submitting) return;
 	submitting = true;
 
 	try {
-		await os.api('signup', {
-			username,
-			password,
-			emailAddress: email,
-			invitationCode,
-			'hcaptcha-response': hCaptchaResponse,
-			'g-recaptcha-response': reCaptchaResponse,
-			'turnstile-response': turnstileResponse,
-		});
-		if (instance.emailRequiredForSignup) {
-			os.alert({
-				type: 'success',
-				title: i18n.ts._signup.almostThere,
-				text: i18n.t('_signup.emailSent', { email }),
-			});
-			emit('signupEmailPending');
+		if (back) {
+			submitting = false;
+			hcaptcha?.reset?.();
+			recaptcha?.reset?.();
+			turnstile?.reset?.();
 		} else {
-			const res = await os.api('signin', {
+			await os.api('signup', {
 				username,
 				password,
+				emailAddress: email,
+				invitationCode,
+				'hcaptcha-response': hCaptchaResponse,
+				'g-recaptcha-response': reCaptchaResponse,
+				'turnstile-response': turnstileResponse,
 			});
-			emit('signup', res);
+			if (instance.emailRequiredForSignup) {
+				os.alert({
+					type: 'success',
+					title: i18n.ts._signup.almostThere,
+					text: i18n.t('_signup.emailSent', { email }),
+				});
+				emit('signupEmailPending');
+			} else {
+				const res = await os.api('signin', {
+					username,
+					password,
+				});
+				emit('signup', res);
 
-			if (props.autoSet) {
-				return login(res.i);
+				if (props.autoSet) {
+					return login(res.i);
+				}
 			}
 		}
 	} catch {

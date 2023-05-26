@@ -20,7 +20,7 @@
 				<XServerRules @done="isAcceptedServerRule = true" @cancel="dialog.close()"/>
 			</template>
 			<template v-else>
-				<XSignup :autoSet="autoSet" @signup="onSignup" @signupEmailPending="onSignupEmailPending"/>
+				<XSignup :autoSet="autoSet" @back="isAcceptedServerRule = false" @signup="onSignup" @signupEmailPending="onSignupEmailPending"/>
 			</template>
 		</Transition>
 	</div>

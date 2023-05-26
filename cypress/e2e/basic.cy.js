@@ -64,6 +64,7 @@ describe('After setup instance', () => {
 		cy.get('[data-cy-signup-submit]').should('be.disabled');
 		cy.get('[data-cy-signup-password-retype] input').type('alice1234');
 		cy.get('[data-cy-signup-submit]').should('not.be.disabled');
+		cy.get('[data-cy-signup-back]').click();
 		cy.get('[data-cy-signup-submit]').click();
 
 		cy.wait('@signup');
