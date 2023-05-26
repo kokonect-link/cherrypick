@@ -127,8 +127,8 @@ function onContextmenu(widget: Widget, ev: MouseEvent) {
 }
 
 .btn {
-	margin: 5px 0;
-	padding: 6px !important;
+	margin: 10px 0;
+	padding: 10px !important;
 }
 
 .widget {
