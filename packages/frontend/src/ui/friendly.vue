@@ -371,7 +371,7 @@ $float-button-size: 65px;
 }
 
 .widgets {
-	padding: 0 var(--margin);
+	padding: 0 var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px));
 	border-left: solid 0.5px var(--divider);
 	background: var(--bg);
 
@@ -487,7 +487,7 @@ $float-button-size: 65px;
 	right: 0;
 	z-index: 1001;
 	height: 100dvh;
-	padding: var(--margin) !important;
+	padding: var(--margin) var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px)) !important;
 	box-sizing: border-box;
 	overflow: auto;
 	overscroll-behavior: contain;
