@@ -159,7 +159,8 @@
 					<div v-else-if="fontSize === 19" style="font-size: 25px;">{{ i18n.ts._mfm.dummy }}</div>
 				</div>
 				<div class="fontSize_slider">
-					<MkRange v-model="fontSize" :min="1" :max="19" :step="1" easing :textConverter="(v) =>
+					<div class="fontSize_left">Aa</div>
+					<MkRange v-model="fontSize" style="position: initial !important; width: 100%; margin: 0 -10px;" :min="1" :max="19" :step="1" easing :textConverter="(v) =>
 						v === 1 ? '7px' :
 						v === 2 ? '8px' :
 						v === 3 ? '9px' :
@@ -181,6 +182,7 @@
 						v === 19 ? '25px' : ''"
 					>
 					</MkRange>
+					<div class="fontSize_right">Aa</div>
 				</div>
 				<MkInfo v-if="fontSize != fontSizeBefore" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
 				<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">{{ i18n.ts.useBoldFont }}</MkSwitch>
@@ -375,7 +377,27 @@ definePageMetadata({
 }
 
 .fontSize_slider {
+	display: flex;
 	margin-top: -8px;
 	border-top: solid .5px var(--divider);
+
+	> .fontSize_left, .fontSize_right {
+		position: relative;
+		background: var(--panel);
+		font-weight: normal;
+		line-height: 20px;
+	}
+
+	> .fontSize_left {
+		padding: 7px 6px 7px 18px;
+		border-bottom-left-radius: 6px;
+		font-size: 12px;
+	}
+
+	> .fontSize_right {
+		padding: 7px 18px 7px 6px;
+		border-bottom-right-radius: 6px;
+		font-size: 18px;
+	}
 }
 </style>
