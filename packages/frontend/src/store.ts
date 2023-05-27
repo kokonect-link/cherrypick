@@ -351,6 +351,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',
 	},
+	fontSize: {
+		where: 'device',
+		default: 8,
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期

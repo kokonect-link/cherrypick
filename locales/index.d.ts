@@ -749,6 +749,7 @@ export interface Locale {
     "wide": string;
     "narrow": string;
     "reloadToApplySetting": string;
+    "reloadToApplySetting2": string;
     "needReloadToApply": string;
     "showTitlebar": string;
     "clearCache": string;
