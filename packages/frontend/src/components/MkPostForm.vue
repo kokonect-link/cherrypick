@@ -948,7 +948,7 @@ defineExpose({
 .avatar {
 	width: 28px;
 	height: 28px;
-	margin: auto;
+	margin: auto 0;
 }
 
 .headerRight {
