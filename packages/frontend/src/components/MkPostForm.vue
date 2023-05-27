@@ -913,7 +913,7 @@ defineExpose({
 
 	&.modal {
 		width: 100%;
-		max-width: 800px;
+		max-width: 640px;
 	}
 }
 
@@ -924,6 +924,7 @@ defineExpose({
 	display: flex;
 	flex-wrap: nowrap;
 	gap: 4px;
+	padding: 8px 12px;
 }
 
 .headerLeft {
@@ -1048,7 +1049,7 @@ defineExpose({
 }
 
 .toSpecified {
-	padding: 6px 24px;
+	padding: 6px 30px;
 	margin-bottom: 8px;
 	overflow: auto;
 	white-space: nowrap;
@@ -1076,7 +1077,7 @@ defineExpose({
 .text {
 	display: block;
 	box-sizing: border-box;
-	padding: 0 24px;
+	padding: 0 30px;
 	margin: 0;
 	width: 100%;
 	font-size: 16px;
@@ -1121,7 +1122,7 @@ defineExpose({
 	max-width: 100%;
 	min-width: 100%;
 	width: 100%;
-	min-height: 90px;
+	min-height: 140px;
 	height: 100%;
 }
 
@@ -1188,6 +1189,10 @@ defineExpose({
 }
 
 @container (max-width: 500px) {
+	.header {
+		padding: 4px;
+	}
+
 	.headerRight {
 		font-size: .9em;
 	}
@@ -1205,20 +1210,30 @@ defineExpose({
 	}
 
 	.toSpecified {
-		padding: 6px 16px;
+		padding: 6px 22px;
 	}
 
 	.preview {
 		padding: 16px 14px 0 14px;
 	}
+
 	.cw,
 	.hashtags,
 	.text {
-		padding: 0 16px;
+		// padding: 0 16px;
+	}
+
+	.cw {
+		padding: 0 22px 8px;
+	}
+
+	.hashtags {
+		padding: 8px 22px;
 	}
 
 	.text {
-		min-height: 80px;
+		min-height: 120px;
+		padding: 0 22px;
 	}
 
 	.footer {
