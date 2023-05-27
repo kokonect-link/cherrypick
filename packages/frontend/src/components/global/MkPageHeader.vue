@@ -106,7 +106,7 @@ function onTabClick(): void {
 const calcBg = () => {
 	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (isFriendly.value && narrow.value) tinyBg.setAlpha(1);
+	if (isFriendly.value && narrow) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
@@ -114,9 +114,6 @@ const calcBg = () => {
 let ro: ResizeObserver | null;
 
 onMounted(() => {
-	calcBg();
-	globalEvents.on('themeChanged', calcBg);
-
 	if (el && el.parentElement) {
 		narrow = el.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
@@ -126,6 +123,9 @@ onMounted(() => {
 		});
 		ro.observe(el.parentElement as HTMLElement);
 	}
+
+	calcBg();
+	globalEvents.on('themeChanged', calcBg);
 });
 
 onUnmounted(() => {
