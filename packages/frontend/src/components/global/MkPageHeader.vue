@@ -1,13 +1,16 @@
 <template>
 <div v-if="show" ref="el" :class="[$style.root]" :style="{ background: bg }">
-	<div :class="[$style.upper, { [$style.slim]: narrow, [$style.thin]: thin_, [$style.slim]: isFriendly }]">
+	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_ }]">
+		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
+			<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-chevron-left"></i></button>
+		</div>
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 			<MkAvatar :class="$style.avatar" :user="$i"/>
 		</div>
-		<div v-else-if="!thin_ && narrow && !hideTitle" :class="$style.buttonsLeft"/>
+		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 
 		<template v-if="metadata">
-			<div v-if="!hideTitle" :class="$style.titleContainer" @click="top">
+			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="top">
 				<div v-if="metadata.avatar" :class="$style.titleAvatarContainer">
 					<MkAvatar :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
 				</div>
@@ -21,18 +24,16 @@
 					</div>
 				</div>
 			</div>
-			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
+			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
 		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
 				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
+		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
 	</div>
-	<div v-if="(narrow && !hideTitle) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow, [$style.thin]: thin_ }]">
-		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
-	</div>
-	<div v-else-if="(!narrow && !hideTitle) && hasTabs && isFriendly" :class="[$style.lower, { [$style.thin]: thin_ }]">
+	<div v-if="((narrow && !hideTitle) || (!narrow && !hideTitle && isFriendly)) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 	</div>
 </div>
@@ -47,8 +48,10 @@ import { globalEvents } from '@/events';
 import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { miLocalStorage } from '@/local-storage';
+import { mainRouter } from "@/router";
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+const canBack = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'messaging');
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
@@ -101,6 +104,10 @@ function openAccountMenu(ev: MouseEvent) {
 
 function onTabClick(): void {
 	top();
+}
+
+function goBack() {
+	history.back();
 }
 
 const calcBg = () => {
@@ -167,6 +174,11 @@ onUnmounted(() => {
 		margin-right: auto;
 	}
 
+	.tabs_canBack {
+		margin-left: auto;
+		padding: 0 12px;
+	}
+
 	&.thin {
 		--height: 40px;
 
@@ -217,6 +229,12 @@ onUnmounted(() => {
 	margin: 0 0 0 var(--margin);
 }
 
+.goBack {
+	> i {
+		margin: auto;
+	}
+}
+
 .avatar {
 	$size: 32px;
 	display: inline-block;
@@ -261,6 +279,10 @@ onUnmounted(() => {
 	font-weight: bold;
 	flex-shrink: 1;
 	margin-left: 24px;
+}
+
+.titleContainer_canBack {
+	margin-left: -32px;
 }
 
 .titleAvatarContainer {

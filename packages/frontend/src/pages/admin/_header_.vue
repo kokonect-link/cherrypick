@@ -1,5 +1,8 @@
 <template>
 <div ref="el" class="fdidabkc" :style="{ background: bg }" @click="onClick">
+	<div class="buttons left">
+		<button class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-chevron-left"></i></button>
+	</div>
 	<template v-if="metadata">
 		<div class="titleContainer" @click="showTabsPopup">
 			<i v-if="metadata.icon" class="icon" :class="metadata.icon"></i>
@@ -112,6 +115,10 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 	}
 }
 
+function goBack() {
+	history.back();
+}
+
 const calcBg = () => {
 	const rawBg = metadata?.bg ?? 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
@@ -160,6 +167,10 @@ onUnmounted(() => {
 		height: var(--height);
 		margin: 0 var(--margin);
 
+		&.left {
+			margin-right: auto;
+		}
+
 		&.right {
 			margin-left: auto;
 		}
@@ -190,6 +201,12 @@ onUnmounted(() => {
 		> .fullButton {
 			& + .fullButton {
 				margin-left: 12px;
+			}
+		}
+
+		> .goBack {
+			> i {
+				margin: auto;
 			}
 		}
 	}
