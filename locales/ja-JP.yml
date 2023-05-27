@@ -1102,6 +1102,7 @@ _initialAccountSetting:
   letsFillYourProfile: "まずはあなたのプロフィールを設定しましょう。"
   profileSetting: "プロフィール設定"
   privacySetting: "プライバシー設定"
+  fontSizeSetting: "フォントサイズ設定"
   blurEffectsSetting: "ぼかし効果設定"
   mfmAndAnimatedImagesSetting: "MFMとアニメーション画像設定"
   theseSettingsCanEditLater: "これらの設定は後から変更できます。"

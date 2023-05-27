@@ -1104,6 +1104,7 @@ export interface Locale {
         "letsFillYourProfile": string;
         "profileSetting": string;
         "privacySetting": string;
+        "fontSizeSetting": string;
         "blurEffectsSetting": string;
         "mfmAndAnimatedImagesSetting": string;
         "theseSettingsCanEditLater": string;

@@ -1084,6 +1084,7 @@ _initialAccountSetting:
   letsFillYourProfile: "우선 나의 프로필을 설정해 보아요."
   profileSetting: "프로필 설정"
   privacySetting: "프라이버시 설정"
+  fontSizeSetting: "글자 크기 설정"
   blurEffectsSetting: "흐림 효과 설정"
   mfmAndAnimatedImagesSetting: "MFM 및 움직이는 이미지 설정"
   theseSettingsCanEditLater: "이 설정들은 나중에도 변경할 수 있어요."
