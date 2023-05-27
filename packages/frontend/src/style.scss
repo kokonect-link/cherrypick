@@ -186,6 +186,10 @@ html {
 		font-size: 25px;
 	}
 
+	&.useBoldFont {
+		font-weight: bold;
+	}
+
 	&.useSystemFont {
 		font-family: 'Hiragino Maru Gothic Pro', sans-serif;
 	}

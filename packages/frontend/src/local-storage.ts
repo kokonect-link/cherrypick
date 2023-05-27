@@ -16,6 +16,7 @@ type Keys =
 	'colorSchema' |
 	'useSystemFont' | 
 	'fontSize' |
+	'useBoldFont' |
 	'ui' |
 	'ui_temp' |
 	'locale' |

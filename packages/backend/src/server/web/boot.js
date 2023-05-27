@@ -127,6 +127,11 @@
 		document.documentElement.classList.add('f-' + fontSize);
 	}
 
+	const useBoldFont = localStorage.getItem('useBoldFont');
+	if (useBoldFont) {
+		document.documentElement.classList.add('useBoldFont');
+	}
+
 	const useSystemFont = localStorage.getItem('useSystemFont');
 	if (useSystemFont) {
 		document.documentElement.classList.add('useSystemFont');

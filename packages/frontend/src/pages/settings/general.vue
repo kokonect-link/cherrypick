@@ -182,6 +182,7 @@
 					>
 					</MkRange>
 				</div>
+				<MkSwitch v-model="useBoldFont">{{ i18n.ts.useBoldFont }}</MkSwitch>
 				<MkInfo v-if="fontSize != fontSizeBefore" style="margin-top: 15px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
 			</div>
 		</div>
@@ -250,6 +251,7 @@ const lang = ref(miLocalStorage.getItem('lang'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
+const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -310,6 +312,14 @@ watch(fontSize, () => {
 	}
 });
 
+watch(useBoldFont, () => {
+	if (useBoldFont.value) {
+		miLocalStorage.setItem('useBoldFont', useBoldFont.value);
+	} else {
+		miLocalStorage.removeItem('useBoldFont');
+	}
+});
+
 watch(useSystemFont, () => {
 	if (useSystemFont.value) {
 		miLocalStorage.setItem('useSystemFont', 't');
@@ -323,6 +333,7 @@ watch([
 	animatedMfm,
 	useBlurEffect,
 	// fontSize,
+	useBoldFont,
 	useSystemFont,
 	enableInfiniteScroll,
 	squareAvatars,
@@ -364,7 +375,7 @@ definePageMetadata({
 }
 
 .fontSize_slider {
-	margin-top: -8px;
+	margin: -8px 0 .75em;
 	border-top: solid .5px var(--divider);
 }
 </style>

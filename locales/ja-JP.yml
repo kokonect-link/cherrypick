@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+useBoldFont: "文字を太くする"
 newNoteRecivedNotification: "新しいノート通知"
 disableRightClick: "右クリックを禁止"
 useEnterToSend: "Enterキーを押して送信"

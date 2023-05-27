@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+useBoldFont: "Bold Text"
 newNoteRecivedNotification: "New note notification"
 disableRightClick: "Prohibit right click"
 useEnterToSend: "Press Enter to send"
