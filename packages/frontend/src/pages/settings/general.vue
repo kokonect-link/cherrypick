@@ -182,8 +182,8 @@
 					>
 					</MkRange>
 				</div>
-				<MkSwitch v-model="useBoldFont">{{ i18n.ts.useBoldFont }}</MkSwitch>
-				<MkInfo v-if="fontSize != fontSizeBefore" style="margin-top: 15px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
+				<MkInfo v-if="fontSize != fontSizeBefore" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
+				<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">{{ i18n.ts.useBoldFont }}</MkSwitch>
 			</div>
 		</div>
 	</FormSection>
@@ -375,7 +375,7 @@ definePageMetadata({
 }
 
 .fontSize_slider {
-	margin: -8px 0 .75em;
+	margin-top: -8px;
 	border-top: solid .5px var(--divider);
 }
 </style>
