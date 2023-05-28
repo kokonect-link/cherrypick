@@ -15,7 +15,7 @@
         <command value="install" />
         <node-interpreter value="project" />
         <envs>
-          <env name="NODE_ENV" value="production" />
+          <env name="NODE_ENV" value="development" />
         </envs>
       </option>
       <option name="NpmBeforeRunTask" enabled="true">
