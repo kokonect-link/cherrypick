@@ -4,7 +4,7 @@
 	<XTimeline class="tl"/>
 	<div class="shape1"></div>
 	<div class="shape2"></div>
-	<img src="/client-assets/misskey.svg" class="misskey"/>
+	<img src="/client-assets/misskey.svg" class="cherrypick"/>
 	<div class="emojis">
 		<MkEmoji :normal="true" :noStyle="true" emoji="👍"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="❤"/>
@@ -105,7 +105,7 @@ os.apiGet('federation/instances', {
 		opacity: 0.5;
 	}
 
-	> .misskey {
+	> .cherrypick {
 		position: fixed;
 		top: 42px;
 		left: 42px;

@@ -237,7 +237,7 @@
 			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
 		}
 
-		#misskey_app,
+		#cherypick_app,
 		#splash {
 			display: none !important;
 		}

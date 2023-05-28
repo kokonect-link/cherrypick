@@ -225,9 +225,9 @@ export async function common(createVue: () => App<Element>) {
 	// https://github.com/misskey-dev/misskey/pull/8575#issuecomment-1114239210
 	// なぜか2回実行されることがあるため、mountするdivを1つに制限する
 	const rootEl = ((): HTMLElement => {
-		const MISSKEY_MOUNT_DIV_ID = 'misskey_app';
+		const CHERRYPICK_MOUNT_DIV_ID = 'cherrypick_app';
 
-		const currentRoot = document.getElementById(MISSKEY_MOUNT_DIV_ID);
+		const currentRoot = document.getElementById(CHERRYPICK_MOUNT_DIV_ID);
 
 		if (currentRoot) {
 			console.warn('multiple import detected');
@@ -235,7 +235,7 @@ export async function common(createVue: () => App<Element>) {
 		}
 
 		const root = document.createElement('div');
-		root.id = MISSKEY_MOUNT_DIV_ID;
+		root.id = CHERRYPICK_MOUNT_DIV_ID;
 		document.body.appendChild(root);
 		return root;
 	})();

@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "misskey.fullname" . }}
+  name: {{ include "cherrypick.fullname" . }}
   labels:
-    {{- include "misskey.labels" . | nindent 4 }}
+    {{- include "cherrypick.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "misskey.selectorLabels" . | nindent 6 }}
+      {{- include "cherrypick.selectorLabels" . | nindent 6 }}
   replicas: 1
   template:
     metadata:
       labels:
-        {{- include "misskey.selectorLabels" . | nindent 8 }}
+        {{- include "cherrypick.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: cherrypick
@@ -21,7 +21,7 @@ spec:
             - name: NODE_ENV
               value: {{ .Values.environment }}
           volumeMounts:
-            - name: {{ include "misskey.fullname" . }}-configuration
+            - name: {{ include "cherrypick.fullname" . }}-configuration
               mountPath: /cherrypick/.config
               readOnly: true
           ports:
@@ -42,6 +42,6 @@ spec:
           ports:
             - containerPort: 6379
       volumes:
-        - name: {{ include "misskey.fullname" . }}-configuration
+        - name: {{ include "cherrypick.fullname" . }}-configuration
           configMap:
-            name: {{ include "misskey.fullname" . }}-configuration
+            name: {{ include "cherrypick.fullname" . }}-configuration

@@ -37,6 +37,6 @@ jobs:
     - name: Check pnpm-lock.yaml
       run: git diff --exit-code pnpm-lock.yaml
     - name: Copy Configure
-      run: cp .github/misskey/test.yml .config/default.yml
+      run: cp .github/cherrypick/test.yml .config/default.yml
     - name: Build
       run: pnpm build

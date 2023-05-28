@@ -1,5 +1,5 @@
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# Misskey configuration
+# CherryPick configuration
 #━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 #   ┌─────┐
@@ -15,19 +15,19 @@ url: https://example.tld/
 #───┘ Port and TLS settings └───────────────────────────────────
 
 #
-# Misskey requires a reverse proxy to support HTTPS connections.
+# CherryPick requires a reverse proxy to support HTTPS connections.
 #
-#                 +----- https://example.tld/ ------------+
-#   +------+      |+-------------+      +----------------+|
-#   | User | ---> || Proxy (443) | ---> | Misskey (3000) ||
-#   +------+      |+-------------+      +----------------+|
-#                 +---------------------------------------+
+#                 +-------- https://example.tld/ ------------+
+#   +------+      |+-------------+      +-------------------+|
+#   | User | ---> || Proxy (443) | ---> | CherryPick (3000) ||
+#   +------+      |+-------------+      +-------------------+|
+#                 +------------------------------------------+
 #
 #   You need to set up a reverse proxy. (e.g. nginx)
 #   An encrypted connection with HTTPS is highly recommended
 #   because tokens may be transferred in GET requests.
 
-# The port that your Misskey server should listen on.
+# The port that your CherryPick server should listen on.
 port: 3000
 
 #   ┌──────────────────────────┐
@@ -38,11 +38,11 @@ db:
   port: 5432
 
   # Database name
-  db: misskey
+  db: cherrypick
 
   # Auth
-  user: example-misskey-user
-  pass: example-misskey-pass
+  user: example-cherrypick-user
+  pass: example-cherrypick-pass
 
   # Whether disable Caching queries
   #disableCache: true
