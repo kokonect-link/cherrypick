@@ -60,7 +60,7 @@ export function file(isSensitive = false) {
 	};
 }
 
-export function userDetailed(id = 'someuserid', username = 'miskist', host = 'misskey-hub.net', name = 'Misskey User'): entities.UserDetailed {
+export function userDetailed(id = 'someuserid', username = 'miskist', host = 'misskey-hub.net', name = 'CherryPick User'): entities.UserDetailed {
 	return {
 		id,
 		username,

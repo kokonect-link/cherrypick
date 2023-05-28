@@ -14,7 +14,7 @@ const appInitialized = Symbol();
 let lastStory = null;
 let moduleInitialized = false;
 let unobserve = () => {};
-let misskeyOS = null;
+let cherrypickOS = null;
 
 function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme']) {
 	unobserve();
@@ -26,7 +26,7 @@ function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme
 	}
 	const observer = new MutationObserver((entries) => {
 		for (const entry of entries) {
-			if (entry.attributeName === 'data-misskey-theme') {
+			if (entry.attributeName === 'data-cherrypick-theme') {
 				const target = entry.target as HTMLElement;
 				const theme = themes[target.dataset.misskeyTheme];
 				if (theme) {
@@ -39,7 +39,7 @@ function loadTheme(applyTheme: typeof import('../src/scripts/theme')['applyTheme
 	});
 	observer.observe(document.documentElement, {
 		attributes: true,
-		attributeFilter: ['data-misskey-theme'],
+		attributeFilter: ['data-cherrypick-theme'],
 	});
 	unobserve = () => observer.disconnect();
 }
@@ -76,7 +76,7 @@ queueMicrotask(() => {
 			components(app);
 			directives(app);
 			widgets(app);
-			misskeyOS = os;
+			cherrypickOS = os;
 			if (isChromatic()) {
 				defaultStore.set('animation', false);
 			}
@@ -123,7 +123,7 @@ const preview = {
 				setup() {
 					return {
 						context,
-						popups: misskeyOS.popups,
+						popups: cherrypickOS.popups,
 					};
 				},
 				template:

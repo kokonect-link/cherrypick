@@ -45,7 +45,7 @@ fs.readFile(
 		micromatch(Array.from(modules), [
 			'../../assets/**',
 			'../../fluent-emojis/**',
-			'../../locales/ja-JP.yml',
+			'../../locales/ko-KR.yml',
 			'../../misskey-assets/**',
 			'assets/**',
 			'public/**',
