@@ -13,6 +13,7 @@ module.exports = {
 	extends: [
 		'../shared/.eslintrc.js',
 		'plugin:vue/vue3-recommended',
+		'plugin:storybook/recommended',
 	],
 	rules: {
 		'@typescript-eslint/no-empty-interface': [

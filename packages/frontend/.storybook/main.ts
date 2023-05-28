@@ -9,6 +9,7 @@ const config = {
 		'@storybook/addon-interactions',
 		'@storybook/addon-links',
 		'@storybook/addon-storysource',
+		'@storybook/addon-mdx-gfm',
 		resolve(__dirname, '../node_modules/storybook-addon-misskey-theme'),
 	],
 	framework: {
