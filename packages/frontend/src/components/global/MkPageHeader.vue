@@ -2,7 +2,7 @@
 <div v-if="show" ref="el" :class="[$style.root]" :style="{ background: bg }">
 	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_ }]">
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-			<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-chevron-left"></i></button>
+			<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 		</div>
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 			<MkAvatar :class="$style.avatar" :user="$i"/>
@@ -230,8 +230,11 @@ onUnmounted(() => {
 }
 
 .goBack {
+	margin-left: 8px;
+
 	> i {
 		margin: auto;
+		font-size: medium;
 	}
 }
 

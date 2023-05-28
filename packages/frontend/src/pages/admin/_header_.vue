@@ -1,7 +1,7 @@
 <template>
 <div ref="el" class="fdidabkc" :style="{ background: bg }" @click="onClick">
 	<div class="buttons left">
-		<button class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-chevron-left"></i></button>
+		<button class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
 	<template v-if="metadata">
 		<div class="titleContainer" @click="showTabsPopup">
@@ -205,8 +205,11 @@ onUnmounted(() => {
 		}
 
 		> .goBack {
+			margin-left: 8px;
+
 			> i {
 				margin: auto;
+				font-size: medium;
 			}
 		}
 	}
