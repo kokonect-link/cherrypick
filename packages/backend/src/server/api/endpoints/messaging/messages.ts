@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Brackets } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { UsersRepository, UserGroupsRepository, MessagingMessagesRepository, UserGroupJoiningsRepository } from '@/models/index.js';
+import type { UserGroupsRepository, MessagingMessagesRepository, UserGroupJoiningsRepository } from '@/models/index.js';
 import { QueryService } from '@/core/QueryService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { MessagingMessageEntityService } from '@/core/entities/MessagingMessageEntityService.js';
 import { MessagingService } from '@/core/MessagingService.js';
 import { DI } from '@/di-symbols.js';
-import { ApiError } from '../../error.js';
 import { GetterService } from '@/server/api/GetterService.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['messaging'],
@@ -121,11 +121,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 				// Mark all as read
 				if (ps.markAsRead) {
-					this.messagingService.readUserMessagingMessage(me.id, recipient.id, messages.filter(m => m.recipientId === me.id).map(x => x.id));
+					await this.messagingService.readUserMessagingMessage(me.id, recipient.id, messages.filter(m => m.recipientId === me.id).map(x => x.id));
 
 					// リモートユーザーとのメッセージだったら既読配信
 					if (this.userEntityService.isLocalUser(me) && this.userEntityService.isRemoteUser(recipient)) {
-						this.messagingService.deliverReadActivity(me, recipient, messages);
+						await this.messagingService.deliverReadActivity(me, recipient, messages);
 					}
 				}
 

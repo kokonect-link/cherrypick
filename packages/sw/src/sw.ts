@@ -70,9 +70,9 @@ globalThis.addEventListener('push', ev => {
 						&& ('userId' in data.body
 							? data.body.userId === n.data.body.userId
 							: data.body.groupId === n.data.body.groupId)
-						) {
-							n.close();
-						}
+					) {
+						n.close();
+					}
 				}
 				break;
 		}

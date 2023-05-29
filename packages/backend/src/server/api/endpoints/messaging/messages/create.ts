@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
 import ms from 'ms';
+import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import type { BlockingsRepository, UserGroupJoiningsRepository, DriveFilesRepository, UserGroupsRepository } from '@/models/index.js';
 import type { User } from '@/models/entities/User.js';
@@ -12,14 +12,14 @@ import { ApiError } from '../../../error.js';
 export const meta = {
 	tags: ['messaging'],
 
-	requireCredential: true,
-
-	kind: 'write:messaging',
-
 	limit: {
 		duration: ms('1hour'),
 		max: 120,
 	},
+
+	requireCredential: true,
+
+	kind: 'write:messaging',
 
 	res: {
 		type: 'object',
