@@ -59,11 +59,6 @@ export class AntennaService implements OnApplicationShutdown {
 	}
 
 	@bindThis
-	public onApplicationShutdown(signal?: string | undefined) {
-		this.redisForSub.off('message', this.onRedisMessage);
-	}
-
-	@bindThis
 	private async onRedisMessage(_: string, data: string): Promise<void> {
 		const obj = JSON.parse(data);
 
@@ -206,5 +201,15 @@ export class AntennaService implements OnApplicationShutdown {
 		}
 	
 		return this.antennas;
+	}
+
+	@bindThis
+	public dispose(): void {
+		this.redisForSub.off('message', this.onRedisMessage);
+	}
+
+	@bindThis
+	public onApplicationShutdown(signal?: string | undefined): void {
+		this.dispose();
 	}
 }
