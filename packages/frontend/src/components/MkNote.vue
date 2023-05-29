@@ -593,6 +593,12 @@ function showReactions(): void {
 
 .renoteUserName {
 	font-weight: bold;
+	text-decoration: none;
+
+	&:hover {
+		color: var(--renoteHover);
+		text-decoration: none;
+	}
 }
 
 .renoteInfo {

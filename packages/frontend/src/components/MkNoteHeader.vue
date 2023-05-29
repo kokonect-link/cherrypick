@@ -55,7 +55,8 @@ defineProps<{
 	text-overflow: ellipsis;
 
 	&:hover {
-		text-decoration: underline;
+		color: var(--nameHover);
+		text-decoration: none;
 	}
 }
 

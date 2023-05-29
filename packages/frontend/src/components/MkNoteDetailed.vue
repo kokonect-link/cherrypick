@@ -536,6 +536,11 @@ if (appearNote.replyId) {
 .noteHeaderName {
 	font-weight: bold;
 	line-height: 1.3;
+
+	&:hover {
+		color: var(--nameHover);
+		text-decoration: none;
+	}
 }
 
 .isBot {

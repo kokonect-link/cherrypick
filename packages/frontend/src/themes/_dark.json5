@@ -45,6 +45,7 @@
 		mentionMe: '@mention',
 		renote: '@accent',
 		renoteHover: ':lighten<5<@renote',
+		nameHover: ':darken<5<@fg',
 		modalBg: 'rgba(0, 0, 0, 0.5)',
 		scrollbarHandle: 'rgba(255, 255, 255, 0.2)',
 		scrollbarHandleHover: 'rgba(255, 255, 255, 0.4)',
