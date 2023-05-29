@@ -290,9 +290,9 @@ export default class Connection {
 	private typingOnMessaging(param: { partner?: User['id']; group?: UserGroup['id']; }) {
 		if (this.user) {
 			if (param.partner) {
-				this.globalEventService.publishMessagingStream(param.partner, this.user.id, 'typing', this.user.id);
+				// this.globalEventService.publishMessagingStream(param.partner, this.user.id, 'typing', this.user.id);
 			} else if (param.group) {
-				this.globalEventService.publishGroupMessagingStream(param.group, 'typing', this.user.id);
+				// this.globalEventService.publishGroupMessagingStream(param.group, 'typing', this.user.id);
 			}
 		}
 	}
