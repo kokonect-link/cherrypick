@@ -2,7 +2,7 @@ import { computed, createApp, watch, markRaw, version as vueVersion, defineAsync
 import { common } from './common';
 import { version, ui, lang, updateLocale } from '@/config';
 import { i18n, updateI18n } from '@/i18n';
-import { confirm, alert, post, popup, toast } from '@/os';
+import {confirm, alert, post, popup, toast, welcomeToast} from '@/os';
 import { useStream } from '@/stream';
 import * as sound from '@/scripts/sound';
 import { $i, refreshAccount, login, updateAccount, signout } from '@/account';
@@ -175,7 +175,7 @@ export async function mainBoot() {
 			const lastUsedDate = parseInt(lastUsed, 10);
 			// 二時間以上前なら
 			if (Date.now() - lastUsedDate > 1000 * 60 * 60 * 2) {
-				toast(i18n.t('welcomeBackWithName', {
+				welcomeToast(i18n.t('welcomeBackWithName', {
 					name: $i.name || $i.username,
 				}));
 			}

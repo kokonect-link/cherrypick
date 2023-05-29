@@ -11,6 +11,7 @@ import MkPostFormDialog from '@/components/MkPostFormDialog.vue';
 import MkWaitingDialog from '@/components/MkWaitingDialog.vue';
 import MkPageWindow from '@/components/MkPageWindow.vue';
 import MkToast from '@/components/MkToast.vue';
+import MkWelcomeToast from '@/components/MkWelcomeToast.vue';
 import MkDialog from '@/components/MkDialog.vue';
 import MkEmojiPickerDialog from '@/components/MkEmojiPickerDialog.vue';
 import MkEmojiPickerWindow from '@/components/MkEmojiPickerWindow.vue';
@@ -174,6 +175,12 @@ export function pageWindow(path: string) {
 
 export function toast(message: string) {
 	popup(MkToast, {
+		message,
+	}, {}, 'closed');
+}
+
+export function welcomeToast(message: string) {
+	popup(MkWelcomeToast, {
 		message,
 	}, {}, 'closed');
 }
