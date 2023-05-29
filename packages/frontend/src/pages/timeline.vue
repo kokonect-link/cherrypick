@@ -2,27 +2,28 @@
 <MkStickyContainer>
 	<template #header>
 		<MkPageHeader v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<transition
-			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
-			:leave-active-class="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
-			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
-			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
-		>
-			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
-		</transition>
-		<transition
-			:enter-active-class="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
-			:leave-active-class="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
-			:enter-from-class="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
-			:leave-to-class="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
-		>
-			<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, {[$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" text-tag="span"><template #n>{{ queue }}</template></I18n></button></div>
-		</transition>
 	</template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
 			<XTutorial v-if="$i && defaultStore.reactiveState.timelineTutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
 			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
+
+			<transition
+				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
+				:leaveActiveClass="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
+				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
+				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
+			>
+				<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+			</transition>
+			<transition
+				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
+				:leaveActiveClass="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
+				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
+				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
+			>
+				<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" textTag="span"><template #n>{{ queue }}</template></I18n></button></div>
+			</transition>
 			<div :class="$style.tl">
 				<MkTimeline
 					ref="tlComponent"
@@ -38,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref, onMounted, provide } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, provide, onMounted } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
@@ -53,6 +54,7 @@ import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
 
+let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
@@ -80,6 +82,12 @@ let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 
 watch ($$(src), () => queue = 0);
+
+onMounted(() => {
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
+});
 
 function queueUpdated(q: number): void {
 	queue = q;
@@ -217,13 +225,18 @@ definePageMetadata(computed(() => ({
 
 .new {
 	position: sticky;
-	top: 64px;
+	top: calc(var(--stickyTop, 0px) + 16px);
 	z-index: 1000;
 	width: 100%;
+	margin: calc(-0.675em - 8px) 0;
 	transition: opacity 0.5s, transform 0.5s;
 
 	&:first-child {
 		margin-top: calc(-0.675em - 8px - var(--margin));
+	}
+
+	&.showEl {
+		transform: translateY(calc(var(--stickyTop, 0px) - 189px))
 	}
 
 	&.reduceAnimation {
