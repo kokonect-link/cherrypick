@@ -225,7 +225,7 @@ definePageMetadata(computed(() => ({
 
 .new {
 	position: sticky;
-	top: calc(var(--stickyTop, 0px) + 16px);
+	top: calc(var(--stickyTop, 0px) + 8px);
 	z-index: 1000;
 	width: 100%;
 	margin: calc(-0.675em - 8px) 0;
@@ -236,7 +236,7 @@ definePageMetadata(computed(() => ({
 	}
 
 	&.showEl {
-		transform: translateY(calc(var(--stickyTop, 0px) - 189px))
+		transform: translateY(calc(var(--stickyTop, 0px) - 181px))
 	}
 
 	&.reduceAnimation {
