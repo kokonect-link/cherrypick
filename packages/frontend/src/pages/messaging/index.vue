@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, defineComponent, inject, markRaw, onMounted, onUnmounted } from 'vue';
+import { markRaw, onMounted, onUnmounted } from 'vue';
 import * as Acct from 'misskey-js/built/acct';
 import MkButton from '@/components/MkButton.vue';
 import { acct } from '@/filters/user';
@@ -57,7 +57,6 @@ import { $i } from '@/account';
 const router = useRouter();
 
 let fetching = $ref(true);
-let moreFetching = $ref(false);
 let messages = $ref([]);
 let connection = $ref(null);
 
