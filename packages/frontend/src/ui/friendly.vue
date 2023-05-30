@@ -1,5 +1,5 @@
 <template>
-<div :class="[$style.root, { [$style.withWallpaper]: wallpaper }]">
+<div :class="$style.root">
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
 	<MkStickyContainer :class="$style.contents">
@@ -12,8 +12,8 @@
 		</main>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop" ref="widgetsEl" :class="$style.widgets">
-		<XWidgets :marginTop="'var(--margin)'" @mounted="attachSticky"/>
+	<div v-if="isDesktop" :class="$style.widgets">
+		<XWidgets/>
 	</div>
 
 	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true" @touchstart="longTouchfloatNavStart" @touchend="longTouchfloatNavEnd"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
@@ -93,11 +93,10 @@
 import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, inject, Ref } from 'vue';
 import XCommon from './_common_/common.vue';
 import { instanceName } from '@/config';
-import { StickySidebar } from '@/scripts/sticky-sidebar';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
-import { navbarItemDef } from '@/navbar';
+// import { navbarItemDef } from '@/navbar';
 import { i18n } from '@/i18n';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { mainRouter } from '@/router';
@@ -132,7 +131,6 @@ let longTouchNavHome = $ref(false);
 let longTouchfloatNav = $ref(false);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
-const widgetsEl = $shallowRef<HTMLElement>();
 const widgetsShowing = $ref(false);
 const navFooter = $shallowRef<HTMLElement>();
 
@@ -144,6 +142,7 @@ provideMetadataReceiver((info) => {
 	}
 });
 
+/*
 const menuIndicated = computed(() => {
 	for (const def in navbarItemDef) {
 		if (def === 'notifications') continue; // 通知は下にボタンとして表示されてるから
@@ -151,14 +150,13 @@ const menuIndicated = computed(() => {
 	}
 	return false;
 });
+ */
 
 const drawerMenuShowing = ref(false);
 
 mainRouter.on('change', () => {
 	drawerMenuShowing.value = false;
 });
-
-document.documentElement.style.overflowY = 'scroll';
 
 if (window.innerWidth > 1024) {
 	const tempUI = miLocalStorage.getItem('ui_temp');
@@ -239,15 +237,8 @@ const onContextmenu = (ev) => {
 	}], ev);
 };
 
-const attachSticky = (el) => {
-	const sticky = new StickySidebar(widgetsEl);
-	window.addEventListener('scroll', () => {
-		sticky.calc(window.scrollY);
-	}, { passive: true });
-};
-
 function top() {
-	window.scroll({ top: 0, behavior: 'smooth' });
+	// TODO
 }
 
 function queueUpdated(q: number): void {
@@ -281,8 +272,6 @@ function longTouchfloatNavStart() {
 function longTouchfloatNavEnd() {
 	longTouchfloatNav = false;
 }
-
-const wallpaper = miLocalStorage.getItem('wallpaper') != null;
 
 let navFooterHeight = $ref(0);
 provide<Ref<number>>(CURRENT_STICKY_BOTTOM, $$(navFooterHeight));
@@ -350,14 +339,10 @@ $float-button-size: 65px;
 }
 
 .root {
-	min-height: 100dvh;
+	height: 100dvh;
+	overflow: clip;
 	box-sizing: border-box;
 	display: flex;
-}
-
-.withWallpaper {
-	background: var(--wallpaperOverlay);
-	//backdrop-filter: var(--blur, blur(4px));
 }
 
 .sidebar {
@@ -365,13 +350,20 @@ $float-button-size: 65px;
 }
 
 .contents {
-	width: 100%;
+	flex: 1;
+	height: 100%;
 	min-width: 0;
+	overflow: auto;
+	overflow-y: scroll;
 	background: var(--bg);
 }
 
 .widgets {
-	padding: 0 var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px));
+	width: 350px;
+	height: 100%;
+	box-sizing: border-box;
+	overflow: auto;
+	padding: var(--margin) var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px));
 	border-left: solid 0.5px var(--divider);
 	background: var(--bg);
 
