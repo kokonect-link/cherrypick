@@ -20,7 +20,7 @@
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true" @touchstart="longTouchfloatNavStart" @touchend="longTouchfloatNavEnd"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
 	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
 
@@ -133,7 +133,6 @@ let lastScrollPosition = $ref(0);
 let queue = $ref(0);
 
 let longTouchNavHome = $ref(false);
-let longTouchfloatNav = $ref(false);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsShowing = $ref(false);
@@ -260,19 +259,6 @@ function openAccountMenu(ev: MouseEvent) {
 
 function closeAccountMenu() {
 	longTouchNavHome = false;
-}
-
-function longTouchfloatNavStart() {
-	longTouchfloatNav = true;
-	setTimeout(() => {
-		if (longTouchfloatNav === true) {
-			location.reload();
-		}
-	}, 1000);
-}
-
-function longTouchfloatNavEnd() {
-	longTouchfloatNav = false;
 }
 
 let navFooterHeight = $ref(0);
