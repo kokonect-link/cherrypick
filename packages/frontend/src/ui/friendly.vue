@@ -12,6 +12,10 @@
 		</main>
 	</MkStickyContainer>
 
+	<div v-if="isDesktop && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+		<XNotifications/>
+	</div>
+
 	<div v-if="isDesktop" :class="$style.widgets">
 		<XWidgets/>
 	</div>
@@ -107,6 +111,7 @@ import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
+const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 
@@ -172,9 +177,6 @@ defaultStore.loaded.then(() => {
 		defaultStore.set('widgets', [{
 			name: 'calendar',
 			id: 'a', place: 'right', data: {},
-		}, {
-			name: 'notifications',
-			id: 'b', place: 'right', data: {},
 		}, {
 			name: 'trends',
 			id: 'c', place: 'right', data: {},
@@ -370,6 +372,11 @@ $float-button-size: 65px;
 	@media (max-width: $widgets-hide-threshold) {
 		display: none;
 	}
+}
+
+.notificationWidgets {
+	composes: widgets;
+	padding: initial;
 }
 
 .floatNavButton {
