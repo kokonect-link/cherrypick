@@ -1,6 +1,6 @@
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" :hash="user?.avatarBlurhash" :cover="true"/>
+	<MkImgWithBlurhash :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" :hash="user?.avatarBlurhash" :cover="true" :noDrag="true"/>
 	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
 </component>
 </template>

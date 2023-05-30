@@ -10,7 +10,7 @@
 		:leaveFromClass="defaultStore.state.animation && props.transition?.leaveFromClass || undefined"
 	>
 		<canvas v-show="hide" key="canvas" ref="canvas" :class="$style.canvas" :width="canvasWidth" :height="canvasHeight" :title="title ?? undefined"/>
-		<img v-show="!hide" key="img" ref="img" :height="imgHeight" :width="imgWidth" :class="$style.img" :src="src ?? undefined" :title="title ?? undefined" :alt="alt ?? undefined" loading="eager" decoding="async"/>
+		<img v-show="!hide" key="img" ref="img" :height="imgHeight" :width="imgWidth" :class="[$style.img, { [$style.noDrag]: noDrag }]" :src="src ?? undefined" :title="title ?? undefined" :alt="alt ?? undefined" loading="eager" decoding="async"/>
 	</TransitionGroup>
 </div>
 </template>
@@ -66,6 +66,7 @@ const props = withDefaults(defineProps<{
 	width?: number;
 	cover?: boolean;
 	forceBlurhash?: boolean;
+	noDrag?: boolean;
 }>(), {
 	transition: null,
 	src: null,
@@ -75,6 +76,7 @@ const props = withDefaults(defineProps<{
 	width: 64,
 	cover: true,
 	forceBlurhash: false,
+	noDrag: false,
 });
 
 const viewId = uuid();
@@ -238,5 +240,9 @@ onUnmounted(() => {
 
 .img {
 	object-fit: contain;
+
+	&.noDrag {
+		-webkit-user-drag: none;
+	}
 }
 </style>
