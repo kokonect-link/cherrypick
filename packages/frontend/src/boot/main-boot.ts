@@ -2,7 +2,7 @@ import { computed, createApp, watch, markRaw, version as vueVersion, defineAsync
 import { common } from './common';
 import { version, ui, lang, updateLocale } from '@/config';
 import { i18n, updateI18n } from '@/i18n';
-import {confirm, alert, post, popup, toast, welcomeToast} from '@/os';
+import { confirm, alert, post, popup, welcomeToast } from '@/os';
 import { useStream } from '@/stream';
 import * as sound from '@/scripts/sound';
 import { $i, refreshAccount, login, updateAccount, signout } from '@/account';
@@ -251,7 +251,7 @@ export async function mainBoot() {
 		});
 
 		// トークンが再生成されたとき
-		// このままではMisskeyが利用できないので強制的にサインアウトさせる
+		// このままではCherryPickが利用できないので強制的にサインアウトさせる
 		main.on('myTokenRegenerated', () => {
 			signout();
 		});
