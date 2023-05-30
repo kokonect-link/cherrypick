@@ -1,8 +1,8 @@
 <template>
-<div :class="$style.root">
+<div :class="[$style.root, { [$style.narrow]: isMobile }]">
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
-	<MkStickyContainer :class="$style.contents">
+	<MkStickyContainer :class="[$style.contents, { [$style.narrow]: isMobile }]">
 		<template #header><XStatusBars :class="$style.statusbars"/></template>
 		<main style="min-width: 0;" @contextmenu.stop="onContextmenu">
 			<div :class="$style.content" style="container-type: inline-size;">
@@ -345,6 +345,10 @@ $float-button-size: 65px;
 	overflow: clip;
 	box-sizing: border-box;
 	display: flex;
+
+	&.narrow {
+		overflow: initial;
+	}
 }
 
 .sidebar {
@@ -358,6 +362,10 @@ $float-button-size: 65px;
 	overflow: auto;
 	overflow-y: scroll;
 	background: var(--bg);
+
+	&.narrow {
+		overflow: initial;
+	}
 }
 
 .widgets {
