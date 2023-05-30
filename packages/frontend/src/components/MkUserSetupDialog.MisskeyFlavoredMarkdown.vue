@@ -2,6 +2,13 @@
 <div class="_gaps">
 	<MkInfo>{{ i18n.ts._initialAccountSetting.theseSettingsCanEditLater }}</MkInfo>
 
+	<div :class="$style.preview" class="_panel">
+		<div style="margin: 0 0 8px; font-size: 1.5em;">
+			<Mfm v-if="advancedMfm && animatedMfm" :key="emojiStyle" text="$[jelly 🍮] $[spin 🍪] $[shake 🍭]"/>
+			<Mfm v-else :key="emojiStyle" text="🍮 🍪 🍭"/>
+		</div>
+	</div>
+
 	<MkFolder>
 		<template #label>{{ i18n.ts.enableAdvancedMfm }}</template>
 		<template #icon><i class="ti ti-markdown"></i></template>
@@ -41,13 +48,19 @@ import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import * as os from '@/os';
 import { $i } from '@/account';
-import { defaultStore } from "@/store";
+import { defaultStore } from '@/store';
 
 const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
 const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
+const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
 </script>
 
 <style lang="scss" module>
-
+.preview {
+	padding: 20px;
+	border-radius: 6px;
+	text-align: center;
+	background: var(--bg);
+}
 </style>

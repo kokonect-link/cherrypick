@@ -38,6 +38,12 @@
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
+				<div class="mfmPreview _panel">
+					<div style="margin: 0 0 8px; font-size: 1.5em;">
+						<Mfm v-if="advancedMfm && animatedMfm" :key="emojiStyle" text="$[jelly 🍮] $[spin 🍪] $[shake 🍭]"/>
+						<Mfm v-else :key="emojiStyle" text="🍮 🍪 🍭"/>
+					</div>
+				</div>
 				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
@@ -332,7 +338,6 @@ watch(useSystemFont, () => {
 
 watch([
 	lang,
-	animatedMfm,
 	useBlurEffect,
 	// fontSize,
 	useBoldFont,
@@ -370,10 +375,15 @@ definePageMetadata({
 	user-select: none;
 }
 
-.fontSize {
+.mfmPreview, .fontSize {
 	padding: 20px 20px 28px;
 	border-radius: 6px;
 	text-align: center;
+}
+
+.mfmPreview {
+	padding: 5px;
+	max-width: 110px;
 }
 
 .fontSize_slider {
