@@ -64,12 +64,12 @@ import { instance } from '@/instance';
 import { i18n } from '@/i18n';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import MkRange from "@/components/MkRange.vue";
+import MkRange from '@/components/MkRange.vue';
 import * as os from '@/os';
 import { $i } from '@/account';
-import { defaultStore } from "@/store";
-import { miLocalStorage } from "@/local-storage";
-import {unisonReload} from "@/scripts/unison-reload";
+import { defaultStore } from '@/store';
+import { miLocalStorage } from '@/local-storage';
+import { unisonReload } from '@/scripts/unison-reload';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));

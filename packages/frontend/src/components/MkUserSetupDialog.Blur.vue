@@ -33,7 +33,7 @@ import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import * as os from '@/os';
 import { $i } from '@/account';
-import { defaultStore } from "@/store";
+import { defaultStore } from '@/store';
 
 const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
