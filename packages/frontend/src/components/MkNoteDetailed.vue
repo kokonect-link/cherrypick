@@ -4,7 +4,7 @@
 	v-show="!isDeleted"
 	ref="el"
 	v-hotkey="keymap"
-	:class="[$style.root, { [$style.renote]: isRenote }]"
+	:class="$style.root"
 >
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
