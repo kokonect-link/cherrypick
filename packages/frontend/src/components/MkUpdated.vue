@@ -4,6 +4,7 @@
 		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
 		<div :class="$style.version">✨{{ version }}🚀</div>
 		<MkButton full @click="whatIsNew">{{ i18n.ts.whatIsNew }}</MkButton>
+		<MkButton full @click="whatIsNewCherryPick">{{ i18n.ts.whatIsNew }} (CherryPick)</MkButton>
 		<MkButton :class="$style.gotIt" primary full @click="close">{{ i18n.ts.gotIt }}</MkButton>
 	</div>
 </MkModal>
@@ -27,6 +28,11 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 const whatIsNew = () => {
 	// modal.value.close();
 	window.open(`https://misskey-hub.net/docs/releases.html#_${version.replace(/\./g, '-')}`, '_blank');
+};
+
+const whatIsNewCherryPick = () => {
+	// modal.value.close();
+	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
 };
 
 const close = async () => {
