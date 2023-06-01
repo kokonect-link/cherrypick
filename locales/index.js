@@ -64,6 +64,7 @@ module.exports = Object.entries(locales)
 			default: return merge(
 				locales['ja-JP'],
 				locales['en-US'],
+				locales['ko-KR'],
 				locales[`${lang}-${primaries[lang]}`] || {},
 				v
 			);
