@@ -337,6 +337,7 @@ $float-button-size: 65px;
 
 	&.narrow {
 		overflow: initial;
+		contain: none;
 	}
 }
 
