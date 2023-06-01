@@ -1,6 +1,6 @@
 <template>
 <div ref="rootEl">
-	<div :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]" ref="headerEl">
+	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]">
 		<slot name="header"></slot>
 	</div>
 	<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
@@ -14,14 +14,13 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, provide, inject, Ref, ref, watch } from 'vue';
+import { $$ } from 'vue/macros';
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';
-import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
 import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
 
 const MOBILE_THRESHOLD = 500;
@@ -103,6 +102,10 @@ onMounted(() => {
 
 onUnmounted(() => {
 	observer.disconnect();
+});
+
+defineExpose({
+	rootEl: $$(rootEl),
 });
 </script>
 

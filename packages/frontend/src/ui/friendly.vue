@@ -2,14 +2,10 @@
 <div :class="[$style.root, { [$style.narrow]: isMobile }]">
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
-	<MkStickyContainer :class="[$style.contents, { [$style.narrow]: isMobile }]">
+	<MkStickyContainer ref="contents" :class="[$style.contents, { [$style.narrow]: isMobile }]" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
 		<template #header><XStatusBars :class="$style.statusbars"/></template>
-		<main style="min-width: 0;" @contextmenu.stop="onContextmenu">
-			<div :class="$style.content" style="container-type: inline-size;">
-				<RouterView/>
-			</div>
-			<div v-if="!(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="$style.spacer"></div>
-		</main>
+		<RouterView/>
+		<div v-if="!(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
 	<div v-if="isDesktop && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
@@ -94,13 +90,14 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, inject, Ref } from 'vue';
+import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, shallowRef, Ref } from 'vue';
 import XCommon from './_common_/common.vue';
+import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
-// import { navbarItemDef } from '@/navbar';
+import { navbarItemDef } from '@/navbar';
 import { i18n } from '@/i18n';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { mainRouter } from '@/router';
@@ -110,6 +107,7 @@ import { miLocalStorage } from '@/local-storage';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
+
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
@@ -137,6 +135,7 @@ let longTouchNavHome = $ref(false);
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsShowing = $ref(false);
 const navFooter = $shallowRef<HTMLElement>();
+const contents = shallowRef<InstanceType<typeof MkStickyContainer>>();
 
 provide('router', mainRouter);
 provideMetadataReceiver((info) => {
@@ -239,7 +238,10 @@ const onContextmenu = (ev) => {
 };
 
 function top() {
-	// TODO
+	contents.value.rootEl.scrollTo({
+		top: 0,
+		behavior: 'smooth',
+	});
 }
 
 function queueUpdated(q: number): void {
@@ -474,6 +476,7 @@ $float-button-size: 65px;
 	top: 0;
 	right: 0;
 	z-index: 1001;
+	width: 330px;
 	height: 100dvh;
 	padding: var(--margin) var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px)) !important;
 	box-sizing: border-box;

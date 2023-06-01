@@ -1112,8 +1112,8 @@ _initialAccountSetting:
   initialAccountSettingCompleted: "초기 설정을 모두 완료했어요!"
   haveFun: "{name}와 함께 즐거운 시간 보내세요!"
   ifYouNeedLearnMore: "{name}(CherryPick)의 사용 방법에 대해 자세히 알아보려면 {link}를 참고해 주세요."
-  skipAreYouSure: "초기 설정을 건너뛸까요?"
-  laterAreYouSure: "초기 설정을 나중에 다시 진행할까요?"
+  skipAreYouSure: "초기 설정을 중단하시겠어요?"
+  laterAreYouSure: "초기 설정을 나중에 진행할까요?"
 _serverRules:
   description: "회원 가입 이전에 간단하게 표시할 서버 규칙이에요. 이용 약관의 요약으로 구성하는 것을 추천해요."
 _accountMigration:
