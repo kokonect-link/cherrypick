@@ -331,6 +331,7 @@ $float-button-size: 65px;
 .root {
 	height: 100dvh;
 	overflow: clip;
+	contain: strict;
 	box-sizing: border-box;
 	display: flex;
 

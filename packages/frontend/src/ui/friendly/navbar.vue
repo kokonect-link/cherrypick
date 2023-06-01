@@ -112,7 +112,7 @@ function openProfile() {
 <style lang="scss" module>
 .root {
 	--nav-width: 250px;
-	--nav-icon-only-width: 80px;
+	--nav-icon-only-width: 72px;
 
 	flex: 0 0 var(--nav-width);
 	width: var(--nav-width);
