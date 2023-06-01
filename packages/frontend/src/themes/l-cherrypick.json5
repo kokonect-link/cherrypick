@@ -9,6 +9,7 @@
 		accent: '#6ba5e3',
 		bg: 'rgb(238, 241, 252)',
 		fg: '#577096',
+		fgOnWhite: '@accent',
 		divider: 'rgb(223, 223, 223)',
 		acrylicPanel: ':alpha<0.5<@panel',
 		header: '@bg',

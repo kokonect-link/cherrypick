@@ -5,6 +5,7 @@
   name: 'Birdsite Pure white',
   props: {
     bg: '#fff',
+		fgOnWhite: '@accent',
     link: '#1d9bf0',
     accent: '#1d9bf0',
     renote: '#536472',

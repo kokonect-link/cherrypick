@@ -22,6 +22,7 @@
 		bg: '$mstdnBase',
 		acrylicBg: '$mstdnUI',
 		fg: '#eee',
+		fgOnWhite: '@accent',
 		divider: '#2e3340',
 		panel: '$mstdnUI',
 		panelHighlight: '$mstdnBg',

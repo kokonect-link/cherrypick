@@ -6,6 +6,7 @@
   props: {
     accent: '#1d9bf0',
     bg: '#000',
+		fgOnWhite: '@accent',
     link: '#1d9bf0',
     hashtag: '#1d9bf0',
     renote: '#71767b',
