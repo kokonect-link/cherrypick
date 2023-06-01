@@ -15,6 +15,7 @@
 		:stroke-dashoffset="strokeDashoffset"
 		fill="none"
 		stroke-width="0.1"
+		:class="$style.circle"
 		:stroke="color"
 	/>
 	<text x="50%" y="50%" dy="0.05" text-anchor="middle" :class="$style.text">{{ (value * 100).toFixed(0) }}%</text>
@@ -44,6 +45,7 @@ const strokeDashoffset = $computed(() => (1 - props.value) * (Math.PI * (r * 2))
 	transform-origin: center;
 	transform: rotate(-90deg);
 	transition: stroke-dashoffset 0.5s ease;
+	stroke-linecap: round;
 }
 
 .text {
