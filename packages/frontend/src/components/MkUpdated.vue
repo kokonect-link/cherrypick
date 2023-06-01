@@ -1,11 +1,18 @@
 <template>
-<MkModal ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
+<MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
 		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
 		<div :class="$style.version">✨{{ version }}🚀</div>
-		<MkButton full @click="whatIsNew">{{ i18n.ts.whatIsNew }}</MkButton>
-		<MkButton full @click="whatIsNewCherryPick">{{ i18n.ts.whatIsNew }} (CherryPick)</MkButton>
+		<MkButton full @click="showChangelog = true; modal.value.close();">{{ i18n.ts.whatIsNew }}</MkButton>
 		<MkButton :class="$style.gotIt" primary full @click="close">{{ i18n.ts.gotIt }}</MkButton>
+	</div>
+</MkModal>
+<MkModal v-else-if="showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
+	<div :class="$style.root">
+		<div :class="$style.title" style="margin: 0 0 1.5em; font-weight: normal;">{{ i18n.ts.whatIsNew }}</div>
+		<MkButton full @click="whatIsNew">Misskey</MkButton>
+		<MkButton full style="margin: 8px 0 0;" @click="whatIsNewCherryPick">CherryPick</MkButton>
+		<MkButton :class="$style.gotIt" primary full @click="close">{{ i18n.ts.ok }}</MkButton>
 	</div>
 </MkModal>
 </template>
@@ -22,6 +29,8 @@ import { unisonReload } from '@/scripts/unison-reload';
 import * as os from '@/os';
 import { miLocalStorage } from '@/local-storage';
 import { fetchCustomEmojis } from '@/custom-emojis';
+
+let showChangelog = $ref(false);
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
@@ -58,7 +67,7 @@ function cacheClear() {
 	miLocalStorage.removeItem('theme');
 	miLocalStorage.removeItem('emojis');
 	miLocalStorage.removeItem('lastEmojisFetchedAt');
-	fetchCustomEmojis();
+	fetchCustomEmojis(true);
 	unisonReload();
 }
 
