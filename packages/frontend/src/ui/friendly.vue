@@ -336,6 +336,8 @@ $float-button-size: 65px;
 	display: flex;
 
 	&.narrow {
+		min-height: 100dvh;
+		height: auto;
 		overflow: initial;
 		contain: none;
 	}
