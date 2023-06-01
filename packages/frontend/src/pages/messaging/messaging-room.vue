@@ -5,11 +5,11 @@
 	</template>
 	<div
 		ref="rootEl"
-		:class="$style['root']"
+		:class="$style.root"
 		@dragover.prevent.stop="onDragover"
 		@drop.prevent.stop="onDrop"
 	>
-		<div :class="$style['body']">
+		<div :class="$style.body">
 			<MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
 				<template #empty>
 					<div class="_fullinfo">
@@ -21,7 +21,7 @@
 					<MkDateSeparatedList
 						v-if="messages.length > 0"
 						v-slot="{ item: message }"
-						:class="{ [$style['messages']]: true, 'deny-move-transition': pFetching }"
+						:class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
 						:items="messages"
 						direction="up"
 						reversed
@@ -31,23 +31,23 @@
 				</template>
 			</MkPagination>
 		</div>
-		<footer :class="$style['footer']">
-			<div v-if="typers.length > 0" :class="$style['typers']">
+		<footer :class="$style.footer">
+			<div v-if="typers.length > 0" :class="$style.typers">
 				<I18n :src="i18n.ts.typingUsers" textTag="span">
 					<template #users>
-						<b v-for="typer in typers" :key="typer.id" :class="$style['user']">{{ typer.username }}</b>
+						<b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
 					</template>
 				</I18n>
 				<MkEllipsis/>
 			</div>
 			<Transition :name="animation ? 'fade' : ''">
-				<div v-show="showIndicator" :class="$style['new-message']">
-					<button class="_buttonPrimary" :class="$style['new-message-button']" @click="onIndicatorClick">
-						<i class="ti ti-circle-arrow-down-filled" :class="$style['new-message-icon']"></i>{{ i18n.ts.newMessageExists }}
+				<div v-show="showIndicator" :class="$style.newMessage">
+					<button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
+						<i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
 					</button>
 				</div>
 			</Transition>
-			<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style['form']"/>
+			<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
 		</footer>
 	</div>
 </MkStickyContainer>
@@ -315,7 +315,7 @@ definePageMetadata(computed(() => !fetching ? user ? {
 
 <style lang="scss" module>
 .root {
-	display: content;
+	display: contents;
 }
 
 .body {
@@ -330,12 +330,15 @@ definePageMetadata(computed(() => !fetching ? user ? {
 	color: #fff;
 	background: rgba(#000, 0.3);
 	border-radius: 12px;
+
 	&:hover {
 		background: rgba(#000, 0.4);
 	}
+
 	&:active {
 		background: rgba(#000, 0.5);
 	}
+
 	> i {
 		margin-right: 4px;
 	}
@@ -361,13 +364,13 @@ definePageMetadata(computed(() => !fetching ? user ? {
 	bottom: var(--minBottomSpacing);
 }
 
-.new-message {
+.newMessage {
 	width: 100%;
 	padding-bottom: 8px;
 	text-align: center;
 }
 
-.new-message-button {
+.newMessageButton {
 	display: inline-block;
 	margin: 0;
 	padding: 0 12px;
@@ -376,7 +379,7 @@ definePageMetadata(computed(() => !fetching ? user ? {
 	border-radius: 16px;
 }
 
-.new-message-icon {
+.newMessageIcon {
 	display: inline-block;
 	margin-right: 8px;
 }

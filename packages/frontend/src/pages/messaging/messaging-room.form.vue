@@ -1,30 +1,30 @@
 <template>
 <div
-	:class="$style['root']"
+	:class="$style.root"
 	@dragover.stop="onDragover"
 	@drop.stop="onDrop"
 >
 	<textarea
-		:class="$style['textarea']"
-		class="_acrylic"
 		ref="textEl"
 		v-model="text"
+		:class="$style.textarea"
+		class="_acrylic"
 		:placeholder="i18n.ts.inputMessageHere"
 		@keydown="onKeydown"
 		@compositionupdate="onCompositionUpdate"
 		@paste="onPaste"
 	></textarea>
-	<footer :class="$style['footer']">
-		<div v-if="file" :class="$style['file']" @click="file = null">{{ file.name }}</div>
-		<div :class="$style['buttons']">
-			<button class="_button" :class="$style['button']" @click="chooseFile"><i class="ti ti-photo-plus"></i></button>
-			<button class="_button" :class="$style['button']" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
-			<button class="_button" :class="[$style['button'], $style['send']]" :disabled="!canSend || sending" :title="i18n.ts.send" @click="send">
+	<footer :class="$style.footer">
+		<div v-if="file" :class="$style.file" @click="file = null">{{ file.name }}</div>
+		<div :class="$style.buttons">
+			<button class="_button" :class="$style.button" @click="chooseFile"><i class="ti ti-photo-plus"></i></button>
+			<button class="_button" :class="$style.button" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
+			<button class="_button" :class="[$style.button, $style.send]" :disabled="!canSend || sending" :title="i18n.ts.send" @click="send">
 				<template v-if="!sending"><i class="ti ti-send"></i></template><template v-if="sending"><MkLoading :em="true"/></template>
 			</button>
 		</div>
 	</footer>
-	<input :class="$style['file-input']" ref="fileEl" type="file" @change="onChangeFile"/>
+	<input ref="fileEl" :class="$style.fileInput" type="file" @change="onChangeFile"/>
 </div>
 </template>
 
@@ -32,7 +32,7 @@
 import { onMounted, watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import autosize from 'autosize';
-//import insertTextAtCursor from 'insert-text-at-cursor';
+import insertTextAtCursor from 'insert-text-at-cursor';
 import { throttle } from 'throttle-debounce';
 import { formatTimeString } from '@/scripts/format-time-string';
 import { selectFile } from '@/scripts/select-file';
@@ -40,7 +40,7 @@ import * as os from '@/os';
 import { useStream } from '@/stream';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';
-//import { Autocomplete } from '@/scripts/autocomplete';
+import { Autocomplete } from '@/scripts/autocomplete';
 import { uploadFile } from '@/scripts/upload';
 import { miLocalStorage } from '@/local-storage';
 import MkLoading from '@/components/global/MkLoading.vue';
@@ -353,6 +353,7 @@ defineExpose({
 		transition: color 0s ease;
 	}
 }
+
 .send {
 	margin-left: auto;
 	color: var(--accent);
@@ -367,7 +368,7 @@ defineExpose({
 	}
 }
 
-.file-input {
+.fileInput {
 	display: none;
 }
 </style>
