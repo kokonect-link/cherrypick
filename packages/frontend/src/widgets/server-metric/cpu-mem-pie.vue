@@ -19,8 +19,7 @@ import XPie from './pie-compact.vue';
 
 const props = defineProps<{
 	connection: any,
-	meta: any,
-	value: number
+	meta: any
 }>();
 
 let cpuUsage: number = $ref(0);
