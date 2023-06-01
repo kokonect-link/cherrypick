@@ -1,5 +1,5 @@
 <!--
-## 13.x.x-cp-3.x.x
+## 13.x.x-cp-4.x.x
 출시일: unreleased
 
 ## NOTE
@@ -22,7 +22,7 @@
 이 문서는 CherryPick의 변경 사항만 포함합니다.<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## 13.x.x-cp-3.x.x
+## 13.x.x-cp-4.x.x
 출시일: unreleased
 
 ### Client
