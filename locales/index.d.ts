@@ -1096,6 +1096,8 @@ export interface Locale {
     "changeReactionConfirm": string;
     "later": string;
     "goToMisskey": string;
+    "additionalEmojiDictionary": string;
+    "installed": string;
     "performanceWarning": string;
     "photosensitiveSeizuresWarning": string;
     "_initialAccountSetting": {

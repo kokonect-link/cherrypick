@@ -1093,6 +1093,8 @@ cancelReactionConfirm: "リアクションを取り消しますか？"
 changeReactionConfirm: "リアクションを変更しますか？"
 later: "あとで"
 goToMisskey: "CherryPickへ"
+additionalEmojiDictionary: "絵文字の追加辞書"
+installed: "インストール済み"
 performanceWarning: "リソースを多く使用するため、デバイスの温度が高くなり、バッテリーの消耗が速くなる可能性があります"
 photosensitiveSeizuresWarning: "光敏感性発作を起こす可能性があります"
 

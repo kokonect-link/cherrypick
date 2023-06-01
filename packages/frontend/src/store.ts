@@ -355,6 +355,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 8,
 	},
+	additionalUnicodeEmojiIndexes: {
+		where: 'device',
+		default: {} as Record<string, Record<string, string[]>>,
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期
