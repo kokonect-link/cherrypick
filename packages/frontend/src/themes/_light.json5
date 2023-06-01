@@ -87,6 +87,7 @@
 		pick: '#b1d3ff',
 		pickLighten: ':lighten<10<@pick',
 		pickX8: ':lighten<5<@pick',
+		misskey: '#86b300',
 		X2: ':darken<2<@panel',
 		X3: 'rgba(0, 0, 0, 0.05)',
 		X4: 'rgba(0, 0, 0, 0.1)',
