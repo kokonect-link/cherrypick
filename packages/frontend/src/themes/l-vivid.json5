@@ -13,7 +13,7 @@
 		cwFg: '#fff',
 		link: '#ff9400',
 		warn: '#ecb637',
-		badge: '#31b1ce',
+		badge: '#afd2ff',
 		error: '#ec4137',
 		focus: ':alpha<0.3<@accent',
 		navBg: '@panel',
