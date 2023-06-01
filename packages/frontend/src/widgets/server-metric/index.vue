@@ -6,8 +6,8 @@
 
 	<div v-if="meta" data-cy-mkw-serverMetric class="mkw-serverMetric">
 		<XCpuMemory v-if="widgetProps.view === 0" :connection="connection" :meta="meta"/>
-		<XCpuMemoryCompact v-if="widgetProps.view === 1" :connection="connection" :meta="meta"/>
-		<XNet v-else-if="widgetProps.view === 2" :connection="connection" :meta="meta"/>
+		<XNet v-else-if="widgetProps.view === 1" :connection="connection" :meta="meta"/>
+		<XCpuMemoryCompact v-if="widgetProps.view === 2" :connection="connection" :meta="meta"/>
 		<XCpu v-else-if="widgetProps.view === 3" :connection="connection" :meta="meta"/>
 		<XMemory v-else-if="widgetProps.view === 4" :connection="connection" :meta="meta"/>
 		<XDisk v-else-if="widgetProps.view === 5" :connection="connection" :meta="meta"/>
