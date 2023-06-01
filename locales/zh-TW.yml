@@ -1073,7 +1073,7 @@ rolesThatCanBeUsedThisEmojiAsReactionPublicRoleWarn: "角色必須是公開的�
 cancelReactionConfirm: "要取消做出的反應嗎？"
 changeReactionConfirm: "要變更做出的反應嗎？"
 later: "稍後再說"
-goToMisskey: "往Misskey"
+goToMisskey: "往CherryPick"
 _initialAccountSetting:
   accountCreated: "帳戶已建立完成！"
   letsStartAccountSetup: "來進行帳戶的初始設定吧。"
@@ -1086,7 +1086,7 @@ _initialAccountSetting:
   pushNotificationDescription: "啟用推送通知，就可以在設備上接收{name}的通知。"
   initialAccountSettingCompleted: "初始設定完成了！"
   haveFun: "盡情享受{name}吧！"
-  ifYouNeedLearnMore: "關於如何使用{name}(Misskey)的詳細資訊，請見{link}。"
+  ifYouNeedLearnMore: "關於如何使用{name}(CherryPick)的詳細資訊，請見{link}。"
   skipAreYouSure: "要略過初始設定嗎？"
   laterAreYouSure: "稍後再重新進行初始設定嗎？"
 _serverRules:
@@ -1705,7 +1705,7 @@ _time:
   hour: "小時"
   day: "日"
 _timelineTutorial:
-  title: "Misskey的使用方法"
+  title: "CherryPick的使用方法"
   step1_1: "這個畫面是「時間軸」。發布到{name}的「貼文」按照時間順序顯示。"
   step1_2: "時間軸有多種類型，例如在「首頁時間軸」中流動的是您追蹤的人的貼文；而在「本地時間軸」流動的是{name}全體的貼文。"
   step2_1: "試試看，發布個貼文吧！按畫面上鉛筆圖示的按鈕開啟表格。"

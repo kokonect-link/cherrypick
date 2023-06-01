@@ -1073,7 +1073,7 @@ rolesThatCanBeUsedThisEmojiAsReactionPublicRoleWarn: "Diese Rollen müssen öffe
 cancelReactionConfirm: "Möchtest du deine Reaktion wirklich löschen?"
 changeReactionConfirm: "Möchtest du deine Reaktion wirklich ändern?"
 later: "Später"
-goToMisskey: "Zu Misskey"
+goToMisskey: "Zu CherryPick"
 _initialAccountSetting:
   accountCreated: "Dein Konto wurde erfolgreich erstellt!"
   letsStartAccountSetup: "Lass uns nun dein Konto einrichten."
@@ -1086,7 +1086,7 @@ _initialAccountSetting:
   pushNotificationDescription: "Durch die Aktivierung von Push-Benachrichtigungen kannst du von {name} Benachrichtigungen direkt auf dein Gerät erhalten."
   initialAccountSettingCompleted: "Kontoeinrichtung abgeschlossen!"
   haveFun: "Viel Spaß mit {name}!"
-  ifYouNeedLearnMore: "Besuche {link}, falls du mehr über {name} (Misskey) lernen möchtest."
+  ifYouNeedLearnMore: "Besuche {link}, falls du mehr über {name} (CherryPick) lernen möchtest."
   skipAreYouSure: "Die Kontoeinrichtung wirklich überspringen?"
   laterAreYouSure: "Die Kontoeinrichtung wirklich später erledigen?"
 _serverRules:
@@ -1099,7 +1099,7 @@ _accountMigration:
   moveTo: "Dieses Konto zu einem neuen migrieren"
   moveToLabel: "Umzugsziel:"
   moveCannotBeUndone: "Die Migration eines Benutzerkontos ist unwiderruflich."
-  moveAccountDescription: "Hierdurch wird dein Konto zu einem anderen migriert.\n　・Follower von diesem Konto werden automatisch auf das neue Konto migriert\n　・Dieses Konto wird allen Nutzern, denen es derzeit folgt, nicht mehr folgen\n　・Mit diesem Konto können keine neuen Notizen usw. erstellt werden\n\nWährend die Migration der Follower automatisch erfolgt, muss die Migration der Konten, denen du folgst, manuell vorbereitet werden. Exportiere hierzu die Liste der gefolgten Nutzer über das Einstellungsmenu, und importiere diese Liste im neuen Konto. Das gleiche Verfahren gilt für erstellte Listen und stummgeschaltete oder blockierte Nutzer.\n\n(Diese Erklärung gilt für Misskey v13.12.0 oder später. Die Funktionsweise andere ActivityPub-Software, beispielsweise Mastodon,  kann hiervon abweichen.)"
+  moveAccountDescription: "Hierdurch wird dein Konto zu einem anderen migriert.\n　・Follower von diesem Konto werden automatisch auf das neue Konto migriert\n　・Dieses Konto wird allen Nutzern, denen es derzeit folgt, nicht mehr folgen\n　・Mit diesem Konto können keine neuen Notizen usw. erstellt werden\n\nWährend die Migration der Follower automatisch erfolgt, muss die Migration der Konten, denen du folgst, manuell vorbereitet werden. Exportiere hierzu die Liste der gefolgten Nutzer über das Einstellungsmenu, und importiere diese Liste im neuen Konto. Das gleiche Verfahren gilt für erstellte Listen und stummgeschaltete oder blockierte Nutzer.\n\n(Diese Erklärung gilt für CherryPick v13.12.0 oder später. Die Funktionsweise andere ActivityPub-Software, beispielsweise Mastodon,  kann hiervon abweichen.)"
   moveAccountHowTo: "Um ein Konto zu migrieren, erstelle zuerst auf dem Umzugsziel einen Alias für dieses Konto.\nGib dann das Umzugsziel in folgendem Format ein: @username@server.example.com"
   startMigration: "Migrieren"
   migrationConfirm: "Dieses Konto wirklich zu {account} umziehen? Sobald der Umzug beginnt, kann er nicht rückgängig gemacht werden, und dieses Konto nicht wieder im ursprünglichen Zustand verwendet werden."

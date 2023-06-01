@@ -1073,7 +1073,7 @@ rolesThatCanBeUsedThisEmojiAsReactionPublicRoleWarn: "角色必须是公开的�
 cancelReactionConfirm: "要取消回应吗？"
 changeReactionConfirm: "要更改回应吗？"
 later: "一会再说"
-goToMisskey: "去往Misskey"
+goToMisskey: "去往CherryPick"
 _initialAccountSetting:
   accountCreated: "账户创建完成了！"
   letsStartAccountSetup: "来进行帐户的初始设置吧。"
@@ -1086,7 +1086,7 @@ _initialAccountSetting:
   pushNotificationDescription: "启用推送通知的话，就可以在设备上受到来自{name}的通知了。"
   initialAccountSettingCompleted: "初始设定已经完成了！"
   haveFun: "希望{name}在这里玩得开心！"
-  ifYouNeedLearnMore: "关于{name}(Misskey)的使用方法，详见{link}。"
+  ifYouNeedLearnMore: "关于{name}(CherryPick)的使用方法，详见{link}。"
   skipAreYouSure: "要跳过初始设置吗？"
   laterAreYouSure: "要稍后再进行初始设定吗？"
 _serverRules:
@@ -1705,7 +1705,7 @@ _time:
   hour: "小时"
   day: "日"
 _timelineTutorial:
-  title: "Misskey的使用方法"
+  title: "CherryPick的使用方法"
   step1_1: "这个画面是「时间线」。{name}的投稿会按照帖子的发布时间顺序来显示。"
   step1_2: "时间线有许多种类，比如在「首页时间线」中展现的是你关注的人的贴文；而在「本地时间线」中展现的是{name}里全部用户的贴文。"
   step2_1: "那么接下来，试着写一些什么东西来发布吧！你可以通过点击屏幕上的铅笔图标来打开投稿页面。"

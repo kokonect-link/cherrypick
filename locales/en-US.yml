@@ -1092,7 +1092,7 @@ rolesThatCanBeUsedThisEmojiAsReactionPublicRoleWarn: "These roles must be public
 cancelReactionConfirm: "Really delete your reaction?"
 changeReactionConfirm: "Really change your reaction?"
 later: "Later"
-goToMisskey: "To Misskey"
+goToMisskey: "To CherryPick"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
 photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
 _initialAccountSetting:
@@ -1110,7 +1110,7 @@ _initialAccountSetting:
   pushNotificationDescription: "Enabling push notifications will allow you to receive notifications from {name} directly on your device."
   initialAccountSettingCompleted: "Profile setup complete!"
   haveFun: "Enjoy {name}!"
-  ifYouNeedLearnMore: "If you'd like to learn more about how to use {name} (Misskey), please visit {link}."
+  ifYouNeedLearnMore: "If you'd like to learn more about how to use {name} (CherryPick), please visit {link}."
   skipAreYouSure: "Really skip profile setup?"
   laterAreYouSure: "Really do profile setup later?"
 _serverRules:
@@ -1123,7 +1123,7 @@ _accountMigration:
   moveTo: "Migrate this account to a different one"
   moveToLabel: "Account to move to:"
   moveCannotBeUndone: "Account migration cannot be undone."
-  moveAccountDescription: "This will migrate your account to a different one.\n　・Followers from this account will automatically be migrated to the new account\n　・This account will unfollow all users it is currently following\n　・You will be unable to create new notes etc. on this account\n\nWhile migration of followers is automatic, you must manually prepare some steps to migrate the list of users you are following. To do so, carry out a follows export that you will later import on the new account in the settings menu. The same procedure applies to your lists as well as your muted and blocked users.\n\n(This explanation applies to Misskey v13.12.0 and later. Other ActivityPub software, such as Mastodon, might function differently.)"
+  moveAccountDescription: "This will migrate your account to a different one.\n　・Followers from this account will automatically be migrated to the new account\n　・This account will unfollow all users it is currently following\n　・You will be unable to create new notes etc. on this account\n\nWhile migration of followers is automatic, you must manually prepare some steps to migrate the list of users you are following. To do so, carry out a follows export that you will later import on the new account in the settings menu. The same procedure applies to your lists as well as your muted and blocked users.\n\n(This explanation applies to CherryPick v13.12.0 and later. Other ActivityPub software, such as Mastodon, might function differently.)"
   moveAccountHowTo: "To migrate, first create an alias for this account on the account to move to.\nAfter you have created the alias, enter the account to move to in the following format: @username@server.example.com"
   startMigration: "Migrate"
   migrationConfirm: "Really migrate this account to {account}? Once started, this process cannot be stopped or taken back, and you will not be able to use this account in its original state anymore."
