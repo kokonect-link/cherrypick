@@ -1100,6 +1100,7 @@ export interface Locale {
     "installed": string;
     "performanceWarning": string;
     "photosensitiveSeizuresWarning": string;
+    "friendlyEnableNotification": string;
     "_initialAccountSetting": {
         "accountCreated": string;
         "letsStartAccountSetup": string;

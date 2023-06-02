@@ -1097,6 +1097,7 @@ additionalEmojiDictionary: "Additional emoji dictionaries"
 installed: "Installed"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
 photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
+friendlyEnableNotification: "Enable notification area (Friendly UI only)"
 _initialAccountSetting:
   accountCreated: "Your account was successfully created!"
   letsStartAccountSetup: "For starters, let's set up your profile."
