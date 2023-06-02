@@ -39,7 +39,7 @@
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
-				<div class="mfmPreview _panel">
+				<div :class="$style.mfmPreview" class="_panel">
 					<div style="margin: 0 0 8px; font-size: 1.5em;">
 						<Mfm v-if="advancedMfm && animatedMfm" :key="emojiStyle" text="$[jelly 🍮] $[spin 🍪] $[shake 🍭]"/>
 						<Mfm v-else :key="emojiStyle" text="🍮 🍪 🍭"/>
@@ -143,8 +143,8 @@
 			-->
 
 			<div>
-				<div class="label">{{ i18n.ts.fontSize }}</div>
-				<div class="fontSize _panel">
+				<div :class="$style.label">{{ i18n.ts.fontSize }}</div>
+				<div :class="$style.fontSize" class="_panel">
 					<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._mfm.dummy }}</div>
 					<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._mfm.dummy }}</div>
 					<div v-else-if="fontSize === 3" style="font-size: 9px;">{{ i18n.ts._mfm.dummy }}</div>
@@ -165,8 +165,8 @@
 					<div v-else-if="fontSize === 18" style="font-size: 24px;">{{ i18n.ts._mfm.dummy }}</div>
 					<div v-else-if="fontSize === 19" style="font-size: 25px;">{{ i18n.ts._mfm.dummy }}</div>
 				</div>
-				<div class="fontSize_slider">
-					<div class="fontSize_left">Aa</div>
+				<div :class="$style.fontSizeSlider">
+					<div :class="$style.fontSizeLeft">Aa</div>
 					<MkRange v-model="fontSize" style="position: initial !important; width: 100%; margin: 0 -10px;" :min="1" :max="19" :step="1" easing :textConverter="(v) =>
 						v === 1 ? '7px' :
 						v === 2 ? '8px' :
@@ -189,7 +189,7 @@
 						v === 19 ? '25px' : ''"
 					>
 					</MkRange>
-					<div class="fontSize_right">Aa</div>
+					<div :class="$style.fontSizeRight">Aa</div>
 				</div>
 				<MkInfo v-if="fontSize != fontSizeBefore" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
 				<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">{{ i18n.ts.useBoldFont }}</MkSwitch>
@@ -405,7 +405,7 @@ definePageMetadata({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 .label {
 	font-size: 0.85em;
 	padding: 0 0 8px 0;
@@ -423,25 +423,25 @@ definePageMetadata({
 	max-width: 110px;
 }
 
-.fontSize_slider {
+.fontSizeSlider {
 	display: flex;
 	margin-top: -8px;
 	border-top: solid .5px var(--divider);
 
-	> .fontSize_left, .fontSize_right {
+	> .fontSizeLeft, .fontSizeRight {
 		position: relative;
 		background: var(--panel);
 		font-weight: normal;
 		line-height: 20px;
 	}
 
-	> .fontSize_left {
+	> .fontSizeLeft {
 		padding: 7px 6px 7px 18px;
 		border-bottom-left-radius: 6px;
 		font-size: 12px;
 	}
 
-	> .fontSize_right {
+	> .fontSizeRight {
 		padding: 7px 18px 7px 6px;
 		border-bottom-right-radius: 6px;
 		font-size: 18px;
