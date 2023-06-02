@@ -16,9 +16,10 @@
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="nav _button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="post _button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging' || mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="os.post()"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]"></span><i class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && mainRouter.currentRoute.value.name === 'messaging' && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]"></span><i class="ti ti-plus"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, {[$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
@@ -261,6 +262,10 @@ function openAccountMenu(ev: MouseEvent) {
 
 function closeAccountMenu() {
 	longTouchNavHome = false;
+}
+
+function openMessage(ev: MouseEvent) {
+	eventBus.emit('openMessage', ev);
 }
 
 let navFooterHeight = $ref(0);

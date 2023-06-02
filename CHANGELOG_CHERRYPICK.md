@@ -36,6 +36,7 @@
 - (Friendly) 데스크톱 헤더 디자인 개선
 - (Friendly) 데스크톱 모드에서 타임라인 옆에 알림 영역을 배치하도록
 - (Friendly) 오조작 방지를 위해 플로팅 버튼을 길게 눌러 새로고침 기능 제거
+- (Friendly) 채팅 탭에 플로팅 버튼 추가
 - 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
 - about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
 - 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))

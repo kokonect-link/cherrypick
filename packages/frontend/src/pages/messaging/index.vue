@@ -53,6 +53,7 @@ import { useRouter } from '@/router';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { $i } from '@/account';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const router = useRouter();
 
@@ -144,6 +145,10 @@ onMounted(() => {
 			messages = _messages;
 			fetching = false;
 		});
+	});
+
+	eventBus.on('openMessage', (ev) => {
+		start(ev);
 	});
 });
 
