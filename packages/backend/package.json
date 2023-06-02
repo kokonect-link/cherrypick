@@ -65,6 +65,7 @@
 		"@fastify/multipart": "7.6.0",
 		"@fastify/static": "6.10.1",
 		"@fastify/view": "7.4.1",
+		"@google-cloud/translate": "^7.2.1",
 		"@nestjs/common": "9.4.2",
 		"@nestjs/core": "9.4.2",
 		"@nestjs/testing": "9.4.2",

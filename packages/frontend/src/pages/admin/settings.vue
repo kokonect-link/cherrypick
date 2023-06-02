@@ -114,14 +114,15 @@
 						-->
 
 						<template #label>Translation</template>
-						<MkRadios v-model="translatorType">
+						<MkRadios v-model="provider">
 							<template #label>Translator type</template>
 							<option :value="null">{{ i18n.ts.none }}</option>
-							<option value="DeepL">DeepL</option>
-							<option value="GoogleNoAPI">Google Translate(without API)</option>
+							<option value="deepl">DeepL</option>
+							<option value="google_no_api">Google Translate(without API)</option>
+							<option value="ctav3">Cloud Translation - Advanced(v3)</option>
 						</MkRadios>
 
-						<template v-if="translatorType === 'DeepL'">
+						<template v-if="provider === 'deepl'">
 							<div class="_gaps_m">
 								<MkInput v-model="deeplAuthKey">
 									<template #prefix><i class="ti ti-key"></i></template>
@@ -131,6 +132,24 @@
 									<template #label>Pro account</template>
 								</MkSwitch>
 							</div>
+						</template>
+						<template v-else-if="provider === 'ctav3'">
+							<MkInput v-model="ctav3SaKey" type="password">
+								<template #prefix><i class="ti ti-key"></i></template>
+								<template #label>Service account key</template>
+							</MkInput>
+							<MkInput v-model="ctav3ProjectId">
+								<template #label>Project ID</template>
+							</MkInput>
+							<MkInput v-model="ctav3Location">
+								<template #label>Location</template>
+							</MkInput>
+							<MkInput v-model="ctav3Model">
+								<template #label>Model ID</template>
+							</MkInput>
+							<MkInput v-model="ctav3Glossary">
+								<template #label>Glossary ID</template>
+							</MkInput>
 						</template>
 					</FormSection>
 				</div>
@@ -154,7 +173,6 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkRadios from '@/components/MkRadios.vue';
-import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
 import FormSuspense from '@/components/form/suspense.vue';
@@ -180,9 +198,14 @@ let cacheRemoteFiles: boolean = $ref(false);
 let enableServiceWorker: boolean = $ref(false);
 let swPublicKey: any = $ref(null);
 let swPrivateKey: any = $ref(null);
-let translatorType: string | null = $ref(null);
+let provider: string | null = $ref(null);
 let deeplAuthKey: string = $ref('');
 let deeplIsPro: boolean = $ref(false);
+let ctav3SaKey: string = $ref('');
+let ctav3ProjectId: string = $ref('');
+let ctav3Location: string = $ref('');
+let ctav3Model: string = $ref('');
+let ctav3Glossary: string = $ref('');
 
 async function init() {
 	const meta = await os.api('admin/meta');
@@ -201,9 +224,14 @@ async function init() {
 	enableServiceWorker = meta.enableServiceWorker;
 	swPublicKey = meta.swPublickey;
 	swPrivateKey = meta.swPrivateKey;
-	translatorType = meta.translatorType;
+	provider = meta.translatorType;
 	deeplAuthKey = meta.deeplAuthKey;
 	deeplIsPro = meta.deeplIsPro;
+	ctav3SaKey = meta.ctav3SaKey;
+	ctav3ProjectId = meta.ctav3ProjectId;
+	ctav3Location = meta.ctav3Location;
+	ctav3Model = meta.ctav3Model;
+	ctav3Glossary = meta.ctav3Glossary;
 }
 
 function save() {
@@ -223,9 +251,14 @@ function save() {
 		enableServiceWorker,
 		swPublicKey,
 		swPrivateKey,
-		translatorType,
+		translatorType: provider,
 		deeplAuthKey,
 		deeplIsPro,
+		ctav3SaKey,
+		ctav3ProjectId,
+		ctav3Location,
+		ctav3Model,
+		ctav3Glossary,
 	}).then(() => {
 		fetchInstance();
 	});

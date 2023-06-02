@@ -59,8 +59,13 @@
 						<div v-if="translating || translation" :class="$style.translation">
 							<MkLoading v-if="translating" mini/>
 							<div v-else>
-								<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}: </b>
+								<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
 								<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+								<div v-if="translation.translator == 'ctav3'">
+									<hr>
+									<img v-if="defaultStore.state.darkMode == false" src="/client-assets/color-short.svg" alt="">
+									<img v-else src="/client-assets/white-short.svg" alt=""/>
+								</div>
 							</div>
 						</div>
 					</div>
