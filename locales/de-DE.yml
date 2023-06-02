@@ -1074,6 +1074,8 @@ cancelReactionConfirm: "Möchtest du deine Reaktion wirklich löschen?"
 changeReactionConfirm: "Möchtest du deine Reaktion wirklich ändern?"
 later: "Später"
 goToMisskey: "Zu CherryPick"
+additionalEmojiDictionary: "Zusätzliche Emoji-Wörterbücher"
+installed: "Installiert"
 _initialAccountSetting:
   accountCreated: "Dein Konto wurde erfolgreich erstellt!"
   letsStartAccountSetup: "Lass uns nun dein Konto einrichten."

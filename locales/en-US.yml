@@ -1093,6 +1093,8 @@ cancelReactionConfirm: "Really delete your reaction?"
 changeReactionConfirm: "Really change your reaction?"
 later: "Later"
 goToMisskey: "To CherryPick"
+additionalEmojiDictionary: "Additional emoji dictionaries"
+installed: "Installed"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
 photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
 _initialAccountSetting:
