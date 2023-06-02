@@ -25,6 +25,10 @@
 ## 13.x.x-cp-4.x.x
 출시일: unreleased
 
+### General
+- 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
+- Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
+
 ### Client
 - (Friendly) 모바일에서 스크롤 시 각종 요소들의 유동적인 높이 조절을 변경된 헤더 디자인에 대응
 - (Friendly) 모바일에서 하단 바를 길게 눌러 나오는 계정 관리 팝업에서 로그아웃 버튼 제거
@@ -32,7 +36,6 @@
 - (Friendly) 데스크톱 헤더 디자인 개선
 - (Friendly) 데스크톱 모드에서 타임라인 옆에 알림 영역을 배치하도록
 - (Friendly) 오조작 방지를 위해 플로팅 버튼을 길게 눌러 새로고침 기능 제거
-- 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
 - 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
 - about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
 - 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))
@@ -54,7 +57,6 @@
 - 업데이트 팝업 개선 (Misskey와 CherryPick의 변경 사항을 직관적으로 볼 수 있도록)
 - 서버 통계 위젯의 원 그래프 디자인 개선
 - 새로운 서버 통계 위젯 추가
-- Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
 - 알림 기본 정렬을 수직으로 변경
 - Fix: (Friendly) 위젯 영역에 safe-area-inset-bottom이 적용되지 않음
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
