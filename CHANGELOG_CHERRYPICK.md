@@ -27,6 +27,7 @@
 
 ### General
 - 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
+- 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))
 - Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
 
 ### Client
@@ -39,7 +40,6 @@
 - (Friendly) 채팅 탭에 플로팅 버튼 추가
 - 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
 - about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
-- 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))
 - 계정 초기 설정 마법사 개선
   - 뒤로 가기 버튼 추가
   - 나중에 버튼 추가
