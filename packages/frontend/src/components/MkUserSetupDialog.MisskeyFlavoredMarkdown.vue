@@ -3,9 +3,11 @@
 	<MkInfo>{{ i18n.ts._initialAccountSetting.theseSettingsCanEditLater }}</MkInfo>
 
 	<div :class="$style.preview" class="_panel">
-		<div style="margin: 0 0 8px; font-size: 1.5em;">
-			<Mfm v-if="advancedMfm && animatedMfm" :key="emojiStyle" text="$[jelly 🍮] $[spin 🍪] $[shake 🍭]"/>
-			<Mfm v-else :key="emojiStyle" text="🍮 🍪 🍭"/>
+		<div v-if="advancedMfm && animatedMfm" style="margin: 0 0 8px; font-size: 1.5em;">
+			<Mfm :key="emojiStyle" text="$[jelly 🍮] $[spin 🍪] $[shake 🍭]"/>
+		</div>
+		<div v-else style="margin: 0 0 8px; font-size: 1.5em;">
+			<Mfm :key="emojiStyle" text="🍮 🍪 🍭"/>
 		</div>
 	</div>
 
