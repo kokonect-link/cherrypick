@@ -1,39 +1,38 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="800">
-		<div class="yweeujhr">
-			<MkButton primary class="start" @click="start"><i class="ti ti-plus"></i> {{ i18n.ts.startMessaging }}</MkButton>
-
-			<div v-if="messages.length > 0" class="history">
+	<MkSpacer :contentMax="800">
+		<div>
+			<div v-if="messages.length > 0">
 				<MkA
 					v-for="(message, i) in messages"
 					:key="message.id"
 					v-anim="i"
-					class="message _panel"
-					:class="{ isMe: isMe(message), isRead: message.groupId ? message.reads.includes($i.id) : message.isRead }"
+					class="_panel"
+					:class="$style.message"
 					:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
 					:data-index="i"
 				>
 					<div>
-						<MkAvatar class="avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" indicator link preview/>
+						<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
+						<MkAvatar :class="$style.avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" indicator link preview/>
 						<header v-if="message.groupId">
-							<span class="name">{{ message.group.name }}</span>
-							<MkTime :time="message.createdAt" class="time"/>
+							<span :class="$style.name">{{ message.group.name }}</span>
+							<MkTime :time="message.createdAt" :class="$style.time"/>
 						</header>
 						<header v-else>
-							<span class="name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
-							<span class="username">@{{ acct(isMe(message) ? message.recipient : message.user) }}</span>
-							<MkTime :time="message.createdAt" class="time"/>
+							<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
+							<span :class="$style.username">@{{ acct(isMe(message) ? message.recipient : message.user) }}</span>
+							<MkTime :time="message.createdAt" :class="$style.time"/>
 						</header>
-						<div class="body">
-							<p class="text"><span v-if="isMe(message)" class="me">{{ i18n.ts.you }}:</span>{{ message.text }}</p>
+						<div>
+							<p :class="$style.text"><span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}:</span>{{ message.text }}</p>
 						</div>
 					</div>
 				</MkA>
 			</div>
 			<div v-if="!fetching && messages.length == 0" class="_fullinfo">
-				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
+				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost" alt=""/>
 				<div>{{ i18n.ts.noHistory }}</div>
 			</div>
 			<MkLoading v-if="fetching"/>
@@ -45,7 +44,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted } from 'vue';
 import * as Acct from 'misskey-js/built/acct';
-import MkButton from '@/components/MkButton.vue';
 import { acct } from '@/filters/user';
 import * as os from '@/os';
 import { useStream } from '@/stream';
@@ -170,144 +168,112 @@ definePageMetadata({
 });
 </script>
 
-<style lang="scss" scoped>
-.yweeujhr {
+<style lang="scss" module>
+.message {
+	display: block;
+	text-decoration: none !important;
+	margin-bottom: var(--margin);
 
-	> .start {
-		margin: 0 auto var(--margin) auto;
+	* {
+		pointer-events: none;
+		user-select: none;
 	}
 
-	> .history {
-		> .message {
+	&:hover {
+		.avatar {
+			filter: saturate(200%);
+		}
+	}
+
+	&:after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+
+	> div {
+		padding: 20px 30px;
+
+		&:after {
+			content: "";
 			display: block;
-			text-decoration: none;
-			margin-bottom: var(--margin);
+			clear: both;
+		}
 
-			* {
-				pointer-events: none;
-				user-select: none;
-			}
-
-			&:hover {
-				.avatar {
-					filter: saturate(200%);
-				}
-			}
-
-			&:active {
-			}
-
-			&.isRead,
-			&.isMe {
-				opacity: 0.8;
-			}
-
-			&:not(.isMe):not(.isRead) {
-				> div {
-					background-image: url("/client-assets/unread.svg");
-					background-repeat: no-repeat;
-					background-position: 0 center;
-				}
-			}
-
-			&:after {
-				content: "";
-				display: block;
-				clear: both;
-			}
-
-			> div {
-				padding: 20px 30px;
-
-				&:after {
-					content: "";
-					display: block;
-					clear: both;
-				}
-
-				> header {
-					display: flex;
-					align-items: center;
-					margin-bottom: 2px;
-					white-space: nowrap;
-					overflow: hidden;
-
-					> .name {
-						margin: 0;
-						padding: 0;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						font-size: 1em;
-						font-weight: bold;
-						transition: all 0.1s ease;
-					}
-
-					> .username {
-						margin: 0 8px;
-					}
-
-					> .time {
-						margin: 0 0 0 auto;
-					}
-				}
-
-				> .avatar {
-					float: left;
-					width: 54px;
-					height: 54px;
-					margin: 0 16px 0 0;
-					border-radius: 8px;
-					transition: all 0.1s ease;
-				}
-
-				> .body {
-
-					> .text {
-						display: block;
-						margin: 0 0 0 0;
-						padding: 0;
-						overflow: hidden;
-						overflow-wrap: break-word;
-						font-size: 1.1em;
-						color: var(--faceText);
-
-						.me {
-							opacity: 0.7;
-						}
-					}
-
-					> .image {
-						display: block;
-						max-width: 100%;
-						max-height: 512px;
-					}
-				}
-			}
+		> header {
+			display: flex;
+			align-items: center;
+			margin-bottom: 2px;
+			white-space: nowrap;
+			overflow: hidden;
 		}
 	}
 }
 
+.indicator {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: var(--indicator);
+	font-size: 8px;
+}
+
+.name {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: bold;
+	transition: all 0.1s ease;
+}
+
+.username {
+	margin: 0 8px;
+}
+
+.time {
+	margin: 0 0 0 auto;
+	font-size: .85em;
+}
+
+.avatar {
+	float: left;
+	width: 42px;
+	height: 42px;
+	margin: 0 16px 0 0;
+	border-radius: 8px;
+	transition: all 0.1s ease;
+}
+
+.text {
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0;
+	overflow: hidden;
+	overflow-wrap: break-word;
+	color: var(--faceText);
+}
+
+.me {
+	opacity: 0.7;
+}
+
+.image {
+	display: block;
+	max-width: 100%;
+	max-height: 512px;
+}
+
 @container (max-width: 400px) {
-	.yweeujhr {
-		> .history {
-			> .message {
-				&:not(.isMe):not(.isRead) {
-					> div {
-						background-image: none;
-						border-left: solid 4px #3aa2dc;
-					}
-				}
-
-				> div {
-					padding: 16px;
-					font-size: 0.9em;
-
-					> .avatar {
-						margin: 0 12px 0 0;
-					}
-				}
-			}
+	.message {
+		> div {
+			padding: 16px;
+			font-size: 0.9em;
 		}
+	}
+
+	.avatar {
+		margin: 0 12px 0 0;
 	}
 }
 </style>
