@@ -31,7 +31,9 @@
 				</template>
 			</MkPagination>
 		</div>
-		<footer :class="$style.footer">
+	</div>
+	<template #footer>
+		<div :class="$style.footer">
 			<div v-if="typers.length > 0" :class="$style.typers">
 				<I18n :src="i18n.ts.typingUsers" textTag="span">
 					<template #users>
@@ -48,8 +50,8 @@
 				</div>
 			</Transition>
 			<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
-		</footer>
-	</div>
+		</div>
+	</template>
 </MkStickyContainer>
 </template>
 
@@ -314,12 +316,21 @@ definePageMetadata(computed(() => !fetching ? user ? {
 </script>
 
 <style lang="scss" module>
+.fade-enter-active, .fade-leave-active {
+	transition: opacity 0.1s;
+}
+
+.fade-enter-from, .fade-leave-to {
+	transition: opacity 0.5s;
+	opacity: 0;
+}
+
 .root {
 	display: contents;
 }
 
 .body {
-	min-height: 80%;
+	min-height: 80dvh;
 }
 
 .more {
@@ -361,7 +372,6 @@ definePageMetadata(computed(() => !fetching ? user ? {
 	position: sticky;
 	z-index: 2;
 	padding-top: 8px;
-	bottom: var(--minBottomSpacing);
 }
 
 .newMessage {
@@ -409,12 +419,9 @@ definePageMetadata(computed(() => !fetching ? user ? {
 	border-bottom-right-radius: 0;
 }
 
-.fade-enter-active, .fade-leave-active {
-	transition: opacity 0.1s;
-}
-
-.fade-enter-from, .fade-leave-to {
-	transition: opacity 0.5s;
-	opacity: 0;
+@container (max-width: 500px) {
+	.footer {
+		margin-top: 50px;
+	}
 }
 </style>

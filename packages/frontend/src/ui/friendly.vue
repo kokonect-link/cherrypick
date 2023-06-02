@@ -23,7 +23,7 @@
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, {[$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
-	<div v-if="isMobile" :class="$style.nav">
+	<div v-if="isMobile" ref="navFooter" :class="$style.nav">
 		<!-- <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.replace('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.replace('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>

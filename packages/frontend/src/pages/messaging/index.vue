@@ -26,7 +26,7 @@
 							<MkTime :time="message.createdAt" :class="$style.time"/>
 						</header>
 						<div>
-							<p :class="$style.text"><span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}:</span>{{ message.text }}</p>
+							<p :class="$style.text"><span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}: </span>{{ message.text }}</p>
 						</div>
 					</div>
 				</MkA>
@@ -264,11 +264,10 @@ definePageMetadata({
 	max-height: 512px;
 }
 
-@container (max-width: 400px) {
+@container (max-width: 500px) {
 	.message {
 		> div {
-			padding: 16px;
-			font-size: 0.9em;
+			font-size: .9em;
 		}
 	}
 
