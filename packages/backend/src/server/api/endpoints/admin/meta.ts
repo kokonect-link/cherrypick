@@ -86,10 +86,6 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
-			proxyAccountName: {
-				type: 'string',
-				optional: false, nullable: true,
-			},
 			userStarForReactionFallback: {
 				type: 'boolean',
 				optional: true, nullable: false,
