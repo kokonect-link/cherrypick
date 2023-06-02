@@ -55,6 +55,7 @@
 - 서버 통계 위젯의 원 그래프 디자인 개선
 - 새로운 서버 통계 위젯 추가
 - Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
+- 알림 기본 정렬을 수직으로 변경
 - Fix: (Friendly) 위젯 영역에 safe-area-inset-bottom이 적용되지 않음
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: 위젯 편집 시 헤더 이외의 영역을 눌렀을 때 위젯 설정이 뜨는 문제

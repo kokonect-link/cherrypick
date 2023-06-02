@@ -333,7 +333,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	notificationStackAxis: {
 		where: 'device',
-		default: 'horizontal' as 'vertical' | 'horizontal',
+		default: 'vertical' as 'vertical' | 'horizontal',
 	},
 	enableCondensedLineForAcct: {
 		where: 'device',
