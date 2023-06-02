@@ -61,10 +61,9 @@
 							<div v-else>
 								<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
 								<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-								<div v-if="translation.translator == 'ctav3'">
-									<hr>
-									<img v-if="defaultStore.state.darkMode == false" src="/client-assets/color-short.svg" alt="">
-									<img v-else src="/client-assets/white-short.svg" alt=""/>
+								<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+									<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+									<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 								</div>
 							</div>
 						</div>
