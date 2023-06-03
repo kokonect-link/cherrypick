@@ -37,6 +37,7 @@
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
 				<MkSwitch v-model="largeNoteReactions">{{ i18n.ts.largeNoteReactions }}</MkSwitch>
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
+				<MkSwitch v-model="collapseDefault">{{ i18n.ts.collapseDefault }}</MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
 				<div :class="$style.mfmPreview" class="_panel">
@@ -317,6 +318,7 @@ const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'))
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const newNoteRecivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteRecivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
+const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

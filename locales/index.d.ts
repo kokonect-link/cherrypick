@@ -1012,6 +1012,7 @@ export interface Locale {
     "thisPostMayBeAnnoyingCancel": string;
     "thisPostMayBeAnnoyingIgnore": string;
     "collapseRenotes": string;
+    "collapseDefault": string;
     "internalServerError": string;
     "internalServerErrorDescription": string;
     "copyErrorInfo": string;

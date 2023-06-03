@@ -61,6 +61,7 @@
 - 알림 기본 정렬을 수직으로 변경
 - 채팅방 목록 페이지 디자인 개선
 - 리노트 문구를 노트 최상단으로 배치
+- 특정 MFM 구문이 포함된 노트를 간략화 할지 선택할 수 있음(enhance: [aba0755](https://github.com/kokonect-link/cherrypick/commit/aba0755880d6797f49d34c8b7fe2c602d153e367))
 - Fix: (Friendly) 위젯 영역에 safe-area-inset-bottom이 적용되지 않음
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: 위젯 편집 시 헤더 이외의 영역을 눌렀을 때 위젯 설정이 뜨는 문제

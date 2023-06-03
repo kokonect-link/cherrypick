@@ -75,10 +75,10 @@
 					<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
 					<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 					<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
-					<button v-if="isLong && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
+					<button v-if="(isLong || isMFM) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
 						<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
 					</button>
-					<button v-else-if="isLong && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+					<button v-else-if="(isLong || isMFM) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
 						<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 					</button>
 				</div>
@@ -214,17 +214,19 @@ const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;
 const isLong = (appearNote.cw == null && appearNote.text != null && (
-	(appearNote.text.includes('$[x2')) ||
-	(appearNote.text.includes('$[x3')) ||
-	(appearNote.text.includes('$[x4')) ||
-	(appearNote.text.includes('$[scale')) ||
-	(appearNote.text.includes('$[position')) ||
 	(appearNote.text.split('\n').length > 9) ||
 	(appearNote.text.length > 500) ||
 	(appearNote.files.length >= 5) ||
 	(urls && urls.length >= 4)
 ));
-const collapsed = ref(appearNote.cw == null && isLong);
+const isMFM = (appearNote.cw == null && appearNote.text != null && (
+	(appearNote.text.includes('$[x2')) ||
+	(appearNote.text.includes('$[x3')) ||
+	(appearNote.text.includes('$[x4')) ||
+	(appearNote.text.includes('$[scale')) ||
+	(appearNote.text.includes('$[position'))
+));
+const collapsed = ref(appearNote.cw == null && (isLong || isMFM && defaultStore.state.collapseDefault));
 const isDeleted = ref(false);
 const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref<any>(null);

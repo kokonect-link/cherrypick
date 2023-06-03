@@ -90,6 +90,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'useEnterToSend',
 	'postFormVisibilityHotkey',
 	'newNoteRecivedNotificationBehavior',
+	'collapseDefault',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',
