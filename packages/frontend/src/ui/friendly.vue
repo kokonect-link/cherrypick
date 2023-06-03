@@ -178,7 +178,7 @@ defaultStore.loaded.then(() => {
 			id: 'a', place: 'right', data: {},
 		}, {
 			name: 'trends',
-			id: 'c', place: 'right', data: {},
+			id: 'b', place: 'right', data: {},
 		}]);
 	}
 });
