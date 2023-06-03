@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted, nextTick, onBeforeUnmount } from 'vue';
+import { computed, onMounted, nextTick, onBeforeUnmount, watch } from 'vue';
 import * as Misskey from 'misskey-js';
 import * as Acct from 'misskey-js/built/acct';
 import XMessage from './messaging-room.message.vue';
@@ -204,8 +204,7 @@ function onDrop(ev: DragEvent): void {
 	//#region ドライブのファイル
 	const driveFile = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FILE_);
 	if (driveFile != null && driveFile !== '') {
-		const file = JSON.parse(driveFile);
-		formEl.file = file;
+		formEl.file = JSON.parse(driveFile);
 	}
 	//#endregion
 }
