@@ -267,6 +267,7 @@ definePageMetadata({
 @container (max-width: 500px) {
 	.message {
 		> div {
+			padding: 15px 20px;
 			font-size: .9em;
 		}
 	}
