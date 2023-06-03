@@ -1,7 +1,8 @@
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkPageHeader v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-else v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
@@ -53,6 +54,7 @@ import { definePageMetadata } from '@/scripts/page-metadata';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
+import {unisonReload} from "@/scripts/unison-reload";
 
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
@@ -153,7 +155,27 @@ function focus(): void {
 	tlComponent.focus();
 }
 
-const headerActions = $computed(() => []);
+async function reloadAsk() {
+	const { canceled } = await os.confirm({
+		type: 'info',
+		text: i18n.ts.reloadToApplySetting,
+	});
+	if (canceled) return;
+
+	unisonReload();
+}
+
+const headerActions = $computed(() => [{
+	asFullButton: true,
+	icon: 'ti ti-column-insert-left',
+	text: i18n.ts.friendlyEnableNotification,
+	handler: () => {
+		friendlyEnableNotification.value = !friendlyEnableNotification.value;
+		reloadAsk();
+	},
+}]);
+
+const friendlyEnableNotification = computed(defaultStore.makeGetterSetter('friendlyEnableNotification'));
 
 const headerTabs = $computed(() => [{
 	key: 'home',

@@ -119,9 +119,6 @@
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
 				<MkSwitch v-model="enableDataSaverMode">{{ i18n.ts.dataSaver }}</MkSwitch>
 			</div>
-			<div class="_gaps_s">
-				<MkSwitch v-model="friendlyEnableNotification">{{ i18n.ts.friendlyEnableNotification }}</MkSwitch>
-			</div>
 			<div>
 				<MkRadios v-model="emojiStyle">
 					<template #label>{{ i18n.ts.emojiStyle }}</template>
@@ -320,7 +317,6 @@ const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'))
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const newNoteRecivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteRecivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
-const friendlyEnableNotification = computed(defaultStore.makeGetterSetter('friendlyEnableNotification'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
