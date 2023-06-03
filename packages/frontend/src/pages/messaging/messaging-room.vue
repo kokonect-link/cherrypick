@@ -71,9 +71,6 @@ import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import MkStickyContainer from '@/components/global/MkStickyContainer.vue';
-import MkPageHeader from '@/components/global/MkPageHeader.vue';
-import MkEllipsis from '@/components/global/MkEllipsis.vue';
 
 const props = defineProps<{
 	userAcct?: string;
@@ -108,7 +105,7 @@ async function fetch() {
 		const acct = Acct.parse(props.userAcct);
 		user = await os.api('users/show', { username: acct.username, host: acct.host || undefined });
 		group = null;
-		
+
 		pagination = {
 			endpoint: 'messaging/messages',
 			limit: 20,
@@ -168,9 +165,9 @@ function onDragover(ev: DragEvent) {
 		switch (ev.dataTransfer.effectAllowed) {
 			case 'all':
 			case 'uninitialized':
-			case 'copy': 
-			case 'copyLink': 
-			case 'copyMove': 
+			case 'copy':
+			case 'copyLink':
+			case 'copyMove':
 				ev.dataTransfer.dropEffect = 'copy';
 				break;
 			case 'linkMove':
@@ -325,7 +322,7 @@ definePageMetadata(computed(() => !fetching ? user ? {
 }
 
 .root {
-	display: contents;
+	display: content;
 }
 
 .body {
