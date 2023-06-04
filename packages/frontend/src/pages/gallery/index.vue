@@ -92,7 +92,7 @@ watch(() => props.tag, () => {
 
 const headerActions = $computed(() => [{
 	icon: 'ti ti-plus',
-	text: i18n.ts.create,
+	text: i18n.ts.postToGallery,
 	handler: () => {
 		router.push('/gallery/new');
 	},
