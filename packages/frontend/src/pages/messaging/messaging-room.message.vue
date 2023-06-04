@@ -74,8 +74,8 @@ function del(): void {
 		position: sticky;
 		top: calc(var(--stickyTop, 0px) + 16px);
 		display: block;
-		width: 54px;
-		height: 54px;
+		width: 48px;
+		height: 48px;
 		transition: all 0.1s ease;
 	}
 
@@ -148,7 +148,7 @@ function del(): void {
 				> .text {
 					display: block;
 					margin: 0;
-					padding: 12px 18px;
+					padding: 8px 12px;
 					overflow: hidden;
 					overflow-wrap: break-word;
 					word-break: break-word;
@@ -282,7 +282,6 @@ function del(): void {
 				}
 
 				> .content {
-
 					> p.is-deleted {
 						color: rgba(#fff, 0.5);
 					}
@@ -308,30 +307,11 @@ function del(): void {
 
 @container (max-width: 400px) {
 	.thvuemwp {
-		> .avatar {
-			width: 48px;
-			height: 48px;
-		}
-
 		> .content {
 			> .balloon {
 				> .content {
 					> .text {
 						font-size: 0.9em;
-					}
-				}
-			}
-		}
-	}
-}
-
-@container (max-width: 500px) {
-	.thvuemwp {
-		> .content {
-			> .balloon {
-				> .content {
-					> .text {
-						padding: 8px 16px;
 					}
 				}
 			}
