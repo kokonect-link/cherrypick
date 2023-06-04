@@ -1,12 +1,12 @@
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :content-max="700">
+	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'owned'" class="_content">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination" class="groups">
 				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
 					<div class="name">{{ group.name }}</div>
-					<MkAvatars :user-ids="group.userIds"/>
+					<MkAvatars :userIds="group.userIds"/>
 				</MkA>
 			</MkPagination>
 		</div>
@@ -15,7 +15,7 @@
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination" class="groups">
 				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
 					<div class="name">{{ group.name }}</div>
-					<MkAvatars :user-ids="group.userIds"/>
+					<MkAvatars :userIds="group.userIds"/>
 					<div class="actions">
 						<MkButton danger @click="leave(group)">{{ i18n.ts.leaveGroup }}</MkButton>
 					</div>
@@ -27,7 +27,7 @@
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="invitationPagination">
 				<MkA v-for="invitation in items" :key="invitation.id" class="group _panel">
 					<div class="name">{{ invitation.group.name }}</div>
-					<MkAvatars :user-ids="invitation.group.userIds"/>
+					<MkAvatars :userIds="invitation.group.userIds"/>
 					<div class="actions">
 						<MkButton primary inline @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ i18n.ts.accept }}</MkButton>
 						<MkButton primary inline @click="rejectInvite(invitation)"><i class="ti ti-x"></i> {{ i18n.ts.reject }}</MkButton>

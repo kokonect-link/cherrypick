@@ -1,40 +1,42 @@
-<template><MkStickyContainer>
+<template>
+<MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-		<MkSpacer :content-max="700">
-	<div class="mk-group-page">
-		<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
-			<div v-if="group && $i.id === group.ownerId" class="_section actions">
-				<div class="_content" style="">
-					<MkButton inline @click="invite()">{{ i18n.ts.invite }}</MkButton>
-					<MkButton inline @click="renameGroup()">{{ i18n.ts.rename }}</MkButton>
-					<MkButton inline @click="transfer()">{{ i18n.ts.transfer }}</MkButton>
-					<MkButton inline danger @click="deleteGroup()">{{ i18n.ts.delete }}</MkButton>
+	<MkSpacer :contentMax="700">
+		<div class="mk-group-page">
+			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
+				<div v-if="group && $i.id === group.ownerId" class="_section actions">
+					<div class="_content" style="">
+						<MkButton inline @click="invite()">{{ i18n.ts.invite }}</MkButton>
+						<MkButton inline @click="renameGroup()">{{ i18n.ts.rename }}</MkButton>
+						<MkButton inline @click="transfer()">{{ i18n.ts.transfer }}</MkButton>
+						<MkButton inline danger @click="deleteGroup()">{{ i18n.ts.delete }}</MkButton>
+					</div>
 				</div>
-			</div>
-		</transition>
+			</transition>
 
-		<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
-			<div v-if="group" class="_section members _gap">
-				<div class="_title">{{ i18n.ts.members }}</div>
-				<div class="_content">
-					<div class="users">
-						<div v-for="user in users" :key="user.id" class="user _panel">
-							<MkAvatar :user="user" class="avatar" :show-indicator="true"/>
-							<div class="body">
-								<MkUserName :user="user" class="name"/>
-								<MkAcct :user="user" class="acct"/>
-							</div>
-							<div v-if="user.id === group.ownerId" :title="i18n.ts.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
-							<div v-else-if="group && $i.id === group.ownerId" class="action">
-								<button class="_button" :title="i18n.ts.banish" @click="removeUser(user)"><i class="ti ti-x"></i></button>
+			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
+				<div v-if="group" class="_section members _gap">
+					<div class="_title">{{ i18n.ts.members }}</div>
+					<div class="_content">
+						<div class="users">
+							<div v-for="user in users" :key="user.id" class="user _panel">
+								<MkAvatar :user="user" class="avatar" :showIndicator="true"/>
+								<div class="body">
+									<MkUserName :user="user" class="name"/>
+									<MkAcct :user="user" class="acct"/>
+								</div>
+								<div v-if="user.id === group.ownerId" :title="i18n.ts.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
+								<div v-else-if="group && $i.id === group.ownerId" class="action">
+									<button class="_button" :title="i18n.ts.banish" @click="removeUser(user)"><i class="ti ti-x"></i></button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</transition>
-	</div>
-</MkSpacer></MkStickyContainer>
+			</transition>
+		</div>
+	</MkSpacer>
+</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
