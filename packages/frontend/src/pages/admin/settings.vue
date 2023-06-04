@@ -136,7 +136,7 @@
 						<template v-else-if="provider === 'ctav3'">
 							<MkInput v-model="ctav3SaKey" type="password">
 								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Service account key</template>
+								<template #label>Service account key(json)</template>
 							</MkInput>
 							<MkInput v-model="ctav3ProjectId">
 								<template #label>Project ID</template>
