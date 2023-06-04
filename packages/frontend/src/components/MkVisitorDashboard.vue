@@ -18,7 +18,8 @@
 			</div>
 			<div class="_gaps_s" :class="$style.mainActions">
 				<MkButton :class="$style.mainAction" full rounded gradate data-cy-signup style="margin-right: 12px;" @click="signup()">{{ i18n.ts.joinThisServer }}</MkButton>
-				<MkButton :class="$style.mainAction" full rounded @click="exploreOtherServers()">{{ i18n.ts.exploreOtherServers }}</MkButton>
+				<!-- <MkButton :class="$style.mainAction" full rounded @click="exploreOtherServers()">{{ i18n.ts.exploreOtherServers }}</MkButton> -->
+				<MkButton :class="$style.mainAction" full rounded @click="mainRouter.push('/explore')">{{ i18n.ts.explore }}</MkButton>
 				<MkButton :class="$style.mainAction" full rounded data-cy-signin @click="signin()">{{ i18n.ts.login }}</MkButton>
 			</div>
 		</div>
@@ -58,6 +59,7 @@ import { instanceName } from '@/config';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { instance } from '@/instance';
+import { mainRouter } from '@/router';
 import number from '@/filters/number';
 import MkNumber from '@/components/MkNumber.vue';
 import XActiveUsersChart from '@/components/MkVisitorDashboard.ActiveUsersChart.vue';
