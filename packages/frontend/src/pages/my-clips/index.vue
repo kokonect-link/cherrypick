@@ -3,8 +3,6 @@
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'my'" class="_gaps">
-			<MkButton primary rounded class="add" @click="create"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="pagination" class="_gaps">
 				<MkA v-for="item in items" :key="item.id" :to="`/clips/${item.id}`">
 					<MkClipPreview :clip="item"/>
@@ -23,7 +21,6 @@
 <script lang="ts" setup>
 import { watch } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
-import MkButton from '@/components/MkButton.vue';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
@@ -80,7 +77,11 @@ function onClipDeleted() {
 	pagingComponent.reload();
 }
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts.add,
+	handler: create,
+}]);
 
 const headerTabs = $computed(() => [{
 	key: 'my',

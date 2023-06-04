@@ -3,8 +3,6 @@
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
 		<div class="_gaps">
-			<MkButton primary rounded style="margin: 0 auto;" @click="create"><i class="ti ti-plus"></i> {{ i18n.ts.createList }}</MkButton>
-
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="pagination">
 				<div class="_gaps">
 					<MkA v-for="list in items" :key="list.id" class="_panel" :class="$style.list" :to="`/my/lists/${ list.id }`">
@@ -21,7 +19,6 @@
 <script lang="ts" setup>
 import { } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
-import MkButton from '@/components/MkButton.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
@@ -46,7 +43,11 @@ async function create() {
 	pagingComponent.reload();
 }
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts.createList,
+	handler: create,
+}]);
 
 const headerTabs = $computed(() => []);
 

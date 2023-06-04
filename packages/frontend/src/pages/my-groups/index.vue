@@ -3,8 +3,6 @@
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :content-max="700">
 		<div v-if="tab === 'owned'" class="_content">
-			<MkButton primary class="add" style="margin: 0 auto var(--margin) auto;" @click="create"><i class="ti ti-plus"></i> {{ i18n.ts.createGroup }}</MkButton>
-
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination" class="groups">
 				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
 					<div class="name">{{ group.name }}</div>
@@ -108,7 +106,11 @@ async function leave(group) {
 	});
 }
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts.createGroup,
+	handler: create,
+}]);
 
 const headerTabs = $computed(() => [{
 	key: 'owned',
