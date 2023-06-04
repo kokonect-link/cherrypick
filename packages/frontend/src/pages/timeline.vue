@@ -54,7 +54,7 @@ import { definePageMetadata } from '@/scripts/page-metadata';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { miLocalStorage } from '@/local-storage';
 import { deviceKind } from '@/scripts/device-kind';
-import {unisonReload} from "@/scripts/unison-reload";
+import { unisonReload } from '@/scripts/unison-reload';
 
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
