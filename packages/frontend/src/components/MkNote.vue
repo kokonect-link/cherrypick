@@ -4,7 +4,7 @@
 	v-show="!isDeleted"
 	ref="el"
 	v-hotkey="keymap"
-	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover }]"
+	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover, [$style.radius]: defaultStore.state.showGapBetweenNotesInTimeline && mainRouter.currentRoute.value.name === 'my-notifications' }]"
 	:tabindex="!isDeleted ? '-1' : undefined"
 >
 	<div v-if="pinned" :class="$style.tip"><i class="ti ti-pin"></i> {{ i18n.ts.pinnedNote }}</div>
@@ -481,6 +481,7 @@ function showReactions(): void {
 	font-size: 1.05em;
 	overflow: clip;
 	contain: content;
+	background: var(--panel);
 
 	// これらの指定はパフォーマンス向上には有効だが、ノートの高さは一定でないため、
 	// 下の方までスクロールすると上のノートの高さがここで決め打ちされたものに変化し、表示しているノートの位置が変わってしまう
@@ -547,6 +548,10 @@ function showReactions(): void {
 		.footer {
 			visibility: visible;
 		}
+	}
+
+	&.radius {
+		border-radius: var(--radius);
 	}
 }
 

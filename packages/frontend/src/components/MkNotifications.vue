@@ -8,7 +8,7 @@
 	</template>
 
 	<template #default="{ items: notifications }">
-		<MkDateSeparatedList v-slot="{ item: notification }" :class="$style.list" :items="notifications" :noGap="true">
+		<MkDateSeparatedList v-slot="{ item: notification }" :class="$style.list" :items="notifications" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline || mainRouter.currentRoute.value.name !== 'my-notifications'">
 			<MkNote v-if="['reply', 'quote', 'mention'].includes(notification.type)" :key="notification.id" :note="notification.note"/>
 			<XNotification v-else :key="notification.id" :notification="notification" :withTime="true" :full="true" class="_panel notification"/>
 		</MkDateSeparatedList>
@@ -26,6 +26,8 @@ import { useStream } from '@/stream';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
 import { notificationTypes } from '@/const';
+import { defaultStore } from '@/store';
+import { mainRouter } from '@/router';
 
 const props = defineProps<{
 	includeTypes?: typeof notificationTypes[number][];

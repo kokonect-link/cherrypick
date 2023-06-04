@@ -166,7 +166,6 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-	asFullButton: true,
 	icon: 'ti ti-column-insert-left',
 	text: i18n.ts.friendlyEnableNotification,
 	handler: () => {
