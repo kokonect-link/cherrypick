@@ -1,6 +1,6 @@
 <template>
 <div v-if="show" ref="el" :class="[$style.root]" :style="{ background: bg }">
-	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_ }]">
+	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly }]">
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
 			<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 		</div>
@@ -27,14 +27,15 @@
 			</div>
 			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
-		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
+		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0 && hideTitle && mainRouter.currentRoute.value.name === 'index')" :class="$style.buttonsRight"/>
+		<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
 				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
 	</div>
-	<div v-if="((narrow && !hideTitle) || (!narrow && !hideTitle && isFriendly)) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
+	<div v-if="((narrow && !hideTitle) || (!narrow && isFriendly)) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 	</div>
 </div>
@@ -207,6 +208,10 @@ onUnmounted(() => {
 .lower {
 	--height: 40px;
 	height: var(--height);
+}
+
+.hideTitle {
+	display: none;
 }
 
 .buttons {
