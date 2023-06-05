@@ -215,11 +215,11 @@
 				<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 				<option value="none">{{ i18n.ts._serverDisconnectedBehavior.none }}</option>
 			</MkSelect>
-			<MkSelect v-model="newNoteRecivedNotificationBehavior">
-				<template #label>{{ i18n.ts.newNoteRecivedNotification }}</template>
-				<option value="default">{{ i18n.ts._newNoteRecivedNotificationBehavior.default }}</option>
-				<option value="count">{{ i18n.ts._newNoteRecivedNotificationBehavior.count }}</option>
-				<option value="none">{{ i18n.ts._newNoteRecivedNotificationBehavior.none }}</option>
+			<MkSelect v-model="newNoteReceivedNotificationBehavior">
+				<template #label>{{ i18n.ts.newNoteReceivedNotification }}</template>
+				<option value="default">{{ i18n.ts._newNoteReceivedNotificationBehavior.default }}</option>
+				<option value="count">{{ i18n.ts._newNoteReceivedNotificationBehavior.count }}</option>
+				<option value="none">{{ i18n.ts._newNoteReceivedNotificationBehavior.none }}</option>
 			</MkSelect>
 			<MkRange v-model="numberOfPageCache" :min="1" :max="10" :step="1" easing>
 				<template #label>{{ i18n.ts.numberOfPageCache }}</template>
@@ -316,7 +316,7 @@ const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificati
 const showTimelineReplies = computed(defaultStore.makeGetterSetter('showTimelineReplies'));
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
-const newNoteRecivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteRecivedNotificationBehavior'));
+const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
 

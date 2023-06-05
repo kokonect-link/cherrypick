@@ -347,7 +347,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	newNoteRecivedNotificationBehavior: {
+	newNoteReceivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',
 	},

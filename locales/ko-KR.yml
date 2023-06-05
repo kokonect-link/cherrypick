@@ -1,7 +1,7 @@
 ---
 _lang_: "한국어"
 useBoldFont: "볼드체 텍스트"
-newNoteRecivedNotification: "새 노트 알림"
+newNoteReceivedNotification: "새 노트 알림을 표시할 때"
 disableRightClick: "우클릭 방지"
 useEnterToSend: "Enter 키를 눌러 보내기"
 useEnterToSendDescription: "옵션을 활성화하면 줄 바꿈은 Shift + Enter 키로 할 수 있어요."
@@ -1442,7 +1442,7 @@ _role:
     and: "다음을 모두 만족"
     or: "다음을 하나라도 만족"
     not: "다음을 만족하지 않음"
-_newNoteRecivedNotificationBehavior:
+_newNoteReceivedNotificationBehavior:
   default: "기본"
   count: "노트 수 표시"
   none: "표시하지 않음"

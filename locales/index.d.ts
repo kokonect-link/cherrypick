@@ -4,7 +4,7 @@
 export interface Locale {
     "_lang_": string;
     "useBoldFont": string;
-    "newNoteRecivedNotification": string;
+    "newNoteReceivedNotification": string;
     "disableRightClick": string;
     "useEnterToSend": string;
     "useEnterToSendDescription": string;
@@ -1527,7 +1527,7 @@ export interface Locale {
             "not": string;
         };
     };
-    "_newNoteRecivedNotificationBehavior": {
+    "_newNoteReceivedNotificationBehavior": {
         "default": string;
         "count": string;
         "none": string;

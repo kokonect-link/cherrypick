@@ -89,7 +89,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'mediaListWithOneImageAppearance',
 	'useEnterToSend',
 	'postFormVisibilityHotkey',
-	'newNoteRecivedNotificationBehavior',
+	'newNoteReceivedNotificationBehavior',
 	'collapseDefault',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [

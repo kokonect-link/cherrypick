@@ -15,7 +15,7 @@
 				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 			>
-				<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'default'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'default'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 			</transition>
 			<transition
 				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -23,7 +23,7 @@
 				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 			>
-				<div v-if="queue > 0 && defaultStore.state.newNoteRecivedNotificationBehavior === 'count'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" textTag="span"><template #n>{{ queue }}</template></I18n></button></div>
+				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'count'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" textTag="span"><template #n>{{ queue }}</template></I18n></button></div>
 			</transition>
 			<div :class="$style.tl">
 				<MkTimeline

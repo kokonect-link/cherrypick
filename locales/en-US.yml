@@ -1,7 +1,7 @@
 ---
 _lang_: "English"
 useBoldFont: "Bold Text"
-newNoteRecivedNotification: "New note notification"
+newNoteReceivedNotification: "When receive a new note notification"
 disableRightClick: "Prohibit right click"
 useEnterToSend: "Press Enter to send"
 useEnterToSendDescription: "When the option is enabled, you can use the Shift + Enter key for line break."
@@ -1441,7 +1441,7 @@ _role:
     and: "AND-Condition"
     or: "OR-Condition"
     not: "NOT-Condition"
-_newNoteRecivedNotificationBehavior:
+_newNoteReceivedNotificationBehavior:
   default: "Default"
   count: "Show number of notes"
   none: "None"
