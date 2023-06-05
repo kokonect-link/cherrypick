@@ -1610,6 +1610,10 @@ _mfm:
   sparkleDescription: "Gives content a sparkling particle effect."
   rotate: "Rotate"
   rotateDescription: "Turns content by a specified angle."
+  position: "Position"
+  positionDescription: "Moves content by a specified location."
+  scale: "Scale"
+  scaleDescription: "Loosen content by the specified value."
   plain: "Plain"
   plainDescription: "Deactivates the effects of all MFM contained within this MFM effect."
 _instanceTicker:

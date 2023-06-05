@@ -75,11 +75,21 @@ export function openInstanceMenu(ev: MouseEvent) {
 			icon: 'ti ti-icons',
 		} : undefined],
 	}, null, {
+		type: 'parent',
 		text: i18n.ts.help,
 		icon: 'ti ti-help-circle',
-		action: () => {
-			window.open('https://misskey-hub.net/help.html', '_blank');
-		},
+		children: [{
+			text: i18n.ts.help,
+			icon: 'ti ti-help-circle',
+			action: () => {
+				window.open('https://misskey-hub.net/help.html', '_blank');
+			},
+		}, {
+			type: 'link',
+			text: i18n.ts._mfm.cheatSheet,
+			icon: 'ti ti-help-circle',
+			to: '/mfm-cheat-sheet',
+		}],
 	}, {
 		type: 'link',
 		text: i18n.ts.aboutMisskey,

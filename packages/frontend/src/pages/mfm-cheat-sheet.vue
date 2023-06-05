@@ -2,297 +2,327 @@
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
-		<div class="mwysmxbg">
-			<div>{{ i18n.ts._mfm.intro }}</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.mention }}</div>
-				<div class="content">
+		<div :class="$style.root">
+			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid .5px var(--divider);">{{ i18n.ts._mfm.intro }}</div>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.mention }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.mentionDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_mention"/>
-						<MkTextarea v-model="preview_mention"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_mention" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.hashtag }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.hashtag }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.hashtagDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_hashtag"/>
-						<MkTextarea v-model="preview_hashtag"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_hashtag" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.url }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.url }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.urlDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_url"/>
-						<MkTextarea v-model="preview_url"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_url" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.link }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.link }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.linkDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_link"/>
-						<MkTextarea v-model="preview_link"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_link" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.emoji }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.emoji }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.emojiDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_emoji"/>
-						<MkTextarea v-model="preview_emoji"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_emoji" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.bold }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.bold }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.boldDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_bold"/>
-						<MkTextarea v-model="preview_bold"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_bold" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.small }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.small }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.smallDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_small"/>
-						<MkTextarea v-model="preview_small"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_small" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.quote }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.quote }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.quoteDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_quote"/>
-						<MkTextarea v-model="preview_quote"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_quote" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.center }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.center }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.centerDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_center"/>
-						<MkTextarea v-model="preview_center"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_center" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.inlineCode }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.inlineCode }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.inlineCodeDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_inlineCode"/>
-						<MkTextarea v-model="preview_inlineCode"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_inlineCode" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.blockCode }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.blockCode }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.blockCodeDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_blockCode"/>
-						<MkTextarea v-model="preview_blockCode"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_blockCode" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.inlineMath }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.inlineMathDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_inlineMath"/>
+						<MkTextarea v-model="preview_inlineMath" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
 			<!-- deprecated
-		<div class="section">
-			<div class="title">{{ i18n.ts._mfm.search }}</div>
-			<div class="content">
+		<div :class="$style.section">
+			<div :class="$style.title">{{ i18n.ts._mfm.search }}</div>
+			<div :class="$style.content">
 				<p>{{ i18n.ts._mfm.searchDescription }}</p>
-				<div class="preview">
+				<div :class="$style.preview">
 					<Mfm :text="preview_search"/>
-					<MkTextarea v-model="preview_search"><template #label>MFM</template></MkTextarea>
+					<MkTextarea v-model="preview_search" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 				</div>
 			</div>
 		</div>
 		-->
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.flip }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.flip }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.flipDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_flip"/>
-						<MkTextarea v-model="preview_flip"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_flip" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.font }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.font }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.fontDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_font"/>
-						<MkTextarea v-model="preview_font"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_font" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.x2 }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.x2 }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.x2Description }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_x2"/>
-						<MkTextarea v-model="preview_x2"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_x2" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.x3 }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.x3 }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.x3Description }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_x3"/>
-						<MkTextarea v-model="preview_x3"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_x3" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.x4 }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.x4 }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.x4Description }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_x4"/>
-						<MkTextarea v-model="preview_x4"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_x4" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.blur }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.blur }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.blurDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_blur"/>
-						<MkTextarea v-model="preview_blur"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_blur" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.jelly }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.jelly }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.jellyDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_jelly"/>
-						<MkTextarea v-model="preview_jelly"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_jelly" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.tada }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.tada }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.tadaDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_tada"/>
-						<MkTextarea v-model="preview_tada"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_tada" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.jump }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.jump }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.jumpDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_jump"/>
-						<MkTextarea v-model="preview_jump"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_jump" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.bounce }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.bounce }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.bounceDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_bounce"/>
-						<MkTextarea v-model="preview_bounce"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_bounce" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.spin }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.spin }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.spinDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_spin"/>
-						<MkTextarea v-model="preview_spin"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_spin" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.shake }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.shake }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.shakeDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_shake"/>
-						<MkTextarea v-model="preview_shake"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_shake" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.twitch }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.twitch }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.twitchDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_twitch"/>
-						<MkTextarea v-model="preview_twitch"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_twitch" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.rainbow }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.rainbow }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.rainbowDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_rainbow"/>
-						<MkTextarea v-model="preview_rainbow"><template #label>MFM</template></MkTextarea>
+						<MkTextarea v-model="preview_rainbow" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.sparkle }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.sparkle }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.sparkleDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_sparkle"/>
-						<MkTextarea v-model="preview_sparkle"><span>MFM</span></MkTextarea>
+						<MkTextarea v-model="preview_sparkle" :class="$style.text"><span>MFM {{ i18n.ts.sample }}</span></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.rotate }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.rotate }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.rotateDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_rotate"/>
-						<MkTextarea v-model="preview_rotate"><span>MFM</span></MkTextarea>
+						<MkTextarea v-model="preview_rotate" :class="$style.text"><span>MFM {{ i18n.ts.sample }}</span></MkTextarea>
 					</div>
 				</div>
 			</div>
-			<div class="section">
-				<div class="title">{{ i18n.ts._mfm.plain }}</div>
-				<div class="content">
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.position }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.positionDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_position"/>
+						<MkTextarea v-model="preview_position" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.scale }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.scaleDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_scale"/>
+						<MkTextarea v-model="preview_scale" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.plain }}</div>
+				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.plainDescription }}</p>
-					<div class="preview">
+					<div :class="$style.preview">
 						<Mfm :text="preview_plain"/>
-						<MkTextarea v-model="preview_plain"><span>MFM</span></MkTextarea>
+						<MkTextarea v-model="preview_plain" :class="$style.text"><span>MFM {{ i18n.ts.sample }}</span></MkTextarea>
 					</div>
 				</div>
 			</div>
@@ -319,6 +349,7 @@ let preview_small = $ref(`<small>${i18n.ts._mfm.dummy}</small>`);
 let preview_center = $ref(`<center>${i18n.ts._mfm.dummy}</center>`);
 let preview_inlineCode = $ref('`<: "Hello, world!"`');
 let preview_blockCode = $ref('```\n~ (#i, 100) {\n\t<: ? ((i % 15) = 0) "FizzBuzz"\n\t\t.? ((i % 3) = 0) "Fizz"\n\t\t.? ((i % 5) = 0) "Buzz"\n\t\t. i\n}\n```');
+let preview_inlineMath = $ref('\\(x= \\frac{-b\' \\pm \\sqrt{(b\')^2-ac}}{a}\\)');
 let preview_quote = $ref(`> ${i18n.ts._mfm.dummy}`);
 let preview_search = $ref(`${i18n.ts._mfm.dummy} 検索`);
 let preview_jelly = $ref('$[jelly 🍮] $[jelly.speed=5s 🍮]');
@@ -336,7 +367,9 @@ let preview_x4 = $ref('$[x4 🍮]');
 let preview_blur = $ref(`$[blur ${i18n.ts._mfm.dummy}]`);
 let preview_rainbow = $ref('$[rainbow 🍮] $[rainbow.speed=5s 🍮]');
 let preview_sparkle = $ref('$[sparkle 🍮]');
-let preview_rotate = $ref('$[rotate 🍮]');
+let preview_rotate = $ref('$[rotate.deg=90 🍮]');
+let preview_position = $ref('$[position.x=1 🍮]\n$[position.y=-1 🍮]\n\n$[position.x=3,y=-3 🍮]');
+let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,y=2 🍮]');
 let preview_plain = $ref('<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>');
 
 const headerActions = $computed(() => []);
@@ -349,33 +382,41 @@ definePageMetadata({
 });
 </script>
 
-<style lang="scss" scoped>
-.mwysmxbg {
+<style lang="scss" module>
+.root {
 	background: var(--bg);
+}
 
-	> .section {
-		> .title {
-			position: sticky;
-			z-index: 1;
-			top: var(--stickyTop, 0px);
-			padding: 16px;
-			font-weight: bold;
-			-webkit-backdrop-filter: var(--blur, blur(10px));
-			backdrop-filter: var(--blur, blur(10px));
-			background-color: var(--X16);
-		}
-
-		> .content {
-			> p {
-				margin: 0;
-				padding: 16px;
-			}
-
-			> .preview {
-				border-top: solid 0.5px var(--divider);
-				padding: 16px;
-			}
-		}
+.section {
+	&:not(:last-child) {
+		margin-bottom: 30px;
 	}
+}
+
+.title {
+	position: sticky;
+	z-index: 1;
+	top: var(--stickyTop, 0px);
+	padding: 16px;
+	font-weight: bold;
+	-webkit-backdrop-filter: var(--blur, blur(10px));
+	backdrop-filter: var(--blur, blur(10px));
+	background-color: var(--X16);
+}
+
+.content {
+	> p {
+		margin: 0;
+		padding: 16px;
+	}
+}
+
+.preview {
+	border-top: solid 0.5px var(--divider);
+	padding: 16px;
+}
+
+.text {
+	padding: 12px 0 8px;
 }
 </style>

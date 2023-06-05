@@ -1716,6 +1716,10 @@ export interface Locale {
         "sparkleDescription": string;
         "rotate": string;
         "rotateDescription": string;
+        "position": string;
+        "positionDescription": string;
+        "scale": string;
+        "scaleDescription": string;
         "plain": string;
         "plainDescription": string;
     };

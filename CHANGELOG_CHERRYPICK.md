@@ -29,6 +29,7 @@
 - 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
 - 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))
 - Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
+- mfm-cheat-sheet 복원
 
 ### Client
 - (Friendly) 모바일에서 스크롤 시 각종 요소들의 유동적인 높이 조절을 변경된 헤더 디자인에 대응
