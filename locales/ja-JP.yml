@@ -1636,6 +1636,10 @@ _mfm:
   positionDescription: "指定した位置に移動させます。"
   scale: "スケール"
   scaleDescription: "指定した値で緩めます。"
+  fg: "描画色"
+  fgDescription: "指定した値で描画色を指定します。"
+  bg: "背景色"
+  bgDescription: "指定した値で背景色を指定します。"
   plain: "プレーン"
   plainDescription: "内側の構文を全て無効にします。"
 

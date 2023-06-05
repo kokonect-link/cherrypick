@@ -317,6 +317,26 @@
 				</div>
 			</div>
 			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.fg }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.fgDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_fg"/>
+						<MkTextarea v-model="preview_fg" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.bg }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.bgDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_bg"/>
+						<MkTextarea v-model="preview_bg" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfm.plain }}</div>
 				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.plainDescription }}</p>
@@ -370,6 +390,8 @@ let preview_sparkle = $ref('$[sparkle 🍮]');
 let preview_rotate = $ref('$[rotate.deg=90 🍮]');
 let preview_position = $ref('$[position.x=1 🍮]\n$[position.y=-1 🍮]\n\n$[position.x=3,y=-3 🍮]');
 let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,y=2 🍮]');
+let preview_fg = $ref('$[fg.color=ffbcdc Cherry]$[fg.color=b1d3ff Pick]');
+let preview_bg = $ref('$[bg.color=ffbcdc Cherry]$[bg.color=b1d3ff Pick]');
 let preview_plain = $ref('<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>');
 
 const headerActions = $computed(() => []);

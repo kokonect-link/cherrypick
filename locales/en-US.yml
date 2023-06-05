@@ -1614,6 +1614,10 @@ _mfm:
   positionDescription: "Moves content by a specified location."
   scale: "Scale"
   scaleDescription: "Loosen content by the specified value."
+  fg: "Foreground color"
+  fgDescription: "Set the foreground color to the specified value."
+  bg: "Background color"
+  bgDescription: "Set the background color to the specified value."
   plain: "Plain"
   plainDescription: "Deactivates the effects of all MFM contained within this MFM effect."
 _instanceTicker:

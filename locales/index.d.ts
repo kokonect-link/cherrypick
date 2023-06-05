@@ -1720,6 +1720,10 @@ export interface Locale {
         "positionDescription": string;
         "scale": string;
         "scaleDescription": string;
+        "fg": string;
+        "fgDescription": string;
+        "bg": string;
+        "bgDescription": string;
         "plain": string;
         "plainDescription": string;
     };
