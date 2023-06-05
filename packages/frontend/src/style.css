@@ -32,6 +32,9 @@
   --marginHalf: 10px;
   --margin: var(--marginFull);
   --minBottomSpacing: 0px;
+	--cherry: rgb(255, 188, 220);
+	--pick: rgb(177, 211, 255);
+	--misskey: rgb(134, 179, 0);
   --cast: rgb(181, 151, 246);
   --ella: rgb(150, 198, 234);
 }
@@ -93,13 +96,64 @@ html::-webkit-scrollbar-thumb:active, html *::-webkit-scrollbar-thumb:active {
   background: var(--accent);
 }
 html.f-1 {
-  font-size: 15px;
+  font-size: 7px;
 }
 html.f-2 {
-  font-size: 16px;
+  font-size: 8px;
 }
 html.f-3 {
-  font-size: 17px;
+  font-size: 9px;
+}
+html.f-4 {
+	font-size: 10px;
+}
+html.f-5 {
+	font-size: 11px;
+}
+html.f-6 {
+	font-size: 12px;
+}
+html.f-7 {
+	font-size: 13px;
+}
+html.f-8 {
+	font-size: 14px;
+}
+html.f-9 {
+	font-size: 15px;
+}
+html.f-10 {
+	font-size: 16px;
+}
+html.f-11 {
+	font-size: 17px;
+}
+html.f-12 {
+	font-size: 18px;
+}
+html.f-13 {
+	font-size: 19px;
+}
+html.f-14 {
+	font-size: 20px;
+}
+html.f-15 {
+	font-size: 21px;
+}
+html.f-16 {
+	font-size: 22px;
+}
+html.f-17 {
+	font-size: 23px;
+}
+html.f-18 {
+	font-size: 24px;
+}
+html.f-19 {
+	font-size: 25px;
+}
+html.useBoldFont {
+	font-weight: bold;
 }
 html.useSystemFont {
   font-family: "Hiragino Maru Gothic Pro", sans-serif;
