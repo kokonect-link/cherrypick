@@ -1,5 +1,8 @@
 ---
 _lang_: "English"
+performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
+photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
+friendlyEnableNotification: "Enable/Disable the notification area"
 useBoldFont: "Bold Text"
 newNoteReceivedNotification: "When receive a new note notification"
 disableRightClick: "Prohibit right click"
@@ -1096,9 +1099,6 @@ later: "Later"
 goToMisskey: "To CherryPick"
 additionalEmojiDictionary: "Additional emoji dictionaries"
 installed: "Installed"
-performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
-photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
-friendlyEnableNotification: "Enable/Disable the notification area"
 _initialAccountSetting:
   accountCreated: "Your account was successfully created!"
   letsStartAccountSetup: "For starters, let's set up your profile."

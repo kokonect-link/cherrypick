@@ -1,5 +1,8 @@
 _lang_: "日本語"
 
+performanceWarning: "リソースを多く使用するため、デバイスの温度が高くなり、バッテリーの消耗が速くなる可能性があります"
+photosensitiveSeizuresWarning: "光敏感性発作を起こす可能性があります"
+friendlyEnableNotification: "通知領域を有効化/無効化"
 useBoldFont: "文字を太くする"
 newNoteReceivedNotification: "新しいノート通知を表示するとき"
 disableRightClick: "右クリックを禁止"
@@ -1096,9 +1099,6 @@ later: "あとで"
 goToMisskey: "CherryPickへ"
 additionalEmojiDictionary: "絵文字の追加辞書"
 installed: "インストール済み"
-performanceWarning: "リソースを多く使用するため、デバイスの温度が高くなり、バッテリーの消耗が速くなる可能性があります"
-photosensitiveSeizuresWarning: "光敏感性発作を起こす可能性があります"
-friendlyEnableNotification: "通知領域を有効化/無効化"
 
 _initialAccountSetting:
   accountCreated: "アカウントの作成が完了しました！"
