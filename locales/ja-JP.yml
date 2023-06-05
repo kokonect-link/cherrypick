@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+requireRefresh: "페이지 새로 고침이 필요할 때"
 performanceWarning: "リソースを多く使用するため、デバイスの温度が高くなり、バッテリーの消耗が速くなる可能性があります"
 photosensitiveSeizuresWarning: "光敏感性発作を起こす可能性があります"
 friendlyEnableNotification: "通知領域を有効化/無効化"
@@ -1099,6 +1100,10 @@ later: "あとで"
 goToMisskey: "CherryPickへ"
 additionalEmojiDictionary: "絵文字の追加辞書"
 installed: "インストール済み"
+
+_requireRefreshBehavior:
+  dialog: "ダイアログで通知"
+  quiet: "控えめに通知"
 
 _initialAccountSetting:
   accountCreated: "アカウントの作成が完了しました！"

@@ -71,18 +71,21 @@ import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { miLocalStorage } from '@/local-storage';
 import { unisonReload } from '@/scripts/unison-reload';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
 
 async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
+	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
+		const { canceled } = await os.confirm({
+			type: 'info',
+			text: i18n.ts.reloadToApplySetting,
+		});
+		if (canceled) return;
 
-	unisonReload();
+		unisonReload();
+	} else eventBus.emit('hasRequireRefresh', true);
 }
 
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));

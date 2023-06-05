@@ -215,6 +215,11 @@
 				<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 				<option value="none">{{ i18n.ts._serverDisconnectedBehavior.none }}</option>
 			</MkSelect>
+			<MkSelect v-model="requireRefreshBehavior">
+				<template #label>{{ i18n.ts.requireRefresh }}</template>
+				<option value="dialog">{{ i18n.ts._requireRefreshBehavior.dialog }}</option>
+				<option value="quiet">{{ i18n.ts._requireRefreshBehavior.quiet }}</option>
+			</MkSelect>
 			<MkSelect v-model="newNoteReceivedNotificationBehavior">
 				<template #label>{{ i18n.ts.newNoteReceivedNotification }}</template>
 				<option value="default">{{ i18n.ts._newNoteReceivedNotificationBehavior.default }}</option>
@@ -264,6 +269,7 @@ import { unisonReload } from '@/scripts/unison-reload';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { miLocalStorage } from '@/local-storage';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 import MkInfo from '@/components/MkInfo.vue';
 
 const lang = ref(miLocalStorage.getItem('lang'));
@@ -274,13 +280,15 @@ const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
 
 async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
+	if (requireRefreshBehavior.value === 'dialog') {
+		const { canceled } = await os.confirm({
+			type: 'info',
+			text: i18n.ts.reloadToApplySetting,
+		});
+		if (canceled) return;
 
-	unisonReload();
+		unisonReload();
+	} else eventBus.emit('hasRequireRefresh', true);
 }
 
 const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));
@@ -319,6 +327,7 @@ const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFor
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
+const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRefreshBehavior'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

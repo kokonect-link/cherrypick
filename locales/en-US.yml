@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+requireRefresh: "When the page needs to refresh"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
 photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
 friendlyEnableNotification: "Enable/Disable the notification area"
@@ -1099,6 +1100,9 @@ later: "Later"
 goToMisskey: "To CherryPick"
 additionalEmojiDictionary: "Additional emoji dictionaries"
 installed: "Installed"
+_requireRefreshBehavior:
+  dialog: "Show warning dialog"
+  quiet: "Show unobtrusive alert"
 _initialAccountSetting:
   accountCreated: "Your account was successfully created!"
   letsStartAccountSetup: "For starters, let's set up your profile."

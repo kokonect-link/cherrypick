@@ -156,13 +156,15 @@ function focus(): void {
 }
 
 async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
+	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
+		const { canceled } = await os.confirm({
+			type: 'info',
+			text: i18n.ts.reloadToApplySetting,
+		});
+		if (canceled) return;
 
-	unisonReload();
+		unisonReload();
+	} else eventBus.emit('hasRequireRefresh', true);
 }
 
 const headerActions = $computed(() => [{

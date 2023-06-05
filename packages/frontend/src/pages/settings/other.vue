@@ -87,6 +87,7 @@ import { signout, $i } from '@/account';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { unisonReload } from '@/scripts/unison-reload';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 import FormSection from '@/components/form/section.vue';
 
 const reportError = computed(defaultStore.makeGetterSetter('reportError'));
@@ -128,13 +129,15 @@ async function deleteAccount() {
 }
 
 async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
+	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
+		const { canceled } = await os.confirm({
+			type: 'info',
+			text: i18n.ts.reloadToApplySetting,
+		});
+		if (canceled) return;
 
-	unisonReload();
+		unisonReload();
+	} else eventBus.emit('hasRequireRefresh', true);
 }
 
 watch([
