@@ -5,13 +5,13 @@
 ## NOTE
 
 ### General
--
+- 
 
 ### Client
--
+- 
 
 ### Server
--
+- 
 
 ---
 
@@ -21,6 +21,14 @@
 
 이 문서는 CherryPick의 변경 사항만 포함합니다.<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
+
+## 13.x.x-cp-4.x.x
+출시일: unreleased
+
+### Client
+- Fix: 네트워크 트래픽이 10MB/s를 초과하면 네트워크 통계 위젯의 그래프가 잘못 출력되는 문제
+
+---
 
 ## 13.13.1-cp-4.0.0
 출시일: 2023/06/06
