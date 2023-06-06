@@ -22,8 +22,8 @@
 이 문서는 CherryPick의 변경 사항만 포함합니다.<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## 13.x.x-cp-4.x.x
-출시일: unreleased
+## 13.13.1-cp-4.0.0
+출시일: 2023/06/06
 
 ### General
 - 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
