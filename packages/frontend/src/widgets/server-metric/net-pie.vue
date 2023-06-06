@@ -44,9 +44,6 @@ let outRecent: number = $ref(0);
 function onStats(connStats) {
 	inRecent = connStats.net.rx;
 	outRecent = connStats.net.tx;
-
-	console.log('in: ' + inRecent);
-	console.log('out: ' + outRecent);
 }
 
 onMounted(() => {
