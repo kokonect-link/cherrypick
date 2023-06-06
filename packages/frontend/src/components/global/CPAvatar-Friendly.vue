@@ -1,19 +1,16 @@
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" :hash="user?.avatarBlurhash" :cover="true" :noDrag="true"/>
-	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
+	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" :hash="user?.avatarBlurhash" :cover="true"/>
 </component>
 </template>
 
 <script lang="ts" setup>
 import { watch } from 'vue';
 import * as misskey from 'misskey-js';
-import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
 import { getStaticImageUrl } from '@/scripts/media-proxy';
 import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash';
 import { acct, userPage } from '@/filters/user';
-import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { defaultStore } from '@/store';
 
 const props = withDefaults(defineProps<{
@@ -21,12 +18,10 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
-	indicator?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
-	indicator: false,
 });
 
 const emit = defineEmits<{
@@ -82,14 +77,5 @@ watch(() => props.user.avatarBlurhash, () => {
 	&.reduceBlurEffect {
 		opacity: 1;
 	}
-}
-
-.indicator {
-	position: absolute;
-	z-index: 1;
-	bottom: 0;
-	left: 0;
-	width: 20%;
-	height: 20%;
 }
 </style>
