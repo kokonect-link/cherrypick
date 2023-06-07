@@ -124,18 +124,16 @@
 					</div>
 				</div>
 			</div>
-			<!-- deprecated
-		<div :class="$style.section">
-			<div :class="$style.title">{{ i18n.ts._mfm.search }}</div>
-			<div :class="$style.content">
-				<p>{{ i18n.ts._mfm.searchDescription }}</p>
-				<div :class="$style.preview">
-					<Mfm :text="preview_search"/>
-					<MkTextarea v-model="preview_search" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.search }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.searchDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_search"/>
+						<MkTextarea v-model="preview_search" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
 				</div>
 			</div>
-		</div>
-		-->
 			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfm.flip }}</div>
 				<div :class="$style.content">
@@ -371,7 +369,7 @@ let preview_inlineCode = $ref('`<: "Hello, world!"`');
 let preview_blockCode = $ref('```\n~ (#i, 100) {\n\t<: ? ((i % 15) = 0) "FizzBuzz"\n\t\t.? ((i % 3) = 0) "Fizz"\n\t\t.? ((i % 5) = 0) "Buzz"\n\t\t. i\n}\n```');
 let preview_inlineMath = $ref('\\(x= \\frac{-b\' \\pm \\sqrt{(b\')^2-ac}}{a}\\)');
 let preview_quote = $ref(`> ${i18n.ts._mfm.dummy}`);
-let preview_search = $ref(`${i18n.ts._mfm.dummy} 検索`);
+let preview_search = $ref(`${i18n.ts._mfm.dummy} 検索\n${i18n.ts._mfm.dummy} 검색\n${i18n.ts._mfm.dummy} search`);
 let preview_jelly = $ref('$[jelly 🍮] $[jelly.speed=5s 🍮]');
 let preview_tada = $ref('$[tada 🍮] $[tada.speed=5s 🍮]');
 let preview_jump = $ref('$[jump 🍮] $[jump.speed=5s 🍮]');
