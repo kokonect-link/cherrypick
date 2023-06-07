@@ -242,7 +242,6 @@ definePageMetadata(computed(() => ({
 <style lang="scss" module>
 .transition_new_enterActive,
 .transition_new_leaveActive {
-	transition: opacity 0.5s, transform 0.2s;
 	transform: translateY(-64px);
 }
 .transition_new_enterFrom,
