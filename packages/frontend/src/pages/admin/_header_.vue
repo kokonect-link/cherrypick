@@ -38,6 +38,14 @@ import { scrollToTop } from '@/scripts/scroll';
 import MkButton from '@/components/MkButton.vue';
 import { globalEvents } from '@/events';
 import { injectPageMetadata } from '@/scripts/page-metadata';
+import { deviceKind } from '@/scripts/device-kind';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 type Tab = {
 	key?: string | null;
@@ -122,7 +130,8 @@ function goBack() {
 const calcBg = () => {
 	const rawBg = metadata?.bg ?? 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	tinyBg.setAlpha(0.85);
+	if (isMobile.value) tinyBg.setAlpha(1);
+	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
 
