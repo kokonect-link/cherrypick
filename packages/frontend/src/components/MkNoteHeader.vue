@@ -40,7 +40,6 @@ defineProps<{
 
 <style lang="scss" module>
 .root {
-	padding-bottom: 10px;
 }
 
 .name {

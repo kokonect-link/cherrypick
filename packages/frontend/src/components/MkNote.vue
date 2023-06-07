@@ -47,7 +47,7 @@
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
 				<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
-				<div style="container-type: inline-size;">
+				<div style="container-type: inline-size; padding-top: 10px;">
 					<p v-if="appearNote.cw != null" :class="$style.cw">
 						<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
 						<MkCwButton v-model="showContent" :note="appearNote"/>

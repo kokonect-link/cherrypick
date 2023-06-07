@@ -603,7 +603,7 @@ if (appearNote.replyId) {
 }
 
 .quote {
-	padding: 8px 0;
+	padding: 16px 0;
 }
 
 .quoteNote {
