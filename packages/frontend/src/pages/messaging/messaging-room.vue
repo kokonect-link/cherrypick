@@ -417,7 +417,7 @@ definePageMetadata(computed(() => !fetching ? user ? {
 
 @container (max-width: 500px) {
 	.footer {
-		margin-top: 50px;
+		margin-top: calc(50px + env(safe-area-inset-bottom));
 	}
 }
 </style>
