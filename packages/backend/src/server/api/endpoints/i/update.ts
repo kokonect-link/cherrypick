@@ -1,5 +1,5 @@
 import RE2 from 're2';
-import * as mfm from 'mfm-js';
+import * as mfm from 'cherrypick-mfm-js';
 import { Inject, Injectable } from '@nestjs/common';
 import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mfm.js';
 import { extractHashtags } from '@/misc/extract-hashtags.js';

@@ -95,7 +95,7 @@
 
 <script lang="ts" setup>
 import { inject, watch, nextTick, onMounted, defineAsyncComponent } from 'vue';
-import * as mfm from 'mfm-js';
+import * as mfm from 'cherrypick-mfm-js';
 import * as misskey from 'misskey-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode/';

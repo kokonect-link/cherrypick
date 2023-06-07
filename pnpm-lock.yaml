@@ -173,6 +173,9 @@ importers:
       chalk-template:
         specifier: 0.4.0
         version: 0.4.0
+      cherrypick-mfm-js:
+        specifier: 0.23.3-cp-1.0.0
+        version: 0.23.3-cp-1.0.0
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
@@ -245,9 +248,6 @@ importers:
       meilisearch:
         specifier: 0.32.5
         version: 0.32.5
-      mfm-js:
-        specifier: 0.23.3
-        version: 0.23.3
       mime-types:
         specifier: 2.1.35
         version: 2.1.35
@@ -703,6 +703,9 @@ importers:
       chartjs-plugin-zoom:
         specifier: 2.0.1
         version: 2.0.1(chart.js@4.3.0)
+      cherrypick-mfm-js:
+        specifier: 0.23.3-cp-1.0.0
+        version: 0.23.3-cp-1.0.0
       chromatic:
         specifier: 6.18.0
         version: 6.18.0
@@ -742,9 +745,6 @@ importers:
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
-      mfm-js:
-        specifier: 0.23.3
-        version: 0.23.3
       misskey-js:
         specifier: workspace:*
         version: link:../misskey-js
@@ -10410,6 +10410,12 @@ packages:
       parse5: 7.1.2
       parse5-htmlparser2-tree-adapter: 7.0.0
 
+  /cherrypick-mfm-js@0.23.3-cp-1.0.0:
+    resolution: {integrity: sha512-oFeUcfV4WKqhdY1oxe4kSfh5jSwxDhma8DLLdD3CyxP+BNYV6rjDcqi9fZkj/4YSx2U9nsvVdbPW3mYdMlVVXA==}
+    dependencies:
+      twemoji-parser: 14.0.0
+    dev: false
+
   /chokidar-cli@3.0.0:
     resolution: {integrity: sha512-xVW+Qeh7z15uZRxHOkP93Ux8A0xbPzwK4GaqD8dQOYc34TlkqUhVSS59fK36DOp5WdJlrRzlYSy02Ht99FjZqQ==}
     engines: {node: '>= 8.10.0'}
@@ -16328,12 +16334,6 @@ packages:
     resolution: {integrity: sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==}
     engines: {node: '>= 0.6'}
     dev: true
-
-  /mfm-js@0.23.3:
-    resolution: {integrity: sha512-o8scYmbey6rMUmWAlT3k3ntt6khaCLdxlmHhAWV5wTTMj2OK1atQvZfRUq0SIVm1Jig08qlZg/ps71xUqrScNA==}
-    dependencies:
-      twemoji-parser: 14.0.0
-    dev: false
 
   /micromatch@3.1.10:
     resolution: {integrity: sha512-MWikgl9n9M3w+bpsY3He8L+w9eF9338xRl8IAO5viDizwSzziFEyUzo2xrrloB64ADbTf8uA8vRqqttDTOmccg==}
