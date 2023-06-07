@@ -7,7 +7,7 @@
 		:leaveToClass="defaultStore.state.animation ? $style.transition_toast_leaveTo : ''"
 		appear @afterLeave="emit('closed')"
 	>
-		<div v-if="showing" class="_acrylic" :class="$style.root" :style="{ zIndex }">
+		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ zIndex }">
 			<CPAvatar :class="$style.avatar" :user="$i"/>
 			<div style="padding: 16px 24px;">
 				{{ message }}
@@ -58,8 +58,7 @@ onMounted(() => {
 	left: 0;
 	right: 0;
 	top: 50px;
-	margin: 0 auto;
-	margin-top: 16px;
+	margin: 16px auto 0;
 	min-width: 300px;
 	max-width: calc(100% - 32px);
 	width: min-content;
@@ -68,11 +67,14 @@ onMounted(() => {
 	overflow: clip;
 	text-align: center;
 	pointer-events: none;
-	transition: opacity 0.5s, transform 0.5s;
 
 	@media (max-width: 500px) {
 		width: 100%;
-		top: 0px;
+		top: 0;
+
+		&.reduceBlurEffect {
+			background: var(--panel);
+		}
 	}
 }
 
