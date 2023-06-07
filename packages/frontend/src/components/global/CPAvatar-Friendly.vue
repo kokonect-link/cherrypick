@@ -1,6 +1,6 @@
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
-	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" :hash="user?.avatarBlurhash" :cover="true"/>
+	<img :class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]" :src="url" :hash="user?.avatarBlurhash" :cover="true" :noDrag="true"/>
 </component>
 </template>
 
@@ -76,6 +76,10 @@ watch(() => props.user.avatarBlurhash, () => {
 
 	&.reduceBlurEffect {
 		opacity: 1;
+	}
+
+	&.noDrag {
+		-webkit-user-drag: none;
 	}
 }
 </style>
