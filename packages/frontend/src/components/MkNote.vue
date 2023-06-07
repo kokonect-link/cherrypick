@@ -41,49 +41,53 @@
 		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :class="$style.collapsedRenoteTargetText" @click="renoteCollapsed = false"/>
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
-		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-		<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
-		<div :class="$style.main">
-			<MkNoteHeader :note="appearNote" :mini="true"/>
-			<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
-			<div style="container-type: inline-size;">
-				<p v-if="appearNote.cw != null" :class="$style.cw">
-					<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
-					<MkCwButton v-model="showContent" :note="appearNote"/>
-				</p>
-				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
-					<div :class="$style.text">
-						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
-						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-						<div v-if="translating || translation" :class="$style.translation">
-							<MkLoading v-if="translating" mini/>
-							<div v-else>
-								<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-								<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-								<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-									<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
-									<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+		<div style="display: flex; padding-bottom: 10px;">
+			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
+			<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
+			<div :class="$style.main">
+				<MkNoteHeader :note="appearNote" :mini="true"/>
+				<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
+				<div style="container-type: inline-size;">
+					<p v-if="appearNote.cw != null" :class="$style.cw">
+						<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
+						<MkCwButton v-model="showContent" :note="appearNote"/>
+					</p>
+					<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
+						<div :class="$style.text">
+							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
+							<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+							<div v-if="translating || translation" :class="$style.translation">
+								<MkLoading v-if="translating" mini/>
+								<div v-else>
+									<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+									<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+									</div>
 								</div>
 							</div>
 						</div>
+						<div v-if="appearNote.files.length > 0">
+							<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
+							<MkMediaList v-else :mediaList="appearNote.files"/>
+						</div>
+						<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
+						<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
+						<button v-if="(isLong || isMFM) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
+							<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
+						</button>
+						<button v-else-if="(isLong || isMFM) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+							<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
+						</button>
 					</div>
-					<div v-if="appearNote.files.length > 0">
-						<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
-						<MkMediaList v-else :mediaList="appearNote.files"/>
-					</div>
-					<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
-					<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
-					<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
-					<button v-if="(isLong || isMFM) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
-						<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
-					</button>
-					<button v-else-if="(isLong || isMFM) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
-						<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
-					</button>
+					<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
 				</div>
-				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
 			</div>
+		</div>
+		<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
+		<div style="padding-left: 10px">
 			<MkReactionsViewer :note="appearNote" :maxNumber="16">
 				<template #more>
 					<button class="_button" :class="$style.reactionDetailsButton" @click="showReactions">
@@ -558,7 +562,7 @@ function showReactions(): void {
 .tip {
 	display: flex;
 	align-items: center;
-	padding: 16px 32px 8px 32px;
+	padding: 24px 38px 16px;
 	line-height: 24px;
 	font-size: 90%;
 	white-space: pre;
@@ -578,7 +582,7 @@ function showReactions(): void {
 	position: relative;
 	display: flex;
 	align-items: center;
-	padding: 16px 32px 8px 32px;
+	padding: 24px 38px 16px;
 	line-height: 28px;
 	white-space: pre;
 	color: var(--renote);
@@ -636,7 +640,7 @@ function showReactions(): void {
 	align-items: center;
 	line-height: 28px;
 	white-space: pre;
-	padding: 0 32px 18px;
+	padding: 8px 38px 24px;
 }
 
 .collapsedRenoteTargetAvatar {
@@ -663,7 +667,6 @@ function showReactions(): void {
 
 .article {
 	position: relative;
-	display: flex;
 	padding: 28px 32px;
 }
 
@@ -681,8 +684,8 @@ function showReactions(): void {
 	flex-shrink: 0;
 	display: block !important;
 	margin: 0 14px 0 0;
-	width: 58px;
-	height: 58px;
+	width: 48px;
+	height: 48px;
 	position: sticky !important;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
@@ -776,8 +779,8 @@ function showReactions(): void {
 }
 
 .quoteNote {
-	padding: 16px;
-	border: dashed 1px var(--renote);
+	padding: 24px;
+	border: solid 1px var(--renote);
 	border-radius: 8px;
 }
 
@@ -816,16 +819,15 @@ function showReactions(): void {
 	}
 
 	.renote {
-		padding: 12px 26px 0 26px;
+		padding: 24px 28px 16px;
+	}
+
+	.collapsedRenoteTarget {
+		padding: 8px 28px 24px;
 	}
 
 	.article {
 		padding: 24px 26px;
-	}
-
-	.avatar {
-		width: 50px;
-		height: 50px;
 	}
 }
 
@@ -834,12 +836,8 @@ function showReactions(): void {
 		font-size: 0.9em;
 	}
 
-	.renote {
-		padding: 10px 22px 0 22px;
-	}
-
 	.article {
-		padding: 20px 22px;
+		padding: 23px 25px;
 	}
 
 	.footer {
@@ -849,20 +847,20 @@ function showReactions(): void {
 
 @container (max-width: 480px) {
 	.renote {
-		padding: 8px 16px 0 16px;
+		padding: 20px 24px 8px;
 	}
 
 	.tip {
-		padding: 8px 16px 0 16px;
+		padding: 20px 24px 8px;
 	}
 
 	.collapsedRenoteTarget {
-		padding: 0 16px 9px;
+		padding: 8px 24px 20px;
 		margin-top: 4px;
 	}
 
 	.article {
-		padding: 14px 16px;
+		padding: 22px 24px;
 	}
 }
 

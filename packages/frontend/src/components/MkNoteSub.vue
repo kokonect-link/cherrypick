@@ -61,7 +61,7 @@ if (props.detail) {
 
 <style lang="scss" module>
 .root {
-	padding: 16px 32px;
+	padding: 28px 32px;
 	font-size: 0.9em;
 	position: relative;
 
@@ -88,9 +88,9 @@ if (props.detail) {
 .avatar {
 	flex-shrink: 0;
 	display: block;
-	margin: 0 8px 0 0;
-	width: 38px;
-	height: 38px;
+	margin: 0 14px 0 0;
+	width: 48px;
+	height: 48px;
 	border-radius: 8px;
 }
 
@@ -125,13 +125,30 @@ if (props.detail) {
 	padding: 10px 0 0 16px;
 }
 
-@container (max-width: 450px) {
+@container (max-width: 580px) {
 	.root {
-		padding: 14px 16px;
+		padding: 28px 26px 0;
+	}
+}
+
+@container (max-width: 500px) {
+	.root {
+		padding: 23px 25px;
+	}
+}
+
+@container (max-width: 480px) {
+	.root {
+		padding: 22px 24px;
 
 		&.children {
 			padding: 10px 0 0 8px;
 		}
+	}
+
+	.avatar {
+		width: 46px;
+		height: 46px;
 	}
 }
 </style>

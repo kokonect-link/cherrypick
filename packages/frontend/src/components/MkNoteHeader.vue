@@ -1,25 +1,27 @@
 <template>
 <header :class="$style.root">
-	<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
-		<MkUserName :user="note.user"/>
-	</MkA>
-	<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
-	<div :class="$style.username"><MkAcct :user="note.user"/></div>
-	<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
-		<img v-for="role in note.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
-	</div>
-	<div :class="$style.info">
-		<MkA :to="notePage(note)">
-			<MkTime :time="note.createdAt"/>
+	<div style="display: flex; align-items: baseline; white-space: nowrap;">
+		<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
+			<MkUserName :user="note.user"/>
 		</MkA>
-		<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[note.visibility]">
-			<i v-if="note.visibility === 'home'" class="ti ti-home"></i>
-			<i v-else-if="note.visibility === 'followers'" class="ti ti-lock"></i>
-			<i v-else-if="note.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
-		</span>
-		<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
-		<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
+		<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
+		<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
+			<img v-for="role in note.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
+		</div>
+		<div :class="$style.info">
+			<MkA :class="$style.time" :to="notePage(note)">
+				<MkTime :time="note.createdAt"/>
+			</MkA>
+			<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[note.visibility]">
+				<i v-if="note.visibility === 'home'" class="ti ti-home"></i>
+				<i v-else-if="note.visibility === 'followers'" class="ti ti-lock"></i>
+				<i v-else-if="note.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
+			</span>
+			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
+			<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
+		</div>
 	</div>
+	<div :class="$style.username"><MkAcct :user="note.user"/></div>
 </header>
 </template>
 
@@ -38,9 +40,7 @@ defineProps<{
 
 <style lang="scss" module>
 .root {
-	display: flex;
-	align-items: baseline;
-	white-space: nowrap;
+	padding-bottom: 10px;
 }
 
 .name {
@@ -75,12 +75,21 @@ defineProps<{
 	margin: 0 .5em 0 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	font-size: .95em;
 }
 
 .info {
 	flex-shrink: 0;
 	margin-left: auto;
 	font-size: 0.9em;
+}
+
+.time {
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: none;
+	}
 }
 
 .badgeRoles {

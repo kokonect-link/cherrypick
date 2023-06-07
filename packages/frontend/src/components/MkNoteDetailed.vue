@@ -87,7 +87,7 @@
 		</div>
 		<footer>
 			<div :class="$style.noteFooterInfo">
-				<MkA :to="notePage(appearNote)">
+				<MkA :class="$style.time" :to="notePage(appearNote)">
 					<MkTime :time="appearNote.createdAt" mode="detail"/>
 				</MkA>
 			</div>
@@ -607,8 +607,8 @@ if (appearNote.replyId) {
 }
 
 .quoteNote {
-	padding: 16px;
-	border: dashed 1px var(--renote);
+	padding: 24px;
+	border: solid 1px var(--renote);
 	border-radius: 8px;
 }
 
@@ -651,19 +651,27 @@ if (appearNote.replyId) {
 	border-top: solid 0.5px var(--divider);
 }
 
+.time {
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
 @container (max-width: 500px) {
 	.root {
 		font-size: 0.9em;
 	}
 }
 
-@container (max-width: 450px) {
+@container (max-width: 480px) {
 	.renote {
 		padding: 8px 16px 0 16px;
 	}
 
 	.note {
-		padding: 16px;
+		padding: 22px 24px;
 	}
 
 	.noteHeaderAvatar {
