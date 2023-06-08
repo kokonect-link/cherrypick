@@ -840,6 +840,16 @@ function showReactions(): void {
 		padding: 23px 25px;
 	}
 
+	.avatar {
+		&.showEl {
+			top: 14px;
+		}
+
+		&.showElTab {
+			top: 54px;
+		}
+	}
+
 	.footer {
 		margin-bottom: -8px;
 	}
@@ -871,14 +881,6 @@ function showReactions(): void {
 		height: 46px;
 		top: calc(14px + var(--stickyTop, 0px));
 		transition: top 0.5s;
-
-		&.showEl {
-			top: 14px;
-		}
-
-		&.showElTab {
-			top: 54px;
-		}
 	}
 }
 
