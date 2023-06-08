@@ -9,7 +9,7 @@
 					:key="message.id"
 					v-anim="i"
 					class="_panel"
-					:class="$style.message"
+					:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead)) }]"
 					:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
 					:data-index="i"
 				>
@@ -207,6 +207,10 @@ definePageMetadata({
 			white-space: nowrap;
 			overflow: hidden;
 		}
+	}
+
+	&.isRead {
+		background: var(--chatReadBg);
 	}
 }
 

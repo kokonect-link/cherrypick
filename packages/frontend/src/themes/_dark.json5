@@ -82,6 +82,7 @@
 		codeBoolean: '#c59eff',
 		deckBg: '#000',
 		htmlThemeColor: '@bg',
+		chatReadBg: ':lighten<1<@bg',
 		cherry: 'rgb(255, 207, 230)',
 		cherryX8: ':lighten<5<@cherry',
 		pick: 'rgb(185, 216, 255)',
