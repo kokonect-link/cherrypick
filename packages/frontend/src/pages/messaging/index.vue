@@ -192,7 +192,7 @@ definePageMetadata({
 	}
 
 	> div {
-		padding: 20px 30px;
+		padding: 25px 30px;
 
 		&:after {
 			content: "";
@@ -216,7 +216,7 @@ definePageMetadata({
 
 .indicator {
 	position: absolute;
-	top: 36px;
+	top: 41px;
 	left: 12px;
 	color: var(--indicator);
 	font-size: 9px;
@@ -271,9 +271,14 @@ definePageMetadata({
 @container (max-width: 500px) {
 	.message {
 		> div {
-			padding: 15px 20px;
+			padding: 20px 30px;
 			font-size: .9em;
 		}
+	}
+
+	.indicator {
+		top: 36px;
+		left: 12px;
 	}
 
 	.avatar {
