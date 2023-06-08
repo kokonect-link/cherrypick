@@ -225,14 +225,14 @@ definePageMetadata({
 .name {
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
 	font-weight: bold;
 	transition: all 0.1s ease;
 }
 
 .username {
 	margin: 0 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .time {
