@@ -1,6 +1,6 @@
 <template>
 <div :class="$style.root">
-	<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
+	<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
 	<div :class="$style.main">
 		<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 		<div style="padding-top: 10px;">
@@ -17,12 +17,16 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { onMounted } from 'vue';
 import * as misskey from 'misskey-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import { $i } from '@/account';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { mainRouter } from '@/router';
+
+let showEl = $ref(false);
 
 const props = defineProps<{
 	note: misskey.entities.Note;
@@ -30,6 +34,12 @@ const props = defineProps<{
 }>();
 
 const showContent = $ref(false);
+
+onMounted(() => {
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
+});
 </script>
 
 <style lang="scss" module>
@@ -74,6 +84,18 @@ const showContent = $ref(false);
 	cursor: default;
 	margin: 0;
 	padding: 0;
+}
+
+@container (max-width: 500px) {
+	.avatar {
+		&.showEl {
+			top: 14px;
+		}
+
+		&.showElTab {
+			top: 54px;
+		}
+	}
 }
 
 @container (min-width: 250px) {
