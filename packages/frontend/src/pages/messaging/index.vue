@@ -212,10 +212,10 @@ definePageMetadata({
 
 .indicator {
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: 36px;
+	left: 12px;
 	color: var(--indicator);
-	font-size: 8px;
+	font-size: 9px;
 }
 
 .name {
