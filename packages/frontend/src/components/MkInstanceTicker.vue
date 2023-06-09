@@ -62,7 +62,7 @@ $height: 2ex;
 }
 
 .icon {
-	height: $height;
+	height: 2.5ex;
 	flex-shrink: 0;
 	border-radius: .3rem;
 }
