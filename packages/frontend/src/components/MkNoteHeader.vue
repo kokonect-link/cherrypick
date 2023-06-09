@@ -61,6 +61,11 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	white-space: nowrap;
 	flex-direction: column;
 
+	&:first-child {
+		overflow: scroll;
+		overflow-wrap: anywhere;
+	}
+
 	&:last-child {
 		align-items: flex-end;
 		margin-left: auto;
