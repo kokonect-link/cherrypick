@@ -1100,6 +1100,7 @@ later: "あとで"
 goToMisskey: "CherryPickへ"
 additionalEmojiDictionary: "絵文字の追加辞書"
 installed: "インストール済み"
+branding: "ブランディング"
 
 _requireRefreshBehavior:
   dialog: "ダイアログで通知"

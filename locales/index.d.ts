@@ -1103,6 +1103,7 @@ export interface Locale {
     "goToMisskey": string;
     "additionalEmojiDictionary": string;
     "installed": string;
+    "branding": string;
     "_requireRefreshBehavior": {
         "dialog": string;
         "quiet": string;
