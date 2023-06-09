@@ -16,6 +16,7 @@
 		header: '@bg',
 		navBg: '#eff4ff',
 		navHoverFg: '@pick',
+		renote: '@accent',
 		buttonGradateA: '@cherry',
 		buttonGradateB: '@pick',
 		badge: '#ffa9c3',
