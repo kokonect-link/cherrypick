@@ -46,7 +46,6 @@
 			<MkAvatar :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
-				<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
 				<div style="container-type: inline-size; padding-top: 10px;">
 					<p v-if="appearNote.cw != null" :class="$style.cw">
 						<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
@@ -154,7 +153,6 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 import { pleaseLogin } from '@/scripts/please-login';
 import { focusPrev, focusNext } from '@/scripts/focus';
 import { checkWordMute } from '@/scripts/check-word-mute';
@@ -235,7 +233,6 @@ const isDeleted = ref(false);
 const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref<any>(null);
 const translating = ref(false);
-const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
 let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId)) || (appearNote.myReaction != null)));
 

@@ -1,13 +1,18 @@
 <template>
 <header :class="$style.root">
-	<div style="display: flex; align-items: baseline; white-space: nowrap;">
-		<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
-			<MkUserName :user="note.user"/>
-		</MkA>
-		<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
-		<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
-			<img v-for="role in note.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
+	<div :class="$style.section">
+		<div style="display: flex;">
+			<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
+				<MkUserName :user="note.user"/>
+			</MkA>
+			<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
+			<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
+				<img v-for="role in note.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
+			</div>
 		</div>
+		<div :class="$style.username"><MkAcct :user="note.user"/></div>
+	</div>
+	<div :class="$style.section">
 		<div :class="$style.info">
 			<MkA :class="$style.time" :to="notePage(note)">
 				<MkTime :time="note.createdAt"/>
@@ -20,8 +25,8 @@
 			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
 		</div>
+		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance"/></div>
 	</div>
-	<div :class="$style.username"><MkAcct :user="note.user"/></div>
 </header>
 </template>
 
@@ -31,15 +36,35 @@ import * as misskey from 'misskey-js';
 import { i18n } from '@/i18n';
 import { notePage } from '@/filters/note';
 import { userPage } from '@/filters/user';
+import { defaultStore } from '@/store';
+import { deepClone } from '@/scripts/clone';
+import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
-defineProps<{
+const props = defineProps<{
 	note: misskey.entities.Note;
 	pinned?: boolean;
 }>();
+
+let note = $ref(deepClone(props.note));
+
+const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && note.user.instance);
 </script>
 
 <style lang="scss" module>
 .root {
+	display: flex;
+}
+
+.section {
+	display: flex;
+	align-items: flex-start;
+	white-space: nowrap;
+	flex-direction: column;
+
+	&:last-child {
+		align-items: flex-end;
+		margin-left: auto;
+	}
 }
 
 .name {
