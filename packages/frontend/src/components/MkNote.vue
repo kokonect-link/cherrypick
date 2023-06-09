@@ -43,7 +43,7 @@
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div style="display: flex; padding-bottom: 10px;">
 			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-			<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
+			<MkAvatar :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
 				<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
@@ -689,6 +689,11 @@ function showReactions(): void {
 	position: sticky !important;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
+
+	&.avatarReplyTo {
+		position: relative !important;
+		top: 0 !important;
+	}
 }
 
 .main {

@@ -1,5 +1,6 @@
 <template>
 <div :class="[$style.root, { [$style.children]: depth > 1 }]">
+	<div :class="$style.line"></div>
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
@@ -71,6 +72,13 @@ if (props.detail) {
 	}
 }
 
+.line {
+	position: absolute;
+	height: 100%;
+	left: 55px;
+	border-left: 2.5px dotted rgb(174, 174, 174);
+}
+
 .main {
 	display: flex;
 }
@@ -129,11 +137,19 @@ if (props.detail) {
 	.root {
 		padding: 28px 26px 0;
 	}
+
+	.line {
+		left: 48.5px;
+	}
 }
 
 @container (max-width: 500px) {
 	.root {
 		padding: 23px 25px;
+	}
+
+	.line {
+		left: 47.5px;
 	}
 }
 
@@ -144,6 +160,10 @@ if (props.detail) {
 		&.children {
 			padding: 10px 0 0 8px;
 		}
+	}
+
+	.line {
+		left: 46px;
 	}
 
 	.avatar {
