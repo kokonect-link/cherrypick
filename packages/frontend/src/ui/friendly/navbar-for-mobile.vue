@@ -269,7 +269,7 @@ function openProfile() {
 	top: 0;
 	left: 20px;
 	color: var(--navIndicator);
-	font-size: 8px;
+	font-size: 6px;
 	animation: blink 1s infinite;
 }
 
