@@ -1,8 +1,8 @@
 <template>
-<div :class="[$style.root, { [$style.narrow]: isMobile }]">
+<div :class="$style.root">
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
-	<MkStickyContainer ref="contents" :class="[$style.contents, { [$style.narrow]: isMobile }]" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
+	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
 		<template #header><XStatusBars :class="$style.statusbars"/></template>
 		<RouterView/>
 		<div v-if="!(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="$style.spacer"></div>
@@ -190,17 +190,17 @@ onMounted(() => {
 		}, { passive: true });
 	}
 
-	window.addEventListener('scroll', onScroll);
+	contents.value.rootEl.addEventListener('scroll', onScroll);
 
 	eventBus.on('queueUpdated', (q) => queueUpdated(q));
 });
 
 onBeforeUnmount(() => {
-	window.removeEventListener('scroll', onScroll);
+	contents.value.rootEl.removeEventListener('scroll', onScroll);
 });
 
 function onScroll() {
-	const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
+	const currentScrollPosition = contents.value.rootEl.scrollTop;
 	if (currentScrollPosition < 0) {
 		return;
 	}
@@ -361,13 +361,6 @@ $float-button-size: 65px;
 	contain: strict;
 	box-sizing: border-box;
 	display: flex;
-
-	&.narrow {
-		min-height: 100dvh;
-		height: auto;
-		overflow: initial;
-		contain: none;
-	}
 }
 
 .sidebar {
@@ -382,10 +375,6 @@ $float-button-size: 65px;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
 	background: var(--bg);
-
-	&.narrow {
-		overflow: initial;
-	}
 }
 
 .widgets {
