@@ -35,7 +35,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: misskey
+      POSTGRES_DB: cherrypick
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:

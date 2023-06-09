@@ -141,7 +141,7 @@ export async function common(createVue: () => App<Element>) {
 			}
 		}
 
-		history.replaceState({ misskey: 'loginId' }, '', target);
+		history.replaceState({ cherrypick: 'loginId' }, '', target);
 	}
 	//#endregion
 

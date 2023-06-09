@@ -167,8 +167,8 @@ TODO
 
 ## Environment Variable
 
-- `MISSKEY_CONFIG_YML`: Specify the file path of config.yml instead of default.yml (e.g. `2nd.yml`).
-- `MISSKEY_WEBFINGER_USE_HTTP`: If it's set true, WebFinger requests will be http instead of https, useful for testing federation between servers in localhost. NEVER USE IN PRODUCTION.
+- `CHERRYPICK_CONFIG_YML`: Specify the file path of config.yml instead of default.yml (e.g. `2nd.yml`).
+- `CHERRYPICK_WEBFINGER_USE_HTTP`: If it's set true, WebFinger requests will be http instead of https, useful for testing federation between servers in localhost. NEVER USE IN PRODUCTION.
 
 ## Continuous integration
 CherryPick uses GitHub Actions for executing automated tests.
