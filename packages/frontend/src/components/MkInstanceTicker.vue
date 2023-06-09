@@ -73,7 +73,5 @@ $height: 2ex;
 	font-weight: bold;
 	white-space: nowrap;
 	overflow: visible;
-	text-shadow: -1px -1px 0 var(--bg), 1px -1px 0 var(--bg),
-	-1px 1px 0 var(--bg), 1px 1px 0 var(--bg);
 }
 </style>
