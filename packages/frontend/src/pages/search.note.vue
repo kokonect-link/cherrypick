@@ -1,7 +1,7 @@
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search">
+		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @keydown="onInputKeydown">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
@@ -100,5 +100,11 @@ async function search() {
 	};
 
 	key++;
+}
+
+function onInputKeydown(evt: KeyboardEvent) {
+	if (evt.key === 'Enter') {
+		search();
+	}
 }
 </script>
