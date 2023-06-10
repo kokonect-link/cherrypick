@@ -20,7 +20,7 @@ import { } from 'vue';
 import { $i } from '@/account';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
-import * as mfm from 'mfm-js';
+import * as mfm from 'cherrypick-mfm-js';
 
 const props = defineProps<{
 	text: string;
