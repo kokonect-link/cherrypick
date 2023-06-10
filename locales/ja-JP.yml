@@ -1643,6 +1643,8 @@ _mfm:
   bgDescription: "指定した値で背景色を指定します。"
   plain: "プレーン"
   plainDescription: "内側の構文を全て無効にします。"
+  ruby: "ルビ"
+  rubyDescription: "文字の上にルビを表示します。"
 
 _instanceTicker:
   none: "表示しない"

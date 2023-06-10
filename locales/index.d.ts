@@ -1727,6 +1727,8 @@ export interface Locale {
         "bgDescription": string;
         "plain": string;
         "plainDescription": string;
+        "ruby": string;
+        "rubyDescription": string;
     };
     "_instanceTicker": {
         "none": string;

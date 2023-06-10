@@ -344,6 +344,16 @@
 					</div>
 				</div>
 			</div>
+			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.ruby }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.rubyDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_ruby"/>
+						<MkTextarea v-model="preview_ruby" :class="$style.text"><span>MFM {{ i18n.ts.sample }}</span></MkTextarea>
+					</div>
+				</div>
+			</div>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>
@@ -391,6 +401,7 @@ let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,
 let preview_fg = $ref('$[fg.color=ffbcdc Cherry]$[fg.color=b1d3ff Pick]');
 let preview_bg = $ref('$[bg.color=ffbcdc Cherry]$[bg.color=b1d3ff Pick]');
 let preview_plain = $ref('<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>');
+let preview_ruby = $ref('<ruby>CherryPick<rt>Misskey</rt></ruby>');
 
 const headerActions = $computed(() => []);
 

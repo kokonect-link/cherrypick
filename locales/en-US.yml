@@ -1620,6 +1620,8 @@ _mfm:
   bgDescription: "Set the background color to the specified value."
   plain: "Plain"
   plainDescription: "Deactivates the effects of all MFM contained within this MFM effect."
+  ruby: "Ruby"
+  rubyDescription: "Display ruby characters over the text."
 _instanceTicker:
   none: "Never show"
   remote: "Show for remote users"
