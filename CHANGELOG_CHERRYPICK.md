@@ -30,6 +30,9 @@
 - 타임라인에 노트의 답글을 표시하는 옵션의 기본값을 켜짐으로 설정
 - 네비게이션 바의 배치를 수정
 - 프로필 아이콘의 기본값을 사각형으로 설정
+- 미디어 타임라인 추가 ([misskey.design c01be0d](https://github.com/kiyo4act/misskey.design/commit/c01be0dc7674cdf0bcac6081c63baab52c4c9abe))
+- ruby 표기 지원 ([misskey.design 8826fbf](https://github.com/kiyo4act/misskey.design/commit/8826fbf77a9d6ff5cac7368da999f3d04aa68c97))
+- 노트 검색을 전체/로컬/리모트로 나누도록 변경 ([misskey.design 4adad07](https://github.com/kiyo4act/misskey.design/commit/4adad0768ce02bd49207a94678cf3c9130ed9e10))
 
 ### Client
 - 모바일에서 UI 흐림 효과를 껐을 때 가독성 향상
@@ -41,6 +44,7 @@
 - 이미 읽은 채팅은 가독성 개선을 위해 배경을 연하게
 - 답글 노트의 디자인 개선
 - 업데이트 팝업의 버튼 디자인 변경
+- 팔로우/팔로워를 비공개로 하고 있는 경우 표시는 '0'이 아닌 키 아이콘을 표시하도록 ([misskey-dev#10934](https://github.com/misskey-dev/misskey/pull/10934))
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: (Friendly) 타임라인이 변경되었을 때 네비게이션 바의 인디케이터가 사라지지 않는 문제
 - Fix: (Friendly) 모바일에서 헤더가 사라졌을 때 프로필 아이콘의 높이가 잘못 설정되는 문제
@@ -62,7 +66,7 @@
 ### General
 - 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
 - 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))
-- Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
+- Cloud Translation - Advanced(v3) 지원 추가 ([mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
 - mfm-cheat-sheet 복원
 
 ### Client
@@ -73,7 +77,7 @@
 - (Friendly) 데스크톱 모드에서 타임라인 옆에 알림 영역을 배치하도록
 - (Friendly) 오조작 방지를 위해 플로팅 버튼을 길게 눌러 새로고침 기능 제거
 - (Friendly) 채팅 탭에 플로팅 버튼 추가
-- 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
+- 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
 - about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
 - 계정 초기 설정 마법사 개선
   - 뒤로 가기 버튼 추가
