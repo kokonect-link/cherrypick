@@ -46,6 +46,7 @@
 - 업데이트 팝업의 버튼 디자인 변경
 - 팔로우/팔로워를 비공개로 하고 있는 경우 표시는 '0'이 아닌 키 아이콘을 표시하도록 ([misskey-dev#10934](https://github.com/misskey-dev/misskey/pull/10934))
 - 신고의 초기 댓글에 사용자 ID 추가 ([misskey.design fded63c](https://github.com/kiyo4act/misskey.design/commit/fded63c7317721daeb8babcdf901dc00ab475231), [misskey.design 8b6e303](https://github.com/kiyo4act/misskey.design/commit/8b6e303f184888193f4ce1daaa1629fedb46c7a9))
+- OGP 미리보기 추가 ([misskey.design 4eb0a6d](https://github.com/kiyo4act/misskey.design/commit/4eb0a6d8467c0c601e6fe37b0170c6c36f4bc8f2))
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: (Friendly) 타임라인이 변경되었을 때 네비게이션 바의 인디케이터가 사라지지 않는 문제
 - Fix: (Friendly) 모바일에서 헤더가 사라졌을 때 프로필 아이콘의 높이가 잘못 설정되는 문제
