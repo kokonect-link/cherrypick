@@ -120,6 +120,7 @@ export class SearchService {
 		userId?: Note['userId'] | null;
 		channelId?: Note['channelId'] | null;
 		host?: string | null;
+		origin?: string | null;
 	}, pagination: {
 		untilId?: Note['id'];
 		sinceId?: Note['id'];
@@ -155,6 +156,12 @@ export class SearchService {
 			return notes.sort((a, b) => a.id > b.id ? -1 : 1);
 		} else {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), pagination.sinceId, pagination.untilId);
+
+			if (opts.origin === 'local') {
+				query.andWhere('note.userHost IS NULL');
+			} else if (opts.origin === 'remote') {
+				query.andWhere('note.userHost IS NOT NULL');
+			}
 
 			if (opts.userId) {
 				query.andWhere('note.userId = :userId', { userId: opts.userId });
