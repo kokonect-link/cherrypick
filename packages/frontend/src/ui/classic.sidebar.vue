@@ -36,7 +36,7 @@
 			<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
 		</button>
 	</div>
-	<!--<MisskeyLogo class="misskey"/>-->
+	<!--<CherryPickLogo class="cherrypick"/>-->
 </div>
 </template>
 
@@ -50,7 +50,7 @@ import { openAccountMenu as openAccountMenu_, $i } from '@/account';
 import MkButton from '@/components/MkButton.vue';
 // import { StickySidebar } from '@/scripts/sticky-sidebar';
 // import { mainRouter } from '@/router';
-//import MisskeyLogo from '@assets/client/misskey.svg';
+//import CherryPickLogo from '@assets/client/cherrypick.svg';
 import { defaultStore } from '@/store';
 import { instance } from '@/instance';
 import { i18n } from '@/i18n';
