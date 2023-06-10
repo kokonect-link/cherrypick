@@ -30,14 +30,26 @@
 					<div :class="$style.statusItemLabel">{{ i18n.ts.notes }}</div>
 					<div>{{ number(user.notesCount) }}</div>
 				</div>
-				<div :class="$style.statusItem">
-					<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
-					<div>{{ number(user.followingCount) }}</div>
-				</div>
-				<div :class="$style.statusItem">
-					<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
-					<div>{{ number(user.followersCount) }}</div>
-				</div>
+				<template v-if="isFfVisibility($i, user)">
+					<div :class="$style.statusItem">
+						<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
+						<div>{{ number(user.followingCount) }}</div>
+					</div>
+					<div :class="$style.statusItem">
+						<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
+						<div>{{ number(user.followersCount) }}</div>
+					</div>
+				</template>
+				<template v-else>
+					<div :class="$style.statusItem">
+						<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
+						<div><i class="ti ti-lock" :class="[$style.keyWiggleArea, { [$style.animation]: animation }]"></i></div>
+					</div>
+					<div :class="$style.statusItem">
+						<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
+						<div><i class="ti ti-lock" :class="[$style.keyWiggleArea, { [$style.animation]: animation }]"></i></div>
+					</div>
+				</template>
 			</div>
 			<button class="_button" :class="$style.menu" @click="showMenu"><i class="ti ti-dots"></i></button>
 			<MkFollowButton v-if="$i && user.id != $i.id" :class="$style.follow" :user="user" mini/>
@@ -61,6 +73,7 @@ import number from '@/filters/number';
 import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
 import { $i } from '@/account';
+import { isFfVisibility } from '@/scripts/is-ff-visibility';
 
 const props = defineProps<{
 	showing: boolean;
@@ -75,6 +88,9 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex('middle');
+
+const animation = $ref(defaultStore.state.animation);
+
 let user = $ref<misskey.entities.UserDetailed | null>(null);
 let top = $ref(0);
 let left = $ref(0);
@@ -227,5 +243,38 @@ onMounted(() => {
 	position: absolute !important;
 	top: 8px;
 	right: 8px;
+}
+
+.keyWiggleArea {
+	display: block;
+	margin: 0 auto;
+}
+
+@keyframes keywiggle {
+	0% { transform: translate(-3px,-1px) rotate(-8deg); }
+	5% { transform: translateY(-1px) rotate(-10deg); }
+	10% { transform: translate(1px,-3px) rotate(0); }
+	15% { transform: translate(1px,1px) rotate(11deg); }
+	20% { transform: translate(-2px,1px) rotate(1deg); }
+	25% { transform: translate(-1px,-2px) rotate(-2deg); }
+	30% { transform: translate(-1px,2px) rotate(-3deg); }
+	35% { transform: translate(2px,1px) rotate(6deg); }
+	40% { transform: translate(-2px,-3px) rotate(-9deg); }
+	45% { transform: translateY(-1px) rotate(-12deg); }
+	50% { transform: translate(1px,2px) rotate(10deg); }
+	55% { transform: translateY(-3px) rotate(8deg); }
+	60% { transform: translate(1px,-1px) rotate(8deg); }
+	65% { transform: translateY(-1px) rotate(-7deg); }
+	70% { transform: translate(-1px,-3px) rotate(6deg); }
+	75% { transform: translateY(-2px) rotate(4deg); }
+	80% { transform: translate(-2px,-1px) rotate(3deg); }
+	85% { transform: translate(1px,-3px) rotate(-10deg); }
+	90% { transform: translate(1px) rotate(3deg); }
+	95% { transform: translate(-2px) rotate(-3deg); }
+	to { transform: translate(2px,1px) rotate(2deg); }
+}
+
+.animation:hover {
+	animation: keywiggle 1s;
 }
 </style>
