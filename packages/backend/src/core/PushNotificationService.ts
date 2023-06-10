@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import push from 'web-push';
 import * as Redis from 'ioredis';
 import { DI } from '@/di-symbols.js';
@@ -45,7 +45,7 @@ function truncateBody<T extends keyof PushNotificationsTypes>(type: T, body: Pus
 }
 
 @Injectable()
-export class PushNotificationService {
+export class PushNotificationService implements OnApplicationShutdown {
 	private subscriptionsCache: RedisKVCache<SwSubscription[]>;
 
 	constructor(
@@ -119,5 +119,15 @@ export class PushNotificationService {
 				}
 			});
 		}
+	}
+
+	@bindThis
+	public dispose(): void {
+		this.subscriptionsCache.dispose();
+	}
+
+	@bindThis
+	public onApplicationShutdown(signal?: string | undefined): void {
+		this.dispose();
 	}
 }
