@@ -199,6 +199,7 @@ function more() {
 
 .middle {
 	flex: 1;
+	z-index: 2;Z
 }
 
 .divider {

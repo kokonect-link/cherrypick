@@ -282,6 +282,7 @@ function openProfile() {
 
 	.middle {
 		flex: 1;
+		z-index: 2;
 	}
 
 	.divider {
