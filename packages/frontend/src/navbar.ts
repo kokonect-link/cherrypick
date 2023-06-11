@@ -127,7 +127,7 @@ export const navbarItemDef = reactive({
 					unisonReload();
 				},
 			}, {
-				text: i18n.ts.default,
+				text: 'Misskey',
 				active: ui === 'default',
 				action: () => {
 					miLocalStorage.setItem('ui', 'default');
