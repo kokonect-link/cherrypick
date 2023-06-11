@@ -1,6 +1,6 @@
 <template>
 <div :class="$style.root">
-	<MkAvatar :class="$style.avatar" :user="$i" link preview/>
+	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="$i" link preview/>
 	<div :class="$style.main">
 		<div :class="$style.header">
 			<MkUserName :user="$i" :nowrap="true"/>
@@ -21,6 +21,7 @@ import { $i } from '@/account';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
 import * as mfm from 'cherrypick-mfm-js';
+import { defaultStore } from '@/store';
 
 const props = defineProps<{
 	text: string;

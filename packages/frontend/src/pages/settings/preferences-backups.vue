@@ -85,6 +85,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'bannerDisplay',
 	'reportError',
 	'squareAvatars',
+	'hideAvatarsInNote',
 	'numberOfPageCache',
 	'aiChanMode',
 	'mediaListWithOneImageAppearance',

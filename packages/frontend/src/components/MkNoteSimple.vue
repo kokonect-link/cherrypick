@@ -1,6 +1,6 @@
 <template>
 <div :class="$style.root">
-	<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
+	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
 	<div :class="$style.main">
 		<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 		<div style="padding-top: 10px;">
@@ -25,6 +25,7 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import { $i } from '@/account';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { mainRouter } from '@/router';
+import { defaultStore } from '@/store';
 
 let showEl = $ref(false);
 

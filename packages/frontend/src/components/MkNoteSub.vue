@@ -1,9 +1,9 @@
 <template>
 <div :class="[$style.root, { [$style.children]: depth > 1 }]">
-	<div :class="$style.line"></div>
+	<div v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.line"></div>
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
-		<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
 		<div :class="$style.body">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
@@ -36,6 +36,7 @@ import { notePage } from '@/filters/note';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
+import { defaultStore } from '@/store';
 
 const props = withDefaults(defineProps<{
 	note: misskey.entities.Note;

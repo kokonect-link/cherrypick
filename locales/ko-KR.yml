@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+hideAvatarsInNote: "노트에서 프로필 아이콘 숨김"
 displayBanner: "배너 이미지 표시"
 requireRefresh: "페이지 새로 고침이 필요할 때"
 performanceWarning: "리소스를 많이 사용하므로, 디바이스의 온도가 높아지고 배터리의 소모가 빨라질 수 있어요"

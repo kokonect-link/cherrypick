@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+hideAvatarsInNote: "Hide avatars in notes"
 displayBanner: "Display Banner Image"
 requireRefresh: "When the page needs to refresh"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
