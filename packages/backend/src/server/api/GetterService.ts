@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { NotesRepository, UsersRepository } from '@/models/index.js';
+import type { NotesRepository, UsersRepository, UserProfilesRepository } from '@/models/index.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import type { LocalUser, RemoteUser, User } from '@/models/entities/User.js';
+import type { UserProfile } from '@/models/entities/UserProfile.js';
 import type { Note } from '@/models/entities/Note.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
@@ -15,6 +16,9 @@ export class GetterService {
 
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
+
+		@Inject(DI.userProfilesRepository)
+		private userProfilesRepository: UserProfilesRepository,
 
 		private userEntityService: UserEntityService,
 	) {
@@ -71,6 +75,17 @@ export class GetterService {
 
 		if (!this.userEntityService.isLocalUser(user)) {
 			throw new Error('user is not a local user');
+		}
+
+		return user;
+	}
+
+	@bindThis
+	public async getUserProfiles(userId: UserProfile['userId']) {
+		const user = await this.userProfilesRepository.findOneBy({ userId: userId });
+
+		if (user == null) {
+			throw new IdentifiableError('15348ddd-432d-49c2-8a5a-8069753becff', 'No such user.');
 		}
 
 		return user;

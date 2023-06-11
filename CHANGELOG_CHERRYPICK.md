@@ -34,6 +34,7 @@
 - ruby 표기 지원 ([misskey.design 8826fbf](https://github.com/kiyo4act/misskey.design/commit/8826fbf77a9d6ff5cac7368da999f3d04aa68c97))
 - 노트 검색을 전체/로컬/리모트로 나누도록 변경 ([misskey.design 4adad07](https://github.com/kiyo4act/misskey.design/commit/4adad0768ce02bd49207a94678cf3c9130ed9e10))
 - 노트/유저 검색 페이지에서 Enter 키를 누르면 검색하도록
+- 프로필 번역 기능 추가
 
 ### Client
 - 모바일에서 UI 흐림 효과를 껐을 때 가독성 향상

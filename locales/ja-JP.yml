@@ -1101,6 +1101,7 @@ goToMisskey: "CherryPickへ"
 additionalEmojiDictionary: "絵文字の追加辞書"
 installed: "インストール済み"
 branding: "ブランディング"
+translateProfile: "プロフィールを翻訳する"
 
 _requireRefreshBehavior:
   dialog: "ダイアログで通知"

@@ -1104,6 +1104,7 @@ export interface Locale {
     "additionalEmojiDictionary": string;
     "installed": string;
     "branding": string;
+    "translateProfile": string;
     "_requireRefreshBehavior": {
         "dialog": string;
         "quiet": string;

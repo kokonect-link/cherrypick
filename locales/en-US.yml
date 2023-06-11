@@ -1100,6 +1100,7 @@ later: "Later"
 goToMisskey: "To CherryPick"
 additionalEmojiDictionary: "Additional emoji dictionaries"
 installed: "Installed"
+translateProfile: "Translate a profile"
 _requireRefreshBehavior:
   dialog: "Show warning dialog"
   quiet: "Show unobtrusive alert"

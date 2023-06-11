@@ -356,6 +356,7 @@ import * as ep___users_show from './endpoints/users/show.js';
 import * as ep___users_stats from './endpoints/users/stats.js';
 import * as ep___users_achievements from './endpoints/users/achievements.js';
 import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
+import * as ep___users_translate from './endpoints/users/translate.js';
 import * as ep___fetchRss from './endpoints/fetch-rss.js';
 import * as ep___retention from './endpoints/retention.js';
 import { GetterService } from './GetterService.js';
@@ -717,6 +718,7 @@ const $users_show: Provider = { provide: 'ep:users/show', useClass: ep___users_s
 const $users_stats: Provider = { provide: 'ep:users/stats', useClass: ep___users_stats.default };
 const $users_achievements: Provider = { provide: 'ep:users/achievements', useClass: ep___users_achievements.default };
 const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass: ep___users_updateMemo.default };
+const $users_translate: Provider = { provide: 'ep:users/translate', useClass: ep___users_translate.default };
 const $fetchRss: Provider = { provide: 'ep:fetch-rss', useClass: ep___fetchRss.default };
 const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention.default };
 
@@ -1082,6 +1084,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_stats,
 		$users_achievements,
 		$users_updateMemo,
+		$users_translate,
 		$fetchRss,
 		$retention,
 	],
@@ -1438,6 +1441,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_stats,
 		$users_achievements,
 		$users_updateMemo,
+		$users_translate,
 		$fetchRss,
 		$retention,
 	],

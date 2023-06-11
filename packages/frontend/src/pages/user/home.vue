@@ -71,6 +71,18 @@
 						<MkOmit>
 							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :i="$i"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
+							<MkButton v-if="user.description" style="margin-top: 10px" small @click="translate">{{ i18n.ts.translateProfile }}</MkButton>
+							<div v-if="translating || translation" class="translation">
+								<MkLoading v-if="translating" mini/>
+								<div v-else>
+									<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+									<Mfm :text="translation.text" :isNote="false" :author="user" :i="$i"/>
+									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+									</div>
+								</div>
+							</div>
 						</MkOmit>
 					</div>
 					<div class="fields system">
@@ -147,7 +159,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
+import { defineAsyncComponent, computed, onMounted, onUnmounted, ref, nextTick, watch } from 'vue';
 import calcAge from 's-age';
 import * as misskey from 'misskey-js';
 import MkNote from '@/components/MkNote.vue';
@@ -172,6 +184,7 @@ import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os';
 import { isFfVisibility } from '@/scripts/is-ff-visibility';
 import { defaultStore } from '@/store';
+import { miLocalStorage } from '@/local-storage';
 
 const XPhotos = defineAsyncComponent(() => import('./index.photos.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
@@ -195,6 +208,9 @@ let memoDraft = $ref(props.user.memo);
 let isEditingMemo = $ref(false);
 let moderationNote = $ref(props.user.moderationNote);
 let editModerationNote = $ref(false);
+
+const translation = ref<any>(null);
+const translating = ref(false);
 
 watch($$(moderationNote), async () => {
 	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote });
@@ -262,6 +278,17 @@ async function updateMemo() {
 		userId: props.user.id,
 	});
 	isEditingMemo = false;
+}
+
+async function translate(): Promise<void> {
+	if (translation.value != null) return;
+	translating.value = true;
+	const res = await os.api('users/translate', {
+		userId: props.user.id,
+		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
+	});
+	translating.value = false;
+	translation.value = res;
 }
 
 watch([props.user], () => {
@@ -498,9 +525,18 @@ onUnmounted(() => {
 					padding: 24px 24px 24px 154px;
 					font-size: 0.95em;
 
-					> .empty {
-						margin: 0;
-						opacity: 0.5;
+					div {
+						> .empty {
+							margin: 0;
+							opacity: 0.5;
+						}
+
+						> .translation {
+							border: solid 0.5px var(--divider);
+							border-radius: var(--radius);
+							padding: 12px;
+							margin-top: 8px;
+						}
 					}
 				}
 

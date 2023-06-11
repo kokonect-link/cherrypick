@@ -1101,6 +1101,7 @@ later: "나중에"
 goToMisskey: "CherryPick으로"
 additionalEmojiDictionary: "이모지 추가 사전"
 installed: "설치됨"
+translateProfile: "프로필 번역하기"
 _requireRefreshBehavior:
   dialog: "알림창 표시"
   quiet: "조용히 알림"
