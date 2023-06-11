@@ -1,6 +1,6 @@
 <template>
 <div :class="[$style.root, { [$style.children]: depth > 1 }]">
-	<div v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.line"></div>
+	<div v-if="!defaultStore.state.hideAvatarsInNote && !hideLine" :class="$style.line"></div>
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
@@ -38,6 +38,8 @@ import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 
+let hideLine = $ref(false);
+
 const props = withDefaults(defineProps<{
 	note: misskey.entities.Note;
 	detail?: boolean;
@@ -57,6 +59,7 @@ if (props.detail) {
 		limit: 5,
 	}).then(res => {
 		replies = res;
+		hideLine = true;
 	});
 }
 </script>
@@ -76,7 +79,7 @@ if (props.detail) {
 .line {
 	position: absolute;
 	height: 100%;
-	left: 55px;
+	left: 60px;
 	border-left: 2.5px dotted rgb(174, 174, 174);
 }
 
@@ -98,8 +101,8 @@ if (props.detail) {
 	flex-shrink: 0;
 	display: block;
 	margin: 0 14px 0 0;
-	width: 48px;
-	height: 48px;
+	width: 58px;
+	height: 58px;
 	border-radius: 8px;
 }
 
@@ -140,17 +143,18 @@ if (props.detail) {
 	}
 
 	.line {
-		left: 48.5px;
+		left: 50.5px;
+	}
+
+	.avatar {
+		width: 50px;
+		height: 50px;
 	}
 }
 
 @container (max-width: 500px) {
 	.root {
 		padding: 23px 25px;
-	}
-
-	.line {
-		left: 47.5px;
 	}
 }
 
@@ -162,7 +166,9 @@ if (props.detail) {
 			padding: 10px 0 0 8px;
 		}
 	}
+}
 
+@container (max-width: 450px) {
 	.line {
 		left: 46px;
 	}
