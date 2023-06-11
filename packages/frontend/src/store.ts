@@ -112,10 +112,12 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: [
 			'notifications',
 			'messaging',
-			'explore',
-			'search',
 			'favorites',
 			'followRequests',
+			'-',
+			'explore',
+			'search',
+			'announcements',
 		],
 	},
 	visibility: {
