@@ -74,10 +74,10 @@
 						</div>
 						<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
 						<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
-						<button v-if="(isLong || isMFM) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
+						<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
 							<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
 						</button>
-						<button v-else-if="(isLong || isMFM) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+						<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
 							<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 						</button>
 					</div>
@@ -228,7 +228,7 @@ const isMFM = (appearNote.cw == null && appearNote.text != null && (
 	(appearNote.text.includes('$[scale')) ||
 	(appearNote.text.includes('$[position'))
 ));
-const collapsed = ref(appearNote.cw == null && (isLong || isMFM && defaultStore.state.collapseDefault));
+const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault)));
 const isDeleted = ref(false);
 const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref<any>(null);
