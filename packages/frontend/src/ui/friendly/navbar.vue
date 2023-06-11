@@ -161,15 +161,15 @@ function openProfile() {
 
 		&.topBanner {
 			top: 0;
-			height: 100%;
+			height: 150%;
 			-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
 			mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
 		}
 
 		&.bottomBanner {
 			bottom: 0;
-			height: 80%;
-			background-position-y: -10px;
+			height: 100%;
+			background-position-y: 20px;
 			-webkit-mask-image: linear-gradient(0deg,rgba(0,0,0,.75) 15%,rgba(0,0,0,0) 80%);
 			mask-image: linear-gradient(0deg,rgba(0,0,0,.75) 15%,rgba(0,0,0,0) 80%);
 		}
