@@ -681,8 +681,8 @@ function showReactions(): void {
 	flex-shrink: 0;
 	display: block !important;
 	margin: 0 14px 0 0;
-	width: 48px;
-	height: 48px;
+	width: 58px;
+	height: 58px;
 	position: sticky !important;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
@@ -831,6 +831,11 @@ function showReactions(): void {
 	.article {
 		padding: 24px 26px;
 	}
+
+	.avatar {
+		width: 50px;
+		height: 50px;
+	}
 }
 
 @container (max-width: 500px) {
@@ -882,7 +887,6 @@ function showReactions(): void {
 		width: 46px;
 		height: 46px;
 		top: calc(14px + var(--stickyTop, 0px));
-		transition: top 0.5s;
 	}
 }
 
