@@ -37,6 +37,14 @@
 		<option value="top">{{ i18n.ts._menuDisplay.top }}</option>
 		<!-- <MkRadio v-model="menuDisplay" value="hide" disabled>{{ i18n.ts._menuDisplay.hide }}</MkRadio>--> <!-- TODO: サイドバーを完全に隠せるようにすると、別途ハンバーガーボタンのようなものをUIに表示する必要があり面倒 -->
 	</MkRadios>
+
+	<MkRadios v-model="bannerDisplay">
+		<template #label>{{ i18n.ts.displayBanner }}</template>
+		<option value="all">{{ i18n.ts._bannerDisplay.all }}</option>
+		<option value="top">{{ i18n.ts._bannerDisplay.top }}</option>
+		<option value="bottom">{{ i18n.ts._bannerDisplay.bottom }}</option>
+		<option value="hide">{{ i18n.ts._bannerDisplay.hide }}</option>
+	</MkRadios>
 </div>
 </template>
 
@@ -63,6 +71,7 @@ const items = ref(defaultStore.state.menu.map(x => ({
 })));
 
 const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
+const bannerDisplay = computed(defaultStore.makeGetterSetter('bannerDisplay'));
 
 async function reloadAsk() {
 	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
@@ -109,7 +118,7 @@ function reset() {
 	}));
 }
 
-watch(menuDisplay, async () => {
+watch([menuDisplay, bannerDisplay], async () => {
 	await reloadAsk();
 });
 

@@ -366,6 +366,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'dialog' as 'quiet' | 'dialog',
 	},
+	bannerDisplay: {
+		where: 'device',
+		default: 'all' as 'all' | 'top' | 'bottom' | 'hide',
+	},
 }));
 
 // TODO: 他のタブと永続化されたstateを同期

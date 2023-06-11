@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+displayBanner: "배너 이미지 표시"
 requireRefresh: "페이지 새로 고침이 필요할 때"
 performanceWarning: "리소스를 많이 사용하므로, 디바이스의 온도가 높아지고 배터리의 소모가 빨라질 수 있어요"
 photosensitiveSeizuresWarning: "광과민성 발작을 일으킬 수 있어요"
@@ -1102,6 +1103,11 @@ goToMisskey: "CherryPick으로"
 additionalEmojiDictionary: "이모지 추가 사전"
 installed: "설치됨"
 translateProfile: "프로필 번역하기"
+_bannerDisplay:
+  all: "전부"
+  top: "상단 (서버 배너)"
+  bottom: "하단 (프로필 배너)"
+  hide: "숨기기"
 _requireRefreshBehavior:
   dialog: "알림창 표시"
   quiet: "조용히 알림"

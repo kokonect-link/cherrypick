@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+displayBanner: "Display Banner Image"
 requireRefresh: "When the page needs to refresh"
 performanceWarning: "High resource usage can result in higher device temperatures and faster battery consumption"
 photosensitiveSeizuresWarning: "Can cause photosensitive seizures"
@@ -1102,6 +1103,11 @@ additionalEmojiDictionary: "Additional emoji dictionaries"
 installed: "Installed"
 branding: "Branding"
 translateProfile: "Translate a profile"
+_bannerDisplay:
+  all: "All"
+  top: "Top (Server banner)"
+  bottom: "Bottom (Profile banner)"
+  hide: "Hide"
 _requireRefreshBehavior:
   dialog: "Show warning dialog"
   quiet: "Show unobtrusive alert"
