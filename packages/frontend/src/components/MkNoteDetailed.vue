@@ -41,6 +41,9 @@
 						<MkUserName :nowrap="false" :user="appearNote.user"/>
 					</MkA>
 					<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
+					<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
+						<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
+					</span>
 					<div :class="$style.noteHeaderInfo">
 						<span v-if="appearNote.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[appearNote.visibility]">
 							<i v-if="appearNote.visibility === 'home'" class="ti ti-home"></i>
@@ -709,5 +712,18 @@ if (appearNote.replyId) {
 	padding: 8px;
 	text-align: center;
 	opacity: 0.7;
+}
+
+.badgeRoles {
+	margin: 0 .5em 0 0;
+}
+
+.badgeRole {
+	height: 1.3em;
+	vertical-align: -20%;
+
+	& + .badgeRole {
+		margin-left: 0.2em;
+	}
 }
 </style>
