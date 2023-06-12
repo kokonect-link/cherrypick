@@ -1,4 +1,4 @@
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { i18n } from '@/i18n';
 
 /**

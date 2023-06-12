@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { UserLite } from 'misskey-js/built/entities';
+import { UserLite } from 'cherrypick-js/built/entities';
 import MkMention from './MkMention.vue';
 import { i18n } from '@/i18n';
 import { host as localHost } from '@/config';

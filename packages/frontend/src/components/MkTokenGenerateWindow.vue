@@ -35,7 +35,7 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import { permissions as kinds } from 'misskey-js';
+import { permissions as kinds } from 'cherrypick-js';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
 import MkButton from './MkButton.vue';

@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import XNotification from '@/components/MkNotification.vue';
 
 defineProps<{

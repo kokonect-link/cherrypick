@@ -17,7 +17,7 @@ import {
 	uploadFile,
 	testPaginationConsistency,
 } from '../utils.js';
-import type * as misskey from 'misskey-js';
+import type * as misskey from 'cherrypick-js';
 import type { INestApplicationContext } from '@nestjs/common';
 
 const compareBy = <T extends { id: string }>(selector: (s: T) => string = (s: T): string => s.id) => (a: T, b: T): number => {
@@ -28,7 +28,7 @@ describe('アンテナ', () => {
 	// エンティティとしてのアンテナを主眼においたテストを記述する
 	// (Antennaを返すエンドポイント、Antennaエンティティを書き換えるエンドポイント、Antennaからノートを取得するエンドポイントをテストする)
 
-	// BUG misskey-jsとjson-schemaが一致していない。
+	// BUG cherrypick-jsとjson-schemaが一致していない。
 	// - srcのenumにgroupが残っている
 	// - userGroupIdが残っている, isActiveがない
 	type Antenna = misskey.entities.Antenna | Packed<'Antenna'>;

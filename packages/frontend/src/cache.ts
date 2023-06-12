@@ -1,4 +1,4 @@
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { Cache } from '@/scripts/cache';
 
 export const clipsCache = new Cache<misskey.entities.Clip[]>(Infinity);

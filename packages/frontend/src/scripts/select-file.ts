@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { DriveFile } from 'misskey-js/built/entities';
+import { DriveFile } from 'cherrypick-js/built/entities';
 import * as os from '@/os';
 import { useStream } from '@/stream';
 import { i18n } from '@/i18n';

@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { toUnicode } from 'punycode/';
 import MkCondensedLine from './MkCondensedLine.vue';
 import { host as hostRaw } from '@/config';

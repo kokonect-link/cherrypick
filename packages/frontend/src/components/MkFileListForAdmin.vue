@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import * as Acct from 'misskey-js/built/acct';
+import * as Acct from 'cherrypick-js/built/acct';
 import MkPagination from '@/components/MkPagination.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import bytes from '@/filters/bytes';

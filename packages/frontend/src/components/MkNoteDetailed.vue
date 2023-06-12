@@ -143,7 +143,7 @@
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';

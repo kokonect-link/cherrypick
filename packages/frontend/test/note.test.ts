@@ -1,7 +1,7 @@
 import { describe, test, assert, afterEach } from 'vitest';
 import { render, cleanup, type RenderResult } from '@testing-library/vue';
 import './init';
-import type { DriveFile } from 'misskey-js/built/entities';
+import type { DriveFile } from 'cherrypick-js/built/entities';
 import { components } from '@/components';
 import { directives } from '@/directives';
 import MkMediaImage from '@/components/MkMediaImage.vue';

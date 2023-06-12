@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import XText from './page.text.vue';
 import XSection from './page.section.vue';
 import XImage from './page.image.vue';

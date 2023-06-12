@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { defineComponent, markRaw, onUnmounted, onMounted, computed, ref } from 'vue';
-import { notificationTypes } from 'misskey-js';
+import { notificationTypes } from 'cherrypick-js';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import XNotification from '@/components/MkNotification.vue';
 import XList from '@/components/MkDateSeparatedList.vue';

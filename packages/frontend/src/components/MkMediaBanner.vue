@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { soundConfigStore } from '@/scripts/sound';
 import { i18n } from '@/i18n';
 

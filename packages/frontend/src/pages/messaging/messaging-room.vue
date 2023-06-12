@@ -57,8 +57,8 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, nextTick, onBeforeUnmount, watch } from 'vue';
-import * as Misskey from 'misskey-js';
-import * as Acct from 'misskey-js/built/acct';
+import * as Misskey from 'cherrypick-js';
+import * as Acct from 'cherrypick-js/built/acct';
 import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';

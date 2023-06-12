@@ -1,6 +1,6 @@
 import { throttle } from 'throttle-debounce';
 import { markRaw } from 'vue';
-import { notificationTypes } from 'misskey-js';
+import { notificationTypes } from 'cherrypick-js';
 import { Storage } from '../../pizzax';
 import { api } from '@/os';
 import { deepClone } from '@/scripts/clone';

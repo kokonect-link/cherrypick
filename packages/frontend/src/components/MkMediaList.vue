@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { onMounted, watch, shallowRef } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
 import 'photoswipe/style.css';

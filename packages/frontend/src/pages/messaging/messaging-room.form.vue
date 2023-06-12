@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { onMounted, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { throttle } from 'throttle-debounce';

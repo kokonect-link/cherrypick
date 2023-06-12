@@ -93,7 +93,7 @@
 
 <script lang="ts" setup>
 import { ref, shallowRef, computed, watch, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import XSection from '@/components/MkEmojiPicker.section.vue';
 import { emojilist, emojiCharByCategory, UnicodeEmojiDef, unicodeEmojiCategories as categories, getEmojiName } from '@/scripts/emojilist';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';

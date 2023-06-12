@@ -43,7 +43,7 @@
 
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted } from 'vue';
-import * as Acct from 'misskey-js/built/acct';
+import * as Acct from 'cherrypick-js/built/acct';
 import { acct } from '@/filters/user';
 import * as os from '@/os';
 import { useStream } from '@/stream';

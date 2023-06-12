@@ -1,4 +1,4 @@
-import { Endpoints } from 'misskey-js/built/api.types';
+import { Endpoints } from 'cherrypick-js/built/api.types';
 import { ref } from 'vue';
 import { apiUrl } from '@/config';
 import { $i } from '@/account';

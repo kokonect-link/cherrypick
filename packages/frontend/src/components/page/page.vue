@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { onMounted, nextTick } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import XBlock from './page.block.vue';
 
 defineProps<{

@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, shallowRef, watch } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import * as os from '@/os';

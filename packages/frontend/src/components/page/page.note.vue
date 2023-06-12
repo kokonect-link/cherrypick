@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 import { onMounted, Ref, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import { NoteBlock } from './block.type';
 import MkNote from '@/components/MkNote.vue';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';

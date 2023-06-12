@@ -219,7 +219,7 @@ CherryPick uses [Storybook](https://storybook.js.org/) for UI development.
 ##### Setup
 
 ```bash
-pnpm --filter misskey-js build
+pnpm --filter cherrypick-js build
 pnpm --filter frontend tsc -p .storybook && (node packages/frontend/.storybook/preload-locale.js & node packages/frontend/.storybook/preload-theme.js)
 ```
 
@@ -234,7 +234,7 @@ node packages/frontend/.storybook/generate.js && pnpm --filter frontend storyboo
 ##### Setup
 
 ```bash
-pnpm --filter misskey-js build
+pnpm --filter cherrypick-js build
 ```
 
 ##### Run
@@ -435,7 +435,7 @@ export const paramDef = {
 ```
 
 ### コネクションには`markRaw`せよ
-**Vueのコンポーネントのdataオプションとして**misskey.jsのコネクションを設定するとき、必ず`markRaw`でラップしてください。インスタンスが不必要にリアクティブ化されることで、misskey.js内の処理で不具合が発生するとともに、パフォーマンス上の問題にも繋がる。なお、Composition APIを使う場合はこの限りではない(リアクティブ化はマニュアルなため)。
+**Vueのコンポーネントのdataオプションとして**cherrypick.jsのコネクションを設定するとき、必ず`markRaw`でラップしてください。インスタンスが不必要にリアクティブ化されることで、misskey.js内の処理で不具合が発生するとともに、パフォーマンス上の問題にも繋がる。なお、Composition APIを使う場合はこの限りではない(リアクティブ化はマニュアルなため)。
 
 ### JSONのimportに気を付けよう
 TypeScriptでjsonをimportすると、tscでコンパイルするときにそのjsonファイルも一緒にdistディレクトリに吐き出されてしまう。この挙動により、意図せずファイルの書き換えが発生することがあるので、jsonをimportするときは書き換えられても良いものかどうか確認すること。書き換えされて欲しくない場合は、importで読み込むのではなく、`fs.readFileSync`などの関数を使って読み込むようにすればよい。

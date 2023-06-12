@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import { Instance } from 'misskey-js/built/entities';
+import { Instance } from 'cherrypick-js/built/entities';
 import XTimeline from './welcome.timeline.vue';
 import MarqueeText from '@/components/MkMarquee.vue';
 import MkFeaturedPhotos from '@/components/MkFeaturedPhotos.vue';

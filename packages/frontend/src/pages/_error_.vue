@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import MkButton from '@/components/MkButton.vue';
 import { version } from '@/config';
 import * as os from '@/os';

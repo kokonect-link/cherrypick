@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import bytes from '@/filters/bytes';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';

@@ -66,6 +66,7 @@
 
 ### Server
 - mfm-js를 cherrypick-mfm-js로 변경
+- misskey-js를 cherrypick-js로 변경
 
 ---
 

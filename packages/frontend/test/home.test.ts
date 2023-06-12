@@ -1,7 +1,7 @@
 import { describe, test, assert, afterEach } from 'vitest';
 import { render, cleanup, type RenderResult } from '@testing-library/vue';
 import './init';
-import type * as misskey from 'misskey-js';
+import type * as misskey from 'cherrypick-js';
 import { directives } from '@/directives';
 import { components } from '@/components/index';
 import XHome from '@/pages/user/home.vue';
