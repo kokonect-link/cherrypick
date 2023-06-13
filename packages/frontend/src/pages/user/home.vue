@@ -53,7 +53,7 @@
 							<template #label>Moderation note</template>
 						</MkTextarea>
 						<div v-else>
-							<MkButton small @click="editModerationNote = true">Add moderation note</MkButton>
+							<MkButton class="moderationNoteButton" small @click="editModerationNote = true">Add moderation note</MkButton>
 						</div>
 					</div>
 					<div v-if="isEditingMemo || memoDraft" class="memo" :class="{'no-memo': !memoDraft}">
@@ -686,6 +686,12 @@ onUnmounted(() => {
 
 				> .moderationNote {
 					margin: 16px 16px 0 16px;
+
+					div {
+						> .moderationNoteButton {
+							margin: 0 auto;
+						}
+					}
 				}
 
 				> .memo {
