@@ -1,6 +1,6 @@
 <template>
 <MkStickyContainer>
-	<template #header><XHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<XQueue v-if="tab === 'deliver'" domain="deliver"/>
 		<XQueue v-else-if="tab === 'inbox'" domain="inbox"/>
@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import XQueue from './queue.chart.vue';
-import XHeader from './_header_.vue';
+import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import * as os from '@/os';
 import * as config from '@/config';
 import { i18n } from '@/i18n';
@@ -60,7 +60,7 @@ const headerTabs = $computed(() => [{
 }, {
 	key: 'inbox',
 	title: 'Inbox',
-}]);
+}] as Tab[]);
 
 definePageMetadata({
 	title: i18n.ts.jobQueue,
