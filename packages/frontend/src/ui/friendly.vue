@@ -5,7 +5,7 @@
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
 		<template #header><XStatusBars :class="$style.statusbars"/></template>
 		<RouterView/>
-		<div v-if="!(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="$style.spacer"></div>
+		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
 	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotification && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
@@ -19,7 +19,7 @@
 	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatNavButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
 	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="os.post()"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i class="ti ti-pencil"></i></button>
-	<button v-if="isMobile && mainRouter.currentRoute.value.name === 'messaging' && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i class="ti ti-plus"></i></button>
+	<button v-if="isMobile && mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i class="ti ti-plus"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
@@ -28,7 +28,7 @@
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.replace('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.replace('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.replace('/my/notifications')"><i :class="$style.navButtonIcon" class="ti ti-bell"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
-		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'messaging' || mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.replace('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.replace('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
 		<button :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
 		<!-- <button :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
 	</div>
