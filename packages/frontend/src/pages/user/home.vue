@@ -71,7 +71,7 @@
 						<MkOmit>
 							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :i="$i"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
-							<MkButton v-if="user.description" style="margin-top: 10px" small @click="translate">{{ i18n.ts.translateProfile }}</MkButton>
+							<MkButton v-if="user.description" class="translateButton" small @click="translate">{{ i18n.ts.translateProfile }}</MkButton>
 							<div v-if="translating || translation" class="translation">
 								<MkLoading v-if="translating" mini/>
 								<div v-else>
@@ -531,6 +531,10 @@ onUnmounted(() => {
 							opacity: 0.5;
 						}
 
+						> .translateButton {
+							margin-top: 10px;
+						}
+
 						> .translation {
 							border: solid 0.5px var(--divider);
 							border-radius: var(--radius);
@@ -691,6 +695,12 @@ onUnmounted(() => {
 				> .description {
 					padding: 16px;
 					text-align: center;
+
+					div {
+						> .translateButton {
+							margin: 10px auto 0;
+						}
+					}
 				}
 
 				> .fields {
