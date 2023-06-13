@@ -16,9 +16,9 @@
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatNavButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatNavButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && !(mainRouter.currentRoute.value.name === 'messaging' || mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="os.post()"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="os.post()"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i class="ti ti-pencil"></i></button>
 	<button v-if="isMobile && mainRouter.currentRoute.value.name === 'messaging' && !(mainRouter.currentRoute.value.name === 'messaging-room' || mainRouter.currentRoute.value.name === 'messaging-room-group')" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i class="ti ti-plus"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
@@ -125,6 +125,20 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
+
+const enableNavButton = [
+	'index',
+	'explore',
+	'my-notifications',
+	'messaging',
+];
+
+const enablePostButton = [
+	'index',
+	'explore',
+	'my-notifications',
+	'user',
+];
 
 let showEl = $ref(false);
 let lastScrollPosition = $ref(0);
