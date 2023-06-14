@@ -394,6 +394,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	showPostFormPreview: {
+		where: 'device',
+		default: false,
+	},
 	reactableRemoteReactionEnabled: {
 		where: 'account',
 		default: true,

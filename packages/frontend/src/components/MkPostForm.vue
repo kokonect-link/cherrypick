@@ -167,7 +167,7 @@ let poll = $ref<{
 	expiredAfter: string | null;
 } | null>(null);
 let useCw = $ref(false);
-let showPreview = $ref(false);
+let showPreview = $ref(defaultStore.state.rememberPostFormToggleStateEnabled ? defaultStore.state.showPostFormPreview : false);
 let cw = $ref<string | null>(null);
 let localOnly = $ref<boolean>(props.initialLocalOnly ?? defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly);
 let visibility = $ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility) as typeof misskey.noteVisibilities[number]);
@@ -257,6 +257,11 @@ watch($$(visibleUsers), () => {
 	checkMissingMention();
 }, {
 	deep: true,
+});
+
+watch($$(showPreview), () => {
+	if (!defaultStore.state.rememberPostFormToggleStateEnabled) return;
+	defaultStore.set('showPostFormPreview', showPreview);
 });
 
 if (props.mention) {
