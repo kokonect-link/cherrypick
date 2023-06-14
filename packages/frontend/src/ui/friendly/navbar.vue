@@ -161,7 +161,7 @@ function openProfile() {
 
 		&.topBanner {
 			top: 0;
-			height: 150%;
+			height: 100%;
 			-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
 			mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
 		}
