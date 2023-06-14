@@ -336,6 +336,12 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	additionalUnicodeEmojiIndexes: {
+		where: 'device',
+		default: {} as Record<string, Record<string, string[]>>,
+	},
+
+	// #region CherryPick
 	useEnterToSend: {
 		where: 'device',
 		default: false,
@@ -351,10 +357,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	fontSize: {
 		where: 'device',
 		default: 8,
-	},
-	additionalUnicodeEmojiIndexes: {
-		where: 'device',
-		default: {} as Record<string, Record<string, string[]>>,
 	},
 	friendlyEnableNotification: {
 		where: 'device',
@@ -383,6 +385,18 @@ export const defaultStore = markRaw(new Storage('base', {
 	nicknameMap: {
 		where: 'account',
 		default: {} as Record<string, string>,
+	},
+	infoButtonForNoteActionsEnabled: {
+		where: 'account',
+		default: true,
+	},
+	rememberPostFormToggleStateEnabled: {
+		where: 'account',
+		default: true,
+	},
+	reactableRemoteReactionEnabled: {
+		where: 'account',
+		default: true,
 	},
 	// #endregion
 }));
