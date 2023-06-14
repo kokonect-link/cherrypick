@@ -39,6 +39,7 @@
 - 노트에서 프로필 아이콘을 숨기는 옵션 추가
 - 닉네임 기능 ([shrimpia 126f145](https://github.com/shrimpia/misskey/commit/126f145560caa0cc34fe8d2c9ee22f3be922ea10), [shrimpia 58f70be](https://github.com/shrimpia/misskey/commit/58f70beb9aff2287a64d903b43583184340294aa))
 	- 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
+- [노트 액션 버튼을 마우스를 올렸을 때에만 표시]를 켰을 때, 자세히 버튼을 표시하도록 변경 ([shrimpia 4802191](https://github.com/shrimpia/misskey/commit/48021913bb9b6b2a314e8d88e3816f6f66a52888))
 
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음
