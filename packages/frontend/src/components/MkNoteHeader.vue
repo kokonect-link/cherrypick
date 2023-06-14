@@ -72,8 +72,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	display: block;
 	margin: 0 .5em 0 0;
 	padding: 0;
-	overflow: scroll;
-	overflow-wrap: anywhere;
+	overflow: hidden;
 	font-size: 1em;
 	font-weight: bold;
 	text-decoration: none;
