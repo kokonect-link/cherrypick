@@ -61,11 +61,6 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	white-space: nowrap;
 	flex-direction: column;
 
-	&:first-child {
-		overflow: scroll;
-		overflow-wrap: anywhere;
-	}
-
 	&:last-child {
 		align-items: flex-end;
 		margin-left: auto;
@@ -77,11 +72,13 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	display: block;
 	margin: 0 .5em 0 0;
 	padding: 0;
-	overflow: hidden;
+	overflow: scroll;
+	overflow-wrap: anywhere;
 	font-size: 1em;
 	font-weight: bold;
 	text-decoration: none;
 	text-overflow: ellipsis;
+	max-width: 300px;
 
 	&:hover {
 		color: var(--nameHover);
@@ -131,6 +128,12 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 
 	& + .badgeRole {
 		margin-left: 0.2em;
+	}
+}
+
+@container (max-width: 500px) {
+	.name {
+		max-width: 200px;
 	}
 }
 </style>
