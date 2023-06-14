@@ -279,11 +279,8 @@ function closeAccountMenu() {
 }
 
 function openMessage(ev: MouseEvent) {
-	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) {
-		eventBus.emit('openMessage', ev);
-	} else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) {
-		os.post();
-	}
+	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) eventBus.emit('openMessage', ev);
+	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
 }
 
 let navFooterHeight = $ref(0);
