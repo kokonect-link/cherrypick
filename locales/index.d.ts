@@ -1119,6 +1119,7 @@ export interface Locale {
         "infoButtonForNoteActionsDescription": string;
         "rememberPostFormToggleState": string;
         "reactableRemoteReaction": string;
+        "showFollowingMessageInsteadOfButton": string;
     };
     "_bannerDisplay": {
         "all": string;

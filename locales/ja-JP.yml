@@ -1117,6 +1117,7 @@ _cherrypick:
   infoButtonForNoteActionsDescription: "オプション「ノートの操作部をホバー時のみ表示する」をオンにしたときに適用されます。"
   rememberPostFormToggleState: "投稿フォームにて、プレビューのオン・オフを記憶する"
   reactableRemoteReaction: "リモートのカスタム絵文字リアクションでも、このサーバーに同じ名前の絵文字があればリアクションできるようにする"
+  showFollowingMessageInsteadOfButton: "既にフォローしている場合、通知欄にフォローボタンを表示しない"
 
 _bannerDisplay:
   all: "全て"

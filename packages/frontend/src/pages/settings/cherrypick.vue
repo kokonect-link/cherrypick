@@ -22,9 +22,7 @@
 			</MkSwitch>
 			<MkSwitch v-model="rememberPostFormToggleStateEnabled">{{ i18n.ts._cherrypick.rememberPostFormToggleState }}</MkSwitch>
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
-			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">
-				既にフォローしている場合、通知欄にフォローボタンを表示しない
-			</MkSwitch>
+			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
 		</div>
 	</FormSection>
 	<!--
