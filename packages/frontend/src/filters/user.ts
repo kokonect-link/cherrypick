@@ -1,7 +1,7 @@
 import * as misskey from 'cherrypick-js';
 import * as Acct from 'cherrypick-js/built/acct';
 import { url } from '@/config';
-import {defaultStore} from "@/store";
+import { defaultStore } from '@/store';
 
 export const acct = (user: misskey.Acct) => {
 	return Acct.toString(user);

@@ -37,7 +37,7 @@ import { useStream } from '@/stream';
 import { i18n } from '@/i18n';
 import { claimAchievement } from '@/scripts/achievements';
 import { $i } from '@/account';
-import {userName} from "@/filters/user";
+import { userName } from '@/filters/user';
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,

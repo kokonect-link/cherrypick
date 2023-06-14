@@ -9,7 +9,7 @@ import * as Acct from 'cherrypick-js/built/acct';
 import * as os from '@/os';
 import { mainRouter } from '@/router';
 import { i18n } from '@/i18n';
-import {userName} from "@/filters/user";
+import { userName } from '@/filters/user';
 
 async function follow(user): Promise<void> {
 	const { canceled } = await os.confirm({

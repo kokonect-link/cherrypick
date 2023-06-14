@@ -57,7 +57,7 @@
 			<MkSwitch v-model="ebiNoteViewEnabled">
 				新しいノートUIを試す
 			</MkSwitch>
-			<MkNote :note="noteMock" />
+			<MkNote :note="noteMock"/>
 		</div>
 	</FormSection>
 </div>
@@ -65,16 +65,16 @@
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
+import { Note, User } from 'cherrypick-js/src/entities';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkNote from '@/components/MkNote.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store';
 import * as os from '@/os';
 import { unisonReload } from '@/scripts/unison-reload';
 import { i18n } from '@/i18n';
+import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import MkNote from "@/components/MkNote.vue";
-import {Note, User} from "misskey-js/built/entities";
-import {$i} from "@/account";
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
