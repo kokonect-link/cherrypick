@@ -214,6 +214,7 @@ function openProfile() {
 	padding-right: 8px;
 	margin-left: 5px;
 	font-weight: bold;
+	max-width: 90px;
 }
 
 .drawer {
