@@ -1107,8 +1107,10 @@ installed: "설치됨"
 translateProfile: "프로필 번역하기"
 _bannerDisplay:
   all: "전부"
+  topBottom: "상단 및 하단"
   top: "상단 (서버 배너)"
   bottom: "하단 (프로필 배너)"
+  bg: "백그라운드"
   hide: "숨기기"
 _requireRefreshBehavior:
   dialog: "알림창 표시"

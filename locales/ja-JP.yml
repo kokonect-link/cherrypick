@@ -1108,8 +1108,10 @@ translateProfile: "プロフィールを翻訳する"
 
 _bannerDisplay:
   all: "全て"
+  topBottom: "上部と下部"
   top: "上部（サーバーバナー）"
   bottom: "下部（プロフィールバナー）"
+  bg: "バックグラウンド"
   hide: "隠す"
 
 _requireRefreshBehavior:

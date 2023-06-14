@@ -370,7 +370,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	bannerDisplay: {
 		where: 'device',
-		default: 'all' as 'all' | 'top' | 'bottom' | 'hide',
+		default: 'topBottom' as 'all' | 'topBottom' | 'top' | 'bottom' | 'bg' | 'hide',
 	},
 	hideAvatarsInNote: {
 		where: 'device',

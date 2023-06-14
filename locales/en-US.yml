@@ -1107,8 +1107,10 @@ branding: "Branding"
 translateProfile: "Translate a profile"
 _bannerDisplay:
   all: "All"
+  topBottom: "Top and Bottom"
   top: "Top (Server banner)"
   bottom: "Bottom (Profile banner)"
+  bg: "Background"
   hide: "Hide"
 _requireRefreshBehavior:
   dialog: "Show warning dialog"

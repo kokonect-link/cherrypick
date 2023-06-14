@@ -1110,8 +1110,10 @@ export interface Locale {
     "translateProfile": string;
     "_bannerDisplay": {
         "all": string;
+        "topBottom": string;
         "top": string;
         "bottom": string;
+        "bg": string;
         "hide": string;
     };
     "_requireRefreshBehavior": {
