@@ -680,12 +680,13 @@ function showReactions(): void {
 .avatar {
 	flex-shrink: 0;
 	display: block !important;
+	position: sticky !important;
 	margin: 0 14px 0 0;
 	width: 58px;
 	height: 58px;
-	position: sticky !important;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
+	transition: top 0.5s;
 
 	&.avatarReplyTo {
 		position: relative !important;
