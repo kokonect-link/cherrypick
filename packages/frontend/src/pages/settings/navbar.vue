@@ -62,7 +62,6 @@ import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { deepClone } from '@/scripts/clone';
-import {MenuItem} from "@/types/menu";
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -86,7 +85,7 @@ async function reloadAsk() {
 	} else eventBus.emit('hasRequireRefresh', true);
 }
 
-async function addItem(e: MouseEvent) {
+async function addItem(ev: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !defaultStore.state.menu.includes(k));
 	os.popupMenu([
 		...menu.map(k => ({
@@ -111,7 +110,7 @@ async function addItem(e: MouseEvent) {
 				}];
 			},
 		},
-	], e.target || e.currentTarget);
+	], ev.target || ev.currentTarget);
 }
 
 function removeItem(index: number) {
