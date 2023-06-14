@@ -34,7 +34,7 @@
 			<MkSwitch v-model="usePostFormWindow">
 				投稿フォームをウィンドウとして表示
 			</MkSwitch>
-			<MkSwitch v-model="ebiNoteViewEnabled">
+			<MkSwitch v-model="cherrypickNoteViewEnabled">
 				新しいノートUIを試す
 			</MkSwitch>
 			<MkNote :note="noteMock"/>
@@ -74,7 +74,7 @@ const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
 const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSetter('rememberPostFormToggleStateEnabled'));
 const usePostFormWindow = computed(defaultStore.makeGetterSetter('usePostFormWindow'));
-const ebiNoteViewEnabled = computed(defaultStore.makeGetterSetter('ebiNoteViewEnabledLab'));
+const cherrypickNoteViewEnabled = computed(defaultStore.makeGetterSetter('cherrypickNoteViewEnabledLab'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
 
 const noteMock: Note = {
