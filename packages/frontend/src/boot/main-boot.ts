@@ -13,6 +13,7 @@ import { miLocalStorage } from '@/local-storage';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { mainRouter } from '@/router';
 import { initializeSw } from '@/scripts/initialize-sw';
+import { userName } from '@/filters/user';
 
 export async function mainBoot() {
 	const { isClientUpdated } = await common(() => createApp(
@@ -176,7 +177,7 @@ export async function mainBoot() {
 			// 二時間以上前なら
 			if (Date.now() - lastUsedDate > 1000 * 60 * 60 * 2) {
 				welcomeToast(i18n.t('welcomeBackWithName', {
-					name: $i.name || $i.username,
+					name: userName($i),
 				}));
 			}
 		}

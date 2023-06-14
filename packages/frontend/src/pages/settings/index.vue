@@ -174,6 +174,11 @@ const menuDef = computed(() => [{
 		text: i18n.ts.other,
 		to: '/settings/other',
 		active: currentPage?.route.name === 'other',
+	}, {
+		icon: 'ti ti-bulb-filled',
+		text: 'CherryPick',
+		to: '/settings/cherrypick',
+		active: currentPage?.route.name === 'cherrypick',
 	}],
 }, {
 	items: [{

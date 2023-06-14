@@ -182,6 +182,10 @@ export const routes = [{
 		name: 'other',
 		component: page(() => import('./pages/settings/other.vue')),
 	}, {
+		path: '/cherrypick',
+		name: 'cherrypick',
+		component: page(() => import('./pages/settings/cherrypick.vue')),
+	}, {
 		path: '/',
 		component: page(() => import('./pages/_empty_.vue')),
 	}],
