@@ -1113,7 +1113,7 @@ _cherrypick:
   patch: "Patch"
   patchDescription: "Make changes to Misskey's functionality"
   infoButtonForNoteActions: "Show detail view button in the note"
-  infoButtonForNoteActionsDescription: "Applies when the option 「Only show note actions on hover」 is turned on."
+  infoButtonForNoteActionsDescription: "Applies when the option「Only show note actions on hover」is turned on."
   rememberPostFormToggleState: "Remember to turn preview on/off in the note post form"
   reactableRemoteReaction: "Allow remote custom emoji reactions to react if there is an emoji with the same name on this server."
   showFollowingMessageInsteadOfButton: "Do not show the follow button in the notification field if you are already following someone"
