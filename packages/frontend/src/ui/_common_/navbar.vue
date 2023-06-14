@@ -189,6 +189,7 @@ function more(ev: MouseEvent) {
 	.post {
 		position: relative;
 		display: block;
+		z-index: 2;
 		width: 100%;
 		height: 40px;
 		color: var(--fgOnAccent);
@@ -231,6 +232,7 @@ function more(ev: MouseEvent) {
 	.account {
 		position: relative;
 		display: flex;
+		z-index: 2;
 		align-items: center;
 		padding-left: 30px;
 		width: 100%;
@@ -256,7 +258,6 @@ function more(ev: MouseEvent) {
 
 	.middle {
 		flex: 1;
-		z-index: 2;
 	}
 
 	.divider {

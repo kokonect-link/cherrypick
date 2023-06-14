@@ -147,6 +147,7 @@ function openProfile() {
 .post {
 	position: relative;
 	display: block;
+	z-index: 2;
 	width: 100%;
 	height: 40px;
 	color: var(--fgOnAccent);
@@ -190,6 +191,7 @@ function openProfile() {
 .account {
 	position: relative;
 	display: flex;
+	z-index: 2;
 	align-items: center;
 	padding-left: 30px;
 	width: 100%;
@@ -216,6 +218,7 @@ function openProfile() {
 
 .drawer {
 	display: flex;
+	z-index: 2;
 	align-items: center;
 	padding: 16px;
 	margin-right: 16px;
@@ -223,7 +226,6 @@ function openProfile() {
 
 .middle {
 	flex: 1;
-	z-index: 2;
 }
 
 .divider {
