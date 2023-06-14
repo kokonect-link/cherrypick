@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+editNickName: "닉네임 편집"
 hideAvatarsInNote: "Hide avatars in notes"
 displayBanner: "Display Banner Image"
 requireRefresh: "When the page needs to refresh"

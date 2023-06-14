@@ -191,11 +191,11 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		},
 	}, ...(defaultStore.state.nicknameEnabled ? [{
 		icon: 'ti ti-edit',
-		text: 'ニックネームを編集',
+		text: i18n.ts.editNickName,
 		action: () => {
 			editNickname(user);
 		},
-	}] : []), null, meId !== user.id ? {
+	}] : []), meId !== user.id ? {
 		type: 'link',
 		icon: 'ti ti-messages',
 		text: i18n.ts.startMessaging,

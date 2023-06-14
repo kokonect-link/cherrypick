@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+editNickName: "ニックネームを編集"
 hideAvatarsInNote: "ノートでアイコンを隠す"
 displayBanner: "バナー画像の表示"
 requireRefresh: "ページの更新が必要なとき"
