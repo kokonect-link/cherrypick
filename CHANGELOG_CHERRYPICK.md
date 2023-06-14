@@ -37,7 +37,8 @@
 - 프로필 번역 기능 추가
 - 네비게이션 메뉴에 배너 표시 옵션 추가
 - 노트에서 프로필 아이콘을 숨기는 옵션 추가
-- 스크롤이 최상단일 때 헤더를 누르면 새로고침 메뉴를 표시하도록
+- 닉네임 기능 ([shrimpia 126f145](https://github.com/shrimpia/misskey/commit/126f145560caa0cc34fe8d2c9ee22f3be922ea10), [shrimpia 58f70be](https://github.com/shrimpia/misskey/commit/58f70beb9aff2287a64d903b43583184340294aa))
+	- 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
 
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음
@@ -56,10 +57,10 @@
 - 더 보기! 메뉴에 도움말 추가
 - 노트를 자세히 볼 때 역할 배지를 표시하도록
 - 일부 제어판 페이지의 헤더 개선
+- 스크롤이 최상단일 때 헤더를 누르면 새로고침 메뉴를 표시하도록
 - MkImgWithBlurhash에서 blurhash 그리기에 사용하는 canvas는 재사용하도록([misskey-dev#10966](https://github.com/misskey-dev/misskey/pull/10966))
 - CherryPick 고유 기능 및 개선된 기능은 [CherryPick] 배지 추가
 - 네비게이션 메뉴 편집 페이지 UI 개선 ([shrimpia bf8c84d](https://github.com/shrimpia/misskey/commit/bf8c84d299bd06cb21e18a9fe68ff9abc11fd4a0))
-- 닉네임 기능 ([shrimpia 126f145](https://github.com/shrimpia/misskey/commit/126f145560caa0cc34fe8d2c9ee22f3be922ea10), [shrimpia 58f70be](https://github.com/shrimpia/misskey/commit/58f70beb9aff2287a64d903b43583184340294aa))
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: (Friendly) 타임라인이 변경되었을 때 네비게이션 바의 인디케이터가 사라지지 않는 문제
 - Fix: (Friendly) 모바일에서 헤더가 사라졌을 때 프로필 아이콘의 높이가 잘못 설정되는 문제
