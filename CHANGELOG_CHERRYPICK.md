@@ -57,6 +57,7 @@
 - 노트를 자세히 볼 때 역할 배지를 표시하도록
 - 일부 제어판 페이지의 헤더 개선
 - cpu-mem 통계 위젯의 색상 변경
+- MkImgWithBlurhash에서 blurhash 그리기에 사용하는 canvas는 재사용하도록([misskey-dev#10966](https://github.com/misskey-dev/misskey/pull/10966))
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: (Friendly) 타임라인이 변경되었을 때 네비게이션 바의 인디케이터가 사라지지 않는 문제
 - Fix: (Friendly) 모바일에서 헤더가 사라졌을 때 프로필 아이콘의 높이가 잘못 설정되는 문제
