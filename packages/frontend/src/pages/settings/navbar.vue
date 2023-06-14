@@ -39,7 +39,7 @@
 	</MkRadios>
 
 	<MkRadios v-model="bannerDisplay">
-		<template #label>{{ i18n.ts.displayBanner }}</template>
+		<template #label>{{ i18n.ts.displayBanner }} <span class="_beta">CherryPick</span></template>
 		<option value="all">{{ i18n.ts._bannerDisplay.all }}</option>
 		<option value="top">{{ i18n.ts._bannerDisplay.top }}</option>
 		<option value="bottom">{{ i18n.ts._bannerDisplay.bottom }}</option>
