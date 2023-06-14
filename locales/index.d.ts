@@ -1108,6 +1108,18 @@ export interface Locale {
     "installed": string;
     "branding": string;
     "translateProfile": string;
+    "_cherrypick": {
+        "function": string;
+        "functionDescription": string;
+        "nickname": string;
+        "nicknameDescription": string;
+        "patch": string;
+        "patchDescription": string;
+        "infoButtonForNoteActions": string;
+        "infoButtonForNoteActionsDescription": string;
+        "rememberPostFormToggleState": string;
+        "reactableRemoteReaction": string;
+    };
     "_bannerDisplay": {
         "all": string;
         "topBottom": string;

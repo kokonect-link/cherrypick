@@ -1,53 +1,32 @@
 <template>
 <div class="_gaps_m">
-	<h1>CherryPick</h1>
-	<FormSection>
-		<template #label>独自機能</template>
+	<FormSection first>
+		<template #label>{{ i18n.ts._cherrypick.function }}</template>
 		<div class="_gaps_m">
-			<div>Ebisskeyが追加する独自機能を有効・無効にします。</div>
+			<div>{{ i18n.ts._cherrypick.functionDescription }}</div>
 
 			<MkSwitch v-model="nicknameEnabled">
-				ニックネーム機能
-				<template #caption>
-					ユーザーページにて、ユーザーの名前をクリック/タップすることで好きなものに変更できるようになります。変更は自分にのみ反映されます。<br>
-					頻繁に名前を変更するユーザーを識別するときなどに使えます。
-				</template>
-			</MkSwitch>
-			<MkSwitch v-model="numberQuoteEnabled">
-				数字引用機能
-				<template #caption>
-					ノートをコピーした上で末尾に数字をつけて投稿する機能。数字が本文の末尾にある場合はそれ+1、なければ「2」になります。
-				</template>
-			</MkSwitch>
-			<MkSwitch v-model="stealEnabled">
-				パクる機能
-				<template #caption>
-					ノートをコピーしてそのまま投稿する機能。
-				</template>
+				{{ i18n.ts._cherrypick.nickname }}
+				<template #caption>{{ i18n.ts._cherrypick.nicknameDescription }}</template>
 			</MkSwitch>
 		</div>
 	</FormSection>
 	<FormSection>
-		<template #label>パッチ</template>
+		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
 		<div class="_gaps_m">
-			<div>Misskeyの機能に変更を加えます。</div>
+			<div>{{ i18n.ts._cherrypick.patchDescription }}</div>
 
 			<MkSwitch v-model="infoButtonForNoteActionsEnabled">
-				ノートに詳細表示ボタンを表示する
-				<template #caption>
-					オプション「ノートの操作部をホバー時のみ表示する」をオンにしたときに適用されます。
-				</template>
+				{{ i18n.ts._cherrypick.infoButtonForNoteActions }}
+				<template #caption>{{ i18n.ts._cherrypick.infoButtonForNoteActionsDescription }}</template>
 			</MkSwitch>
-			<MkSwitch v-model="rememberPostFormToggleStateEnabled">
-				投稿フォームにて、プレビューのオン・オフを記憶する
-			</MkSwitch>
-			<MkSwitch v-model="reactableRemoteReactionEnabled">
-				リモートのカスタム絵文字リアクションでも、このサーバーに同じ名前の絵文字があればリアクションできるようにする
-			</MkSwitch>
+			<MkSwitch v-model="rememberPostFormToggleStateEnabled">{{ i18n.ts._cherrypick.rememberPostFormToggleState }}</MkSwitch>
+			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 		</div>
 	</FormSection>
+	<!--
 	<FormSection>
-		<template #label><i class="ti ti-flask"/> Ebisskey Labs</template>
+		<template #label><i class="ti ti-flask"/> CherryPick Labs</template>
 		<div class="_gaps_m">
 			<div>まだ開発中の機能を試してみませんか。一部の機能はちゃんと動かないかもしれません。</div>
 
@@ -60,6 +39,7 @@
 			<MkNote :note="noteMock"/>
 		</div>
 	</FormSection>
+	-->
 </div>
 </template>
 
@@ -129,7 +109,7 @@ const headerActions = $computed(() => []);
 const headerTabs = $computed(() => []);
 
 definePageMetadata({
-	title: 'Ebisskey',
+	title: 'CherryPick',
 	icon: 'ti ti-bulb-filled',
 });
 </script>

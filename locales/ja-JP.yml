@@ -1106,6 +1106,18 @@ installed: "インストール済み"
 branding: "ブランディング"
 translateProfile: "プロフィールを翻訳する"
 
+_cherrypick:
+  function: "独自機能"
+  functionDescription: "CherryPickが追加する独自機能を有効・無効にします。"
+  nickname: "ニックネーム機能"
+  nicknameDescription: "ユーザーページにて、ユーザーの名前をクリック/タップすることで好きなものに変更できるようになります。変更は自分にのみ反映されます。\n頻繁に名前を変更するユーザーを識別するときなどに使えます。"
+  patch: "パッチ"
+  patchDescription: "Misskeyの機能に変更を加えます。"
+  infoButtonForNoteActions: "ノートに詳細表示ボタンを表示する"
+  infoButtonForNoteActionsDescription: "オプション「ノートの操作部をホバー時のみ表示する」をオンにしたときに適用されます。"
+  rememberPostFormToggleState: "投稿フォームにて、プレビューのオン・オフを記憶する"
+  reactableRemoteReaction: "リモートのカスタム絵文字リアクションでも、このサーバーに同じ名前の絵文字があればリアクションできるようにする"
+
 _bannerDisplay:
   all: "全て"
   topBottom: "上部と下部"
