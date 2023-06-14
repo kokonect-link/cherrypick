@@ -43,6 +43,7 @@
 - [이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음]을 선택 사항으로 설정 ([shrimpia 9345149](https://github.com/shrimpia/misskey/commit/9345149f5d0447058a6ed1524708925a84744bd7))
 - 노트 작성 폼에서 본문 미리보기 상태 기억 ([shrimpia](https://github.com/shrimpia/misskey))
 - 리모트에 존재하는 커스텀 이모지도 자신의 서버 내에 같은 이름의 이모지가 있으면 리액션 할 수 있도록 ([shrimpia e91295f](https://github.com/shrimpia/misskey/commit/e91295ff9c6f8ac90f61c8de7a891a6836e48e95), [shrimpia 010378f](https://github.com/shrimpia/misskey/commit/010378fae659ad3015bfade4346209e01bb2a902), [shrimpia acf2a30](https://github.com/shrimpia/misskey/commit/acf2a30e8a8c57525dfbab499dbb0b6c7d8e43c2))
+- 「이미 본 리노트를 간략화하기」 옵션의 기본값을 꺼짐으로 설정
 
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음
