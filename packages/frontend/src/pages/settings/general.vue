@@ -35,6 +35,7 @@
 			<div class="_gaps_s">
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
+				<MkSwitch v-model="showTranslateButtonInNote">{{ i18n.ts.showTranslateButtonInNote }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="largeNoteReactions">{{ i18n.ts.largeNoteReactions }}</MkSwitch>
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
 				<MkSwitch v-model="collapseDefault">{{ i18n.ts.collapseDefault }} <span class="_beta">CherryPick</span></MkSwitch>
@@ -319,7 +320,6 @@ const instanceTicker = computed(defaultStore.makeGetterSetter('instanceTicker'))
 const enableInfiniteScroll = computed(defaultStore.makeGetterSetter('enableInfiniteScroll'));
 const useReactionPickerForContextMenu = computed(defaultStore.makeGetterSetter('useReactionPickerForContextMenu'));
 const squareAvatars = computed(defaultStore.makeGetterSetter('squareAvatars'));
-const hideAvatarsInNote = computed(defaultStore.makeGetterSetter('hideAvatarsInNote'));
 const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('mediaListWithOneImageAppearance'));
 const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
 const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
@@ -330,6 +330,8 @@ const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSett
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
 const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRefreshBehavior'));
+const hideAvatarsInNote = computed(defaultStore.makeGetterSetter('hideAvatarsInNote'));
+const showTranslateButtonInNote = computed(defaultStore.makeGetterSetter('showTranslateButtonInNote'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

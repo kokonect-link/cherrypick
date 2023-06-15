@@ -56,6 +56,7 @@
 							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 							<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+							<div style="padding-top: 5px; color: var(--accent);"><button v-if="defaultStore.state.showTranslateButtonInNote" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button></div>
 							<div v-if="translating || translation" :class="$style.translation">
 								<MkLoading v-if="translating" mini/>
 								<div v-else>
@@ -178,6 +179,7 @@ import { showMovedDialog } from '@/scripts/show-moved-dialog';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { mainRouter } from '@/router';
 import { notePage } from '@/filters/note';
+import { miLocalStorage } from '@/local-storage';
 
 let showEl = $ref(false);
 
@@ -429,6 +431,17 @@ function menu(viaKeyboard = false): void {
 
 async function clip() {
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
+}
+
+async function translate(): Promise<void> {
+	if (translation.value != null) return;
+	translating.value = true;
+	const res = await os.api('notes/translate', {
+		noteId: appearNote.id,
+		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
+	});
+	translating.value = false;
+	translation.value = res;
 }
 
 function showRenoteMenu(viaKeyboard = false): void {

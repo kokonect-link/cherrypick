@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+translateNote: "노트 번역하기"
+showTranslateButtonInNote: "노트 본문에 번역 버튼 표시"
 editNickName: "닉네임 편집"
 hideAvatarsInNote: "노트에서 프로필 아이콘 숨김"
 displayBanner: "배너 이미지 표시"

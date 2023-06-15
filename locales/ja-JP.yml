@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+translateNote: "ノートを翻訳する"
+showTranslateButtonInNote: "ノート本文に翻訳ボタンを表示"
 editNickName: "ニックネームを編集"
 hideAvatarsInNote: "ノートでアイコンを隠す"
 displayBanner: "バナー画像の表示"

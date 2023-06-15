@@ -342,6 +342,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 
 	// #region CherryPick
+	// - Settings/General
 	useEnterToSend: {
 		where: 'device',
 		default: false,
@@ -378,6 +379,12 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showTranslateButtonInNote: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/CherryPick
 	nicknameEnabled: {
 		where: 'account',
 		default: true,
