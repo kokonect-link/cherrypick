@@ -6,6 +6,18 @@
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
+		<div style="padding-top: 5px; color: var(--accent);"><button v-if="defaultStore.state.showTranslateButtonInNote" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button></div>
+		<div v-if="translating || translation" :class="$style.translation">
+			<MkLoading v-if="translating" mini/>
+			<div v-else>
+				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+				<Mfm :text="translation.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
+				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+				</div>
+			</div>
+		</div>
 	</div>
 	<details v-if="note.files.length > 0">
 		<summary>({{ i18n.t('withNFiles', { n: note.files.length }) }})</summary>
@@ -23,12 +35,18 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref } from 'vue';
 import * as misskey from 'cherrypick-js';
+import * as os from '@/os';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
+import { defaultStore } from '@/store';
+import { miLocalStorage } from '@/local-storage';
+
+const translation = ref<any>(null);
+const translating = ref(false);
 
 const props = defineProps<{
 	note: misskey.entities.Note;
@@ -39,6 +57,17 @@ const collapsed = $ref(
 		(props.note.text.split('\n').length > 9) ||
 		(props.note.text.length > 500)
 	));
+
+async function translate(): Promise<void> {
+	if (translation.value != null) return;
+	translating.value = true;
+	const res = await os.api('notes/translate', {
+		noteId: props.note.id,
+		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
+	});
+	translating.value = false;
+	translation.value = res;
+}
 </script>
 
 <style lang="scss" module>
@@ -86,5 +115,12 @@ const collapsed = $ref(
 	margin-left: 4px;
 	font-style: oblique;
 	color: var(--renote);
+}
+
+.translation {
+	border: solid 0.5px var(--divider);
+	border-radius: var(--radius);
+	padding: 12px;
+	margin-top: 8px;
 }
 </style>
