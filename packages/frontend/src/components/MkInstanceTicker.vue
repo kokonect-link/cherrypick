@@ -43,22 +43,22 @@ $height: 2ex;
 	height: $height;
 	border-radius: .3rem;
 	overflow: clip;
-	color: #fff;
+	color: #000;
 	margin-top: 5px;
 	padding: 1px 3px 1px 0;
 	text-shadow: /* .866 ≈ sin(60deg) */
-		1px 0 1px #000,
-		.866px .5px 1px #000,
-		.5px .866px 1px #000,
-		0 1px 1px #000,
-		-.5px .866px 1px #000,
-		-.866px .5px 1px #000,
-		-1px 0 1px #000,
-		-.866px -.5px 1px #000,
-		-.5px -.866px 1px #000,
-		0 -1px 1px #000,
-		.5px -.866px 1px #000,
-		.866px -.5px 1px #000;
+		1px 0 1px #fff,
+		.866px .5px 1px #fff,
+		.5px .866px 1px #fff,
+		0 1px 1px #fff,
+		-.5px .866px 1px #fff,
+		-.866px .5px 1px #fff,
+		-1px 0 1px #fff,
+		-.866px -.5px 1px #fff,
+		-.5px -.866px 1px #fff,
+		0 -1px 1px #fff,
+		.5px -.866px 1px #fff,
+		.866px -.5px 1px #fff;
 }
 
 .icon {
