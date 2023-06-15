@@ -68,6 +68,7 @@
 - 네비게이션 메뉴 편집 페이지 UI 개선 ([shrimpia bf8c84d](https://github.com/shrimpia/misskey/commit/bf8c84d299bd06cb21e18a9fe68ff9abc11fd4a0))
 - 「노트 본문에 번역 버튼 표시」를 선택 사항으로 설정
 - 답글도 번역할 수 있도록 개선
+- 리노트 했을 때 뜨는 토스트 팝업에 아이콘 추가
 - Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
 - Fix: (Friendly) 타임라인이 변경되었을 때 네비게이션 바의 인디케이터가 사라지지 않는 문제
 - Fix: (Friendly) 모바일에서 헤더가 사라졌을 때 프로필 아이콘의 높이가 잘못 설정되는 문제

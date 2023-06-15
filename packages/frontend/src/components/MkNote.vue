@@ -306,7 +306,7 @@ function renote(viaKeyboard = false) {
 					renoteId: appearNote.id,
 					channelId: appearNote.channelId,
 				}).then(() => {
-					os.toast(i18n.ts.renoted);
+					os.noteToast(i18n.ts.renoted);
 				});
 			},
 		}, {
@@ -336,7 +336,7 @@ function renote(viaKeyboard = false) {
 			os.api('notes/create', {
 				renoteId: appearNote.id,
 			}).then(() => {
-				os.toast(i18n.ts.renoted);
+				os.noteToast(i18n.ts.renoted);
 			});
 		},
 	}, {
