@@ -567,6 +567,7 @@ if (appearNote.replyId) {
 .noteHeaderName {
 	font-weight: bold;
 	line-height: 1.3;
+	margin: 0 .5em 0 0;
 
 	&:hover {
 		color: var(--nameHover);
