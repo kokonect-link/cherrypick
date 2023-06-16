@@ -13,8 +13,6 @@ export const meta = {
 
 	kind: 'write:user-groups',
 
-	description: 'Join a group the authenticated user has been invited to.',
-
 	errors: {
 		noSuchInvitation: {
 			message: 'No such invitation.',
@@ -66,7 +64,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				userGroupId: invitation.userGroupId,
 			} as UserGroupJoining);
 
-			this.userGroupInvitationsRepository.delete(invitation.id);
+			return await this.userGroupInvitationsRepository.delete(invitation.id);
 		});
 	}
 }
