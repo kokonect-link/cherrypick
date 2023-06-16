@@ -238,7 +238,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	instanceTicker: {
 		where: 'device',
-		default: 'remote' as 'none' | 'remote' | 'always',
+		default: 'remote' as 'always' | 'remote' | 'none',
 	},
 	reactionPickerSize: {
 		where: 'device',

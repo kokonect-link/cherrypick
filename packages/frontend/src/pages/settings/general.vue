@@ -64,9 +64,9 @@
 
 			<MkSelect v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
-				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
-				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
 				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
+				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
+				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
 			</MkSelect>
 
 			<MkSelect v-model="nsfw">
