@@ -177,7 +177,8 @@ onMounted(() => {
 	z-index: 2;
 	width: 58px;
 	height: 58px;
-	background: var(--panel);
+	border: solid 4px var(--popup);
+	background: var(--popup);
 }
 
 .title {
