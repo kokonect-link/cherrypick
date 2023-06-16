@@ -75,6 +75,7 @@ const animation = $ref(defaultStore.state.animation);
 	width: 58px;
 	height: 58px;
 	border: solid 4px var(--panel);
+	background: var(--panel);
 }
 
 .title {
