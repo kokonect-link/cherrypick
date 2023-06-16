@@ -73,7 +73,7 @@
 						<MkOmit>
 							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :i="$i"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
-							<MkButton v-if="user.description" class="translateButton" small @click="translate">{{ i18n.ts.translateProfile }}</MkButton>
+							<MkButton v-if="user.description" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
 							<div v-if="translating || translation" class="translation">
 								<MkLoading v-if="translating" mini/>
 								<div v-else>
