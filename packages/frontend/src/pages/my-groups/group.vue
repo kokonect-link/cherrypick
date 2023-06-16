@@ -43,6 +43,7 @@
 import { computed, watch } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
+import { $i } from '@/account';
 import { mainRouter } from '@/router';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';

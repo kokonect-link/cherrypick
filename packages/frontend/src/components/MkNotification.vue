@@ -88,13 +88,7 @@
 				</div>
 			</template>
 			<template v-else-if="notification.type === 'groupInvited'">
-				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}: <b>{{ notification.invitation.group.name }}</b></span>
-				<div v-if="full && !groupInviteDone">
-					<button class="_textButton" @click="acceptGroupInvitation()">{{ i18n.ts.accept }}</button> | <button class="_textButton" @click="rejectGroupInvitation()">{{ i18n.ts.reject }}</button>
-				</div>
-			</template>
-			<template v-else-if="notification.type === 'groupInvited'">
-				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}: <b>{{ notification.invitation.group.name }}</b></span>
+				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}:<span style="font-weight: bold; margin-left: 5px;">{{ notification.invitation.group.name }}</span></span>
 				<div v-if="full && !groupInviteDone">
 					<button class="_textButton" @click="acceptGroupInvitation()">{{ i18n.ts.accept }}</button> | <button class="_textButton" @click="rejectGroupInvitation()">{{ i18n.ts.reject }}</button>
 				</div>
