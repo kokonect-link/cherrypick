@@ -17,7 +17,7 @@
 					<div class="name">{{ group.name }}</div>
 					<MkAvatars :userIds="group.userIds"/>
 					<div class="actions">
-						<MkButton danger @click="leave(group)">{{ i18n.ts.leaveGroup }}</MkButton>
+						<MkButton style="margin-top: 10px; border-radius: 999px;" danger @click="leave(group)">{{ i18n.ts.leaveGroup }}</MkButton>
 					</div>
 				</MkA>
 			</MkPagination>
@@ -157,7 +157,7 @@ definePageMetadata({
 			}
 
 			> .name {
-				margin-bottom: 4px;
+				margin-bottom: 12px;
 			}
 		}
 	}
