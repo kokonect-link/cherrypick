@@ -88,15 +88,17 @@ export default function(props: {
 				switch (token.props.name) {
 					case 'ruby': {
 						let rb, rt, tokens;
-						if (token.children.length == 1 && token.children[0].type == 'text') {
-							tokens = token.props.text.trim().split(" ");
+						token.children.forEach((t) => { if (t.type == 'text') { t.props.text = t.props.text.trim(); });
+						const children = token.children.filter((t) => t.type != 'text' || t.props.text != '');
+						if (children.length == 1 && children[0].type == 'text') {
+							tokens = children[0].props.text.split(" ");
 							rb = [tokens[0]];
 							rt = [tokens.slice(1).join(' ')];
-						} else if (token.children.length > 2) {
-							rb = genEl([token.children[0]], scale);
-							rt = genEl(token.children.slice(1), scale);
+						} else if (children.length >= 2) {
+							rb = genEl([children[0]], scale);
+							rt = genEl(children.slice(1), scale);
 						} else {
-							return genEl(token.children, scale);
+							return genEl(children, scale);
 						}
 						return [h('ruby', {}, [h('rb', {}, rb), h('rt', {}, rt)])];
 					}
