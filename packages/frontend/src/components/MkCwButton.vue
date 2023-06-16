@@ -36,14 +36,17 @@ const toggle = () => {
 <style lang="scss" module>
 .root {
 	display: inline-block;
-	padding: 4px 8px;
+	margin: 5px 0;
+	padding: 6px;
 	font-size: 0.7em;
 	color: var(--cwFg);
 	background: var(--cwBg);
-	border-radius: 2px;
+	border-radius: 5px;
+	transition: background-color .25s ease-in-out;
 
 	&:hover {
-		background: var(--cwHoverBg);
+		color: var(--cwBg);
+		background: var(--panel);
 	}
 }
 

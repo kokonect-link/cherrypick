@@ -46,48 +46,48 @@
 			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
-				<div style="container-type: inline-size; padding-top: 10px;">
-					<p v-if="appearNote.cw != null" :class="$style.cw">
-						<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
-						<MkCwButton v-model="showContent" :note="appearNote"/>
-					</p>
-					<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
-						<div :class="$style.text">
-							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-							<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
-							<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-							<div style="padding-top: 5px; color: var(--accent);"><button v-if="defaultStore.state.showTranslateButtonInNote" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button></div>
-							<div v-if="translating || translation" :class="$style.translation">
-								<MkLoading v-if="translating" mini/>
-								<div v-else>
-									<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-									<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
-										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div v-if="appearNote.files.length > 0">
-							<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
-							<MkMediaList v-else :mediaList="appearNote.files"/>
-						</div>
-						<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
-						<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
-						<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
-							<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
-						</button>
-						<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
-							<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
-						</button>
-					</div>
-					<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
-				</div>
 			</div>
 		</div>
+		<div style="container-type: inline-size;">
+			<p v-if="appearNote.cw != null" :class="$style.cw">
+				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
+				<MkCwButton v-model="showContent" :note="appearNote"/>
+			</p>
+			<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
+				<div :class="$style.text">
+					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
+					<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+					<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+					<div style="padding-top: 5px; color: var(--accent);"><button v-if="defaultStore.state.showTranslateButtonInNote" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button></div>
+					<div v-if="translating || translation" :class="$style.translation">
+						<MkLoading v-if="translating" mini/>
+						<div v-else>
+							<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+							<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+								<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+								<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div v-if="appearNote.files.length > 0">
+					<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
+					<MkMediaList v-else :mediaList="appearNote.files"/>
+				</div>
+				<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
+				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
+				<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
+					<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
+				</button>
+				<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+					<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
+				</button>
+			</div>
+			<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
+		</div>
 		<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
-		<div style="padding-left: 10px">
+		<div>
 			<MkReactionsViewer :note="appearNote" :maxNumber="16">
 				<template #more>
 					<button class="_button" :class="$style.reactionDetailsButton" @click="showReactions">
@@ -718,7 +718,7 @@ function showReactions(): void {
 
 .cw {
 	cursor: default;
-	display: block;
+	display: grid;
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;

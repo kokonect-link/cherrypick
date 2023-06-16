@@ -34,27 +34,33 @@
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
-			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
-			<div :class="$style.noteHeaderBody">
-				<div>
-					<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
-						<MkUserName :nowrap="false" :user="appearNote.user"/>
-					</MkA>
-					<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
-					<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
-						<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
-					</span>
-					<div :class="$style.noteHeaderInfo">
-						<span v-if="appearNote.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[appearNote.visibility]">
-							<i v-if="appearNote.visibility === 'home'" class="ti ti-home"></i>
-							<i v-else-if="appearNote.visibility === 'followers'" class="ti ti-lock"></i>
-							<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
+			<div style="display: flex; align-items: center;">
+				<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+				<div :class="$style.noteHeaderBody">
+					<div>
+						<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
+							<MkUserName :nowrap="false" :user="appearNote.user"/>
+						</MkA>
+						<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
+						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
+							<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
 						</span>
-						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
+						<div :class="$style.noteHeaderInfo">
+							<span v-if="appearNote.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[appearNote.visibility]">
+								<i v-if="appearNote.visibility === 'home'" class="ti ti-home"></i>
+								<i v-else-if="appearNote.visibility === 'followers'" class="ti ti-lock"></i>
+								<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
+							</span>
+							<span v-if="appearNote.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
+						</div>
 					</div>
+					<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
 				</div>
-				<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
-				<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
+			</div>
+			<div style="display: flex; align-items: flex-end; margin-left: auto;">
+				<div :class="$style.noteHeaderBody">
+					<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
+				</div>
 			</div>
 		</header>
 		<div :class="$style.noteContent">

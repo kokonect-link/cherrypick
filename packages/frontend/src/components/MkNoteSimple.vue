@@ -1,16 +1,18 @@
 <template>
 <div :class="$style.root">
-	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
-	<div :class="$style.main">
-		<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
-		<div style="padding-top: 10px;">
-			<p v-if="note.cw != null" :class="$style.cw">
-				<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
-				<MkCwButton v-model="showContent" :note="note"/>
-			</p>
-			<div v-show="note.cw == null || showContent">
-				<MkSubNoteContent :class="$style.text" :note="note"/>
-			</div>
+	<div style="display: flex; padding-bottom: 10px;">
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
+		<div :class="$style.main">
+			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
+		</div>
+	</div>
+	<div>
+		<p v-if="note.cw != null" :class="$style.cw">
+			<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
+			<MkCwButton v-model="showContent" :note="note"/>
+		</p>
+		<div v-show="note.cw == null || showContent">
+			<MkSubNoteContent :class="$style.text" :note="note"/>
 		</div>
 	</div>
 </div>
@@ -45,7 +47,6 @@ onMounted(() => {
 
 <style lang="scss" module>
 .root {
-	display: flex;
 	margin: 0;
 	padding: 0;
 	overflow: clip;
@@ -75,7 +76,7 @@ onMounted(() => {
 
 .cw {
 	cursor: default;
-	display: block;
+	display: grid;
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;
