@@ -86,6 +86,20 @@ export default function(props: {
 				// TODO: CSSを文字列で組み立てていくと token.props.args.~~~ 経由でCSSインジェクションできるのでよしなにやる
 				let style;
 				switch (token.props.name) {
+					case 'ruby': {
+						let rb, rt, tokens;
+						if (token.children.length == 1 && token.children[0].props.type == 'text') {
+							tokens = token.prope.text.split(" ");
+							rb = [tokens[0]];
+							rt = [tokens.slice(1).join(' ')];
+						} else if (token.children.length > 2) {
+							rb = genEl([token.children[0]], scale);
+							rt = genEl(token.children.slice(1), scale);
+						} else {
+							return genEl(token.children, scale);
+						}
+						return [h('ruby', {}, [h('rb', {}, rb), h('rt', {}, rt)])];
+					}
 					case 'tada': {
 						const speed = validTime(token.props.args.speed) ?? '1s';
 						style = 'font-size: 150%;' + (useAnim ? `animation: tada ${speed} linear infinite both;` : '');
