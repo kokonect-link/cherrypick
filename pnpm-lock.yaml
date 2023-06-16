@@ -33,9 +33,6 @@ importers:
       js-yaml:
         specifier: 4.1.0
         version: 4.1.0
-      mitt:
-        specifier: 3.0.0
-        version: 3.0.0
       typescript:
         specifier: 5.1.3
         version: 5.1.3
@@ -173,9 +170,12 @@ importers:
       chalk-template:
         specifier: 0.4.0
         version: 0.4.0
+      cherrypick-js:
+        specifier: workspace:*
+        version: link:../cherrypick-js
       cherrypick-mfm-js:
-        specifier: 0.23.3-cp-1.0.0
-        version: 0.23.3-cp-1.0.0
+        specifier: github:kokonect-link/mfm.js
+        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
@@ -251,9 +251,6 @@ importers:
       mime-types:
         specifier: 2.1.35
         version: 2.1.35
-      cherrypick-js:
-        specifier: workspace:*
-        version: link:../cherrypick-js
       ms:
         specifier: 3.0.0-canary.1
         version: 3.0.0-canary.1
@@ -638,6 +635,61 @@ importers:
         specifier: 29.5.0
         version: 29.5.0
 
+  packages/cherrypick-js:
+    dependencies:
+      '@swc/cli':
+        specifier: 0.1.62
+        version: 0.1.62(@swc/core@1.3.61)(chokidar@3.5.3)
+      '@swc/core':
+        specifier: 1.3.56
+        version: 1.3.56
+      eventemitter3:
+        specifier: 5.0.1
+        version: 5.0.1
+      reconnecting-websocket:
+        specifier: 4.4.0
+        version: 4.4.0
+    devDependencies:
+      '@microsoft/api-extractor':
+        specifier: 7.34.7
+        version: 7.34.7(@types/node@18.16.3)
+      '@swc/jest':
+        specifier: 0.2.26
+        version: 0.2.26(@swc/core@1.3.56)
+      '@types/jest':
+        specifier: 29.5.1
+        version: 29.5.1
+      '@types/node':
+        specifier: 18.16.3
+        version: 18.16.3
+      '@typescript-eslint/eslint-plugin':
+        specifier: 5.59.5
+        version: 5.59.5(@typescript-eslint/parser@5.59.5)(eslint@8.40.0)(typescript@5.0.4)
+      '@typescript-eslint/parser':
+        specifier: 5.59.5
+        version: 5.59.5(eslint@8.40.0)(typescript@5.0.4)
+      eslint:
+        specifier: 8.40.0
+        version: 8.40.0
+      jest:
+        specifier: 29.5.0
+        version: 29.5.0(@types/node@18.16.3)
+      jest-fetch-mock:
+        specifier: 3.0.3
+        version: 3.0.3
+      jest-websocket-mock:
+        specifier: 2.4.0
+        version: 2.4.0
+      mock-socket:
+        specifier: 9.2.1
+        version: 9.2.1
+      tsd:
+        specifier: 0.28.1
+        version: 0.28.1
+      typescript:
+        specifier: 5.0.4
+        version: 5.0.4
+
   packages/frontend:
     dependencies:
       '@discordapp/twemoji':
@@ -683,8 +735,8 @@ importers:
         specifier: github:misskey-dev/browser-image-resizer#v2.2.1-misskey.3
         version: github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a
       buraha:
-        specifier: github:misskey-dev/buraha
-        version: github.com/misskey-dev/buraha/92b20c1ab15c5cb5a224cf3b1ecd4f6baca12b7c
+        specifier: 0.0.1
+        version: 0.0.1
       canvas-confetti:
         specifier: 1.6.0
         version: 1.6.0
@@ -703,9 +755,12 @@ importers:
       chartjs-plugin-zoom:
         specifier: 2.0.1
         version: 2.0.1(chart.js@4.3.0)
+      cherrypick-js:
+        specifier: workspace:*
+        version: link:../cherrypick-js
       cherrypick-mfm-js:
-        specifier: 0.23.3-cp-1.0.0
-        version: 0.23.3-cp-1.0.0
+        specifier: github:kokonect-link/mfm.js
+        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
       chromatic:
         specifier: 6.18.0
         version: 6.18.0
@@ -745,9 +800,9 @@ importers:
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
-      cherrypick-js:
-        specifier: workspace:*
-        version: link:../cherrypick-js
+      mitt:
+        specifier: 3.0.0
+        version: 3.0.0
       photoswipe:
         specifier: 5.3.7
         version: 5.3.7
@@ -1026,72 +1081,17 @@ importers:
         specifier: 1.6.5
         version: 1.6.5(typescript@5.1.3)
 
-  packages/cherrypick-js:
-    dependencies:
-      '@swc/cli':
-        specifier: 0.1.62
-        version: 0.1.62(@swc/core@1.3.61)(chokidar@3.5.3)
-      '@swc/core':
-        specifier: 1.3.56
-        version: 1.3.56
-      eventemitter3:
-        specifier: 5.0.1
-        version: 5.0.1
-      reconnecting-websocket:
-        specifier: 4.4.0
-        version: 4.4.0
-    devDependencies:
-      '@microsoft/api-extractor':
-        specifier: 7.34.7
-        version: 7.34.7(@types/node@18.16.3)
-      '@swc/jest':
-        specifier: 0.2.26
-        version: 0.2.26(@swc/core@1.3.56)
-      '@types/jest':
-        specifier: 29.5.1
-        version: 29.5.1
-      '@types/node':
-        specifier: 18.16.3
-        version: 18.16.3
-      '@typescript-eslint/eslint-plugin':
-        specifier: 5.59.5
-        version: 5.59.5(@typescript-eslint/parser@5.59.5)(eslint@8.40.0)(typescript@5.0.4)
-      '@typescript-eslint/parser':
-        specifier: 5.59.5
-        version: 5.59.5(eslint@8.40.0)(typescript@5.0.4)
-      eslint:
-        specifier: 8.40.0
-        version: 8.40.0
-      jest:
-        specifier: 29.5.0
-        version: 29.5.0(@types/node@18.16.3)
-      jest-fetch-mock:
-        specifier: 3.0.3
-        version: 3.0.3
-      jest-websocket-mock:
-        specifier: 2.4.0
-        version: 2.4.0
-      mock-socket:
-        specifier: 9.2.1
-        version: 9.2.1
-      tsd:
-        specifier: 0.28.1
-        version: 0.28.1
-      typescript:
-        specifier: 5.0.4
-        version: 5.0.4
-
   packages/sw:
     dependencies:
+      cherrypick-js:
+        specifier: workspace:*
+        version: link:../cherrypick-js
       esbuild:
         specifier: 0.17.18
         version: 0.17.18
       idb-keyval:
         specifier: 6.2.0
         version: 6.2.0
-      cherrypick-js:
-        specifier: workspace:*
-        version: link:../cherrypick-js
     devDependencies:
       '@typescript-eslint/parser':
         specifier: 5.59.5
@@ -10040,6 +10040,10 @@ packages:
       - supports-color
     dev: false
 
+  /buraha@0.0.1:
+    resolution: {integrity: sha512-G563A0mTbzknm2jDaNxfZuNKIdeArs8T+XQN6t+KbmgnOoevXSXhKDkyf8Md/36Jrx99ikwbCag37VGe3myExQ==}
+    dev: false
+
   /busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
     engines: {node: '>=10.16.0'}
@@ -10409,12 +10413,6 @@ packages:
       htmlparser2: 8.0.1
       parse5: 7.1.2
       parse5-htmlparser2-tree-adapter: 7.0.0
-
-  /cherrypick-mfm-js@0.23.3-cp-1.0.0:
-    resolution: {integrity: sha512-oFeUcfV4WKqhdY1oxe4kSfh5jSwxDhma8DLLdD3CyxP+BNYV6rjDcqi9fZkj/4YSx2U9nsvVdbPW3mYdMlVVXA==}
-    dependencies:
-      twemoji-parser: 14.0.0
-    dev: false
 
   /chokidar-cli@3.0.0:
     resolution: {integrity: sha512-xVW+Qeh7z15uZRxHOkP93Ux8A0xbPzwK4GaqD8dQOYc34TlkqUhVSS59fK36DOp5WdJlrRzlYSy02Ht99FjZqQ==}
@@ -22287,16 +22285,18 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
+  github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c:
+    resolution: {tarball: https://codeload.github.com/kokonect-link/mfm.js/tar.gz/6cfec923792dce92a5401372a42904ea48e5484c}
+    name: cherrypick-mfm-js
+    version: 0.23.3-cherrypick.2
+    dependencies:
+      twemoji-parser: 14.0.0
+    dev: false
+
   github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a:
     resolution: {tarball: https://codeload.github.com/misskey-dev/browser-image-resizer/tar.gz/0227e860621e55cbed0aabe6dc601096a7748c4a}
     name: browser-image-resizer
     version: 2.2.1-misskey.3
-    dev: false
-
-  github.com/misskey-dev/buraha/92b20c1ab15c5cb5a224cf3b1ecd4f6baca12b7c:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/buraha/tar.gz/92b20c1ab15c5cb5a224cf3b1ecd4f6baca12b7c}
-    name: buraha
-    version: 0.0.0
     dev: false
 
   github.com/misskey-dev/sharp-read-bmp/02d9dc189fa7df0c4bea09330be26741772dac01:
