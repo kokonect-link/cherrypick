@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { AccessTokensRepository, FollowRequestsRepository, NoteReactionsRepository, NotesRepository, User, UsersRepository } from '@/models/index.js';
+import type { AccessTokensRepository, FollowRequestsRepository, NoteReactionsRepository, NotesRepository, User, UsersRepository, UserGroupInvitationsRepository } from '@/models/index.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
 import type { Notification } from '@/models/entities/Notification.js';
 import type { Note } from '@/models/entities/Note.js';
@@ -42,6 +42,9 @@ export class NotificationEntityService implements OnModuleInit {
 
 		@Inject(DI.accessTokensRepository)
 		private accessTokensRepository: AccessTokensRepository,
+
+		@Inject(DI.userGroupInvitationsRepository)
+		private userGroupInvitationsRepository: UserGroupInvitationsRepository,
 
 		//private userEntityService: UserEntityService,
 		//private noteEntityService: NoteEntityService,
@@ -154,6 +157,14 @@ export class NotificationEntityService implements OnModuleInit {
 				where: { followerId: In(followRequestNotifications.map(x => x.notifierId!)) },
 			});
 			validNotifications = validNotifications.filter(x => (x.type !== 'receiveFollowRequest') || reqs.some(r => r.followerId === x.notifierId));
+		}
+
+		const groupInvitedNotifications = validNotifications.filter(x => x.type === 'groupInvited');
+		if (groupInvitedNotifications.length > 0) {
+			const existingInvitationIds = await this.userGroupInvitationsRepository.find({
+				where: { id: In(groupInvitedNotifications.map(x => x.userGroupInvitationId!)) },
+			});
+			validNotifications = validNotifications.filter(x => (x.type !== 'groupInvited') || existingInvitationIds.some(r => r.id === x.userGroupInvitationId));
 		}
 
 		return await Promise.all(validNotifications.map(x => this.pack(x, meId, {}, {
