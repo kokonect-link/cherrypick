@@ -120,13 +120,17 @@
 				<button v-else :class="$style.footerButton" class="_button" disabled>
 					<i class="ti ti-ban"></i>
 				</button>
+				<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
+					<i class="ti ti-heart"></i>
+				</button>
 				<button v-if="appearNote.myReaction == null" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
 					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
-					<i v-else class="ti ti-plus"></i>
+					<i v-else class="ti ti-mood-plus"></i>
 				</button>
 				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
-					<i class="ti ti-minus"></i>
+					<i class="ti ti-mood-minus"></i>
 				</button>
+				<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
 					<i class="ti ti-paperclip"></i>
 				</button>
@@ -223,6 +227,7 @@ const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
+const heartReactButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as misskey.entities.Note : note);
 const isMyRenote = $i && ($i.id === note.userId);
@@ -290,74 +295,55 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-function renote(viaKeyboard = false) {
+function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	let items = [] as MenuItem[];
-
 	if (appearNote.channel) {
-		items = items.concat([{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ti ti-repeat',
-			action: () => {
-				const el = renoteButton.value as HTMLElement | null | undefined;
-				if (el) {
-					const rect = el.getBoundingClientRect();
-					const x = rect.left + (el.offsetWidth / 2);
-					const y = rect.top + (el.offsetHeight / 2);
-					os.popup(MkRippleEffect, { x, y }, {}, 'end');
-				}
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
 
-				os.api('notes/create', {
-					renoteId: appearNote.id,
-					channelId: appearNote.channelId,
-				}).then(() => {
-					os.noteToast(i18n.ts.renoted);
-				});
-			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ti ti-quote',
-			action: () => {
-				os.post({
-					renote: appearNote,
-					channel: appearNote.channel,
-				});
-			},
-		}, null]);
+		os.api('notes/create', {
+			renoteId: appearNote.id,
+			channelId: appearNote.channelId,
+		}).then(() => {
+			os.noteToast(i18n.ts.renoted);
+		});
 	}
 
-	items = items.concat([{
-		text: i18n.ts.renote,
-		icon: 'ti ti-repeat',
-		action: () => {
-			const el = renoteButton.value as HTMLElement | null | undefined;
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const x = rect.left + (el.offsetWidth / 2);
-				const y = rect.top + (el.offsetHeight / 2);
-				os.popup(MkRippleEffect, { x, y }, {}, 'end');
-			}
+	const el = renoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
 
-			os.api('notes/create', {
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.noteToast(i18n.ts.renoted);
-			});
-		},
-	}, {
-		text: i18n.ts.quote,
-		icon: 'ti ti-quote',
-		action: () => {
-			os.post({
-				renote: appearNote,
-			});
-		},
-	}]);
+	os.api('notes/create', {
+		renoteId: appearNote.id,
+	}).then(() => {
+		os.noteToast(i18n.ts.renoted);
+	});
+}
 
-	os.popupMenu(items, renoteButton.value, {
-		viaKeyboard,
+function quote() {
+	pleaseLogin();
+	showMovedDialog();
+
+	if (appearNote.channel) {
+		os.post({
+			renote: appearNote,
+			channel: appearNote.channel,
+		});
+	}
+
+	os.post({
+		renote: appearNote,
 	});
 }
 
@@ -399,6 +385,25 @@ function react(viaKeyboard = false): void {
 		}, () => {
 			focus();
 		});
+	}
+}
+
+function heartReact(): void {
+	pleaseLogin();
+	showMovedDialog();
+	os.api('notes/reactions/create', {
+		noteId: appearNote.id,
+		reaction: '❤️',
+	});
+	if (appearNote.text && appearNote.text.length > 100 && (Date.now() - new Date(appearNote.createdAt).getTime() < 1000 * 3)) {
+		claimAchievement('reactWithoutRead');
+	}
+	const el = heartReactButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
 	}
 }
 
