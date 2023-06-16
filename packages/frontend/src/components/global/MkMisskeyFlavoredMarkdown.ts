@@ -88,8 +88,8 @@ export default function(props: {
 				switch (token.props.name) {
 					case 'ruby': {
 						let rb, rt, tokens;
-						if (token.children.length == 1 && token.children[0].props.type == 'text') {
-							tokens = token.prope.text.split(" ");
+						if (token.children.length == 1 && token.children[0].type == 'text') {
+							tokens = token.props.text.trim().split(" ");
 							rb = [tokens[0]];
 							rt = [tokens.slice(1).join(' ')];
 						} else if (token.children.length > 2) {
