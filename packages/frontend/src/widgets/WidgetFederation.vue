@@ -1,6 +1,6 @@
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" :foldable="foldable" :scrollable="scrollable" data-cy-mkw-federation class="mkw-federation">
-	<template #icon><i class="ti ti-whirl"></i></template>
+	<template #icon><i class="ti ti-world"></i></template>
 	<template #header>{{ i18n.ts._widgets.federation }}</template>
 
 	<div class="wbrkwalb">
