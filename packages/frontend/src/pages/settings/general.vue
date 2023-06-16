@@ -375,6 +375,7 @@ watch([
 	showGapBetweenNotesInTimeline,
 	instanceTicker,
 	overridedDeviceKind,
+	enableDataSaverMode,
 ], async () => {
 	await reloadAsk();
 });
