@@ -88,7 +88,7 @@ export default function(props: {
 				switch (token.props.name) {
 					case 'ruby': {
 						let rb, rt, tokens;
-						token.children.forEach((t) => { if (t.type == 'text') { t.props.text = t.props.text.trim(); });
+						token.children.forEach((t) => { if (t.type == 'text') { t.props.text = t.props.text.trim(); } });
 						const children = token.children.filter((t) => t.type != 'text' || t.props.text != '');
 						if (children.length == 1 && children[0].type == 'text') {
 							tokens = children[0].props.text.split(" ");
