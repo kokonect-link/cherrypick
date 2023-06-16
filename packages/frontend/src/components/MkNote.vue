@@ -846,7 +846,7 @@ function showReactions(): void {
 }
 
 .danger {
-	color: #ff2a2a;
+	color: var(--accent);
 }
 
 @container (max-width: 580px) {

@@ -137,7 +137,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 }
 
 .danger {
-	color: #ff2a2a;
+	color: var(--accent);
 }
 
 @container (max-width: 500px) {

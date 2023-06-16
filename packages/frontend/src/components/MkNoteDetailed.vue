@@ -688,7 +688,7 @@ if (appearNote.replyId) {
 }
 
 .danger {
-	color: #ff2a2a;
+	color: var(--accent);
 }
 
 @container (max-width: 500px) {
