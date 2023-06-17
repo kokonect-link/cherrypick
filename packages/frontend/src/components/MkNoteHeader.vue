@@ -62,15 +62,16 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 }
 
 .section {
-	display: flex;
 	align-items: flex-start;
 	white-space: nowrap;
 	flex-direction: column;
 	overflow: hidden;
 
 	&:last-child {
+		display: flex;
 		align-items: flex-end;
 		margin-left: auto;
+		padding-left: 10px;
 		overflow: clip;
 	}
 }
