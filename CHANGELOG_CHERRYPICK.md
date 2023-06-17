@@ -95,7 +95,7 @@
 - mfm-js를 cherrypick-mfm-js로 변경
 - misskey-js를 cherrypick-js로 변경
 - Fix: 알림에서 UserGroupInvitation 관련 문제 해결 (kokonect-link/cherrypick#75)
-- Fix: 정의되지 않은 OffscreenCanvas 수정 (misskey-dev/misskey#11017)
+- Fix: 정의되지 않은 OffscreenCanvas (misskey-dev/misskey#11017)
 
 ---
 
