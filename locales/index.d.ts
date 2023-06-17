@@ -1112,6 +1112,11 @@ export interface Locale {
     "installed": string;
     "branding": string;
     "translateProfile": string;
+    "_group": {
+        "leader": string;
+        "banish": string;
+        "banishConfirm": string;
+    };
     "_cherrypick": {
         "function": string;
         "functionDescription": string;

@@ -1109,6 +1109,10 @@ goToMisskey: "CherryPick으로"
 additionalEmojiDictionary: "이모지 추가 사전"
 installed: "설치됨"
 translateProfile: "프로필 번역하기"
+_group:
+  leader: "그룹 주인"
+  banish: "추방"
+  banishConfirm: "정말로 \"{name}\" 님을 \"{group}\" 에서 추방할까요?"
 _cherrypick:
   function: "고유 기능"
   functionDescription: "CherryPick이 추가하는 고유 기능을 활성화/비활성화할 수 있어요."

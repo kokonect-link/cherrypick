@@ -1110,6 +1110,11 @@ installed: "インストール済み"
 branding: "ブランディング"
 translateProfile: "プロフィールを翻訳する"
 
+_group:
+  leader: "グループオーナー"
+  banish: "追放"
+  banishConfirm: "本当に\"{name}\"さんを\"{group}\"から追放しますか？"
+
 _cherrypick:
   function: "独自機能"
   functionDescription: "CherryPickが追加する独自機能を有効・無効にします。"

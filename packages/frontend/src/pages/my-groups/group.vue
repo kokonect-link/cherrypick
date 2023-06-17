@@ -19,9 +19,9 @@
 									</MkA>
 									<MkAcct :user="user" :class="$style.acct"/>
 								</div>
-								<div v-if="user.id === group.ownerId" :title="i18n.ts.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
+								<div v-if="user.id === group.ownerId" v-tooltip="i18n.ts._group.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
 								<div v-else-if="group && $i.id === group.ownerId">
-									<button class="_button" :title="i18n.ts.banish" @click="removeUser(user)"><i class="ti ti-x"></i></button>
+									<button v-tooltip="i18n.ts._group.banish" class="_button" @click="removeUser(user)"><i class="ti ti-x"></i></button>
 								</div>
 							</div>
 						</div>
@@ -75,7 +75,7 @@ function invite() {
 async function removeUser(user) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('banishConfirm', { name: user.name || user.username }),
+		text: i18n.t('_group.banishConfirm', { name: user.name || user.username, group: group.name }),
 	});
 	if (canceled) return;
 

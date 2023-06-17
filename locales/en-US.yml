@@ -1109,6 +1109,10 @@ additionalEmojiDictionary: "Additional emoji dictionaries"
 installed: "Installed"
 branding: "Branding"
 translateProfile: "Translate profile"
+_group:
+  leader: "Group owner"
+  banish: "Banish"
+  banishConfirm: "Do you really want to banish \"{name}\" from \"{group}\"?"
 _cherrypick:
   function: "Proprietary Functions"
   functionDescription: "Enables or disables proprietary features that CherryPick adds."
