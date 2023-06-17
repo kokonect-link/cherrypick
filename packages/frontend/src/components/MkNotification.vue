@@ -89,8 +89,9 @@
 			</template>
 			<template v-else-if="notification.type === 'groupInvited'">
 				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}:<span style="font-weight: bold; margin-left: 5px;">{{ notification.invitation.group.name }}</span></span>
-				<div v-if="full && !groupInviteDone">
-					<button class="_textButton" @click="acceptGroupInvitation()">{{ i18n.ts.accept }}</button> | <button class="_textButton" @click="rejectGroupInvitation()">{{ i18n.ts.reject }}</button>
+				<div v-if="full && !groupInviteDone" :class="$style.followRequestCommands">
+					<MkButton :class="$style.followRequestCommandButton" rounded primary @click="acceptGroupInvitation()"><i class="ti ti-check"/> {{ i18n.ts.accept }}</MkButton>
+					<MkButton :class="$style.followRequestCommandButton" rounded danger @click="rejectGroupInvitation()"><i class="ti ti-x"/> {{ i18n.ts.reject }}</MkButton>
 				</div>
 			</template>
 			<span v-else-if="notification.type === 'app'" :class="$style.text">
@@ -149,7 +150,7 @@ const acceptGroupInvitation = () => {
 
 const rejectGroupInvitation = () => {
 	groupInviteDone.value = true;
-	os.api('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
+	os.apiWithDialog('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };
 
 useTooltip(reactionRef, (showing) => {

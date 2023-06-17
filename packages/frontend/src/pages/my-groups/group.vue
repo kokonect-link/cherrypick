@@ -1,19 +1,11 @@
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header>
+		<MkPageHeader v-if="group && $i.id === group.ownerId" :actions="headerActions" :tabs="headerTabs"/>
+		<MkPageHeader v-else :tabs="headerTabs"/>
+	</template>
 	<MkSpacer :contentMax="700">
 		<div>
-			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
-				<div v-if="group && $i.id === group.ownerId">
-					<div :class="$style.content" style="">
-						<MkButton inline @click="invite()">{{ i18n.ts.invite }}</MkButton>
-						<MkButton inline @click="renameGroup()">{{ i18n.ts.rename }}</MkButton>
-						<MkButton inline @click="transfer()">{{ i18n.ts.transfer }}</MkButton>
-						<MkButton inline danger @click="deleteGroup()">{{ i18n.ts.delete }}</MkButton>
-					</div>
-				</div>
-			</transition>
-
 			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
 				<div v-if="group" class="_gaps_s">
 					<div style="margin-top: var(--margin);">{{ i18n.ts.members }}</div>
@@ -43,7 +35,6 @@
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
-import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
 import { $i } from '@/account';
 import { mainRouter } from '@/router';
@@ -135,7 +126,31 @@ async function deleteGroup() {
 
 watch(() => props.listId, fetchGroup, { immediate: true });
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts.invite,
+	handler: () => {
+		invite();
+	},
+}, {
+	icon: 'ti ti-edit',
+	text: i18n.ts.rename,
+	handler: () => {
+		renameGroup();
+	},
+}, {
+	icon: 'ti ti-arrows-exchange',
+	text: i18n.ts.transfer,
+	handler: () => {
+		transfer();
+	},
+}, {
+	icon: 'ti ti-trash',
+	text: i18n.ts.delete,
+	handler: () => {
+		deleteGroup();
+	},
+}]);
 
 const headerTabs = $computed(() => []);
 
