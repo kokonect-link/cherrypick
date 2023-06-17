@@ -31,7 +31,7 @@
 - 네비게이션 바의 배치를 수정
 - 프로필 아이콘의 기본값을 사각형으로 설정
 - 미디어 타임라인 추가 ([kiyo4act/misskey.design＠c01be0d](https://github.com/kiyo4act/misskey.design/commit/c01be0dc7674cdf0bcac6081c63baab52c4c9abe))
-- ruby 표기 지원 ([kiyo4act/misskey.design@8826fbf](https://github.com/kiyo4act/misskey.design/commit/8826fbf77a9d6ff5cac7368da999f3d04aa68c97))
+- ruby 표기 지원 ([yuriha-chan/misskey@0a109d4](https://github.com/yuriha-chan/misskey/commit/0a109d4f7442f8eedc48693b09ad2fd0b61e67a5), [yuriha-chan/misskey@446f0c2](https://github.com/yuriha-chan/misskey/commit/446f0c2ea5cc9a9f7f48a75935bce550bd0b3095), [yuriha-chan/misskey@4cfd28a](https://github.com/yuriha-chan/misskey/commit/4cfd28a452be0cdcc1328d77ab0db6dca627ca23), [yuriha-chan/misskey@dc6a6dc](https://github.com/yuriha-chan/misskey/commit/dc6a6dcdc3c2ac5b836570defb14ef4d441725e8))
 - 노트 검색을 전체/로컬/리모트로 나누도록 변경 ([kiyo4act/misskey.design@4adad07](https://github.com/kiyo4act/misskey.design/commit/4adad0768ce02bd49207a94678cf3c9130ed9e10))
 - 노트/유저 검색 페이지에서 Enter 키를 누르면 검색하도록
 - 프로필 번역 기능 추가
