@@ -87,22 +87,6 @@ export default function(props: {
 				// TODO: CSSを文字列で組み立てていくと token.props.args.~~~ 経由でCSSインジェクションできるのでよしなにやる
 				let style;
 				switch (token.props.name) {
-					case 'ruby': {
-						let rb, rt, tokens;
-						token.children.forEach((t) => { if (t.type == 'text') { t.props.text = t.props.text.trim(); } });
-						const children = token.children.filter((t) => t.type != 'text' || t.props.text != '');
-						if (children.length == 1 && children[0].type == 'text') {
-							tokens = children[0].props.text.split(" ");
-							rb = [tokens[0]];
-							rt = [tokens.slice(1).join(' ')];
-						} else if (children.length >= 2) {
-							rb = genEl([children[0]], scale);
-							rt = genEl(children.slice(1), scale);
-						} else {
-							return genEl(children, scale);
-						}
-						return [h('ruby', {}, [h('rb', {}, rb), h('rt', {}, rt)])];
-					}
 					case 'tada': {
 						const speed = validTime(token.props.args.speed) ?? '1s';
 						style = 'font-size: 150%;' + (useAnim ? `animation: tada ${speed} linear infinite both;` : '');
@@ -231,6 +215,22 @@ export default function(props: {
 						if (!/^[0-9a-f]{3,6}$/i.test(color)) color = 'f00';
 						style = `background-color: #${color};`;
 						break;
+					}
+					case 'ruby': {
+						let rb, rt, tokens;
+						token.children.forEach((t) => { if (t.type == 'text') { t.props.text = t.props.text.trim(); } });
+						const children = token.children.filter((t) => t.type != 'text' || t.props.text != '');
+						if (children.length == 1 && children[0].type == 'text') {
+							tokens = children[0].props.text.split(' ');
+							rb = [tokens[0]];
+							rt = [tokens.slice(1).join(' ')];
+						} else if (children.length >= 2) {
+							rb = genEl([children[0]], scale);
+							rt = genEl(children.slice(1), scale);
+						} else {
+							return genEl(children, scale);
+						}
+						return [h('ruby', {}, [h('rb', {}, rb), h('rt', {}, rt)])];
 					}
 				}
 				if (style == null) {

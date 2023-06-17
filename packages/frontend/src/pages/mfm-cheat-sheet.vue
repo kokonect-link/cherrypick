@@ -401,7 +401,7 @@ let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,
 let preview_fg = $ref('$[fg.color=ffbcdc Cherry]$[fg.color=b1d3ff Pick]');
 let preview_bg = $ref('$[bg.color=ffbcdc Cherry]$[bg.color=b1d3ff Pick]');
 let preview_plain = $ref('<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>');
-let preview_ruby = $ref('<ruby>CherryPick<rt>Misskey</rt></ruby>');
+let preview_ruby = $ref('$[ruby CherryPick Misskey]');
 
 const headerActions = $computed(() => []);
 
