@@ -60,21 +60,7 @@ export default function(props: {
 					const res: (VNode | string)[] = [];
 					for (const t of text.split('\n')) {
 						res.push(h('br'));
-						t.replace(/<ruby>(.+?)<rt>(.+?)<\/rt><\/ruby>/g, '\n<ruby>$1<rt>$2</rt></ruby>\n')
-							.replace(/《《(.+?)》》/g, (match, c1) => c1.replace(/(.)/g, '\n<ruby>$1<rt>・</rt></ruby>\n'))
-							.replace(/[\|｜](.+?)《(.+?)》/g, '\n<ruby>$1<rt>$2</rt></ruby>\n')
-							.replace(/([一-龠]+)《(.+?)》/g, '\n<ruby>$1<rt>$2</rt></ruby>\n')
-							.replace(/[\|｜]《(.+?)》/g, '《$1》')
-							.split('\n')
-							.forEach( t2 => {
-								const match = t2.match(/<ruby>(.+?)<rt>(.+?)<\/rt><\/ruby>/);
-								if (match !== null && match.length > 2) {
-									const rubyAlign = match[1].length < match[2].length ? 'ruby-align:center' : 'ruby-align:space-around';
-									res.push(h('ruby', { style: rubyAlign }, [match[1], h('rt', match[2])]));
-								} else if (t2 !== '') {
-									res.push(t2);
-								}
-							});
+						res.push(t);
 					}
 					res.shift();
 					return res;
