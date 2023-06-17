@@ -1,6 +1,6 @@
 <template>
 <div :class="[$style.root, { [$style.collapsed]: collapsed }]">
-	<div>
+	<div style="display: grid;">
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
@@ -18,16 +18,17 @@
 				</div>
 			</div>
 		</div>
+		<MkDetailsButton v-if="note.files.length > 0 || note.poll" v-model="showContent" :note="note"/>
+		<div v-show="showContent">
+			<div v-if="note.files.length > 0">
+				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @contextmenu.prevent/>
+				<MkMediaList v-else :mediaList="note.files"/>
+			</div>
+			<div v-if="note.poll">
+				<MkPoll :note="note"/>
+			</div>
+		</div>
 	</div>
-	<details v-if="note.files.length > 0">
-		<summary>({{ i18n.t('withNFiles', { n: note.files.length }) }})</summary>
-		<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @contextmenu.prevent/>
-		<MkMediaList v-else :mediaList="note.files"/>
-	</details>
-	<details v-if="note.poll">
-		<summary>{{ i18n.ts.poll }}</summary>
-		<MkPoll :note="note"/>
-	</details>
 	<button v-if="collapsed" :class="$style.fade" class="_button" @click="collapsed = false">
 		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 	</button>
@@ -40,11 +41,13 @@ import * as misskey from 'cherrypick-js';
 import * as os from '@/os';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
+import MkDetailsButton from '@/components/MkDetailsButton.vue';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { miLocalStorage } from '@/local-storage';
 
+const showContent = ref(false);
 const translation = ref<any>(null);
 const translating = ref(false);
 
