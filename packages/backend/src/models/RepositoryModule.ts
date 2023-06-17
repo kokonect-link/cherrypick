@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import { User, Note, Announcement, AnnouncementRead, App, NoteFavorite, NoteThreadMuting, NoteReaction, NoteUnread, Poll, PollVote, UserProfile, UserKeypair, UserPending, AttestationChallenge, UserSecurityKey, UserPublickey, UserList, UserListJoining, UserGroup, UserGroupJoining, UserGroupInvitation, UserNotePining, UserIp, UsedUsername, Following, FollowRequest, Instance, Emoji, DriveFile, DriveFolder, Meta, Muting, RenoteMuting, Blocking, SwSubscription, Hashtag, AbuseUserReport, RegistrationTicket, AuthSession, AccessToken, Signin, MessagingMessage, Page, PageLike, GalleryPost, GalleryLike, ModerationLog, Clip, ClipNote, Antenna, PromoNote, PromoRead, Relay, MutedNote, Channel, ChannelFollowing, ChannelFavorite, RegistryItem, Webhook, Ad, PasswordResetRequest, RetentionAggregation, FlashLike, Flash, Role, RoleAssignment, ClipFavorite, UserMemo, UserListFavorite } from './index.js';
+import { User, Note, Announcement, AnnouncementRead, App, NoteFavorite, NoteThreadMuting, NoteReaction, NoteUnread, Poll, PollVote, UserProfile, UserKeypair, UserPending, AttestationChallenge, UserSecurityKey, UserPublickey, UserList, UserListJoining, UserGroup, UserGroupJoining, UserGroupInvitation, UserNotePining, UserIp, UsedUsername, Following, FollowRequest, Instance, Emoji, Event, DriveFile, DriveFolder, Meta, Muting, RenoteMuting, Blocking, SwSubscription, Hashtag, AbuseUserReport, RegistrationTicket, AuthSession, AccessToken, Signin, MessagingMessage, Page, PageLike, GalleryPost, GalleryLike, ModerationLog, Clip, ClipNote, Antenna, PromoNote, PromoRead, Relay, MutedNote, Channel, ChannelFollowing, ChannelFavorite, RegistryItem, Webhook, Ad, PasswordResetRequest, RetentionAggregation, FlashLike, Flash, Role, RoleAssignment, ClipFavorite, UserMemo, UserListFavorite } from './index.js';
 import type { DataSource } from 'typeorm';
 import type { Provider } from '@nestjs/common';
 
@@ -181,6 +181,12 @@ const $instancesRepository: Provider = {
 const $emojisRepository: Provider = {
 	provide: DI.emojisRepository,
 	useFactory: (db: DataSource) => db.getRepository(Emoji),
+	inject: [DI.db],
+};
+
+const $eventsRepository: Provider = {
+	provide: DI.eventsRepository,
+	useFactory: (db: DataSource) => db.getRepository(Event),
 	inject: [DI.db],
 };
 
@@ -458,6 +464,7 @@ const $userMemosRepository: Provider = {
 		$followRequestsRepository,
 		$instancesRepository,
 		$emojisRepository,
+		$eventsRepository,
 		$driveFilesRepository,
 		$driveFoldersRepository,
 		$metasRepository,
@@ -530,6 +537,7 @@ const $userMemosRepository: Provider = {
 		$followRequestsRepository,
 		$instancesRepository,
 		$emojisRepository,
+		$eventsRepository,
 		$driveFilesRepository,
 		$driveFoldersRepository,
 		$metasRepository,

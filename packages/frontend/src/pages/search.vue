@@ -14,6 +14,10 @@
 	<MkSpacer v-else-if="tab === 'user'" :contentMax="800">
 		<XUser/>
 	</MkSpacer>
+
+	<MkSpacer v-else-if="tab === 'event'" :contentMax="800">
+		<XEvent/>
+	</MkSpacer>
 </MkStickyContainer>
 </template>
 
@@ -28,6 +32,7 @@ import MkInfo from '@/components/MkInfo.vue';
 
 const XNote = defineAsyncComponent(() => import('./search.note.vue'));
 const XUser = defineAsyncComponent(() => import('./search.user.vue'));
+const XEvent = defineAsyncComponent(() => import('./search.event.vue'));
 
 let tab = $ref('note');
 
@@ -43,6 +48,10 @@ const headerTabs = $computed(() => [{
 	key: 'user',
 	title: i18n.ts.users,
 	icon: 'ti ti-users',
+}, {
+	key: 'event',
+	title: i18n.ts.events,
+	icon: 'ti ti-calendar',
 }]);
 
 definePageMetadata(computed(() => ({

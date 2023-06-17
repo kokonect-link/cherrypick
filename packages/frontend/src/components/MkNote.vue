@@ -55,6 +55,7 @@
 			</div>
 		</div>
 		<div style="container-type: inline-size;">
+			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
 				<MkCwButton v-model="showContent" :note="appearNote"/>
@@ -171,6 +172,7 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
+import MkEvent from '@/components/MkEvent.vue';
 import { pleaseLogin } from '@/scripts/please-login';
 import { focusPrev, focusNext } from '@/scripts/focus';
 import { checkWordMute } from '@/scripts/check-word-mute';

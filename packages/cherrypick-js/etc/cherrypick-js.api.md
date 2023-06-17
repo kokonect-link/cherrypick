@@ -1677,6 +1677,12 @@ export type Endpoints = {
                 expiresAt?: null | number;
                 expiredAfter?: null | number;
             };
+            event?: null | {
+                title: string;
+                start: number;
+                end?: null | number;
+                metadata: Record<string, string>;
+            };
         };
         res: {
             createdNote: Note;
@@ -1753,6 +1759,24 @@ export type Endpoints = {
             choice: number;
         };
         res: null;
+    };
+    'notes/events/search': {
+        req: {
+            query?: string;
+            sinceId?: Note['id'];
+            untilId?: Note['id'];
+            limit?: number;
+            offset?: number;
+            users?: User['id'][];
+            sinceDate?: number;
+            untilDate?: number;
+            sortBy?: 'startDate' | 'craetedAt';
+            filters?: {
+                key: string;
+                values: (string | null)[];
+            }[];
+        };
+        res: Note[];
     };
     'notes/reactions': {
         req: {
@@ -2406,6 +2430,12 @@ type Note = {
     replyId: Note['id'];
     renote?: Note;
     renoteId: Note['id'];
+    event?: {
+        title: string;
+        start: DateString;
+        end: DateString | null;
+        metadata: Record<string, string>;
+    };
     files: DriveFile[];
     fileIds: DriveFile['id'][];
     visibility: 'public' | 'home' | 'followers' | 'specified';
@@ -2719,7 +2749,7 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 //
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
-// src/api.types.ts:596:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
+// src/api.types.ts:614:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

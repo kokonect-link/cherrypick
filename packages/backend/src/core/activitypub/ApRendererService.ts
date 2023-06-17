@@ -20,7 +20,7 @@ import { MfmService } from '@/core/MfmService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
 import type { UserKeypair } from '@/models/entities/UserKeypair.js';
-import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFilesRepository, EmojisRepository, PollsRepository } from '@/models/index.js';
+import type { UsersRepository, UserProfilesRepository, NotesRepository, DriveFilesRepository, EmojisRepository, PollsRepository, EventsRepository } from '@/models/index.js';
 import { bindThis } from '@/decorators.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { isNotNull } from '@/misc/is-not-null.js';
@@ -52,6 +52,9 @@ export class ApRendererService {
 
 		@Inject(DI.pollsRepository)
 		private pollsRepository: PollsRepository,
+
+		@Inject(DI.eventsRepository)
+		private eventsRepository: EventsRepository,
 
 		private customEmojiService: CustomEmojiService,
 		private userEntityService: UserEntityService,
@@ -429,6 +432,17 @@ export class ApRendererService {
 			_misskey_talk: true,
 		} as const : {};
 
+		let asEvent = {};
+		if (note.hasEvent) {
+			const event = await this.eventsRepository.findOneBy({ noteId: note.id });
+			asEvent = event ? {
+				type: 'Event',
+				name: event.title,
+				startTime: event.start,
+				endTime: event.end,
+			} as const : {};
+		}
+
 		return {
 			id: `${this.config.url}/notes/${note.id}`,
 			type: 'Note',
@@ -449,6 +463,7 @@ export class ApRendererService {
 			attachment: files.map(x => this.renderDocument(x)),
 			sensitive: note.cw != null || files.some(file => file.isSensitive),
 			tag,
+			...asEvent,
 			...asPoll,
 			...asTalk,
 		};

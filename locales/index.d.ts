@@ -1068,6 +1068,9 @@ export interface Locale {
     "accountMovedShort": string;
     "operationForbidden": string;
     "forceShowAds": string;
+    "event": string;
+    "events": string;
+    "reverseChronological": string;
     "addMemo": string;
     "editMemo": string;
     "reactionsList": string;
@@ -1163,6 +1166,35 @@ export interface Locale {
     };
     "_serverRules": {
         "description": string;
+    };
+    "_event": {
+        "title": string;
+        "startDateTime": string;
+        "endDateTime": string;
+        "startDate": string;
+        "endDate": string;
+        "startTime": string;
+        "endTime": string;
+        "detailName": string;
+        "detailValue": string;
+        "location": string;
+        "url": string;
+        "doorTime": string;
+        "organizer": string;
+        "organizerLink": string;
+        "audience": string;
+        "language": string;
+        "ageRange": string;
+        "ticketsUrl": string;
+        "isFree": string;
+        "price": string;
+        "availability": string;
+        "from": string;
+        "until": string;
+        "availabilityStart": string;
+        "availabilityEnd": string;
+        "keywords": string;
+        "performers": string;
     };
     "_accountMigration": {
         "moveFrom": string;

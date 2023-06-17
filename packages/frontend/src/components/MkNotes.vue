@@ -13,6 +13,7 @@
 				ref="notes"
 				v-slot="{ item: note }"
 				:items="notes"
+				:getDate="getDate"
 				:direction="pagination.reversed ? 'up' : 'down'"
 				:reversed="pagination.reversed"
 				:noGap="noGap"
@@ -37,6 +38,7 @@ import { infoImageUrl } from '@/instance';
 const props = defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
+	getDate?: (any) => string; // custom function to separate notes on something that isn't createdAt
 }>();
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();

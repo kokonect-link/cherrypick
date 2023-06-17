@@ -76,6 +76,7 @@
 			</div>
 		</header>
 		<div :class="$style.noteContent">
+			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
 				<MkCwButton v-model="showContent" :note="appearNote"/>
@@ -180,6 +181,7 @@ import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
+import MkEvent from '@/components/MkEvent.vue';
 import { pleaseLogin } from '@/scripts/please-login';
 import { checkWordMute } from '@/scripts/check-word-mute';
 import { userPage } from '@/filters/user';
