@@ -90,6 +90,12 @@ export type Source = {
 	deliverJobMaxAttempts?: number;
 	inboxJobMaxAttempts?: number;
 
+	cloudLogging?: {
+		projectId: string;
+		saKeyPath: string;
+		logName?: string;
+	}
+
 	mediaProxy?: string;
 	proxyRemoteFiles?: boolean;
 	videoThumbnailGenerator?: string;
