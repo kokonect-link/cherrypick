@@ -85,6 +85,10 @@
 				<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 				<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
+				<div v-if="defaultStore.state.showTranslateButtonInNote" style="padding-top: 5px; color: var(--accent);">
+					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
+					<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.closeTranslate }}</button>
+				</div>
 				<div v-if="translating || translation" :class="$style.translation">
 					<MkLoading v-if="translating" mini/>
 					<div v-else>
@@ -194,6 +198,7 @@ import { claimAchievement } from '@/scripts/achievements';
 import { MenuItem } from '@/types/menu';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog';
+import { miLocalStorage } from '@/local-storage';
 
 const props = defineProps<{
 	note: misskey.entities.Note;
@@ -418,6 +423,17 @@ function menu(viaKeyboard = false): void {
 	os.popupMenu(getNoteMenu({ note: note, translating, translation, menuButton, isDeleted }), menuButton.value, {
 		viaKeyboard,
 	}).then(focus);
+}
+
+async function translate(): Promise<void> {
+	if (translation.value != null) return;
+	translating.value = true;
+	const res = await os.api('notes/translate', {
+		noteId: appearNote.id,
+		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
+	});
+	translating.value = false;
+	translation.value = res;
 }
 
 async function clip() {

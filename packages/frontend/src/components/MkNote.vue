@@ -64,7 +64,10 @@
 					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 					<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 					<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-					<div style="padding-top: 5px; color: var(--accent);"><button v-if="defaultStore.state.showTranslateButtonInNote" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button></div>
+					<div v-if="defaultStore.state.showTranslateButtonInNote" style="padding-top: 5px; color: var(--accent);">
+						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
+						<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.closeTranslate }}</button>
+					</div>
 					<div v-if="translating || translation" :class="$style.translation">
 						<MkLoading v-if="translating" mini/>
 						<div v-else>

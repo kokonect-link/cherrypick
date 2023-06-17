@@ -6,7 +6,10 @@
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 		<Mfm v-if="note.text" :text="note.text" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div style="padding-top: 5px; color: var(--accent);"><button v-if="defaultStore.state.showTranslateButtonInNote" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button></div>
+		<div v-if="defaultStore.state.showTranslateButtonInNote" style="padding-top: 5px; color: var(--accent);">
+			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
+			<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.closeTranslate }}</button>
+		</div>
 		<div v-if="translating || translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
