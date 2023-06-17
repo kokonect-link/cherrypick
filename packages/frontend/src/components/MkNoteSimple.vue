@@ -7,6 +7,7 @@
 		</div>
 	</div>
 	<div>
+		<MkEvent v-if="note.event" :note="note"/>
 		<p v-if="note.cw != null" :class="$style.cw">
 			<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
 			<MkCwButton v-model="showContent" :note="note"/>
@@ -24,6 +25,7 @@ import * as misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
+import MkEvent from '@/components/MkEvent.vue';
 import { $i } from '@/account';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { mainRouter } from '@/router';
