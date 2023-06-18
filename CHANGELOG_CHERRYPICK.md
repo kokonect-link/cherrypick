@@ -95,6 +95,7 @@
 ### Server
 - mfm-js를 cherrypick-mfm-js로 변경
 - misskey-js를 cherrypick-js로 변경
+- Add: Cloud Logging 기능 ([libnare/mk-castella@0a883ef](https://github.com/libnare/mk-castella/commit/0a883efe08921d5e5b7914a1075c3931122a623b), [libnare/mk-castella@7987d57](https://github.com/libnare/mk-castella/commit/7987d57789316084b38665e539e41a463ddaa110))
 - Fix: 알림에서 UserGroupInvitation 관련 문제 해결 (kokonect-link/cherrypick#75)
 - Fix: 정의되지 않은 OffscreenCanvas (misskey-dev/misskey#11017)
 

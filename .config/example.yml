@@ -155,7 +155,7 @@ id: 'aid'
 #cloudLogging:
 #  projectId: example-project-id
 #  saKeyPath: /path/to/service-account-key.json
-#  logName: misskey
+#  logName: cherrypick
 
 # Proxy for HTTP/HTTPS
 #proxy: http://127.0.0.1:3128
