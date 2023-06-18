@@ -45,7 +45,8 @@
 			<span v-else-if="notification.type === 'achievementEarned'">{{ i18n.ts._notification.achievementEarned }}</span>
 			<MkA v-else-if="notification.user" v-user-preview="notification.user.id" :class="$style.headerName" :to="userPage(notification.user)"><MkUserName :user="notification.user"/></MkA>
 			<span v-else>{{ notification.header }}</span>
-			<MkTime v-if="withTime" :time="notification.createdAt" :class="$style.headerTime"/>
+			<MkTime v-if="withTime && defaultStore.state.enableAbsoluteTime" :time="notification.createdAt" :class="$style.headerTime" mode="absolute"/>
+			<MkTime v-else-if="withTime && !defaultStore.state.enableAbsoluteTime" :time="notification.createdAt" :class="$style.headerTime" mode="relative"/>
 		</header>
 		<div>
 			<MkA v-if="notification.type === 'reaction'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">

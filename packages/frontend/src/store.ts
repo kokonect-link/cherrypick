@@ -383,6 +383,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	enableAbsoluteTime: {
+		where: 'device',
+		default: false,
+	},
 
 	// - Settings/CherryPick
 	nicknameEnabled: {

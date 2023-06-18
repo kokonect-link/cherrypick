@@ -46,6 +46,7 @@
 - 「이미 본 리노트를 간략화하기」 옵션의 기본값을 꺼짐으로 설정
 - 이벤트 기능 (misskey-dev/misskey#10628)
 - プレイにAPI Tokenを要求できる関数を追加 (misskey-dev/misskey#10949)
+- 절대 시간 표기 (sakura-tel/milkey#69)
 
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음

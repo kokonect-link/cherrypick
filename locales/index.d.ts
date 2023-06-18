@@ -1117,6 +1117,7 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "enableAbsoluteTime": string;
     "_group": {
         "leader": string;
         "banish": string;
