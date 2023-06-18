@@ -75,7 +75,7 @@
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
 							<div v-if="user.description">
 								<MkButton v-if="!(translating || translation)" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
-								<MkButton v-else class="translateButton" small @click="translation = null">{{ i18n.ts.closeTranslate }}</MkButton>
+								<MkButton v-else class="translateButton" small @click="translation = null"><i class="ti ti-x"></i> {{ i18n.ts.close }}</MkButton>
 							</div>
 							<div v-if="translating || translation" class="translation">
 								<MkLoading v-if="translating" mini/>
