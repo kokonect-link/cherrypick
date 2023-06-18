@@ -1113,6 +1113,9 @@ export interface Locale {
     "goToMisskey": string;
     "additionalEmojiDictionary": string;
     "installed": string;
+    "additionalPermissionsForFlash": string;
+    "thisFlashRequiresTheFollowingPermissions": string;
+    "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "branding": string;
     "translateProfile": string;
     "_group": {
