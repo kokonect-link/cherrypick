@@ -45,7 +45,7 @@
 - 리모트에 존재하는 커스텀 이모지도 자신의 서버 내에 같은 이름의 이모지가 있으면 리액션 할 수 있도록 ([shrimpia/misskey@e91295f](https://github.com/shrimpia/misskey/commit/e91295ff9c6f8ac90f61c8de7a891a6836e48e95), [shrimpia/misskey@010378f](https://github.com/shrimpia/misskey/commit/010378fae659ad3015bfade4346209e01bb2a902), [shrimpia/misskey@acf2a30](https://github.com/shrimpia/misskey/commit/acf2a30e8a8c57525dfbab499dbb0b6c7d8e43c2))
 - 「이미 본 리노트를 간략화하기」 옵션의 기본값을 꺼짐으로 설정
 - 이벤트 기능 (misskey-dev/misskey#10628)
-- プレイにAPI Tokenを要求できる関数を追加 (misskey-dev/misskey#10949)
+- Play에 API Token을 요청할 수 있는 기능 추가 (misskey-dev/misskey#10949)
 - 절대 시간 표기 (sakura-tel/milkey#69)
 
 ### Client
