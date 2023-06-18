@@ -40,24 +40,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import { i18n } from '@/i18n';
-import * as os from '@/os';
-import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { $i } from '@/account';
-import { instance } from '@/instance';
-import MkInfo from '@/components/MkInfo.vue';
-import { useRouter } from '@/router';
 import MkFolder from '@/components/MkFolder.vue';
+import { i18n } from '@/i18n';
+import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
-const router = useRouter();
-
-let key = $ref('');
+let key = $ref(0);
 let searchQuery = $ref('');
 let searchOrigin = $ref('combined');
 let eventSort = $ref('startDate');
@@ -65,28 +57,11 @@ let eventPagination = $ref();
 let startDate = $ref(null);
 let endDate = $ref(null);
 
-async function search() {
+async function search(): Promise<void> {
 	const query = searchQuery.toString().trim();
 
+	// only notes/users search require the query string
 	if (query == null || query === '') return;
-
-	if (query.startsWith('https://')) {
-		const promise = os.api('ap/show', {
-			uri: query,
-		});
-
-		os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
-
-		const res = await promise;
-
-		if (res.type === 'User') {
-			router.push(`/@${res.object.username}@${res.object.host}`);
-		} else if (res.type === 'Note') {
-			router.push(`/notes/${res.object.id}`);
-		}
-
-		return;
-	}
 
 	eventPagination = {
 		endpoint: 'notes/events/search',
@@ -101,8 +76,7 @@ async function search() {
 		},
 	};
 
-	// only refresh search on query/key change
-	key = JSON.stringify(eventPagination);
+	key++;
 }
 
 function onInputKeydown(evt: KeyboardEvent) {

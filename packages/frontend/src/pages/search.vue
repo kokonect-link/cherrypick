@@ -22,10 +22,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import * as os from '@/os';
 import { $i } from '@/account';
 import { instance } from '@/instance';
 import MkInfo from '@/components/MkInfo.vue';
