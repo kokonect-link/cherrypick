@@ -1118,6 +1118,8 @@ export interface Locale {
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
     "enableAbsoluteTime": string;
+    "inviteRevoke": string;
+    "inviteRevokeConfirm": string;
     "_group": {
         "leader": string;
         "banish": string;

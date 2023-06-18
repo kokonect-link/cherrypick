@@ -47,6 +47,7 @@
 - 이벤트 기능 (misskey-dev/misskey#10628)
 - Play에 API Token을 요청할 수 있는 기능 추가 (misskey-dev/misskey#10949)
 - 절대 시간 표기 (sakura-tel/milkey#69)
+- 초대 코드 해지 기능 ([atsu1125/groundpolis@2da90e7](https://github.com/atsu1125/groundpolis/commit/2da90e7241d2f88390a7713e76a86f26e158248e))
 
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음

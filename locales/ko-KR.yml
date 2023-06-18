@@ -1115,6 +1115,8 @@ thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구�
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
 translateProfile: "프로필 번역하기"
 enableAbsoluteTime: "절대 시간 표기 사용"
+inviteRevoke: "모든 초대 코드 무효화"
+inviteRevokeConfirm: "정말로 모든 초대 코드를 무효화 할까요?"
 _group:
   leader: "그룹 주인"
   banish: "추방"

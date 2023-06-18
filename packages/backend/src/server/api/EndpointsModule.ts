@@ -39,6 +39,7 @@ import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js'
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
 import * as ep___invite from './endpoints/invite.js';
+import * as ep___inviteRevoke from './endpoints/invite-revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -402,6 +403,7 @@ const $admin_getIndexStats: Provider = { provide: 'ep:admin/get-index-stats', us
 const $admin_getTableStats: Provider = { provide: 'ep:admin/get-table-stats', useClass: ep___admin_getTableStats.default };
 const $admin_getUserIps: Provider = { provide: 'ep:admin/get-user-ips', useClass: ep___admin_getUserIps.default };
 const $invite: Provider = { provide: 'ep:invite', useClass: ep___invite.default };
+const $inviteRevoke: Provider = { provide: 'ep:invite-revoke', useClass: ep___inviteRevoke.default };
 const $admin_promo_create: Provider = { provide: 'ep:admin/promo/create', useClass: ep___admin_promo_create.default };
 const $admin_queue_clear: Provider = { provide: 'ep:admin/queue/clear', useClass: ep___admin_queue_clear.default };
 const $admin_queue_deliverDelayed: Provider = { provide: 'ep:admin/queue/deliver-delayed', useClass: ep___admin_queue_deliverDelayed.default };
@@ -769,6 +771,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getTableStats,
 		$admin_getUserIps,
 		$invite,
+		$inviteRevoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
@@ -1130,6 +1133,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getTableStats,
 		$admin_getUserIps,
 		$invite,
+		$inviteRevoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
