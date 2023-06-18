@@ -1,6 +1,6 @@
 import { utils, values } from '@syuilo/aiscript';
 import { defineAsyncComponent } from 'vue';
-import { permissions as MkPermissions } from 'misskey-js';
+import { permissions as MkPermissions } from 'cherrypick-js';
 import * as os from '@/os';
 import { $i } from '@/account';
 import { miLocalStorage } from '@/local-storage';
