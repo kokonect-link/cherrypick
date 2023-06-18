@@ -36,7 +36,7 @@
 				</MkInput>
 			</section>
 		</div>
-		<div>
+		<div style="margin: 10px 8px;">
 			<section>
 				<MkSwitch v-model="showAdvanced" :disabled="false" class="input">{{ i18n.ts.advanced }}</MkSwitch>
 			</section>
