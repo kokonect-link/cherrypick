@@ -60,7 +60,7 @@
 			<MkCaptcha v-if="instance.enableRecaptcha" ref="recaptcha" v-model="reCaptchaResponse" :class="$style.captcha" provider="recaptcha" :sitekey="instance.recaptchaSiteKey"/>
 			<MkCaptcha v-if="instance.enableTurnstile" ref="turnstile" v-model="turnstileResponse" :class="$style.captcha" provider="turnstile" :sitekey="instance.turnstileSiteKey"/>
 			<div class="_buttonsCenter">
-				<MkButton inline rounded data-cy-signup-back @click="goBack"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+				<MkButton inline rounded @click="goBack"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
 				<MkButton type="submit" :disabled="shouldDisableSubmitting" inline gradate rounded data-cy-signup-submit>
 					<template v-if="submitting">
 						<MkLoading :em="true" :colored="false"/>

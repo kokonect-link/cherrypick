@@ -41,6 +41,7 @@ export const paramDef = {
 			default: false,
 			description: 'Only show notes that have attached files.',
 		},
+		withReplies: { type: 'boolean', default: false },
 		fileType: { type: 'array', items: {
 			type: 'string',
 		} },
@@ -87,7 +88,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				.leftJoinAndSelect('renote.user', 'renoteUser');
 
 			this.queryService.generateChannelQuery(query, me);
-			this.queryService.generateRepliesQuery(query, me);
+			this.queryService.generateRepliesQuery(query, ps.withReplies, me);
 			this.queryService.generateVisibilityQuery(query, me);
 			if (me) this.queryService.generateMutedUserQuery(query, me);
 			if (me) this.queryService.generateMutedNoteQuery(query, me);

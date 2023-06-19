@@ -964,7 +964,7 @@ describe('Endpoints', () => {
 		test('文字数オーバーで怒られる', async () => {
 			const res = await api('/messaging/messages/create', {
 				userId: bob.id,
-				text: '!'.repeat(1001),
+				text: '!'.repeat(3001),
 			}, alice);
 
 			assert.strictEqual(res.status, 400);
