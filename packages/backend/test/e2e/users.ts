@@ -405,7 +405,7 @@ describe('ユーザー', () => {
 		assert.deepStrictEqual(response.mutedWords, []);
 		assert.deepStrictEqual(response.mutedInstances, []);
 		assert.deepStrictEqual(response.mutingNotificationTypes, []);
-		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest']);
+		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest', 'groupInvited']);
 		assert.deepStrictEqual(response.achievements, []);
 		assert.deepStrictEqual(response.loggedInDays, 0);
 		assert.deepStrictEqual(response.policies, DEFAULT_POLICIES); 
@@ -485,9 +485,9 @@ describe('ユーザー', () => {
 		{ parameters: (): object => ({ mutedWords: [] }) },
 		{ parameters: (): object => ({ mutedInstances: ['xxxx.xxxxx'] }) },
 		{ parameters: (): object => ({ mutedInstances: [] }) },
-		{ parameters: (): object => ({ mutingNotificationTypes: ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'app'] }) },
+		{ parameters: (): object => ({ mutingNotificationTypes: ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'groupInvited', 'app'] }) },
 		{ parameters: (): object => ({ mutingNotificationTypes: [] }) },
-		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest'] }) },
+		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest', 'groupInvited'] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: [] }) },
 	] as const)('を書き換えることができる($#)', async ({ parameters }) => {
 		const response = await successfulApiCall({ endpoint: 'i/update', parameters: parameters(), user: alice });
