@@ -22,17 +22,24 @@ describe('After user signed in', () => {
 		cy.wait(1000);
 	});
 
+  it('widget edit toggle is visible', () => {
+		cy.get('[data-cy-widget-edit]').should('be.visible');
+  });
+
 	it('widget select should be visible in edit mode', () => {
+		cy.get('[data-cy-widget-edit]').click();
 		cy.get('[data-cy-widget-select]').should('be.visible');
   });
 
 	it('first widget should be removed', () => {
+		cy.get('[data-cy-widget-edit]').click();
 		cy.get('[data-cy-customize-container]:first-child [data-cy-customize-container-remove]._button').click();
 		cy.get('[data-cy-customize-container]').should('have.length', 2);
 	});
 
 	function buildWidgetTest(widgetName) {
 		it(`${widgetName} widget should get added`, () => {
+			cy.get('[data-cy-widget-edit]').click();
 			cy.get('[data-cy-widget-select] select').select(widgetName, { force: true });
 			cy.get('[data-cy-bg]._modalBg[data-cy-transparent]').click({ multiple: true, force: true });
 			cy.get('[data-cy-widget-add]').click({ force: true });
