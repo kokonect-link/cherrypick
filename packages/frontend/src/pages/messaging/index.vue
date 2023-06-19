@@ -255,6 +255,8 @@ definePageMetadata({
 	padding: 0;
 	overflow: hidden;
 	overflow-wrap: break-word;
+	line-height: 1.35;
+	max-height: 4.05em;
 	color: var(--faceText);
 }
 
