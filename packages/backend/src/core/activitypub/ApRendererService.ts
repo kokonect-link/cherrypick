@@ -440,6 +440,7 @@ export class ApRendererService {
 				name: event.title,
 				startTime: event.start,
 				endTime: event.end,
+				...event.metadata,
 			} as const : {};
 		}
 
