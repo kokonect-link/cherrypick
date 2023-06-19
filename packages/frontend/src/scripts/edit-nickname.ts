@@ -10,8 +10,8 @@ export async function editNickname(user: User) {
 		placeholder: user.name || user.username,
 		default: defaultStore.state.nicknameMap[user.id] ?? null,
 	});
-	if (canceled) return
-	const newMap = {...defaultStore.state.nicknameMap};
+	if (canceled) return;
+	const newMap = { ...defaultStore.state.nicknameMap };
 	if (result) {
 		newMap[user.id] = result;
 	} else {

@@ -112,7 +112,7 @@ async function addItem(ev: MouseEvent) {
 				}];
 			},
 		},
-	], ev.target || ev.currentTarget);
+	], ev.currentTarget ?? ev.target );
 }
 
 function removeItem(index: number) {

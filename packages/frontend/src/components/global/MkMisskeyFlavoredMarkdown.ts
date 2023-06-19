@@ -218,9 +218,9 @@ export default function(props: {
 					}
 					case 'ruby': {
 						let rb, rt, tokens;
-						token.children.forEach((t) => { if (t.type == 'text') { t.props.text = t.props.text.trim(); } });
-						const children = token.children.filter((t) => t.type != 'text' || t.props.text != '');
-						if (children.length == 1 && children[0].type == 'text') {
+						token.children.forEach((t) => { if (t.type === 'text') { t.props.text = t.props.text.trim(); } });
+						const children = token.children.filter((t) => t.type !== 'text' || t.props.text !== '');
+						if (children.length === 1 && children[0].type === 'text') {
 							tokens = children[0].props.text.split(' ');
 							rb = [tokens[0]];
 							rt = [tokens.slice(1).join(' ')];
