@@ -10,7 +10,7 @@
 				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i"/>
-					<MkCwButton v-model="showContent" :note="note"/>
+					<MkCwButton v-model="showContent" style="width: 100%" :note="note"/>
 				</p>
 				<div v-show="note.cw == null || showContent">
 					<MkSubNoteContent :class="$style.text" :note="note"/>
