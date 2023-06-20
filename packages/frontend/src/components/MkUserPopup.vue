@@ -145,6 +145,19 @@ onMounted(() => {
 	background-color: rgba(0, 0, 0, 0.1);
 	background-size: cover;
 	background-position: center;
+
+	&::after {
+		content: "";
+		background-image: var(--blur, inherit);
+		position: fixed;
+		inset: 0;
+		background-size: cover;
+		background-position: center;
+		pointer-events: none;
+		opacity: 0.1;
+		filter: var(--blur, blur(10px));
+	}
+
 }
 
 .followed {
