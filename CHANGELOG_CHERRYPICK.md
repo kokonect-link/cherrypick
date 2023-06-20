@@ -26,6 +26,9 @@
 출시일: unreleased<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md#13xx](CHANGELOG.md#13xx) 문서를 참고하십시오.
 
+### General
+- 리액션 수신의 기본값을 전체로 설정
+
 ### Client
 - 리노트 전 확인 팝업을 띄움
 - 유저 팝업 디자인 개선
