@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+renoteConfirm: "리노트 할까요?"
 posted: "노트를 게시했어요!"
 translateNote: "노트 번역하기"
 showTranslateButtonInNote: "노트 본문에 번역 버튼 표시"

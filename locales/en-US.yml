@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+renoteConfirm: "Do you want to Renote?"
 posted: "Note are now published."
 translateNote: "Translate Note"
 showTranslateButtonInNote: "Display translate button in note body"

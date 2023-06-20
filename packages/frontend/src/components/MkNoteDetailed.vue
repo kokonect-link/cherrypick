@@ -284,9 +284,15 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-function renote() {
+async function renote() {
 	pleaseLogin();
 	showMovedDialog();
+
+	const { canceled } = await os.confirm({
+		type: 'info',
+		text: i18n.ts.renoteConfirm,
+	});
+	if (canceled) return;
 
 	if (appearNote.channel) {
 		const el = renoteButton.value as HTMLElement | null | undefined;
