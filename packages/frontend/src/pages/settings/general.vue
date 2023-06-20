@@ -60,7 +60,7 @@
 					<template #label>{{ i18n.ts.postFormVisibilityHotkey }} <span class="_beta">CherryPick</span></template>
 					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
 				</MkSwitch>
-				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }}</MkSwitch>
+				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
