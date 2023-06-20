@@ -1,5 +1,5 @@
 <template>
-<time :title="absolute">
+<time v-tooltip="absolute">
 	<template v-if="invalid">{{ i18n.ts._ago.invalid }}</template>
 	<template v-else-if="mode === 'relative'">{{ relative }}</template>
 	<template v-else-if="mode === 'absolute'">{{ absolute }}</template>

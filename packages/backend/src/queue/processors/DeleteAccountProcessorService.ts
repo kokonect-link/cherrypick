@@ -73,7 +73,7 @@ export class DeleteAccountProcessorService {
 				await this.notesRepository.delete(notes.map(note => note.id));
 			}
 
-			this.logger.succ('All of notes deleted');
+			this.logger.succ(`All of notes deleted: ${job.data.user.id}`);
 		}
 
 		{ // Delete files
@@ -102,7 +102,7 @@ export class DeleteAccountProcessorService {
 				}
 			}
 
-			this.logger.succ('All of files deleted');
+			this.logger.succ(`All of files deleted: ${job.data.user.id}`);
 		}
 
 		{ // Send email notification
@@ -121,6 +121,6 @@ export class DeleteAccountProcessorService {
 			await this.usersRepository.delete(job.data.user.id);
 		}
 
-		return 'Account deleted';
+		return `[${job.data.user.id}] Account deleted`;
 	}
 }

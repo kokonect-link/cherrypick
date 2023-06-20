@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import type * as Misskey from 'misskey-js';
+import type * as Misskey from 'cherrypick-js';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';

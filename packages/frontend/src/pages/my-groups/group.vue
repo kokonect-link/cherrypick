@@ -1,33 +1,27 @@
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header>
+		<MkPageHeader v-if="group && $i.id === group.ownerId" :actions="headerActions" :tabs="headerTabs"/>
+		<MkPageHeader v-else :tabs="headerTabs"/>
+	</template>
 	<MkSpacer :contentMax="700">
-		<div class="mk-group-page">
+		<div>
 			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
-				<div v-if="group && $i.id === group.ownerId" class="_section actions">
-					<div class="_content" style="">
-						<MkButton inline @click="invite()">{{ i18n.ts.invite }}</MkButton>
-						<MkButton inline @click="renameGroup()">{{ i18n.ts.rename }}</MkButton>
-						<MkButton inline @click="transfer()">{{ i18n.ts.transfer }}</MkButton>
-						<MkButton inline danger @click="deleteGroup()">{{ i18n.ts.delete }}</MkButton>
-					</div>
-				</div>
-			</transition>
-
-			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
-				<div v-if="group" class="_section members _gap">
-					<div class="_title">{{ i18n.ts.members }}</div>
-					<div class="_content">
-						<div class="users">
-							<div v-for="user in users" :key="user.id" class="user _panel">
-								<MkAvatar :user="user" class="avatar" :showIndicator="true"/>
-								<div class="body">
-									<MkUserName :user="user" class="name"/>
-									<MkAcct :user="user" class="acct"/>
+				<div v-if="group" class="_gaps_s">
+					<div style="margin-top: var(--margin);">{{ i18n.ts.members }}</div>
+					<div :class="$style.content">
+						<div :class="$style.users">
+							<div v-for="user in users" :key="user.id" :class="$style.user" class="_panel">
+								<MkAvatar :user="user" :class="$style.avatar" link preview/>
+								<div :class="$style.body">
+									<MkA v-user-preview="user" :class="$style.username" :to="userPage(user)">
+										<MkUserName :user="user" :class="$style.name"/>
+									</MkA>
+									<MkAcct :user="user" :class="$style.acct"/>
 								</div>
-								<div v-if="user.id === group.ownerId" :title="i18n.ts.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
-								<div v-else-if="group && $i.id === group.ownerId" class="action">
-									<button class="_button" :title="i18n.ts.banish" @click="removeUser(user)"><i class="ti ti-x"></i></button>
+								<div v-if="user.id === group.ownerId" v-tooltip="i18n.ts._group.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
+								<div v-else-if="group && $i.id === group.ownerId">
+									<button v-tooltip="i18n.ts._group.banish" class="_button" @click="removeUser(user)"><i class="ti ti-x"></i></button>
 								</div>
 							</div>
 						</div>
@@ -41,12 +35,13 @@
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
-import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
+import { $i } from '@/account';
 import { mainRouter } from '@/router';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
+import { userPage } from '@/filters/user';
 
 const props = defineProps<{
 	groupId: string;
@@ -80,7 +75,7 @@ function invite() {
 async function removeUser(user) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('banishConfirm', { name: user.name || user.username }),
+		text: i18n.t('_group.banishConfirm', { name: user.name || user.username, group: group.name }),
 	});
 	if (canceled) return;
 
@@ -131,7 +126,31 @@ async function deleteGroup() {
 
 watch(() => props.listId, fetchGroup, { immediate: true });
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts.invite,
+	handler: () => {
+		invite();
+	},
+}, {
+	icon: 'ti ti-edit',
+	text: i18n.ts.rename,
+	handler: () => {
+		renameGroup();
+	},
+}, {
+	icon: 'ti ti-arrows-exchange',
+	text: i18n.ts.transfer,
+	handler: () => {
+		transfer();
+	},
+}, {
+	icon: 'ti ti-trash',
+	text: i18n.ts.delete,
+	handler: () => {
+		deleteGroup();
+	},
+}]);
 
 const headerTabs = $computed(() => []);
 
@@ -142,56 +161,55 @@ definePageMetadata(computed(() => group ? {
 
 </script>
 
-<style lang="scss" scoped>
-.mk-group-page {
-	> .actions {
-		._content {
-			display: flex;
-			flex-wrap: wrap;
-			gap: var(--margin);
-		}
+<style lang="scss" module>
+.content {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--margin);
+}
+
+.users {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+	grid-gap: 12px;
+	width: 100%;
+}
+
+.user {
+	display: flex;
+	align-items: center;
+	padding: 16px;
+}
+
+.avatar {
+	width: 50px;
+	height: 50px;
+}
+
+.body {
+	flex: 1;
+	padding: 8px;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.username {
+	font-weight: bold;
+	text-decoration: none;
+
+	&:hover {
+		color: var(--renoteHover);
+		text-decoration: none;
 	}
-	> .members {
-		> ._content {
-			display: flex;
-			gap: var(--margin);
-			flex-wrap: wrap;
-			> .users {
-				margin-top: var(--margin);
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-				grid-gap: 12px;
-				width: 100%;
+}
 
-				> .user {
-					display: flex;
-					align-items: center;
-					padding: 16px;
+.name {
+	display: block;
+	font-weight: bold;
+}
 
-					> .avatar {
-						width: 50px;
-						height: 50px;
-					}
-
-					> .body {
-						flex: 1;
-						padding: 8px;
-						width: 100%;
-						white-space: nowrap;
-						overflow: hidden;
-
-						> .name {
-							display: block;
-							font-weight: bold;
-						}
-
-						> .acct {
-							opacity: 0.5;
-						}
-					}
-				}
-			}
-		}
-	}
+.acct {
+	opacity: 0.5;
 }
 </style>

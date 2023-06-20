@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import { watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import XEmoji from './emojis.emoji.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';

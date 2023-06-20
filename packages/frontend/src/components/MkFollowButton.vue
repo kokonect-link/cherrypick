@@ -1,5 +1,6 @@
 <template>
 <button
+	v-if="!disableIfFollowing || !isFollowing"
 	class="_button"
 	:class="[$style.root, { [$style.wait]: wait, [$style.active]: isFollowing || hasPendingFollowRequestFromYou, [$style.full]: full, [$style.large]: large }]"
 	:disabled="wait"
@@ -31,20 +32,27 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os';
 import { useStream } from '@/stream';
 import { i18n } from '@/i18n';
 import { claimAchievement } from '@/scripts/achievements';
 import { $i } from '@/account';
+import { userName } from '@/filters/user';
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,
 	full?: boolean,
 	large?: boolean,
+
+	// CherryPick
+	disableIfFollowing?: boolean,
 }>(), {
 	full: false,
 	large: false,
+
+	// CherryPick
+	disableIfFollowing: false,
 });
 
 let isFollowing = $ref(props.user.isFollowing);
@@ -73,7 +81,7 @@ async function onClick() {
 		if (isFollowing) {
 			const { canceled } = await os.confirm({
 				type: 'warning',
-				text: i18n.t('unfollowConfirm', { name: props.user.name || props.user.username }),
+				text: i18n.t('unfollowConfirm', { name: userName(props.user) }),
 			});
 
 			if (canceled) return;

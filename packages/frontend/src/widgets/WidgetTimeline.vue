@@ -4,7 +4,7 @@
 		<i v-if="widgetProps.src === 'home'" class="ti ti-home"></i>
 		<i v-else-if="widgetProps.src === 'local'" class="ti ti-planet"></i>
 		<i v-else-if="widgetProps.src === 'social'" class="ti ti-rocket"></i>
-		<i v-else-if="widgetProps.src === 'global'" class="ti ti-whirl"></i>
+		<i v-else-if="widgetProps.src === 'global'" class="ti ti-world"></i>
 		<i v-else-if="widgetProps.src === 'list'" class="ti ti-list"></i>
 		<i v-else-if="widgetProps.src === 'antenna'" class="ti ti-antenna"></i>
 	</template>
@@ -118,12 +118,16 @@ const choose = async (ev) => {
 		icon: 'ti ti-planet',
 		action: () => { setSrc('local'); },
 	}, {
+		text: i18n.ts._timelines.media,
+		icon: 'ti ti-photo',
+		action: () => { setSrc('media'); },
+	}, {
 		text: i18n.ts._timelines.social,
 		icon: 'ti ti-rocket',
 		action: () => { setSrc('social'); },
 	}, {
 		text: i18n.ts._timelines.global,
-		icon: 'ti ti-whirl',
+		icon: 'ti ti-world',
 		action: () => { setSrc('global'); },
 	}, antennaItems.length > 0 ? null : undefined, ...antennaItems, listItems.length > 0 ? null : undefined, ...listItems], ev.currentTarget ?? ev.target).then(() => {
 		menuOpened.value = false;

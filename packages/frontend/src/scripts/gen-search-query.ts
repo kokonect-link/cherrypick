@@ -1,4 +1,4 @@
-import * as Acct from 'misskey-js/built/acct';
+import * as Acct from 'cherrypick-js/built/acct';
 import { host as localHost } from '@/config';
 
 export async function genSearchQuery(v: any, q: string) {

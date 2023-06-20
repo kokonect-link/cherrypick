@@ -33,9 +33,6 @@ importers:
       js-yaml:
         specifier: 4.1.0
         version: 4.1.0
-      mitt:
-        specifier: 3.0.0
-        version: 3.0.0
       typescript:
         specifier: 5.1.3
         version: 5.1.3
@@ -113,6 +110,9 @@ importers:
       '@fastify/view':
         specifier: 7.4.1
         version: 7.4.1
+      '@google-cloud/logging':
+        specifier: ^10.5.0
+        version: 10.5.0
       '@google-cloud/translate':
         specifier: ^7.2.1
         version: 7.2.1
@@ -173,6 +173,12 @@ importers:
       chalk-template:
         specifier: 0.4.0
         version: 0.4.0
+      cherrypick-js:
+        specifier: workspace:*
+        version: link:../cherrypick-js
+      cherrypick-mfm-js:
+        specifier: github:kokonect-link/mfm.js
+        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
@@ -245,15 +251,9 @@ importers:
       meilisearch:
         specifier: 0.32.5
         version: 0.32.5
-      mfm-js:
-        specifier: 0.23.3
-        version: 0.23.3
       mime-types:
         specifier: 2.1.35
         version: 2.1.35
-      misskey-js:
-        specifier: workspace:*
-        version: link:../misskey-js
       ms:
         specifier: 3.0.0-canary.1
         version: 3.0.0-canary.1
@@ -359,6 +359,9 @@ importers:
       stringz:
         specifier: 2.1.0
         version: 2.1.0
+      strip-ansi:
+        specifier: ^7.1.0
+        version: 7.1.0
       summaly:
         specifier: github:misskey-dev/summaly
         version: github.com/misskey-dev/summaly/77dd5654bb82280b38c1f50e51a771c33f3df503
@@ -638,6 +641,61 @@ importers:
         specifier: 29.5.0
         version: 29.5.0
 
+  packages/cherrypick-js:
+    dependencies:
+      '@swc/cli':
+        specifier: 0.1.62
+        version: 0.1.62(@swc/core@1.3.61)(chokidar@3.5.3)
+      '@swc/core':
+        specifier: 1.3.56
+        version: 1.3.56
+      eventemitter3:
+        specifier: 5.0.1
+        version: 5.0.1
+      reconnecting-websocket:
+        specifier: 4.4.0
+        version: 4.4.0
+    devDependencies:
+      '@microsoft/api-extractor':
+        specifier: 7.34.7
+        version: 7.34.7(@types/node@18.16.3)
+      '@swc/jest':
+        specifier: 0.2.26
+        version: 0.2.26(@swc/core@1.3.56)
+      '@types/jest':
+        specifier: 29.5.1
+        version: 29.5.1
+      '@types/node':
+        specifier: 18.16.3
+        version: 18.16.3
+      '@typescript-eslint/eslint-plugin':
+        specifier: 5.59.5
+        version: 5.59.5(@typescript-eslint/parser@5.59.5)(eslint@8.40.0)(typescript@5.0.4)
+      '@typescript-eslint/parser':
+        specifier: 5.59.5
+        version: 5.59.5(eslint@8.40.0)(typescript@5.0.4)
+      eslint:
+        specifier: 8.40.0
+        version: 8.40.0
+      jest:
+        specifier: 29.5.0
+        version: 29.5.0(@types/node@18.16.3)
+      jest-fetch-mock:
+        specifier: 3.0.3
+        version: 3.0.3
+      jest-websocket-mock:
+        specifier: 2.4.0
+        version: 2.4.0
+      mock-socket:
+        specifier: 9.2.1
+        version: 9.2.1
+      tsd:
+        specifier: 0.28.1
+        version: 0.28.1
+      typescript:
+        specifier: 5.0.4
+        version: 5.0.4
+
   packages/frontend:
     dependencies:
       '@discordapp/twemoji':
@@ -683,8 +741,8 @@ importers:
         specifier: github:misskey-dev/browser-image-resizer#v2.2.1-misskey.3
         version: github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a
       buraha:
-        specifier: github:misskey-dev/buraha
-        version: github.com/misskey-dev/buraha/92b20c1ab15c5cb5a224cf3b1ecd4f6baca12b7c
+        specifier: 0.0.1
+        version: 0.0.1
       canvas-confetti:
         specifier: 1.6.0
         version: 1.6.0
@@ -703,6 +761,12 @@ importers:
       chartjs-plugin-zoom:
         specifier: 2.0.1
         version: 2.0.1(chart.js@4.3.0)
+      cherrypick-js:
+        specifier: workspace:*
+        version: link:../cherrypick-js
+      cherrypick-mfm-js:
+        specifier: github:kokonect-link/mfm.js
+        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
       chromatic:
         specifier: 6.18.0
         version: 6.18.0
@@ -742,12 +806,9 @@ importers:
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
-      mfm-js:
-        specifier: 0.23.3
-        version: 0.23.3
-      misskey-js:
-        specifier: workspace:*
-        version: link:../misskey-js
+      mitt:
+        specifier: 3.0.0
+        version: 3.0.0
       photoswipe:
         specifier: 5.3.7
         version: 5.3.7
@@ -1026,72 +1087,17 @@ importers:
         specifier: 1.6.5
         version: 1.6.5(typescript@5.1.3)
 
-  packages/misskey-js:
-    dependencies:
-      '@swc/cli':
-        specifier: 0.1.62
-        version: 0.1.62(@swc/core@1.3.61)(chokidar@3.5.3)
-      '@swc/core':
-        specifier: 1.3.56
-        version: 1.3.56
-      eventemitter3:
-        specifier: 5.0.1
-        version: 5.0.1
-      reconnecting-websocket:
-        specifier: 4.4.0
-        version: 4.4.0
-    devDependencies:
-      '@microsoft/api-extractor':
-        specifier: 7.34.7
-        version: 7.34.7(@types/node@18.16.3)
-      '@swc/jest':
-        specifier: 0.2.26
-        version: 0.2.26(@swc/core@1.3.56)
-      '@types/jest':
-        specifier: 29.5.1
-        version: 29.5.1
-      '@types/node':
-        specifier: 18.16.3
-        version: 18.16.3
-      '@typescript-eslint/eslint-plugin':
-        specifier: 5.59.5
-        version: 5.59.5(@typescript-eslint/parser@5.59.5)(eslint@8.40.0)(typescript@5.0.4)
-      '@typescript-eslint/parser':
-        specifier: 5.59.5
-        version: 5.59.5(eslint@8.40.0)(typescript@5.0.4)
-      eslint:
-        specifier: 8.40.0
-        version: 8.40.0
-      jest:
-        specifier: 29.5.0
-        version: 29.5.0(@types/node@18.16.3)
-      jest-fetch-mock:
-        specifier: 3.0.3
-        version: 3.0.3
-      jest-websocket-mock:
-        specifier: 2.4.0
-        version: 2.4.0
-      mock-socket:
-        specifier: 9.2.1
-        version: 9.2.1
-      tsd:
-        specifier: 0.28.1
-        version: 0.28.1
-      typescript:
-        specifier: 5.0.4
-        version: 5.0.4
-
   packages/sw:
     dependencies:
+      cherrypick-js:
+        specifier: workspace:*
+        version: link:../cherrypick-js
       esbuild:
         specifier: 0.17.18
         version: 0.17.18
       idb-keyval:
         specifier: 6.2.0
         version: 6.2.0
-      misskey-js:
-        specifier: workspace:*
-        version: link:../misskey-js
     devDependencies:
       '@typescript-eslint/parser':
         specifier: 5.59.5
@@ -4932,6 +4938,38 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /@google-cloud/logging@10.5.0:
+    resolution: {integrity: sha512-XmlNs6B8lDZvFwFB5M55g9ch873AA2rXSuFOczQ3FOAzuyd/qksf18suFJfcrLMu8lYSr3SQhTE45FlXz4p9pg==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      '@google-cloud/common': 4.0.3
+      '@google-cloud/paginator': 4.0.1
+      '@google-cloud/projectify': 3.0.0
+      '@google-cloud/promisify': 3.0.1
+      arrify: 2.0.1
+      dot-prop: 6.0.1
+      eventid: 2.0.1
+      extend: 3.0.2
+      gcp-metadata: 4.3.1
+      google-auth-library: 8.8.0
+      google-gax: 3.6.0
+      on-finished: 2.4.1
+      pumpify: 2.0.1
+      stream-events: 1.0.5
+      uuid: 9.0.0
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /@google-cloud/paginator@4.0.1:
+    resolution: {integrity: sha512-6G1ui6bWhNyHjmbYwavdN7mpVPRBtyDg/bfqBTAlwr413On2TnFNfDxc9UhTJctkgoCDgQXEKiRPLPR9USlkbQ==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      arrify: 2.0.1
+      extend: 3.0.2
     dev: false
 
   /@google-cloud/projectify@3.0.0:
@@ -9095,6 +9133,11 @@ packages:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
 
+  /ansi-regex@6.0.1:
+    resolution: {integrity: sha512-n5M855fKb2SsfMIiFFoVrABHJC8QtHwVx+mHWP3QcEqBHYienj5dHSgjbxtC0WEZXYt4wcD6zrQElDPhFuZgfA==}
+    engines: {node: '>=12'}
+    dev: false
+
   /ansi-styles@2.2.1:
     resolution: {integrity: sha512-kmCevFghRiWM7HB5zTPULl4r9bVFSWjz62MhqizDGUrq2NWuNMQyuv4tHHoKJHs69M/MF64lEcHdYIocrdWQYA==}
     engines: {node: '>=0.10.0'}
@@ -10038,6 +10081,10 @@ packages:
       uuid: 9.0.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /buraha@0.0.1:
+    resolution: {integrity: sha512-G563A0mTbzknm2jDaNxfZuNKIdeArs8T+XQN6t+KbmgnOoevXSXhKDkyf8Md/36Jrx99ikwbCag37VGe3myExQ==}
     dev: false
 
   /busboy@1.6.0:
@@ -11545,6 +11592,13 @@ packages:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
+  /dot-prop@6.0.1:
+    resolution: {integrity: sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==}
+    engines: {node: '>=10'}
+    dependencies:
+      is-obj: 2.0.0
+    dev: false
+
   /dotenv-expand@10.0.0:
     resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
     engines: {node: '>=12'}
@@ -11612,7 +11666,6 @@ packages:
 
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
-    dev: true
 
   /ejs@3.1.8:
     resolution: {integrity: sha512-/sXZeMlhS0ArkfX2Aw780gJzXSMPnKjtspYZv+f3NiKLlubezAHDU5+9xz6gd3/NhG3txQCo6xlglmTS+oTGEQ==}
@@ -12322,6 +12375,13 @@ packages:
 
   /eventemitter3@5.0.1:
     resolution: {integrity: sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==}
+    dev: false
+
+  /eventid@2.0.1:
+    resolution: {integrity: sha512-sPNTqiMokAvV048P2c9+foqVJzk49o6d4e0D/sq5jog3pw+4kBgyR0gaM1FM7Mx6Kzd9dztesh9oYz1LWWOpzw==}
+    engines: {node: '>=10'}
+    dependencies:
+      uuid: 8.3.2
     dev: false
 
   /events@3.3.0:
@@ -13170,6 +13230,20 @@ packages:
       wide-align: 1.1.5
     dev: false
 
+  /gaxios@4.3.3:
+    resolution: {integrity: sha512-gSaYYIO1Y3wUtdfHmjDUZ8LWaxJQpiavzbF5Kq53akSzvmVg0RfyOcFDbO1KJ/KCGRFz2qG+lS81F0nkr7cRJA==}
+    engines: {node: '>=10'}
+    dependencies:
+      abort-controller: 3.0.0
+      extend: 3.0.2
+      https-proxy-agent: 5.0.1
+      is-stream: 2.0.1
+      node-fetch: 2.6.11
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
   /gaxios@5.1.0:
     resolution: {integrity: sha512-aezGIjb+/VfsJtIcHGcBSerNEDdfdHeMros+RbYbGpmonKWQCOVOes0LVZhn1lDtIgq55qq0HaxymIoae3Fl/A==}
     engines: {node: '>=12'}
@@ -13178,6 +13252,17 @@ packages:
       https-proxy-agent: 5.0.1
       is-stream: 2.0.1
       node-fetch: 2.6.11
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: false
+
+  /gcp-metadata@4.3.1:
+    resolution: {integrity: sha512-x850LS5N7V1F3UcV7PoupzGsyD6iVwTVvsh3tbXfkctZnBnjW5yu5z1/3k3SehF7TyoTIe78rJs02GMMy+LF+A==}
+    engines: {node: '>=10'}
+    dependencies:
+      gaxios: 4.3.3
+      json-bigint: 1.0.0
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -14516,6 +14601,11 @@ packages:
   /is-number@7.0.0:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
+
+  /is-obj@2.0.0:
+    resolution: {integrity: sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==}
+    engines: {node: '>=8'}
+    dev: false
 
   /is-path-cwd@2.2.0:
     resolution: {integrity: sha512-w942bTcih8fdJPJmQHFzkS76NEP8Kzzvmw92cXsazb8intwLqPibPPdXf4ANdKV3rYMuuQYGIWtvz9JilB3NFQ==}
@@ -16329,12 +16419,6 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /mfm-js@0.23.3:
-    resolution: {integrity: sha512-o8scYmbey6rMUmWAlT3k3ntt6khaCLdxlmHhAWV5wTTMj2OK1atQvZfRUq0SIVm1Jig08qlZg/ps71xUqrScNA==}
-    dependencies:
-      twemoji-parser: 14.0.0
-    dev: false
-
   /micromatch@3.1.10:
     resolution: {integrity: sha512-MWikgl9n9M3w+bpsY3He8L+w9eF9338xRl8IAO5viDizwSzziFEyUzo2xrrloB64ADbTf8uA8vRqqttDTOmccg==}
     engines: {node: '>=0.10.0'}
@@ -17198,7 +17282,6 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       ee-first: 1.1.1
-    dev: true
 
   /on-headers@1.0.2:
     resolution: {integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==}
@@ -18515,6 +18598,14 @@ packages:
       duplexify: 3.7.1
       inherits: 2.0.4
       pump: 2.0.1
+
+  /pumpify@2.0.1:
+    resolution: {integrity: sha512-m7KOje7jZxrmutanlkS1daj1dS6z6BgslzOXmcSEpIlCxM3VJH7lG5QLeck/6hgF6F4crFf01UtQmNsJfweTAw==}
+    dependencies:
+      duplexify: 4.1.2
+      inherits: 2.0.4
+      pump: 3.0.0
+    dev: false
 
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
@@ -20350,6 +20441,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       ansi-regex: 5.0.1
+
+  /strip-ansi@7.1.0:
+    resolution: {integrity: sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      ansi-regex: 6.0.1
+    dev: false
 
   /strip-bom@2.0.0:
     resolution: {integrity: sha512-kwrX1y7czp1E69n2ajbG65mIo9dqvJ+8aBQXOGVxqwvNbsXdFM6Lq37dLAY3mknUwru8CfcCbfOLL/gMo+fi3g==}
@@ -22287,16 +22385,18 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
+  github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c:
+    resolution: {tarball: https://codeload.github.com/kokonect-link/mfm.js/tar.gz/6cfec923792dce92a5401372a42904ea48e5484c}
+    name: cherrypick-mfm-js
+    version: 0.23.3-cherrypick.2
+    dependencies:
+      twemoji-parser: 14.0.0
+    dev: false
+
   github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a:
     resolution: {tarball: https://codeload.github.com/misskey-dev/browser-image-resizer/tar.gz/0227e860621e55cbed0aabe6dc601096a7748c4a}
     name: browser-image-resizer
     version: 2.2.1-misskey.3
-    dev: false
-
-  github.com/misskey-dev/buraha/92b20c1ab15c5cb5a224cf3b1ecd4f6baca12b7c:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/buraha/tar.gz/92b20c1ab15c5cb5a224cf3b1ecd4f6baca12b7c}
-    name: buraha
-    version: 0.0.0
     dev: false
 
   github.com/misskey-dev/sharp-read-bmp/02d9dc189fa7df0c4bea09330be26741772dac01:

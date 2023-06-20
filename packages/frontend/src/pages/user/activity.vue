@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import XHeatmap from './activity.heatmap.vue';
 import XPv from './activity.pv.vue';
 import XNotes from './activity.notes.vue';

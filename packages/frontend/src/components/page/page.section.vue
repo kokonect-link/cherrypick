@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import { SectionBlock } from './block.type';
 
 const XBlock = defineAsyncComponent(() => import('./page.block.vue'));

@@ -1,5 +1,5 @@
 import { defineAsyncComponent, Ref } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { claimAchievement } from './achievements';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
@@ -355,9 +355,11 @@ export function getNoteMenu(props: {
 					text: i18n.ts.reportAbuse,
 					action: () => {
 						const u = appearNote.url ?? appearNote.uri ?? `${url}/notes/${appearNote.id}`;
+						const username = '@' + props.note.user.username;
+						const host = props.note.user.host ? '@' + props.note.user.host : '';
 						os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 							user: appearNote.user,
-							initialComment: `Note: ${u}\n-----\n`,
+							initialComment: `Note: ${u}\nUser: ${username + host}\n-----\n`,
 						}, {}, 'closed');
 					},
 				}]

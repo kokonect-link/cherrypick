@@ -1,5 +1,5 @@
 import { reactive, ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import { readAndCompressImage } from 'browser-image-resizer';
 import { getCompressionConfig } from './upload/compress-config';
 import { defaultStore } from '@/store';

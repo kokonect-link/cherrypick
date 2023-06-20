@@ -127,7 +127,7 @@ export const navbarItemDef = reactive({
 					unisonReload();
 				},
 			}, {
-				text: i18n.ts.default,
+				text: 'Misskey',
 				active: ui === 'default',
 				action: () => {
 					miLocalStorage.setItem('ui', 'default');
@@ -147,6 +147,24 @@ export const navbarItemDef = reactive({
 					miLocalStorage.setItem('ui', 'classic');
 					unisonReload();
 				},
+			}], ev.currentTarget ?? ev.target);
+		},
+	},
+	help: {
+		title: i18n.ts.help,
+		icon: 'ti ti-help-circle',
+		action: (ev) => {
+			os.popupMenu([{
+				text: i18n.ts.help,
+				icon: 'ti ti-help-circle',
+				action: () => {
+					window.open('https://misskey-hub.net/help.html', '_blank');
+				},
+			}, {
+				type: 'link',
+				text: i18n.ts._mfm.cheatSheet,
+				icon: 'ti ti-help-circle',
+				to: '/mfm-cheat-sheet',
 			}], ev.currentTarget ?? ev.target);
 		},
 	},

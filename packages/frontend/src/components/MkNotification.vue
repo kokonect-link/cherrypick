@@ -45,7 +45,8 @@
 			<span v-else-if="notification.type === 'achievementEarned'">{{ i18n.ts._notification.achievementEarned }}</span>
 			<MkA v-else-if="notification.user" v-user-preview="notification.user.id" :class="$style.headerName" :to="userPage(notification.user)"><MkUserName :user="notification.user"/></MkA>
 			<span v-else>{{ notification.header }}</span>
-			<MkTime v-if="withTime" :time="notification.createdAt" :class="$style.headerTime"/>
+			<MkTime v-if="withTime && defaultStore.state.enableAbsoluteTime" :time="notification.createdAt" :class="$style.headerTime" mode="absolute"/>
+			<MkTime v-else-if="withTime && !defaultStore.state.enableAbsoluteTime" :time="notification.createdAt" :class="$style.headerTime" mode="relative"/>
 		</header>
 		<div>
 			<MkA v-if="notification.type === 'reaction'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">
@@ -77,7 +78,7 @@
 			</MkA>
 			<template v-else-if="notification.type === 'follow'">
 				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.youGotNewFollower }}</span>
-				<div v-if="full"><MkFollowButton :user="notification.user" :full="true"/></div>
+				<div v-if="full"><MkFollowButton :user="notification.user" :full="true" :disableIfFollowing="defaultStore.reactiveState.showFollowingMessageInsteadOfButtonEnabled.value"/></div>
 			</template>
 			<span v-else-if="notification.type === 'followRequestAccepted'" :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.followRequestAccepted }}</span>
 			<template v-else-if="notification.type === 'receiveFollowRequest'">
@@ -88,15 +89,10 @@
 				</div>
 			</template>
 			<template v-else-if="notification.type === 'groupInvited'">
-				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}: <b>{{ notification.invitation.group.name }}</b></span>
-				<div v-if="full && !groupInviteDone">
-					<button class="_textButton" @click="acceptGroupInvitation()">{{ i18n.ts.accept }}</button> | <button class="_textButton" @click="rejectGroupInvitation()">{{ i18n.ts.reject }}</button>
-				</div>
-			</template>
-			<template v-else-if="notification.type === 'groupInvited'">
-				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}: <b>{{ notification.invitation.group.name }}</b></span>
-				<div v-if="full && !groupInviteDone">
-					<button class="_textButton" @click="acceptGroupInvitation()">{{ i18n.ts.accept }}</button> | <button class="_textButton" @click="rejectGroupInvitation()">{{ i18n.ts.reject }}</button>
+				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.groupInvited }}:<span style="font-weight: bold; margin-left: 5px;">{{ notification.invitation.group.name }}</span></span>
+				<div v-if="full && !groupInviteDone" :class="$style.followRequestCommands">
+					<MkButton :class="$style.followRequestCommandButton" rounded primary @click="acceptGroupInvitation()"><i class="ti ti-check"/> {{ i18n.ts.accept }}</MkButton>
+					<MkButton :class="$style.followRequestCommandButton" rounded danger @click="rejectGroupInvitation()"><i class="ti ti-x"/> {{ i18n.ts.reject }}</MkButton>
 				</div>
 			</template>
 			<span v-else-if="notification.type === 'app'" :class="$style.text">
@@ -109,7 +105,7 @@
 
 <script lang="ts" setup>
 import { ref, shallowRef } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import XReactionTooltip from '@/components/MkReactionTooltip.vue';
@@ -121,6 +117,7 @@ import { i18n } from '@/i18n';
 import * as os from '@/os';
 import { useTooltip } from '@/scripts/use-tooltip';
 import { $i } from '@/account';
+import { defaultStore } from '@/store';
 
 const props = withDefaults(defineProps<{
 	notification: misskey.entities.Notification;
@@ -154,7 +151,7 @@ const acceptGroupInvitation = () => {
 
 const rejectGroupInvitation = () => {
 	groupInviteDone.value = true;
-	os.api('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
+	os.apiWithDialog('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };
 
 useTooltip(reactionRef, (showing) => {

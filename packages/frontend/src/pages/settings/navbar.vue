@@ -37,6 +37,16 @@
 		<option value="top">{{ i18n.ts._menuDisplay.top }}</option>
 		<!-- <MkRadio v-model="menuDisplay" value="hide" disabled>{{ i18n.ts._menuDisplay.hide }}</MkRadio>--> <!-- TODO: サイドバーを完全に隠せるようにすると、別途ハンバーガーボタンのようなものをUIに表示する必要があり面倒 -->
 	</MkRadios>
+
+	<MkRadios v-model="bannerDisplay">
+		<template #label>{{ i18n.ts.displayBanner }} <span class="_beta">CherryPick</span></template>
+		<option value="all">{{ i18n.ts._bannerDisplay.all }}</option>
+		<option value="topBottom">{{ i18n.ts._bannerDisplay.topBottom }}</option>
+		<option value="top">{{ i18n.ts._bannerDisplay.top }}</option>
+		<option value="bottom">{{ i18n.ts._bannerDisplay.bottom }}</option>
+		<option value="bg">{{ i18n.ts._bannerDisplay.bg }}</option>
+		<option value="hide">{{ i18n.ts._bannerDisplay.hide }}</option>
+	</MkRadios>
 </div>
 </template>
 
@@ -63,6 +73,7 @@ const items = ref(defaultStore.state.menu.map(x => ({
 })));
 
 const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
+const bannerDisplay = computed(defaultStore.makeGetterSetter('bannerDisplay'));
 
 async function reloadAsk() {
 	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
@@ -76,21 +87,32 @@ async function reloadAsk() {
 	} else eventBus.emit('hasRequireRefresh', true);
 }
 
-async function addItem() {
+async function addItem(ev: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !defaultStore.state.menu.includes(k));
-	const { canceled, result: item } = await os.select({
-		title: i18n.ts.addItem,
-		items: [...menu.map(k => ({
-			value: k, text: navbarItemDef[k].title,
+	os.popupMenu([
+		...menu.map(k => ({
+			type: 'button',
+			text: navbarItemDef[k].title,
+			icon: navbarItemDef[k].icon,
+			action() {
+				items.value = [...items.value, {
+					id: Math.random().toString(),
+					type: k,
+				}];
+			},
 		})), {
-			value: '-', text: i18n.ts.divider,
-		}],
-	});
-	if (canceled) return;
-	items.value = [...items.value, {
-		id: Math.random().toString(),
-		type: item,
-	}];
+			type: 'button',
+			text: i18n.ts.divider,
+			// Note: アイコン指定しないとテキストの位置が他の項目とずれる
+			icon: 'ti',
+			action() {
+				items.value = [...items.value, {
+					id: Math.random().toString(),
+					type: '-',
+				}];
+			},
+		},
+	], ev.currentTarget ?? ev.target );
 }
 
 function removeItem(index: number) {
@@ -109,7 +131,7 @@ function reset() {
 	}));
 }
 
-watch(menuDisplay, async () => {
+watch([menuDisplay, bannerDisplay], async () => {
 	await reloadAsk();
 });
 

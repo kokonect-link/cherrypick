@@ -206,6 +206,7 @@ import * as os from '@/os';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { $i } from '@/account';
+import { instance } from '@/instance';
 
 const patronsWithIconWithCherryPick = [{
 	name: 'Inger 잉어',
@@ -353,6 +354,12 @@ const patronsWithMisskey = [
 ];
 
 let isKokonect = false;
+const instanceList = [
+	'http://localhost:3000',
+	'https://kokonect.link',
+	'https://beta.kokonect.link',
+	'https://universe.noridev.moe',
+];
 
 let thereIsTreasure = $ref($i && !claimedAchievements.includes('foundTreasure'));
 
@@ -361,8 +368,7 @@ let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
 const containerEl = $shallowRef<HTMLElement>();
 
-const meta = await os.api('meta', { detail: true });
-if (meta.uri == 'https://kokonect.link' || 'http://localhost:3000') isKokonect = true;
+if (instanceList.includes(<string>instance.uri)) isKokonect = true;
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;

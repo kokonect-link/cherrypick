@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 import { onMounted, watch } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { throttle } from 'throttle-debounce';
@@ -198,7 +198,7 @@ function clear() {
 }
 
 function saveDraft() {
-	const drafts = JSON.parse(miLocalStorage.getItem('message_drafts') || '{}');
+	const drafts = JSON.parse(miLocalStorage.getItem('message_drafts') ?? '{}');
 
 	drafts[draftKey] = {
 		updatedAt: new Date(),
@@ -213,7 +213,7 @@ function saveDraft() {
 }
 
 function deleteDraft() {
-	const drafts = JSON.parse(miLocalStorage.getItem('message_drafts') || '{}');
+	const drafts = JSON.parse(miLocalStorage.getItem('message_drafts') ?? '{}');
 
 	delete drafts[draftKey];
 
@@ -221,7 +221,7 @@ function deleteDraft() {
 }
 
 async function insertEmoji(ev: MouseEvent) {
-	os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textEl);
+	await os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textEl);
 }
 
 onMounted(() => {
@@ -232,7 +232,7 @@ onMounted(() => {
 	//new Autocomplete(textEl, this, { model: 'text' });
 
 	// 書きかけの投稿を復元
-	const draft = JSON.parse(miLocalStorage.getItem('message_drafts') || '{}')[draftKey];
+	const draft = JSON.parse(miLocalStorage.getItem('message_drafts') ?? '{}')[draftKey];
 	if (draft) {
 		text = draft.data.text;
 		file = draft.data.file;

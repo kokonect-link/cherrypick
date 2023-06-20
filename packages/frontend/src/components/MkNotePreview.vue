@@ -1,6 +1,6 @@
 <template>
 <div :class="$style.root">
-	<MkAvatar :class="$style.avatar" :user="$i" link preview/>
+	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="$i" link preview/>
 	<div :class="$style.main">
 		<div :class="$style.header">
 			<MkUserName :user="$i" :nowrap="true"/>
@@ -8,6 +8,7 @@
 		<div>
 			<div>
 				<Mfm :text="text.trim()" :author="$i" :i="$i"/>
+				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 			</div>
 		</div>
 	</div>
@@ -17,10 +18,15 @@
 <script lang="ts" setup>
 import { } from 'vue';
 import { $i } from '@/account';
+import MkUrlPreview from '@/components/MkUrlPreview.vue';
+import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
+import * as mfm from 'cherrypick-mfm-js';
+import { defaultStore } from '@/store';
 
 const props = defineProps<{
 	text: string;
 }>();
+const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;
 </script>
 
 <style lang="scss" module>
@@ -53,6 +59,11 @@ const props = defineProps<{
 	width: 100%;
 	overflow: clip;
     text-overflow: ellipsis;
+}
+
+.urlPreview {
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 @container (min-width: 350px) {

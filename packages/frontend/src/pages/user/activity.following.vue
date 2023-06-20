@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { Chart, ChartDataset } from 'chart.js';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import gradient from 'chartjs-plugin-gradient';
 import * as os from '@/os';
 import { defaultStore } from '@/store';

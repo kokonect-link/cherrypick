@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 
-import { parse } from 'mfm-js';
+import { parse } from 'cherrypick-mfm-js';
 import { extractMentions } from '@/misc/extract-mentions.js';
 
 describe('Extract mentions', () => {

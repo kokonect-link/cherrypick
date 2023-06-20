@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Note } from 'misskey-js/built/entities';
+import { Note } from 'cherrypick-js/built/entities';
 import { onUpdated } from 'vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import MkMediaList from '@/components/MkMediaList.vue';

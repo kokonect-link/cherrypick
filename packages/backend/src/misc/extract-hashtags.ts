@@ -1,4 +1,4 @@
-import * as mfm from 'mfm-js';
+import * as mfm from 'cherrypick-mfm-js';
 import { unique } from '@/misc/prelude/array.js';
 
 export function extractHashtags(nodes: mfm.MfmNode[]): string[] {

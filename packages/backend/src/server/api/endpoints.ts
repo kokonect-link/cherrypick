@@ -39,6 +39,7 @@ import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js'
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
 import * as ep___invite from './endpoints/invite.js';
+import * as ep___inviteRevoke from './endpoints/invite-revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -260,9 +261,11 @@ import * as ep___notes_featured from './endpoints/notes/featured.js';
 import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js';
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
+import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
+import * as ep___notes_events_search from './endpoints/notes/events/search.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
 import * as ep___notes_reactions_create from './endpoints/notes/reactions/create.js';
 import * as ep___notes_reactions_delete from './endpoints/notes/reactions/delete.js';
@@ -291,6 +294,7 @@ import * as ep___pages_update from './endpoints/pages/update.js';
 import * as ep___flash_create from './endpoints/flash/create.js';
 import * as ep___flash_delete from './endpoints/flash/delete.js';
 import * as ep___flash_featured from './endpoints/flash/featured.js';
+import * as ep___flash_genToken from './endpoints/flash/gen-token.js';
 import * as ep___flash_like from './endpoints/flash/like.js';
 import * as ep___flash_show from './endpoints/flash/show.js';
 import * as ep___flash_unlike from './endpoints/flash/unlike.js';
@@ -352,9 +356,9 @@ import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
-import * as ep___users_stats from './endpoints/users/stats.js';
 import * as ep___users_achievements from './endpoints/users/achievements.js';
 import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
+import * as ep___users_translate from './endpoints/users/translate.js';
 import * as ep___fetchRss from './endpoints/fetch-rss.js';
 import * as ep___retention from './endpoints/retention.js';
 
@@ -397,6 +401,7 @@ const eps = [
 	['admin/get-table-stats', ep___admin_getTableStats],
 	['admin/get-user-ips', ep___admin_getUserIps],
 	['invite', ep___invite],
+	['invite-revoke', ep___inviteRevoke],
 	['admin/promo/create', ep___admin_promo_create],
 	['admin/queue/clear', ep___admin_queue_clear],
 	['admin/queue/deliver-delayed', ep___admin_queue_deliverDelayed],
@@ -618,9 +623,11 @@ const eps = [
 	['notes/global-timeline', ep___notes_globalTimeline],
 	['notes/hybrid-timeline', ep___notes_hybridTimeline],
 	['notes/local-timeline', ep___notes_localTimeline],
+	['notes/media-timeline', ep___notes_mediaTimeline],
 	['notes/mentions', ep___notes_mentions],
 	['notes/polls/recommendation', ep___notes_polls_recommendation],
 	['notes/polls/vote', ep___notes_polls_vote],
+	['notes/events/search', ep___notes_events_search],
 	['notes/reactions', ep___notes_reactions],
 	['notes/reactions/create', ep___notes_reactions_create],
 	['notes/reactions/delete', ep___notes_reactions_delete],
@@ -649,6 +656,7 @@ const eps = [
 	['flash/create', ep___flash_create],
 	['flash/delete', ep___flash_delete],
 	['flash/featured', ep___flash_featured],
+	['flash/gen-token', ep___flash_genToken],
 	['flash/like', ep___flash_like],
 	['flash/show', ep___flash_show],
 	['flash/unlike', ep___flash_unlike],
@@ -710,9 +718,9 @@ const eps = [
 	['users/search-by-username-and-host', ep___users_searchByUsernameAndHost],
 	['users/search', ep___users_search],
 	['users/show', ep___users_show],
-	['users/stats', ep___users_stats],
 	['users/achievements', ep___users_achievements],
 	['users/update-memo', ep___users_updateMemo],
+	['users/translate', ep___users_translate],
 	['fetch-rss', ep___fetchRss],
 	['retention', ep___retention],
 ];

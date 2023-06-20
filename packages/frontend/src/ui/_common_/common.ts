@@ -21,7 +21,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 	}, {
 		type: 'link',
 		text: i18n.ts.federation,
-		icon: 'ti ti-whirl',
+		icon: 'ti ti-world',
 		to: '/about#federation',
 	}, {
 		type: 'link',

@@ -1750,6 +1750,7 @@ _instanceCharts:
 _timelines:
   home: "Beranda"
   local: "Lokal"
+  media: "Media"
   social: "Sosial"
   global: "Global"
 _play:

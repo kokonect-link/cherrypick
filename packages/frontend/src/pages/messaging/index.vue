@@ -9,7 +9,7 @@
 					:key="message.id"
 					v-anim="i"
 					class="_panel"
-					:class="$style.message"
+					:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead)) }]"
 					:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
 					:data-index="i"
 				>
@@ -43,7 +43,7 @@
 
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted } from 'vue';
-import * as Acct from 'misskey-js/built/acct';
+import * as Acct from 'cherrypick-js/built/acct';
 import { acct } from '@/filters/user';
 import * as os from '@/os';
 import { useStream } from '@/stream';
@@ -192,7 +192,7 @@ definePageMetadata({
 	}
 
 	> div {
-		padding: 20px 30px;
+		padding: 25px 30px;
 
 		&:after {
 			content: "";
@@ -208,27 +208,31 @@ definePageMetadata({
 			overflow: hidden;
 		}
 	}
+
+	&.isRead {
+		background: var(--chatReadBg);
+	}
 }
 
 .indicator {
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: 41px;
+	left: 12px;
 	color: var(--indicator);
-	font-size: 8px;
+	font-size: 9px;
 }
 
 .name {
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
-	text-overflow: ellipsis;
 	font-weight: bold;
 	transition: all 0.1s ease;
 }
 
 .username {
 	margin: 0 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .time {
@@ -251,6 +255,8 @@ definePageMetadata({
 	padding: 0;
 	overflow: hidden;
 	overflow-wrap: break-word;
+	line-height: 1.35;
+	max-height: 4.05em;
 	color: var(--faceText);
 }
 
@@ -267,9 +273,14 @@ definePageMetadata({
 @container (max-width: 500px) {
 	.message {
 		> div {
-			padding: 15px 20px;
+			padding: 20px 30px;
 			font-size: .9em;
 		}
+	}
+
+	.indicator {
+		top: 36px;
+		left: 12px;
 	}
 
 	.avatar {

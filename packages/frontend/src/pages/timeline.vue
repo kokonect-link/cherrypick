@@ -83,7 +83,10 @@ let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 
-watch ($$(src), () => queue = 0);
+watch ($$(src), () => {
+	queue = 0;
+	queueUpdated(queue);
+});
 
 onMounted(() => {
 	eventBus.on('showEl', (showEl_receive) => {
@@ -189,6 +192,11 @@ const headerTabs = $computed(() => [{
 	icon: 'ti ti-planet',
 	iconOnly: true,
 }, {
+	key: 'media',
+	title: i18n.ts._timelines.media,
+	icon: 'ti ti-photo',
+	iconOnly: true,
+}, {
 	key: 'social',
 	title: i18n.ts._timelines.social,
 	icon: 'ti ti-rocket',
@@ -196,7 +204,7 @@ const headerTabs = $computed(() => [{
 }] : []), ...(isGlobalTimelineAvailable ? [{
 	key: 'global',
 	title: i18n.ts._timelines.global,
-	icon: 'ti ti-whirl',
+	icon: 'ti ti-world',
 	iconOnly: true,
 }] : []), {
 	icon: 'ti ti-list',
@@ -225,21 +233,20 @@ const headerTabsWhenNotLogin = $computed(() => [
 	...(isGlobalTimelineAvailable ? [{
 		key: 'global',
 		title: i18n.ts._timelines.global,
-		icon: 'ti ti-whirl',
+		icon: 'ti ti-world',
 		iconOnly: true,
 	}] : []),
 ] as Tab[]);
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-whirl' : 'ti ti-home',
+	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
 })));
 </script>
 
 <style lang="scss" module>
 .transition_new_enterActive,
 .transition_new_leaveActive {
-	transition: opacity 0.5s, transform 0.2s;
 	transform: translateY(-64px);
 }
 .transition_new_enterFrom,

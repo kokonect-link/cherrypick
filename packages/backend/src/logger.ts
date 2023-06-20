@@ -1,7 +1,10 @@
 import cluster from 'node:cluster';
+import util from 'util';
 import chalk from 'chalk';
 import { default as convertColor } from 'color-convert';
 import { format as dateFormat } from 'date-fns';
+import { Logging } from '@google-cloud/logging';
+import stripAnsi from 'strip-ansi';
 import { bindThis } from '@/decorators.js';
 import { envOption } from './env.js';
 import type { KEYWORD } from 'color-convert/conversions';
@@ -12,18 +15,21 @@ type Context = {
 };
 
 type Level = 'error' | 'success' | 'warning' | 'debug' | 'info';
+type CloudLogging = any | undefined;
 
 export default class Logger {
 	private context: Context;
 	private parentLogger: Logger | null = null;
 	private store: boolean;
+	private clConfig?: CloudLogging;
 
-	constructor(context: string, color?: KEYWORD, store = true) {
+	constructor(context: string, color?: KEYWORD, store = true, clConfig?: CloudLogging) {
 		this.context = {
 			name: context,
 			color: color,
 		};
 		this.store = store;
+		this.clConfig = clConfig;
 	}
 
 	@bindThis
@@ -44,7 +50,8 @@ export default class Logger {
 			return;
 		}
 
-		const time = dateFormat(new Date(), 'HH:mm:ss');
+		const timestamp = new Date();
+		const time = dateFormat(timestamp, 'HH:mm:ss');
 		const worker = cluster.isPrimary ? '*' : cluster.worker!.id;
 		const l =
 			level === 'error' ? important ? chalk.bgRed.white('ERR ') : chalk.red('ERR ') :
@@ -66,7 +73,43 @@ export default class Logger {
 		if (envOption.withLogTime) log = chalk.gray(time) + ' ' + log;
 
 		console.log(important ? chalk.bold(log) : log);
-		if (level === 'error' && data) console.log(data);
+		if (level === 'error' && data) {
+			console.log(data);
+			this.writeCloudLogging(level, log, timestamp, data);
+		} else {
+			this.writeCloudLogging(level, log, timestamp, null);
+		}
+	}
+
+	private async writeCloudLogging(level: Level, message: string, time: Date, data?: Record<string, any> | null) {
+		if (!this.clConfig) return;
+		if (!this.clConfig.projectId || !this.clConfig.saKeyPath) return;
+
+		let lv = level;
+		if (level === 'success') lv = 'info';
+
+		const projectId = this.clConfig.projectId;
+		const logging = new Logging({ projectId: projectId, keyFilename: this.clConfig.saKeyPath });
+		const logName = this.clConfig.logName ?? 'misskey';
+		const log = logging.log(logName);
+		const logMessage = stripAnsi(message);
+
+		const metadata = {
+			severity: lv.toUpperCase(),
+			resource: {
+				type: 'global',
+				timestamp: time,
+			},
+			labels: {
+				name: `${this.context.name}`,
+				color: `${this.context.color}`,
+			},
+		};
+
+		const dataString = data ? '\n' + util.inspect(data, { depth: null }) : '';
+		const entry = log.entry(metadata, logMessage + dataString);
+
+		await log.write(entry);
 	}
 
 	@bindThis

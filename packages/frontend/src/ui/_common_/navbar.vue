@@ -1,8 +1,9 @@
 <template>
 <div :class="[$style.root, { [$style.iconOnly]: iconOnly }]">
 	<div :class="$style.body">
+		<div v-if="['all', 'bg'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 		<div :class="$style.top">
-			<div :class="$style.banner" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
+			<div v-if="['all', 'topBottom', 'top'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 			<button v-tooltip.noDelay.right="instance.name ?? i18n.ts.instance" class="_button" :class="$style.instance" @click="openInstanceMenu">
 				<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon"/>
 			</button>
@@ -40,6 +41,7 @@
 			</MkA>
 		</div>
 		<div :class="$style.bottom">
+			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
 			<button v-tooltip.noDelay.right="i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
 				<i class="ti ti-pencil ti-fw" :class="$style.postIcon"></i><span :class="$style.postText">{{ i18n.ts.note }}</span>
 			</button>
@@ -142,14 +144,25 @@ function more(ev: MouseEvent) {
 
 	.banner {
 		position: absolute;
-		top: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
 		background-size: cover;
 		background-position: center center;
-		-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
-		mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
+
+		&.topBanner {
+			top: 0;
+			height: 100%;
+			-webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
+			mask-image: linear-gradient(0deg, rgba(0,0,0,0) 15%, rgba(0,0,0,0.75) 100%);
+		}
+
+		&.bottomBanner {
+			bottom: 0;
+			height: 100%;
+			background-position-y: 20px;
+			-webkit-mask-image: linear-gradient(0deg,rgba(0,0,0,.75) 15%,rgba(0,0,0,0) 80%);
+			mask-image: linear-gradient(0deg,rgba(0,0,0,.75) 15%,rgba(0,0,0,0) 80%);
+		}
 	}
 
 	.instance {
@@ -177,6 +190,7 @@ function more(ev: MouseEvent) {
 	.post {
 		position: relative;
 		display: block;
+		z-index: 2;
 		width: 100%;
 		height: 40px;
 		color: var(--fgOnAccent);
@@ -219,6 +233,7 @@ function more(ev: MouseEvent) {
 	.account {
 		position: relative;
 		display: flex;
+		z-index: 2;
 		align-items: center;
 		padding-left: 30px;
 		width: 100%;

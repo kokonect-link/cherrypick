@@ -37,8 +37,8 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as mfm from 'mfm-js';
-import * as Misskey from 'misskey-js';
+import * as mfm from 'cherrypick-mfm-js';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkAvatar from '@/components/global/MkAvatar.vue';

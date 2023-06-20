@@ -39,6 +39,7 @@ import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js'
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
 import * as ep___invite from './endpoints/invite.js';
+import * as ep___inviteRevoke from './endpoints/invite-revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -260,9 +261,11 @@ import * as ep___notes_featured from './endpoints/notes/featured.js';
 import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js';
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
+import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
+import * as ep___notes_events_search from './endpoints/notes/events/search.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
 import * as ep___notes_reactions_create from './endpoints/notes/reactions/create.js';
 import * as ep___notes_reactions_delete from './endpoints/notes/reactions/delete.js';
@@ -291,6 +294,7 @@ import * as ep___pages_update from './endpoints/pages/update.js';
 import * as ep___flash_create from './endpoints/flash/create.js';
 import * as ep___flash_delete from './endpoints/flash/delete.js';
 import * as ep___flash_featured from './endpoints/flash/featured.js';
+import * as ep___flash_genToken from './endpoints/flash/gen-token.js';
 import * as ep___flash_like from './endpoints/flash/like.js';
 import * as ep___flash_show from './endpoints/flash/show.js';
 import * as ep___flash_unlike from './endpoints/flash/unlike.js';
@@ -352,9 +356,9 @@ import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
-import * as ep___users_stats from './endpoints/users/stats.js';
 import * as ep___users_achievements from './endpoints/users/achievements.js';
 import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
+import * as ep___users_translate from './endpoints/users/translate.js';
 import * as ep___fetchRss from './endpoints/fetch-rss.js';
 import * as ep___retention from './endpoints/retention.js';
 import { GetterService } from './GetterService.js';
@@ -399,6 +403,7 @@ const $admin_getIndexStats: Provider = { provide: 'ep:admin/get-index-stats', us
 const $admin_getTableStats: Provider = { provide: 'ep:admin/get-table-stats', useClass: ep___admin_getTableStats.default };
 const $admin_getUserIps: Provider = { provide: 'ep:admin/get-user-ips', useClass: ep___admin_getUserIps.default };
 const $invite: Provider = { provide: 'ep:invite', useClass: ep___invite.default };
+const $inviteRevoke: Provider = { provide: 'ep:invite-revoke', useClass: ep___inviteRevoke.default };
 const $admin_promo_create: Provider = { provide: 'ep:admin/promo/create', useClass: ep___admin_promo_create.default };
 const $admin_queue_clear: Provider = { provide: 'ep:admin/queue/clear', useClass: ep___admin_queue_clear.default };
 const $admin_queue_deliverDelayed: Provider = { provide: 'ep:admin/queue/deliver-delayed', useClass: ep___admin_queue_deliverDelayed.default };
@@ -620,9 +625,11 @@ const $notes_featured: Provider = { provide: 'ep:notes/featured', useClass: ep__
 const $notes_globalTimeline: Provider = { provide: 'ep:notes/global-timeline', useClass: ep___notes_globalTimeline.default };
 const $notes_hybridTimeline: Provider = { provide: 'ep:notes/hybrid-timeline', useClass: ep___notes_hybridTimeline.default };
 const $notes_localTimeline: Provider = { provide: 'ep:notes/local-timeline', useClass: ep___notes_localTimeline.default };
+const $notes_mediaTimeline: Provider = { provide: 'ep:notes/media-timeline', useClass: ep___notes_mediaTimeline.default };
 const $notes_mentions: Provider = { provide: 'ep:notes/mentions', useClass: ep___notes_mentions.default };
 const $notes_polls_recommendation: Provider = { provide: 'ep:notes/polls/recommendation', useClass: ep___notes_polls_recommendation.default };
 const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: ep___notes_polls_vote.default };
+const $notes_events_search: Provider = { provide: 'ep:notes/events/search', useClass: ep___notes_events_search.default };
 const $notes_reactions: Provider = { provide: 'ep:notes/reactions', useClass: ep___notes_reactions.default };
 const $notes_reactions_create: Provider = { provide: 'ep:notes/reactions/create', useClass: ep___notes_reactions_create.default };
 const $notes_reactions_delete: Provider = { provide: 'ep:notes/reactions/delete', useClass: ep___notes_reactions_delete.default };
@@ -651,6 +658,7 @@ const $pages_update: Provider = { provide: 'ep:pages/update', useClass: ep___pag
 const $flash_create: Provider = { provide: 'ep:flash/create', useClass: ep___flash_create.default };
 const $flash_delete: Provider = { provide: 'ep:flash/delete', useClass: ep___flash_delete.default };
 const $flash_featured: Provider = { provide: 'ep:flash/featured', useClass: ep___flash_featured.default };
+const $flash_genToken: Provider = { provide: 'ep:flash/gen-token', useClass: ep___flash_genToken.default };
 const $flash_like: Provider = { provide: 'ep:flash/like', useClass: ep___flash_like.default };
 const $flash_show: Provider = { provide: 'ep:flash/show', useClass: ep___flash_show.default };
 const $flash_unlike: Provider = { provide: 'ep:flash/unlike', useClass: ep___flash_unlike.default };
@@ -712,9 +720,9 @@ const $users_reportAbuse: Provider = { provide: 'ep:users/report-abuse', useClas
 const $users_searchByUsernameAndHost: Provider = { provide: 'ep:users/search-by-username-and-host', useClass: ep___users_searchByUsernameAndHost.default };
 const $users_search: Provider = { provide: 'ep:users/search', useClass: ep___users_search.default };
 const $users_show: Provider = { provide: 'ep:users/show', useClass: ep___users_show.default };
-const $users_stats: Provider = { provide: 'ep:users/stats', useClass: ep___users_stats.default };
 const $users_achievements: Provider = { provide: 'ep:users/achievements', useClass: ep___users_achievements.default };
 const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass: ep___users_updateMemo.default };
+const $users_translate: Provider = { provide: 'ep:users/translate', useClass: ep___users_translate.default };
 const $fetchRss: Provider = { provide: 'ep:fetch-rss', useClass: ep___fetchRss.default };
 const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention.default };
 
@@ -763,6 +771,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getTableStats,
 		$admin_getUserIps,
 		$invite,
+		$inviteRevoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
@@ -984,9 +993,11 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_globalTimeline,
 		$notes_hybridTimeline,
 		$notes_localTimeline,
+		$notes_mediaTimeline,
 		$notes_mentions,
 		$notes_polls_recommendation,
 		$notes_polls_vote,
+		$notes_events_search,
 		$notes_reactions,
 		$notes_reactions_create,
 		$notes_reactions_delete,
@@ -1015,6 +1026,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$flash_create,
 		$flash_delete,
 		$flash_featured,
+		$flash_genToken,
 		$flash_like,
 		$flash_show,
 		$flash_unlike,
@@ -1076,9 +1088,9 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
-		$users_stats,
 		$users_achievements,
 		$users_updateMemo,
+		$users_translate,
 		$fetchRss,
 		$retention,
 	],
@@ -1121,6 +1133,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getTableStats,
 		$admin_getUserIps,
 		$invite,
+		$inviteRevoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
@@ -1341,9 +1354,11 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_globalTimeline,
 		$notes_hybridTimeline,
 		$notes_localTimeline,
+		$notes_mediaTimeline,
 		$notes_mentions,
 		$notes_polls_recommendation,
 		$notes_polls_vote,
+		$notes_events_search,
 		$notes_reactions,
 		$notes_reactions_create,
 		$notes_reactions_delete,
@@ -1372,6 +1387,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$flash_create,
 		$flash_delete,
 		$flash_featured,
+		$flash_genToken,
 		$flash_like,
 		$flash_show,
 		$flash_unlike,
@@ -1431,9 +1447,9 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
-		$users_stats,
 		$users_achievements,
 		$users_updateMemo,
+		$users_translate,
 		$fetchRss,
 		$retention,
 	],

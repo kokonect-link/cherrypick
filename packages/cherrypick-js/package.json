@@ -1,7 +1,7 @@
 {
-	"name": "misskey-js",
-	"version": "0.0.15",
-	"description": "Misskey SDK for JavaScript",
+	"name": "cherrypick-js",
+	"version": "0.0.15-cherrypick.1",
+	"description": "CherryPick SDK for JavaScript",
 	"main": "./built/index.js",
 	"types": "./built/index.d.ts",
 	"scripts": {

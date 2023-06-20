@@ -3,7 +3,7 @@
 	ref="buttonEl"
 	v-ripple="canToggle"
 	class="_button"
-	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: canToggle, [$style.large]: defaultStore.state.largeNoteReactions }]"
+	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.large]: defaultStore.state.largeNoteReactions }]"
 	@click="toggleReaction()"
 >
 	<MkReactionIcon :class="$style.icon" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substr(1, reaction.length - 2)]"/>
@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, shallowRef, watch } from 'vue';
-import * as misskey from 'misskey-js';
+import { computed, ComputedRef, onMounted, shallowRef, watch } from 'vue';
+import * as misskey from 'cherrypick-js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import * as os from '@/os';
@@ -23,6 +23,7 @@ import MkReactionEffect from '@/components/MkReactionEffect.vue';
 import { claimAchievement } from '@/scripts/achievements';
 import { defaultStore } from '@/store';
 import { i18n } from '@/i18n';
+import { customEmojis } from '@/custom-emojis';
 
 const props = defineProps<{
 	reaction: string;
@@ -33,10 +34,20 @@ const props = defineProps<{
 
 const buttonEl = shallowRef<HTMLElement>();
 
+const reactionName = computed(() => {
+	const r = props.reaction.replace(':', '');
+	return r.slice(0, r.indexOf('@'));
+});
+
+const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
+
 const canToggle = computed(() => !props.reaction.match(/@\w/) && $i);
 
-async function toggleReaction() {
-	if (!canToggle.value) return;
+async function toggleReaction(ev) {
+	if (!canToggle.value) {
+		chooseAlternative(ev);
+		return;
+	}
 
 	// TODO: その絵文字を使う権限があるかどうか確認
 
@@ -77,6 +88,16 @@ function anime() {
 	const x = rect.left + 16;
 	const y = rect.top + (buttonEl.value.offsetHeight / 2);
 	os.popup(MkReactionEffect, { reaction: props.reaction, x, y }, {}, 'end');
+}
+
+function chooseAlternative(ev) {
+	// メニュー表示にして、モデレーター以上の場合は登録もできるように
+	if (!alternative.value) return;
+	console.log(alternative.value);
+	os.api('notes/reactions/create', {
+		noteId: props.note.id,
+		reaction: `:${alternative.value}:`,
+	});
 }
 
 watch(() => props.count, (newCount, oldCount) => {

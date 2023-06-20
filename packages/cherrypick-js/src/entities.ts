@@ -150,6 +150,12 @@ export type Note = {
 	replyId: Note['id'];
 	renote?: Note;
 	renoteId: Note['id'];
+	event?: {
+		title: string,
+		start: DateString,
+		end: DateString | null,
+		metadata: Record<string, string>,
+	};
 	files: DriveFile[];
 	fileIds: DriveFile['id'][];
 	visibility: 'public' | 'home' | 'followers' | 'specified';
@@ -294,7 +300,9 @@ export type LiteInstanceMetadata = {
 	themeColor: string | null;
 	mascotImageUrl: string | null;
 	bannerUrl: string | null;
-	errorImageUrl: string | null;
+	serverErrorImageUrl: string | null;
+	infoImageUrl: string | null;
+	notFoundImageUrl: string | null;
 	iconUrl: string | null;
 	backgroundImageUrl: string | null;
 	logoImageUrl: string | null;

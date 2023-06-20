@@ -16,6 +16,7 @@ import { ClipFavorite } from '@/models/entities/ClipFavorite.js';
 import { DriveFile } from '@/models/entities/DriveFile.js';
 import { DriveFolder } from '@/models/entities/DriveFolder.js';
 import { Emoji } from '@/models/entities/Emoji.js';
+import { Event } from '@/models/entities/Event.js';
 import { Following } from '@/models/entities/Following.js';
 import { FollowRequest } from '@/models/entities/FollowRequest.js';
 import { GalleryLike } from '@/models/entities/GalleryLike.js';
@@ -89,6 +90,7 @@ export {
 	DriveFile,
 	DriveFolder,
 	Emoji,
+	Event,
 	Following,
 	FollowRequest,
 	GalleryLike,
@@ -161,6 +163,7 @@ export type ClipFavoritesRepository = Repository<ClipFavorite>;
 export type DriveFilesRepository = Repository<DriveFile>;
 export type DriveFoldersRepository = Repository<DriveFolder>;
 export type EmojisRepository = Repository<Emoji>;
+export type EventsRepository = Repository<Event>;
 export type FollowingsRepository = Repository<Following>;
 export type FollowRequestsRepository = Repository<FollowRequest>;
 export type GalleryLikesRepository = Repository<GalleryLike>;

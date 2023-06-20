@@ -1,11 +1,13 @@
 <template>
 <div :class="[$style.root, { [$style.children]: depth > 1 }]">
+	<div v-if="!defaultStore.state.hideAvatarsInNote && !hideLine" :class="$style.line"></div>
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
-		<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
 		<div :class="$style.body">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
+				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i"/>
 					<MkCwButton v-model="showContent" :note="note"/>
@@ -27,14 +29,18 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
+import MkEvent from '@/components/MkEvent.vue';
 import { notePage } from '@/filters/note';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
+import { defaultStore } from '@/store';
+
+let hideLine = $ref(false);
 
 const props = withDefaults(defineProps<{
 	note: misskey.entities.Note;
@@ -55,13 +61,14 @@ if (props.detail) {
 		limit: 5,
 	}).then(res => {
 		replies = res;
+		hideLine = true;
 	});
 }
 </script>
 
 <style lang="scss" module>
 .root {
-	padding: 16px 32px;
+	padding: 28px 32px;
 	font-size: 0.9em;
 	position: relative;
 
@@ -69,6 +76,13 @@ if (props.detail) {
 		padding: 10px 0 0 16px;
 		font-size: 1em;
 	}
+}
+
+.line {
+	position: absolute;
+	height: 100%;
+	left: 60px;
+	border-left: 2.5px dotted rgb(174, 174, 174);
 }
 
 .main {
@@ -88,9 +102,9 @@ if (props.detail) {
 .avatar {
 	flex-shrink: 0;
 	display: block;
-	margin: 0 8px 0 0;
-	width: 38px;
-	height: 38px;
+	margin: 0 14px 0 0;
+	width: 58px;
+	height: 58px;
 	border-radius: 8px;
 }
 
@@ -125,13 +139,45 @@ if (props.detail) {
 	padding: 10px 0 0 16px;
 }
 
-@container (max-width: 450px) {
+@container (max-width: 580px) {
 	.root {
-		padding: 14px 16px;
+		padding: 28px 26px 0;
+	}
+
+	.line {
+		left: 50.5px;
+	}
+
+	.avatar {
+		width: 50px;
+		height: 50px;
+	}
+}
+
+@container (max-width: 500px) {
+	.root {
+		padding: 23px 25px;
+	}
+}
+
+@container (max-width: 480px) {
+	.root {
+		padding: 22px 24px;
 
 		&.children {
 			padding: 10px 0 0 8px;
 		}
+	}
+}
+
+@container (max-width: 450px) {
+	.line {
+		left: 46px;
+	}
+
+	.avatar {
+		width: 46px;
+		height: 46px;
 	}
 }
 </style>

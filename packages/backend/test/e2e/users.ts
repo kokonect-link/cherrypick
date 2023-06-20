@@ -15,7 +15,7 @@ import {
 	failedApiCall,
 	uploadFile,
 } from '../utils.js';
-import type * as misskey from 'misskey-js';
+import type * as misskey from 'cherrypick-js';
 import type { INestApplicationContext } from '@nestjs/common';
 
 describe('ユーザー', () => {
@@ -31,7 +31,7 @@ describe('ユーザー', () => {
 			}, {});
 	};
 
-	// BUG misskey-jsとjson-schemaと実際に返ってくるデータが全部違う
+	// BUG cherrypick-jsとjson-schemaと実際に返ってくるデータが全部違う
 	type UserLite = misskey.entities.UserLite & {
 		badgeRoles: any[],
 	};
@@ -150,6 +150,7 @@ describe('ユーザー', () => {
 			hideOnlineStatus: user.hideOnlineStatus,
 			hasUnreadSpecifiedNotes: user.hasUnreadSpecifiedNotes,
 			hasUnreadMentions: user.hasUnreadMentions,
+			hasUnreadMessagingMessage: user.hasUnreadMessagingMessage,
 			hasUnreadAnnouncement: user.hasUnreadAnnouncement,
 			hasUnreadAntenna: user.hasUnreadAntenna,
 			hasUnreadChannel: user.hasUnreadChannel,
@@ -395,6 +396,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.hideOnlineStatus, false);
 		assert.strictEqual(response.hasUnreadSpecifiedNotes, false);
 		assert.strictEqual(response.hasUnreadMentions, false);
+		assert.strictEqual(response.hasUnreadMessagingMessage, false);
 		assert.strictEqual(response.hasUnreadAnnouncement, false);
 		assert.strictEqual(response.hasUnreadAntenna, false);
 		assert.strictEqual(response.hasUnreadChannel, false);
@@ -403,7 +405,7 @@ describe('ユーザー', () => {
 		assert.deepStrictEqual(response.mutedWords, []);
 		assert.deepStrictEqual(response.mutedInstances, []);
 		assert.deepStrictEqual(response.mutingNotificationTypes, []);
-		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest']);
+		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest', 'groupInvited']);
 		assert.deepStrictEqual(response.achievements, []);
 		assert.deepStrictEqual(response.loggedInDays, 0);
 		assert.deepStrictEqual(response.policies, DEFAULT_POLICIES); 
@@ -483,9 +485,9 @@ describe('ユーザー', () => {
 		{ parameters: (): object => ({ mutedWords: [] }) },
 		{ parameters: (): object => ({ mutedInstances: ['xxxx.xxxxx'] }) },
 		{ parameters: (): object => ({ mutedInstances: [] }) },
-		{ parameters: (): object => ({ mutingNotificationTypes: ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'app'] }) },
+		{ parameters: (): object => ({ mutingNotificationTypes: ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'groupInvited', 'app'] }) },
 		{ parameters: (): object => ({ mutingNotificationTypes: [] }) },
-		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest'] }) },
+		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest', 'groupInvited'] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: [] }) },
 	] as const)('を書き換えることができる($#)', async ({ parameters }) => {
 		const response = await successfulApiCall({ endpoint: 'i/update', parameters: parameters(), user: alice });

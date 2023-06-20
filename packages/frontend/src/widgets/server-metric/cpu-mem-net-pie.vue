@@ -14,14 +14,26 @@
 	</div>
 	<div :class="$style.divider"></div>
 	<div :class="$style.div">
-		<!-- 基準が10MBなので、基準を超えるとグラフが壊れる問題がある -->
-		<XPie :class="$style.pie" :value="inRecent / 10000000"/>
+		<!-- Max: 10GB -->
+		<XPie v-if="inRecent > 1000000000" :class="$style.pie" :value="inRecent / 1000000000"/>
+		<!-- Max: 1GB -->
+		<XPie v-else-if="inRecent > 100000000" :class="$style.pie" :value="inRecent / 100000000"/>
+		<!-- Max: 100MB -->
+		<XPie v-else-if="inRecent > 10000000 && inRecent <= 100000000" :class="$style.pie" :value="inRecent / 100000000"/>
+		<!-- Max: 10MB -->
+		<XPie v-else :class="$style.pie" :value="inRecent / 10000000"/>
 		<div :class="$style.div2">
 			<p>NET rx</p>
 			<text x="50%" y="50%" dy="0.05" text-anchor="middle" :class="$style.text"><tspan>{{ bytes(inRecent, 1) }}<span style="font-weight: normal; font-size: .75em; margin-left: 2px;">{{ bytesSizes(inRecent) }}</span></tspan></text>
 		</div>
-		<!-- 基準が10MBなので、基準を超えるとグラフが壊れる問題がある -->
-		<XPie :class="$style.pie" :value="outRecent / 10000000"/>
+		<!-- Max: 10GB -->
+		<XPie v-if="outRecent > 1000000000" :class="$style.pie" :value="outRecent / 1000000000"/>
+		<!-- Max: 1GB -->
+		<XPie v-if="outRecent > 100000000" :class="$style.pie" :value="outRecent / 100000000"/>
+		<!-- Max: 100MB -->
+		<XPie v-else-if="outRecent > 10000000 && outRecent <= 100000000" :class="$style.pie" :value="outRecent / 100000000"/>
+		<!-- Max: 10MB -->
+		<XPie v-else :class="$style.pie" :value="outRecent / 10000000"/>
 		<div :class="$style.div2">
 			<p>NET tx</p>
 			<text x="50%" y="50%" dy="0.05" text-anchor="middle" :class="$style.text"><tspan>{{ bytes(outRecent, 1) }}<span style="font-weight: normal; font-size: .75em; margin-left: 2px;">{{ bytesSizes(outRecent) }}</span></tspan></text>

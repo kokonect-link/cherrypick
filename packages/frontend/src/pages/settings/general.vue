@@ -35,9 +35,10 @@
 			<div class="_gaps_s">
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
+				<MkSwitch v-model="showTranslateButtonInNote">{{ i18n.ts.showTranslateButtonInNote }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="largeNoteReactions">{{ i18n.ts.largeNoteReactions }}</MkSwitch>
 				<MkSwitch v-model="collapseRenotes">{{ i18n.ts.collapseRenotes }}</MkSwitch>
-				<MkSwitch v-model="collapseDefault">{{ i18n.ts.collapseDefault }}</MkSwitch>
+				<MkSwitch v-model="collapseDefault">{{ i18n.ts.collapseDefault }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="advancedMfm">{{ i18n.ts.enableAdvancedMfm }}</MkSwitch>
 				<MkSwitch v-if="advancedMfm" v-model="animatedMfm">{{ i18n.ts.enableAnimatedMfm }}</MkSwitch>
 				<div :class="$style.mfmPreview" class="_panel">
@@ -52,20 +53,21 @@
 				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
 				<MkSwitch v-model="useEnterToSend">
-					<template #label>{{ i18n.ts.useEnterToSend }}</template>
+					<template #label>{{ i18n.ts.useEnterToSend }} <span class="_beta">CherryPick</span></template>
 					<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="postFormVisibilityHotkey">
-					<template #label>{{ i18n.ts.postFormVisibilityHotkey }}</template>
+					<template #label>{{ i18n.ts.postFormVisibilityHotkey }} <span class="_beta">CherryPick</span></template>
 					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }}</MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
-				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
-				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
 				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
+				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
+				<option value="none">{{ i18n.ts._instanceTicker.none }}</option>
 			</MkSelect>
 
 			<MkSelect v-model="nsfw">
@@ -115,6 +117,7 @@
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
 				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption>{{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
+				<MkSwitch v-model="hideAvatarsInNote">{{ i18n.ts.hideAvatarsInNote }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
@@ -146,7 +149,7 @@
 			-->
 
 			<div>
-				<div :class="$style.label">{{ i18n.ts.fontSize }}</div>
+				<div :class="$style.label">{{ i18n.ts.fontSize }} <span class="_beta">CherryPick</span></div>
 				<div :class="$style.fontSize" class="_panel">
 					<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._mfm.dummy }}</div>
 					<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._mfm.dummy }}</div>
@@ -209,19 +212,19 @@
 				<MkSwitch v-model="enableInfiniteScroll">{{ i18n.ts.enableInfiniteScroll }}</MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
-				<template #label>{{ i18n.ts.whenServerDisconnected }}</template>
+				<template #label>{{ i18n.ts.whenServerDisconnected }} <span class="_beta">CherryPick</span></template>
 				<option value="reload">{{ i18n.ts._serverDisconnectedBehavior.reload }}</option>
 				<option value="dialog">{{ i18n.ts._serverDisconnectedBehavior.dialog }}</option>
 				<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 				<option value="none">{{ i18n.ts._serverDisconnectedBehavior.none }}</option>
 			</MkSelect>
 			<MkSelect v-model="requireRefreshBehavior">
-				<template #label>{{ i18n.ts.requireRefresh }}</template>
+				<template #label>{{ i18n.ts.requireRefresh }} <span class="_beta">CherryPick</span></template>
 				<option value="dialog">{{ i18n.ts._requireRefreshBehavior.dialog }}</option>
 				<option value="quiet">{{ i18n.ts._requireRefreshBehavior.quiet }}</option>
 			</MkSelect>
 			<MkSelect v-model="newNoteReceivedNotificationBehavior">
-				<template #label>{{ i18n.ts.newNoteReceivedNotification }}</template>
+				<template #label>{{ i18n.ts.newNoteReceivedNotification }} <span class="_beta">CherryPick</span></template>
 				<option value="default">{{ i18n.ts._newNoteReceivedNotificationBehavior.default }}</option>
 				<option value="count">{{ i18n.ts._newNoteReceivedNotificationBehavior.count }}</option>
 				<option value="none">{{ i18n.ts._newNoteReceivedNotificationBehavior.none }}</option>
@@ -328,6 +331,9 @@ const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSett
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
 const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRefreshBehavior'));
+const hideAvatarsInNote = computed(defaultStore.makeGetterSetter('hideAvatarsInNote'));
+const showTranslateButtonInNote = computed(defaultStore.makeGetterSetter('showTranslateButtonInNote'));
+const enableAbsoluteTime = computed(defaultStore.makeGetterSetter('enableAbsoluteTime'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -366,10 +372,13 @@ watch([
 	useSystemFont,
 	enableInfiniteScroll,
 	squareAvatars,
+	hideAvatarsInNote,
 	showNoteActionsOnlyHover,
 	showGapBetweenNotesInTimeline,
 	instanceTicker,
 	overridedDeviceKind,
+	enableDataSaverMode,
+	enableAbsoluteTime,
 ], async () => {
 	await reloadAsk();
 });

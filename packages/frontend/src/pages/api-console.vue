@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import JSON5 from 'json5';
-import { Endpoints } from 'misskey-js';
+import { Endpoints } from 'cherrypick-js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';

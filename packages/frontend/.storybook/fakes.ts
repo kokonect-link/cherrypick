@@ -1,4 +1,4 @@
-import type { entities } from 'misskey-js'
+import type { entities } from 'cherrypick-js'
 
 export function abuseUserReport() {
 	return {

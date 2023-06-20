@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { getStaticImageUrl } from '@/scripts/media-proxy';
 import { notePage } from '@/filters/note';
 import * as os from '@/os';

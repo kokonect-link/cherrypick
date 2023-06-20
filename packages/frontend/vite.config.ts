@@ -112,7 +112,7 @@ export function getConfig(): UserConfig {
 
 		// https://vitejs.dev/guide/dep-pre-bundling.html#monorepos-and-linked-dependencies
 		optimizeDeps: {
-			include: ['misskey-js'],
+			include: ['cherrypick-js'],
 		},
 
 		build: {
@@ -144,7 +144,7 @@ export function getConfig(): UserConfig {
 
 			// https://vitejs.dev/guide/dep-pre-bundling.html#monorepos-and-linked-dependencies
 			commonjsOptions: {
-				include: [/misskey-js/, /node_modules/],
+				include: [/cherrypick-js/, /node_modules/],
 			},
 		},
 

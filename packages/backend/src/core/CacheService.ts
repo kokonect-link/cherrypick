@@ -7,6 +7,7 @@ import { DI } from '@/di-symbols.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
 import { StreamMessages } from '@/server/api/stream/types.js';
+import type { FlashToken } from '@/misc/flash-token';
 import type { OnApplicationShutdown } from '@nestjs/common';
 
 @Injectable()
@@ -16,6 +17,7 @@ export class CacheService implements OnApplicationShutdown {
 	public localUserByIdCache: MemoryKVCache<LocalUser>;
 	public uriPersonCache: MemoryKVCache<User | null>;
 	public userProfileCache: RedisKVCache<UserProfile>;
+	public flashAccessTokensCache: RedisKVCache<FlashToken | null>;
 	public userMutingsCache: RedisKVCache<Set<string>>;
 	public userBlockingCache: RedisKVCache<Set<string>>;
 	public userBlockedCache: RedisKVCache<Set<string>>; // NOTE: 「被」Blockキャッシュ
@@ -116,6 +118,13 @@ export class CacheService implements OnApplicationShutdown {
 			fromRedisConverter: (value) => new Set(JSON.parse(value)),
 		});
 
+		this.flashAccessTokensCache = new RedisKVCache<FlashToken | null>(this.redisClient, 'flashAccessTokens', {
+			lifetime: 1000 * 60 * 30, // 30m
+			memoryCacheLifetime: 1000 * 60, // 1m
+			fetcher: async (key) => null,
+			toRedisConverter: (value) => JSON.stringify(value),
+			fromRedisConverter: (value) => JSON.parse(value),
+		});
 		this.redisForSub.on('message', this.onMessage);
 	}
 
@@ -168,6 +177,17 @@ export class CacheService implements OnApplicationShutdown {
 	@bindThis
 	public dispose(): void {
 		this.redisForSub.off('message', this.onMessage);
+		this.userByIdCache.dispose();
+		this.localUserByNativeTokenCache.dispose();
+		this.localUserByIdCache.dispose();
+		this.uriPersonCache.dispose();
+		this.userProfileCache.dispose();
+		this.userMutingsCache.dispose();
+		this.userBlockingCache.dispose();
+		this.userBlockedCache.dispose();
+		this.renoteMutingsCache.dispose();
+		this.userFollowingsCache.dispose();
+		this.userFollowingChannelsCache.dispose();
 	}
 
 	@bindThis

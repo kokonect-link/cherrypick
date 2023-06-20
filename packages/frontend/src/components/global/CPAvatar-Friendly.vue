@@ -1,12 +1,13 @@
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
-	<img :class="[$style.inner, {[$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect}]" :src="url" :hash="user?.avatarBlurhash" :cover="true"/>
+	<MkImgWithBlurhash :class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]" :src="url" :hash="user?.avatarBlurhash" :cover="true" :onlyAvgColor="true" :noDrag="true"/>
 </component>
 </template>
 
 <script lang="ts" setup>
 import { watch } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
+import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
 import { getStaticImageUrl } from '@/scripts/media-proxy';
 import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash';
@@ -76,6 +77,10 @@ watch(() => props.user.avatarBlurhash, () => {
 
 	&.reduceBlurEffect {
 		opacity: 1;
+	}
+
+	&.noDrag {
+		-webkit-user-drag: none;
 	}
 }
 </style>

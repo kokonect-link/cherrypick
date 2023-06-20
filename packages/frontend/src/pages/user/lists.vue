@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import {} from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import MkPagination from '@/components/MkPagination.vue';
 import MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import MkSpacer from '@/components/global/MkSpacer.vue';

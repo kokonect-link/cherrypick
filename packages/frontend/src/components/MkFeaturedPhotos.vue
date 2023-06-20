@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os';
 
 const meta = ref<Misskey.entities.DetailedInstanceMetadata>();

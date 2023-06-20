@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { watch } from 'vue';
 import XReaction from '@/components/MkReactionsViewer.reaction.vue';
 import { defaultStore } from '@/store';
@@ -80,7 +80,7 @@ watch([() => props.note.reactions, () => props.maxNumber], ([newSource, maxNumbe
 }
 
 .root {
-	margin: 10px -2px 0 -2px;
+	margin: 10px -2px 10px -2px;
 
 	&:empty {
 		display: none;

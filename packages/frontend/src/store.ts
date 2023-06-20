@@ -56,7 +56,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	collapseRenotes: {
 		where: 'account',
-		default: true,
+		default: false,
 	},
 	rememberNoteVisibility: {
 		where: 'account',
@@ -104,7 +104,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showTimelineReplies: {
 		where: 'account',
-		default: false,
+		default: true,
 	},
 
 	menu: {
@@ -113,14 +113,11 @@ export const defaultStore = markRaw(new Storage('base', {
 			'notifications',
 			'messaging',
 			'favorites',
-			'drive',
 			'followRequests',
 			'-',
 			'explore',
-			'announcements',
 			'search',
-			'-',
-			'ui',
+			'announcements',
 		],
 	},
 	visibility: {
@@ -241,19 +238,19 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	instanceTicker: {
 		where: 'device',
-		default: 'remote' as 'none' | 'remote' | 'always',
+		default: 'remote' as 'always' | 'remote' | 'none',
 	},
 	reactionPickerSize: {
 		where: 'device',
-		default: 1,
+		default: 3,
 	},
 	reactionPickerWidth: {
 		where: 'device',
-		default: 1,
+		default: 2,
 	},
 	reactionPickerHeight: {
 		where: 'device',
-		default: 2,
+		default: 3,
 	},
 	reactionPickerUseDrawerForMobile: {
 		where: 'device',
@@ -281,7 +278,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	squareAvatars: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	postFormWithHashtags: {
 		where: 'device',
@@ -339,6 +336,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	additionalUnicodeEmojiIndexes: {
+		where: 'device',
+		default: {} as Record<string, Record<string, string[]>>,
+	},
+
+	// #region CherryPick
+	// - Settings/General
 	useEnterToSend: {
 		where: 'device',
 		default: false,
@@ -355,10 +359,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 8,
 	},
-	additionalUnicodeEmojiIndexes: {
-		where: 'device',
-		default: {} as Record<string, Record<string, string[]>>,
-	},
 	friendlyEnableNotification: {
 		where: 'device',
 		default: true,
@@ -371,6 +371,53 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'dialog' as 'quiet' | 'dialog',
 	},
+	bannerDisplay: {
+		where: 'device',
+		default: 'topBottom' as 'all' | 'topBottom' | 'top' | 'bottom' | 'bg' | 'hide',
+	},
+	hideAvatarsInNote: {
+		where: 'device',
+		default: false,
+	},
+	showTranslateButtonInNote: {
+		where: 'device',
+		default: true,
+	},
+	enableAbsoluteTime: {
+		where: 'device',
+		default: false,
+	},
+
+	// - Settings/CherryPick
+	nicknameEnabled: {
+		where: 'account',
+		default: true,
+	},
+	nicknameMap: {
+		where: 'account',
+		default: {} as Record<string, string>,
+	},
+	infoButtonForNoteActionsEnabled: {
+		where: 'account',
+		default: true,
+	},
+	rememberPostFormToggleStateEnabled: {
+		where: 'account',
+		default: true,
+	},
+	showPostFormPreview: {
+		where: 'device',
+		default: false,
+	},
+	reactableRemoteReactionEnabled: {
+		where: 'account',
+		default: true,
+	},
+	showFollowingMessageInsteadOfButtonEnabled: {
+		where: 'account',
+		default: true,
+	},
+	// #endregion
 }));
 
 // TODO: 他のタブと永続化されたstateを同期
@@ -400,7 +447,7 @@ interface Watcher {
 import { miLocalStorage } from './local-storage';
 import lightTheme from '@/themes/l-cherrypick.json5';
 import darkTheme from '@/themes/d-cherrypick.json5';
-import { Note, UserDetailed, Page } from 'misskey-js/built/entities';
+import { Note, UserDetailed, Page } from 'cherrypick-js/built/entities';
 
 export class ColdDeviceStorage {
 	public static default = {

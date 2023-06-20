@@ -42,15 +42,17 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject } from 'vue';
+import { onMounted, onUnmounted, ref, inject, defineAsyncComponent } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
-import { scrollToTop } from '@/scripts/scroll';
+import { getScrollPosition, scrollToTop } from '@/scripts/scroll';
 import { globalEvents } from '@/events';
 import { injectPageMetadata } from '@/scripts/page-metadata';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { miLocalStorage } from '@/local-storage';
 import { mainRouter } from '@/router';
+import * as os from '@/os';
+import { i18n } from '@/i18n';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'messaging');
@@ -92,9 +94,18 @@ const preventDrag = (ev: TouchEvent) => {
 	ev.stopPropagation();
 };
 
-const top = () => {
-	if (el) {
+const top = (ev: MouseEvent) => {
+	const pos = getScrollPosition(el as HTMLElement);
+	if (el && pos !== 0) {
 		scrollToTop(el as HTMLElement, { behavior: 'smooth' });
+	} else if (pos === 0) {
+		os.popupMenu([{
+			text: i18n.ts.reload,
+			icon: 'ti ti-refresh',
+			action: () => {
+				location.reload();
+			},
+		}], ev.currentTarget ?? ev.target);
 	}
 };
 
@@ -115,7 +126,7 @@ function goBack() {
 const calcBg = () => {
 	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (isFriendly.value && narrow) tinyBg.setAlpha(1);
+	if (narrow) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };

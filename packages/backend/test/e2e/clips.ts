@@ -144,7 +144,7 @@ describe('クリップ', () => {
 		alice = await signup({ username: 'alice' });
 		bob = await signup({ username: 'bob' });
 
-		// FIXME: misskey-jsのNoteはoutdatedなので直接変換できない
+		// FIXME: cherrypick-jsのNoteはoutdatedなので直接変換できない
 		aliceNote = await post(alice, { text: 'test' }) as any; 
 		aliceHomeNote = await post(alice, { text: 'home only', visibility: 'home' }) as any; 
 		aliceFollowersNote = await post(alice, { text: 'followers only', visibility: 'followers' }) as any; 

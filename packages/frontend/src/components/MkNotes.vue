@@ -2,7 +2,7 @@
 <MkPagination ref="pagingComponent" :pagination="pagination">
 	<template #empty>
 		<div class="_fullinfo">
-			<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
+			<img :src="infoImageUrl" class="_ghost"/>
 			<div>{{ i18n.ts.noNotes }}</div>
 		</div>
 	</template>
@@ -13,6 +13,7 @@
 				ref="notes"
 				v-slot="{ item: note }"
 				:items="notes"
+				:getDate="getDate"
 				:direction="pagination.reversed ? 'up' : 'down'"
 				:reversed="pagination.reversed"
 				:noGap="noGap"
@@ -32,10 +33,12 @@ import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n';
+import { infoImageUrl } from '@/instance';
 
 const props = defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
+	getDate?: (any) => string; // custom function to separate notes on something that isn't createdAt
 }>();
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();

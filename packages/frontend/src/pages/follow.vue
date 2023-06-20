@@ -5,15 +5,16 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as Acct from 'misskey-js/built/acct';
+import * as Acct from 'cherrypick-js/built/acct';
 import * as os from '@/os';
 import { mainRouter } from '@/router';
 import { i18n } from '@/i18n';
+import { userName } from '@/filters/user';
 
 async function follow(user): Promise<void> {
 	const { canceled } = await os.confirm({
 		type: 'question',
-		text: i18n.t('followConfirm', { name: user.name || user.username }),
+		text: i18n.t('followConfirm', { name: userName(user) }),
 	});
 
 	if (canceled) {

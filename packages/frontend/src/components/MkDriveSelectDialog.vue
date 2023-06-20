@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { ref, shallowRef } from 'vue';
-import * as Misskey from 'misskey-js';
+import * as Misskey from 'cherrypick-js';
 import XDrive from '@/components/MkDrive.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import number from '@/filters/number';

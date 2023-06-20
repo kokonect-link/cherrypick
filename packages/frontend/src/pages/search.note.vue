@@ -1,9 +1,14 @@
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search">
+		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @keydown="onInputKeydown">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkInput>
+		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
+			<option value="combined">{{ i18n.ts.all }}</option>
+			<option value="local">{{ i18n.ts.local }}</option>
+			<option value="remote">{{ i18n.ts.remote }}</option>
+		</MkRadios>
 		<MkFolder>
 			<template #label>{{ i18n.ts.options }}</template>
 
@@ -90,9 +95,16 @@ async function search() {
 		params: {
 			query: searchQuery,
 			userId: user ? user.id : null,
+			origin: searchOrigin,
 		},
 	};
 
 	key++;
+}
+
+function onInputKeydown(evt: KeyboardEvent) {
+	if (evt.key === 'Enter') {
+		search();
+	}
 }
 </script>

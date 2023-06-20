@@ -1835,6 +1835,7 @@ _instanceCharts:
 _timelines:
   home: "Персональная"
   local: "Местная"
+  media: "Медиа"
   social: "Социальная"
   global: "Всеобщая"
 _play:

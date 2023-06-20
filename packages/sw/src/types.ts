@@ -1,4 +1,4 @@
-import type * as Misskey from 'misskey-js';
+import type * as Misskey from 'cherrypick-js';
 
 export type SwMessageOrderType = 'post' | 'push';
 

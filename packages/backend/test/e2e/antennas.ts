@@ -17,7 +17,7 @@ import {
 	uploadFile,
 	testPaginationConsistency,
 } from '../utils.js';
-import type * as misskey from 'misskey-js';
+import type * as misskey from 'cherrypick-js';
 import type { INestApplicationContext } from '@nestjs/common';
 
 const compareBy = <T extends { id: string }>(selector: (s: T) => string = (s: T): string => s.id) => (a: T, b: T): number => {
@@ -28,7 +28,7 @@ describe('アンテナ', () => {
 	// エンティティとしてのアンテナを主眼においたテストを記述する
 	// (Antennaを返すエンドポイント、Antennaエンティティを書き換えるエンドポイント、Antennaからノートを取得するエンドポイントをテストする)
 
-	// BUG misskey-jsとjson-schemaが一致していない。
+	// BUG cherrypick-jsとjson-schemaが一致していない。
 	// - srcのenumにgroupが残っている
 	// - userGroupIdが残っている, isActiveがない
 	type Antenna = misskey.entities.Antenna | Packed<'Antenna'>;
@@ -43,6 +43,7 @@ describe('アンテナ', () => {
 		name: 'test',
 		notify: false,
 		src: 'all' as const,
+		userGroupId: null,
 		userListId: null,
 		users: [''],
 		withFile: false,
@@ -165,6 +166,7 @@ describe('アンテナ', () => {
 			name: 'test',
 			notify: false,
 			src: 'all',
+			userGroupId: null,
 			userListId: null,
 			users: [''],
 			withFile: false,
@@ -216,6 +218,7 @@ describe('アンテナ', () => {
 		{ parameters: (): object => ({ src: 'all' }) },
 		{ parameters: (): object => ({ src: 'users' }) },
 		{ parameters: (): object => ({ src: 'list' }) },
+		{ parameters: (): object => ({ userGroupId: null }) },
 		{ parameters: (): object => ({ userListId: null }) },
 		{ parameters: (): object => ({ src: 'list', userListId: aliceList.id }) },
 		{ parameters: (): object => ({ keywords: [['x']] }) },

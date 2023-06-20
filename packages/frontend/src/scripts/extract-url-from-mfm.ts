@@ -1,4 +1,4 @@
-import * as mfm from 'mfm-js';
+import * as mfm from 'cherrypick-mfm-js';
 import { unique } from '@/scripts/array';
 
 // unique without hash

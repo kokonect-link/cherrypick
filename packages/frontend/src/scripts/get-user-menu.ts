@@ -1,5 +1,5 @@
 import { defineAsyncComponent } from 'vue';
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { i18n } from '@/i18n';
 import copyToClipboard from '@/scripts/copy-to-clipboard';
 import { host } from '@/config';
@@ -9,6 +9,7 @@ import { $i, iAmModerator } from '@/account';
 import { mainRouter } from '@/router';
 import { Router } from '@/nirax';
 import { rolesCache, userListsCache } from '@/cache';
+import { editNickname } from '@/scripts/edit-nickname';
 
 export function getUserMenu(user: misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -197,7 +198,13 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-users',
 		text: i18n.ts.inviteToGroup,
 		action: inviteGroup,
-	} : undefined, null, {
+	} : undefined, null, ...(defaultStore.state.nicknameEnabled ? [{
+		icon: 'ti ti-edit',
+		text: i18n.ts.editNickName,
+		action: () => {
+			editNickname(user);
+		},
+	}] : []), {
 		icon: 'ti ti-pencil',
 		text: i18n.ts.editMemo,
 		action: () => {

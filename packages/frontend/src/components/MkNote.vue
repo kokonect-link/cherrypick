@@ -12,7 +12,7 @@
 	<!--<div v-if="appearNote._featuredId_" class="tip"><i class="ti ti-bolt"></i> {{ i18n.ts.featured }}</div>-->
 	<div v-if="isRenote" :class="$style.renote">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
-		<MkAvatar :class="$style.renoteAvatar" :user="note.user" link preview/>
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.renoteAvatar" :user="note.user" link preview/>
 		<i class="ti ti-repeat" style="margin-right: 4px;"></i>
 		<I18n :src="i18n.ts.renotedBy" tag="span" :class="$style.renoteText">
 			<template #user>
@@ -22,68 +22,83 @@
 			</template>
 		</I18n>
 		<div :class="$style.renoteInfo">
+			<span v-if="note.visibility !== 'public'" style="margin-right: 0.5em;">
+				<i v-if="note.visibility === 'home'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-home"></i>
+				<i v-else-if="note.visibility === 'followers'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-lock"></i>
+				<i v-else-if="note.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-mail"></i>
+			</span>
+			<span v-if="note.reactionAcceptance !== null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
+				<i v-if="note.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
+				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
+				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
+				<i v-else-if="note.reactionAcceptance === 'likeOnly'" v-tooltip="i18n.ts.likeOnly" class="ti ti-heart"></i>
+			</span>
+			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
+			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
 			<button ref="renoteTime" :class="$style.renoteTime" class="_button" @click="showRenoteMenu()">
 				<i v-if="isMyRenote" class="ti ti-dots" :class="$style.renoteMenu"></i>
-				<MkTime :time="note.createdAt"/>
+				<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
+				<MkTime v-else-if="!defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="relative"/>
 			</button>
-			<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;" :title="i18n.ts._visibility[note.visibility]">
-				<i v-if="note.visibility === 'home'" class="ti ti-home"></i>
-				<i v-else-if="note.visibility === 'followers'" class="ti ti-lock"></i>
-				<i v-else-if="note.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
-			</span>
-			<span v-if="note.localOnly" style="margin-left: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
-			<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
 		</div>
 	</div>
 	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="renoteCollapsed" :class="$style.collapsedRenoteTarget">
-		<MkAvatar :class="$style.collapsedRenoteTargetAvatar" :user="appearNote.user" link preview/>
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.collapsedRenoteTargetAvatar" :user="appearNote.user" link preview/>
 		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :class="$style.collapsedRenoteTargetText" @click="renoteCollapsed = false"/>
 	</div>
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
-		<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-		<MkAvatar :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
-		<div :class="$style.main">
-			<MkNoteHeader :note="appearNote" :mini="true"/>
-			<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
-			<div style="container-type: inline-size;">
-				<p v-if="appearNote.cw != null" :class="$style.cw">
-					<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
-					<MkCwButton v-model="showContent" :note="appearNote"/>
-				</p>
-				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
-					<div :class="$style.text">
-						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-						<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
-						<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-						<div v-if="translating || translation" :class="$style.translation">
-							<MkLoading v-if="translating" mini/>
-							<div v-else>
-								<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-								<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-								<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-									<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
-									<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
-								</div>
+		<div style="display: flex; padding-bottom: 10px;">
+			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
+			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
+			<div :class="$style.main">
+				<MkNoteHeader :note="appearNote" :mini="true"/>
+			</div>
+		</div>
+		<div style="container-type: inline-size;">
+			<MkEvent v-if="appearNote.event" :note="appearNote"/>
+			<p v-if="appearNote.cw != null" :class="$style.cw">
+				<Mfm v-if="appearNote.cw != ''" :text="appearNote.cw" :author="appearNote.user" :i="$i"/>
+				<MkCwButton v-model="showContent" :note="appearNote"/>
+			</p>
+			<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
+				<div :class="$style.text">
+					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
+					<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+					<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable" style="padding-top: 5px; color: var(--accent);">
+						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
+						<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
+					</div>
+					<div v-if="translating || translation" :class="$style.translation">
+						<MkLoading v-if="translating" mini/>
+						<div v-else>
+							<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+							<Mfm :text="translation.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
+							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+								<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+								<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 							</div>
 						</div>
 					</div>
-					<div v-if="appearNote.files.length > 0">
-						<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
-						<MkMediaList v-else :mediaList="appearNote.files"/>
-					</div>
-					<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
-					<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
-					<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
-					<button v-if="(isLong || isMFM) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
-						<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
-					</button>
-					<button v-else-if="(isLong || isMFM) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
-						<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
-					</button>
 				</div>
-				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
+				<div v-if="appearNote.files.length > 0">
+					<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
+					<MkMediaList v-else :mediaList="appearNote.files"/>
+				</div>
+				<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
+				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
+				<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" :class="$style.collapsed" class="_button" @click="collapsed = false">
+					<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
+				</button>
+				<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+					<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
+				</button>
 			</div>
+			<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
+		</div>
+		<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
+		<div>
 			<MkReactionsViewer :note="appearNote" :maxNumber="16">
 				<template #more>
 					<button class="_button" :class="$style.reactionDetailsButton" @click="showReactions">
@@ -92,13 +107,14 @@
 				</template>
 			</MkReactionsViewer>
 			<footer :class="$style.footer">
-				<button :class="$style.footerButton" class="_button" @click="reply()">
+				<button v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click="reply()">
 					<i class="ti ti-arrow-back-up"></i>
 					<p v-if="appearNote.repliesCount > 0" :class="$style.footerButtonCount">{{ appearNote.repliesCount }}</p>
 				</button>
 				<button
 					v-if="canRenote"
 					ref="renoteButton"
+					v-tooltip="i18n.ts.renote"
 					:class="$style.footerButton"
 					class="_button"
 					@mousedown="renote()"
@@ -109,17 +125,24 @@
 				<button v-else :class="$style.footerButton" class="_button" disabled>
 					<i class="ti ti-ban"></i>
 				</button>
-				<button v-if="appearNote.myReaction == null" ref="reactButton" :class="$style.footerButton" class="_button" @mousedown="react()">
+				<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
+					<i class="ti ti-heart"></i>
+				</button>
+				<button v-if="appearNote.myReaction == null" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
 					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
-					<i v-else class="ti ti-plus"></i>
+					<i v-else class="ti ti-mood-plus"></i>
 				</button>
 				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
-					<i class="ti ti-minus"></i>
+					<i class="ti ti-mood-minus"></i>
 				</button>
-				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" :class="$style.footerButton" class="_button" @mousedown="clip()">
+				<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
+				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
 					<i class="ti ti-paperclip"></i>
 				</button>
-				<button ref="menuButton" :class="$style.footerButton" class="_button" @mousedown="menu()">
+				<MkA v-if="defaultStore.state.infoButtonForNoteActionsEnabled && defaultStore.state.showNoteActionsOnlyHover" v-tooltip="i18n.ts.details" :to="notePage(note)" :class="$style.footerButton" style="text-decoration: none;" class="_button">
+					<i class="ti ti-info-circle"></i>
+				</MkA>
+				<button ref="menuButton" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @mousedown="menu()">
 					<i class="ti ti-dots"></i>
 				</button>
 			</footer>
@@ -139,8 +162,8 @@
 
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent } from 'vue';
-import * as mfm from 'mfm-js';
-import * as misskey from 'misskey-js';
+import * as mfm from 'cherrypick-mfm-js';
+import * as misskey from 'cherrypick-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
@@ -150,7 +173,7 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
+import MkEvent from '@/components/MkEvent.vue';
 import { pleaseLogin } from '@/scripts/please-login';
 import { focusPrev, focusNext } from '@/scripts/focus';
 import { checkWordMute } from '@/scripts/check-word-mute';
@@ -172,6 +195,9 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { mainRouter } from '@/router';
+import { notePage } from '@/filters/note';
+import { miLocalStorage } from '@/local-storage';
+import { instance } from '@/instance';
 
 let showEl = $ref(false);
 
@@ -208,6 +234,7 @@ const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const renoteTime = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
+const heartReactButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 let appearNote = $computed(() => isRenote ? note.renote as misskey.entities.Note : note);
 const isMyRenote = $i && ($i.id === note.userId);
@@ -226,12 +253,11 @@ const isMFM = (appearNote.cw == null && appearNote.text != null && (
 	(appearNote.text.includes('$[scale')) ||
 	(appearNote.text.includes('$[position'))
 ));
-const collapsed = ref(appearNote.cw == null && (isLong || isMFM && defaultStore.state.collapseDefault));
+const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault)));
 const isDeleted = ref(false);
 const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref<any>(null);
 const translating = ref(false);
-const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && appearNote.user.instance);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
 let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId)) || (appearNote.myReaction != null)));
 
@@ -276,74 +302,55 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-function renote(viaKeyboard = false) {
+function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	let items = [] as MenuItem[];
-
 	if (appearNote.channel) {
-		items = items.concat([{
-			text: i18n.ts.inChannelRenote,
-			icon: 'ti ti-repeat',
-			action: () => {
-				const el = renoteButton.value as HTMLElement | null | undefined;
-				if (el) {
-					const rect = el.getBoundingClientRect();
-					const x = rect.left + (el.offsetWidth / 2);
-					const y = rect.top + (el.offsetHeight / 2);
-					os.popup(MkRippleEffect, { x, y }, {}, 'end');
-				}
+		const el = renoteButton.value as HTMLElement | null | undefined;
+		if (el) {
+			const rect = el.getBoundingClientRect();
+			const x = rect.left + (el.offsetWidth / 2);
+			const y = rect.top + (el.offsetHeight / 2);
+			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		}
 
-				os.api('notes/create', {
-					renoteId: appearNote.id,
-					channelId: appearNote.channelId,
-				}).then(() => {
-					os.toast(i18n.ts.renoted);
-				});
-			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ti ti-quote',
-			action: () => {
-				os.post({
-					renote: appearNote,
-					channel: appearNote.channel,
-				});
-			},
-		}, null]);
+		os.api('notes/create', {
+			renoteId: appearNote.id,
+			channelId: appearNote.channelId,
+		}).then(() => {
+			os.noteToast(i18n.ts.renoted);
+		});
 	}
 
-	items = items.concat([{
-		text: i18n.ts.renote,
-		icon: 'ti ti-repeat',
-		action: () => {
-			const el = renoteButton.value as HTMLElement | null | undefined;
-			if (el) {
-				const rect = el.getBoundingClientRect();
-				const x = rect.left + (el.offsetWidth / 2);
-				const y = rect.top + (el.offsetHeight / 2);
-				os.popup(MkRippleEffect, { x, y }, {}, 'end');
-			}
+	const el = renoteButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
 
-			os.api('notes/create', {
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted);
-			});
-		},
-	}, {
-		text: i18n.ts.quote,
-		icon: 'ti ti-quote',
-		action: () => {
-			os.post({
-				renote: appearNote,
-			});
-		},
-	}]);
+	os.api('notes/create', {
+		renoteId: appearNote.id,
+	}).then(() => {
+		os.noteToast(i18n.ts.renoted);
+	});
+}
 
-	os.popupMenu(items, renoteButton.value, {
-		viaKeyboard,
+function quote() {
+	pleaseLogin();
+	showMovedDialog();
+
+	if (appearNote.channel) {
+		os.post({
+			renote: appearNote,
+			channel: appearNote.channel,
+		});
+	}
+
+	os.post({
+		renote: appearNote,
 	});
 }
 
@@ -388,6 +395,25 @@ function react(viaKeyboard = false): void {
 	}
 }
 
+function heartReact(): void {
+	pleaseLogin();
+	showMovedDialog();
+	os.api('notes/reactions/create', {
+		noteId: appearNote.id,
+		reaction: '❤️',
+	});
+	if (appearNote.text && appearNote.text.length > 100 && (Date.now() - new Date(appearNote.createdAt).getTime() < 1000 * 3)) {
+		claimAchievement('reactWithoutRead');
+	}
+	const el = heartReactButton.value as HTMLElement | null | undefined;
+	if (el) {
+		const rect = el.getBoundingClientRect();
+		const x = rect.left + (el.offsetWidth / 2);
+		const y = rect.top + (el.offsetHeight / 2);
+		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+	}
+}
+
 function undoReact(note): void {
 	const oldReaction = note.myReaction;
 	if (!oldReaction) return;
@@ -424,6 +450,17 @@ function menu(viaKeyboard = false): void {
 
 async function clip() {
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
+}
+
+async function translate(): Promise<void> {
+	if (translation.value != null) return;
+	translating.value = true;
+	const res = await os.api('notes/translate', {
+		noteId: appearNote.id,
+		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
+	});
+	translating.value = false;
+	translation.value = res;
 }
 
 function showRenoteMenu(viaKeyboard = false): void {
@@ -558,7 +595,7 @@ function showReactions(): void {
 .tip {
 	display: flex;
 	align-items: center;
-	padding: 16px 32px 8px 32px;
+	padding: 24px 38px 16px;
 	line-height: 24px;
 	font-size: 90%;
 	white-space: pre;
@@ -578,7 +615,7 @@ function showReactions(): void {
 	position: relative;
 	display: flex;
 	align-items: center;
-	padding: 16px 32px 8px 32px;
+	padding: 24px 38px 16px;
 	line-height: 28px;
 	white-space: pre;
 	color: var(--renote);
@@ -636,7 +673,7 @@ function showReactions(): void {
 	align-items: center;
 	line-height: 28px;
 	white-space: pre;
-	padding: 0 32px 18px;
+	padding: 8px 38px 24px;
 }
 
 .collapsedRenoteTargetAvatar {
@@ -663,7 +700,6 @@ function showReactions(): void {
 
 .article {
 	position: relative;
-	display: flex;
 	padding: 28px 32px;
 }
 
@@ -680,12 +716,18 @@ function showReactions(): void {
 .avatar {
 	flex-shrink: 0;
 	display: block !important;
+	position: sticky !important;
 	margin: 0 14px 0 0;
 	width: 58px;
 	height: 58px;
-	position: sticky !important;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
+	transition: top 0.5s;
+
+	&.avatarReplyTo {
+		position: relative !important;
+		top: 0 !important;
+	}
 }
 
 .main {
@@ -695,7 +737,7 @@ function showReactions(): void {
 
 .cw {
 	cursor: default;
-	display: block;
+	display: grid;
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;
@@ -776,8 +818,8 @@ function showReactions(): void {
 }
 
 .quoteNote {
-	padding: 16px;
-	border: dashed 1px var(--renote);
+	padding: 24px;
+	border: solid 1px var(--renote);
 	border-radius: 8px;
 }
 
@@ -787,7 +829,7 @@ function showReactions(): void {
 }
 
 .footer {
-	margin-bottom: -14px;
+	margin: 7px 0 -14px;
 }
 
 .footerButton {
@@ -796,7 +838,7 @@ function showReactions(): void {
 	opacity: 0.7;
 
 	&:not(:last-child) {
-		margin-right: 28px;
+		margin-right: 10px;
 	}
 
 	&:hover {
@@ -810,13 +852,21 @@ function showReactions(): void {
 	opacity: 0.7;
 }
 
+.danger {
+	color: var(--accent);
+}
+
 @container (max-width: 580px) {
 	.root {
 		font-size: 0.95em;
 	}
 
 	.renote {
-		padding: 12px 26px 0 26px;
+		padding: 24px 28px 16px;
+	}
+
+	.collapsedRenoteTarget {
+		padding: 8px 28px 24px;
 	}
 
 	.article {
@@ -834,12 +884,18 @@ function showReactions(): void {
 		font-size: 0.9em;
 	}
 
-	.renote {
-		padding: 10px 22px 0 22px;
+	.article {
+		padding: 23px 25px;
 	}
 
-	.article {
-		padding: 20px 22px;
+	.avatar {
+		&.showEl {
+			top: 14px;
+		}
+
+		&.showElTab {
+			top: 54px;
+		}
 	}
 
 	.footer {
@@ -849,20 +905,20 @@ function showReactions(): void {
 
 @container (max-width: 480px) {
 	.renote {
-		padding: 8px 16px 0 16px;
+		padding: 20px 24px 8px;
 	}
 
 	.tip {
-		padding: 8px 16px 0 16px;
+		padding: 20px 24px 8px;
 	}
 
 	.collapsedRenoteTarget {
-		padding: 0 16px 9px;
+		padding: 8px 24px 20px;
 		margin-top: 4px;
 	}
 
 	.article {
-		padding: 14px 16px;
+		padding: 22px 24px;
 	}
 }
 
@@ -872,15 +928,6 @@ function showReactions(): void {
 		width: 46px;
 		height: 46px;
 		top: calc(14px + var(--stickyTop, 0px));
-		transition: top 0.5s;
-
-		&.showEl {
-			top: 14px;
-		}
-
-		&.showElTab {
-			top: 54px;
-		}
 	}
 }
 

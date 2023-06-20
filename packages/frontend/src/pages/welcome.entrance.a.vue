@@ -4,7 +4,7 @@
 	<XTimeline class="tl"/>
 	<div class="shape1"></div>
 	<div class="shape2"></div>
-	<img src="/client-assets/misskey.svg" class="cherrypick"/>
+	<img src="/client-assets/cherrypick.svg" class="cherrypick"/>
 	<div class="emojis">
 		<MkEmoji :normal="true" :noStyle="true" emoji="👍"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="❤"/>
@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import { Instance } from 'misskey-js/built/entities';
+import { Instance } from 'cherrypick-js/built/entities';
 import XTimeline from './welcome.timeline.vue';
 import MarqueeText from '@/components/MkMarquee.vue';
 import MkFeaturedPhotos from '@/components/MkFeaturedPhotos.vue';
@@ -109,7 +109,7 @@ os.apiGet('federation/instances', {
 		position: fixed;
 		top: 42px;
 		left: 42px;
-		width: 140px;
+		width: 180px;
 
 		@media (max-width: 450px) {
 			width: 130px;

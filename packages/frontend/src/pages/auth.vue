@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import { AuthSession } from 'misskey-js/built/entities';
+import { AuthSession } from 'cherrypick-js/built/entities';
 import XForm from './auth.form.vue';
 import MkSignin from '@/components/MkSignin.vue';
 import * as os from '@/os';

@@ -1,28 +1,37 @@
 <template>
 <div :class="$style.root">
-	<MkAvatar :class="$style.avatar" :user="note.user" link preview/>
-	<div :class="$style.main">
-		<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
-		<div>
-			<p v-if="note.cw != null" :class="$style.cw">
-				<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
-				<MkCwButton v-model="showContent" :note="note"/>
-			</p>
-			<div v-show="note.cw == null || showContent">
-				<MkSubNoteContent :class="$style.text" :note="note"/>
-			</div>
+	<div style="display: flex; padding-bottom: 10px;">
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
+		<div :class="$style.main">
+			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
+		</div>
+	</div>
+	<div>
+		<MkEvent v-if="note.event" :note="note"/>
+		<p v-if="note.cw != null" :class="$style.cw">
+			<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i" :emojiUrls="note.emojis"/>
+			<MkCwButton v-model="showContent" :note="note"/>
+		</p>
+		<div v-show="note.cw == null || showContent">
+			<MkSubNoteContent :class="$style.text" :note="note"/>
 		</div>
 	</div>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import * as misskey from 'misskey-js';
+import { onMounted } from 'vue';
+import * as misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
+import MkEvent from '@/components/MkEvent.vue';
 import { $i } from '@/account';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { mainRouter } from '@/router';
+import { defaultStore } from '@/store';
+
+let showEl = $ref(false);
 
 const props = defineProps<{
 	note: misskey.entities.Note;
@@ -30,11 +39,16 @@ const props = defineProps<{
 }>();
 
 const showContent = $ref(false);
+
+onMounted(() => {
+	eventBus.on('showEl', (showEl_receive) => {
+		showEl = showEl_receive;
+	});
+});
 </script>
 
 <style lang="scss" module>
 .root {
-	display: flex;
 	margin: 0;
 	padding: 0;
 	overflow: clip;
@@ -64,7 +78,7 @@ const showContent = $ref(false);
 
 .cw {
 	cursor: default;
-	display: block;
+	display: grid;
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;
@@ -74,6 +88,18 @@ const showContent = $ref(false);
 	cursor: default;
 	margin: 0;
 	padding: 0;
+}
+
+@container (max-width: 500px) {
+	.avatar {
+		&.showEl {
+			top: 14px;
+		}
+
+		&.showElTab {
+			top: 54px;
+		}
+	}
 }
 
 @container (min-width: 250px) {

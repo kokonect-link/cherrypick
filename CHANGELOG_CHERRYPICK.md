@@ -1,14 +1,15 @@
 <!--
 ## 13.x.x-cp-4.x.x
-출시일: unreleased
+출시일: unreleased<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md#13xx](CHANGELOG.md#13xx) 문서를 참고하십시오.
 
 ## NOTE
 
 ### General
--
+- 
 
 ### Client
--
+- 
 
 ### Server
 -
@@ -19,16 +20,99 @@
 
 # 릴리즈 노트
 
-이 문서는 CherryPick의 변경 사항만 포함합니다.<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
+이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 13.13.1-cp-4.0.0
-출시일: 2023/06/06
+## 13.13.2-cp-4.1.0
+출시일: 2023/06/20<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGELOG.md#13132) 문서를 참고하십시오.
 
 ### General
-- 채팅 및 그룹 기능 유지 (revert: [misskey-dev/misskey#9919](https://github.com/misskey-dev/misskey/pull/9919), [misskey-dev/misskey#9942](https://github.com/misskey-dev/misskey/pull/9942))
-- 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 ([misskey-dev/misskey#9754](https://github.com/misskey-dev/misskey/issues/9754)))
-- Cloud Translation - Advanced(v3) 지원 추가 ([@mk-castella](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
+- 타임라인에 노트의 답글을 표시하는 옵션의 기본값을 켜짐으로 설정
+- 네비게이션 바의 배치를 수정
+- 프로필 아이콘의 기본값을 사각형으로 설정
+- 미디어 타임라인 추가 ([kiyo4act/misskey.design＠c01be0d](https://github.com/kiyo4act/misskey.design/commit/c01be0dc7674cdf0bcac6081c63baab52c4c9abe))
+- ruby 표기 지원 ([yuriha-chan/misskey@0a109d4](https://github.com/yuriha-chan/misskey/commit/0a109d4f7442f8eedc48693b09ad2fd0b61e67a5), [yuriha-chan/misskey@446f0c2](https://github.com/yuriha-chan/misskey/commit/446f0c2ea5cc9a9f7f48a75935bce550bd0b3095), [yuriha-chan/misskey@4cfd28a](https://github.com/yuriha-chan/misskey/commit/4cfd28a452be0cdcc1328d77ab0db6dca627ca23), [yuriha-chan/misskey@dc6a6dc](https://github.com/yuriha-chan/misskey/commit/dc6a6dcdc3c2ac5b836570defb14ef4d441725e8))
+- 노트 검색을 전체/로컬/리모트로 나누도록 변경 ([kiyo4act/misskey.design@4adad07](https://github.com/kiyo4act/misskey.design/commit/4adad0768ce02bd49207a94678cf3c9130ed9e10))
+- 노트/유저 검색 페이지에서 Enter 키를 누르면 검색하도록
+- 프로필 번역 기능 추가
+- 네비게이션 메뉴에 배너 표시 옵션 추가
+- 노트에서 프로필 아이콘을 숨기는 옵션 추가
+- 닉네임 기능 ([shrimpia/misskey@126f145](https://github.com/shrimpia/misskey/commit/126f145560caa0cc34fe8d2c9ee22f3be922ea10), [shrimpia/misskey@58f70be](https://github.com/shrimpia/misskey/commit/58f70beb9aff2287a64d903b43583184340294aa))
+	- 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
+- 「노트 액션 버튼을 마우스를 올렸을 때에만 표시」 옵션을 켰을 때, 자세히 버튼을 표시하도록 변경 ([shrimpia/misskey@4802191](https://github.com/shrimpia/misskey/commit/48021913bb9b6b2a314e8d88e3816f6f66a52888))
+- 「이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음」을 선택 사항으로 설정 ([shrimpia/misskey@9345149](https://github.com/shrimpia/misskey/commit/9345149f5d0447058a6ed1524708925a84744bd7))
+- 노트 작성 폼에서 본문 미리보기 상태 기억 ([shrimpia/misskey](https://github.com/shrimpia/misskey))
+- 리모트에 존재하는 커스텀 이모지도 자신의 서버 내에 같은 이름의 이모지가 있으면 리액션 할 수 있도록 ([shrimpia/misskey@e91295f](https://github.com/shrimpia/misskey/commit/e91295ff9c6f8ac90f61c8de7a891a6836e48e95), [shrimpia/misskey@010378f](https://github.com/shrimpia/misskey/commit/010378fae659ad3015bfade4346209e01bb2a902), [shrimpia/misskey@acf2a30](https://github.com/shrimpia/misskey/commit/acf2a30e8a8c57525dfbab499dbb0b6c7d8e43c2))
+- 「이미 본 리노트를 간략화하기」 옵션의 기본값을 꺼짐으로 설정
+- 이벤트 기능 (misskey-dev/misskey#10628)
+- Play에 API Token을 요청할 수 있는 기능 추가 (misskey-dev/misskey#10949)
+- 절대 시간 표기 (sakura-tel/milkey#69)
+- 초대 코드 해지 기능 ([atsu1125/groundpolis@2da90e7](https://github.com/atsu1125/groundpolis/commit/2da90e7241d2f88390a7713e76a86f26e158248e))
+
+### Client
+- (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음
+- 모바일에서 UI 흐림 효과를 비활성화 했을 때 가독성 향상
+	- 토스트 알림의 배경이 불투명하게 표시되도록
+  - 헤더의 배경이 불투명하게 표시되도록
+- MFM 도움말에 검색 섹션 추가
+- 노트 디자인 개선
+- 채팅을 읽지 않았을 떄 표시되는 인디케이터의 위치 조정
+- 이미 읽은 채팅은 가독성 개선을 위해 배경을 연하게
+- 답글 노트의 디자인 개선
+- 업데이트 팝업의 버튼 디자인 변경
+- 팔로우/팔로워를 비공개로 하고 있는 경우 표시는 '0'이 아닌 키 아이콘을 표시하도록 (misskey-dev/misskey#10934)
+- 신고의 초기 댓글에 사용자 ID 추가 ([kiyo4act/misskey.design@fded63c](https://github.com/kiyo4act/misskey.design/commit/fded63c7317721daeb8babcdf901dc00ab475231), [kiyo4act/misskey.design@8b6e303](https://github.com/kiyo4act/misskey.design/commit/8b6e303f184888193f4ce1daaa1629fedb46c7a9))
+- OGP 미리보기 추가 ([kiyo4act/misskey.design@4eb0a6d](https://github.com/kiyo4act/misskey.design/commit/4eb0a6d8467c0c601e6fe37b0170c6c36f4bc8f2))
+- 더 보기! 메뉴에 도움말 추가
+- 노트를 자세히 볼 때 역할 배지를 표시하도록
+- 일부 제어판 페이지의 헤더 개선
+- 스크롤이 최상단일 때 헤더를 누르면 새로고침 메뉴를 표시하도록
+- MkImgWithBlurhash에서 blurhash 그리기에 사용하는 canvas는 재사용하도록(misskey-dev/misskey#10966)
+- CherryPick 고유 기능 및 개선된 기능은 「CherryPick」 배지 추가
+- 네비게이션 메뉴 편집 페이지 UI 개선 ([shrimpia/misskey@bf8c84d](https://github.com/shrimpia/misskey/commit/bf8c84d299bd06cb21e18a9fe68ff9abc11fd4a0))
+- 「노트 본문에 번역 버튼 표시」를 선택 사항으로 설정
+- 답글도 번역할 수 있도록 개선
+- 리노트 했을 때 뜨는 토스트 알림에 아이콘 추가
+- 노트의 서버 정보 옵션의 순서를 변경
+- 글로벌 타임라인의 아이콘 변경
+- 노트 헤더에 리액션 수신 상태 표시
+- 노트를 게시했을 때 토스트 알림 표시
+- 노트 액션 버튼 추가 및 편의성 향상
+- 데이터 세이버를 활성화하면 설정을 반영하기 위해 페이지를 새로 고치도록
+- 그룹 페이지의 전반적인 디자인 개선
+- 파일 및 투표의 details 디자인 개선
+- Fix: (Friendly) 플로팅 메뉴를 길게 눌렀을 때 프로필 이미지를 드래그 할 수 있는 문제
+- Fix: (Friendly) 타임라인이 변경되었을 때 네비게이션 바의 인디케이터가 사라지지 않는 문제
+- Fix: (Friendly) 모바일에서 헤더가 사라졌을 때 프로필 아이콘의 높이가 잘못 설정되는 문제
+- Fix: (Friendly) 화면이 넓은 일부 모바일 기기에서 프로필 아이콘의 높이가 잘못 설정되는 문제
+- Fix: (Friendly) 스크롤 계산 방식 변경
+- Fix: (Friendly) 모바일에서 네비게이션 메뉴의 인디케이터 크기를 작게 조정
+- Fix: (Friendly) 유저 이름이 너무 긴 경우 디자인에 문제가 발생할 수 있음
+- Fix: 네트워크 트래픽이 10MB/s를 초과하면 네트워크 통계 위젯의 그래프가 잘못 출력되는 문제
+- Fix: iOS 기기에서 채팅 입력란이 채팅을 가리는 문제
+- Fix: 특정 MFM 구문이 포함된 노트 간략화 옵션 비활성화 시, MFM 구문에 대해서는 더 보기 버튼을 표시하지 않도록
+- Fix: 프로필 아이콘을 사각형으로 설정했을 때 유저 팝업의 디자인 개선
+- Fix: 노트 헤더에서 유저 이름이 너무 긴 경우 디자인에 문제가 발생할 수 있음
+- Fix: 그룹 페이지에서 기능이 제대로 작동하지 않음
+- Fix: 채팅 내용이 길이가 너무 길어도 그만큼 공간을 차지하는 문제
+
+### Server
+- mfm-js를 cherrypick-mfm-js로 변경
+- misskey-js를 cherrypick-js로 변경
+- Add: Cloud Logging 기능 ([libnare/mk-castella@0a883ef](https://github.com/libnare/mk-castella/commit/0a883efe08921d5e5b7914a1075c3931122a623b), [libnare/mk-castella@7987d57](https://github.com/libnare/mk-castella/commit/7987d57789316084b38665e539e41a463ddaa110))
+- Fix: 알림에서 UserGroupInvitation 관련 문제 해결 (kokonect-link/cherrypick#75)
+- Fix: 정의되지 않은 OffscreenCanvas (misskey-dev/misskey#11017)
+
+---
+
+## 13.13.1-cp-4.0.0
+출시일: 2023/06/06<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGELOG.md#13131) 문서를 참고하십시오.
+
+### General
+- 채팅 및 그룹 기능 유지 (revert: misskey-dev/misskey#9919, misskey-dev/misskey#9942)
+- 노트 수식 삽입 기능 복원 (MathML 호환을 위해 기존에 제거된 KaTex를 Temml로 대체 (misskey-dev/misskey#9754))
+- Cloud Translation - Advanced(v3) 지원 추가 ([libnare/mk-castella@3c582dd](https://github.com/libnare/mk-castella/commit/3c582dd850d00f5b8faea027fd054118efb97856))
 - mfm-cheat-sheet 복원
 
 ### Client
@@ -39,7 +123,7 @@
 - (Friendly) 데스크톱 모드에서 타임라인 옆에 알림 영역을 배치하도록
 - (Friendly) 오조작 방지를 위해 플로팅 버튼을 길게 눌러 새로고침 기능 제거
 - (Friendly) 채팅 탭에 플로팅 버튼 추가
-- 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([@mk-castella](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
+- 클라이언트에서 사용되는 폰트의 확장자를 ttf에서 woff2 및 woff로 변경 ([libnare/mk-castella@f439b3e](https://github.com/libnare/mk-castella/commit/f439b3e007618c02da7a352016b3d0f397311f54))
 - about-misskey 페이지에 CherryPick 관련 정보 추가 및 Misskey 문단 구분명 추가
 - 계정 초기 설정 마법사 개선
   - 뒤로 가기 버튼 추가
@@ -62,7 +146,7 @@
 - 알림 기본 정렬을 수직으로 변경
 - 채팅방 목록 페이지 디자인 개선
 - 리노트 문구를 노트 최상단으로 배치
-- 특정 MFM 구문이 포함된 노트를 간략화 할지 선택할 수 있음(enhance: [aba0755](https://github.com/kokonect-link/cherrypick/commit/aba0755880d6797f49d34c8b7fe2c602d153e367))
+- 특정 MFM 구문이 포함된 노트를 간략화 할지 선택할 수 있음(enhance: [@aba0755](https://github.com/kokonect-link/cherrypick/commit/aba0755880d6797f49d34c8b7fe2c602d153e367))
 - 노트 사이를 띄우는 옵션 활성화 시 알림 페이지의 노트도 띄우도록
 - 안테나, 그룹, 리스트, 클립 페이지의 생성 버튼을 헤더로 이동
 - 채팅 디자인 일부 개선
@@ -83,7 +167,8 @@
 ---
 
 ## 13.5.6-cp-3.1.0
-출시일: 2023/02/10
+출시일: 2023/02/10<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
 변경 사항이 없습니다.
@@ -91,7 +176,8 @@
 ---
 
 ## 13.5.5-cp-3.1.0
-출시일: 2023/02/10
+출시일: 2023/02/10<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
 이 버전부터 Misskey v13을 대응합니다.
@@ -120,7 +206,8 @@
 ---
 
 ## 12.119.0-cp-3.0.0
-출시일: 2022/09/16
+출시일: 2022/09/16<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
 이 버전부터는 기존 버전과 연결되지 않고, 새로 포크하여 작업되었습니다. 따라서 기존 버전에 있던 기능들이 다시 명시될 수 있습니다.
@@ -154,7 +241,7 @@
 
 ### Bugfixes
 - 클라이언트: 채팅방에서 메시지를 입력하고 있을 때 움직이지 않는 온점(.)이 표시되는 문제
-- 클라이언트: 환영 페이지에서 GitHub 바로가기와 더보기 버튼이 겹쳐있는 경우 더보기 버튼을 누를 수 없었던 문제
+- 클라이언트: 환영 페이지에서 GitHub 바로가기와 더 보기 버튼이 겹쳐있는 경우 더 보기 버튼을 누를 수 없었던 문제
 
 <!--
 ## 12.x.x-cp-2.x.x (unreleased)_legacy
@@ -440,8 +527,8 @@ CherryPick은 다른 클라이언트의 유용한 기능들을 **이식**하고 
 - 노트와 유저를 동시에 검색할 수 있게 변경했어요.
 - 사이드 바와 내비게이션 바의 배치를 개선했어요.
 - 더 작은 폰트(verySmail) 크기를 추가했어요!
-- 프로필 페이지에 프로필 수정 버튼을 추가했어요! 이제 수정을 위해서 더보기 버튼을 누르지 않아도 돼요.
-- 프로필 페이지에서 더보기 버튼을 하나로 줄였어요. (저도 왜 이게 2개나 있는지 모르겠어요...)
+- 프로필 페이지에 프로필 수정 버튼을 추가했어요! 이제 수정을 위해서 더 보기 버튼을 누르지 않아도 돼요.
+- 프로필 페이지에서 더 보기 버튼을 하나로 줄였어요. (저도 왜 이게 2개나 있는지 모르겠어요...)
 
 ### UI Improvements
 - Friendly UI: 새 노트 알림의 아이콘이 변경됐어요.
@@ -467,7 +554,7 @@ CherryPick은 다른 클라이언트의 유용한 기능들을 **이식**하고 
 - 리모트 유저의 프로필을 불러올 때 문제를 야기할 수 있는 부분이 수정됐어요.
 - 환영 페이지에서 배너 이미지가 뜨지 않는 문제를 수정했어요!
 - 비로그인 상태에서 유저 프로필의 노트를 열람하지 못하는 문제를 수정했어요.
-- 환영 페이지에서 GitHub 바로가기와 더보기 버튼이 겹쳐있는 경우 더보기 버튼을 누를 수 없었던 문제를 수정했어요.
+- 환영 페이지에서 GitHub 바로가기와 더 보기 버튼이 겹쳐있는 경우 더 보기 버튼을 누를 수 없었던 문제를 수정했어요.
 - 이미지가 노트 영역을 뚫고 나오는 문제를 수정했어요.
 - 일본어 및 한국어를 제외한 언어에서 도움말의 API 문서의 목차가 작동하지 않는 문제를 수정했어요.
 - 알림 토스트의 텍스트가 eclipse 되지 않는 문제를 수정했어요.

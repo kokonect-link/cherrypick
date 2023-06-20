@@ -1,4 +1,4 @@
-import * as misskey from 'misskey-js';
+import * as misskey from 'cherrypick-js';
 import { ComputedRef, inject, isRef, onActivated, onMounted, provide, ref, Ref } from 'vue';
 
 export const setPageMetadata = Symbol('setPageMetadata');

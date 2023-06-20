@@ -1,6 +1,6 @@
 <template>
 <div ref="el" class="hiyeyicy" :class="{ wide: !narrow }">
-	<div v-if="!narrow || currentPage?.route.name == null" class="nav">	
+	<div v-if="!narrow || currentPage?.route.name == null" class="nav">
 		<MkSpacer :contentMax="700" :marginMin="16">
 			<div class="lxpfedzu">
 				<div class="banner">
@@ -82,6 +82,11 @@ const menuDef = $computed(() => [{
 		icon: 'ti ti-user-plus',
 		text: i18n.ts.invite,
 		action: invite,
+	}, {
+		type: 'button',
+		icon: 'ti ti-user-cancel',
+		text: i18n.ts.inviteRevoke,
+		action: inviteRevoke,
 	}] : [])],
 }, {
 	title: i18n.ts.administration,
@@ -106,7 +111,7 @@ const menuDef = $computed(() => [{
 		to: '/admin/emojis',
 		active: currentPage?.route.name === 'emojis',
 	}, {
-		icon: 'ti ti-whirl',
+		icon: 'ti ti-world',
 		text: i18n.ts.federation,
 		to: '/admin/federation',
 		active: currentPage?.route.name === 'federation',
@@ -143,6 +148,11 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.general,
 		to: '/admin/settings',
 		active: currentPage?.route.name === 'settings',
+	}, {
+		icon: 'ti ti-paint',
+		text: i18n.ts.branding,
+		to: '/admin/branding',
+		active: currentPage?.route.name === 'branding',
 	}, {
 		icon: 'ti ti-shield',
 		text: i18n.ts.moderation,
@@ -245,6 +255,16 @@ const invite = () => {
 			type: 'error',
 			text: err,
 		});
+	});
+};
+
+const inviteRevoke = () => {
+	os.confirm({
+		type: 'warning',
+		text: i18n.ts.inviteRevokeConfirm,
+	}).then(({ canceled }) => {
+		if (canceled) return;
+		os.apiWithDialog('invite-revoke');
 	});
 };
 

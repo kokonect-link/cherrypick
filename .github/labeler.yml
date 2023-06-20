@@ -13,9 +13,9 @@
 'packages/sw':
 - packages/sw/**/*
 
-'packages/misskey-js':
-- packages/misskey-js/**/*
+'packages/cherrypick-js':
+- packages/cherrypick-js/**/*
 
-'packages/misskey-js:test':
-- packages/misskey-js/test/**/*
-- packages/misskey-js/test-d/**/*
+'packages/cherrypick-js:test':
+- packages/cherrypick-js/test/**/*
+- packages/cherrypick-js/test-d/**/*

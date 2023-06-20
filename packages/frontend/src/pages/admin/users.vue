@@ -119,7 +119,6 @@ const headerActions = $computed(() => [{
 	text: i18n.ts.search,
 	handler: searchUser,
 }, {
-	asFullButton: true,
 	icon: 'ti ti-plus',
 	text: i18n.ts.addUser,
 	handler: addUser,

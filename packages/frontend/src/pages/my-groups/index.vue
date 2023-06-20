@@ -2,35 +2,37 @@
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
-		<div v-if="tab === 'owned'" class="_content">
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination" class="groups">
-				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
-					<div class="name">{{ group.name }}</div>
-					<MkAvatars :userIds="group.userIds"/>
+		<div v-if="tab === 'owned'">
+			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination">
+				<MkA v-for="group in items" :key="group.id" :class="$style.group" class="_panel" :to="`/my/groups/${ group.id }`">
+					<div :class="$style.name">{{ group.name }}</div>
+					<MkAvatars :class="$style.avatars" :userIds="group.userIds"/>
 				</MkA>
 			</MkPagination>
 		</div>
 
-		<div v-else-if="tab === 'joined'" class="_content">
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination" class="groups">
-				<MkA v-for="group in items" :key="group.id" class="group _panel" :to="`/my/groups/${ group.id }`">
-					<div class="name">{{ group.name }}</div>
-					<MkAvatars :userIds="group.userIds"/>
-					<div class="actions">
-						<MkButton danger @click="leave(group)">{{ i18n.ts.leaveGroup }}</MkButton>
+		<div v-else-if="tab === 'joined'">
+			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination">
+				<div v-for="group in items" :class="$style.group" class="_panel">
+					<MkA :key="group.id" :class="$style.groupTop" :to="`/my/groups/${ group.id }`">
+						<div :class="$style.name">{{ group.name }}</div>
+						<MkAvatars :class="$style.avatars" :userIds="group.userIds"/>
+					</MkA>
+					<div :class="$style.actions">
+						<MkButton rounded danger @click="leave(group)">{{ i18n.ts.leaveGroup }}</MkButton>
 					</div>
-				</MkA>
+				</div>
 			</MkPagination>
 		</div>
 
-		<div v-else-if="tab === 'invites'" class="_content">
+		<div v-else-if="tab === 'invites'">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="invitationPagination">
-				<MkA v-for="invitation in items" :key="invitation.id" class="group _panel">
-					<div class="name">{{ invitation.group.name }}</div>
-					<MkAvatars :userIds="invitation.group.userIds"/>
-					<div class="actions">
-						<MkButton primary inline @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ i18n.ts.accept }}</MkButton>
-						<MkButton primary inline @click="rejectInvite(invitation)"><i class="ti ti-x"></i> {{ i18n.ts.reject }}</MkButton>
+				<MkA v-for="invitation in items" :key="invitation.id" :class="$style.group" class="_panel">
+					<div :class="$style.name">{{ invitation.group.name }}</div>
+					<MkAvatars :class="$style.avatars" :userIds="invitation.group.userIds"/>
+					<div :class="$style.actions">
+						<MkButton primary rounded inline :class="$style.invitesButton" @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ i18n.ts.accept }}</MkButton>
+						<MkButton rounded inline :class="$style.invitesButton" @click="rejectInvite(invitation)"><i class="ti ti-x"></i> {{ i18n.ts.reject }}</MkButton>
 					</div>
 				</MkA>
 			</MkPagination>
@@ -138,28 +140,49 @@ definePageMetadata({
 
 </script>
 
-<style lang="scss" scoped>
-._content {
-	> .add {
-		margin: 0 auto var(--margin) auto;
+<style lang="scss" module>
+.actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
+	padding: 0 24px 16px;
+}
+
+.add {
+	margin: 0 auto var(--margin) auto;
+}
+
+.group {
+	display: block;
+	border: solid 1px var(--divider);
+	border-radius: 6px;
+
+	&:hover {
+		border: solid 1px var(--accent);
+		text-decoration: none;
 	}
+}
 
-	> .groups {
-		> .group {
-			display: block;
-			padding: 16px;
-			border: solid 1px var(--divider);
-			border-radius: 6px;
+.groupTop {
+	&:hover {
+		text-decoration: none;
+	}
+}
 
-			&:hover {
-				border: solid 1px var(--accent);
-				text-decoration: none;
-			}
+.name {
+	margin-bottom: 12px;
+	border-bottom: solid 1px var(--divider);
+	padding: 16px 24px;
+	font-weight: bold;
+}
 
-			> .name {
-				margin-bottom: 4px;
-			}
-		}
+.avatars {
+	padding: 8px 24px 16px;
+}
+
+.invitesButton {
+	&:not(:last-child) {
+		margin-right: 5px;
 	}
 }
 </style>

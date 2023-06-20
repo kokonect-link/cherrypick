@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://misskey-hub.net">
-	<img src="./assets/title_float.svg" alt="Misskey logo" style="border-radius:50%" width="400"/>
+	<img src="./assets/title_float_cherrypick.svg" alt="CherryPick logo" width="400"/>
 </a>
 	
 **🌎 **[CherryPick](https://misskey-hub.net/)** is an open source, decentralized social media platform that's free forever! 🚀**

@@ -1415,6 +1415,7 @@ _instanceCharts:
 _timelines:
   home: "Domov"
   local: "Lokálne"
+  media: "Médiá"
   social: "Sociálne"
   global: "Globálne"
 _play:

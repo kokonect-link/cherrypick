@@ -151,7 +151,6 @@
 						<MkButton primary rounded @click="updateBaseRole">{{ i18n.ts.save }}</MkButton>
 					</div>
 				</MkFolder>
-				<MkButton primary rounded @click="create"><i class="ti ti-plus"></i> {{ i18n.ts._role.new }}</MkButton>
 				<div class="_gaps_s">
 					<MkFoldableSection>
 						<template #header>Manual roles</template>
@@ -214,7 +213,11 @@ function create() {
 	router.push('/admin/roles/new');
 }
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts._role.new,
+	handler: create,
+}]);
 
 const headerTabs = $computed(() => []);
 

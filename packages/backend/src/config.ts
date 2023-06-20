@@ -90,6 +90,12 @@ export type Source = {
 	deliverJobMaxAttempts?: number;
 	inboxJobMaxAttempts?: number;
 
+	cloudLogging?: {
+		projectId: string;
+		saKeyPath: string;
+		logName?: string;
+	}
+
 	mediaProxy?: string;
 	proxyRemoteFiles?: boolean;
 	videoThumbnailGenerator?: string;
@@ -98,7 +104,7 @@ export type Source = {
 };
 
 /**
- * Misskeyが自動的に(ユーザーが設定した情報から推論して)設定する情報
+ * CherryPickが自動的に(ユーザーが設定した情報から推論して)設定する情報
  */
 export type Mixin = {
 	version: string;
@@ -133,8 +139,8 @@ const dir = `${_dirname}/../../../.config`;
 /**
  * Path of configuration file
  */
-const path = process.env.MISSKEY_CONFIG_YML
-	? resolve(dir, process.env.MISSKEY_CONFIG_YML)
+const path = process.env.CHERRYPICK_CONFIG_YML
+	? resolve(dir, process.env.CHERRYPICK_CONFIG_YML)
 	: process.env.NODE_ENV === 'test'
 		? resolve(dir, 'test.yml')
 		: resolve(dir, 'default.yml');

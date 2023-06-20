@@ -1,6 +1,6 @@
 import { VNode, h } from 'vue';
-import * as mfm from 'mfm-js';
-import * as Misskey from 'misskey-js';
+import * as mfm from 'cherrypick-mfm-js';
+import * as Misskey from 'cherrypick-js';
 import MkUrl from '@/components/global/MkUrl.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkMention from '@/components/MkMention.vue';
@@ -216,6 +216,22 @@ export default function(props: {
 						style = `background-color: #${color};`;
 						break;
 					}
+					case 'ruby': {
+						let rb, rt, tokens;
+						token.children.forEach((t) => { if (t.type === 'text') { t.props.text = t.props.text.trim(); } });
+						const children = token.children.filter((t) => t.type !== 'text' || t.props.text !== '');
+						if (children.length === 1 && children[0].type === 'text') {
+							tokens = children[0].props.text.split(' ');
+							rb = [tokens[0]];
+							rt = [tokens.slice(1).join(' ')];
+						} else if (children.length >= 2) {
+							rb = genEl([children[0]], scale);
+							rt = genEl(children.slice(1), scale);
+						} else {
+							return genEl(children, scale);
+						}
+						return [h('ruby', {}, [h('rb', {}, rb), h('rt', {}, rt)])];
+					}
 				}
 				if (style == null) {
 					return h('span', {}, ['$[', token.props.name, ' ', ...genEl(token.children, scale), ']']);
@@ -257,7 +273,7 @@ export default function(props: {
 			case 'mention': {
 				return [h(MkMention, {
 					key: Math.random(),
-					host: (token.props.host == null && props.author && props.author.host != null ? props.author.host : token.props.host) || host,
+					host: (token.props.host == null && props.author && props.author.host != null ? props.author.host : token.props.host) ?? host,
 					username: token.props.username,
 				})];
 			}
