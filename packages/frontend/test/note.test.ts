@@ -73,7 +73,7 @@ describe('MkMediaImage', () => {
 	test('Attaching image with an alt message should show an ALT indicator', async () => {
 		const mkMediaImage = renderMediaImage({
 			type: 'image/png',
-			comment: 'Misskeyのロゴです',
+			comment: 'CherryPickのロゴです',
 		});
 		const [gif, alt] = await Promise.all([
 			mkMediaImage.queryByText('GIF'),
@@ -86,7 +86,7 @@ describe('MkMediaImage', () => {
 	test('Attaching GIF image with an alt message should show a GIF and an ALT indicator', async () => {
 		const mkMediaImage = renderMediaImage({
 			type: 'image/gif',
-			comment: 'Misskeyのロゴです',
+			comment: 'CherryPickのロゴです',
 		});
 		const [gif, alt] = await Promise.all([
 			mkMediaImage.queryByText('GIF'),

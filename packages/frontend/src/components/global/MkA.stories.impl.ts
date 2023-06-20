@@ -22,7 +22,7 @@ export const Default = {
 					};
 				},
 			},
-			template: '<MkA v-bind="props">Misskey</MkA>',
+			template: '<MkA v-bind="props">CherryPick</MkA>',
 		};
 	},
 	async play({ canvasElement }) {
