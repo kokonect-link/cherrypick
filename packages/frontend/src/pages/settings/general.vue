@@ -378,6 +378,7 @@ watch([
 	instanceTicker,
 	overridedDeviceKind,
 	enableDataSaverMode,
+	enableAbsoluteTime,
 ], async () => {
 	await reloadAsk();
 });
