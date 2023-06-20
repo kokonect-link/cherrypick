@@ -23,7 +23,7 @@
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
 ## 13.13.2-cp-4.1.0
-출시일: unreleased<br>
+출시일: 2023/06/20<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGELOG.md#13132) 문서를 참고하십시오.
 
 ### General
