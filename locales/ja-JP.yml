@@ -1,6 +1,9 @@
 _lang_: "日本語"
 
 renoteConfirm: "Renoteしますか？"
+inviteRevoke: "全ての招待コードを失効する"
+inviteRevokeConfirm: "本当に全ての招待コードを失効させますか？"
+enableAbsoluteTime: "絶対時刻表記を使用する"
 posted: "ノートを公開しました。"
 translateNote: "ノートを翻訳する"
 showTranslateButtonInNote: "ノート本文に翻訳ボタンを表示"
@@ -1115,9 +1118,6 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
-enableAbsoluteTime: "絶対時刻表記を使用する"
-inviteRevoke: "全ての招待コードを失効する"
-inviteRevokeConfirm: "本当に全ての招待コードを失効させますか？"
 
 _group:
   leader: "グループオーナー"

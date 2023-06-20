@@ -4,6 +4,9 @@
 export interface Locale {
     "_lang_": string;
     "renoteConfirm": string;
+    "inviteRevoke": string;
+    "inviteRevokeConfirm": string;
+    "enableAbsoluteTime": string;
     "posted": string;
     "translateNote": string;
     "showTranslateButtonInNote": string;
@@ -1118,9 +1121,6 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
-    "enableAbsoluteTime": string;
-    "inviteRevoke": string;
-    "inviteRevokeConfirm": string;
     "_group": {
         "leader": string;
         "banish": string;
