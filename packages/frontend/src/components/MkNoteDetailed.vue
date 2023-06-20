@@ -519,6 +519,7 @@ if (appearNote.replyId) {
 	height: 28px;
 	margin: 0 8px 0 0;
 	border-radius: 6px;
+	background: var(--panel);
 }
 
 .renoteText {
@@ -573,6 +574,7 @@ if (appearNote.replyId) {
 	flex-shrink: 0;
 	width: 58px;
 	height: 58px;
+	background: var(--panel);
 }
 
 .noteHeaderBody {

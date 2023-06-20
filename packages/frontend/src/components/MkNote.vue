@@ -635,6 +635,7 @@ function showReactions(): void {
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
+	background: var(--panel);
 }
 
 .renoteText {
@@ -682,6 +683,7 @@ function showReactions(): void {
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
+	background: var(--panel);
 }
 
 .collapsedRenoteTargetText {
@@ -722,6 +724,7 @@ function showReactions(): void {
 	height: 58px;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
+	background: var(--panel);
 	transition: top 0.5s;
 
 	&.avatarReplyTo {

@@ -106,6 +106,7 @@ if (props.detail) {
 	width: 58px;
 	height: 58px;
 	border-radius: 8px;
+	background: var(--panel);
 }
 
 .body {

@@ -65,6 +65,7 @@ onMounted(() => {
 	position: sticky !important;
 	top: calc(16px + var(--stickyTop, 0px));
 	left: 0;
+	background: var(--panel);
 }
 
 .main {
