@@ -119,7 +119,7 @@ if (props.detail) {
 
 .cw {
 	cursor: default;
-	display: block;
+	display: grid;
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;
