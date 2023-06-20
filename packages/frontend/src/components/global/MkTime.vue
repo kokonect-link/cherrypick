@@ -1,5 +1,5 @@
 <template>
-<time v-tooltip="absolute">
+<time v-tooltip="mode === 'detail' ? absolute : mode === 'relative' ? absolute : relative">
 	<template v-if="invalid">{{ i18n.ts._ago.invalid }}</template>
 	<template v-else-if="mode === 'relative'">{{ relative }}</template>
 	<template v-else-if="mode === 'absolute'">{{ absolute }}</template>
@@ -30,7 +30,7 @@ const absolute = !invalid ? dateTimeFormat.format(_time) : i18n.ts._ago.invalid;
 
 let now = $ref((props.origin ?? new Date()).getTime());
 const relative = $computed<string>(() => {
-	if (props.mode === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
+	// if (props.mode === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
 
 	const ago = (now - _time) / 1000/*ms*/;
