@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+enableMarkByDate: "노트 시간을 일자로 표시"
 renoteConfirm: "리노트 할까요?"
 inviteRevoke: "모든 초대 코드 무효화"
 inviteRevokeConfirm: "정말로 모든 초대 코드를 무효화 할까요?"

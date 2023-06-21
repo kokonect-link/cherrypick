@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+enableMarkByDate: "ノート時刻を日付で表示"
 renoteConfirm: "Renoteしますか？"
 inviteRevoke: "全ての招待コードを失効する"
 inviteRevokeConfirm: "本当に全ての招待コードを失効させますか？"

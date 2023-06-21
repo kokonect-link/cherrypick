@@ -61,6 +61,7 @@
 					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="enableMarkByDate" :disabled="defaultStore.state.enableAbsoluteTime">{{ i18n.ts.enableMarkByDate }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -334,6 +335,7 @@ const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRe
 const hideAvatarsInNote = computed(defaultStore.makeGetterSetter('hideAvatarsInNote'));
 const showTranslateButtonInNote = computed(defaultStore.makeGetterSetter('showTranslateButtonInNote'));
 const enableAbsoluteTime = computed(defaultStore.makeGetterSetter('enableAbsoluteTime'));
+const enableMarkByDate = computed(defaultStore.makeGetterSetter('enableMarkByDate'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -379,6 +381,7 @@ watch([
 	overridedDeviceKind,
 	enableDataSaverMode,
 	enableAbsoluteTime,
+	enableMarkByDate,
 ], async () => {
 	await reloadAsk();
 });

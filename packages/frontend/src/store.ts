@@ -387,6 +387,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	enableMarkByDate: {
+		where: 'device',
+		default: false,
+	},
 
 	// - Settings/CherryPick
 	nicknameEnabled: {

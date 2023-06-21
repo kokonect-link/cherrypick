@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+enableMarkByDate: "Show note times as dates"
 renoteConfirm: "Do you want to Renote?"
 inviteRevoke: "Revoke All Invitation Codes"
 inviteRevokeConfirm: "Are you sure that you want to revoke all invitation codes?"
