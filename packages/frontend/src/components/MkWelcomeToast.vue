@@ -9,8 +9,7 @@
 	>
 		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ zIndex }">
 			<CPAvatar :class="$style.avatar" :user="$i"/>
-			<Mfm :text="message" :isNote="false"></Mfm>
-			<MkUserName class="_nowrap" :user="$i"/>
+			<Mfm style="display: inherit; margin: 10px;" :text="message" :plain="true"></Mfm>
 		</div>
 	</Transition>
 </div>
