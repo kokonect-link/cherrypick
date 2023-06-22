@@ -208,6 +208,13 @@ export type Channels = {
         };
         receives: null;
     };
+    catTimeline: {
+        params: null;
+        events: {
+            note: (payload: Note) => void;
+        };
+        receives: null;
+    };
     globalTimeline: {
         params: null;
         events: {
