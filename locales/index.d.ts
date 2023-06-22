@@ -1572,6 +1572,7 @@ export interface Locale {
         "_options": {
             "gtlAvailable": string;
             "ltlAvailable": string;
+            "ctlAvailable": string;
             "canPublicNote": string;
             "canInvite": string;
             "canManageCustomEmojis": string;
@@ -2192,6 +2193,7 @@ export interface Locale {
         "local": string;
         "media": string;
         "social": string;
+        "cat": string;
         "global": string;
     };
     "_play": {

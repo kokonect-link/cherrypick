@@ -35,6 +35,14 @@
 							</MkSwitch>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.ctlAvailable, 'ctlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.ctlAvailable }}</template>
+							<template #suffix>{{ policies.ctlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.ctlAvailable">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canPublicNote, 'canPublicNote'])">
 							<template #label>{{ i18n.ts._role._options.canPublicNote }}</template>
 							<template #suffix>{{ policies.canPublicNote ? i18n.ts.yes : i18n.ts.no }}</template>

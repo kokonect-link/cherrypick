@@ -1484,6 +1484,7 @@ _role:
   _options:
     gtlAvailable: "글로벌 타임라인 보이기"
     ltlAvailable: "로컬 타임라인 보이기"
+    ctlAvailable: "고양이 타임라인 보이기"
     canPublicNote: "공개 노트 허용"
     canInvite: "서버 초대 코드 발행"
     canManageCustomEmojis: "커스텀 이모지 관리"
@@ -2053,6 +2054,7 @@ _timelines:
   local: "로컬"
   media: "미디어"
   social: "소셜"
+  cat: "고양이"
   global: "글로벌"
 _play:
   new: "Play 만들기"

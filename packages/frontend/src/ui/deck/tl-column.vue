@@ -5,11 +5,12 @@
 		<i v-else-if="column.tl === 'local'" class="ti ti-planet"></i>
 		<i v-else-if="column.tl === 'social'" class="ti ti-rocket"></i>
 		<i v-else-if="column.tl === 'media'" class="ti ti-photo"></i>
+		<i v-else-if="column.tl === 'cat'" class="ti cat"></i>
 		<i v-else-if="column.tl === 'global'" class="ti ti-world"></i>
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="(((column.tl === 'local' || column.tl === 'social') && !isLocalTimelineAvailable) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((column.tl === 'local' || column.tl === 'social' || column.tl === 'cat') && !isLocalTimelineAvailable) || (column.tl === 'cat' && !isCatTimelineAvailable) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ti ti-circle-minus"></i>
 			{{ i18n.ts._disabledTimeline.title }}
@@ -39,13 +40,15 @@ let disabled = $ref(false);
 
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
+const isCatTimelineAvailable = (($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable));
 
 onMounted(() => {
 	if (props.column.tl == null) {
 		setType();
 	} else if ($i) {
 		disabled = (
-			(!((instance.policies.ltlAvailable) || ($i.policies.ltlAvailable)) && ['local', 'social'].includes(props.column.tl)) ||
+			(!((instance.policies.ltlAvailable) || ($i.policies.ltlAvailable)) && ['local', 'social', 'cat'].includes(props.column.tl)) ||
+			(!((instance.policies.ctlAvailable) || ($i.policies.ctlAvailable)) && ['cat'].includes(props.column.tl)) ||
 			(!((instance.policies.gtlAvailable) || ($i.policies.gtlAvailable)) && ['global'].includes(props.column.tl)));
 	}
 });
@@ -61,6 +64,8 @@ async function setType() {
 			value: 'media' as const, text: i18n.ts._timelines.media,
 		}, {
 			value: 'social' as const, text: i18n.ts._timelines.social,
+		}, {
+			value: 'cat' as const, text: i18n.ts._timelines.cat,
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,
 		}],

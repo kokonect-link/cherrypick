@@ -24,7 +24,7 @@ export type Column = {
 	channelId?: string;
 	roleId?: string;
 	includingTypes?: typeof notificationTypes[number][];
-	tl?: 'home' | 'local' | 'media' | 'social' | 'global';
+	tl?: 'home' | 'local' | 'media' | 'social' | 'cat' | 'global';
 };
 
 export const deckStore = markRaw(new Storage('deck', {

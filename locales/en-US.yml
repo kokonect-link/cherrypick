@@ -1484,6 +1484,7 @@ _role:
   _options:
     gtlAvailable: "Can view the global timeline"
     ltlAvailable: "Can view the local timeline"
+    ctlAvailable: "Can view the cat timeline"
     canPublicNote: "Can send public notes"
     canInvite: "Can create instance invite codes"
     canManageCustomEmojis: "Can manage custom emojis"
@@ -2053,6 +2054,7 @@ _timelines:
   local: "Local"
   media: "Media"
   social: "Social"
+  cat: "Cat"
   global: "Global"
 _play:
   new: "Create Play"

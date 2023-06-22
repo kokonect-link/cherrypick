@@ -107,6 +107,15 @@ if (props.src === 'antenna') {
 		withReplies: defaultStore.state.showTimelineReplies,
 	});
 	connection.on('note', prepend);
+} else if (props.src === 'cat') {
+	endpoint = 'notes/cat-timeline';
+	query = {
+		withReplies: defaultStore.state.showTimelineReplies,
+	};
+	connection = stream.useChannel('catTimeline', {
+		withReplies: defaultStore.state.showTimelineReplies,
+	});
+	connection.on('note', prepend);
 } else if (props.src === 'global') {
 	endpoint = 'notes/global-timeline';
 	query = {
