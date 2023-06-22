@@ -5,7 +5,7 @@
 		<i v-else-if="column.tl === 'local'" class="ti ti-planet"></i>
 		<i v-else-if="column.tl === 'media'" class="ti ti-photo"></i>
 		<i v-else-if="column.tl === 'social'" class="ti ti-rocket"></i>
-		<i v-else-if="column.tl === 'cat'" class="ti cat"></i>
+		<i v-else-if="column.tl === 'cat'" class="ti ti-cat"></i>
 		<i v-else-if="column.tl === 'global'" class="ti ti-world"></i>
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
