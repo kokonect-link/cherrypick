@@ -183,52 +183,53 @@ const headerActions = $computed(() => [{
 
 const friendlyEnableNotification = computed(defaultStore.makeGetterSetter('friendlyEnableNotification'));
 
-const headerTabs = $computed(() => [{
-	key: 'home',
-	title: i18n.ts._timelines.home,
-	icon: 'ti ti-home',
-	iconOnly: true,
-}, ...(isLocalTimelineAvailable ? [{
-	key: 'local',
-	title: i18n.ts._timelines.local,
-	icon: 'ti ti-planet',
-	iconOnly: true,
-}, ...(isMediaTimelineAvailable ? [{
-	key: 'media',
-	title: i18n.ts._timelines.media,
-	icon: 'ti ti-photo',
-	iconOnly: true,
-}] : []), {
-	key: 'social',
-	title: i18n.ts._timelines.social,
-	icon: 'ti ti-rocket',
-	iconOnly: true,
-}, ...(isCatTimelineAvailable ? [{
-	key: 'cat',
-	title: i18n.ts._timelines.cat,
-	icon: 'ti ti-cat',
-	iconOnly: true,
-}] : [])] : []), ...(isGlobalTimelineAvailable ? [{
-	key: 'global',
-	title: i18n.ts._timelines.global,
-	icon: 'ti ti-world',
-	iconOnly: true,
-}] : []), {
-	icon: 'ti ti-list',
-	title: i18n.ts.lists,
-	iconOnly: true,
-	onClick: chooseList,
-}, {
-	icon: 'ti ti-antenna',
-	title: i18n.ts.antennas,
-	iconOnly: true,
-	onClick: chooseAntenna,
-}, {
-	icon: 'ti ti-device-tv',
-	title: i18n.ts.channel,
-	iconOnly: true,
-	onClick: chooseChannel,
-}] as Tab[]);
+const headerTabs = $computed(() => [
+	...(defaultStore.state.enableHomeTimeline ? [{
+		key: 'home',
+		title: i18n.ts._timelines.home,
+		icon: 'ti ti-home',
+		iconOnly: true,
+	}] : []), ...(isLocalTimelineAvailable && defaultStore.state.enableLocalTimeline ? [{
+		key: 'local',
+		title: i18n.ts._timelines.local,
+		icon: 'ti ti-planet',
+		iconOnly: true,
+	}, ...(isMediaTimelineAvailable && defaultStore.state.enableMediaTimeline ? [{
+		key: 'media',
+		title: i18n.ts._timelines.media,
+		icon: 'ti ti-photo',
+		iconOnly: true,
+	}] : []), ...(defaultStore.state.enableSocialTimeline ? [{
+		key: 'social',
+		title: i18n.ts._timelines.social,
+		icon: 'ti ti-rocket',
+		iconOnly: true,
+	}] : []), ...(isCatTimelineAvailable && defaultStore.state.enableCatTimeline ? [{
+		key: 'cat',
+		title: i18n.ts._timelines.cat,
+		icon: 'ti ti-cat',
+		iconOnly: true,
+	}] : [])] : []), ...(isGlobalTimelineAvailable && defaultStore.state.enableGlobalTimeline ? [{
+		key: 'global',
+		title: i18n.ts._timelines.global,
+		icon: 'ti ti-world',
+		iconOnly: true,
+	}] : []), ...(defaultStore.state.enableListTimeline ? [{
+		icon: 'ti ti-list',
+		title: i18n.ts.lists,
+		iconOnly: true,
+		onClick: chooseList,
+	}] : []), ...(defaultStore.state.enableAntennaTimeline ? [{
+		icon: 'ti ti-antenna',
+		title: i18n.ts.antennas,
+		iconOnly: true,
+		onClick: chooseAntenna,
+	}] : []), ...(defaultStore.state.enableChannelTimeline ? [{
+		icon: 'ti ti-device-tv',
+		title: i18n.ts.channel,
+		iconOnly: true,
+		onClick: chooseChannel,
+	}] : [])] as Tab[]);
 
 const headerTabsWhenNotLogin = $computed(() => [
 	...(isLocalTimelineAvailable ? [{

@@ -392,6 +392,44 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 
+	// - Settings/Timeline
+	enableHomeTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableLocalTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableMediaTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableSocialTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableCatTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableGlobalTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableListTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableAntennaTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableChannelTimeline: {
+		where: 'device',
+		default: true,
+	},
+
 	// - Settings/CherryPick
 	nicknameEnabled: {
 		where: 'account',
