@@ -1484,6 +1484,7 @@ _role:
   _options:
     gtlAvailable: "글로벌 타임라인 보이기"
     ltlAvailable: "로컬 타임라인 보이기"
+    mtlAvailable: "미디어 타임라인 보이기"
     ctlAvailable: "고양이 타임라인 보이기"
     canPublicNote: "공개 노트 허용"
     canInvite: "서버 초대 코드 발행"

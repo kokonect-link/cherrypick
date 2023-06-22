@@ -1572,6 +1572,7 @@ export interface Locale {
         "_options": {
             "gtlAvailable": string;
             "ltlAvailable": string;
+            "mtlAvailable": string;
             "ctlAvailable": string;
             "canPublicNote": string;
             "canInvite": string;

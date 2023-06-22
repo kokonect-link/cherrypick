@@ -1494,6 +1494,7 @@ _role:
   _options:
     gtlAvailable: "グローバルタイムラインの閲覧"
     ltlAvailable: "ローカルタイムラインの閲覧"
+    mtlAvailable: "メディアタイムラインの閲覧"
     ctlAvailable: "キャットタイムラインの閲覧"
     canPublicNote: "パブリック投稿の許可"
     canInvite: "サーバー招待コードの発行"

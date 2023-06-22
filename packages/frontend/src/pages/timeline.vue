@@ -72,6 +72,7 @@ const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
+const isMediaTimelineAvailable = ($i == null && instance.policies.mtlAvailable) || ($i != null && $i.policies.mtlAvailable);
 const isCatTimelineAvailable = ($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable);
 const keymap = {
 	't': focus,
@@ -192,12 +193,12 @@ const headerTabs = $computed(() => [{
 	title: i18n.ts._timelines.local,
 	icon: 'ti ti-planet',
 	iconOnly: true,
-}, {
+}, ...(isMediaTimelineAvailable ? [{
 	key: 'media',
 	title: i18n.ts._timelines.media,
 	icon: 'ti ti-photo',
 	iconOnly: true,
-}, {
+}] : []), {
 	key: 'social',
 	title: i18n.ts._timelines.social,
 	icon: 'ti ti-rocket',
@@ -207,7 +208,7 @@ const headerTabs = $computed(() => [{
 	title: i18n.ts._timelines.cat,
 	icon: 'ti ti-cat',
 	iconOnly: true,
-}] : []), ] : []), ...(isGlobalTimelineAvailable ? [{
+}] : [])] : []), ...(isGlobalTimelineAvailable ? [{
 	key: 'global',
 	title: i18n.ts._timelines.global,
 	icon: 'ti ti-world',

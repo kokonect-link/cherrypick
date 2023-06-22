@@ -1484,6 +1484,7 @@ _role:
   _options:
     gtlAvailable: "Can view the global timeline"
     ltlAvailable: "Can view the local timeline"
+    mtlAvailable: "Can view the media timeline"
     ctlAvailable: "Can view the cat timeline"
     canPublicNote: "Can send public notes"
     canInvite: "Can create instance invite codes"
