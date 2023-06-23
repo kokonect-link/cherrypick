@@ -21,7 +21,7 @@
 				</div>
 			</div>
 		</div>
-		<MkDetailsButton v-if="note.files.length > 0 || note.poll" v-model="showContent" :note="note"/>
+		<MkDetailsButton v-if="note.files.length > 0 || note.poll" v-model="showContent" style="width: 100%" :note="note"/>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
 				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @contextmenu.prevent/>
