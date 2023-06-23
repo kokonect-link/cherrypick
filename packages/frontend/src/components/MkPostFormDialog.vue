@@ -1,6 +1,6 @@
 <template>
 <MkModal ref="modal" :preferType="'dialog'" @click="modal.close()" @closed="onModalClosed()">
-	<MkPostForm ref="form" style="margin: 0 auto auto auto;" v-bind="props" autofocus freezeAfterPosted @posted="onPosted" @cancel="modal.close()" @esc="modal.close()"/>
+	<MkPostForm ref="form" style="margin: 0 auto auto auto; overflow: scroll; max-height: 100%" v-bind="props" autofocus freezeAfterPosted @posted="onPosted" @cancel="modal.close()" @esc="modal.close()"/>
 </MkModal>
 </template>
 
