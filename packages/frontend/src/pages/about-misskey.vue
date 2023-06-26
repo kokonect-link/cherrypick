@@ -397,7 +397,10 @@ function getTreasure() {
 }
 
 onMounted(() => {
-	if (window.location.host == ('localhost:3000' || 'kokonect.link' || 'beta.kokonect.link' || 'universe.noridev.moe')) isKokonect = true;
+	if (window.location.host == 'localhost:3000') isKokonect = true;
+	else if (window.location.host == 'kokonect.link') isKokonect = true;
+	else if (window.location.host == 'beta.kokonect.link') isKokonect = true;
+	else if (window.location.host == 'universe.noridev.moe') isKokonect = true;
 })
 
 onBeforeUnmount(() => {
