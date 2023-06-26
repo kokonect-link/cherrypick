@@ -7,7 +7,7 @@ import { Logging } from '@google-cloud/logging';
 import stripAnsi from 'strip-ansi';
 import { bindThis } from '@/decorators.js';
 import { envOption } from './env.js';
-import type { KEYWORD } from 'color-convert/conversions';
+import type { KEYWORD } from 'color-convert/conversions.js';
 
 type Context = {
 	name: string;

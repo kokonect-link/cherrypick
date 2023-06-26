@@ -84,7 +84,7 @@ export class ApiCallService implements OnApplicationShutdown {
 			}
 		}).catch(err => {
 			if (err instanceof AuthenticationError) {
-				this.send(reply, 403, new ApiError({
+				this.send(reply, 401, new ApiError({
 					message: 'Authentication failed. Please ensure your token is correct.',
 					code: 'AUTHENTICATION_FAILED',
 					id: 'b0a7f5f8-dc2f-4171-b91f-de88ad238e14',
@@ -138,7 +138,7 @@ export class ApiCallService implements OnApplicationShutdown {
 			}
 		}).catch(err => {
 			if (err instanceof AuthenticationError) {
-				this.send(reply, 403, new ApiError({
+				this.send(reply, 401, new ApiError({
 					message: 'Authentication failed. Please ensure your token is correct.',
 					code: 'AUTHENTICATION_FAILED',
 					id: 'b0a7f5f8-dc2f-4171-b91f-de88ad238e14',
@@ -280,6 +280,7 @@ export class ApiCallService implements OnApplicationShutdown {
 				throw new ApiError({
 					message: 'You are not assigned to a moderator role.',
 					code: 'ROLE_PERMISSION_DENIED',
+					kind: 'permission',
 					id: 'd33d5333-db36-423d-a8f9-1a2b9549da41',
 				});
 			}
@@ -287,6 +288,7 @@ export class ApiCallService implements OnApplicationShutdown {
 				throw new ApiError({
 					message: 'You are not assigned to an administrator role.',
 					code: 'ROLE_PERMISSION_DENIED',
+					kind: 'permission',
 					id: 'c3d38592-54c0-429d-be96-5636b0431a61',
 				});
 			}
@@ -298,6 +300,7 @@ export class ApiCallService implements OnApplicationShutdown {
 				throw new ApiError({
 					message: 'You are not assigned to a required role.',
 					code: 'ROLE_PERMISSION_DENIED',
+					kind: 'permission',
 					id: '7f86f06f-7e15-4057-8561-f4b6d4ac755a',
 				});
 			}
@@ -307,6 +310,7 @@ export class ApiCallService implements OnApplicationShutdown {
 			throw new ApiError({
 				message: 'Your app does not have the necessary permissions to use this endpoint.',
 				code: 'PERMISSION_DENIED',
+				kind: 'permission',
 				id: '1370e5b7-d4eb-4566-bb1d-7748ee6a1838',
 			});
 		}
