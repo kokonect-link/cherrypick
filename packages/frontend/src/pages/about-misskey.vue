@@ -193,7 +193,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted } from 'vue';
 import { version } from '@/config';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
@@ -206,7 +206,6 @@ import * as os from '@/os';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { $i } from '@/account';
-import { instance } from '@/instance';
 
 const patronsWithIconWithCherryPick = [{
 	name: 'Inger 잉어',
@@ -354,12 +353,6 @@ const patronsWithMisskey = [
 ];
 
 let isKokonect = false;
-const instanceList = [
-	'http://localhost:3000',
-	'https://kokonect.link',
-	'https://beta.kokonect.link',
-	'https://universe.noridev.moe',
-];
 
 let thereIsTreasure = $ref($i && !claimedAchievements.includes('foundTreasure'));
 
@@ -367,8 +360,6 @@ let easterEggReady = false;
 let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
 const containerEl = $shallowRef<HTMLElement>();
-
-if (instanceList.includes(<string>instance.uri)) isKokonect = true;
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;
@@ -404,6 +395,10 @@ function getTreasure() {
 	thereIsTreasure = false;
 	claimAchievement('foundTreasure');
 }
+
+onMounted(() => {
+	if (window.location.host == ('localhost:3000' || 'kokonect.link' || 'beta.kokonect.link' || 'universe.noridev.moe')) isKokonect = true;
+})
 
 onBeforeUnmount(() => {
 	if (easterEggEngine) {
