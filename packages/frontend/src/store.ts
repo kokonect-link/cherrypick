@@ -459,6 +459,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	mobileTimelineHeaderChange: {
+		where: 'device',
+		default: false,
+	},
 	// #endregion
 }));
 

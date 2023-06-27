@@ -1,7 +1,8 @@
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkPageHeader v-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileTimelineHeaderChange" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-else-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 		<MkPageHeader v-else v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
@@ -59,7 +60,7 @@ import { unisonReload } from '@/scripts/unison-reload';
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
+if (!isFriendly.value && !defaultStore.state.mobileTimelineHeaderChange) provide('shouldOmitHeaderTitle', true);
 
 const MOBILE_THRESHOLD = 500;
 

@@ -1139,6 +1139,7 @@ export interface Locale {
         "rememberPostFormToggleState": string;
         "reactableRemoteReaction": string;
         "showFollowingMessageInsteadOfButton": string;
+        "mobileTimelineHeaderChange": string;
     };
     "_bannerDisplay": {
         "all": string;

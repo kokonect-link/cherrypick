@@ -1135,6 +1135,7 @@ _cherrypick:
   rememberPostFormToggleState: "Remember to turn preview on/off in the note post form"
   reactableRemoteReaction: "Allow remote custom emoji reactions to react if there is an emoji with the same name on this server."
   showFollowingMessageInsteadOfButton: "Do not show the follow button in the notification field if you are already following someone"
+  mobileTimelineHeaderChange: "Timeline header design change in mobile environment"
 _bannerDisplay:
   all: "All"
   topBottom: "Top and Bottom"

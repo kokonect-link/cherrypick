@@ -23,6 +23,7 @@
 			<MkSwitch v-model="rememberPostFormToggleStateEnabled">{{ i18n.ts._cherrypick.rememberPostFormToggleState }}</MkSwitch>
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
+			<MkSwitch v-model="mobileTimelineHeaderChange">{{ i18n.ts._cherrypick.mobileTimelineHeaderChange }}</MkSwitch>
 		</div>
 	</FormSection>
 	<!--
@@ -76,6 +77,7 @@ const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSette
 const usePostFormWindow = computed(defaultStore.makeGetterSetter('usePostFormWindow'));
 const cherrypickNoteViewEnabled = computed(defaultStore.makeGetterSetter('cherrypickNoteViewEnabledLab'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
+const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
 
 const noteMock: Note = {
 	id: 'abc',
