@@ -27,7 +27,7 @@
 			</div>
 			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
-		<div v-if="!thin_ && !narrow && actions && actions.length > 0 && hideTitle && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsRight"/>
+		<div v-if="!thin_ && !narrow && actions && actions.length > 0 && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 		<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
 				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
@@ -55,7 +55,7 @@ import * as os from '@/os';
 import { i18n } from '@/i18n';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
-const canBack = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'messaging');
+const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
@@ -160,11 +160,6 @@ onUnmounted(() => {
 	backdrop-filter: var(--blur, blur(15px));
 	border-bottom: solid 0.5px var(--divider);
 	width: 100%;
-	transition: opacity 0.5s, transform 0.5s;
-
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
 }
 
 .upper,
