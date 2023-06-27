@@ -65,6 +65,6 @@ const headerTabs = $computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.timeline,
-	icon: 'ti ti-bulb-filled',
+	icon: 'ti ti-align-left',
 });
 </script>
