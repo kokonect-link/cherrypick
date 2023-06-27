@@ -39,7 +39,7 @@ const emit = defineEmits<{
 	text-overflow: ellipsis;
 
 	&:not(:last-child) {
-		margin-bottom: 3px;
+		margin-bottom: 8px;
 	}
 }
 
