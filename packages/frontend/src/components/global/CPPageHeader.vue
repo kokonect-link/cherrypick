@@ -1,5 +1,5 @@
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_ }]" :style="{ background: bg }">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ background: bg }">
 	<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
 		<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
@@ -55,6 +55,7 @@ import { miLocalStorage } from '@/local-storage';
 import { mainRouter } from '@/router';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
+import {defaultStore} from "@/store";
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -248,6 +249,11 @@ onUnmounted(() => {
 				margin-right: auto;
 			}
 		}
+	}
+
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
 	}
 }
 
