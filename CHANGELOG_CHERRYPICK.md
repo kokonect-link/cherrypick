@@ -47,6 +47,7 @@
   - 브라우저의 최대 높이를 초과하지 않도록
 - MkDialog 버튼이 3개 이상이면 정렬을 변경하도록
 - 리노트 유저 팝업의 디자인 일부 개선
+- 네비게이션 바의 블러 처리 추가
 - Fix: 그룹 초대 알림 아이콘이 잘못 표시되는 문제
 - Fix: 노트 디자인이 올바르지 않게 표시되는 문제
 - Fix: 프로필 아이콘이 투명일 때 노트 답글선이 비치는 문제
@@ -64,7 +65,7 @@
 
 ### General
 - 타임라인에 노트의 답글을 표시하는 옵션의 기본값을 켜짐으로 설정
-- 네비게이션 바의 배치를 수정
+- 네비게이션 메뉴의 배치를 수정
 - 프로필 아이콘의 기본값을 사각형으로 설정
 - 미디어 타임라인 추가 ([kiyo4act/misskey.design＠c01be0d](https://github.com/kiyo4act/misskey.design/commit/c01be0dc7674cdf0bcac6081c63baab52c4c9abe))
 - ruby 표기 지원 ([yuriha-chan/misskey@0a109d4](https://github.com/yuriha-chan/misskey/commit/0a109d4f7442f8eedc48693b09ad2fd0b61e67a5), [yuriha-chan/misskey@446f0c2](https://github.com/yuriha-chan/misskey/commit/446f0c2ea5cc9a9f7f48a75935bce550bd0b3095), [yuriha-chan/misskey@4cfd28a](https://github.com/yuriha-chan/misskey/commit/4cfd28a452be0cdcc1328d77ab0db6dca627ca23), [yuriha-chan/misskey@dc6a6dc](https://github.com/yuriha-chan/misskey/commit/dc6a6dcdc3c2ac5b836570defb14ef4d441725e8))
