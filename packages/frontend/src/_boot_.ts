@@ -2,7 +2,7 @@
 import 'vite/modulepreload-polyfill';
 
 import '@/style.scss';
-import 'temml/dist/Temml-Latin-Modern.css';
+import '@/Temml-Latin-Modern.css';
 import { mainBoot } from './boot/main-boot';
 import { subBoot } from './boot/sub-boot';
 

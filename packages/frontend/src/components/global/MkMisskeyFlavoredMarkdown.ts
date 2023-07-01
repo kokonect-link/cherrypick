@@ -1,7 +1,7 @@
 import { VNode, h } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
-import temml from 'temml';
+import temml from 'temml/dist/temml.mjs';
 import MkUrl from '@/components/global/MkUrl.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkMention from '@/components/MkMention.vue';
@@ -350,15 +350,15 @@ export default function(props: {
 			}
 
 			case 'mathInline': {
-				const ret = h('math');
-				temml.render(token.props.formula, ret)
-				return [ret];
+				const ret = document.createElement('span');
+				temml.render(token.props.formula, ret, {});
+				return [h('span', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'mathBlock': {
-				const ret = h('math');
+				const ret = document.createElement('div');
 				temml.render(token.props.formula, ret, { displayMode: true });
-				return [ret];
+				return [h('div', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'search': {
