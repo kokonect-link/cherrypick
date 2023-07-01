@@ -1,12 +1,12 @@
 import { VNode, h } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import temml from 'temml';
 import MkUrl from '@/components/global/MkUrl.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkMention from '@/components/MkMention.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
-import MkFormula from '@/components/MkFormula.vue';
 import MkCode from '@/components/MkCode.vue';
 import MkGoogle from '@/components/MkGoogle.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
@@ -350,21 +350,15 @@ export default function(props: {
 			}
 
 			case 'mathInline': {
-				// return [h('code', token.props.formula)];
-				return [h(MkFormula, {
-					key: Math.random(),
-					formula: token.props.formula,
-					block: false,
-				})];
+				const ret = h('math');
+				temml.render(token.props.formula, ret)
+				return [ret];
 			}
 
 			case 'mathBlock': {
-				// return [h('code', token.props.formula)];
-				return [h(MkFormula, {
-					key: Math.random(),
-					formula: token.props.formula,
-					block: true,
-				})];
+				const ret = h('math');
+				temml.render(token.props.formula, ret, { displayMode: true });
+				return [ret];
 			}
 
 			case 'search': {
