@@ -25,7 +25,7 @@
 		</template>
 	</div>
 	<div v-else>
-		<MkFoldableSection ref="tagsEl" :foldable="true" :expanded="false" class="_margin">
+		<MkFoldableSection ref="tagsEl" :foldable="true" :expanded="true" class="_margin">
 			<template #header><i class="ti ti-hash ti-fw" style="margin-right: 0.5em;"></i>{{ i18n.ts.popularTags }}</template>
 
 			<div>
