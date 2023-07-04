@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+alreadyFollowed: "You've been followed!"
 enableMarkByDate: "Show note times as dates"
 renoteConfirm: "Do you want to Renote?"
 inviteRevoke: "Revoke All Invitation Codes"
