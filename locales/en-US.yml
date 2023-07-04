@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+showSubNoteFooterButton: "Show action buttons in subnotes"
+showSubNoteFooterButtonDescription: "Enabling this setting will show an action button on the parent note of the replied-to note."
 alreadyFollowed: "You've been followed!"
 enableMarkByDate: "Show note times as dates"
 renoteConfirm: "Do you want to Renote?"

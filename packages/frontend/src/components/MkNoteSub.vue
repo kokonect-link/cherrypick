@@ -13,7 +13,7 @@
 					<MkCwButton v-model="showContent" style="width: 100%" :note="note"/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="$style.text" :note="note"/>
+					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
 				</div>
 			</div>
 		</div>

@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+showSubNoteFooterButton: "서브 노트에 액션 버튼 표시"
+showSubNoteFooterButtonDescription: "이 설정을 활성화하면 답글이 달린 노트의 상위 노트에 액션 버튼을 표시해요."
 alreadyFollowed: "팔로우 했어요!"
 enableMarkByDate: "노트 시간을 일자로 표시"
 renoteConfirm: "리노트 할까요?"

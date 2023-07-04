@@ -46,16 +46,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
-import { Note, User } from 'cherrypick-js/src/entities';
+import { computed, watch } from 'vue';
+// import { Note, User } from 'cherrypick-js/src/entities';
 import MkSwitch from '@/components/MkSwitch.vue';
-import MkNote from '@/components/MkNote.vue';
+// import MkNote from '@/components/MkNote.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store';
 import * as os from '@/os';
 import { unisonReload } from '@/scripts/unison-reload';
 import { i18n } from '@/i18n';
-import { $i } from '@/account';
+// import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
 
 async function reloadAsk() {
@@ -74,11 +74,12 @@ const stealEnabled = computed(defaultStore.makeGetterSetter('stealEnabled'));
 const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('infoButtonForNoteActionsEnabled'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
 const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSetter('rememberPostFormToggleStateEnabled'));
-const usePostFormWindow = computed(defaultStore.makeGetterSetter('usePostFormWindow'));
-const cherrypickNoteViewEnabled = computed(defaultStore.makeGetterSetter('cherrypickNoteViewEnabledLab'));
+// const usePostFormWindow = computed(defaultStore.makeGetterSetter('usePostFormWindow'));
+// const cherrypickNoteViewEnabled = computed(defaultStore.makeGetterSetter('cherrypickNoteViewEnabledLab'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
 const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
 
+/*
 const noteMock: Note = {
 	id: 'abc',
 	createdAt: new Date().toISOString(),
@@ -97,6 +98,7 @@ const noteMock: Note = {
 	emojis: [],
 	localOnly: true,
 };
+ */
 
 watch([
 	numberQuoteEnabled,
