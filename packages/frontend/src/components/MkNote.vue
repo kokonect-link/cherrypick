@@ -128,9 +128,8 @@
 				<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
 					<i class="ti ti-heart"></i>
 				</button>
-				<button v-if="appearNote.myReaction == null" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
-					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
-					<i v-else class="ti ti-mood-plus"></i>
+				<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
+					<i class="ti ti-mood-plus"></i>
 				</button>
 				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
 					<i class="ti ti-mood-minus"></i>
