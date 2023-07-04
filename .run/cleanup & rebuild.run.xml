@@ -3,7 +3,7 @@
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start" />
+      <script value="build" />
     </scripts>
     <node-interpreter value="project" />
     <envs>
@@ -22,17 +22,6 @@
       <option name="NpmBeforeRunTask" enabled="true">
         <package-json value="$PROJECT_DIR$/package.json" />
         <command value="install" />
-        <node-interpreter value="project" />
-        <envs>
-          <env name="NODE_ENV" value="development" />
-        </envs>
-      </option>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="build" />
-        </scripts>
         <node-interpreter value="project" />
         <envs>
           <env name="NODE_ENV" value="development" />
