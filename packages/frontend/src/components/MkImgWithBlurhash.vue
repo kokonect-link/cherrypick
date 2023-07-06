@@ -110,7 +110,7 @@ function waitForDecode() {
 			.then(() => {
 				loaded = true;
 			}, error => {
-				console.error('Error occured during decoding image', img.value, error);
+				console.error('Error occurred during decoding image', img.value, error);
 				throw Error(error);
 			});
 	} else {
@@ -182,7 +182,7 @@ async function draw() {
 			render(props.hash, work);
 			drawImage(work);
 		} catch (error) {
-			console.error('Error occured during drawing blurhash', error);
+			console.error('Error occurred during drawing blurhash', error);
 		}
 	}
 }
