@@ -65,4 +65,5 @@ temp
 *.blend4
 *.blend5
 
-.pnpm-store/
+# VSCode addon
+.favorites.json
