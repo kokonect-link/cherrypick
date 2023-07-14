@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import XPie from './pie.vue';
 import bytes from '@/filters/bytes';
 
