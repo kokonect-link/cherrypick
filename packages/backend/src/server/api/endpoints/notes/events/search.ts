@@ -78,7 +78,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
-	
+
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
@@ -91,7 +91,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (!policies.canSearchNotes) {
 				throw new ApiError(meta.errors.unavailable);
 			}
-	
+
 			const queryRunner = this.notesRepository.queryRunner;
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note', queryRunner), ps.sinceId, ps.untilId);
 
@@ -119,7 +119,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			}
 			if (ps.filters) {
 				const filters = ps.filters;
-				
+
 				filters.forEach(f => {
 					if (!f.key || !f.values) throw new ApiError(meta.errors.invalidParam);
 					const filterKey = f.key;
@@ -163,7 +163,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (ps.offset) query.skip(ps.offset);
 
 			query.maxExecutionTime(250); // because we include regex expressions in where clause, defend against long running regex with timeout
-			const notes = await query.take(ps.limit).getMany();
+			const notes = await query.limit(ps.limit).getMany();
 
 			return await this.noteEntityService.packMany(notes, me);
 		});

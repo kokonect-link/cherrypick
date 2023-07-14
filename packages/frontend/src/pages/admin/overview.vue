@@ -38,7 +38,7 @@
 					<template #header>Federation</template>
 					<XFederation/>
 				</MkFoldableSection>
-		
+
 				<MkFoldableSection class="item">
 					<template #header>Instances</template>
 					<XInstances/>
@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import {markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, ref} from 'vue';
+import { markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, ref } from 'vue';
 import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
@@ -88,7 +88,6 @@ import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import XCpuMemoryNetCompact from "@/widgets/server-metric/cpu-mem-net-pie.vue";
-import XCpuMemory from "@/widgets/server-metric/cpu-mem.vue";
 
 const rootEl = $shallowRef<HTMLElement>();
 let serverInfo: any = $ref(null);

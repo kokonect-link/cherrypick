@@ -151,7 +151,7 @@ function validate(profile: unknown): void {
 
 	if (!profile.name) throw new Error('Missing required prop: name');
 	if (!profile.cherrypickVersion) throw new Error('Missing required prop: cherrypickVersion');
-	
+
 	// Check if createdAt and updatedAt is Date
 	// https://zenn.dev/lollipop_onl/articles/eoz-judge-js-invalid-date
 	if (!profile.createdAt || Number.isNaN(new Date(profile.createdAt).getTime())) throw new Error('createdAt is falsy or not Date');
@@ -280,7 +280,7 @@ async function applyProfile(id: string): Promise<void> {
 			defaultStore.set(key, settings.hot[key]);
 		}
 	}
-	
+
 	// coldDeviceStorage
 	for (const key of coldDeviceStorageSaveKeys) {
 		if (settings.cold[key] !== undefined) {

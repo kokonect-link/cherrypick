@@ -46,7 +46,7 @@
 
 	--margin: var(--marginFull);
 	--minBottomSpacing: 0px;
-	
+
 	@media (max-width: 500px) {
 		--margin: var(--marginHalf);
 		--minBottomSpacing: calc(72px + max(12px, env(safe-area-inset-bottom, 0px)));
@@ -190,7 +190,7 @@ html {
 	}
 
 	&.useSystemFont {
-		font-family: 'Hiragino Maru Gothic Pro', sans-serif;
+		font-family: system-ui;
 	}
 }
 

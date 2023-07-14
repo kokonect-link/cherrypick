@@ -142,7 +142,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (Array.isArray(ps.sensitiveWords)) {
 				set.sensitiveWords = ps.sensitiveWords.filter(Boolean);
 			}
-		
+
 			if (ps.themeColor !== undefined) {
 				set.themeColor = ps.themeColor;
 			}

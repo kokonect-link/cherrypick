@@ -60,7 +60,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				.leftJoinAndSelect('invitation.userGroup', 'user_group');
 
 			const invitations = await query
-				.take(ps.limit)
+				.limit(ps.limit)
 				.getMany();
 
 			return await this.userGroupInvitationEntityService.packMany(invitations);

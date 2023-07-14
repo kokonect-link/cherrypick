@@ -303,7 +303,6 @@ copyUrl: "Sao chép URL"
 rename: "Đổi tên"
 avatar: "Ảnh đại diện"
 banner: "Ảnh bìa"
-nsfw: "Nhạy cảm"
 whenServerDisconnected: "Khi mất kết nối tới máy chủ"
 disconnectedFromServer: "Mất kết nối tới máy chủ"
 reload: "Tải lại"
@@ -1226,10 +1225,6 @@ _aboutMisskey:
   donate: "Ủng hộ Misskey"
   morePatrons: "Chúng tôi cũng trân trọng sự hỗ trợ của nhiều người đóng góp khác không được liệt kê ở đây. Cảm ơn! 🥰"
   patrons: "Người ủng hộ"
-_nsfw:
-  respect: "Ẩn nội dung NSFW"
-  ignore: "Hiện nội dung NSFW"
-  force: "Ẩn mọi media"
 _mfm:
   cheatSheet: "MFM Cheatsheet"
   intro: "MFM là ngôn ngữ phát triển độc quyền của Misskey có thể được sử dụng ở nhiều nơi. Tại đây bạn có thể xem danh sách tất cả các cú pháp MFM có sẵn."

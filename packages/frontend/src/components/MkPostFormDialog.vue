@@ -1,6 +1,6 @@
 <template>
 <MkModal ref="modal" :preferType="'dialog'" @click="modal.close()" @closed="onModalClosed()">
-	<MkPostForm ref="form" style="margin: 0 auto auto auto; overflow: scroll; max-height: calc(100% - env(safe-area-inset-bottom));" v-bind="props" autofocus freezeAfterPosted @posted="onPosted" @cancel="modal.close()" @esc="modal.close()"/>
+	<MkPostForm ref="form" :class="$style.form" v-bind="props" autofocus freezeAfterPosted @posted="onPosted" @cancel="modal.close()" @esc="modal.close()"/>
 </MkModal>
 </template>
 
@@ -44,3 +44,11 @@ function onModalClosed() {
 	emit('closed');
 }
 </script>
+
+<style lang="scss" module>
+.form {
+	max-height: calc(100% - env(safe-area-inset-bottom));
+	margin: 0 auto auto auto;
+	overflow: scroll;
+}
+</style>
