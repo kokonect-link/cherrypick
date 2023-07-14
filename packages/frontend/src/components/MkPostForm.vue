@@ -609,7 +609,7 @@ async function onPaste(ev: ClipboardEvent) {
 				return;
 			}
 
-			quoteId = paste.substr(url.length).match(/^\/notes\/(.+?)\/?$/)[1];
+			quoteId = paste.substring(url.length).match(/^\/notes\/(.+?)\/?$/)[1];
 		});
 	}
 }
