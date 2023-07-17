@@ -6,6 +6,7 @@ import type { Config } from '@/config.js';
 import type Logger from '@/logger.js';
 import { DriveService } from '@/core/DriveService.js';
 import { bindThis } from '@/decorators.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { DbJobDataWithUser } from '../types.js';
@@ -25,6 +26,7 @@ export class DeleteDriveFilesProcessorService {
 		private driveFilesRepository: DriveFilesRepository,
 
 		private driveService: DriveService,
+		private userEntityService: UserEntityService,
 		private queueLoggerService: QueueLoggerService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('delete-drive-files');
@@ -62,7 +64,8 @@ export class DeleteDriveFilesProcessorService {
 			cursor = files.at(-1)?.id ?? null;
 
 			for (const file of files) {
-				await this.driveService.deleteFileSync(file);
+				const isRemote = file.user ? this.userEntityService.isRemoteUser(file.user) : false;
+				await this.driveService.deleteFileSync(file, false, isRemote);
 				deletedCount++;
 			}
 

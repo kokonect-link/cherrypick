@@ -10,6 +10,7 @@ import type { Note } from '@/models/entities/Note.js';
 import { EmailService } from '@/core/EmailService.js';
 import { bindThis } from '@/decorators.js';
 import { SearchService } from '@/core/SearchService.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { DbUserDeleteJobData } from '../types.js';
@@ -34,6 +35,7 @@ export class DeleteAccountProcessorService {
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
+		private userEntityService: UserEntityService,
 		private driveService: DriveService,
 		private emailService: EmailService,
 		private queueLoggerService: QueueLoggerService,
@@ -47,6 +49,7 @@ export class DeleteAccountProcessorService {
 		this.logger.info(`Deleting account of ${job.data.user.id} ...`);
 
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
+		const isRemote = user ? this.userEntityService.isRemoteUser(user) : false;
 		if (user == null) {
 			return;
 		}
@@ -104,7 +107,7 @@ export class DeleteAccountProcessorService {
 				cursor = files.at(-1)?.id ?? null;
 
 				for (const file of files) {
-					await this.driveService.deleteFileSync(file);
+					await this.driveService.deleteFileSync(file, false, isRemote);
 				}
 			}
 

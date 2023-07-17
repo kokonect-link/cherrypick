@@ -4,66 +4,139 @@
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<div class="_gaps_m">
-				<MkSwitch v-model="useObjectStorage">{{ i18n.ts.useObjectStorage }}</MkSwitch>
+				<MkFolder>
+					<template #label>{{ i18n.ts.objectStorage }}</template>
 
-				<template v-if="useObjectStorage">
-					<MkInput v-model="objectStorageBaseUrl" :placeholder="'https://example.com'">
-						<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
-						<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
-					</MkInput>
+					<div class="_gaps_m">
+						<MkSwitch v-model="useObjectStorage">{{ i18n.ts.useObjectStorage }}</MkSwitch>
 
-					<MkInput v-model="objectStorageBucket">
-						<template #label>{{ i18n.ts.objectStorageBucket }}</template>
-						<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
-					</MkInput>
+						<template v-if="useObjectStorage">
+							<MkInput v-model="objectStorageBaseUrl" :placeholder="'https://example.com'">
+								<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
+								<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
+							</MkInput>
 
-					<MkInput v-model="objectStoragePrefix">
-						<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
-						<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
-					</MkInput>
+							<MkInput v-model="objectStorageBucket">
+								<template #label>{{ i18n.ts.objectStorageBucket }}</template>
+								<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
+							</MkInput>
 
-					<MkInput v-model="objectStorageEndpoint" :placeholder="'example.com'">
-						<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
-						<template #prefix>https://</template>
-						<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
-					</MkInput>
+							<MkInput v-model="objectStoragePrefix">
+								<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
+								<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
+							</MkInput>
 
-					<MkInput v-model="objectStorageRegion">
-						<template #label>{{ i18n.ts.objectStorageRegion }}</template>
-						<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
-					</MkInput>
+							<MkInput v-model="objectStorageEndpoint" :placeholder="'example.com'">
+								<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
+								<template #prefix>https://</template>
+								<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
+							</MkInput>
 
-					<FormSplit :minWidth="280">
-						<MkInput v-model="objectStorageAccessKey">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>Access key</template>
-						</MkInput>
+							<MkInput v-model="objectStorageRegion">
+								<template #label>{{ i18n.ts.objectStorageRegion }}</template>
+								<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
+							</MkInput>
 
-						<MkInput v-model="objectStorageSecretKey" type="password">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>Secret key</template>
-						</MkInput>
-					</FormSplit>
+							<FormSplit :minWidth="280">
+								<MkInput v-model="objectStorageAccessKey">
+									<template #prefix><i class="ti ti-key"></i></template>
+									<template #label>Access key</template>
+								</MkInput>
 
-					<MkSwitch v-model="objectStorageUseSSL">
-						<template #label>{{ i18n.ts.objectStorageUseSSL }}</template>
-						<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
-					</MkSwitch>
+								<MkInput v-model="objectStorageSecretKey" type="password">
+									<template #prefix><i class="ti ti-key"></i></template>
+									<template #label>Secret key</template>
+								</MkInput>
+							</FormSplit>
 
-					<MkSwitch v-model="objectStorageUseProxy">
-						<template #label>{{ i18n.ts.objectStorageUseProxy }}</template>
-						<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
-					</MkSwitch>
+							<MkSwitch v-model="objectStorageUseSSL">
+								<template #label>{{ i18n.ts.objectStorageUseSSL }}</template>
+								<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
+							</MkSwitch>
 
-					<MkSwitch v-model="objectStorageSetPublicRead">
-						<template #label>{{ i18n.ts.objectStorageSetPublicRead }}</template>
-					</MkSwitch>
+							<MkSwitch v-model="objectStorageUseProxy">
+								<template #label>{{ i18n.ts.objectStorageUseProxy }}</template>
+								<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
+							</MkSwitch>
 
-					<MkSwitch v-model="objectStorageS3ForcePathStyle">
-						<template #label>s3ForcePathStyle</template>
-						<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
-					</MkSwitch>
-				</template>
+							<MkSwitch v-model="objectStorageSetPublicRead">
+								<template #label>{{ i18n.ts.objectStorageSetPublicRead }}</template>
+							</MkSwitch>
+
+							<MkSwitch v-model="objectStorageS3ForcePathStyle">
+								<template #label>s3ForcePathStyle</template>
+								<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
+							</MkSwitch>
+						</template>
+					</div>
+				</MkFolder>
+
+				<MkFolder>
+					<template #label>{{ i18n.ts.objectStorage }} (Remote)</template>
+
+					<div class="_gaps_m">
+						<MkSwitch v-model="useObjectStorageRemote">{{ i18n.ts.useObjectStorage }}</MkSwitch>
+
+						<template v-if="useObjectStorageRemote">
+							<MkInput v-model="objectStorageRemoteBaseUrl" :placeholder="'https://example.com'">
+								<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
+								<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
+							</MkInput>
+
+							<MkInput v-model="objectStorageRemoteBucket">
+								<template #label>{{ i18n.ts.objectStorageBucket }}</template>
+								<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
+							</MkInput>
+
+							<MkInput v-model="objectStorageRemotePrefix">
+								<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
+								<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
+							</MkInput>
+
+							<MkInput v-model="objectStorageRemoteEndpoint" :placeholder="'example.com'">
+								<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
+								<template #prefix>https://</template>
+								<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
+							</MkInput>
+
+							<MkInput v-model="objectStorageRemoteRegion">
+								<template #label>{{ i18n.ts.objectStorageRegion }}</template>
+								<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
+							</MkInput>
+
+							<FormSplit :minWidth="280">
+								<MkInput v-model="objectStorageRemoteAccessKey">
+									<template #prefix><i class="ti ti-key"></i></template>
+									<template #label>Access key</template>
+								</MkInput>
+
+								<MkInput v-model="objectStorageRemoteSecretKey" type="password">
+									<template #prefix><i class="ti ti-key"></i></template>
+									<template #label>Secret key</template>
+								</MkInput>
+							</FormSplit>
+
+							<MkSwitch v-model="objectStorageRemoteUseSSL">
+								<template #label>{{ i18n.ts.objectStorageUseSSL }}</template>
+								<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
+							</MkSwitch>
+
+							<MkSwitch v-model="objectStorageRemoteUseProxy">
+								<template #label>{{ i18n.ts.objectStorageUseProxy }}</template>
+								<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
+							</MkSwitch>
+
+							<MkSwitch v-model="objectStorageRemoteSetPublicRead">
+								<template #label>{{ i18n.ts.objectStorageSetPublicRead }}</template>
+							</MkSwitch>
+
+							<MkSwitch v-model="objectStorageRemoteS3ForcePathStyle">
+								<template #label>s3ForcePathStyle</template>
+								<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
+							</MkSwitch>
+						</template>
+					</div>
+				</MkFolder>
 			</div>
 		</FormSuspense>
 	</MkSpacer>
@@ -80,6 +153,7 @@
 <script lang="ts" setup>
 import { } from 'vue';
 import XHeader from './_header_.vue';
+import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import FormSuspense from '@/components/form/suspense.vue';
@@ -103,6 +177,19 @@ let objectStorageUseSSL: boolean = $ref(false);
 let objectStorageUseProxy: boolean = $ref(false);
 let objectStorageSetPublicRead: boolean = $ref(false);
 let objectStorageS3ForcePathStyle: boolean = $ref(true);
+let useObjectStorageRemote: boolean = $ref(false);
+let objectStorageRemoteBaseUrl: string | null = $ref(null);
+let objectStorageRemoteBucket: string | null = $ref(null);
+let objectStorageRemotePrefix: string | null = $ref(null);
+let objectStorageRemoteEndpoint: string | null = $ref(null);
+let objectStorageRemoteRegion: string | null = $ref(null);
+let objectStorageRemotePort: number | null = $ref(null);
+let objectStorageRemoteAccessKey: string | null = $ref(null);
+let objectStorageRemoteSecretKey: string | null = $ref(null);
+let objectStorageRemoteUseSSL: boolean = $ref(false);
+let objectStorageRemoteUseProxy: boolean = $ref(false);
+let objectStorageRemoteSetPublicRead: boolean = $ref(false);
+let objectStorageRemoteS3ForcePathStyle: boolean = $ref(true);
 
 async function init() {
 	const meta = await os.api('admin/meta');
@@ -119,6 +206,19 @@ async function init() {
 	objectStorageUseProxy = meta.objectStorageUseProxy;
 	objectStorageSetPublicRead = meta.objectStorageSetPublicRead;
 	objectStorageS3ForcePathStyle = meta.objectStorageS3ForcePathStyle;
+	useObjectStorageRemote = meta.useObjectStorageRemote;
+	objectStorageRemoteBaseUrl = meta.objectStorageRemoteBaseUrl;
+	objectStorageRemoteBucket = meta.objectStorageRemoteBucket;
+	objectStorageRemotePrefix = meta.objectStorageRemotePrefix;
+	objectStorageRemoteEndpoint = meta.objectStorageRemoteEndpoint;
+	objectStorageRemoteRegion = meta.objectStorageRemoteRegion;
+	objectStorageRemotePort = meta.objectStorageRemotePort;
+	objectStorageRemoteAccessKey = meta.objectStorageRemoteAccessKey;
+	objectStorageRemoteSecretKey = meta.objectStorageRemoteSecretKey;
+	objectStorageRemoteUseSSL = meta.objectStorageRemoteUseSSL;
+	objectStorageRemoteUseProxy = meta.objectStorageRemoteUseProxy;
+	objectStorageRemoteSetPublicRead = meta.objectStorageRemoteSetPublicRead;
+	objectStorageRemoteS3ForcePathStyle = meta.objectStorageRemoteS3ForcePathStyle;
 }
 
 function save() {
@@ -136,6 +236,19 @@ function save() {
 		objectStorageUseProxy,
 		objectStorageSetPublicRead,
 		objectStorageS3ForcePathStyle,
+		useObjectStorageRemote,
+		objectStorageRemoteBaseUrl,
+		objectStorageRemoteBucket,
+		objectStorageRemotePrefix,
+		objectStorageRemoteEndpoint,
+		objectStorageRemoteRegion,
+		objectStorageRemotePort,
+		objectStorageRemoteAccessKey,
+		objectStorageRemoteSecretKey,
+		objectStorageRemoteUseSSL,
+		objectStorageRemoteUseProxy,
+		objectStorageRemoteSetPublicRead,
+		objectStorageRemoteS3ForcePathStyle,
 	}).then(() => {
 		fetchInstance();
 	});

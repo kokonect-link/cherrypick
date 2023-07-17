@@ -436,6 +436,78 @@ export class Meta {
 	@Column('boolean', {
 		default: false,
 	})
+	public useObjectStorageRemote: boolean;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteBucket: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemotePrefix: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteBaseUrl: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteEndpoint: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteRegion: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteAccessKey: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteSecretKey: string | null;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public objectStorageRemotePort: number | null;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageRemoteUseSSL: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageRemoteUseProxy: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public objectStorageRemoteSetPublicRead: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageRemoteS3ForcePathStyle: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
 	public enableIpLogging: boolean;
 
 	@Column('boolean', {

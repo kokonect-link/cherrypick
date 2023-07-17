@@ -99,6 +99,19 @@ export const paramDef = {
 		objectStorageUseProxy: { type: 'boolean' },
 		objectStorageSetPublicRead: { type: 'boolean' },
 		objectStorageS3ForcePathStyle: { type: 'boolean' },
+		useObjectStorageRemote: { type: 'boolean' },
+		objectStorageRemoteBaseUrl: { type: 'string', nullable: true },
+		objectStorageRemoteBucket: { type: 'string', nullable: true },
+		objectStorageRemotePrefix: { type: 'string', nullable: true },
+		objectStorageRemoteEndpoint: { type: 'string', nullable: true },
+		objectStorageRemoteRegion: { type: 'string', nullable: true },
+		objectStorageRemotePort: { type: 'integer', nullable: true },
+		objectStorageRemoteAccessKey: { type: 'string', nullable: true },
+		objectStorageRemoteSecretKey: { type: 'string', nullable: true },
+		objectStorageRemoteUseSSL: { type: 'boolean' },
+		objectStorageRemoteUseProxy: { type: 'boolean' },
+		objectStorageRemoteSetPublicRead: { type: 'boolean' },
+		objectStorageRemoteS3ForcePathStyle: { type: 'boolean' },
 		enableIpLogging: { type: 'boolean' },
 		enableActiveEmailValidation: { type: 'boolean' },
 		enableChartsForRemoteUser: { type: 'boolean' },
@@ -382,6 +395,58 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			if (ps.objectStorageS3ForcePathStyle !== undefined) {
 				set.objectStorageS3ForcePathStyle = ps.objectStorageS3ForcePathStyle;
+			}
+
+			if (ps.useObjectStorageRemote !== undefined) {
+				set.useObjectStorageRemote = ps.useObjectStorageRemote;
+			}
+
+			if (ps.objectStorageRemoteBaseUrl !== undefined) {
+				set.objectStorageRemoteBaseUrl = ps.objectStorageRemoteBaseUrl;
+			}
+
+			if (ps.objectStorageRemoteBucket !== undefined) {
+				set.objectStorageRemoteBucket = ps.objectStorageRemoteBucket;
+			}
+
+			if (ps.objectStorageRemotePrefix !== undefined) {
+				set.objectStorageRemotePrefix = ps.objectStorageRemotePrefix;
+			}
+
+			if (ps.objectStorageRemoteEndpoint !== undefined) {
+				set.objectStorageRemoteEndpoint = ps.objectStorageRemoteEndpoint;
+			}
+
+			if (ps.objectStorageRemoteRegion !== undefined) {
+				set.objectStorageRemoteRegion = ps.objectStorageRemoteRegion;
+			}
+
+			if (ps.objectStorageRemotePort !== undefined) {
+				set.objectStorageRemotePort = ps.objectStorageRemotePort;
+			}
+
+			if (ps.objectStorageRemoteAccessKey !== undefined) {
+				set.objectStorageRemoteAccessKey = ps.objectStorageRemoteAccessKey;
+			}
+
+			if (ps.objectStorageRemoteSecretKey !== undefined) {
+				set.objectStorageRemoteSecretKey = ps.objectStorageRemoteSecretKey;
+			}
+
+			if (ps.objectStorageRemoteUseSSL !== undefined) {
+				set.objectStorageRemoteUseSSL = ps.objectStorageRemoteUseSSL;
+			}
+
+			if (ps.objectStorageRemoteUseProxy !== undefined) {
+				set.objectStorageRemoteUseProxy = ps.objectStorageRemoteUseProxy;
+			}
+
+			if (ps.objectStorageRemoteSetPublicRead !== undefined) {
+				set.objectStorageRemoteSetPublicRead = ps.objectStorageRemoteSetPublicRead;
+			}
+
+			if (ps.objectStorageRemoteS3ForcePathStyle !== undefined) {
+				set.objectStorageRemoteS3ForcePathStyle = ps.objectStorageRemoteS3ForcePathStyle;
 			}
 
 			if (ps.translatorType !== undefined) {
