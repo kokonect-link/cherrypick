@@ -23,6 +23,9 @@ export type RolePolicies = {
 	ctlAvailable: boolean;
 	canPublicNote: boolean;
 	canInvite: boolean;
+	inviteLimit: number;
+	inviteLimitCycle: number;
+	inviteExpirationTime: number;
 	canManageCustomEmojis: boolean;
 	canSearchNotes: boolean;
 	canHideAds: boolean;
@@ -46,6 +49,9 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	ctlAvailable: true,
 	canPublicNote: true,
 	canInvite: false,
+	inviteLimit: 0,
+	inviteLimitCycle: 60 * 24 * 7,
+	inviteExpirationTime: 0,
 	canManageCustomEmojis: false,
 	canSearchNotes: false,
 	canHideAds: false,
@@ -283,6 +289,9 @@ export class RoleService implements OnApplicationShutdown {
 			ctlAvailable: calc('ctlAvailable', vs => vs.some(v => v === true)),
 			canPublicNote: calc('canPublicNote', vs => vs.some(v => v === true)),
 			canInvite: calc('canInvite', vs => vs.some(v => v === true)),
+			inviteLimit: calc('inviteLimit', vs => Math.max(...vs)),
+			inviteLimitCycle: calc('inviteLimitCycle', vs => Math.max(...vs)),
+			inviteExpirationTime: calc('inviteExpirationTime', vs => Math.max(...vs)),
 			canManageCustomEmojis: calc('canManageCustomEmojis', vs => vs.some(v => v === true)),
 			canSearchNotes: calc('canSearchNotes', vs => vs.some(v => v === true)),
 			canHideAds: calc('canHideAds', vs => vs.some(v => v === true)),

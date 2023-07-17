@@ -13,11 +13,12 @@ import { miLocalStorage } from '@/local-storage';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { mainRouter } from '@/router';
 import { initializeSw } from '@/scripts/initialize-sw';
+import { deckStore } from '@/ui/deck/deck-store';
 import { userName } from '@/filters/user';
 
 export async function mainBoot() {
 	const { isClientUpdated } = await common(() => createApp(
-		new URLSearchParams(window.location.search).has('zen') || (ui === 'deck' && location.pathname !== '/') ? defineAsyncComponent(() => import('@/ui/zen.vue')) :
+		new URLSearchParams(window.location.search).has('zen') || (ui === 'deck' && deckStore.state.useSimpleUiForNonRootPages && location.pathname !== '/') ? defineAsyncComponent(() => import('@/ui/zen.vue')) :
 		!$i ? defineAsyncComponent(() => import('@/ui/visitor.vue')) :
 		ui === 'deck' ? defineAsyncComponent(() => import('@/ui/deck.vue')) :
 		ui === 'classic' ? defineAsyncComponent(() => import('@/ui/classic.vue')) :

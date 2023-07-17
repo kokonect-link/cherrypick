@@ -285,6 +285,7 @@ type DetailedInstanceMetadata = LiteInstanceMetadata & {
     pinnedPages: string[];
     pinnedClipId: string | null;
     cacheRemoteFiles: boolean;
+    cacheRemoteSensitiveFiles: boolean;
     requireSetup: boolean;
     proxyAccountName: string | null;
     features: Record<string, any>;
@@ -338,6 +339,10 @@ export type Endpoints = {
         res: TODO;
     };
     'admin/logs': {
+        req: TODO;
+        res: TODO;
+    };
+    'admin/meta': {
         req: TODO;
         res: TODO;
     };
@@ -492,6 +497,14 @@ export type Endpoints = {
         res: TODO;
     };
     'admin/federation/update-instance': {
+        req: TODO;
+        res: TODO;
+    };
+    'admin/invite/create': {
+        req: TODO;
+        res: TODO;
+    };
+    'admin/invite/list': {
         req: TODO;
         res: TODO;
     };
@@ -1561,6 +1574,28 @@ export type Endpoints = {
         req: TODO;
         res: TODO;
     };
+    'invite/create': {
+        req: NoParams;
+        res: Invite;
+    };
+    'invite/delete': {
+        req: {
+            inviteId: Invite['id'];
+        };
+        res: null;
+    };
+    'invite/list': {
+        req: {
+            limit?: number;
+            sinceId?: Invite['id'];
+            untilId?: Invite['id'];
+        };
+        res: Invite[];
+    };
+    'invite/limit': {
+        req: NoParams;
+        res: InviteLimit;
+    };
     'messaging/history': {
         req: {
             limit?: number;
@@ -2246,6 +2281,8 @@ declare namespace entities {
         Blocking,
         Instance,
         Signin,
+        Invite,
+        InviteLimit,
         UserSorting,
         OriginType
     }
@@ -2345,6 +2382,23 @@ type Instance = {
 
 // @public (undocumented)
 type InstanceMetadata = LiteInstanceMetadata | DetailedInstanceMetadata;
+
+// @public (undocumented)
+type Invite = {
+    id: ID;
+    code: string;
+    expiresAt: DateString | null;
+    createdAt: DateString;
+    createdBy: UserLite | null;
+    usedBy: UserLite | null;
+    usedAt: DateString | null;
+    used: boolean;
+};
+
+// @public (undocumented)
+type InviteLimit = {
+    remaining: number;
+};
 
 // @public (undocumented)
 function isAPIError(reason: any): reason is APIError;
@@ -2800,7 +2854,7 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 //
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
-// src/api.types.ts:631:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
+// src/api.types.ts:629:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

@@ -132,9 +132,7 @@ export function play(type: 'noteMy' | 'note' | 'chat' | 'chatBg' | 'antenna' | '
 }
 
 export function playFile(file: string, volume: number) {
-	const masterVolume = soundConfigStore.state.sound_masterVolume;
-	if (masterVolume === 0) return;
-
 	const audio = setVolume(getAudio(file), volume);
+	if (audio.volume === 0) return;
 	audio.play();
 }

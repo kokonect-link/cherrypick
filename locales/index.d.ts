@@ -191,6 +191,8 @@ export interface Locale {
     "settingGuide": string;
     "cacheRemoteFiles": string;
     "cacheRemoteFilesDescription": string;
+    "cacheRemoteSensitiveFiles": string;
+    "cacheRemoteSensitiveFilesDescription": string;
     "flagAsBot": string;
     "flagAsBotDescription": string;
     "flagAsCat": string;
@@ -1130,6 +1132,23 @@ export interface Locale {
     "enableServerMachineStats": string;
     "enableIdenticonGeneration": string;
     "turnOffToImprovePerformance": string;
+    "createInviteCode": string;
+    "createWithOptions": string;
+    "createCount": string;
+    "inviteCodeCreated": string;
+    "inviteLimitExceeded": string;
+    "createLimitRemaining": string;
+    "inviteLimitResetCycle": string;
+    "expirationDate": string;
+    "noExpirationDate": string;
+    "inviteCodeUsedAt": string;
+    "registeredUserUsingInviteCode": string;
+    "waitingForMailAuth": string;
+    "inviteCodeCreator": string;
+    "usedAt": string;
+    "unused": string;
+    "used": string;
+    "expired": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -1589,6 +1608,9 @@ export interface Locale {
             "ctlAvailable": string;
             "canPublicNote": string;
             "canInvite": string;
+            "inviteLimit": string;
+            "inviteLimitCycle": string;
+            "inviteExpirationTime": string;
             "canManageCustomEmojis": string;
             "driveCapacity": string;
             "alwaysMarkNsfw": string;
@@ -2338,6 +2360,7 @@ export interface Locale {
         "introduction": string;
         "introduction2": string;
         "widgetsIntroduction": string;
+        "useSimpleUiForNonRootPages": string;
         "_columns": {
             "main": string;
             "widgets": string;
@@ -2383,4 +2406,4 @@ export interface Locale {
 declare const locales: {
     [lang: string]: Locale;
 };
-export = locales;
+export default locales;
