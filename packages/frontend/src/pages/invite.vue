@@ -32,7 +32,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, shallowRef } from 'vue';
-import type { Invite } from 'misskey-js/built/entities';
+import type { Invite } from 'cherrypick-js/built/entities';
 import { i18n } from '@/i18n';
 import * as os from '@/os';
 import MkButton from '@/components/MkButton.vue';

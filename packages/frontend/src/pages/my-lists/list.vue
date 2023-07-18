@@ -54,7 +54,7 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkInput from '@/components/MkInput.vue';
 import { userListsCache } from '@/cache';
-import { UserList, UserLite } from 'misskey-js/built/entities';
+import { UserList, UserLite } from 'cherrypick-js/built/entities';
 import { $i } from '@/account';
 import { defaultStore } from '@/store';
 const {

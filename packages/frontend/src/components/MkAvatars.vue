@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import * as os from '@/os';
-import { UserLite } from 'misskey-js/built/entities';
+import { UserLite } from 'cherrypick-js/built/entities';
 
 const props = withDefaults(defineProps<{
 	userIds: string[];
