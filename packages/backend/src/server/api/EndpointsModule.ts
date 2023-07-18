@@ -40,6 +40,7 @@ import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js'
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
 import * as ep___admin_invite_create from './endpoints/admin/invite/create.js';
 import * as ep___admin_invite_list from './endpoints/admin/invite/list.js';
+import * as ep___admin_invite_revoke from './endpoints/admin/invite/revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -409,6 +410,7 @@ const $admin_getTableStats: Provider = { provide: 'ep:admin/get-table-stats', us
 const $admin_getUserIps: Provider = { provide: 'ep:admin/get-user-ips', useClass: ep___admin_getUserIps.default };
 const $admin_invite_create: Provider = { provide: 'ep:admin/invite/create', useClass: ep___admin_invite_create.default };
 const $admin_invite_list: Provider = { provide: 'ep:admin/invite/list', useClass: ep___admin_invite_list.default };
+const $admin_invite_revoke: Provider = { provide: 'ep:admin/invite/revoke', useClass: ep___admin_invite_revoke.default };
 const $admin_promo_create: Provider = { provide: 'ep:admin/promo/create', useClass: ep___admin_promo_create.default };
 const $admin_queue_clear: Provider = { provide: 'ep:admin/queue/clear', useClass: ep___admin_queue_clear.default };
 const $admin_queue_deliverDelayed: Provider = { provide: 'ep:admin/queue/deliver-delayed', useClass: ep___admin_queue_deliverDelayed.default };
@@ -782,6 +784,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getUserIps,
 		$admin_invite_create,
 		$admin_invite_list,
+		$admin_invite_revoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
@@ -1149,6 +1152,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getUserIps,
 		$admin_invite_create,
 		$admin_invite_list,
+		$admin_invite_revoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,

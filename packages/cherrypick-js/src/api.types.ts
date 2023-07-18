@@ -60,6 +60,8 @@ export type Endpoints = {
 	'admin/federation/update-instance': { req: TODO; res: TODO; };
 	'admin/invite/create': { req: TODO; res: TODO; };
 	'admin/invite/list': { req: TODO; res: TODO; };
+	'admin/invite/revoke': { req: TODO; res: TODO; };
+	'admin/invite/revoke-unused': { req: TODO; res: TODO; };
 	'admin/moderators/add': { req: TODO; res: TODO; };
 	'admin/moderators/remove': { req: TODO; res: TODO; };
 	'admin/promo/create': { req: TODO; res: TODO; };

@@ -104,7 +104,21 @@ function deleted(id: string) {
 	}
 }
 
-const headerActions = $computed(() => []);
+function inviteRevoke() {
+	os.confirm({
+		type: 'warning',
+		text: i18n.ts.inviteRevokeConfirm,
+	}).then(({ canceled }) => {
+		if (canceled) return;
+		os.apiWithDialog('admin/invite/revoke');
+	});
+}
+
+const headerActions = $computed(() => [{
+	text: i18n.ts.inviteRevoke,
+	icon: 'ti ti-trash',
+	handler: inviteRevoke,
+}]);
 const headerTabs = $computed(() => []);
 
 definePageMetadata({

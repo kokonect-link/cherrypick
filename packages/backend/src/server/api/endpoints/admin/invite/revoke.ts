@@ -7,7 +7,6 @@ export const meta = {
 	tags: ['admin'],
 
 	requireCredential: true,
-	requireRolePolicy: 'canInvite',
 	requireModerator: true,
 } as const;
 

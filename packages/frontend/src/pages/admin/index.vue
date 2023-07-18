@@ -82,11 +82,6 @@ const menuDef = $computed(() => [{
 		icon: 'ti ti-user-plus',
 		text: i18n.ts.createInviteCode,
 		action: invite,
-	}, {
-		type: 'button',
-		icon: 'ti ti-user-cancel',
-		text: i18n.ts.inviteRevoke,
-		action: inviteRevoke,
 	}] : [])],
 }, {
 	title: i18n.ts.administration,
@@ -260,16 +255,6 @@ const invite = () => {
 			type: 'error',
 			text: err,
 		});
-	});
-};
-
-const inviteRevoke = () => {
-	os.confirm({
-		type: 'warning',
-		text: i18n.ts.inviteRevokeConfirm,
-	}).then(({ canceled }) => {
-		if (canceled) return;
-		os.apiWithDialog('invite-revoke');
 	});
 };
 
