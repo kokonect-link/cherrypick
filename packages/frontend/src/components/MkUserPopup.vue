@@ -216,6 +216,7 @@ onMounted(() => {
 }
 
 .status {
+	display: flex;
 	padding: 16px 26px 16px 26px;
 }
 
@@ -223,6 +224,7 @@ onMounted(() => {
 	display: inline-block;
 	width: 33%;
 	text-align: center;
+	flex: 1;
 }
 
 .statusItemLabel {
