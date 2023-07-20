@@ -972,6 +972,7 @@ defineExpose({
 	flex-wrap: nowrap;
 	gap: 4px;
 	padding: 8px 12px;
+	margin-bottom: -10px;
 }
 
 .headerLeft {

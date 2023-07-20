@@ -1149,6 +1149,9 @@ export interface Locale {
     "unused": string;
     "used": string;
     "expired": string;
+    "doYouAgree": string;
+    "beSureToReadThisAsItIsImportant": string;
+    "iHaveReadXCarefullyAndAgree": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;

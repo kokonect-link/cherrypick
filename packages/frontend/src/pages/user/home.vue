@@ -117,30 +117,18 @@
 						</dl>
 					</div>
 					<div class="status">
-						<MkA v-click-anime :to="userPage(user)">
+						<MkA :to="userPage(user)">
 							<b>{{ number(user.notesCount) }}</b>
 							<span>{{ i18n.ts.notes }}</span>
 						</MkA>
-						<template v-if="isFfVisibility($i, props.user)">
-							<MkA v-click-anime :to="userPage(user, 'following')">
-								<b>{{ number(user.followingCount) }}</b>
-								<span>{{ i18n.ts.following }}</span>
-							</MkA>
-							<MkA v-click-anime :to="userPage(user, 'followers')">
-								<b>{{ number(user.followersCount) }}</b>
-								<span>{{ i18n.ts.followers }}</span>
-							</MkA>
-						</template>
-						<template v-else>
-							<div>
-								<i class="ti ti-lock" :class="{ [$style.animation]: animation }"></i>
-								<span>{{ i18n.ts.following }}</span>
-							</div>
-							<div>
-								<i class="ti ti-lock" :class="{ [$style.animation]: animation }"></i>
-								<span>{{ i18n.ts.followers }}</span>
-							</div>
-						</template>
+						<MkA v-if="isFfVisibleForMe(user)" :to="userPage(user, 'following')">
+							<b>{{ number(user.followingCount) }}</b>
+							<span>{{ i18n.ts.following }}</span>
+						</MkA>
+						<MkA v-if="isFfVisibleForMe(user)" :to="userPage(user, 'followers')">
+							<b>{{ number(user.followersCount) }}</b>
+							<span>{{ i18n.ts.followers }}</span>
+						</MkA>
 					</div>
 				</div>
 			</div>
@@ -189,7 +177,7 @@ import { dateString } from '@/filters/date';
 import { confetti } from '@/scripts/confetti';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os';
-import { isFfVisibility } from '@/scripts/is-ff-visibility';
+import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe';
 import { defaultStore } from '@/store';
 import { miLocalStorage } from '@/local-storage';
 import { editNickname } from '@/scripts/edit-nickname';
@@ -242,8 +230,6 @@ const style = $computed(() => {
 const age = $computed(() => {
 	return calcAge(props.user.birthday);
 });
-
-const animation = $ref(defaultStore.state.animation);
 
 function menu(ev) {
 	os.popupMenu(getUserMenu(props.user, router), ev.currentTarget ?? ev.target);
@@ -424,18 +410,6 @@ onUnmounted(() => {
 							font-weight: bold;
 							font-size: 1.8em;
 							text-shadow: 0 0 8px #000;
-
-							> .nickname-button {
-								-webkit-backdrop-filter: var(--blur, blur(8px));
-								backdrop-filter: var(--blur, blur(8px));
-								background: rgba(0, 0, 0, 0.2);
-								color: #ccc;
-								font-size: 0.7em;
-								line-height: 1;
-								width: 1.8em;
-								height: 1.8em;
-								border-radius: 100%;
-							}
 						}
 
 						> .bottom {
@@ -476,10 +450,6 @@ onUnmounted(() => {
 							margin-right: 8px;
 							opacity: 0.8;
 						}
-					}
-
-					> .nickname-button {
-						margin-left: 8px;
 					}
 				}
 
@@ -758,33 +728,5 @@ onUnmounted(() => {
 	background: var(--bg);
     border-radius: var(--radius);
     overflow: clip;
-}
-
-@keyframes keywiggle {
-	0% { transform: translate(-3px,-1px) rotate(-8deg); }
-	5% { transform: translateY(-1px) rotate(-10deg); }
-	10% { transform: translate(1px,-3px) rotate(0); }
-	15% { transform: translate(1px,1px) rotate(11deg); }
-	20% { transform: translate(-2px,1px) rotate(1deg); }
-	25% { transform: translate(-1px,-2px) rotate(-2deg); }
-	30% { transform: translate(-1px,2px) rotate(-3deg); }
-	35% { transform: translate(2px,1px) rotate(6deg); }
-	40% { transform: translate(-2px,-3px) rotate(-9deg); }
-	45% { transform: translateY(-1px) rotate(-12deg); }
-	50% { transform: translate(1px,2px) rotate(10deg); }
-	55% { transform: translateY(-3px) rotate(8deg); }
-	60% { transform: translate(1px,-1px) rotate(8deg); }
-	65% { transform: translateY(-1px) rotate(-7deg); }
-	70% { transform: translate(-1px,-3px) rotate(6deg); }
-	75% { transform: translateY(-2px) rotate(4deg); }
-	80% { transform: translate(-2px,-1px) rotate(3deg); }
-	85% { transform: translate(1px,-3px) rotate(-10deg); }
-	90% { transform: translate(1px) rotate(3deg); }
-	95% { transform: translate(-2px) rotate(-3deg); }
-	to { transform: translate(2px,1px) rotate(2deg); }
-}
-
-.animation:hover {
-	animation: keywiggle 1s;
 }
 </style>
