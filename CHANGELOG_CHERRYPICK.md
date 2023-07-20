@@ -40,6 +40,7 @@
 - 「발견하기」의 인기 태그 기본값을 펼침으로 설정
 - 초대 코드 해지 기능을 새 버전에 맞게 개선
 - 리모트 캐시 파일을 별도의 Object Storage에 저장하도록 설정 ([libnare/mk-castella@0d93433](https://github.com/libnare/mk-castella/commit/0d93433b0836238f518658b5719ce335060963b0)) 
+- Byeolvit 테마 추가 ([Luminon/Byeolvit-Theme](https://github.com/Luminon/Byeolvit-Theme), [libnare/mk-castella@3c95399](https://github.com/libnare/mk-castella/commit/3c95399d0989015bb92836e48d010df07619038b))
 
 ### Client
 - 리노트 전 확인 팝업을 띄움
