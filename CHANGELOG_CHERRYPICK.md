@@ -42,7 +42,7 @@
 - 리모트 캐시 파일을 별도의 Object Storage에 저장하도록 설정 ([libnare/mk-castella@0d93433](https://github.com/libnare/mk-castella/commit/0d93433b0836238f518658b5719ce335060963b0)) 
 - Byeolvit 테마 추가 ([Luminon/Byeolvit-Theme](https://github.com/Luminon/Byeolvit-Theme), [libnare/mk-castella@3c95399](https://github.com/libnare/mk-castella/commit/3c95399d0989015bb92836e48d010df07619038b))
 - buttersc.one 테마 추가 ([libnare/mk-castella@6f15fa1](https://github.com/libnare/mk-castella/commit/6f15fa10b8022d0830254b8f615153d11c441480))
-- Byeolvit 테마 추가 ([Luminon/Byeolvit-Theme](https://github.com/Luminon/Byeolvit-Theme), [libnare/mk-castella@3c95399](https://github.com/libnare/mk-castella/commit/3c95399d0989015bb92836e48d010df07619038b))
+- stella.place 테마 추가 ([libnare/mk-castella@f6f77db](https://github.com/libnare/mk-castella/commit/f6f77dbd7f94b87edd3550ecf59e2bbd1fb3c708))
 
 ### Client
 - 리노트 전 확인 팝업을 띄움

@@ -1,0 +1,22 @@
+{
+	id: 'd932db14-5aed-49d4-85b2-cfea32884044',
+
+	name: 'Stella Night R2',
+	author: 'caipira113',
+
+	base: 'dark',
+
+	props: {
+		accent: 'rgb(184, 185, 247)',
+		bg: 'rgb(27, 26, 37)',
+		fg: 'rgb(242, 238, 252)',
+		fgOnAccent: '@panel',
+		panel: 'rgb(33, 32, 41)',
+		renote: '@accent',
+		link: 'rgb(247, 217, 255)',
+		mention: '@link',
+		hashtag: 'rgb(100, 179, 255)',
+		driveFolderBg: 'rgb(73, 71, 96)',
+		divider: 'rgb(48, 47, 61)',
+	},
+}
