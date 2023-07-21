@@ -175,14 +175,14 @@ async function reloadAsk() {
 
 const headerActions = $computed(() => [{
 	icon: 'ti ti-column-insert-left',
-	text: i18n.ts.friendlyEnableNotification,
+	text: i18n.ts.friendlyEnableNotifications,
 	handler: () => {
-		friendlyEnableNotification.value = !friendlyEnableNotification.value;
+		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
 		reloadAsk();
 	},
 }]);
 
-const friendlyEnableNotification = computed(defaultStore.makeGetterSetter('friendlyEnableNotification'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
 
 const headerTabs = $computed(() => [
 	...(defaultStore.state.enableHomeTimeline ? [{

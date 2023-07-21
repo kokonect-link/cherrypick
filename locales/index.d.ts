@@ -20,7 +20,7 @@ export interface Locale {
     "requireRefresh": string;
     "performanceWarning": string;
     "photosensitiveSeizuresWarning": string;
-    "friendlyEnableNotification": string;
+    "friendlyEnableNotifications": string;
     "useBoldFont": string;
     "newNoteReceivedNotification": string;
     "disableRightClick": string;

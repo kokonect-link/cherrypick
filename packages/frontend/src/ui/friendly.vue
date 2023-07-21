@@ -8,7 +8,7 @@
 		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotification && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotifications && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
 		<XNotifications/>
 	</div>
 
