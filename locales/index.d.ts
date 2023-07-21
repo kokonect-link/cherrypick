@@ -21,6 +21,7 @@ export interface Locale {
     "performanceWarning": string;
     "photosensitiveSeizuresWarning": string;
     "friendlyEnableNotifications": string;
+    "friendlyEnableWidgets": string;
     "useBoldFont": string;
     "newNoteReceivedNotification": string;
     "disableRightClick": string;

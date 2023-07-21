@@ -363,6 +363,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	friendlyEnableWidgets: {
+		where: 'device',
+		default: true,
+	},
 	collapseDefault: {
 		where: 'account',
 		default: true,

@@ -174,15 +174,23 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-	icon: 'ti ti-column-insert-left',
+	icon: friendlyEnableNotifications.value ? 'ti ti-notification-off' : 'ti ti-notification',
 	text: i18n.ts.friendlyEnableNotifications,
 	handler: () => {
 		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
 		reloadAsk();
 	},
+}, {
+	icon: friendlyEnableWidgets.value ? 'ti ti-layout-sidebar-right-collapse' : 'ti ti-layout-sidebar-right-expand',
+	text: i18n.ts.friendlyEnableWidgets,
+	handler: () => {
+		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
+		reloadAsk();
+	},
 }]);
 
 const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
 const headerTabs = $computed(() => [
 	...(defaultStore.state.enableHomeTimeline ? [{

@@ -45,6 +45,8 @@
 - stella.place 테마 추가 ([libnare/mk-castella@f6f77db](https://github.com/libnare/mk-castella/commit/f6f77dbd7f94b87edd3550ecf59e2bbd1fb3c708))
 
 ### Client
+- (Friendly) 데스크톱 모드에서 타임라인 옆에 위젯 영역을 배치하도록
+- (Friendly) 위젯 영역과 알림 영역의 현재 상태에 따라서 아이콘을 다르게 설정
 - 리노트 전 확인 팝업을 띄움
 - 유저 팝업 디자인 개선
 - 절대 시간으로 표시할 때 툴팁에서는 상대 시간을 표기

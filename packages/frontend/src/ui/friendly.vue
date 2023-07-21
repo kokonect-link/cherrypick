@@ -12,7 +12,7 @@
 		<XNotifications/>
 	</div>
 
-	<div v-if="isDesktop" :class="$style.widgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyEnableWidgets" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 
