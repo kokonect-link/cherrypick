@@ -90,14 +90,13 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, shallowRef, Ref } from 'vue';
+import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, ComputedRef, shallowRef, Ref } from 'vue';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
-import { navbarItemDef } from '@/navbar';
 import { i18n } from '@/i18n';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { mainRouter } from '@/router';
