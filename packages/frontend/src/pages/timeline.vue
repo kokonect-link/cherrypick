@@ -174,14 +174,14 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-	icon: friendlyEnableNotifications.value ? 'ti ti-notification-off' : 'ti ti-notification',
+	icon: friendlyEnableNotifications.value ? 'ti ti-notification' : 'ti ti-notification-off',
 	text: i18n.ts.friendlyEnableNotifications,
 	handler: () => {
 		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
 		reloadAsk();
 	},
 }, {
-	icon: friendlyEnableWidgets.value ? 'ti ti-layout-sidebar-right-collapse' : 'ti ti-layout-sidebar-right-expand',
+	icon: friendlyEnableWidgets.value ? 'ti ti-apps' : 'ti ti-apps-off',
 	text: i18n.ts.friendlyEnableWidgets,
 	handler: () => {
 		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
