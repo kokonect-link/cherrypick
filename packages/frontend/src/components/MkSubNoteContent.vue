@@ -32,10 +32,10 @@
 			</div>
 		</div>
 	</div>
-	<button v-if="isLong && collapsed" :class="$style.fade" class="_button" @click="collapsed = false">
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" :class="$style.fade" class="_button" @click="collapsed = false">
 		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 	</button>
-	<button v-else-if="isLong && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
@@ -101,6 +101,7 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import MkReactionsViewer from "@/components/MkReactionsViewer.vue";
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
+import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed';
 import { defaultStore } from '@/store';
 import { miLocalStorage } from '@/local-storage';
 import { instance } from '@/instance';
@@ -135,13 +136,10 @@ const props = defineProps<{
 
 let note = $ref(deepClone(props.note));
 
-const isLong =
-	props.note.cw == null && props.note.text != null && (
-		(props.note.text.split('\n').length > 9) ||
-		(props.note.text.length > 500)
-	);
+const isLong = shouldCollapsed(props.note);
+const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = $ref(isLong);
+const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault));
 
 useNoteCapture({
 	rootEl: el,
