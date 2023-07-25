@@ -190,11 +190,13 @@ async function renote() {
 	pleaseLogin();
 	showMovedDialog();
 
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.renoteConfirm,
-	});
-	if (canceled) return;
+	if (defaultStore.state.showRenoteConfirmPopup) {
+		const { canceled } = await os.confirm({
+			type: 'info',
+			text: i18n.ts.renoteConfirm,
+		});
+		if (canceled) return;
+	}
 
 	if (props.note.channel) {
 		const el = renoteButton.value as HTMLElement | null | undefined;
