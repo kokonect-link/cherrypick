@@ -371,6 +371,7 @@ watch([
 	showGapBetweenNotesInTimeline,
 	instanceTicker,
 	overridedDeviceKind,
+	mediaListWithOneImageAppearance,
 	enableDataSaverMode,
 	enableAbsoluteTime,
 	enableMarkByDate,
