@@ -167,6 +167,28 @@ const remoteMenu = (emoji, ev: MouseEvent) => {
 	}], ev.currentTarget ?? ev.target);
 };
 
+const uploadMenu = (ev: MouseEvent) => {
+  os.popupMenu([{
+    icon: 'ti ti-file',
+    text: i18n.ts.addSingle,
+    action: add,
+  }, {
+    icon: 'ti ti-files',
+    text: i18n.ts.addMultiple,
+    action: async () => {
+      const files = await selectFiles(ev.currentTarget ?? ev.target, null);
+
+      const promise = Promise.all(files.map(file => os.api('admin/emoji/adds', {
+        fileId: file.id,
+      })));
+      promise.then(() => {
+        emojisPaginationComponent.value.reload();
+      });
+      os.promiseDialog(promise);
+    },
+  }], ev.currentTarget ?? ev.target);
+};
+
 const menu = (ev: MouseEvent) => {
 	os.popupMenu([{
 		icon: 'ti ti-download',
@@ -282,10 +304,10 @@ const delBulk = async () => {
 };
 
 const headerActions = $computed(() => [{
-	asFullButton: true,
-	icon: 'ti ti-plus',
-	text: i18n.ts.addEmoji,
-	handler: add,
+  asFullButton: true,
+  icon: 'ti ti-plus',
+  text: i18n.ts.addEmoji,
+  handler: uploadMenu,
 }, {
 	icon: 'ti ti-dots',
 	handler: menu,
