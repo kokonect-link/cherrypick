@@ -4,10 +4,6 @@
 		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
 		<MkSpacer :contentMax="700">
 			<div class="_gaps">
-				<div class="_buttons">
-					<MkButton primary rounded @click="edit"><i class="ti ti-pencil"></i> {{ i18n.ts.edit }}</MkButton>
-					<MkButton danger rounded @click="del"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
-				</div>
 				<MkFolder>
 					<template #icon><i class="ti ti-info-circle"></i></template>
 					<template #label>{{ i18n.ts.info }}</template>
@@ -162,7 +158,15 @@ async function toggleItem(item) {
 	}
 }
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+  text: i18n.ts.edit,
+  icon: 'ti ti-pencil',
+  handler: edit,
+}, {
+  text: i18n.ts.delete,
+  icon: 'ti ti-trash',
+  handler: del,
+}]);
 
 const headerTabs = $computed(() => []);
 
