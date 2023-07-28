@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+addSingle: "하나만 추가"
+addMultiple: "여러 개 추가"
 showRenoteConfirmPopup: "리노트할 때 확인 팝업 표시"
 showSubNoteFooterButton: "서브 노트에 액션 버튼 표시"
 showSubNoteFooterButtonDescription: "이 설정을 활성화하면 답글이 달린 노트의 상위 노트에 액션 버튼을 표시해요."

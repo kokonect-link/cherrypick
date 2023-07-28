@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+addSingle: "Add just one"
+addMultiple: "Add multiple"
 showRenoteConfirmPopup: "Show confirmation popup when renote"
 showSubNoteFooterButton: "Show action buttons in subnotes"
 showSubNoteFooterButtonDescription: "Enabling this setting will show an action button on the parent note of the replied-to note."

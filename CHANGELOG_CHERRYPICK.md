@@ -22,7 +22,7 @@
 
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 13.4.1-cp-4.2.0
+## 13.4.2-cp-4.2.0
 출시일: unreleased<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md#13xx](CHANGELOG.md#13xx) 문서를 참고하십시오.
 
@@ -43,6 +43,7 @@
 - Byeolvit 테마 추가 ([Luminon/Byeolvit-Theme](https://github.com/Luminon/Byeolvit-Theme), [libnare/mk-castella@3c95399](https://github.com/libnare/mk-castella/commit/3c95399d0989015bb92836e48d010df07619038b))
 - buttersc.one 테마 추가 ([libnare/mk-castella@6f15fa1](https://github.com/libnare/mk-castella/commit/6f15fa10b8022d0830254b8f615153d11c441480))
 - stella.place 테마 추가 ([libnare/mk-castella@f6f77db](https://github.com/libnare/mk-castella/commit/f6f77dbd7f94b87edd3550ecf59e2bbd1fb3c708))
+- 이모지를 한 번에 두 개 이상 업로드할 수 있는 옵션 추가
 
 ### Client
 - (Friendly) 데스크톱 모드에서 타임라인 옆에 위젯 영역을 배치하도록
@@ -53,7 +54,7 @@
 - 환영 메시지를 MFM으로 렌더링
 - 노트 내용이 없으면 번역 버튼을 활성화하지 않음
 - 노트 작성 폼 개선
-	- 내용이 너무 길면 스크롤 가능하도록
+  - 내용이 너무 길면 스크롤 가능하도록
   - 브라우저의 최대 높이를 초과하지 않도록
 - MkDialog 버튼이 3개 이상이면 정렬을 변경하도록
 - 리노트 유저 팝업의 디자인 일부 개선

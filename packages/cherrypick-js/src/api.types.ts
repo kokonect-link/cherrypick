@@ -49,6 +49,7 @@ export type Endpoints = {
 	'admin/drive/files': { req: TODO; res: TODO; };
 	'admin/drive/show-file': { req: TODO; res: TODO; };
 	'admin/emoji/add': { req: TODO; res: TODO; };
+	'admin/emoji/adds': { req: TODO; res: TODO; };
 	'admin/emoji/copy': { req: TODO; res: TODO; };
 	'admin/emoji/list-remote': { req: TODO; res: TODO; };
 	'admin/emoji/list': { req: TODO; res: TODO; };

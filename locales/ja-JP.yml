@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+addSingle: "一つだけ追加"
+addMultiple: "複数追加"
 showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"
 showSubNoteFooterButton: "サブノートにアクションボタンを表示"
 showSubNoteFooterButtonDescription: "この設定を有効にすると、返信があるノートの親ノートにアクションボタンを表示します。"
