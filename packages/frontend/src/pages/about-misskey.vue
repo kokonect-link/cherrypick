@@ -211,8 +211,6 @@ import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { $i } from '@/account';
 
 const patronsWithIconWithCherryPick = [{
-	name: 'Inger 잉어',
-	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/84216800/918c97c846994764ac3c027ad4b157f6/eyJ3IjoyMDB9/1.png?token-time=2145916800&token-hash=d7ZLPuj9EH99FuOVYFyEJQs94HArBfPxCdJpZqyIwSU%3D',
 }];
 
 const patronsWithIconWithMisskey = [{
