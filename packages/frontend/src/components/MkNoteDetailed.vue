@@ -348,6 +348,7 @@ function reply(viaKeyboard = false): void {
 	showMovedDialog();
 	os.post({
 		reply: appearNote,
+		channel: appearNote.channel,
 		animation: !viaKeyboard,
 	}, () => {
 		focus();
@@ -668,6 +669,7 @@ if (appearNote.replyId) {
 	padding: 24px;
 	border: solid 1px var(--renote);
 	border-radius: 8px;
+	overflow: clip;
 }
 
 .channel {

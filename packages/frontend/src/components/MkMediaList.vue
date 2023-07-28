@@ -39,10 +39,18 @@ const ro = new ResizeObserver(entries => {
 	}
 });
 
-function getClientWidthWithCache(targetEl: HTMLElement, containerEl: HTMLElement) {
+async function getClientWidthWithCache(targetEl: HTMLElement, containerEl: HTMLElement, count = 0) {
+	if (_DEV_) console.log('getClientWidthWithCache', { targetEl, containerEl, count, cache: widthCache.get(containerEl) });
 	if (widthCache.has(containerEl)) return widthCache.get(containerEl)!;
 
 	const width = targetEl.clientWidth;
+
+	if (count <= 10 && width < 64) {
+		// widthが64未満はおかしいのでリトライする
+		await new Promise(resolve => setTimeout(resolve, 50));
+		return getClientWidthWithCache(targetEl, containerEl, count + 1);
+	}
+
 	widthCache.set(containerEl, width);
 	ro.observe(containerEl);
 	return width;
@@ -50,7 +58,7 @@ function getClientWidthWithCache(targetEl: HTMLElement, containerEl: HTMLElement
 </script>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef } from 'vue';
+import { onMounted, onUnmounted, shallowRef } from 'vue';
 import * as misskey from 'cherrypick-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
@@ -74,12 +82,19 @@ const gallery = shallowRef<HTMLDivElement>();
 const pswpZIndex = os.claimZIndex('middle');
 document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
 const count = $computed(() => props.mediaList.filter(media => previewable(media)).length);
+let lightbox: PhotoSwipeLightbox | null;
+
+const popstateHandler = (): void => {
+	if (lightbox.pswp && lightbox.pswp.isOpen === true) {
+		lightbox.pswp.close();
+	}
+};
 
 /**
  * アスペクト比をmediaListWithOneImageAppearanceに基づいていい感じに調整する
  * aspect-ratioではなくheightを使う
  */
-function calcAspectRatio() {
+async function calcAspectRatio() {
 	if (!gallery.value || !root.value) return;
 
 	let img = props.mediaList[0];
@@ -90,7 +105,7 @@ function calcAspectRatio() {
 	}
 
 	if (!container.value) container.value = getScrollContainer(root.value);
-	const width = container.value ? getClientWidthWithCache(root.value, container.value) : root.value.clientWidth;
+	const width = container.value ? await getClientWidthWithCache(root.value, container.value) : root.value.clientWidth;
 
 	const heightMin = (ratio: number) => {
 		const imgResizeRatio = width / img.properties.width;
@@ -129,7 +144,7 @@ function calcAspectRatio() {
 onMounted(() => {
 	calcAspectRatio();
 
-	const lightbox = new PhotoSwipeLightbox({
+	lightbox = new PhotoSwipeLightbox({
 		dataSource: props.mediaList
 			.filter(media => {
 				if (media.type === 'image/svg+xml') return true; // svgのwebpublicはpngなのでtrue
@@ -213,12 +228,7 @@ onMounted(() => {
 
 	lightbox.init();
 
-	window.addEventListener('popstate', () => {
-		if (lightbox.pswp && lightbox.pswp.isOpen === true) {
-			lightbox.pswp.close();
-			return;
-		}
-	});
+	window.addEventListener('popstate', popstateHandler);
 
 	lightbox.on('beforeOpen', () => {
 		history.pushState(null, '', '#pswp');
@@ -229,6 +239,12 @@ onMounted(() => {
 			history.back();
 		}
 	});
+});
+
+onUnmounted(() => {
+	window.removeEventListener('popstate', popstateHandler);
+	lightbox?.destroy();
+	lightbox = null;
 });
 
 const previewable = (file: misskey.entities.DriveFile): boolean => {

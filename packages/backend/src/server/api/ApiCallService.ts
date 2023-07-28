@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { pipeline } from 'node:stream';
 import * as fs from 'node:fs';
-import { promisify } from 'node:util';
+import * as stream from 'node:stream/promises';
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import { getIpHash } from '@/misc/get-ip-hash.js';
@@ -21,8 +20,6 @@ import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { OnApplicationShutdown } from '@nestjs/common';
 import type { IEndpointMeta, IEndpoint } from './endpoints.js';
 import type { FlashToken } from '@/misc/flash-token.js';
-
-const pump = promisify(pipeline);
 
 const accessDenied = {
 	message: 'Access denied.',
@@ -139,7 +136,7 @@ export class ApiCallService implements OnApplicationShutdown {
 		}
 
 		const [path] = await createTemp();
-		await pump(multipartData.file, fs.createWriteStream(path));
+		await stream.pipeline(multipartData.file, fs.createWriteStream(path));
 
 		const fields = {} as Record<string, unknown>;
 		for (const [k, v] of Object.entries(multipartData.fields)) {

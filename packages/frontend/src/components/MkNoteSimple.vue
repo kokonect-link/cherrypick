@@ -51,7 +51,6 @@ onMounted(() => {
 .root {
 	margin: 0;
 	padding: 0;
-	overflow: clip;
 	font-size: 0.95em;
 }
 
