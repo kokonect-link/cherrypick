@@ -92,7 +92,7 @@
 - 네비게이션 메뉴에 배너 표시 옵션 추가
 - 노트에서 프로필 아이콘을 숨기는 옵션 추가
 - 닉네임 기능 ([shrimpia/misskey@126f145](https://github.com/shrimpia/misskey/commit/126f145560caa0cc34fe8d2c9ee22f3be922ea10), [shrimpia/misskey@58f70be](https://github.com/shrimpia/misskey/commit/58f70beb9aff2287a64d903b43583184340294aa))
-	- 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
+  - 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
 - 「노트 액션 버튼을 마우스를 올렸을 때에만 표시」 옵션을 켰을 때, 자세히 버튼을 표시하도록 변경 ([shrimpia/misskey@4802191](https://github.com/shrimpia/misskey/commit/48021913bb9b6b2a314e8d88e3816f6f66a52888))
 - 「이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음」을 선택 사항으로 설정 ([shrimpia/misskey@9345149](https://github.com/shrimpia/misskey/commit/9345149f5d0447058a6ed1524708925a84744bd7))
 - 노트 작성 폼에서 본문 미리보기 상태 기억 ([shrimpia/misskey](https://github.com/shrimpia/misskey))
@@ -106,7 +106,7 @@
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음
 - 모바일에서 UI 흐림 효과를 비활성화 했을 때 가독성 향상
-	- 토스트 알림의 배경이 불투명하게 표시되도록
+  - 토스트 알림의 배경이 불투명하게 표시되도록
   - 헤더의 배경이 불투명하게 표시되도록
 - MFM 도움말에 검색 섹션 추가
 - 노트 디자인 개선
