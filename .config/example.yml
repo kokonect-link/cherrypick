@@ -30,8 +30,8 @@ url: https://example.tld/
 # The port that your CherryPick server should listen on.
 port: 3000
 
-# You can also use UNIX domain socket. 
-# socket: /path/to/misskey.sock
+# You can also use UNIX domain socket.
+# socket: /path/to/cherrypick.sock
 # chmodSocket: '777'
 
 #   ┌──────────────────────────┐
@@ -60,17 +60,17 @@ dbReplications: false
 # You can configure any number of replicas here
 #dbSlaves:
 #  -
-#    host: 
-#    port: 
-#    db: 
-#    user: 
-#    pass: 
+#    host:
+#    port:
+#    db:
+#    user:
+#    pass:
 #  -
-#    host: 
-#    port: 
-#    db: 
-#    user: 
-#    pass: 
+#    host:
+#    port:
+#    db:
+#    user:
+#    pass:
 
 #   ┌─────────────────────┐
 #───┘ Redis configuration └─────────────────────────────────────
