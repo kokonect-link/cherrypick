@@ -1,7 +1,8 @@
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkPageHeader v-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileTimelineHeaderChange" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-else-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 		<MkPageHeader v-else v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
@@ -59,7 +60,7 @@ import { unisonReload } from '@/scripts/unison-reload';
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
+if (!isFriendly.value && !defaultStore.state.mobileTimelineHeaderChange) provide('shouldOmitHeaderTitle', true);
 
 const MOBILE_THRESHOLD = 500;
 
@@ -72,6 +73,8 @@ const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
+const isMediaTimelineAvailable = ($i == null && instance.policies.mtlAvailable) || ($i != null && $i.policies.mtlAvailable);
+const isCatTimelineAvailable = ($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable);
 const keymap = {
 	't': focus,
 };
@@ -137,7 +140,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global'): void {
+function saveSrc(newSrc: 'home' | 'local' | 'media' | 'social' | 'cat' | 'global'): void {
 	defaultStore.set('tl', {
 		...defaultStore.state.tl,
 		src: newSrc,
@@ -171,57 +174,71 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-	icon: 'ti ti-column-insert-left',
-	text: i18n.ts.friendlyEnableNotification,
+	icon: friendlyEnableNotifications.value ? 'ti ti-notification' : 'ti ti-notification-off',
+	text: i18n.ts.friendlyEnableNotifications,
 	handler: () => {
-		friendlyEnableNotification.value = !friendlyEnableNotification.value;
+		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
+		reloadAsk();
+	},
+}, {
+	icon: friendlyEnableWidgets.value ? 'ti ti-apps' : 'ti ti-apps-off',
+	text: i18n.ts.friendlyEnableWidgets,
+	handler: () => {
+		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
 		reloadAsk();
 	},
 }]);
 
-const friendlyEnableNotification = computed(defaultStore.makeGetterSetter('friendlyEnableNotification'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
-const headerTabs = $computed(() => [{
-	key: 'home',
-	title: i18n.ts._timelines.home,
-	icon: 'ti ti-home',
-	iconOnly: true,
-}, ...(isLocalTimelineAvailable ? [{
-	key: 'local',
-	title: i18n.ts._timelines.local,
-	icon: 'ti ti-planet',
-	iconOnly: true,
-}, {
-	key: 'media',
-	title: i18n.ts._timelines.media,
-	icon: 'ti ti-photo',
-	iconOnly: true,
-}, {
-	key: 'social',
-	title: i18n.ts._timelines.social,
-	icon: 'ti ti-rocket',
-	iconOnly: true,
-}] : []), ...(isGlobalTimelineAvailable ? [{
-	key: 'global',
-	title: i18n.ts._timelines.global,
-	icon: 'ti ti-world',
-	iconOnly: true,
-}] : []), {
-	icon: 'ti ti-list',
-	title: i18n.ts.lists,
-	iconOnly: true,
-	onClick: chooseList,
-}, {
-	icon: 'ti ti-antenna',
-	title: i18n.ts.antennas,
-	iconOnly: true,
-	onClick: chooseAntenna,
-}, {
-	icon: 'ti ti-device-tv',
-	title: i18n.ts.channel,
-	iconOnly: true,
-	onClick: chooseChannel,
-}] as Tab[]);
+const headerTabs = $computed(() => [
+	...(defaultStore.state.enableHomeTimeline ? [{
+		key: 'home',
+		title: i18n.ts._timelines.home,
+		icon: 'ti ti-home',
+		iconOnly: true,
+	}] : []), ...(isLocalTimelineAvailable && defaultStore.state.enableLocalTimeline ? [{
+		key: 'local',
+		title: i18n.ts._timelines.local,
+		icon: 'ti ti-planet',
+		iconOnly: true,
+	}, ...(isMediaTimelineAvailable && defaultStore.state.enableMediaTimeline ? [{
+		key: 'media',
+		title: i18n.ts._timelines.media,
+		icon: 'ti ti-photo',
+		iconOnly: true,
+	}] : []), ...(defaultStore.state.enableSocialTimeline ? [{
+		key: 'social',
+		title: i18n.ts._timelines.social,
+		icon: 'ti ti-rocket',
+		iconOnly: true,
+	}] : []), ...(isCatTimelineAvailable && defaultStore.state.enableCatTimeline ? [{
+		key: 'cat',
+		title: i18n.ts._timelines.cat,
+		icon: 'ti ti-cat',
+		iconOnly: true,
+	}] : [])] : []), ...(isGlobalTimelineAvailable && defaultStore.state.enableGlobalTimeline ? [{
+		key: 'global',
+		title: i18n.ts._timelines.global,
+		icon: 'ti ti-world',
+		iconOnly: true,
+	}] : []), ...(defaultStore.state.enableListTimeline ? [{
+		icon: 'ti ti-list',
+		title: i18n.ts.lists,
+		iconOnly: true,
+		onClick: chooseList,
+	}] : []), ...(defaultStore.state.enableAntennaTimeline ? [{
+		icon: 'ti ti-antenna',
+		title: i18n.ts.antennas,
+		iconOnly: true,
+		onClick: chooseAntenna,
+	}] : []), ...(defaultStore.state.enableChannelTimeline ? [{
+		icon: 'ti ti-device-tv',
+		title: i18n.ts.channel,
+		iconOnly: true,
+		onClick: chooseChannel,
+	}] : [])] as Tab[]);
 
 const headerTabsWhenNotLogin = $computed(() => [
 	...(isLocalTimelineAvailable ? [{
@@ -240,7 +257,7 @@ const headerTabsWhenNotLogin = $computed(() => [
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
+	icon: src === 'local' ? 'ti ti-planet' : src === 'media' ? 'ti ti-photo' : src === 'social' ? 'ti ti-rocket' : src === 'cat' ? 'ti ti-cat' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
 })));
 </script>
 

@@ -43,7 +43,7 @@
 			<MkButton v-if="showOkButton" data-cy-modal-dialog-ok inline primary rounded :autofocus="!input && !select" :disabled="okButtonDisabled" @click="ok">{{ okText ?? ((showCancelButton || input || select) ? i18n.ts.ok : i18n.ts.gotIt) }}</MkButton>
 			<MkButton v-if="showCancelButton || input || select" data-cy-modal-dialog-cancel inline rounded @click="cancel">{{ cancelText ?? i18n.ts.cancel }}</MkButton>
 		</div>
-		<div v-if="actions" :class="$style.buttons">
+		<div v-if="actions" :class="[$style.buttons, { [$style.changeButtonAlign]: actions.length > 2 }]">
 			<MkButton v-for="action in actions" :key="action.text" inline rounded :primary="action.primary" :danger="action.danger" @click="() => { action.callback(); modal?.close(); }">{{ action.text }}</MkButton>
 		</div>
 	</div>
@@ -243,5 +243,9 @@ onBeforeUnmount(() => {
 	gap: 8px;
 	flex-wrap: wrap;
 	justify-content: center;
+
+	&.changeButtonAlign {
+		flex-direction: column;
+	}
 }
 </style>

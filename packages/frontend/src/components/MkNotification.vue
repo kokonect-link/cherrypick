@@ -10,6 +10,7 @@
 				[$style.t_follow]: notification.type === 'follow',
 				[$style.t_followRequestAccepted]: notification.type === 'followRequestAccepted',
 				[$style.t_receiveFollowRequest]: notification.type === 'receiveFollowRequest',
+				[$style.t_groupInvited]: notification.type === 'groupInvited',
 				[$style.t_renote]: notification.type === 'renote',
 				[$style.t_reply]: notification.type === 'reply',
 				[$style.t_mention]: notification.type === 'mention',
@@ -21,7 +22,7 @@
 			<i v-if="notification.type === 'follow'" class="ti ti-plus"></i>
 			<i v-else-if="notification.type === 'receiveFollowRequest'" class="ti ti-clock"></i>
 			<i v-else-if="notification.type === 'followRequestAccepted'" class="ti ti-check"></i>
-			<i v-else-if="notification.type === 'groupInvited'" class="ti ti-certificate-2"></i>
+			<i v-else-if="notification.type === 'groupInvited'" class="ti ti-users-group"></i>
 			<i v-else-if="notification.type === 'renote'" class="ti ti-repeat"></i>
 			<i v-else-if="notification.type === 'reply'" class="ti ti-arrow-back-up"></i>
 			<i v-else-if="notification.type === 'mention'" class="ti ti-at"></i>

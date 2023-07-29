@@ -10,10 +10,10 @@
 				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :i="$i"/>
-					<MkCwButton v-model="showContent" :note="note"/>
+					<MkCwButton v-model="showContent" style="width: 100%" :note="note"/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="$style.text" :note="note"/>
+					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
 				</div>
 			</div>
 		</div>
@@ -106,6 +106,7 @@ if (props.detail) {
 	width: 58px;
 	height: 58px;
 	border-radius: 8px;
+	background: var(--panel);
 }
 
 .body {
@@ -119,7 +120,7 @@ if (props.detail) {
 
 .cw {
 	cursor: default;
-	display: block;
+	display: grid;
 	margin: 0;
 	padding: 0;
 	overflow-wrap: break-word;

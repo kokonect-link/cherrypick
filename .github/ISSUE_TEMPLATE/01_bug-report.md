@@ -54,7 +54,7 @@ Please include errors from the developer console and/or server log files if you 
 
 * Installation Method or Hosting Service: <!-- Example: docker compose, k8s/docker, systemd, "CherryPick install shell script", development environment -->
 * CherryPick: 13.x.x-cp-4.x.x
-* Node: 18.x.x
+* Node: 20.x.x
 * PostgreSQL: 15.x.x
 * Redis: 7.x.x
 * OS and Architecture: <!-- Example: Ubuntu 22.04.2 LTS aarch64 -->

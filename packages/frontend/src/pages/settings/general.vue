@@ -52,15 +52,9 @@
 				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 				<MkSwitch v-model="useReactionPickerForContextMenu">{{ i18n.ts.useReactionPickerForContextMenu }}</MkSwitch>
-				<MkSwitch v-model="useEnterToSend">
-					<template #label>{{ i18n.ts.useEnterToSend }} <span class="_beta">CherryPick</span></template>
-					<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="postFormVisibilityHotkey">
-					<template #label>{{ i18n.ts.postFormVisibilityHotkey }} <span class="_beta">CherryPick</span></template>
-					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }}</MkSwitch>
+				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="enableMarkByDate" :disabled="defaultStore.state.enableAbsoluteTime">{{ i18n.ts.enableMarkByDate }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="showSubNoteFooterButton">{{ i18n.ts.showSubNoteFooterButton }}<template #caption>{{ i18n.ts.showSubNoteFooterButtonDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -71,10 +65,10 @@
 			</MkSelect>
 
 			<MkSelect v-model="nsfw">
-				<template #label>{{ i18n.ts.nsfw }}</template>
-				<option value="respect">{{ i18n.ts._nsfw.respect }}</option>
-				<option value="ignore">{{ i18n.ts._nsfw.ignore }}</option>
-				<option value="force">{{ i18n.ts._nsfw.force }}</option>
+				<template #label>{{ i18n.ts.displayOfSensitiveMedia }}</template>
+				<option value="respect">{{ i18n.ts._displayOfSensitiveMedia.respect }}</option>
+				<option value="ignore">{{ i18n.ts._displayOfSensitiveMedia.ignore }}</option>
+				<option value="force">{{ i18n.ts._displayOfSensitiveMedia.force }}</option>
 			</MkSelect>
 
 			<MkRadios v-model="mediaListWithOneImageAppearance">
@@ -325,8 +319,6 @@ const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('
 const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
 const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
 const showTimelineReplies = computed(defaultStore.makeGetterSetter('showTimelineReplies'));
-const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
-const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
@@ -334,6 +326,8 @@ const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRe
 const hideAvatarsInNote = computed(defaultStore.makeGetterSetter('hideAvatarsInNote'));
 const showTranslateButtonInNote = computed(defaultStore.makeGetterSetter('showTranslateButtonInNote'));
 const enableAbsoluteTime = computed(defaultStore.makeGetterSetter('enableAbsoluteTime'));
+const enableMarkByDate = computed(defaultStore.makeGetterSetter('enableMarkByDate'));
+const showSubNoteFooterButton = computed(defaultStore.makeGetterSetter('showSubNoteFooterButton'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -377,8 +371,11 @@ watch([
 	showGapBetweenNotesInTimeline,
 	instanceTicker,
 	overridedDeviceKind,
+	mediaListWithOneImageAppearance,
 	enableDataSaverMode,
 	enableAbsoluteTime,
+	enableMarkByDate,
+	showSubNoteFooterButton,
 ], async () => {
 	await reloadAsk();
 });

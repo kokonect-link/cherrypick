@@ -105,7 +105,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 					.setParameter('meId', me.id)
 					.setParameter('recipientId', recipient.id);
 
-				const messages = await query.take(ps.limit).getMany();
+				const messages = await query.limit(ps.limit).getMany();
 
 				if (ps.sinceId !== undefined) {
 					messages.reverse();
@@ -145,7 +145,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				const query = this.queryService.makePaginationQuery(this.messagingMessagesRepository.createQueryBuilder('message'), ps.sinceId, ps.untilId)
 					.andWhere('message.groupId = :groupId', { groupId: recipientGroup.id });
 
-				const messages = await query.take(ps.limit).getMany();
+				const messages = await query.limit(ps.limit).getMany();
 
 				if (ps.sinceId) {
 					messages.reverse();

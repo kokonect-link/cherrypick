@@ -106,7 +106,7 @@ If your language is not listed in Crowdin, please open an issue.
 ![Crowdin](https://d322cqt584bo4o.cloudfront.net/misskey/localized.svg)
 
 ## Development
-During development, it is useful to use the 
+During development, it is useful to use the
 
 ```
 pnpm dev
@@ -150,7 +150,7 @@ Prepare DB/Redis for testing.
 ```
 docker compose -f packages/backend/test/docker-compose.yml up
 ```
-Alternatively, prepare an empty (data can be erased) DB and edit `.config/test.yml`. 
+Alternatively, prepare an empty (data can be erased) DB and edit `.config/test.yml`.
 
 Run all test.
 ```
@@ -214,30 +214,13 @@ CherryPick uses [Storybook](https://storybook.js.org/) for UI development.
 
 ### Setup & Run
 
-#### Universal
-
-##### Setup
-
-```bash
-pnpm --filter cherrypick-js build
-pnpm --filter frontend tsc -p .storybook && (node packages/frontend/.storybook/preload-locale.js & node packages/frontend/.storybook/preload-theme.js)
-```
-
-##### Run
-
-```bash
-node packages/frontend/.storybook/generate.js && pnpm --filter frontend storybook dev
-```
-
-#### macOS & Linux
-
-##### Setup
+#### Setup
 
 ```bash
 pnpm --filter cherrypick-js build
 ```
 
-##### Run
+#### Run
 
 ```bash
 pnpm --filter frontend storybook-dev
@@ -294,11 +277,12 @@ You can override the component meta by creating a meta story file (`MyComponent.
 ```ts
 export const argTypes = {
 	scale: {
-		control: {
-			type: 'range',
-			min: 1,
-			max: 4,
-		},
+        control: {
+            type: 'range',
+            min: 1,
+            max: 4,
+        },
+    },
 };
 ```
 
@@ -435,7 +419,7 @@ export const paramDef = {
 ```
 
 ### コネクションには`markRaw`せよ
-**Vueのコンポーネントのdataオプションとして**cherrypick.jsのコネクションを設定するとき、必ず`markRaw`でラップしてください。インスタンスが不必要にリアクティブ化されることで、misskey.js内の処理で不具合が発生するとともに、パフォーマンス上の問題にも繋がる。なお、Composition APIを使う場合はこの限りではない(リアクティブ化はマニュアルなため)。
+**Vueのコンポーネントのdataオプションとして**cherrypick.jsのコネクションを設定するとき、必ず`markRaw`でラップしてください。インスタンスが不必要にリアクティブ化されることで、cherrypick.js内の処理で不具合が発生するとともに、パフォーマンス上の問題にも繋がる。なお、Composition APIを使う場合はこの限りではない(リアクティブ化はマニュアルなため)。
 
 ### JSONのimportに気を付けよう
 TypeScriptでjsonをimportすると、tscでコンパイルするときにそのjsonファイルも一緒にdistディレクトリに吐き出されてしまう。この挙動により、意図せずファイルの書き換えが発生することがあるので、jsonをimportするときは書き換えられても良いものかどうか確認すること。書き換えされて欲しくない場合は、importで読み込むのではなく、`fs.readFileSync`などの関数を使って読み込むようにすればよい。

@@ -27,7 +27,7 @@
 				<i v-else-if="note.visibility === 'followers'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-lock"></i>
 				<i v-else-if="note.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-mail"></i>
 			</span>
-			<span v-if="note.reactionAcceptance !== null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
+			<span v-if="note.reactionAcceptance != null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
 				<i v-if="note.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
 				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
 				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
@@ -63,10 +63,10 @@
 			</p>
 			<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
 				<div :class="$style.text">
-					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
+					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
 					<MkA v-if="appearNote.replyId" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 					<Mfm v-if="appearNote.text" :text="appearNote.text" :author="appearNote.user" :i="$i" :emojiUrls="appearNote.emojis"/>
-					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable" style="padding-top: 5px; color: var(--accent);">
+					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && appearNote.text" style="padding-top: 5px; color: var(--accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 						<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 					</div>
@@ -128,12 +128,12 @@
 				<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
 					<i class="ti ti-heart"></i>
 				</button>
-				<button v-if="appearNote.myReaction == null" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
-					<i v-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
-					<i v-else class="ti ti-mood-plus"></i>
+				<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
+					<i class="ti ti-mood-plus"></i>
 				</button>
 				<button v-if="appearNote.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
-					<i class="ti ti-mood-minus"></i>
+					<i v-if="appearNote.reactionAcceptance !== 'likeOnly'" class="ti ti-mood-minus"></i>
+					<i v-else class="ti ti-heart-minus"></i>
 				</button>
 				<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
@@ -190,9 +190,9 @@ import { deepClone } from '@/scripts/clone';
 import { useTooltip } from '@/scripts/use-tooltip';
 import { claimAchievement } from '@/scripts/achievements';
 import { getNoteSummary } from '@/scripts/get-note-summary';
-import { MenuItem } from '@/types/menu';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog';
+import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { mainRouter } from '@/router';
 import { notePage } from '@/filters/note';
@@ -240,26 +240,15 @@ let appearNote = $computed(() => isRenote ? note.renote as misskey.entities.Note
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;
-const isLong = (appearNote.cw == null && appearNote.text != null && (
-	(appearNote.text.split('\n').length > 9) ||
-	(appearNote.text.length > 500) ||
-	(appearNote.files.length >= 5) ||
-	(urls && urls.length >= 4)
-));
-const isMFM = (appearNote.cw == null && appearNote.text != null && (
-	(appearNote.text.includes('$[x2')) ||
-	(appearNote.text.includes('$[x3')) ||
-	(appearNote.text.includes('$[x4')) ||
-	(appearNote.text.includes('$[scale')) ||
-	(appearNote.text.includes('$[position'))
-));
+const isLong = shouldCollapsed(appearNote);
+const isMFM = shouldMfmCollapsed(appearNote);
 const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault)));
 const isDeleted = ref(false);
 const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref<any>(null);
 const translating = ref(false);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
-let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId)) || (appearNote.myReaction != null)));
+let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId || $i.id === appearNote.userId)) || (appearNote.myReaction != null)));
 
 const keymap = {
 	'r': () => reply(true),
@@ -302,9 +291,28 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-function renote() {
+type Visibility = 'public' | 'home' | 'followers' | 'specified';
+
+// defaultStore.state.visibilityがstringなためstringも受け付けている
+function smallerVisibility(a: Visibility | string, b: Visibility | string): Visibility {
+	if (a === 'specified' || b === 'specified') return 'specified';
+	if (a === 'followers' || b === 'followers') return 'followers';
+	if (a === 'home' || b === 'home') return 'home';
+	// if (a === 'public' || b === 'public')
+	return 'public';
+}
+
+async function renote() {
 	pleaseLogin();
 	showMovedDialog();
+
+	if (defaultStore.state.showRenoteConfirmPopup) {
+		const { canceled } = await os.confirm({
+			type: 'info',
+			text: i18n.ts.renoteConfirm,
+		});
+		if (canceled) return;
+	}
 
 	if (appearNote.channel) {
 		const el = renoteButton.value as HTMLElement | null | undefined;
@@ -331,7 +339,12 @@ function renote() {
 		os.popup(MkRippleEffect, { x, y }, {}, 'end');
 	}
 
+	const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
+	const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+
 	os.api('notes/create', {
+		localOnly,
+		visibility: smallerVisibility(appearNote.visibility, configuredVisibility),
 		renoteId: appearNote.id,
 	}).then(() => {
 		os.noteToast(i18n.ts.renoted);
@@ -358,6 +371,7 @@ function reply(viaKeyboard = false): void {
 	pleaseLogin();
 	os.post({
 		reply: appearNote,
+		channel: appearNote.channel,
 		animation: !viaKeyboard,
 	}, () => {
 		focus();
@@ -635,6 +649,7 @@ function showReactions(): void {
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
+	background: var(--panel);
 }
 
 .renoteText {
@@ -682,6 +697,7 @@ function showReactions(): void {
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
+	background: var(--panel);
 }
 
 .collapsedRenoteTargetText {
@@ -722,6 +738,7 @@ function showReactions(): void {
 	height: 58px;
 	top: calc(22px + var(--stickyTop, 0px));
 	left: 0;
+	background: var(--panel);
 	transition: top 0.5s;
 
 	&.avatarReplyTo {
@@ -821,6 +838,7 @@ function showReactions(): void {
 	padding: 24px;
 	border: solid 1px var(--renote);
 	border-radius: 8px;
+	overflow: clip;
 }
 
 .channel {

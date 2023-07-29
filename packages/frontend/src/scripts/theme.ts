@@ -21,6 +21,9 @@ export const themeProps = Object.keys(lightTheme.props).filter(key => !key.start
 export const getBuiltinThemes = () => Promise.all(
 	[
 		'l-cherrypick',
+		'l-byeolvit-polaris',
+		'l-scone-color',
+		'l-stella-r2',
 		'l-light',
 		'l-coffee',
 		'l-apricot',
@@ -33,6 +36,9 @@ export const getBuiltinThemes = () => Promise.all(
 		'l-birdsite',
 
 		'd-cherrypick',
+		'd-byeolvit-noctiluca',
+		'd-scone-color',
+		'd-stella-r2',
 		'd-dark',
 		'd-persimmon',
 		'd-astro',
@@ -103,7 +109,7 @@ function compile(theme: Theme): Record<string, string> {
 	function getColor(val: string): tinycolor.Instance {
 		// ref (prop)
 		if (val[0] === '@') {
-			return getColor(theme.props[val.substr(1)]);
+			return getColor(theme.props[val.substring(1)]);
 		}
 
 		// ref (const)
@@ -114,7 +120,7 @@ function compile(theme: Theme): Record<string, string> {
 		// func
 		else if (val[0] === ':') {
 			const parts = val.split('<');
-			const func = parts.shift().substr(1);
+			const func = parts.shift().substring(1);
 			const arg = parseFloat(parts.shift());
 			const color = getColor(parts.join('<'));
 

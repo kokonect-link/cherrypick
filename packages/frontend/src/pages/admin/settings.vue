@@ -37,6 +37,13 @@
 								<template #label>{{ i18n.ts.cacheRemoteFiles }}</template>
 								<template #caption>{{ i18n.ts.cacheRemoteFilesDescription }}</template>
 							</MkSwitch>
+
+							<template v-if="cacheRemoteFiles">
+								<MkSwitch v-model="cacheRemoteSensitiveFiles">
+									<template #label>{{ i18n.ts.cacheRemoteSensitiveFiles }}</template>
+									<template #caption>{{ i18n.ts.cacheRemoteSensitiveFilesDescription }}</template>
+								</MkSwitch>
+							</template>
 						</div>
 					</FormSection>
 
@@ -146,7 +153,6 @@ import { fetchInstance } from '@/instance';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import MkButton from '@/components/MkButton.vue';
-import MkColorInput from '@/components/MkColorInput.vue';
 
 let name: string | null = $ref(null);
 let description: string | null = $ref(null);
@@ -154,6 +160,7 @@ let maintainerName: string | null = $ref(null);
 let maintainerEmail: string | null = $ref(null);
 let pinnedUsers: string = $ref('');
 let cacheRemoteFiles: boolean = $ref(false);
+let cacheRemoteSensitiveFiles: boolean = $ref(false);
 let enableServiceWorker: boolean = $ref(false);
 let swPublicKey: any = $ref(null);
 let swPrivateKey: any = $ref(null);
@@ -166,7 +173,7 @@ let ctav3Location: string = $ref('');
 let ctav3Model: string = $ref('');
 let ctav3Glossary: string = $ref('');
 
-async function init() {
+async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
 	name = meta.name;
 	description = meta.description;
@@ -174,6 +181,7 @@ async function init() {
 	maintainerEmail = meta.maintainerEmail;
 	pinnedUsers = meta.pinnedUsers.join('\n');
 	cacheRemoteFiles = meta.cacheRemoteFiles;
+	cacheRemoteSensitiveFiles = meta.cacheRemoteSensitiveFiles;
 	enableServiceWorker = meta.enableServiceWorker;
 	swPublicKey = meta.swPublickey;
 	swPrivateKey = meta.swPrivateKey;
@@ -187,7 +195,7 @@ async function init() {
 	ctav3Glossary = meta.ctav3Glossary;
 }
 
-function save() {
+function save(): void {
 	os.apiWithDialog('admin/update-meta', {
 		name,
 		description,
@@ -195,6 +203,7 @@ function save() {
 		maintainerEmail,
 		pinnedUsers: pinnedUsers.split('\n'),
 		cacheRemoteFiles,
+		cacheRemoteSensitiveFiles,
 		enableServiceWorker,
 		swPublicKey,
 		swPrivateKey,

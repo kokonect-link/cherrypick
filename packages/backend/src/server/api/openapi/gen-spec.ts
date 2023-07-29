@@ -9,7 +9,7 @@ export function genOpenapiSpec(config: Config) {
 
 		info: {
 			version: config.version,
-			title: 'Misskey API',
+			title: 'CherryPick API',
 			'x-logo': { url: '/static-assets/api-doc.png' },
 		},
 

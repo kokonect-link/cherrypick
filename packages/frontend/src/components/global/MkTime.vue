@@ -1,5 +1,5 @@
 <template>
-<time v-tooltip="absolute">
+<time v-tooltip="mode === 'detail' ? absolute : mode === 'relative' ? absolute : relative">
 	<template v-if="invalid">{{ i18n.ts._ago.invalid }}</template>
 	<template v-else-if="mode === 'relative'">{{ relative }}</template>
 	<template v-else-if="mode === 'absolute'">{{ absolute }}</template>
@@ -9,9 +9,10 @@
 
 <script lang="ts" setup>
 import isChromatic from 'chromatic/isChromatic';
-import { onUnmounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { i18n } from '@/i18n';
 import { dateTimeFormat } from '@/scripts/intl-const';
+import { defaultStore } from '@/store';
 
 const props = withDefaults(defineProps<{
 	time: Date | string | number | null;
@@ -29,37 +30,54 @@ const invalid = Number.isNaN(_time);
 const absolute = !invalid ? dateTimeFormat.format(_time) : i18n.ts._ago.invalid;
 
 let now = $ref((props.origin ?? new Date()).getTime());
+const ago = $computed(() => (now - _time) / 1000/*ms*/);
+
 const relative = $computed<string>(() => {
-	if (props.mode === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
+	// if (props.mode === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
 
-	const ago = (now - _time) / 1000/*ms*/;
-	return (
-		ago >= 31536000 ? i18n.t('_ago.yearsAgo', { n: Math.round(ago / 31536000).toString() }) :
-		ago >= 2592000 ? i18n.t('_ago.monthsAgo', { n: Math.round(ago / 2592000).toString() }) :
-		ago >= 604800 ? i18n.t('_ago.weeksAgo', { n: Math.round(ago / 604800).toString() }) :
-		ago >= 86400 ? i18n.t('_ago.daysAgo', { n: Math.round(ago / 86400).toString() }) :
-		ago >= 3600 ? i18n.t('_ago.hoursAgo', { n: Math.round(ago / 3600).toString() }) :
-		ago >= 60 ? i18n.t('_ago.minutesAgo', { n: (~~(ago / 60)).toString() }) :
-		ago >= 10 ? i18n.t('_ago.secondsAgo', { n: (~~(ago % 60)).toString() }) :
-		ago >= -1 ? i18n.ts._ago.justNow :
-		i18n.ts._ago.future);
+	if (defaultStore.state.enableMarkByDate) {
+		return (
+			ago >= 86400 ? i18n.t('_ago.daysAgo', { n: Math.round(ago / 86400).toString() }) :
+			ago >= 3600 ? i18n.t('_ago.hoursAgo', { n: Math.round(ago / 3600).toString() }) :
+			ago >= 60 ? i18n.t('_ago.minutesAgo', { n: (~~(ago / 60)).toString() }) :
+			ago >= 10 ? i18n.t('_ago.secondsAgo', { n: (~~(ago % 60)).toString() }) :
+			ago >= -1 ? i18n.ts._ago.justNow :
+			i18n.ts._ago.future);
+	} else {
+		return (
+			ago >= 31536000 ? i18n.t('_ago.yearsAgo', { n: Math.round(ago / 31536000).toString() }) :
+			ago >= 2592000 ? i18n.t('_ago.monthsAgo', { n: Math.round(ago / 2592000).toString() }) :
+			ago >= 604800 ? i18n.t('_ago.weeksAgo', { n: Math.round(ago / 604800).toString() }) :
+			ago >= 86400 ? i18n.t('_ago.daysAgo', { n: Math.round(ago / 86400).toString() }) :
+			ago >= 3600 ? i18n.t('_ago.hoursAgo', { n: Math.round(ago / 3600).toString() }) :
+			ago >= 60 ? i18n.t('_ago.minutesAgo', { n: (~~(ago / 60)).toString() }) :
+			ago >= 10 ? i18n.t('_ago.secondsAgo', { n: (~~(ago % 60)).toString() }) :
+			ago >= -1 ? i18n.ts._ago.justNow :
+			i18n.ts._ago.future);
+	}
 });
 
 let tickId: number;
+let currentInterval: number;
 
 function tick() {
-	now = props.origin ?? (new Date()).getTime();
-	const ago = (now - _time) / 1000/*ms*/;
-	const next = ago < 60 ? 10000 : ago < 3600 ? 60000 : 180000;
+	now = (new Date()).getTime();
+	const nextInterval = ago < 60 ? 10000 : ago < 3600 ? 60000 : 180000;
 
-	tickId = window.setTimeout(tick, next);
+	if (currentInterval !== nextInterval) {
+		if (tickId) window.clearInterval(tickId);
+		currentInterval = nextInterval;
+		tickId = window.setInterval(tick, nextInterval);
+	}
 }
 
-if (props.mode === 'relative' || props.mode === 'detail') {
-	tick();
+if (!invalid && props.origin === null && (props.mode === 'relative' || props.mode === 'detail')) {
+	onMounted(() => {
+		tick();
+	});
 	onUnmounted(() => {
-		window.clearTimeout(tickId);
+		if (tickId) window.clearInterval(tickId);
 	});
 }
 </script>

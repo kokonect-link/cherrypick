@@ -14,7 +14,7 @@ type Keys =
 	'wallpaper' |
 	'theme' |
 	'colorScheme' |
-	'useSystemFont' | 
+	'useSystemFont' |
 	'fontSize' |
 	'useBoldFont' |
 	'ui' |

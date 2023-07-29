@@ -35,6 +35,22 @@
 							</MkSwitch>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.mtlAvailable, 'mtlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.mtlAvailable }}</template>
+							<template #suffix>{{ policies.mtlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.mtlAvailable">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.ctlAvailable, 'ctlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.ctlAvailable }}</template>
+							<template #suffix>{{ policies.ctlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.ctlAvailable">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canPublicNote, 'canPublicNote'])">
 							<template #label>{{ i18n.ts._role._options.canPublicNote }}</template>
 							<template #suffix>{{ policies.canPublicNote ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -49,6 +65,29 @@
 							<MkSwitch v-model="policies.canInvite">
 								<template #label>{{ i18n.ts.enable }}</template>
 							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.inviteLimit, 'inviteLimit'])">
+							<template #label>{{ i18n.ts._role._options.inviteLimit }}</template>
+							<template #suffix>{{ policies.inviteLimit }}</template>
+							<MkInput v-model="policies.inviteLimit" type="number">
+							</MkInput>
+						</MkFolder>
+						
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.inviteLimitCycle, 'inviteLimitCycle'])">
+							<template #label>{{ i18n.ts._role._options.inviteLimitCycle }}</template>
+							<template #suffix>{{ policies.inviteLimitCycle + i18n.ts._time.minute }}</template>
+							<MkInput v-model="policies.inviteLimitCycle" type="number">
+								<template #suffix>{{ i18n.ts._time.minute }}</template>
+							</MkInput>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.inviteExpirationTime, 'inviteExpirationTime'])">
+							<template #label>{{ i18n.ts._role._options.inviteExpirationTime }}</template>
+							<template #suffix>{{ policies.inviteExpirationTime + i18n.ts._time.minute }}</template>
+							<MkInput v-model="policies.inviteExpirationTime" type="number">
+								<template #suffix>{{ i18n.ts._time.minute }}</template>
+							</MkInput>
 						</MkFolder>
 
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageCustomEmojis, 'canManageCustomEmojis'])">

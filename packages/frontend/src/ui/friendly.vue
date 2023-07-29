@@ -8,21 +8,21 @@
 		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotification && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotifications && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
 		<XNotifications/>
 	</div>
 
-	<div v-if="isDesktop" :class="$style.widgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyEnableWidgets" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatNavButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
-	<div v-if="isMobile" ref="navFooter" :class="$style.nav">
+	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]">
 		<!-- <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.replace('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
 		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.replace('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
@@ -90,14 +90,13 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, shallowRef, Ref } from 'vue';
+import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, ComputedRef, shallowRef, Ref } from 'vue';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
-import { navbarItemDef } from '@/navbar';
 import { i18n } from '@/i18n';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
 import { mainRouter } from '@/router';
@@ -290,9 +289,11 @@ watch($$(navFooter), () => {
 	if (navFooter) {
 		navFooterHeight = navFooter.offsetHeight;
 		document.body.style.setProperty('--stickyBottom', `${navFooterHeight}px`);
+		document.body.style.setProperty('--minBottomSpacing', 'var(--minBottomSpacingMobile)');
 	} else {
 		navFooterHeight = 0;
 		document.body.style.setProperty('--stickyBottom', '0px');
+		document.body.style.setProperty('--minBottomSpacing', '0px');
 	}
 }, {
 	immediate: true,
@@ -427,6 +428,11 @@ $float-button-size: 65px;
 	backdrop-filter: var(--blur, blur(15px));
 	transition: opacity 0.5s, transform 0.5s;
 
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;
 	}
@@ -458,6 +464,11 @@ $float-button-size: 65px;
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 	transition: opacity 0.5s, transform 0.5s;
+
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;
@@ -541,11 +552,16 @@ $float-button-size: 65px;
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
-	-webkit-backdrop-filter: var(--blur, blur(32px));
-	backdrop-filter: var(--blur, blur(32px));
-	background-color: var(--panel);
+	-webkit-backdrop-filter: var(--blur, blur(64px));
+	backdrop-filter: var(--blur, blur(64px));
 	border-top: solid 0.5px var(--divider);
 	padding: 0 10px;
+
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+		background-color: var(--panel);
+	}
 }
 
 .navButton {
@@ -555,13 +571,15 @@ $float-button-size: 65px;
 	margin: auto;
 	height: 50px;
 	// border-radius: 8px;
-	background: var(--panel);
+	// background: var(--panel);
 	color: var(--fg);
 	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
+	/*
 	&:not(:last-child) {
-		// margin-right: 12px;
+		margin-right: 12px;
 	}
+	 */
 
 	@media (max-width: 300px) {
 		height: 60px;

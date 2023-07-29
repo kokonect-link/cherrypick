@@ -1,6 +1,6 @@
+import { randomUUID } from 'node:crypto';
 import * as fs from 'node:fs';
 import { Inject, Injectable } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import sharp from 'sharp';
 import { sharpBmp } from 'sharp-read-bmp';
 import { IsNull } from 'typeorm';
@@ -131,9 +131,10 @@ export class DriveService {
 	 * @param type Content-Type for original
 	 * @param hash Hash for original
 	 * @param size Size for original
+	 * @param isRemote If true, file is remote file
 	 */
 	@bindThis
-	private async save(file: DriveFile, path: string, name: string, type: string, hash: string, size: number): Promise<DriveFile> {
+	private async save(file: DriveFile, path: string, name: string, type: string, hash: string, size: number, isRemote: boolean): Promise<DriveFile> {
 	// thunbnail, webpublic を必要なら生成
 		const alts = await this.generateAlts(path, type, !file.uri);
 
@@ -158,11 +159,19 @@ export class DriveService {
 				ext = '';
 			}
 
-			const baseUrl = meta.objectStorageBaseUrl
-				?? `${ meta.objectStorageUseSSL ? 'https' : 'http' }://${ meta.objectStorageEndpoint }${ meta.objectStoragePort ? `:${meta.objectStoragePort}` : '' }/${ meta.objectStorageBucket }`;
+			const useObjectStorageRemote = isRemote && meta.useObjectStorageRemote;
+			const objectStorageBaseUrl = useObjectStorageRemote ? meta.objectStorageRemoteBaseUrl : meta.objectStorageBaseUrl;
+			const objectStorageUseSSL = useObjectStorageRemote ? meta.objectStorageRemoteUseSSL : meta.objectStorageUseSSL;
+			const objectStorageEndpoint = useObjectStorageRemote ? meta.objectStorageRemoteEndpoint : meta.objectStorageEndpoint;
+			const objectStoragePort = useObjectStorageRemote ? meta.objectStorageRemotePort : meta.objectStoragePort;
+			const objectStorageBucket = useObjectStorageRemote ? meta.objectStorageRemoteBucket : meta.objectStorageBucket;
+			const objectStoragePrefix = useObjectStorageRemote ? meta.objectStorageRemotePrefix : meta.objectStoragePrefix;
+
+			const baseUrl = objectStorageBaseUrl
+				?? `${ objectStorageUseSSL ? 'https' : 'http' }://${ objectStorageEndpoint }${ objectStoragePort ? `:${objectStoragePort}` : '' }/${ objectStorageBucket }`;
 
 			// for original
-			const key = `${meta.objectStoragePrefix}/${uuid()}${ext}`;
+			const key = `${objectStoragePrefix}/${randomUUID()}${ext}`;
 			const url = `${ baseUrl }/${ key }`;
 
 			// for alts
@@ -175,23 +184,23 @@ export class DriveService {
 			//#region Uploads
 			this.registerLogger.info(`uploading original: ${key}`);
 			const uploads = [
-				this.upload(key, fs.createReadStream(path), type, null, name),
+				this.upload(key, fs.createReadStream(path), type, isRemote, null, name),
 			];
 
 			if (alts.webpublic) {
-				webpublicKey = `${meta.objectStoragePrefix}/webpublic-${uuid()}.${alts.webpublic.ext}`;
+				webpublicKey = `${objectStoragePrefix}/webpublic-${randomUUID()}.${alts.webpublic.ext}`;
 				webpublicUrl = `${ baseUrl }/${ webpublicKey }`;
 
 				this.registerLogger.info(`uploading webpublic: ${webpublicKey}`);
-				uploads.push(this.upload(webpublicKey, alts.webpublic.data, alts.webpublic.type, alts.webpublic.ext, name));
+				uploads.push(this.upload(webpublicKey, alts.webpublic.data, alts.webpublic.type, isRemote, alts.webpublic.ext, name));
 			}
 
 			if (alts.thumbnail) {
-				thumbnailKey = `${meta.objectStoragePrefix}/thumbnail-${uuid()}.${alts.thumbnail.ext}`;
+				thumbnailKey = `${objectStoragePrefix}/thumbnail-${randomUUID()}.${alts.thumbnail.ext}`;
 				thumbnailUrl = `${ baseUrl }/${ thumbnailKey }`;
 
 				this.registerLogger.info(`uploading thumbnail: ${thumbnailKey}`);
-				uploads.push(this.upload(thumbnailKey, alts.thumbnail.data, alts.thumbnail.type, alts.thumbnail.ext, `${name}.thumbnail`));
+				uploads.push(this.upload(thumbnailKey, alts.thumbnail.data, alts.thumbnail.type, isRemote, alts.thumbnail.ext, `${name}.thumbnail`));
 			}
 
 			await Promise.all(uploads);
@@ -212,9 +221,9 @@ export class DriveService {
 
 			return await this.driveFilesRepository.insert(file).then(x => this.driveFilesRepository.findOneByOrFail(x.identifiers[0]));
 		} else { // use internal storage
-			const accessKey = uuid();
-			const thumbnailAccessKey = 'thumbnail-' + uuid();
-			const webpublicAccessKey = 'webpublic-' + uuid();
+			const accessKey = randomUUID();
+			const thumbnailAccessKey = 'thumbnail-' + randomUUID();
+			const webpublicAccessKey = 'webpublic-' + randomUUID();
 
 			const url = this.internalStorageService.saveFromPath(accessKey, path);
 
@@ -360,14 +369,18 @@ export class DriveService {
 	 * Upload to ObjectStorage
 	 */
 	@bindThis
-	private async upload(key: string, stream: fs.ReadStream | Buffer, type: string, ext?: string | null, filename?: string) {
+	private async upload(key: string, stream: fs.ReadStream | Buffer, type: string, isRemote: boolean, ext?: string | null, filename?: string) {
 		if (type === 'image/apng') type = 'image/png';
 		if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
 
 		const meta = await this.metaService.fetch();
 
+		const useObjectStorageRemote = isRemote && meta.useObjectStorageRemote;
+		const objectStorageBucket = useObjectStorageRemote ? meta.objectStorageRemoteBucket : meta.objectStorageBucket;
+		const objectStorageSetPublicRead = useObjectStorageRemote ? meta.objectStorageRemoteSetPublicRead : meta.objectStorageSetPublicRead;
+
 		const params = {
-			Bucket: meta.objectStorageBucket,
+			Bucket: objectStorageBucket,
 			Key: key,
 			Body: stream,
 			ContentType: type,
@@ -380,9 +393,9 @@ export class DriveService {
 			// 許可されているファイル形式でしか拡張子をつけない
 			ext ? correctFilename(filename, ext) : filename,
 		);
-		if (meta.objectStorageSetPublicRead) params.ACL = 'public-read';
+		if (objectStorageSetPublicRead) params.ACL = 'public-read';
 
-		await this.s3Service.upload(meta, params)
+		await this.s3Service.upload(meta, params, isRemote)
 			.then(
 				result => {
 					if ('Bucket' in result) { // CompleteMultipartUploadCommandOutput
@@ -584,9 +597,9 @@ export class DriveService {
 			if (isLink) {
 				file.url = url;
 				// ローカルプロキシ用
-				file.accessKey = uuid();
-				file.thumbnailAccessKey = 'thumbnail-' + uuid();
-				file.webpublicAccessKey = 'webpublic-' + uuid();
+				file.accessKey = randomUUID();
+				file.thumbnailAccessKey = 'thumbnail-' + randomUUID();
+				file.webpublicAccessKey = 'webpublic-' + randomUUID();
 			}
 		}
 
@@ -618,7 +631,8 @@ export class DriveService {
 				}
 			}
 		} else {
-			file = await (this.save(file, path, detectedName, info.type.mime, info.md5, info.size));
+			const isRemote = user ? this.userEntityService.isRemoteUser(user) : false;
+			file = await (this.save(file, path, detectedName, info.type.mime, info.md5, info.size, isRemote));
 		}
 
 		this.registerLogger.succ(`drive file has been created ${file.id}`);
@@ -672,7 +686,7 @@ export class DriveService {
 	}
 
 	@bindThis
-	public async deleteFileSync(file: DriveFile, isExpired = false) {
+	public async deleteFileSync(file: DriveFile, isExpired = false, isRemote: boolean) {
 		if (file.storedInternal) {
 			this.internalStorageService.del(file.accessKey!);
 
@@ -686,14 +700,14 @@ export class DriveService {
 		} else if (!file.isLink) {
 			const promises = [];
 
-			promises.push(this.deleteObjectStorageFile(file.accessKey!));
+			promises.push(this.deleteObjectStorageFile(file.accessKey!, isRemote));
 
 			if (file.thumbnailUrl) {
-				promises.push(this.deleteObjectStorageFile(file.thumbnailAccessKey!));
+				promises.push(this.deleteObjectStorageFile(file.thumbnailAccessKey!, isRemote));
 			}
 
 			if (file.webpublicUrl) {
-				promises.push(this.deleteObjectStorageFile(file.webpublicAccessKey!));
+				promises.push(this.deleteObjectStorageFile(file.webpublicAccessKey!, isRemote));
 			}
 
 			await Promise.all(promises);
@@ -713,9 +727,9 @@ export class DriveService {
 				webpublicUrl: null,
 				storedInternal: false,
 				// ローカルプロキシ用
-				accessKey: uuid(),
-				thumbnailAccessKey: 'thumbnail-' + uuid(),
-				webpublicAccessKey: 'webpublic-' + uuid(),
+				accessKey: randomUUID(),
+				thumbnailAccessKey: 'thumbnail-' + randomUUID(),
+				webpublicAccessKey: 'webpublic-' + randomUUID(),
 			});
 		} else {
 			this.driveFilesRepository.delete(file.id);
@@ -733,15 +747,17 @@ export class DriveService {
 	}
 
 	@bindThis
-	public async deleteObjectStorageFile(key: string) {
+	public async deleteObjectStorageFile(key: string, isRemote: boolean) {
 		const meta = await this.metaService.fetch();
+		const useObjectStorageRemote = isRemote && meta.useObjectStorageRemote;
+		const objectStorageBucket = useObjectStorageRemote ? meta.objectStorageRemoteBucket : meta.objectStorageBucket;
 		try {
 			const param = {
-				Bucket: meta.objectStorageBucket,
+				Bucket: objectStorageBucket,
 				Key: key,
 			} as DeleteObjectCommandInput;
 
-			await this.s3Service.delete(meta, param);
+			await this.s3Service.delete(meta, param, isRemote);
 		} catch (err: any) {
 			if (err.name === 'NoSuchKey') {
 				this.deleteLogger.warn(`The object storage had no such key to delete: ${key}. Skipping this.`, err as Error);

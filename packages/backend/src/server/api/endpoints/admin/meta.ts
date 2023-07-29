@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { MetaService } from '@/core/MetaService.js';
 import type { Config } from '@/config.js';
@@ -17,6 +16,10 @@ export const meta = {
 		optional: false, nullable: false,
 		properties: {
 			cacheRemoteFiles: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			cacheRemoteSensitiveFiles: {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
@@ -250,6 +253,54 @@ export const meta = {
 				type: 'boolean',
 				optional: true, nullable: false,
 			},
+			useObjectStorageRemote: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			objectStorageRemoteBaseUrl: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemoteBucket: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemotePrefix: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemoteEndpoint: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemoteRegion: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemotePort: {
+				type: 'number',
+				optional: true, nullable: true,
+			},
+			objectStorageRemoteAccessKey: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemoteSecretKey: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
+			objectStorageRemoteUseSSL: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			objectStorageRemoteUseProxy: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
+			objectStorageRemoteSetPublicRead: {
+				type: 'boolean',
+				optional: true, nullable: false,
+			},
 			enableIpLogging: {
 				type: 'boolean',
 				optional: true, nullable: false,
@@ -263,6 +314,14 @@ export const meta = {
 				optional: false, nullable: false,
 			},
 			enableChartsForFederatedInstances: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			enableServerMachineStats: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			enableIdenticonGeneration: {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
@@ -332,6 +391,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				// pinnedPages: instance.pinnedPages,
 				// pinnedClipId: instance.pinnedClipId,
 				cacheRemoteFiles: instance.cacheRemoteFiles,
+				cacheRemoteSensitiveFiles: instance.cacheRemoteSensitiveFiles,
 				pinnedUsers: instance.pinnedUsers,
 				hiddenTags: instance.hiddenTags,
 				blockedHosts: instance.blockedHosts,
@@ -366,6 +426,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				objectStorageUseProxy: instance.objectStorageUseProxy,
 				objectStorageSetPublicRead: instance.objectStorageSetPublicRead,
 				objectStorageS3ForcePathStyle: instance.objectStorageS3ForcePathStyle,
+				useObjectStorageRemote: instance.useObjectStorageRemote,
+				objectStorageRemoteBaseUrl: instance.objectStorageRemoteBaseUrl,
+				objectStorageRemoteBucket: instance.objectStorageRemoteBucket,
+				objectStorageRemotePrefix: instance.objectStorageRemotePrefix,
+				objectStorageRemoteEndpoint: instance.objectStorageRemoteEndpoint,
+				objectStorageRemoteRegion: instance.objectStorageRemoteRegion,
+				objectStorageRemotePort: instance.objectStorageRemotePort,
+				objectStorageRemoteAccessKey: instance.objectStorageRemoteAccessKey,
+				objectStorageRemoteSecretKey: instance.objectStorageRemoteSecretKey,
+				objectStorageRemoteUseSSL: instance.objectStorageRemoteUseSSL,
+				objectStorageRemoteUseProxy: instance.objectStorageRemoteUseProxy,
+				objectStorageRemoteSetPublicRead: instance.objectStorageRemoteSetPublicRead,
+				objectStorageRemoteS3ForcePathStyle: instance.objectStorageRemoteS3ForcePathStyle,
 				deeplAuthKey: instance.deeplAuthKey,
 				deeplIsPro: instance.deeplIsPro,
 				ctav3SaKey: instance.ctav3SaKey,
@@ -377,6 +450,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				enableActiveEmailValidation: instance.enableActiveEmailValidation,
 				enableChartsForRemoteUser: instance.enableChartsForRemoteUser,
 				enableChartsForFederatedInstances: instance.enableChartsForFederatedInstances,
+				enableServerMachineStats: instance.enableServerMachineStats,
+				enableIdenticonGeneration: instance.enableIdenticonGeneration,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 			};
 		});

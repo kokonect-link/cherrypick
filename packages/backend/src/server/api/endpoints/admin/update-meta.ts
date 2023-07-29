@@ -43,6 +43,7 @@ export const paramDef = {
 		defaultLightTheme: { type: 'string', nullable: true },
 		defaultDarkTheme: { type: 'string', nullable: true },
 		cacheRemoteFiles: { type: 'boolean' },
+		cacheRemoteSensitiveFiles: { type: 'boolean' },
 		emailRequiredForSignup: { type: 'boolean' },
 		enableHcaptcha: { type: 'boolean' },
 		hcaptchaSiteKey: { type: 'string', nullable: true },
@@ -98,10 +99,25 @@ export const paramDef = {
 		objectStorageUseProxy: { type: 'boolean' },
 		objectStorageSetPublicRead: { type: 'boolean' },
 		objectStorageS3ForcePathStyle: { type: 'boolean' },
+		useObjectStorageRemote: { type: 'boolean' },
+		objectStorageRemoteBaseUrl: { type: 'string', nullable: true },
+		objectStorageRemoteBucket: { type: 'string', nullable: true },
+		objectStorageRemotePrefix: { type: 'string', nullable: true },
+		objectStorageRemoteEndpoint: { type: 'string', nullable: true },
+		objectStorageRemoteRegion: { type: 'string', nullable: true },
+		objectStorageRemotePort: { type: 'integer', nullable: true },
+		objectStorageRemoteAccessKey: { type: 'string', nullable: true },
+		objectStorageRemoteSecretKey: { type: 'string', nullable: true },
+		objectStorageRemoteUseSSL: { type: 'boolean' },
+		objectStorageRemoteUseProxy: { type: 'boolean' },
+		objectStorageRemoteSetPublicRead: { type: 'boolean' },
+		objectStorageRemoteS3ForcePathStyle: { type: 'boolean' },
 		enableIpLogging: { type: 'boolean' },
 		enableActiveEmailValidation: { type: 'boolean' },
 		enableChartsForRemoteUser: { type: 'boolean' },
 		enableChartsForFederatedInstances: { type: 'boolean' },
+		enableServerMachineStats: { type: 'boolean' },
+		enableIdenticonGeneration: { type: 'boolean' },
 		serverRules: { type: 'array', items: { type: 'string' } },
 		preservedUsernames: { type: 'array', items: { type: 'string' } },
 	},
@@ -140,7 +156,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (Array.isArray(ps.sensitiveWords)) {
 				set.sensitiveWords = ps.sensitiveWords.filter(Boolean);
 			}
-		
+
 			if (ps.themeColor !== undefined) {
 				set.themeColor = ps.themeColor;
 			}
@@ -195,6 +211,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			if (ps.cacheRemoteFiles !== undefined) {
 				set.cacheRemoteFiles = ps.cacheRemoteFiles;
+			}
+
+			if (ps.cacheRemoteSensitiveFiles !== undefined) {
+				set.cacheRemoteSensitiveFiles = ps.cacheRemoteSensitiveFiles;
 			}
 
 			if (ps.emailRequiredForSignup !== undefined) {
@@ -377,6 +397,58 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				set.objectStorageS3ForcePathStyle = ps.objectStorageS3ForcePathStyle;
 			}
 
+			if (ps.useObjectStorageRemote !== undefined) {
+				set.useObjectStorageRemote = ps.useObjectStorageRemote;
+			}
+
+			if (ps.objectStorageRemoteBaseUrl !== undefined) {
+				set.objectStorageRemoteBaseUrl = ps.objectStorageRemoteBaseUrl;
+			}
+
+			if (ps.objectStorageRemoteBucket !== undefined) {
+				set.objectStorageRemoteBucket = ps.objectStorageRemoteBucket;
+			}
+
+			if (ps.objectStorageRemotePrefix !== undefined) {
+				set.objectStorageRemotePrefix = ps.objectStorageRemotePrefix;
+			}
+
+			if (ps.objectStorageRemoteEndpoint !== undefined) {
+				set.objectStorageRemoteEndpoint = ps.objectStorageRemoteEndpoint;
+			}
+
+			if (ps.objectStorageRemoteRegion !== undefined) {
+				set.objectStorageRemoteRegion = ps.objectStorageRemoteRegion;
+			}
+
+			if (ps.objectStorageRemotePort !== undefined) {
+				set.objectStorageRemotePort = ps.objectStorageRemotePort;
+			}
+
+			if (ps.objectStorageRemoteAccessKey !== undefined) {
+				set.objectStorageRemoteAccessKey = ps.objectStorageRemoteAccessKey;
+			}
+
+			if (ps.objectStorageRemoteSecretKey !== undefined) {
+				set.objectStorageRemoteSecretKey = ps.objectStorageRemoteSecretKey;
+			}
+
+			if (ps.objectStorageRemoteUseSSL !== undefined) {
+				set.objectStorageRemoteUseSSL = ps.objectStorageRemoteUseSSL;
+			}
+
+			if (ps.objectStorageRemoteUseProxy !== undefined) {
+				set.objectStorageRemoteUseProxy = ps.objectStorageRemoteUseProxy;
+			}
+
+			if (ps.objectStorageRemoteSetPublicRead !== undefined) {
+				set.objectStorageRemoteSetPublicRead = ps.objectStorageRemoteSetPublicRead;
+			}
+
+			if (ps.objectStorageRemoteS3ForcePathStyle !== undefined) {
+				set.objectStorageRemoteS3ForcePathStyle = ps.objectStorageRemoteS3ForcePathStyle;
+			}
+
 			if (ps.translatorType !== undefined) {
 				if (ps.translatorType === '') {
 					set.translatorType = null;
@@ -431,6 +503,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			if (ps.enableChartsForFederatedInstances !== undefined) {
 				set.enableChartsForFederatedInstances = ps.enableChartsForFederatedInstances;
+			}
+
+			if (ps.enableServerMachineStats !== undefined) {
+				set.enableServerMachineStats = ps.enableServerMachineStats;
+			}
+
+			if (ps.enableIdenticonGeneration !== undefined) {
+				set.enableIdenticonGeneration = ps.enableIdenticonGeneration;
 			}
 
 			if (ps.serverRules !== undefined) {

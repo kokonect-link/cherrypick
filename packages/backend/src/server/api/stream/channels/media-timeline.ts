@@ -29,7 +29,7 @@ class MediaTimelineChannel extends Channel {
 	@bindThis
 	public async init(params: any) {
 		const policies = await this.roleService.getUserPolicies(this.user ? this.user.id : null);
-		if (!policies.ltlAvailable) return;
+		if (!policies.mtlAvailable) return;
 
 		this.withReplies = params.withReplies as boolean;
 

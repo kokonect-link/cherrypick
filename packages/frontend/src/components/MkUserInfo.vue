@@ -15,24 +15,14 @@
 	</div>
 	<div :class="$style.status">
 		<div :class="$style.statusItem">
-			<p :class="$style.statusItemLabel">{{ i18n.ts.notes }}</p><span :class="$style.statusItemValue">{{ user.notesCount }}</span>
+			<p :class="$style.statusItemLabel">{{ i18n.ts.notes }}</p><span :class="$style.statusItemValue">{{ number(user.notesCount) }}</span>
 		</div>
-		<template v-if="isFfVisibility($i, props.user)">
-			<div :class="$style.statusItem">
-				<p :class="$style.statusItemLabel">{{ i18n.ts.following }}</p><span :class="$style.statusItemValue">{{ user.followingCount }}</span>
-			</div>
-			<div :class="$style.statusItem">
-				<p :class="$style.statusItemLabel">{{ i18n.ts.followers }}</p><span :class="$style.statusItemValue">{{ user.followersCount }}</span>
-			</div>
-		</template>
-		<template v-else>
-			<div :class="$style.statusItem">
-				<p :class="$style.statusItemLabel">{{ i18n.ts.following }}</p><span :class="$style.statusItemValue"><i class="ti ti-lock" :class="[$style.keyWiggleArea, { [$style.animation]: animation }]"></i></span>
-			</div>
-			<div :class="$style.statusItem">
-				<p :class="$style.statusItemLabel">{{ i18n.ts.followers }}</p><span :class="$style.statusItemValue"><i class="ti ti-lock" :class="[$style.keyWiggleArea, { [$style.animation]: animation }]"></i></span>
-			</div>
-		</template>
+		<div v-if="isFfVisibleForMe(user)" :class="$style.statusItem">
+			<p :class="$style.statusItemLabel">{{ i18n.ts.following }}</p><span :class="$style.statusItemValue">{{ number(user.followingCount) }}</span>
+		</div>
+		<div v-if="isFfVisibleForMe(user)" :class="$style.statusItem">
+			<p :class="$style.statusItemLabel">{{ i18n.ts.followers }}</p><span :class="$style.statusItemValue">{{ number(user.followersCount) }}</span>
+		</div>
 	</div>
 	<MkFollowButton v-if="$i && user.id != $i.id" :class="$style.follow" :user="user" mini/>
 </div>
@@ -41,17 +31,15 @@
 <script lang="ts" setup>
 import * as misskey from 'cherrypick-js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
+import number from '@/filters/number';
 import { userPage } from '@/filters/user';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
-import { isFfVisibility } from '@/scripts/is-ff-visibility';
-import { defaultStore } from '@/store';
+import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe';
 
 const props = defineProps<{
 	user: misskey.entities.UserDetailed;
 }>();
-
-const animation = $ref(defaultStore.state.animation);
 </script>
 
 <style lang="scss" module>
@@ -149,37 +137,5 @@ const animation = $ref(defaultStore.state.animation);
 	position: absolute !important;
 	top: 8px;
 	right: 8px;
-}
-
-.keyWiggleArea {
-	display: block;
-}
-
-@keyframes keywiggle {
-	0% { transform: translate(-3px,-1px) rotate(-8deg); }
-	5% { transform: translateY(-1px) rotate(-10deg); }
-	10% { transform: translate(1px,-3px) rotate(0); }
-	15% { transform: translate(1px,1px) rotate(11deg); }
-	20% { transform: translate(-2px,1px) rotate(1deg); }
-	25% { transform: translate(-1px,-2px) rotate(-2deg); }
-	30% { transform: translate(-1px,2px) rotate(-3deg); }
-	35% { transform: translate(2px,1px) rotate(6deg); }
-	40% { transform: translate(-2px,-3px) rotate(-9deg); }
-	45% { transform: translateY(-1px) rotate(-12deg); }
-	50% { transform: translate(1px,2px) rotate(10deg); }
-	55% { transform: translateY(-3px) rotate(8deg); }
-	60% { transform: translate(1px,-1px) rotate(8deg); }
-	65% { transform: translateY(-1px) rotate(-7deg); }
-	70% { transform: translate(-1px,-3px) rotate(6deg); }
-	75% { transform: translateY(-2px) rotate(4deg); }
-	80% { transform: translate(-2px,-1px) rotate(3deg); }
-	85% { transform: translate(1px,-3px) rotate(-10deg); }
-	90% { transform: translate(1px) rotate(3deg); }
-	95% { transform: translate(-2px) rotate(-3deg); }
-	to { transform: translate(2px,1px) rotate(2deg); }
-}
-
-.animation:hover {
-	animation: keywiggle 1s;
 }
 </style>

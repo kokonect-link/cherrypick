@@ -80,7 +80,7 @@ export async function masterMain() {
 		await spawnWorkers(config.clusterLimit);
 	}
 
-	bootLogger.succ(`Now listening on port ${config.port} on ${config.url}`, null, true);
+	bootLogger.succ(config.socket ? `Now listening on socket ${config.socket} on ${config.url}` : `Now listening on port ${config.port} on ${config.url}`, null, true);
 }
 
 function showEnvironment(): void {
@@ -98,12 +98,6 @@ function showNodejsVersion(): void {
 	const nodejsLogger = bootLogger.createSubLogger('nodejs');
 
 	nodejsLogger.info(`Version ${process.version} detected.`);
-
-	const minVersion = fs.readFileSync(`${_dirname}/../../../../.node-version`, 'utf-8').trim();
-	if (semver.lt(process.version, minVersion)) {
-		nodejsLogger.error(`At least Node.js ${minVersion} required!`);
-		process.exit(1);
-	}
 }
 
 function loadConfigBoot(): Config {

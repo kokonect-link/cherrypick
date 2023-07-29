@@ -20,6 +20,7 @@ import * as ep___admin_drive_files from './endpoints/admin/drive/files.js';
 import * as ep___admin_drive_showFile from './endpoints/admin/drive/show-file.js';
 import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-aliases-bulk.js';
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
+import * as ep___admin_emoji_adds from './endpoints/admin/emoji/adds.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
 import * as ep___admin_emoji_delete from './endpoints/admin/emoji/delete.js';
@@ -38,8 +39,9 @@ import * as ep___admin_federation_updateInstance from './endpoints/admin/federat
 import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js';
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
-import * as ep___invite from './endpoints/invite.js';
-import * as ep___inviteRevoke from './endpoints/invite-revoke.js';
+import * as ep___admin_invite_create from './endpoints/admin/invite/create.js';
+import * as ep___admin_invite_list from './endpoints/admin/invite/list.js';
+import * as ep___admin_invite_revoke from './endpoints/admin/invite/revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -233,6 +235,10 @@ import * as ep___i_webhooks_show from './endpoints/i/webhooks/show.js';
 import * as ep___i_webhooks_list from './endpoints/i/webhooks/list.js';
 import * as ep___i_webhooks_update from './endpoints/i/webhooks/update.js';
 import * as ep___i_webhooks_delete from './endpoints/i/webhooks/delete.js';
+import * as ep___invite_create from './endpoints/invite/create.js';
+import * as ep___invite_delete from './endpoints/invite/delete.js';
+import * as ep___invite_list from './endpoints/invite/list.js';
+import * as ep___invite_limit from './endpoints/invite/limit.js';
 import * as ep___messaging_history from './endpoints/messaging/history.js';
 import * as ep___messaging_messages from './endpoints/messaging/messages.js';
 import * as ep___messaging_messages_create from './endpoints/messaging/messages/create.js';
@@ -262,6 +268,7 @@ import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
+import * as ep___notes_catTimeline from './endpoints/notes/cat-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
@@ -384,6 +391,7 @@ const $admin_drive_files: Provider = { provide: 'ep:admin/drive/files', useClass
 const $admin_drive_showFile: Provider = { provide: 'ep:admin/drive/show-file', useClass: ep___admin_drive_showFile.default };
 const $admin_emoji_addAliasesBulk: Provider = { provide: 'ep:admin/emoji/add-aliases-bulk', useClass: ep___admin_emoji_addAliasesBulk.default };
 const $admin_emoji_add: Provider = { provide: 'ep:admin/emoji/add', useClass: ep___admin_emoji_add.default };
+const $admin_emoji_adds: Provider = { provide: 'ep:admin/emoji/adds', useClass: ep___admin_emoji_adds.default };
 const $admin_emoji_copy: Provider = { provide: 'ep:admin/emoji/copy', useClass: ep___admin_emoji_copy.default };
 const $admin_emoji_deleteBulk: Provider = { provide: 'ep:admin/emoji/delete-bulk', useClass: ep___admin_emoji_deleteBulk.default };
 const $admin_emoji_delete: Provider = { provide: 'ep:admin/emoji/delete', useClass: ep___admin_emoji_delete.default };
@@ -402,8 +410,9 @@ const $admin_federation_updateInstance: Provider = { provide: 'ep:admin/federati
 const $admin_getIndexStats: Provider = { provide: 'ep:admin/get-index-stats', useClass: ep___admin_getIndexStats.default };
 const $admin_getTableStats: Provider = { provide: 'ep:admin/get-table-stats', useClass: ep___admin_getTableStats.default };
 const $admin_getUserIps: Provider = { provide: 'ep:admin/get-user-ips', useClass: ep___admin_getUserIps.default };
-const $invite: Provider = { provide: 'ep:invite', useClass: ep___invite.default };
-const $inviteRevoke: Provider = { provide: 'ep:invite-revoke', useClass: ep___inviteRevoke.default };
+const $admin_invite_create: Provider = { provide: 'ep:admin/invite/create', useClass: ep___admin_invite_create.default };
+const $admin_invite_list: Provider = { provide: 'ep:admin/invite/list', useClass: ep___admin_invite_list.default };
+const $admin_invite_revoke: Provider = { provide: 'ep:admin/invite/revoke', useClass: ep___admin_invite_revoke.default };
 const $admin_promo_create: Provider = { provide: 'ep:admin/promo/create', useClass: ep___admin_promo_create.default };
 const $admin_queue_clear: Provider = { provide: 'ep:admin/queue/clear', useClass: ep___admin_queue_clear.default };
 const $admin_queue_deliverDelayed: Provider = { provide: 'ep:admin/queue/deliver-delayed', useClass: ep___admin_queue_deliverDelayed.default };
@@ -597,6 +606,10 @@ const $i_webhooks_list: Provider = { provide: 'ep:i/webhooks/list', useClass: ep
 const $i_webhooks_show: Provider = { provide: 'ep:i/webhooks/show', useClass: ep___i_webhooks_show.default };
 const $i_webhooks_update: Provider = { provide: 'ep:i/webhooks/update', useClass: ep___i_webhooks_update.default };
 const $i_webhooks_delete: Provider = { provide: 'ep:i/webhooks/delete', useClass: ep___i_webhooks_delete.default };
+const $invite_create: Provider = { provide: 'ep:invite/create', useClass: ep___invite_create.default };
+const $invite_delete: Provider = { provide: 'ep:invite/delete', useClass: ep___invite_delete.default };
+const $invite_list: Provider = { provide: 'ep:invite/list', useClass: ep___invite_list.default };
+const $invite_limit: Provider = { provide: 'ep:invite/limit', useClass: ep___invite_limit.default };
 const $messaging_history: Provider = { provide: 'ep:messaging/history', useClass: ep___messaging_history.default };
 const $messaging_messages: Provider = { provide: 'ep:messaging/messages', useClass: ep___messaging_messages.default };
 const $messaging_messages_create: Provider = { provide: 'ep:messaging/messages/create', useClass: ep___messaging_messages_create.default };
@@ -626,6 +639,7 @@ const $notes_globalTimeline: Provider = { provide: 'ep:notes/global-timeline', u
 const $notes_hybridTimeline: Provider = { provide: 'ep:notes/hybrid-timeline', useClass: ep___notes_hybridTimeline.default };
 const $notes_localTimeline: Provider = { provide: 'ep:notes/local-timeline', useClass: ep___notes_localTimeline.default };
 const $notes_mediaTimeline: Provider = { provide: 'ep:notes/media-timeline', useClass: ep___notes_mediaTimeline.default };
+const $notes_catTimeline: Provider = { provide: 'ep:notes/cat-timeline', useClass: ep___notes_catTimeline.default };
 const $notes_mentions: Provider = { provide: 'ep:notes/mentions', useClass: ep___notes_mentions.default };
 const $notes_polls_recommendation: Provider = { provide: 'ep:notes/polls/recommendation', useClass: ep___notes_polls_recommendation.default };
 const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: ep___notes_polls_vote.default };
@@ -752,6 +766,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_drive_showFile,
 		$admin_emoji_addAliasesBulk,
 		$admin_emoji_add,
+		$admin_emoji_adds,
 		$admin_emoji_copy,
 		$admin_emoji_deleteBulk,
 		$admin_emoji_delete,
@@ -770,8 +785,9 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getIndexStats,
 		$admin_getTableStats,
 		$admin_getUserIps,
-		$invite,
-		$inviteRevoke,
+		$admin_invite_create,
+		$admin_invite_list,
+		$admin_invite_revoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
@@ -965,6 +981,10 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$i_webhooks_show,
 		$i_webhooks_update,
 		$i_webhooks_delete,
+		$invite_create,
+		$invite_delete,
+		$invite_list,
+		$invite_limit,
 		$messaging_history,
 		$messaging_messages,
 		$messaging_messages_create,
@@ -994,6 +1014,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_hybridTimeline,
 		$notes_localTimeline,
 		$notes_mediaTimeline,
+		$notes_catTimeline,
 		$notes_mentions,
 		$notes_polls_recommendation,
 		$notes_polls_vote,
@@ -1114,6 +1135,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_drive_showFile,
 		$admin_emoji_addAliasesBulk,
 		$admin_emoji_add,
+		$admin_emoji_adds,
 		$admin_emoji_copy,
 		$admin_emoji_deleteBulk,
 		$admin_emoji_delete,
@@ -1132,8 +1154,9 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_getIndexStats,
 		$admin_getTableStats,
 		$admin_getUserIps,
-		$invite,
-		$inviteRevoke,
+		$admin_invite_create,
+		$admin_invite_list,
+		$admin_invite_revoke,
 		$admin_promo_create,
 		$admin_queue_clear,
 		$admin_queue_deliverDelayed,
@@ -1326,6 +1349,10 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$i_webhooks_show,
 		$i_webhooks_update,
 		$i_webhooks_delete,
+		$invite_create,
+		$invite_delete,
+		$invite_list,
+		$invite_limit,
 		$messaging_history,
 		$messaging_messages,
 		$messaging_messages_create,
@@ -1355,6 +1382,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_hybridTimeline,
 		$notes_localTimeline,
 		$notes_mediaTimeline,
+		$notes_catTimeline,
 		$notes_mentions,
 		$notes_polls_recommendation,
 		$notes_polls_vote,

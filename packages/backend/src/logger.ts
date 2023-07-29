@@ -7,7 +7,7 @@ import { Logging } from '@google-cloud/logging';
 import stripAnsi from 'strip-ansi';
 import { bindThis } from '@/decorators.js';
 import { envOption } from './env.js';
-import type { KEYWORD } from 'color-convert/conversions';
+import type { KEYWORD } from 'color-convert/conversions.js';
 
 type Context = {
 	name: string;
@@ -90,7 +90,7 @@ export default class Logger {
 
 		const projectId = this.clConfig.projectId;
 		const logging = new Logging({ projectId: projectId, keyFilename: this.clConfig.saKeyPath });
-		const logName = this.clConfig.logName ?? 'misskey';
+		const logName = this.clConfig.logName ?? 'cherrypick';
 		const log = logging.log(logName);
 		const logMessage = stripAnsi(message);
 

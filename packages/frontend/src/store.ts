@@ -56,7 +56,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	collapseRenotes: {
 		where: 'account',
-		default: false,
+		default: true,
 	},
 	rememberNoteVisibility: {
 		where: 'account',
@@ -92,7 +92,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	reactionAcceptance: {
 		where: 'account',
-		default: 'nonSensitiveOnly' as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
+		default: null as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
 	},
 	mutedWords: {
 		where: 'account',
@@ -351,6 +351,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	showRenoteConfirmPopup: {
+		where: 'device',
+		default: true,
+	},
 	newNoteReceivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',
@@ -359,7 +363,11 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 8,
 	},
-	friendlyEnableNotification: {
+	friendlyEnableNotifications: {
+		where: 'device',
+		default: true,
+	},
+	friendlyEnableWidgets: {
 		where: 'device',
 		default: true,
 	},
@@ -386,6 +394,52 @@ export const defaultStore = markRaw(new Storage('base', {
 	enableAbsoluteTime: {
 		where: 'device',
 		default: false,
+	},
+	enableMarkByDate: {
+		where: 'device',
+		default: false,
+	},
+	showSubNoteFooterButton: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Timeline
+	enableHomeTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableLocalTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableMediaTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableSocialTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableCatTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableGlobalTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableListTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableAntennaTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableChannelTimeline: {
+		where: 'device',
+		default: true,
 	},
 
 	// - Settings/CherryPick
@@ -416,6 +470,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	showFollowingMessageInsteadOfButtonEnabled: {
 		where: 'account',
 		default: true,
+	},
+	mobileTimelineHeaderChange: {
+		where: 'device',
+		default: false,
 	},
 	// #endregion
 }));

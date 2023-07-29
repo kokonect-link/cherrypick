@@ -25,7 +25,7 @@ export const meta = {
 	},
 
 	errors: {
-		ltlDisabled: {
+		mtlDisabled: {
 			message: 'Media timeline has been disabled.',
 			code: 'MTL_DISABLED',
 			id: '45a6eb02-7695-4393-b023-dd4be9aaaefd',
@@ -71,8 +71,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const policies = await this.roleService.getUserPolicies(me ? me.id : null);
-			if (!policies.ltlAvailable) {
-				throw new ApiError(meta.errors.ltlDisabled);
+			if (!policies.mtlAvailable) {
+				throw new ApiError(meta.errors.mtlDisabled);
 			}
 
 			//#region Construct query
@@ -115,7 +115,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			}
 			//#endregion
 
-			const timeline = await query.take(ps.limit).getMany();
+			const timeline = await query.limit(ps.limit).getMany();
 
 			process.nextTick(() => {
 				if (me) {

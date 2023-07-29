@@ -179,10 +179,13 @@
 					<template #label>Special thanks</template>
 					<div class="_gaps" style="text-align: center;">
 						<div>
-							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img width="200" src="https://misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
+							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img width="180" src="https://misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
 						</div>
 						<div>
-							<a style="display: inline-block;" class="dcadvirth" title="DC Advirth" href="https://www.dotchain.ltd/advirth" target="_blank"><img width="200" src="https://misskey-hub.net/sponsors/dcadvirth.png" alt="DC Advirth"></a>
+							<a style="display: inline-block;" class="skeb" title="Skeb" href="https://skeb.jp/" target="_blank"><img width="180" src="https://misskey-hub.net/sponsors/skeb.svg" alt="Skeb"></a>
+						</div>
+						<div>
+							<a style="display: inline-block;" class="dcadvirth" title="DC Advirth" href="https://www.dotchain.ltd/advirth" target="_blank"><img width="100" src="https://misskey-hub.net/sponsors/dcadvirth.png" alt="DC Advirth"></a>
 						</div>
 					</div>
 				</FormSection>
@@ -193,7 +196,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted } from 'vue';
 import { version } from '@/config';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
@@ -206,11 +209,8 @@ import * as os from '@/os';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements';
 import { $i } from '@/account';
-import { instance } from '@/instance';
 
 const patronsWithIconWithCherryPick = [{
-	name: 'Inger 잉어',
-	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/84216800/918c97c846994764ac3c027ad4b157f6/eyJ3IjoyMDB9/1.png?token-time=2145916800&token-hash=d7ZLPuj9EH99FuOVYFyEJQs94HArBfPxCdJpZqyIwSU%3D',
 }];
 
 const patronsWithIconWithMisskey = [{
@@ -252,6 +252,30 @@ const patronsWithIconWithMisskey = [{
 }, {
 	name: 'spinlock',
 	icon: 'https://misskey-hub.net/patrons/6a1cebc819d540a78bf20e9e3115baa8.jpg',
+}, {
+	name: 'じゅくま',
+	icon: 'https://misskey-hub.net/patrons/3e56bdac69dd42f7a06e0f12cf2fc895.jpg',
+}, {
+	name: '清遊あみ',
+	icon: 'https://misskey-hub.net/patrons/de25195b88e940a388388bea2e7637d8.jpg',
+}, {
+	name: 'Nagi8410',
+	icon: 'https://misskey-hub.net/patrons/31b102ab4fc540ed806b0461575d38be.jpg',
+}, {
+	name: '山岡士郎',
+	icon: 'https://misskey-hub.net/patrons/84b9056341684266bb1eda3e680d094d.jpg',
+}, {
+	name: 'よもやまたろう',
+	icon: 'https://misskey-hub.net/patrons/4273c9cce50d445f8f7d0f16113d6d7f.jpg',
+}, {
+	name: '花咲ももか',
+	icon: 'https://misskey-hub.net/patrons/8c9b2b9128cb4fee99f04bb4f86f2efa.jpg',
+}, {
+	name: 'カガミ',
+	icon: 'https://misskey-hub.net/patrons/226ea3a4617749548580ec2d9a263e24.jpg',
+}, {
+	name: 'フランギ・シュウ',
+	icon: 'https://misskey-hub.net/patrons/3016d37e35f3430b90420176c912d304.jpg',
 }];
 
 const patronsWithCherryPick = [
@@ -351,15 +375,12 @@ const patronsWithMisskey = [
 	'binvinyl',
 	'渡志郎',
 	'ぷーざ',
+	'越貝鯛丸',
+	'Nick / pprmint.',
+	'kino3277',
 ];
 
 let isKokonect = false;
-const instanceList = [
-	'http://localhost:3000',
-	'https://kokonect.link',
-	'https://beta.kokonect.link',
-	'https://universe.noridev.moe',
-];
 
 let thereIsTreasure = $ref($i && !claimedAchievements.includes('foundTreasure'));
 
@@ -367,8 +388,6 @@ let easterEggReady = false;
 let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
 const containerEl = $shallowRef<HTMLElement>();
-
-if (instanceList.includes(<string>instance.uri)) isKokonect = true;
 
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;
@@ -404,6 +423,13 @@ function getTreasure() {
 	thereIsTreasure = false;
 	claimAchievement('foundTreasure');
 }
+
+onMounted(() => {
+	if (window.location.host == 'localhost:3000') isKokonect = true;
+	else if (window.location.host == 'kokonect.link') isKokonect = true;
+	else if (window.location.host == 'beta.kokonect.link') isKokonect = true;
+	else if (window.location.host == 'universe.noridev.moe') isKokonect = true;
+})
 
 onBeforeUnmount(() => {
 	if (easterEggEngine) {

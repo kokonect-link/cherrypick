@@ -15,11 +15,15 @@ globalThis.addEventListener('activate', ev => {
 			.then(cacheNames => Promise.all(
 				cacheNames
 					.filter((v) => v !== swLang.cacheName)
-					.map(name => caches.delete(name))
+					.map(name => caches.delete(name)),
 			))
 			.then(() => globalThis.clients.claim()),
 	);
 });
+
+function offlineContentHTML(): string {
+	return `<!doctype html>Offline. Service Worker @${_VERSION_} <button onclick="location.reload()">reload</button>`
+}
 
 globalThis.addEventListener('fetch', ev => {
 	let isHTMLRequest = false;
@@ -34,7 +38,14 @@ globalThis.addEventListener('fetch', ev => {
 	if (!isHTMLRequest) return;
 	ev.respondWith(
 		fetch(ev.request)
-		.catch(() => new Response(`Offline. Service Worker @${_VERSION_}`, { status: 200 }))
+			.catch(() => {
+				return new Response(offlineContentHTML(), {
+					status: 200,
+					headers: {
+						'content-type': 'text/html',
+					},
+				});
+			}),
 	);
 });
 
@@ -204,7 +215,7 @@ globalThis.addEventListener('message', (ev: ServiceWorkerGlobalScopeEventMap['me
 				// Cache Storage全削除
 				await caches.keys()
 					.then(cacheNames => Promise.all(
-						cacheNames.map(name => caches.delete(name))
+						cacheNames.map(name => caches.delete(name)),
 					));
 				return; // TODO
 		}

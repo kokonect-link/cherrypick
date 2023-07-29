@@ -50,14 +50,6 @@ const prependFilterdMedia = note => {
 	}
 };
 
-const onUserAdded = () => {
-	tlComponent.pagingComponent?.reload();
-};
-
-const onUserRemoved = () => {
-	tlComponent.pagingComponent?.reload();
-};
-
 let endpoint;
 let query;
 let connection;
@@ -107,6 +99,15 @@ if (props.src === 'antenna') {
 		withReplies: defaultStore.state.showTimelineReplies,
 	});
 	connection.on('note', prepend);
+} else if (props.src === 'cat') {
+	endpoint = 'notes/cat-timeline';
+	query = {
+		withReplies: defaultStore.state.showTimelineReplies,
+	};
+	connection = stream.useChannel('catTimeline', {
+		withReplies: defaultStore.state.showTimelineReplies,
+	});
+	connection.on('note', prepend);
 } else if (props.src === 'global') {
 	endpoint = 'notes/global-timeline';
 	query = {
@@ -141,8 +142,6 @@ if (props.src === 'antenna') {
 		listId: props.list,
 	});
 	connection.on('note', prepend);
-	connection.on('userAdded', onUserAdded);
-	connection.on('userRemoved', onUserRemoved);
 } else if (props.src === 'channel') {
 	endpoint = 'channels/timeline';
 	query = {

@@ -46,6 +46,7 @@ const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;
 	height: 40px !important;
 	border-radius: 8px !important;
 	pointer-events: none !important;
+	background: var(--panel);
 }
 
 .main {

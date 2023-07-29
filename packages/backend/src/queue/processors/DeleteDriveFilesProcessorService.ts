@@ -1,11 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MoreThan } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { UsersRepository, DriveFilesRepository } from '@/models/index.js';
+import type { UsersRepository, DriveFilesRepository, DriveFile } from '@/models/index.js';
 import type { Config } from '@/config.js';
 import type Logger from '@/logger.js';
 import { DriveService } from '@/core/DriveService.js';
 import { bindThis } from '@/decorators.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { DbJobDataWithUser } from '../types.js';
@@ -25,6 +26,7 @@ export class DeleteDriveFilesProcessorService {
 		private driveFilesRepository: DriveFilesRepository,
 
 		private driveService: DriveService,
+		private userEntityService: UserEntityService,
 		private queueLoggerService: QueueLoggerService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('delete-drive-files');
@@ -40,7 +42,7 @@ export class DeleteDriveFilesProcessorService {
 		}
 
 		let deletedCount = 0;
-		let cursor: any = null;
+		let cursor: DriveFile['id'] | null = null;
 
 		while (true) {
 			const files = await this.driveFilesRepository.find({
@@ -59,10 +61,11 @@ export class DeleteDriveFilesProcessorService {
 				break;
 			}
 
-			cursor = files[files.length - 1].id;
+			cursor = files.at(-1)?.id ?? null;
 
 			for (const file of files) {
-				await this.driveService.deleteFileSync(file);
+				const isRemote = file.user ? this.userEntityService.isRemoteUser(file.user) : false;
+				await this.driveService.deleteFileSync(file, false, isRemote);
 				deletedCount++;
 			}
 

@@ -12,15 +12,69 @@
 - 
 
 ### Server
--
+- 
 
 ---
 
 -->
 
 # 릴리즈 노트
-
 이 문서는 CherryPick의 변경 사항만 포함합니다.
+
+## 13.14.2-cp-4.2.0
+출시일: 2023/07/29<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGELOG.md#13142) 문서를 참고하십시오.
+
+### General
+- 리액션 수신의 기본값을 전체로 설정
+- 제어판 메인 화면에 서버 통계 추가
+- 노트의 시간을 일자로 표시하는 기능
+- 고양이 타임라인 추가
+- 미디어 타임라인 개선
+- 타임라인 편집 기능 추가
+- 모바일 환경에서 타임라인의 헤더 디자인을 변경할 수 있음
+- 「제어판 - 유저」에서 최근 온라인 유저를 정렬해서 볼 수 있음
+- 「이미 본 리노트를 간략화하기」 옵션의 기본값을 켜짐으로 변경 (revert 94bd0fa9)
+- 서브 노트에 액션 버튼을 표시하는 기능
+- 「발견하기」의 인기 태그 기본값을 펼침으로 설정
+- 초대 코드 해지 기능을 새 버전에 맞게 개선
+- 리모트 캐시 파일을 별도의 Object Storage에 저장하도록 설정 ([libnare/mk-castella@0d93433](https://github.com/libnare/mk-castella/commit/0d93433b0836238f518658b5719ce335060963b0)) 
+- Byeolvit 테마 추가 ([Luminon/Byeolvit-Theme](https://github.com/Luminon/Byeolvit-Theme), [libnare/mk-castella@3c95399](https://github.com/libnare/mk-castella/commit/3c95399d0989015bb92836e48d010df07619038b))
+- buttersc.one 테마 추가 ([libnare/mk-castella@6f15fa1](https://github.com/libnare/mk-castella/commit/6f15fa10b8022d0830254b8f615153d11c441480))
+- stella.place 테마 추가 ([libnare/mk-castella@f6f77db](https://github.com/libnare/mk-castella/commit/f6f77dbd7f94b87edd3550ecf59e2bbd1fb3c708))
+- 이모지를 한 번에 두 개 이상 업로드할 수 있는 옵션 추가
+
+### Client
+- (Friendly) 데스크톱 모드에서 타임라인 옆에 위젯 영역을 배치하도록
+- (Friendly) 위젯 영역과 알림 영역의 현재 상태에 따라서 아이콘을 다르게 설정
+- 리노트 전 확인 팝업을 띄움
+- 유저 팝업 디자인 개선
+- 절대 시간으로 표시할 때 툴팁에서는 상대 시간을 표기
+- 환영 메시지를 MFM으로 렌더링
+- 노트 내용이 없으면 번역 버튼을 활성화하지 않음
+- 노트 작성 폼 개선
+  - 내용이 너무 길면 스크롤 가능하도록
+  - 브라우저의 최대 높이를 초과하지 않도록
+- MkDialog 버튼이 3개 이상이면 정렬을 변경하도록
+- 리노트 유저 팝업의 디자인 일부 개선
+- 네비게이션 바의 블러 처리 추가
+- 헤더의 블러 설정 추가
+- 「이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음」설정 사용 시, 팔로우 했다는 문구를 표시하도록
+- 흐림 효과를 비활성화 하면 알림을 불투명하게 표시하도록
+- 설정 - 일반에 있는 일부 기능의 위치를 CherryPick 으로 이동
+- 리노트할 때 확인 팝업 표시 유무를 선택할 수 있음
+- Fix: 그룹 초대 알림 아이콘이 잘못 표시되는 문제
+- Fix: 노트 디자인이 올바르지 않게 표시되는 문제
+- Fix: 프로필 아이콘이 투명일 때 노트 답글선이 비치는 문제
+- Fix: 서브 노트의 내용 숨김 버튼의 디자인이 잘못 표시되는 문제
+- Fix: 「좋아요만 받기」로 설정된 노트에서 리액션 버튼이 여러 개 표시되는 문제
+- Fix: 「좋아요만 받기」로 설정된 노트에서 좋아요를 취소하려고 할 때 아이콘이 잘못 표시되는 문제
+
+### Server
+- 미디어 타임라인 개선
+- 오류 페이지 재구성
+
+---
 
 ## 13.13.2-cp-4.1.0
 출시일: 2023/06/20<br>
@@ -28,7 +82,7 @@
 
 ### General
 - 타임라인에 노트의 답글을 표시하는 옵션의 기본값을 켜짐으로 설정
-- 네비게이션 바의 배치를 수정
+- 네비게이션 메뉴의 배치를 수정
 - 프로필 아이콘의 기본값을 사각형으로 설정
 - 미디어 타임라인 추가 ([kiyo4act/misskey.design＠c01be0d](https://github.com/kiyo4act/misskey.design/commit/c01be0dc7674cdf0bcac6081c63baab52c4c9abe))
 - ruby 표기 지원 ([yuriha-chan/misskey@0a109d4](https://github.com/yuriha-chan/misskey/commit/0a109d4f7442f8eedc48693b09ad2fd0b61e67a5), [yuriha-chan/misskey@446f0c2](https://github.com/yuriha-chan/misskey/commit/446f0c2ea5cc9a9f7f48a75935bce550bd0b3095), [yuriha-chan/misskey@4cfd28a](https://github.com/yuriha-chan/misskey/commit/4cfd28a452be0cdcc1328d77ab0db6dca627ca23), [yuriha-chan/misskey@dc6a6dc](https://github.com/yuriha-chan/misskey/commit/dc6a6dcdc3c2ac5b836570defb14ef4d441725e8))
@@ -38,7 +92,7 @@
 - 네비게이션 메뉴에 배너 표시 옵션 추가
 - 노트에서 프로필 아이콘을 숨기는 옵션 추가
 - 닉네임 기능 ([shrimpia/misskey@126f145](https://github.com/shrimpia/misskey/commit/126f145560caa0cc34fe8d2c9ee22f3be922ea10), [shrimpia/misskey@58f70be](https://github.com/shrimpia/misskey/commit/58f70beb9aff2287a64d903b43583184340294aa))
-	- 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
+  - 유저 페이지에서 사용자의 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있습니다.
 - 「노트 액션 버튼을 마우스를 올렸을 때에만 표시」 옵션을 켰을 때, 자세히 버튼을 표시하도록 변경 ([shrimpia/misskey@4802191](https://github.com/shrimpia/misskey/commit/48021913bb9b6b2a314e8d88e3816f6f66a52888))
 - 「이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음」을 선택 사항으로 설정 ([shrimpia/misskey@9345149](https://github.com/shrimpia/misskey/commit/9345149f5d0447058a6ed1524708925a84744bd7))
 - 노트 작성 폼에서 본문 미리보기 상태 기억 ([shrimpia/misskey](https://github.com/shrimpia/misskey))
@@ -52,7 +106,7 @@
 ### Client
 - (Friendly) 일부 페이지를 제외하고 플로팅 버튼을 표시하지 않음
 - 모바일에서 UI 흐림 효과를 비활성화 했을 때 가독성 향상
-	- 토스트 알림의 배경이 불투명하게 표시되도록
+  - 토스트 알림의 배경이 불투명하게 표시되도록
   - 헤더의 배경이 불투명하게 표시되도록
 - MFM 도움말에 검색 섹션 추가
 - 노트 디자인 개선

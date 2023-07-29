@@ -30,26 +30,14 @@
 					<div :class="$style.statusItemLabel">{{ i18n.ts.notes }}</div>
 					<div>{{ number(user.notesCount) }}</div>
 				</div>
-				<template v-if="isFfVisibility($i, user)">
-					<div :class="$style.statusItem">
-						<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
-						<div>{{ number(user.followingCount) }}</div>
-					</div>
-					<div :class="$style.statusItem">
-						<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
-						<div>{{ number(user.followersCount) }}</div>
-					</div>
-				</template>
-				<template v-else>
-					<div :class="$style.statusItem">
-						<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
-						<div><i class="ti ti-lock" :class="[$style.keyWiggleArea, { [$style.animation]: animation }]"></i></div>
-					</div>
-					<div :class="$style.statusItem">
-						<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
-						<div><i class="ti ti-lock" :class="[$style.keyWiggleArea, { [$style.animation]: animation }]"></i></div>
-					</div>
-				</template>
+				<div v-if="isFfVisibleForMe(user)" :class="$style.statusItem">
+					<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
+					<div>{{ number(user.followingCount) }}</div>
+				</div>
+				<div v-if="isFfVisibleForMe(user)" :class="$style.statusItem">
+					<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
+					<div>{{ number(user.followersCount) }}</div>
+				</div>
 			</div>
 			<button class="_button" :class="$style.menu" @click="showMenu"><i class="ti ti-dots"></i></button>
 			<MkFollowButton v-if="$i && user.id != $i.id" :class="$style.follow" :user="user" mini/>
@@ -73,7 +61,7 @@ import number from '@/filters/number';
 import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
 import { $i } from '@/account';
-import { isFfVisibility } from '@/scripts/is-ff-visibility';
+import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe';
 
 const props = defineProps<{
 	showing: boolean;
@@ -88,9 +76,6 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex('middle');
-
-const animation = $ref(defaultStore.state.animation);
-
 let user = $ref<misskey.entities.UserDetailed | null>(null);
 let top = $ref(0);
 let left = $ref(0);
@@ -104,7 +89,7 @@ onMounted(() => {
 		user = props.q;
 	} else {
 		const query = props.q.startsWith('@') ?
-			Acct.parse(props.q.substr(1)) :
+			Acct.parse(props.q.substring(1)) :
 			{ userId: props.q };
 
 		os.api('users/show', query).then(res => {
@@ -145,6 +130,19 @@ onMounted(() => {
 	background-color: rgba(0, 0, 0, 0.1);
 	background-size: cover;
 	background-position: center;
+
+	&::after {
+		content: "";
+		background-image: var(--blur, inherit);
+		position: fixed;
+		inset: 0;
+		background-size: cover;
+		background-position: center;
+		pointer-events: none;
+		opacity: 0.1;
+		filter: var(--blur, blur(10px));
+	}
+
 }
 
 .followed {
@@ -213,11 +211,12 @@ onMounted(() => {
 .mfm {
 	display: -webkit-box;
 	-webkit-line-clamp: 5;
-	-webkit-box-orient: vertical;  
+	-webkit-box-orient: vertical;
 	overflow: hidden;
 }
 
 .status {
+	display: flex;
 	padding: 16px 26px 16px 26px;
 }
 
@@ -225,6 +224,7 @@ onMounted(() => {
 	display: inline-block;
 	width: 33%;
 	text-align: center;
+	flex: 1;
 }
 
 .statusItemLabel {
@@ -245,38 +245,5 @@ onMounted(() => {
 	position: absolute !important;
 	top: 8px;
 	right: 8px;
-}
-
-.keyWiggleArea {
-	display: block;
-	margin: 0 auto;
-}
-
-@keyframes keywiggle {
-	0% { transform: translate(-3px,-1px) rotate(-8deg); }
-	5% { transform: translateY(-1px) rotate(-10deg); }
-	10% { transform: translate(1px,-3px) rotate(0); }
-	15% { transform: translate(1px,1px) rotate(11deg); }
-	20% { transform: translate(-2px,1px) rotate(1deg); }
-	25% { transform: translate(-1px,-2px) rotate(-2deg); }
-	30% { transform: translate(-1px,2px) rotate(-3deg); }
-	35% { transform: translate(2px,1px) rotate(6deg); }
-	40% { transform: translate(-2px,-3px) rotate(-9deg); }
-	45% { transform: translateY(-1px) rotate(-12deg); }
-	50% { transform: translate(1px,2px) rotate(10deg); }
-	55% { transform: translateY(-3px) rotate(8deg); }
-	60% { transform: translate(1px,-1px) rotate(8deg); }
-	65% { transform: translateY(-1px) rotate(-7deg); }
-	70% { transform: translate(-1px,-3px) rotate(6deg); }
-	75% { transform: translateY(-2px) rotate(4deg); }
-	80% { transform: translate(-2px,-1px) rotate(3deg); }
-	85% { transform: translate(1px,-3px) rotate(-10deg); }
-	90% { transform: translate(1px) rotate(3deg); }
-	95% { transform: translate(-2px) rotate(-3deg); }
-	to { transform: translate(2px,1px) rotate(2deg); }
-}
-
-.animation:hover {
-	animation: keywiggle 1s;
 }
 </style>

@@ -10,6 +10,11 @@
 				</MkFoldableSection>
 
 				<MkFoldableSection class="item">
+					<template #header>Server Metric</template>
+					<XCpuMemoryNetCompact :connection="connection" :meta="meta"/>
+				</MkFoldableSection>
+
+				<MkFoldableSection class="item">
 					<template #header>Active users</template>
 					<XActiveUsers/>
 				</MkFoldableSection>
@@ -33,7 +38,7 @@
 					<template #header>Federation</template>
 					<XFederation/>
 				</MkFoldableSection>
-		
+
 				<MkFoldableSection class="item">
 					<template #header>Instances</template>
 					<XInstances/>
@@ -65,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, ref } from 'vue';
 import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
@@ -82,6 +87,7 @@ import { useStream } from '@/stream';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
+import XCpuMemoryNetCompact from "@/widgets/server-metric/cpu-mem-net-pie.vue";
 
 const rootEl = $shallowRef<HTMLElement>();
 let serverInfo: any = $ref(null);
@@ -94,12 +100,19 @@ let federationSubActiveDiff = $ref<number | null>(null);
 let newUsers = $ref(null);
 let activeInstances = $shallowRef(null);
 const queueStatsConnection = markRaw(useStream().useChannel('queueStats'));
+const connection = useStream().useChannel('serverStats');
 const now = new Date();
 const filesPagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 9,
 	noPaging: true,
 };
+
+const meta = ref(null);
+
+os.api('server-info', {}).then(res => {
+	meta.value = res;
+});
 
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);
@@ -162,7 +175,7 @@ onMounted(async () => {
 
 	nextTick(() => {
 		queueStatsConnection.send('requestLog', {
-			id: Math.random().toString().substr(2, 8),
+			id: Math.random().toString().substring(2, 10),
 			length: 100,
 		});
 	});
@@ -170,6 +183,10 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
 	queueStatsConnection.dispose();
+});
+
+onUnmounted(() => {
+	connection.dispose();
 });
 
 const headerActions = $computed(() => []);

@@ -53,6 +53,9 @@ export function createAiScriptEnv(opts) {
 			utils.assertString(key);
 			return utils.jsToVal(JSON.parse(miLocalStorage.getItem(`aiscript:${opts.storageKey}:${key.value}`)));
 		}),
+		'Mk:url': values.FN_NATIVE(() => {
+			return values.STR(window.location.href);
+		}),
 		'Mk:requestToken': values.FN_NATIVE(async ([value]) => {
 			utils.assertArray(value);
 			const permissions = (utils.valToJs(value) as unknown[]).map(val => {

@@ -11,6 +11,8 @@
 						<option value="+createdAt">{{ i18n.ts.registeredDate }} ({{ i18n.ts.descendingOrder }})</option>
 						<option value="-updatedAt">{{ i18n.ts.lastUsed }} ({{ i18n.ts.ascendingOrder }})</option>
 						<option value="+updatedAt">{{ i18n.ts.lastUsed }} ({{ i18n.ts.descendingOrder }})</option>
+						<option value="-lastActiveDate">{{ i18n.ts.lastActiveDate }} ({{ i18n.ts.ascendingOrder }})</option>
+						<option value="+lastActiveDate">{{ i18n.ts.lastActiveDate }} ({{ i18n.ts.descendingOrder }})</option>
 					</MkSelect>
 					<MkSelect v-model="state" style="flex: 1;">
 						<template #label>{{ i18n.ts.state }}</template>

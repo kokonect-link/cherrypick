@@ -69,7 +69,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (!policies.canSearchNotes) {
 				throw new ApiError(meta.errors.unavailable);
 			}
-	
+
 			const notes = await this.searchService.searchNote(ps.query, me, {
 				userId: ps.userId,
 				channelId: ps.channelId,

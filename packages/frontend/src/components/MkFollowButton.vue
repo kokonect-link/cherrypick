@@ -28,6 +28,7 @@
 		<span v-if="full" :class="$style.text">{{ i18n.ts.processing }}</span><MkLoading :em="true" :colored="false"/>
 	</template>
 </button>
+	<div v-else-if="disableIfFollowing && isFollowing"><i class="ti ti-circle-check"></i><span style="padding-left: 3px;">{{ i18n.ts.alreadyFollowed }}</span></div>
 </template>
 
 <script lang="ts" setup>

@@ -23,7 +23,6 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 
 const props = defineProps<{
 	value: number;

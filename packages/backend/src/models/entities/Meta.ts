@@ -1,7 +1,6 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { id } from '../id.js';
 import { User } from './User.js';
-import type { Clip } from './Clip.js';
 
 @Entity()
 export class Meta {
@@ -125,6 +124,11 @@ export class Meta {
 		default: true,
 	})
 	public cacheRemoteFiles: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public cacheRemoteSensitiveFiles: boolean;
 
 	@Column({
 		...id(),
@@ -432,6 +436,78 @@ export class Meta {
 	@Column('boolean', {
 		default: false,
 	})
+	public useObjectStorageRemote: boolean;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteBucket: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemotePrefix: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteBaseUrl: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteEndpoint: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteRegion: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteAccessKey: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public objectStorageRemoteSecretKey: string | null;
+
+	@Column('integer', {
+		nullable: true,
+	})
+	public objectStorageRemotePort: number | null;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageRemoteUseSSL: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageRemoteUseProxy: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public objectStorageRemoteSetPublicRead: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public objectStorageRemoteS3ForcePathStyle: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
 	public enableIpLogging: boolean;
 
 	@Column('boolean', {
@@ -449,6 +525,16 @@ export class Meta {
 	})
 	public enableChartsForFederatedInstances: boolean;
 
+	@Column('boolean', {
+		default: false,
+	})
+	public enableServerMachineStats: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public enableIdenticonGeneration: boolean;
+
 	@Column('jsonb', {
 		default: { },
 	})
@@ -462,7 +548,7 @@ export class Meta {
 	public serverRules: string[];
 
 	@Column('varchar', {
-		length: 1024, array: true, default: '{ "admin", "administrator", "root", "system", "maintainer", "host", "mod", "moderator", "owner", "superuser", "staff", "auth", "i", "me", "everyone", "all", "mention", "mentions", "example", "user", "users", "account", "accounts", "official", "help", "helps", "support", "supports", "info", "information", "informations", "announce", "announces", "announcement", "announcements", "notice", "notification", "notifications", "dev", "developer", "developers", "tech", "misskey" }',
+		length: 1024, array: true, default: '{ "admin", "administrator", "root", "system", "maintainer", "host", "mod", "moderator", "owner", "superuser", "staff", "auth", "i", "me", "everyone", "all", "mention", "mentions", "example", "user", "users", "account", "accounts", "official", "help", "helps", "support", "supports", "info", "information", "informations", "announce", "announces", "announcement", "announcements", "notice", "notification", "notifications", "dev", "developer", "developers", "tech", "misskey", "cherrypick" }',
 	})
 	public preservedUsernames: string[];
 }

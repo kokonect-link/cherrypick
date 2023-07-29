@@ -20,6 +20,7 @@ import * as ep___admin_drive_files from './endpoints/admin/drive/files.js';
 import * as ep___admin_drive_showFile from './endpoints/admin/drive/show-file.js';
 import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-aliases-bulk.js';
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
+import * as ep___admin_emoji_adds from './endpoints/admin/emoji/adds.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
 import * as ep___admin_emoji_delete from './endpoints/admin/emoji/delete.js';
@@ -38,8 +39,9 @@ import * as ep___admin_federation_updateInstance from './endpoints/admin/federat
 import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js';
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
-import * as ep___invite from './endpoints/invite.js';
-import * as ep___inviteRevoke from './endpoints/invite-revoke.js';
+import * as ep___admin_invite_create from './endpoints/admin/invite/create.js';
+import * as ep___admin_invite_list from './endpoints/admin/invite/list.js';
+import * as ep___admin_invite_revoke from './endpoints/admin/invite/revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -233,6 +235,10 @@ import * as ep___i_webhooks_show from './endpoints/i/webhooks/show.js';
 import * as ep___i_webhooks_list from './endpoints/i/webhooks/list.js';
 import * as ep___i_webhooks_update from './endpoints/i/webhooks/update.js';
 import * as ep___i_webhooks_delete from './endpoints/i/webhooks/delete.js';
+import * as ep___invite_create from './endpoints/invite/create.js';
+import * as ep___invite_delete from './endpoints/invite/delete.js';
+import * as ep___invite_list from './endpoints/invite/list.js';
+import * as ep___invite_limit from './endpoints/invite/limit.js';
 import * as ep___messaging_history from './endpoints/messaging/history.js';
 import * as ep___messaging_messages from './endpoints/messaging/messages.js';
 import * as ep___messaging_messages_create from './endpoints/messaging/messages/create.js';
@@ -262,6 +268,7 @@ import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
+import * as ep___notes_catTimeline from './endpoints/notes/cat-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
@@ -382,6 +389,7 @@ const eps = [
 	['admin/drive/show-file', ep___admin_drive_showFile],
 	['admin/emoji/add-aliases-bulk', ep___admin_emoji_addAliasesBulk],
 	['admin/emoji/add', ep___admin_emoji_add],
+	['admin/emoji/adds', ep___admin_emoji_adds],
 	['admin/emoji/copy', ep___admin_emoji_copy],
 	['admin/emoji/delete-bulk', ep___admin_emoji_deleteBulk],
 	['admin/emoji/delete', ep___admin_emoji_delete],
@@ -400,8 +408,9 @@ const eps = [
 	['admin/get-index-stats', ep___admin_getIndexStats],
 	['admin/get-table-stats', ep___admin_getTableStats],
 	['admin/get-user-ips', ep___admin_getUserIps],
-	['invite', ep___invite],
-	['invite-revoke', ep___inviteRevoke],
+	['admin/invite/create', ep___admin_invite_create],
+	['admin/invite/list', ep___admin_invite_list],
+	['admin/invite/revoke', ep___admin_invite_revoke],
 	['admin/promo/create', ep___admin_promo_create],
 	['admin/queue/clear', ep___admin_queue_clear],
 	['admin/queue/deliver-delayed', ep___admin_queue_deliverDelayed],
@@ -595,6 +604,10 @@ const eps = [
 	['i/webhooks/show', ep___i_webhooks_show],
 	['i/webhooks/update', ep___i_webhooks_update],
 	['i/webhooks/delete', ep___i_webhooks_delete],
+	['invite/create', ep___invite_create],
+	['invite/delete', ep___invite_delete],
+	['invite/list', ep___invite_list],
+	['invite/limit', ep___invite_limit],
 	['messaging/history', ep___messaging_history],
 	['messaging/messages', ep___messaging_messages],
 	['messaging/messages/create', ep___messaging_messages_create],
@@ -624,6 +637,7 @@ const eps = [
 	['notes/hybrid-timeline', ep___notes_hybridTimeline],
 	['notes/local-timeline', ep___notes_localTimeline],
 	['notes/media-timeline', ep___notes_mediaTimeline],
+	['notes/cat-timeline', ep___notes_catTimeline],
 	['notes/mentions', ep___notes_mentions],
 	['notes/polls/recommendation', ep___notes_polls_recommendation],
 	['notes/polls/vote', ep___notes_polls_vote],

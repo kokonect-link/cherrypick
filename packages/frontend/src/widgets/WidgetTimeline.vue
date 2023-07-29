@@ -3,7 +3,9 @@
 	<template #icon>
 		<i v-if="widgetProps.src === 'home'" class="ti ti-home"></i>
 		<i v-else-if="widgetProps.src === 'local'" class="ti ti-planet"></i>
+		<i v-else-if="widgetProps.src === 'media'" class="ti ti-photo"></i>
 		<i v-else-if="widgetProps.src === 'social'" class="ti ti-rocket"></i>
+		<i v-else-if="widgetProps.src === 'cat'" class="ti ti-cat"></i>
 		<i v-else-if="widgetProps.src === 'global'" class="ti ti-world"></i>
 		<i v-else-if="widgetProps.src === 'list'" class="ti ti-list"></i>
 		<i v-else-if="widgetProps.src === 'antenna'" class="ti ti-antenna"></i>
@@ -15,7 +17,7 @@
 		</button>
 	</template>
 
-	<div v-if="(((widgetProps.src === 'local' || widgetProps.src === 'social') && !isLocalTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((widgetProps.src === 'local' || widgetProps.src === 'social' || widgetProps.src === 'media' || widgetProps.src === 'cat') && !isLocalTimelineAvailable) || (widgetProps.src === 'media' && !isMediaTimelineAvailable) || (widgetProps.src === 'cat' && !isCatTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ti ti-minus"></i>
 			{{ i18n.ts._disabledTimeline.title }}
@@ -42,6 +44,8 @@ import { instance } from '@/instance';
 const name = 'timeline';
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
+const isMediaTimelineAvailable = (($i == null && instance.policies.mtlAvailable) || ($i != null && $i.policies.mtlAvailable));
+const isCatTimelineAvailable = (($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable));
 
 const widgetPropsDef = {
 	showHeader: {
@@ -125,6 +129,10 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.social,
 		icon: 'ti ti-rocket',
 		action: () => { setSrc('social'); },
+	}, {
+		text: i18n.ts._timelines.cat,
+		icon: 'ti ti-cat',
+		action: () => { setSrc('cat'); },
 	}, {
 		text: i18n.ts._timelines.global,
 		icon: 'ti ti-world',

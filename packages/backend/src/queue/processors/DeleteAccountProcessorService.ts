@@ -9,6 +9,8 @@ import type { DriveFile } from '@/models/entities/DriveFile.js';
 import type { Note } from '@/models/entities/Note.js';
 import { EmailService } from '@/core/EmailService.js';
 import { bindThis } from '@/decorators.js';
+import { SearchService } from '@/core/SearchService.js';
+import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { DbUserDeleteJobData } from '../types.js';
@@ -33,9 +35,11 @@ export class DeleteAccountProcessorService {
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
+		private userEntityService: UserEntityService,
 		private driveService: DriveService,
 		private emailService: EmailService,
 		private queueLoggerService: QueueLoggerService,
+		private searchService: SearchService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('delete-account');
 	}
@@ -45,6 +49,7 @@ export class DeleteAccountProcessorService {
 		this.logger.info(`Deleting account of ${job.data.user.id} ...`);
 
 		const user = await this.usersRepository.findOneBy({ id: job.data.user.id });
+		const isRemote = user ? this.userEntityService.isRemoteUser(user) : false;
 		if (user == null) {
 			return;
 		}
@@ -68,9 +73,13 @@ export class DeleteAccountProcessorService {
 					break;
 				}
 
-				cursor = notes[notes.length - 1].id;
+				cursor = notes.at(-1)?.id ?? null;
 
 				await this.notesRepository.delete(notes.map(note => note.id));
+
+				for (const note of notes) {
+					await this.searchService.unindexNote(note);
+				}
 			}
 
 			this.logger.succ(`All of notes deleted: ${job.data.user.id}`);
@@ -95,10 +104,10 @@ export class DeleteAccountProcessorService {
 					break;
 				}
 
-				cursor = files[files.length - 1].id;
+				cursor = files.at(-1)?.id ?? null;
 
 				for (const file of files) {
-					await this.driveService.deleteFileSync(file);
+					await this.driveService.deleteFileSync(file, false, isRemote);
 				}
 			}
 

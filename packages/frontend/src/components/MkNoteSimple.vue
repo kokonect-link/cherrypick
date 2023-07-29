@@ -51,7 +51,6 @@ onMounted(() => {
 .root {
 	margin: 0;
 	padding: 0;
-	overflow: clip;
 	font-size: 0.95em;
 }
 
@@ -65,6 +64,7 @@ onMounted(() => {
 	position: sticky !important;
 	top: calc(16px + var(--stickyTop, 0px));
 	left: 0;
+	background: var(--panel);
 }
 
 .main {

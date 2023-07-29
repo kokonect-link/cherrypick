@@ -80,13 +80,8 @@ const menuDef = $computed(() => [{
 	}, ...(instance.disableRegistration ? [{
 		type: 'button',
 		icon: 'ti ti-user-plus',
-		text: i18n.ts.invite,
+		text: i18n.ts.createInviteCode,
 		action: invite,
-	}, {
-		type: 'button',
-		icon: 'ti ti-user-cancel',
-		text: i18n.ts.inviteRevoke,
-		action: inviteRevoke,
 	}] : [])],
 }, {
 	title: i18n.ts.administration,
@@ -100,6 +95,11 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.users,
 		to: '/admin/users',
 		active: currentPage?.route.name === 'users',
+	}, {
+		icon: 'ti ti-user-plus',
+		text: i18n.ts.invite,
+		to: '/admin/invites',
+		active: currentPage?.route.name === 'invites',
 	}, {
 		icon: 'ti ti-badges',
 		text: i18n.ts.roles,
@@ -245,26 +245,16 @@ provideMetadataReceiver((info) => {
 });
 
 const invite = () => {
-	os.api('invite').then(x => {
+	os.api('admin/invite/create').then(x => {
 		os.alert({
 			type: 'info',
-			text: x.code,
+			text: x?.[0].code,
 		});
 	}).catch(err => {
 		os.alert({
 			type: 'error',
 			text: err,
 		});
-	});
-};
-
-const inviteRevoke = () => {
-	os.confirm({
-		type: 'warning',
-		text: i18n.ts.inviteRevokeConfirm,
-	}).then(({ canceled }) => {
-		if (canceled) return;
-		os.apiWithDialog('invite-revoke');
 	});
 };
 
