@@ -144,7 +144,8 @@
 				<i class="ti ti-mood-plus"></i>
 			</button>
 			<button v-if="appearNote.myReaction != null" ref="reactButton" class="_button" :class="[$style.noteFooterButton, $style.reacted]" @click="undoReact(appearNote)">
-				<i class="ti ti-mood-minus"></i>
+				<i v-if="appearNote.reactionAcceptance !== 'likeOnly'" class="ti ti-mood-minus"></i>
+				<i v-else class="ti ti-heart-minus"></i>
 			</button>
 			<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
