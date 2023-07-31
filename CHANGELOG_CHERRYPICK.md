@@ -21,6 +21,15 @@
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 13.x.x-cp-4.x.x
+출시일: unreleased<br>
+전체 변경 사항을 확인하려면, [CHANGELOG.md#13xx](CHANGELOG.md#13xx) 문서를 참고하십시오.
+
+### Client
+- 이모티콘 피커의 검색 건수를 100개로 증가 (misskey-dev/misskey#11371)
+
+---
+
 ## 13.14.2-cp-4.2.0
 출시일: 2023/07/29<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGELOG.md#13142) 문서를 참고하십시오.
