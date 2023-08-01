@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div v-if="hasRequireRefresh && defaultStore.state.requireRefreshBehavior === 'quiet'" :class="$style.root" class="_panel _shadow" @click="resetRequireRefresh">
 	<div><i class="ti ti-alert-circle"></i> {{ i18n.ts.reloadToApplySetting2 }}</div>

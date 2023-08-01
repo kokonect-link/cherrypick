@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkCondensedLine v-if="defaultStore.state.enableCondensedLineForAcct" :minScale="2 / 3">
 	<span>@{{ user.username }}</span>

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 'use strict';
 
 window.onload = async () => {
@@ -46,10 +51,10 @@ window.onload = async () => {
 		const tl = document.getElementById('tl');
 		for (const note of notes) {
 			const el = document.createElement('div');
-			
+
 			const name = document.createElement('header');
 			name.textContent = `${note.user.name} @${note.user.username}`;
-			
+
 			const text = document.createElement('div');
 			if (note.renoteId !== null) {
 				const renoteTextShrinked = note.renote.text.slice(0, 30).concat('...');
@@ -60,8 +65,8 @@ window.onload = async () => {
 				text.textContent += `Reply of @${note.reply.user.username}'s note: ${replyTextShrinked}<br>`;
 			}
 			text.textContent += `${note.text || ''}`;
-			
-			
+
+
 			el.appendChild(name);
 			el.appendChild(text);
 			tl.appendChild(el);

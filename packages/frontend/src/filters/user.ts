@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import * as misskey from 'cherrypick-js';
 import * as Acct from 'cherrypick-js/built/acct';
 import { url } from '@/config';

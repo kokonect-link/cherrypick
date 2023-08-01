@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <script lang="ts">
 import { defineComponent, h, PropType, TransitionGroup, useCssModule } from 'vue';
 import MkAd from '@/components/global/MkAd.vue';
@@ -170,10 +175,10 @@ export default defineComponent({
 	> *:empty {
 		display: none;
 	}
-
-	> *:not(:last-child) {
-		margin-bottom: var(--margin);
 	}
+
+	&:not(.date-separated-list-nogap) > *:not(:last-child) {
+		margin-bottom: var(--margin);
 	}
 }
 

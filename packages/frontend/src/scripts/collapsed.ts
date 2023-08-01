@@ -1,6 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import * as mfm from 'cherrypick-mfm-js';
 import * as misskey from 'cherrypick-js';
-import {extractUrlFromMfm} from './extract-url-from-mfm';
+import { extractUrlFromMfm } from './extract-url-from-mfm';
 
 export function shouldCollapsed(note: misskey.entities.Note): boolean {
 	const urls = note.text ? extractUrlFromMfm(mfm.parse(note.text)) : null;

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import * as Misskey from 'cherrypick-js';
 import { defineAsyncComponent } from 'vue';
 import { i18n } from '@/i18n';
@@ -88,7 +93,7 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 		icon: 'ti ti-crop',
 		action: () => os.cropImage(file, {
 			aspectRatio: NaN,
-			uploadFolder: folder ? folder.id : folder
+			uploadFolder: folder ? folder.id : folder,
 		}),
 	}] : [], null, {
 		text: i18n.ts.createNoteFromTheFile,

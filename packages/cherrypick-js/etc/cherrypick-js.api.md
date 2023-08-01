@@ -18,6 +18,11 @@ export type Acct = {
 type Ad = TODO_2;
 
 // @public (undocumented)
+type AdminInstanceMetadata = DetailedInstanceMetadata & {
+    blockedHosts: string[];
+};
+
+// @public (undocumented)
 type Announcement = {
     id: ID;
     createdAt: DateString;
@@ -343,8 +348,8 @@ export type Endpoints = {
         res: TODO;
     };
     'admin/meta': {
-        req: TODO;
-        res: TODO;
+        req: NoParams;
+        res: AdminInstanceMetadata;
     };
     'admin/reset-password': {
         req: TODO;
@@ -2280,6 +2285,7 @@ declare namespace entities {
         LiteInstanceMetadata,
         DetailedInstanceMetadata,
         InstanceMetadata,
+        AdminInstanceMetadata,
         ServerInfo,
         Stats,
         Page,
@@ -2371,7 +2377,7 @@ type ID = string;
 // @public (undocumented)
 type Instance = {
     id: ID;
-    caughtAt: DateString;
+    firstRetrievedAt: DateString;
     host: string;
     usersCount: number;
     notesCount: number;
@@ -2385,6 +2391,7 @@ type Instance = {
     lastCommunicatedAt: DateString;
     isNotResponding: boolean;
     isSuspended: boolean;
+    isBlocked: boolean;
     softwareName: string | null;
     softwareVersion: string | null;
     openRegistrations: boolean | null;

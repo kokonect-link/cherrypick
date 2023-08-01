@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { reactive, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { readAndCompressImage } from 'browser-image-resizer';

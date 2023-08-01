@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { promisify } from 'node:util';
 import bcrypt from 'bcryptjs';
 import cbor from 'cbor';

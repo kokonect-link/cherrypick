@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <time v-tooltip="mode === 'detail' ? absolute : mode === 'relative' ? absolute : relative">
 	<template v-if="invalid">{{ i18n.ts._ago.invalid }}</template>

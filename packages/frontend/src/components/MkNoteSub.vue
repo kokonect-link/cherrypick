@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="[$style.root, { [$style.children]: depth > 1 }]">
 	<div v-if="!defaultStore.state.hideAvatarsInNote && !hideLine" :class="$style.line"></div>

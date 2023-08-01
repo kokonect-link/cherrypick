@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Endpoints } from 'cherrypick-js/built/api.types';
 import { ref } from 'vue';
 import { apiUrl } from '@/config';

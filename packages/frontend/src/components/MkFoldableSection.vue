@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="el" :class="$style.root">
 	<header :class="[$style.header, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
