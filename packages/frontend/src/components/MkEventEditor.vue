@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="zmdxowut">
 	<MkInput v-model="title" small type="text" class="input">
@@ -194,7 +199,7 @@ function get(): misskey.entities.Note['event'] {
 	};
 }
 
-watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, organizer, organizerLink, audience, language, 
+watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, organizer, organizerLink, audience, language,
 							ageRange, ticketsUrl, isFree, price, availabilityStart, availabilityEnd, keywords], () => emit('update:modelValue', get()), {
 	deep: true,
 });

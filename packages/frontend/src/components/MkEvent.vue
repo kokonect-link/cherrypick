@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.container">
 	<div :class="$style.title">
@@ -16,60 +21,60 @@
 			</dd>
 		</template>
 		<template v-if="note.event!.metadata.doorTime">
-			<dt :class="$style.key">{{ i18n.ts._event.doorTime }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.doorTime }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.doorTime }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.location">
-			<dt :class="$style.key">{{ i18n.ts._event.location }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.location }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.location }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.url">
-			<dt :class="$style.key">{{ i18n.ts._event.url }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.url }}</dt>
 			<dd :class="$style.value"><a :href="note.event!.metadata.url">{{ note.event!.metadata.url }}</a></dd>
 		</template>
 		<template v-if="note.event!.metadata.organizer">
-			<dt :class="$style.key">{{ i18n.ts._event.organizer }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.organizer }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.organizer.name }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.audience">
-			<dt :class="$style.key">{{ i18n.ts._event.audience }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.audience }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.audience.name }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.inLanguage">
-			<dt :class="$style.key">{{ i18n.ts._event.language }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.language }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.inLanguage }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.typicalAgeRange">
-			<dt :class="$style.key">{{ i18n.ts._event.ageRange }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.ageRange }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.typicalAgeRange }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.performer">
-			<dt :class="$style.key">{{ i18n.ts._event.performers }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.performers }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.performer.join(', ') }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.offers?.url">
-			<dt :class="$style.key">{{ i18n.ts._event.ticketsUrl }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.ticketsUrl }}</dt>
 			<dd :class="$style.value"><a :href="note.event!.metadata.offers.url">{{ note.event!.metadata.offers.url }}</a></dd>
 		</template>
 		<template v-if="note.event!.metadata.isAccessibleForFree">
-			<dt :class="$style.key">{{ i18n.ts._event.isFree }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.isFree }}</dt>
 			<dd :class="$style.value">{{ i18n.ts.yes }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.offers?.price">
-			<dt :class="$style.key">{{ i18n.ts._event.price }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.price }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.offers.price }}</dd>
 		</template>
 		<template v-if="note.event!.metadata.offers?.availabilityStarts || note.event!.metadata.offers?.availabilityEnds">
-			<dt :class="$style.key">{{ i18n.ts._event.availability }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.availability }}</dt>
 			<dd :class="$style.value">
 				{{ [
-					(note.event!.metadata.offers.availabilityStarts ? i18n.ts._event.from + note.event!.metadata.offers.availabilityStarts : ''), 
+					(note.event!.metadata.offers.availabilityStarts ? i18n.ts._event.from + note.event!.metadata.offers.availabilityStarts : ''),
 					(note.event!.metadata.offers.availabilityEnds ? i18n.ts._event.until + note.event!.metadata.offers.availabilityEnds : '')]
 					.join(' ') }}
 			</dd>
 		</template>
 		<template v-if="note.event!.metadata.keywords">
-			<dt :class="$style.key">{{ i18n.ts._event.keywords }}</dt> 
+			<dt :class="$style.key">{{ i18n.ts._event.keywords }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.keywords }}</dd>
 		</template>
 	</dl>

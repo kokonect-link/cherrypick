@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { URLSearchParams } from 'node:url';
 import fs from 'node:fs';
 import { Inject, Injectable } from '@nestjs/common';
@@ -140,11 +145,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		});
 
 		const json = (await res.json()) as {
-      translations: {
-        detected_source_language: string;
-        text: string;
-      }[];
-    };
+			translations: {
+				detected_source_language: string;
+				text: string;
+			}[];
+		};
 
 		return {
 			sourceLang: json.translations[0].detected_source_language,
@@ -156,9 +161,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 	private async apiCloudTranslationAdvanced(text: string, targetLang: string, saKey: string, projectId: string, location: string, model: string | null, glossary: string | null, provider: string) {
 		const [path, cleanup] = await createTemp();
 		fs.writeFileSync(path, saKey);
-		process.env.GOOGLE_APPLICATION_CREDENTIALS = path;
 
-		const translationClient = new TranslationServiceClient();
+		const translationClient = new TranslationServiceClient({ keyFilename: path });
 
 		const detectRequest = {
 			parent: `projects/${projectId}/locations/${location}`,
@@ -193,8 +197,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		const translatedText = translateResponse.translations && translateResponse.translations[0]?.translatedText;
 		const detectedLanguageCode = translateResponse.translations && translateResponse.translations[0]?.detectedLanguageCode;
 
-		delete process.env.GOOGLE_APPLICATION_CREDENTIALS;
 		cleanup();
+
 		return {
 			sourceLang: detectedLanguage !== null ? detectedLanguage : detectedLanguageCode,
 			text: translatedText,

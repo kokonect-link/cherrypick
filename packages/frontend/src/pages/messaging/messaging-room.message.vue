@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="thvuemwp" :class="{ isMe }">
 	<MkAvatar class="avatar" :user="message.user" indicator link preview/>
@@ -266,7 +271,7 @@ function del(): void {
 				::selection {
 					color: var(--accent);
 					background-color: #fff;
-				} 
+				}
 
 				&.noText {
 					background: transparent;

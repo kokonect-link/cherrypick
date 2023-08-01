@@ -20,7 +20,7 @@ import { onMounted } from 'vue';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
 import { $i } from '@/account';
-import CPAvatar from '@/components/global/toast-avatar.vue';
+import CPAvatar from '@/components/global/ToastAvatar.vue';
 
 defineProps<{
 	message: string;

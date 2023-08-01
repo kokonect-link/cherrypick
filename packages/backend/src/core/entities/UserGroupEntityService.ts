@@ -1,10 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models/index.js';
-import { awaitAll } from '@/misc/prelude/await-all.js';
 import type { Packed } from '@/misc/json-schema.js';
-import type { } from '@/models/entities/Blocking.js';
-import type { User } from '@/models/entities/User.js';
 import type { UserGroup } from '@/models/entities/UserGroup.js';
 import { UserEntityService } from './UserEntityService.js';
 import { bindThis } from '@/decorators.js';
@@ -37,7 +39,7 @@ export class UserGroupEntityService {
 			createdAt: userGroup.createdAt.toISOString(),
 			name: userGroup.name,
 			ownerId: userGroup.userId,
-			userIds: users.map(x => x.userId),
+			userIds: users.map((x: { userId: any; }) => x.userId),
 		};
 	}
 }

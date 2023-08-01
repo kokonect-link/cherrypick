@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header>
@@ -94,7 +99,7 @@ async function renameGroup() {
 	});
 	if (canceled) return;
 
-	await os.apiWithDialog('users/groups/update', {	
+	await os.apiWithDialog('users/groups/update', {
 		groupId: group.id,
 		name: name,
 	});

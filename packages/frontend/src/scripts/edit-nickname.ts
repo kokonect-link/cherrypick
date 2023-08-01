@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import * as os from '@/os';
 import { User } from 'cherrypick-js/src/entities';
 import { defaultStore } from '@/store';
