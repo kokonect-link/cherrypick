@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, watch, nextTick, onBeforeUnmount } from 'vue';
+import { onMounted, onUnmounted, ref, inject, watch, nextTick } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll';
 import { globalEvents } from '@/events';
@@ -60,7 +60,7 @@ import { miLocalStorage } from '@/local-storage';
 import { mainRouter } from '@/router';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
-import {defaultStore} from "@/store";
+import { defaultStore } from '@/store';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -128,26 +128,26 @@ const preventDrag = (ev: TouchEvent) => {
 	ev.stopPropagation();
 };
 
+const top = (ev: MouseEvent) => {
+  const pos = getScrollPosition(el as HTMLElement);
+  if (el && pos !== 0) {
+    scrollToTop(el as HTMLElement, { behavior: 'smooth' });
+  } else if (pos === 0) {
+    os.popupMenu([{
+      text: i18n.ts.reload,
+      icon: 'ti ti-refresh',
+      action: () => {
+        location.reload();
+      },
+    }], ev.currentTarget ?? ev.target);
+  }
+};
+
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_({
 		withExtraOperation: true,
 	}, ev);
 }
-
-const top = (ev: MouseEvent) => {
-	const pos = getScrollPosition(el as HTMLElement);
-	if (el && pos !== 0) {
-		scrollToTop(el as HTMLElement, { behavior: 'smooth' });
-	} else if (pos === 0) {
-		os.popupMenu([{
-			text: i18n.ts.reload,
-			icon: 'ti ti-refresh',
-			action: () => {
-				location.reload();
-			},
-		}], ev.currentTarget ?? ev.target);
-	}
-};
 
 function onTabMousedown(tab: Tab, ev: MouseEvent): void {
 	// ユーザビリティの観点からmousedown時にはonClickは呼ばない

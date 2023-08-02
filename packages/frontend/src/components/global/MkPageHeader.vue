@@ -58,7 +58,7 @@ import { miLocalStorage } from '@/local-storage';
 import { mainRouter } from '@/router';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
-import {defaultStore} from "@/store";
+import { defaultStore } from '@/store';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
