@@ -587,9 +587,7 @@ export class DriveService {
 		file.maybePorn = info.porn;
 		file.isSensitive = user
 			? this.userEntityService.isLocalUser(user) && profile!.alwaysMarkNsfw ? true :
-			(sensitive !== null && sensitive !== undefined)
-				? sensitive
-				: false
+			sensitive ?? false
 			: false;
 
 		if (info.sensitive && profile!.autoSensitive) file.isSensitive = true;

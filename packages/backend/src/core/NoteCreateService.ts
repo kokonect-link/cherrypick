@@ -372,7 +372,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			text: data.text,
 			hasPoll: data.poll != null,
 			hasEvent: data.event != null,
-			cw: data.cw == null ? null : data.cw,
+			cw: data.cw ?? null,
 			tags: tags.map(tag => normalizeForSearch(tag)),
 			emojis,
 			userId: user.id,
@@ -408,7 +408,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 				const url = profile != null ? profile.url : null;
 				return {
 					uri: u.uri,
-					url: url == null ? undefined : url,
+					url: url ?? undefined,
 					username: u.username,
 					host: u.host,
 				} as IMentionedRemoteUsers[0];
