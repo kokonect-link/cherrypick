@@ -97,7 +97,7 @@ const metadata = injectPageMetadata();
 const hideTitle = inject('shouldOmitHeaderTitle', false);
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-const el = $shallowRef<HTMLElement | undefined>(undefined);
+let el = $shallowRef<HTMLElement | undefined>(undefined);
 const tabRefs: Record<string, HTMLElement | null> = {};
 const tabHighlightEl = $shallowRef<HTMLElement | null>(null);
 const bg = ref<string | undefined>(undefined);
@@ -172,19 +172,16 @@ function goBack() {
 }
 
 const calcBg = () => {
-	const rawBg = metadata?.bg || 'var(--bg)';
-	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (narrow) tinyBg.setAlpha(1);
-	else tinyBg.setAlpha(0.85);
-	bg.value = tinyBg.toRgbString();
+  const rawBg = 'var(--bg)';
+  const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+  if (narrow) tinyBg.setAlpha(1);
+  else tinyBg.setAlpha(0.85);
+  bg.value = tinyBg.toRgbString();
 };
 
 let ro: ResizeObserver | null;
 
 onMounted(() => {
-	calcBg();
-	globalEvents.on('themeChanged', calcBg);
-
 	watch(() => [props.tab, props.tabs], () => {
 		nextTick(() => {
 			const tabEl = props.tab ? tabRefs[props.tab] : undefined;
@@ -210,6 +207,9 @@ onMounted(() => {
 		});
 		ro.observe(el.parentElement as HTMLElement);
 	}
+
+  calcBg();
+  globalEvents.on('themeChanged', calcBg);
 });
 
 onUnmounted(() => {

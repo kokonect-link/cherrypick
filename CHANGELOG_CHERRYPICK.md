@@ -28,6 +28,7 @@
 ### Client
 - 이모티콘 피커의 검색 건수를 100개로 증가 (misskey-dev/misskey#11371)
 - Fix: 움직임이 있는 MFM 설정을 사용하지 않아도 `$[rainbow ]`문자를 볼 수 있음 (misskey-dev/misskey#11361)
+- Fix: 모바일에서 헤더의 디자인을 변경하면 블러 설정이 강제됨
 
 ### Server
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
