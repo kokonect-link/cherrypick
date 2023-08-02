@@ -4,12 +4,14 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import type { Meta } from '@/models/entities/Meta.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { DI } from '@/di-symbols.js';
 import { MetaService } from '@/core/MetaService.js';
+import { ServerStatsService } from '@/daemons/ServerStatsService.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -133,6 +135,8 @@ export const paramDef = {
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> {
 	constructor(
+		private moduleRef: ModuleRef,
+
 		@Inject(DI.db)
 		private db: DataSource,
 
@@ -528,6 +532,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			await this.metaService.update(set);
 			this.moderationLogService.insertModerationLog(me, 'updateMeta');
+
+			if (set.enableServerMachineStats === true) {
+				const serverStatsService: ServerStatsService = await this.moduleRef.resolve(ServerStatsService);
+				await serverStatsService.start();
+			} else {
+				const serverStatsService: ServerStatsService = await this.moduleRef.resolve(ServerStatsService);
+				serverStatsService.dispose();
+			}
 		});
 	}
 }
