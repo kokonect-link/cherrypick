@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+displayHeaderNavBarWhenScroll: "スクロール時の要素表示（ヘッダー、フローティングボタン、ナビゲーションバー）"
 addSingle: "一つだけ追加"
 addMultiple: "複数追加"
 showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"
@@ -1176,6 +1177,14 @@ _cherrypick:
   reactableRemoteReaction: "リモートのカスタム絵文字リアクションでも、このサーバーに同じ名前の絵文字があればリアクションできるようにする"
   showFollowingMessageInsteadOfButton: "既にフォローしている場合、通知欄にフォローボタンを表示しない"
   mobileTimelineHeaderChange: "モバイル環境でタイムラインのヘッダーデザインを変更"
+
+_displayHeaderNavBarWhenScroll:
+  all: "全て表示"
+  hideHeaderOnly: "ヘッダーだけを隠す"
+  hideHeaderFloatBtn: "ヘッダーとフローティングボタンを隠す"
+  hideFloatBtnOnly: "フローティングボタンだけを隠す"
+  hideFloatBtnNavBar: "フローティングボタンとナビゲーションバーを隠す"
+  hide: "全て隠す"
 
 _bannerDisplay:
   all: "全て"

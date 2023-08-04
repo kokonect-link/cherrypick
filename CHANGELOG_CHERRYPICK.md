@@ -25,6 +25,9 @@
 출시일: unreleased<br>
 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
+### General
+- 스크롤 시 요소 표시(헤더, 플로팅 버튼, 탐색 모음)를 사용자화 할 수 있는 옵션 추가
+
 ### Client
 - 이모티콘 피커의 검색 건수를 100개로 증가 (misskey-dev/misskey#11371)
 - about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음

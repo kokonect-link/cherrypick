@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl">
-	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]">
+	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]">
 		<slot name="header"></slot>
 	</div>
 	<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
@@ -26,8 +26,7 @@ import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 
-const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
-
+const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);

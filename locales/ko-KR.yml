@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+displayHeaderNavBarWhenScroll: "스크롤 시 요소 표시 (헤더, 플로팅 버튼, 탐색 모음)"
 addSingle: "하나만 추가"
 addMultiple: "여러 개 추가"
 showRenoteConfirmPopup: "리노트할 때 확인 팝업 표시"
@@ -1172,6 +1173,13 @@ _cherrypick:
   reactableRemoteReaction: "서버에 리모트 이모지와 이름이 같은 이모지가 있으면 리모트 이모지에도 반응할 수 있음"
   showFollowingMessageInsteadOfButton: "이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음"
   mobileTimelineHeaderChange: "모바일 환경에서 타임라인의 헤더 디자인을 변경"
+_displayHeaderNavBarWhenScroll:
+  all: "모두 표시"
+  hideHeaderOnly: "헤더만 숨기기"
+  hideHeaderFloatBtn: "헤더와 플로팅 버튼 숨기기"
+  hideFloatBtnOnly: "플로팅 버튼만 숨기기"
+  hideFloatBtnNavBar: "플로팅 버튼과 탐색 모음 숨기기"
+  hide: "모두 숨기기"
 _bannerDisplay:
   all: "전부"
   topBottom: "상단 및 하단"

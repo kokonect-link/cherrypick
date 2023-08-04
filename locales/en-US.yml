@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+displayHeaderNavBarWhenScroll: "Show elements when scrolling (header, floating buttons, navigation bar)"
 addSingle: "Add just one"
 addMultiple: "Add multiple"
 showRenoteConfirmPopup: "Show confirmation popup when renote"
@@ -1174,6 +1175,13 @@ _cherrypick:
   reactableRemoteReaction: "Allow remote custom emoji reactions to react if there is an emoji with the same name on this server."
   showFollowingMessageInsteadOfButton: "Do not show the follow button in the notification field if you are already following someone"
   mobileTimelineHeaderChange: "Timeline header design change in mobile environment"
+_displayHeaderNavBarWhenScroll:
+  all: "Display all"
+  hideHeaderOnly: "Hide header only"
+  hideHeaderFloatBtn: "Hide header and floating buttons"
+  hideFloatBtnOnly: "Hide floating buttons only"
+  hideFloatBtnNavBar: "Hide floating buttons and navigation bar"
+  hide: "Hide All"
 _bannerDisplay:
   all: "All"
   topBottom: "Top and Bottom"

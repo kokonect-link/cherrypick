@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="el" :class="$style.root">
-	<header :class="[$style.header, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
+	<header :class="[$style.header, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
 		<div :class="$style.title"><div><slot name="header"></slot></div></div>
 		<div :class="$style.divider"></div>
 		<button class="_button" :class="$style.button">
@@ -35,8 +35,6 @@ import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
 import { deviceKind } from '@/scripts/device-kind';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
-
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const MOBILE_THRESHOLD = 500;
 
