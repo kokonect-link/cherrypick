@@ -348,18 +348,6 @@ export const defaultStore = markRaw(new Storage('base', {
 
 	// #region CherryPick
 	// - Settings/General
-	useEnterToSend: {
-		where: 'device',
-		default: false,
-	},
-	postFormVisibilityHotkey: {
-		where: 'device',
-		default: true,
-	},
-	showRenoteConfirmPopup: {
-		where: 'device',
-		default: true,
-	},
 	newNoteReceivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',
@@ -455,6 +443,18 @@ export const defaultStore = markRaw(new Storage('base', {
 	nicknameMap: {
 		where: 'account',
 		default: {} as Record<string, string>,
+	},
+	useEnterToSend: {
+		where: 'device',
+		default: false,
+	},
+	postFormVisibilityHotkey: {
+		where: 'device',
+		default: true,
+	},
+	showRenoteConfirmPopup: {
+		where: 'device',
+		default: true,
 	},
 	infoButtonForNoteActionsEnabled: {
 		where: 'account',
