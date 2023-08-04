@@ -356,14 +356,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 8,
 	},
-	friendlyEnableNotifications: {
-		where: 'device',
-		default: true,
-	},
-	friendlyEnableWidgets: {
-		where: 'device',
-		default: true,
-	},
 	collapseDefault: {
 		where: 'account',
 		default: true,
@@ -483,6 +475,16 @@ export const defaultStore = markRaw(new Storage('base', {
 	mobileTimelineHeaderChange: {
 		where: 'device',
 		default: false,
+	},
+
+	// - etc
+	friendlyEnableNotifications: {
+		where: 'device',
+		default: true,
+	},
+	friendlyEnableWidgets: {
+		where: 'device',
+		default: true,
 	},
 	// #endregion
 }));
