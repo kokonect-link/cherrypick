@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
 
 	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
@@ -151,6 +151,7 @@ let lastScrollPosition = $ref(0);
 let queue = $ref(0);
 let longTouchNavHome = $ref(false);
 const bg = ref<string | undefined>(undefined);
+const PostBg = ref<string | undefined>(undefined);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsShowing = $ref(false);
@@ -204,10 +205,19 @@ defaultStore.loaded.then(() => {
 
 const calcBg = () => {
   const rawBg = 'var(--panel)';
+  const rawPostBg = 'var(--accent)';
   const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-  if (defaultStore.state.useBlurEffect) tinyBg.setAlpha(0.7);
-  else tinyBg.setAlpha(1);
+  const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
+  if (defaultStore.state.useBlurEffect) {
+    tinyBg.setAlpha(0.7);
+    tinyPostBg.setAlpha(0.7);
+  }
+  else {
+    tinyBg.setAlpha(1);
+    tinyPostBg.setAlpha(1);
+  }
   bg.value = tinyBg.toRgbString();
+  PostBg.value = tinyPostBg.toRgbString();
 };
 
 onMounted(() => {
@@ -433,30 +443,36 @@ $float-button-size: 65px;
 	padding: initial;
 }
 
+.floatButton {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  bottom: calc(65px + env(safe-area-inset-bottom));
+  width: $float-button-size;
+  height: $float-button-size;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 28px;
+  -webkit-backdrop-filter: var(--blur, blur(15px));
+  backdrop-filter: var(--blur, blur(15px));
+  transition: opacity 0.5s, transform 0.5s;
+
+  &.reduceBlurEffect {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  &.reduceAnimation {
+    transition: opacity 0s, transform 0s;
+  }
+
+  &.showEl {
+    transform: translateX(-250px);
+  }
+}
+
 .floatNavButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: calc(65px + env(safe-area-inset-bottom));
-	left: 15px;
-	width: $float-button-size;
-	height: $float-button-size;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-	// background: var(--panel);
-	// opacity: 0.7;
-	border-radius: 28px;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	transition: opacity 0.5s, transform 0.5s;
-
-	&.reduceBlurEffect {
-		-webkit-backdrop-filter: none;
-		backdrop-filter: none;
-	}
-
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
+  composes: floatButton;
+  left: 15px;
 
 	&.showEl {
 		transform: translateX(-250px);
@@ -470,30 +486,9 @@ $float-button-size: 65px;
 }
 
 .floatPostButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: calc(65px + env(safe-area-inset-bottom));
+  composes: floatButton;
 	right: 15px;
-	width: $float-button-size;
-	height: $float-button-size;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 18px;
-	// background: var(--accent);
-	// opacity: 0.7;
-	border-radius: 28px;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	transition: opacity 0.5s, transform 0.5s;
-
-	&.reduceBlurEffect {
-		-webkit-backdrop-filter: none;
-		backdrop-filter: none;
-	}
-
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
 
 	&.showEl {
 		transform: translateX(250px);
@@ -511,13 +506,7 @@ $float-button-size: 65px;
 	height: 100%;
 	right: 0;
 	bottom: 0;
-	background: var(--accent);
-	opacity: .7;
 	border-radius: 28px;
-
-	&.reduceBlurEffect {
-		opacity: 1;
-	}
 }
 
 .widgetButton {
@@ -568,8 +557,6 @@ $float-button-size: 65px;
 	position: fixed;
 	z-index: 1000;
 	bottom: 0;
-	// left: 0;
-	// padding: 16px 16px calc(env(safe-area-inset-bottom, 0px) + 16px) 16px;
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
@@ -587,19 +574,10 @@ $float-button-size: 65px;
 .navButton {
 	position: relative;
 	flex: 1;
-	// padding: 0;
 	margin: auto;
 	height: 50px;
-	// border-radius: 8px;
-	// background: var(--panel);
 	color: var(--fg);
 	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
-
-	/*
-	&:not(:last-child) {
-		margin-right: 12px;
-	}
-	 */
 
 	@media (max-width: 300px) {
 		height: 60px;
@@ -607,10 +585,6 @@ $float-button-size: 65px;
 		&:not(:last-child) {
 			margin-right: 8px;
 		}
-	}
-
-	&:hover {
-		// background: var(--X2);
 	}
 
 	&:active {
