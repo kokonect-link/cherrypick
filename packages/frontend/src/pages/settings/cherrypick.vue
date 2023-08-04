@@ -27,15 +27,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showRenoteConfirmPopup">
 					<template #label>{{ i18n.ts.showRenoteConfirmPopup }}</template>
 				</MkSwitch>
-        <MkRadios v-model="displayHeaderNavBarWhenScroll">
-          <template #label>{{ i18n.ts.displayHeaderNavBarWhenScroll }}</template>
-          <option value="all">{{ i18n.ts._displayHeaderNavBarWhenScroll.all }}</option>
-          <option value="hideHeaderOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
-          <option value="hideHeaderFloatBtn">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
-          <option value="hideFloatBtnOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
-          <option value="hideFloatBtnNavBar">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
-          <option value="hide">{{ i18n.ts._displayHeaderNavBarWhenScroll.hide }}</option>
-        </MkRadios>
+
+				<div>
+					<MkRadios v-model="displayHeaderNavBarWhenScroll">
+						<template #label>{{ i18n.ts.displayHeaderNavBarWhenScroll }}</template>
+						<option value="all">{{ i18n.ts._displayHeaderNavBarWhenScroll.all }}</option>
+						<option value="hideHeaderOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+						<option value="hideHeaderFloatBtn">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+						<option value="hideFloatBtnOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+						<option value="hideFloatBtnNavBar">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+						<option value="hide">{{ i18n.ts._displayHeaderNavBarWhenScroll.hide }}</option>
+					</MkRadios>
+				</div>
 			</div>
 		</div>
 	</FormSection>
