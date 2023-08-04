@@ -12,8 +12,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-panel class="about">
 					<div ref="containerEl" class="container" :class="{ playing: easterEggEngine != null }">
 						<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false" @load="iconLoaded" @click="gravity"/>
-						<div class="misskey">CherryPick</div>
-						<div class="version">v{{ version }}</div>
+						<div class="cherrypick">CherryPick</div>
+						<div class="version" @click="whatIsNewCherryPick">v{{ version }}</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
 							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true"/>
 							<MkEmoji v-else class="emoji" :emoji="emoji.emoji" :normal="true" :noStyle="true"/>
@@ -394,6 +394,10 @@ let easterEggEmojis = $ref([]);
 let easterEggEngine = $ref(null);
 const containerEl = $shallowRef<HTMLElement>();
 
+const whatIsNewCherryPick = () => {
+  window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
+};
+
 function iconLoaded() {
 	const emojis = defaultStore.state.reactions;
 	const containerWidth = containerEl.offsetWidth;
@@ -500,7 +504,7 @@ definePageMetadata({
 				z-index: 1;
 			}
 
-			> .misskey {
+			> .cherrypick {
 				margin: 0.75em auto 0 auto;
 				width: max-content;
 				position: relative;
@@ -513,6 +517,11 @@ definePageMetadata({
 				opacity: 0.5;
 				position: relative;
 				z-index: 1;
+
+        &:hover {
+          text-decoration: underline;
+          color: var(--link);
+        }
 			}
 
 			> .emoji {
@@ -572,7 +581,7 @@ definePageMetadata({
 	font-size: 11px;
 	font-weight: bold;
 
-	> .misskey {
+	> .cherrypick {
 		color: #86b300;
 	}
 

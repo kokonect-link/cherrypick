@@ -27,6 +27,7 @@
 
 ### Client
 - 이모티콘 피커의 검색 건수를 100개로 증가 (misskey-dev/misskey#11371)
+- about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
 - Fix: (Friendly) 흐림 효과를 사용할 때 하단 내비게이션 바의 가독성이 매우 떨어지는 문제
 - Fix: 움직임이 있는 MFM 설정을 사용하지 않아도 `$[rainbow ]`문자를 볼 수 있음 (misskey-dev/misskey#11361)
 - Fix: 모바일에서 헤더의 디자인을 변경하면 흐림 효과가 강제됨
