@@ -55,6 +55,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
 			<MkSwitch v-model="mobileTimelineHeaderChange">{{ i18n.ts._cherrypick.mobileTimelineHeaderChange }}</MkSwitch>
+      <MkSwitch v-model="renameTheButtonInPostFormToNya">
+        {{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
+        <template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
+      </MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -91,6 +95,7 @@ const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSette
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
 const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
+const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
 
 watch([
 	infoButtonForNoteActionsEnabled,

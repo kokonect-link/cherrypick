@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template v-if="posted"></template>
 					<template v-else-if="posting"><MkEllipsis/></template>
 					<template v-else>{{ submitText }}</template>
-					<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : 'ti ti-send'"></i>
+					<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 				</div>
 			</button>
 		</div>
@@ -238,7 +238,9 @@ const submitText = $computed((): string => {
 		? i18n.ts.quote
 		: props.reply
 			? i18n.ts.reply
-			: i18n.ts.note;
+			: defaultStore.state.renameTheButtonInPostFormToNya
+        ? i18n.ts.nya
+        : i18n.ts.note;
 });
 
 const textLength = $computed((): number => {
