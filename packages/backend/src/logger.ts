@@ -79,10 +79,8 @@ export default class Logger {
 		console.log(important ? chalk.bold(log) : log);
 		if (level === 'error' && data) {
 			console.log(data);
-			this.writeCloudLogging(level, log, timestamp, data);
-		} else {
-			this.writeCloudLogging(level, log, timestamp, null);
 		}
+		this.writeCloudLogging(level, log, timestamp, level === 'error' || level === 'warning' ? data : null);
 	}
 
 	private async writeCloudLogging(level: Level, message: string, time: Date, data?: Record<string, any> | null) {
