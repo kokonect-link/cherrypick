@@ -9,10 +9,10 @@ import type { MessagingMessagesRepository } from '@/models/index.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { User } from '@/models/entities/User.js';
 import type { MessagingMessage } from '@/models/entities/MessagingMessage.js';
+import { bindThis } from '@/decorators.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
 import { UserGroupEntityService } from './UserGroupEntityService.js';
-import { bindThis } from '@/decorators.js';
 
 @Injectable()
 export class MessagingMessageEntityService {

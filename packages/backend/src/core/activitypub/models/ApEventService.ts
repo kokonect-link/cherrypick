@@ -3,10 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Inject, Injectable } from '@nestjs/common';
-import { DI } from '@/di-symbols.js';
-import type { EventsRepository, NotesRepository } from '@/models/index.js';
-import type { Config } from '@/config.js';
+import { Injectable } from '@nestjs/common';
 import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { IEvent } from '@/models/entities/Event.js';
@@ -21,15 +18,6 @@ export class ApEventService {
 	private logger: Logger;
 
 	constructor(
-		@Inject(DI.config)
-		private config: Config,
-
-		@Inject(DI.notesRepository)
-		private notesRepository: NotesRepository,
-
-		@Inject(DI.eventsRepository)
-		private eventsRepository: EventsRepository,
-
 		private apResolverService: ApResolverService,
 		private apLoggerService: ApLoggerService,
 	) {

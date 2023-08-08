@@ -8,7 +8,6 @@ import { DI } from '@/di-symbols.js';
 import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models/index.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { UserGroup } from '@/models/entities/UserGroup.js';
-import { UserEntityService } from './UserEntityService.js';
 import { bindThis } from '@/decorators.js';
 
 @Injectable()
@@ -19,8 +18,6 @@ export class UserGroupEntityService {
 
 		@Inject(DI.userGroupJoiningsRepository)
 		private userGroupJoiningsRepository: UserGroupJoiningsRepository,
-
-		private userEntityService: UserEntityService,
 	) {
 	}
 
