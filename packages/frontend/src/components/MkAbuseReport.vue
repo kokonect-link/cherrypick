@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts.forwardReport }}
 				<template #caption>{{ i18n.ts.forwardReportIsAnonymous }}</template>
 			</MkSwitch>
-			<MkButton v-if="!report.resolved" primary @click="resolve">{{ i18n.ts.abuseMarkAsResolved }}</MkButton>
+			<MkButton v-if="!report.resolved" primary style="margin-top: 10px;" @click="resolve">{{ i18n.ts.abuseMarkAsResolved }}</MkButton>
 		</div>
 	</div>
 </div>
