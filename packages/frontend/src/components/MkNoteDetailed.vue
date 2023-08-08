@@ -145,12 +145,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @mousedown="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="appearNote.myReaction == null && appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
-				<i class="ti ti-mood-plus"></i>
-			</button>
-			<button v-if="appearNote.myReaction != null" ref="reactButton" class="_button" :class="[$style.noteFooterButton, $style.reacted]" @click="undoReact(appearNote)">
-				<i v-if="appearNote.reactionAcceptance !== 'likeOnly'" class="ti ti-mood-minus"></i>
-				<i v-else class="ti ti-heart-minus"></i>
+      <button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
+        <i v-if="appearNote.myReaction == null" class="ti ti-mood-plus"></i>
+        <i v-else class="ti ti-mood-edit"></i>
+      </button>
+      <button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
+        <i class="ti ti-heart-minus"></i>
 			</button>
 			<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
@@ -379,16 +379,40 @@ function react(viaKeyboard = false): void {
 	} else {
 		blur();
 		reactionPicker.show(reactButton.value, reaction => {
-			os.api('notes/reactions/create', {
-				noteId: appearNote.id,
-				reaction: reaction,
-			});
-			if (appearNote.text && appearNote.text.length > 100 && (Date.now() - new Date(appearNote.createdAt).getTime() < 1000 * 3)) {
-				claimAchievement('reactWithoutRead');
-			}
+			toggleReaction(reaction);
 		}, () => {
 			focus();
 		});
+	}
+}
+
+async function toggleReaction(reaction) {
+	const oldReaction = note.myReaction;
+	if (oldReaction) {
+		const confirm = await os.confirm({
+			type: 'warning',
+			text: oldReaction !== reaction ? i18n.ts.changeReactionConfirm : i18n.ts.cancelReactionConfirm,
+		});
+		if (confirm.canceled) return;
+
+		os.api('notes/reactions/delete', {
+			noteId: note.id,
+		}).then(() => {
+			if (oldReaction !== reaction) {
+				os.api('notes/reactions/create', {
+					noteId: note.id,
+					reaction: reaction,
+				});
+			}
+		});
+	} else {
+		os.api('notes/reactions/create', {
+			noteId: appearNote.id,
+			reaction: reaction,
+		});
+	}
+	if (appearNote.text && appearNote.text.length > 100 && (Date.now() - new Date(appearNote.createdAt).getTime() < 1000 * 3)) {
+		claimAchievement('reactWithoutRead');
 	}
 }
 
