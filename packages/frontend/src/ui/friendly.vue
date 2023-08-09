@@ -110,6 +110,7 @@ import { deviceKind } from '@/scripts/device-kind';
 import { miLocalStorage } from '@/local-storage';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
+import { useScrollPositionManager } from '@/nirax';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 import tinycolor from 'tinycolor2';
 import { globalEvents } from '@/events';
@@ -329,6 +330,8 @@ watch($$(navFooter), () => {
 }, {
 	immediate: true,
 });
+
+useScrollPositionManager(() => contents.value.rootEl, mainRouter);
 </script>
 
 <style>
