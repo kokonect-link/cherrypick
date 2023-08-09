@@ -169,7 +169,7 @@ onMounted(() => {
 				return item;
 			}),
 		gallery: gallery.value,
-		mainClass: 'pswp',
+		mainClass: defaultStore.state.useBlurEffectForModal ? 'pswp' : 'pswpX2',
 		children: '.image',
 		thumbSelector: '.image',
 		loop: false,
@@ -347,6 +347,11 @@ const previewable = (file: misskey.entities.DriveFile): boolean => {
 :global(.pswp) {
 	--pswp-root-z-index: var(--mk-pswp-root-z-index, 2000700) !important;
 	--pswp-bg: var(--modalBg) !important;
+}
+
+:global(.pswpX2) {
+  --pswp-root-z-index: var(--mk-pswp-root-z-index, 2000700) !important;
+  --pswp-bg: var(--modalBgX2) !important;
 }
 </style>
 
