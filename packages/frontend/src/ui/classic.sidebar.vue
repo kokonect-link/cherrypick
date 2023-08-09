@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="divider"></div>
 	<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
 		<i class="ti ti-dashboard ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
+    <span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</MkA>
 	<button v-click-anime class="item _button" @click="more">
 		<i class="ti ti-dots ti-fw"></i><span class="text">{{ i18n.ts.more }}</span>
@@ -76,6 +77,14 @@ let el = $shallowRef<HTMLElement>();
 // let connection = $ref(null);
 let iconOnly = $ref(false);
 let settingsWindowed = $ref(false);
+let controlPanelIndicated = $ref(false);
+
+os.api('admin/abuse-user-reports', {
+  state: 'unresolved',
+  limit: 1,
+}).then(reports => {
+  if (reports.length > 0) controlPanelIndicated = true;
+});
 
 function calcViewState() {
 	iconOnly = (window.innerWidth <= WINDOW_THRESHOLD) || (menuDisplay.value === 'sideIcon');

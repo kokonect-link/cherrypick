@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onActivated, onMounted, onUnmounted, provide, watch } from 'vue';
+import {computed, onActivated, onMounted, onUnmounted, provide, watch} from 'vue';
 import { i18n } from '@/i18n';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
@@ -143,6 +143,7 @@ const menuDef = $computed(() => [{
 	}, {
 		icon: 'ti ti-exclamation-circle',
 		text: i18n.ts.abuseReports,
+    indicated: computed(() => thereIsUnresolvedAbuseReport),
 		to: '/admin/abuses',
 		active: currentPage?.route.name === 'abuses',
 	}],
