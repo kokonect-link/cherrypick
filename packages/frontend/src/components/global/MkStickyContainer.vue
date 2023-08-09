@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl">
-	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]">
+	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && (mainRouter.currentRoute.value.name !== 'index' || !isFriendly), [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' && isFriendly }]">
 		<slot name="header"></slot>
 	</div>
 	<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
@@ -25,7 +25,9 @@ import { deviceKind } from '@/scripts/device-kind';
 import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { miLocalStorage } from '@/local-storage';
 
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
 

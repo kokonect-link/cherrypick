@@ -17,9 +17,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XWidgets/>
 	</div>
 
-	<button v-if="!isDesktop && !isMobile" :class="$style.widgetButton" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
+	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
-	<div v-if="isMobile" ref="navFooter" :class="$style.nav">
+	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]">
 		<button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
 		<button :class="$style.navButton" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.push('/')"><i :class="$style.navButtonIcon" class="ti ti-home"></i></button>
 		<button :class="$style.navButton" class="_button" @click="mainRouter.push('/my/notifications')"><i :class="$style.navButtonIcon" class="ti ti-bell"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
@@ -85,7 +85,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref, ComputedRef, watch, shallowRef, Ref } from 'vue';
+import {
+  defineAsyncComponent,
+  provide,
+  onMounted,
+  computed,
+  ref,
+  ComputedRef,
+  watch,
+  shallowRef,
+  Ref,
+  onBeforeUnmount
+} from 'vue';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config';
@@ -101,6 +112,7 @@ import { deviceKind } from '@/scripts/device-kind';
 import { miLocalStorage } from '@/local-storage';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
 import { useScrollPositionManager } from '@/nirax';
+import {eventBus} from "@/scripts/cherrypick/eventBus";
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/_common_/navbar.vue'));
@@ -115,6 +127,9 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
+
+let showEl = $ref(false);
+let lastScrollPosition = $ref(0);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsShowing = $ref(false);
@@ -173,7 +188,29 @@ onMounted(() => {
 			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
 		}, { passive: true });
 	}
+
+  contents.value.rootEl.addEventListener('scroll', onScroll);
 });
+
+onBeforeUnmount(() => {
+  contents.value.rootEl.removeEventListener('scroll', onScroll);
+});
+
+function onScroll() {
+  const currentScrollPosition = contents.value.rootEl.scrollTop;
+  if (currentScrollPosition < 0) {
+    return;
+  }
+  // Stop executing this function if the difference between
+  // current scroll position and last scroll position is less than some offset
+  if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
+    return;
+  }
+  showEl = currentScrollPosition < lastScrollPosition;
+  lastScrollPosition = currentScrollPosition;
+  showEl = !showEl;
+  eventBus.emit('showEl', showEl);
+}
 
 const onContextmenu = (ev) => {
 	const isLink = (el: HTMLElement) => {
@@ -343,6 +380,15 @@ $widgets-hide-threshold: 1090px;
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 22px;
 	background: var(--panel);
+  transition: opacity 0.5s, transform 0.5s;
+
+  &.reduceAnimation {
+    transition: opacity 0s, transform 0s;
+  }
+
+  &.showEl {
+    transform: translateX(100px);
+  }
 }
 
 .widgetsDrawerBg {
@@ -390,6 +436,15 @@ $widgets-hide-threshold: 1090px;
 	backdrop-filter: var(--blur, blur(24px));
 	background-color: var(--header);
 	border-top: solid 0.5px var(--divider);
+  transition: opacity 0.5s, transform 0.5s;
+
+  &.reduceAnimation {
+    transition: opacity 0s, transform 0s;
+  }
+
+  &.showEl {
+    transform: translateY(84.55px);
+  }
 }
 
 .navButton {
