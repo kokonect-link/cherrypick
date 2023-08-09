@@ -517,9 +517,14 @@ $float-button-size: 65px;
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 22px;
 	background: var(--panel);
+  transition: opacity 0.5s, transform 0.5s;
 
   &.reduceAnimation {
     transition: opacity 0s, transform 0s;
+  }
+
+  &.showEl {
+    transform: translateX(100px);
   }
 }
 
