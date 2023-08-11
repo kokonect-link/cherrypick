@@ -71,7 +71,7 @@
 		"@fastify/multipart": "7.7.3",
 		"@fastify/static": "6.10.2",
 		"@fastify/view": "8.0.0",
-        "@google-cloud/logging": "^10.5.0",
+        "@google-cloud/logging": "^11.0.0",
         "@google-cloud/translate": "^7.2.1",
 		"@nestjs/common": "10.1.2",
 		"@nestjs/core": "10.1.2",
