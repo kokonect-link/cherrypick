@@ -39,6 +39,7 @@ import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-al
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
 import * as ep___admin_emoji_adds from './endpoints/admin/emoji/adds.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
+import * as ep___admin_emoji_steal from './endpoints/admin/emoji/steal.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
 import * as ep___admin_emoji_delete from './endpoints/admin/emoji/delete.js';
 import * as ep___admin_emoji_importZip from './endpoints/admin/emoji/import-zip.js';
@@ -430,6 +431,7 @@ const $admin_emoji_addAliasesBulk: Provider = { provide: 'ep:admin/emoji/add-ali
 const $admin_emoji_add: Provider = { provide: 'ep:admin/emoji/add', useClass: ep___admin_emoji_add.default };
 const $admin_emoji_adds: Provider = { provide: 'ep:admin/emoji/adds', useClass: ep___admin_emoji_adds.default };
 const $admin_emoji_copy: Provider = { provide: 'ep:admin/emoji/copy', useClass: ep___admin_emoji_copy.default };
+const $admin_emoji_steal: Provider = { provide: 'ep:admin/emoji/steal', useClass: ep___admin_emoji_steal.default };
 const $admin_emoji_deleteBulk: Provider = { provide: 'ep:admin/emoji/delete-bulk', useClass: ep___admin_emoji_deleteBulk.default };
 const $admin_emoji_delete: Provider = { provide: 'ep:admin/emoji/delete', useClass: ep___admin_emoji_delete.default };
 const $admin_emoji_importZip: Provider = { provide: 'ep:admin/emoji/import-zip', useClass: ep___admin_emoji_importZip.default };
@@ -826,6 +828,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_emoji_add,
 		$admin_emoji_adds,
 		$admin_emoji_copy,
+		$admin_emoji_steal,
 		$admin_emoji_deleteBulk,
 		$admin_emoji_delete,
 		$admin_emoji_importZip,
@@ -1215,6 +1218,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_emoji_add,
 		$admin_emoji_adds,
 		$admin_emoji_copy,
+		$admin_emoji_steal,
 		$admin_emoji_deleteBulk,
 		$admin_emoji_delete,
 		$admin_emoji_importZip,

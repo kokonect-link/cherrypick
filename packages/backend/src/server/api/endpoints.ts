@@ -38,6 +38,7 @@ import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-al
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
 import * as ep___admin_emoji_adds from './endpoints/admin/emoji/adds.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
+import * as ep___admin_emoji_steal from './endpoints/admin/emoji/steal.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
 import * as ep___admin_emoji_delete from './endpoints/admin/emoji/delete.js';
 import * as ep___admin_emoji_importZip from './endpoints/admin/emoji/import-zip.js';
@@ -427,6 +428,7 @@ const eps = [
 	['admin/emoji/add', ep___admin_emoji_add],
 	['admin/emoji/adds', ep___admin_emoji_adds],
 	['admin/emoji/copy', ep___admin_emoji_copy],
+	['admin/emoji/steal', ep___admin_emoji_steal],
 	['admin/emoji/delete-bulk', ep___admin_emoji_deleteBulk],
 	['admin/emoji/delete', ep___admin_emoji_delete],
 	['admin/emoji/import-zip', ep___admin_emoji_importZip],
