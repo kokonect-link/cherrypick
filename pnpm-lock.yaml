@@ -49,10 +49,10 @@ importers:
         version: 2.0.2
       '@typescript-eslint/eslint-plugin':
         specifier: 6.2.0
-        version: 6.2.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)(typescript@5.1.6)
+        version: 6.2.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/parser':
-        specifier: 6.2.0
-        version: 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+        specifier: 6.4.0
+        version: 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -184,7 +184,7 @@ importers:
         version: link:../cherrypick-js
       cherrypick-mfm-js:
         specifier: github:kokonect-link/mfm.js
-        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
+        version: git@github.com+kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
@@ -355,7 +355,7 @@ importers:
         version: 0.32.4
       sharp-read-bmp:
         specifier: github:misskey-dev/sharp-read-bmp
-        version: github.com/misskey-dev/sharp-read-bmp/02d9dc189fa7df0c4bea09330be26741772dac01
+        version: git@github.com+misskey-dev/sharp-read-bmp/02d9dc189fa7df0c4bea09330be26741772dac01
       slacc:
         specifier: 0.0.10
         version: 0.0.10
@@ -370,7 +370,7 @@ importers:
         version: 7.1.0
       summaly:
         specifier: github:misskey-dev/summaly
-        version: github.com/misskey-dev/summaly/089a0ad8e8c780e5c088b1c528aa95c5827cbdcc
+        version: git@github.com+misskey-dev/summaly/d2d8db49943ccb201c1b1b283e9d0a630519fac7
       systeminformation:
         specifier: 5.18.9
         version: 5.18.9
@@ -624,10 +624,10 @@ importers:
         version: 8.5.5
       '@typescript-eslint/eslint-plugin':
         specifier: 6.2.0
-        version: 6.2.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)(typescript@5.1.6)
+        version: 6.2.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/parser':
-        specifier: 6.2.0
-        version: 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+        specifier: 6.4.0
+        version: 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       aws-sdk-client-mock:
         specifier: 3.0.0
         version: 3.0.0
@@ -639,7 +639,7 @@ importers:
         version: 8.46.0
       eslint-plugin-import:
         specifier: 2.28.0
-        version: 2.28.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)
+        version: 2.28.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)
       execa:
         specifier: 7.2.0
         version: 7.2.0
@@ -682,10 +682,10 @@ importers:
         version: 20.4.5
       '@typescript-eslint/eslint-plugin':
         specifier: 6.2.0
-        version: 6.2.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)(typescript@5.1.6)
+        version: 6.2.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/parser':
-        specifier: 6.2.0
-        version: 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+        specifier: 6.4.0
+        version: 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       eslint:
         specifier: 8.46.0
         version: 8.46.0
@@ -751,7 +751,7 @@ importers:
         version: 5.1.0
       browser-image-resizer:
         specifier: github:misskey-dev/browser-image-resizer#v2.2.1-misskey.3
-        version: github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a
+        version: git@github.com+misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a
       buraha:
         specifier: 0.0.1
         version: 0.0.1
@@ -778,7 +778,7 @@ importers:
         version: link:../cherrypick-js
       cherrypick-mfm-js:
         specifier: github:kokonect-link/mfm.js
-        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
+        version: git@github.com+kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
       chromatic:
         specifier: 6.19.9
         version: 6.19.9
@@ -1004,10 +1004,10 @@ importers:
         version: 8.5.5
       '@typescript-eslint/eslint-plugin':
         specifier: 6.2.0
-        version: 6.2.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)(typescript@5.1.6)
+        version: 6.2.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/parser':
-        specifier: 6.2.0
-        version: 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+        specifier: 6.4.0
+        version: 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       '@vitest/coverage-v8':
         specifier: 0.33.0
         version: 0.33.0(vitest@0.33.0)
@@ -1028,7 +1028,7 @@ importers:
         version: 8.46.0
       eslint-plugin-import:
         specifier: 2.28.0
-        version: 2.28.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)
+        version: 2.28.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)
       eslint-plugin-vue:
         specifier: 9.16.1
         version: 9.16.1(eslint@8.46.0)
@@ -1067,10 +1067,10 @@ importers:
         version: 7.0.27
       storybook-addon-misskey-theme:
         specifier: github:misskey-dev/storybook-addon-misskey-theme
-        version: github.com/misskey-dev/storybook-addon-misskey-theme/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@7.0.27)(@storybook/components@7.0.27)(@storybook/core-events@7.0.27)(@storybook/manager-api@7.0.27)(@storybook/preview-api@7.0.27)(@storybook/theming@7.0.27)(@storybook/types@7.0.27)(react-dom@18.2.0)(react@18.2.0)
+        version: git@github.com+misskey-dev/storybook-addon-misskey-theme/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@7.0.27)(@storybook/components@7.0.27)(@storybook/core-events@7.0.27)(@storybook/manager-api@7.0.27)(@storybook/preview-api@7.0.27)(@storybook/theming@7.0.27)(@storybook/types@7.0.27)(react-dom@18.2.0)(react@18.2.0)
       summaly:
         specifier: github:misskey-dev/summaly
-        version: github.com/misskey-dev/summaly/089a0ad8e8c780e5c088b1c528aa95c5827cbdcc
+        version: git@github.com+misskey-dev/summaly/d2d8db49943ccb201c1b1b283e9d0a630519fac7
       vite-plugin-turbosnap:
         specifier: 1.0.2
         version: 1.0.2
@@ -1100,8 +1100,8 @@ importers:
         version: 6.2.1
     devDependencies:
       '@typescript-eslint/parser':
-        specifier: 6.2.0
-        version: 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+        specifier: 6.4.0
+        version: 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       '@typescript/lib-webworker':
         specifier: npm:@types/serviceworker@0.0.67
         version: /@types/serviceworker@0.0.67
@@ -1110,7 +1110,7 @@ importers:
         version: 8.46.0
       eslint-plugin-import:
         specifier: 2.28.0
-        version: 2.28.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)
+        version: 2.28.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)
       typescript:
         specifier: 5.1.6
         version: 5.1.6
@@ -1865,7 +1865,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1888,7 +1888,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1939,7 +1939,7 @@ packages:
       '@babel/helper-validator-option': 7.21.0
       browserslist: 4.21.5
       lru-cache: 5.1.1
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /@babel/helper-compilation-targets@7.22.1(@babel/core@7.22.1):
@@ -1953,7 +1953,7 @@ packages:
       '@babel/helper-validator-option': 7.21.0
       browserslist: 4.21.5
       lru-cache: 5.1.1
-      semver: 6.3.0
+      semver: 6.3.1
     dev: true
 
   /@babel/helper-create-class-features-plugin@7.21.0(@babel/core@7.21.3):
@@ -2027,7 +2027,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       lodash.debounce: 4.0.8
       resolve: 1.22.1
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2043,7 +2043,7 @@ packages:
       debug: 4.3.4(supports-color@8.1.1)
       lodash.debounce: 4.0.8
       resolve: 1.22.1
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3865,7 +3865,7 @@ packages:
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.21.3)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.21.3)
       core-js-compat: 3.29.1
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3951,7 +3951,7 @@ packages:
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.1)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.1)
       core-js-compat: 3.29.1
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -5431,7 +5431,7 @@ packages:
     hasBin: true
     requiresBuild: true
     dependencies:
-      detect-libc: 2.0.1
+      detect-libc: 2.0.2
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
       node-fetch: 2.6.11
@@ -8696,7 +8696,7 @@ packages:
     dev: true
     optional: true
 
-  /@typescript-eslint/eslint-plugin@6.2.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0)(typescript@5.1.6):
+  /@typescript-eslint/eslint-plugin@6.2.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0)(typescript@5.1.6):
     resolution: {integrity: sha512-rClGrMuyS/3j0ETa1Ui7s6GkLhfZGKZL3ZrChLeAiACBE/tRc1wq8SNZESUuluxhLj9FkUefRs2l6bCIArWBiQ==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
@@ -8708,7 +8708,7 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.6.2
-      '@typescript-eslint/parser': 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+      '@typescript-eslint/parser': 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/scope-manager': 6.2.0
       '@typescript-eslint/type-utils': 6.2.0(eslint@8.46.0)(typescript@5.1.6)
       '@typescript-eslint/utils': 6.2.0(eslint@8.46.0)(typescript@5.1.6)
@@ -8726,8 +8726,8 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser@6.2.0(eslint@8.46.0)(typescript@5.1.6):
-    resolution: {integrity: sha512-igVYOqtiK/UsvKAmmloQAruAdUHihsOCvplJpplPZ+3h4aDkC/UKZZNKgB6h93ayuYLuEymU3h8nF1xMRbh37g==}
+  /@typescript-eslint/parser@6.4.0(eslint@8.46.0)(typescript@5.1.6):
+    resolution: {integrity: sha512-I1Ah1irl033uxjxO9Xql7+biL3YD7w9IU8zF+xlzD/YxY6a4b7DYA08PXUUCbm2sEljwJF6ERFy2kTGAGcNilg==}
     engines: {node: ^16.0.0 || >=18.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0
@@ -8736,10 +8736,10 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/scope-manager': 6.2.0
-      '@typescript-eslint/types': 6.2.0
-      '@typescript-eslint/typescript-estree': 6.2.0(typescript@5.1.6)
-      '@typescript-eslint/visitor-keys': 6.2.0
+      '@typescript-eslint/scope-manager': 6.4.0
+      '@typescript-eslint/types': 6.4.0
+      '@typescript-eslint/typescript-estree': 6.4.0(typescript@5.1.6)
+      '@typescript-eslint/visitor-keys': 6.4.0
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.46.0
       typescript: 5.1.6
@@ -8753,6 +8753,14 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.2.0
       '@typescript-eslint/visitor-keys': 6.2.0
+    dev: true
+
+  /@typescript-eslint/scope-manager@6.4.0:
+    resolution: {integrity: sha512-TUS7vaKkPWDVvl7GDNHFQMsMruD+zhkd3SdVW0d7b+7Zo+bd/hXJQ8nsiUZMi1jloWo6c9qt3B7Sqo+flC1nig==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dependencies:
+      '@typescript-eslint/types': 6.4.0
+      '@typescript-eslint/visitor-keys': 6.4.0
     dev: true
 
   /@typescript-eslint/type-utils@6.2.0(eslint@8.46.0)(typescript@5.1.6):
@@ -8780,6 +8788,11 @@ packages:
     engines: {node: ^16.0.0 || >=18.0.0}
     dev: true
 
+  /@typescript-eslint/types@6.4.0:
+    resolution: {integrity: sha512-+FV9kVFrS7w78YtzkIsNSoYsnOtrYVnKWSTVXoL1761CsCRv5wpDOINgsXpxD67YCLZtVQekDDyaxfjVWUJmmg==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dev: true
+
   /@typescript-eslint/typescript-estree@6.2.0(typescript@5.1.6):
     resolution: {integrity: sha512-Mts6+3HQMSM+LZCglsc2yMIny37IhUgp1Qe8yJUYVyO6rHP7/vN0vajKu3JvHCBIy8TSiKddJ/Zwu80jhnGj1w==}
     engines: {node: ^16.0.0 || >=18.0.0}
@@ -8791,6 +8804,27 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.2.0
       '@typescript-eslint/visitor-keys': 6.2.0
+      debug: 4.3.4(supports-color@8.1.1)
+      globby: 11.1.0
+      is-glob: 4.0.3
+      semver: 7.5.4
+      ts-api-utils: 1.0.1(typescript@5.1.6)
+      typescript: 5.1.6
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@typescript-eslint/typescript-estree@6.4.0(typescript@5.1.6):
+    resolution: {integrity: sha512-iDPJArf/K2sxvjOR6skeUCNgHR/tCQXBsa+ee1/clRKr3olZjZ/dSkXPZjG6YkPtnW6p5D1egeEPMCW6Gn4yLA==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@typescript-eslint/types': 6.4.0
+      '@typescript-eslint/visitor-keys': 6.4.0
       debug: 4.3.4(supports-color@8.1.1)
       globby: 11.1.0
       is-glob: 4.0.3
@@ -8825,7 +8859,15 @@ packages:
     engines: {node: ^16.0.0 || >=18.0.0}
     dependencies:
       '@typescript-eslint/types': 6.2.0
-      eslint-visitor-keys: 3.4.1
+      eslint-visitor-keys: 3.4.2
+    dev: true
+
+  /@typescript-eslint/visitor-keys@6.4.0:
+    resolution: {integrity: sha512-yJSfyT+uJm+JRDWYRYdCm2i+pmvXJSMtPR9Cq5/XQs4QIgNoLcoRtDdzsLbLsFM/c6um6ohQkg/MLxWvoIndJA==}
+    engines: {node: ^16.0.0 || >=18.0.0}
+    dependencies:
+      '@typescript-eslint/types': 6.4.0
+      eslint-visitor-keys: 3.4.2
     dev: true
 
   /@vitalets/google-translate-api@9.2.0:
@@ -9857,7 +9899,7 @@ packages:
       '@babel/compat-data': 7.22.3
       '@babel/core': 7.21.3
       '@babel/helper-define-polyfill-provider': 0.3.3(@babel/core@7.21.3)
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -9870,7 +9912,7 @@ packages:
       '@babel/compat-data': 7.22.3
       '@babel/core': 7.22.1
       '@babel/helper-define-polyfill-provider': 0.3.3(@babel/core@7.22.1)
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11619,11 +11661,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /detect-libc@2.0.1:
-    resolution: {integrity: sha512-463v3ZeIrcWtdgIg6vI6XUncguvr2TnGl4SzDXinkt9mSLpBJKXT3mW6xT3VQdDN11+WVs29pgvivTc4Lp8v+w==}
-    engines: {node: '>=8'}
-    dev: false
-
   /detect-libc@2.0.2:
     resolution: {integrity: sha512-UX6sGumvvqSaXgdKGUsgZWqcUyIXZ/vZTrlRT/iobiKhGL0zL4d3osHj3uqllWJK+i+sixDS/3COVEOFbupFyw==}
     engines: {node: '>=8'}
@@ -12209,7 +12246,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-module-utils@2.8.0(@typescript-eslint/parser@6.2.0)(eslint-import-resolver-node@0.3.7)(eslint@8.46.0):
+  /eslint-module-utils@2.8.0(@typescript-eslint/parser@6.4.0)(eslint-import-resolver-node@0.3.7)(eslint@8.46.0):
     resolution: {integrity: sha512-aWajIYfsqCKRDgUfjEXNN/JlrzauMuSEy5sbd7WXbtW3EH6A6MpwEh42c7qD+MqQo9QMJ6fWLAeIJynx0g6OAw==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -12230,7 +12267,7 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+      '@typescript-eslint/parser': 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       debug: 3.2.7(supports-color@5.5.0)
       eslint: 8.46.0
       eslint-import-resolver-node: 0.3.7
@@ -12238,7 +12275,7 @@ packages:
       - supports-color
     dev: true
 
-  /eslint-plugin-import@2.28.0(@typescript-eslint/parser@6.2.0)(eslint@8.46.0):
+  /eslint-plugin-import@2.28.0(@typescript-eslint/parser@6.4.0)(eslint@8.46.0):
     resolution: {integrity: sha512-B8s/n+ZluN7sxj9eUf7/pRFERX0r5bnFA2dCaLHy2ZeaQEAz0k+ZZkFWRFHJAqxfxQDx6KLv9LeIki7cFdwW+Q==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -12248,7 +12285,7 @@ packages:
       '@typescript-eslint/parser':
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 6.2.0(eslint@8.46.0)(typescript@5.1.6)
+      '@typescript-eslint/parser': 6.4.0(eslint@8.46.0)(typescript@5.1.6)
       array-includes: 3.1.6
       array.prototype.findlastindex: 1.2.2
       array.prototype.flat: 1.3.1
@@ -12257,7 +12294,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.46.0
       eslint-import-resolver-node: 0.3.7
-      eslint-module-utils: 2.8.0(@typescript-eslint/parser@6.2.0)(eslint-import-resolver-node@0.3.7)(eslint@8.46.0)
+      eslint-module-utils: 2.8.0(@typescript-eslint/parser@6.4.0)(eslint-import-resolver-node@0.3.7)(eslint@8.46.0)
       has: 1.0.3
       is-core-module: 2.12.1
       is-glob: 4.0.3
@@ -12315,11 +12352,11 @@ packages:
   /eslint-visitor-keys@3.4.1:
     resolution: {integrity: sha512-pZnmmLwYzf+kWaM/Qgrvpen51upAktaaiI01nsJD/Yr3lMOdNtq0cxkrrg16w64VtisN6okbs7Q8AfGqj4c9fA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
 
   /eslint-visitor-keys@3.4.2:
     resolution: {integrity: sha512-8drBzUEyZ2llkpCA67iYrgEssKDUu68V8ChqqOfFupIaG/LCVPUT+CoGJpT77zJprs4T/W7p07LP7zAIMuweVw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dev: true
 
   /eslint@8.46.0:
     resolution: {integrity: sha512-cIO74PvbW0qU8e0mIvk5IV3ToWdCq5FYG6gWPHHkx6gNdjlbAYvtfHmlCMXxjcoVaIdwy/IAt3+mDkZkfvb2Dg==}
@@ -12373,7 +12410,7 @@ packages:
     dependencies:
       acorn: 8.10.0
       acorn-jsx: 5.3.2(acorn@8.10.0)
-      eslint-visitor-keys: 3.4.1
+      eslint-visitor-keys: 3.4.2
     dev: true
 
   /espree@9.6.0:
@@ -12382,7 +12419,7 @@ packages:
     dependencies:
       acorn: 8.10.0
       acorn-jsx: 5.3.2(acorn@8.10.0)
-      eslint-visitor-keys: 3.4.1
+      eslint-visitor-keys: 3.4.2
     dev: false
 
   /espree@9.6.1:
@@ -15027,7 +15064,7 @@ packages:
       '@babel/parser': 7.22.7
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
-      semver: 6.3.0
+      semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -16369,7 +16406,7 @@ packages:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
     dependencies:
-      semver: 6.3.0
+      semver: 6.3.1
 
   /make-fetch-happen@11.1.1:
     resolution: {integrity: sha512-rLWS7GCSTcEujjVBs2YqG7Y4643u8ucvCJeSRqiLYhesrDuzeuFIk37xREzAsfQaqzl8b9rNCE4m6J8tvX4Q8w==}
@@ -19779,21 +19816,16 @@ packages:
     resolution: {integrity: sha512-Rh266MLDYNeML5h90ttdMwfXe1+Nc4LAWd9X1KdJe8pPHP4kFmvLZALtsMNHNdvTyQygbEC0D59sIz47DIaq8w==}
     engines: {node: '>=8'}
     dependencies:
-      semver: 6.3.0
+      semver: 6.3.1
     dev: false
 
   /semver@5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
     hasBin: true
 
-  /semver@6.3.0:
-    resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
-    hasBin: true
-
   /semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
-    dev: true
 
   /semver@7.0.0:
     resolution: {integrity: sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==}
@@ -19893,7 +19925,7 @@ packages:
     requiresBuild: true
     dependencies:
       color: 4.2.3
-      detect-libc: 2.0.1
+      detect-libc: 2.0.2
       node-addon-api: 5.0.0
       prebuild-install: 7.1.1
       semver: 7.5.4
@@ -22588,22 +22620,22 @@ packages:
       readable-stream: 3.6.0
     dev: false
 
-  github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c:
-    resolution: {tarball: https://codeload.github.com/kokonect-link/mfm.js/tar.gz/6cfec923792dce92a5401372a42904ea48e5484c}
+  git@github.com+kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c:
+    resolution: {commit: 6cfec923792dce92a5401372a42904ea48e5484c, repo: git@github.com:kokonect-link/mfm.js.git, type: git}
     name: cherrypick-mfm-js
     version: 0.23.3-cherrypick.2
     dependencies:
       twemoji-parser: 14.0.0
     dev: false
 
-  github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/browser-image-resizer/tar.gz/0227e860621e55cbed0aabe6dc601096a7748c4a}
+  git@github.com+misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a:
+    resolution: {commit: 0227e860621e55cbed0aabe6dc601096a7748c4a, repo: git@github.com:misskey-dev/browser-image-resizer.git, type: git}
     name: browser-image-resizer
     version: 2.2.1-misskey.3
     dev: false
 
-  github.com/misskey-dev/sharp-read-bmp/02d9dc189fa7df0c4bea09330be26741772dac01:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/sharp-read-bmp/tar.gz/02d9dc189fa7df0c4bea09330be26741772dac01}
+  git@github.com+misskey-dev/sharp-read-bmp/02d9dc189fa7df0c4bea09330be26741772dac01:
+    resolution: {commit: 02d9dc189fa7df0c4bea09330be26741772dac01, repo: git@github.com:misskey-dev/sharp-read-bmp.git, type: git}
     name: sharp-read-bmp
     version: 1.0.0
     dependencies:
@@ -22612,9 +22644,9 @@ packages:
       sharp: 0.31.3
     dev: false
 
-  github.com/misskey-dev/storybook-addon-misskey-theme/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@7.0.27)(@storybook/components@7.0.27)(@storybook/core-events@7.0.27)(@storybook/manager-api@7.0.27)(@storybook/preview-api@7.0.27)(@storybook/theming@7.0.27)(@storybook/types@7.0.27)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {tarball: https://codeload.github.com/misskey-dev/storybook-addon-misskey-theme/tar.gz/cf583db098365b2ccc81a82f63ca9c93bc32b640}
-    id: github.com/misskey-dev/storybook-addon-misskey-theme/cf583db098365b2ccc81a82f63ca9c93bc32b640
+  git@github.com+misskey-dev/storybook-addon-misskey-theme/cf583db098365b2ccc81a82f63ca9c93bc32b640(@storybook/blocks@7.0.27)(@storybook/components@7.0.27)(@storybook/core-events@7.0.27)(@storybook/manager-api@7.0.27)(@storybook/preview-api@7.0.27)(@storybook/theming@7.0.27)(@storybook/types@7.0.27)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {commit: cf583db098365b2ccc81a82f63ca9c93bc32b640, repo: git@github.com:misskey-dev/storybook-addon-misskey-theme.git, type: git}
+    id: git@github.com+misskey-dev/storybook-addon-misskey-theme/cf583db098365b2ccc81a82f63ca9c93bc32b640
     name: storybook-addon-misskey-theme
     version: 0.0.0
     peerDependencies:
@@ -22644,8 +22676,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  github.com/misskey-dev/summaly/089a0ad8e8c780e5c088b1c528aa95c5827cbdcc:
-    resolution: {tarball: https://codeload.github.com/misskey-dev/summaly/tar.gz/089a0ad8e8c780e5c088b1c528aa95c5827cbdcc}
+  git@github.com+misskey-dev/summaly/d2d8db49943ccb201c1b1b283e9d0a630519fac7:
+    resolution: {commit: d2d8db49943ccb201c1b1b283e9d0a630519fac7, repo: git@github.com:misskey-dev/summaly.git, type: git}
     name: summaly
     version: 4.0.2
     dependencies:
