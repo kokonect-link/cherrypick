@@ -108,7 +108,7 @@
 		"@types/node": "20.4.5",
 		"@types/punycode": "2.1.0",
 		"@types/sanitize-html": "2.9.0",
-		"@types/testing-library__jest-dom": "5.14.9",
+		"@types/testing-library__jest-dom": "6.0.0",
 		"@types/throttle-debounce": "5.0.0",
 		"@types/tinycolor2": "1.4.3",
 		"@types/uuid": "9.0.2",
