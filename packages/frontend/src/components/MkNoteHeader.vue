@@ -54,7 +54,6 @@ import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{
 	note: misskey.entities.Note;
-	pinned?: boolean;
 }>();
 
 let note = $ref(deepClone(props.note));

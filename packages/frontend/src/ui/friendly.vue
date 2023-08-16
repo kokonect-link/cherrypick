@@ -8,7 +8,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
-		<template #header><XStatusBars :class="$style.statusbars"/></template>
+		<template #header>
+			<div>
+				<XAnnouncements v-if="$i" :class="$style.announcements"/>
+				<XStatusBars :class="$style.statusbars"/>
+			</div>
+		</template>
 		<RouterView/>
 		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
@@ -119,6 +124,7 @@ const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
+const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
 
 miLocalStorage.setItem('ui', 'friendly');
 

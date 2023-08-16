@@ -1160,10 +1160,26 @@ export interface Locale {
     "doYouAgree": string;
     "beSureToReadThisAsItIsImportant": string;
     "iHaveReadXCarefullyAndAgree": string;
+    "dialog": string;
+    "icon": string;
+    "forYou": string;
+    "currentAnnouncements": string;
+    "pastAnnouncements": string;
+    "youHaveUnreadAnnouncements": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "_announcement": {
+        "forExistingUsers": string;
+        "forExistingUsersDescription": string;
+        "needConfirmationToRead": string;
+        "needConfirmationToReadDescription": string;
+        "end": string;
+        "tooManyActiveAnnouncementDescription": string;
+        "readConfirmTitle": string;
+        "readConfirmText": string;
+    };
     "_group": {
         "leader": string;
         "banish": string;

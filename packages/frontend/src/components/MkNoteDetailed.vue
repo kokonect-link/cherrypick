@@ -212,7 +212,6 @@ import { instance } from '@/instance';
 
 const props = defineProps<{
 	note: misskey.entities.Note;
-	pinned?: boolean;
 }>();
 
 const inChannel = inject('inChannel', null);

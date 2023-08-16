@@ -30,6 +30,10 @@ type Announcement = {
     text: string;
     title: string;
     imageUrl: string | null;
+    display: 'normal' | 'banner' | 'dialog';
+    icon: 'info' | 'warning' | 'error' | 'success';
+    needConfirmationToRead: boolean;
+    forYou: boolean;
     isRead?: boolean;
 };
 
@@ -2509,6 +2513,7 @@ type MeDetailed = UserDetailed & {
     noCrawle: boolean;
     receiveAnnouncementEmail: boolean;
     usePasswordLessLogin: boolean;
+    unreadAnnouncements: Announcement[];
     [other: string]: any;
 };
 

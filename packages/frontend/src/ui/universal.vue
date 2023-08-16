@@ -8,7 +8,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
-		<template #header><XStatusBars :class="$style.statusbars"/></template>
+		<template #header>
+			<div>
+				<XAnnouncements v-if="$i" :class="$style.announcements"/>
+				<XStatusBars :class="$style.statusbars"/>
+			</div>
+		</template>
 		<RouterView/>
 		<div :class="$style.spacer"></div>
 	</MkStickyContainer>
@@ -85,18 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import {
-  defineAsyncComponent,
-  provide,
-  onMounted,
-  computed,
-  ref,
-  ComputedRef,
-  watch,
-  shallowRef,
-  Ref,
-  onBeforeUnmount
-} from 'vue';
+import { defineAsyncComponent, provide, onMounted, computed, ref, ComputedRef, watch, shallowRef, Ref, onBeforeUnmount } from 'vue';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config';
@@ -117,6 +111,7 @@ import {eventBus} from "@/scripts/cherrypick/eventBus";
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/_common_/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
+const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
