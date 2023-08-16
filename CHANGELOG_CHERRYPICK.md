@@ -43,6 +43,7 @@
 - Fix: 움직임이 있는 MFM 설정을 사용하지 않아도 `$[rainbow ]`문자를 볼 수 있음 (misskey-dev/misskey#11361)
 - Fix: 모바일에서 헤더의 디자인을 변경하면 흐림 효과가 강제됨
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업되는 문제
+- Fix: 다른 서버의 사용자에게 '메시지 보내기' 시 초기 텍스트 멘션이 잘못 표시되는 문제 수정 (misskey-dev/misskey#11721)
 
 ### Server
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
