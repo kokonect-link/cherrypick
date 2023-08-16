@@ -143,7 +143,7 @@ const menuDef = $computed(() => [{
 	}, {
 		icon: 'ti ti-exclamation-circle',
 		text: i18n.ts.abuseReports,
-    indicated: computed(() => thereIsUnresolvedAbuseReport),
+    indicated: thereIsUnresolvedAbuseReport,
 		to: '/admin/abuses',
 		active: currentPage?.route.name === 'abuses',
 	}],
