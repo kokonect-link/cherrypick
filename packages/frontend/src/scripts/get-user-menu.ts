@@ -179,7 +179,8 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-mail',
 		text: i18n.ts.sendMessage,
 		action: () => {
-			os.post({ specified: user, initialText: `@${user.username} ` });
+			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${user.host}`;
+			os.post({ specified: user, initialText: `${canonical} ` });
 		},
 	}, meId !== user.id ? {
 		type: 'link',

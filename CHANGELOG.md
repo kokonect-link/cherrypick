@@ -32,6 +32,7 @@
 - Fix: iOSで画面を回転させるとテキストサイズが変わる問題を修正
 - Fix: word mute for sub note is not applied
 - Fix: タイムラインを下にスクロールしてノート画面に移動して再び戻ったら以前のスクロール位置を失う問題を修正
+- Fix: 他のサーバーのユーザーへ「メッセージを送信」した時の初期テキストのメンションが間違っている問題を修正
 
 ### Server
 - cacheRemoteFilesの初期値はfalseになりました
