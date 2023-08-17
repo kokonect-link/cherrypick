@@ -77,9 +77,7 @@ export default class Logger {
 		if (envOption.withLogTime) log = chalk.gray(time) + ' ' + log;
 
 		console.log(important ? chalk.bold(log) : log);
-		if (level === 'error' && data) {
-			console.log(data);
-		}
+		if (level === 'error' && data) console.log(data);
 		this.writeCloudLogging(level, log, timestamp, level === 'error' || level === 'warning' ? data : null);
 	}
 
