@@ -77,9 +77,8 @@ function notAlphaNumeric(s: string): boolean {
 	return null !== s.match(/[^\w]/);
 }
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
