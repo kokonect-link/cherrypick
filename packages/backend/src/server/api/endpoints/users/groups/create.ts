@@ -7,8 +7,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import ms from 'ms';
 import type { UserGroupsRepository, UserGroupJoiningsRepository } from '@/models/index.js';
 import { IdService } from '@/core/IdService.js';
-import type { UserGroup } from '@/models/entities/UserGroup.js';
-import type { UserGroupJoining } from '@/models/entities/UserGroupJoining.js';
+import type { MiUserGroup } from '@/models/entities/UserGroup.js';
+import type { MiUserGroupJoining } from '@/models/entities/UserGroupJoining.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { UserGroupEntityService } from '@/core/entities/UserGroupEntityService.js';
 import { DI } from '@/di-symbols.js';
@@ -61,7 +61,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				createdAt: new Date(),
 				userId: me.id,
 				name: ps.name,
-			} as UserGroup).then(x => this.userGroupsRepository.findOneByOrFail(x.identifiers[0]));
+			} as MiUserGroup).then(x => this.userGroupsRepository.findOneByOrFail(x.identifiers[0]));
 
 			// Push the owner
 			await this.userGroupJoiningsRepository.insert({
@@ -69,7 +69,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				createdAt: new Date(),
 				userId: me.id,
 				userGroupId: userGroup.id,
-			} as UserGroupJoining);
+			} as MiUserGroupJoining);
 
 			return await this.userGroupEntityService.pack(userGroup);
 		});

@@ -7,9 +7,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { NotesRepository, UsersRepository, UserProfilesRepository } from '@/models/index.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
-import type { LocalUser, RemoteUser, User } from '@/models/entities/User.js';
-import type { UserProfile } from '@/models/entities/UserProfile.js';
-import type { Note } from '@/models/entities/Note.js';
+import type { MiLocalUser, MiRemoteUser, MiUser } from '@/models/entities/User.js';
+import type { MiUserProfile } from '@/models/entities/UserProfile.js';
+import type { MiNote } from '@/models/entities/Note.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
 
@@ -33,7 +33,7 @@ export class GetterService {
 	 * Get note for API processing
 	 */
 	@bindThis
-	public async getNote(noteId: Note['id']) {
+	public async getNote(noteId: MiNote['id']) {
 		const note = await this.notesRepository.findOneBy({ id: noteId });
 
 		if (note == null) {
@@ -47,21 +47,21 @@ export class GetterService {
 	 * Get user for API processing
 	 */
 	@bindThis
-	public async getUser(userId: User['id']) {
+	public async getUser(userId: MiUser['id']) {
 		const user = await this.usersRepository.findOneBy({ id: userId });
 
 		if (user == null) {
 			throw new IdentifiableError('15348ddd-432d-49c2-8a5a-8069753becff', 'No such user.');
 		}
 
-		return user as LocalUser | RemoteUser;
+		return user as MiLocalUser | MiRemoteUser;
 	}
 
 	/**
 	 * Get remote user for API processing
 	 */
 	@bindThis
-	public async getRemoteUser(userId: User['id']) {
+	public async getRemoteUser(userId: MiUser['id']) {
 		const user = await this.getUser(userId);
 
 		if (!this.userEntityService.isRemoteUser(user)) {
@@ -75,7 +75,7 @@ export class GetterService {
 	 * Get local user for API processing
 	 */
 	@bindThis
-	public async getLocalUser(userId: User['id']) {
+	public async getLocalUser(userId: MiUser['id']) {
 		const user = await this.getUser(userId);
 
 		if (!this.userEntityService.isLocalUser(user)) {
@@ -86,7 +86,7 @@ export class GetterService {
 	}
 
 	@bindThis
-	public async getUserProfiles(userId: UserProfile['userId']) {
+	public async getUserProfiles(userId: MiUserProfile['userId']) {
 		const user = await this.userProfilesRepository.findOneBy({ userId: userId });
 
 		if (user == null) {

@@ -4,13 +4,13 @@
  */
 
 import { notificationTypes } from '@/types.js';
-import { User } from './User.js';
-import { Note } from './Note.js';
-import { FollowRequest } from './FollowRequest.js';
-import { UserGroupInvitation } from './UserGroupInvitation.js';
-import { AccessToken } from './AccessToken.js';
+import { MiUser } from './User.js';
+import { MiNote } from './Note.js';
+import { MiFollowRequest } from './FollowRequest.js';
+import { MiUserGroupInvitation } from './UserGroupInvitation.js';
+import { MiAccessToken } from './AccessToken.js';
 
-export type Notification = {
+export type MiNotification = {
 	id: string;
 
 	// RedisのためDateではなくstring
@@ -19,7 +19,7 @@ export type Notification = {
 	/**
 	 * 通知の送信者(initiator)
 	 */
-	notifierId: User['id'] | null;
+	notifierId: MiUser['id'] | null;
 
 	/**
 	 * 通知の種類。
@@ -38,15 +38,15 @@ export type Notification = {
 	 */
 	type: typeof notificationTypes[number];
 
-	noteId: Note['id'] | null;
+	noteId: MiNote['id'] | null;
 
-	followRequestId: FollowRequest['id'] | null;
+	followRequestId: MiFollowRequest['id'] | null;
 
 	reaction: string | null;
 
-	userGroupInvitationId: UserGroupInvitation['id'] | null;
+	userGroupInvitationId: MiUserGroupInvitation['id'] | null;
 
-	userGroupInvitation: UserGroupInvitation | null;
+	userGroupInvitation: MiUserGroupInvitation | null;
 
 	choice: number | null;
 
@@ -72,5 +72,5 @@ export type Notification = {
 	/**
 	 * アプリ通知のアプリ(のトークン)
 	 */
-	appAccessTokenId: AccessToken['id'] | null;
+	appAccessTokenId: MiAccessToken['id'] | null;
 }

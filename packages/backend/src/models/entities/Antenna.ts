@@ -5,12 +5,12 @@
 
 import { PrimaryColumn, Entity, Index, JoinColumn, Column, ManyToOne } from 'typeorm';
 import { id } from '../id.js';
-import { User } from './User.js';
-import { UserList } from './UserList.js';
-import { UserGroupJoining } from './UserGroupJoining.js';
+import { MiUser } from './User.js';
+import { MiUserList } from './UserList.js';
+import { MiUserGroupJoining } from './UserGroupJoining.js';
 
-@Entity()
-export class Antenna {
+@Entity('antenna')
+export class MiAntenna {
 	@PrimaryColumn(id())
 	public id: string;
 
@@ -28,13 +28,13 @@ export class Antenna {
 		...id(),
 		comment: 'The owner ID.',
 	})
-	public userId: User['id'];
+	public userId: MiUser['id'];
 
-	@ManyToOne(type => User, {
+	@ManyToOne(type => MiUser, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public user: User | null;
+	public user: MiUser | null;
 
 	@Column('varchar', {
 		length: 128,
@@ -49,25 +49,25 @@ export class Antenna {
 		...id(),
 		nullable: true,
 	})
-	public userListId: UserList['id'] | null;
+	public userListId: MiUserList['id'] | null;
 
-	@ManyToOne(type => UserList, {
+	@ManyToOne(type => MiUserList, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public userList: UserList | null;
+	public userList: MiUserList | null;
 
 	@Column({
 		...id(),
 		nullable: true,
 	})
-	public userGroupJoiningId: UserGroupJoining['id'] | null;
+	public userGroupJoiningId: MiUserGroupJoining['id'] | null;
 
-	@ManyToOne(type => UserGroupJoining, {
+	@ManyToOne(type => MiUserGroupJoining, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public userGroupJoining: UserGroupJoining | null;
+	public userGroupJoining: MiUserGroupJoining | null;
 
 	@Column('varchar', {
 		length: 1024, array: true,

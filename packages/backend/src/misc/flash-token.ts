@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { LocalUser } from '@/models/entities/User.js';
+import type { MiLocalUser } from '@/models/entities/User.js';
 
 export type FlashToken = {
 	permissions: string[];
-	user: LocalUser
+	user: MiLocalUser
 };

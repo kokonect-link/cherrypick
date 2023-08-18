@@ -6,7 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { UserGroupInvitationsRepository } from '@/models/index.js';
-import type { UserGroupInvitation } from '@/models/entities/UserGroupInvitation.js';
+import type { MiUserGroupInvitation } from '@/models/entities/UserGroupInvitation.js';
 import { bindThis } from '@/decorators.js';
 import { UserGroupEntityService } from './UserGroupEntityService.js';
 
@@ -22,7 +22,7 @@ export class UserGroupInvitationEntityService {
 
 	@bindThis
 	public async pack(
-		src: UserGroupInvitation['id'] | UserGroupInvitation,
+		src: MiUserGroupInvitation['id'] | MiUserGroupInvitation,
 	) {
 		const invitation = typeof src === 'object' ? src : await this.userGroupInvitationsRepository.findOneByOrFail({ id: src });
 

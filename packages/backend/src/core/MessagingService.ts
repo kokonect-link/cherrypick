@@ -7,11 +7,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { In, Not } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
-import type { DriveFile } from '@/models/entities/DriveFile.js';
-import type { MessagingMessage } from '@/models/entities/MessagingMessage.js';
-import type { Note } from '@/models/entities/Note.js';
-import type { User, RemoteUser } from '@/models/entities/User.js';
-import type { UserGroup } from '@/models/entities/UserGroup.js';
+import type { MiDriveFile } from '@/models/entities/DriveFile.js';
+import type { MiMessagingMessage } from '@/models/entities/MessagingMessage.js';
+import type { MiNote } from '@/models/entities/Note.js';
+import type { MiUser, MiRemoteUser } from '@/models/entities/User.js';
+import type { MiUserGroup } from '@/models/entities/UserGroup.js';
 import { QueueService } from '@/core/QueueService.js';
 import { toArray } from '@/misc/prelude/array.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
@@ -53,7 +53,7 @@ export class MessagingService {
 	}
 
 	@bindThis
-	public async createMessage(user: { id: User['id']; host: User['host']; }, recipientUser: User | undefined, recipientGroup: UserGroup | undefined, text: string | null | undefined, file: DriveFile | null, uri?: string) {
+	public async createMessage(user: { id: MiUser['id']; host: MiUser['host']; }, recipientUser: MiUser | undefined, recipientGroup: MiUserGroup | undefined, text: string | null | undefined, file: MiDriveFile | null, uri?: string) {
 		const message = {
 			id: this.idService.genId(),
 			createdAt: new Date(),
@@ -65,7 +65,7 @@ export class MessagingService {
 			isRead: false,
 			reads: [] as any[],
 			uri,
-		} as MessagingMessage;
+		} as MiMessagingMessage;
 
 		await this.messagingMessagesRepository.insert(message);
 
@@ -138,7 +138,7 @@ export class MessagingService {
 					username: u.username,
 					host: u.host,
 				}))),
-			} as Note;
+			} as MiNote;
 
 			const activity = this.apRendererService.addContext(this.apRendererService.renderCreate(await this.apRendererService.renderNote(note, false, true), note));
 
@@ -148,13 +148,13 @@ export class MessagingService {
 	}
 
 	@bindThis
-	public async deleteMessage(message: MessagingMessage) {
+	public async deleteMessage(message: MiMessagingMessage) {
 		await this.messagingMessagesRepository.delete(message.id);
 		this.postDeleteMessage(message);
 	}
 
 	@bindThis
-	private async postDeleteMessage(message: MessagingMessage) {
+	private async postDeleteMessage(message: MiMessagingMessage) {
 		if (message.recipientId) {
 			const user = await this.usersRepository.findOneByOrFail({ id: message.userId });
 			const recipient = await this.usersRepository.findOneByOrFail({ id: message.recipientId });
@@ -176,9 +176,9 @@ export class MessagingService {
 	 */
 	@bindThis
 	public async readUserMessagingMessage(
-		userId: User['id'],
-		otherpartyId: User['id'],
-		messageIds: MessagingMessage['id'][],
+		userId: MiUser['id'],
+		otherpartyId: MiUser['id'],
+		messageIds: MiMessagingMessage['id'][],
 	) {
 		if (messageIds.length === 0) return;
 
@@ -232,9 +232,9 @@ export class MessagingService {
 	 */
 	@bindThis
 	public async readGroupMessagingMessage(
-		userId: User['id'],
-		groupId: UserGroup['id'],
-		messageIds: MessagingMessage['id'][],
+		userId: MiUser['id'],
+		groupId: MiUserGroup['id'],
+		messageIds: MiMessagingMessage['id'][],
 	) {
 		if (messageIds.length === 0) return;
 
@@ -252,7 +252,7 @@ export class MessagingService {
 			id: In(messageIds),
 		});
 
-		const reads: MessagingMessage['id'][] = [];
+		const reads: MiMessagingMessage['id'][] = [];
 
 		for (const message of messages) {
 			if (message.userId === userId) continue;
@@ -296,7 +296,7 @@ export class MessagingService {
 	}
 
 	@bindThis
-	public async deliverReadActivity(user: { id: User['id']; host: null; }, recipient: RemoteUser, messages: MessagingMessage | MessagingMessage[]) {
+	public async deliverReadActivity(user: { id: MiUser['id']; host: null; }, recipient: MiRemoteUser, messages: MiMessagingMessage | MiMessagingMessage[]) {
 		messages = toArray(messages).filter(x => x.uri);
 		const contents = messages.map(x => this.apRendererService.renderRead(user, x));
 

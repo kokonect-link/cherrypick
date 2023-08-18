@@ -10,7 +10,7 @@ import { Injectable } from '@nestjs/common';
 import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import { NodeHttpHandler, NodeHttpHandlerOptions } from '@aws-sdk/node-http-handler';
-import type { Meta } from '@/models/entities/Meta.js';
+import type { MiMeta } from '@/models/entities/Meta.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { bindThis } from '@/decorators.js';
 import type { DeleteObjectCommandInput, PutObjectCommandInput } from '@aws-sdk/client-s3';
@@ -23,7 +23,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public getS3Client(meta: Meta, isRemote: boolean): S3Client {
+	public getS3Client(meta: MiMeta, isRemote: boolean): S3Client {
 		const useObjectStorageRemote = isRemote && meta.useObjectStorageRemote;
 
 		const objectStorageEndpoint = useObjectStorageRemote ? meta.objectStorageRemoteEndpoint : meta.objectStorageEndpoint;
@@ -60,7 +60,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public async upload(meta: Meta, input: PutObjectCommandInput, isRemote: boolean) {
+	public async upload(meta: MiMeta, input: PutObjectCommandInput, isRemote: boolean) {
 		const client = this.getS3Client(meta, isRemote);
 		return new Upload({
 			client,
@@ -72,7 +72,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public delete(meta: Meta, input: DeleteObjectCommandInput, isRemote: boolean) {
+	public delete(meta: MiMeta, input: DeleteObjectCommandInput, isRemote: boolean) {
 		const client = this.getS3Client(meta, isRemote);
 		return client.send(new DeleteObjectCommand(input));
 	}

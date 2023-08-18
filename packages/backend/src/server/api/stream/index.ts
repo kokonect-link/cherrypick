@@ -4,15 +4,15 @@
  */
 
 import * as WebSocket from 'ws';
-import type { User } from '@/models/entities/User.js';
-import type { AccessToken } from '@/models/entities/AccessToken.js';
+import type { MiUser } from '@/models/entities/User.js';
+import type { MiAccessToken } from '@/models/entities/AccessToken.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { NoteReadService } from '@/core/NoteReadService.js';
 import type { NotificationService } from '@/core/NotificationService.js';
 import { bindThis } from '@/decorators.js';
 import { CacheService } from '@/core/CacheService.js';
-import { UserProfile } from '@/models/index.js';
-import type { UserGroup } from '@/models/entities/UserGroup.js';
+import { MiUserProfile } from '@/models/index.js';
+import type { MiUserGroup } from '@/models/entities/UserGroup.js';
 import type { ChannelsService } from './ChannelsService.js';
 import type { EventEmitter } from 'events';
 import type Channel from './channel.js';
@@ -22,14 +22,14 @@ import type { StreamEventEmitter, StreamMessages } from './types.js';
  * Main stream connection
  */
 export default class Connection {
-	public user?: User;
-	public token?: AccessToken;
+	public user?: MiUser;
+	public token?: MiAccessToken;
 	private wsConnection: WebSocket.WebSocket;
 	public subscriber: StreamEventEmitter;
 	private channels: Channel[] = [];
 	private subscribingNotes: any = {};
 	private cachedNotes: Packed<'Note'>[] = [];
-	public userProfile: UserProfile | null = null;
+	public userProfile: MiUserProfile | null = null;
 	public following: Set<string> = new Set();
 	public followingChannels: Set<string> = new Set();
 	public userIdsWhoMeMuting: Set<string> = new Set();
@@ -43,8 +43,8 @@ export default class Connection {
 		private notificationService: NotificationService,
 		private cacheService: CacheService,
 
-		user: User | null | undefined,
-		token: AccessToken | null | undefined,
+		user: MiUser | null | undefined,
+		token: MiAccessToken | null | undefined,
 	) {
 		if (user) this.user = user;
 		if (token) this.token = token;
@@ -292,7 +292,7 @@ export default class Connection {
 	}
 
 	@bindThis
-	private typingOnMessaging(param: { partner?: User['id']; group?: UserGroup['id']; }) {
+	private typingOnMessaging(param: { partner?: MiUser['id']; group?: MiUserGroup['id']; }) {
 		if (this.user) {
 			if (param.partner) {
 				// this.globalEventService.publishMessagingStream(param.partner, this.user.id, 'typing', this.user.id);

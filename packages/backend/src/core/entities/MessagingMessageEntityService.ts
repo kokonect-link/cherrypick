@@ -7,8 +7,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { MessagingMessagesRepository } from '@/models/index.js';
 import type { Packed } from '@/misc/json-schema.js';
-import type { User } from '@/models/entities/User.js';
-import type { MessagingMessage } from '@/models/entities/MessagingMessage.js';
+import type { MiUser } from '@/models/entities/User.js';
+import type { MiMessagingMessage } from '@/models/entities/MessagingMessage.js';
 import { bindThis } from '@/decorators.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
@@ -28,8 +28,8 @@ export class MessagingMessageEntityService {
 
 	@bindThis
 	public async pack(
-		src: MessagingMessage['id'] | MessagingMessage,
-		me?: { id: User['id'] } | null | undefined,
+		src: MiMessagingMessage['id'] | MiMessagingMessage,
+		me?: { id: MiUser['id'] } | null | undefined,
 		options?: {
 			populateRecipient?: boolean,
 			populateGroup?: boolean,

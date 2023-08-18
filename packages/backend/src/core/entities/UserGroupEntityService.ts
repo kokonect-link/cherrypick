@@ -7,7 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models/index.js';
 import type { Packed } from '@/misc/json-schema.js';
-import type { UserGroup } from '@/models/entities/UserGroup.js';
+import type { MiUserGroup } from '@/models/entities/UserGroup.js';
 import { bindThis } from '@/decorators.js';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class UserGroupEntityService {
 
 	@bindThis
 	public async pack(
-		src: UserGroup['id'] | UserGroup,
+		src: MiUserGroup['id'] | MiUserGroup,
 	): Promise<Packed<'UserGroup'>> {
 		const userGroup = typeof src === 'object' ? src : await this.userGroupsRepository.findOneByOrFail({ id: src });
 

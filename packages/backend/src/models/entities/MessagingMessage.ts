@@ -5,12 +5,12 @@
 
 import { PrimaryColumn, Entity, Index, JoinColumn, Column, ManyToOne } from 'typeorm';
 import { id } from '../id.js';
-import { User } from './User.js';
-import { DriveFile } from './DriveFile.js';
-import { UserGroup } from './UserGroup.js';
+import { MiUser } from './User.js';
+import { MiDriveFile } from './DriveFile.js';
+import { MiUserGroup } from './UserGroup.js';
 
-@Entity()
-export class MessagingMessage {
+@Entity('messaging_message')
+export class MiMessagingMessage {
 	@PrimaryColumn(id())
 	public id: string;
 
@@ -25,39 +25,39 @@ export class MessagingMessage {
 		...id(),
 		comment: 'The sender user ID.',
 	})
-	public userId: User['id'];
+	public userId: MiUser['id'];
 
-	@ManyToOne(type => User, {
+	@ManyToOne(type => MiUser, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public user: User | null;
+	public user: MiUser | null;
 
 	@Index()
 	@Column({
 		...id(), nullable: true,
 		comment: 'The recipient user ID.',
 	})
-	public recipientId: User['id'] | null;
+	public recipientId: MiUser['id'] | null;
 
-	@ManyToOne(type => User, {
+	@ManyToOne(type => MiUser, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public recipient: User | null;
+	public recipient: MiUser | null;
 
 	@Index()
 	@Column({
 		...id(), nullable: true,
 		comment: 'The recipient group ID.',
 	})
-	public groupId: UserGroup['id'] | null;
+	public groupId: MiUserGroup['id'] | null;
 
-	@ManyToOne(type => UserGroup, {
+	@ManyToOne(type => MiUserGroup, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public group: UserGroup | null;
+	public group: MiUserGroup | null;
 
 	@Column('varchar', {
 		length: 4096, nullable: true,
@@ -78,17 +78,17 @@ export class MessagingMessage {
 		...id(),
 		array: true, default: '{}',
 	})
-	public reads: User['id'][];
+	public reads: MiUser['id'][];
 
 	@Column({
 		...id(),
 		nullable: true,
 	})
-	public fileId: DriveFile['id'] | null;
+	public fileId: MiDriveFile['id'] | null;
 
-	@ManyToOne(type => DriveFile, {
+	@ManyToOne(type => MiDriveFile, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public file: DriveFile | null;
+	public file: MiDriveFile | null;
 }

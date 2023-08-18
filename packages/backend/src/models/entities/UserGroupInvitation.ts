@@ -5,12 +5,12 @@
 
 import { PrimaryColumn, Entity, Index, JoinColumn, Column, ManyToOne } from 'typeorm';
 import { id } from '../id.js';
-import { User } from './User.js';
-import { UserGroup } from './UserGroup.js';
+import { MiUser } from './User.js';
+import { MiUserGroup } from './UserGroup.js';
 
-@Entity()
+@Entity('user_group_invitation')
 @Index(['userId', 'userGroupId'], { unique: true })
-export class UserGroupInvitation {
+export class MiUserGroupInvitation {
 	@PrimaryColumn(id())
 	public id: string;
 
@@ -24,24 +24,24 @@ export class UserGroupInvitation {
 		...id(),
 		comment: 'The user ID.',
 	})
-	public userId: User['id'];
+	public userId: MiUser['id'];
 
-	@ManyToOne(type => User, {
+	@ManyToOne(type => MiUser, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public user: User | null;
+	public user: MiUser | null;
 
 	@Index()
 	@Column({
 		...id(),
 		comment: 'The group ID.',
 	})
-	public userGroupId: UserGroup['id'];
+	public userGroupId: MiUserGroup['id'];
 
-	@ManyToOne(type => UserGroup, {
+	@ManyToOne(type => MiUserGroup, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public userGroup: UserGroup | null;
+	public userGroup: MiUserGroup | null;
 }

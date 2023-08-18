@@ -5,10 +5,10 @@
 
 import { Entity, Index, JoinColumn, Column, PrimaryColumn, ManyToOne } from 'typeorm';
 import { id } from '../id.js';
-import { User } from './User.js';
+import { MiUser } from './User.js';
 
-@Entity()
-export class UserGroup {
+@Entity('user_group')
+export class MiUserGroup {
 	@PrimaryColumn(id())
 	public id: string;
 
@@ -28,20 +28,20 @@ export class UserGroup {
 		...id(),
 		comment: 'The ID of owner.',
 	})
-	public userId: User['id'];
+	public userId: MiUser['id'];
 
-	@ManyToOne(type => User, {
+	@ManyToOne(type => MiUser, {
 		onDelete: 'CASCADE',
 	})
 	@JoinColumn()
-	public user: User | null;
+	public user: MiUser | null;
 
 	@Column('boolean', {
 		default: false,
 	})
 	public isPrivate: boolean;
 
-	constructor(data: Partial<UserGroup>) {
+	constructor(data: Partial<MiUserGroup>) {
 		if (data == null) return;
 
 		for (const [k, v] of Object.entries(data)) {
