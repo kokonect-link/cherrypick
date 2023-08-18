@@ -47,6 +47,7 @@
 - Fix: Misskey 플러그인 설치 시 AiScript 버전 확인이 0.14.0 이후 버전에서 지원되지 않는 문제 수정 (misskey-dev/misskey#11729)
 
 ### Server
+- Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
 
 ---

@@ -75,6 +75,10 @@ export class NodeinfoServerService {
 
 			return {
 				software: {
+					/*
+					 * ソフトウェアの名前を変更すると、一部の独自機能が使用できなくなったり、CherryPickとして認識されないなどの不利益が発生する場合があります。
+					 * フォーク開発者はこの点に注意して修正を行ってください。
+					 */
 					name: 'cherrypick',
 					version: this.config.version,
 					repository: meta.repositoryUrl,
