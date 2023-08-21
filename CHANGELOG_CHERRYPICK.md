@@ -30,6 +30,7 @@
 - 노트 작성 폼의 '노트' 버튼을 '냥!'으로 변경할 수 있는 옵션 추가
 - 노트의 리액션을 삭제하지 않고도 리액션 버튼을 눌러 리액션을 변경할 수 있도록 (misskey-dev/misskey#11157)
 - 리노트를 신고할 수 있도록 (misskey-dev/misskey#11466)
+- Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
 
 ### Client
 - about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
