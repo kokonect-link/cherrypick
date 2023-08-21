@@ -37,7 +37,7 @@
 		header: ':alpha<0.7<@panel',
 		infoBg: '#253142',
 		infoFg: '#fff',
-		renote: '#229e82',
+		renote: '#ffc5e6',
 		shadow: 'rgba(0, 0, 0, 0.3)',
 		divider: 'rgba(255, 255, 255, 0.1)',
 		hashtag: '#ea9a97',

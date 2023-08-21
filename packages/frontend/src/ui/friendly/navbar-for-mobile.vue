@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
       <span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</MkA>
 		<button :class="$style.item" class="_button" @click="more">
-			<i :class="$style.itemIcon" class="ti ti-grid-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
+			<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 			<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</button>
 		<MkA :class="$style.item" :activeClass="$style.active" to="/settings">
@@ -262,6 +262,7 @@ function openProfile() {
 	text-align: left;
 	box-sizing: border-box;
 	color: var(--navFg);
+  margin-bottom: 0.35rem;
 
 	&:hover {
 		text-decoration: none;
@@ -294,6 +295,7 @@ function openProfile() {
 	position: relative;
 	width: 32px;
 	margin-right: 8px;
+  font-size: 1.1em;
 }
 
 .itemIndicator {

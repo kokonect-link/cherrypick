@@ -61,9 +61,10 @@ defineProps<{
 				align-items: center;
 				width: 100%;
 				box-sizing: border-box;
-				padding: 9px 16px 9px 8px;
+				padding: 12px 16px 12px 8px;
 				border-radius: 9px;
 				font-size: 0.9em;
+        margin-bottom: 0.3rem;
 
 				&:hover {
 					text-decoration: none;
