@@ -2097,6 +2097,10 @@ export interface Locale {
         "write:gallery": string;
         "read:gallery-likes": string;
         "write:gallery-likes": string;
+        "read:flash": string;
+        "write:flash": string;
+        "read:flash-likes": string;
+        "write:flash-likes": string;
     };
     "_auth": {
         "shareAccessTitle": string;
