@@ -519,7 +519,7 @@ interface Watcher {
  */
 import { miLocalStorage } from './local-storage';
 import lightTheme from '@/themes/l-cherrypick.json5';
-import darkTheme from '@/themes/d-cherrypick.json5';
+import darkTheme from '@/themes/d-rosepinemoon.json5';
 import { Note, UserDetailed, Page } from 'cherrypick-js/built/entities';
 
 export class ColdDeviceStorage {
