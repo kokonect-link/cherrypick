@@ -5,57 +5,59 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header>
-		<MkPageHeader/>
-	</template>
+	<template #header><MkPageHeader/></template>
 	<div
 		ref="rootEl"
 		:class="$style.root"
 		@dragover.prevent.stop="onDragover"
 		@drop.prevent.stop="onDrop"
 	>
-		<div :class="$style.body">
-			<MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
-				<template #empty>
-					<div class="_fullinfo">
-						<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
-						<div>{{ i18n.ts.noMessagesYet }}</div>
-					</div>
-				</template>
-				<template #default="{ items: messages, fetching: pFetching }">
-					<MkDateSeparatedList
-						v-if="messages.length > 0"
-						v-slot="{ item: message }"
-						:class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
-						:items="messages"
-						direction="up"
-						reversed
-					>
-						<XMessage :key="message.id" :message="message" :isGroup="group != null"/>
-					</MkDateSeparatedList>
-				</template>
-			</MkPagination>
-		</div>
+    <MkSpacer :contentMax="800">
+      <div :class="$style.body">
+        <MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
+          <template #empty>
+            <div class="_fullinfo">
+              <img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
+              <div>{{ i18n.ts.noMessagesYet }}</div>
+            </div>
+          </template>
+          <template #default="{ items: messages, fetching: pFetching }">
+            <MkDateSeparatedList
+                v-if="messages.length > 0"
+                v-slot="{ item: message }"
+                :class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
+                :items="messages"
+                direction="up"
+                reversed
+            >
+              <XMessage :key="message.id" :message="message" :isGroup="group != null"/>
+            </MkDateSeparatedList>
+          </template>
+        </MkPagination>
+      </div>
+    </MkSpacer>
 	</div>
 	<template #footer>
-		<div :class="$style.footer">
-			<div v-if="typers.length > 0" :class="$style.typers">
-				<I18n :src="i18n.ts.typingUsers" textTag="span">
-					<template #users>
-						<b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
-					</template>
-				</I18n>
-				<MkEllipsis/>
-			</div>
-			<Transition :name="animation ? 'fade' : ''">
-				<div v-show="showIndicator" :class="$style.newMessage">
-					<button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
-						<i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
-					</button>
-				</div>
-			</Transition>
-			<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
-		</div>
+    <div :class="$style.footerSpacer">
+      <div :class="$style.footer">
+        <div v-if="typers.length > 0" :class="$style.typers">
+          <I18n :src="i18n.ts.typingUsers" textTag="span">
+            <template #users>
+              <b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
+            </template>
+          </I18n>
+          <MkEllipsis/>
+        </div>
+        <Transition :name="animation ? 'fade' : ''">
+          <div v-show="showIndicator" :class="$style.newMessage">
+            <button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
+              <i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
+            </button>
+          </div>
+        </Transition>
+        <XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
+      </div>
+    </div>
 	</template>
 </MkStickyContainer>
 </template>
@@ -368,6 +370,10 @@ definePageMetadata(computed(() => !fetching ? user ? {
 	}
 }
 
+.footerSpacer {
+  padding: 20px;
+}
+
 .footer {
 	width: 100%;
 	position: sticky;
@@ -415,14 +421,23 @@ definePageMetadata(computed(() => !fetching ? user ? {
 .form {
 	max-height: 12em;
 	overflow-y: scroll;
-	border-top: solid 0.5px var(--divider);
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
+	// border-top: solid 0.5px var(--divider);
+	// border-bottom-left-radius: 0;
+	// border-bottom-right-radius: 0;
+  border-radius: 15px;
 }
 
 @container (max-width: 500px) {
+  .footerSpacer {
+    padding: initial;
+  }
+
 	.footer {
 		margin-top: calc(50px + env(safe-area-inset-bottom));
 	}
+
+  .form {
+    border-radius: 0;
+  }
 }
 </style>
