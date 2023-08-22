@@ -84,4 +84,4 @@ COPY --chown=cherrypick:cherrypick . ./
 ENV NODE_ENV=production
 HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/cherrypick/healthcheck.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["pnpm", "run", "migrateandstart"]
+CMD ["pnpm", "run", "migrateandstart:docker"]
