@@ -63,7 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, nextTick, onBeforeUnmount, watch } from 'vue';
+import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as Acct from 'cherrypick-js/built/acct';
 import XMessage from './messaging-room.message.vue';
@@ -86,7 +86,7 @@ const props = defineProps<{
 
 let rootEl = $shallowRef<HTMLDivElement>();
 let formEl = $shallowRef<InstanceType<typeof XForm>>();
-let pagingComponent = $shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
 let fetching = $ref(true);
 let user: Misskey.entities.UserDetailed | null = $ref(null);
@@ -153,7 +153,7 @@ async function fetch() {
 	document.addEventListener('visibilitychange', onVisibilitychange);
 
 	nextTick(() => {
-		pagingComponent.inited.then(() => {
+		pagingComponent.value.inited.then(() => {
 			thisScrollToBottom();
 		});
 		window.setTimeout(() => {
@@ -218,7 +218,7 @@ function onMessage(message) {
 
 	const _isBottom = isBottomVisible(rootEl, 64);
 
-	pagingComponent.prepend(message);
+	pagingComponent.value.prepend(message);
 	if (message.userId !== $i?.id && !document.hidden) {
 		connection?.send('read', {
 			id: message.id,
@@ -240,21 +240,21 @@ function onRead(x) {
 	if (user) {
 		if (!Array.isArray(x)) x = [x];
 		for (const id of x) {
-			if (pagingComponent.items.some(y => y.id === id)) {
-				const exist = pagingComponent.items.map(y => y.id).indexOf(id);
-				pagingComponent.items[exist] = {
-					...pagingComponent.items[exist],
+			if (pagingComponent.value.items.some(y => y.id === id)) {
+				const exist = pagingComponent.value.items.map(y => y.id).indexOf(id);
+				pagingComponent.value.items[exist] = {
+					...pagingComponent.value.items[exist],
 					isRead: true,
 				};
 			}
 		}
 	} else if (group) {
 		for (const id of x.ids) {
-			if (pagingComponent.items.some(y => y.id === id)) {
-				const exist = pagingComponent.items.map(y => y.id).indexOf(id);
-				pagingComponent.items[exist] = {
-					...pagingComponent.items[exist],
-					reads: [...pagingComponent.items[exist].reads, x.userId],
+			if (pagingComponent.value.items.some(y => y.id === id)) {
+				const exist = pagingComponent.value.items.map(y => y.id).indexOf(id);
+				pagingComponent.value.items[exist] = {
+					...pagingComponent.value.items[exist],
+					reads: [...pagingComponent.value.items[exist].reads, x.userId],
 				};
 			}
 		}
@@ -262,9 +262,9 @@ function onRead(x) {
 }
 
 function onDeleted(id) {
-	const msg = pagingComponent.items.find(m => m.id === id);
+	const msg = pagingComponent.value.items.find(m => m.id === id);
 	if (msg) {
-		pagingComponent.items = pagingComponent.items.filter(m => m.id !== msg.id);
+		pagingComponent.value.items = pagingComponent.value.items.filter(m => m.id !== msg.id);
 	}
 }
 
@@ -290,7 +290,7 @@ function notifyNewMessage() {
 
 function onVisibilitychange() {
 	if (document.hidden) return;
-	for (const message of pagingComponent.items) {
+	for (const message of pagingComponent.value.items) {
 		if (message.userId !== $i?.id && !message.isRead) {
 			connection?.send('read', {
 				id: message.id,
