@@ -47,6 +47,7 @@
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업되는 문제
 - Fix: 다른 서버의 사용자에게 '메시지 보내기' 시 초기 텍스트 멘션이 잘못 표시되는 문제 수정 (misskey-dev/misskey#11721)
 - Fix: Misskey 플러그인 설치 시 AiScript 버전 확인이 0.14.0 이후 버전에서 지원되지 않는 문제 수정 (misskey-dev/misskey#11729)
+- Fix: '대화'에서 Autocomplete를 사용할 수 없음
 
 ### Server
 - Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가

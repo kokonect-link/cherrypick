@@ -99,6 +99,7 @@
 		"@storybook/vue3-vite": "7.0.27",
 		"@testing-library/jest-dom": "5.16.5",
 		"@testing-library/vue": "7.0.0",
+		"@types/autosize": "^4.0.1",
 		"@types/escape-regexp": "0.0.1",
 		"@types/estree": "1.0.1",
 		"@types/gulp": "4.0.13",

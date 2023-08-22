@@ -37,8 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
-import insertTextAtCursor from 'insert-text-at-cursor';
-import { throttle } from 'throttle-debounce';
+// import insertTextAtCursor from 'insert-text-at-cursor';
 import { formatTimeString } from '@/scripts/format-time-string';
 import { selectFile } from '@/scripts/select-file';
 import * as os from '@/os';
@@ -55,8 +54,8 @@ const props = defineProps<{
 	group?: Misskey.entities.UserGroup | null;
 }>();
 
-let textEl = $shallowRef<HTMLTextAreaElement>();
-let fileEl = $shallowRef<HTMLInputElement>();
+const textEl = $shallowRef<HTMLTextAreaElement | null>(null);
+const fileEl = $shallowRef<HTMLInputElement | null>(null);
 
 let text = $ref<string>('');
 let file = $ref<Misskey.entities.DriveFile | null>(null);
@@ -233,8 +232,7 @@ onMounted(() => {
 	autosize(textEl);
 
 	// TODO: detach when unmount
-	// TODO
-	//new Autocomplete(textEl, this, { model: 'text' });
+	new Autocomplete(textEl, $$(text));
 
 	// 書きかけの投稿を復元
 	const draft = JSON.parse(miLocalStorage.getItem('message_drafts') ?? '{}')[draftKey];
@@ -287,7 +285,7 @@ defineExpose({
 	background: transparent;
 	cursor: pointer;
 }
-/*
+
 .files {
 	display: block;
 	margin: 0;
@@ -321,7 +319,7 @@ defineExpose({
 	}
 }
 
-.file-remove {
+.fileRemove {
 	display: none;
 	position: absolute;
 	right: -6px;
@@ -335,7 +333,6 @@ defineExpose({
 	box-shadow: none;
 	cursor: pointer;
 }
-*/
 
 .buttons {
 	display: flex;
