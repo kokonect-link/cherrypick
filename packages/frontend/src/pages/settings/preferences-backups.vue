@@ -115,7 +115,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'postFormVisibilityHotkey',
   'showRenoteConfirmPopup',
   'displayHeaderNavBarWhenScroll',
-  'showPostFormPreview',
   'mobileTimelineHeaderChange',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [

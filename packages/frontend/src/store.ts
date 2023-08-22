@@ -132,6 +132,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: false,
 	},
+	showPreview: {
+		where: 'device',
+		default: false,
+	},
 	statusbars: {
 		where: 'deviceAccount',
 		default: [] as {
@@ -454,14 +458,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	infoButtonForNoteActionsEnabled: {
 		where: 'account',
 		default: true,
-	},
-	rememberPostFormToggleStateEnabled: {
-		where: 'account',
-		default: true,
-	},
-	showPostFormPreview: {
-		where: 'device',
-		default: false,
 	},
 	reactableRemoteReactionEnabled: {
 		where: 'account',
