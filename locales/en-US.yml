@@ -1168,6 +1168,13 @@ additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
+_tlTutorial:
+  step1_1: 'The {icon} Home timeline is where you can see posts from the accounts you follow.'
+  step1_2: 'The {icon} Local timeline is where you can see posts from everyone else on this server.'
+  step1_3: 'The {icon} Media timeline is where you can see posts from everyone else on this server, but only those that contain media(photos, videos).'
+  step1_4: 'The {icon} Social timeline is a combination of the Home and Local timelines.'
+  step1_5: 'The {icon} Cat timeline shows posts from users who have enabled cat on this server and every other connected server.'
+  step1_6: 'The {icon} Global timeline is where you can see posts from every other connected server.'
 _announcement:
   forExistingUsers: "Existing users only"
   forExistingUsersDescription: "This announcement will only be shown to users existing at the point of publishment if enabled. If disabled, those newly signing up after it has been posted will also see it."

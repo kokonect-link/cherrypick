@@ -4,19 +4,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="[$style.root, { [$style.warn]: warn }]">
+<div v-if="visible" :class="[$style.root, { [$style.warn]: warn }]">
 	<i v-if="warn" class="ti ti-alert-triangle" :class="$style.i"></i>
 	<i v-else class="ti ti-info-circle" :class="$style.i"></i>
 	<slot></slot>
+  <button v-if="closeable" v-tooltip="i18n.ts.close" :class="$style.close" class="_button" @click.stop="close" :aria-label="i18n.t('close')">
+    <i class="ti ti-x"></i>
+  </button>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref } from 'vue';
+import { i18n } from '@/i18n';
+
+const visible = ref(true);
 
 const props = defineProps<{
 	warn?: boolean;
+  closeable?: boolean;
 }>();
+
+const emit = defineEmits<{
+  (ev: 'closed'): void;
+}>();
+
+function close() {
+  visible.value = false;
+  emit('closed');
+}
 </script>
 
 <style lang="scss" module>
@@ -27,6 +43,8 @@ const props = defineProps<{
 	color: var(--infoFg);
 	border-radius: var(--radius);
 	white-space: pre-wrap;
+  display: flex;
+  align-items: center;
 
 	&.warn {
 		background: var(--infoWarnBg);
@@ -35,6 +53,11 @@ const props = defineProps<{
 }
 
 .i {
-	margin-right: 4px;
+	margin-right: 8px;
+}
+
+.close {
+  margin-left: auto;
+  float: right;
 }
 </style>

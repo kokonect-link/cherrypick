@@ -1169,6 +1169,13 @@ additionalPermissionsForFlash: "Play에 대한 추가 권한"
 thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구해요"
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
 translateProfile: "프로필 번역하기"
+_tlTutorial:
+  step1_1: '{icon} 홈 타임라인은 내가 팔로우하고 있는 계정의 게시물을 볼 수 있어요.'
+  step1_2: '{icon} 로컬 타임라인은 이 서버의 모든 유저가 올린 게시물을 볼 수 있어요.'
+  step1_3: '{icon} 미디어 타임라인은 이 서버의 모든 유저가 올린 게시물 중, 미디어(사진, 영상)가 포함된 게시물만 볼 수 있어요.'
+  step1_4: '{icon} 소셜 타임라인은 홈 타임라인과 로컬 타임라인을 합친 것과 같아요.'
+  step1_5: '{icon} 고양이 타임라인에서는 이 서버와 연결된 모든 서버 중, 고양이를 활성화한 유저의 게시물을 볼 수 있어요.'
+  step1_6: '{icon} 글로벌 타임라인에서는 이 서버와 연결된 모든 서버의 게시물을 볼 수 있어요.'
 _announcement:
   forExistingUsers: "기존 유저에게만 알리기"
   forExistingUsersDescription: "활성화하면 이 공지사항을 게시한 시점에서 이미 가입한 유저에게만 표시해요. 비활성화하면 게시 후에 가입한 유저에게도 표시해요."
