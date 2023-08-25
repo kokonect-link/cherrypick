@@ -32,13 +32,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
-		<div v-if="!thin_ && !narrow && actions && actions.length > 0 && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
+		<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 		<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
 				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
+    <div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
+      <MkFollowButton v-if="narrow" :user="metadata.avatar" :transparent="false" :full="false"/>
+      <MkFollowButton v-else :user="metadata.avatar" :transparent="false" :full="true"/>
+    </div>
 	</div>
 	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
@@ -59,6 +63,10 @@ import { mainRouter } from '@/router';
 import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
+import MkFollowButton from '@/components/MkFollowButton.vue';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+
+let showFollowButton = $ref(false);
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -152,6 +160,10 @@ onMounted(() => {
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
+
+  eventBus.on('showFollowButton', (showFollowButton_receive) => {
+    showFollowButton = showFollowButton_receive;
+  });
 });
 
 onUnmounted(() => {
@@ -250,6 +262,11 @@ onUnmounted(() => {
 .buttonsRight {
 	composes: buttons;
 	margin: 0 0 0 var(--margin);
+}
+
+.followButton {
+  composes: buttons;
+  margin: 0 var(--margin) 0 0;
 }
 
 .goBack {
@@ -357,5 +374,11 @@ onUnmounted(() => {
 			margin-left: 6px;
 		}
 	}
+}
+
+@container (max-width: 500px) {
+  .followButton {
+    margin: 0;
+  }
 }
 </style>

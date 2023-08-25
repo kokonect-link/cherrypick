@@ -35,6 +35,8 @@ import * as os from '@/os';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
+import { getUserMenu } from '@/scripts/get-user-menu';
+import { mainRouter } from '@/router';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
@@ -73,7 +75,11 @@ watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => []);
+const headerActions = $computed(() => [{
+    icon: 'ti ti-dots',
+    text: i18n.ts.menu,
+    handler: menu,
+}]);
 
 const headerTabs = $computed(() => user ? [{
 	key: 'home',
@@ -120,6 +126,11 @@ const headerTabs = $computed(() => user ? [{
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
 }] : []);
+
+function menu(ev) {
+  const { menu, cleanup } = getUserMenu(user, mainRouter);
+  os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
+}
 
 definePageMetadata(computed(() => user ? {
 	icon: 'ti ti-user',

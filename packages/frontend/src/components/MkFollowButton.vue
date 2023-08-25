@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <button
-	v-if="!disableIfFollowing || !isFollowing"
+	v-if="(!disableIfFollowing || !isFollowing) && ($i != null && $i.id != user.id)"
 	class="_button"
 	:class="[$style.root, { [$style.wait]: wait, [$style.active]: isFollowing || hasPendingFollowRequestFromYou, [$style.full]: full, [$style.large]: large }]"
 	:disabled="wait"
@@ -45,6 +45,9 @@ import { i18n } from '@/i18n';
 import { claimAchievement } from '@/scripts/achievements';
 import { $i } from '@/account';
 import { userName } from '@/filters/user';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
+
+let showFollowButton = $ref(false);
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,
@@ -133,6 +136,9 @@ async function onClick() {
 onMounted(() => {
 	connection.on('follow', onFollowChange);
 	connection.on('unfollow', onFollowChange);
+
+  showFollowButton = $i != null && $i.id != props.user.id;
+  eventBus.emit('showFollowButton', showFollowButton);
 });
 
 onBeforeUnmount(() => {
