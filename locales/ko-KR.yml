@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+replayUserSetupDialog: "초기 설정 다시 보기"
+replayTutorial: "튜토리얼 다시 보기"
 nya: "냥!"
 displayHeaderNavBarWhenScroll: "스크롤 시 요소 표시 (헤더, 플로팅 버튼, 탐색 모음)"
 addSingle: "하나만 추가"

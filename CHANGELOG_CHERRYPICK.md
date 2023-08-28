@@ -32,6 +32,8 @@
 - 리노트를 신고할 수 있도록 (misskey-dev/misskey#11466)
 - Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
 - 타임라인 소개 추가
+- 이용 약관을 서버 메뉴에서 볼 수 있도록
+- 계정 초기 설정과 타임라인 튜토리얼을 다시 진행할 수 있도록
 
 ### Client
 - about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음

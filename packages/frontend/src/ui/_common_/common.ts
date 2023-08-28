@@ -3,11 +3,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { defineAsyncComponent } from 'vue';
 import * as os from '@/os';
 import { instance } from '@/instance';
 import { host } from '@/config';
 import { i18n } from '@/i18n';
 import { $i } from '@/account';
+import { defaultStore } from '@/store';
+import { unisonReload } from '@/scripts/unison-reload';
 
 export function openInstanceMenu(ev: MouseEvent) {
 	os.popupMenu([{
@@ -69,6 +72,13 @@ export function openInstanceMenu(ev: MouseEvent) {
 			icon: 'ti ti-icons',
 		} : undefined],
 	}, null, {
+		type: 'button',
+		text: i18n.ts.termsOfService,
+		icon: 'ti ti-checklist',
+		action: () => {
+			window.open(instance.tosUrl, '_blank');
+		},
+	}, {
 		type: 'parent',
 		text: i18n.ts.help,
 		icon: 'ti ti-help-circle',
@@ -83,6 +93,28 @@ export function openInstanceMenu(ev: MouseEvent) {
 			text: i18n.ts._mfm.cheatSheet,
 			icon: 'ti ti-help-circle',
 			to: '/mfm-cheat-sheet',
+		}, null, {
+			type: 'button',
+			text: i18n.ts.replayUserSetupDialog,
+			icon: 'ti ti-list-numbers',
+			action: () => {
+				defaultStore.set('accountSetupWizard', 0);
+				os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
+			},
+		}, {
+			type: 'button',
+			text: i18n.ts.replayTutorial,
+			icon: 'ti ti-checkup-list',
+			action: () => {
+				defaultStore.set('timelineTutorial', 0);
+				defaultStore.set('tlHomeHintClosed', false);
+				defaultStore.set('tlLocalHintClosed', false);
+				defaultStore.set('tlMediaHintClosed', false);
+				defaultStore.set('tlSocialHintClosed', false);
+				defaultStore.set('tlCatHintClosed', false);
+				defaultStore.set('tlGlobalHintClosed', false);
+				setTimeout(unisonReload, 100);
+			},
 		}],
 	}, {
 		type: 'link',

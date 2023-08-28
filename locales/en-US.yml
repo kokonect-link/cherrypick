@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+replayUserSetupDialog: "Replay initial setting"
+replayTutorial: "Replay tutorial"
 nya: "Nyan!"
 displayHeaderNavBarWhenScroll: "Show elements when scrolling (header, floating buttons, navigation bar)"
 addSingle: "Add just one"

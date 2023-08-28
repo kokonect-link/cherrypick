@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+replayUserSetupDialog: "初期設定のリプレイ"
+replayTutorial: "チュートリアルのリプレイ"
 nya: "にゃん！"
 displayHeaderNavBarWhenScroll: "スクロール時の要素表示（ヘッダー、フローティングボタン、ナビゲーションバー）"
 addSingle: "一つだけ追加"
