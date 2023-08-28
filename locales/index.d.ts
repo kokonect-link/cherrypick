@@ -1255,7 +1255,6 @@ export interface Locale {
         "description": string;
     };
     "_event": {
-        "title": string;
         "startDateTime": string;
         "endDateTime": string;
         "startDate": string;
@@ -1265,7 +1264,6 @@ export interface Locale {
         "detailName": string;
         "detailValue": string;
         "location": string;
-        "url": string;
         "doorTime": string;
         "organizer": string;
         "organizerLink": string;

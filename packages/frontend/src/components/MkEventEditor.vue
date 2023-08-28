@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="zmdxowut">
 	<MkInput v-model="title" small type="text" class="input">
-		<template #label>*{{ i18n.ts._event.title }}</template>
+		<template #label>*{{ i18n.ts.title }}</template>
 	</MkInput>
 	<section>
 		<div>
@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</section>
 			<section>
 				<MkInput v-model="url" small type="url" class="input">
-					<template #label>{{ i18n.ts._event.url }}</template>
+					<template #label>URL</template>
 				</MkInput>
 			</section>
 		</div>

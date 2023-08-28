@@ -1243,7 +1243,6 @@ _initialAccountSetting:
 _serverRules:
   description: "A set of rules to be displayed before registration. Setting a summary of the Terms of Service is recommended."
 _event:
-  title: "Title"
   startDateTime: "Start date time"
   endDateTime: "End date time"
   startDate: "Start date"
@@ -1253,7 +1252,6 @@ _event:
   detailName: "Details"
   detailValue: "value"
   location: "Location"
-  url: "URL"
   doorTime: "Door Time"
   organizer: "Organizer"
   organizerLink: "Organizer Link"

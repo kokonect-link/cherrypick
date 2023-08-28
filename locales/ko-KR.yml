@@ -1244,7 +1244,6 @@ _initialAccountSetting:
 _serverRules:
   description: "회원 가입 이전에 간단하게 표시할 서버 규칙이에요. 이용 약관의 요약으로 구성하는 것을 추천해요."
 _event:
-  title: "제목"
   startDateTime: "시작 일시"
   endDateTime: "종료 일시"
   startDate: "시작일"
@@ -1254,7 +1253,6 @@ _event:
   detailName: "속성"
   detailValue: "값"
   location: "위치"
-  url: "URL"
   doorTime: "출입 가능 시간"
   organizer: "주최자"
   organizerLink: "주최자 링크"
