@@ -16,6 +16,7 @@ import { mainRouter } from '@/router';
 import { Router } from '@/nirax';
 import { antennasCache, rolesCache, userListsCache } from '@/cache';
 import { editNickname } from '@/scripts/edit-nickname';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 export function getUserMenu(user: misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -107,6 +108,15 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 		os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 			user: user,
 		}, {}, 'closed');
+	}
+
+	function refreshUser() {
+		eventBus.emit('refreshUser');
+	}
+
+	async function updateRemoteUser() {
+		await os.apiWithDialog('federation/update-remote-user', { userId: user.id });
+		refreshUser();
 	}
 
 	async function getConfirmed(text: string): Promise<boolean> {
@@ -365,6 +375,14 @@ export function getUserMenu(user: misskey.entities.UserDetailed, router: Router 
 				action.handler(user);
 			},
 		}))]);
+	}
+
+	if ($i && meId !== user.id && user.host != null) {
+		menu = menu.concat([null, {
+			icon: 'ti ti-refresh',
+			text: i18n.ts.updateRemoteUser,
+			action: updateRemoteUser,
+		}]);
 	}
 
 	const cleanup = () => {
