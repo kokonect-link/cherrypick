@@ -197,7 +197,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, watch } from 'vue';
 import * as misskey from 'cherrypick-js';
 import MkChart from '@/components/MkChart.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
@@ -220,6 +220,7 @@ import { i18n } from '@/i18n';
 import { iAmAdmin, $i } from '@/account';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const props = withDefaults(defineProps<{
 	userId: string;
@@ -443,6 +444,10 @@ watch($$(user), () => {
 	}).then(res => {
 		ap = res;
 	});
+});
+
+onMounted(() => {
+    eventBus.on('refreshUser', () => updateRemoteUser());
 });
 
 const headerActions = $computed(() => []);
