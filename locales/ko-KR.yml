@@ -12,6 +12,7 @@ showSubNoteFooterButtonDescription: "이 설정을 활성화하면 답글이 달
 alreadyFollowed: "팔로우 했어요!"
 enableMarkByDate: "노트 시간을 일자로 표시"
 renoteConfirm: "리노트 할까요?"
+renoteConfirmDescription: "이 설정은 [설정 - CherryPick]에서 변경할 수 있어요."
 inviteRevoke: "모든 초대 코드 제거"
 inviteRevokeConfirm: "정말로 모든 초대 코드를 제거할까요?"
 enableAbsoluteTime: "절대 시간 표기 사용"
@@ -1240,6 +1241,7 @@ _initialAccountSetting:
   haveFun: "{name}와 함께 즐거운 시간 보내세요!"
   ifYouNeedLearnMore: "{name}(CherryPick)의 사용 방법에 대해 자세히 알아보려면 {link}를 참고해 주세요."
   skipAreYouSure: "초기 설정을 중단하시겠어요?"
+  skipAreYouSureDescription: "지금 초기 설정을 중단해도 [더 보기! - 도움말 - 초기 설정 다시 보기]에서 다시 진행할 수 있어요."
   laterAreYouSure: "초기 설정을 나중에 진행할까요?"
 _serverRules:
   description: "회원 가입 이전에 간단하게 표시할 서버 규칙이에요. 이용 약관의 요약으로 구성하는 것을 추천해요."

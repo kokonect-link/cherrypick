@@ -297,6 +297,7 @@ async function renote() {
 		const { canceled } = await os.confirm({
 			type: 'info',
 			text: i18n.ts.renoteConfirm,
+      caption: i18n.ts.renoteConfirmDescription,
 		});
 		if (canceled) return;
 	}

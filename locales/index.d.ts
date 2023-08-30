@@ -15,6 +15,7 @@ export interface Locale {
     "alreadyFollowed": string;
     "enableMarkByDate": string;
     "renoteConfirm": string;
+    "renoteConfirmDescription": string;
     "inviteRevoke": string;
     "inviteRevokeConfirm": string;
     "enableAbsoluteTime": string;
@@ -1250,6 +1251,7 @@ export interface Locale {
         "haveFun": string;
         "ifYouNeedLearnMore": string;
         "skipAreYouSure": string;
+        "skipAreYouSureDescription": string;
         "laterAreYouSure": string;
     };
     "_serverRules": {

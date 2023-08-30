@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<header v-if="title" :class="$style.title"><Mfm :text="title"/></header>
 		<div v-if="text" :class="$style.text"><Mfm :text="text"/></div>
+		<div v-if="caption" :class="$style.caption"><small><Mfm :text="caption"/></small></div>
 		<MkInput v-if="input" v-model="inputValue" autofocus :type="input.type || 'text'" :placeholder="input.placeholder || undefined" :autocomplete="input.autocomplete" @keydown="onInputKeydown">
 			<template v-if="input.type === 'password'" #prefix><i class="ti ti-lock"></i></template>
 			<template #caption>
@@ -91,6 +92,7 @@ const props = withDefaults(defineProps<{
 	type?: 'success' | 'error' | 'warning' | 'info' | 'question' | 'waiting';
 	title: string;
 	text?: string;
+	caption?: string;
 	input?: Input;
 	select?: Select;
 	icon?: string;
@@ -240,6 +242,11 @@ onBeforeUnmount(() => {
 
 .text {
 	margin: 16px 0 0 0;
+}
+
+.caption {
+  margin: 4px 0 0 0;
+  color: var(--fgTransparentWeak);
 }
 
 .buttons {
