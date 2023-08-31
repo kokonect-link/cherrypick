@@ -40,15 +40,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
-      <span :class="$style.renoteTime">
-        <button ref="renoteTime" class="_button">
+			<span :class="$style.renoteTime">
+				<button ref="renoteTime" class="_button">
 					<i class="ti ti-dots" :class="$style.renoteMenu" @click="showRenoteMenu()"></i>
 				</button>
-        <MkA :to="notePage(note)">
-          <MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
-				  <MkTime v-else :time="note.createdAt" mode="relative"/>
+				<MkA :to="notePage(note)">
+					<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
+					<MkTime v-else :time="note.createdAt" mode="relative"/>
 				</MkA>
-      </span>
+			</span>
 		</div>
 	</div>
 	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed" :note="appearNote.reply" :class="$style.replyTo"/>
@@ -139,7 +139,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</button>
 				<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
 					<i v-if="appearNote.myReaction == null" class="ti ti-mood-plus"></i>
-          <i v-else class="ti ti-mood-edit"></i>
+					<i v-else class="ti ti-mood-edit"></i>
 				</button>
 				<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
 					<i class="ti ti-heart-minus"></i>
@@ -319,7 +319,7 @@ async function renote() {
 		const { canceled } = await os.confirm({
 			type: 'info',
 			text: i18n.ts.renoteConfirm,
-      caption: i18n.ts.renoteConfirmDescription,
+			caption: i18n.ts.renoteConfirmDescription,
 		});
 		if (canceled) return;
 	}

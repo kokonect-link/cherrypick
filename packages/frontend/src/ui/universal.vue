@@ -106,7 +106,7 @@ import { deviceKind } from '@/scripts/device-kind';
 import { miLocalStorage } from '@/local-storage';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
 import { useScrollPositionManager } from '@/nirax';
-import {eventBus} from "@/scripts/cherrypick/eventBus";
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/_common_/navbar.vue'));
@@ -184,27 +184,27 @@ onMounted(() => {
 		}, { passive: true });
 	}
 
-  contents.value.rootEl.addEventListener('scroll', onScroll);
+	contents.value.rootEl.addEventListener('scroll', onScroll);
 });
 
 onBeforeUnmount(() => {
-  contents.value.rootEl.removeEventListener('scroll', onScroll);
+	contents.value.rootEl.removeEventListener('scroll', onScroll);
 });
 
 function onScroll() {
-  const currentScrollPosition = contents.value.rootEl.scrollTop;
-  if (currentScrollPosition < 0) {
-    return;
-  }
-  // Stop executing this function if the difference between
-  // current scroll position and last scroll position is less than some offset
-  if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
-    return;
-  }
-  showEl = currentScrollPosition < lastScrollPosition;
-  lastScrollPosition = currentScrollPosition;
-  showEl = !showEl;
-  eventBus.emit('showEl', showEl);
+	const currentScrollPosition = contents.value.rootEl.scrollTop;
+	if (currentScrollPosition < 0) {
+		return;
+	}
+	// Stop executing this function if the difference between
+	// current scroll position and last scroll position is less than some offset
+	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
+		return;
+	}
+	showEl = currentScrollPosition < lastScrollPosition;
+	lastScrollPosition = currentScrollPosition;
+	showEl = !showEl;
+	eventBus.emit('showEl', showEl);
 }
 
 const onContextmenu = (ev) => {

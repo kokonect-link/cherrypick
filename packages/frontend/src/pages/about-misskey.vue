@@ -395,7 +395,7 @@ let easterEggEngine = $ref(null);
 const containerEl = $shallowRef<HTMLElement>();
 
 const whatIsNewCherryPick = () => {
-  window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
+	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
 };
 
 function iconLoaded() {
@@ -434,11 +434,12 @@ function getTreasure() {
 }
 
 onMounted(() => {
-	if (window.location.host == 'localhost:3000') isKokonect = true;
-	else if (window.location.host == 'kokonect.link') isKokonect = true;
-	else if (window.location.host == 'beta.kokonect.link') isKokonect = true;
-	else if (window.location.host == 'universe.noridev.moe') isKokonect = true;
-})
+	if (window.location.host === 'localhost:3000') isKokonect = true;
+	else if (window.location.host === '127.0.0.1:3000') isKokonect = true;
+	else if (window.location.host === 'kokonect.link') isKokonect = true;
+	else if (window.location.host === 'beta.kokonect.link') isKokonect = true;
+	else if (window.location.host === 'universe.noridev.moe') isKokonect = true;
+});
 
 onBeforeUnmount(() => {
 	if (easterEggEngine) {
