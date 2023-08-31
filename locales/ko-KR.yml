@@ -1172,6 +1172,8 @@ additionalPermissionsForFlash: "Play에 대한 추가 권한"
 thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구해요"
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
 translateProfile: "프로필 번역하기"
+_messaging:
+  direct: "다이렉트 메시지"
 _tlTutorial:
   step1_1: '{icon} 홈 타임라인은 내가 팔로우하고 있는 계정의 게시물을 볼 수 있어요.'
   step1_2: '{icon} 로컬 타임라인은 이 서버의 모든 유저가 올린 게시물을 볼 수 있어요.'

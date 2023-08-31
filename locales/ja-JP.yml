@@ -1173,6 +1173,9 @@ thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
 
+_messaging:
+  direct: "ダイレクトメッセージ"
+
 _tlTutorial:
   step1_1: '{icon} ホームタイムラインは、あなたがフォローしているアカウントの投稿を見られます。'
   step1_2: '{icon} ローカルタイムラインでは、このサーバーにいるみんなの投稿を見られます。'

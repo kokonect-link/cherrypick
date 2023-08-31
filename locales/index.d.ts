@@ -1175,6 +1175,9 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "_messaging": {
+        "direct": string;
+    };
     "_tlTutorial": {
         "step1_1": string;
         "step1_2": string;
