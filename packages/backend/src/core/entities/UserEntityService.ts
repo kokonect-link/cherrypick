@@ -421,8 +421,8 @@ export class UserEntityService implements OnModuleInit {
 				birthday: profile!.birthday,
 				lang: profile!.lang,
 				fields: profile!.fields,
-				followersCount: followersCount ?? 0,
-				followingCount: followingCount ?? 0,
+				followersCount: followersCount ?? '?',
+				followingCount: followingCount ?? '?',
 				notesCount: user.notesCount,
 				pinnedNoteIds: pins.map(pin => pin.noteId),
 				pinnedNotes: this.noteEntityService.packMany(pins.map(pin => pin.note!), me, {
