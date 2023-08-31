@@ -366,7 +366,7 @@ watch(useSystemFont, () => {
 watch([
 	lang,
 	useBlurEffect,
-  useBlurEffectForModal,
+	useBlurEffectForModal,
 	// fontSize,
 	useBoldFont,
 	useSystemFont,
