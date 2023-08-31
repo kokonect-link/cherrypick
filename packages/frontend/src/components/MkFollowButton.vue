@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span v-if="full" :class="$style.text">{{ i18n.ts.processing }}</span><MkLoading :em="true" :colored="false"/>
 	</template>
 </button>
-	<div v-else-if="disableIfFollowing && isFollowing"><i class="ti ti-circle-check"></i><span style="padding-left: 3px;">{{ i18n.ts.alreadyFollowed }}</span></div>
+<div v-else-if="disableIfFollowing && isFollowing"><i class="ti ti-circle-check"></i><span style="padding-left: 3px;">{{ i18n.ts.alreadyFollowed }}</span></div>
 </template>
 
 <script lang="ts" setup>
@@ -137,8 +137,8 @@ onMounted(() => {
 	connection.on('follow', onFollowChange);
 	connection.on('unfollow', onFollowChange);
 
-  showFollowButton = $i != null && $i.id != props.user.id;
-  eventBus.emit('showFollowButton', showFollowButton);
+	showFollowButton = $i != null && $i.id !== props.user.id;
+	eventBus.emit('showFollowButton', showFollowButton);
 });
 
 onBeforeUnmount(() => {

@@ -101,6 +101,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, ComputedRef, shallowRef, Ref, onUnmounted } from 'vue';
+import tinycolor from 'tinycolor2';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config';
@@ -117,7 +118,6 @@ import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
 import { useScrollPositionManager } from '@/nirax';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
-import tinycolor from 'tinycolor2';
 import { globalEvents } from '@/events';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
@@ -211,20 +211,20 @@ defaultStore.loaded.then(() => {
 });
 
 const calcBg = () => {
-  const rawBg = 'var(--panel)';
-  const rawPostBg = 'var(--accent)';
-  const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-  const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
-  if (defaultStore.state.useBlurEffect) {
-    tinyBg.setAlpha(0.7);
-    tinyPostBg.setAlpha(0.7);
-  }
-  else {
-    tinyBg.setAlpha(1);
-    tinyPostBg.setAlpha(1);
-  }
-  bg.value = tinyBg.toRgbString();
-  PostBg.value = tinyPostBg.toRgbString();
+	const rawBg = 'var(--panel)';
+	const rawPostBg = 'var(--accent)';
+	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
+	if (defaultStore.state.useBlurEffect) {
+		tinyBg.setAlpha(0.7);
+		tinyPostBg.setAlpha(0.7);
+	}
+	else {
+		tinyBg.setAlpha(1);
+		tinyPostBg.setAlpha(1);
+	}
+	bg.value = tinyBg.toRgbString();
+	PostBg.value = tinyPostBg.toRgbString();
 };
 
 onMounted(() => {
@@ -238,8 +238,8 @@ onMounted(() => {
 
 	eventBus.on('queueUpdated', (q) => queueUpdated(q));
 
-  calcBg();
-  globalEvents.on('themeChanged', calcBg);
+	calcBg();
+	globalEvents.on('themeChanged', calcBg);
 });
 
 onBeforeUnmount(() => {
@@ -247,7 +247,7 @@ onBeforeUnmount(() => {
 });
 
 onUnmounted(() => {
-  globalEvents.off('themeChanged', calcBg);
+	globalEvents.off('themeChanged', calcBg);
 });
 
 function onScroll() {

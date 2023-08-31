@@ -12,6 +12,7 @@ showSubNoteFooterButtonDescription: "Enabling this setting will show an action b
 alreadyFollowed: "You've been followed!"
 enableMarkByDate: "Show note times as dates"
 renoteConfirm: "Do you want to renote?"
+renoteConfirmDescription: "You can change this setting in \"Settings - CherryPick\"."
 inviteRevoke: "Revoke All Invitation Codes"
 inviteRevokeConfirm: "Are you sure that you want to revoke all invitation codes?"
 enableAbsoluteTime: "Enable Absolute Time"
@@ -1170,6 +1171,8 @@ additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
+_messaging:
+  direct: "Direct Message"
 _tlTutorial:
   step1_1: 'The {icon} Home timeline is where you can see posts from the accounts you follow.'
   step1_2: 'The {icon} Local timeline is where you can see posts from everyone else on this server.'
@@ -1239,6 +1242,7 @@ _initialAccountSetting:
   haveFun: "Enjoy {name}!"
   ifYouNeedLearnMore: "If you'd like to learn more about how to use {name} (CherryPick), please visit {link}."
   skipAreYouSure: "Really skip profile setup?"
+  skipAreYouSureDescription: "If you interrupt initialization now, you can resume it at [More! - Help - Replay initial setting]."
   laterAreYouSure: "Really do profile setup later?"
 _serverRules:
   description: "A set of rules to be displayed before registration. Setting a summary of the Terms of Service is recommended."

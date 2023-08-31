@@ -15,6 +15,7 @@ export interface Locale {
     "alreadyFollowed": string;
     "enableMarkByDate": string;
     "renoteConfirm": string;
+    "renoteConfirmDescription": string;
     "inviteRevoke": string;
     "inviteRevokeConfirm": string;
     "enableAbsoluteTime": string;
@@ -1174,6 +1175,9 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "_messaging": {
+        "direct": string;
+    };
     "_tlTutorial": {
         "step1_1": string;
         "step1_2": string;
@@ -1250,6 +1254,7 @@ export interface Locale {
         "haveFun": string;
         "ifYouNeedLearnMore": string;
         "skipAreYouSure": string;
+        "skipAreYouSureDescription": string;
         "laterAreYouSure": string;
     };
     "_serverRules": {

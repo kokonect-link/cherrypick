@@ -12,6 +12,7 @@ showSubNoteFooterButtonDescription: "この設定を有効にすると、返信�
 alreadyFollowed: "フォローしました！"
 enableMarkByDate: "ノート時刻を日付で表示"
 renoteConfirm: "Renoteしますか？"
+renoteConfirmDescription: "この設定は「設定 - CherryPick」で変更できます。"
 inviteRevoke: "全ての招待コードを失効する"
 inviteRevokeConfirm: "本当に全ての招待コードを失効させますか？"
 enableAbsoluteTime: "絶対時刻表記を使用する"
@@ -1172,6 +1173,9 @@ thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
 
+_messaging:
+  direct: "ダイレクトメッセージ"
+
 _tlTutorial:
   step1_1: '{icon} ホームタイムラインは、あなたがフォローしているアカウントの投稿を見られます。'
   step1_2: '{icon} ローカルタイムラインでは、このサーバーにいるみんなの投稿を見られます。'
@@ -1248,6 +1252,7 @@ _initialAccountSetting:
   haveFun: "{name}をお楽しみください！"
   ifYouNeedLearnMore: "{name}(CherryPick)の使い方などを詳しく知るには{link}をご覧ください。"
   skipAreYouSure: "初期設定をスキップしますか？"
+  skipAreYouSureDescription: "今すぐ初期設定を中断しても、[もっと！ - ヘルプ - 初期設定のリプレイ]から再開することができます。"
   laterAreYouSure: "初期設定をあとでやり直しますか？"
 
 _serverRules:

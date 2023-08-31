@@ -5,36 +5,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div>
-			<div v-if="messages.length > 0">
-				<MkA
-					v-for="(message, i) in messages"
-					:key="message.id"
-					v-anim="i"
-					class="_panel"
-					:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead)) }]"
-					:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
-					:data-index="i"
-				>
-					<div>
-						<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
-						<MkAvatar :class="$style.avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" indicator link preview/>
-						<header v-if="message.groupId">
-							<span :class="$style.name">{{ message.group.name }}</span>
-							<MkTime :time="message.createdAt" :class="$style.time"/>
-						</header>
-						<header v-else>
-							<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
-							<span :class="$style.username">@{{ acct(isMe(message) ? message.recipient : message.user) }}</span>
-							<MkTime :time="message.createdAt" :class="$style.time"/>
-						</header>
-						<div>
-							<p :class="$style.text"><span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}: </span>{{ message.text }}</p>
-						</div>
-					</div>
-				</MkA>
+			<div v-if="tab === 'direct'">
+				<MkPagination v-slot="{ items }" :pagination="directPagination">
+					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
+				</MkPagination>
+			</div>
+			<div v-else-if="tab === 'groups'">
+				<MkPagination v-slot="{ items }" :pagination="groupsPagination">
+					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
+				</MkPagination>
 			</div>
 			<div v-if="!fetching && messages.length == 0" class="_fullinfo">
 				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost" alt=""/>
@@ -49,7 +31,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted } from 'vue';
 import * as Acct from 'cherrypick-js/built/acct';
-import { acct } from '@/filters/user';
 import * as os from '@/os';
 import { useStream } from '@/stream';
 import { useRouter } from '@/router';
@@ -57,18 +38,31 @@ import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { $i } from '@/account';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
+import MkChatPreview from '@/components/MkChatPreview.vue';
+import MkPagination from '@/components/MkPagination.vue';
 
 const router = useRouter();
+
+let tab = $ref('direct');
 
 let fetching = $ref(true);
 let messages = $ref([]);
 let connection = $ref(null);
 
-const getAcct = Acct.toString;
-
-function isMe(message) {
-	return message.userId === $i.id;
-}
+const directPagination = {
+	endpoint: 'messaging/history' as const,
+	limit: 15,
+	params: {
+		group: false,
+	},
+};
+const groupsPagination = {
+	endpoint: 'messaging/history' as const,
+	limit: 5,
+	params: {
+		group: true,
+	},
+};
 
 function onMessage(message) {
 	if (message.recipientId) {
@@ -135,6 +129,10 @@ async function startGroup() {
 	router.push(`/my/messaging/group/${group.id}`);
 }
 
+async function readAllMessagingMessages() {
+	await os.apiWithDialog('i/read-all-messaging-messages');
+}
+
 onMounted(() => {
 	connection = markRaw(useStream().useChannel('messagingIndex'));
 
@@ -163,9 +161,21 @@ const headerActions = $computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.create,
 	handler: start,
+}, {
+	icon: 'ti ti-check',
+	text: i18n.ts.markAllAsRead,
+	handler: readAllMessagingMessages,
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = $computed(() => [{
+	key: 'direct',
+	title: i18n.ts._messaging.direct,
+	icon: 'ti ti-users',
+}, {
+	key: 'groups',
+	title: i18n.ts.groups,
+	icon: 'ti ti-users-group',
+}]);
 
 definePageMetadata({
 	title: i18n.ts.messaging,
@@ -174,122 +184,4 @@ definePageMetadata({
 </script>
 
 <style lang="scss" module>
-.message {
-	display: block;
-	text-decoration: none !important;
-	margin-bottom: var(--margin);
-
-	* {
-		pointer-events: none;
-		user-select: none;
-	}
-
-	&:hover {
-		.avatar {
-			filter: saturate(200%);
-		}
-	}
-
-	&:after {
-		content: "";
-		display: block;
-		clear: both;
-	}
-
-	> div {
-		padding: 25px 30px;
-
-		&:after {
-			content: "";
-			display: block;
-			clear: both;
-		}
-
-		> header {
-			display: flex;
-			align-items: center;
-			margin-bottom: 2px;
-			white-space: nowrap;
-			overflow: hidden;
-		}
-	}
-
-	&.isRead {
-		background: var(--chatReadBg);
-	}
-}
-
-.indicator {
-	position: absolute;
-	top: 41px;
-	left: 12px;
-	color: var(--indicator);
-	font-size: 9px;
-}
-
-.name {
-	margin: 0;
-	padding: 0;
-	font-weight: bold;
-	transition: all 0.1s ease;
-}
-
-.username {
-	margin: 0 8px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.time {
-	margin: 0 0 0 auto;
-	font-size: .85em;
-}
-
-.avatar {
-	float: left;
-	width: 42px;
-	height: 42px;
-	margin: 0 16px 0 0;
-	border-radius: 8px;
-	transition: all 0.1s ease;
-}
-
-.text {
-	display: block;
-	margin: 0 0 0 0;
-	padding: 0;
-	overflow: hidden;
-	overflow-wrap: break-word;
-	line-height: 1.35;
-	max-height: 4.05em;
-	color: var(--faceText);
-}
-
-.me {
-	opacity: 0.7;
-}
-
-.image {
-	display: block;
-	max-width: 100%;
-	max-height: 512px;
-}
-
-@container (max-width: 500px) {
-	.message {
-		> div {
-			padding: 20px 30px;
-			font-size: .9em;
-		}
-	}
-
-	.indicator {
-		top: 36px;
-		left: 12px;
-	}
-
-	.avatar {
-		margin: 0 12px 0 0;
-	}
-}
 </style>

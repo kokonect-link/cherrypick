@@ -194,6 +194,7 @@ async function close(skip: boolean) {
 		const { canceled } = await os.confirm({
 			type: 'warning',
 			text: i18n.ts._initialAccountSetting.skipAreYouSure,
+      caption: i18n.ts._initialAccountSetting.skipAreYouSureDescription,
 		});
 		if (canceled) return;
 	}
