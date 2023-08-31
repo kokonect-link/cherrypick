@@ -285,7 +285,7 @@ function openProfile() {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			border-radius: 999px;
+			border-radius: 15px;
 			background: var(--accentedBg);
 		}
 	}
