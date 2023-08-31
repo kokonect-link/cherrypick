@@ -129,6 +129,10 @@ async function startGroup() {
 	router.push(`/my/messaging/group/${group.id}`);
 }
 
+async function readAllMessagingMessages() {
+	await os.apiWithDialog('i/read-all-messaging-messages');
+}
+
 onMounted(() => {
 	connection = markRaw(useStream().useChannel('messagingIndex'));
 
@@ -140,7 +144,7 @@ onMounted(() => {
 			const _messages = userMessages.concat(groupMessages);
 			_messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 			messages = _messages;
-      fetching = false;
+			fetching = false;
 		});
 	});
 
@@ -157,6 +161,10 @@ const headerActions = $computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.create,
 	handler: start,
+}, {
+	icon: 'ti ti-check',
+	text: i18n.ts.markAllAsRead,
+	handler: readAllMessagingMessages,
 }]);
 
 const headerTabs = $computed(() => [{
