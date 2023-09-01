@@ -16,7 +16,7 @@ import pkceChallenge from 'pkce-challenge';
 import { JSDOM } from 'jsdom';
 import Fastify, { type FastifyReply, type FastifyInstance } from 'fastify';
 import { api, port, signup, startServer } from '../utils.js';
-import type * as misskey from 'misskey-js';
+import type * as misskey from 'cherrypick-js';
 import type { INestApplicationContext } from '@nestjs/common';
 
 const host = `http://127.0.0.1:${port}`;
