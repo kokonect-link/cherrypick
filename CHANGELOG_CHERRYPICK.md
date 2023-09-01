@@ -45,7 +45,7 @@
 - 새로운 신고가 있는 경우, 네비게이션 바의 제어판 아이콘과 제어판 페이지의 신고 섹션에 점을 표시
 - 스크롤 시 요소 표시 기능을 Friendly 이외의 UI에도 대응
 - 기본 다크 테마를 'Rosé Pine Moon'으로 변경
-- Spec: 사용자 정의 이모티콘 라이센스 항목을 여러 줄 텍스트로 (MisskeyIO/misskey#130)
+- Spec: 사용자 정의 이모티콘 라이센스를 여러 항목으로 추가할 수 있도록 (MisskeyIO/misskey#130)
 - Enhance: '제어판 - 신고' 페이지의 버튼 가독성 향상
 - Enhance: '모달에 흐림 효과 사용' 옵션이 비활성화된 경우, 이미지를 탭하여 표시할 때 표시되는 배경을 어둡게 조정
 - Enhance: 대화 페이지 디자인 개선
@@ -67,7 +67,7 @@
 ### Server
 - Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가
 - Graceful Shutdown (MisskeyIO/misskey#156)
-- perf : 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
+- Perf : 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
 - Enhance : 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
 
