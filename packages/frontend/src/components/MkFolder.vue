@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="rootEl" :class="$style.root" role="group" :aria-expanded="opened">
 	<MkStickyContainer>
 		<template #header>
-			<div :class="[$style.header, { [$style.opened]: opened }]" class="_button" role="button" data-cy-folder-header @click="toggle">
+			<div :class="[$style.header, { [$style.opened]: opened, [$style.inactive]: inactive }]" class="_button" role="button" data-cy-folder-header @click="toggle">
 				<div :class="$style.headerIcon"><slot name="icon"></slot></div>
 				<div :class="$style.headerText">
 					<div>
@@ -19,6 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<div :class="$style.headerRight">
 					<span :class="$style.headerRightText"><slot name="suffix"></slot></span>
+					<i v-if="inactive" class="ti ti-archive icon"></i>
 					<i v-if="opened" class="ti ti-chevron-up icon"></i>
 					<i v-else class="ti ti-chevron-down icon"></i>
 				</div>
@@ -56,9 +57,11 @@ import { defaultStore } from '@/store';
 const props = withDefaults(defineProps<{
 	defaultOpen?: boolean;
 	maxHeight?: number | null;
+  inactive?: boolean;
 }>(), {
 	defaultOpen: false,
 	maxHeight: null,
+	inactive: false,
 });
 
 const getBgColor = (el: HTMLElement) => {
@@ -155,6 +158,10 @@ onMounted(() => {
 	&.opened {
 		border-radius: 6px 6px 0 0;
 	}
+
+  &.inactive {
+    opacity: 0.7;
+  }
 }
 
 .headerUpper {
