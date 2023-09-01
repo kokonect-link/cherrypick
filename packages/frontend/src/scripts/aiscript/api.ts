@@ -13,7 +13,6 @@ import { customEmojis } from '@/custom-emojis';
 import { lang } from '@/config';
 
 export function createAiScriptEnv(opts) {
-	let apiRequests = 0;
 	const table = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 	const randomString = Array.from(crypto.getRandomValues(new Uint32Array(32)))
 		.map(v => table[v % table.length])
@@ -46,8 +45,6 @@ export function createAiScriptEnv(opts) {
 				// バグがあればundefinedもあり得るため念のため
 				if (typeof token.value !== 'string') throw new Error('invalid token');
 			}
-			apiRequests++;
-			if (apiRequests > 16) return values.NULL;
 			const res = await os.api(ep.value, utils.valToJs(param), token ? token.value : miLocalStorage.getItem(`aiscriptSecure:${opts.storageKey}:${randomString}:accessToken`) ?? (opts.token ?? null));
 			return utils.jsToVal(res);
 		}),
