@@ -82,7 +82,7 @@ process.on('exit', code => {
 });
 
 process.on('warning', warning => {
-	if ((warning as never)['code'] !== 'MISSKEY_SHUTDOWN') return;
+	if ((warning as never)['code'] !== 'CHERRYPICK_SHUTDOWN') return;
 	logger.warn(chalk.yellow(`${warning.message}: ${(warning as never)['detail']}`));
 	for (const id in cluster.workers) cluster.workers[id]?.process.kill('SIGTERM');
 	process.exit();

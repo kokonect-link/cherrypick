@@ -119,8 +119,8 @@ export class GlobalModule implements OnApplicationShutdown {
 
 	async onApplicationShutdown(signal: string): Promise<void> {
 		await this.dispose();
-		process.emitWarning('Misskey is shutting down', {
-			code: 'MISSKEY_SHUTDOWN',
+		process.emitWarning('CherryPick is shutting down', {
+			code: 'CHERRYPICK_SHUTDOWN',
 			detail: `Application received ${signal} signal`,
 		});
 	}
