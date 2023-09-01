@@ -116,6 +116,10 @@ onMounted(() => {
 	const myBg = computedStyle.getPropertyValue('--panel');
 	bgSame = parentBg === myBg;
 });
+
+defineExpose({
+	toggle,
+});
 </script>
 
 <style lang="scss" module>

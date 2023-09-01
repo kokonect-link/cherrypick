@@ -330,6 +330,14 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			doNotSendNotificationEmailsForAbuseReport: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			emailToReceiveAbuseReport: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			policies: {
 				type: 'object',
 				optional: false, nullable: false,
@@ -456,6 +464,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableChartsForFederatedInstances: instance.enableChartsForFederatedInstances,
 				enableServerMachineStats: instance.enableServerMachineStats,
 				enableIdenticonGeneration: instance.enableIdenticonGeneration,
+				doNotSendNotificationEmailsForAbuseReport: instance.doNotSendNotificationEmailsForAbuseReport,
+				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 			};
 		});

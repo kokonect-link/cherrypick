@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { MiAbuseReportResolver } from '@/models/entities/AbuseReportResolver.js';
 import { MiAbuseUserReport } from '@/models/entities/AbuseUserReport.js';
 import { MiAccessToken } from '@/models/entities/AccessToken.js';
 import { MiAd } from '@/models/entities/Ad.js';
@@ -77,6 +78,7 @@ import { MiUserListFavorite } from './entities/UserListFavorite.js';
 import type { Repository } from 'typeorm';
 
 export {
+	MiAbuseReportResolver,
 	MiAbuseUserReport,
 	MiAccessToken,
 	MiAd,
@@ -150,6 +152,7 @@ export {
 	MiUserMemo,
 };
 
+export type AbuseReportResolversRepository = Repository<MiAbuseReportResolver>;
 export type AbuseUserReportsRepository = Repository<MiAbuseUserReport>;
 export type AccessTokensRepository = Repository<MiAccessToken>;
 export type AdsRepository = Repository<MiAd>;

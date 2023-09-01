@@ -129,6 +129,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</template>
 					</FormSection>
+
+					<FormSection>
+						<template #label>{{ i18n.ts.abuseReports }}</template>
+
+						<div class="_gaps_m">
+							<MkInput v-model="emailToReceiveAbuseReport" type="email">
+								<template #prefix><i class="ti ti-mail"></i></template>
+								<template #label>{{ i18n.ts.emailToReceiveAbuseReport }}</template>
+								<template #caption>{{ i18n.ts.emailToReceiveAbuseReportCaption }}</template>
+							</MkInput>
+						</div>
+					</FormSection>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
@@ -163,6 +175,7 @@ let name: string | null = $ref(null);
 let description: string | null = $ref(null);
 let maintainerName: string | null = $ref(null);
 let maintainerEmail: string | null = $ref(null);
+let emailToReceiveAbuseReport: string | null = $ref(null);
 let pinnedUsers: string = $ref('');
 let cacheRemoteFiles: boolean = $ref(false);
 let cacheRemoteSensitiveFiles: boolean = $ref(false);
@@ -184,6 +197,7 @@ async function init(): Promise<void> {
 	description = meta.description;
 	maintainerName = meta.maintainerName;
 	maintainerEmail = meta.maintainerEmail;
+	emailToReceiveAbuseReport = meta.emailToReceiveAbuseReport;
 	pinnedUsers = meta.pinnedUsers.join('\n');
 	cacheRemoteFiles = meta.cacheRemoteFiles;
 	cacheRemoteSensitiveFiles = meta.cacheRemoteSensitiveFiles;
@@ -206,6 +220,8 @@ function save(): void {
 		description,
 		maintainerName,
 		maintainerEmail,
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		emailToReceiveAbuseReport: emailToReceiveAbuseReport || null,
 		pinnedUsers: pinnedUsers.split('\n'),
 		cacheRemoteFiles,
 		cacheRemoteSensitiveFiles,

@@ -1165,6 +1165,9 @@ export interface Locale {
     "doYouAgree": string;
     "beSureToReadThisAsItIsImportant": string;
     "iHaveReadXCarefullyAndAgree": string;
+    "doNotSendNotificationEmailsForAbuseReport": string;
+    "emailToReceiveAbuseReport": string;
+    "emailToReceiveAbuseReportCaption": string;
     "dialog": string;
     "icon": string;
     "forYou": string;
@@ -2463,6 +2466,25 @@ export interface Locale {
             "reaction": string;
             "mention": string;
         };
+    };
+    "_abuse": {
+        "_resolver": {
+            "1hour": string;
+            "12hours": string;
+            "1day": string;
+            "1week": string;
+            "1month": string;
+            "3months": string;
+            "6months": string;
+            "1year": string;
+            "indefinitely": string;
+            "expiresAt": string;
+            "targetUserPattern": string;
+            "reporterPattern": string;
+            "reportContentPattern": string;
+        };
+        "list": string;
+        "resolver": string;
     };
 }
 declare const locales: {

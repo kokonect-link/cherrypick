@@ -5,7 +5,7 @@
 
 import { Module } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import { MiAbuseUserReport, MiAccessToken, MiAd, MiAnnouncement, MiAnnouncementRead, MiAntenna, MiApp, MiAttestationChallenge, MiAuthSession, MiBlocking, MiChannel, MiChannelFavorite, MiChannelFollowing, MiClip, MiClipFavorite, MiClipNote, MiDriveFile, MiDriveFolder, MiEmoji, MiEvent, MiFlash, MiFlashLike, MiFollowRequest, MiFollowing, MiGalleryLike, MiGalleryPost, MiHashtag, MiInstance, MiMessagingMessage, MiMeta, MiModerationLog, MiMutedNote, MiMuting, MiNote, MiNoteFavorite, MiNoteReaction, MiNoteThreadMuting, MiNoteUnread, MiPage, MiPageLike, MiPasswordResetRequest, MiPoll, MiPollVote, MiPromoNote, MiPromoRead, MiRegistrationTicket, MiRegistryItem, MiRelay, MiRenoteMuting, MiRetentionAggregation, MiRole, MiRoleAssignment, MiSignin, MiSwSubscription, MiUsedUsername, MiUser, MiUserGroup, MiUserGroupJoining, MiUserGroupInvitation, MiUserIp, MiUserKeypair, MiUserList, MiUserListFavorite, MiUserListJoining, MiUserMemo, MiUserNotePining, MiUserPending, MiUserProfile, MiUserPublickey, MiUserSecurityKey, MiWebhook } from './index.js';
+import { MiAbuseReportResolver, MiAbuseUserReport, MiAccessToken, MiAd, MiAnnouncement, MiAnnouncementRead, MiAntenna, MiApp, MiAttestationChallenge, MiAuthSession, MiBlocking, MiChannel, MiChannelFavorite, MiChannelFollowing, MiClip, MiClipFavorite, MiClipNote, MiDriveFile, MiDriveFolder, MiEmoji, MiEvent, MiFlash, MiFlashLike, MiFollowRequest, MiFollowing, MiGalleryLike, MiGalleryPost, MiHashtag, MiInstance, MiMessagingMessage, MiMeta, MiModerationLog, MiMutedNote, MiMuting, MiNote, MiNoteFavorite, MiNoteReaction, MiNoteThreadMuting, MiNoteUnread, MiPage, MiPageLike, MiPasswordResetRequest, MiPoll, MiPollVote, MiPromoNote, MiPromoRead, MiRegistrationTicket, MiRegistryItem, MiRelay, MiRenoteMuting, MiRetentionAggregation, MiRole, MiRoleAssignment, MiSignin, MiSwSubscription, MiUsedUsername, MiUser, MiUserGroup, MiUserGroupJoining, MiUserGroupInvitation, MiUserIp, MiUserKeypair, MiUserList, MiUserListFavorite, MiUserListJoining, MiUserMemo, MiUserNotePining, MiUserPending, MiUserProfile, MiUserPublickey, MiUserSecurityKey, MiWebhook } from './index.js';
 import type { DataSource } from 'typeorm';
 import type { Provider } from '@nestjs/common';
 
@@ -435,6 +435,12 @@ const $userMemosRepository: Provider = {
 	inject: [DI.db],
 };
 
+const $abuseReportResolversRepository: Provider = {
+	provide: DI.abuseReportResolversRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiAbuseReportResolver),
+	inject: [DI.db],
+};
+
 @Module({
 	imports: [
 	],
@@ -510,6 +516,7 @@ const $userMemosRepository: Provider = {
 		$flashsRepository,
 		$flashLikesRepository,
 		$userMemosRepository,
+		$abuseReportResolversRepository,
 	],
 	exports: [
 		$usersRepository,
@@ -583,6 +590,7 @@ const $userMemosRepository: Provider = {
 		$flashsRepository,
 		$flashLikesRepository,
 		$userMemosRepository,
+		$abuseReportResolversRepository,
 	],
 })
 export class RepositoryModule {}

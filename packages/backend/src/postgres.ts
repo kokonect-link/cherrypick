@@ -11,6 +11,7 @@ import { DataSource, Logger } from 'typeorm';
 import * as highlight from 'cli-highlight';
 import { entities as charts } from '@/core/chart/entities.js';
 
+import { MiAbuseReportResolver } from '@/models/entities/AbuseReportResolver.js';
 import { MiAbuseUserReport } from '@/models/entities/AbuseUserReport.js';
 import { MiAccessToken } from '@/models/entities/AccessToken.js';
 import { MiAd } from '@/models/entities/Ad.js';
@@ -131,6 +132,7 @@ class MyCustomLogger implements Logger {
 }
 
 export const entities = [
+	MiAbuseReportResolver,
 	MiAnnouncement,
 	MiAnnouncementRead,
 	MiMeta,

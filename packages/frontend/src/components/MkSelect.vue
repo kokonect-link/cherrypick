@@ -65,7 +65,7 @@ const opening = ref(false);
 const changed = ref(false);
 const invalid = ref(false);
 const filled = computed(() => v.value !== '' && v.value != null);
-const inputEl = ref(null);
+const inputEl = ref<HTMLSelectElement | null>(null);
 const prefixEl = ref(null);
 const suffixEl = ref(null);
 const container = ref(null);
@@ -124,6 +124,9 @@ onMounted(() => {
 });
 
 function show(ev: MouseEvent) {
+	if (inputEl.value && inputEl.value.hasAttribute('disabled')) {
+		return;
+	}
 	focused.value = true;
 	opening.value = true;
 
