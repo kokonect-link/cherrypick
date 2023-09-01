@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="rootEl" :class="$style.root" role="group" :aria-expanded="opened">
 	<MkStickyContainer>
 		<template #header>
-			<div :class="[$style.header, { [$style.opened]: opened, [$style.inactive]: inactive }]" class="_button" role="button" data-cy-folder-header @click="toggle">
+			<div :class="[$style.header, { [$style.opened]: opened, [$style.inactive]: inactive || isArchived }]" class="_button" role="button" data-cy-folder-header @click="toggle">
 				<div :class="$style.headerIcon"><slot name="icon"></slot></div>
 				<div :class="$style.headerText">
 					<div>
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<div :class="$style.headerRight">
 					<span :class="$style.headerRightText"><slot name="suffix"></slot></span>
-					<i v-if="inactive" class="ti ti-archive icon"></i>
+					<i v-if="isArchived" class="ti ti-archive icon" style="margin-right: 0.5em;"></i>
 					<i v-if="opened" class="ti ti-chevron-up icon"></i>
 					<i v-else class="ti ti-chevron-down icon"></i>
 				</div>
@@ -58,10 +58,12 @@ const props = withDefaults(defineProps<{
 	defaultOpen?: boolean;
 	maxHeight?: number | null;
   inactive?: boolean;
+	isArchived? :boolean;
 }>(), {
 	defaultOpen: false,
 	maxHeight: null,
 	inactive: false,
+	isArchived: false,
 });
 
 const getBgColor = (el: HTMLElement) => {
@@ -164,7 +166,7 @@ defineExpose({
 	}
 
   &.inactive {
-    opacity: 0.7;
+    opacity: 0.6;
   }
 }
 

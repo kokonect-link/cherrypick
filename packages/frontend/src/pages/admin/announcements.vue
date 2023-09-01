@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps">
 			<MkInfo v-if="announcements.length > 5" warn>{{ i18n.ts._announcement.tooManyActiveAnnouncementDescription }}</MkInfo>
 
-			<MkFolder v-for="announcement in announcements" :key="announcement.id ?? announcement._id" :defaultOpen="announcement.id == null" :inactive="announcement.id && !announcement.isActive">
+			<MkFolder v-for="announcement in announcements" :key="announcement.id ?? announcement._id" :defaultOpen="announcement.id == null" :isArchived="announcement.id && !announcement.isActive">
 				<template #label>{{ announcement.title }}</template>
 				<template #icon>
 					<i v-if="announcement.icon === 'info'" class="ti ti-info-circle"></i>
