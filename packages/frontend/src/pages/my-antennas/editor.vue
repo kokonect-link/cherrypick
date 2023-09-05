@@ -17,8 +17,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="all">{{ i18n.ts._antennaSources.all }}</option>
 					<!--<option value="home">{{ i18n.ts._antennaSources.homeTimeline }}</option>-->
 					<option value="users">{{ i18n.ts._antennaSources.users }}</option>
-					<!--<option value="list">{{ i18n.ts._antennaSources.userList }}</option>-->
-					<!--<option value="group">{{ i18n.ts._antennaSources.userGroup }}</option>-->
+					<option value="list">{{ i18n.ts._antennaSources.userList }}</option>
+					<option value="group">{{ i18n.ts._antennaSources.userGroup }}</option>
 				</MkSelect>
 				<MkSelect v-if="src === 'list'" v-model="userListId">
 					<template #label>{{ i18n.ts.userList }}</template>
