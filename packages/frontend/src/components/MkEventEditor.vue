@@ -118,7 +118,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import { Ref, ref, watch } from 'vue';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
@@ -128,12 +128,12 @@ import { i18n } from '@/i18n';
 import date from '@/filters/date';
 
 const props = defineProps<{
-	modelValue: misskey.entities.Note['event']
+	modelValue: Misskey.entities.Note['event']
 }>();
 
 const emit = defineEmits<{
 	(ev: 'update:modelValue', v: {
-		model: misskey.entities.Note['event']
+		model: Misskey.entities.Note['event']
 	})
 }>();
 
@@ -158,7 +158,7 @@ const availabilityStart = ref(props.modelValue?.metadata.offers?.availabilitySta
 const availabilityEnd = ref(props.modelValue?.metadata.offers?.availabilityEnds ?? null);
 const keywords = ref(props.modelValue?.metadata.keywords ?? null);
 
-function get(): misskey.entities.Note['event'] {
+function get(): Misskey.entities.Note['event'] {
 	const calcAt = (date: Ref<string>, time: Ref<string>): number => (new Date(`${date.value} ${time.value}`)).getTime();
 
 	const start = calcAt(startDate, startTime);

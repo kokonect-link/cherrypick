@@ -3,22 +3,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as misskey from 'cherrypick-js';
-import * as Acct from 'cherrypick-js/built/acct';
+import * as Misskey from 'cherrypick-js';
 import { url } from '@/config';
 import { defaultStore } from '@/store';
 
-export const acct = (user: misskey.Acct) => {
-	return Acct.toString(user);
+export const acct = (user: Misskey.Acct) => {
+	return Misskey.acct.toString(user);
 };
 
-export const userName = (user: misskey.entities.User) => {
+export const userName = (user: Misskey.entities.User) => {
 	if (!defaultStore.state.nicknameEnabled) {
 		return user.name || user.username;
 	}
 	return defaultStore.reactiveState.nicknameMap.value[user.id] || user.name || user.username;
 };
 
-export const userPage = (user: misskey.Acct, path?, absolute = false) => {
+export const userPage = (user: Misskey.Acct, path?, absolute = false) => {
 	return `${absolute ? url : ''}/@${acct(user)}${(path ? `/${path}` : '')}`;
 };

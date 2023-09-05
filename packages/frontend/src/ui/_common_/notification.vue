@@ -11,12 +11,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import XNotification from '@/components/MkNotification.vue';
 import { defaultStore } from '@/store';
 
 defineProps<{
-	notification: misskey.entities.Notification;
+	notification: Misskey.entities.Notification;
 }>();
 </script>
 

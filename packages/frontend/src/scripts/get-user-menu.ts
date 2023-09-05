@@ -5,7 +5,7 @@
 
 import { toUnicode } from 'punycode';
 import { defineAsyncComponent, ref, watch } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import { i18n } from '@/i18n';
 import copyToClipboard from '@/scripts/copy-to-clipboard';
 import { host, url } from '@/config';
@@ -18,7 +18,7 @@ import { antennasCache, rolesCache, userListsCache } from '@/cache';
 import { editNickname } from '@/scripts/edit-nickname';
 import { eventBus } from '@/scripts/cherrypick/eventBus';
 
-export function getUserMenu(user: misskey.entities.UserDetailed, router: Router = mainRouter) {
+export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
 
 	const cleanups = [] as (() => void)[];

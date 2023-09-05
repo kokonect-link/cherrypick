@@ -4,7 +4,7 @@
  */
 
 import { defineAsyncComponent, Ref } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import { claimAchievement } from './achievements';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
@@ -19,9 +19,9 @@ import { clipsCache } from '@/cache';
 import { MenuItem } from '@/types/menu';
 
 export async function getNoteClipMenu(props: {
-	note: misskey.entities.Note;
+	note: Misskey.entities.Note;
 	isDeleted: Ref<boolean>;
-	currentClip?: misskey.entities.Clip;
+	currentClip?: Misskey.entities.Clip;
 }) {
 	const isRenote = (
 		props.note.renote != null &&
@@ -30,7 +30,7 @@ export async function getNoteClipMenu(props: {
 		props.note.poll == null
 	);
 
-	const appearNote = isRenote ? props.note.renote as misskey.entities.Note : props.note;
+	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
 
 	const clips = await clipsCache.fetch(() => os.api('clips/list'));
 	return [...clips.map(clip => ({
@@ -92,14 +92,14 @@ export async function getNoteClipMenu(props: {
 	}];
 }
 
-export function getAbuseNoteMenu(note: misskey.entities.Note, text: string): MenuItem {
+export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): MenuItem {
 	return {
 		icon: 'ti ti-exclamation-circle',
 		text,
 		action: (): void => {
 			const u = note.url ?? note.uri ?? `${url}/notes/${note.id}`;
-            const username = '@' + note.user.username;
-            const host = note.user.host ? '@' + note.user.host : '';
+			const username = '@' + note.user.username;
+			const host = note.user.host ? '@' + note.user.host : '';
 			os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 				user: note.user,
 				initialComment: `Note: ${u}\nUser: ${username + host}\n-----\n`,
@@ -109,12 +109,12 @@ export function getAbuseNoteMenu(note: misskey.entities.Note, text: string): Men
 }
 
 export function getNoteMenu(props: {
-	note: misskey.entities.Note;
+	note: Misskey.entities.Note;
 	menuButton: Ref<HTMLElement>;
 	translation: Ref<any>;
 	translating: Ref<boolean>;
 	isDeleted: Ref<boolean>;
-	currentClip?: misskey.entities.Clip;
+	currentClip?: Misskey.entities.Clip;
 }) {
 	const isRenote = (
 		props.note.renote != null &&
@@ -123,7 +123,7 @@ export function getNoteMenu(props: {
 		props.note.poll == null
 	);
 
-	const appearNote = isRenote ? props.note.renote as misskey.entities.Note : props.note;
+	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
 
 	const cleanups = [] as (() => void)[];
 

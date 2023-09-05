@@ -25,8 +25,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef } from 'vue';
-import * as misskey from 'cherrypick-js';
+import { onMounted, shallowRef } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -34,7 +34,7 @@ import { i18n } from '@/i18n';
 import { $i, updateAccount } from '@/account';
 
 const props = withDefaults(defineProps<{
-	announcement: misskey.entities.Announcement;
+	announcement: Misskey.entities.Announcement;
 }>(), {
 });
 

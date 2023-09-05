@@ -56,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch } from 'vue';
-import * as Acct from 'cherrypick-js/built/acct';
+import * as Misskey from 'cherrypick-js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -149,7 +149,7 @@ async function deleteAntenna() {
 function addUser() {
 	os.selectUser().then(user => {
 		users = users.trim();
-		users += '\n@' + Acct.toString(user as any);
+		users += '\n@' + Misskey.acct.toString(user as any);
 		users = users.trim();
 	});
 }

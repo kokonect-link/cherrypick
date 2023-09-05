@@ -28,8 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, watch } from 'vue';
-import * as Acct from 'cherrypick-js/built/acct';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import { acct as getAcct } from '@/filters/user';
 import * as os from '@/os';
 import { definePageMetadata } from '@/scripts/page-metadata';
@@ -58,13 +57,13 @@ const props = withDefaults(defineProps<{
 });
 
 let tab = $ref(props.page);
-let user = $ref<null | misskey.entities.UserDetailed>(null);
+let user = $ref<null | Misskey.entities.UserDetailed>(null);
 let error = $ref(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
 	user = null;
-	os.api('users/show', Acct.parse(props.acct)).then(u => {
+	os.api('users/show', Misskey.acct.parse(props.acct)).then(u => {
 		user = u;
 	}).catch(err => {
 		error = err;
@@ -76,9 +75,9 @@ watch(() => props.acct, fetchUser, {
 });
 
 const headerActions = $computed(() => [{
-    icon: 'ti ti-dots',
-    text: i18n.ts.menu,
-    handler: menu,
+	icon: 'ti ti-dots',
+	text: i18n.ts.menu,
+	handler: menu,
 }]);
 
 const headerTabs = $computed(() => user ? [{
@@ -128,8 +127,8 @@ const headerTabs = $computed(() => user ? [{
 }] : []);
 
 function menu(ev) {
-  const { menu, cleanup } = getUserMenu(user, mainRouter);
-  os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
+	const { menu, cleanup } = getUserMenu(user, mainRouter);
+	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
 definePageMetadata(computed(() => user ? {

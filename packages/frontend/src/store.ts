@@ -4,6 +4,7 @@
  */
 
 import { markRaw, ref } from 'vue';
+import Misskey from 'cherrypick-js';
 import { Storage } from './pizzax';
 
 interface PostFormAction {
@@ -13,16 +14,16 @@ interface PostFormAction {
 
 interface UserAction {
 	title: string,
-	handler: (user: UserDetailed) => void;
+	handler: (user: Misskey.entities.UserDetailed) => void;
 }
 
 interface NoteAction {
 	title: string,
-	handler: (note: Note) => void;
+	handler: (note: Misskey.entities.Note) => void;
 }
 
 interface NoteViewInterruptor {
-	handler: (note: Note) => unknown;
+	handler: (note: Misskey.entities.Note) => unknown;
 }
 
 interface NotePostInterruptor {
@@ -30,7 +31,7 @@ interface NotePostInterruptor {
 }
 
 interface PageViewInterruptor {
-	handler: (page: Page) => unknown;
+	handler: (page: Misskey.entities.Page) => unknown;
 }
 
 export const postFormActions: PostFormAction[] = [];
@@ -539,7 +540,6 @@ interface Watcher {
 import { miLocalStorage } from './local-storage';
 import lightTheme from '@/themes/l-cherrypick.json5';
 import darkTheme from '@/themes/d-rosepinemoon.json5';
-import { Note, UserDetailed, Page } from 'cherrypick-js/built/entities';
 
 export class ColdDeviceStorage {
 	public static default = {

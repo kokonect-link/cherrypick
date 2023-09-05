@@ -82,11 +82,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import { i18n } from '@/i18n';
 
 const props = defineProps<{
-	note: misskey.entities.Note
+	note: Misskey.entities.Note
 }>();
 </script>
 

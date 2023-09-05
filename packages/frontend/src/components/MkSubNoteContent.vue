@@ -97,7 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, Ref, ref, shallowRef } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
@@ -129,15 +129,15 @@ const heartReactButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i.id);
 const isDeleted = ref(false);
-const currentClip = inject<Ref<misskey.entities.Clip> | null>('currentClip', null);
+const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
 const showContent = ref(false);
 const translation = ref<any>(null);
 const translating = ref(false);
 
 const props = defineProps<{
-	note: misskey.entities.Note;
-	showSubNoteFooterButton: boolean;
+	note: Misskey.entities.Note;
+  showSubNoteFooterButton: boolean;
 }>();
 
 let note = $ref(deepClone(props.note));
