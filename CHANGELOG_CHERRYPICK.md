@@ -54,6 +54,8 @@
 - Enhance: 헤더에 모든 대화를 읽음으로 표시하는 버튼 추가
 - Enhance: 공지사항에 이미지가 있는 경우 다이얼로그 알림에도 표시하도록 (MisskeyIO/misskey#157)
 - Enhance: 공지사항에서 다이얼로그 알림을 아카이브 할 때 이벤트가 발생하지 않도록・아카이브 된 공지를 알기 쉽게 (MisskeyIO/misskey#153)
+- Enhance: 데이터 절약 모드가 활성화되면 페이지의 이미지도 숨기도록 (misskey-dev/misskey#11779)
+- Enhance: 데이터 절약 모드 활성화 시 URL 미리보기 썸네일을 표시하지 않도록 (misskey-dev/misskey#11779)
 - Fix: (Friendly) 흐림 효과를 사용할 때 하단 내비게이션 바의 가독성이 매우 떨어지는 문제
 - Fix: (Friendly) 위젯 버튼에서 'UI 애니메이션 줄이기' 옵션이 적용되지 않는 문제
 - Fix: (Friendly) 스크롤을 해도 위젯 버튼이 숨겨지지 않는 문제
