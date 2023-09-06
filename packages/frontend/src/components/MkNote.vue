@@ -193,7 +193,7 @@ import { reactionPicker } from '@/scripts/reaction-picker';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
 import { $i } from '@/account';
 import { i18n } from '@/i18n';
-import { getAbuseNoteMenu, getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu';
+import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu';
 import { useNoteCapture } from '@/scripts/use-note-capture';
 import { deepClone } from '@/scripts/clone';
 import { useTooltip } from '@/scripts/use-tooltip';
@@ -516,21 +516,29 @@ async function translate(): Promise<void> {
 function showRenoteMenu(viaKeyboard = false): void {
 	if (isMyRenote) {
 		pleaseLogin();
-		os.popupMenu([{
-			text: i18n.ts.unrenote,
-			icon: 'ti ti-trash',
-			danger: true,
-			action: () => {
-				os.api('notes/delete', {
-					noteId: note.id,
-				});
-				isDeleted.value = true;
+		os.popupMenu([
+			getCopyNoteLinkMenu(note, i18n.ts.copyLinkRenote),
+			null,
+			{
+				text: i18n.ts.unrenote,
+				icon: 'ti ti-trash',
+				danger: true,
+				action: () => {
+					os.api('notes/delete', {
+						noteId: note.id,
+					});
+					isDeleted.value = true;
+				},
 			},
-		}], renoteTime.value, {
+		], renoteTime.value, {
 			viaKeyboard: viaKeyboard,
 		});
 	} else {
-		os.popupMenu([getAbuseNoteMenu(note, i18n.ts.reportAbuseRenote)], renoteTime.value, {
+		os.popupMenu([
+			getCopyNoteLinkMenu(note, i18n.ts.copyLinkRenote),
+			null,
+			getAbuseNoteMenu(note, i18n.ts.reportAbuseRenote),
+		], renoteTime.value, {
 			viaKeyboard: viaKeyboard,
 		});
 	}

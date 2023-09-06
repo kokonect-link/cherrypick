@@ -251,7 +251,7 @@ announcements: "Annonces"
 imageUrl: "URL de l’image"
 remove: "Supprimer"
 removed: "Supprimé"
-removeAreYouSure: "Êtes-vous sûr·e de vouloir supprimer「{x}」?"
+removeAreYouSure: "Êtes-vous sûr·e de vouloir supprimer « {x} » ?"
 deleteAreYouSure: "Êtes-vous sûr·e de vouloir supprimer「{x}」?"
 resetAreYouSure: "Voulez-vous réinitialiser ?"
 saved: "Enregistré"
@@ -612,7 +612,7 @@ tokenRequested: "Autoriser l'accès au compte"
 pluginTokenRequestedDescription: "Ce plugin pourra utiliser les autorisations définies ici."
 notificationType: "Type de notifications"
 edit: "Editer"
-emailServer: "Serveur mail"
+emailServer: "Serveur de messagerie"
 enableEmail: "Activer la distribution de courriel"
 emailConfigInfo: "Utilisé pour confirmer votre adresse de courriel et la réinitialisation de votre mot de passe en cas d’oubli."
 email: "E-mail "
@@ -847,7 +847,7 @@ off: "Désactivé"
 emailRequiredForSignup: "Une adresse e-mail est nécessaire pour créer un compte"
 unread: "Non lu"
 filter: "Filtre"
-controlPanel: "Panneau de contrôle"
+controlPanel: "Panneau de configuration"
 manageAccounts: "Gérer les comptes"
 makeReactionsPublic: "Rendre les réactions publiques"
 makeReactionsPublicDescription: "Ceci rendra la liste de toutes vos réactions données publique."
@@ -959,9 +959,12 @@ color: "Couleur"
 manageCustomEmojis: "Gestion des émojis personnalisés"
 preset: "Préréglage"
 selectFromPresets: "Sélectionner à partir des préréglages"
+achievements: "Accomplissements"
 thisPostMayBeAnnoying: "Cette note peut gêner d'autres personnes."
 thisPostMayBeAnnoyingCancel: "Annuler"
+thisPostMayBeAnnoyingIgnore: "Publier quand-même"
 internalServerError: "Erreur interne du serveur"
+disableFederationOk: "Désactiver"
 license: "Licence"
 video: "Vidéo"
 videos: "Vidéos"
@@ -978,14 +981,33 @@ vertical: "Vertical"
 horizontal: "Latéral"
 serverRules: "Règles du serveur"
 youFollowing: "Abonné·e"
-goToMisskey: "Retour vers Misskey"
+later: "Plus tard"
+goToMisskey: "Retour vers CherryPick"
 expirationDate: "Date d’expiration"
+usedAt: "Utilisé le"
+unused: "Non-utilisé"
+used: "Utilisé"
+expired: "Expiré"
+doYouAgree: "Êtes-vous d’accord ?"
 icon: "Avatar"
+forYou: "Pour vous"
+_announcement:
+  readConfirmTitle: "Marquer comme lu ?"
+_initialAccountSetting:
+  profileSetting: "Paramètres du profil"
+  privacySetting: "Paramètres de confidentialité"
+_accountMigration:
+  moveToLabel: "Compte vers lequel vous migrez :"
+  startMigration: "Migrer"
+  movedTo: "Compte vers lequel vous migrez :"
 _achievements:
   _types:
     _notes1:
+      title: "Je viens tout juste de configurer mon msky"
       description: "Publiez votre première note"
       flavor: "Passez un bon moment avec CherryPick !"
+    _notes10:
+      title: "Quelques notes"
     _notes100:
       title: "Beaucoup de notes"
     _notes100000:
@@ -1000,16 +1022,23 @@ _achievements:
       title: "Débutant Ⅲ"
       description: "Se connecter pour un total de 15 jours"
     _login30:
+      title: "CherryPicknaute I"
       description: "Se connecter pour un total de 30 jours"
     _login60:
+      title: "CherryPicknaute II"
       description: "Se connecter pour un total de 60 jours"
     _login100:
+      title: "CherryPicknaute III"
       description: "Se connecter pour un total de 100 jours"
+      flavor: "CherryPicknaute acharné·e"
     _login200:
+      title: "Régulier I"
       description: "Se connecter pour un total de 200 jours"
     _login300:
+      title: "Régulier II"
       description: "Se connecter pour un total de 300 jours"
     _login400:
+      title: "Régulier III"
       description: "Se connecter pour un total de 400 jours"
     _login500:
       description: "Se connecter pour un total de 500 jours"
@@ -1023,6 +1052,8 @@ _achievements:
       description: "Se connecter pour un total de 900 jours"
     _login1000:
       flavor: "Merci d'utiliser CherryPick !"
+    _profileFilled:
+      description: "Configuration de votre profil"
     _markedAsCat:
       title: "Je suis un chat"
       flavor: "Je n'ai pas encore de nom"
@@ -1032,6 +1063,16 @@ _achievements:
       title: "Abonnez-moi !"
     _iLoveMisskey:
       title: "J’adore CherryPick"
+      description: "Publication « J’❤ #CherryPick »"
+    _foundTreasure:
+      title: "Chasse au trésor"
+      description: "Vous avez trouvé le trésor caché"
+    _postedAtLateNight:
+      flavor: "C’est l’heure d’aller au lit."
+    _postedAt0min0sec:
+      title: "Horloge parlante"
+      description: "Publication d’une note à 00:00"
+      flavor: "Tic tac, tic tac, tic tac, ding !"
     _viewInstanceChart:
       title: "Analyste"
     _loggedInOnBirthday:
@@ -1041,7 +1082,11 @@ _achievements:
     _cookieClicked:
       flavor: "Attendez une minute, vous êtes sur le mauvais site web ?"
 _role:
+  name: "Nom du rôle"
+  description: "Description du rôle"
+  permission: "Rôle et autorisations"
   assignTarget: "Attribuer"
+  condition: "Condition"
   priority: "Priorité"
   _priority:
     low: "Basse"
@@ -1133,6 +1178,8 @@ _aboutMisskey:
   donate: "Soutenir Misskey"
   morePatrons: "Nous apprécions vraiment le soutien de nombreuses autres personnes non mentionnées ici. Merci à toutes et à tous ! 🥰"
   patrons: "Contributeurs"
+_displayOfSensitiveMedia:
+  force: "Masquer tous les médias"
 _mfm:
   cheatSheet: "Antisèche MFM"
   intro: "MFM est un langage Markdown spécifique utilisable ici et là dans Misskey. Vous pouvez vérifier ici les structures utilisables avec MFM."
@@ -1217,6 +1264,8 @@ _channel:
   following: "Abonné·e"
   usersCount: "{n} Participant·e·s"
   notesCount: "{n} Notes"
+  nameAndDescription: "Nom et description"
+  nameOnly: "Nom seulement"
 _menuDisplay:
   sideFull: "Latéral"
   sideIcon: "Latéral (icônes)"
@@ -1334,16 +1383,24 @@ _time:
   minute: "min"
   hour: "h"
   day: "j"
+_timelineTutorial:
+  title: "Comment utiliser CherryPick"
+  step3_1: "Avez-vous publié votre première note ?"
 _2fa:
   alreadyRegistered: "Configuration déjà achevée."
   step1: "Tout d'abord, installez une application d'authentification, telle que {a} ou {b}, sur votre appareil."
   step2: "Ensuite, scannez le code QR affiché sur l’écran."
-  step2Url: "Vous pouvez également saisir cette URL si vous utilisez un programme de bureau :"
+  step3Title: "Veuillez saisir le code d’authentification"
   step3: "Entrez le jeton affiché sur votre application pour compléter la configuration."
+  setupCompleted: "Configuration terminée avec succès !"
   step4: "À partir de maintenant, ce même jeton vous sera demandé à chacune de vos connexions."
+  securityKeyNotSupported: "Votre navigateur ne prend pas en charge les clés de sécurité."
   securityKeyInfo: "Vous pouvez configurer l'authentification WebAuthN pour sécuriser davantage le processus de connexion grâce à une clé de sécurité matérielle qui prend en charge FIDO2, ou bien en configurant l'authentification par empreinte digitale ou par code PIN sur votre appareil."
+  securityKeyName: "Nom de la clé"
   removeKeyConfirm: "Voulez-vous supprimer {name} ?"
+  renewTOTPOk: "Reconfigurer"
   renewTOTPCancel: "Pas maintenant"
+  backupCodes: "Codes de Secours"
 _permissions:
   "read:account": "Afficher les informations du compte"
   "write:account": "Mettre à jour les informations de votre compte"
@@ -1562,7 +1619,7 @@ _pages:
   fontSerif: "Serif"
   fontSansSerif: "Sans Serif"
   eyeCatchingImageSet: "Définir une image attractive"
-  eyeCatchingImageRemove: "Supprimer l'image attractive"
+  eyeCatchingImageRemove: "Supprimer la miniature"
   chooseBlock: "Ajouter un bloc"
   selectType: "Choisir un type"
   contentBlocks: "Contenu"
@@ -1598,6 +1655,7 @@ _notification:
   pollEnded: "Les résultats du sondage sont disponibles"
   unreadAntennaNote: "Antenne {name}"
   emptyPushNotificationMessage: "Les notifications push ont été mises à jour"
+  achievementEarned: "Accomplissement"
   _types:
     all: "Toutes"
     follow: "Nouvel·le abonné·e"
@@ -1610,6 +1668,7 @@ _notification:
     receiveFollowRequest: "Demande d'abonnement reçue"
     followRequestAccepted: "Demande d'abonnement acceptée"
     groupInvited: "Invitation à un groupe"
+    achievementEarned: "Accomplissement"
     app: "Notifications provenant des apps"
   _actions:
     followBack: "Suivre"
@@ -1631,6 +1690,7 @@ _deck:
   deleteProfile: "Supprimer le profil"
   introduction: "Créez l’interface parfaite qui vous sied en arrangeant librement les colonnes !"
   introduction2: "Cliquez sur le + à droite de l'écran pour ajouter de nouvelles colonnes quand vous le souhaitez."
+  flexible: "Ajuster automatiquement la largeur"
   _columns:
     main: "Principale"
     widgets: "Widgets"
