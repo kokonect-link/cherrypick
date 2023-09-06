@@ -62,7 +62,7 @@ defineProps<{
 				width: 100%;
 				box-sizing: border-box;
 				padding: 12px 16px 12px 8px;
-				border-radius: 9px;
+				border-radius: 15px;
 				font-size: 0.9em;
         margin-bottom: 0.3rem;
 
