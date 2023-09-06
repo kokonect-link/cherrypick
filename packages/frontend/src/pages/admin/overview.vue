@@ -92,7 +92,7 @@ import { useStream } from '@/stream';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import XCpuMemoryNetCompact from "@/widgets/server-metric/cpu-mem-net-pie.vue";
+import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 
 const rootEl = $shallowRef<HTMLElement>();
 let serverInfo: any = $ref(null);
