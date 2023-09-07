@@ -14,9 +14,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XStats/>
 				</MkFoldableSection>
 
-				<MkFoldableSection class="item">
+				<MkFoldableSection v-if="meta" class="item">
 					<template #header>Server Metric</template>
-					<XCpuMemoryNetCompact :connection="connection" :meta="meta"/>
+					<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
+					<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
 				</MkFoldableSection>
 
 				<MkFoldableSection class="item">
@@ -115,10 +116,6 @@ const filesPagination = {
 
 const meta = ref(null);
 
-os.api('server-info', {}).then(res => {
-	meta.value = res;
-});
-
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);
 }
@@ -178,6 +175,10 @@ onMounted(async () => {
 		activeInstances = res;
 	});
 
+	os.api('admin/meta', {}).then(res => {
+		meta.value = res;
+	});
+
 	nextTick(() => {
 		queueStatsConnection.send('requestLog', {
 			id: Math.random().toString().substring(2, 10),
@@ -209,5 +210,12 @@ definePageMetadata({
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 	grid-gap: 16px;
+}
+
+.disabledServerMachineStats {
+  color: var(--fgTransparentWeak);
+  margin: 10px;
+  font-size: 0.9em;
+  text-align: center;
 }
 </style>

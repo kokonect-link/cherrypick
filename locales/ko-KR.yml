@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+disabledServerMachineStats: "'서버의 머신 사양을 공개하기' 설정이 꺼져 있습니다.\n서버 통계를 보려면 '제어판 - 기타'에서 '서버의 머신 사양을 공개하기' 설정을 활성화하세요."
 replayUserSetupDialog: "초기 설정 다시 보기"
 replayTutorial: "튜토리얼 다시 보기"
 nya: "냥!"

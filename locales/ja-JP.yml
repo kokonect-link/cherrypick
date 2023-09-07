@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+disabledServerMachineStats: "「サーバーのマシン情報を公開する」設定がオフになっています。\nサーバーメトリクスを表示するには、「コントロールパネル - その他」で「サーバーのマシン情報を公開する」設定を有効にしてください。"
 replayUserSetupDialog: "初期設定のリプレイ"
 replayTutorial: "チュートリアルのリプレイ"
 nya: "にゃん！"

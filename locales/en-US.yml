@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+disabledServerMachineStats: "The 'Publish server hardware stats' setting is turned off.\nTo view server metrics, please enable the 'Publish server hardware stats' setting in 'Control Panel - Other'."
 replayUserSetupDialog: "Replay initial setting"
 replayTutorial: "Replay tutorial"
 nya: "Nyan!"
