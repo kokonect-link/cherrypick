@@ -2329,3 +2329,10 @@ _abuse:
     reportContentPattern: "Patterns of Reported Contents"
   list: "List"
   resolver: "Resolver"
+_imageCompressionMode:
+  title: "Image compression format"
+  description: "If you do not want to keep the original image, you can select the compression format of the image for web publishing. If the image is to be reduced in size, it will be reduced to be smaller than 2048x2048. If lossy compression is not specified, either lossy or lossy compression will be automatically selected depending on the original image."
+  resizeCompress: "Resize and compression"
+  noResizeCompress: "Compression without resize"
+  resizeCompressLossy: "Resize and lossy compression"
+  noResizeCompressLossy: "Lossy compression without resize"
