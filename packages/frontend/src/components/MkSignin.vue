@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <form :class="{ signing, totpLogin }" @submit.prevent="onSubmit">
 	<div class="_gaps_m">
-		<div v-show="withAvatar" :class="$style.avatar" :style="{ backgroundImage: user ? `url('${ user.avatarUrl }')` : undefined, marginBottom: message ? '1.5em' : undefined }"></div>
+		<div v-show="withAvatar" :class="[$style.avatar, { [$style.square]: squareAvatars }]" :style="{ backgroundImage: user ? `url('${ user.avatarUrl }')` : undefined, marginBottom: message ? '1.5em' : undefined }"></div>
 		<MkInfo v-if="message">
 			{{ message }}
 		</MkInfo>
@@ -61,6 +61,9 @@ import { host as configHost } from '@/config';
 import * as os from '@/os';
 import { login } from '@/account';
 import { i18n } from '@/i18n';
+import { defaultStore } from '@/store';
+
+const squareAvatars = $ref(defaultStore.state.squareAvatars);
 
 let signing = $ref(false);
 let user = $ref<UserDetailed | null>(null);
@@ -233,9 +236,12 @@ function resetPassword(): void {
 	margin: 0 auto 0 auto;
 	width: 64px;
 	height: 64px;
-	background: #ddd;
-	background-position: center;
+	background: #ddd center;
 	background-size: cover;
 	border-radius: 100%;
+}
+
+.square {
+	border-radius: 20%;
 }
 </style>
