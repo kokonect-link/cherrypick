@@ -1946,7 +1946,6 @@ _2fa:
   securityKeyNotSupported: "이 브라우저는 보안 키를 지원하지 않는 것 같아요."
   registerTOTPBeforeKey: "보안 키 또는 패스키를 등록하려면 먼저 인증 앱을 등록해 주세요."
   securityKeyInfo: "FIDO2를 지원하는 하드웨어 보안 키 혹은 디바이스의 지문인식이나 화면잠금 PIN을 이용해서 로그인하도록 설정할 수 있어요."
-  chromePasskeyNotSupported: "현재 Chrome에서의 패스키는 아직 지원되지 않아요."
   registerSecurityKey: "보안 키 또는 패스키 등록"
   securityKeyName: "키 이름 입력"
   tapSecurityKey: "브라우저에 안내되는 지시에 따라 보안 키 또는 패스키를 등록해 주세요"

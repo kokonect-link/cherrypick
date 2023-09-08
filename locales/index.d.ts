@@ -1176,6 +1176,7 @@ export interface Locale {
     "currentAnnouncements": string;
     "pastAnnouncements": string;
     "youHaveUnreadAnnouncements": string;
+    "useSecurityKey": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -2073,7 +2074,6 @@ export interface Locale {
         "securityKeyNotSupported": string;
         "registerTOTPBeforeKey": string;
         "securityKeyInfo": string;
-        "chromePasskeyNotSupported": string;
         "registerSecurityKey": string;
         "securityKeyName": string;
         "tapSecurityKey": string;
