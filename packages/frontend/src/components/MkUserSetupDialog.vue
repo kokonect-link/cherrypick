@@ -175,7 +175,7 @@ import { host } from '@/config';
 import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
 import { defaultStore } from '@/store';
 import * as os from '@/os';
-import { unisonReload } from "@/scripts/unison-reload";
+import { unisonReload } from '@/scripts/unison-reload';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -194,7 +194,7 @@ async function close(skip: boolean) {
 		const { canceled } = await os.confirm({
 			type: 'warning',
 			text: i18n.ts._initialAccountSetting.skipAreYouSure,
-      caption: i18n.ts._initialAccountSetting.skipAreYouSureDescription,
+			caption: i18n.ts._initialAccountSetting.skipAreYouSureDescription,
 		});
 		if (canceled) return;
 	}

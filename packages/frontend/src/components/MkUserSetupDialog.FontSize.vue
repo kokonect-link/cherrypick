@@ -66,13 +66,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { instance } from '@/instance';
 import { i18n } from '@/i18n';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
 import * as os from '@/os';
-import { $i } from '@/account';
 import { defaultStore } from '@/store';
 import { miLocalStorage } from '@/local-storage';
 import { unisonReload } from '@/scripts/unison-reload';
