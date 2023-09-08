@@ -501,7 +501,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 	renameTheButtonInPostFormToNya: {
-		where: 'device',
+		where: 'account',
 		default: false,
 	},
 
