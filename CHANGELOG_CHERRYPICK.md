@@ -39,6 +39,7 @@
 - 설정에서 변경 가능한 옵션은 다이얼로그에서 안내하도록 주석 추가
 - 메모리 할당자를 jemalloc으로 설정 (MisskeyIO/misskey#152)
 - 신고 즉시 해결 기능 (misskey-dev/misskey#11032)
+- 어떤 이유로 클라이언트의 이모티콘 캐시가 삭제된 경우 즉시 다시 가져오도록 (MisskeyIO/misskey#163)
 
 ### Client
 - about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
@@ -77,6 +78,7 @@
 - Perf : 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
 - Enhance : 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
+- Fix: deliver-delayed에서 URL 구문 분석에 실패할 때 모든 것이 꼬이는 문제 수정 (MisskeyIO/misskey#164)
 
 ---
 
