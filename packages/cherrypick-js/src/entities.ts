@@ -263,6 +263,8 @@ export type Notification = {
 	header?: string | null;
 	body: string;
 	icon?: string | null;
+} | {
+	type: 'test';
 });
 
 export type MessagingMessage = {

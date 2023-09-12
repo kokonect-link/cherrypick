@@ -59,10 +59,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div v-if="iAmModerator" class="moderationNote">
 						<MkTextarea v-if="editModerationNote || (moderationNote != null && moderationNote !== '')" v-model="moderationNote" manualSave>
-							<template #label>Moderation note</template>
+							<template #label>{{ i18n.ts.moderationNote }}</template>
 						</MkTextarea>
 						<div v-else>
-							<MkButton class="moderationNoteButton" small @click="editModerationNote = true">Add moderation note</MkButton>
+							<MkButton class="moderationNoteButton" small @click="editModerationNote = true">{{ i18n.ts.addModerationNote }}</MkButton>
 						</div>
 					</div>
 					<div v-if="isEditingMemo || memoDraft" class="memo" :class="{'no-memo': !memoDraft}">

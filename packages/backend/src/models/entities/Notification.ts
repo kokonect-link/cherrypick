@@ -35,6 +35,7 @@ export type MiNotification = {
 	 * groupInvited - グループに招待された
 	 * achievementEarned - 実績を獲得
 	 * app - アプリ通知
+	 * test - テスト通知（サーバー側）
 	 */
 	type: typeof notificationTypes[number];
 

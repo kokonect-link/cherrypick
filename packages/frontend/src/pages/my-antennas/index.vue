@@ -26,11 +26,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import { onActivated } from 'vue';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { antennasCache } from '@/cache';
-import { api } from '@/os';
-import { onActivated } from 'vue';
 import { infoImageUrl } from '@/instance';
 import { useRouter } from '@/router';
 
@@ -39,7 +38,7 @@ const router = useRouter();
 const antennas = $computed(() => antennasCache.value.value ?? []);
 
 function fetch() {
-	antennasCache.fetch(() => api('antennas/list'));
+	antennasCache.fetch();
 }
 
 fetch();
@@ -68,7 +67,7 @@ definePageMetadata({
 });
 
 onActivated(() => {
-	antennasCache.fetch(() => api('antennas/list'));
+	antennasCache.fetch();
 });
 </script>
 

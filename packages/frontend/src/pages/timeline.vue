@@ -57,8 +57,9 @@ import { i18n } from '@/i18n';
 import { instance } from '@/instance';
 import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { antennasCache, userListsCache } from '@/cache';
 import { miLocalStorage } from '@/local-storage';
+import { eventBus } from '@/scripts/cherrypick/eventBus';
 import { deviceKind } from '@/scripts/device-kind';
 import { unisonReload } from '@/scripts/unison-reload';
 
@@ -112,7 +113,7 @@ function top(): void {
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
-	const lists = await os.api('users/lists/list');
+	const lists = await userListsCache.fetch();
 	const items = lists.map(list => ({
 		type: 'link' as const,
 		text: list.name,
@@ -122,7 +123,7 @@ async function chooseList(ev: MouseEvent): Promise<void> {
 }
 
 async function chooseAntenna(ev: MouseEvent): Promise<void> {
-	const antennas = await os.api('antennas/list');
+	const antennas = await antennasCache.fetch();
 	const items = antennas.map(antenna => ({
 		type: 'link' as const,
 		text: antenna.name,

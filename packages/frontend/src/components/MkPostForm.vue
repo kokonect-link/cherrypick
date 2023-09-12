@@ -671,6 +671,8 @@ function onDrop(ev): void {
 }
 
 function saveDraft() {
+	if (props.instant) return;
+
 	const draftData = JSON.parse(miLocalStorage.getItem('drafts') ?? '{}');
 
 	draftData[draftKey] = {

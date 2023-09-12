@@ -459,6 +459,8 @@ totp: "認証アプリ"
 totpDescription: "認証アプリを使ってワンタイムパスワードを入力"
 moderator: "モデレーター"
 moderation: "モデレーション"
+moderationNote: "モデレーションノート"
+addModerationNote: "モデレーションノートを追加する"
 nUsersMentioned: "{n}人が投稿"
 securityKeyAndPasskey: "セキュリティキー・パスキー"
 securityKey: "セキュリティキー"
@@ -1085,7 +1087,7 @@ retryAllQueuesConfirmText: "一時的にサーバーの負荷が増大するこ�
 enableChartsForRemoteUser: "リモートユーザーのチャートを生成"
 enableChartsForFederatedInstances: "リモートサーバーのチャートを生成"
 showClipButtonInNoteFooter: "ノートのアクションにクリップを追加"
-largeNoteReactions: "ノートのリアクションを大きく表示"
+reactionsDisplaySize: "リアクションの表示サイズ"
 noteIdOrUrl: "ノートIDまたはURL"
 video: "動画"
 videos: "動画"
@@ -1546,6 +1548,9 @@ _achievements:
       title: "Brain Diver"
       description: "Brain Diverへのリンクを投稿した"
       flavor: "CherryPick-CherryPick La-Tu-Ma"
+    _smashTestNotificationButton:
+      title: "テスト過剰"
+      description: "通知のテストをごく短時間のうちに連続して行った"
 
 _role:
   new: "ロールの作成"
@@ -2302,6 +2307,10 @@ _notification:
   unreadAntennaNote: "アンテナ {name}"
   emptyPushNotificationMessage: "プッシュ通知の更新をしました"
   achievementEarned: "実績を獲得"
+  testNotification: "通知テスト"
+  checkNotificationBehavior: "通知の表示を確かめる"
+  sendTestNotification: "テスト通知を送信する"
+  notificationWillBeDisplayedLikeThis: "通知はこのように表示されます"
 
   _types:
     all: "すべて"
