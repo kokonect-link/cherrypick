@@ -46,10 +46,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-  <div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
-    <MkFollowButton v-if="narrow" :user="metadata.avatar" :transparent="false" :full="false"/>
-    <MkFollowButton v-else :user="metadata.avatar" :transparent="false" :full="true"/>
-  </div>
+	<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
+		<MkFollowButton v-if="narrow" :user="metadata.avatar" :transparent="false" :full="false"/>
+		<MkFollowButton v-else :user="metadata.avatar" :transparent="false" :full="true"/>
+	</div>
 </div>
 </template>
 
@@ -137,18 +137,18 @@ const preventDrag = (ev: TouchEvent) => {
 };
 
 const top = (ev: MouseEvent) => {
-  const pos = getScrollPosition(el as HTMLElement);
-  if (el && pos !== 0) {
-    scrollToTop(el as HTMLElement, { behavior: 'smooth' });
-  } else if (pos === 0) {
-    os.popupMenu([{
-      text: i18n.ts.reload,
-      icon: 'ti ti-refresh',
-      action: () => {
-        location.reload();
-      },
-    }], ev.currentTarget ?? ev.target);
-  }
+	const pos = getScrollPosition(el as HTMLElement);
+	if (el && pos !== 0) {
+		scrollToTop(el as HTMLElement, { behavior: 'smooth' });
+	} else if (pos === 0) {
+		os.popupMenu([{
+			text: i18n.ts.reload,
+			icon: 'ti ti-refresh',
+			action: () => {
+				location.reload();
+			},
+		}], ev.currentTarget ?? ev.target);
+	}
 };
 
 function openAccountMenu(ev: MouseEvent) {
@@ -180,11 +180,11 @@ function goBack() {
 }
 
 const calcBg = () => {
-  const rawBg = 'var(--bg)';
-  const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-  if (narrow) tinyBg.setAlpha(1);
-  else tinyBg.setAlpha(0.85);
-  bg.value = tinyBg.toRgbString();
+	const rawBg = 'var(--bg)';
+	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+	if (narrow) tinyBg.setAlpha(1);
+	else tinyBg.setAlpha(0.85);
+	bg.value = tinyBg.toRgbString();
 };
 
 let ro: ResizeObserver | null;
@@ -216,12 +216,12 @@ onMounted(() => {
 		ro.observe(el.parentElement as HTMLElement);
 	}
 
-  calcBg();
-  globalEvents.on('themeChanged', calcBg);
+	calcBg();
+	globalEvents.on('themeChanged', calcBg);
 
-  eventBus.on('showFollowButton', (showFollowButton_receive) => {
-    showFollowButton = showFollowButton_receive;
-  });
+	eventBus.on('showFollowButton', (showFollowButton_receive) => {
+		showFollowButton = showFollowButton_receive;
+	});
 });
 
 onUnmounted(() => {
