@@ -34,7 +34,7 @@ import { miLocalStorage } from '@/local-storage';
 import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
 import { deviceKind } from '@/scripts/device-kind';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 const MOBILE_THRESHOLD = 500;
 
@@ -101,7 +101,7 @@ onMounted(() => {
 	_bg.setAlpha(0.85);
 	bg.value = _bg.toRgbString();
 
-	eventBus.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

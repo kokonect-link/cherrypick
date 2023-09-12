@@ -114,11 +114,10 @@ import { mainRouter } from '@/router';
 import { PageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata';
 import { deviceKind } from '@/scripts/device-kind';
 import { miLocalStorage } from '@/local-storage';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 import { CURRENT_STICKY_BOTTOM } from '@/const';
 import { useScrollPositionManager } from '@/nirax';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
-import { globalEvents } from '@/events';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
@@ -236,7 +235,7 @@ onMounted(() => {
 
 	contents.value.rootEl.addEventListener('scroll', onScroll);
 
-	eventBus.on('queueUpdated', (q) => queueUpdated(q));
+  globalEvents.on('queueUpdated', (q) => queueUpdated(q));
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
@@ -263,7 +262,7 @@ function onScroll() {
 	showEl = currentScrollPosition < lastScrollPosition;
 	lastScrollPosition = currentScrollPosition;
 	showEl = !showEl;
-	eventBus.emit('showEl', showEl);
+  globalEvents.emit('showEl', showEl);
 }
 
 const onContextmenu = (ev) => {
@@ -316,7 +315,7 @@ function closeAccountMenu() {
 }
 
 function openMessage(ev: MouseEvent) {
-	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) eventBus.emit('openMessage', ev);
+	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('openMessage', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
 }
 

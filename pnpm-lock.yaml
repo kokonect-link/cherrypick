@@ -818,9 +818,6 @@ importers:
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
-      mitt:
-        specifier: 3.0.0
-        version: 3.0.0
       photoswipe:
         specifier: 5.3.9
         version: 5.3.9
@@ -15747,10 +15744,6 @@ packages:
     dependencies:
       minipass: 3.3.6
       yallist: 4.0.0
-
-  /mitt@3.0.0:
-    resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
-    dev: false
 
   /mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}

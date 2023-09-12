@@ -67,7 +67,7 @@ import { defaultStore } from '@/store';
 import { unisonReload } from '@/scripts/unison-reload';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -88,7 +88,7 @@ async function reloadAsk() {
 		if (canceled) return;
 
 		unisonReload();
-	} else eventBus.emit('hasRequireRefresh', true);
+	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 async function addItem(ev: MouseEvent) {

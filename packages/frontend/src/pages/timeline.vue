@@ -59,7 +59,7 @@ import { $i } from '@/account';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { antennasCache, userListsCache } from '@/cache';
 import { miLocalStorage } from '@/local-storage';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 import { deviceKind } from '@/scripts/device-kind';
 import { unisonReload } from '@/scripts/unison-reload';
 
@@ -98,14 +98,14 @@ watch ($$(src), () => {
 });
 
 onMounted(() => {
-	eventBus.on('showEl', (showEl_receive) => {
+  globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });
 
 function queueUpdated(q: number): void {
 	queue = q;
-	eventBus.emit('queueUpdated', q);
+  globalEvents.emit('queueUpdated', q);
 }
 
 function top(): void {
@@ -176,7 +176,7 @@ async function reloadAsk() {
 		if (canceled) return;
 
 		unisonReload();
-	} else eventBus.emit('hasRequireRefresh', true);
+	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 const headerActions = $computed(() => [{

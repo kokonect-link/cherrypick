@@ -45,7 +45,7 @@ import { i18n } from '@/i18n';
 import { claimAchievement } from '@/scripts/achievements';
 import { $i } from '@/account';
 import { userName } from '@/filters/user';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 let showFollowButton = $ref(false);
 
@@ -138,7 +138,7 @@ onMounted(() => {
 	connection.on('unfollow', onFollowChange);
 
 	showFollowButton = $i != null && $i.id !== props.user.id;
-	eventBus.emit('showFollowButton', showFollowButton);
+  globalEvents.emit('showFollowButton', showFollowButton);
 });
 
 onBeforeUnmount(() => {

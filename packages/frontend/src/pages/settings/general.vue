@@ -281,7 +281,6 @@ import { definePageMetadata } from '@/scripts/page-metadata';
 import { miLocalStorage } from '@/local-storage';
 import { globalEvents } from '@/events';
 import { claimAchievement } from '@/scripts/achievements';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
 import MkInfo from '@/components/MkInfo.vue';
 
 const lang = ref(miLocalStorage.getItem('lang'));
@@ -300,7 +299,7 @@ async function reloadAsk() {
 		if (canceled) return;
 
 		unisonReload();
-	} else eventBus.emit('hasRequireRefresh', true);
+	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));

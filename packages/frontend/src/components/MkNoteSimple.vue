@@ -32,7 +32,7 @@ import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import { $i } from '@/account';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
 
@@ -45,7 +45,7 @@ const props = defineProps<{
 const showContent = $ref(false);
 
 onMounted(() => {
-	eventBus.on('showEl', (showEl_receive) => {
+  globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

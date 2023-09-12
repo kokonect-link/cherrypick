@@ -202,7 +202,7 @@ import { getNoteSummary } from '@/scripts/get-note-summary';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog';
 import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 import { mainRouter } from '@/router';
 import { notePage } from '@/filters/note';
 import { miLocalStorage } from '@/local-storage';
@@ -271,7 +271,7 @@ const keymap = {
 };
 
 onMounted(() => {
-	eventBus.on('showEl', (showEl_receive) => {
+  globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

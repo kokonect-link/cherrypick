@@ -37,7 +37,7 @@ import { useRouter } from '@/router';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { $i } from '@/account';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 import MkChatPreview from '@/components/MkChatPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 
@@ -148,7 +148,7 @@ onMounted(() => {
 		});
 	});
 
-	eventBus.on('openMessage', (ev) => {
+	globalEvents.on('openMessage', (ev) => {
 		start(ev);
 	});
 });

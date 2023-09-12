@@ -27,7 +27,7 @@ import { i18n } from '@/i18n';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os';
 import { defaultStore } from '@/store';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 const zIndex = os.claimZIndex('high');
 
@@ -53,7 +53,7 @@ function reload() {
 useStream().on('_disconnected_', onDisconnected);
 
 onMounted(() => {
-	eventBus.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
+  globalEvents.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
 		hasRequireRefresh = hasRequireRefresh_receive;
 	});
 });

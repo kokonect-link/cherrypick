@@ -64,7 +64,6 @@ import * as os from '@/os';
 import { i18n } from '@/i18n';
 import { defaultStore } from '@/store';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
 
 let showFollowButton = $ref(false);
 
@@ -161,7 +160,7 @@ onMounted(() => {
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
 
-  eventBus.on('showFollowButton', (showFollowButton_receive) => {
+  globalEvents.on('showFollowButton', (showFollowButton_receive) => {
     showFollowButton = showFollowButton_receive;
   });
 });

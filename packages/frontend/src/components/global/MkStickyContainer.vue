@@ -24,7 +24,7 @@ import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';
 import { deviceKind } from '@/scripts/device-kind';
 import { mainRouter } from '@/router';
 import { defaultStore } from '@/store';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 import { miLocalStorage } from '@/local-storage';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
@@ -101,7 +101,7 @@ onMounted(() => {
 	observer.observe(headerEl);
 	observer.observe(footerEl);
 
-	eventBus.on('showEl', (showEl_receive) => {
+  globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

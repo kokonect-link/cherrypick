@@ -220,7 +220,7 @@ import { i18n } from '@/i18n';
 import { iAmAdmin, $i } from '@/account';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 const props = withDefaults(defineProps<{
 	userId: string;
@@ -447,7 +447,7 @@ watch($$(user), () => {
 });
 
 onMounted(() => {
-    eventBus.on('refreshUser', () => updateRemoteUser());
+  globalEvents.on('refreshUser', () => updateRemoteUser());
 });
 
 const headerActions = $computed(() => []);

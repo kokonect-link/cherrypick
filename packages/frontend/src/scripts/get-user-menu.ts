@@ -16,7 +16,7 @@ import { mainRouter } from '@/router';
 import { Router } from '@/nirax';
 import { antennasCache, rolesCache, userListsCache } from '@/cache';
 import { editNickname } from '@/scripts/edit-nickname';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -111,7 +111,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 	}
 
 	function refreshUser() {
-		eventBus.emit('refreshUser');
+		globalEvents.emit('refreshUser');
 	}
 
 	async function updateRemoteUser() {

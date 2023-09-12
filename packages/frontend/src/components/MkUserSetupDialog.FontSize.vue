@@ -74,7 +74,7 @@ import * as os from '@/os';
 import { defaultStore } from '@/store';
 import { miLocalStorage } from '@/local-storage';
 import { unisonReload } from '@/scripts/unison-reload';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { globalEvents } from '@/events';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
@@ -88,7 +88,7 @@ async function reloadAsk() {
 		if (canceled) return;
 
 		unisonReload();
-	} else eventBus.emit('hasRequireRefresh', true);
+	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
