@@ -62,7 +62,7 @@ ARG GID="991"
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-	ffmpeg tini curl libjemalloc2 \
+	ffmpeg tini curl libjemalloc-dev libjemalloc2 \
 	&& corepack enable \
 	&& groupadd -g "${GID}" cherrypick \
 	&& useradd -l -u "${UID}" -g "${GID}" -m -d /cherrypick cherrypick \
