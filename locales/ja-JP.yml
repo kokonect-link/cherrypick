@@ -1805,6 +1805,8 @@ _mfm:
   rainbowDescription: "内容をレインボーにします。"
   sparkle: "キラキラ"
   sparkleDescription: "キラキラしたパーティクルのエフェクトを追加します。"
+  fade: "フェード"
+  fadeDescription: "ゆっくりと現れたり消えたりする効果を追加します。"
   rotate: "回転"
   rotateDescription: "指定した角度で回転させます。"
   position: "位置"

@@ -1890,6 +1890,8 @@ export interface Locale {
         "rainbowDescription": string;
         "sparkle": string;
         "sparkleDescription": string;
+        "fade": string;
+        "fadeDescription": string;
         "rotate": string;
         "rotateDescription": string;
         "position": string;

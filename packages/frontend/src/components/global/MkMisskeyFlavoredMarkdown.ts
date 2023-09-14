@@ -191,6 +191,14 @@ export default function(props: {
 						}
 						return h(MkSparkle, {}, genEl(token.children, scale));
 					}
+					case 'fade': {
+						if (!useAnim) {
+							return genEl(token.children, scale);
+						}
+						const speed = validTime(token.props.args.speed) ?? '4s';
+						style = `animation: mfm-fade ${speed} linear infinite;`;
+						break;
+					}
 					case 'rotate': {
 						const degrees = parseFloat(token.props.args.deg ?? '90');
 						style = `transform: rotate(${degrees}deg); transform-origin: center center;`;

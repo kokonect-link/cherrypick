@@ -290,6 +290,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.fade }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.fadeDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_fade"/>
+						<MkTextarea v-model="preview_fade" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfm.rotate }}</div>
 				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.rotateDescription }}</p>
@@ -402,6 +412,7 @@ let preview_x4 = $ref('$[x4 🍮]');
 let preview_blur = $ref(`$[blur ${i18n.ts._mfm.dummy}]`);
 let preview_rainbow = $ref('$[rainbow 🍮] $[rainbow.speed=5s 🍮]');
 let preview_sparkle = $ref('$[sparkle 🍮]');
+let preview_fade = $ref('$[fade 🍮] $[fade.speed=1.5s 🍮]');
 let preview_rotate = $ref('$[rotate.deg=90 🍮]');
 let preview_position = $ref('$[position.x=1 🍮]\n$[position.y=-1 🍮]\n\n$[position.x=3,y=-3 🍮]');
 let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,y=2 🍮]');

@@ -1769,6 +1769,8 @@ _mfm:
   rainbowDescription: "내용을 무지개로 표시해요."
   sparkle: "반짝반짝"
   sparkleDescription: "반짝이는 파티클 효과를 추가해요."
+  fade: "페이드"
+  fadeDescription: "천천히 나타났다가 사라지는 효과를 추가해요."
   rotate: "회전"
   rotateDescription: "지정한 각도로 회전시켜요."
   position: "위치"

@@ -42,6 +42,7 @@
 - 어떤 이유로 클라이언트의 이모티콘 캐시가 삭제된 경우 즉시 다시 가져오도록 (MisskeyIO/misskey#163)
 - EventBus를 사용하는 코드를 EventEmitter3로 변경
 - 노트 작성 폼에 MFM 도움말을 볼 수 있는 버튼 추가
+- 새 MFM 구문 추가 (페이드)
 
 ### Client
 - about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
