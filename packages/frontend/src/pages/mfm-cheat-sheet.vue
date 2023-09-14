@@ -5,10 +5,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-if="!popup" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
-			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid .5px var(--divider);">{{ i18n.ts._mfm.intro }}</div>
+			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid 1px var(--divider);">{{ i18n.ts._mfm.intro }}</div>
 			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfm.mention }}</div>
 				<div :class="$style.content">
@@ -365,12 +365,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import { i18n } from '@/i18n';
-import { instance } from '@/instance';
 import { customEmojis } from '@/custom-emojis';
+
+defineProps<{
+  popup?: boolean;
+}>();
 
 let preview_mention = $ref('@example');
 let preview_hashtag = $ref('#test');
