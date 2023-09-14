@@ -32,7 +32,7 @@ export const meta = {
 
 	errors: {
 		ctlDisabled: {
-			message: 'Hybrid timeline has been disabled.',
+			message: 'Cat timeline has been disabled.',
 			code: 'CTL_DISABLED',
 			id: '620763f4-f621-4533-ab33-0577a1a3c342',
 		},
