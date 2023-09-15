@@ -48,8 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div :class="$style.bottom">
 			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-			<button v-tooltip.noDelay.right="i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
-				<i class="ti ti-pencil ti-fw" :class="$style.postIcon"></i><span :class="$style.postText">{{ i18n.ts.note }}</span>
+			<button v-tooltip.noDelay.right="defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
+				<i class="ti ti-fw" :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 			</button>
 			<div :class="$style.profile">
 				<button v-if="iconOnly" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
@@ -89,10 +89,10 @@ const otherMenuItemIndicated = computed(() => {
 let controlPanelIndicated = $ref(false);
 
 os.api('admin/abuse-user-reports', {
-  state: 'unresolved',
-  limit: 1,
+	state: 'unresolved',
+	limit: 1,
 }).then(reports => {
-  if (reports.length > 0) controlPanelIndicated = true;
+	if (reports.length > 0) controlPanelIndicated = true;
 });
 
 const calcViewState = () => {

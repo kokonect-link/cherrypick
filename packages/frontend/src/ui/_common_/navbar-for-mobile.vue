@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.divider"></div>
 		<MkA v-if="$i.isAdmin || $i.isModerator" :class="$style.item" :activeClass="$style.active" to="/admin">
 			<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
-      <span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
+			<span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</MkA>
 		<button :class="$style.item" class="_button" @click="more">
 			<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.bottom">
 		<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
 		<button class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
-			<i :class="$style.postIcon" class="ti ti-pencil ti-fw"></i><span style="position: relative;">{{ i18n.ts.note }}</span>
+			<i :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']" class="ti ti-fw"></i><span style="position: relative;">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 		</button>
 		<button class="_button" :class="$style.account" @click="openAccountMenu">
 			<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct :class="$style.acct" class="_nowrap" :user="$i"/>
@@ -69,10 +69,10 @@ const otherMenuItemIndicated = computed(() => {
 let controlPanelIndicated = $ref(false);
 
 os.api('admin/abuse-user-reports', {
-  state: 'unresolved',
-  limit: 1,
+	state: 'unresolved',
+	limit: 1,
 }).then(reports => {
-  if (reports.length > 0) controlPanelIndicated = true;
+	if (reports.length > 0) controlPanelIndicated = true;
 });
 
 function openAccountMenu(ev: MouseEvent) {

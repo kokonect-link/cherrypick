@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-tooltip.noDelay.right="i18n.ts.controlPanel" :class="$style.item" :activeClass="$style.active" to="/admin">
 				<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
-        <span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 			</MkA>
 			<button class="_button" :class="$style.item" @click="more">
 				<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
@@ -48,8 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div :class="$style.bottom">
 			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-			<button v-tooltip.noDelay.right="i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
-				<i class="ti ti-pencil ti-fw" :class="$style.postIcon"></i><span :class="$style.postText">{{ i18n.ts.note }}</span>
+			<button v-tooltip.noDelay.right="defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
+				<i class="ti ti-fw" :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 			</button>
 			<button v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
 				<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct class="_nowrap" :class="$style.acct" :user="$i"/>
@@ -82,10 +82,10 @@ const otherMenuItemIndicated = computed(() => {
 let controlPanelIndicated = $ref(false);
 
 os.api('admin/abuse-user-reports', {
-  state: 'unresolved',
-  limit: 1,
+	state: 'unresolved',
+	limit: 1,
 }).then(reports => {
-  if (reports.length > 0) controlPanelIndicated = true;
+	if (reports.length > 0) controlPanelIndicated = true;
 });
 
 const calcViewState = () => {

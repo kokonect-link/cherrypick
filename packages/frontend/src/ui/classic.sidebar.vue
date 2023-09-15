@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</button>
 	<div class="post" data-cy-open-post-form @click="os.post">
 		<MkButton class="button" gradate full rounded>
-			<i class="ti ti-pencil ti-fw"></i><span v-if="!iconOnly" class="text">{{ i18n.ts.note }}</span>
+			<i :class="defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil'" class="ti ti-fw" style="margin-right: 2px;"></i><span v-if="!iconOnly" class="text">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 		</MkButton>
 	</div>
 	<div class="divider"></div>
@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="divider"></div>
 	<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
 		<i class="ti ti-dashboard ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
-    <span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
+		<span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</MkA>
 	<button v-click-anime class="item _button" @click="more">
 		<i class="ti ti-dots ti-fw"></i><span class="text">{{ i18n.ts.more }}</span>
@@ -80,10 +80,10 @@ let settingsWindowed = $ref(false);
 let controlPanelIndicated = $ref(false);
 
 os.api('admin/abuse-user-reports', {
-  state: 'unresolved',
-  limit: 1,
+	state: 'unresolved',
+	limit: 1,
 }).then(reports => {
-  if (reports.length > 0) controlPanelIndicated = true;
+	if (reports.length > 0) controlPanelIndicated = true;
 });
 
 function calcViewState() {

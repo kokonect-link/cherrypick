@@ -98,6 +98,7 @@ const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('r
 watch([
 	infoButtonForNoteActionsEnabled,
 	reactableRemoteReactionEnabled,
+	renameTheButtonInPostFormToNya,
 ], async () => {
 	await reloadAsk();
 });
