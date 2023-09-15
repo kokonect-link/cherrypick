@@ -74,6 +74,7 @@
 - Fix: Misskey 플러그인 설치 시 AiScript 버전 확인이 0.14.0 이후 버전에서 지원되지 않는 문제 수정 (misskey-dev/misskey#11729)
 - Fix: '대화'에서 Autocomplete를 사용할 수 없음
 - Fix: 누락된 안테나 소스 추가
+- Fix: 모달 팝업이 safe area를 침범하지 않도록
 
 ### Server
 - Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가
