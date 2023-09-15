@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import type { UserGroupsRepository, UserGroupJoiningsRepository, UserGroupInvitationsRepository } from '@/models/index.js';
+import type { UserGroupsRepository, UserGroupJoiningsRepository, UserGroupInvitationsRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import type { MiUserGroupInvitation } from '@/models/entities/UserGroupInvitation.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';

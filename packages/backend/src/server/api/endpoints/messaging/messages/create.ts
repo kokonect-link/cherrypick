@@ -6,7 +6,7 @@
 import ms from 'ms';
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { BlockingsRepository, UserGroupJoiningsRepository, DriveFilesRepository, UserGroupsRepository } from '@/models/index.js';
+import type { BlockingsRepository, UserGroupJoiningsRepository, DriveFilesRepository, UserGroupsRepository } from '@/models/_.js';
 import type { MiUser } from '@/models/entities/User.js';
 import type { MiUserGroup } from '@/models/entities/UserGroup.js';
 import { GetterService } from '@/server/api/GetterService.js';

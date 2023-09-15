@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import type { UserGroupJoiningsRepository, UsersRepository, MessagingMessagesRepository } from '@/models/index.js';
+import type { UserGroupJoiningsRepository, UsersRepository, MessagingMessagesRepository } from '@/models/_.js';
 import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/entities/User.js';
 import type { MiUserGroup } from '@/models/entities/UserGroup.js';
 import { MessagingService } from '@/core/MessagingService.js';

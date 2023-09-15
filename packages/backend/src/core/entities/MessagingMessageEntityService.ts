@@ -5,7 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { MessagingMessagesRepository } from '@/models/index.js';
+import type { MessagingMessagesRepository } from '@/models/_.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { MiUser } from '@/models/entities/User.js';
 import type { MiMessagingMessage } from '@/models/entities/MessagingMessage.js';

@@ -5,7 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import ms from 'ms';
-import type { UserGroupsRepository, UserGroupJoiningsRepository } from '@/models/index.js';
+import type { UserGroupsRepository, UserGroupJoiningsRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import type { MiUserGroup } from '@/models/entities/UserGroup.js';
 import type { MiUserGroupJoining } from '@/models/entities/UserGroupJoining.js';

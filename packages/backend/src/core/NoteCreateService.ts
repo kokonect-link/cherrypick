@@ -15,7 +15,7 @@ import { extractHashtags } from '@/misc/extract-hashtags.js';
 import type { IMentionedRemoteUsers } from '@/models/entities/Note.js';
 import { MiNote } from '@/models/entities/Note.js';
 import { MiEvent, IEvent } from '@/models/entities/Event.js';
-import type { ChannelsRepository, InstancesRepository, MutedNotesRepository, MutingsRepository, NotesRepository, NoteThreadMutingsRepository, UserProfilesRepository, UsersRepository } from '@/models/index.js';
+import type { ChannelsRepository, InstancesRepository, MutedNotesRepository, MutingsRepository, NotesRepository, NoteThreadMutingsRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type { MiDriveFile } from '@/models/entities/DriveFile.js';
 import type { MiApp } from '@/models/entities/App.js';
 import { concat } from '@/misc/prelude/array.js';
