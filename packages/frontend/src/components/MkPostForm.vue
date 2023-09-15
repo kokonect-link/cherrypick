@@ -240,8 +240,8 @@ const submitText = $computed((): string => {
 		: props.reply
 			? i18n.ts.reply
 			: defaultStore.state.renameTheButtonInPostFormToNya
-        ? i18n.ts.nya
-        : i18n.ts.note;
+				? i18n.ts.nya
+				: i18n.ts.note;
 });
 
 const textLength = $computed((): number => {

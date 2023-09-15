@@ -29,17 +29,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSwitch>
 			</div>
 
-      <div>
-        <MkRadios v-model="displayHeaderNavBarWhenScroll">
-          <template #label>{{ i18n.ts.displayHeaderNavBarWhenScroll }}</template>
-          <option value="all">{{ i18n.ts._displayHeaderNavBarWhenScroll.all }}</option>
-          <option value="hideHeaderOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
-          <option value="hideHeaderFloatBtn">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
-          <option value="hideFloatBtnOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
-          <option value="hideFloatBtnNavBar">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
-          <option value="hide">{{ i18n.ts._displayHeaderNavBarWhenScroll.hide }}</option>
-        </MkRadios>
-      </div>
+			<div>
+				<MkRadios v-model="displayHeaderNavBarWhenScroll">
+					<template #label>{{ i18n.ts.displayHeaderNavBarWhenScroll }}</template>
+					<option value="all">{{ i18n.ts._displayHeaderNavBarWhenScroll.all }}</option>
+					<option value="hideHeaderOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+					<option value="hideHeaderFloatBtn">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+					<option value="hideFloatBtnOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+					<option value="hideFloatBtnNavBar">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+					<option value="hide">{{ i18n.ts._displayHeaderNavBarWhenScroll.hide }}</option>
+				</MkRadios>
+			</div>
 		</div>
 	</FormSection>
 	<FormSection>
@@ -54,10 +54,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
 			<MkSwitch v-model="mobileTimelineHeaderChange">{{ i18n.ts._cherrypick.mobileTimelineHeaderChange }}</MkSwitch>
-      <MkSwitch v-model="renameTheButtonInPostFormToNya">
-        {{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
-        <template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
-      </MkSwitch>
+			<MkSwitch v-model="renameTheButtonInPostFormToNya">
+				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
+				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
+			</MkSwitch>
 		</div>
 	</FormSection>
 </div>
