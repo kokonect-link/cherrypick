@@ -45,8 +45,11 @@ export function createAiScriptEnv(opts) {
 				// バグがあればundefinedもあり得るため念のため
 				if (typeof token.value !== 'string') throw new Error('invalid token');
 			}
-			const res = await os.api(ep.value, utils.valToJs(param), token ? token.value : miLocalStorage.getItem(`aiscriptSecure:${opts.storageKey}:${randomString}:accessToken`) ?? (opts.token ?? null));
-			return utils.jsToVal(res);
+			return os.api(ep.value, utils.valToJs(param), token ? token.value : miLocalStorage.getItem(`aiscriptSecure:${opts.storageKey}:${randomString}:accessToken`) ?? (opts.token ?? null)).then(res => {
+				return utils.jsToVal(res);
+			}, err => {
+				return values.ERROR('request_failed', utils.jsToVal(err));
+			});
 		}),
 		'Mk:save': values.FN_NATIVE(([key, value]) => {
 			utils.assertString(key);

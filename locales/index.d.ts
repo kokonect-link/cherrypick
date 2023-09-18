@@ -401,7 +401,6 @@ export interface Locale {
     "driveCapacityPerLocalAccount": string;
     "driveCapacityPerRemoteAccount": string;
     "inMb": string;
-    "iconUrl": string;
     "bannerUrl": string;
     "backgroundImageUrl": string;
     "basicInfo": string;
@@ -1179,6 +1178,10 @@ export interface Locale {
     "pastAnnouncements": string;
     "youHaveUnreadAnnouncements": string;
     "useSecurityKey": string;
+    "replies": string;
+    "renotes": string;
+    "loadReplies": string;
+    "loadConversation": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -1294,6 +1297,14 @@ export interface Locale {
         "availabilityEnd": string;
         "keywords": string;
         "performers": string;
+    };
+    "_serverSettings": {
+        "iconUrl": string;
+        "appIconDescription": string;
+        "appIconUsageExample": string;
+        "appIconStyleRecommendation": string;
+        "appIconResolutionMustBe": string;
+        "manifestJsonOverride": string;
     };
     "_accountMigration": {
         "moveFrom": string;

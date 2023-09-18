@@ -41,6 +41,8 @@ export const paramDef = {
 		infoImageUrl: { type: 'string', nullable: true },
 		notFoundImageUrl: { type: 'string', nullable: true },
 		iconUrl: { type: 'string', nullable: true },
+		app192IconUrl: { type: 'string', nullable: true },
+		app512IconUrl: { type: 'string', nullable: true },
 		backgroundImageUrl: { type: 'string', nullable: true },
 		logoImageUrl: { type: 'string', nullable: true },
 		name: { type: 'string', nullable: true },
@@ -127,6 +129,7 @@ export const paramDef = {
 		emailToReceiveAbuseReport: { type: 'string', nullable: true },
 		serverRules: { type: 'array', items: { type: 'string' } },
 		preservedUsernames: { type: 'array', items: { type: 'string' } },
+		manifestJsonOverride: { type: 'string' },
 	},
 	required: [],
 } as const;
@@ -175,6 +178,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.iconUrl !== undefined) {
 				set.iconUrl = ps.iconUrl;
+			}
+
+			if (ps.app192IconUrl !== undefined) {
+				set.app192IconUrl = ps.app192IconUrl;
+			}
+
+			if (ps.app512IconUrl !== undefined) {
+				set.app512IconUrl = ps.app512IconUrl;
 			}
 
 			if (ps.serverErrorImageUrl !== undefined) {
@@ -531,6 +542,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.preservedUsernames !== undefined) {
 				set.preservedUsernames = ps.preservedUsernames;
+			}
+
+			if (ps.manifestJsonOverride !== undefined) {
+				set.manifestJsonOverride = ps.manifestJsonOverride;
 			}
 
 			await this.metaService.update(set);
