@@ -1182,6 +1182,7 @@ export interface Locale {
     "renotes": string;
     "loadReplies": string;
     "loadConversation": string;
+    "pinnedList": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
