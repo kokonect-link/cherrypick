@@ -188,7 +188,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	tl: {
 		where: 'deviceAccount',
 		default: {
-			src: 'home' as 'home' | 'local' | 'social' | 'global' | `list:${string}`,
+			src: 'home' as 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`,
 			userList: null as Misskey.entities.UserList | null,
 		},
 	},
