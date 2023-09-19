@@ -152,7 +152,7 @@
 		"rss-parser": "3.13.0",
 		"rxjs": "7.8.1",
 		"sanitize-html": "2.11.0",
-		"sharp": "0.32.5",
+		"sharp": "0.32.6",
 		"sharp-read-bmp": "github:misskey-dev/sharp-read-bmp",
 		"slacc": "0.0.10",
 		"strict-event-emitter-types": "2.0.0",
