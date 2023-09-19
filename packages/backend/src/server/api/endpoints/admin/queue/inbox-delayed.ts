@@ -62,7 +62,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				try {
 					host = new URL(job.data.signature.keyId).host;
 				} catch (e) {
-					this.apiLoggerService.logger.warn(`failed to parse url '${job.data.signature.keyId}': ${e}`);
+					this.apiLoggerService.logger.warn(`failed to parse url in ${job.id}: ${e}`);
+					this.apiLoggerService.logger.warn(`id: ${job.id}, data: ${JSON.stringify(job.data)}`);
 					continue;
 				}
 
