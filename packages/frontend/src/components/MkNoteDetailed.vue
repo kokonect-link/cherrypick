@@ -11,6 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	v-hotkey="keymap"
 	:class="$style.root"
 >
+	<div v-if="appearNote.reply && appearNote.reply.replyId && !conversationLoaded" style="padding: 16px">
+		<MkButton style="margin: 0 auto;" primary rounded @click="loadConversation">{{ i18n.ts.loadConversation }}</MkButton>
+	</div>
 	<div v-if="isRenote" :class="$style.renote">
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.renoteAvatar" :user="note.user" link preview/>
 		<MkA v-user-preview="note.userId" :class="$style.renoteName" :to="userPage(note.user)"/>
@@ -44,12 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 		</div>
 	</div>
-	<div v-if="appearNote.reply && appearNote.reply.replyId">
-		<div v-if="!conversationLoaded" style="padding: 16px">
-			<MkButton style="margin: 0 auto;" primary rounded @click="loadConversation">{{ i18n.ts.loadConversation }}</MkButton>
-		</div>
-		<MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note"/>
-	</div>
+	<MkNoteSub v-for="note in conversation" v-if="appearNote.reply && appearNote.reply.replyId" :key="note.id" :class="$style.replyToMore" :note="note"/>
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
@@ -175,10 +173,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
-			<div v-if="!repliesLoaded" style="padding: 16px">
+			<div v-if="replies.length > 3 && !repliesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadReplies }}</MkButton>
 			</div>
-			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
+			<MkNoteSub v-for="note in replies" v-if="replies.length <= 3 || repliesLoaded" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
 		</div>
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination">
@@ -580,6 +578,13 @@ function focus() {
 function blur() {
 	el.value.blur();
 }
+
+os.api('notes/children', {
+	noteId: appearNote.id,
+	limit: 4,
+}).then(res => {
+	replies.value = res;
+});
 
 const repliesLoaded = ref(false);
 function loadReplies() {
