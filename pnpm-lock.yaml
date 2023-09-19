@@ -710,6 +710,9 @@ importers:
       '@discordapp/twemoji':
         specifier: 14.1.2
         version: 14.1.2
+      '@fontsource/jetbrains-mono':
+        specifier: ^5.0.12
+        version: 5.0.12
       '@github/webauthn-json':
         specifier: 2.1.1
         version: 2.1.1
@@ -821,6 +824,12 @@ importers:
       photoswipe:
         specifier: 5.4.0
         version: 5.4.0
+      pretendard:
+        specifier: ^1.3.8
+        version: 1.3.8
+      pretendard-jp:
+        specifier: ^1.3.8
+        version: 1.3.8
       prismjs:
         specifier: 1.29.0
         version: 1.29.0
@@ -3944,6 +3953,10 @@ packages:
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
     dev: true
+
+  /@fontsource/jetbrains-mono@5.0.12:
+    resolution: {integrity: sha512-BO2in8zNXWUn1TJsPWgL2qSMYU2SQKoKOmJ9FRrE9gMFtPhEDKgxc0hUCVmeDUcMFrafFEn+KqZ5a85z8rwMzA==}
+    dev: false
 
   /@github/webauthn-json@2.1.1:
     resolution: {integrity: sha512-XrftRn4z75SnaJOmZQbt7Mk+IIjqVHw+glDGOxuHwXkZBZh/MBoRS7MHjSZMDaLhT4RjN2VqiEU7EOYleuJWSQ==}
@@ -16907,6 +16920,14 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
     dev: true
+
+  /pretendard-jp@1.3.8:
+    resolution: {integrity: sha512-yRnEWummLceSk+J5iNPo9DU650PCHW9PpnqqykNFZYZk/mLTt9b/D5n295pK05Udoki8IRq21qyzGmvn5VChjQ==}
+    dev: false
+
+  /pretendard@1.3.8:
+    resolution: {integrity: sha512-LTuUQsX0tE4vQVS4pL5xZ7p0Z4/sOZxZxeENydS0NnhDE4EOu+3pPQS1hoa9EIbaNuy+lL4P9ngAuXhD/FluiQ==}
+    dev: false
 
   /prettier@2.8.8:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
