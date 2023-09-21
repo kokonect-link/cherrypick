@@ -56,15 +56,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, inject, watch, nextTick } from 'vue';
 import tinycolor from 'tinycolor2';
-import { getScrollPosition, scrollToTop } from '@/scripts/scroll';
+import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
 import { globalEvents } from '@/events';
-import { injectPageMetadata } from '@/scripts/page-metadata';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
-import { miLocalStorage } from '@/local-storage';
-import { mainRouter } from '@/router';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { defaultStore } from '@/store';
+import { injectPageMetadata } from '@/scripts/page-metadata.js';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { mainRouter } from '@/router.js';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
 let showFollowButton = $ref(false);

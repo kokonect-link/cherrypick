@@ -4,13 +4,13 @@
  */
 
 import { defineAsyncComponent } from 'vue';
-import * as os from '@/os';
-import { instance } from '@/instance';
-import { host } from '@/config';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { defaultStore } from '@/store';
-import { unisonReload } from '@/scripts/unison-reload';
+import * as os from '@/os.js';
+import { instance } from '@/instance.js';
+import { host } from '@/config.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 export function openInstanceMenu(ev: MouseEvent) {
 	os.popupMenu([{

@@ -13,17 +13,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<a v-if="item.type === 'a'" :href="item.href" :target="item.target" :tabindex="i" class="_button item" :class="{ danger: item.danger, active: item.active }">
 					<span v-if="item.icon" class="icon"><i :class="item.icon" class="ti-fw"></i></span>
 					<span class="text">{{ item.text }}</span>
-          <span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
 				</a>
 				<button v-else-if="item.type === 'button'" :tabindex="i" class="_button item" :class="{ danger: item.danger, active: item.active }" :disabled="item.active" @click="ev => item.action(ev)">
 					<span v-if="item.icon" class="icon"><i :class="item.icon" class="ti-fw"></i></span>
 					<span class="text">{{ item.text }}</span>
-          <span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
 				</button>
 				<MkA v-else :to="item.to" :tabindex="i" class="_button item" :class="{ danger: item.danger, active: item.active }">
 					<span v-if="item.icon" class="icon"><i :class="item.icon" class="ti-fw"></i></span>
 					<span class="text">{{ item.text }}</span>
-          <span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
 				</MkA>
 			</template>
 		</div>

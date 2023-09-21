@@ -31,11 +31,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
-import { defaultStore } from '@/store';
+import { defaultStore } from '@/store.js';
 
 const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));

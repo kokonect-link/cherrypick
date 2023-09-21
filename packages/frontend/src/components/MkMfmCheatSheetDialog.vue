@@ -15,7 +15,7 @@
 import { shallowRef } from 'vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import XMfmCheatSheet from '@/pages/mfm-cheat-sheet.vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 
 const emit = defineEmits<{
   (ev: 'done'): void;

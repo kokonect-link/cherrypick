@@ -31,12 +31,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted } from 'vue';
 import * as Acct from 'cherrypick-js/built/acct';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import { useRouter } from '@/router';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { $i } from '@/account';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import { useRouter } from '@/router.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { $i } from '@/account.js';
 import { globalEvents } from '@/events';
 import MkChatPreview from '@/components/MkChatPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';

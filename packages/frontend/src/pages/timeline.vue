@@ -51,18 +51,18 @@ import { defineAsyncComponent, computed, watch, ref, provide, onMounted } from '
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
-import { scroll } from '@/scripts/scroll';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
-import { $i } from '@/account';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { scroll } from '@/scripts/scroll.js';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
+import { $i } from '@/account.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { miLocalStorage } from '@/local-storage.js';
 import { antennasCache, userListsCache } from '@/cache';
-import { miLocalStorage } from '@/local-storage';
 import { globalEvents } from '@/events';
-import { deviceKind } from '@/scripts/device-kind';
-import { unisonReload } from '@/scripts/unison-reload';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');

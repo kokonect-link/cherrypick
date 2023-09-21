@@ -165,10 +165,10 @@ import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
 import FormSuspense from '@/components/form/suspense.vue';
-import * as os from '@/os';
-import { fetchInstance } from '@/instance';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { fetchInstance } from '@/instance.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 
 let name: string | null = $ref(null);

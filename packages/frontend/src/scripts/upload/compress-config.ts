@@ -6,7 +6,7 @@
 import isAnimated from 'is-file-animated';
 import { isWebpSupported } from './isWebpSupported';
 import type { BrowserImageResizerConfig } from 'browser-image-resizer';
-import { defaultStore } from '@/store';
+import { defaultStore } from '@/store.js';
 
 const compressTypeMap = {
 	'lossy': { quality: 0.90, mimeType: 'image/webp' },

@@ -31,10 +31,10 @@ import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
-import { $i } from '@/account';
-import { globalEvents } from '@/events';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
+import { $i } from '@/account.js';
+import { globalEvents } from '@/events.js';
+import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
 
 let showEl = $ref(false);
 

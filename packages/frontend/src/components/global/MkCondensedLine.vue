@@ -18,7 +18,7 @@ interface Props {
 
 const contentSymbol = Symbol();
 const observer = new ResizeObserver((entries) => {
-  const results: {
+	const results: {
     container: HTMLSpanElement;
     transform: string;
   }[] = [];

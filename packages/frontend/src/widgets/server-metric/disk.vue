@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import XPie from './pie.vue';
-import bytes from '@/filters/bytes';
+import bytes from '@/filters/bytes.js';
 
 const props = defineProps<{
 	meta: any; // TODO

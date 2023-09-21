@@ -45,11 +45,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { i18n } from '@/i18n';
-import { notePage } from '@/filters/note';
-import { userPage } from '@/filters/user';
-import { defaultStore } from '@/store';
-import { deepClone } from '@/scripts/clone';
+import { i18n } from '@/i18n.js';
+import { notePage } from '@/filters/note.js';
+import { userPage } from '@/filters/user.js';
+import { defaultStore } from '@/store.js';
+import { deepClone } from '@/scripts/clone.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{

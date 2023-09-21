@@ -39,12 +39,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import { i18n } from '@/i18n';
-import { claimAchievement } from '@/scripts/achievements';
-import { $i } from '@/account';
-import { userName } from '@/filters/user';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import { i18n } from '@/i18n.js';
+import { claimAchievement } from '@/scripts/achievements.js';
+import { $i } from '@/account.js';
+import { userName } from '@/filters/user.js';
 import { globalEvents } from '@/events';
 
 let showFollowButton = $ref(false);

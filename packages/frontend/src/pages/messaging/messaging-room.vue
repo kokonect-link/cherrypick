@@ -12,52 +12,52 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@dragover.prevent.stop="onDragover"
 		@drop.prevent.stop="onDrop"
 	>
-    <MkSpacer :contentMax="800">
-      <div :class="$style.body">
-        <MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
-          <template #empty>
-            <div class="_fullinfo">
-              <img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
-              <div>{{ i18n.ts.noMessagesYet }}</div>
-            </div>
-          </template>
-          <template #default="{ items: messages, fetching: pFetching }">
-            <MkDateSeparatedList
-                v-if="messages.length > 0"
-                v-slot="{ item: message }"
-                :class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
-                :items="messages"
-                direction="up"
-                reversed
-            >
-              <XMessage :key="message.id" :message="message" :isGroup="group != null"/>
-            </MkDateSeparatedList>
-          </template>
-        </MkPagination>
-      </div>
-    </MkSpacer>
+		<MkSpacer :contentMax="800">
+			<div :class="$style.body">
+				<MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
+					<template #empty>
+						<div class="_fullinfo">
+							<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
+							<div>{{ i18n.ts.noMessagesYet }}</div>
+						</div>
+					</template>
+					<template #default="{ items: messages, fetching: pFetching }">
+						<MkDateSeparatedList
+							v-if="messages.length > 0"
+							v-slot="{ item: message }"
+							:class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
+							:items="messages"
+							direction="up"
+							reversed
+						>
+							<XMessage :key="message.id" :message="message" :isGroup="group != null"/>
+						</MkDateSeparatedList>
+					</template>
+				</MkPagination>
+			</div>
+		</MkSpacer>
 	</div>
 	<template #footer>
-    <div :class="$style.footerSpacer">
-      <div :class="$style.footer">
-        <div v-if="typers.length > 0" :class="$style.typers">
-          <I18n :src="i18n.ts.typingUsers" textTag="span">
-            <template #users>
-              <b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
-            </template>
-          </I18n>
-          <MkEllipsis/>
-        </div>
-        <Transition :name="animation ? 'fade' : ''">
-          <div v-show="showIndicator" :class="$style.newMessage">
-            <button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
-              <i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
-            </button>
-          </div>
-        </Transition>
-        <XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
-      </div>
-    </div>
+		<div :class="$style.footerSpacer">
+			<div :class="$style.footer">
+				<div v-if="typers.length > 0" :class="$style.typers">
+					<I18n :src="i18n.ts.typingUsers" textTag="span">
+						<template #users>
+							<b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
+						</template>
+					</I18n>
+					<MkEllipsis/>
+				</div>
+				<Transition :name="animation ? 'fade' : ''">
+					<div v-show="showIndicator" :class="$style.newMessage">
+						<button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
+							<i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
+						</button>
+					</div>
+				</Transition>
+				<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
+			</div>
+		</div>
 	</template>
 </MkStickyContainer>
 </template>
@@ -70,14 +70,14 @@ import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
-import { isBottomVisible, onScrollBottom, scrollToBottom } from '@/scripts/scroll';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import * as sound from '@/scripts/sound';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { defaultStore } from '@/store';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { isBottomVisible, onScrollBottom, scrollToBottom } from '@/scripts/scroll.js';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import * as sound from '@/scripts/sound.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const props = defineProps<{
 	userAcct?: string;

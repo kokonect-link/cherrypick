@@ -963,6 +963,9 @@ importers:
       '@types/node':
         specifier: 20.6.0
         version: 20.6.0
+      '@types/prismjs':
+        specifier: ^1.26.0
+        version: 1.26.0
       '@types/punycode':
         specifier: 2.1.0
         version: 2.1.0
@@ -8035,6 +8038,10 @@ packages:
 
   /@types/pretty-hrtime@1.0.1:
     resolution: {integrity: sha512-VjID5MJb1eGKthz2qUerWT8+R4b9N+CHvGCzg9fn4kWZgaF9AhdYikQio3R7wV8YY1NsQKPaCwKz1Yff+aHNUQ==}
+    dev: true
+
+  /@types/prismjs@1.26.0:
+    resolution: {integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==}
     dev: true
 
   /@types/prop-types@15.7.5:

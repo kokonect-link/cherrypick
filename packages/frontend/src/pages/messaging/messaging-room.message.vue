@@ -44,13 +44,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os';
+import * as os from '@/os.js';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkAvatar from '@/components/global/MkAvatar.vue';
 import MkTime from '@/components/global/MkTime.vue';
-import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
+import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
 
 const props = defineProps<{
 	message: Misskey.entities.MessagingMessage;

@@ -38,15 +38,15 @@ import { onMounted, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
 // import insertTextAtCursor from 'insert-text-at-cursor';
-import { formatTimeString } from '@/scripts/format-time-string';
-import { selectFile } from '@/scripts/select-file';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { Autocomplete } from '@/scripts/autocomplete';
-import { uploadFile } from '@/scripts/upload';
-import { miLocalStorage } from '@/local-storage';
+import { formatTimeString } from '@/scripts/format-time-string.js';
+import { selectFile } from '@/scripts/select-file.js';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { Autocomplete } from '@/scripts/autocomplete.js';
+import { uploadFile } from '@/scripts/upload.js';
+import { miLocalStorage } from '@/local-storage.js';
 import MkLoading from '@/components/global/MkLoading.vue';
 
 const props = defineProps<{

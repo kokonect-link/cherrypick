@@ -40,13 +40,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
-import * as os from '@/os';
-import { $i } from '@/account';
-import { mainRouter } from '@/router';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
-import { defaultStore } from '@/store';
-import { userPage } from '@/filters/user';
+import * as os from '@/os.js';
+import { $i } from '@/account.js';
+import { mainRouter } from '@/router.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
+import { userPage } from '@/filters/user.js';
 
 const props = defineProps<{
 	groupId: string;

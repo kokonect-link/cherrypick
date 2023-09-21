@@ -61,12 +61,13 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';
-import * as os from '@/os';
+import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar';
-import { defaultStore } from '@/store';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { defaultStore } from '@/store.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { deepClone } from '@/scripts/clone.js';
 import { globalEvents } from '@/events';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));

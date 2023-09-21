@@ -46,7 +46,7 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 import 'vue-prism-editor/dist/prismeditor.min.css';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-regex';

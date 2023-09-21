@@ -27,13 +27,13 @@ import { onMounted, shallowRef } from 'vue';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
-import { version } from '@/config';
-import { i18n } from '@/i18n';
-import { confetti } from '@/scripts/confetti';
-import { unisonReload } from '@/scripts/unison-reload';
-import * as os from '@/os';
-import { miLocalStorage } from '@/local-storage';
-import { fetchCustomEmojis } from '@/custom-emojis';
+import { version } from '@/config.js';
+import { i18n } from '@/i18n.js';
+import { confetti } from '@/scripts/confetti.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import * as os from '@/os.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { fetchCustomEmojis } from '@/custom-emojis.js';
 
 let showChangelog = $ref(false);
 

@@ -376,9 +376,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import MkTextarea from '@/components/MkTextarea.vue';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
-import { customEmojis } from '@/custom-emojis';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { i18n } from '@/i18n.js';
+import { customEmojis } from '@/custom-emojis.js';
 
 defineProps<{
   popup?: boolean;

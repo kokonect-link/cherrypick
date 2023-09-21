@@ -17,9 +17,9 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { $i } from '@/account';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { $i } from '@/account.js';
 import CPAvatar from '@/components/global/ToastAvatar.vue';
 
 defineProps<{

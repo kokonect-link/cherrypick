@@ -6,16 +6,16 @@
 import { toUnicode } from 'punycode';
 import { defineAsyncComponent, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { i18n } from '@/i18n';
-import copyToClipboard from '@/scripts/copy-to-clipboard';
-import { host, url } from '@/config';
-import * as os from '@/os';
-import { defaultStore, userActions } from '@/store';
-import { $i, iAmModerator } from '@/account';
-import { mainRouter } from '@/router';
-import { Router } from '@/nirax';
-import { antennasCache, rolesCache, userListsCache } from '@/cache';
-import { editNickname } from '@/scripts/edit-nickname';
+import { i18n } from '@/i18n.js';
+import copyToClipboard from '@/scripts/copy-to-clipboard.js';
+import { host, url } from '@/config.js';
+import * as os from '@/os.js';
+import { defaultStore, userActions } from '@/store.js';
+import { $i, iAmModerator } from '@/account.js';
+import { mainRouter } from '@/router.js';
+import { Router } from '@/nirax.js';
+import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
+import { editNickname } from '@/scripts/edit-nickname.js';
 import { globalEvents } from '@/events';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {

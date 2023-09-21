@@ -82,11 +82,11 @@ import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { customEmojiCategories } from '@/custom-emojis';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { customEmojiCategories } from '@/custom-emojis.js';
 import MkSwitch from '@/components/MkSwitch.vue';
-import { selectFile, selectFiles } from '@/scripts/select-file';
+import { selectFile, selectFiles } from '@/scripts/select-file.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 
 const props = defineProps<{

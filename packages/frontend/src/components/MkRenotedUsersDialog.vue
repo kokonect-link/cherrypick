@@ -37,10 +37,10 @@ import { onMounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
-import { userPage } from '@/filters/user';
-import { i18n } from '@/i18n';
-import * as os from '@/os';
-import { infoImageUrl } from '@/instance';
+import { userPage } from '@/filters/user.js';
+import { i18n } from '@/i18n.js';
+import * as os from '@/os.js';
+import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void,

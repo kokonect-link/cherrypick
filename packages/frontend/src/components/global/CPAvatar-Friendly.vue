@@ -12,12 +12,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
-import MkA from './MkA.vue';
-import { getStaticImageUrl } from '@/scripts/media-proxy';
-import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash';
-import { acct, userPage } from '@/filters/user';
-import { defaultStore } from '@/store';
+import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import MkA from '@/components/global/MkA.vue';
+import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash.js';
+import { acct, userPage } from '@/filters/user.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;

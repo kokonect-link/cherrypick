@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { utils, values } from '@syuilo/aiscript';
 import { defineAsyncComponent } from 'vue';
 import { permissions as MkPermissions } from 'cherrypick-js';
-import * as os from '@/os';
-import { $i } from '@/account';
-import { miLocalStorage } from '@/local-storage';
-import { customEmojis } from '@/custom-emojis';
-import { lang } from '@/config';
+import { utils, values } from '@syuilo/aiscript';
+import * as os from '@/os.js';
+import { $i } from '@/account.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { customEmojis } from '@/custom-emojis.js';
+import { lang } from '@/config.js';
 
 export function createAiScriptEnv(opts) {
 	const table = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

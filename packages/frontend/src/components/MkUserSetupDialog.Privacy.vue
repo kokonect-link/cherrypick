@@ -44,12 +44,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
-import { i18n } from '@/i18n';
+import { computed, ref, watch } from 'vue';
+import { instance } from '@/instance.js';
+import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
-import * as os from '@/os';
+import * as os from '@/os.js';
+import { $i } from '@/account.js';
 
 let isLocked = ref(false);
 let hideOnlineStatus = ref(false);

@@ -66,14 +66,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { miLocalStorage } from '@/local-storage';
-import { unisonReload } from '@/scripts/unison-reload';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 import { globalEvents } from '@/events';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));

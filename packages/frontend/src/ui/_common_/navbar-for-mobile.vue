@@ -51,12 +51,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, toRef } from 'vue';
 import { openInstanceMenu } from './common';
-import * as os from '@/os';
-import { navbarItemDef } from '@/navbar';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
+import * as os from '@/os.js';
+import { navbarItemDef } from '@/navbar.js';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
 
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {

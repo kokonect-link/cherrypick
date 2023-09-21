@@ -21,11 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, provide, inject, Ref, ref, watch } from 'vue';
 import { $$ } from 'vue/macros';
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';
-import { deviceKind } from '@/scripts/device-kind';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
 import { globalEvents } from '@/events';
-import { miLocalStorage } from '@/local-storage';
+import { miLocalStorage } from '@/local-storage.js';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));

@@ -22,7 +22,7 @@ import { ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkTab from '@/components/MkTab.vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;

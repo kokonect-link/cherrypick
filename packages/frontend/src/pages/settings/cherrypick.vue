@@ -68,11 +68,11 @@ import { computed, watch } from 'vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
-import { defaultStore } from '@/store';
-import * as os from '@/os';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { defaultStore } from '@/store.js';
+import * as os from '@/os.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({

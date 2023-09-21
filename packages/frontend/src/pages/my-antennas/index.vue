@@ -27,11 +27,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onActivated } from 'vue';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import MkButton from '@/components/MkButton.vue';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { antennasCache } from '@/cache';
-import { infoImageUrl } from '@/instance';
-import { useRouter } from '@/router';
+import { infoImageUrl } from '@/instance.js';
+import { useRouter } from '@/router.js';
 
 const router = useRouter();
 

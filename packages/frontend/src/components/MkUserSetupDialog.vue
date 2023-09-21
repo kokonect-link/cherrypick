@@ -169,13 +169,13 @@ import XFontSize from '@/components/MkUserSetupDialog.FontSize.vue';
 import XBlur from '@/components/MkUserSetupDialog.Blur.vue';
 import XMfm from '@/components/MkUserSetupDialog.MisskeyFlavoredMarkdown.vue';
 import MkAnimBg from '@/components/MkAnimBg.vue';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
-import { host } from '@/config';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
+import { host } from '@/config.js';
 import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
-import { defaultStore } from '@/store';
-import * as os from '@/os';
-import { unisonReload } from '@/scripts/unison-reload';
+import { defaultStore } from '@/store.js';
+import * as os from '@/os.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;

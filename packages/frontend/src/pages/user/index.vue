@@ -29,13 +29,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { acct as getAcct } from '@/filters/user';
-import * as os from '@/os';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { getUserMenu } from '@/scripts/get-user-menu';
-import { mainRouter } from '@/router';
+import { acct as getAcct } from '@/filters/user.js';
+import * as os from '@/os.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { mainRouter } from '@/router.js';
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));

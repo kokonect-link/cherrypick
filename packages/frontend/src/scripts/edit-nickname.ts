@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as os from '@/os';
 import { User } from 'cherrypick-js/src/entities';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
 
 export async function editNickname(user: User) {
 	if (!defaultStore.state.nicknameEnabled) return;

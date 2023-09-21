@@ -30,10 +30,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import tinycolor from 'tinycolor2';
-import { miLocalStorage } from '@/local-storage';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
-import { deviceKind } from '@/scripts/device-kind';
+import { miLocalStorage } from '@/local-storage.js';
+import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
+import { deviceKind } from '@/scripts/device-kind.js';
 import { globalEvents } from '@/events';
 
 const MOBILE_THRESHOLD = 500;

@@ -32,9 +32,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import * as Acct from 'cherrypick-js/built/acct';
-import { acct } from '@/filters/user';
-import { $i } from '@/account';
-import { i18n } from '@/i18n';
+import { acct } from '@/filters/user.js';
+import { $i } from '@/account.js';
+import { i18n } from '@/i18n.js';
 
 const getAcct = Acct.toString;
 

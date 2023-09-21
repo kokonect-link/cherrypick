@@ -5,15 +5,15 @@
 
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os';
-import { showSuspendedDialog } from './scripts/show-suspended-dialog';
-import { i18n } from './i18n';
-import { miLocalStorage } from './local-storage';
-import { MenuButton } from './types/menu';
-import { del, get, set } from '@/scripts/idb-proxy';
-import { apiUrl } from '@/config';
-import { waiting, api, popup, popupMenu, success, alert } from '@/os';
-import { unisonReload, reloadChannel } from '@/scripts/unison-reload';
+import * as os from '@/os.js';
+import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
+import { i18n } from '@/i18n.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { MenuButton } from '@/types/menu.js';
+import { del, get, set } from '@/scripts/idb-proxy.js';
+import { apiUrl } from '@/config.js';
+import { waiting, api, popup, popupMenu, success, alert } from '@/os.js';
+import { unisonReload, reloadChannel } from '@/scripts/unison-reload.js';
 
 // TODO: 他のタブと永続化されたstateを同期
 

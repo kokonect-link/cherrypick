@@ -118,14 +118,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Misskey from 'cherrypick-js';
 import { Ref, ref, watch } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
-import { formatDateTimeString } from '@/scripts/format-time-string';
-import { addTime } from '@/scripts/time';
-import { i18n } from '@/i18n';
-import date from '@/filters/date';
+import { formatDateTimeString } from '@/scripts/format-time-string.js';
+import { addTime } from '@/scripts/time.js';
+import { i18n } from '@/i18n.js';
+import date from '@/filters/date.js';
 
 const props = defineProps<{
 	modelValue: Misskey.entities.Note['event']

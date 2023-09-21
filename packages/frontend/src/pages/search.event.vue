@@ -51,7 +51,7 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkFolder from '@/components/MkFolder.vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
 let key = $ref(0);

@@ -13,12 +13,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, provide, onUnmounted } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
-import { useStream } from '@/stream';
-import * as sound from '@/scripts/sound';
-import { $i } from '@/account';
-import { defaultStore } from '@/store';
 import MkInfo from '@/components/MkInfo.vue';
-import { i18n } from '@/i18n';
+import { useStream } from '@/stream.js';
+import * as sound from '@/scripts/sound.js';
+import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	src: string;
