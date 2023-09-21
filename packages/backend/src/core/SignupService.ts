@@ -5,7 +5,8 @@
 
 import { generateKeyPair } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
-import bcrypt from 'bcryptjs';
+//import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import { DataSource, IsNull } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { MiMeta, UsedUsernamesRepository, UsersRepository } from '@/models/_.js';
@@ -69,8 +70,8 @@ export class SignupService {
 			}
 
 			// Generate hash of password
-			const salt = await bcrypt.genSalt(8);
-			hash = await bcrypt.hash(password, salt);
+			//const salt = await bcrypt.genSalt(8);
+			hash = await argon2.hash(password);
 		}
 
 		// Generate secret
