@@ -107,7 +107,7 @@ export class DriveFileEntityService {
 	}
 
 	@bindThis
-	public getPublicUrl(file: MiDriveFile, mode?: 'avatar'): string { // static = thumbnail
+	public getPublicUrl(file: MiDriveFile, mode?: 'avatar', ap?: boolean): string { // static = thumbnail
 		// リモートかつメディアプロキシ
 		if (file.uri != null && file.userHost != null && this.config.externalMediaProxyEnabled) {
 			return this.getProxiedUrl(file.uri, mode);
@@ -129,6 +129,16 @@ export class DriveFileEntityService {
 		if (mode === 'avatar') {
 			return this.getProxiedUrl(url, 'avatar');
 		}
+
+		if (ap && this.config.apFileBaseUrl) {
+			const baseUrl = this.config.apFileBaseUrl;
+			const isValidBaseUrl = /^https?:\/\/[\w.-]+\.[a-zA-Z]{2,}(\/.*)?$/i.test(baseUrl);
+			if (isValidBaseUrl) {
+				const trimmedBaseUrl = baseUrl.replace(/\/$/, '');
+				return url.replace(/^https?:\/\/[\w.-]+\.[a-zA-Z]{2,}/, trimmedBaseUrl);
+			}
+		}
+
 		return url;
 	}
 

@@ -250,8 +250,8 @@ export class ApPersonService implements OnModuleInit {
 		return {
 			avatarId: avatar?.id ?? null,
 			bannerId: banner?.id ?? null,
-			avatarUrl: avatar ? this.driveFileEntityService.getPublicUrl(avatar, 'avatar') : null,
-			bannerUrl: banner ? this.driveFileEntityService.getPublicUrl(banner) : null,
+			avatarUrl: avatar ? this.driveFileEntityService.getPublicUrl(avatar, 'avatar', true) : null,
+			bannerUrl: banner ? this.driveFileEntityService.getPublicUrl(banner, undefined, true) : null,
 			avatarBlurhash: avatar?.blurhash ?? null,
 			bannerBlurhash: banner?.blurhash ?? null,
 		};
