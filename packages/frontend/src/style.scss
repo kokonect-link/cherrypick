@@ -27,7 +27,8 @@
 
 $default-font: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo", Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 $system-font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-$monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
+$monospace-font: "Pretendard JP", Pretendard, "JetBrains Mono", Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
+$code-monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
 
 :root {
 	--radius: 12px;
@@ -501,7 +502,7 @@ hr {
 
 code[class*="language-"],
 pre[class*="language-"] {
-	font-family: $monospace-font
+	font-family: $code-monospace-font
 }
 
 .prism-editor__textarea:focus {
