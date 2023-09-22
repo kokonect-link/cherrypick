@@ -204,7 +204,7 @@ function onScroll() {
 	showEl = currentScrollPosition < lastScrollPosition;
 	lastScrollPosition = currentScrollPosition;
 	showEl = !showEl;
-  globalEvents.emit('showEl', showEl);
+	globalEvents.emit('showEl', showEl);
 }
 
 const onContextmenu = (ev) => {

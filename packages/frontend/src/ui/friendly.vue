@@ -102,8 +102,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, ComputedRef, shallowRef, Ref, onUnmounted } from 'vue';
 import tinycolor from 'tinycolor2';
-import XCommon from '@/ui/_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
+import XCommon from '@/ui/_common_/common.vue';
 import { instanceName } from '@/config.js';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os.js';
@@ -235,7 +235,7 @@ onMounted(() => {
 
 	contents.value.rootEl.addEventListener('scroll', onScroll);
 
-  globalEvents.on('queueUpdated', (q) => queueUpdated(q));
+	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
@@ -262,7 +262,7 @@ function onScroll() {
 	showEl = currentScrollPosition < lastScrollPosition;
 	lastScrollPosition = currentScrollPosition;
 	showEl = !showEl;
-  globalEvents.emit('showEl', showEl);
+	globalEvents.emit('showEl', showEl);
 }
 
 const onContextmenu = (ev) => {
