@@ -102,6 +102,7 @@ describe('ユーザー', () => {
 			birthday: user.birthday,
 			lang: user.lang,
 			fields: user.fields,
+			verifiedLinks: user.verifiedLinks,
 			followersCount: user.followersCount,
 			followingCount: user.followingCount,
 			notesCount: user.notesCount,
@@ -131,6 +132,7 @@ describe('ユーザー', () => {
 			isBlocked: user.isBlocked ?? false,
 			isMuted: user.isMuted ?? false,
 			isRenoteMuted: user.isRenoteMuted ?? false,
+			notify: user.notify ?? 'none',
 		});
 	};
 
@@ -370,6 +372,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.birthday, null);
 		assert.strictEqual(response.lang, null);
 		assert.deepStrictEqual(response.fields, []);
+		assert.deepStrictEqual(response.verifiedLinks, []);
 		assert.strictEqual(response.followersCount, 0);
 		assert.strictEqual(response.followingCount, 0);
 		assert.strictEqual(response.notesCount, 0);
@@ -494,7 +497,7 @@ describe('ユーザー', () => {
 		{ parameters: (): object => ({ mutedWords: [] }) },
 		{ parameters: (): object => ({ mutedInstances: ['xxxx.xxxxx'] }) },
 		{ parameters: (): object => ({ mutedInstances: [] }) },
-		{ parameters: (): object => ({ mutingNotificationTypes: ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'groupInvited', 'app'] }) },
+		{ parameters: (): object => ({ mutingNotificationTypes: ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'groupInvited', 'app'] }) },
 		{ parameters: (): object => ({ mutingNotificationTypes: [] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest', 'groupInvited'] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: [] }) },

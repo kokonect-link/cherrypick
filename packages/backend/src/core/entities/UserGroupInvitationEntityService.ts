@@ -6,7 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { UserGroupInvitationsRepository } from '@/models/_.js';
-import type { MiUserGroupInvitation } from '@/models/entities/UserGroupInvitation.js';
+import type { MiUserGroupInvitation } from '@/models/UserGroupInvitation.js';
 import { bindThis } from '@/decorators.js';
 import { UserGroupEntityService } from './UserGroupEntityService.js';
 

@@ -1183,6 +1183,10 @@ export interface Locale {
     "loadReplies": string;
     "loadConversation": string;
     "pinnedList": string;
+    "keepScreenOn": string;
+    "verifiedLink": string;
+    "notifyNotes": string;
+    "unnotifyNotes": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -2273,6 +2277,7 @@ export interface Locale {
         "metadataContent": string;
         "changeAvatar": string;
         "changeBanner": string;
+        "verifiedLinkDescription": string;
     };
     "_exportOrImport": {
         "allNotes": string;
@@ -2406,6 +2411,7 @@ export interface Locale {
         "yourFollowRequestAccepted": string;
         "youWereInvitedToGroup": string;
         "pollEnded": string;
+        "newNote": string;
         "unreadAntennaNote": string;
         "emptyPushNotificationMessage": string;
         "achievementEarned": string;

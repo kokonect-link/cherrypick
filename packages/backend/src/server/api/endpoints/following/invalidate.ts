@@ -29,7 +29,7 @@ export const meta = {
 		noSuchUser: {
 			message: 'No such user.',
 			code: 'NO_SUCH_USER',
-			id: '5b12c78d-2b28-4dca-99d2-f56139b42ff8',
+			id: 'b77e6ae6-a3e5-40da-9cc8-c240115479cc',
 		},
 
 		followerIsYourself: {
@@ -41,7 +41,7 @@ export const meta = {
 		notFollowing: {
 			message: 'The other use is not following you.',
 			code: 'NOT_FOLLOWING',
-			id: '5dbf82f5-c92b-40b1-87d1-6c8c0741fd09',
+			id: '918faac3-074f-41ae-9c43-ed5d2946770d',
 		},
 	},
 

@@ -7,7 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models/_.js';
 import type { Packed } from '@/misc/json-schema.js';
-import type { MiUserGroup } from '@/models/entities/UserGroup.js';
+import type { MiUserGroup } from '@/models/UserGroup.js';
 import { bindThis } from '@/decorators.js';
 
 @Injectable()

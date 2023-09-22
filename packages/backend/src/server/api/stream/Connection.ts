@@ -4,15 +4,15 @@
  */
 
 import * as WebSocket from 'ws';
-import type { MiUser } from '@/models/entities/User.js';
-import type { MiAccessToken } from '@/models/entities/AccessToken.js';
+import type { MiUser } from '@/models/User.js';
+import type { MiAccessToken } from '@/models/AccessToken.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { NoteReadService } from '@/core/NoteReadService.js';
 import type { NotificationService } from '@/core/NotificationService.js';
 import { bindThis } from '@/decorators.js';
 import { CacheService } from '@/core/CacheService.js';
 import { MiUserProfile } from '@/models/_.js';
-import type { MiUserGroup } from '@/models/entities/UserGroup.js';
+import type { MiUserGroup } from '@/models/UserGroup.js';
 import type { ChannelsService } from './ChannelsService.js';
 import type { EventEmitter } from 'events';
 import type Channel from './channel.js';

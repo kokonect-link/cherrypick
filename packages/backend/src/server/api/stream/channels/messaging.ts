@@ -5,8 +5,8 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import type { UserGroupJoiningsRepository, UsersRepository, MessagingMessagesRepository } from '@/models/_.js';
-import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/entities/User.js';
-import type { MiUserGroup } from '@/models/entities/UserGroup.js';
+import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/User.js';
+import type { MiUserGroup } from '@/models/UserGroup.js';
 import { MessagingService } from '@/core/MessagingService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DI } from '@/di-symbols.js';
