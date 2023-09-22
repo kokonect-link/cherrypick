@@ -1945,7 +1945,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "이미 설정되어 있어요!"
   registerTOTP: "인증 앱 설정 시작"
-  passwordToTOTP: "비밀번호를 입력하세요."
   step1: "먼저, {a}나 {b}등의 인증 앱을 사용 중인 디바이스에 설치해 주세요."
   step2: "인증 앱을 설치했다면, 표시되어 있는 QR 코드를 앱으로 스캔해 주세요."
   step2Click: "QR 코드를 클릭하면 기기에 설치된 인증 앱에 등록할 수 있어요."

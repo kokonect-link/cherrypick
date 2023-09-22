@@ -42,8 +42,8 @@ export class MiAntenna {
 	})
 	public name: string;
 
-	@Column('enum', { enum: ['home', 'all', 'users', 'list', 'group'] })
-	public src: 'home' | 'all' | 'users' | 'list' | 'group';
+	@Column('enum', { enum: ['home', 'all', 'users', 'list', 'group', 'users_blacklist'] })
+	public src: 'home' | 'all' | 'users' | 'list' | 'group' | 'users_blacklist';
 
 	@Column({
 		...id(),

@@ -53,7 +53,7 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		name: { type: 'string', minLength: 1, maxLength: 100 },
-		src: { type: 'string', enum: ['home', 'all', 'users', 'list', 'group'] },
+		src: { type: 'string', enum: ['home', 'all', 'users', 'list', 'group', 'users_blacklist'] },
 		userListId: { type: 'string', format: 'misskey:id', nullable: true },
 		userGroupId: { type: 'string', format: 'misskey:id', nullable: true },
 		keywords: { type: 'array', items: {

@@ -761,7 +761,7 @@ alwaysMarkSensitive: "デフォルトでメディアをセンシティブ設定�
 loadRawImages: "添付画像のサムネイルをオリジナル画質にする"
 disableShowingAnimatedImages: "アニメーション画像を再生しない"
 disableShowingAnimatedImagesDescription: "無効にすると、動く画像が再生されます。光敏感性発作を起こすことがありますので、ご注意ください。"
-highlightSensitiveMedia: "センシティブなメディアを目立たせる"
+highlightSensitiveMedia: "メディアがセンシティブであることを分かりやすく表示"
 verificationEmailSent: "確認のメールを送信しました。メールに記載されたリンクにアクセスして、設定を完了してください。\nもしメールが来なかったらスパムメールボックスを確認してください。"
 notSet: "未設定"
 emailVerified: "メールアドレスが確認されました"
@@ -1179,6 +1179,8 @@ keepScreenOn: "デバイスの画面を常にオンにする"
 verifiedLink: "このリンク先の所有者であることが確認されました"
 notifyNotes: "投稿を通知"
 unnotifyNotes: "投稿の通知を解除"
+authentication: "認証"
+authenticationRequiredToContinue: "続けるには認証を行ってください"
 additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
@@ -2004,7 +2006,6 @@ _timelineTutorial:
 _2fa:
   alreadyRegistered: "既に設定は完了しています。"
   registerTOTP: "認証アプリの設定を開始"
-  passwordToTOTP: "パスワードを入力してください"
   step1: "まず、{a}や{b}などの認証アプリをお使いのデバイスにインストールします。"
   step2: "次に、表示されているQRコードをアプリでスキャンします。"
   step2Click: "QRコードをクリックすると、お使いの端末にインストールされている認証アプリやキーリングに登録できます。"
@@ -2087,6 +2088,7 @@ _antennaSources:
   users: "指定した一人または複数のユーザーのノート"
   userList: "指定したリストのユーザーのノート"
   userGroup: "指定したグループのユーザーのノート"
+  userBlacklist: "指定した一人または複数のユーザーを除いた全てのノート"
 
 _weekday:
   sunday: "日曜日"

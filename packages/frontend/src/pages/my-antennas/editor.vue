@@ -19,16 +19,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="users">{{ i18n.ts._antennaSources.users }}</option>
 					<option value="list">{{ i18n.ts._antennaSources.userList }}</option>
 					<option value="group">{{ i18n.ts._antennaSources.userGroup }}</option>
+					<option value="users_blacklist">{{ i18n.ts._antennaSources.userBlacklist }}</option>
 				</MkSelect>
 				<MkSelect v-if="src === 'list'" v-model="userListId">
 					<template #label>{{ i18n.ts.userList }}</template>
 					<option v-for="list in userLists" :key="list.id" :value="list.id">{{ list.name }}</option>
 				</MkSelect>
 				<MkSelect v-else-if="src === 'group'" v-model="userGroupId">
-					<template #label>{{ i18n.ts.userGroup }}</template>
+					<template #label>{{ i18n.ts.group }}</template>
 					<option v-for="group in userGroups" :key="group.id" :value="group.id">{{ group.name }}</option>
 				</MkSelect>
-				<MkTextarea v-else-if="src === 'users'" v-model="users">
+				<MkTextarea v-else-if="src === 'users' || src === 'users_blacklist'" v-model="users">
 					<template #label>{{ i18n.ts.users }}</template>
 					<template #caption>{{ i18n.ts.antennaUsersDescription }} <button class="_textButton" @click="addUser">{{ i18n.ts.addUser }}</button></template>
 				</MkTextarea>

@@ -1182,6 +1182,8 @@ export interface Locale {
     "verifiedLink": string;
     "notifyNotes": string;
     "unnotifyNotes": string;
+    "authentication": string;
+    "authenticationRequiredToContinue": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -2090,7 +2092,6 @@ export interface Locale {
     "_2fa": {
         "alreadyRegistered": string;
         "registerTOTP": string;
-        "passwordToTOTP": string;
         "step1": string;
         "step2": string;
         "step2Click": string;
@@ -2173,6 +2174,7 @@ export interface Locale {
         "users": string;
         "userList": string;
         "userGroup": string;
+        "userBlacklist": string;
     };
     "_weekday": {
         "sunday": string;

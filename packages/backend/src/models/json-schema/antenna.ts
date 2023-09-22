@@ -47,7 +47,7 @@ export const packedAntennaSchema = {
 		src: {
 			type: 'string',
 			optional: false, nullable: false,
-			enum: ['home', 'all', 'users', 'list', 'group'],
+			enum: ['home', 'all', 'users', 'list', 'group', 'users_blacklist'],
 		},
 		userListId: {
 			type: 'string',
