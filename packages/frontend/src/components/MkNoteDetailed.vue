@@ -942,13 +942,16 @@ function loadConversation() {
 }
 
 .reactionTab {
-	padding: 4px 6px;
+	padding: 0 12px;
 	border: solid 1px var(--divider);
-	border-radius: 6px;
+	border-radius: 999px;
+	height: 30px;
 }
 
 .reactionTabActive {
-	border-color: var(--accent);
+	background: var(--accentedBg);
+	color: var(--accent);
+	box-shadow: 0 0 0 1px var(--accent) inset;
 }
 
 .time {
