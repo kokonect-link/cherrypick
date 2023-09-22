@@ -7,10 +7,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkContainer :style="`height: ${widgetProps.height}px;`" :showHeader="widgetProps.showHeader" :scrollable="true" data-cy-mkw-notifications class="mkw-notifications">
 	<template #icon><i class="ti ti-bell"></i></template>
 	<template #header>{{ i18n.ts.notifications }}</template>
-	<template #func="{ buttonStyleClass }"><button class="_button" :class="buttonStyleClass" @click="configureNotification()"><i class="ti ti-settings"></i></button></template>
+	<template #func="{ buttonStyleClass }">
+		<button v-tooltip="i18n.ts.filter" class="_button" :class="buttonStyleClass" @click="setFilter"><i class="ti ti-filter"></i></button>
+		<button v-tooltip="i18n.ts.markAllAsRead" class="_button" :class="buttonStyleClass" @click="os.apiWithDialog('notifications/mark-all-as-read')"><i class="ti ti-check"></i></button>
+		<button v-tooltip="i18n.ts.settings" class="_button" :class="buttonStyleClass" @click="configureNotification()"><i class="ti ti-settings"></i></button>
+	</template>
 
 	<div>
-		<XNotifications :includeTypes="widgetProps.includingTypes"/>
+		<XNotifications :includeTypes="includeTypes"/>
 	</div>
 </MkContainer>
 </template>
@@ -23,6 +27,9 @@ import MkContainer from '@/components/MkContainer.vue';
 import XNotifications from '@/components/MkNotifications.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
+import { notificationTypes } from '@/const.js';
+
+let includeTypes = $ref<string[] | null>(null);
 
 const name = 'notifications';
 
@@ -63,6 +70,24 @@ const configureNotification = () => {
 			save();
 		},
 	}, 'closed');
+};
+
+const setFilter = (ev) => {
+	const typeItems = notificationTypes.map(t => ({
+		text: i18n.t(`_notification._types.${t}`),
+		active: includeTypes && includeTypes.includes(t),
+		action: () => {
+			includeTypes = [t];
+		},
+	}));
+	const items = includeTypes != null ? [{
+		icon: 'ti ti-x',
+		text: i18n.ts.clear,
+		action: () => {
+			includeTypes = null;
+		},
+	}, null, ...typeItems] : typeItems;
+	os.popupMenu(items, ev.currentTarget ?? ev.target);
 };
 
 defineExpose<WidgetComponentExpose>({
