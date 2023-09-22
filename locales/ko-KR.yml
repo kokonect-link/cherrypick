@@ -2256,6 +2256,7 @@ _notification:
   notificationWillBeDisplayedLikeThis: "알림이 이렇게 표시돼요!"
   _types:
     all: "전부"
+    note: "노트"
     follow: "팔로잉"
     mention: "멘션"
     reply: "답글"

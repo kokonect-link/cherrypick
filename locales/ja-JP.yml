@@ -2337,6 +2337,7 @@ _notification:
 
   _types:
     all: "すべて"
+    note: "ノート"
     follow: "フォロー"
     mention: "メンション"
     reply: "リプライ"

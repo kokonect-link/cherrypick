@@ -2425,6 +2425,7 @@ export interface Locale {
         "notificationWillBeDisplayedLikeThis": string;
         "_types": {
             "all": string;
+            "note": string;
             "follow": string;
             "mention": string;
             "reply": string;
