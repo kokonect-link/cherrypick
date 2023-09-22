@@ -9,13 +9,13 @@ import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiMessagingMessage } from '@/models/MessagingMessage.js';
-import type { MiNote } from '@/models/Note.js';
+import type { MiNote, IMentionedRemoteUsers } from '@/models/Note.js';
 import type { MiUser, MiRemoteUser } from '@/models/User.js';
 import type { MiUserGroup } from '@/models/UserGroup.js';
 import { QueueService } from '@/core/QueueService.js';
 import { toArray } from '@/misc/prelude/array.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
-import type { MessagingMessagesRepository, MutingsRepository, UserGroupJoiningsRepository, UsersRepository } from '@/models/_.js';
+import type { MessagingMessagesRepository, MutingsRepository, UserGroupJoiningsRepository, UsersRepository, UserProfilesRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
@@ -23,9 +23,6 @@ import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
 import { MessagingMessageEntityService } from '@/core/entities/MessagingMessageEntityService.js';
 import { PushNotificationService } from '@/core/PushNotificationService.js';
 import { bindThis } from '@/decorators.js';
-import type { UserProfilesRepository } from "@/models/_.js";
-import {IMentionedRemoteUsers} from '@/models/Note.js';
-import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 
 @Injectable()
 export class MessagingService {
@@ -47,8 +44,6 @@ export class MessagingService {
 
 		@Inject(DI.mutingsRepository)
 		private mutingsRepository: MutingsRepository,
-
-		private noteEntityService: NoteEntityService,
 		private userEntityService: UserEntityService,
 		private messagingMessageEntityService: MessagingMessageEntityService,
 		private idService: IdService,
