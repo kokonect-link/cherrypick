@@ -5,6 +5,10 @@ export interface Locale {
     "_lang_": string;
     "showFixedPostFormInReplies": string;
     "showFixedPostFormInRepliesDescription": string;
+    "renoteQuoteButtonSeparation": string;
+    "showReplyInNotification": string;
+    "infoButtonForNoteActions": string;
+    "infoButtonForNoteActionsDescription": string;
     "disabledServerMachineStats": string;
     "replayUserSetupDialog": string;
     "replayTutorial": string;
@@ -1238,16 +1242,11 @@ export interface Locale {
         };
         "patch": string;
         "patchDescription": string;
-        "infoButtonForNoteActions": string;
-        "infoButtonForNoteActionsDescription": string;
-        "rememberPostFormToggleState": string;
         "reactableRemoteReaction": string;
         "showFollowingMessageInsteadOfButton": string;
         "mobileTimelineHeaderChange": string;
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
-        "showReplyInNotification": string;
-        "renoteQuoteButtonSeparation": string;
     };
     "_bannerDisplay": {
         "all": string;

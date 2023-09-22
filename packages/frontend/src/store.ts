@@ -437,6 +437,18 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	infoButtonForNoteActionsEnabled: {
+		where: 'account',
+		default: true,
+	},
+	showReplyInNotification: {
+		where: 'device',
+		default: false,
+	},
+	renoteQuoteButtonSeparation: {
+		where: 'device',
+		default: true,
+	},
 	showFixedPostFormInReplies: {
 		where: 'device',
 		default: true,
@@ -505,10 +517,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'hideHeaderFloatBtn' as 'all' | 'hideHeaderOnly' | 'hideHeaderFloatBtn' | 'hideFloatBtnOnly' | 'hideFloatBtnNavBar' | 'hide',
 	},
-	infoButtonForNoteActionsEnabled: {
-		where: 'account',
-		default: true,
-	},
 	reactableRemoteReactionEnabled: {
 		where: 'account',
 		default: true,
@@ -524,14 +532,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	renameTheButtonInPostFormToNya: {
 		where: 'account',
 		default: false,
-	},
-	showReplyInNotification: {
-		where: 'device',
-		default: false,
-	},
-	renoteQuoteButtonSeparation: {
-		where: 'device',
-		default: true,
 	},
 
 	// - etc

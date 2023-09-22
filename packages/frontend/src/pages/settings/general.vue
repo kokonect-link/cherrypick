@@ -71,6 +71,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="enableMarkByDate" :disabled="defaultStore.state.enableAbsoluteTime">{{ i18n.ts.enableMarkByDate }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showSubNoteFooterButton">{{ i18n.ts.showSubNoteFooterButton }}<template #caption>{{ i18n.ts.showSubNoteFooterButtonDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="infoButtonForNoteActionsEnabled">{{ i18n.ts.infoButtonForNoteActions }}<template #caption>{{ i18n.ts.infoButtonForNoteActionsDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="showReplyInNotification">{{ i18n.ts.showReplyInNotification }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts.renoteQuoteButtonSeparation }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
@@ -187,26 +190,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<div :class="$style.fontSizeSlider">
 					<div :class="$style.fontSizeLeft">Aa</div>
-					<MkRange v-model="fontSize" style="position: initial !important; width: 100%; margin: 0 -10px;" :min="1" :max="19" :step="1" easing :textConverter="(v) =>
-						v === 1 ? '7px' :
-						v === 2 ? '8px' :
-						v === 3 ? '9px' :
-						v === 4 ? '10px' :
-						v === 5 ? '11px' :
-						v === 6 ? '12px' :
-						v === 7 ? '13px' :
-						v === 8 ? '14px' :
-						v === 9 ? '15px' :
-						v === 10 ? '16px' :
-						v === 11 ? '17px' :
-						v === 12 ? '18px' :
-						v === 13 ? '19px' :
-						v === 14 ? '20px' :
-						v === 15 ? '21px' :
-						v === 16 ? '22px' :
-						v === 17 ? '23px' :
-						v === 18 ? '24px' :
-						v === 19 ? '25px' : ''"
+					<MkRange
+						v-model="fontSize" style="position: initial !important; width: 100%; margin: 0 -10px;" :min="1" :max="19" :step="1" easing :textConverter="(v) =>
+							v === 1 ? '7px' :
+							v === 2 ? '8px' :
+							v === 3 ? '9px' :
+							v === 4 ? '10px' :
+							v === 5 ? '11px' :
+							v === 6 ? '12px' :
+							v === 7 ? '13px' :
+							v === 8 ? '14px' :
+							v === 9 ? '15px' :
+							v === 10 ? '16px' :
+							v === 11 ? '17px' :
+							v === 12 ? '18px' :
+							v === 13 ? '19px' :
+							v === 14 ? '20px' :
+							v === 15 ? '21px' :
+							v === 16 ? '22px' :
+							v === 17 ? '23px' :
+							v === 18 ? '24px' :
+							v === 19 ? '25px' : ''"
 					>
 					</MkRange>
 					<div :class="$style.fontSizeRight">Aa</div>
@@ -353,6 +357,9 @@ const showTranslateButtonInNote = computed(defaultStore.makeGetterSetter('showTr
 const enableAbsoluteTime = computed(defaultStore.makeGetterSetter('enableAbsoluteTime'));
 const enableMarkByDate = computed(defaultStore.makeGetterSetter('enableMarkByDate'));
 const showSubNoteFooterButton = computed(defaultStore.makeGetterSetter('showSubNoteFooterButton'));
+const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('infoButtonForNoteActionsEnabled'));
+const showReplyInNotification = computed(defaultStore.makeGetterSetter('showReplyInNotification'));
+const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('renoteQuoteButtonSeparation'));
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
 
 watch(lang, () => {
@@ -406,6 +413,9 @@ watch([
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
+	infoButtonForNoteActionsEnabled,
+	showReplyInNotification,
+	renoteQuoteButtonSeparation,
 	showFixedPostFormInReplies,
 ], async () => {
 	await reloadAsk();
