@@ -84,6 +84,7 @@
 - Enhance : 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
 - Fix: deliver-delayed에서 URL 구문 분석에 실패할 때 모든 것이 꼬이는 문제 수정 (MisskeyIO/misskey#164)
+- Fix: 대기열에 예상치 못한 데이터가 있는 경우, 엔드포인트 URL 구문 분석 및 오류 로그 생성에 실패하는 문제 수정 (MisskeyIO/misskey#168)
 
 ---
 
