@@ -148,7 +148,7 @@ const props = withDefaults(defineProps<{
 	freezeAfterPosted?: boolean;
 }>(), {
 	initialVisibleUsers: () => [],
-	autofocus: true,
+	autofocus: false,
 });
 
 const emit = defineEmits<{
