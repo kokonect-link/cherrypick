@@ -146,6 +146,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: [
 			'notifications',
+            'clips',
 			'messaging',
 			'favorites',
 			'followRequests',
