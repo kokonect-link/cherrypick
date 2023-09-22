@@ -49,7 +49,7 @@
 - Feat: 이미지 압축 방식을 선택할 수 있음
   - 사이즈 변경 여부를 선택할 수 있음
   - 이미지를 업로드할 때 손실 압축으로 변경할 수 있음
-- Scratchpad에서 Async: 계열 함수나 버튼 콜백 등의 오류에도 대화창을 띄우도록(시험적이라 Play 등에는 미구현) (misskey-dev/misskey#11850)
+- Feat: Scratchpad에서 Async: 계열 함수나 버튼 콜백 등의 오류에도 대화창을 띄우도록(시험적이라 Play 등에는 미구현) (misskey-dev/misskey#11850)
 - Feat: 민감한 미디어를 돋보이게 하는 설정 추가 (misskey-dev/misskey#11851)
 - Spec: 사용자 정의 이모티콘 라이센스를 여러 항목으로 추가할 수 있도록 (MisskeyIO/misskey#130)
 - Enhance: 새로운 신고가 있는 경우, 네비게이션 바의 제어판 아이콘과 제어판 페이지의 신고 섹션에 점을 표시
