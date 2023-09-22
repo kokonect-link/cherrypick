@@ -279,10 +279,6 @@ if (props.mention) {
 	text += ' ';
 }
 
-if (props.reply && (props.reply.user.username !== $i.username || (props.reply.user.host != null && props.reply.user.host !== host))) {
-	text = `@${props.reply.user.username}${props.reply.user.host != null ? '@' + toASCII(props.reply.user.host) : ''} `;
-}
-
 if (props.reply && props.reply.text != null) {
 	const ast = mfm.parse(props.reply.text);
 	const otherHost = props.reply.user.host;
