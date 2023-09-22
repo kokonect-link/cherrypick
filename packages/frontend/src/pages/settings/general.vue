@@ -71,6 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="enableMarkByDate" :disabled="defaultStore.state.enableAbsoluteTime">{{ i18n.ts.enableMarkByDate }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showSubNoteFooterButton">{{ i18n.ts.showSubNoteFooterButton }}<template #caption>{{ i18n.ts.showSubNoteFooterButtonDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -352,6 +353,7 @@ const showTranslateButtonInNote = computed(defaultStore.makeGetterSetter('showTr
 const enableAbsoluteTime = computed(defaultStore.makeGetterSetter('enableAbsoluteTime'));
 const enableMarkByDate = computed(defaultStore.makeGetterSetter('enableMarkByDate'));
 const showSubNoteFooterButton = computed(defaultStore.makeGetterSetter('showSubNoteFooterButton'));
+const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -404,6 +406,7 @@ watch([
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
+	showFixedPostFormInReplies,
 ], async () => {
 	await reloadAsk();
 });

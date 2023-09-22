@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+showFixedPostFormInReplies: "Show posting form in replies"
+showFixedPostFormInRepliesDescription: "Only visible in desktop and tablet environments."
 disabledServerMachineStats: "The 'Publish server hardware stats' setting is turned off.\nTo view server metrics, please enable the 'Publish server hardware stats' setting in 'Control Panel - Other'."
 replayUserSetupDialog: "Replay initial setting"
 replayTutorial: "Replay tutorial"
