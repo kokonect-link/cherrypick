@@ -1222,6 +1222,7 @@ _cherrypick:
   mobileTimelineHeaderChange: "Timeline header design change in mobile environment"
   renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
   renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
+  showReplyInNotification: "Show parent note of notes with replies in notifications"
 _displayHeaderNavBarWhenScroll:
   all: "Display all"
   hideHeaderOnly: "Hide header only"

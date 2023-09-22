@@ -58,6 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
 				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
 			</MkSwitch>
+			<MkSwitch v-model="showReplyInNotification">{{ i18n.ts._cherrypick.showReplyInNotification }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -94,11 +95,13 @@ const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGet
 const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const showReplyInNotification = computed(defaultStore.makeGetterSetter('showReplyInNotification'));
 
 watch([
 	infoButtonForNoteActionsEnabled,
 	reactableRemoteReactionEnabled,
 	renameTheButtonInPostFormToNya,
+	showReplyInNotification,
 ], async () => {
 	await reloadAsk();
 });

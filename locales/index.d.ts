@@ -1233,6 +1233,7 @@ export interface Locale {
         "mobileTimelineHeaderChange": string;
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
+        "showReplyInNotification": string;
     };
     "_displayHeaderNavBarWhenScroll": {
         "all": string;

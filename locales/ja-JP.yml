@@ -1231,6 +1231,7 @@ _cherrypick:
   mobileTimelineHeaderChange: "モバイル環境でタイムラインのヘッダーデザインを変更"
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
+  showReplyInNotification: "通知で返信があるノートの親ノートを表示する"
 
 _displayHeaderNavBarWhenScroll:
   all: "全て表示"
