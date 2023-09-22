@@ -115,7 +115,11 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'postFormVisibilityHotkey',
   'showRenoteConfirmPopup',
   'displayHeaderNavBarWhenScroll',
+  'infoButtonForNoteActionsEnabled',
+  'reactableRemoteReactionEnabled',
+  'showFollowingMessageInsteadOfButtonEnabled',
   'mobileTimelineHeaderChange',
+  'renameTheButtonInPostFormToNya',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',
