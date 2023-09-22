@@ -23,6 +23,9 @@ import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
 import { MessagingMessageEntityService } from '@/core/entities/MessagingMessageEntityService.js';
 import { PushNotificationService } from '@/core/PushNotificationService.js';
 import { bindThis } from '@/decorators.js';
+import type { UserProfilesRepository } from "@/models/_.js";
+import {IMentionedRemoteUsers} from '@/models/Note.js';
+import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 
 @Injectable()
 export class MessagingService {
@@ -33,6 +36,9 @@ export class MessagingService {
 		@Inject(DI.usersRepository)
 		private usersRepository: UsersRepository,
 
+		@Inject(DI.userProfilesRepository)
+		private userProfilesRepository: UserProfilesRepository,
+
 		@Inject(DI.messagingMessagesRepository)
 		private messagingMessagesRepository: MessagingMessagesRepository,
 
@@ -42,6 +48,7 @@ export class MessagingService {
 		@Inject(DI.mutingsRepository)
 		private mutingsRepository: MutingsRepository,
 
+		private noteEntityService: NoteEntityService,
 		private userEntityService: UserEntityService,
 		private messagingMessageEntityService: MessagingMessageEntityService,
 		private idService: IdService,
@@ -53,10 +60,12 @@ export class MessagingService {
 	}
 
 	@bindThis
-	public async createMessage(user: { id: MiUser['id']; host: MiUser['host']; }, recipientUser: MiUser | undefined, recipientGroup: MiUserGroup | undefined, text: string | null | undefined, file: MiDriveFile | null, uri?: string) {
+	public async createMessage(user: { id: MiUser['id']; host: MiUser['host']; }, recipientUser: MiUser | null, recipientGroup: MiUserGroup | null, text: string | null | undefined, file: MiDriveFile | null, uri?: string) {
+		const data = new Date();
+
 		const message = {
-			id: this.idService.genId(),
-			createdAt: new Date(),
+			id: this.idService.genId(data),
+			createdAt: data,
 			fileId: file ? file.id : null,
 			recipientId: recipientUser ? recipientUser.id : null,
 			groupId: recipientGroup ? recipientGroup.id : null,
@@ -125,6 +134,10 @@ export class MessagingService {
 		}, 2000);
 
 		if (recipientUser && this.userEntityService.isLocalUser(user) && this.userEntityService.isRemoteUser(recipientUser)) {
+			const profiles = await this.userProfilesRepository.findBy({ userId: In([recipientUser.id]) });
+			const profile = profiles.find(p => p.userId === recipientUser.id);
+			const url = profile != null ? profile.url : null;
+
 			const note = {
 				id: message.id,
 				createdAt: message.createdAt,
@@ -132,12 +145,15 @@ export class MessagingService {
 				text: message.text,
 				userId: message.userId,
 				visibility: 'specified',
+				emojis: [{}],
 				mentions: [recipientUser].map(u => u.id),
 				mentionedRemoteUsers: JSON.stringify([recipientUser].map(u => ({
 					uri: u.uri,
+					url: url,
 					username: u.username,
 					host: u.host,
-				}))),
+				} as IMentionedRemoteUsers[0]
+				))),
 			} as MiNote;
 
 			const activity = this.apRendererService.addContext(this.apRendererService.renderCreate(await this.apRendererService.renderNote(note, false, true), note));
