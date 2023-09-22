@@ -172,6 +172,9 @@ id: 'aidx'
 #  saKeyPath: /path/to/service-account-key.json
 #  logName: cherrypick
 
+# Override the file URL rendering in ActivityPub (Object Storage file only)
+#apFileBaseUrl: https://example.com/
+
 # Proxy for HTTP/HTTPS
 #proxy: http://127.0.0.1:3128
 

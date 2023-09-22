@@ -86,6 +86,8 @@ type Source = {
 		logName?: string;
 	}
 
+	apFileBaseUrl?: string;
+
 	mediaProxy?: string;
 	proxyRemoteFiles?: boolean;
 	videoThumbnailGenerator?: string;
@@ -145,6 +147,7 @@ export type Config = {
 	relashionshipJobPerSec: number | undefined;
 	deliverJobMaxAttempts: number | undefined;
 	inboxJobMaxAttempts: number | undefined;
+	apFileBaseUrl: string | undefined;
 	proxyRemoteFiles: boolean | undefined;
 	signToActivityPubGet: boolean | undefined;
 
@@ -250,6 +253,7 @@ export function loadConfig(): Config {
 		inboxJobMaxAttempts: config.inboxJobMaxAttempts,
 		proxyRemoteFiles: config.proxyRemoteFiles,
 		signToActivityPubGet: config.signToActivityPubGet,
+		apFileBaseUrl: config.apFileBaseUrl,
 		mediaProxy: externalMediaProxy ?? internalMediaProxy,
 		externalMediaProxyEnabled: externalMediaProxy !== null && externalMediaProxy !== internalMediaProxy,
 		videoThumbnailGenerator: config.videoThumbnailGenerator ?
