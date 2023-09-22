@@ -11,47 +11,54 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@dragleave="onDragleave"
 	@drop.stop="onDrop"
 >
-	<header :class="$style.header">
-		<div :class="$style.headerLeft">
-			<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
-			<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
-				<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
-			</button>
-		</div>
-		<div :class="$style.headerRight">
-			<template v-if="!(channel != null && fixed)">
-				<button v-if="channel == null" ref="visibilityButton" v-click-anime v-tooltip="i18n.ts.visibility" :class="['_button', $style.headerRightItem, $style.visibility]" @click="setVisibility">
-					<span v-if="visibility === 'public'"><i class="ti ti-world"></i></span>
-					<span v-if="visibility === 'home'"><i class="ti ti-home"></i></span>
-					<span v-if="visibility === 'followers'"><i class="ti ti-lock"></i></span>
-					<span v-if="visibility === 'specified'"><i class="ti ti-mail"></i></span>
-					<span :class="$style.headerRightButtonText">{{ i18n.ts._visibility[visibility] }}</span>
+	<Transition
+		:enterActiveClass="defaultStore.state.animation ? $style.transition_header_enterActive : ''"
+		:leaveActiveClass="defaultStore.state.animation ? $style.transition_header_leaveActive : ''"
+		:enterFromClass="defaultStore.state.animation ? $style.transition_header_enterFrom : ''"
+		:leaveToClass="defaultStore.state.animation ? $style.transition_header_leaveTo : ''"
+	>
+		<header v-if="formClick" :class="$style.header">
+			<div :class="$style.headerLeft">
+				<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
+				<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
+					<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
 				</button>
-				<button v-else class="_button" :class="[$style.headerRightItem, $style.visibility]" disabled>
-					<span><i class="ti ti-device-tv"></i></span>
-					<span :class="$style.headerRightButtonText">{{ channel.name }}</span>
+			</div>
+			<div :class="$style.headerRight">
+				<template v-if="!(channel != null && fixed)">
+					<button v-if="channel == null" ref="visibilityButton" v-click-anime v-tooltip="i18n.ts.visibility" :class="['_button', $style.headerRightItem, $style.visibility]" @click="setVisibility">
+						<span v-if="visibility === 'public'"><i class="ti ti-world"></i></span>
+						<span v-if="visibility === 'home'"><i class="ti ti-home"></i></span>
+						<span v-if="visibility === 'followers'"><i class="ti ti-lock"></i></span>
+						<span v-if="visibility === 'specified'"><i class="ti ti-mail"></i></span>
+						<span :class="$style.headerRightButtonText">{{ i18n.ts._visibility[visibility] }}</span>
+					</button>
+					<button v-else class="_button" :class="[$style.headerRightItem, $style.visibility]" disabled>
+						<span><i class="ti ti-device-tv"></i></span>
+						<span :class="$style.headerRightButtonText">{{ channel.name }}</span>
+					</button>
+				</template>
+				<button v-click-anime v-tooltip="i18n.ts._visibility.disableFederation" class="_button" :class="[$style.headerRightItem, { [$style.danger]: localOnly }]" :disabled="channel != null || visibility === 'specified'" @click="toggleLocalOnly">
+					<span v-if="!localOnly"><i class="ti ti-rocket"></i></span>
+					<span v-else><i class="ti ti-rocket-off"></i></span>
 				</button>
-			</template>
-			<button v-click-anime v-tooltip="i18n.ts._visibility.disableFederation" class="_button" :class="[$style.headerRightItem, { [$style.danger]: localOnly }]" :disabled="channel != null || visibility === 'specified'" @click="toggleLocalOnly">
-				<span v-if="!localOnly"><i class="ti ti-rocket"></i></span>
-				<span v-else><i class="ti ti-rocket-off"></i></span>
-			</button>
-			<button v-click-anime v-tooltip="i18n.ts.reactionAcceptance" class="_button" :class="[$style.headerRightItem, { [$style.danger]: reactionAcceptance === 'likeOnly' }]" @click="toggleReactionAcceptance">
-				<span v-if="reactionAcceptance === 'likeOnly'"><i class="ti ti-heart"></i></span>
-				<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ti ti-heart-plus"></i></span>
-				<span v-else><i class="ti ti-icons"></i></span>
-			</button>
-			<button v-tooltip="i18n.ts._mfm.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
-			<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
-				<div :class="$style.submitInner">
-					<template v-if="posted"></template>
-					<template v-else-if="posting"><MkEllipsis/></template>
-					<template v-else>{{ submitText }}</template>
-					<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
-				</div>
-			</button>
-		</div>
-	</header>
+				<button v-click-anime v-tooltip="i18n.ts.reactionAcceptance" class="_button" :class="[$style.headerRightItem, { [$style.danger]: reactionAcceptance === 'likeOnly' }]" @click="toggleReactionAcceptance">
+					<span v-if="reactionAcceptance === 'likeOnly'"><i class="ti ti-heart"></i></span>
+					<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ti ti-heart-plus"></i></span>
+					<span v-else><i class="ti ti-icons"></i></span>
+				</button>
+				<button v-tooltip="i18n.ts._mfm.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
+				<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
+					<div :class="$style.submitInner">
+						<template v-if="posted"></template>
+						<template v-else-if="posting"><MkEllipsis/></template>
+						<template v-else>{{ submitText }}</template>
+						<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+					</div>
+				</button>
+			</div>
+		</header>
+	</Transition>
 	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
 	<MkEventEditor v-if="event" v-model="event" @destroyed="event = null"/>
 	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
@@ -66,9 +73,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
-	<div :class="[$style.textOuter, { [$style.withCw]: useCw }]">
-		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.formClick]: !formClick }]">
+		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :placeholder="placeholder" data-cy-post-form-text @click="formClick = true" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
+		<button v-if="!formClick" v-click-anime class="_button" :class="$style.submit" style="position: absolute; bottom: 0; right: 12px;" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
+			<div :class="$style.submitInner">
+				<template v-if="posted"></template>
+				<template v-else-if="posting"><MkEllipsis/></template>
+				<template v-else>{{ submitText }}</template>
+				<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+			</div>
+		</button>
 	</div>
 	<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
@@ -76,23 +91,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNotePreview v-if="showPreview" :class="$style.preview" :text="text"/>
 	<div v-if="showingOptions" style="padding: 8px 16px;">
 	</div>
-	<footer :class="$style.footer">
-		<div :class="$style.footerLeft">
-			<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
-			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
-			<button v-tooltip="i18n.ts.event" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: event }]" @click="toggleEvent"><i class="ti ti-calendar"></i></button>
-			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
-			<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
-			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-			<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
-			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
-			<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
-		</div>
-		<div :class="$style.footerRight">
-			<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="[$style.footerButton, { [$style.previewButtonActive]: showPreview }]" @click="showPreview = !showPreview"><i class="ti ti-eye"></i></button>
-			<!--<button v-tooltip="i18n.ts.more" class="_button" :class="$style.footerButton" @click="showingOptions = !showingOptions"><i class="ti ti-dots"></i></button>-->
-		</div>
-	</footer>
+	<Transition
+		:enterActiveClass="defaultStore.state.animation ? $style.transition_footer_enterActive : ''"
+		:leaveActiveClass="defaultStore.state.animation ? $style.transition_footer_leaveActive : ''"
+		:enterFromClass="defaultStore.state.animation ? $style.transition_footer_enterFrom : ''"
+		:leaveToClass="defaultStore.state.animation ? $style.transition_footer_leaveTo : ''"
+	>
+		<footer v-if="formClick" :class="$style.footer">
+			<div :class="$style.footerLeft">
+				<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
+				<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
+				<button v-tooltip="i18n.ts.event" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: event }]" @click="toggleEvent"><i class="ti ti-calendar"></i></button>
+				<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
+				<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
+				<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
+				<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
+				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugin" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
+				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
+			</div>
+			<div :class="$style.footerRight">
+				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="[$style.footerButton, { [$style.previewButtonActive]: showPreview }]" @click="showPreview = !showPreview"><i class="ti ti-eye"></i></button>
+				<!--<button v-tooltip="i18n.ts.more" class="_button" :class="$style.footerButton" @click="showingOptions = !showingOptions"><i class="ti ti-dots"></i></button>-->
+			</div>
+		</footer>
+	</Transition>
 	<datalist id="hashtags">
 		<option v-for="hashtag in recentHashtags" :key="hashtag" :value="hashtag"/>
 	</datalist>
@@ -161,6 +183,8 @@ const textareaEl = $shallowRef<HTMLTextAreaElement | null>(null);
 const cwInputEl = $shallowRef<HTMLInputElement | null>(null);
 const hashtagsInputEl = $shallowRef<HTMLInputElement | null>(null);
 const visibilityButton = $shallowRef<HTMLElement | null>(null);
+
+let formClick = $ref(false);
 
 let posting = $ref(false);
 let posted = $ref(false);
@@ -965,6 +989,30 @@ defineExpose({
 </script>
 
 <style lang="scss" module>
+.transition_header_enterActive,
+.transition_header_leaveActive {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1), opacity 850ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.transition_header_enterFrom,
+.transition_header_leaveTo {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.transition_footer_enterActive,
+.transition_footer_leaveActive {
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 850ms cubic-bezier(0.23, 1, 0.32, 1), opacity 850ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.transition_footer_enterFrom,
+.transition_footer_leaveTo {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
 .root {
 	position: relative;
 	container-type: inline-size;
@@ -1168,6 +1216,10 @@ defineExpose({
 	&.withCw {
 		padding-top: 8px;
 	}
+
+  &.formClick {
+    margin-top: 20px;
+  }
 }
 
 .text {
