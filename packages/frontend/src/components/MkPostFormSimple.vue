@@ -902,7 +902,7 @@ onMounted(() => {
 		});
 	}
 
-  autosize(textareaEl);
+	autosize(textareaEl);
 
 	// TODO: detach when unmount
 	new Autocomplete(textareaEl, $$(text));
