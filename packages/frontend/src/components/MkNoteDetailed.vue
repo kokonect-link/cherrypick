@@ -139,7 +139,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-tooltip="i18n.ts.renote"
 				class="_button"
 				:class="$style.noteFooterButton"
-				@mousedown="renote()"
+				@mousedown="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.renoteCount }}</p>
@@ -157,7 +157,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
@@ -353,7 +353,78 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-async function renote() {
+function renote(viaKeyboard = false) {
+	pleaseLogin();
+	showMovedDialog();
+
+	let items = [] as MenuItem[];
+
+	if (appearNote.channel) {
+		items = items.concat([{
+			text: i18n.ts.inChannelRenote,
+			icon: 'ti ti-repeat',
+			action: () => {
+				const el = renoteButton.value as HTMLElement | null | undefined;
+				if (el) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				os.api('notes/create', {
+					renoteId: appearNote.id,
+					channelId: appearNote.channelId,
+				}).then(() => {
+					os.noteToast(i18n.ts.renoted);
+				});
+			},
+		}, {
+			text: i18n.ts.inChannelQuote,
+			icon: 'ti ti-quote',
+			action: () => {
+				os.post({
+					renote: appearNote,
+					channel: appearNote.channel,
+				});
+			},
+		}, null]);
+	}
+
+	items = items.concat([{
+		text: i18n.ts.renote,
+		icon: 'ti ti-repeat',
+		action: () => {
+			const el = renoteButton.value as HTMLElement | null | undefined;
+			if (el) {
+				const rect = el.getBoundingClientRect();
+				const x = rect.left + (el.offsetWidth / 2);
+				const y = rect.top + (el.offsetHeight / 2);
+				os.popup(MkRippleEffect, { x, y }, {}, 'end');
+			}
+
+			os.api('notes/create', {
+				renoteId: appearNote.id,
+			}).then(() => {
+				os.noteToast(i18n.ts.renoted);
+			});
+		},
+	}, {
+		text: i18n.ts.quote,
+		icon: 'ti ti-quote',
+		action: () => {
+			os.post({
+				renote: appearNote,
+			});
+		},
+	}]);
+
+	os.popupMenu(items, renoteButton.value, {
+		viaKeyboard,
+	});
+}
+
+async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 

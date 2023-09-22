@@ -521,6 +521,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	renoteQuoteButtonSeparation: {
+		where: 'device',
+		default: true,
+	},
 
 	// - etc
 	friendlyEnableNotifications: {

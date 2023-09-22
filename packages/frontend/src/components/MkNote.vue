@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 		</div>
 	</div>
-  <MkNoteSub v-if="appearNote.reply && !renoteCollapsed && notification && defaultStore.state.showReplyInNotification" :note="appearNote.reply" :class="$style.replyTo"/>
+	<MkNoteSub v-if="appearNote.reply && !renoteCollapsed && notification && defaultStore.state.showReplyInNotification" :note="appearNote.reply" :class="$style.replyTo"/>
 	<MkNoteSub v-else-if="appearNote.reply && !renoteCollapsed && !notification" :note="appearNote.reply" :class="$style.replyTo"/>
 	<div v-if="renoteCollapsed" :class="$style.collapsedRenoteTarget">
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.collapsedRenoteTargetAvatar" :user="appearNote.user" link preview/>
@@ -125,7 +125,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					v-tooltip="i18n.ts.renote"
 					:class="$style.footerButton"
 					class="_button"
-					@mousedown="renote()"
+					@mousedown="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
 				>
 					<i class="ti ti-repeat"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
@@ -143,7 +143,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(appearNote)">
 					<i class="ti ti-heart-minus"></i>
 				</button>
-				<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
+				<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
 				<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
 					<i class="ti ti-paperclip"></i>
 				</button>
@@ -216,7 +216,7 @@ const props = withDefaults(defineProps<{
 	pinned?: boolean;
   notification?: boolean;
 }>(), {
-  notification: false,
+	notification: false,
 });
 
 const inChannel = inject('inChannel', null);
@@ -275,7 +275,7 @@ const keymap = {
 };
 
 onMounted(() => {
-  globalEvents.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });
@@ -315,7 +315,89 @@ function smallerVisibility(a: Visibility | string, b: Visibility | string): Visi
 	return 'public';
 }
 
-async function renote() {
+function renote(viaKeyboard = false) {
+	pleaseLogin();
+	showMovedDialog();
+
+	let items = [] as MenuItem[];
+
+	if (appearNote.channel) {
+		items = items.concat([{
+			text: i18n.ts.inChannelRenote,
+			icon: 'ti ti-repeat',
+			action: () => {
+				const el = renoteButton.value as HTMLElement | null | undefined;
+				if (el) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				os.api('notes/create', {
+					renoteId: appearNote.id,
+					channelId: appearNote.channelId,
+				}).then(() => {
+					os.noteToast(i18n.ts.renoted);
+				});
+			},
+		}, {
+			text: i18n.ts.inChannelQuote,
+			icon: 'ti ti-quote',
+			action: () => {
+				os.post({
+					renote: appearNote,
+					channel: appearNote.channel,
+				});
+			},
+		}, null]);
+	}
+
+	items = items.concat([{
+		text: i18n.ts.renote,
+		icon: 'ti ti-repeat',
+		action: () => {
+			const el = renoteButton.value as HTMLElement | null | undefined;
+			if (el) {
+				const rect = el.getBoundingClientRect();
+				const x = rect.left + (el.offsetWidth / 2);
+				const y = rect.top + (el.offsetHeight / 2);
+				os.popup(MkRippleEffect, { x, y }, {}, 'end');
+			}
+
+			const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
+			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+
+			let visibility = appearNote.visibility;
+			visibility = smallerVisibility(visibility, configuredVisibility);
+			if (appearNote.channel?.isSensitive) {
+				visibility = smallerVisibility(visibility, 'home');
+			}
+
+			os.api('notes/create', {
+				localOnly,
+				visibility,
+				renoteId: appearNote.id,
+			}).then(() => {
+				os.noteToast(i18n.ts.renoted);
+			});
+		},
+	}, {
+		text: i18n.ts.quote,
+		icon: 'ti ti-quote',
+		action: () => {
+			os.post({
+				renote: appearNote,
+			});
+		},
+	}]);
+
+	os.popupMenu(items, renoteButton.value, {
+		viaKeyboard,
+	});
+}
+
+async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 

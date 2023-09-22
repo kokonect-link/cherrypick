@@ -121,6 +121,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'mobileTimelineHeaderChange',
 	'renameTheButtonInPostFormToNya',
 	'showReplyInNotification',
+	'renoteQuoteButtonSeparation',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

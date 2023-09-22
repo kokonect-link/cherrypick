@@ -1219,6 +1219,7 @@ _cherrypick:
   renameTheButtonInPostFormToNya: "노트 작성 화면의 \"노트\" 버튼을 \"냥!\"으로 변경"
   renameTheButtonInPostFormToNyaDescription: "냐앙냥냥냥냐냥?"
   showReplyInNotification: "알림에서 답글이 달린 노트의 상위 노트 표시하기"
+  renoteQuoteButtonSeparation: "리노트와 인용 버튼을 분리해서 표시하기"
 _displayHeaderNavBarWhenScroll:
   all: "모두 표시"
   hideHeaderOnly: "헤더만 숨기기"

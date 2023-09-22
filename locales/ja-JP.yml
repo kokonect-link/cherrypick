@@ -1232,6 +1232,7 @@ _cherrypick:
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
   showReplyInNotification: "通知で返信があるノートの親ノートを表示する"
+  renoteQuoteButtonSeparation: "リノートと引用ボタンを分けて表示する"
 
 _displayHeaderNavBarWhenScroll:
   all: "全て表示"

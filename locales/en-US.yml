@@ -1223,6 +1223,7 @@ _cherrypick:
   renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
   renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
   showReplyInNotification: "Show parent note of notes with replies in notifications"
+  renoteQuoteButtonSeparation: "Separate Renote and Quote buttons"
 _displayHeaderNavBarWhenScroll:
   all: "Display all"
   hideHeaderOnly: "Hide header only"

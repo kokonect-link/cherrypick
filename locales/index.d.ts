@@ -1234,6 +1234,7 @@ export interface Locale {
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
         "showReplyInNotification": string;
+        "renoteQuoteButtonSeparation": string;
     };
     "_displayHeaderNavBarWhenScroll": {
         "all": string;
