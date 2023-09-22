@@ -7,10 +7,8 @@ export interface Locale {
     "replayUserSetupDialog": string;
     "replayTutorial": string;
     "nya": string;
-    "displayHeaderNavBarWhenScroll": string;
     "addSingle": string;
     "addMultiple": string;
-    "showRenoteConfirmPopup": string;
     "showSubNoteFooterButton": string;
     "showSubNoteFooterButtonDescription": string;
     "alreadyFollowed": string;
@@ -34,10 +32,6 @@ export interface Locale {
     "useBoldFont": string;
     "newNoteReceivedNotification": string;
     "disableRightClick": string;
-    "useEnterToSend": string;
-    "useEnterToSendDescription": string;
-    "postFormVisibilityHotkey": string;
-    "postFormVisibilityHotkeyDescription": string;
     "cherrypickUpdatedCacheClearTitle": string;
     "cherrypickUpdatedCacheClear": string;
     "cherrypickUpdatedCacheClearLater": string;
@@ -1223,6 +1217,21 @@ export interface Locale {
         "functionDescription": string;
         "nickname": string;
         "nicknameDescription": string;
+        "useEnterToSend": string;
+        "useEnterToSendDescription": string;
+        "postFormVisibilityHotkey": string;
+        "postFormVisibilityHotkeyDescription": string;
+        "showRenoteConfirmPopup": string;
+        "showRenoteConfirmPopupDescription": string;
+        "displayHeaderNavBarWhenScroll": string;
+        "_displayHeaderNavBarWhenScroll": {
+            "all": string;
+            "hideHeaderOnly": string;
+            "hideHeaderFloatBtn": string;
+            "hideFloatBtnOnly": string;
+            "hideFloatBtnNavBar": string;
+            "hide": string;
+        };
         "patch": string;
         "patchDescription": string;
         "infoButtonForNoteActions": string;
@@ -1235,14 +1244,6 @@ export interface Locale {
         "renameTheButtonInPostFormToNyaDescription": string;
         "showReplyInNotification": string;
         "renoteQuoteButtonSeparation": string;
-    };
-    "_displayHeaderNavBarWhenScroll": {
-        "all": string;
-        "hideHeaderOnly": string;
-        "hideHeaderFloatBtn": string;
-        "hideFloatBtnOnly": string;
-        "hideFloatBtnNavBar": string;
-        "hide": string;
     };
     "_bannerDisplay": {
         "all": string;

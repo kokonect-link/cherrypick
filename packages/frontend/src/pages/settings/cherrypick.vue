@@ -17,27 +17,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div class="_gaps_s">
 				<MkSwitch v-model="useEnterToSend">
-					<template #label>{{ i18n.ts.useEnterToSend }}</template>
-					<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
+					<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="postFormVisibilityHotkey">
-					<template #label>{{ i18n.ts.postFormVisibilityHotkey }}</template>
-					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
+					<template #label>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="showRenoteConfirmPopup">
-					<template #label>{{ i18n.ts.showRenoteConfirmPopup }}</template>
+					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
 				</MkSwitch>
 			</div>
 
 			<div>
 				<MkRadios v-model="displayHeaderNavBarWhenScroll">
-					<template #label>{{ i18n.ts.displayHeaderNavBarWhenScroll }}</template>
-					<option value="all">{{ i18n.ts._displayHeaderNavBarWhenScroll.all }}</option>
-					<option value="hideHeaderOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
-					<option value="hideHeaderFloatBtn">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
-					<option value="hideFloatBtnOnly">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
-					<option value="hideFloatBtnNavBar">{{ i18n.ts._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
-					<option value="hide">{{ i18n.ts._displayHeaderNavBarWhenScroll.hide }}</option>
+					<template #label>{{ i18n.ts._cherrypick.displayHeaderNavBarWhenScroll }}</template>
+					<option value="all">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.all }}</option>
+					<option value="hideHeaderOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+					<option value="hideHeaderFloatBtn">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+					<option value="hideFloatBtnOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+					<option value="hideFloatBtnNavBar">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+					<option value="hide">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hide }}</option>
 				</MkRadios>
 			</div>
 		</div>
