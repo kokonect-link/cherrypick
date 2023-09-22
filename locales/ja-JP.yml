@@ -767,6 +767,7 @@ alwaysMarkSensitive: "デフォルトでメディアをセンシティブ設定�
 loadRawImages: "添付画像のサムネイルをオリジナル画質にする"
 disableShowingAnimatedImages: "アニメーション画像を再生しない"
 disableShowingAnimatedImagesDescription: "無効にすると、動く画像が再生されます。光敏感性発作を起こすことがありますので、ご注意ください。"
+highlightSensitiveMedia: "センシティブなメディアを目立たせる"
 verificationEmailSent: "確認のメールを送信しました。メールに記載されたリンクにアクセスして、設定を完了してください。\nもしメールが来なかったらスパムメールボックスを確認してください。"
 notSet: "未設定"
 emailVerified: "メールアドレスが確認されました"

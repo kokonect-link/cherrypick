@@ -770,6 +770,7 @@ export interface Locale {
     "loadRawImages": string;
     "disableShowingAnimatedImages": string;
     "disableShowingAnimatedImagesDescription": string;
+    "highlightSensitiveMedia": string;
     "verificationEmailSent": string;
     "notSet": string;
     "emailVerified": string;
