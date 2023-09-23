@@ -48,9 +48,8 @@ import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { onScrollTop, isTopVisible, getBodyScrollHeight, getScrollContainer, onScrollBottom, scrollToBottom, scroll, isBottomVisible } from '@/scripts/scroll.js';
 import { useDocumentVisibility } from '@/scripts/use-document-visibility.js';
-import MkButton from '@/components/MkButton.vue';
 import { defaultStore } from '@/store.js';
-import { MisskeyEntity } from '@/types/date-separated-list';
+import { MisskeyEntity } from '@/types/date-separated-list.js';
 import { i18n } from '@/i18n.js';
 
 const SECOND_FETCH_LIMIT = 30;
@@ -90,6 +89,7 @@ function concatMapWithArray(map: MisskeyEntityMap, entities: MisskeyEntity[]): M
 </script>
 <script lang="ts" setup>
 import { infoImageUrl } from '@/instance.js';
+import MkButton from '@/components/MkButton.vue';
 
 const props = withDefaults(defineProps<{
 	pagination: Paging;
