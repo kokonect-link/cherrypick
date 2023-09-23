@@ -110,8 +110,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private messagingService: MessagingService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			let recipientUser: MiUser | null;
-			let recipientGroup: MiUserGroup | null;
+			let recipientUser: MiUser | null = null;
+			let recipientGroup: MiUserGroup | null = null;
 
 			if (ps.userId != null) {
 				// Myself
