@@ -659,12 +659,14 @@ function blur() {
 	el.value.blur();
 }
 
-os.api('notes/children', {
-	noteId: appearNote.id,
-	limit: 4,
-}).then(res => {
-	replies.value = res;
-});
+function loadRepliesSimple() {
+	os.api('notes/children', {
+		noteId: appearNote.id,
+		limit: 4,
+	}).then(res => {
+		replies.value = res;
+	});
+}
 
 const repliesLoaded = ref(false);
 function loadReplies() {
@@ -686,6 +688,10 @@ function loadConversation() {
 		conversation.value = res.reverse();
 	});
 }
+
+onMounted(() => {
+	loadRepliesSimple();
+});
 </script>
 
 <style lang="scss" module>
