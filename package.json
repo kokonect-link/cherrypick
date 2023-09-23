@@ -1,6 +1,6 @@
 {
 	"name": "cherrypick",
-	"version": "2023.9.0-beta.11-cp-4.3.0-beta.7",
+	"version": "2023.9.0-rc.2-cp-4.3.0-beta.7",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
@@ -57,7 +57,7 @@
 		"@typescript-eslint/parser": "6.7.2",
 		"cross-env": "7.0.3",
 		"cypress": "13.2.0",
-		"eslint": "8.49.0",
+		"eslint": "8.50.0",
 		"start-server-and-test": "2.0.1"
 	},
 	"optionalDependencies": {

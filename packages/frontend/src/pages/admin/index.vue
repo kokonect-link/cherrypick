@@ -143,9 +143,14 @@ const menuDef = $computed(() => [{
 	}, {
 		icon: 'ti ti-exclamation-circle',
 		text: i18n.ts.abuseReports,
-    indicated: thereIsUnresolvedAbuseReport,
+		indicated: thereIsUnresolvedAbuseReport,
 		to: '/admin/abuses',
 		active: currentPage?.route.name === 'abuses',
+	}, {
+		icon: 'ti ti-list-search',
+		text: i18n.ts.moderationLogs,
+		to: '/admin/modlog',
+		active: currentPage?.route.name === 'modlog',
 	}],
 }, {
 	title: i18n.ts.settings,
