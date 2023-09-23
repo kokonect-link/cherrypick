@@ -46,8 +46,8 @@ const router = useRouter();
 let tab = $ref('direct');
 
 let fetching = $ref(true);
-let messages = $ref([]);
-let connection = $ref(null);
+let messages;
+let connection;
 
 const directPagination = {
 	endpoint: 'messaging/history' as const,
