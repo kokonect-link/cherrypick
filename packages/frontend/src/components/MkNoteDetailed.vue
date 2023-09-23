@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 		</div>
 	</div>
-	<MkNoteSub v-for="note in conversation" v-if="appearNote.reply && appearNote.reply.replyId" :key="note.id" :class="$style.replyToMore" :note="note"/>
+	<template v-if="appearNote.reply && appearNote.reply.replyId"><MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note"/></template>
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
