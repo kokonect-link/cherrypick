@@ -220,7 +220,7 @@ import { i18n } from '@/i18n.js';
 import { iAmAdmin, $i } from '@/account.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{
 	userId: string;

@@ -5,7 +5,7 @@
 
 import { ref } from 'vue';
 import tinycolor from 'tinycolor2';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 export type Theme = {
 	id: string;

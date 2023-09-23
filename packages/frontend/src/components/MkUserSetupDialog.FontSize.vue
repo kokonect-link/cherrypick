@@ -74,7 +74,7 @@ import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));

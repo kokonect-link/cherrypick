@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, ref, inject, watch, nextTick } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';

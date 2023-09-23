@@ -90,7 +90,7 @@ import { signout, $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 import FormSection from '@/components/form/section.vue';
 
 const reportError = computed(defaultStore.makeGetterSetter('reportError'));

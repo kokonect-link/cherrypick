@@ -41,7 +41,7 @@ import tinycolor from 'tinycolor2';
 import { popupMenu } from '@/os.js';
 import { scrollToTop } from '@/scripts/scroll.js';
 import MkButton from '@/components/MkButton.vue';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 

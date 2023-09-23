@@ -24,7 +24,7 @@ import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { mainRouter } from '@/router.js';
 import { defaultStore } from '@/store.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 import { miLocalStorage } from '@/local-storage.js';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');

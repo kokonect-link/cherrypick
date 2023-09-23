@@ -34,7 +34,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { mainRouter } from '@/router.js';
 import { defaultStore } from '@/store.js';
 import { deviceKind } from '@/scripts/device-kind.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 const MOBILE_THRESHOLD = 500;
 

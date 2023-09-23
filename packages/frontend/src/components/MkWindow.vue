@@ -56,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onBeforeUnmount, onMounted, provide } from 'vue';
 import contains from '@/scripts/contains.js';
 import * as os from '@/os.js';
-import { MenuItem } from '@/types/menu';
+import { MenuItem } from '@/types/menu.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 

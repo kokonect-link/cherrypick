@@ -45,7 +45,7 @@ import { i18n } from '@/i18n.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
 import { userName } from '@/filters/user.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 let showFollowButton = $ref(false);
 

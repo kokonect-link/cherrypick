@@ -56,7 +56,7 @@ import { $i } from '@/account.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 const XStreamIndicator = defineAsyncComponent(() => import('./stream-indicator.vue'));
 const XUpload = defineAsyncComponent(() => import('./upload.vue'));
