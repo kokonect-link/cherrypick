@@ -65,7 +65,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as Acct from 'cherrypick-js/built/acct';
 import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
@@ -109,7 +108,7 @@ async function fetch() {
 	fetching = true;
 
 	if (props.userAcct) {
-		const acct = Acct.parse(props.userAcct);
+		const acct = Misskey.acct.parse(props.userAcct);
 		user = await os.api('users/show', { username: acct.username, host: acct.host || undefined });
 		group = null;
 
@@ -310,6 +309,8 @@ onBeforeUnmount(() => {
 });
 
 definePageMetadata(computed(() => !fetching ? user ? {
+  title: '',
+  icon: null,
 	userName: user,
 	avatar: user,
 } : {

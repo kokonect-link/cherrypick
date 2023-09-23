@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	v-anim="i"
 	class="_panel"
 	:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead)) }]"
-	:to="message.groupId ? `/my/messaging/group/${message.groupId}` : `/my/messaging/${getAcct(isMe(message) ? message.recipient : message.user)}`"
+	:to="message.groupId ? `/my/messaging/group/${ message.groupId }` : `/my/messaging/@${Misskey.acct.toString(isMe(message) ? message.recipient : message.user)}`"
 	:data-index="i"
 >
 	<div>
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</header>
 		<header v-else>
 			<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
-			<span :class="$style.username">@{{ acct(isMe(message) ? message.recipient : message.user) }}</span>
+			<span :class="$style.username">@{{ Misskey.acct.toString(isMe(message) ? message.recipient : message.user) }}</span>
 			<MkTime :time="message.createdAt" :class="$style.time"/>
 		</header>
 		<div>
@@ -31,12 +31,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as Acct from 'cherrypick-js/built/acct';
-import { acct } from '@/filters/user.js';
+import * as Misskey from 'cherrypick-js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-
-const getAcct = Acct.toString;
 
 const props = defineProps<{
   message: Record<string, any>;

@@ -480,7 +480,7 @@ export const routes = [{
 	loginRequired: true,
 }, {
 	name: 'messaging-room',
-	path: '/my/messaging/:userAcct',
+	path: '/my/messaging/@:userAcct',
 	component: page(() => import('./pages/messaging/messaging-room.vue')),
 	loginRequired: true,
 }, {

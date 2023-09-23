@@ -55,7 +55,7 @@ export function openAntenna(antennaId: string, loginId: string): ReturnType<type
 
 export async function openChat(body: any, loginId: string) {
 	if (body.groupId === null) {
-		return openClient('push', `/my/messaging/${getAcct(body.user)}`, loginId, { body });
+		return openClient('push', `/my/messaging/@${Misskey.acct.toString(body.user)}`, loginId, { body });
 	} else {
 		return openClient('push', `/my/messaging/group/${body.groupId}`, loginId, { body });
 	}
