@@ -84,6 +84,7 @@
 - Fix: 모달 팝업이 safe area를 침범하지 않도록
 - Fix: OffscreenCanvas undefined (MisskeyIO/misskey#165)
 - Fix: 대화 삭제가 올바르게 작동하지 않음
+- Fix: 유저 메뉴에서 '대화 시작하기'를 클릭하면 잘못된 페이지가 호출됨
 
 ### Server
 - Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가

@@ -16,7 +16,7 @@ import { mainRouter } from '@/router.js';
 import { Router } from '@/nirax.js';
 import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -205,7 +205,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		type: 'link',
 		icon: 'ti ti-messages',
 		text: i18n.ts.startMessaging,
-		to: '/my/messaging/${user.id}',
+		to: `/my/messaging/@${user.host === null ? user.username : user.username + '@' + user.host}`,
 	} : undefined, meId !== user.id ? {
 		icon: 'ti ti-users',
 		text: i18n.ts.inviteToGroup,
