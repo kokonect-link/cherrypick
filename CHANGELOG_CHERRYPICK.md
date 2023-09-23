@@ -83,6 +83,7 @@
 - Fix: 누락된 안테나 소스 추가
 - Fix: 모달 팝업이 safe area를 침범하지 않도록
 - Fix: OffscreenCanvas undefined (MisskeyIO/misskey#165)
+- Fix: 대화 삭제가 올바르게 작동하지 않음
 
 ### Server
 - Nodeinfo의 Software 이름을 CherryPick이 아닌 다른 이름으로 변경할 때 관련 주석 추가
@@ -92,6 +93,7 @@
 - Fix: 실행 중인 앱 내에서 ServerStatsService 시작 (misskey-dev/misskey#11342)
 - Fix: deliver-delayed에서 URL 구문 분석에 실패할 때 모든 것이 꼬이는 문제 수정 (MisskeyIO/misskey#164)
 - Fix: 대기열에 예상치 못한 데이터가 있는 경우, 엔드포인트 URL 구문 분석 및 오류 로그 생성에 실패하는 문제 수정 (MisskeyIO/misskey#168)
+- Fix: 리모트 서버로 대화를 발신할 수 없는 문제
 
 ---
 
