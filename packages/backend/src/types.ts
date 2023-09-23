@@ -44,6 +44,9 @@ export const moderationLogTypes = [
 	'deleteNote',
 	'createGlobalAnnouncement',
 	'createUserAnnouncement',
+	'resetPassword',
+	'suspendRemoteInstance',
+	'unsuspendRemoteInstance',
 ] as const;
 
 export type ModerationLogPayloads = {
@@ -104,5 +107,16 @@ export type ModerationLogPayloads = {
 		announcementId: string;
 		announcement: any;
 		userId: string;
+	};
+	resetPassword: {
+		targetId: string;
+	};
+	suspendRemoteInstance: {
+		id: string;
+		host: string;
+	};
+	unsuspendRemoteInstance: {
+		id: string;
+		host: string;
 	};
 };
