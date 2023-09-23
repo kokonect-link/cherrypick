@@ -39,10 +39,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-    <div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
-      <MkFollowButton v-if="narrow" :user="metadata.avatar" :transparent="false" :full="false"/>
-      <MkFollowButton v-else :user="metadata.avatar" :transparent="false" :full="true"/>
-    </div>
+		<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
+			<MkFollowButton v-if="narrow && mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="false"/>
+			<MkFollowButton v-else-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="true"/>
+		</div>
 	</div>
 	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
@@ -55,7 +55,7 @@ import { onMounted, onUnmounted, ref, inject, defineAsyncComponent } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -160,9 +160,9 @@ onMounted(() => {
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
 
-  globalEvents.on('showFollowButton', (showFollowButton_receive) => {
-    showFollowButton = showFollowButton_receive;
-  });
+	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
+		showFollowButton = showFollowButton_receive;
+	});
 });
 
 onUnmounted(() => {

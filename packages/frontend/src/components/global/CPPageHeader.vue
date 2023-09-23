@@ -47,8 +47,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
 	<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
-		<MkFollowButton v-if="narrow" :user="metadata.avatar" :transparent="false" :full="false"/>
-		<MkFollowButton v-else :user="metadata.avatar" :transparent="false" :full="true"/>
+		<MkFollowButton v-if="narrow && mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="false"/>
+		<MkFollowButton v-else-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="true"/>
 	</div>
 </div>
 </template>
