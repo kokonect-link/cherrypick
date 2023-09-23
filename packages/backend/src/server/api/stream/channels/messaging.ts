@@ -63,7 +63,7 @@ class MessagingChannel extends Channel {
 		this.emitTypersIntervalId = setInterval(this.emitTypers, 5000);
 
 		this.subCh = this.otherpartyId
-			? `messagingStream:${this.user!.id}-${this.otherpartyId}`
+			? `messagingStream:${this.user?.id}-${this.otherpartyId}`
 			: `messagingStream:${this.groupId}`;
 
 		// Subscribe messaging stream

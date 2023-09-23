@@ -268,7 +268,9 @@ function onDeleted(id) {
 }
 
 function thisScrollToBottom() {
-	scrollToBottom($$(rootEl).value, { behavior: 'smooth' });
+	if (window.location.href.includes('my/messaging/')) {
+		scrollToBottom($$(rootEl).value, { behavior: 'smooth' });
+	}
 }
 
 function onIndicatorClick() {
@@ -309,8 +311,8 @@ onBeforeUnmount(() => {
 });
 
 definePageMetadata(computed(() => !fetching ? user ? {
-  title: '',
-  icon: null,
+	title: '',
+	icon: null,
 	userName: user,
 	avatar: user,
 } : {

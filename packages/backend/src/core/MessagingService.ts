@@ -162,7 +162,7 @@ export class MessagingService {
 	@bindThis
 	public async deleteMessage(message: MiMessagingMessage) {
 		await this.messagingMessagesRepository.delete(message.id);
-		this.postDeleteMessage(message);
+		await this.postDeleteMessage(message);
 	}
 
 	@bindThis
