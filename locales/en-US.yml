@@ -1237,7 +1237,7 @@ _cherrypick:
   patchDescription: "Make changes to Misskey's functionality"
   reactableRemoteReaction: "Allow remote custom emoji reactions to react if there is an emoji with the same name on this server."
   showFollowingMessageInsteadOfButton: "Do not show the follow button in the notification field if you are already following someone"
-  mobileTimelineHeaderChange: "Timeline header design change in mobile environment"
+  mobileHeaderChange: "Header design change in mobile environment"
   renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
   renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
 _bannerDisplay:

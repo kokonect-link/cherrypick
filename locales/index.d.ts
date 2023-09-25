@@ -1245,7 +1245,7 @@ export interface Locale {
         "patchDescription": string;
         "reactableRemoteReaction": string;
         "showFollowingMessageInsteadOfButton": string;
-        "mobileTimelineHeaderChange": string;
+        "mobileHeaderChange": string;
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
     };

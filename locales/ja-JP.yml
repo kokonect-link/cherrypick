@@ -1242,7 +1242,7 @@ _cherrypick:
   patchDescription: "Misskeyの機能に変更を加えます。"
   reactableRemoteReaction: "リモートのカスタム絵文字リアクションでも、このサーバーに同じ名前の絵文字があればリアクションできるようにする"
   showFollowingMessageInsteadOfButton: "既にフォローしている場合、通知欄にフォローボタンを表示しない"
-  mobileTimelineHeaderChange: "モバイル環境でタイムラインのヘッダーデザインを変更"
+  mobileHeaderChange: "モバイル環境でヘッダーのデザインを変更"
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
 

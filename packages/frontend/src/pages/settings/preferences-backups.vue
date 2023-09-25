@@ -118,7 +118,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'infoButtonForNoteActionsEnabled',
 	'reactableRemoteReactionEnabled',
 	'showFollowingMessageInsteadOfButtonEnabled',
-	'mobileTimelineHeaderChange',
+	'mobileHeaderChange',
 	'renameTheButtonInPostFormToNya',
 	'showReplyInNotification',
 	'renoteQuoteButtonSeparation',

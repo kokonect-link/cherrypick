@@ -5,7 +5,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/>
+		<MkPageHeader v-else v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/>
+	</template>
 	<div>
 		<div v-if="user">
 			<XHome v-if="tab === 'home'" :user="user"/>
@@ -27,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch } from 'vue';
+import { defineAsyncComponent, computed, watch, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { acct as getAcct } from '@/filters/user.js';
 import * as os from '@/os.js';
@@ -36,6 +39,15 @@ import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));

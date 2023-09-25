@@ -16,13 +16,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<template v-if="metadata">
 		<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]">
-			<MkAvatar v-if="metadata.avatar" :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
+			<div v-if="metadata.avatar" :class="$style.titleAvatarContainer" @click="top">
+				<MkAvatar :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
+			</div>
 			<i v-else-if="metadata.icon" :class="[$style.titleIcon, metadata.icon]" @click="top"></i>
 
 			<div :class="$style.title">
-				<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true"/>
+				<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true" @click="top"/>
 				<div v-else-if="metadata.title" @click="top">{{ metadata.title }}</div>
-				<div v-if="!narrow && metadata.subtitle" :class="$style.subtitle">
+				<div v-if="!narrow && metadata.subtitle" :class="$style.subtitle" @click="top">
 					{{ metadata.subtitle }}
 				</div>
 				<div v-if="narrow && hasTabs" :class="[$style.subtitle, $style.activeTab]" @click="showTabsPopup">
@@ -357,6 +359,16 @@ onUnmounted(() => {
 
 .titleContainer_canBack {
 	margin-left: -32px;
+}
+
+.titleAvatarContainer {
+  $size: 32px;
+  contain: strict;
+  overflow: clip;
+  width: $size;
+  height: $size;
+  padding: 8px;
+  flex-shrink: 0;
 }
 
 .titleAvatar {
