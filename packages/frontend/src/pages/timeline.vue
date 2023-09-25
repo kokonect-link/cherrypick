@@ -59,7 +59,7 @@ import { instance } from '@/instance.js';
 import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { antennasCache, userListsCache } from '@/cache';
+import { antennasCache, userListsCache } from '@/cache.js';
 import { globalEvents } from '@/events.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
