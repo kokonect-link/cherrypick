@@ -740,7 +740,7 @@ export class ApPersonService implements OnModuleInit {
 
 		// Resolve to Object(may be Note) arrays
 		const unresolvedItems = isCollection(collection) ? collection.items : collection.orderedItems;
-		const items = await Promise.all(toArray(unresolvedItems).map(x => _resolver?.resolve(x)));
+		const items = await Promise.all(toArray(unresolvedItems).map(x => _resolver.resolve(x)));
 
 		// Resolve and regist Notes
 		const limit = promiseLimit<MiNote | null>(2);

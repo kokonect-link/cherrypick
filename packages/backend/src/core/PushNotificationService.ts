@@ -44,7 +44,7 @@ function truncateBody<T extends keyof PushNotificationsTypes>(type: T, body: Pus
 				reply: undefined,
 				renote: undefined,
 				user: type === 'notification' ? undefined as any : body.note.user,
-			}
+			},
 		} : {}),
 	};
 }

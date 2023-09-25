@@ -6,6 +6,7 @@
 import { Module } from '@nestjs/common';
 
 import { CoreModule } from '@/core/CoreModule.js';
+import { ServerStatsService } from '@/daemons/ServerStatsService.js';
 import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_abuseUserReports from './endpoints/admin/abuse-user-reports.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
@@ -382,7 +383,6 @@ import * as ep___fetchRss from './endpoints/fetch-rss.js';
 import * as ep___retention from './endpoints/retention.js';
 import { GetterService } from './GetterService.js';
 import { ApiLoggerService } from './ApiLoggerService.js';
-import { ServerStatsService } from '@/daemons/ServerStatsService.js';
 import type { Provider } from '@nestjs/common';
 
 const $admin_meta: Provider = { provide: 'ep:admin/meta', useClass: ep___admin_meta.default };

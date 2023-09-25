@@ -4,8 +4,8 @@
  */
 
 import { Entity, Index, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
-import { id } from './util/id.js';
 import { noteVisibilities } from '@/types.js';
+import { id } from './util/id.js';
 import { MiNote } from './Note.js';
 import type { MiUser } from './User.js';
 
