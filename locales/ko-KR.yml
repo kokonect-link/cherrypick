@@ -2328,6 +2328,9 @@ _webhookSettings:
     renote: "누군가 내 글을 리노트 했을 때"
     reaction: "누군가 내 노트에 리액션 했을 때"
     mention: "누군가 나를 멘션 했을 때"
+_moderationLogTypes:
+  suspend: "정지"
+  resetPassword: "비밀번호 재설정"
 _abuse:
   _resolver:
     1hour: "1시간"

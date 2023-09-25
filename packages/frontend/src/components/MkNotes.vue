@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkPagination ref="pagingComponent" :pagination="pagination">
+<MkPagination ref="pagingComponent" :pagination="pagination" :disableAutoLoad="disableAutoLoad">
 	<template #empty>
 		<div class="_fullinfo">
 			<img :src="infoImageUrl" class="_ghost"/>
@@ -44,6 +44,7 @@ const props = defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 	getDate?: (any) => string; // custom function to separate notes on something that isn't createdAt
+	disableAutoLoad?: boolean;
 }>();
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
