@@ -157,7 +157,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()">
+				<i class="ti ti-quote"></i>
+			</button>
 			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
@@ -479,17 +481,14 @@ async function renoteOnly() {
 	});
 }
 
-function quote() {
+function quote(): void {
 	pleaseLogin();
-	showMovedDialog();
-
 	if (appearNote.channel) {
 		os.post({
 			renote: appearNote,
 			channel: appearNote.channel,
 		});
 	}
-
 	os.post({
 		renote: appearNote,
 	});

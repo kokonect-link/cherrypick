@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<div :class="$style.form">
 			<FormSplit :minWidth="170">
-				<MkInput v-model="username" :autofocus="true" @update:modelValue="includeHost ? search : searchLocal">
+				<MkInput v-model="username" autofocus @update:modelValue="includeHost ? search : searchLocal">
 					<template #label>{{ i18n.ts.username }}</template>
 					<template #prefix>@</template>
 				</MkInput>
