@@ -69,7 +69,10 @@ function fetchGroup() {
 }
 
 function invite() {
-	os.selectUser().then(user => {
+	os.selectUser({
+		includeSelf: false,
+		includeHost: false,
+	}).then(user => {
 		os.apiWithDialog('users/groups/invite', {
 			groupId: group.id,
 			userId: user.id,
@@ -108,7 +111,10 @@ async function renameGroup() {
 }
 
 function transfer() {
-	os.selectUser().then(user => {
+	os.selectUser({
+		includeSelf: false,
+		includeHost: false,
+	}).then(user => {
 		os.apiWithDialog('users/groups/transfer', {
 			groupId: group.id,
 			userId: user.id,

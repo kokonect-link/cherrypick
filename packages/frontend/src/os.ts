@@ -435,10 +435,11 @@ export function form(title, form) {
 	});
 }
 
-export async function selectUser(opts: { includeSelf?: boolean } = {}) {
+export async function selectUser(opts: { includeSelf?: boolean, includeHost?: boolean } = {}) {
 	return new Promise((resolve, reject) => {
 		popup(defineAsyncComponent(() => import('@/components/MkUserSelectDialog.vue')), {
 			includeSelf: opts.includeSelf,
+			includeHost: opts.includeHost,
 		}, {
 			ok: user => {
 				resolve(user);

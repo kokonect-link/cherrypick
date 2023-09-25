@@ -17,17 +17,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<div :class="$style.form">
 			<FormSplit :minWidth="170">
-				<MkInput v-model="username" :autofocus="true" @update:modelValue="search">
+				<MkInput v-model="username" :autofocus="true" @update:modelValue="includeHost ? search : searchLocal">
 					<template #label>{{ i18n.ts.username }}</template>
 					<template #prefix>@</template>
 				</MkInput>
-				<MkInput v-model="host" :datalist="[hostname]" @update:modelValue="search">
+				<MkInput v-if="includeHost" v-model="host" :datalist="[hostname]" @update:modelValue="includeHost ? search : searchLocal">
 					<template #label>{{ i18n.ts.host }}</template>
 					<template #prefix>@</template>
 				</MkInput>
 			</FormSplit>
 		</div>
-		<div v-if="username != '' || host != ''" :class="[$style.result, { [$style.hit]: users.length > 0 }]">
+		<div v-if="username != '' || (host != '' && includeHost)" :class="[$style.result, { [$style.hit]: users.length > 0 }]">
 			<div v-if="users.length > 0" :class="$style.users">
 				<div v-for="user in users" :key="user.id" class="_button" :class="[$style.user, { [$style.selected]: selected && selected.id === user.id }]" @click="selected = user" @dblclick="ok()">
 					<MkAvatar :user="user" :class="$style.avatar" indicator/>
@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span>{{ i18n.ts.noUsers }}</span>
 			</div>
 		</div>
-		<div v-if="username == '' && host == ''" :class="$style.recent">
+		<div v-if="(username == '' && !includeHost) || (username == '' && host == '' && includeHost)" :class="$style.recent">
 			<div :class="$style.users">
 				<div v-for="user in recentUsers" :key="user.id" class="_button" :class="[$style.user, { [$style.selected]: selected && selected.id === user.id }]" @click="selected = user" @dblclick="ok()">
 					<MkAvatar :user="user" :class="$style.avatar" indicator/>
@@ -74,9 +74,12 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	includeSelf?: boolean;
-}>();
+  includeHost?: boolean;
+}>(), {
+	includeHost: true,
+});
 
 let username = $ref('');
 let host = $ref('');
@@ -93,6 +96,20 @@ const search = () => {
 	os.api('users/search-by-username-and-host', {
 		username: username,
 		host: host,
+		limit: 10,
+		detail: false,
+	}).then(_users => {
+		users = _users;
+	});
+};
+
+const searchLocal = () => {
+	if (username === '') {
+		users = [];
+		return;
+	}
+	os.api('users/search', {
+		username: username,
 		limit: 10,
 		detail: false,
 	}).then(_users => {

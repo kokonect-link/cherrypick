@@ -206,7 +206,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-messages',
 		text: i18n.ts.startMessaging,
 		to: `/my/messaging/@${user.host === null ? user.username : user.username + '@' + user.host}`,
-	} : undefined, meId !== user.id ? {
+	} : undefined, meId !== user.id && user.host === null ? {
 		icon: 'ti ti-users',
 		text: i18n.ts.inviteToGroup,
 		action: inviteGroup,
