@@ -136,11 +136,6 @@ const headerTabs = $computed(() => [{
 definePageMetadata({
 	title: i18n.ts.groups,
 	icon: 'ti ti-users',
-	actions: [{
-		icon: 'ti ti-plus',
-		text: i18n.ts.createGroup,
-		handler: create,
-	}],
 });
 
 </script>
