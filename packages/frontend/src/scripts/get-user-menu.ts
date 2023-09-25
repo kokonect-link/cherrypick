@@ -219,9 +219,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 	}] : []), {
 		icon: 'ti ti-pencil',
 		text: i18n.ts.editMemo,
-		action: () => {
-			editMemo();
-		},
+		action: editMemo,
 	}, {
 		type: 'parent',
 		icon: 'ti ti-list',
