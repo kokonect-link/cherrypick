@@ -228,7 +228,9 @@ function renote(viaKeyboard = false) {
 				os.post({
 					renote: props.note,
 					channel: props.note.channel,
-				});
+				}, () => {
+          focus();
+        });
 			},
 		}, null]);
 	}
@@ -257,7 +259,9 @@ function renote(viaKeyboard = false) {
 		action: () => {
 			os.post({
 				renote: props.note,
-			});
+			}, () => {
+        focus();
+      });
 		},
 	}]);
 
@@ -311,17 +315,22 @@ async function renoteOnly() {
 	});
 }
 
-function quote(): void {
+function quote(viaKeyboard = false): void {
 	pleaseLogin();
 	if (props.note.channel) {
 		os.post({
 			renote: props.note,
 			channel: props.note.channel,
-		});
+      animation: !viaKeyboard,
+		}, () => {
+      focus();
+    });
 	}
 	os.post({
 		renote: props.note,
-	});
+	}, () => {
+    focus();
+  });
 }
 
 function reply(viaKeyboard = false): void {

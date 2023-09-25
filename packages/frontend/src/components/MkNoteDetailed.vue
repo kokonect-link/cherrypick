@@ -398,7 +398,9 @@ function renote(viaKeyboard = false) {
 				os.post({
 					renote: appearNote,
 					channel: appearNote.channel,
-				});
+				}, () => {
+          focus();
+        });
 			},
 		}, null]);
 	}
@@ -427,7 +429,9 @@ function renote(viaKeyboard = false) {
 		action: () => {
 			os.post({
 				renote: appearNote,
-			});
+			}, () => {
+        focus();
+      });
 		},
 	}]);
 
@@ -481,17 +485,22 @@ async function renoteOnly() {
 	});
 }
 
-function quote(): void {
+function quote(viaKeyboard = false): void {
 	pleaseLogin();
 	if (appearNote.channel) {
 		os.post({
 			renote: appearNote,
 			channel: appearNote.channel,
-		});
+      animation: !viaKeyboard,
+		}, () => {
+      focus();
+    });
 	}
 	os.post({
 		renote: appearNote,
-	});
+	}, () => {
+    focus();
+  });
 }
 
 function reply(viaKeyboard = false): void {
