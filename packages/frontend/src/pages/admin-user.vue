@@ -447,7 +447,7 @@ watch($$(user), () => {
 });
 
 onMounted(() => {
-  globalEvents.on('refreshUser', () => updateRemoteUser());
+	globalEvents.on('refreshUser', () => updateRemoteUser());
 });
 
 const headerActions = $computed(() => []);

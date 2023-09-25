@@ -218,7 +218,7 @@ onMounted(() => {
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
 
-  globalEvents.on('showFollowButton', (showFollowButton_receive) => {
+	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
 		showFollowButton = showFollowButton_receive;
 	});
 });

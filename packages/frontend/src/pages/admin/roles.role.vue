@@ -164,13 +164,13 @@ async function toggleItem(item) {
 }
 
 const headerActions = $computed(() => [{
-  text: i18n.ts.edit,
-  icon: 'ti ti-pencil',
-  handler: edit,
+	text: i18n.ts.edit,
+	icon: 'ti ti-pencil',
+	handler: edit,
 }, {
-  text: i18n.ts.delete,
-  icon: 'ti ti-trash',
-  handler: del,
+	text: i18n.ts.delete,
+	icon: 'ti ti-trash',
+	handler: del,
 }]);
 
 const headerTabs = $computed(() => []);

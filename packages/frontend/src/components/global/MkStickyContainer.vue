@@ -101,7 +101,7 @@ onMounted(() => {
 	observer.observe(headerEl);
 	observer.observe(footerEl);
 
-  globalEvents.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

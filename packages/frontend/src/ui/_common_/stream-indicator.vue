@@ -53,7 +53,7 @@ function reload() {
 useStream().on('_disconnected_', onDisconnected);
 
 onMounted(() => {
-  globalEvents.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
+	globalEvents.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
 		hasRequireRefresh = hasRequireRefresh_receive;
 	});
 });

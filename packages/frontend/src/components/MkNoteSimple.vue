@@ -45,7 +45,7 @@ const props = defineProps<{
 const showContent = $ref(false);
 
 onMounted(() => {
-  globalEvents.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

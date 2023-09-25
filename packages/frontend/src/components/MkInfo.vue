@@ -30,8 +30,8 @@ const emit = defineEmits<{
 }>();
 
 function close() {
-  visible.value = false;
-  emit('closed');
+	visible.value = false;
+	emit('closed');
 }
 </script>
 

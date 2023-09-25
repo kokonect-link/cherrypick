@@ -54,27 +54,27 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: 0,
 	},
 	tlHomeHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlLocalHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlMediaHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlSocialHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlCatHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	tlGlobalHintClosed: {
-		where: "device",
+		where: 'device',
 		default: false,
 	},
 	keepCw: {

@@ -138,7 +138,7 @@ onMounted(() => {
 	connection.on('unfollow', onFollowChange);
 
 	showFollowButton = $i != null && $i.id !== props.user.id;
-  globalEvents.emit('showFollowButton', showFollowButton);
+	globalEvents.emit('showFollowButton', showFollowButton);
 });
 
 onBeforeUnmount(() => {

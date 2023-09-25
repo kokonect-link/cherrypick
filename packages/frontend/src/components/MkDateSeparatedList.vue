@@ -42,7 +42,7 @@ export default defineComponent({
 			type: Function, // Note => date string
 			required: false,
 			default: undefined,
-		}
+		},
 	},
 
 	setup(props, { slots, expose }) {
