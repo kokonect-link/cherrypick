@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<header v-if="formClick" :class="$style.header">
 			<div :class="$style.headerLeft">
 				<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
-				<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="$style.account" class="_button" @click="openAccountMenu">
+				<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="[$style.account, { [$style.fixed]: fixed }]" class="_button" @click="openAccountMenu">
 					<MkAvatar :user="postAccount ?? $i" :class="$style.avatar"/>
 				</button>
 			</div>
@@ -1044,7 +1044,10 @@ defineExpose({
 	display: inline-flex;
 	vertical-align: bottom;
 	flex: 0 1 50px;
-  margin: 0 0 0 12px;
+
+  &.fixed {
+    margin: 0 0 0 12px;
+  }
 }
 
 .avatar {
