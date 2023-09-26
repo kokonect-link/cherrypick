@@ -22,8 +22,12 @@
 @import "@fontsource/jetbrains-mono/700-italic.css";
 @import "@fontsource/jetbrains-mono/800.css";
 @import "@fontsource/jetbrains-mono/800-italic.css";
-@import "pretendard/dist/web/static/pretendard-dynamic-subset.css";
-@import "pretendard-jp/dist/web/static/pretendard-jp-dynamic-subset.css";
+@import "pretendard/dist/web/static/pretendard.css";
+@import "pretendard-jp/dist/web/static/pretendard-jp.css";
+// @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+// @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp-dynamic-subset.css');
+// @import "pretendard/dist/web/static/pretendard-dynamic-subset.css";
+// @import "pretendard-jp/dist/web/static/pretendard-jp-dynamic-subset.css";
 
 $default-font: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo", Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 $system-font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
