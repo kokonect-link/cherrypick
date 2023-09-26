@@ -433,8 +433,8 @@ defineExpose({
 			bottom: 0;
 			left: 0;
 			right: 0;
-      margin: auto auto calc(env(safe-area-inset-bottom));
-      padding: 32px;
+			margin: auto;
+			padding: 32px;
 			display: flex;
 			overflow: auto;
 
@@ -467,7 +467,7 @@ defineExpose({
 			bottom: 0;
 			left: 0;
 			right: 0;
-      margin: auto auto calc(env(safe-area-inset-bottom));
+			margin: auto;
 		}
 	}
 }
