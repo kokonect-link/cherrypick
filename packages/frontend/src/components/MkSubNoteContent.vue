@@ -218,7 +218,7 @@ function renote(viaKeyboard = false) {
 					renoteId: props.note.id,
 					channelId: props.note.channelId,
 				}).then(() => {
-					os.noteToast(i18n.ts.renoted);
+					os.noteToast(i18n.ts.renoted, 'renote');
 				});
 			},
 		}, {
@@ -229,8 +229,8 @@ function renote(viaKeyboard = false) {
 					renote: props.note,
 					channel: props.note.channel,
 				}, () => {
-          focus();
-        });
+					focus();
+				});
 			},
 		}, null]);
 	}
@@ -250,7 +250,7 @@ function renote(viaKeyboard = false) {
 			os.api('notes/create', {
 				renoteId: props.note.id,
 			}).then(() => {
-				os.noteToast(i18n.ts.renoted);
+				os.noteToast(i18n.ts.renoted, 'renote');
 			});
 		},
 	}, {
@@ -260,8 +260,8 @@ function renote(viaKeyboard = false) {
 			os.post({
 				renote: props.note,
 			}, () => {
-        focus();
-      });
+				focus();
+			});
 		},
 	}]);
 
@@ -296,7 +296,7 @@ async function renoteOnly() {
 			renoteId: props.note.id,
 			channelId: props.note.channelId,
 		}).then(() => {
-			os.noteToast(i18n.ts.renoted);
+			os.noteToast(i18n.ts.renoted, 'renote');
 		});
 	}
 
@@ -311,7 +311,7 @@ async function renoteOnly() {
 	os.api('notes/create', {
 		renoteId: props.note.id,
 	}).then(() => {
-		os.noteToast(i18n.ts.renoted);
+		os.noteToast(i18n.ts.renoted, 'renote');
 	});
 }
 
@@ -321,16 +321,16 @@ function quote(viaKeyboard = false): void {
 		os.post({
 			renote: props.note,
 			channel: props.note.channel,
-      animation: !viaKeyboard,
+			animation: !viaKeyboard,
 		}, () => {
-      focus();
-    });
+			focus();
+		});
 	}
 	os.post({
 		renote: props.note,
 	}, () => {
-    focus();
-  });
+		focus();
+	});
 }
 
 function reply(viaKeyboard = false): void {

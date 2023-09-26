@@ -153,6 +153,8 @@ export interface Locale {
     "renote": string;
     "unrenote": string;
     "renoted": string;
+    "quoted": string;
+    "replied": string;
     "cantRenote": string;
     "cantReRenote": string;
     "quote": string;

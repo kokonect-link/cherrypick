@@ -185,9 +185,10 @@ export function toast(message: string) {
 	}, {}, 'closed');
 }
 
-export function noteToast(message: string) {
+export function noteToast(message: string, icon: string) {
 	popup(MkNoteToast, {
 		message,
+		icon,
 	}, {}, 'closed');
 }
 
