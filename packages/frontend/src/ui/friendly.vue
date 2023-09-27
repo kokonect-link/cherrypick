@@ -300,14 +300,16 @@ function queueUpdated(q: number): void {
 }
 
 function openAccountMenu(ev: MouseEvent) {
-	longTouchNavHome = true;
-	setTimeout(() => {
-		if (longTouchNavHome === true) {
-			openAccountMenu_({
-				withExtraOperationFriendly: true,
-			}, ev);
-		}
-	}, 500);
+	if (defaultStore.state.enableLongPressOpenAccountMenu) {
+		longTouchNavHome = true;
+		setTimeout(() => {
+			if (longTouchNavHome === true) {
+				openAccountMenu_({
+					withExtraOperationFriendly: true,
+				}, ev);
+			}
+		}, 500);
+	}
 }
 
 function closeAccountMenu() {

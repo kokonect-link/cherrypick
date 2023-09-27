@@ -43,6 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</FormSection>
+
 	<FormSection>
 		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
 		<div class="_gaps_m">
@@ -55,6 +56,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
 				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
 			</MkSwitch>
+		</div>
+	</FormSection>
+
+	<FormSection>
+		<template #label>Friendly UI</template>
+		<div class="_gaps_m">
+			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -90,6 +98,7 @@ const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGet
 const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
 
 watch([
 	reactableRemoteReactionEnabled,

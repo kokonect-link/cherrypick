@@ -1255,6 +1255,7 @@ export interface Locale {
         "mobileHeaderChange": string;
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
+        "enableLongPressOpenAccountMenu": string;
     };
     "_bannerDisplay": {
         "all": string;

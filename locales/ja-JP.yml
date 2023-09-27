@@ -1252,6 +1252,7 @@ _cherrypick:
   mobileHeaderChange: "モバイル環境でヘッダーのデザインを変更"
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
+  enableLongPressOpenAccountMenu: "長押しでアカウントメニューを開く"
 
 _bannerDisplay:
   all: "全て"

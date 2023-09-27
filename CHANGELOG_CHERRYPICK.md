@@ -46,6 +46,7 @@
 - Enhance: 메모리 할당자를 jemalloc으로 설정 (MisskeyIO/misskey#152)
 
 ### Client
+- Feat: (Friendly) 길게 눌러 계정 메뉴를 표시하는 옵션을 비활성화 할 수 있음
 - Feat: about-misskey 페이지에서 클라이언트 버전을 누르면 변경 사항을 볼 수 있음
 - Feat: 이미지 압축 방식을 선택할 수 있음
   - 사이즈 변경 여부를 선택할 수 있음
