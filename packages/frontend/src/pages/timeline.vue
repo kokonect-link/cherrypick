@@ -187,14 +187,14 @@ async function reloadAsk() {
 
 const headerActions = $computed(() => [{
 	icon: friendlyEnableNotifications.value ? 'ti ti-notification' : 'ti ti-notification-off',
-	text: i18n.ts.friendlyEnableNotifications,
+	text: friendlyEnableNotifications.value ? i18n.ts.friendlyEnableNotifications : i18n.ts.friendlyDisableNotifications,
 	handler: () => {
 		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
 		reloadAsk();
 	},
 }, {
 	icon: friendlyEnableWidgets.value ? 'ti ti-apps' : 'ti ti-apps-off',
-	text: i18n.ts.friendlyEnableWidgets,
+	text: friendlyEnableWidgets.value ? i18n.ts.friendlyEnableWidgets : i18n.ts.friendlyDisableWidgets,
 	handler: () => {
 		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
 		reloadAsk();

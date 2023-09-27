@@ -62,6 +62,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<template #label>Friendly UI</template>
 		<div class="_gaps_m">
+			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
+			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
 			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
 		</div>
 	</FormSection>
@@ -98,11 +100,15 @@ const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGet
 const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
 
 watch([
 	reactableRemoteReactionEnabled,
 	renameTheButtonInPostFormToNya,
+	friendlyEnableNotifications,
+	friendlyEnableWidgets,
 ], async () => {
 	await reloadAsk();
 });
