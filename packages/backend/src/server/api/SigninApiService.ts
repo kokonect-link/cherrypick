@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-//import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import * as argon2 from 'argon2';
 import * as OTPAuth from 'otpauth';
 import { IsNull } from 'typeorm';
@@ -124,7 +124,7 @@ export class SigninApiService {
 		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 
 		// Compare password
-		const same = await argon2.verify(profile.password!, password);
+		const same = await argon2.verify(profile.password!, password) || bcrypt.compareSync(password, profile.password!);
 
 		const fail = async (status?: number, failure?: { id: string }) => {
 			// Append signin history
@@ -141,6 +141,12 @@ export class SigninApiService {
 
 		if (!profile.twoFactorEnabled) {
 			if (same) {
+				if (profile.password!.startsWith('$2')) {
+					const newHash = await argon2.hash(password);
+					this.userProfilesRepository.update(user.id, {
+						password: newHash
+					});
+				}
 				return this.signinService.signin(request, reply, user);
 			} else {
 				return await fail(403, {
@@ -157,6 +163,12 @@ export class SigninApiService {
 			}
 
 			try {
+				if (profile.password!.startsWith('$2')) {
+					const newHash = await argon2.hash(password);
+					this.userProfilesRepository.update(user.id, {
+						password: newHash
+					});
+				}
 				await this.userAuthService.twoFactorAuthenticate(profile, token);
 			} catch (e) {
 				return await fail(403, {
