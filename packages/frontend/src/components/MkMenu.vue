@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div role="menu">
 	<div
-		ref="itemsEl" v-hotkey="keymap"
+		ref="itemsEl" v-hotkey="keymap" v-vibrate="5"
 		class="_popup _shadow"
 		:class="[$style.root, { [$style.center]: align === 'center', [$style.asDrawer]: asDrawer }]"
 		:style="{ width: (width && !asDrawer) ? width + 'px' : '', maxHeight: maxHeight ? maxHeight + 'px' : '' }"

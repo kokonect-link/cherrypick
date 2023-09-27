@@ -128,9 +128,9 @@ const menuDef = computed(() => [{
 		active: currentPage?.route.name === 'statusbar',
 	}, {
 		icon: 'ti ti-music',
-		text: i18n.ts.sounds,
-		to: '/settings/sounds',
-		active: currentPage?.route.name === 'sounds',
+		text: i18n.ts.soundsAndVibrations,
+		to: '/settings/sounds-and-vibrations',
+		active: currentPage?.route.name === 'sounds-and-vibrations',
 	}, {
 		icon: 'ti ti-plug',
 		text: i18n.ts.plugins,

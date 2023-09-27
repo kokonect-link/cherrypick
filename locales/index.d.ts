@@ -595,6 +595,10 @@ export interface Locale {
     "newNoteRecived": string;
     "sounds": string;
     "sound": string;
+    "vibrations": string;
+    "soundsAndVibrations": string;
+    "playVibrationsOnClick": string;
+    "playVibrationsOnClickDescription": string;
     "listen": string;
     "none": string;
     "showInPage": string;

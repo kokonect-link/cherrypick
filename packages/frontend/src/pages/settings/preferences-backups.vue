@@ -128,6 +128,15 @@ const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'darkTheme',
 	'syncDeviceDarkMode',
 	'plugins',
+	'vibrate',
+	'sound_masterVolume',
+	'sound_note',
+	'sound_noteMy',
+	'sound_notification',
+	'sound_chat',
+	'sound_chatBg',
+	'sound_antenna',
+	'sound_channel',
 ];
 
 const scope = ['clientPreferencesProfiles'];

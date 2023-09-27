@@ -77,6 +77,7 @@ import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const props = defineProps<{
 	userAcct?: string;
@@ -214,6 +215,7 @@ function onDrop(ev: DragEvent): void {
 
 function onMessage(message) {
 	sound.play('chat');
+	vibrate([30, 30, 30]);
 
 	const _isBottom = isBottomVisible(rootEl, 64);
 

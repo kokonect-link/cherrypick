@@ -5,7 +5,7 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { miLocalStorage } from './local-storage';
+import { miLocalStorage } from '@/local-storage.js';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -583,6 +583,7 @@ export class ColdDeviceStorage {
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
+		vibrate: true,
 		sound_masterVolume: 0.5,
 		sound_note: { type: 'syuilo/down', volume: 0.5 },
 		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },

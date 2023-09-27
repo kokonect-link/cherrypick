@@ -129,6 +129,7 @@ import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const modal = inject('modal');
 
@@ -848,6 +849,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
+	vibrate([10, 20, 10, 20, 10, 20, 60]);
 }
 
 function cancel() {

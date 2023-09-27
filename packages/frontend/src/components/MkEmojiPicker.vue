@@ -13,6 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button
 					v-for="emoji in searchResultCustom"
 					:key="emoji.name"
+					v-vibrate="50"
 					class="_button item"
 					:title="emoji.name"
 					tabindex="0"

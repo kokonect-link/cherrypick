@@ -5,6 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <span
+	v-vibrate="5"
 	v-tooltip="checked ? i18n.ts.itsOn : i18n.ts.itsOff"
 	:class="{
 		[$style.button]: true,

@@ -22,6 +22,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSection>
 
 	<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+
+	<FormSection>
+		<template #label>{{ i18n.ts.vibration }}</template>
+		<div class="_gaps_s">
+			<MkSwitch v-model="vibrate" @click="demoVibrate()">{{ i18n.ts.playVibrationsOnClick }}<template #caption>{{ i18n.ts.playVibrationsOnClickDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+		</div>
+	</FormSection>
 </div>
 </template>
 
@@ -32,9 +39,11 @@ import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import MkFolder from '@/components/MkFolder.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
 import { soundConfigStore } from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { ColdDeviceStorage } from '@/store.js';
 
 const masterVolume = computed(soundConfigStore.makeGetterSetter('sound_masterVolume'));
 
@@ -49,6 +58,8 @@ const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
 	antenna: soundConfigStore.reactiveState.sound_antenna,
 	channel: soundConfigStore.reactiveState.sound_channel,
 });
+
+const vibrate = computed(ColdDeviceStorage.makeGetterSetter('vibrate'));
 
 async function updated(type: keyof typeof sounds.value, sound) {
 	const v = {
@@ -68,12 +79,16 @@ function reset() {
 	}
 }
 
+function demoVibrate() {
+	window.navigator.vibrate(100);
+}
+
 const headerActions = $computed(() => []);
 
 const headerTabs = $computed(() => []);
 
 definePageMetadata({
-	title: i18n.ts.sounds,
+	title: i18n.ts.soundsAndVibrations,
 	icon: 'ti ti-music',
 });
 </script>
