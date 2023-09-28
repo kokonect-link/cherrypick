@@ -30,6 +30,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Add: 타임라인 소개 추가
 - Change: EventBus를 사용하는 코드를 EventEmitter3로 변경
 - Change: 버전 관리 방식 변경
+- Change: '광고를 항상 표시' 옵션을 기본 활성화로 변경
 - Feat: 스크롤 시 요소 표시(헤더, 플로팅 버튼, 탐색 모음)를 사용자화 할 수 있는 옵션 추가
 - Feat: 노트 작성 버튼을 '노트'에서 '냥!'으로 변경할 수 있는 옵션 추가
 - Feat: 리노트를 신고할 수 있도록 (misskey-dev/misskey#11466)
