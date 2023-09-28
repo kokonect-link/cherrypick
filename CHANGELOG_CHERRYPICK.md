@@ -1,7 +1,7 @@
 <!--
-## 2023.x.x-cp-4.x.x
+## 4.x.x
 출시일: unreleased<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ## NOTE
 
@@ -21,14 +21,15 @@
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 2023.x.x-cp-4.x.x
+## 4.x.x
 출시일: unreleased<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### General
 - Add: Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
 - Add: 타임라인 소개 추가
 - Change: EventBus를 사용하는 코드를 EventEmitter3로 변경
+- Change: 버전 관리 방식 변경
 - Feat: 스크롤 시 요소 표시(헤더, 플로팅 버튼, 탐색 모음)를 사용자화 할 수 있는 옵션 추가
 - Feat: 노트 작성 버튼을 '노트'에서 '냥!'으로 변경할 수 있는 옵션 추가
 - Feat: 리노트를 신고할 수 있도록 (misskey-dev/misskey#11466)
@@ -107,7 +108,7 @@
 
 ## 13.14.2-cp-4.2.0
 출시일: 2023/07/29<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGELOG.md#13142) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGELOG.md#13142) 문서를 참고하십시오.
 
 ### General
 - 리액션 수신의 기본값을 전체로 설정
@@ -162,7 +163,7 @@
 
 ## 13.13.2-cp-4.1.0
 출시일: 2023/06/20<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGELOG.md#13132) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGELOG.md#13132) 문서를 참고하십시오.
 
 ### General
 - 타임라인에 노트의 답글을 표시하는 옵션의 기본값을 켜짐으로 설정
@@ -245,7 +246,7 @@
 
 ## 13.13.1-cp-4.0.0
 출시일: 2023/06/06<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGELOG.md#13131) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGELOG.md#13131) 문서를 참고하십시오.
 
 ### General
 - 채팅 및 그룹 기능 유지 (revert: misskey-dev/misskey#9919, misskey-dev/misskey#9942)
@@ -306,7 +307,7 @@
 
 ## 13.5.6-cp-3.1.0
 출시일: 2023/02/10<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
 변경 사항이 없습니다.
@@ -315,7 +316,7 @@
 
 ## 13.5.5-cp-3.1.0
 출시일: 2023/02/10<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
 이 버전부터 Misskey v13을 대응합니다.
@@ -345,7 +346,7 @@
 
 ## 12.119.0-cp-3.0.0
 출시일: 2022/09/16<br>
-전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
 이 버전부터는 기존 버전과 연결되지 않고, 새로 포크하여 작업되었습니다. 따라서 기존 버전에 있던 기능들이 다시 명시될 수 있습니다.
