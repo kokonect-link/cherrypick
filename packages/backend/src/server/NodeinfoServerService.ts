@@ -83,6 +83,7 @@ export class NodeinfoServerService {
 					 */
 					name: 'cherrypick',
 					version: this.config.version,
+					basedMisskeyVersion: this.config.basedMisskeyVersion,
 					homepage: nodeinfo_homepage,
 					repository: meta.repositoryUrl,
 				},

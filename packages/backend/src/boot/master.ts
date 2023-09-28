@@ -49,6 +49,7 @@ function greet() {
 
 	bootLogger.info('Welcome to CherryPick!');
 	bootLogger.info(`CherryPick v${meta.version}`, null, true);
+	bootLogger.info(`Based on Misskey v${meta.basedMisskeyVersion}`, null, true);
 }
 
 /**

@@ -5,6 +5,7 @@
 
 type Keys =
 	'v' |
+	'basedMisskeyVersion' |
 	'lastVersion' |
 	'instance' |
 	'account' |

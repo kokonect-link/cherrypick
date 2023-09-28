@@ -36,6 +36,10 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: false,
 			},
+			basedMisskeyVersion: {
+				type: 'string',
+				optional: false, nullable: false,
+			},
 			name: {
 				type: 'string',
 				optional: false, nullable: false,
@@ -290,6 +294,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				maintainerEmail: instance.maintainerEmail,
 
 				version: this.config.version,
+				basedMisskeyVersion: this.config.basedMisskeyVersion,
 
 				name: instance.name,
 				shortName: instance.shortName,

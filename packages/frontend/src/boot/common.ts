@@ -130,6 +130,7 @@ export async function common(createVue: () => App<Element>) {
 
 	fetchInstanceMetaPromise.then(() => {
 		miLocalStorage.setItem('v', instance.version);
+		miLocalStorage.setItem('basedMisskeyVersion', instance.basedMisskeyVersion);
 	});
 
 	//#region loginId

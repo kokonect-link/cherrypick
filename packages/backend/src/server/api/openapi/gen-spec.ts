@@ -14,6 +14,7 @@ export function genOpenapiSpec(config: Config) {
 
 		info: {
 			version: config.version,
+			basedMisskeyVersion: config.basedMisskeyVersion,
 			title: 'CherryPick API',
 			'x-logo': { url: '/static-assets/api-doc.png' },
 		},

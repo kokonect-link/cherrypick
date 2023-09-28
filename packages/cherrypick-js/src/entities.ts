@@ -305,6 +305,7 @@ export type LiteInstanceMetadata = {
 	maintainerName: string | null;
 	maintainerEmail: string | null;
 	version: string;
+	basedMisskeyVersion: string;
 	name: string | null;
 	shortName: string | null;
 	uri: string;

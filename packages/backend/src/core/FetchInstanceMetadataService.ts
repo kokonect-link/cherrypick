@@ -22,6 +22,7 @@ type NodeInfo = {
 	software?: {
 		name?: unknown;
 		version?: unknown;
+		basedMisskeyVersion?: unknown;
 	};
 	metadata?: {
 		name?: unknown;

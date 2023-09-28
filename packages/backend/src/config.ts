@@ -152,6 +152,7 @@ export type Config = {
 	signToActivityPubGet: boolean | undefined;
 
 	version: string;
+	basedMisskeyVersion: string;
 	host: string;
 	hostname: string;
 	scheme: string;
@@ -201,6 +202,7 @@ export function loadConfig(): Config {
 
 	const url = tryCreateUrl(config.url);
 	const version = meta.version;
+	const basedMisskeyVersion = meta.basedMisskeyVersion;
 	const host = url.host;
 	const hostname = url.hostname;
 	const scheme = url.protocol.replace(/:$/, '');
@@ -214,6 +216,7 @@ export function loadConfig(): Config {
 
 	return {
 		version,
+		basedMisskeyVersion,
 		url: url.origin,
 		port: config.port ?? parseInt(process.env.PORT ?? '', 10),
 		socket: config.socket,
