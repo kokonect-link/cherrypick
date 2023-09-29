@@ -1234,7 +1234,7 @@ _cherrypick:
   nickname: "ニックネーム機能"
   nicknameDescription: "ユーザーページにて、ユーザーの名前をクリック/タップすることで好きなものに変更できるようになります。変更は自分にのみ反映されます。\n頻繁に名前を変更するユーザーを識別するときなどに使えます。"
   useEnterToSend: "Enterキーを押して送信"
-  useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。"
+  useEnterToSendDescription: "オプションを有効にすると、行替えはShift＋Enterキーでできます。チャットを送信するときはオプションの影響を受けません。"
   postFormVisibilityHotkey: "ショートカットキーで公開範囲を切り替える"
   postFormVisibilityHotkeyDescription: "ノートを作成する際、Ctrl(control) + Shiftキーを押すと公開範囲を切り替えることができます。ローカルのみショートカットキーは、Ctrl(commandまたはcontrol) + Alt(option)キーです。"
   showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"

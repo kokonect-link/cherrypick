@@ -80,6 +80,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: '타임라인 상단에 글 작성란 표시' 옵션이 활성화 되었을 때 autofocus를 사용하지 않도록
 - Enhance: 로컬 유저만 그룹에 초대할 수 있도록
 - Enhance: 노트를 게시한 방식에 따라 토스트 알림의 아이콘과 내용이 다르게 표시되도록
+- Enhance: 'Enter 키를 눌러 보내기' 옵션에 관계없이 채팅에서 Enter 키를 눌러 전송하도록 강제함
 - Fix: (Friendly) 흐림 효과를 사용할 때 하단 내비게이션 바의 가독성이 매우 떨어지는 문제
 - Fix: (Friendly) 위젯 버튼에서 'UI 애니메이션 줄이기' 옵션이 적용되지 않는 문제
 - Fix: (Friendly) 스크롤을 해도 위젯 버튼이 숨겨지지 않는 문제

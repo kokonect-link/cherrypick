@@ -148,15 +148,7 @@ function onDrop(ev: DragEvent): void {
 
 function onKeydown(ev: KeyboardEvent) {
 	typing();
-	if (defaultStore.state.useEnterToSend && !ev.shiftKey) {
-		if ((ev.key === 'Enter') && canSend) {
-			send();
-		}
-	} else {
-		if ((ev.key === 'Enter') && (ev.ctrlKey || ev.metaKey) && canSend) {
-			send();
-		}
-	}
+	if ((ev.key === 'Enter') && !ev.shiftKey && canSend) send();
 }
 
 function onCompositionUpdate() {
