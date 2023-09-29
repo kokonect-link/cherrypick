@@ -1,27 +1,32 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkModal ref="modal" :preferType="'dialog'" @click="modal.close()" @closed="onModalClosed()">
-	<MkPostForm ref="form" style="margin: 0 auto auto auto;" v-bind="props" autofocus freezeAfterPosted @posted="onPosted" @cancel="modal.close()" @esc="modal.close()"/>
+	<MkPostForm ref="form" :class="$style.form" v-bind="props" autofocus freezeAfterPosted @posted="onPosted" @cancel="modal.close()" @esc="modal.close()"/>
 </MkModal>
 </template>
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkModal from '@/components/MkModal.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 
 const props = defineProps<{
-	reply?: misskey.entities.Note;
-	renote?: misskey.entities.Note;
+	reply?: Misskey.entities.Note;
+	renote?: Misskey.entities.Note;
 	channel?: any; // TODO
-	mention?: misskey.entities.User;
-	specified?: misskey.entities.User;
+	mention?: Misskey.entities.User;
+	specified?: Misskey.entities.User;
 	initialText?: string;
-	initialVisibility?: typeof misskey.noteVisibilities;
-	initialFiles?: misskey.entities.DriveFile[];
+	initialVisibility?: typeof Misskey.noteVisibilities;
+	initialFiles?: Misskey.entities.DriveFile[];
 	initialLocalOnly?: boolean;
-	initialVisibleUsers?: misskey.entities.User[];
-	initialNote?: misskey.entities.Note;
+	initialVisibleUsers?: Misskey.entities.User[];
+	initialNote?: Misskey.entities.Note;
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
@@ -44,3 +49,11 @@ function onModalClosed() {
 	emit('closed');
 }
 </script>
+
+<style lang="scss" module>
+.form {
+	max-height: calc(100% - env(safe-area-inset-bottom));
+	margin: 0 auto auto auto;
+	overflow: scroll;
+}
+</style>

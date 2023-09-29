@@ -1,10 +1,15 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { AsyncComponentLoader, defineAsyncComponent, inject } from 'vue';
 import { Router } from '@/nirax';
-import { $i, iAmModerator } from '@/account';
+import { $i, iAmModerator } from '@/account.js';
 import MkLoading from '@/pages/_loading_.vue';
 import MkError from '@/pages/_error_.vue';
 
-const page = (loader: AsyncComponentLoader<any>) => defineAsyncComponent({
+export const page = (loader: AsyncComponentLoader<any>) => defineAsyncComponent({
 	loader: loader,
 	loadingComponent: MkLoading,
 	errorComponent: MkError,
@@ -37,10 +42,6 @@ export const routes = [{
 }, {
 	path: '/clips/:clipId',
 	component: page(() => import('./pages/clip.vue')),
-}, {
-	path: '/user-info/:userId',
-	component: page(() => import('./pages/user-info.vue')),
-	hash: 'initialTab',
 }, {
 	path: '/instance-info/:host',
 	component: page(() => import('./pages/instance-info.vue')),
@@ -106,13 +107,17 @@ export const routes = [{
 		name: 'navbar',
 		component: page(() => import('./pages/settings/navbar.vue')),
 	}, {
+		path: '/timeline',
+		name: 'timeline',
+		component: page(() => import('./pages/settings/timeline.vue')),
+	}, {
 		path: '/statusbar',
 		name: 'statusbar',
 		component: page(() => import('./pages/settings/statusbar.vue')),
 	}, {
-		path: '/sounds',
-		name: 'sounds',
-		component: page(() => import('./pages/settings/sounds.vue')),
+		path: '/sounds-and-vibrations',
+		name: 'sounds-and-vibrations',
+		component: page(() => import('./pages/settings/sounds-and-vibrations.vue')),
 	}, {
 		path: '/plugin/install',
 		name: 'plugin',
@@ -206,6 +211,10 @@ export const routes = [{
 	path: '/about-misskey',
 	component: page(() => import('./pages/about-misskey.vue')),
 }, {
+	path: '/invite',
+	name: 'invite',
+	component: page(() => import('./pages/invite.vue')),
+}, {
 	path: '/ads',
 	component: page(() => import('./pages/ads.vue')),
 }, {
@@ -262,6 +271,9 @@ export const routes = [{
 		icon: 'icon',
 		permission: 'permission',
 	},
+}, {
+	path: '/oauth/authorize',
+	component: page(() => import('./pages/oauth.vue')),
 }, {
 	path: '/tags/:tag',
 	component: page(() => import('./pages/tag.vue')),
@@ -331,6 +343,9 @@ export const routes = [{
 	path: '/registry',
 	component: page(() => import('./pages/registry.vue')),
 }, {
+	path: '/admin/user/:userId',
+	component: iAmModerator ? page(() => import('./pages/admin-user.vue')) : page(() => import('./pages/not-found.vue')),
+}, {
 	path: '/admin/file/:fileId',
 	component: iAmModerator ? page(() => import('./pages/admin-file.vue')) : page(() => import('./pages/not-found.vue')),
 }, {
@@ -393,6 +408,10 @@ export const routes = [{
 		name: 'abuses',
 		component: page(() => import('./pages/admin/abuses.vue')),
 	}, {
+		path: '/modlog',
+		name: 'modlog',
+		component: page(() => import('./pages/admin/modlog.vue')),
+	}, {
 		path: '/settings',
 		name: 'settings',
 		component: page(() => import('./pages/admin/settings.vue')),
@@ -437,6 +456,10 @@ export const routes = [{
 		name: 'server-rules',
 		component: page(() => import('./pages/admin/server-rules.vue')),
 	}, {
+		path: '/invites',
+		name: 'invites',
+		component: page(() => import('./pages/admin/invites.vue')),
+	}, {
 		path: '/',
 		component: page(() => import('./pages/_empty_.vue')),
 	}],
@@ -461,7 +484,7 @@ export const routes = [{
 	loginRequired: true,
 }, {
 	name: 'messaging-room',
-	path: '/my/messaging/:userAcct',
+	path: '/my/messaging/@:userAcct',
 	component: page(() => import('./pages/messaging/messaging-room.vue')),
 	loginRequired: true,
 }, {
@@ -538,45 +561,16 @@ export const routes = [{
 	component: page(() => import('./pages/not-found.vue')),
 }];
 
-export const mainRouter = new Router(routes, location.pathname + location.search + location.hash);
+export const mainRouter = new Router(routes, location.pathname + location.search + location.hash, !!$i, page(() => import('@/pages/not-found.vue')));
 
 window.history.replaceState({ key: mainRouter.getCurrentKey() }, '', location.href);
 
-// TODO: このファイルでスクロール位置も管理する設計だとdeckに対応できないのでなんとかする
-// スクロール位置取得+スクロール位置設定関数をprovideする感じでも良いかも
-
-const scrollPosStore = new Map<string, number>();
-
-window.setInterval(() => {
-	scrollPosStore.set(window.history.state?.key, window.scrollY);
-}, 1000);
-
 mainRouter.addListener('push', ctx => {
 	window.history.pushState({ key: ctx.key }, '', ctx.path);
-	const scrollPos = scrollPosStore.get(ctx.key) ?? 0;
-	window.scroll({ top: scrollPos, behavior: 'instant' });
-	if (scrollPos !== 0) {
-		window.setTimeout(() => { // 遷移直後はタイミングによってはコンポーネントが復元し切ってない可能性も考えられるため少し時間を空けて再度スクロール
-			window.scroll({ top: scrollPos, behavior: 'instant' });
-		}, 100);
-	}
-});
-
-mainRouter.addListener('replace', ctx => {
-	window.history.replaceState({ key: ctx.key }, '', ctx.path);
-});
-
-mainRouter.addListener('same', () => {
-	window.scroll({ top: 0, behavior: 'smooth' });
 });
 
 window.addEventListener('popstate', (event) => {
-	mainRouter.replace(location.pathname + location.search + location.hash, event.state?.key, false);
-	const scrollPos = scrollPosStore.get(event.state?.key) ?? 0;
-	window.scroll({ top: scrollPos, behavior: 'instant' });
-	window.setTimeout(() => { // 遷移直後はタイミングによってはコンポーネントが復元し切ってない可能性も考えられるため少し時間を空けて再度スクロール
-		window.scroll({ top: scrollPos, behavior: 'instant' });
-	}, 100);
+	mainRouter.replace(location.pathname + location.search + location.hash, event.state?.key);
 });
 
 export function useRouter(): Router {

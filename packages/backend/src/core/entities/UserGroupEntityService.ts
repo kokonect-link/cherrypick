@@ -1,12 +1,13 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models/index.js';
-import { awaitAll } from '@/misc/prelude/await-all.js';
+import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models/_.js';
 import type { Packed } from '@/misc/json-schema.js';
-import type { } from '@/models/entities/Blocking.js';
-import type { User } from '@/models/entities/User.js';
-import type { UserGroup } from '@/models/entities/UserGroup.js';
-import { UserEntityService } from './UserEntityService.js';
+import type { MiUserGroup } from '@/models/UserGroup.js';
 import { bindThis } from '@/decorators.js';
 
 @Injectable()
@@ -17,14 +18,12 @@ export class UserGroupEntityService {
 
 		@Inject(DI.userGroupJoiningsRepository)
 		private userGroupJoiningsRepository: UserGroupJoiningsRepository,
-
-		private userEntityService: UserEntityService,
 	) {
 	}
 
 	@bindThis
 	public async pack(
-		src: UserGroup['id'] | UserGroup,
+		src: MiUserGroup['id'] | MiUserGroup,
 	): Promise<Packed<'UserGroup'>> {
 		const userGroup = typeof src === 'object' ? src : await this.userGroupsRepository.findOneByOrFail({ id: src });
 
@@ -37,7 +36,7 @@ export class UserGroupEntityService {
 			createdAt: userGroup.createdAt.toISOString(),
 			name: userGroup.name,
 			ownerId: userGroup.userId,
-			userIds: users.map(x => x.userId),
+			userIds: users.map((x: { userId: any; }) => x.userId),
 		};
 	}
 }

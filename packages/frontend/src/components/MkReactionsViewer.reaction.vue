@@ -1,35 +1,41 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <button
 	ref="buttonEl"
 	v-ripple="canToggle"
+	v-vibrate="[10, 30, 40]"
 	class="_button"
-	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.large]: defaultStore.state.largeNoteReactions }]"
+	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
 	@click="toggleReaction()"
 >
-	<MkReactionIcon :class="$style.icon" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substr(1, reaction.length - 2)]"/>
+	<MkReactionIcon :class="$style.icon" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]"/>
 	<span :class="$style.count">{{ count }}</span>
 </button>
 </template>
 
 <script lang="ts" setup>
 import { computed, ComputedRef, onMounted, shallowRef, watch } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
-import * as os from '@/os';
-import { useTooltip } from '@/scripts/use-tooltip';
-import { $i } from '@/account';
+import * as os from '@/os.js';
+import { useTooltip } from '@/scripts/use-tooltip.js';
+import { $i } from '@/account.js';
 import MkReactionEffect from '@/components/MkReactionEffect.vue';
-import { claimAchievement } from '@/scripts/achievements';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { customEmojis } from '@/custom-emojis';
+import { claimAchievement } from '@/scripts/achievements.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { customEmojis } from '@/custom-emojis.js';
 
 const props = defineProps<{
 	reaction: string;
 	count: number;
 	isInitial: boolean;
-	note: misskey.entities.Note;
+	note: Misskey.entities.Note;
 }>();
 
 const buttonEl = shallowRef<HTMLElement>();
@@ -130,10 +136,12 @@ useTooltip(buttonEl, async (showing) => {
 
 <style lang="scss" module>
 .root {
-	display: inline-block;
-	height: 30px;
+	display: inline-flex;
+	align-items: center;
+	height: 38px;
 	margin: 2px;
 	padding: 0 12px;
+	font-size: 1.35em;
 	border-radius: 999px;
 
 	&.canToggle {
@@ -148,28 +156,35 @@ useTooltip(buttonEl, async (showing) => {
 		cursor: default;
 	}
 
-	&.large {
-		height: 42px;
-		font-size: 1.5em;
-		padding: 4px 14px;
-		// border-radius: 6px;
+	&.small {
+		height: 30px;
+		font-size: 1em;
 
 		> .count {
-			font-size: 0.7em;
-			line-height: 32px;
+			font-size: 0.9em;
+			line-height: 22px;
+		}
+	}
+
+	&.large {
+		height: 46px;
+		font-size: 1.8em;
+		padding: 4px 16px;
+
+		> .count {
+			font-size: 0.6em;
+			line-height: 50px;
 			margin: 0 0 0 8px;
 		}
 	}
 
-	&.reacted {
-		background: var(--accent);
-
-		&:hover {
-			background: var(--accent);
-		}
+	&.reacted, &.reacted:hover {
+		background: var(--accentedBg);
+		color: var(--accent);
+		box-shadow: 0 0 0px 1px var(--accent) inset;
 
 		> .count {
-			color: var(--fgOnAccent);
+			color: var(--accent);
 		}
 
 		> .icon {
@@ -178,9 +193,13 @@ useTooltip(buttonEl, async (showing) => {
 	}
 }
 
+.icon {
+	max-width: 150px;
+}
+
 .count {
 	font-size: 0.9em;
-	line-height: 22px;
+	line-height: 32px;
 	margin: 0 0 0 5px;
 }
 </style>

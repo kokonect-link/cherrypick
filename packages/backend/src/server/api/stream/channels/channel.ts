@@ -1,6 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Injectable } from '@nestjs/common';
 import { isUserRelated } from '@/misc/is-user-related.js';
-import type { User } from '@/models/entities/User.js';
+import type { MiUser } from '@/models/User.js';
 import type { Packed } from '@/misc/json-schema.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
@@ -13,7 +18,7 @@ class ChannelChannel extends Channel {
 	public static shouldShare = false;
 	public static requireCredential = false;
 	private channelId: string;
-	private typers: Record<User['id'], Date> = {};
+	private typers: Record<MiUser['id'], Date> = {};
 	private emitTypersIntervalId: ReturnType<typeof setInterval>;
 
 	constructor(

@@ -1,5 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { markRaw, ref } from 'vue';
-import { Storage } from './pizzax';
+import * as Misskey from 'cherrypick-js';
+import { miLocalStorage } from '@/local-storage.js';
+import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
 	title: string,
@@ -8,16 +15,16 @@ interface PostFormAction {
 
 interface UserAction {
 	title: string,
-	handler: (user: UserDetailed) => void;
+	handler: (user: Misskey.entities.UserDetailed) => void;
 }
 
 interface NoteAction {
 	title: string,
-	handler: (note: Note) => void;
+	handler: (note: Misskey.entities.Note) => void;
 }
 
 interface NoteViewInterruptor {
-	handler: (note: Note) => unknown;
+	handler: (note: Misskey.entities.Note) => unknown;
 }
 
 interface NotePostInterruptor {
@@ -25,7 +32,7 @@ interface NotePostInterruptor {
 }
 
 interface PageViewInterruptor {
-	handler: (page: Page) => unknown;
+	handler: (page: Misskey.entities.Page) => unknown;
 }
 
 export const postFormActions: PostFormAction[] = [];
@@ -46,6 +53,30 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 0,
 	},
+	tlHomeHintClosed: {
+		where: 'device',
+		default: false,
+	},
+	tlLocalHintClosed: {
+		where: 'device',
+		default: false,
+	},
+	tlMediaHintClosed: {
+		where: 'device',
+		default: false,
+	},
+	tlSocialHintClosed: {
+		where: 'device',
+		default: false,
+	},
+	tlCatHintClosed: {
+		where: 'device',
+		default: false,
+	},
+	tlGlobalHintClosed: {
+		where: 'device',
+		default: false,
+	},
 	keepCw: {
 		where: 'account',
 		default: true,
@@ -56,7 +87,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	collapseRenotes: {
 		where: 'account',
-		default: false,
+		default: true,
 	},
 	rememberNoteVisibility: {
 		where: 'account',
@@ -82,6 +113,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	imageCompressionMode: {
+		where: 'account',
+		default: 'resizeCompressLossy' as 'resizeCompress' | 'noResizeCompress' | 'resizeCompressLossy' | 'noResizeCompressLossy' | null,
+	},
 	memo: {
 		where: 'account',
 		default: null,
@@ -92,7 +127,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	reactionAcceptance: {
 		where: 'account',
-		default: 'nonSensitiveOnly' as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
+		default: null as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
 	},
 	mutedWords: {
 		where: 'account',
@@ -114,7 +149,6 @@ export const defaultStore = markRaw(new Storage('base', {
 			'messaging',
 			'favorites',
 			'followRequests',
-			'-',
 			'explore',
 			'search',
 			'announcements',
@@ -126,6 +160,14 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	localOnly: {
 		where: 'deviceAccount',
+		default: false,
+	},
+	showPreview: {
+		where: 'device',
+		default: false,
+	},
+	showPreviewInReplies: {
+		where: 'device',
 		default: false,
 	},
 	statusbars: {
@@ -151,9 +193,13 @@ export const defaultStore = markRaw(new Storage('base', {
 	tl: {
 		where: 'deviceAccount',
 		default: {
-			src: 'home' as 'home' | 'local' | 'social' | 'global',
-			arg: null,
+			src: 'home' as 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`,
+			userList: null as Misskey.entities.UserList | null,
 		},
+	},
+	pinnedUserLists: {
+		where: 'deviceAccount',
+		default: [] as Misskey.entities.UserList[],
 	},
 
 	overridedDeviceKind: {
@@ -167,6 +213,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	nsfw: {
 		where: 'device',
 		default: 'respect' as 'respect' | 'force' | 'ignore',
+	},
+	highlightSensitiveMedia: {
+		where: 'device',
+		default: false,
 	},
 	animation: {
 		where: 'device',
@@ -304,13 +354,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	largeNoteReactions: {
+	reactionsDisplaySize: {
 		where: 'device',
-		default: false,
+		default: 'small' as 'small' | 'medium' | 'large',
 	},
 	forceShowAds: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	aiChanMode: {
 		where: 'device',
@@ -340,17 +390,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: {} as Record<string, Record<string, string[]>>,
 	},
-
-	// #region CherryPick
-	// - Settings/General
-	useEnterToSend: {
+	keepScreenOn: {
 		where: 'device',
 		default: false,
 	},
-	postFormVisibilityHotkey: {
-		where: 'device',
-		default: true,
-	},
+
+	// #region CherryPick
+	// - Settings/General
 	newNoteReceivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',
@@ -358,10 +404,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	fontSize: {
 		where: 'device',
 		default: 8,
-	},
-	friendlyEnableNotification: {
-		where: 'device',
-		default: true,
 	},
 	collapseDefault: {
 		where: 'account',
@@ -387,6 +429,68 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	enableMarkByDate: {
+		where: 'device',
+		default: false,
+	},
+	showSubNoteFooterButton: {
+		where: 'device',
+		default: true,
+	},
+	infoButtonForNoteActionsEnabled: {
+		where: 'account',
+		default: true,
+	},
+	showReplyInNotification: {
+		where: 'device',
+		default: false,
+	},
+	renoteQuoteButtonSeparation: {
+		where: 'device',
+		default: true,
+	},
+	showFixedPostFormInReplies: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Timeline
+	enableHomeTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableLocalTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableMediaTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableSocialTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableCatTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableGlobalTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableListTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableAntennaTimeline: {
+		where: 'device',
+		default: true,
+	},
+	enableChannelTimeline: {
+		where: 'device',
+		default: true,
+	},
 
 	// - Settings/CherryPick
 	nicknameEnabled: {
@@ -397,17 +501,21 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: {} as Record<string, string>,
 	},
-	infoButtonForNoteActionsEnabled: {
-		where: 'account',
-		default: true,
-	},
-	rememberPostFormToggleStateEnabled: {
-		where: 'account',
-		default: true,
-	},
-	showPostFormPreview: {
+	useEnterToSend: {
 		where: 'device',
 		default: false,
+	},
+	postFormVisibilityHotkey: {
+		where: 'device',
+		default: true,
+	},
+	showRenoteConfirmPopup: {
+		where: 'device',
+		default: true,
+	},
+	displayHeaderNavBarWhenScroll: {
+		where: 'device',
+		default: 'hideHeaderFloatBtn' as 'all' | 'hideHeaderOnly' | 'hideHeaderFloatBtn' | 'hideFloatBtnOnly' | 'hideFloatBtnNavBar' | 'hide',
 	},
 	reactableRemoteReactionEnabled: {
 		where: 'account',
@@ -415,6 +523,28 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showFollowingMessageInsteadOfButtonEnabled: {
 		where: 'account',
+		default: true,
+	},
+	mobileHeaderChange: {
+		where: 'device',
+		default: false,
+	},
+	renameTheButtonInPostFormToNya: {
+		where: 'account',
+		default: false,
+	},
+	enableLongPressOpenAccountMenu: {
+		where: 'device',
+		default: true,
+	},
+
+	// - etc
+	friendlyEnableNotifications: {
+		where: 'device',
+		default: true,
+	},
+	friendlyEnableWidgets: {
+		where: 'device',
 		default: true,
 	},
 	// #endregion
@@ -434,6 +564,9 @@ export type Plugin = {
 	src: string | null;
 	version: string;
 	ast: any[];
+	author?: string;
+	description?: string;
+	permissions?: string[];
 };
 
 interface Watcher {
@@ -444,10 +577,8 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import { miLocalStorage } from './local-storage';
 import lightTheme from '@/themes/l-cherrypick.json5';
 import darkTheme from '@/themes/d-cherrypick.json5';
-import { Note, UserDetailed, Page } from 'cherrypick-js/built/entities';
 
 export class ColdDeviceStorage {
 	public static default = {
@@ -456,6 +587,7 @@ export class ColdDeviceStorage {
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
+		vibrate: true,
 		sound_masterVolume: 0.5,
 		sound_note: { type: 'syuilo/down', volume: 0.5 },
 		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },

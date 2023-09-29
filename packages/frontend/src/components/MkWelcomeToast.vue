@@ -9,9 +9,7 @@
 	>
 		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ zIndex }">
 			<CPAvatar :class="$style.avatar" :user="$i"/>
-			<div style="padding: 16px 24px;">
-				{{ message }}
-			</div>
+			<Mfm style="display: inherit; margin: 10px;" :text="message" :plain="true"></Mfm>
 		</div>
 	</Transition>
 </div>
@@ -19,10 +17,10 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { $i } from '@/account';
-import CPAvatar from '@/components/global/toast-avatar.vue';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { $i } from '@/account.js';
+import CPAvatar from '@/components/global/ToastAvatar.vue';
 
 defineProps<{
 	message: string;
@@ -68,13 +66,13 @@ onMounted(() => {
 	text-align: center;
 	pointer-events: none;
 
+	&.reduceBlurEffect {
+		background: var(--panel);
+	}
+
 	@media (max-width: 500px) {
 		width: 100%;
 		top: 0;
-
-		&.reduceBlurEffect {
-			background: var(--panel);
-		}
 	}
 }
 

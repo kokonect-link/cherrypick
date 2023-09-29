@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<MkPagination v-slot="{items}" ref="list" :pagination="type === 'following' ? followingPagination : followersPagination">
@@ -10,12 +15,12 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkUserInfo from '@/components/MkUserInfo.vue';
 import MkPagination from '@/components/MkPagination.vue';
 
 const props = defineProps<{
-	user: misskey.entities.User;
+	user: Misskey.entities.User;
 	type: 'following' | 'followers';
 }>();
 

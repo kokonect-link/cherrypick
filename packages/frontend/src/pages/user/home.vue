@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkSpacer :contentMax="narrow ? 800 : 1100">
 	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
@@ -46,16 +51,18 @@
 					</div>
 					<div v-if="user.roles.length > 0" class="roles">
 						<span v-for="role in user.roles" :key="role.id" v-tooltip="role.description" class="role" :style="{ '--color': role.color }">
-							<img v-if="role.iconUrl" style="height: 1.3em; vertical-align: -22%;" :src="role.iconUrl"/>
-							{{ role.name }}
+							<MkA v-adaptive-bg :to="`/roles/${role.id}`">
+								<img v-if="role.iconUrl" style="height: 1.3em; vertical-align: -22%;" :src="role.iconUrl"/>
+								{{ role.name }}
+							</MkA>
 						</span>
 					</div>
 					<div v-if="iAmModerator" class="moderationNote">
 						<MkTextarea v-if="editModerationNote || (moderationNote != null && moderationNote !== '')" v-model="moderationNote" manualSave>
-							<template #label>Moderation note</template>
+							<template #label>{{ i18n.ts.moderationNote }}</template>
 						</MkTextarea>
 						<div v-else>
-							<MkButton class="moderationNoteButton" small @click="editModerationNote = true">Add moderation note</MkButton>
+							<MkButton class="moderationNoteButton" small @click="editModerationNote = true">{{ i18n.ts.addModerationNote }}</MkButton>
 						</div>
 					</div>
 					<div v-if="isEditingMemo || memoDraft" class="memo" :class="{'no-memo': !memoDraft}">
@@ -111,34 +118,23 @@
 							</dt>
 							<dd class="value">
 								<Mfm :text="field.value" :author="user" :i="$i" :colored="false"/>
+								<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ti ti-circle-check" :class="$style.verifiedLink"></i>
 							</dd>
 						</dl>
 					</div>
 					<div class="status">
-						<MkA v-click-anime :to="userPage(user)">
+						<MkA :to="userPage(user)">
 							<b>{{ number(user.notesCount) }}</b>
 							<span>{{ i18n.ts.notes }}</span>
 						</MkA>
-						<template v-if="isFfVisibility($i, props.user)">
-							<MkA v-click-anime :to="userPage(user, 'following')">
-								<b>{{ number(user.followingCount) }}</b>
-								<span>{{ i18n.ts.following }}</span>
-							</MkA>
-							<MkA v-click-anime :to="userPage(user, 'followers')">
-								<b>{{ number(user.followersCount) }}</b>
-								<span>{{ i18n.ts.followers }}</span>
-							</MkA>
-						</template>
-						<template v-else>
-							<div>
-								<i class="ti ti-lock" :class="{ [$style.animation]: animation }"></i>
-								<span>{{ i18n.ts.following }}</span>
-							</div>
-							<div>
-								<i class="ti ti-lock" :class="{ [$style.animation]: animation }"></i>
-								<span>{{ i18n.ts.followers }}</span>
-							</div>
-						</template>
+						<MkA v-if="isFfVisibleForMe(user)" :to="userPage(user, 'following')">
+							<b>{{ number(user.followingCount) }}</b>
+							<span>{{ i18n.ts.following }}</span>
+						</MkA>
+						<MkA v-if="isFfVisibleForMe(user)" :to="userPage(user, 'followers')">
+							<b>{{ number(user.followersCount) }}</b>
+							<span>{{ i18n.ts.followers }}</span>
+						</MkA>
 					</div>
 				</div>
 			</div>
@@ -165,8 +161,7 @@
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, onMounted, onUnmounted, ref, nextTick, watch } from 'vue';
-import calcAge from 's-age';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkNote from '@/components/MkNote.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import MkAccountMoved from '@/components/MkAccountMoved.vue';
@@ -175,28 +170,43 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkOmit from '@/components/MkOmit.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkButton from '@/components/MkButton.vue';
-import { getScrollPosition } from '@/scripts/scroll';
-import { getUserMenu } from '@/scripts/get-user-menu';
-import number from '@/filters/number';
-import { userPage } from '@/filters/user';
-import * as os from '@/os';
-import { useRouter } from '@/router';
-import { i18n } from '@/i18n';
-import { $i, iAmModerator } from '@/account';
-import { dateString } from '@/filters/date';
-import { confetti } from '@/scripts/confetti';
+import { getScrollPosition } from '@/scripts/scroll.js';
+import { getUserMenu } from '@/scripts/get-user-menu.js';
+import number from '@/filters/number.js';
+import { userPage } from '@/filters/user.js';
+import * as os from '@/os.js';
+import { useRouter } from '@/router.js';
+import { i18n } from '@/i18n.js';
+import { $i, iAmModerator } from '@/account.js';
+import { dateString } from '@/filters/date.js';
+import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
-import { api } from '@/os';
-import { isFfVisibility } from '@/scripts/is-ff-visibility';
-import { defaultStore } from '@/store';
-import { miLocalStorage } from '@/local-storage';
-import { editNickname } from '@/scripts/edit-nickname';
+import { api } from '@/os.js';
+import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+import { defaultStore } from '@/store.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { editNickname } from '@/scripts/edit-nickname.js';
+
+function calcAge(birthdate: string): number {
+	const date = new Date(birthdate);
+	const now = new Date();
+
+	let yearDiff = now.getFullYear() - date.getFullYear();
+	const monthDiff = now.getMonth() - date.getMonth();
+	const pastDate = now.getDate() < date.getDate();
+
+	if (monthDiff < 0 || (monthDiff === 0 && pastDate)) {
+		yearDiff--;
+	}
+
+	return yearDiff;
+}
 
 const XPhotos = defineAsyncComponent(() => import('./index.photos.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
 
 const props = withDefaults(defineProps<{
-	user: misskey.entities.UserDetailed;
+	user: Misskey.entities.UserDetailed;
 	/** Test only; MkNotes currently causes problems in vitest */
 	disableNotes: boolean;
 }>(), {
@@ -241,10 +251,9 @@ const age = $computed(() => {
 	return calcAge(props.user.birthday);
 });
 
-const animation = $ref(defaultStore.state.animation);
-
 function menu(ev) {
-	os.popupMenu(getUserMenu(props.user, router), ev.currentTarget ?? ev.target);
+	const { menu, cleanup } = getUserMenu(props.user, router);
+	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
 function parallaxLoop() {
@@ -422,18 +431,6 @@ onUnmounted(() => {
 							font-weight: bold;
 							font-size: 1.8em;
 							text-shadow: 0 0 8px #000;
-
-							> .nickname-button {
-								-webkit-backdrop-filter: var(--blur, blur(8px));
-								backdrop-filter: var(--blur, blur(8px));
-								background: rgba(0, 0, 0, 0.2);
-								color: #ccc;
-								font-size: 0.7em;
-								line-height: 1;
-								width: 1.8em;
-								height: 1.8em;
-								border-radius: 100%;
-							}
 						}
 
 						> .bottom {
@@ -474,10 +471,6 @@ onUnmounted(() => {
 							margin-right: 8px;
 							opacity: 0.8;
 						}
-					}
-
-					> .nickname-button {
-						margin-left: 8px;
 					}
 				}
 
@@ -754,35 +747,12 @@ onUnmounted(() => {
 <style lang="scss" module>
 .tl {
 	background: var(--bg);
-    border-radius: var(--radius);
-    overflow: clip;
+	border-radius: var(--radius);
+	overflow: clip;
 }
 
-@keyframes keywiggle {
-	0% { transform: translate(-3px,-1px) rotate(-8deg); }
-	5% { transform: translateY(-1px) rotate(-10deg); }
-	10% { transform: translate(1px,-3px) rotate(0); }
-	15% { transform: translate(1px,1px) rotate(11deg); }
-	20% { transform: translate(-2px,1px) rotate(1deg); }
-	25% { transform: translate(-1px,-2px) rotate(-2deg); }
-	30% { transform: translate(-1px,2px) rotate(-3deg); }
-	35% { transform: translate(2px,1px) rotate(6deg); }
-	40% { transform: translate(-2px,-3px) rotate(-9deg); }
-	45% { transform: translateY(-1px) rotate(-12deg); }
-	50% { transform: translate(1px,2px) rotate(10deg); }
-	55% { transform: translateY(-3px) rotate(8deg); }
-	60% { transform: translate(1px,-1px) rotate(8deg); }
-	65% { transform: translateY(-1px) rotate(-7deg); }
-	70% { transform: translate(-1px,-3px) rotate(6deg); }
-	75% { transform: translateY(-2px) rotate(4deg); }
-	80% { transform: translate(-2px,-1px) rotate(3deg); }
-	85% { transform: translate(1px,-3px) rotate(-10deg); }
-	90% { transform: translate(1px) rotate(3deg); }
-	95% { transform: translate(-2px) rotate(-3deg); }
-	to { transform: translate(2px,1px) rotate(2deg); }
-}
-
-.animation:hover {
-	animation: keywiggle 1s;
+.verifiedLink {
+	margin-left: 4px;
+	color: var(--success);
 }
 </style>

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkModalWindow
 	ref="dialog"
@@ -29,25 +34,25 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
-import { userPage } from '@/filters/user';
-import { i18n } from '@/i18n';
-import * as os from '@/os';
-import { infoImageUrl } from '@/instance';
+import { userPage } from '@/filters/user.js';
+import { i18n } from '@/i18n.js';
+import * as os from '@/os.js';
+import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void,
 }>();
 
 const props = defineProps<{
-	noteId: misskey.entities.Note['id'];
+	noteId: Misskey.entities.Note['id'];
 }>();
 
 const dialog = $shallowRef<InstanceType<typeof MkModalWindow>>();
 
-let note = $ref<misskey.entities.Note>();
+let note = $ref<Misskey.entities.Note>();
 let renotes = $ref();
 let users = $ref();
 

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="zbwaqsat">
 	<XPie class="pie" :value="usage"/>
@@ -11,9 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import XPie from './pie.vue';
-import bytes from '@/filters/bytes';
+import bytes from '@/filters/bytes.js';
 
 const props = defineProps<{
 	meta: any; // TODO

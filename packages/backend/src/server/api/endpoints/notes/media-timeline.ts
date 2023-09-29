@@ -1,10 +1,14 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Brackets } from 'typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import type { NotesRepository } from '@/models/index.js';
+import type { NotesRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { QueryService } from '@/core/QueryService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
-import { MetaService } from '@/core/MetaService.js';
 import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import { DI } from '@/di-symbols.js';
 import { RoleService } from '@/core/RoleService.js';
@@ -25,7 +29,7 @@ export const meta = {
 	},
 
 	errors: {
-		ltlDisabled: {
+		mtlDisabled: {
 			message: 'Media timeline has been disabled.',
 			code: 'MTL_DISABLED',
 			id: '45a6eb02-7695-4393-b023-dd4be9aaaefd',
@@ -55,24 +59,22 @@ export const paramDef = {
 	required: [],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
 		private noteEntityService: NoteEntityService,
 		private queryService: QueryService,
-		private metaService: MetaService,
 		private roleService: RoleService,
 		private activeUsersChart: ActiveUsersChart,
 		private idService: IdService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const policies = await this.roleService.getUserPolicies(me ? me.id : null);
-			if (!policies.ltlAvailable) {
-				throw new ApiError(meta.errors.ltlDisabled);
+			if (!policies.mtlAvailable) {
+				throw new ApiError(meta.errors.mtlDisabled);
 			}
 
 			//#region Construct query
@@ -115,7 +117,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			}
 			//#endregion
 
-			const timeline = await query.take(ps.limit).getMany();
+			const timeline = await query.limit(ps.limit).getMany();
 
 			process.nextTick(() => {
 				if (me) {

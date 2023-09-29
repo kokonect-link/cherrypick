@@ -1,12 +1,17 @@
 /*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+/*
  * Notification manager for SW
  */
 import type { BadgeNames, PushNotificationDataMap } from '@/types';
-import { char2fileName } from '@/scripts/twemoji-base';
-import { cli } from '@/scripts/operations';
-import { getAccountFromId } from '@/scripts/get-account-from-id';
-import { swLang } from '@/scripts/lang';
-import { getUserName } from '@/scripts/get-user-name';
+import { char2fileName } from '@/scripts/twemoji-base.js';
+import { cli } from '@/scripts/operations.js';
+import { getAccountFromId } from '@/scripts/get-account-from-id.js';
+import { swLang } from '@/scripts/lang.js';
+import { getUserName } from '@/scripts/get-user-name.js';
 
 const closeNotificationsByTags = async (tags: string[]): Promise<void> => {
 	for (const n of (await Promise.all(tags.map(tag => globalThis.registration.getNotifications({ tag })))).flat()) {
@@ -18,7 +23,7 @@ const iconUrl = (name: BadgeNames): string => `/static-assets/tabler-badges/${na
 /* How to add a new badge:
  * 1. Find the icon and download png from https://tabler-icons.io/
  * 2. vips resize ~/Downloads/icon-name.png vipswork.png 0.4; vips scRGB2BW vipswork.png ~/icon-name.png"[compression=9,strip]"; rm vipswork.png;
- * 3. mv ~/icon-name.png ~/misskey/packages/backend/assets/tabler-badges/
+ * 3. mv ~/icon-name.png ~/cherrypick/packages/backend/assets/tabler-badges/
  * 4. Add 'icon-name' to BadgeNames
  * 5. Add `badge: iconUrl('icon-name'),`
  */
@@ -129,6 +134,13 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						],
 					}];
 
+				case 'note':
+					return [t('_notification.newNote') + ': ' + getUserName(data.body.user), {
+						body: data.body.note.text ?? '',
+						icon: data.body.user.avatarUrl,
+						data,
+					}];
+
 				case 'reaction': {
 					let reaction = data.body.reaction;
 					let badge: string | undefined;
@@ -216,6 +228,13 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						tag: `achievement:${data.body.achievement}`,
 					}];
 
+				case 'pollEnded':
+					return [t('_notification.pollEnded'), {
+						body: data.body.note.text ?? '',
+						badge: iconUrl('chart-arrows'),
+						data,
+					}];
+
 				case 'app':
 					return [data.body.header ?? data.body.body, {
 						body: data.body.header ? data.body.body : '',
@@ -265,7 +284,7 @@ export async function createEmptyNotification(): Promise<void> {
 		await globalThis.registration.showNotification(
 			(new URL(origin)).host,
 			{
-				body: `Misskey v${_VERSION_}`,
+				body: `CherryPick v${_VERSION_}`,
 				silent: true,
 				badge: iconUrl('null'),
 				tag: 'read_notification',

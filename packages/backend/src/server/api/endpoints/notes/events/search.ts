@@ -1,7 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { Brackets } from 'typeorm';
-import { Event } from '@/models/entities/Event.js';
-import type { NotesRepository } from '@/models/index.js';
+import { MiEvent } from '@/models/Event.js';
+import type { NotesRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { QueryService } from '@/core/QueryService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
@@ -72,13 +77,12 @@ function notAlphaNumeric(s: string): boolean {
 	return null !== s.match(/[^\w]/);
 }
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
-	
+
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
@@ -91,7 +95,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (!policies.canSearchNotes) {
 				throw new ApiError(meta.errors.unavailable);
 			}
-	
+
 			const queryRunner = this.notesRepository.queryRunner;
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note', queryRunner), ps.sinceId, ps.untilId);
 
@@ -107,7 +111,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			}
 
 			query
-				.innerJoinAndSelect(Event, 'event', 'event.noteId = note.id')
+				.innerJoinAndSelect(MiEvent, 'event', 'event.noteId = note.id')
 				.innerJoinAndSelect('note.user', 'user');
 
 			if (ps.query && ps.query.trim() !== '') {
@@ -119,7 +123,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			}
 			if (ps.filters) {
 				const filters = ps.filters;
-				
+
 				filters.forEach(f => {
 					if (!f.key || !f.values) throw new ApiError(meta.errors.invalidParam);
 					const filterKey = f.key;
@@ -163,7 +167,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			if (ps.offset) query.skip(ps.offset);
 
 			query.maxExecutionTime(250); // because we include regex expressions in where clause, defend against long running regex with timeout
-			const notes = await query.take(ps.limit).getMany();
+			const notes = await query.limit(ps.limit).getMany();
 
 			return await this.noteEntityService.packMany(notes, me);
 		});

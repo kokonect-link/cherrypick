@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <header :class="$style.root">
 	<div :class="$style.section">
@@ -19,7 +24,7 @@
 				<i v-else-if="note.visibility === 'followers'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-lock"></i>
 				<i v-else-if="note.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-mail"></i>
 			</span>
-			<span v-if="note.reactionAcceptance !== null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
+			<span v-if="note.reactionAcceptance != null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
 				<i v-if="note.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
 				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
 				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
@@ -39,17 +44,16 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'cherrypick-js';
-import { i18n } from '@/i18n';
-import { notePage } from '@/filters/note';
-import { userPage } from '@/filters/user';
-import { defaultStore } from '@/store';
-import { deepClone } from '@/scripts/clone';
+import * as Misskey from 'cherrypick-js';
+import { i18n } from '@/i18n.js';
+import { notePage } from '@/filters/note.js';
+import { userPage } from '@/filters/user.js';
+import { defaultStore } from '@/store.js';
+import { deepClone } from '@/scripts/clone.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{
-	note: misskey.entities.Note;
-	pinned?: boolean;
+	note: Misskey.entities.Note;
 }>();
 
 let note = $ref(deepClone(props.note));

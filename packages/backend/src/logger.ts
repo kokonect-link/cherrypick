@@ -1,13 +1,18 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import cluster from 'node:cluster';
 import util from 'util';
 import chalk from 'chalk';
 import { default as convertColor } from 'color-convert';
 import { format as dateFormat } from 'date-fns';
-import { Logging } from '@google-cloud/logging';
 import stripAnsi from 'strip-ansi';
 import { bindThis } from '@/decorators.js';
 import { envOption } from './env.js';
-import type { KEYWORD } from 'color-convert/conversions';
+import type { Log } from '@google-cloud/logging';
+import type { KEYWORD } from 'color-convert/conversions.js';
 
 type Context = {
 	name: string;
@@ -15,21 +20,21 @@ type Context = {
 };
 
 type Level = 'error' | 'success' | 'warning' | 'debug' | 'info';
-type CloudLogging = any | undefined;
 
+// eslint-disable-next-line import/no-default-export
 export default class Logger {
 	private context: Context;
 	private parentLogger: Logger | null = null;
 	private store: boolean;
-	private clConfig?: CloudLogging;
+	private cloudLogging: Log | null | undefined;
 
-	constructor(context: string, color?: KEYWORD, store = true, clConfig?: CloudLogging) {
+	constructor(context: string, color?: KEYWORD, store = true, cloudLogging?: Log) {
 		this.context = {
 			name: context,
 			color: color,
 		};
 		this.store = store;
-		this.clConfig = clConfig;
+		this.cloudLogging = cloudLogging;
 	}
 
 	@bindThis
@@ -73,25 +78,17 @@ export default class Logger {
 		if (envOption.withLogTime) log = chalk.gray(time) + ' ' + log;
 
 		console.log(important ? chalk.bold(log) : log);
-		if (level === 'error' && data) {
-			console.log(data);
-			this.writeCloudLogging(level, log, timestamp, data);
-		} else {
-			this.writeCloudLogging(level, log, timestamp, null);
-		}
+		if (level === 'error' && data) console.log(data);
+		this.writeCloudLogging(level, log, timestamp, level === 'error' || level === 'warning' ? data : null);
 	}
 
 	private async writeCloudLogging(level: Level, message: string, time: Date, data?: Record<string, any> | null) {
-		if (!this.clConfig) return;
-		if (!this.clConfig.projectId || !this.clConfig.saKeyPath) return;
+		if (!this.cloudLogging) return;
 
 		let lv = level;
 		if (level === 'success') lv = 'info';
 
-		const projectId = this.clConfig.projectId;
-		const logging = new Logging({ projectId: projectId, keyFilename: this.clConfig.saKeyPath });
-		const logName = this.clConfig.logName ?? 'misskey';
-		const log = logging.log(logName);
+		const log = this.cloudLogging;
 		const logMessage = stripAnsi(message);
 
 		const metadata = {

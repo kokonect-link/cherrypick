@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { Injectable } from '@nestjs/common';
 import { bindThis } from '@/decorators.js';
 import Channel from '../channel.js';
 

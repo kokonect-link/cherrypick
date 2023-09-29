@@ -1,8 +1,13 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="azykntjl">
 	<div class="body">
 		<div class="left">
-			<button v-click-anime class="item _button instance" @click="openInstanceMenu">
+			<button v-click-anime v-vibrate="5" class="item _button instance" @click="openInstanceMenu">
 				<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
 			</button>
 			<MkA v-click-anime v-tooltip="i18n.ts.timeline" class="item index" activeClass="active" to="/" exact>
@@ -10,7 +15,7 @@
 			</MkA>
 			<template v-for="item in menu">
 				<div v-if="item === '-'" class="divider"></div>
-				<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-tooltip="navbarItemDef[item].title" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+				<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="5" v-tooltip="navbarItemDef[item].title" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 					<i class="ti-fw" :class="navbarItemDef[item].icon"></i>
 					<span v-if="navbarItemDef[item].indicated" class="indicator"><i class="_indicatorCircle"></i></span>
 				</component>
@@ -19,7 +24,7 @@
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
 				<i class="ti ti-dashboard ti-fw"></i>
 			</MkA>
-			<button v-click-anime class="item _button" @click="more">
+			<button v-click-anime v-vibrate="5" class="item _button" @click="more">
 				<i class="ti ti-dots ti-fw"></i>
 				<span v-if="otherNavItemIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 			</button>
@@ -28,7 +33,7 @@
 			<MkA v-click-anime v-tooltip="i18n.ts.settings" class="item" activeClass="active" to="/settings" :behavior="settingsWindowed ? 'window' : null">
 				<i class="ti ti-settings ti-fw"></i>
 			</MkA>
-			<button v-click-anime class="item _button account" @click="openAccountMenu">
+			<button v-click-anime v-vibrate="5" class="item _button account" @click="openAccountMenu">
 				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
 			</button>
 			<div class="post" @click="os.post()">
@@ -44,13 +49,13 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted } from 'vue';
 import { openInstanceMenu } from './_common_/common';
-import * as os from '@/os';
+import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar';
-import { openAccountMenu as openAccountMenu_, $i } from '@/account';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 import MkButton from '@/components/MkButton.vue';
-import { defaultStore } from '@/store';
-import { instance } from '@/instance';
-import { i18n } from '@/i18n';
+import { defaultStore } from '@/store.js';
+import { instance } from '@/instance.js';
+import { i18n } from '@/i18n.js';
 
 const WINDOW_THRESHOLD = 1400;
 
@@ -82,7 +87,7 @@ function openAccountMenu(ev: MouseEvent) {
 onMounted(() => {
 	window.addEventListener('resize', () => {
 		settingsWindowed = (window.innerWidth >= WINDOW_THRESHOLD);
-	}, { passive: true });	
+	}, { passive: true });
 });
 
 </script>
@@ -177,7 +182,7 @@ onMounted(() => {
 
 			> .post {
 				display: inline-block;
-			
+
 				> .button {
 					width: 40px;
 					height: 40px;

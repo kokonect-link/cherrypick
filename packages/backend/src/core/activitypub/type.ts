@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 export type Obj = { [x: string]: any };
 export type ApObject = IObject | string | (IObject | string)[];
 
@@ -198,7 +203,6 @@ export interface IApPropertyValue extends IObject {
 }
 
 export const isPropertyValue = (object: IObject): object is IApPropertyValue =>
-	object &&
 	getApType(object) === 'PropertyValue' &&
 	typeof object.name === 'string' &&
 	'value' in object &&

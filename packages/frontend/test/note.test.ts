@@ -1,13 +1,18 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { describe, test, assert, afterEach } from 'vitest';
 import { render, cleanup, type RenderResult } from '@testing-library/vue';
 import './init';
-import type { DriveFile } from 'cherrypick-js/built/entities';
+import type * as Misskey from 'cherrypick-js';
 import { components } from '@/components';
 import { directives } from '@/directives';
 import MkMediaImage from '@/components/MkMediaImage.vue';
 
 describe('MkMediaImage', () => {
-	const renderMediaImage = (image: Partial<DriveFile>): RenderResult => {
+	const renderMediaImage = (image: Partial<Misskey.entities.DriveFile>): RenderResult => {
 		return render(MkMediaImage, {
 			props: {
 				image: {
@@ -73,7 +78,7 @@ describe('MkMediaImage', () => {
 	test('Attaching image with an alt message should show an ALT indicator', async () => {
 		const mkMediaImage = renderMediaImage({
 			type: 'image/png',
-			comment: 'Misskeyのロゴです',
+			comment: 'CherryPickのロゴです',
 		});
 		const [gif, alt] = await Promise.all([
 			mkMediaImage.queryByText('GIF'),
@@ -86,7 +91,7 @@ describe('MkMediaImage', () => {
 	test('Attaching GIF image with an alt message should show a GIF and an ALT indicator', async () => {
 		const mkMediaImage = renderMediaImage({
 			type: 'image/gif',
-			comment: 'Misskeyのロゴです',
+			comment: 'CherryPickのロゴです',
 		});
 		const [gif, alt] = await Promise.all([
 			mkMediaImage.queryByText('GIF'),

@@ -1,8 +1,13 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { shallowRef, computed, markRaw, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { api, apiGet } from './os';
-import { useStream } from '@/stream';
-import { get, set } from '@/scripts/idb-proxy';
+import { api, apiGet } from '@/os.js';
+import { useStream } from '@/stream.js';
+import { get, set, exist } from '@/scripts/idb-proxy.js';
 
 const storageCache = await get('emojis');
 export const customEmojis = shallowRef<Misskey.entities.CustomEmoji[]>(Array.isArray(storageCache) ? storageCache : []);
@@ -49,8 +54,9 @@ export async function fetchCustomEmojis(force = false) {
 	if (force) {
 		res = await api('emojis', {});
 	} else {
+		const emojiCacheExist = await exist('emojis');
 		const lastFetchedAt = await get('lastEmojisFetchedAt');
-		if (lastFetchedAt && (now - lastFetchedAt) < 1000 * 60 * 60) return;
+		if (lastFetchedAt && (now - lastFetchedAt) < 1000 * 60 * 60 && emojiCacheExist) return;
 		res = await apiGet('emojis', {});
 	}
 

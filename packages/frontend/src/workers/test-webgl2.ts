@@ -1,13 +1,14 @@
-try {
-    // throw ReferenceError in Safari <= 16.3
-    const canvas = new OffscreenCanvas(1, 1);
-    const gl = canvas.getContext('webgl2');
-    if (gl) {
-        postMessage({ result: true });
-    } else {
-        postMessage({ result: false });
-    }
-} catch (err) {
-    // assert(e instanceof ReferenceError)
-    postMessage({ result: false });
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+const canvas = globalThis.OffscreenCanvas && new OffscreenCanvas(1, 1);
+// 環境によってはOffscreenCanvasが存在しないため
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+const gl = canvas?.getContext('webgl2');
+if (gl) {
+	postMessage({ result: true });
+} else {
+	postMessage({ result: false });
 }

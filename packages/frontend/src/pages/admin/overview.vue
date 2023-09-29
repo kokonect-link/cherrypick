@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<MkStickyContainer>
@@ -7,6 +12,12 @@
 				<MkFoldableSection class="item">
 					<template #header>Stats</template>
 					<XStats/>
+				</MkFoldableSection>
+
+				<MkFoldableSection v-if="meta" class="item">
+					<template #header>Server Metric</template>
+					<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
+					<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
 				</MkFoldableSection>
 
 				<MkFoldableSection class="item">
@@ -33,7 +44,7 @@
 					<template #header>Federation</template>
 					<XFederation/>
 				</MkFoldableSection>
-		
+
 				<MkFoldableSection class="item">
 					<template #header>Instances</template>
 					<XInstances/>
@@ -65,7 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, ref } from 'vue';
 import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
@@ -77,11 +88,12 @@ import XStats from './overview.stats.vue';
 import XRetention from './overview.retention.vue';
 import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
+import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 
 const rootEl = $shallowRef<HTMLElement>();
 let serverInfo: any = $ref(null);
@@ -94,12 +106,15 @@ let federationSubActiveDiff = $ref<number | null>(null);
 let newUsers = $ref(null);
 let activeInstances = $shallowRef(null);
 const queueStatsConnection = markRaw(useStream().useChannel('queueStats'));
+const connection = useStream().useChannel('serverStats');
 const now = new Date();
 const filesPagination = {
 	endpoint: 'admin/drive/files' as const,
 	limit: 9,
 	noPaging: true,
 };
+
+const meta = ref(null);
 
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);
@@ -160,9 +175,13 @@ onMounted(async () => {
 		activeInstances = res;
 	});
 
+	os.api('admin/meta', {}).then(res => {
+		meta.value = res;
+	});
+
 	nextTick(() => {
 		queueStatsConnection.send('requestLog', {
-			id: Math.random().toString().substr(2, 8),
+			id: Math.random().toString().substring(2, 10),
 			length: 100,
 		});
 	});
@@ -170,6 +189,10 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
 	queueStatsConnection.dispose();
+});
+
+onUnmounted(() => {
+	connection.dispose();
 });
 
 const headerActions = $computed(() => []);
@@ -187,5 +210,12 @@ definePageMetadata({
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
 	grid-gap: 16px;
+}
+
+.disabledServerMachineStats {
+  color: var(--fgTransparentWeak);
+  margin: 10px;
+  font-size: 0.9em;
+  text-align: center;
 }
 </style>

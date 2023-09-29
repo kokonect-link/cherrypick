@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<div class="_fullinfo">
@@ -8,9 +13,18 @@
 </template>
 
 <script lang="ts" setup>
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { notFoundImageUrl } from '@/instance';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { pleaseLogin } from '@/scripts/please-login.js';
+import { notFoundImageUrl } from '@/instance.js';
+
+const props = defineProps<{
+	showLoginPopup?: boolean;
+}>();
+
+if (props.showLoginPopup) {
+	pleaseLogin('/');
+}
 
 const headerActions = $computed(() => []);
 

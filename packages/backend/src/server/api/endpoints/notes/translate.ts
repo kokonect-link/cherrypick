@@ -1,12 +1,14 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { URLSearchParams } from 'node:url';
 import fs from 'node:fs';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { translate } from '@vitalets/google-translate-api';
 import { TranslationServiceClient } from '@google-cloud/translate';
-import type { NotesRepository } from '@/models/index.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { Config } from '@/config.js';
-import { DI } from '@/di-symbols.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { MetaService } from '@/core/MetaService.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
@@ -47,16 +49,9 @@ export const paramDef = {
 	required: ['noteId', 'targetLang'],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.config)
-		private config: Config,
-
-		@Inject(DI.notesRepository)
-		private notesRepository: NotesRepository,
-
 		private noteEntityService: NoteEntityService,
 		private getterService: GetterService,
 		private metaService: MetaService,
@@ -160,9 +155,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 	private async apiCloudTranslationAdvanced(text: string, targetLang: string, saKey: string, projectId: string, location: string, model: string | null, glossary: string | null, provider: string) {
 		const [path, cleanup] = await createTemp();
 		fs.writeFileSync(path, saKey);
-		process.env.GOOGLE_APPLICATION_CREDENTIALS = path;
 
-		const translationClient = new TranslationServiceClient();
+		const translationClient = new TranslationServiceClient({ keyFilename: path });
 
 		const detectRequest = {
 			parent: `projects/${projectId}/locations/${location}`,
@@ -197,8 +191,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 		const translatedText = translateResponse.translations && translateResponse.translations[0]?.translatedText;
 		const detectedLanguageCode = translateResponse.translations && translateResponse.translations[0]?.detectedLanguageCode;
 
-		delete process.env.GOOGLE_APPLICATION_CREDENTIALS;
 		cleanup();
+
 		return {
 			sourceLang: detectedLanguage !== null ? detectedLanguage : detectedLanguageCode,
 			text: translatedText,

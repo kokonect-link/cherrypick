@@ -1,9 +1,14 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { throttle } from 'throttle-debounce';
 import { markRaw } from 'vue';
 import { notificationTypes } from 'cherrypick-js';
-import { Storage } from '../../pizzax';
-import { api } from '@/os';
-import { deepClone } from '@/scripts/clone';
+import { Storage } from '@/pizzax.js';
+import { api } from '@/os.js';
+import { deepClone } from '@/scripts/clone.js';
 
 type ColumnWidget = {
 	name: string;
@@ -24,7 +29,7 @@ export type Column = {
 	channelId?: string;
 	roleId?: string;
 	includingTypes?: typeof notificationTypes[number][];
-	tl?: 'home' | 'local' | 'media' | 'social' | 'global';
+	tl?: 'home' | 'local' | 'media' | 'social' | 'cat' | 'global';
 };
 
 export const deckStore = markRaw(new Storage('deck', {
@@ -49,6 +54,10 @@ export const deckStore = markRaw(new Storage('deck', {
 		default: true,
 	},
 	navWindow: {
+		where: 'deviceAccount',
+		default: true,
+	},
+	useSimpleUiForNonRootPages: {
 		where: 'deviceAccount',
 		default: true,
 	},

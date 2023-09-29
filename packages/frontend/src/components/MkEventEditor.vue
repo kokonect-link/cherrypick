@@ -1,7 +1,12 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="zmdxowut">
 	<MkInput v-model="title" small type="text" class="input">
-		<template #label>*{{ i18n.ts._event.title }}</template>
+		<template #label>*{{ i18n.ts.title }}</template>
 	</MkInput>
 	<section>
 		<div>
@@ -32,7 +37,7 @@
 			</section>
 			<section>
 				<MkInput v-model="url" small type="url" class="input">
-					<template #label>{{ i18n.ts._event.url }}</template>
+					<template #label>URL</template>
 				</MkInput>
 			</section>
 		</div>
@@ -113,22 +118,22 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'cherrypick-js';
 import { Ref, ref, watch } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
-import { formatDateTimeString } from '@/scripts/format-time-string';
-import { addTime } from '@/scripts/time';
-import { i18n } from '@/i18n';
-import date from '@/filters/date';
+import { formatDateTimeString } from '@/scripts/format-time-string.js';
+import { addTime } from '@/scripts/time.js';
+import { i18n } from '@/i18n.js';
+import date from '@/filters/date.js';
 
 const props = defineProps<{
-	modelValue: misskey.entities.Note['event']
+	modelValue: Misskey.entities.Note['event']
 }>();
 
 const emit = defineEmits<{
 	(ev: 'update:modelValue', v: {
-		model: misskey.entities.Note['event']
+		model: Misskey.entities.Note['event']
 	})
 }>();
 
@@ -153,7 +158,7 @@ const availabilityStart = ref(props.modelValue?.metadata.offers?.availabilitySta
 const availabilityEnd = ref(props.modelValue?.metadata.offers?.availabilityEnds ?? null);
 const keywords = ref(props.modelValue?.metadata.keywords ?? null);
 
-function get(): misskey.entities.Note['event'] {
+function get(): Misskey.entities.Note['event'] {
 	const calcAt = (date: Ref<string>, time: Ref<string>): number => (new Date(`${date.value} ${time.value}`)).getTime();
 
 	const start = calcAt(startDate, startTime);
@@ -194,7 +199,7 @@ function get(): misskey.entities.Note['event'] {
 	};
 }
 
-watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, organizer, organizerLink, audience, language, 
+watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, organizer, organizerLink, audience, language,
 							ageRange, ticketsUrl, isFree, price, availabilityStart, availabilityEnd, keywords], () => emit('update:modelValue', get()), {
 	deep: true,
 });
@@ -203,39 +208,6 @@ watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, o
 <style lang="scss" scoped>
 .zmdxowut {
 	padding: 8px 16px;
-
-	>.caution {
-		margin: 0 0 8px 0;
-		font-size: 0.8em;
-		color: #f00;
-
-		>i {
-			margin-right: 4px;
-		}
-	}
-
-	>ul {
-		display: block;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		>li {
-			display: flex;
-			margin: 8px 0;
-			padding: 0;
-			width: 100%;
-
-			>.input {
-				flex: 1;
-			}
-
-			>button {
-				width: 32px;
-				padding: 4px 0;
-			}
-		}
-	}
 
 	>section {
 		margin: 16px 0 0 0;

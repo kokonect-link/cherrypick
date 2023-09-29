@@ -1,9 +1,14 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<XWidgets :edit="editMode" :widgets="widgets" @addWidget="addWidget" @removeWidget="removeWidget" @updateWidget="updateWidget" @updateWidgets="updateWidgets" @exit="editMode = false"/>
 
-	<button v-if="editMode" class="_textButton" style="font-size: 0.9em;" @click="editMode = false"><i class="ti ti-check"></i> {{ i18n.ts.editWidgetsExit }}</button>
-	<button v-else class="_textButton" data-cy-widget-edit :class="$style.edit" style="font-size: 0.9em;" @click="editMode = true"><i class="ti ti-pencil"></i> {{ i18n.ts.editWidgets }}</button>
+	<button v-if="editMode" v-vibrate="5" class="_textButton" style="font-size: 0.9em;" @click="editMode = false"><i class="ti ti-check"></i> {{ i18n.ts.editWidgetsExit }}</button>
+	<button v-else v-vibrate="5" class="_textButton" data-cy-widget-edit :class="$style.edit" style="font-size: 0.9em;" @click="editMode = true"><i class="ti ti-pencil"></i> {{ i18n.ts.editWidgets }}</button>
 </div>
 </template>
 
@@ -13,8 +18,8 @@ let editMode = $ref(false);
 <script lang="ts" setup>
 import { } from 'vue';
 import XWidgets from '@/components/MkWidgets.vue';
-import { i18n } from '@/i18n';
-import { defaultStore } from '@/store';
+import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	// null = 全てのウィジェットを表示

@@ -1,8 +1,14 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Injectable } from '@nestjs/common';
 import { bindThis } from '@/decorators.js';
 import { HybridTimelineChannelService } from './channels/hybrid-timeline.js';
 import { LocalTimelineChannelService } from './channels/local-timeline.js';
 import { MediaTimelineChannelService } from './channels/media-timeline.js';
+import { CatTimelineChannelService } from './channels/cat-timeline.js';
 import { HomeTimelineChannelService } from './channels/home-timeline.js';
 import { GlobalTimelineChannelService } from './channels/global-timeline.js';
 import { MainChannelService } from './channels/main.js';
@@ -25,6 +31,7 @@ export class ChannelsService {
 		private homeTimelineChannelService: HomeTimelineChannelService,
 		private localTimelineChannelService: LocalTimelineChannelService,
 		private mediaTimelineChannelService: MediaTimelineChannelService,
+		private catTimelineChannelService: CatTimelineChannelService,
 		private hybridTimelineChannelService: HybridTimelineChannelService,
 		private globalTimelineChannelService: GlobalTimelineChannelService,
 		private userListChannelService: UserListChannelService,
@@ -49,6 +56,7 @@ export class ChannelsService {
 			case 'localTimeline': return this.localTimelineChannelService;
 			case 'mediaTimeline': return this.mediaTimelineChannelService;
 			case 'hybridTimeline': return this.hybridTimelineChannelService;
+			case 'catTimeline': return this.catTimelineChannelService;
 			case 'globalTimeline': return this.globalTimelineChannelService;
 			case 'userList': return this.userListChannelService;
 			case 'hashtag': return this.hashtagChannelService;
@@ -61,7 +69,7 @@ export class ChannelsService {
 			case 'serverStats': return this.serverStatsChannelService;
 			case 'queueStats': return this.queueStatsChannelService;
 			case 'admin': return this.adminChannelService;
-		
+
 			default:
 				throw new Error(`no such channel: ${name}`);
 		}

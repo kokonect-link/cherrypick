@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="el" class="hiyeyicy" :class="{ wide: !narrow }">
 	<div v-if="!narrow || currentPage?.route.name == null" class="nav">
@@ -24,14 +29,14 @@
 
 <script lang="ts" setup>
 import { onActivated, onMounted, onUnmounted, provide, watch } from 'vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { instance } from '@/instance';
-import * as os from '@/os';
-import { lookupUser } from '@/scripts/lookup-user';
-import { useRouter } from '@/router';
-import { definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata';
+import { instance } from '@/instance.js';
+import * as os from '@/os.js';
+import { lookupUser } from '@/scripts/lookup-user.js';
+import { useRouter } from '@/router.js';
+import { definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';
 
@@ -80,13 +85,8 @@ const menuDef = $computed(() => [{
 	}, ...(instance.disableRegistration ? [{
 		type: 'button',
 		icon: 'ti ti-user-plus',
-		text: i18n.ts.invite,
+		text: i18n.ts.createInviteCode,
 		action: invite,
-	}, {
-		type: 'button',
-		icon: 'ti ti-user-cancel',
-		text: i18n.ts.inviteRevoke,
-		action: inviteRevoke,
 	}] : [])],
 }, {
 	title: i18n.ts.administration,
@@ -100,6 +100,11 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.users,
 		to: '/admin/users',
 		active: currentPage?.route.name === 'users',
+	}, {
+		icon: 'ti ti-user-plus',
+		text: i18n.ts.invite,
+		to: '/admin/invites',
+		active: currentPage?.route.name === 'invites',
 	}, {
 		icon: 'ti ti-badges',
 		text: i18n.ts.roles,
@@ -138,8 +143,14 @@ const menuDef = $computed(() => [{
 	}, {
 		icon: 'ti ti-exclamation-circle',
 		text: i18n.ts.abuseReports,
+		indicated: thereIsUnresolvedAbuseReport,
 		to: '/admin/abuses',
 		active: currentPage?.route.name === 'abuses',
+	}, {
+		icon: 'ti ti-list-search',
+		text: i18n.ts.moderationLogs,
+		to: '/admin/modlog',
+		active: currentPage?.route.name === 'modlog',
 	}],
 }, {
 	title: i18n.ts.settings,
@@ -245,26 +256,16 @@ provideMetadataReceiver((info) => {
 });
 
 const invite = () => {
-	os.api('invite').then(x => {
+	os.api('admin/invite/create').then(x => {
 		os.alert({
 			type: 'info',
-			text: x.code,
+			text: x?.[0].code,
 		});
 	}).catch(err => {
 		os.alert({
 			type: 'error',
 			text: err,
 		});
-	});
-};
-
-const inviteRevoke = () => {
-	os.confirm({
-		type: 'warning',
-		text: i18n.ts.inviteRevokeConfirm,
-	}).then(({ canceled }) => {
-		if (canceled) return;
-		os.apiWithDialog('invite-revoke');
 	});
 };
 

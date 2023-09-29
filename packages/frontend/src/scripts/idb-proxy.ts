@@ -1,9 +1,15 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 // FirefoxのプライベートモードなどではindexedDBが使用不可能なので、
 // indexedDBが使えない環境ではlocalStorageを使う
 import {
 	get as iget,
 	set as iset,
 	del as idel,
+	keys as ikeys,
 } from 'idb-keyval';
 
 const fallbackName = (key: string) => `idbfallback::${key}`;
@@ -34,4 +40,12 @@ export async function set(key: string, val: any) {
 export async function del(key: string) {
 	if (idbAvailable) return idel(key);
 	return window.localStorage.removeItem(fallbackName(key));
+}
+
+export async function exist(key: string) {
+	if (idbAvailable) {
+		const keys = await ikeys();
+		return keys.includes(key);
+	}
+	return window.localStorage.getItem(fallbackName(key)) !== null;
 }

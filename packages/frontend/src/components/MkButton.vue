@@ -1,9 +1,16 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <button
 	v-if="!link"
 	ref="el" class="_button"
 	:class="[$style.root, { [$style.inline]: inline, [$style.primary]: primary, [$style.gradate]: gradate, [$style.danger]: danger, [$style.rounded]: rounded, [$style.full]: full, [$style.small]: small, [$style.large]: large, [$style.transparent]: transparent, [$style.asLike]: asLike }]"
 	:type="type"
+	:name="name"
+	:value="value"
 	@click="emit('click', $event)"
 	@mousedown="onMousedown"
 >
@@ -27,6 +34,7 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted } from 'vue';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const props = defineProps<{
 	type?: 'button' | 'submit' | 'reset';
@@ -44,6 +52,8 @@ const props = defineProps<{
 	large?: boolean;
 	transparent?: boolean;
 	asLike?: boolean;
+	name?: string;
+	value?: string;
 }>();
 
 const emit = defineEmits<{
@@ -89,6 +99,8 @@ function onMousedown(evt: MouseEvent): void {
 	const circleCenterY = evt.clientY - rect.top;
 
 	const scale = calcCircleScale(target.clientWidth, target.clientHeight, circleCenterX, circleCenterY);
+
+	vibrate(10);
 
 	window.setTimeout(() => {
 		ripple.style.transform = 'scale(' + (scale / 2) + ')';

@@ -1,5 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { App } from 'vue';
 
+import CPPageHeader from './global/CPPageHeader.vue';
 import Mfm from './global/MkMisskeyFlavoredMarkdown.ts';
 import MkA from './global/MkA.vue';
 import MkAcct from './global/MkAcct.vue';
@@ -29,6 +35,7 @@ export default function(app: App) {
 export const components = {
 	I18n: I18n,
 	RouterView: RouterView,
+	CPPageHeader: CPPageHeader,
 	Mfm: Mfm,
 	MkA: MkA,
 	MkAcct: MkAcct,
@@ -52,6 +59,7 @@ declare module '@vue/runtime-core' {
 	export interface GlobalComponents {
 		I18n: typeof I18n;
 		RouterView: typeof RouterView;
+		CPPageHeader: typeof CPPageHeader;
 		Mfm: typeof Mfm;
 		MkA: typeof MkA;
 		MkAcct: typeof MkAcct;

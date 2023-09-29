@@ -47,6 +47,7 @@
 		renoteHover: ':lighten<5<@renote',
 		nameHover: ':lighten<5<@fg',
 		modalBg: 'rgba(0, 0, 0, 0.3)',
+		modalBgX2: 'rgba(0, 0, 0, 0.9)',
 		scrollbarHandle: 'rgba(0, 0, 0, 0.2)',
 		scrollbarHandleHover: 'rgba(0, 0, 0, 0.4)',
 		dateLabelFg: '@fg',

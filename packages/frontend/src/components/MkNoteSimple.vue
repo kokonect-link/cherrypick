@@ -1,7 +1,12 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.root">
 	<div style="display: flex; padding-bottom: 10px;">
-		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: showEl && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: showEl && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
+		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
 		<div :class="$style.main">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 		</div>
@@ -21,27 +26,26 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
-import { $i } from '@/account';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
+import { $i } from '@/account.js';
+import { globalEvents } from '@/events.js';
+import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
 
 let showEl = $ref(false);
 
 const props = defineProps<{
-	note: misskey.entities.Note;
-	pinned?: boolean;
+	note: Misskey.entities.Note;
 }>();
 
 const showContent = $ref(false);
 
 onMounted(() => {
-	eventBus.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });
@@ -51,7 +55,6 @@ onMounted(() => {
 .root {
 	margin: 0;
 	padding: 0;
-	overflow: clip;
 	font-size: 0.95em;
 }
 
@@ -65,6 +68,7 @@ onMounted(() => {
 	position: sticky !important;
 	top: calc(16px + var(--stickyTop, 0px));
 	left: 0;
+	background: var(--panel);
 }
 
 .main {

@@ -1,9 +1,14 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.root">
 	<div v-if="['all', 'bg'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 	<div :class="$style.top">
 		<div v-if="['all', 'topBottom', 'top'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
-		<button class="_button" :class="$style.instance" @click="openInstanceMenu">
+		<button v-vibrate="5" class="_button" :class="$style.instance" @click="openInstanceMenu">
 			<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon"/>
 		</button>
 	</div>
@@ -13,7 +18,7 @@
 		</MkA>
 		<template v-for="item in menu">
 			<div v-if="item === '-'" :class="$style.divider"></div>
-			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-vibrate="5" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 				<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
 				<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 			</component>
@@ -21,9 +26,10 @@
 		<div :class="$style.divider"></div>
 		<MkA v-if="$i.isAdmin || $i.isModerator" :class="$style.item" :activeClass="$style.active" to="/admin">
 			<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
+			<span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</MkA>
-		<button :class="$style.item" class="_button" @click="more">
-			<i :class="$style.itemIcon" class="ti ti-grid-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
+		<button v-vibrate="5" :class="$style.item" class="_button" @click="more">
+			<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 			<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</button>
 		<MkA :class="$style.item" :activeClass="$style.active" to="/settings">
@@ -32,10 +38,10 @@
 	</div>
 	<div :class="$style.bottom">
 		<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-		<button class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
-			<i :class="$style.postIcon" class="ti ti-pencil ti-fw"></i><span style="position: relative;">{{ i18n.ts.note }}</span>
+		<button v-vibrate="5" class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
+			<i :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']" class="ti ti-fw"></i><span style="position: relative;">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 		</button>
-		<button class="_button" :class="$style.account" @click="openAccountMenu">
+		<button v-vibrate="5" class="_button" :class="$style.account" @click="openAccountMenu">
 			<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct :class="$style.acct" class="_nowrap" :user="$i"/>
 		</button>
 	</div>
@@ -45,12 +51,12 @@
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, toRef } from 'vue';
 import { openInstanceMenu } from './common';
-import * as os from '@/os';
-import { navbarItemDef } from '@/navbar';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
+import * as os from '@/os.js';
+import { navbarItemDef } from '@/navbar.js';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
 
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {
@@ -59,6 +65,14 @@ const otherMenuItemIndicated = computed(() => {
 		if (navbarItemDef[def].indicated) return true;
 	}
 	return false;
+});
+let controlPanelIndicated = $ref(false);
+
+os.api('admin/abuse-user-reports', {
+	state: 'unresolved',
+	limit: 1,
+}).then(reports => {
+	if (reports.length > 0) controlPanelIndicated = true;
 });
 
 function openAccountMenu(ev: MouseEvent) {
@@ -221,6 +235,7 @@ function more() {
 	text-align: left;
 	box-sizing: border-box;
 	color: var(--navFg);
+  margin-bottom: 0.35rem;
 
 	&:hover {
 		text-decoration: none;
@@ -243,7 +258,7 @@ function more() {
 			left: 0;
 			right: 0;
 			bottom: 0;
-			border-radius: 999px;
+			border-radius: 15px;
 			background: var(--accentedBg);
 		}
 	}
@@ -253,6 +268,7 @@ function more() {
 	position: relative;
 	width: 32px;
 	margin-right: 8px;
+  font-size: 1.1em;
 }
 
 .itemIndicator {

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import type { Config } from '@/config.js';
 import endpoints from '../endpoints.js';
 import { errors as basicErrors } from './errors.js';
@@ -9,7 +14,8 @@ export function genOpenapiSpec(config: Config) {
 
 		info: {
 			version: config.version,
-			title: 'Misskey API',
+			basedMisskeyVersion: config.basedMisskeyVersion,
+			title: 'CherryPick API',
 			'x-logo': { url: '/static-assets/api-doc.png' },
 		},
 

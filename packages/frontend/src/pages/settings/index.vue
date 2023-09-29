@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
@@ -23,17 +28,17 @@
 
 <script setup lang="ts">
 import { computed, onActivated, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
-import { signout, signoutAll, $i } from '@/account';
-import { unisonReload } from '@/scripts/unison-reload';
-import { instance } from '@/instance';
-import { useRouter } from '@/router';
-import { definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata';
-import * as os from '@/os';
-import { miLocalStorage } from '@/local-storage';
-import { fetchCustomEmojis } from '@/custom-emojis';
+import { signout, signoutAll, $i } from '@/account.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { instance } from '@/instance.js';
+import { useRouter } from '@/router.js';
+import { definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.js';
+import * as os from '@/os.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { fetchCustomEmojis } from '@/custom-emojis.js';
 
 const indexInfo = {
 	title: i18n.ts.settings,
@@ -112,15 +117,20 @@ const menuDef = computed(() => [{
 		to: '/settings/navbar',
 		active: currentPage?.route.name === 'navbar',
 	}, {
+		icon: 'ti ti-align-left',
+		text: i18n.ts.timeline,
+		to: '/settings/timeline',
+		active: currentPage?.route.name === 'timeline',
+	}, {
 		icon: 'ti ti-equal-double',
 		text: i18n.ts.statusbar,
 		to: '/settings/statusbar',
 		active: currentPage?.route.name === 'statusbar',
 	}, {
 		icon: 'ti ti-music',
-		text: i18n.ts.sounds,
-		to: '/settings/sounds',
-		active: currentPage?.route.name === 'sounds',
+		text: i18n.ts.soundsAndVibrations,
+		to: '/settings/sounds-and-vibrations',
+		active: currentPage?.route.name === 'sounds-and-vibrations',
 	}, {
 		icon: 'ti ti-plug',
 		text: i18n.ts.plugins,
@@ -166,7 +176,7 @@ const menuDef = computed(() => [{
 		active: currentPage?.route.name === 'import-export',
 	}, {
 		icon: 'ti ti-plane',
-		text: `${i18n.ts.accountMigration} (${i18n.ts.experimental})`,
+		text: `${i18n.ts.accountMigration}`,
 		to: '/settings/migration',
 		active: currentPage?.route.name === 'migration',
 	}, {

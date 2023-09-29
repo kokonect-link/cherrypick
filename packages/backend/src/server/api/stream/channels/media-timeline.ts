@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Injectable } from '@nestjs/common';
 import { checkWordMute } from '@/misc/check-word-mute.js';
 import { isUserRelated } from '@/misc/is-user-related.js';
@@ -29,7 +34,7 @@ class MediaTimelineChannel extends Channel {
 	@bindThis
 	public async init(params: any) {
 		const policies = await this.roleService.getUserPolicies(this.user ? this.user.id : null);
-		if (!policies.ltlAvailable) return;
+		if (!policies.mtlAvailable) return;
 
 		this.withReplies = params.withReplies as boolean;
 

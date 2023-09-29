@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkPagination ref="pagingComponent" :pagination="pagination">
 	<template #empty>
@@ -9,7 +14,7 @@
 
 	<template #default="{ items: notifications }">
 		<MkDateSeparatedList v-slot="{ item: notification }" :class="$style.list" :items="notifications" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline || mainRouter.currentRoute.value.name !== 'my-notifications'">
-			<MkNote v-if="['reply', 'quote', 'mention'].includes(notification.type)" :key="notification.id" :note="notification.note"/>
+			<MkNote v-if="['reply', 'quote', 'mention'].includes(notification.type)" :key="notification.id" :note="notification.note" :notification="true"/>
 			<XNotification v-else :key="notification.id" :notification="notification" :withTime="true" :full="true" class="_panel notification"/>
 		</MkDateSeparatedList>
 	</template>
@@ -22,13 +27,13 @@ import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import XNotification from '@/components/MkNotification.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkNote from '@/components/MkNote.vue';
-import { useStream } from '@/stream';
-import { $i } from '@/account';
-import { i18n } from '@/i18n';
+import { useStream } from '@/stream.js';
+import { $i } from '@/account.js';
+import { i18n } from '@/i18n.js';
 import { notificationTypes } from '@/const';
-import { infoImageUrl } from '@/instance';
-import { defaultStore } from '@/store';
-import { mainRouter } from '@/router';
+import { infoImageUrl } from '@/instance.js';
+import { defaultStore } from '@/store.js';
+import { mainRouter } from '@/router.js';
 
 const props = defineProps<{
 	includeTypes?: typeof notificationTypes[number][];

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 /**
  * BOOT LOADER
  * サーバーからレスポンスされるHTMLに埋め込まれるスクリプトで、以下の役割を持ちます。
@@ -57,8 +62,13 @@
 		}
 		const meta = await metaRes.json();
 		const v = meta.version;
+		const basedMisskeyVersion = meta.basedMisskeyVersion;
 		if (v == null) {
 			renderError('META_FETCH_V');
+			return;
+		}
+		if (basedMisskeyVersion == null) {
+			renderError('META_FETCH_BASEDMISSKEY_V');
 			return;
 		}
 
@@ -166,14 +176,14 @@
 				<path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
 			</svg>
 			<h1>Failed to load<br>読み込みに失敗しました<br>뭔가 문제가 있는 것 같아요!</h1>
-			<button class="button-big" onclick="location.reload(true);">
+			<button class="button-big" style="margin: 0 0 12px !important;" onclick="location.reload(true);">
 				<span class="button-label-big">Reload / リロード / 새로고침</span>
 			</button>
 			<p><b>The following actions may solve the problem. / 以下を行うと解決する可能性があります。/ 아래 과정을 진행하면 해결될 수도 있어요.</b></p>
 			<p>Clear the browser cache / ブラウザのキャッシュをクリアする / 브라우저의 캐시 지우기</p>
 			<p>Update your os and browser / ブラウザおよびOSを最新バージョンに更新する / 브라우저와 OS를 최신 버전으로 업데이트 하기</p>
 			<p>Disable an adblocker / アドブロッカーを無効にする / 광고 차단기를 비활성화 하기</p>
-			<details style="color: #86b300;">
+			<details style="color: rgb(255, 197, 230);">
 				<summary>Other options / その他のオプション / 기타 옵션</summary>
 				<a href="/flush">
 					<button class="button-small">
@@ -208,30 +218,24 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
-		@font-face {
-			font-family: 'Pretendard JP';
-			font-weight: 400;
-			font-display: swap;
-			src: local('Pretendard JP Regular'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Regular.woff2') format('woff2'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Regular.woff') format('woff');
-		}
-		@font-face {
-			font-family: 'Pretendard JP';
-			font-weight: 700;
-			font-display: swap;
-			src: local('Pretendard JP Bold'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Bold.woff2') format('woff2'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Bold.woff') format('woff');
-		}
-		@font-face {
-			font-family: 'JetBrains Mono';
-			font-style: normal;
-			font-weight: 400;
-			src: local("JetBrains Mono Regular"), local("JetBrainsMono-Regular"),
-			url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");
-			font-display: swap; }
-		}
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800-italic.css");
+		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
 
 		* {
 			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
@@ -244,7 +248,7 @@
 
 		body,
 		html {
-			background-color: #222;
+			background-color: rgb(28, 28, 37);
 			color: #dfddcc;
 			justify-content: center;
 			margin: auto;
@@ -257,36 +261,40 @@
 			padding: 0px 12px 0px 12px;
 			border: none;
 			cursor: pointer;
-			margin-bottom: 12px;
+			margin-top: 12px;
+
+			&:not(:first-child) {
+				margin-bottom: 12px;
+			}
 		}
 
 		.button-big {
-			background: linear-gradient(90deg, rgb(134, 179, 0), rgb(74, 179, 0));
+			background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
 			line-height: 50px;
 		}
 
 		.button-big:hover {
-			background: rgb(153, 204, 0);
+			background: rgb(255, 222, 241);
 		}
 
 		.button-small {
-			background: #444;
+			background: rgb(35, 35, 47);
 			line-height: 40px;
 		}
 
 		.button-small:hover {
-			background: #555;
+			background: rgba(255, 255, 255, 0.1);
 		}
 
 		.button-label-big {
-			color: #222;
+			color: rgb(28, 28, 37);
 			font-weight: bold;
 			font-size: 1.2em;
 			padding: 12px;
 		}
 
 		.button-label-small {
-			color: rgb(153, 204, 0);
+			color: rgb(185, 216, 255);
 			font-size: 16px;
 			padding: 12px;
 		}
@@ -313,11 +321,11 @@
 		}
 
 		code {
-			font-family: "JetBrains Mono", Fira, FiraCode, monospace;
+			font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Fira, FiraCode, monospace;
 		}
 
 		#errorInfo {
-			background: #333;
+			background: rgb(35, 35, 47);
 			margin-bottom: 2rem;
 			padding: 0.5rem 1rem;
 			width: 40rem;

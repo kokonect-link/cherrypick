@@ -1,7 +1,12 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="content" :class="[$style.content, { [$style.omitted]: omitted }]">
 	<slot></slot>
-	<button v-if="omitted" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
+	<button v-if="omitted" v-vibrate="5" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
 		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 	</button>
 </div>
@@ -9,7 +14,7 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted } from 'vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 
 const props = withDefaults(defineProps<{
 	maxHeight?: number;

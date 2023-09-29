@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="_gaps_m">
 	<FormSection first>
@@ -9,53 +14,72 @@
 				{{ i18n.ts._cherrypick.nickname }}
 				<template #caption>{{ i18n.ts._cherrypick.nicknameDescription }}</template>
 			</MkSwitch>
+
+			<div class="_gaps_s">
+				<MkSwitch v-model="useEnterToSend">
+					<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="postFormVisibilityHotkey">
+					<template #label>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="showRenoteConfirmPopup">
+					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
+				</MkSwitch>
+			</div>
+
+			<div>
+				<MkRadios v-model="displayHeaderNavBarWhenScroll">
+					<template #label>{{ i18n.ts._cherrypick.displayHeaderNavBarWhenScroll }}</template>
+					<option value="all">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.all }}</option>
+					<option value="hideHeaderOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+					<option value="hideHeaderFloatBtn">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+					<option value="hideFloatBtnOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+					<option value="hideFloatBtnNavBar">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+					<option value="hide">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hide }}</option>
+				</MkRadios>
+			</div>
 		</div>
 	</FormSection>
+
 	<FormSection>
 		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
 		<div class="_gaps_m">
 			<div>{{ i18n.ts._cherrypick.patchDescription }}</div>
 
-			<MkSwitch v-model="infoButtonForNoteActionsEnabled">
-				{{ i18n.ts._cherrypick.infoButtonForNoteActions }}
-				<template #caption>{{ i18n.ts._cherrypick.infoButtonForNoteActionsDescription }}</template>
-			</MkSwitch>
-			<MkSwitch v-model="rememberPostFormToggleStateEnabled">{{ i18n.ts._cherrypick.rememberPostFormToggleState }}</MkSwitch>
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
+			<MkSwitch v-model="mobileHeaderChange">{{ i18n.ts._cherrypick.mobileHeaderChange }}</MkSwitch>
+			<MkSwitch v-model="renameTheButtonInPostFormToNya">
+				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
+				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
+			</MkSwitch>
 		</div>
 	</FormSection>
-	<!--
-	<FormSection>
-		<template #label><i class="ti ti-flask"/> CherryPick Labs</template>
-		<div class="_gaps_m">
-			<div>まだ開発中の機能を試してみませんか。一部の機能はちゃんと動かないかもしれません。</div>
 
-			<MkSwitch v-model="usePostFormWindow">
-				投稿フォームをウィンドウとして表示
-			</MkSwitch>
-			<MkSwitch v-model="cherrypickNoteViewEnabled">
-				新しいノートUIを試す
-			</MkSwitch>
-			<MkNote :note="noteMock"/>
+	<FormSection>
+		<template #label>Friendly UI</template>
+		<div class="_gaps_m">
+			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
+			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
+			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
 		</div>
 	</FormSection>
-	-->
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue';
-import { Note, User } from 'cherrypick-js/src/entities';
+import { computed, watch } from 'vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import MkNote from '@/components/MkNote.vue';
+import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
-import { defaultStore } from '@/store';
-import * as os from '@/os';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { defaultStore } from '@/store.js';
+import * as os from '@/os.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -68,39 +92,23 @@ async function reloadAsk() {
 }
 
 const nicknameEnabled = computed(defaultStore.makeGetterSetter('nicknameEnabled'));
-const numberQuoteEnabled = computed(defaultStore.makeGetterSetter('numberQuoteEnabled'));
-const stealEnabled = computed(defaultStore.makeGetterSetter('stealEnabled'));
-const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('infoButtonForNoteActionsEnabled'));
+const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
+const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
+const showRenoteConfirmPopup = computed(defaultStore.makeGetterSetter('showRenoteConfirmPopup'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
-const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSetter('rememberPostFormToggleStateEnabled'));
-const usePostFormWindow = computed(defaultStore.makeGetterSetter('usePostFormWindow'));
-const cherrypickNoteViewEnabled = computed(defaultStore.makeGetterSetter('cherrypickNoteViewEnabledLab'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
-
-const noteMock: Note = {
-	id: 'abc',
-	createdAt: new Date().toISOString(),
-	text: '> **エビ**（海老・蝦・魵）は、節足動物門・甲殻亜門・軟甲綱・十脚目（エビ目）のうち、カニ下目（短尾類）とヤドカリ下目（異尾類）以外の全ての種の総称である。すなわち、かつての**長尾類**（長尾亜目 Macrura）にあたる。現在、長尾亜目という分類群は廃止されており、学術的な分類ではなく便宜上の区分である。\n\n出典：https://ja.wikipedia.org/wiki/%E3%82%A8%E3%83%93',
-	cw: null,
-	user: $i as User,
-	userId: $i.id,
-	replyId: '',
-	renoteId: '',
-	files: [],
-	fileIds: [],
-	visibility: 'home',
-	reactions: {},
-	renoteCount: 20,
-	repliesCount: 10,
-	emojis: [],
-	localOnly: true,
-};
+const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
+const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
+const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
+const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
 
 watch([
-	numberQuoteEnabled,
-	stealEnabled,
-	infoButtonForNoteActionsEnabled,
 	reactableRemoteReactionEnabled,
+	renameTheButtonInPostFormToNya,
+	friendlyEnableNotifications,
+	friendlyEnableWidgets,
 ], async () => {
 	await reloadAsk();
 });

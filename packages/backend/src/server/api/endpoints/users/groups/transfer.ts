@@ -1,5 +1,10 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
-import type { UserGroupsRepository, UserGroupJoiningsRepository } from '@/models/index.js';
+import type { UserGroupsRepository, UserGroupJoiningsRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { UserGroupEntityService } from '@/core/entities/UserGroupEntityService.js';
 import { GetterService } from '@/server/api/GetterService.js';
@@ -51,9 +56,8 @@ export const paramDef = {
 	required: ['groupId', 'userId'],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.userGroupsRepository)
 		private userGroupsRepository: UserGroupsRepository,

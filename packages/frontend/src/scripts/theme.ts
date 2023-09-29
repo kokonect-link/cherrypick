@@ -1,6 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { ref } from 'vue';
 import tinycolor from 'tinycolor2';
-import { globalEvents } from '@/events';
+import { globalEvents } from '@/events.js';
 
 export type Theme = {
 	id: string;
@@ -14,13 +19,17 @@ export type Theme = {
 import lightTheme from '@/themes/_light.json5';
 import darkTheme from '@/themes/_dark.json5';
 import { deepClone } from './clone';
-import { miLocalStorage } from '@/local-storage';
+import { miLocalStorage } from '@/local-storage.js';
 
 export const themeProps = Object.keys(lightTheme.props).filter(key => !key.startsWith('X'));
 
 export const getBuiltinThemes = () => Promise.all(
 	[
 		'l-cherrypick',
+		'l-rosepinedawn',
+		'l-byeolvit-polaris',
+		'l-scone-color',
+		'l-stella-r2',
 		'l-light',
 		'l-coffee',
 		'l-apricot',
@@ -33,6 +42,11 @@ export const getBuiltinThemes = () => Promise.all(
 		'l-birdsite',
 
 		'd-cherrypick',
+		'd-rosepine',
+		'd-rosepinemoon',
+		'd-byeolvit-noctiluca',
+		'd-scone-color',
+		'd-stella-r2',
 		'd-dark',
 		'd-persimmon',
 		'd-astro',
@@ -103,7 +117,7 @@ function compile(theme: Theme): Record<string, string> {
 	function getColor(val: string): tinycolor.Instance {
 		// ref (prop)
 		if (val[0] === '@') {
-			return getColor(theme.props[val.substr(1)]);
+			return getColor(theme.props[val.substring(1)]);
 		}
 
 		// ref (const)
@@ -114,7 +128,7 @@ function compile(theme: Theme): Record<string, string> {
 		// func
 		else if (val[0] === ':') {
 			const parts = val.split('<');
-			const func = parts.shift().substr(1);
+			const func = parts.shift().substring(1);
 			const arg = parseFloat(parts.shift());
 			const color = getColor(parts.join('<'));
 

@@ -1,8 +1,15 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { setTimeout } from 'node:timers/promises';
+import process from 'node:process';
 import { Global, Inject, Module } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DataSource } from 'typeorm';
 import { MeiliSearch } from 'meilisearch';
+import { Logging } from '@google-cloud/logging';
 import { DI } from './di-symbols.js';
 import { Config, loadConfig } from './config.js';
 import { createPostgresDataSource } from './postgres.js';
@@ -38,17 +45,24 @@ const $meilisearch: Provider = {
 	inject: [DI.config],
 };
 
+const $cloudLogging: Provider = {
+	provide: DI.cloudLogging,
+	useFactory: (config: Config) => {
+		if (config.cloudLogging) {
+			return new Logging({
+				projectId: config.cloudLogging.projectId, keyFilename: config.cloudLogging.saKeyPath,
+			});
+		} else {
+			return null;
+		}
+	},
+	inject: [DI.config],
+};
+
 const $redis: Provider = {
 	provide: DI.redis,
 	useFactory: (config: Config) => {
-		return new Redis.Redis({
-			port: config.redis.port,
-			host: config.redis.host,
-			family: config.redis.family == null ? 0 : config.redis.family,
-			password: config.redis.pass,
-			keyPrefix: `${config.redis.prefix}:`,
-			db: config.redis.db ?? 0,
-		});
+		return new Redis.Redis(config.redis);
 	},
 	inject: [DI.config],
 };
@@ -56,14 +70,7 @@ const $redis: Provider = {
 const $redisForPub: Provider = {
 	provide: DI.redisForPub,
 	useFactory: (config: Config) => {
-		const redis = new Redis.Redis({
-			port: config.redisForPubsub.port,
-			host: config.redisForPubsub.host,
-			family: config.redisForPubsub.family == null ? 0 : config.redisForPubsub.family,
-			password: config.redisForPubsub.pass,
-			keyPrefix: `${config.redisForPubsub.prefix}:`,
-			db: config.redisForPubsub.db ?? 0,
-		});
+		const redis = new Redis.Redis(config.redisForPubsub);
 		return redis;
 	},
 	inject: [DI.config],
@@ -72,14 +79,7 @@ const $redisForPub: Provider = {
 const $redisForSub: Provider = {
 	provide: DI.redisForSub,
 	useFactory: (config: Config) => {
-		const redis = new Redis.Redis({
-			port: config.redisForPubsub.port,
-			host: config.redisForPubsub.host,
-			family: config.redisForPubsub.family == null ? 0 : config.redisForPubsub.family,
-			password: config.redisForPubsub.pass,
-			keyPrefix: `${config.redisForPubsub.prefix}:`,
-			db: config.redisForPubsub.db ?? 0,
-		});
+		const redis = new Redis.Redis(config.redisForPubsub);
 		redis.subscribe(config.host);
 		return redis;
 	},
@@ -89,8 +89,8 @@ const $redisForSub: Provider = {
 @Global()
 @Module({
 	imports: [RepositoryModule],
-	providers: [$config, $db, $meilisearch, $redis, $redisForPub, $redisForSub],
-	exports: [$config, $db, $meilisearch, $redis, $redisForPub, $redisForSub, RepositoryModule],
+	providers: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub],
+	exports: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, RepositoryModule],
 })
 export class GlobalModule implements OnApplicationShutdown {
 	constructor(
@@ -119,5 +119,9 @@ export class GlobalModule implements OnApplicationShutdown {
 
 	async onApplicationShutdown(signal: string): Promise<void> {
 		await this.dispose();
+		process.emitWarning('CherryPick is shutting down', {
+			code: 'CHERRYPICK_SHUTDOWN',
+			detail: `Application received ${signal} signal`,
+		});
 	}
 }

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkModalWindow
 	ref="dialog"
@@ -24,10 +29,10 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue';
-import MkModalWindow from './MkModalWindow.vue';
-import MkSpacer from './global/MkSpacer.vue';
-import MkButton from './MkButton.vue';
-import { i18n } from '@/i18n';
+import MkModalWindow from '@/components/MkModalWindow.vue';
+import MkSpacer from '@/components/global/MkSpacer.vue';
+import MkButton from '@/components/MkButton.vue';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	permissions: string[];

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkModalWindow
 	ref="dialogEl"
@@ -12,17 +17,17 @@
 	<div>
 		<div :class="$style.form">
 			<FormSplit :minWidth="170">
-				<MkInput v-model="username" :autofocus="true" @update:modelValue="search">
+				<MkInput v-model="username" autofocus @update:modelValue="includeHost ? search : searchLocal">
 					<template #label>{{ i18n.ts.username }}</template>
 					<template #prefix>@</template>
 				</MkInput>
-				<MkInput v-model="host" :datalist="[hostname]" @update:modelValue="search">
+				<MkInput v-if="includeHost" v-model="host" :datalist="[hostname]" @update:modelValue="includeHost ? search : searchLocal">
 					<template #label>{{ i18n.ts.host }}</template>
 					<template #prefix>@</template>
 				</MkInput>
 			</FormSplit>
 		</div>
-		<div v-if="username != '' || host != ''" :class="[$style.result, { [$style.hit]: users.length > 0 }]">
+		<div v-if="username != '' || (host != '' && includeHost)" :class="[$style.result, { [$style.hit]: users.length > 0 }]">
 			<div v-if="users.length > 0" :class="$style.users">
 				<div v-for="user in users" :key="user.id" class="_button" :class="[$style.user, { [$style.selected]: selected && selected.id === user.id }]" @click="selected = user" @dblclick="ok()">
 					<MkAvatar :user="user" :class="$style.avatar" indicator/>
@@ -36,7 +41,7 @@
 				<span>{{ i18n.ts.noUsers }}</span>
 			</div>
 		</div>
-		<div v-if="username == '' && host == ''" :class="$style.recent">
+		<div v-if="(username == '' && !includeHost) || (username == '' && host == '' && includeHost)" :class="$style.recent">
 			<div :class="$style.users">
 				<div v-for="user in recentUsers" :key="user.id" class="_button" :class="[$style.user, { [$style.selected]: selected && selected.id === user.id }]" @click="selected = user" @dblclick="ok()">
 					<MkAvatar :user="user" :class="$style.avatar" indicator/>
@@ -53,31 +58,34 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { hostname } from '@/config';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { hostname } from '@/config.js';
 
 const emit = defineEmits<{
-	(ev: 'ok', selected: misskey.entities.UserDetailed): void;
+	(ev: 'ok', selected: Misskey.entities.UserDetailed): void;
 	(ev: 'cancel'): void;
 	(ev: 'closed'): void;
 }>();
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	includeSelf?: boolean;
-}>();
+  includeHost?: boolean;
+}>(), {
+	includeHost: true,
+});
 
 let username = $ref('');
 let host = $ref('');
-let users: misskey.entities.UserDetailed[] = $ref([]);
-let recentUsers: misskey.entities.UserDetailed[] = $ref([]);
-let selected: misskey.entities.UserDetailed | null = $ref(null);
+let users: Misskey.entities.UserDetailed[] = $ref([]);
+let recentUsers: Misskey.entities.UserDetailed[] = $ref([]);
+let selected: Misskey.entities.UserDetailed | null = $ref(null);
 let dialogEl = $ref();
 
 const search = () => {
@@ -88,6 +96,20 @@ const search = () => {
 	os.api('users/search-by-username-and-host', {
 		username: username,
 		host: host,
+		limit: 10,
+		detail: false,
+	}).then(_users => {
+		users = _users;
+	});
+};
+
+const searchLocal = () => {
+	if (username === '') {
+		users = [];
+		return;
+	}
+	os.api('users/search', {
+		username: username,
 		limit: 10,
 		detail: false,
 	}).then(_users => {

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import type { Schema } from '@/misc/json-schema.js';
 import { RolePolicies } from '@/core/RoleService.js';
 
@@ -13,6 +18,10 @@ import * as ep___admin_announcements_create from './endpoints/admin/announcement
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
 import * as ep___admin_announcements_update from './endpoints/admin/announcements/update.js';
+import * as ep___admin_abuseReportResolver_create from './endpoints/admin/abuse-report-resolver/create.js';
+import * as ep___admin_abuseReportResolver_update from './endpoints/admin/abuse-report-resolver/update.js';
+import * as ep___admin_abuseReportResolver_delete from './endpoints/admin/abuse-report-resolver/delete.js';
+import * as ep___admin_abuseReportResolver_list from './endpoints/admin/abuse-report-resolver/list.js';
 import * as ep___admin_deleteAllFilesOfAUser from './endpoints/admin/delete-all-files-of-a-user.js';
 import * as ep___admin_drive_cleanRemoteFiles from './endpoints/admin/drive/clean-remote-files.js';
 import * as ep___admin_drive_cleanup from './endpoints/admin/drive/cleanup.js';
@@ -20,6 +29,7 @@ import * as ep___admin_drive_files from './endpoints/admin/drive/files.js';
 import * as ep___admin_drive_showFile from './endpoints/admin/drive/show-file.js';
 import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-aliases-bulk.js';
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
+import * as ep___admin_emoji_adds from './endpoints/admin/emoji/adds.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
 import * as ep___admin_emoji_delete from './endpoints/admin/emoji/delete.js';
@@ -38,8 +48,9 @@ import * as ep___admin_federation_updateInstance from './endpoints/admin/federat
 import * as ep___admin_getIndexStats from './endpoints/admin/get-index-stats.js';
 import * as ep___admin_getTableStats from './endpoints/admin/get-table-stats.js';
 import * as ep___admin_getUserIps from './endpoints/admin/get-user-ips.js';
-import * as ep___invite from './endpoints/invite.js';
-import * as ep___inviteRevoke from './endpoints/invite-revoke.js';
+import * as ep___admin_invite_create from './endpoints/admin/invite/create.js';
+import * as ep___admin_invite_list from './endpoints/admin/invite/list.js';
+import * as ep___admin_invite_revoke from './endpoints/admin/invite/revoke.js';
 import * as ep___admin_promo_create from './endpoints/admin/promo/create.js';
 import * as ep___admin_queue_clear from './endpoints/admin/queue/clear.js';
 import * as ep___admin_queue_deliverDelayed from './endpoints/admin/queue/deliver-delayed.js';
@@ -155,6 +166,7 @@ import * as ep___federation_users from './endpoints/federation/users.js';
 import * as ep___federation_stats from './endpoints/federation/stats.js';
 import * as ep___following_create from './endpoints/following/create.js';
 import * as ep___following_delete from './endpoints/following/delete.js';
+import * as ep___following_update from './endpoints/following/update.js';
 import * as ep___following_invalidate from './endpoints/following/invalidate.js';
 import * as ep___following_requests_accept from './endpoints/following/requests/accept.js';
 import * as ep___following_requests_cancel from './endpoints/following/requests/cancel.js';
@@ -233,6 +245,10 @@ import * as ep___i_webhooks_show from './endpoints/i/webhooks/show.js';
 import * as ep___i_webhooks_list from './endpoints/i/webhooks/list.js';
 import * as ep___i_webhooks_update from './endpoints/i/webhooks/update.js';
 import * as ep___i_webhooks_delete from './endpoints/i/webhooks/delete.js';
+import * as ep___invite_create from './endpoints/invite/create.js';
+import * as ep___invite_delete from './endpoints/invite/delete.js';
+import * as ep___invite_list from './endpoints/invite/list.js';
+import * as ep___invite_limit from './endpoints/invite/limit.js';
 import * as ep___messaging_history from './endpoints/messaging/history.js';
 import * as ep___messaging_messages from './endpoints/messaging/messages.js';
 import * as ep___messaging_messages_create from './endpoints/messaging/messages/create.js';
@@ -262,6 +278,7 @@ import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mediaTimeline from './endpoints/notes/media-timeline.js';
+import * as ep___notes_catTimeline from './endpoints/notes/cat-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
@@ -283,6 +300,7 @@ import * as ep___notes_unrenote from './endpoints/notes/unrenote.js';
 import * as ep___notes_userListTimeline from './endpoints/notes/user-list-timeline.js';
 import * as ep___notifications_create from './endpoints/notifications/create.js';
 import * as ep___notifications_markAllAsRead from './endpoints/notifications/mark-all-as-read.js';
+import * as ep___notifications_testNotification from './endpoints/notifications/test-notification.js';
 import * as ep___pagePush from './endpoints/page-push.js';
 import * as ep___pages_create from './endpoints/pages/create.js';
 import * as ep___pages_delete from './endpoints/pages/delete.js';
@@ -349,6 +367,7 @@ import * as ep___users_lists_create_from_public from './endpoints/users/lists/cr
 import * as ep___users_lists_update from './endpoints/users/lists/update.js';
 import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_pages from './endpoints/users/pages.js';
+import * as ep___users_flashs from './endpoints/users/flashs.js';
 import * as ep___users_reactions from './endpoints/users/reactions.js';
 import * as ep___users_recommendation from './endpoints/users/recommendation.js';
 import * as ep___users_relation from './endpoints/users/relation.js';
@@ -375,6 +394,10 @@ const eps = [
 	['admin/announcements/delete', ep___admin_announcements_delete],
 	['admin/announcements/list', ep___admin_announcements_list],
 	['admin/announcements/update', ep___admin_announcements_update],
+	['admin/abuse-report-resolver/create', ep___admin_abuseReportResolver_create],
+	['admin/abuse-report-resolver/list', ep___admin_abuseReportResolver_list],
+	['admin/abuse-report-resolver/delete', ep___admin_abuseReportResolver_delete],
+	['admin/abuse-report-resolver/update', ep___admin_abuseReportResolver_update],
 	['admin/delete-all-files-of-a-user', ep___admin_deleteAllFilesOfAUser],
 	['admin/drive/clean-remote-files', ep___admin_drive_cleanRemoteFiles],
 	['admin/drive/cleanup', ep___admin_drive_cleanup],
@@ -382,6 +405,7 @@ const eps = [
 	['admin/drive/show-file', ep___admin_drive_showFile],
 	['admin/emoji/add-aliases-bulk', ep___admin_emoji_addAliasesBulk],
 	['admin/emoji/add', ep___admin_emoji_add],
+	['admin/emoji/adds', ep___admin_emoji_adds],
 	['admin/emoji/copy', ep___admin_emoji_copy],
 	['admin/emoji/delete-bulk', ep___admin_emoji_deleteBulk],
 	['admin/emoji/delete', ep___admin_emoji_delete],
@@ -400,8 +424,9 @@ const eps = [
 	['admin/get-index-stats', ep___admin_getIndexStats],
 	['admin/get-table-stats', ep___admin_getTableStats],
 	['admin/get-user-ips', ep___admin_getUserIps],
-	['invite', ep___invite],
-	['invite-revoke', ep___inviteRevoke],
+	['admin/invite/create', ep___admin_invite_create],
+	['admin/invite/list', ep___admin_invite_list],
+	['admin/invite/revoke', ep___admin_invite_revoke],
 	['admin/promo/create', ep___admin_promo_create],
 	['admin/queue/clear', ep___admin_queue_clear],
 	['admin/queue/deliver-delayed', ep___admin_queue_deliverDelayed],
@@ -517,6 +542,7 @@ const eps = [
 	['federation/stats', ep___federation_stats],
 	['following/create', ep___following_create],
 	['following/delete', ep___following_delete],
+	['following/update', ep___following_update],
 	['following/invalidate', ep___following_invalidate],
 	['following/requests/accept', ep___following_requests_accept],
 	['following/requests/cancel', ep___following_requests_cancel],
@@ -595,6 +621,10 @@ const eps = [
 	['i/webhooks/show', ep___i_webhooks_show],
 	['i/webhooks/update', ep___i_webhooks_update],
 	['i/webhooks/delete', ep___i_webhooks_delete],
+	['invite/create', ep___invite_create],
+	['invite/delete', ep___invite_delete],
+	['invite/list', ep___invite_list],
+	['invite/limit', ep___invite_limit],
 	['messaging/history', ep___messaging_history],
 	['messaging/messages', ep___messaging_messages],
 	['messaging/messages/create', ep___messaging_messages_create],
@@ -624,6 +654,7 @@ const eps = [
 	['notes/hybrid-timeline', ep___notes_hybridTimeline],
 	['notes/local-timeline', ep___notes_localTimeline],
 	['notes/media-timeline', ep___notes_mediaTimeline],
+	['notes/cat-timeline', ep___notes_catTimeline],
 	['notes/mentions', ep___notes_mentions],
 	['notes/polls/recommendation', ep___notes_polls_recommendation],
 	['notes/polls/vote', ep___notes_polls_vote],
@@ -645,6 +676,7 @@ const eps = [
 	['notes/user-list-timeline', ep___notes_userListTimeline],
 	['notifications/create', ep___notifications_create],
 	['notifications/mark-all-as-read', ep___notifications_markAllAsRead],
+	['notifications/test-notification', ep___notifications_testNotification],
 	['page-push', ep___pagePush],
 	['pages/create', ep___pages_create],
 	['pages/delete', ep___pages_delete],
@@ -711,6 +743,7 @@ const eps = [
 	['users/lists/create-from-public', ep___users_lists_create_from_public],
 	['users/notes', ep___users_notes],
 	['users/pages', ep___users_pages],
+	['users/flashs', ep___users_flashs],
 	['users/reactions', ep___users_reactions],
 	['users/recommendation', ep___users_recommendation],
 	['users/relation', ep___users_relation],
@@ -838,4 +871,5 @@ const endpoints: IEndpoint[] = (eps as [string, any]).map(([name, ep]) => {
 	};
 });
 
+// eslint-disable-next-line import/no-default-export
 export default endpoints;

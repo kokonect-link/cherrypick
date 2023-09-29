@@ -1,7 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { Brackets } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { UserGroupsRepository, MessagingMessagesRepository, UserGroupJoiningsRepository } from '@/models/index.js';
+import type { UserGroupsRepository, MessagingMessagesRepository, UserGroupJoiningsRepository } from '@/models/_.js';
 import { QueryService } from '@/core/QueryService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { MessagingMessageEntityService } from '@/core/entities/MessagingMessageEntityService.js';
@@ -64,9 +69,8 @@ export const paramDef = {
 	],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.messagingMessagesRepository)
 		private messagingMessagesRepository: MessagingMessagesRepository,
@@ -105,7 +109,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 					.setParameter('meId', me.id)
 					.setParameter('recipientId', recipient.id);
 
-				const messages = await query.take(ps.limit).getMany();
+				const messages = await query.limit(ps.limit).getMany();
 
 				if (ps.sinceId !== undefined) {
 					messages.reverse();
@@ -145,7 +149,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				const query = this.queryService.makePaginationQuery(this.messagingMessagesRepository.createQueryBuilder('message'), ps.sinceId, ps.untilId)
 					.andWhere('message.groupId = :groupId', { groupId: recipientGroup.id });
 
-				const messages = await query.take(ps.limit).getMany();
+				const messages = await query.limit(ps.limit).getMany();
 
 				if (ps.sinceId) {
 					messages.reverse();

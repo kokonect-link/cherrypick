@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 process.env.NODE_ENV = 'test';
 
 import { Test } from '@nestjs/testing';
@@ -5,8 +10,8 @@ import { UploadPartCommand, CompleteMultipartUploadCommand, CreateMultipartUploa
 import { mockClient } from 'aws-sdk-client-mock';
 import { GlobalModule } from '@/GlobalModule.js';
 import { CoreModule } from '@/core/CoreModule.js';
-import { S3Service } from '@/core/S3Service';
-import { Meta } from '@/models';
+import { S3Service } from '@/core/S3Service.js';
+import { MiMeta } from '@/models/_.js';
 import type { TestingModule } from '@nestjs/testing';
 
 describe('S3Service', () => {
@@ -35,11 +40,11 @@ describe('S3Service', () => {
 		test('upload a file', async () => {
 			s3Mock.on(PutObjectCommand).resolves({});
 
-			await s3Service.upload({ objectStorageRegion: 'us-east-1' } as Meta, {
+			await s3Service.upload({ objectStorageRegion: 'us-east-1' } as MiMeta, {
 				Bucket: 'fake',
 				Key: 'fake',
 				Body: 'x',
-			});
+			}, false);
 		});
 
 		test('upload a large file', async () => {
@@ -47,31 +52,31 @@ describe('S3Service', () => {
 			s3Mock.on(UploadPartCommand).resolves({ ETag: '1' });
 			s3Mock.on(CompleteMultipartUploadCommand).resolves({ Bucket: 'fake', Key: 'fake' });
 
-			await s3Service.upload({} as Meta, {
+			await s3Service.upload({} as MiMeta, {
 				Bucket: 'fake',
 				Key: 'fake',
 				Body: 'x'.repeat(8 * 1024 * 1024 + 1), // デフォルトpartSizeにしている 8 * 1024 * 1024 を越えるサイズ
-			});
+			}, false);
 		});
 
 		test('upload a file error', async () => {
 			s3Mock.on(PutObjectCommand).rejects({ name: 'Fake Error' });
 
-			await expect(s3Service.upload({ objectStorageRegion: 'us-east-1' } as Meta, {
+			await expect(s3Service.upload({ objectStorageRegion: 'us-east-1' } as MiMeta, {
 				Bucket: 'fake',
 				Key: 'fake',
 				Body: 'x',
-			})).rejects.toThrowError(Error);
+			}, false)).rejects.toThrowError(Error);
 		});
 
 		test('upload a large file error', async () => {
 			s3Mock.on(UploadPartCommand).rejects();
 
-			await expect(s3Service.upload({} as Meta, {
+			await expect(s3Service.upload({} as MiMeta, {
 				Bucket: 'fake',
 				Key: 'fake',
 				Body: 'x'.repeat(8 * 1024 * 1024 + 1), // デフォルトpartSizeにしている 8 * 1024 * 1024 を越えるサイズ
-			})).rejects.toThrowError(Error);
+			}, false)).rejects.toThrowError(Error);
 		});
 	});
 });

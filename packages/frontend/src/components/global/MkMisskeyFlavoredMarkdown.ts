@@ -1,18 +1,23 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { VNode, h } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import temml from 'temml/dist/temml.mjs';
 import MkUrl from '@/components/global/MkUrl.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkMention from '@/components/MkMention.vue';
 import MkEmoji from '@/components/global/MkEmoji.vue';
 import MkCustomEmoji from '@/components/global/MkCustomEmoji.vue';
-import MkFormula from '@/components/MkFormula.vue';
 import MkCode from '@/components/MkCode.vue';
 import MkGoogle from '@/components/MkGoogle.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import MkA from '@/components/global/MkA.vue';
-import { host } from '@/config';
-import { defaultStore } from '@/store';
+import { host } from '@/config.js';
+import { defaultStore } from '@/store.js';
 
 const QUOTE_STYLE = `
 display: block;
@@ -171,8 +176,13 @@ export default function(props: {
 						}, genEl(token.children, scale));
 					}
 					case 'rainbow': {
+						if (!useAnim) {
+							return h('span', {
+								class: '_mfm_rainbow_fallback_',
+							}, genEl(token.children, scale));
+						}
 						const speed = validTime(token.props.args.speed) ?? '1s';
-						style = useAnim ? `animation: mfm-rainbow ${speed} linear infinite;` : '';
+						style = `animation: mfm-rainbow ${speed} linear infinite;`;
 						break;
 					}
 					case 'sparkle': {
@@ -180,6 +190,14 @@ export default function(props: {
 							return genEl(token.children, scale);
 						}
 						return h(MkSparkle, {}, genEl(token.children, scale));
+					}
+					case 'fade': {
+						if (!useAnim) {
+							return genEl(token.children, scale);
+						}
+						const speed = validTime(token.props.args.speed) ?? '4s';
+						style = `animation: mfm-fade ${speed} linear infinite;`;
+						break;
 					}
 					case 'rotate': {
 						const degrees = parseFloat(token.props.args.deg ?? '90');
@@ -200,7 +218,7 @@ export default function(props: {
 						}
 						const x = Math.min(parseFloat(token.props.args.x ?? '1'), 5);
 						const y = Math.min(parseFloat(token.props.args.y ?? '1'), 5);
-						style = `transform: scale(${x}, ${y});`; 
+						style = `transform: scale(${x}, ${y});`;
 						scale = scale * Math.max(x, y);
 						break;
 					}
@@ -350,21 +368,15 @@ export default function(props: {
 			}
 
 			case 'mathInline': {
-				// return [h('code', token.props.formula)];
-				return [h(MkFormula, {
-					key: Math.random(),
-					formula: token.props.formula,
-					block: false,
-				})];
+				const ret = document.createElement('span');
+				temml.render(token.props.formula, ret, {});
+				return [h('span', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'mathBlock': {
-				// return [h('code', token.props.formula)];
-				return [h(MkFormula, {
-					key: Math.random(),
-					formula: token.props.formula,
-					block: true,
-				})];
+				const ret = document.createElement('div');
+				temml.render(token.props.formula, ret, { displayMode: true });
+				return [h('div', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'search': {

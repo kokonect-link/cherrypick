@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<MkStickyContainer>
@@ -35,6 +40,22 @@
 							</MkSwitch>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.mtlAvailable, 'mtlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.mtlAvailable }}</template>
+							<template #suffix>{{ policies.mtlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.mtlAvailable">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.ctlAvailable, 'ctlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.ctlAvailable }}</template>
+							<template #suffix>{{ policies.ctlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.ctlAvailable">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canPublicNote, 'canPublicNote'])">
 							<template #label>{{ i18n.ts._role._options.canPublicNote }}</template>
 							<template #suffix>{{ policies.canPublicNote ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -49,6 +70,29 @@
 							<MkSwitch v-model="policies.canInvite">
 								<template #label>{{ i18n.ts.enable }}</template>
 							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.inviteLimit, 'inviteLimit'])">
+							<template #label>{{ i18n.ts._role._options.inviteLimit }}</template>
+							<template #suffix>{{ policies.inviteLimit }}</template>
+							<MkInput v-model="policies.inviteLimit" type="number">
+							</MkInput>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.inviteLimitCycle, 'inviteLimitCycle'])">
+							<template #label>{{ i18n.ts._role._options.inviteLimitCycle }}</template>
+							<template #suffix>{{ policies.inviteLimitCycle + i18n.ts._time.minute }}</template>
+							<MkInput v-model="policies.inviteLimitCycle" type="number">
+								<template #suffix>{{ i18n.ts._time.minute }}</template>
+							</MkInput>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.inviteExpirationTime, 'inviteExpirationTime'])">
+							<template #label>{{ i18n.ts._role._options.inviteExpirationTime }}</template>
+							<template #suffix>{{ policies.inviteExpirationTime + i18n.ts._time.minute }}</template>
+							<MkInput v-model="policies.inviteExpirationTime" type="number">
+								<template #suffix>{{ i18n.ts._time.minute }}</template>
+							</MkInput>
 						</MkFolder>
 
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canManageCustomEmojis, 'canManageCustomEmojis'])">
@@ -180,11 +224,11 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkRange from '@/components/MkRange.vue';
 import MkRolePreview from '@/components/MkRolePreview.vue';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { instance } from '@/instance';
-import { useRouter } from '@/router';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { instance } from '@/instance.js';
+import { useRouter } from '@/router.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { ROLE_POLICIES } from '@/const';
 

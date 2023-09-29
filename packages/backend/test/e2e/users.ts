@@ -1,17 +1,22 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
 import { inspect } from 'node:util';
 import { DEFAULT_POLICIES } from '@/core/RoleService.js';
 import type { Packed } from '@/misc/json-schema.js';
-import { 
-	signup, 
-	post, 
+import {
+	signup,
+	post,
 	page,
 	role,
-	startServer, 
+	startServer,
 	api,
-	successfulApiCall, 
+	successfulApiCall,
 	failedApiCall,
 	uploadFile,
 } from '../utils.js';
@@ -36,19 +41,19 @@ describe('ユーザー', () => {
 		badgeRoles: any[],
 	};
 
-	type UserDetailedNotMe = UserLite & 
+	type UserDetailedNotMe = UserLite &
 	misskey.entities.UserDetailed & {
 		roles: any[],
 	};
 
-	type MeDetailed = UserDetailedNotMe & 
+	type MeDetailed = UserDetailedNotMe &
 		misskey.entities.MeDetailed & {
 		achievements: object[],
 		loggedInDays: number,
 		policies: object,
 	};
-	
-	type User = MeDetailed & { token: string };	
+
+	type User = MeDetailed & { token: string };
 
 	const show = async (id: string, me = root): Promise<MeDetailed | UserDetailedNotMe> => {
 		return successfulApiCall({ endpoint: 'users/show', parameters: { userId: id }, user: me }) as any;
@@ -97,6 +102,7 @@ describe('ユーザー', () => {
 			birthday: user.birthday,
 			lang: user.lang,
 			fields: user.fields,
+			verifiedLinks: user.verifiedLinks,
 			followersCount: user.followersCount,
 			followingCount: user.followingCount,
 			notesCount: user.notesCount,
@@ -126,6 +132,7 @@ describe('ユーザー', () => {
 			isBlocked: user.isBlocked ?? false,
 			isMuted: user.isMuted ?? false,
 			isRenoteMuted: user.isRenoteMuted ?? false,
+			notify: user.notify ?? 'none',
 		});
 	};
 
@@ -147,6 +154,7 @@ describe('ユーザー', () => {
 			preventAiLearning: user.preventAiLearning,
 			isExplorable: user.isExplorable,
 			isDeleted: user.isDeleted,
+			twoFactorBackupCodesStock: user.twoFactorBackupCodesStock,
 			hideOnlineStatus: user.hideOnlineStatus,
 			hasUnreadSpecifiedNotes: user.hasUnreadSpecifiedNotes,
 			hasUnreadMentions: user.hasUnreadMentions,
@@ -156,11 +164,12 @@ describe('ユーザー', () => {
 			hasUnreadChannel: user.hasUnreadChannel,
 			hasUnreadNotification: user.hasUnreadNotification,
 			hasPendingReceivedFollowRequest: user.hasPendingReceivedFollowRequest,
+			unreadAnnouncements: user.unreadAnnouncements,
 			mutedWords: user.mutedWords,
 			mutedInstances: user.mutedInstances,
 			mutingNotificationTypes: user.mutingNotificationTypes,
 			emailNotificationTypes: user.emailNotificationTypes,
-			achievements: user.achievements, 
+			achievements: user.achievements,
 			loggedInDays: user.loggedInDays,
 			policies: user.policies,
 			...(security ? {
@@ -223,11 +232,11 @@ describe('ユーザー', () => {
 	beforeAll(async () => {
 		root = await signup({ username: 'root' });
 		alice = await signup({ username: 'alice' });
-		aliceNote = await post(alice, { text: 'test' }) as any; 
+		aliceNote = await post(alice, { text: 'test' }) as any;
 		alicePage = await page(alice);
 		aliceList = (await api('users/list/create', { name: 'aliceList' }, alice)).body;
 		bob = await signup({ username: 'bob' });
-		bobNote = await post(bob, { text: 'test' }) as any; 
+		bobNote = await post(bob, { text: 'test' }) as any;
 		carol = await signup({ username: 'carol' });
 		dave = await signup({ username: 'dave' });
 		ellen = await signup({ username: 'ellen' });
@@ -237,10 +246,10 @@ describe('ユーザー', () => {
 		usersReplying = await [...Array(10)].map((_, i) => i).reduce(async (acc, i) => {
 			const u = await signup({ username: `replying${i}` });
 			for (let j = 0; j < 10 - i; j++) {
-				const p = await post(u, { text: `test${j}` }); 
+				const p = await post(u, { text: `test${j}` });
 				await post(alice, { text: `@${u.username} test${j}`, replyId: p.id });
 			}
-			
+
 			return (await acc).concat(u);
 		}, Promise.resolve([] as User[]));
 
@@ -363,6 +372,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.birthday, null);
 		assert.strictEqual(response.lang, null);
 		assert.deepStrictEqual(response.fields, []);
+		assert.deepStrictEqual(response.verifiedLinks, []);
 		assert.strictEqual(response.followersCount, 0);
 		assert.strictEqual(response.followingCount, 0);
 		assert.strictEqual(response.notesCount, 0);
@@ -377,7 +387,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.securityKeys, false);
 		assert.deepStrictEqual(response.roles, []);
 		assert.strictEqual(response.memo, null);
-		
+
 		// MeDetailedOnly
 		assert.strictEqual(response.avatarId, null);
 		assert.strictEqual(response.bannerId, null);
@@ -393,6 +403,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.preventAiLearning, true);
 		assert.strictEqual(response.isExplorable, true);
 		assert.strictEqual(response.isDeleted, false);
+		assert.strictEqual(response.twoFactorBackupCodesStock, 'none');
 		assert.strictEqual(response.hideOnlineStatus, false);
 		assert.strictEqual(response.hasUnreadSpecifiedNotes, false);
 		assert.strictEqual(response.hasUnreadMentions, false);
@@ -402,13 +413,14 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.hasUnreadChannel, false);
 		assert.strictEqual(response.hasUnreadNotification, false);
 		assert.strictEqual(response.hasPendingReceivedFollowRequest, false);
+		assert.deepStrictEqual(response.unreadAnnouncements, []);
 		assert.deepStrictEqual(response.mutedWords, []);
 		assert.deepStrictEqual(response.mutedInstances, []);
 		assert.deepStrictEqual(response.mutingNotificationTypes, []);
 		assert.deepStrictEqual(response.emailNotificationTypes, ['follow', 'receiveFollowRequest', 'groupInvited']);
 		assert.deepStrictEqual(response.achievements, []);
 		assert.deepStrictEqual(response.loggedInDays, 0);
-		assert.deepStrictEqual(response.policies, DEFAULT_POLICIES); 
+		assert.deepStrictEqual(response.policies, DEFAULT_POLICIES);
 		assert.notStrictEqual(response.email, undefined);
 		assert.strictEqual(response.emailVerified, false);
 		assert.deepStrictEqual(response.securityKeysList, []);
@@ -485,7 +497,7 @@ describe('ユーザー', () => {
 		{ parameters: (): object => ({ mutedWords: [] }) },
 		{ parameters: (): object => ({ mutedInstances: ['xxxx.xxxxx'] }) },
 		{ parameters: (): object => ({ mutedInstances: [] }) },
-		{ parameters: (): object => ({ mutingNotificationTypes: ['follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'groupInvited', 'app'] }) },
+		{ parameters: (): object => ({ mutingNotificationTypes: ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'achievementEarned', 'groupInvited', 'app'] }) },
 		{ parameters: (): object => ({ mutingNotificationTypes: [] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: ['mention', 'reply', 'quote', 'follow', 'receiveFollowRequest', 'groupInvited'] }) },
 		{ parameters: (): object => ({ emailNotificationTypes: [] }) },
@@ -501,8 +513,8 @@ describe('ユーザー', () => {
 		const response = await successfulApiCall({ endpoint: 'i/update', parameters: parameters, user: alice });
 		assert.match(response.avatarUrl ?? '.', /^[-a-zA-Z0-9@:%._\+~#&?=\/]+$/);
 		assert.match(response.avatarBlurhash ?? '.', /[ -~]{54}/);
-		const expected = { 
-			...meDetailed(alice, true), 
+		const expected = {
+			...meDetailed(alice, true),
 			avatarId: aliceFile.id,
 			avatarBlurhash: response.avatarBlurhash,
 			avatarUrl: response.avatarUrl,
@@ -511,8 +523,8 @@ describe('ユーザー', () => {
 
 		const parameters2 = { avatarId: null };
 		const response2 = await successfulApiCall({ endpoint: 'i/update', parameters: parameters2, user: alice });
-		const expected2 = { 
-			...meDetailed(alice, true), 
+		const expected2 = {
+			...meDetailed(alice, true),
 			avatarId: null,
 			avatarBlurhash: null,
 			avatarUrl: alice.avatarUrl, // 解除した場合、identiconになる
@@ -526,8 +538,8 @@ describe('ユーザー', () => {
 		const response = await successfulApiCall({ endpoint: 'i/update', parameters: parameters, user: alice });
 		assert.match(response.bannerUrl ?? '.', /^[-a-zA-Z0-9@:%._\+~#&?=\/]+$/);
 		assert.match(response.bannerBlurhash ?? '.', /[ -~]{54}/);
-		const expected = { 
-			...meDetailed(alice, true), 
+		const expected = {
+			...meDetailed(alice, true),
 			bannerId: aliceFile.id,
 			bannerBlurhash: response.bannerBlurhash,
 			bannerUrl: response.bannerUrl,
@@ -536,8 +548,8 @@ describe('ユーザー', () => {
 
 		const parameters2 = { bannerId: null };
 		const response2 = await successfulApiCall({ endpoint: 'i/update', parameters: parameters2, user: alice });
-		const expected2 = { 
-			...meDetailed(alice, true), 
+		const expected2 = {
+			...meDetailed(alice, true),
 			bannerId: null,
 			bannerBlurhash: null,
 			bannerUrl: null,
@@ -553,7 +565,7 @@ describe('ユーザー', () => {
 		const response = await successfulApiCall({ endpoint: 'i/pin', parameters, user: alice });
 		const expected = { ...meDetailed(alice, false), pinnedNoteIds: [aliceNote.id], pinnedNotes: [aliceNote] };
 		assert.deepStrictEqual(response, expected);
-		
+
 		const response2 = await successfulApiCall({ endpoint: 'i/unpin', parameters, user: alice });
 		const expected2 = meDetailed(alice, false);
 		assert.deepStrictEqual(response2, expected2);
@@ -614,7 +626,7 @@ describe('ユーザー', () => {
 	});
 	test.todo('をリスト形式で取得することができる（リモート, hostname指定）');
 	test.todo('をリスト形式で取得することができる（pagenation）');
-	
+
 	//#endregion
 	//#region ユーザー情報(users/show)
 
@@ -686,9 +698,9 @@ describe('ユーザー', () => {
 		const parameters = { userIds: [bob.id, alice.id, carol.id] };
 		const response = await successfulApiCall({ endpoint: 'users/show', parameters, user: alice });
 		const expected = [
-			await successfulApiCall({ endpoint: 'users/show', parameters: { userId: bob.id }, user: alice }), 
-			await successfulApiCall({ endpoint: 'users/show', parameters: { userId: alice.id }, user: alice }), 
-			await successfulApiCall({ endpoint: 'users/show', parameters: { userId: carol.id }, user: alice }), 
+			await successfulApiCall({ endpoint: 'users/show', parameters: { userId: bob.id }, user: alice }),
+			await successfulApiCall({ endpoint: 'users/show', parameters: { userId: alice.id }, user: alice }),
+			await successfulApiCall({ endpoint: 'users/show', parameters: { userId: carol.id }, user: alice }),
 		];
 		assert.deepStrictEqual(response, expected);
 	});
@@ -703,7 +715,7 @@ describe('ユーザー', () => {
 		// BUG サスペンドユーザーを一般ユーザーから見るとrootユーザーが返ってくる
 		//{ label: 'サスペンドユーザーが（一般ユーザーが見るときは）含まれない', user: (): User => userSuspended, me: (): User => bob, excluded: true },
 		{ label: '削除済ユーザーが含まれる', user: (): User => userDeletedBySelf },
-		{ label: '削除済(byAdmin)ユーザーが含まれる', user: (): User => userDeletedByAdmin },	
+		{ label: '削除済(byAdmin)ユーザーが含まれる', user: (): User => userDeletedByAdmin },
 	] as const)('をID指定のリスト形式で取得することができ、結果に$label', async ({ user, me, excluded }) => {
 		const parameters = { userIds: [user().id] };
 		const response = await successfulApiCall({ endpoint: 'users/show', parameters, user: me?.() ?? alice });
@@ -736,7 +748,7 @@ describe('ユーザー', () => {
 		{ label: 'サイレンスユーザーが含まれる', user: (): User => userSilenced },
 		{ label: 'サスペンドユーザーが含まれない', user: (): User => userSuspended, excluded: true },
 		{ label: '削除済ユーザーが含まれる', user: (): User => userDeletedBySelf },
-		{ label: '削除済(byAdmin)ユーザーが含まれる', user: (): User => userDeletedByAdmin },	
+		{ label: '削除済(byAdmin)ユーザーが含まれる', user: (): User => userDeletedByAdmin },
 	] as const)('を検索することができ、結果に$labelが含まれる', async ({ user, excluded }) => {
 		const parameters = { query: user().username, limit: 1 };
 		const response = await successfulApiCall({ endpoint: 'users/search', parameters, user: alice });
@@ -749,7 +761,7 @@ describe('ユーザー', () => {
 	//#endregion
 	//#region ID指定検索(users/search-by-username-and-host)
 
-	test.each([ 
+	test.each([
 		{ label: '自分', parameters: { username: 'alice' }, user: (): User[] => [alice] },
 		{ label: '自分かつusernameが大文字', parameters: { username: 'ALICE' }, user: (): User[] => [alice] },
 		{ label: 'ローカルのフォロイーでノートなし', parameters: { username: 'userFollowedByAlice' }, user: (): User[] => [userFollowedByAlice] },
@@ -788,7 +800,7 @@ describe('ユーザー', () => {
 	test('がよくリプライをするユーザーのリストを取得できる', async () => {
 		const parameters = { userId: alice.id, limit: 5 };
 		const response = await successfulApiCall({ endpoint: 'users/get-frequently-replied-users', parameters, user: alice });
-		const expected = await Promise.all(usersReplying.slice(0, parameters.limit).map(async (s, i) => ({ 
+		const expected = await Promise.all(usersReplying.slice(0, parameters.limit).map(async (s, i) => ({
 			user: await show(s.id, alice),
 			weight: (usersReplying.length - i) / usersReplying.length,
 		})));

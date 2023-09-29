@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div v-if="meta" :class="$style.root">
 	<div :class="[$style.main, $style.panel]">
@@ -48,23 +53,23 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import { Instance } from 'cherrypick-js/built/entities';
+import * as Misskey from 'cherrypick-js';
 import XTimeline from './welcome.timeline.vue';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import XSignupDialog from '@/components/MkSignupDialog.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { instanceName } from '@/config';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
-import { mainRouter } from '@/router';
-import number from '@/filters/number';
+import { instanceName } from '@/config.js';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
+import { mainRouter } from '@/router.js';
+import number from '@/filters/number.js';
 import MkNumber from '@/components/MkNumber.vue';
 import XActiveUsersChart from '@/components/MkVisitorDashboard.ActiveUsersChart.vue';
 
-let meta = $ref<Instance>();
+let meta = $ref<Misskey.entities.Instance>();
 let stats = $ref(null);
 
 os.api('meta', { detail: true }).then(_meta => {

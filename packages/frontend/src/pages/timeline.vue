@@ -1,13 +1,19 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkPageHeader v-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-else-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 		<MkPageHeader v-else v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
 			<XTutorial v-if="$i && defaultStore.reactiveState.timelineTutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
-			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);"/>
+			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);" :autofocus="false"/>
 
 			<transition
 				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -15,7 +21,7 @@
 				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 			>
-				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'default'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
+				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'default'" :class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i>{{ i18n.ts.newNoteRecived }}</button></div>
 			</transition>
 			<transition
 				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
@@ -23,13 +29,14 @@
 				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
 				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 			>
-				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'count'" :class="[$style.new, { [$style.showEl]: showEl && isMobile, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" textTag="span"><template #n>{{ queue }}</template></I18n></button></div>
+				<div v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'count'" :class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"><button class="_buttonPrimary" :class="$style.newButton" @click="top()"><i class="ti ti-arrow-up"></i><I18n :src="i18n.ts.newNoteRecivedCount" textTag="span"><template #n>{{ queue }}</template></I18n></button></div>
 			</transition>
 			<div :class="$style.tl">
 				<MkTimeline
 					ref="tlComponent"
 					:key="src"
-					:src="src"
+					:src="src.split(':')[0]"
+					:list="src.split(':')[1]"
 					:sound="true"
 					@queue="queueUpdated"
 				/>
@@ -44,22 +51,23 @@ import { defineAsyncComponent, computed, watch, ref, provide, onMounted } from '
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
-import { scroll } from '@/scripts/scroll';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
-import { $i } from '@/account';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
-import { miLocalStorage } from '@/local-storage';
-import { deviceKind } from '@/scripts/device-kind';
-import { unisonReload } from '@/scripts/unison-reload';
+import { scroll } from '@/scripts/scroll.js';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
+import { $i } from '@/account.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { antennasCache, userListsCache } from '@/cache.js';
+import { globalEvents } from '@/events.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
+if (!isFriendly.value && !defaultStore.state.mobileHeaderChange) provide('shouldOmitHeaderTitle', true);
 
 const MOBILE_THRESHOLD = 500;
 
@@ -72,6 +80,8 @@ const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
+const isMediaTimelineAvailable = ($i == null && instance.policies.mtlAvailable) || ($i != null && $i.policies.mtlAvailable);
+const isCatTimelineAvailable = ($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable);
 const keymap = {
 	't': focus,
 };
@@ -83,20 +93,20 @@ let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 
-watch ($$(src), () => {
+watch($$(src), () => {
 	queue = 0;
 	queueUpdated(queue);
 });
 
 onMounted(() => {
-	eventBus.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });
 
 function queueUpdated(q: number): void {
 	queue = q;
-	eventBus.emit('queueUpdated', q);
+	globalEvents.emit('queueUpdated', q);
 }
 
 function top(): void {
@@ -104,7 +114,7 @@ function top(): void {
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
-	const lists = await os.api('users/lists/list');
+	const lists = await userListsCache.fetch();
 	const items = lists.map(list => ({
 		type: 'link' as const,
 		text: list.name,
@@ -114,7 +124,7 @@ async function chooseList(ev: MouseEvent): Promise<void> {
 }
 
 async function chooseAntenna(ev: MouseEvent): Promise<void> {
-	const antennas = await os.api('antennas/list');
+	const antennas = await antennasCache.fetch();
 	const items = antennas.map(antenna => ({
 		type: 'link' as const,
 		text: antenna.name,
@@ -137,10 +147,15 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global'): void {
+function saveSrc(newSrc: 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`): void {
+	let userList = null;
+	if (newSrc.startsWith('userList:')) {
+		const id = newSrc.substring('userList:'.length);
+		userList = defaultStore.reactiveState.pinnedUserLists.value.find(l => l.id === id);
+	}
 	defaultStore.set('tl', {
-		...defaultStore.state.tl,
 		src: newSrc,
+		userList,
 	});
 	srcWhenNotSignin = newSrc;
 }
@@ -167,61 +182,79 @@ async function reloadAsk() {
 		if (canceled) return;
 
 		unisonReload();
-	} else eventBus.emit('hasRequireRefresh', true);
+	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 const headerActions = $computed(() => [{
-	icon: 'ti ti-column-insert-left',
-	text: i18n.ts.friendlyEnableNotification,
+	icon: friendlyEnableNotifications.value ? 'ti ti-notification' : 'ti ti-notification-off',
+	text: friendlyEnableNotifications.value ? i18n.ts.friendlyEnableNotifications : i18n.ts.friendlyDisableNotifications,
 	handler: () => {
-		friendlyEnableNotification.value = !friendlyEnableNotification.value;
+		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
+		reloadAsk();
+	},
+}, {
+	icon: friendlyEnableWidgets.value ? 'ti ti-apps' : 'ti ti-apps-off',
+	text: friendlyEnableWidgets.value ? i18n.ts.friendlyEnableWidgets : i18n.ts.friendlyDisableWidgets,
+	handler: () => {
+		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
 		reloadAsk();
 	},
 }]);
 
-const friendlyEnableNotification = computed(defaultStore.makeGetterSetter('friendlyEnableNotification'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
-const headerTabs = $computed(() => [{
+const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
+	key: 'list:' + l.id,
+	title: l.name,
+	icon: 'ti ti-star',
+	iconOnly: true,
+}))), ...(defaultStore.state.enableHomeTimeline ? [{
 	key: 'home',
 	title: i18n.ts._timelines.home,
 	icon: 'ti ti-home',
 	iconOnly: true,
-}, ...(isLocalTimelineAvailable ? [{
+}] : []), ...(isLocalTimelineAvailable && defaultStore.state.enableLocalTimeline ? [{
 	key: 'local',
 	title: i18n.ts._timelines.local,
 	icon: 'ti ti-planet',
 	iconOnly: true,
-}, {
+}, ...(isMediaTimelineAvailable && defaultStore.state.enableMediaTimeline ? [{
 	key: 'media',
 	title: i18n.ts._timelines.media,
 	icon: 'ti ti-photo',
 	iconOnly: true,
-}, {
+}] : []), ...(defaultStore.state.enableSocialTimeline ? [{
 	key: 'social',
 	title: i18n.ts._timelines.social,
 	icon: 'ti ti-rocket',
 	iconOnly: true,
-}] : []), ...(isGlobalTimelineAvailable ? [{
+}] : []), ...(isCatTimelineAvailable && defaultStore.state.enableCatTimeline ? [{
+	key: 'cat',
+	title: i18n.ts._timelines.cat,
+	icon: 'ti ti-cat',
+	iconOnly: true,
+}] : [])] : []), ...(isGlobalTimelineAvailable && defaultStore.state.enableGlobalTimeline ? [{
 	key: 'global',
 	title: i18n.ts._timelines.global,
 	icon: 'ti ti-world',
 	iconOnly: true,
-}] : []), {
+}] : []), ...(defaultStore.state.enableListTimeline ? [{
 	icon: 'ti ti-list',
 	title: i18n.ts.lists,
 	iconOnly: true,
 	onClick: chooseList,
-}, {
+}] : []), ...(defaultStore.state.enableAntennaTimeline ? [{
 	icon: 'ti ti-antenna',
 	title: i18n.ts.antennas,
 	iconOnly: true,
 	onClick: chooseAntenna,
-}, {
+}] : []), ...(defaultStore.state.enableChannelTimeline ? [{
 	icon: 'ti ti-device-tv',
 	title: i18n.ts.channel,
 	iconOnly: true,
 	onClick: chooseChannel,
-}] as Tab[]);
+}] : [])] as Tab[]);
 
 const headerTabsWhenNotLogin = $computed(() => [
 	...(isLocalTimelineAvailable ? [{
@@ -240,7 +273,7 @@ const headerTabsWhenNotLogin = $computed(() => [
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-rocket' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
+	icon: src === 'local' ? 'ti ti-planet' : src === 'media' ? 'ti ti-photo' : src === 'social' ? 'ti ti-rocket' : src === 'cat' ? 'ti ti-cat' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
 })));
 </script>
 
@@ -266,8 +299,12 @@ definePageMetadata(computed(() => ({
 	}
 
 	&.showEl {
-		transform: translateY(calc(var(--stickyTop, 0px) - 181px))
+		transform: translateY(calc(var(--stickyTop, 0px) - 101px))
 	}
+
+  &.showElTab {
+    transform: translateY(calc(var(--stickyTop, 0px) - 181px))
+  }
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;

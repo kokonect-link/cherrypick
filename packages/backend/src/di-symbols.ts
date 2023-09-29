@@ -1,7 +1,13 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 export const DI = {
 	config: Symbol('config'),
 	db: Symbol('db'),
 	meilisearch: Symbol('meilisearch'),
+	cloudLogging: Symbol('cloudLogging'),
 	redis: Symbol('redis'),
 	redisForPub: Symbol('redisForPub'),
 	redisForSub: Symbol('redisForSub'),
@@ -9,6 +15,7 @@ export const DI = {
 	//#region Repositories
 	usersRepository: Symbol('usersRepository'),
 	notesRepository: Symbol('notesRepository'),
+	abuseReportResolversRepository: Symbol('abuseReportResolversRepository'),
 	announcementsRepository: Symbol('announcementsRepository'),
 	announcementReadsRepository: Symbol('announcementReadsRepository'),
 	appsRepository: Symbol('appsRepository'),
@@ -21,7 +28,6 @@ export const DI = {
 	userProfilesRepository: Symbol('userProfilesRepository'),
 	userKeypairsRepository: Symbol('userKeypairsRepository'),
 	userPendingsRepository: Symbol('userPendingsRepository'),
-	attestationChallengesRepository: Symbol('attestationChallengesRepository'),
 	userSecurityKeysRepository: Symbol('userSecurityKeysRepository'),
 	userPublickeysRepository: Symbol('userPublickeysRepository'),
 	userListsRepository: Symbol('userListsRepository'),

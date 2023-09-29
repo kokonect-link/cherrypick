@@ -1,0 +1,22 @@
+{
+	id: '5a079dd7-d741-4ef6-8292-2ca8204e6f55',
+
+	name: 'Stella Light R2',
+	author: 'caipira113',
+
+	base: 'light',
+
+	props: {
+		accent: 'rgb(137, 131, 226)',
+		bg: 'rgb(234, 230, 253)',
+		fg: 'rgb(91, 87, 150)',
+		fgOnAccent: '@panel',
+		panel: 'rgb(249, 247, 255)',
+		renote: '@accent',
+		link: 'rgb(137, 105, 151)',
+		mention: '@link',
+		hashtag: 'rgb(0, 43, 255)',
+		driveFolderBg: 'rgba(137, 131, 226, 0.3)',
+		divider: 'rgb(208, 205, 217)',
+	},
+}

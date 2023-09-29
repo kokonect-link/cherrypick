@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div
 	:class="$style.root"
@@ -32,17 +37,16 @@
 import { onMounted, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
-import insertTextAtCursor from 'insert-text-at-cursor';
-import { throttle } from 'throttle-debounce';
-import { formatTimeString } from '@/scripts/format-time-string';
-import { selectFile } from '@/scripts/select-file';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import { defaultStore } from '@/store';
-import { i18n } from '@/i18n';
-import { Autocomplete } from '@/scripts/autocomplete';
-import { uploadFile } from '@/scripts/upload';
-import { miLocalStorage } from '@/local-storage';
+// import insertTextAtCursor from 'insert-text-at-cursor';
+import { formatTimeString } from '@/scripts/format-time-string.js';
+import { selectFile } from '@/scripts/select-file.js';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { Autocomplete } from '@/scripts/autocomplete.js';
+import { uploadFile } from '@/scripts/upload.js';
+import { miLocalStorage } from '@/local-storage.js';
 import MkLoading from '@/components/global/MkLoading.vue';
 
 const props = defineProps<{
@@ -50,8 +54,8 @@ const props = defineProps<{
 	group?: Misskey.entities.UserGroup | null;
 }>();
 
-let textEl = $shallowRef<HTMLTextAreaElement>();
-let fileEl = $shallowRef<HTMLInputElement>();
+const textEl = $shallowRef<HTMLTextAreaElement | null>(null);
+const fileEl = $shallowRef<HTMLInputElement | null>(null);
 
 let text = $ref<string>('');
 let file = $ref<Misskey.entities.DriveFile | null>(null);
@@ -144,15 +148,7 @@ function onDrop(ev: DragEvent): void {
 
 function onKeydown(ev: KeyboardEvent) {
 	typing();
-	if (defaultStore.state.useEnterToSend && !ev.shiftKey) {
-		if ((ev.key === 'Enter') && canSend) {
-			send();
-		}
-	} else {
-		if ((ev.key === 'Enter') && (ev.ctrlKey || ev.metaKey) && canSend) {
-			send();
-		}
-	}
+	if ((ev.key === 'Enter') && !ev.shiftKey && canSend) send();
 }
 
 function onCompositionUpdate() {
@@ -228,8 +224,7 @@ onMounted(() => {
 	autosize(textEl);
 
 	// TODO: detach when unmount
-	// TODO
-	//new Autocomplete(textEl, this, { model: 'text' });
+	new Autocomplete(textEl, $$(text));
 
 	// 書きかけの投稿を復元
 	const draft = JSON.parse(miLocalStorage.getItem('message_drafts') ?? '{}')[draftKey];
@@ -282,7 +277,7 @@ defineExpose({
 	background: transparent;
 	cursor: pointer;
 }
-/*
+
 .files {
 	display: block;
 	margin: 0;
@@ -316,7 +311,7 @@ defineExpose({
 	}
 }
 
-.file-remove {
+.fileRemove {
 	display: none;
 	position: absolute;
 	right: -6px;
@@ -330,7 +325,6 @@ defineExpose({
 	box-shadow: none;
 	cursor: pointer;
 }
-*/
 
 .buttons {
 	display: flex;

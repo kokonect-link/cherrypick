@@ -1,35 +1,45 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.root">
 	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
 
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
-		<template #header><XStatusBars :class="$style.statusbars"/></template>
+		<template #header>
+			<div>
+				<XAnnouncements v-if="$i" :class="$style.announcements"/>
+				<XStatusBars :class="$style.statusbars"/>
+			</div>
+		</template>
 		<RouterView/>
 		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotification && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotifications && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
 		<XNotifications/>
 	</div>
 
-	<div v-if="isDesktop" :class="$style.widgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyEnableWidgets" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatNavButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="5" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" :class="[$style.floatPostButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl }]" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="5" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
 
-	<button v-if="!isDesktop && !isMobile" :class="[$style.widgetButton, { [$style.showEl]: showEl }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
+	<button v-if="!isDesktop && !isMobile" v-vibrate="5" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
-	<div v-if="isMobile" ref="navFooter" :class="$style.nav">
-		<!-- <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
-		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.replace('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
-		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.replace('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
-		<button :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.replace('/my/notifications')"><i :class="$style.navButtonIcon" class="ti ti-bell"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
-		<button :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.replace('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
-		<button :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
-		<!-- <button :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
+	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: bg }">
+		<!-- v-vibrate="5" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
+		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
+		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
+		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')"><i :class="$style.navButtonIcon" class="ti ti-bell"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button v-vibrate="5" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
+		<!-- <button v-vibrate="5" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
 	</div>
 
 	<Transition
@@ -90,28 +100,30 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, computed, ref, watch, ComputedRef, shallowRef, Ref } from 'vue';
-import XCommon from './_common_/common.vue';
+import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, ComputedRef, shallowRef, Ref, onUnmounted } from 'vue';
+import tinycolor from 'tinycolor2';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
-import { instanceName } from '@/config';
+import XCommon from '@/ui/_common_/common.vue';
+import { instanceName } from '@/config.js';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { navbarItemDef } from '@/navbar';
-import { i18n } from '@/i18n';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
-import { mainRouter } from '@/router';
-import { PageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata';
-import { deviceKind } from '@/scripts/device-kind';
-import { miLocalStorage } from '@/local-storage';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
-import { CURRENT_STICKY_BOTTOM } from '@/const';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { mainRouter } from '@/router.js';
+import { PageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { CURRENT_STICKY_BOTTOM } from '@/const.js';
+import { useScrollPositionManager } from '@/nirax.js';
+import { globalEvents } from '@/events.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
 const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
+const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
 
 miLocalStorage.setItem('ui', 'friendly');
 
@@ -142,10 +154,10 @@ const enablePostButton = [
 
 let showEl = $ref(false);
 let lastScrollPosition = $ref(0);
-
 let queue = $ref(0);
-
 let longTouchNavHome = $ref(false);
+const bg = ref<string | undefined>(undefined);
+const PostBg = ref<string | undefined>(undefined);
 
 let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
 const widgetsShowing = $ref(false);
@@ -197,6 +209,23 @@ defaultStore.loaded.then(() => {
 	}
 });
 
+const calcBg = () => {
+	const rawBg = 'var(--panel)';
+	const rawPostBg = 'var(--accent)';
+	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
+	if (defaultStore.state.useBlurEffect) {
+		tinyBg.setAlpha(0.7);
+		tinyPostBg.setAlpha(0.7);
+	}
+	else {
+		tinyBg.setAlpha(1);
+		tinyPostBg.setAlpha(1);
+	}
+	bg.value = tinyBg.toRgbString();
+	PostBg.value = tinyPostBg.toRgbString();
+};
+
 onMounted(() => {
 	if (!isDesktop.value) {
 		window.addEventListener('resize', () => {
@@ -206,11 +235,18 @@ onMounted(() => {
 
 	contents.value.rootEl.addEventListener('scroll', onScroll);
 
-	eventBus.on('queueUpdated', (q) => queueUpdated(q));
+	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
+
+	calcBg();
+	globalEvents.on('themeChanged', calcBg);
 });
 
 onBeforeUnmount(() => {
 	contents.value.rootEl.removeEventListener('scroll', onScroll);
+});
+
+onUnmounted(() => {
+	globalEvents.off('themeChanged', calcBg);
 });
 
 function onScroll() {
@@ -226,7 +262,7 @@ function onScroll() {
 	showEl = currentScrollPosition < lastScrollPosition;
 	lastScrollPosition = currentScrollPosition;
 	showEl = !showEl;
-	eventBus.emit('showEl', showEl);
+	globalEvents.emit('showEl', showEl);
 }
 
 const onContextmenu = (ev) => {
@@ -264,14 +300,16 @@ function queueUpdated(q: number): void {
 }
 
 function openAccountMenu(ev: MouseEvent) {
-	longTouchNavHome = true;
-	setTimeout(() => {
-		if (longTouchNavHome === true) {
-			openAccountMenu_({
-				withExtraOperationFriendly: true,
-			}, ev);
-		}
-	}, 500);
+	if (defaultStore.state.enableLongPressOpenAccountMenu) {
+		longTouchNavHome = true;
+		setTimeout(() => {
+			if (longTouchNavHome === true) {
+				openAccountMenu_({
+					withExtraOperationFriendly: true,
+				}, ev);
+			}
+		}, 500);
+	}
 }
 
 function closeAccountMenu() {
@@ -279,7 +317,7 @@ function closeAccountMenu() {
 }
 
 function openMessage(ev: MouseEvent) {
-	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) eventBus.emit('openMessage', ev);
+	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('openMessage', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
 }
 
@@ -290,13 +328,17 @@ watch($$(navFooter), () => {
 	if (navFooter) {
 		navFooterHeight = navFooter.offsetHeight;
 		document.body.style.setProperty('--stickyBottom', `${navFooterHeight}px`);
+		document.body.style.setProperty('--minBottomSpacing', 'var(--minBottomSpacingMobile)');
 	} else {
 		navFooterHeight = 0;
 		document.body.style.setProperty('--stickyBottom', '0px');
+		document.body.style.setProperty('--minBottomSpacing', '0px');
 	}
 }, {
 	immediate: true,
 });
+
+useScrollPositionManager(() => contents.value.rootEl, mainRouter);
 </script>
 
 <style>
@@ -411,25 +453,32 @@ $float-button-size: 65px;
 	padding: initial;
 }
 
-.floatNavButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: calc(65px + env(safe-area-inset-bottom));
-	left: 15px;
-	width: $float-button-size;
-	height: $float-button-size;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-	// background: var(--panel);
-	// opacity: 0.7;
-	border-radius: 28px;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	transition: opacity 0.5s, transform 0.5s;
+.floatButton {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  bottom: calc(65px + env(safe-area-inset-bottom));
+  width: $float-button-size;
+  height: $float-button-size;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 28px;
+  -webkit-backdrop-filter: var(--blur, blur(15px));
+  backdrop-filter: var(--blur, blur(15px));
+  transition: opacity 0.5s, transform 0.5s;
 
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
+  &.reduceBlurEffect {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  &.reduceAnimation {
+    transition: opacity 0s, transform 0s;
+  }
+}
+
+.floatNavButton {
+  composes: floatButton;
+  left: 15px;
 
 	&.showEl {
 		transform: translateX(-250px);
@@ -443,25 +492,9 @@ $float-button-size: 65px;
 }
 
 .floatPostButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: calc(65px + env(safe-area-inset-bottom));
+  composes: floatButton;
 	right: 15px;
-	width: $float-button-size;
-	height: $float-button-size;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 18px;
-	// background: var(--accent);
-	// opacity: 0.7;
-	border-radius: 28px;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	transition: opacity 0.5s, transform 0.5s;
-
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
 
 	&.showEl {
 		transform: translateX(250px);
@@ -479,13 +512,7 @@ $float-button-size: 65px;
 	height: 100%;
 	right: 0;
 	bottom: 0;
-	background: var(--accent);
-	opacity: .7;
 	border-radius: 28px;
-
-	&.reduceBlurEffect {
-		opacity: 1;
-	}
 }
 
 .widgetButton {
@@ -500,6 +527,15 @@ $float-button-size: 65px;
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 22px;
 	background: var(--panel);
+  transition: opacity 0.5s, transform 0.5s;
+
+  &.reduceAnimation {
+    transition: opacity 0s, transform 0s;
+  }
+
+  &.showEl {
+    transform: translateX(100px);
+  }
 }
 
 .widgetsDrawerBg {
@@ -536,32 +572,36 @@ $float-button-size: 65px;
 	position: fixed;
 	z-index: 1000;
 	bottom: 0;
-	// left: 0;
-	// padding: 16px 16px calc(env(safe-area-inset-bottom, 0px) + 16px) 16px;
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
-	-webkit-backdrop-filter: var(--blur, blur(32px));
-	backdrop-filter: var(--blur, blur(32px));
-	background-color: var(--panel);
+	-webkit-backdrop-filter: var(--blur, blur(15px));
+	backdrop-filter: var(--blur, blur(15px));
 	border-top: solid 0.5px var(--divider);
 	padding: 0 10px;
+  transition: opacity 0.5s, transform 0.5s;
+
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+
+  &.reduceAnimation {
+    transition: opacity 0s, transform 0s;
+  }
+
+  &.showEl {
+    transform: translateY(50.55px);
+  }
 }
 
 .navButton {
 	position: relative;
 	flex: 1;
-	// padding: 0;
 	margin: auto;
 	height: 50px;
-	// border-radius: 8px;
-	background: var(--panel);
 	color: var(--fg);
 	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
-
-	&:not(:last-child) {
-		// margin-right: 12px;
-	}
 
 	@media (max-width: 300px) {
 		height: 60px;
@@ -569,10 +609,6 @@ $float-button-size: 65px;
 		&:not(:last-child) {
 			margin-right: 8px;
 		}
-	}
-
-	&:hover {
-		// background: var(--X2);
 	}
 
 	&:active {
