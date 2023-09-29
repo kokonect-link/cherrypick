@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash :class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]" :src="url" :hash="user?.avatarBlurhash" :cover="true" :onlyAvgColor="true" :noDrag="true"/>
@@ -6,16 +11,16 @@
 
 <script lang="ts" setup>
 import { watch } from 'vue';
-import * as misskey from 'cherrypick-js';
-import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
-import MkA from './MkA.vue';
-import { getStaticImageUrl } from '@/scripts/media-proxy';
-import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash';
-import { acct, userPage } from '@/filters/user';
-import { defaultStore } from '@/store';
+import * as Misskey from 'cherrypick-js';
+import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import MkA from '@/components/global/MkA.vue';
+import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { extractAvgColorFromBlurhash } from '@/scripts/extract-avg-color-from-blurhash.js';
+import { acct, userPage } from '@/filters/user.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
-	user: misskey.entities.User;
+	user: Misskey.entities.User;
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;

@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 export default (v) => {
 	if (v == null) return '?';
 	const sizes = ['B/s', 'KB/s', 'MB/s', 'GB/s', 'TB/s'];

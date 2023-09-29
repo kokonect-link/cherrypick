@@ -1,9 +1,14 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-if="!popup" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
-			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid .5px var(--divider);">{{ i18n.ts._mfm.intro }}</div>
+			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid 1px var(--divider);">{{ i18n.ts._mfm.intro }}</div>
 			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfm.mention }}</div>
 				<div :class="$style.content">
@@ -285,6 +290,16 @@
 				</div>
 			</div>
 			<div :class="$style.section">
+				<div :class="$style.title">{{ i18n.ts._mfm.fade }}</div>
+				<div :class="$style.content">
+					<p>{{ i18n.ts._mfm.fadeDescription }}</p>
+					<div :class="$style.preview">
+						<Mfm :text="preview_fade"/>
+						<MkTextarea v-model="preview_fade" :class="$style.text"><template #label>MFM {{ i18n.ts.sample }}</template></MkTextarea>
+					</div>
+				</div>
+			</div>
+			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfm.rotate }}</div>
 				<div :class="$style.content">
 					<p>{{ i18n.ts._mfm.rotateDescription }}</p>
@@ -360,12 +375,14 @@
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
-import { customEmojis } from '@/custom-emojis';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { i18n } from '@/i18n.js';
+import { customEmojis } from '@/custom-emojis.js';
+
+defineProps<{
+  popup?: boolean;
+}>();
 
 let preview_mention = $ref('@example');
 let preview_hashtag = $ref('#test');
@@ -395,6 +412,7 @@ let preview_x4 = $ref('$[x4 🍮]');
 let preview_blur = $ref(`$[blur ${i18n.ts._mfm.dummy}]`);
 let preview_rainbow = $ref('$[rainbow 🍮] $[rainbow.speed=5s 🍮]');
 let preview_sparkle = $ref('$[sparkle 🍮]');
+let preview_fade = $ref('$[fade 🍮] $[fade.speed=1.5s 🍮]');
 let preview_rotate = $ref('$[rotate.deg=90 🍮]');
 let preview_position = $ref('$[position.x=1 🍮]\n$[position.y=-1 🍮]\n\n$[position.x=3,y=-3 🍮]');
 let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,y=2 🍮]');

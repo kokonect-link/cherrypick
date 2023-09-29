@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<MkStickyContainer>
@@ -42,7 +47,7 @@
 
 				<MkPagination v-slot="{items}" ref="paginationComponent" :pagination="pagination">
 					<div :class="$style.users">
-						<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt)}`" :class="$style.user" :to="`/user-info/${user.id}`">
+						<MkA v-for="user in items" :key="user.id" v-tooltip.mfm="`Last posted: ${dateString(user.updatedAt)}`" :class="$style.user" :to="`/admin/user/${user.id}`">
 							<MkUserCardMini :user="user"/>
 						</MkA>
 					</div>
@@ -59,12 +64,12 @@ import XHeader from './_header_.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import * as os from '@/os';
-import { lookupUser } from '@/scripts/lookup-user';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { lookupUser } from '@/scripts/lookup-user.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
-import { dateString } from '@/filters/date';
+import { dateString } from '@/filters/date.js';
 
 let paginationComponent = $shallowRef<InstanceType<typeof MkPagination>>();
 
@@ -113,7 +118,7 @@ async function addUser() {
 }
 
 function show(user) {
-	os.pageWindow(`/user-info/${user.id}`);
+	os.pageWindow(`/admin/user/${user.id}`);
 }
 
 const headerActions = $computed(() => [{

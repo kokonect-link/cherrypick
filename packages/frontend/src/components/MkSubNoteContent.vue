@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="el" :class="[$style.root, { [$style.collapsed]: collapsed }]">
 	<div>
@@ -32,10 +37,10 @@
 			</div>
 		</div>
 	</div>
-	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" :class="$style.fade" class="_button" @click="collapsed = false">
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false">
 		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 	</button>
-	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" :class="$style.showLess" class="_button" @click="collapsed = true">
+	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true">
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
@@ -47,17 +52,18 @@
 			</template>
 		</MkReactionsViewer>
 		<footer :class="$style.footer">
-			<button v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click="reply()">
+			<button v-vibrate="5" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click="reply()">
 				<i class="ti ti-arrow-back-up"></i>
 				<p v-if="note.repliesCount > 0" :class="$style.footerButtonCount">{{ note.repliesCount }}</p>
 			</button>
 			<button
 				v-if="canRenote"
 				ref="renoteButton"
+				v-vibrate="[30, 30, 60]"
 				v-tooltip="i18n.ts.renote"
 				:class="$style.footerButton"
 				class="_button"
-				@mousedown="renote()"
+				@mousedown="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ note.renoteCount }}</p>
@@ -65,24 +71,26 @@
 			<button v-else :class="$style.footerButton" class="_button" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="note.myReaction == null" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
+			<button v-if="note.myReaction == null" ref="heartReactButton" v-vibrate="[30, 50, 50]" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="note.myReaction == null && note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
+			<button v-if="note.myReaction == null && note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="[30, 50, 50]" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
 				<i class="ti ti-mood-plus"></i>
 			</button>
-			<button v-if="note.myReaction != null" ref="reactButton" :class="$style.footerButton" class="_button" @click="undoReact(note)">
+			<button v-if="note.myReaction != null" ref="reactButton" v-vibrate="[30, 50, 50]" :class="$style.footerButton" class="_button" @click="undoReact(note)">
 				<i v-if="note.reactionAcceptance !== 'likeOnly'" class="ti ti-mood-minus"></i>
 				<i v-else class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()"><i class="ti ti-quote"></i></button>
-			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="5" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @mousedown="quote()">
+				<i class="ti ti-quote"></i>
+			</button>
+			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="5" v-tooltip="i18n.ts.clip" :class="$style.footerButton" class="_button" @mousedown="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
 			<MkA v-if="defaultStore.state.infoButtonForNoteActionsEnabled && defaultStore.state.showNoteActionsOnlyHover" v-tooltip="i18n.ts.details" :to="notePage(note)" :class="$style.footerButton" style="text-decoration: none;" class="_button">
 				<i class="ti ti-info-circle"></i>
 			</MkA>
-			<button ref="menuButton" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @mousedown="menu()">
+			<button ref="menuButton" v-vibrate="5" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @mousedown="menu()">
 				<i class="ti ti-dots"></i>
 			</button>
 		</footer>
@@ -92,29 +100,30 @@
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, inject, Ref, ref, shallowRef } from 'vue';
-import * as misskey from 'cherrypick-js';
-import * as os from '@/os';
+import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkDetailsButton from '@/components/MkDetailsButton.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
-import MkReactionsViewer from "@/components/MkReactionsViewer.vue";
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed';
-import { defaultStore } from '@/store';
-import { miLocalStorage } from '@/local-storage';
-import { instance } from '@/instance';
-import { notePage } from '@/filters/note';
-import { useTooltip } from '@/scripts/use-tooltip';
-import { pleaseLogin } from '@/scripts/please-login';
-import { showMovedDialog } from '@/scripts/show-moved-dialog';
-import { getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu';
-import { deepClone } from '@/scripts/clone';
-import { reactionPicker } from '@/scripts/reaction-picker';
-import { claimAchievement } from '@/scripts/achievements';
-import { useNoteCapture } from '@/scripts/use-note-capture';
+import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed.js';
+import { defaultStore } from '@/store.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { instance } from '@/instance.js';
+import { notePage } from '@/filters/note.js';
+import { useTooltip } from '@/scripts/use-tooltip.js';
+import { pleaseLogin } from '@/scripts/please-login.js';
+import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
+import { getNoteClipMenu, getNoteMenu } from '@/scripts/get-note-menu.js';
+import { deepClone } from '@/scripts/clone.js';
+import { reactionPicker } from '@/scripts/reaction-picker.js';
+import { claimAchievement } from '@/scripts/achievements.js';
+import { useNoteCapture } from '@/scripts/use-note-capture.js';
+import { MenuItem } from '@/types/menu.js';
 
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -124,15 +133,15 @@ const heartReactButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i.id);
 const isDeleted = ref(false);
-const currentClip = inject<Ref<misskey.entities.Clip> | null>('currentClip', null);
+const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
 const showContent = ref(false);
 const translation = ref<any>(null);
 const translating = ref(false);
 
 const props = defineProps<{
-	note: misskey.entities.Note;
-	showSubNoteFooterButton: boolean;
+	note: Misskey.entities.Note;
+  showSubNoteFooterButton: boolean;
 }>();
 
 let note = $ref(deepClone(props.note));
@@ -187,7 +196,82 @@ useTooltip(renoteButton, async (showing) => {
 	}, {}, 'closed');
 });
 
-async function renote() {
+function renote(viaKeyboard = false) {
+	pleaseLogin();
+	showMovedDialog();
+
+	let items = [] as MenuItem[];
+
+	if (props.note.channel) {
+		items = items.concat([{
+			text: i18n.ts.inChannelRenote,
+			icon: 'ti ti-repeat',
+			action: () => {
+				const el = renoteButton.value as HTMLElement | null | undefined;
+				if (el) {
+					const rect = el.getBoundingClientRect();
+					const x = rect.left + (el.offsetWidth / 2);
+					const y = rect.top + (el.offsetHeight / 2);
+					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+				}
+
+				os.api('notes/create', {
+					renoteId: props.note.id,
+					channelId: props.note.channelId,
+				}).then(() => {
+					os.noteToast(i18n.ts.renoted, 'renote');
+				});
+			},
+		}, {
+			text: i18n.ts.inChannelQuote,
+			icon: 'ti ti-quote',
+			action: () => {
+				os.post({
+					renote: props.note,
+					channel: props.note.channel,
+				}, () => {
+					focus();
+				});
+			},
+		}, null]);
+	}
+
+	items = items.concat([{
+		text: i18n.ts.renote,
+		icon: 'ti ti-repeat',
+		action: () => {
+			const el = renoteButton.value as HTMLElement | null | undefined;
+			if (el) {
+				const rect = el.getBoundingClientRect();
+				const x = rect.left + (el.offsetWidth / 2);
+				const y = rect.top + (el.offsetHeight / 2);
+				os.popup(MkRippleEffect, { x, y }, {}, 'end');
+			}
+
+			os.api('notes/create', {
+				renoteId: props.note.id,
+			}).then(() => {
+				os.noteToast(i18n.ts.renoted, 'renote');
+			});
+		},
+	}, {
+		text: i18n.ts.quote,
+		icon: 'ti ti-quote',
+		action: () => {
+			os.post({
+				renote: props.note,
+			}, () => {
+				focus();
+			});
+		},
+	}]);
+
+	os.popupMenu(items, renoteButton.value, {
+		viaKeyboard,
+	});
+}
+
+async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 
@@ -195,6 +279,7 @@ async function renote() {
 		const { canceled } = await os.confirm({
 			type: 'info',
 			text: i18n.ts.renoteConfirm,
+			caption: i18n.ts.renoteConfirmDescription,
 		});
 		if (canceled) return;
 	}
@@ -212,7 +297,7 @@ async function renote() {
 			renoteId: props.note.id,
 			channelId: props.note.channelId,
 		}).then(() => {
-			os.noteToast(i18n.ts.renoted);
+			os.noteToast(i18n.ts.renoted, 'renote');
 		});
 	}
 
@@ -227,23 +312,25 @@ async function renote() {
 	os.api('notes/create', {
 		renoteId: props.note.id,
 	}).then(() => {
-		os.noteToast(i18n.ts.renoted);
+		os.noteToast(i18n.ts.renoted, 'renote');
 	});
 }
 
-function quote() {
+function quote(viaKeyboard = false): void {
 	pleaseLogin();
-	showMovedDialog();
-
 	if (props.note.channel) {
 		os.post({
 			renote: props.note,
 			channel: props.note.channel,
+			animation: !viaKeyboard,
+		}, () => {
+			focus();
 		});
 	}
-
 	os.post({
 		renote: props.note,
+	}, () => {
+		focus();
 	});
 }
 

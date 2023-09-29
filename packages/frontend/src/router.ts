@@ -1,6 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { AsyncComponentLoader, defineAsyncComponent, inject } from 'vue';
 import { Router } from '@/nirax';
-import { $i, iAmModerator } from '@/account';
+import { $i, iAmModerator } from '@/account.js';
 import MkLoading from '@/pages/_loading_.vue';
 import MkError from '@/pages/_error_.vue';
 
@@ -37,10 +42,6 @@ export const routes = [{
 }, {
 	path: '/clips/:clipId',
 	component: page(() => import('./pages/clip.vue')),
-}, {
-	path: '/user-info/:userId',
-	component: page(() => import('./pages/user-info.vue')),
-	hash: 'initialTab',
 }, {
 	path: '/instance-info/:host',
 	component: page(() => import('./pages/instance-info.vue')),
@@ -114,9 +115,9 @@ export const routes = [{
 		name: 'statusbar',
 		component: page(() => import('./pages/settings/statusbar.vue')),
 	}, {
-		path: '/sounds',
-		name: 'sounds',
-		component: page(() => import('./pages/settings/sounds.vue')),
+		path: '/sounds-and-vibrations',
+		name: 'sounds-and-vibrations',
+		component: page(() => import('./pages/settings/sounds-and-vibrations.vue')),
 	}, {
 		path: '/plugin/install',
 		name: 'plugin',
@@ -271,6 +272,9 @@ export const routes = [{
 		permission: 'permission',
 	},
 }, {
+	path: '/oauth/authorize',
+	component: page(() => import('./pages/oauth.vue')),
+}, {
 	path: '/tags/:tag',
 	component: page(() => import('./pages/tag.vue')),
 }, {
@@ -339,6 +343,9 @@ export const routes = [{
 	path: '/registry',
 	component: page(() => import('./pages/registry.vue')),
 }, {
+	path: '/admin/user/:userId',
+	component: iAmModerator ? page(() => import('./pages/admin-user.vue')) : page(() => import('./pages/not-found.vue')),
+}, {
 	path: '/admin/file/:fileId',
 	component: iAmModerator ? page(() => import('./pages/admin-file.vue')) : page(() => import('./pages/not-found.vue')),
 }, {
@@ -400,6 +407,10 @@ export const routes = [{
 		path: '/abuses',
 		name: 'abuses',
 		component: page(() => import('./pages/admin/abuses.vue')),
+	}, {
+		path: '/modlog',
+		name: 'modlog',
+		component: page(() => import('./pages/admin/modlog.vue')),
 	}, {
 		path: '/settings',
 		name: 'settings',
@@ -473,7 +484,7 @@ export const routes = [{
 	loginRequired: true,
 }, {
 	name: 'messaging-room',
-	path: '/my/messaging/:userAcct',
+	path: '/my/messaging/@:userAcct',
 	component: page(() => import('./pages/messaging/messaging-room.vue')),
 	loginRequired: true,
 }, {

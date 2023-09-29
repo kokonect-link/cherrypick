@@ -1,4 +1,9 @@
-import * as misskey from 'cherrypick-js';
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import * as Misskey from 'cherrypick-js';
 import { ComputedRef, inject, isRef, onActivated, onMounted, provide, ref, Ref } from 'vue';
 
 export const setPageMetadata = Symbol('setPageMetadata');
@@ -8,8 +13,8 @@ export type PageMetadata = {
 	title: string;
 	subtitle?: string;
 	icon?: string | null;
-	avatar?: misskey.entities.User | null;
-	userName?: misskey.entities.User | null;
+	avatar?: Misskey.entities.User | null;
+	userName?: Misskey.entities.User | null;
 };
 
 export function definePageMetadata(metadata: PageMetadata | null | Ref<PageMetadata | null> | ComputedRef<PageMetadata | null>): void {

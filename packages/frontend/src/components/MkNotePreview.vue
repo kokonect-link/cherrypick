@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.root">
 	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="$i" link preview/>
@@ -17,11 +22,11 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import { $i } from '@/account';
-import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
 import * as mfm from 'cherrypick-mfm-js';
-import { defaultStore } from '@/store';
+import { $i } from '@/account.js';
+import MkUrlPreview from '@/components/MkUrlPreview.vue';
+import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
+import { defaultStore } from '@/store.js';
 
 const props = defineProps<{
 	text: string;

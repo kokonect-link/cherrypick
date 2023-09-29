@@ -56,17 +56,17 @@ dbReplications: false
 # You can configure any number of replicas here
 #dbSlaves:
 #  -
-#    host: 
-#    port: 
-#    db: 
-#    user: 
-#    pass: 
+#    host: localhost
+#    port: 5433
+#    db: cherrypick
+#    user: example-cherrypick-user
+#    pass: example-cherrypick-pass
 #  -
-#    host: 
-#    port: 
-#    db: 
-#    user: 
-#    pass: 
+#    host: localhost
+#    port: 5434
+#    db: cherrypick
+#    user: example-cherrypick-user
+#    pass: example-cherrypick-pass
 
 #   ┌─────────────────────┐
 #───┘ Redis configuration └─────────────────────────────────────
@@ -114,6 +114,7 @@ redis:
 
 # Available methods:
 # aid ... Short, Millisecond accuracy
+# aidx ... Millisecond accuracy
 # meid ... Similar to ObjectID, Millisecond accuracy
 # ulid ... Millisecond accuracy
 # objectid ... This is left for backward compatibility
@@ -121,7 +122,7 @@ redis:
 # ONCE YOU HAVE STARTED THE INSTANCE, DO NOT CHANGE THE
 # ID SETTINGS AFTER THAT!
 
-id: 'aid'
+id: 'aidx'
 
 #   ┌─────────────────────┐
 #───┘ Other configuration └─────────────────────────────────────
@@ -153,6 +154,9 @@ id: 'aid'
 #  saKeyPath: /path/to/service-account-key.json
 #  logName: cherrypick
 
+# Override the file URL rendering in ActivityPub (Object Storage file only)
+#apFileBaseUrl: https://example.tld/
+
 # Proxy for HTTP/HTTPS
 #proxy: http://127.0.0.1:3128
 
@@ -171,8 +175,8 @@ proxyBypassHosts:
 # Media Proxy
 #mediaProxy: https://example.com/proxy
 
-# Proxy remote files (default: false)
-#proxyRemoteFiles: true
+# Proxy remote files (default: true)
+proxyRemoteFiles: true
 
 # Sign to ActivityPub GET request (default: true)
 signToActivityPubGet: true

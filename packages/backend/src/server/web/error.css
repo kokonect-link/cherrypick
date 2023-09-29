@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 @font-face {
 	font-family: 'Pretendard JP';
 	font-weight: 400;
@@ -116,7 +122,7 @@ h1 {
 
 code {
     display: block;
-    font-family: Fira, FiraCode, monospace;
+    font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     background: #333;
     padding: 0.5rem 1rem;
     max-width: 40rem;

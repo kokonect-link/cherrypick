@@ -1,6 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Module } from '@nestjs/common';
 
 import { CoreModule } from '@/core/CoreModule.js';
+import { ServerStatsService } from '@/daemons/ServerStatsService.js';
 import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_abuseUserReports from './endpoints/admin/abuse-user-reports.js';
 import * as ep___admin_accounts_create from './endpoints/admin/accounts/create.js';
@@ -13,6 +19,10 @@ import * as ep___admin_announcements_create from './endpoints/admin/announcement
 import * as ep___admin_announcements_delete from './endpoints/admin/announcements/delete.js';
 import * as ep___admin_announcements_list from './endpoints/admin/announcements/list.js';
 import * as ep___admin_announcements_update from './endpoints/admin/announcements/update.js';
+import * as ep___admin_abuseReportResolver_create from './endpoints/admin/abuse-report-resolver/create.js';
+import * as ep___admin_abuseReportResolver_update from './endpoints/admin/abuse-report-resolver/update.js';
+import * as ep___admin_abuseReportResolver_delete from './endpoints/admin/abuse-report-resolver/delete.js';
+import * as ep___admin_abuseReportResolver_list from './endpoints/admin/abuse-report-resolver/list.js';
 import * as ep___admin_deleteAllFilesOfAUser from './endpoints/admin/delete-all-files-of-a-user.js';
 import * as ep___admin_drive_cleanRemoteFiles from './endpoints/admin/drive/clean-remote-files.js';
 import * as ep___admin_drive_cleanup from './endpoints/admin/drive/cleanup.js';
@@ -157,6 +167,7 @@ import * as ep___federation_users from './endpoints/federation/users.js';
 import * as ep___federation_stats from './endpoints/federation/stats.js';
 import * as ep___following_create from './endpoints/following/create.js';
 import * as ep___following_delete from './endpoints/following/delete.js';
+import * as ep___following_update from './endpoints/following/update.js';
 import * as ep___following_invalidate from './endpoints/following/invalidate.js';
 import * as ep___following_requests_accept from './endpoints/following/requests/accept.js';
 import * as ep___following_requests_cancel from './endpoints/following/requests/cancel.js';
@@ -290,6 +301,7 @@ import * as ep___notes_unrenote from './endpoints/notes/unrenote.js';
 import * as ep___notes_userListTimeline from './endpoints/notes/user-list-timeline.js';
 import * as ep___notifications_create from './endpoints/notifications/create.js';
 import * as ep___notifications_markAllAsRead from './endpoints/notifications/mark-all-as-read.js';
+import * as ep___notifications_testNotification from './endpoints/notifications/test-notification.js';
 import * as ep___pagePush from './endpoints/page-push.js';
 import * as ep___pages_create from './endpoints/pages/create.js';
 import * as ep___pages_delete from './endpoints/pages/delete.js';
@@ -356,6 +368,7 @@ import * as ep___users_lists_unfavorite from './endpoints/users/lists/unfavorite
 import * as ep___users_lists_create_from_public from './endpoints/users/lists/create-from-public.js';
 import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_pages from './endpoints/users/pages.js';
+import * as ep___users_flashs from './endpoints/users/flashs.js';
 import * as ep___users_reactions from './endpoints/users/reactions.js';
 import * as ep___users_recommendation from './endpoints/users/recommendation.js';
 import * as ep___users_relation from './endpoints/users/relation.js';
@@ -384,6 +397,10 @@ const $admin_announcements_create: Provider = { provide: 'ep:admin/announcements
 const $admin_announcements_delete: Provider = { provide: 'ep:admin/announcements/delete', useClass: ep___admin_announcements_delete.default };
 const $admin_announcements_list: Provider = { provide: 'ep:admin/announcements/list', useClass: ep___admin_announcements_list.default };
 const $admin_announcements_update: Provider = { provide: 'ep:admin/announcements/update', useClass: ep___admin_announcements_update.default };
+const $admin_abuseReportResolver_create: Provider = { provide: 'ep:admin/abuse-report-resolver/create', useClass: ep___admin_abuseReportResolver_create.default };
+const $admin_abuseReportResolver_update: Provider = { provide: 'ep:admin/abuse-report-resolver/update', useClass: ep___admin_abuseReportResolver_update.default };
+const $admin_abuseReportResolver_list: Provider = { provide: 'ep:admin/abuse-report-resolver/list', useClass: ep___admin_abuseReportResolver_list.default };
+const $admin_abuseReportResolver_delete: Provider = { provide: 'ep:admin/abuse-report-resolver/delete', useClass: ep___admin_abuseReportResolver_delete.default };
 const $admin_deleteAllFilesOfAUser: Provider = { provide: 'ep:admin/delete-all-files-of-a-user', useClass: ep___admin_deleteAllFilesOfAUser.default };
 const $admin_drive_cleanRemoteFiles: Provider = { provide: 'ep:admin/drive/clean-remote-files', useClass: ep___admin_drive_cleanRemoteFiles.default };
 const $admin_drive_cleanup: Provider = { provide: 'ep:admin/drive/cleanup', useClass: ep___admin_drive_cleanup.default };
@@ -528,6 +545,7 @@ const $federation_users: Provider = { provide: 'ep:federation/users', useClass: 
 const $federation_stats: Provider = { provide: 'ep:federation/stats', useClass: ep___federation_stats.default };
 const $following_create: Provider = { provide: 'ep:following/create', useClass: ep___following_create.default };
 const $following_delete: Provider = { provide: 'ep:following/delete', useClass: ep___following_delete.default };
+const $following_update: Provider = { provide: 'ep:following/update', useClass: ep___following_update.default };
 const $following_invalidate: Provider = { provide: 'ep:following/invalidate', useClass: ep___following_invalidate.default };
 const $following_requests_accept: Provider = { provide: 'ep:following/requests/accept', useClass: ep___following_requests_accept.default };
 const $following_requests_cancel: Provider = { provide: 'ep:following/requests/cancel', useClass: ep___following_requests_cancel.default };
@@ -661,6 +679,7 @@ const $notes_unrenote: Provider = { provide: 'ep:notes/unrenote', useClass: ep__
 const $notes_userListTimeline: Provider = { provide: 'ep:notes/user-list-timeline', useClass: ep___notes_userListTimeline.default };
 const $notifications_create: Provider = { provide: 'ep:notifications/create', useClass: ep___notifications_create.default };
 const $notifications_markAllAsRead: Provider = { provide: 'ep:notifications/mark-all-as-read', useClass: ep___notifications_markAllAsRead.default };
+const $notifications_testNotification: Provider = { provide: 'ep:notifications/test-notification', useClass: ep___notifications_testNotification.default };
 const $pagePush: Provider = { provide: 'ep:page-push', useClass: ep___pagePush.default };
 const $pages_create: Provider = { provide: 'ep:pages/create', useClass: ep___pages_create.default };
 const $pages_delete: Provider = { provide: 'ep:pages/delete', useClass: ep___pages_delete.default };
@@ -727,6 +746,7 @@ const $users_lists_unfavorite: Provider = { provide: 'ep:users/lists/unfavorite'
 const $users_lists_create_from_public: Provider = { provide: 'ep:users/lists/create-from-public', useClass: ep___users_lists_create_from_public.default };
 const $users_notes: Provider = { provide: 'ep:users/notes', useClass: ep___users_notes.default };
 const $users_pages: Provider = { provide: 'ep:users/pages', useClass: ep___users_pages.default };
+const $users_flashs: Provider = { provide: 'ep:users/flashs', useClass: ep___users_flashs.default };
 const $users_reactions: Provider = { provide: 'ep:users/reactions', useClass: ep___users_reactions.default };
 const $users_recommendation: Provider = { provide: 'ep:users/recommendation', useClass: ep___users_recommendation.default };
 const $users_relation: Provider = { provide: 'ep:users/relation', useClass: ep___users_relation.default };
@@ -747,6 +767,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 	providers: [
 		GetterService,
 		ApiLoggerService,
+		ServerStatsService,
 		$admin_meta,
 		$admin_abuseUserReports,
 		$admin_accounts_create,
@@ -759,6 +780,10 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_announcements_delete,
 		$admin_announcements_list,
 		$admin_announcements_update,
+		$admin_abuseReportResolver_create,
+		$admin_abuseReportResolver_delete,
+		$admin_abuseReportResolver_list,
+		$admin_abuseReportResolver_update,
 		$admin_deleteAllFilesOfAUser,
 		$admin_drive_cleanRemoteFiles,
 		$admin_drive_cleanup,
@@ -903,6 +928,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$federation_stats,
 		$following_create,
 		$following_delete,
+		$following_update,
 		$following_invalidate,
 		$following_requests_accept,
 		$following_requests_cancel,
@@ -1036,6 +1062,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$notes_userListTimeline,
 		$notifications_create,
 		$notifications_markAllAsRead,
+		$notifications_testNotification,
 		$pagePush,
 		$pages_create,
 		$pages_delete,
@@ -1102,6 +1129,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_lists_create_from_public,
 		$users_notes,
 		$users_pages,
+		$users_flashs,
 		$users_reactions,
 		$users_recommendation,
 		$users_relation,
@@ -1128,6 +1156,10 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$admin_announcements_delete,
 		$admin_announcements_list,
 		$admin_announcements_update,
+		$admin_abuseReportResolver_create,
+		$admin_abuseReportResolver_delete,
+		$admin_abuseReportResolver_list,
+		$admin_abuseReportResolver_update,
 		$admin_deleteAllFilesOfAUser,
 		$admin_drive_cleanRemoteFiles,
 		$admin_drive_cleanup,
@@ -1272,6 +1304,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$federation_stats,
 		$following_create,
 		$following_delete,
+		$following_update,
 		$following_invalidate,
 		$following_requests_accept,
 		$following_requests_cancel,
@@ -1468,6 +1501,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_lists_create_from_public,
 		$users_notes,
 		$users_pages,
+		$users_flashs,
 		$users_reactions,
 		$users_recommendation,
 		$users_relation,

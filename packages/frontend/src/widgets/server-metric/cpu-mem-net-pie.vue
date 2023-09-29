@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.root">
 	<div :class="$style.div">
@@ -45,8 +50,8 @@
 <script lang="ts" setup>
 import { onMounted, onBeforeUnmount } from 'vue';
 import XPie from './pie-compact.vue';
-import bytes from '@/filters/bytes-net-v';
-import bytesSizes from '@/filters/bytes-net-sizes';
+import bytes from '@/filters/bytes-net-v.js';
+import bytesSizes from '@/filters/bytes-net-sizes.js';
 
 const props = defineProps<{
 	connection: any,

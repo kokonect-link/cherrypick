@@ -1,8 +1,13 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="rootEl" :class="$style.root" role="group" :aria-expanded="opened">
 	<MkStickyContainer>
 		<template #header>
-			<div :class="[$style.header, { [$style.opened]: opened }]" class="_button" role="button" data-cy-folder-header @click="toggle">
+			<div v-vibrate="5" :class="[$style.header, { [$style.opened]: opened, [$style.inactive]: inactive || isArchived }]" class="_button" role="button" data-cy-folder-header @click="toggle">
 				<div :class="$style.headerIcon"><slot name="icon"></slot></div>
 				<div :class="$style.headerText">
 					<div>
@@ -14,6 +19,7 @@
 				</div>
 				<div :class="$style.headerRight">
 					<span :class="$style.headerRightText"><slot name="suffix"></slot></span>
+					<i v-if="isArchived" class="ti ti-archive icon" style="margin-right: 0.5em;"></i>
 					<i v-if="opened" class="ti ti-chevron-up icon"></i>
 					<i v-else class="ti ti-chevron-down icon"></i>
 				</div>
@@ -46,14 +52,18 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted } from 'vue';
-import { defaultStore } from '@/store';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	defaultOpen?: boolean;
 	maxHeight?: number | null;
+  inactive?: boolean;
+	isArchived? :boolean;
 }>(), {
 	defaultOpen: false,
 	maxHeight: null,
+	inactive: false,
+	isArchived: false,
 });
 
 const getBgColor = (el: HTMLElement) => {
@@ -108,6 +118,10 @@ onMounted(() => {
 	const myBg = computedStyle.getPropertyValue('--panel');
 	bgSame = parentBg === myBg;
 });
+
+defineExpose({
+	toggle,
+});
 </script>
 
 <style lang="scss" module>
@@ -150,6 +164,10 @@ onMounted(() => {
 	&.opened {
 		border-radius: 6px 6px 0 0;
 	}
+
+  &.inactive {
+    opacity: 0.6;
+  }
 }
 
 .headerUpper {

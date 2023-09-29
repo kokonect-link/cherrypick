@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <span :class="$style.container">
 	<span ref="content" :class="$style.content">
@@ -13,7 +18,7 @@ interface Props {
 
 const contentSymbol = Symbol();
 const observer = new ResizeObserver((entries) => {
-  const results: {
+	const results: {
     container: HTMLSpanElement;
     transform: string;
   }[] = [];

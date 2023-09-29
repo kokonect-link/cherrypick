@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="_gaps_m">
 	<FormLink @click="configure"><template #icon><i class="ti ti-settings"></i></template>{{ i18n.ts.notificationSetting }}</FormLink>
@@ -6,6 +11,11 @@
 			<FormLink @click="readAllNotifications">{{ i18n.ts.markAsReadAllNotifications }}</FormLink>
 			<FormLink @click="readAllUnreadNotes">{{ i18n.ts.markAsReadAllUnreadNotes }}</FormLink>
 			<FormLink @click="readAllMessagingMessages">{{ i18n.ts.markAsReadAllTalkMessages }}</FormLink>
+		</div>
+	</FormSection>
+	<FormSection>
+		<div class="_gaps_m">
+			<FormLink @click="testNotification">{{ i18n.ts._notification.sendTestNotification }}</FormLink>
 		</div>
 	</FormSection>
 	<FormSection>
@@ -31,10 +41,10 @@ import { defineAsyncComponent } from 'vue';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import * as os from '@/os';
-import { $i } from '@/account';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { $i } from '@/account.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
 import { notificationTypes } from '@/const';
 
@@ -43,15 +53,15 @@ let pushRegistrationInServer = $computed(() => allowButton?.pushRegistrationInSe
 let sendReadMessage = $computed(() => pushRegistrationInServer?.sendReadMessage || false);
 
 async function readAllUnreadNotes() {
-	await os.api('i/read-all-unread-notes');
+	await os.apiWithDialog('i/read-all-unread-notes');
 }
 
 async function readAllMessagingMessages() {
-	await os.api('i/read-all-messaging-messages');
+	await os.apiWithDialog('i/read-all-messaging-messages');
 }
 
 async function readAllNotifications() {
-	await os.api('notifications/mark-all-as-read');
+	await os.apiWithDialog('notifications/mark-all-as-read');
 }
 
 function configure() {
@@ -81,6 +91,10 @@ function onChangeSendReadMessage(v: boolean) {
 		if (!allowButton)	return;
 		allowButton.pushRegistrationInServer = res;
 	});
+}
+
+function testNotification(): void {
+	os.api('notifications/test-notification');
 }
 
 const headerActions = $computed(() => []);

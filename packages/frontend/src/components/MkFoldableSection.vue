@@ -1,6 +1,11 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="el" :class="$style.root">
-	<header :class="[$style.header, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
+	<header :class="[$style.header, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" :style="{ background: bg }" @click="showBody = !showBody">
 		<div :class="$style.title"><div><slot name="header"></slot></div></div>
 		<div :class="$style.divider"></div>
 		<button class="_button" :class="$style.button">
@@ -25,13 +30,11 @@
 <script lang="ts" setup>
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import tinycolor from 'tinycolor2';
-import { miLocalStorage } from '@/local-storage';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
-import { deviceKind } from '@/scripts/device-kind';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
-
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+import { miLocalStorage } from '@/local-storage.js';
+import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { globalEvents } from '@/events.js';
 
 const MOBILE_THRESHOLD = 500;
 
@@ -98,7 +101,7 @@ onMounted(() => {
 	_bg.setAlpha(0.85);
 	bg.value = _bg.toRgbString();
 
-	eventBus.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

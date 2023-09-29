@@ -1,14 +1,16 @@
-import sanitizeHtml from 'sanitize-html';
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
-import type { UsersRepository, AbuseUserReportsRepository } from '@/models/index.js';
+import type { AbuseUserReportsRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { GlobalEventService } from '@/core/GlobalEventService.js';
-import { MetaService } from '@/core/MetaService.js';
-import { EmailService } from '@/core/EmailService.js';
 import { DI } from '@/di-symbols.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { RoleService } from '@/core/RoleService.js';
+import { QueueService } from '@/core/QueueService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -48,22 +50,16 @@ export const paramDef = {
 	required: ['userId', 'comment'],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.usersRepository)
-		private usersRepository: UsersRepository,
-
 		@Inject(DI.abuseUserReportsRepository)
 		private abuseUserReportsRepository: AbuseUserReportsRepository,
 
 		private idService: IdService,
-		private metaService: MetaService,
-		private emailService: EmailService,
 		private getterService: GetterService,
 		private roleService: RoleService,
-		private globalEventService: GlobalEventService,
+		private queueService: QueueService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			// Lookup user
@@ -90,26 +86,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				comment: ps.comment,
 			}).then(x => this.abuseUserReportsRepository.findOneByOrFail(x.identifiers[0]));
 
-			// Publish event to moderators
-			setImmediate(async () => {
-				const moderators = await this.roleService.getModerators();
-
-				for (const moderator of moderators) {
-					this.globalEventService.publishAdminStream(moderator.id, 'newAbuseUserReport', {
-						id: report.id,
-						targetUserId: report.targetUserId,
-						reporterId: report.reporterId,
-						comment: report.comment,
-					});
-				}
-
-				const meta = await this.metaService.fetch();
-				if (meta.email) {
-					this.emailService.sendEmail(meta.email, 'New abuse report',
-						sanitizeHtml(ps.comment),
-						sanitizeHtml(ps.comment));
-				}
-			});
+			this.queueService.createReportAbuseJob(report);
 		});
 	}
 }

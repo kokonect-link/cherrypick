@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkModal ref="modal" :preferType="'dialog'" :zPriority="'high'" @click="done(true)" @closed="emit('closed')">
 	<div :class="$style.root">
@@ -22,6 +27,7 @@
 		</div>
 		<header v-if="title" :class="$style.title"><Mfm :text="title"/></header>
 		<div v-if="text" :class="$style.text"><Mfm :text="text"/></div>
+		<div v-if="caption" :class="$style.caption"><small><Mfm :text="caption"/></small></div>
 		<MkInput v-if="input" v-model="inputValue" autofocus :type="input.type || 'text'" :placeholder="input.placeholder || undefined" :autocomplete="input.autocomplete" @keydown="onInputKeydown">
 			<template v-if="input.type === 'password'" #prefix><i class="ti ti-lock"></i></template>
 			<template #caption>
@@ -56,7 +62,7 @@ import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 
 type Input = {
 	type: 'text' | 'number' | 'password' | 'email' | 'url' | 'date' | 'time' | 'search' | 'datetime-local';
@@ -86,6 +92,7 @@ const props = withDefaults(defineProps<{
 	type?: 'success' | 'error' | 'warning' | 'info' | 'question' | 'waiting';
 	title: string;
 	text?: string;
+	caption?: string;
 	input?: Input;
 	select?: Select;
 	icon?: string;
@@ -235,6 +242,11 @@ onBeforeUnmount(() => {
 
 .text {
 	margin: 16px 0 0 0;
+}
+
+.caption {
+  margin: 4px 0 0 0;
+  color: var(--fgTransparentWeak);
 }
 
 .buttons {

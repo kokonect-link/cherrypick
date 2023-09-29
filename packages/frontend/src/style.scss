@@ -1,43 +1,36 @@
 @charset "utf-8";
 
-@mixin font($font-family, $font-weight, $font-style, $font-local, $font-url) {
-	@font-face {
-		font-family: $font-family;
-		font-weight: $font-weight;
-		font-style: $font-style;
-		font-display: swap;
-		src: local($font-local), url($font-url) format('woff2');
-	}
-}
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 
-@include font(
-		'Pretendard JP',
-		400,
-		normal,
-		'Pretendard JP Regular',
-		'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Regular.woff2'
-);
-@include font(
-		'Pretendard JP',
-		700,
-		normal,
-		'Pretendard JP Bold',
-		'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Bold.woff2'
-);
-@include font(
-		'JetBrains Mono',
-		400,
-		normal,
-		'JetBrains Mono Regular',
-		'https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Regular.woff2'
-);
-@include font(
-		'JetBrains Mono',
-		700,
-		normal,
-		'JetBrains Mono Bold',
-		'https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Bold.woff2'
-);
+@import "@fontsource/jetbrains-mono/100.css";
+@import "@fontsource/jetbrains-mono/100-italic.css";
+@import "@fontsource/jetbrains-mono/200.css";
+@import "@fontsource/jetbrains-mono/200-italic.css";
+@import "@fontsource/jetbrains-mono/300.css";
+@import "@fontsource/jetbrains-mono/300-italic.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/400-italic.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/500-italic.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/jetbrains-mono/600-italic.css";
+@import "@fontsource/jetbrains-mono/700.css";
+@import "@fontsource/jetbrains-mono/700-italic.css";
+@import "@fontsource/jetbrains-mono/800.css";
+@import "@fontsource/jetbrains-mono/800-italic.css";
+@import "pretendard/dist/web/static/pretendard.css";
+@import "pretendard-jp/dist/web/static/pretendard-jp.css";
+// @import "pretendard/dist/web/static/pretendard-dynamic-subset.css";
+// @import "pretendard-jp/dist/web/static/pretendard-jp-dynamic-subset.css";
+
+$default-font: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo", Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+$system-font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+$monospace-font: "Pretendard JP", Pretendard, "JetBrains Mono", Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
+$code-monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
 
 :root {
 	--radius: 12px;
@@ -74,16 +67,14 @@ html {
 	accent-color: var(--accent);
 	overflow: auto;
 	overflow-wrap: break-word;
-	font-family: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
-								Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo",
-								Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka,
-								"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+	font-family: $default-font;
 	// incoming changes from v13
 	// font-family: 'Hiragino Maru Gothic Pro', "BIZ UDGothic", Roboto, HelveticaNeue, Arial, sans-serif;
 	font-size: 14px;
 	line-height: 1.35;
 	text-size-adjust: 100%;
 	tab-size: 2;
+	-webkit-text-size-adjust: 100%;
 
 	&, * {
 		scrollbar-color: var(--scrollbarHandle) transparent;
@@ -192,7 +183,7 @@ html {
 	}
 
 	&.useSystemFont {
-		font-family: system-ui;
+		font-family: $system-font;
 	}
 }
 
@@ -508,21 +499,12 @@ hr {
 }
 
 ._monospace {
-	font-family: "Pretendard JP", "JetBrains Mono", Fira code, Fira Mono, Consolas, Menlo, Courier, monospace !important;
-}
-
-._code {
-	@extend ._monospace;
-	background: #2d2d2d;
-	color: #ccc;
-	font-size: 14px;
-	line-height: 1.5;
-	padding: 5px;
+	font-family: $monospace-font
 }
 
 code[class*="language-"],
 pre[class*="language-"] {
-	font-family: "JetBrains Mono", "Pretendard JP" , Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
+	font-family: $code-monospace-font
 }
 
 .prism-editor__textarea:focus {
@@ -643,6 +625,13 @@ pre[class*="language-"] {
 	}
 }
 
+._mfm_rainbow_fallback_ {
+	background-image: linear-gradient(to right, rgb(255, 0, 0) 0%, rgb(255, 165, 0) 17%, rgb(255, 255, 0) 33%, rgb(0, 255, 0) 50%, rgb(0, 255, 255) 67%, rgb(0, 0, 255) 83%, rgb(255, 0, 255) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
 @keyframes mfm-spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
@@ -741,4 +730,10 @@ pre[class*="language-"] {
 @keyframes mfm-rainbow {
 	0% { filter: hue-rotate(0deg) contrast(150%) saturate(150%); }
 	100% { filter: hue-rotate(360deg) contrast(150%) saturate(150%); }
+}
+
+@keyframes mfm-fade {
+	0% { opacity: 0; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
 }

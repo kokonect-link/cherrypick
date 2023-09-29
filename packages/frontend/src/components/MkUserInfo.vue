@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="_panel" :class="$style.root">
 	<div :class="$style.banner" :style="user.bannerUrl ? `background-image: url(${user.bannerUrl})` : ''"></div>
@@ -29,16 +34,16 @@
 </template>
 
 <script lang="ts" setup>
-import * as misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-import number from '@/filters/number';
-import { userPage } from '@/filters/user';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
-import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe';
+import number from '@/filters/number.js';
+import { userPage } from '@/filters/user.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
+import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 
-const props = defineProps<{
-	user: misskey.entities.UserDetailed;
+defineProps<{
+	user: Misskey.entities.UserDetailed;
 }>();
 </script>
 

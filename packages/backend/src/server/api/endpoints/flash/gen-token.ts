@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Injectable } from '@nestjs/common';
 import ms from 'ms';
 import { secureRndstr } from '@/misc/secure-rndstr.js';
@@ -37,13 +42,13 @@ export const paramDef = {
 	required: ['permissions'],
 } as const;
 
-@Injectable() // eslint-disable-next-line import/no-default-export
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+@Injectable()
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor (
 		private cacheService: CacheService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const token = secureRndstr(32, true);
+			const token = secureRndstr(32);
 			await this.cacheService.flashAccessTokensCache.set(token, {
 				user: me,
 				permissions: ps.permissions,

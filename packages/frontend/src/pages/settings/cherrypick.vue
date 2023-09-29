@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="_gaps_m">
 	<FormSection first>
@@ -12,32 +17,54 @@
 
 			<div class="_gaps_s">
 				<MkSwitch v-model="useEnterToSend">
-					<template #label>{{ i18n.ts.useEnterToSend }}</template>
-					<template #caption>{{ i18n.ts.useEnterToSendDescription }}</template>
+					<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="postFormVisibilityHotkey">
-					<template #label>{{ i18n.ts.postFormVisibilityHotkey }}</template>
-					<template #caption>{{ i18n.ts.postFormVisibilityHotkeyDescription }}</template>
+					<template #label>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</template>
 				</MkSwitch>
 				<MkSwitch v-model="showRenoteConfirmPopup">
-					<template #label>{{ i18n.ts.showRenoteConfirmPopup }}</template>
+					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
 				</MkSwitch>
+			</div>
+
+			<div>
+				<MkRadios v-model="displayHeaderNavBarWhenScroll">
+					<template #label>{{ i18n.ts._cherrypick.displayHeaderNavBarWhenScroll }}</template>
+					<option value="all">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.all }}</option>
+					<option value="hideHeaderOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+					<option value="hideHeaderFloatBtn">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+					<option value="hideFloatBtnOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+					<option value="hideFloatBtnNavBar">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+					<option value="hide">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hide }}</option>
+				</MkRadios>
 			</div>
 		</div>
 	</FormSection>
+
 	<FormSection>
 		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
 		<div class="_gaps_m">
 			<div>{{ i18n.ts._cherrypick.patchDescription }}</div>
 
-			<MkSwitch v-model="infoButtonForNoteActionsEnabled">
-				{{ i18n.ts._cherrypick.infoButtonForNoteActions }}
-				<template #caption>{{ i18n.ts._cherrypick.infoButtonForNoteActionsDescription }}</template>
-			</MkSwitch>
-			<MkSwitch v-model="rememberPostFormToggleStateEnabled">{{ i18n.ts._cherrypick.rememberPostFormToggleState }}</MkSwitch>
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
-			<MkSwitch v-model="mobileTimelineHeaderChange">{{ i18n.ts._cherrypick.mobileTimelineHeaderChange }}</MkSwitch>
+			<MkSwitch v-model="mobileHeaderChange">{{ i18n.ts._cherrypick.mobileHeaderChange }}</MkSwitch>
+			<MkSwitch v-model="renameTheButtonInPostFormToNya">
+				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
+				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
+			</MkSwitch>
+		</div>
+	</FormSection>
+
+	<FormSection>
+		<template #label>Friendly UI</template>
+		<div class="_gaps_m">
+			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
+			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
+			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -46,12 +73,13 @@
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
-import { defaultStore } from '@/store';
-import * as os from '@/os';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { defaultStore } from '@/store.js';
+import * as os from '@/os.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -67,15 +95,20 @@ const nicknameEnabled = computed(defaultStore.makeGetterSetter('nicknameEnabled'
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const showRenoteConfirmPopup = computed(defaultStore.makeGetterSetter('showRenoteConfirmPopup'));
-const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('infoButtonForNoteActionsEnabled'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
-const rememberPostFormToggleStateEnabled = computed(defaultStore.makeGetterSetter('rememberPostFormToggleStateEnabled'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
-const mobileTimelineHeaderChange = computed(defaultStore.makeGetterSetter('mobileTimelineHeaderChange'));
+const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
+const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
+const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
+const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
 
 watch([
-	infoButtonForNoteActionsEnabled,
 	reactableRemoteReactionEnabled,
+	renameTheButtonInPostFormToNya,
+	friendlyEnableNotifications,
+	friendlyEnableWidgets,
 ], async () => {
 	await reloadAsk();
 });

@@ -1,6 +1,11 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div ref="rootEl">
-	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name !== 'index', [$style.showElTl]: showEl && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' }]">
+	<div ref="headerEl" :class="[$style.root, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && (mainRouter.currentRoute.value.name !== 'index' || !isFriendly), [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' && isFriendly }]">
 		<slot name="header"></slot>
 	</div>
 	<div ref="bodyEl" :data-sticky-container-header-height="headerHeight">
@@ -16,13 +21,14 @@
 import { onMounted, onUnmounted, provide, inject, Ref, ref, watch } from 'vue';
 import { $$ } from 'vue/macros';
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const';
-import { deviceKind } from '@/scripts/device-kind';
-import { mainRouter } from '@/router';
-import { defaultStore } from '@/store';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { mainRouter } from '@/router.js';
+import { defaultStore } from '@/store.js';
+import { globalEvents } from '@/events.js';
+import { miLocalStorage } from '@/local-storage.js';
 
-const isAllowHideHeader = ref(mainRouter.currentRoute.value.name === 'index' || mainRouter.currentRoute.value.name === 'explore' || mainRouter.currentRoute.value.name === 'my-notifications' || mainRouter.currentRoute.value.name === 'my-favorites');
-
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -95,7 +101,7 @@ onMounted(() => {
 	observer.observe(headerEl);
 	observer.observe(footerEl);
 
-	eventBus.on('showEl', (showEl_receive) => {
+	globalEvents.on('showEl', (showEl_receive) => {
 		showEl = showEl_receive;
 	});
 });

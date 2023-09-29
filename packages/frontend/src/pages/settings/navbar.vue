@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="_gaps_m">
 	<FormSlot>
@@ -56,14 +61,14 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';
-import * as os from '@/os';
+import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar';
-import { defaultStore } from '@/store';
-import { unisonReload } from '@/scripts/unison-reload';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
-import { deepClone } from '@/scripts/clone';
+import { defaultStore } from '@/store.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { deepClone } from '@/scripts/clone.js';
+import { globalEvents } from '@/events.js';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -84,7 +89,7 @@ async function reloadAsk() {
 		if (canceled) return;
 
 		unisonReload();
-	} else eventBus.emit('hasRequireRefresh', true);
+	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 async function addItem(ev: MouseEvent) {

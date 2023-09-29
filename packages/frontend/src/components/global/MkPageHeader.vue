@@ -1,11 +1,16 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ background: bg }">
 	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly }]">
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-			<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+			<button v-vibrate="5" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 		</div>
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-			<MkAvatar :class="$style.avatar" :user="$i"/>
+			<MkAvatar v-vibrate="5" :class="$style.avatar" :user="$i"/>
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 		<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
@@ -27,13 +32,17 @@
 			</div>
 			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
-		<div v-if="!thin_ && !narrow && actions && actions.length > 0 && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
+		<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 		<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
-				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				<button v-vibrate="5" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
+		<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
+			<MkFollowButton v-if="narrow && mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="false"/>
+			<MkFollowButton v-else-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="true"/>
+		</div>
 	</div>
 	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
@@ -45,15 +54,18 @@
 import { onMounted, onUnmounted, ref, inject, defineAsyncComponent } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
-import { getScrollPosition, scrollToTop } from '@/scripts/scroll';
-import { globalEvents } from '@/events';
-import { injectPageMetadata } from '@/scripts/page-metadata';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account';
-import { miLocalStorage } from '@/local-storage';
-import { mainRouter } from '@/router';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import {defaultStore} from "@/store";
+import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
+import { globalEvents } from '@/events.js';
+import { injectPageMetadata } from '@/scripts/page-metadata.js';
+import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { mainRouter } from '@/router.js';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
+import MkFollowButton from '@/components/MkFollowButton.vue';
+
+let showFollowButton = $ref(false);
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -147,6 +159,10 @@ onMounted(() => {
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
+
+	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
+		showFollowButton = showFollowButton_receive;
+	});
 });
 
 onUnmounted(() => {
@@ -245,6 +261,11 @@ onUnmounted(() => {
 .buttonsRight {
 	composes: buttons;
 	margin: 0 0 0 var(--margin);
+}
+
+.followButton {
+  composes: buttons;
+  margin: 0 var(--margin) 0 0;
 }
 
 .goBack {
@@ -352,5 +373,11 @@ onUnmounted(() => {
 			margin-left: 6px;
 		}
 	}
+}
+
+@container (max-width: 500px) {
+  .followButton {
+    margin: 0;
+  }
 }
 </style>

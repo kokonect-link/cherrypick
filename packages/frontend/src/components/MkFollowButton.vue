@@ -1,6 +1,11 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <button
-	v-if="!disableIfFollowing || !isFollowing"
+	v-if="(!disableIfFollowing || !isFollowing) && ($i != null && $i.id != user.id)"
 	class="_button"
 	:class="[$style.root, { [$style.wait]: wait, [$style.active]: isFollowing || hasPendingFollowRequestFromYou, [$style.full]: full, [$style.large]: large }]"
 	:disabled="wait"
@@ -28,18 +33,22 @@
 		<span v-if="full" :class="$style.text">{{ i18n.ts.processing }}</span><MkLoading :em="true" :colored="false"/>
 	</template>
 </button>
-	<div v-else-if="disableIfFollowing && isFollowing"><i class="ti ti-circle-check"></i><span style="padding-left: 3px;">{{ i18n.ts.alreadyFollowed }}</span></div>
+<div v-else-if="disableIfFollowing && isFollowing"><i class="ti ti-circle-check"></i><span style="padding-left: 3px;">{{ i18n.ts.alreadyFollowed }}</span></div>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os';
-import { useStream } from '@/stream';
-import { i18n } from '@/i18n';
-import { claimAchievement } from '@/scripts/achievements';
-import { $i } from '@/account';
-import { userName } from '@/filters/user';
+import * as os from '@/os.js';
+import { useStream } from '@/stream.js';
+import { i18n } from '@/i18n.js';
+import { claimAchievement } from '@/scripts/achievements.js';
+import { $i } from '@/account.js';
+import { userName } from '@/filters/user.js';
+import { globalEvents } from '@/events.js';
+import { vibrate } from '@/scripts/vibrate.js';
+
+let showFollowButton = $ref(false);
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,
@@ -100,6 +109,7 @@ async function onClick() {
 				await os.api('following/create', {
 					userId: props.user.id,
 				});
+				vibrate([30, 40, 100]);
 				hasPendingFollowRequestFromYou = true;
 
 				claimAchievement('following1');
@@ -128,6 +138,9 @@ async function onClick() {
 onMounted(() => {
 	connection.on('follow', onFollowChange);
 	connection.on('unfollow', onFollowChange);
+
+	showFollowButton = $i != null && $i.id !== props.user.id;
+	globalEvents.emit('showFollowButton', showFollowButton);
 });
 
 onBeforeUnmount(() => {

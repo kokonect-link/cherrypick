@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
@@ -46,9 +51,9 @@ import { } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
 
@@ -131,11 +136,6 @@ const headerTabs = $computed(() => [{
 definePageMetadata({
 	title: i18n.ts.groups,
 	icon: 'ti ti-users',
-	actions: [{
-		icon: 'ti ti-plus',
-		text: i18n.ts.createGroup,
-		handler: create,
-	}],
 });
 
 </script>

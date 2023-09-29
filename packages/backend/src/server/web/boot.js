@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 /**
  * BOOT LOADER
  * サーバーからレスポンスされるHTMLに埋め込まれるスクリプトで、以下の役割を持ちます。
@@ -57,8 +62,13 @@
 		}
 		const meta = await metaRes.json();
 		const v = meta.version;
+		const basedMisskeyVersion = meta.basedMisskeyVersion;
 		if (v == null) {
 			renderError('META_FETCH_V');
+			return;
+		}
+		if (basedMisskeyVersion == null) {
+			renderError('META_FETCH_BASEDMISSKEY_V');
 			return;
 		}
 
@@ -208,30 +218,24 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
-		@font-face {
-			font-family: 'Pretendard JP';
-			font-weight: 400;
-			font-display: swap;
-			src: local('Pretendard JP Regular'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Regular.woff2') format('woff2'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Regular.woff') format('woff');
-		}
-		@font-face {
-			font-family: 'Pretendard JP';
-			font-weight: 700;
-			font-display: swap;
-			src: local('Pretendard JP Bold'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff2/PretendardJP-Bold.woff2') format('woff2'),
-			url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/packages/pretendard-jp/dist/web/static/woff/PretendardJP-Bold.woff') format('woff');
-		}
-		@font-face {
-			font-family: 'JetBrains Mono';
-			font-style: normal;
-			font-weight: 400;
-			src: local("JetBrains Mono Regular"), local("JetBrainsMono-Regular"),
-			url("https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@master/fonts/webfonts/JetBrainsMono-Regular.woff2") format("woff2");
-			font-display: swap; }
-		}
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700-italic.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800.css");
+		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800-italic.css");
+		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
 
 		* {
 			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
@@ -258,7 +262,7 @@
 			border: none;
 			cursor: pointer;
 			margin-top: 12px;
-			
+
 			&:not(:first-child) {
 				margin-bottom: 12px;
 			}
@@ -317,7 +321,7 @@
 		}
 
 		code {
-			font-family: "JetBrains Mono", Fira, FiraCode, monospace;
+			font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Fira, FiraCode, monospace;
 		}
 
 		#errorInfo {

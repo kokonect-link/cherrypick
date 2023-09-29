@@ -1,6 +1,12 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div
 	v-adaptive-border
+	v-vibrate="5"
 	:class="[$style.root, { [$style.disabled]: disabled, [$style.checked]: checked }]"
 	:aria-checked="checked"
 	:aria-disabled="disabled"

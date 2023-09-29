@@ -1,7 +1,12 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
-import type { UserGroupJoiningsRepository, UsersRepository, MessagingMessagesRepository } from '@/models/index.js';
-import type { User, LocalUser, RemoteUser } from '@/models/entities/User.js';
-import type { UserGroup } from '@/models/entities/UserGroup.js';
+import type { UserGroupJoiningsRepository, UsersRepository, MessagingMessagesRepository } from '@/models/_.js';
+import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/User.js';
+import type { MiUserGroup } from '@/models/UserGroup.js';
 import { MessagingService } from '@/core/MessagingService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DI } from '@/di-symbols.js';
@@ -15,10 +20,10 @@ class MessagingChannel extends Channel {
 	public static requireCredential = true;
 
 	private otherpartyId: string | null;
-	private otherparty: User | null;
+	private otherparty: MiUser | null;
 	private groupId: string | null;
-	private subCh: `messagingStream:${User['id']}-${User['id']}` | `messagingStream:${UserGroup['id']}`;
-	private typers: Record<User['id'], Date> = {};
+	private subCh: `messagingStream:${MiUser['id']}-${MiUser['id']}` | `messagingStream:${MiUserGroup['id']}`;
+	private typers: Record<MiUser['id'], Date> = {};
 	private emitTypersIntervalId: ReturnType<typeof setInterval>;
 
 	constructor(
@@ -58,7 +63,7 @@ class MessagingChannel extends Channel {
 		this.emitTypersIntervalId = setInterval(this.emitTypers, 5000);
 
 		this.subCh = this.otherpartyId
-			? `messagingStream:${this.user!.id}-${this.otherpartyId}`
+			? `messagingStream:${this.user?.id}-${this.otherpartyId}`
 			: `messagingStream:${this.groupId}`;
 
 		// Subscribe messaging stream
@@ -89,7 +94,7 @@ class MessagingChannel extends Channel {
 					// リモートユーザーからのメッセージだったら既読配信
 					if (this.userEntityService.isLocalUser(this.user!) && this.userEntityService.isRemoteUser(this.otherparty!)) {
 						this.messagingMessagesRepository.findOneBy({ id: body.id }).then(message => {
-							if (message) this.messagingService.deliverReadActivity(this.user as LocalUser, this.otherparty as RemoteUser, message);
+							if (message) this.messagingService.deliverReadActivity(this.user as MiLocalUser, this.otherparty as MiRemoteUser, message);
 						});
 					}
 				} else if (this.groupId) {

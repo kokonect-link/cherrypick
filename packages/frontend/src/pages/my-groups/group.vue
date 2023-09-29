@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header>
@@ -35,13 +40,13 @@
 
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
-import * as os from '@/os';
-import { $i } from '@/account';
-import { mainRouter } from '@/router';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
-import { defaultStore } from '@/store';
-import { userPage } from '@/filters/user';
+import * as os from '@/os.js';
+import { $i } from '@/account.js';
+import { mainRouter } from '@/router.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
+import { userPage } from '@/filters/user.js';
 
 const props = defineProps<{
 	groupId: string;
@@ -64,7 +69,10 @@ function fetchGroup() {
 }
 
 function invite() {
-	os.selectUser().then(user => {
+	os.selectUser({
+		includeSelf: false,
+		includeHost: false,
+	}).then(user => {
 		os.apiWithDialog('users/groups/invite', {
 			groupId: group.id,
 			userId: user.id,
@@ -94,7 +102,7 @@ async function renameGroup() {
 	});
 	if (canceled) return;
 
-	await os.apiWithDialog('users/groups/update', {	
+	await os.apiWithDialog('users/groups/update', {
 		groupId: group.id,
 		name: name,
 	});
@@ -103,7 +111,10 @@ async function renameGroup() {
 }
 
 function transfer() {
-	os.selectUser().then(user => {
+	os.selectUser({
+		includeSelf: false,
+		includeHost: false,
+	}).then(user => {
 		os.apiWithDialog('users/groups/transfer', {
 			groupId: group.id,
 			userId: user.id,

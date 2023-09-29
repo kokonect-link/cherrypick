@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div class="thvuemwp" :class="{ isMe }">
 	<MkAvatar class="avatar" :user="message.user" indicator link preview/>
@@ -22,13 +27,14 @@
 		<div></div>
 		<MkUrlPreview v-for="url in urls" :key="url" :url="url" style="margin: 8px 0;"/>
 		<footer>
-			<template v-if="isGroup">
-				<span v-if="message.reads.length > 0" class="read">{{ i18n.ts.messageRead }} {{ message.reads.length }}</span>
-			</template>
-			<template v-else>
-				<span v-if="isMe && message.isRead" class="read">{{ i18n.ts.messageRead }}</span>
-			</template>
 			<MkTime :time="message.createdAt"/>
+			<template v-if="isGroup">
+				<span v-if="message.reads.length > 0" class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageRead }} {{ message.reads.length }}</span>
+			</template>
+			<template v-else-if="isMe">
+				<span v-if="!message.isRead" class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageSend }}</span>
+				<span v-else class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageRead }}</span>
+			</template>
 			<template v-if="message.is_edited"><i class="ti ti-pencil"></i></template>
 		</footer>
 	</div>
@@ -39,13 +45,13 @@
 import { } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os';
+import * as os from '@/os.js';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkAvatar from '@/components/global/MkAvatar.vue';
 import MkTime from '@/components/global/MkTime.vue';
-import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm';
-import { i18n } from '@/i18n';
-import { $i } from '@/account';
+import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
+import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
 
 const props = defineProps<{
 	message: Misskey.entities.MessagingMessage;
@@ -204,7 +210,7 @@ function del(): void {
 			font-size: 0.65em;
 
 			> .read {
-				margin: 0 8px;
+				margin: 0 4px;
 			}
 
 			> i {
@@ -266,7 +272,7 @@ function del(): void {
 				::selection {
 					color: var(--accent);
 					background-color: #fff;
-				} 
+				}
 
 				&.noText {
 					background: transparent;

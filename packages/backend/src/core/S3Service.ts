@@ -1,13 +1,16 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { URL } from 'node:url';
 import * as http from 'node:http';
 import * as https from 'node:https';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DeleteObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
-import { NodeHttpHandler, NodeHttpHandlerOptions } from '@aws-sdk/node-http-handler';
-import { DI } from '@/di-symbols.js';
-import type { Config } from '@/config.js';
-import type { Meta } from '@/models/entities/Meta.js';
+import { NodeHttpHandler, NodeHttpHandlerOptions } from '@smithy/node-http-handler';
+import type { MiMeta } from '@/models/Meta.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { bindThis } from '@/decorators.js';
 import type { DeleteObjectCommandInput, PutObjectCommandInput } from '@aws-sdk/client-s3';
@@ -15,15 +18,12 @@ import type { DeleteObjectCommandInput, PutObjectCommandInput } from '@aws-sdk/c
 @Injectable()
 export class S3Service {
 	constructor(
-		@Inject(DI.config)
-		private config: Config,
-
 		private httpRequestService: HttpRequestService,
 	) {
 	}
 
 	@bindThis
-	public getS3Client(meta: Meta, isRemote: boolean): S3Client {
+	public getS3Client(meta: MiMeta, isRemote: boolean): S3Client {
 		const useObjectStorageRemote = isRemote && meta.useObjectStorageRemote;
 
 		const objectStorageEndpoint = useObjectStorageRemote ? meta.objectStorageRemoteEndpoint : meta.objectStorageEndpoint;
@@ -60,7 +60,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public async upload(meta: Meta, input: PutObjectCommandInput, isRemote: boolean) {
+	public async upload(meta: MiMeta, input: PutObjectCommandInput, isRemote: boolean) {
 		const client = this.getS3Client(meta, isRemote);
 		return new Upload({
 			client,
@@ -72,7 +72,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public delete(meta: Meta, input: DeleteObjectCommandInput, isRemote: boolean) {
+	public delete(meta: MiMeta, input: DeleteObjectCommandInput, isRemote: boolean) {
 		const client = this.getS3Client(meta, isRemote);
 		return client.send(new DeleteObjectCommand(input));
 	}

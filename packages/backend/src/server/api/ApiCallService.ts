@@ -1,17 +1,23 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { randomUUID } from 'node:crypto';
 import * as fs from 'node:fs';
 import * as stream from 'node:stream/promises';
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
 import { getIpHash } from '@/misc/get-ip-hash.js';
-import type { LocalUser, User } from '@/models/entities/User.js';
-import type { AccessToken } from '@/models/entities/AccessToken.js';
+import type { MiLocalUser, MiUser } from '@/models/User.js';
+import type { MiAccessToken } from '@/models/AccessToken.js';
 import type Logger from '@/logger.js';
-import type { UserIpsRepository } from '@/models/index.js';
+import type { UserIpsRepository } from '@/models/_.js';
 import { MetaService } from '@/core/MetaService.js';
 import { createTemp } from '@/misc/create-temp.js';
 import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
+import type { FlashToken } from '@/misc/flash-token.js';
 import { ApiError } from './error.js';
 import { RateLimiterService } from './RateLimiterService.js';
 import { ApiLoggerService } from './ApiLoggerService.js';
@@ -19,7 +25,6 @@ import { AuthenticateService, AuthenticationError } from './AuthenticateService.
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import type { OnApplicationShutdown } from '@nestjs/common';
 import type { IEndpointMeta, IEndpoint } from './endpoints.js';
-import type { FlashToken } from '@/misc/flash-token.js';
 
 const accessDenied = {
 	message: 'Access denied.',
@@ -30,8 +35,8 @@ const accessDenied = {
 @Injectable()
 export class ApiCallService implements OnApplicationShutdown {
 	private logger: Logger;
-	private userIpHistories: Map<User['id'], Set<string>>;
-	private userIpHistoriesClearIntervalId: NodeJS.Timer;
+	private userIpHistories: Map<MiUser['id'], Set<string>>;
+	private userIpHistoriesClearIntervalId: NodeJS.Timeout;
 
 	constructor(
 		@Inject(DI.userIpsRepository)
@@ -44,7 +49,7 @@ export class ApiCallService implements OnApplicationShutdown {
 		private apiLoggerService: ApiLoggerService,
 	) {
 		this.logger = this.apiLoggerService.logger;
-		this.userIpHistories = new Map<User['id'], Set<string>>();
+		this.userIpHistories = new Map<MiUser['id'], Set<string>>();
 
 		this.userIpHistoriesClearIntervalId = setInterval(() => {
 			this.userIpHistories.clear();
@@ -192,7 +197,7 @@ export class ApiCallService implements OnApplicationShutdown {
 	}
 
 	@bindThis
-	private async logIp(request: FastifyRequest, user: LocalUser) {
+	private async logIp(request: FastifyRequest, user: MiLocalUser) {
 		const meta = await this.metaService.fetch();
 		if (!meta.enableIpLogging) return;
 		const ip = request.ip;
@@ -218,8 +223,8 @@ export class ApiCallService implements OnApplicationShutdown {
 	@bindThis
 	private async call(
 		ep: IEndpoint & { exec: any },
-		user: LocalUser | null | undefined,
-		token: AccessToken | null | undefined,
+		user: MiLocalUser | null | undefined,
+		token: MiAccessToken | null | undefined,
 		flashToken: FlashToken | null | undefined,
 		data: any,
 		file: {

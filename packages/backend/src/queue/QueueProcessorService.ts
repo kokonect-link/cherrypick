@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import * as Bull from 'bullmq';
 import type { Config } from '@/config.js';
@@ -27,6 +32,7 @@ import { ExportFavoritesProcessorService } from './processors/ExportFavoritesPro
 import { CleanRemoteFilesProcessorService } from './processors/CleanRemoteFilesProcessorService.js';
 import { DeleteFileProcessorService } from './processors/DeleteFileProcessorService.js';
 import { RelationshipProcessorService } from './processors/RelationshipProcessorService.js';
+import { ReportAbuseProcessorService } from './processors/ReportAbuseProcessorService.js';
 import { TickChartsProcessorService } from './processors/TickChartsProcessorService.js';
 import { ResyncChartsProcessorService } from './processors/ResyncChartsProcessorService.js';
 import { CleanChartsProcessorService } from './processors/CleanChartsProcessorService.js';
@@ -102,6 +108,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private deleteFileProcessorService: DeleteFileProcessorService,
 		private cleanRemoteFilesProcessorService: CleanRemoteFilesProcessorService,
 		private relationshipProcessorService: RelationshipProcessorService,
+		private reportAbuseProcessorService: ReportAbuseProcessorService,
 		private tickChartsProcessorService: TickChartsProcessorService,
 		private resyncChartsProcessorService: ResyncChartsProcessorService,
 		private cleanChartsProcessorService: CleanChartsProcessorService,
@@ -174,6 +181,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 				case 'importCustomEmojis': return this.importCustomEmojisProcessorService.process(job);
 				case 'importAntennas': return this.importAntennasProcessorService.process(job);
 				case 'deleteAccount': return this.deleteAccountProcessorService.process(job);
+				case 'reportAbuse': return this.reportAbuseProcessorService.process(job);
 				default: throw new Error(`unrecognized job type ${job.name} for db`);
 			}
 		}, {

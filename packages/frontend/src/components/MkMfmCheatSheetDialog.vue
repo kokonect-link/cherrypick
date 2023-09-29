@@ -1,0 +1,31 @@
+<template>
+<MkModalWindow
+	ref="dialog"
+	:width="600"
+	:height="1000"
+	@close="cancel()"
+	@closed="$emit('closed')"
+>
+	<template #header>{{ i18n.ts._mfm.cheatSheet }}</template>
+	<XMfmCheatSheet :popup="true" style="background: var(--bg)"/>
+</MkModalWindow>
+</template>
+
+<script lang="ts" setup>
+import { shallowRef } from 'vue';
+import MkModalWindow from '@/components/MkModalWindow.vue';
+import XMfmCheatSheet from '@/pages/mfm-cheat-sheet.vue';
+import { i18n } from '@/i18n.js';
+
+const emit = defineEmits<{
+  (ev: 'done'): void;
+  (ev: 'closed'): void;
+}>();
+
+const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+
+function cancel() {
+	emit('done');
+	dialog.value?.close();
+}
+</script>

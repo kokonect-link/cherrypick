@@ -1,12 +1,18 @@
-import { computed, reactive } from 'vue';
-import { $i } from './account';
-import { miLocalStorage } from './local-storage';
-import { openInstanceMenu } from './ui/_common_/common';
-import { lookup } from './scripts/lookup';
-import * as os from '@/os';
-import { i18n } from '@/i18n';
-import { ui } from '@/config';
-import { unisonReload } from '@/scripts/unison-reload';
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { computed, defineAsyncComponent, reactive } from 'vue';
+import { $i } from '@/account.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { openInstanceMenu } from '@/ui/_common_/common.js';
+import { lookup } from '@/scripts/lookup.js';
+import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
+import { ui } from '@/config.js';
+import { defaultStore } from '@/store.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -165,6 +171,28 @@ export const navbarItemDef = reactive({
 				text: i18n.ts._mfm.cheatSheet,
 				icon: 'ti ti-help-circle',
 				to: '/mfm-cheat-sheet',
+			}, null, {
+				type: 'button',
+				text: i18n.ts.replayUserSetupDialog,
+				icon: 'ti ti-list-numbers',
+				action: () => {
+					defaultStore.set('accountSetupWizard', 0);
+					os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
+				},
+			}, {
+				type: 'button',
+				text: i18n.ts.replayTutorial,
+				icon: 'ti ti-checkup-list',
+				action: () => {
+					defaultStore.set('timelineTutorial', 0);
+					defaultStore.set('tlHomeHintClosed', false);
+					defaultStore.set('tlLocalHintClosed', false);
+					defaultStore.set('tlMediaHintClosed', false);
+					defaultStore.set('tlSocialHintClosed', false);
+					defaultStore.set('tlCatHintClosed', false);
+					defaultStore.set('tlGlobalHintClosed', false);
+					setTimeout(unisonReload, 100);
+				},
 			}], ev.currentTarget ?? ev.target);
 		},
 	},

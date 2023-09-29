@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 	<MkStickyContainer>
@@ -7,6 +12,11 @@
 				<div class="_gaps_m">
 					<MkInput v-model="name">
 						<template #label>{{ i18n.ts.instanceName }}</template>
+					</MkInput>
+
+					<MkInput v-model="shortName">
+						<template #label>{{ i18n.ts._serverSettings.shortName }} ({{ i18n.ts.optional }})</template>
+						<template #caption>{{ i18n.ts._serverSettings.shortNameDescription }}</template>
 					</MkInput>
 
 					<MkTextarea v-model="description">
@@ -35,7 +45,7 @@
 						<div class="_gaps_m">
 							<MkSwitch v-model="cacheRemoteFiles">
 								<template #label>{{ i18n.ts.cacheRemoteFiles }}</template>
-								<template #caption>{{ i18n.ts.cacheRemoteFilesDescription }}</template>
+								<template #caption>{{ i18n.ts.cacheRemoteFilesDescription }}{{ i18n.ts.youCanCleanRemoteFilesCache }}</template>
 							</MkSwitch>
 
 							<template v-if="cacheRemoteFiles">
@@ -124,6 +134,18 @@
 							</MkInput>
 						</template>
 					</FormSection>
+
+					<FormSection>
+						<template #label>{{ i18n.ts.abuseReports }}</template>
+
+						<div class="_gaps_m">
+							<MkInput v-model="emailToReceiveAbuseReport" type="email">
+								<template #prefix><i class="ti ti-mail"></i></template>
+								<template #label>{{ i18n.ts.emailToReceiveAbuseReport }}</template>
+								<template #caption>{{ i18n.ts.emailToReceiveAbuseReportCaption }}</template>
+							</MkInput>
+						</div>
+					</FormSection>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
@@ -148,16 +170,18 @@ import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
 import FormSuspense from '@/components/form/suspense.vue';
-import * as os from '@/os';
-import { fetchInstance } from '@/instance';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { fetchInstance } from '@/instance.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 
 let name: string | null = $ref(null);
+let shortName: string | null = $ref(null);
 let description: string | null = $ref(null);
 let maintainerName: string | null = $ref(null);
 let maintainerEmail: string | null = $ref(null);
+let emailToReceiveAbuseReport: string | null = $ref(null);
 let pinnedUsers: string = $ref('');
 let cacheRemoteFiles: boolean = $ref(false);
 let cacheRemoteSensitiveFiles: boolean = $ref(false);
@@ -176,9 +200,11 @@ let ctav3Glossary: string = $ref('');
 async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
 	name = meta.name;
+	shortName = meta.shortName;
 	description = meta.description;
 	maintainerName = meta.maintainerName;
 	maintainerEmail = meta.maintainerEmail;
+	emailToReceiveAbuseReport = meta.emailToReceiveAbuseReport;
 	pinnedUsers = meta.pinnedUsers.join('\n');
 	cacheRemoteFiles = meta.cacheRemoteFiles;
 	cacheRemoteSensitiveFiles = meta.cacheRemoteSensitiveFiles;
@@ -198,9 +224,12 @@ async function init(): Promise<void> {
 function save(): void {
 	os.apiWithDialog('admin/update-meta', {
 		name,
+		shortName: shortName === '' ? null : shortName,
 		description,
 		maintainerName,
 		maintainerEmail,
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		emailToReceiveAbuseReport: emailToReceiveAbuseReport || null,
 		pinnedUsers: pinnedUsers.split('\n'),
 		cacheRemoteFiles,
 		cacheRemoteSensitiveFiles,

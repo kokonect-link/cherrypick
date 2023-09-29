@@ -1,25 +1,30 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { computed, createApp, watch, markRaw, version as vueVersion, defineAsyncComponent, App } from 'vue';
 import { compareVersions } from 'compare-versions';
-import widgets from '@/widgets';
-import directives from '@/directives';
-import components from '@/components';
-import { version, ui, lang, updateLocale } from '@/config';
-import { applyTheme } from '@/scripts/theme';
-import { isDeviceDarkmode } from '@/scripts/is-device-darkmode';
-import { i18n, updateI18n } from '@/i18n';
-import { confirm, alert, post, popup, toast } from '@/os';
-import { $i, refreshAccount, login, updateAccount, signout } from '@/account';
-import { defaultStore, ColdDeviceStorage } from '@/store';
-import { fetchInstance, instance } from '@/instance';
-import { deviceKind } from '@/scripts/device-kind';
-import { reloadChannel } from '@/scripts/unison-reload';
-import { reactionPicker } from '@/scripts/reaction-picker';
-import { getUrlWithoutLoginId } from '@/scripts/login-id';
-import { getAccountFromId } from '@/scripts/get-account-from-id';
-import { deckStore } from '@/ui/deck/deck-store';
-import { miLocalStorage } from '@/local-storage';
-import { fetchCustomEmojis } from '@/custom-emojis';
-import { mainRouter } from '@/router';
+import widgets from '@/widgets/index.js';
+import directives from '@/directives/index.js';
+import components from '@/components/index.js';
+import { version, basedMisskeyVersion, ui, lang, updateLocale } from '@/config.js';
+import { applyTheme } from '@/scripts/theme.js';
+import { isDeviceDarkmode } from '@/scripts/is-device-darkmode.js';
+import { i18n, updateI18n } from '@/i18n.js';
+import { confirm, alert, post, popup, toast } from '@/os.js';
+import { $i, refreshAccount, login, updateAccount, signout } from '@/account.js';
+import { defaultStore, ColdDeviceStorage } from '@/store.js';
+import { fetchInstance, instance } from '@/instance.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { reloadChannel } from '@/scripts/unison-reload.js';
+import { reactionPicker } from '@/scripts/reaction-picker.js';
+import { getUrlWithoutLoginId } from '@/scripts/login-id.js';
+import { getAccountFromId } from '@/scripts/get-account-from-id.js';
+import { deckStore } from '@/ui/deck/deck-store.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { fetchCustomEmojis } from '@/custom-emojis.js';
+import { mainRouter } from '@/router.js';
 
 export async function common(createVue: () => App<Element>) {
 	console.info(`CherryPick v${version}`);
@@ -67,6 +72,7 @@ export async function common(createVue: () => App<Element>) {
 
 	//#region クライアントが更新されたかチェック
 	const lastVersion = miLocalStorage.getItem('lastVersion');
+	const lastBasedMisskeyVersion = miLocalStorage.getItem('lastBasedMisskeyVersion');
 	if (lastVersion !== version) {
 		miLocalStorage.setItem('lastVersion', version);
 
@@ -79,11 +85,23 @@ export async function common(createVue: () => App<Element>) {
 			}
 		} catch (err) { /* empty */ }
 	}
+	if (lastBasedMisskeyVersion !== basedMisskeyVersion) {
+		miLocalStorage.setItem('lastBasedMisskeyVersion', basedMisskeyVersion);
+
+		// テーマリビルドするため
+		miLocalStorage.removeItem('theme');
+
+		try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
+			if (lastBasedMisskeyVersion != null && compareVersions(basedMisskeyVersion, lastBasedMisskeyVersion) === 1) {
+				isClientUpdated = true;
+			}
+		} catch (err) { /* empty */ }
+	}
 	//#endregion
 
 	//#region Detect language & fetch translations
 	const localeVersion = miLocalStorage.getItem('localeVersion');
-	const localeOutdated = (localeVersion == null || localeVersion !== version);
+	const localeOutdated = (localeVersion == null || localeVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion);
 	if (localeOutdated) {
 		const res = await window.fetch(`/assets/locales/${lang}.${version}.json`);
 		if (res.status === 200) {
@@ -125,6 +143,7 @@ export async function common(createVue: () => App<Element>) {
 
 	fetchInstanceMetaPromise.then(() => {
 		miLocalStorage.setItem('v', instance.version);
+		miLocalStorage.setItem('basedMisskeyVersion', instance.basedMisskeyVersion);
 	});
 
 	//#region loginId
@@ -196,6 +215,18 @@ export async function common(createVue: () => App<Element>) {
 			document.documentElement.style.setProperty('--blur', 'none');
 		}
 	}, { immediate: true });
+
+	if (defaultStore.state.keepScreenOn) {
+		if ('wakeLock' in navigator) {
+			navigator.wakeLock.request('screen');
+
+			document.addEventListener('visibilitychange', async () => {
+				if (document.visibilityState === 'visible') {
+					navigator.wakeLock.request('screen');
+				}
+			});
+		}
+	}
 
 	//#region Fetch user
 	if ($i && $i.token) {

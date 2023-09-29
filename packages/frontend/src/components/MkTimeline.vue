@@ -1,14 +1,24 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
+<MkInfo v-if="$i && tlHint && !tlHintClosed" :closeable="true" style="margin-bottom: 16px;" @closed="closeHint">
+	<I18n :src="tlHint"><template #icon><i :class="tlIcon"></i></template></I18n>
+</MkInfo>
 <MkNotes ref="tlComponent" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" @queue="emit('queue', $event)"/>
 </template>
 
 <script lang="ts" setup>
 import { computed, provide, onUnmounted } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
-import { useStream } from '@/stream';
-import * as sound from '@/scripts/sound';
-import { $i } from '@/account';
-import { defaultStore } from '@/store';
+import MkInfo from '@/components/MkInfo.vue';
+import { useStream } from '@/stream.js';
+import * as sound from '@/scripts/sound.js';
+import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	src: string;
@@ -55,6 +65,10 @@ let query;
 let connection;
 let connection2;
 
+let tlIcon;
+let tlHint;
+let tlHintClosed;
+
 const stream = useStream();
 
 if (props.src === 'antenna') {
@@ -77,6 +91,10 @@ if (props.src === 'antenna') {
 	connection.on('note', prepend);
 
 	connection2 = stream.useChannel('main');
+
+	tlIcon = 'ti ti-home';
+	tlHint = i18n.ts._tlTutorial.step1_1;
+	tlHintClosed = defaultStore.state.tlHomeHintClosed;
 } else if (props.src === 'local') {
 	endpoint = 'notes/local-timeline';
 	query = {
@@ -86,10 +104,18 @@ if (props.src === 'antenna') {
 		withReplies: defaultStore.state.showTimelineReplies,
 	});
 	connection.on('note', prepend);
+
+	tlIcon = 'ti ti-planet';
+	tlHint = i18n.ts._tlTutorial.step1_2;
+	tlHintClosed = defaultStore.state.tlLocalHintClosed;
 } else if (props.src === 'media') {
 	endpoint = 'notes/media-timeline';
 	connection = stream.useChannel('mediaTimeline');
 	connection.on('note', prependFilterdMedia);
+
+	tlIcon = 'ti ti-photo';
+	tlHint = i18n.ts._tlTutorial.step1_3;
+	tlHintClosed = defaultStore.state.tlMediaHintClosed;
 } else if (props.src === 'social') {
 	endpoint = 'notes/hybrid-timeline';
 	query = {
@@ -99,6 +125,10 @@ if (props.src === 'antenna') {
 		withReplies: defaultStore.state.showTimelineReplies,
 	});
 	connection.on('note', prepend);
+
+	tlIcon = 'ti ti-rocket';
+	tlHint = i18n.ts._tlTutorial.step1_4;
+	tlHintClosed = defaultStore.state.tlSocialHintClosed;
 } else if (props.src === 'cat') {
 	endpoint = 'notes/cat-timeline';
 	query = {
@@ -108,6 +138,10 @@ if (props.src === 'antenna') {
 		withReplies: defaultStore.state.showTimelineReplies,
 	});
 	connection.on('note', prepend);
+
+	tlIcon = 'ti ti-cat';
+	tlHint = i18n.ts._tlTutorial.step1_5;
+	tlHintClosed = defaultStore.state.tlCatHintClosed;
 } else if (props.src === 'global') {
 	endpoint = 'notes/global-timeline';
 	query = {
@@ -117,6 +151,10 @@ if (props.src === 'antenna') {
 		withReplies: defaultStore.state.showTimelineReplies,
 	});
 	connection.on('note', prepend);
+
+	tlIcon = 'ti ti-world';
+	tlHint = i18n.ts._tlTutorial.step1_6;
+	tlHintClosed = defaultStore.state.tlGlobalHintClosed;
 } else if (props.src === 'mentions') {
 	endpoint = 'notes/mentions';
 	connection = stream.useChannel('main');
@@ -160,6 +198,29 @@ if (props.src === 'antenna') {
 		roleId: props.role,
 	});
 	connection.on('note', prepend);
+}
+
+function closeHint() {
+	switch (props.src) {
+		case 'home':
+			defaultStore.set('tlHomeHintClosed', true);
+			break;
+		case 'local':
+			defaultStore.set('tlLocalHintClosed', true);
+			break;
+		case 'media':
+			defaultStore.set('tlMediaHintClosed', true);
+			break;
+		case 'social':
+			defaultStore.set('tlSocialHintClosed', true);
+			break;
+		case 'cat':
+			defaultStore.set('tlCatHintClosed', true);
+			break;
+		case 'global':
+			defaultStore.set('tlGlobalHintClosed', true);
+			break;
+	}
 }
 
 const pagination = {

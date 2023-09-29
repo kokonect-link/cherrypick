@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
@@ -31,6 +36,12 @@
 						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
 					</MkSwitch>
 				</div>
+
+				<div class="_panel" style="padding: 16px;">
+					<MkSwitch v-model="doNotSendNotificationEmailsForAbuseReport">
+						<template #label>{{ i18n.ts.doNotSendNotificationEmailsForAbuseReport }}</template>
+					</MkSwitch>
+				</div>
 			</div>
 		</FormSuspense>
 	</MkSpacer>
@@ -41,16 +52,17 @@
 import { } from 'vue';
 import XHeader from './_header_.vue';
 import FormSuspense from '@/components/form/suspense.vue';
-import * as os from '@/os';
-import { fetchInstance } from '@/instance';
-import { i18n } from '@/i18n';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import * as os from '@/os.js';
+import { fetchInstance } from '@/instance.js';
+import { i18n } from '@/i18n.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 
 let enableServerMachineStats: boolean = $ref(false);
 let enableIdenticonGeneration: boolean = $ref(false);
 let enableChartsForRemoteUser: boolean = $ref(false);
 let enableChartsForFederatedInstances: boolean = $ref(false);
+let doNotSendNotificationEmailsForAbuseReport: boolean = $ref(false);
 
 async function init() {
 	const meta = await os.api('admin/meta');
@@ -58,6 +70,7 @@ async function init() {
 	enableIdenticonGeneration = meta.enableIdenticonGeneration;
 	enableChartsForRemoteUser = meta.enableChartsForRemoteUser;
 	enableChartsForFederatedInstances = meta.enableChartsForFederatedInstances;
+	doNotSendNotificationEmailsForAbuseReport = meta.doNotSendNotificationEmailsForAbuseReport;
 }
 
 function save() {
@@ -66,6 +79,7 @@ function save() {
 		enableIdenticonGeneration,
 		enableChartsForRemoteUser,
 		enableChartsForFederatedInstances,
+		doNotSendNotificationEmailsForAbuseReport,
 	}).then(() => {
 		fetchInstance();
 	});

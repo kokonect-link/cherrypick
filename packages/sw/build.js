@@ -1,5 +1,10 @@
 // @ts-check
 
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { fileURLToPath } from 'node:url';
 import * as esbuild from 'esbuild';
 import locales from '../../locales/index.js';
@@ -20,6 +25,7 @@ const buildOptions = {
 		_LANGS_: JSON.stringify(Object.entries(locales).map(([k, v]) => [k, v._lang_])),
 		_PERF_PREFIX_: JSON.stringify('CherryPick:'),
 		_VERSION_: JSON.stringify(meta.version),
+		_BASEDMISSKEYVERSION_: JSON.stringify(meta.basedMisskeyVersion),
 	},
 	entryPoints: [`${__dirname}/src/sw.ts`],
 	format: 'esm',

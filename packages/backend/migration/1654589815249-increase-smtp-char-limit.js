@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 export class increaseSmtpCharLimit1654589815249 {
     name = 'increaseSmtpCharLimit1654589815249'
 
@@ -9,7 +14,7 @@ export class increaseSmtpCharLimit1654589815249 {
 
     async down(queryRunner) {
 			// It's safe to keep extended character limit, rather than shrinking with risk of breaking settings
-			
+
 			// await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "smtpHost" TYPE character varying(128)`);
 			// await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "smtpUser" TYPE character varying(128)`);
 			// await queryRunner.query(`ALTER TABLE "meta" ALTER COLUMN "smtpPass" TYPE character varying(128)`);

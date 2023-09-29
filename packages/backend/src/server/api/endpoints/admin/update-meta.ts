@@ -1,10 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import type { Meta } from '@/models/entities/Meta.js';
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { Injectable } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import type { MiMeta } from '@/models/Meta.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { DI } from '@/di-symbols.js';
 import { MetaService } from '@/core/MetaService.js';
+import { ServerStatsService } from '@/daemons/ServerStatsService.js';
 
 export const meta = {
 	tags: ['admin'],
@@ -36,9 +41,12 @@ export const paramDef = {
 		infoImageUrl: { type: 'string', nullable: true },
 		notFoundImageUrl: { type: 'string', nullable: true },
 		iconUrl: { type: 'string', nullable: true },
+		app192IconUrl: { type: 'string', nullable: true },
+		app512IconUrl: { type: 'string', nullable: true },
 		backgroundImageUrl: { type: 'string', nullable: true },
 		logoImageUrl: { type: 'string', nullable: true },
 		name: { type: 'string', nullable: true },
+		shortName: { type: 'string', nullable: true },
 		description: { type: 'string', nullable: true },
 		defaultLightTheme: { type: 'string', nullable: true },
 		defaultDarkTheme: { type: 'string', nullable: true },
@@ -118,24 +126,24 @@ export const paramDef = {
 		enableChartsForFederatedInstances: { type: 'boolean' },
 		enableServerMachineStats: { type: 'boolean' },
 		enableIdenticonGeneration: { type: 'boolean' },
+		doNotSendNotificationEmailsForAbuseReport: { type: 'boolean' },
+		emailToReceiveAbuseReport: { type: 'string', nullable: true },
 		serverRules: { type: 'array', items: { type: 'string' } },
 		preservedUsernames: { type: 'array', items: { type: 'string' } },
+		manifestJsonOverride: { type: 'string' },
 	},
 	required: [],
 } as const;
 
-// eslint-disable-next-line import/no-default-export
 @Injectable()
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.db)
-		private db: DataSource,
-
+        private moduleRef: ModuleRef,
 		private metaService: MetaService,
 		private moderationLogService: ModerationLogService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			const set = {} as Partial<Meta>;
+			const set = {} as Partial<MiMeta>;
 
 			if (typeof ps.disableRegistration === 'boolean') {
 				set.disableRegistration = ps.disableRegistration;
@@ -173,6 +181,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				set.iconUrl = ps.iconUrl;
 			}
 
+			if (ps.app192IconUrl !== undefined) {
+				set.app192IconUrl = ps.app192IconUrl;
+			}
+
+			if (ps.app512IconUrl !== undefined) {
+				set.app512IconUrl = ps.app512IconUrl;
+			}
+
 			if (ps.serverErrorImageUrl !== undefined) {
 				set.serverErrorImageUrl = ps.serverErrorImageUrl;
 			}
@@ -195,6 +211,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			if (ps.name !== undefined) {
 				set.name = ps.name;
+			}
+
+			if (ps.shortName !== undefined) {
+				set.shortName = ps.shortName;
 			}
 
 			if (ps.description !== undefined) {
@@ -513,6 +533,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				set.enableIdenticonGeneration = ps.enableIdenticonGeneration;
 			}
 
+			if (ps.doNotSendNotificationEmailsForAbuseReport !== undefined) {
+				set.doNotSendNotificationEmailsForAbuseReport = ps.doNotSendNotificationEmailsForAbuseReport;
+			}
+
+			if (ps.emailToReceiveAbuseReport !== undefined) {
+				set.emailToReceiveAbuseReport = ps.emailToReceiveAbuseReport;
+			}
+
 			if (ps.serverRules !== undefined) {
 				set.serverRules = ps.serverRules;
 			}
@@ -521,8 +549,28 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				set.preservedUsernames = ps.preservedUsernames;
 			}
 
+			if (ps.manifestJsonOverride !== undefined) {
+				set.manifestJsonOverride = ps.manifestJsonOverride;
+			}
+
+			const before = await this.metaService.fetch(true);
+
 			await this.metaService.update(set);
-			this.moderationLogService.insertModerationLog(me, 'updateMeta');
+
+			const after = await this.metaService.fetch(true);
+
+			this.moderationLogService.log(me, 'updateServerSettings', {
+				before,
+				after,
+			});
+
+			if (set.enableServerMachineStats === true) {
+				const serverStatsService: ServerStatsService = await this.moduleRef.resolve(ServerStatsService);
+				await serverStatsService.start();
+			} else {
+				const serverStatsService: ServerStatsService = await this.moduleRef.resolve(ServerStatsService);
+				serverStatsService.dispose();
+			}
 		});
 	}
 }

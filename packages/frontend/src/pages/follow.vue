@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div>
 </div>
@@ -5,11 +10,11 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as Acct from 'cherrypick-js/built/acct';
-import * as os from '@/os';
-import { mainRouter } from '@/router';
-import { i18n } from '@/i18n';
-import { userName } from '@/filters/user';
+import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
+import { mainRouter } from '@/router.js';
+import { i18n } from '@/i18n.js';
+import { userName } from '@/filters/user.js';
 
 async function follow(user): Promise<void> {
 	const { canceled } = await os.confirm({
@@ -53,7 +58,7 @@ if (acct.startsWith('https://')) {
 		}
 	});
 } else {
-	promise = os.api('users/show', Acct.parse(acct));
+	promise = os.api('users/show', Misskey.acct.parse(acct));
 	promise.then(user => {
 		follow(user);
 	});

@@ -1,18 +1,23 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { defineAsyncComponent, reactive, ref } from 'vue';
-import * as misskey from 'cherrypick-js';
-import { showSuspendedDialog } from './scripts/show-suspended-dialog';
-import { i18n } from './i18n';
-import { miLocalStorage } from './local-storage';
-import { MenuButton } from './types/menu';
-import { del, get, set } from '@/scripts/idb-proxy';
-import { apiUrl } from '@/config';
-import { waiting, api, popup, popupMenu, success, alert } from '@/os';
-import { unisonReload, reloadChannel } from '@/scripts/unison-reload';
-import * as os from '@/os';
+import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
+import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
+import { i18n } from '@/i18n.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { MenuButton } from '@/types/menu.js';
+import { del, get, set } from '@/scripts/idb-proxy.js';
+import { apiUrl } from '@/config.js';
+import { waiting, api, popup, popupMenu, success, alert } from '@/os.js';
+import { unisonReload, reloadChannel } from '@/scripts/unison-reload.js';
 
 // TODO: 他のタブと永続化されたstateを同期
 
-type Account = misskey.entities.MeDetailed;
+type Account = Misskey.entities.MeDetailed;
 
 const accountData = miLocalStorage.getItem('account');
 
@@ -129,7 +134,6 @@ export async function removeAccount(idOrToken: Account['id']) {
 
 function fetchAccount(token: string, id?: string, forceShowDialog?: boolean): Promise<Account> {
 	return new Promise((done, fail) => {
-		// Fetch user
 		window.fetch(`${apiUrl}/i`, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -141,8 +145,8 @@ function fetchAccount(token: string, id?: string, forceShowDialog?: boolean): Pr
 		})
 			.then(res => new Promise<Account | { error: Record<string, any> }>((done2, fail2) => {
 				if (res.status >= 500 && res.status < 600) {
-				// サーバーエラー(5xx)の場合をrejectとする
-				// （認証エラーなど4xxはresolve）
+					// サーバーエラー(5xx)の場合をrejectとする
+					// （認証エラーなど4xxはresolve）
 					return fail2(res);
 				}
 				res.json().then(done2, fail2);
@@ -150,13 +154,13 @@ function fetchAccount(token: string, id?: string, forceShowDialog?: boolean): Pr
 			.then(async res => {
 				if (res.error) {
 					if (res.error.id === 'a8c724b3-6e9c-4b46-b1a8-bc3ed6258370') {
-					// SUSPENDED
+						// SUSPENDED
 						if (forceShowDialog || $i && (token === $i.token || id === $i.id)) {
 							await showSuspendedDialog();
 						}
 					} else if (res.error.id === 'e5b3b9f0-2b8f-4b9f-9c1f-8c5c1b2e1b1a') {
-					// USER_IS_DELETED
-					// アカウントが削除されている
+						// USER_IS_DELETED
+						// アカウントが削除されている
 						if (forceShowDialog || $i && (token === $i.token || id === $i.id)) {
 							await alert({
 								type: 'error',
@@ -165,8 +169,8 @@ function fetchAccount(token: string, id?: string, forceShowDialog?: boolean): Pr
 							});
 						}
 					} else if (res.error.id === 'b0a7f5f8-dc2f-4171-b91f-de88ad238e14') {
-					// AUTHENTICATION_FAILED
-					// トークンが無効化されていたりアカウントが削除されたりしている
+						// AUTHENTICATION_FAILED
+						// トークンが無効化されていたりアカウントが削除されたりしている
 						if (forceShowDialog || $i && (token === $i.token || id === $i.id)) {
 							await alert({
 								type: 'error',
@@ -246,8 +250,8 @@ export async function openAccountMenu(opts: {
 	includeCurrentAccount?: boolean;
 	withExtraOperation: boolean;
 	withExtraOperationFriendly: boolean;
-	active?: misskey.entities.UserDetailed['id'];
-	onChoose?: (account: misskey.entities.UserDetailed) => void;
+	active?: Misskey.entities.UserDetailed['id'];
+	onChoose?: (account: Misskey.entities.UserDetailed) => void;
 }, ev: MouseEvent) {
 	if (!$i) return;
 
@@ -269,7 +273,7 @@ export async function openAccountMenu(opts: {
 		}, 'closed');
 	}
 
-	async function switchAccount(account: misskey.entities.UserDetailed) {
+	async function switchAccount(account: Misskey.entities.UserDetailed) {
 		const storedAccounts = await getAccounts();
 		const found = storedAccounts.find(x => x.id === account.id);
 		if (found == null) return;
@@ -283,7 +287,7 @@ export async function openAccountMenu(opts: {
 	const storedAccounts = await getAccounts().then(accounts => accounts.filter(x => x.id !== $i.id));
 	const accountsPromise = api('users/show', { userIds: storedAccounts.map(x => x.id) });
 
-	function createItem(account: misskey.entities.UserDetailed) {
+	function createItem(account: Misskey.entities.UserDetailed) {
 		return {
 			type: 'user' as const,
 			user: account,
@@ -359,7 +363,7 @@ export async function openAccountMenu(opts: {
 		});
 	}
 
-	function accountListFriendly (account: misskey.entities.UserDetailed) {
+	function accountListFriendly (account: Misskey.entities.UserDetailed) {
 		popupMenu([...[{
 			type: 'link' as const,
 			text: account.name,

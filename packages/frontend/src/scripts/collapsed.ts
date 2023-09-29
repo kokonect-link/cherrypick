@@ -1,8 +1,13 @@
-import * as mfm from 'cherrypick-mfm-js';
-import * as misskey from 'cherrypick-js';
-import {extractUrlFromMfm} from './extract-url-from-mfm';
+/*
+ * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 
-export function shouldCollapsed(note: misskey.entities.Note): boolean {
+import * as mfm from 'cherrypick-mfm-js';
+import * as Misskey from 'cherrypick-js';
+import { extractUrlFromMfm } from './extract-url-from-mfm.js';
+
+export function shouldCollapsed(note: Misskey.entities.Note): boolean {
 	const urls = note.text ? extractUrlFromMfm(mfm.parse(note.text)) : null;
 	return note.cw == null && note.text != null && (
 		(note.text.split('\n').length > 9) ||
@@ -12,7 +17,7 @@ export function shouldCollapsed(note: misskey.entities.Note): boolean {
 	);
 }
 
-export function shouldMfmCollapsed(note: misskey.entities.Note): boolean {
+export function shouldMfmCollapsed(note: Misskey.entities.Note): boolean {
 	return note.cw == null && note.text != null && (
 		(note.text.includes('$[x2')) ||
 		(note.text.includes('$[x3')) ||

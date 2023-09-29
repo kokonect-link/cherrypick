@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkModalWindow
 	ref="dialog"
@@ -164,13 +169,13 @@ import XFontSize from '@/components/MkUserSetupDialog.FontSize.vue';
 import XBlur from '@/components/MkUserSetupDialog.Blur.vue';
 import XMfm from '@/components/MkUserSetupDialog.MisskeyFlavoredMarkdown.vue';
 import MkAnimBg from '@/components/MkAnimBg.vue';
-import { i18n } from '@/i18n';
-import { instance } from '@/instance';
-import { host } from '@/config';
+import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
+import { host } from '@/config.js';
 import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
-import { defaultStore } from '@/store';
-import * as os from '@/os';
-import { unisonReload } from "@/scripts/unison-reload";
+import { defaultStore } from '@/store.js';
+import * as os from '@/os.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -189,6 +194,7 @@ async function close(skip: boolean) {
 		const { canceled } = await os.confirm({
 			type: 'warning',
 			text: i18n.ts._initialAccountSetting.skipAreYouSure,
+			caption: i18n.ts._initialAccountSetting.skipAreYouSureDescription,
 		});
 		if (canceled) return;
 	}

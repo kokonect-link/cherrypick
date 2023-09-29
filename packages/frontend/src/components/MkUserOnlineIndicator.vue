@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div
 	v-tooltip="text"
@@ -12,11 +17,11 @@
 
 <script lang="ts" setup>
 import { } from 'vue';
-import * as misskey from 'cherrypick-js';
-import { i18n } from '@/i18n';
+import * as Misskey from 'cherrypick-js';
+import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	user: misskey.entities.User;
+	user: Misskey.entities.User;
 }>();
 
 const text = $computed(() => {

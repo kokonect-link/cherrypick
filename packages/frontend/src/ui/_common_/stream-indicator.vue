@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div v-if="hasRequireRefresh && defaultStore.state.requireRefreshBehavior === 'quiet'" :class="$style.root" class="_panel _shadow" @click="resetRequireRefresh">
 	<div><i class="ti ti-alert-circle"></i> {{ i18n.ts.reloadToApplySetting2 }}</div>
@@ -17,12 +22,12 @@
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted } from 'vue';
-import { useStream } from '@/stream';
-import { i18n } from '@/i18n';
+import { useStream } from '@/stream.js';
+import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
-import * as os from '@/os';
-import { defaultStore } from '@/store';
-import { eventBus } from '@/scripts/cherrypick/eventBus';
+import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { globalEvents } from '@/events.js';
 
 const zIndex = os.claimZIndex('high');
 
@@ -48,7 +53,7 @@ function reload() {
 useStream().on('_disconnected_', onDisconnected);
 
 onMounted(() => {
-	eventBus.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
+	globalEvents.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
 		hasRequireRefresh = hasRequireRefresh_receive;
 	});
 });

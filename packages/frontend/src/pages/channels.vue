@@ -1,10 +1,15 @@
+<!--
+SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'search'">
 			<div class="_gaps">
-				<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search">
+				<MkInput v-model="searchQuery" :large="true" autofocus type="search">
 					<template #prefix><i class="ti ti-search"></i></template>
 				</MkInput>
 				<MkRadios v-model="searchType" @update:modelValue="search()">
@@ -53,9 +58,9 @@ import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { useRouter } from '@/router';
-import { definePageMetadata } from '@/scripts/page-metadata';
-import { i18n } from '@/i18n';
+import { useRouter } from '@/router.js';
+import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { i18n } from '@/i18n.js';
 
 const router = useRouter();
 
