@@ -36,34 +36,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkPagination>
 			</div>
 		</MkSpacer>
-	</div>
-	<template #footer>
-		<div :class="$style.footerSpacer">
-			<div :class="$style.footer">
-				<div v-if="typers.length > 0" :class="$style.typers">
-					<I18n :src="i18n.ts.typingUsers" textTag="span">
-						<template #users>
-							<b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
-						</template>
-					</I18n>
-					<MkEllipsis/>
-				</div>
-				<Transition :name="animation ? 'fade' : ''">
-					<div v-show="showIndicator" :class="$style.newMessage">
-						<button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
-							<i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
-						</button>
+		<footer>
+			<div :class="$style.footerSpacer">
+				<div :class="[$style.footer, { [$style.friendly]: isFriendly }]">
+					<div v-if="typers.length > 0" :class="$style.typers">
+						<I18n :src="i18n.ts.typingUsers" textTag="span">
+							<template #users>
+								<b v-for="typer in typers" :key="typer.id" :class="$style.user">{{ typer.username }}</b>
+							</template>
+						</I18n>
+						<MkEllipsis/>
 					</div>
-				</Transition>
-				<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
+					<Transition :name="animation ? 'fade' : ''">
+						<div v-show="showIndicator" :class="$style.newMessage">
+							<button class="_buttonPrimary" :class="$style.newMessageButton" @click="onIndicatorClick">
+								<i class="ti ti-circle-arrow-down-filled" :class="$style.newMessageIcon"></i>{{ i18n.ts.newMessageExists }}
+							</button>
+						</div>
+					</Transition>
+					<XForm v-if="!fetching" ref="formEl" :user="user" :group="group" :class="$style.form"/>
+				</div>
 			</div>
-		</div>
-	</template>
+		</footer>
+	</div>
 </MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef } from 'vue';
+import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
@@ -78,6 +78,9 @@ import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { miLocalStorage } from '@/local-storage.js';
+
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const props = defineProps<{
 	userAcct?: string;
@@ -94,9 +97,7 @@ let group: Misskey.entities.UserGroup | null = $ref(null);
 let typers: Misskey.entities.User[] = $ref([]);
 let connection: Misskey.ChannelConnection<Misskey.Channels['messaging']> | null = $ref(null);
 let showIndicator = $ref(false);
-const {
-	animation,
-} = defaultStore.reactiveState;
+const animation = defaultStore.reactiveState;
 
 let pagination: Paging | null = $ref(null);
 
@@ -217,7 +218,7 @@ function onMessage(message) {
 	sound.play('chat');
 	vibrate([30, 30, 30]);
 
-	const _isBottom = isBottomVisible(rootEl, 64);
+	const _isBottom = isBottomVisible($$(rootEl).value, 64);
 
 	pagingComponent.value.prepend(message);
 	if (message.userId !== $i?.id && !document.hidden) {
@@ -282,7 +283,7 @@ let scrollRemove: (() => void) | null = $ref(null);
 function notifyNewMessage() {
 	showIndicator = true;
 
-	scrollRemove = onScrollBottom(rootEl, () => {
+	scrollRemove = onScrollBottom($$(rootEl).value, () => {
 		showIndicator = false;
 		scrollRemove = null;
 	});
@@ -328,10 +329,6 @@ definePageMetadata(computed(() => !fetching ? user ? {
 .fade-enter-from, .fade-leave-to {
 	transition: opacity 0.5s;
 	opacity: 0;
-}
-
-.root {
-	display: contents;
 }
 
 .body {
@@ -435,7 +432,9 @@ definePageMetadata(computed(() => !fetching ? user ? {
   }
 
 	.footer {
-		margin-top: calc(50px + env(safe-area-inset-bottom));
+    &.friendly {
+      margin-bottom: calc(50px + env(safe-area-inset-bottom));
+    }
 	}
 
   .form {
