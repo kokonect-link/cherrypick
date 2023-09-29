@@ -27,13 +27,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div></div>
 		<MkUrlPreview v-for="url in urls" :key="url" :url="url" style="margin: 8px 0;"/>
 		<footer>
-			<template v-if="isGroup">
-				<span v-if="message.reads.length > 0" class="read">{{ i18n.ts.messageRead }} {{ message.reads.length }}</span>
-			</template>
-			<template v-else>
-				<span v-if="isMe && message.isRead" class="read">{{ i18n.ts.messageRead }}</span>
-			</template>
 			<MkTime :time="message.createdAt"/>
+			<template v-if="isGroup">
+				<span v-if="message.reads.length > 0" class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageRead }} {{ message.reads.length }}</span>
+			</template>
+			<template v-else-if="isMe">
+				<span v-if="!message.isRead" class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageSend }}</span>
+				<span v-else class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageRead }}</span>
+			</template>
 			<template v-if="message.is_edited"><i class="ti ti-pencil"></i></template>
 		</footer>
 	</div>
@@ -209,7 +210,7 @@ function del(): void {
 			font-size: 0.65em;
 
 			> .read {
-				margin: 0 8px;
+				margin: 0 4px;
 			}
 
 			> i {

@@ -320,6 +320,7 @@ export interface Locale {
     "uploadFromUrlMayTakeTime": string;
     "explore": string;
     "messageRead": string;
+    "messageSend": string;
     "noMoreHistory": string;
     "startMessaging": string;
     "nUsersRead": string;
