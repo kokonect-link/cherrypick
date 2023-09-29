@@ -61,15 +61,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	tlMediaHintClosed: {
-		where: 'device',
-		default: false,
-	},
 	tlSocialHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlCatHintClosed: {
 		where: 'device',
 		default: false,
 	},
@@ -189,7 +181,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	tl: {
 		where: 'deviceAccount',
 		default: {
-			src: 'home' as 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`,
+			src: 'home' as 'home' | 'local' | 'social' | 'global' | `list:${string}`,
 			userList: null as Misskey.entities.UserList | null,
 		},
 	},
@@ -460,10 +452,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 	enableSocialTimeline: {
-		where: 'device',
-		default: true,
-	},
-	enableCatTimeline: {
 		where: 'device',
 		default: true,
 	},

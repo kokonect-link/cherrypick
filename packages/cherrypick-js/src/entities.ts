@@ -332,7 +332,6 @@ export type LiteInstanceMetadata = {
 	feedbackUrl: string;
 	disableRegistration: boolean;
 	disableLocalTimeline: boolean;
-	disableCatTimeline: boolean;
 	disableGlobalTimeline: boolean;
 	driveCapacityPerLocalUserMb: number;
 	driveCapacityPerRemoteUserMb: number;

@@ -56,6 +56,7 @@ export const paramDef = {
 			default: false,
 			description: 'Only show notes that have attached files.',
 		},
+		withCats: { type: 'boolean', default: false },
 	},
 	required: ['listId'],
 } as const;
@@ -148,6 +149,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.withFiles) {
 				query.andWhere('note.fileIds != \'{}\'');
+			}
+
+			if (ps.withCats) {
+				query.andWhere('(select "isCat" from "user" where id = note."userId")');
 			}
 			//#endregion
 

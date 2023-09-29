@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</button>
 	</template>
 
-	<div v-if="(((widgetProps.src === 'local' || widgetProps.src === 'social' || widgetProps.src === 'cat') && !isLocalTimelineAvailable) || (widgetProps.src === 'cat' && !isCatTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((widgetProps.src === 'local' || widgetProps.src === 'social') && !isLocalTimelineAvailable) || (widgetProps.src === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ti ti-minus"></i>
 			{{ i18n.ts._disabledTimeline.title }}
@@ -48,7 +48,6 @@ import { instance } from '@/instance.js';
 const name = 'timeline';
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
-const isCatTimelineAvailable = (($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable));
 
 const widgetPropsDef = {
 	showHeader: {
@@ -128,10 +127,6 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.social,
 		icon: 'ti ti-universe',
 		action: () => { setSrc('social'); },
-	}, {
-		text: i18n.ts._timelines.cat,
-		icon: 'ti ti-cat',
-		action: () => { setSrc('cat'); },
 	}, {
 		text: i18n.ts._timelines.global,
 		icon: 'ti ti-world',

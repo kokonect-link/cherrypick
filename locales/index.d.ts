@@ -1206,6 +1206,7 @@ export interface Locale {
     "notificationRecieveConfig": string;
     "mutualFollow": string;
     "fileAttachedOnly": string;
+    "showCatOnly": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -1218,7 +1219,6 @@ export interface Locale {
         "step1_2": string;
         "step1_3": string;
         "step1_4": string;
-        "step1_5": string;
     };
     "_announcement": {
         "forExistingUsers": string;
@@ -1709,7 +1709,6 @@ export interface Locale {
         "_options": {
             "gtlAvailable": string;
             "ltlAvailable": string;
-            "ctlAvailable": string;
             "canPublicNote": string;
             "canEditNote": string;
             "canInvite": string;
@@ -2346,9 +2345,7 @@ export interface Locale {
     "_timelines": {
         "home": string;
         "local": string;
-        "media": string;
         "social": string;
-        "cat": string;
         "global": string;
     };
     "_play": {

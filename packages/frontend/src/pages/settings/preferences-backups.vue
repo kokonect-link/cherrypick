@@ -105,7 +105,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'enableHomeTimeline',
 	'enableLocalTimeline',
 	'enableSocialTimeline',
-	'enableCatTimeline',
 	'enableGlobalTimeline',
 	'enableListTimeline',
 	'enableAntennaTimeline',

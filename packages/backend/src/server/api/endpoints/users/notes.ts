@@ -43,6 +43,7 @@ export const paramDef = {
 		userId: { type: 'string', format: 'misskey:id' },
 		withReplies: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
+		withCats: { type: 'boolean', default: false },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
@@ -137,6 +138,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					qb.orWhere('note.fileIds != \'{}\'');
 					qb.orWhere('0 < (SELECT COUNT(*) FROM poll WHERE poll."noteId" = note.id)');
 				}));
+			}
+
+			if (ps.withCats) {
+				query.andWhere('(select "isCat" from "user" where id = note."userId")');
 			}
 
 			//#endregion

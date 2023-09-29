@@ -222,13 +222,6 @@ export type Channels = {
         };
         receives: null;
     };
-    catTimeline: {
-        params: null;
-        events: {
-            note: (payload: Note) => void;
-        };
-        receives: null;
-    };
     globalTimeline: {
         params: null;
         events: {
@@ -2478,7 +2471,6 @@ type LiteInstanceMetadata = {
     feedbackUrl: string;
     disableRegistration: boolean;
     disableLocalTimeline: boolean;
-    disableCatTimeline: boolean;
     disableGlobalTimeline: boolean;
     driveCapacityPerLocalUserMb: number;
     driveCapacityPerRemoteUserMb: number;

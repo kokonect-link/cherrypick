@@ -9,12 +9,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i v-if="column.tl === 'home'" class="ti ti-home"></i>
 		<i v-else-if="column.tl === 'local'" class="ti ti-planet"></i>
 		<i v-else-if="column.tl === 'social'" class="ti ti-universe"></i>
-		<i v-else-if="column.tl === 'cat'" class="ti ti-cat"></i>
 		<i v-else-if="column.tl === 'global'" class="ti ti-world"></i>
 		<span style="margin-left: 8px;">{{ column.name }}</span>
 	</template>
 
-	<div v-if="(((column.tl === 'local' || column.tl === 'social' || column.tl === 'cat') && !isLocalTimelineAvailable) || (column.tl === 'cat' && !isCatTimelineAvailable) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
+	<div v-if="(((column.tl === 'local' || column.tl === 'social') && !isLocalTimelineAvailable) || (column.tl === 'global' && !isGlobalTimelineAvailable))" :class="$style.disabled">
 		<p :class="$style.disabledTitle">
 			<i class="ti ti-circle-minus"></i>
 			{{ i18n.ts._disabledTimeline.title }}
@@ -24,11 +23,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkTimeline
 		v-else-if="column.tl"
 		ref="timeline"
-		:key="column.tl + withRenotes + withReplies + onlyFiles"
+		:key="column.tl + withRenotes + withReplies + onlyFiles + onlyCats"
 		:src="column.tl"
 		:withRenotes="withRenotes"
 		:withReplies="withReplies"
 		:onlyFiles="onlyFiles"
+    :onlyCats="onlyCats"
 	/>
 </XColumn>
 </template>
@@ -52,10 +52,10 @@ let disabled = $ref(false);
 
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
-const isCatTimelineAvailable = (($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable));
 const withRenotes = $ref(props.column.withRenotes ?? true);
 const withReplies = $ref(props.column.withReplies ?? false);
 const onlyFiles = $ref(props.column.onlyFiles ?? false);
+const onlyCats = $ref(props.column.onlyCats ?? false);
 
 watch($$(withRenotes), v => {
 	updateColumn(props.column.id, {
@@ -75,13 +75,18 @@ watch($$(onlyFiles), v => {
 	});
 });
 
+watch($$(onlyCats), v => {
+  updateColumn(props.column.id, {
+    onlyCats: v,
+  });
+});
+
 onMounted(() => {
 	if (props.column.tl == null) {
 		setType();
 	} else if ($i) {
 		disabled = (
 			(!((instance.policies.ltlAvailable) || ($i.policies.ltlAvailable)) && ['local', 'social'].includes(props.column.tl)) ||
-			(!((instance.policies.ctlAvailable) || ($i.policies.ctlAvailable)) && ['cat'].includes(props.column.tl)) ||
 			(!((instance.policies.gtlAvailable) || ($i.policies.gtlAvailable)) && ['global'].includes(props.column.tl)));
 	}
 });
@@ -95,8 +100,6 @@ async function setType() {
 			value: 'local' as const, text: i18n.ts._timelines.local,
 		}, {
 			value: 'social' as const, text: i18n.ts._timelines.social,
-		}, {
-			value: 'cat' as const, text: i18n.ts._timelines.cat,
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,
 		}],
@@ -128,6 +131,10 @@ const menu = [{
 	type: 'switch',
 	text: i18n.ts.fileAttachedOnly,
 	ref: $$(onlyFiles),
+}, {
+  type: 'switch',
+  text: i18n.ts.showCatOnly,
+  ref: $$(onlyCats),
 }];
 </script>
 
