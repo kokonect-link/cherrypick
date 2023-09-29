@@ -22,10 +22,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
-출시일: unreleased<br>
-기반 Misskey 버전: 2023.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+## 4.3.0
+출시일: 2023/09/29<br>
+기반 Misskey 버전: 2023.9.1<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGELOG.md#202391) 문서를 참고하십시오.
 
 ### General
 - Add: Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
