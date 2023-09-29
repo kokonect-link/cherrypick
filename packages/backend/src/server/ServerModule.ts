@@ -35,8 +35,6 @@ import { HashtagChannelService } from './api/stream/channels/hashtag.js';
 import { HomeTimelineChannelService } from './api/stream/channels/home-timeline.js';
 import { HybridTimelineChannelService } from './api/stream/channels/hybrid-timeline.js';
 import { LocalTimelineChannelService } from './api/stream/channels/local-timeline.js';
-import { MediaTimelineChannelService } from './api/stream/channels/media-timeline.js';
-import { CatTimelineChannelService } from './api/stream/channels/cat-timeline.js';
 import { MessagingIndexChannelService } from './api/stream/channels/messaging-index.js';
 import { MessagingChannelService } from './api/stream/channels/messaging.js';
 import { QueueStatsChannelService } from './api/stream/channels/queue-stats.js';
@@ -84,8 +82,6 @@ import { OAuth2ProviderService } from './oauth/OAuth2ProviderService.js';
 		HomeTimelineChannelService,
 		HybridTimelineChannelService,
 		LocalTimelineChannelService,
-		MediaTimelineChannelService,
-		CatTimelineChannelService,
 		MessagingIndexChannelService,
 		MessagingChannelService,
 		QueueStatsChannelService,

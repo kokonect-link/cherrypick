@@ -215,21 +215,7 @@ export type Channels = {
         };
         receives: null;
     };
-    mediaTimeline: {
-        params: null;
-        events: {
-            note: (payload: Note) => void;
-        };
-        receives: null;
-    };
     hybridTimeline: {
-        params: null;
-        events: {
-            note: (payload: Note) => void;
-        };
-        receives: null;
-    };
-    catTimeline: {
         params: null;
         events: {
             note: (payload: Note) => void;
@@ -1587,7 +1573,7 @@ export type Endpoints = {
             receiveAnnouncementEmail?: boolean;
             alwaysMarkNsfw?: boolean;
             mutedWords?: string[][];
-            mutingNotificationTypes?: Notification_2['type'][];
+            notificationRecieveConfig?: any;
             emailNotificationTypes?: string[];
             alsoKnownAs?: string[];
         };
@@ -2485,8 +2471,6 @@ type LiteInstanceMetadata = {
     feedbackUrl: string;
     disableRegistration: boolean;
     disableLocalTimeline: boolean;
-    disableMediaTimeline: boolean;
-    disableTimeline: boolean;
     disableGlobalTimeline: boolean;
     driveCapacityPerLocalUserMb: number;
     driveCapacityPerRemoteUserMb: number;
@@ -2548,7 +2532,22 @@ type MeDetailed = UserDetailed & {
     isDeleted: boolean;
     isExplorable: boolean;
     mutedWords: string[][];
-    mutingNotificationTypes: string[];
+    notificationRecieveConfig: {
+        [notificationType in typeof notificationTypes_2[number]]?: {
+            type: 'all';
+        } | {
+            type: 'never';
+        } | {
+            type: 'following';
+        } | {
+            type: 'follower';
+        } | {
+            type: 'mutualFollow';
+        } | {
+            type: 'list';
+            userListId: string;
+        };
+    };
     noCrawle: boolean;
     receiveAnnouncementEmail: boolean;
     usePasswordLessLogin: boolean;
@@ -2677,10 +2676,22 @@ type ModerationLog = {
 } | {
     type: 'unmarkSensitiveDriveFile';
     info: ModerationLogPayloads['unmarkSensitiveDriveFile'];
+} | {
+    type: 'createInvitation';
+    info: ModerationLogPayloads['createInvitation'];
+} | {
+    type: 'createAd';
+    info: ModerationLogPayloads['createAd'];
+} | {
+    type: 'updateAd';
+    info: ModerationLogPayloads['updateAd'];
+} | {
+    type: 'deleteAd';
+    info: ModerationLogPayloads['deleteAd'];
 });
 
 // @public (undocumented)
-export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "unsuspend", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport"];
+export const moderationLogTypes: readonly ["updateServerSettings", "suspend", "unsuspend", "updateUserNote", "addCustomEmoji", "updateCustomEmoji", "deleteCustomEmoji", "assignRole", "unassignRole", "createRole", "updateRole", "deleteRole", "clearQueue", "promoteQueue", "deleteDriveFile", "deleteNote", "createGlobalAnnouncement", "createUserAnnouncement", "updateGlobalAnnouncement", "updateUserAnnouncement", "deleteGlobalAnnouncement", "deleteUserAnnouncement", "resetPassword", "suspendRemoteInstance", "unsuspendRemoteInstance", "markSensitiveDriveFile", "unmarkSensitiveDriveFile", "resolveAbuseReport", "createInvitation", "createAd", "updateAd", "deleteAd"];
 
 // @public (undocumented)
 export const mutedNoteReasons: readonly ["word", "manual", "spam", "other"];
@@ -2689,6 +2700,7 @@ export const mutedNoteReasons: readonly ["word", "manual", "spam", "other"];
 type Note = {
     id: ID;
     createdAt: DateString;
+    updatedAt?: DateString | null;
     text: string | null;
     cw: string | null;
     user: User;
@@ -3033,7 +3045,8 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:659:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
-// src/entities.ts:588:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:107:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
+// src/entities.ts:602:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

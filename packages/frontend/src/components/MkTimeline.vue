@@ -20,14 +20,23 @@ import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	src: string;
 	list?: string;
 	antenna?: string;
 	channel?: string;
 	role?: string;
 	sound?: boolean;
-}>();
+	withRenotes?: boolean;
+	withReplies?: boolean;
+	onlyFiles?: boolean;
+  onlyCats?: boolean;
+}>(), {
+	withRenotes: true,
+	withReplies: false,
+	onlyFiles: false,
+	onlyCats: false,
+});
 
 const emit = defineEmits<{
 	(ev: 'note'): void;
@@ -83,10 +92,16 @@ if (props.src === 'antenna') {
 } else if (props.src === 'home') {
 	endpoint = 'notes/timeline';
 	query = {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('homeTimeline', {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
@@ -98,62 +113,59 @@ if (props.src === 'antenna') {
 } else if (props.src === 'local') {
 	endpoint = 'notes/local-timeline';
 	query = {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('localTimeline', {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
 	tlIcon = 'ti ti-planet';
 	tlHint = i18n.ts._tlTutorial.step1_2;
 	tlHintClosed = defaultStore.state.tlLocalHintClosed;
-} else if (props.src === 'media') {
-	endpoint = 'notes/media-timeline';
-	connection = stream.useChannel('mediaTimeline');
-	connection.on('note', prependFilterdMedia);
-
-	tlIcon = 'ti ti-photo';
-	tlHint = i18n.ts._tlTutorial.step1_3;
-	tlHintClosed = defaultStore.state.tlMediaHintClosed;
 } else if (props.src === 'social') {
 	endpoint = 'notes/hybrid-timeline';
 	query = {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('hybridTimeline', {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
-	tlIcon = 'ti ti-rocket';
-	tlHint = i18n.ts._tlTutorial.step1_4;
+	tlIcon = 'ti ti-universe';
+	tlHint = i18n.ts._tlTutorial.step1_3;
 	tlHintClosed = defaultStore.state.tlSocialHintClosed;
-} else if (props.src === 'cat') {
-	endpoint = 'notes/cat-timeline';
-	query = {
-		withReplies: defaultStore.state.showTimelineReplies,
-	};
-	connection = stream.useChannel('catTimeline', {
-		withReplies: defaultStore.state.showTimelineReplies,
-	});
-	connection.on('note', prepend);
-
-	tlIcon = 'ti ti-cat';
-	tlHint = i18n.ts._tlTutorial.step1_5;
-	tlHintClosed = defaultStore.state.tlCatHintClosed;
 } else if (props.src === 'global') {
 	endpoint = 'notes/global-timeline';
 	query = {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('globalTimeline', {
-		withReplies: defaultStore.state.showTimelineReplies,
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
 	tlIcon = 'ti ti-world';
-	tlHint = i18n.ts._tlTutorial.step1_6;
+	tlHint = i18n.ts._tlTutorial.step1_4;
 	tlHintClosed = defaultStore.state.tlGlobalHintClosed;
 } else if (props.src === 'mentions') {
 	endpoint = 'notes/mentions';
@@ -174,9 +186,17 @@ if (props.src === 'antenna') {
 } else if (props.src === 'list') {
 	endpoint = 'notes/user-list-timeline';
 	query = {
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 		listId: props.list,
 	};
 	connection = stream.useChannel('userList', {
+		withRenotes: props.withRenotes,
+		withReplies: props.withReplies,
+		withFiles: props.onlyFiles ? true : undefined,
+		withCats: props.onlyCats,
 		listId: props.list,
 	});
 	connection.on('note', prepend);
@@ -208,14 +228,8 @@ function closeHint() {
 		case 'local':
 			defaultStore.set('tlLocalHintClosed', true);
 			break;
-		case 'media':
-			defaultStore.set('tlMediaHintClosed', true);
-			break;
 		case 'social':
 			defaultStore.set('tlSocialHintClosed', true);
-			break;
-		case 'cat':
-			defaultStore.set('tlCatHintClosed', true);
 			break;
 		case 'global':
 			defaultStore.set('tlGlobalHintClosed', true);

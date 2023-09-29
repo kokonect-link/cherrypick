@@ -10,9 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_m">
 			<MkSwitch v-model="enableHomeTimeline"><i class="ti ti-home"></i> {{ i18n.ts._timelines.home }}</MkSwitch>
 			<MkSwitch v-model="enableLocalTimeline"><i class="ti ti-planet"></i> {{ i18n.ts._timelines.local }}</MkSwitch>
-			<MkSwitch v-model="enableMediaTimeline"><i class="ti ti-photo"></i> {{ i18n.ts._timelines.media }}</MkSwitch>
-			<MkSwitch v-model="enableSocialTimeline"><i class="ti ti-rocket"></i> {{ i18n.ts._timelines.social }}</MkSwitch>
-			<MkSwitch v-model="enableCatTimeline"><i class="ti ti-cat"></i> {{ i18n.ts._timelines.cat }}</MkSwitch>
+			<MkSwitch v-model="enableSocialTimeline"><i class="ti ti-universe"></i> {{ i18n.ts._timelines.social }}</MkSwitch>
 			<MkSwitch v-model="enableGlobalTimeline"><i class="ti ti-world"></i> {{ i18n.ts._timelines.global }}</MkSwitch>
 		</div>
 	</FormSection>
@@ -56,9 +54,7 @@ function save() {
 
 const enableHomeTimeline = computed(defaultStore.makeGetterSetter('enableHomeTimeline'));
 const enableLocalTimeline = computed(defaultStore.makeGetterSetter('enableLocalTimeline'));
-const enableMediaTimeline = computed(defaultStore.makeGetterSetter('enableMediaTimeline'));
 const enableSocialTimeline = computed(defaultStore.makeGetterSetter('enableSocialTimeline'));
-const enableCatTimeline = computed(defaultStore.makeGetterSetter('enableCatTimeline'));
 const enableGlobalTimeline = computed(defaultStore.makeGetterSetter('enableGlobalTimeline'));
 const enableListTimeline = computed(defaultStore.makeGetterSetter('enableListTimeline'));
 const enableAntennaTimeline = computed(defaultStore.makeGetterSetter('enableAntennaTimeline'));

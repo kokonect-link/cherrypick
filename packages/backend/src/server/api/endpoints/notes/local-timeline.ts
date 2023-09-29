@@ -42,6 +42,8 @@ export const paramDef = {
 	properties: {
 		withFiles: { type: 'boolean', default: false },
 		withReplies: { type: 'boolean', default: false },
+		withRenotes: { type: 'boolean', default: true },
+		withCats: { type: 'boolean', default: false },
 		fileType: { type: 'array', items: {
 			type: 'string',
 		} },
@@ -109,6 +111,20 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					query.andWhere('note.cw IS NULL');
 					query.andWhere('0 = (SELECT COUNT(*) FROM drive_file df WHERE df.id = ANY(note."fileIds") AND df."isSensitive" = TRUE)');
 				}
+			}
+
+			if (ps.withRenotes === false) {
+				query.andWhere(new Brackets(qb => {
+					qb.orWhere('note.renoteId IS NULL');
+					qb.orWhere(new Brackets(qb => {
+						qb.orWhere('note.text IS NOT NULL');
+						qb.orWhere('note.fileIds != \'{}\'');
+					}));
+				}));
+			}
+
+			if (ps.withCats) {
+				query.andWhere('(select "isCat" from "user" where id = note."userId")');
 			}
 			//#endregion
 

@@ -1197,6 +1197,10 @@ notifyNotes: "Notify about new notes"
 unnotifyNotes: "Stop notifying about new notes"
 authentication: "Authentication"
 authenticationRequiredToContinue: "Please authenticate to continue"
+dateAndTime: "Timestamp"
+showRenotes: "Show renotes"
+edited: "Edited"
+showCatOnly: "Show only cats"
 additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
@@ -1206,10 +1210,8 @@ _messaging:
 _tlTutorial:
   step1_1: 'The {icon} Home timeline is where you can see posts from the accounts you follow.'
   step1_2: 'The {icon} Local timeline is where you can see posts from everyone else on this server.'
-  step1_3: 'The {icon} Media timeline is where you can see posts from everyone else on this server, but only those that contain media(photos, videos).'
-  step1_4: 'The {icon} Social timeline is a combination of the Home and Local timelines.'
-  step1_5: 'The {icon} Cat timeline shows posts from users who have enabled cat on their social timeline.'
-  step1_6: 'The {icon} Global timeline is where you can see posts from every other connected server.'
+  step1_3: 'The {icon} Social timeline is a combination of the Home and Local timelines.'
+  step1_4: 'The {icon} Global timeline is where you can see posts from every other connected server.'
 _announcement:
   forExistingUsers: "Existing users only"
   forExistingUsersDescription: "This announcement will only be shown to users existing at the point of publishment if enabled. If disabled, those newly signing up after it has been posted will also see it."
@@ -1610,9 +1612,8 @@ _role:
   _options:
     gtlAvailable: "Can view the global timeline"
     ltlAvailable: "Can view the local timeline"
-    mtlAvailable: "Can view the media timeline"
-    ctlAvailable: "Can view the cat timeline"
     canPublicNote: "Can send public notes"
+    canEditNote: "Note editing"
     canInvite: "Can create instance invite codes"
     inviteLimit: "Invite limit"
     inviteLimitCycle: "Invite limit cooldown"
@@ -2196,9 +2197,7 @@ _instanceCharts:
 _timelines:
   home: "Home"
   local: "Local"
-  media: "Media"
   social: "Social"
-  cat: "Cat"
   global: "Global"
 _play:
   new: "Create Play"
@@ -2363,6 +2362,8 @@ _webhookSettings:
     reaction: "When receiving a reaction"
     mention: "When being mentioned"
 _moderationLogTypes:
+  createRole: "Role created"
+  deleteRole: "Role deleted"
   updateRole: "Role updated"
   assignRole: "Assigned to role"
   unassignRole: "Removed from role"
@@ -2386,6 +2387,8 @@ _moderationLogTypes:
   unsuspendRemoteInstance: "Remote instance unsuspended"
   markSensitiveDriveFile: "File marked as sensitive"
   unmarkSensitiveDriveFile: "File unmarked as sensitive"
+  resolveAbuseReport: "Report resolved"
+  createInvitation: "Invite generated"
 _abuse:
   _resolver:
     1hour: "one hour"

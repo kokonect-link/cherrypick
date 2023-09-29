@@ -49,11 +49,14 @@ export const paramDef = {
 		includeMyRenotes: { type: 'boolean', default: true },
 		includeRenotedMyNotes: { type: 'boolean', default: true },
 		includeLocalRenotes: { type: 'boolean', default: true },
+		withReplies: { type: 'boolean', default: false },
+		withRenotes: { type: 'boolean', default: true },
 		withFiles: {
 			type: 'boolean',
 			default: false,
 			description: 'Only show notes that have attached files.',
 		},
+		withCats: { type: 'boolean', default: false },
 	},
 	required: ['listId'],
 } as const;
@@ -130,8 +133,26 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}));
 			}
 
+			if (!ps.withReplies) {
+				query.andWhere('note.replyId IS NULL');
+			}
+
+			if (ps.withRenotes === false) {
+				query.andWhere(new Brackets(qb => {
+					qb.orWhere('note.renoteId IS NULL');
+					qb.orWhere(new Brackets(qb => {
+						qb.orWhere('note.text IS NOT NULL');
+						qb.orWhere('note.fileIds != \'{}\'');
+					}));
+				}));
+			}
+
 			if (ps.withFiles) {
 				query.andWhere('note.fileIds != \'{}\'');
+			}
+
+			if (ps.withCats) {
+				query.andWhere('(select "isCat" from "user" where id = note."userId")');
 			}
 			//#endregion
 

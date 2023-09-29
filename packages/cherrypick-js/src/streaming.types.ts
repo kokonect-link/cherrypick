@@ -56,21 +56,7 @@ export type Channels = {
 		};
 		receives: null;
 	};
-	mediaTimeline: {
-		params: null;
-		events: {
-			note: (payload: Note) => void;
-		};
-		receives: null;
-	};
 	hybridTimeline: {
-		params: null;
-		events: {
-			note: (payload: Note) => void;
-		};
-		receives: null;
-	};
-	catTimeline: {
 		params: null;
 		events: {
 			note: (payload: Note) => void;
@@ -146,6 +132,13 @@ export type NoteUpdatedEvent = {
 	type: 'deleted';
 	body: {
 		deletedAt: string;
+	};
+} | {
+	id: Note['id'];
+	type: 'updated';
+	body: {
+		cw: string | null;
+		text: string;
 	};
 } | {
 	id: Note['id'];
