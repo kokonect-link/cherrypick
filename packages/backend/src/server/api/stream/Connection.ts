@@ -13,10 +13,10 @@ import { bindThis } from '@/decorators.js';
 import { CacheService } from '@/core/CacheService.js';
 import { MiUserProfile } from '@/models/_.js';
 import type { MiUserGroup } from '@/models/UserGroup.js';
+import type { StreamEventEmitter, GlobalEvents } from '@/core/GlobalEventService.js';
 import type { ChannelsService } from './ChannelsService.js';
 import type { EventEmitter } from 'events';
 import type Channel from './channel.js';
-import type { StreamEventEmitter, StreamMessages } from './types.js';
 
 /**
  * Main stream connection
@@ -128,7 +128,7 @@ export default class Connection {
 	}
 
 	@bindThis
-	private onBroadcastMessage(data: StreamMessages['broadcast']['payload']) {
+	private onBroadcastMessage(data: GlobalEvents['broadcast']['payload']) {
 		this.sendMessageToWs(data.type, data.body);
 	}
 
@@ -202,7 +202,7 @@ export default class Connection {
 	}
 
 	@bindThis
-	private async onNoteStreamMessage(data: StreamMessages['note']['payload']) {
+	private async onNoteStreamMessage(data: GlobalEvents['note']['payload']) {
 		this.sendMessageToWs('noteUpdated', {
 			id: data.body.id,
 			type: data.type,

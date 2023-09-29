@@ -6,9 +6,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<MkPageHeader v-else-if="isMobile || !isFriendly" v-model:tab="src" style="position: relative; z-index: 1001" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<MkPageHeader v-else v-model:tab="src" style="position: relative; z-index: 1001" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
@@ -34,9 +33,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.tl">
 				<MkTimeline
 					ref="tlComponent"
-					:key="src"
+					:key="src + withRenotes + withReplies + onlyFiles"
 					:src="src.split(':')[0]"
 					:list="src.split(':')[1]"
+					:withRenotes="withRenotes"
+					:withReplies="withReplies"
+					:onlyFiles="onlyFiles"
 					:sound="true"
 					@queue="queueUpdated"
 				/>
@@ -80,7 +82,6 @@ const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
-const isMediaTimelineAvailable = ($i == null && instance.policies.mtlAvailable) || ($i != null && $i.policies.mtlAvailable);
 const isCatTimelineAvailable = ($i == null && instance.policies.ctlAvailable) || ($i != null && $i.policies.ctlAvailable);
 const keymap = {
 	't': focus,
@@ -92,10 +93,22 @@ const rootEl = $shallowRef<HTMLElement>();
 let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
+const withRenotes = $ref(true);
+const withReplies = $ref(false);
+const onlyFiles = $ref(false);
+const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
+const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
 watch($$(src), () => {
 	queue = 0;
 	queueUpdated(queue);
+});
+
+watch([
+  friendlyEnableNotifications,
+  friendlyEnableWidgets,
+], async () => {
+  await reloadAsk();
 });
 
 onMounted(() => {
@@ -147,7 +160,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'media' | 'social' | 'cat' | 'global' | `list:${string}`): void {
+function saveSrc(newSrc: 'home' | 'local' | 'social' | 'cat' | 'global' | `list:${string}`): void {
 	let userList = null;
 	if (newSrc.startsWith('userList:')) {
 		const id = newSrc.substring('userList:'.length);
@@ -186,23 +199,45 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-	icon: friendlyEnableNotifications.value ? 'ti ti-notification' : 'ti ti-notification-off',
-	text: friendlyEnableNotifications.value ? i18n.ts.friendlyEnableNotifications : i18n.ts.friendlyDisableNotifications,
-	handler: () => {
-		friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
-		reloadAsk();
-	},
-}, {
-	icon: friendlyEnableWidgets.value ? 'ti ti-apps' : 'ti ti-apps-off',
-	text: friendlyEnableWidgets.value ? i18n.ts.friendlyEnableWidgets : i18n.ts.friendlyDisableWidgets,
-	handler: () => {
-		friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
-		reloadAsk();
-	},
+  icon: 'ti ti-dots',
+  text: i18n.ts.options,
+  handler: (ev) => {
+    os.popupMenu([{
+      type: 'switch',
+      text: i18n.ts.friendlyEnableNotifications,
+      icon: 'ti ti-notification',
+      ref: friendlyEnableNotifications,
+      action: () => {
+        friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
+        reloadAsk;
+      },
+    }, {
+      type: 'switch',
+      text: i18n.ts.friendlyEnableWidgets,
+      icon: 'ti ti-apps',
+      ref: friendlyEnableWidgets,
+      action: () => {
+        friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
+        reloadAsk;
+      },
+    }, {
+      type: 'switch',
+      text: i18n.ts.showRenotes,
+      icon: 'ti ti-repeat',
+      ref: $$(withRenotes),
+    }, {
+      type: 'switch',
+      text: i18n.ts.withReplies,
+      icon: 'ti ti-arrow-back-up',
+      ref: $$(withReplies),
+    }, {
+      type: 'switch',
+      text: i18n.ts.fileAttachedOnly,
+      icon: 'ti ti-photo',
+      ref: $$(onlyFiles),
+    }], ev.currentTarget ?? ev.target);
+  },
 }]);
-
-const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
-const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,
@@ -219,15 +254,10 @@ const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLis
 	title: i18n.ts._timelines.local,
 	icon: 'ti ti-planet',
 	iconOnly: true,
-}, ...(isMediaTimelineAvailable && defaultStore.state.enableMediaTimeline ? [{
-	key: 'media',
-	title: i18n.ts._timelines.media,
-	icon: 'ti ti-photo',
-	iconOnly: true,
-}] : []), ...(defaultStore.state.enableSocialTimeline ? [{
+}, ...(defaultStore.state.enableSocialTimeline ? [{
 	key: 'social',
 	title: i18n.ts._timelines.social,
-	icon: 'ti ti-rocket',
+	icon: 'ti ti-universe',
 	iconOnly: true,
 }] : []), ...(isCatTimelineAvailable && defaultStore.state.enableCatTimeline ? [{
 	key: 'cat',
@@ -273,7 +303,7 @@ const headerTabsWhenNotLogin = $computed(() => [
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'media' ? 'ti ti-photo' : src === 'social' ? 'ti ti-rocket' : src === 'cat' ? 'ti ti-cat' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
+	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-universe' : src === 'cat' ? 'ti ti-cat' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
 })));
 </script>
 

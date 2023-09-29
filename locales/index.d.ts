@@ -1201,6 +1201,11 @@ export interface Locale {
     "authentication": string;
     "authenticationRequiredToContinue": string;
     "dateAndTime": string;
+    "showRenotes": string;
+    "edited": string;
+    "notificationRecieveConfig": string;
+    "mutualFollow": string;
+    "fileAttachedOnly": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
@@ -1214,7 +1219,6 @@ export interface Locale {
         "step1_3": string;
         "step1_4": string;
         "step1_5": string;
-        "step1_6": string;
     };
     "_announcement": {
         "forExistingUsers": string;
@@ -1705,9 +1709,9 @@ export interface Locale {
         "_options": {
             "gtlAvailable": string;
             "ltlAvailable": string;
-            "mtlAvailable": string;
             "ctlAvailable": string;
             "canPublicNote": string;
+            "canEditNote": string;
             "canInvite": string;
             "inviteLimit": string;
             "inviteLimitCycle": string;
@@ -2551,6 +2555,10 @@ export interface Locale {
         "markSensitiveDriveFile": string;
         "unmarkSensitiveDriveFile": string;
         "resolveAbuseReport": string;
+        "createInvitation": string;
+        "createAd": string;
+        "deleteAd": string;
+        "updateAd": string;
     };
     "_abuse": {
         "_resolver": {

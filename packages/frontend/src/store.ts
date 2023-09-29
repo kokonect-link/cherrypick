@@ -137,10 +137,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: [] as string[],
 	},
-	showTimelineReplies: {
-		where: 'account',
-		default: true,
-	},
 
 	menu: {
 		where: 'deviceAccount',
@@ -460,10 +456,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 	enableLocalTimeline: {
-		where: 'device',
-		default: true,
-	},
-	enableMediaTimeline: {
 		where: 'device',
 		default: true,
 	},

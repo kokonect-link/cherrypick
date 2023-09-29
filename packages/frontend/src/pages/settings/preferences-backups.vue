@@ -104,7 +104,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'showSubNoteFooterButton',
 	'enableHomeTimeline',
 	'enableLocalTimeline',
-	'enableMediaTimeline',
 	'enableSocialTimeline',
 	'enableCatTimeline',
 	'enableGlobalTimeline',
