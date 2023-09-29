@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:withRenotes="withRenotes"
 		:withReplies="withReplies"
 		:onlyFiles="onlyFiles"
-    :onlyCats="onlyCats"
+		:onlyCats="onlyCats"
 	/>
 </XColumn>
 </template>
@@ -76,9 +76,9 @@ watch($$(onlyFiles), v => {
 });
 
 watch($$(onlyCats), v => {
-  updateColumn(props.column.id, {
-    onlyCats: v,
-  });
+	updateColumn(props.column.id, {
+		onlyCats: v,
+	});
 });
 
 onMounted(() => {
@@ -132,9 +132,9 @@ const menu = [{
 	text: i18n.ts.fileAttachedOnly,
 	ref: $$(onlyFiles),
 }, {
-  type: 'switch',
-  text: i18n.ts.showCatOnly,
-  ref: $$(onlyCats),
+	type: 'switch',
+	text: i18n.ts.showCatOnly,
+	ref: $$(onlyCats),
 }];
 </script>
 

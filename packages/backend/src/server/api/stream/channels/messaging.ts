@@ -11,8 +11,8 @@ import { MessagingService } from '@/core/MessagingService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
-import Channel from '../channel.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
+import Channel from '../channel.js';
 
 class MessagingChannel extends Channel {
 	public readonly chName = 'messaging';

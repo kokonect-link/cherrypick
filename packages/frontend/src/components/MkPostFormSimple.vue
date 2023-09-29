@@ -776,7 +776,7 @@ async function post(ev?: MouseEvent) {
 		visibleUserIds: visibility === 'specified' ? visibleUsers.map(u => u.id) : undefined,
 		reactionAcceptance,
 		disableRightClick: disableRightClick,
-    noteId: props.updateMode ? props.initialNote?.id : undefined,
+		noteId: props.updateMode ? props.initialNote?.id : undefined,
 	};
 
 	if (withHashtags && hashtags && hashtags.trim() !== '') {
@@ -892,10 +892,10 @@ function showActions(ev) {
 		action: () => {
 			action.handler({
 				text: text,
-        cw: cw,
+				cw: cw,
 			}, (key, value) => {
 				if (key === 'text') { text = value; }
-        if (key === 'cw') { useCw = value !== null; cw = value; }
+				if (key === 'cw') { useCw = value !== null; cw = value; }
 			});
 		},
 	})), ev.currentTarget ?? ev.target);

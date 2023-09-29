@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<XHeader :actions="headerActions" :tabs="headerTabs" />
+		<XHeader :actions="headerActions" :tabs="headerTabs"/>
 	</template>
 	<MkSpacer :contentMax="900">
 		<MkSwitch :modelValue="publishing" @update:modelValue="onChangePublishing">
@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkSwitch>
 		<div>
 			<div v-for="ad in ads" class="_panel _gaps_m" :class="$style.ad">
-				<MkAd v-if="ad.url" :specify="ad" />
+				<MkAd v-if="ad.url" :specify="ad"/>
 				<MkInput v-model="ad.url" type="url">
 					<template #label>URL</template>
 				</MkInput>
@@ -51,8 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span>
 						{{ i18n.ts._ad.timezoneinfo }}
 						<div v-for="(day, index) in daysOfWeek" :key="index">
-							<input :id="`ad${ad.id}-${index}`" type="checkbox" :checked="(ad.dayOfWeek & (1 << index)) !== 0"
-								@change="toggleDayOfWeek(ad, index)">
+							<input :id="`ad${ad.id}-${index}`" type="checkbox" :checked="(ad.dayOfWeek & (1 << index)) !== 0" @change="toggleDayOfWeek(ad, index)">
 							<label :for="`ad${ad.id}-${index}`">{{ day }}</label>
 						</div>
 					</span>
@@ -61,9 +60,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.memo }}</template>
 				</MkTextarea>
 				<div class="buttons">
-					<MkButton class="button" inline primary style="margin-right: 12px;" @click="save(ad)"><i
-							class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-					<MkButton class="button" inline danger @click="remove(ad)"><i class="ti ti-trash"></i> {{ i18n.ts.remove }}
+					<MkButton class="button" inline primary style="margin-right: 12px;" @click="save(ad)">
+						<i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}
+					</MkButton>
+					<MkButton class="button" inline danger @click="remove(ad)">
+						<i class="ti ti-trash"></i> {{ i18n.ts.remove }}
 					</MkButton>
 				</div>
 			</div>

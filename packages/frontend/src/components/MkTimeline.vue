@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<{
 	withRenotes: true,
 	withReplies: false,
 	onlyFiles: false,
-  onlyCats: false,
+	onlyCats: false,
 });
 
 const emit = defineEmits<{
@@ -95,13 +95,13 @@ if (props.src === 'antenna') {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('homeTimeline', {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
@@ -116,13 +116,13 @@ if (props.src === 'antenna') {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('localTimeline', {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
@@ -135,13 +135,13 @@ if (props.src === 'antenna') {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('hybridTimeline', {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
@@ -154,13 +154,13 @@ if (props.src === 'antenna') {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	};
 	connection = stream.useChannel('globalTimeline', {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 	});
 	connection.on('note', prepend);
 
@@ -189,14 +189,14 @@ if (props.src === 'antenna') {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 		listId: props.list,
 	};
 	connection = stream.useChannel('userList', {
 		withRenotes: props.withRenotes,
 		withReplies: props.withReplies,
 		withFiles: props.onlyFiles ? true : undefined,
-    withCats: props.onlyCats,
+		withCats: props.onlyCats,
 		listId: props.list,
 	});
 	connection.on('note', prepend);

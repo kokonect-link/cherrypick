@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:withRenotes="withRenotes"
 					:withReplies="withReplies"
 					:onlyFiles="onlyFiles"
-          :onlyCats="onlyCats"
+					:onlyCats="onlyCats"
 					:sound="true"
 					@queue="queueUpdated"
 				/>
@@ -106,10 +106,10 @@ watch($$(src), () => {
 });
 
 watch([
-  friendlyEnableNotifications,
-  friendlyEnableWidgets,
+	friendlyEnableNotifications,
+	friendlyEnableWidgets,
 ], async () => {
-  await reloadAsk();
+	await reloadAsk();
 });
 
 onMounted(() => {
@@ -200,47 +200,47 @@ async function reloadAsk() {
 }
 
 const headerActions = $computed(() => [{
-  icon: 'ti ti-dots',
-  text: i18n.ts.options,
-  handler: (ev) => {
-    os.popupMenu([{
-      type: 'switch',
-      text: i18n.ts.friendlyEnableNotifications,
-      icon: 'ti ti-notification',
-      ref: friendlyEnableNotifications,
-      action: () => {
-        friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
-      },
-    }, {
-      type: 'switch',
-      text: i18n.ts.friendlyEnableWidgets,
-      icon: 'ti ti-apps',
-      ref: friendlyEnableWidgets,
-      action: () => {
-        friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
-      },
-    }, {
-      type: 'switch',
-      text: i18n.ts.showRenotes,
-      icon: 'ti ti-repeat',
-      ref: $$(withRenotes),
-    }, {
-      type: 'switch',
-      text: i18n.ts.withReplies,
-      icon: 'ti ti-arrow-back-up',
-      ref: $$(withReplies),
-    }, {
-      type: 'switch',
-      text: i18n.ts.fileAttachedOnly,
-      icon: 'ti ti-photo',
-      ref: $$(onlyFiles),
-    }, {
-      type: 'switch',
-      text: i18n.ts.showCatOnly,
-      icon: 'ti ti-cat',
-      ref: $$(onlyCats),
-    }], ev.currentTarget ?? ev.target);
-  },
+	icon: 'ti ti-dots',
+	text: i18n.ts.options,
+	handler: (ev) => {
+		os.popupMenu([{
+			type: 'switch',
+			text: i18n.ts.friendlyEnableNotifications,
+			icon: 'ti ti-notification',
+			ref: friendlyEnableNotifications,
+			action: () => {
+				friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
+			},
+		}, {
+			type: 'switch',
+			text: i18n.ts.friendlyEnableWidgets,
+			icon: 'ti ti-apps',
+			ref: friendlyEnableWidgets,
+			action: () => {
+				friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
+			},
+		}, {
+			type: 'switch',
+			text: i18n.ts.showRenotes,
+			icon: 'ti ti-repeat',
+			ref: $$(withRenotes),
+		}, {
+			type: 'switch',
+			text: i18n.ts.withReplies,
+			icon: 'ti ti-arrow-back-up',
+			ref: $$(withReplies),
+		}, {
+			type: 'switch',
+			text: i18n.ts.fileAttachedOnly,
+			icon: 'ti ti-photo',
+			ref: $$(onlyFiles),
+		}, {
+			type: 'switch',
+			text: i18n.ts.showCatOnly,
+			icon: 'ti ti-cat',
+			ref: $$(onlyCats),
+		}], ev.currentTarget ?? ev.target);
+	},
 }]);
 
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
