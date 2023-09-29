@@ -7,7 +7,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
 		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
-		<div :class="$style.version">✨{{ version }}🚀</div>
+		<div :class="$style.version">
+			<div>✨{{ version }}🚀</div>
+			<div style="font-size: 0.8em;">{{ basedMisskeyVersion }}</div>
+		</div>
 		<MkButton rounded full @click="showChangelog = true; modal.value.close();">{{ i18n.ts.whatIsNew }}</MkButton>
 		<MkButton :class="$style.gotIt" primary rounded full @click="close">{{ i18n.ts.gotIt }}</MkButton>
 	</div>
@@ -15,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkModal v-else-if="showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
 		<div :class="$style.title" style="margin: 0 0 1.5em; font-weight: normal;">{{ i18n.ts.whatIsNew }}</div>
-		<MkButton rounded full @click="whatIsNew">Misskey</MkButton>
+		<MkButton rounded full @click="whatIsNewMisskey">Misskey</MkButton>
 		<MkButton rounded full style="margin: 8px 0 0;" @click="whatIsNewCherryPick">CherryPick</MkButton>
 		<MkButton :class="$style.gotIt" primary rounded full @click="close">{{ i18n.ts.ok }}</MkButton>
 	</div>
@@ -27,7 +30,7 @@ import { onMounted, shallowRef } from 'vue';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
-import { version } from '@/config.js';
+import { version, basedMisskeyVersion } from '@/config.js';
 import { i18n } from '@/i18n.js';
 import { confetti } from '@/scripts/confetti.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
@@ -39,9 +42,9 @@ let showChangelog = $ref(false);
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
-const whatIsNew = () => {
+const whatIsNewMisskey = () => {
 	// modal.value.close();
-	window.open(`https://misskey-hub.net/docs/releases.html#_${version.replace(/\./g, '-')}`, '_blank');
+	window.open(`https://misskey-hub.net/docs/releases.html#_${basedMisskeyVersion.replace(/\./g, '-')}`, '_blank');
 };
 
 const whatIsNewCherryPick = () => {

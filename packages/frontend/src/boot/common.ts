@@ -8,7 +8,7 @@ import { compareVersions } from 'compare-versions';
 import widgets from '@/widgets/index.js';
 import directives from '@/directives/index.js';
 import components from '@/components/index.js';
-import { version, ui, lang, updateLocale } from '@/config.js';
+import { version, basedMisskeyVersion, ui, lang, updateLocale } from '@/config.js';
 import { applyTheme } from '@/scripts/theme.js';
 import { isDeviceDarkmode } from '@/scripts/is-device-darkmode.js';
 import { i18n, updateI18n } from '@/i18n.js';
@@ -72,6 +72,7 @@ export async function common(createVue: () => App<Element>) {
 
 	//#region クライアントが更新されたかチェック
 	const lastVersion = miLocalStorage.getItem('lastVersion');
+	const lastBasedMisskeyVersion = miLocalStorage.getItem('lastBasedMisskeyVersion');
 	if (lastVersion !== version) {
 		miLocalStorage.setItem('lastVersion', version);
 
@@ -84,11 +85,23 @@ export async function common(createVue: () => App<Element>) {
 			}
 		} catch (err) { /* empty */ }
 	}
+	if (lastBasedMisskeyVersion !== basedMisskeyVersion) {
+		miLocalStorage.setItem('lastBasedMisskeyVersion', basedMisskeyVersion);
+
+		// テーマリビルドするため
+		miLocalStorage.removeItem('theme');
+
+		try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
+			if (lastBasedMisskeyVersion != null && compareVersions(basedMisskeyVersion, lastBasedMisskeyVersion) === 1) {
+				isClientUpdated = true;
+			}
+		} catch (err) { /* empty */ }
+	}
 	//#endregion
 
 	//#region Detect language & fetch translations
 	const localeVersion = miLocalStorage.getItem('localeVersion');
-	const localeOutdated = (localeVersion == null || localeVersion !== version);
+	const localeOutdated = (localeVersion == null || localeVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion);
 	if (localeOutdated) {
 		const res = await window.fetch(`/assets/locales/${lang}.${version}.json`);
 		if (res.status === 200) {
