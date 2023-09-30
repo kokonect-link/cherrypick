@@ -150,7 +150,7 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { vibrate } from '@/scripts/vibrate.js';
-import XSigninDialog from "@/components/MkSigninDialog.vue";
+import XSigninDialog from '@/components/MkSigninDialog.vue';
 
 const modal = inject('modal');
 
@@ -932,9 +932,9 @@ function formClick() {
 }
 
 function signin() {
-  os.popup(XSigninDialog, {
-    autoSet: true,
-  }, {}, 'closed');
+	os.popup(XSigninDialog, {
+		autoSet: true,
+	}, {}, 'closed');
 }
 
 onMounted(() => {
