@@ -234,6 +234,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: window.matchMedia('(prefers-reduced-motion)').matches,
 	},
+	showingAnimatedImages: {
+		where: 'device',
+		default: 'always' as 'always' | 'interaction' | 'inactive',
+	},
 	emojiStyle: {
 		where: 'device',
 		default: 'twemoji', // twemoji / fluentEmoji / native

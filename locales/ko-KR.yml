@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+showingAnimatedImagesDescription: "'건드리면 움직임'으로 설정하면 이미지 위에 마우스를 올리거나 이미지를 터치하면 움직여요."
 showFixedPostFormInReplies: "답글에 글 작성란 표시"
 showFixedPostFormInRepliesDescription: "데스크톱과 태블릿 환경에서만 표시돼요."
 renoteQuoteButtonSeparation: "리노트와 인용 버튼을 분리해서 표시하기"
@@ -1191,6 +1192,10 @@ additionalPermissionsForFlash: "Play에 대한 추가 권한"
 thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구해요"
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
 translateProfile: "프로필 번역하기"
+_showingAnimatedImages:
+  always: "항상 움직임"
+  interaction: "건드리면 움직임"
+  inactive: "일정 시간이 지나면 멈춤"
 _messaging:
   direct: "다이렉트 메시지"
 _tlTutorial:

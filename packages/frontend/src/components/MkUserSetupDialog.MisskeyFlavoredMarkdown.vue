@@ -40,6 +40,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<MkInfo v-if="!disableShowingAnimatedImages" style="margin-bottom: 15px;" warn>{{ i18n.ts.photosensitiveSeizuresWarning }}</MkInfo>
 		<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption>{{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
+		<MkRadios v-if="!disableShowingAnimatedImages" v-model="showingAnimatedImages" style="margin-left: 44px;">
+			<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
+			<option value="interaction">{{ i18n.ts._showingAnimatedImages.interaction }}</option>
+			<option value="inactive">{{ i18n.ts._showingAnimatedImages.inactive }}</option>
+			<template #caption>{{ i18n.ts.showingAnimatedImagesDescription }}</template>
+		</MkRadios>
 	</MkFolder>
 
 	<MkInfo>{{ i18n.ts._initialAccountSetting.youCanEditMoreSettingsInSettingsPageLater }}</MkInfo>
@@ -52,12 +58,14 @@ import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
+import MkRadios from '@/components/MkRadios.vue';
 import { defaultStore } from '@/store.js';
 
 const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
 const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
 const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
+const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 </script>
 
 <style lang="scss" module>

@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+showingAnimatedImagesDescription: "When set to \"Animate on interaction\", the image will play when you hover over it or touch it."
 showFixedPostFormInReplies: "Show posting form in replies"
 showFixedPostFormInRepliesDescription: "Only visible in desktop and tablet environments."
 renoteQuoteButtonSeparation: "Show renote and quote buttons separately"
@@ -1205,6 +1206,10 @@ additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
+_showingAnimatedImages:
+  always: "Always animate"
+  interaction: "Animate on interaction"
+  inactive: "Stop after a certain amount of time"
 _messaging:
   direct: "Direct Message"
 _tlTutorial:

@@ -131,6 +131,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
 				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption>{{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
+				<MkSelect v-if="!disableShowingAnimatedImages" v-model="showingAnimatedImages" style="margin-left: 44px;">
+					<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
+					<option value="interaction">{{ i18n.ts._showingAnimatedImages.interaction }}</option>
+					<option value="inactive">{{ i18n.ts._showingAnimatedImages.inactive }}</option>
+					<template #caption>{{ i18n.ts.showingAnimatedImagesDescription }}</template>
+				</MkSelect>
 				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
 				<MkSwitch v-model="hideAvatarsInNote">{{ i18n.ts.hideAvatarsInNote }} <span class="_beta">CherryPick</span></MkSwitch>
@@ -359,6 +365,7 @@ const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('
 const showReplyInNotification = computed(defaultStore.makeGetterSetter('showReplyInNotification'));
 const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('renoteQuoteButtonSeparation'));
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
+const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -415,6 +422,7 @@ watch([
 	showReplyInNotification,
 	renoteQuoteButtonSeparation,
 	showFixedPostFormInReplies,
+	showingAnimatedImages,
 ], async () => {
 	await reloadAsk();
 });
