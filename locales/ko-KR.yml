@@ -2110,6 +2110,7 @@ _visibility:
   disableFederation: "연합에 보내지 않기"
   disableFederationDescription: "다른 서버로 보내지 않을래요"
 _postForm:
+  signinRequiredPlaceholder: "노트를 작성하려면 로그인이 필요해요."
   replyPlaceholder: "이 노트에 답글..."
   quotePlaceholder: "이 노트를 인용..."
   channelPlaceholder: "채널에 게시하기..."

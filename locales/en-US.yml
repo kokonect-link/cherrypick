@@ -2136,6 +2136,7 @@ _visibility:
   disableFederation: "Defederate"
   disableFederationDescription: "Don't transmit to other instances"
 _postForm:
+  signinRequiredPlaceholder: "You must be logged in to create a notes."
   replyPlaceholder: "Reply to this note..."
   quotePlaceholder: "Quote this note..."
   channelPlaceholder: "Post to a channel..."

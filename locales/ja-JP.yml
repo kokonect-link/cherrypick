@@ -2191,6 +2191,7 @@ _visibility:
   disableFederationDescription: "他サーバーへの配信を行いません"
 
 _postForm:
+  signinRequiredPlaceholder: "ノートを作成するにはログインが必要です。"
   replyPlaceholder: "このノートに返信..."
   quotePlaceholder: "このノートを引用..."
   channelPlaceholder: "チャンネルに投稿..."

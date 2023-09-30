@@ -2278,6 +2278,7 @@ export interface Locale {
         "disableFederationDescription": string;
     };
     "_postForm": {
+        "signinRequiredPlaceholder": string;
         "replyPlaceholder": string;
         "quotePlaceholder": string;
         "channelPlaceholder": string;
