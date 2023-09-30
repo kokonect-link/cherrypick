@@ -176,6 +176,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.replies }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ti ti-repeat"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ti ti-icons"></i> {{ i18n.ts.reactions }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history' }]" @click="tab = 'history'"><i class="ti ti-pencil"></i> {{ i18n.ts.edited }}</button>
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
@@ -213,6 +214,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</template>
 			</MkPagination>
 		</div>
+		<div v-else-if="tab === 'history'" :class="$style.tab_history">
+			<div style="display: grid;">
+				<div v-for="text in appearNote.noteEditHistory" :class="$style.historyRoot" :key="text">
+					<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
+					<div :class="$style.historyMain">
+						<div :class="$style.historyHeader">
+							<MkUserName :user="appearNote.user" :nowrap="true"/>
+						</div>
+						<div>
+							<div>
+								<Mfm :text="text.trim()" :author="appearNote.user" :i="$i"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div v-else class="_panel" :class="$style.muted" @click="muted = false">
@@ -232,6 +250,7 @@ import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
+import MkNotePreview from '@/components/MkNotePreview.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
@@ -954,6 +973,9 @@ onMounted(() => {
 	padding: 16px;
 }
 
+.tab_history {
+	padding: 16px;
+}
 .reactionTabs {
 	display: flex;
 	gap: 8px;
@@ -1016,6 +1038,36 @@ onMounted(() => {
 		width: 50px;
 		height: 50px;
 	}
+}
+
+.historyRoot {
+	display: flex;
+	margin: 0;
+	padding: 10px;
+	overflow: clip;
+	font-size: 0.95em;
+}
+
+.historyMain {
+	flex: 1;
+	min-width: 0;
+}
+
+.historyHeader {
+	margin-bottom: 2px;
+	font-weight: bold;
+	width: 100%;
+	overflow: clip;
+    text-overflow: ellipsis;
+}
+.avatar {
+	flex-shrink: 0 !important;
+	display: block !important;
+	margin: 0 10px 0 0 !important;
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 8px !important;
+	pointer-events: none !important;
 }
 
 .muted {
