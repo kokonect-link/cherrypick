@@ -28,7 +28,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### General
-- 편집한 노트의 기록을 확인할 수 있음 (misskey-dev/misskey#11938)
+- Feat: 편집한 노트의 기록을 확인할 수 있음 (misskey-dev/misskey#11938)
 
 ### Client
 - Feat: 움직이는 이미지를 표시하는 방법을 세분화
@@ -38,7 +38,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 로그인하지 않은 상태에서 노트 상세 페이지의 노트 작성 폼을 조작할 수 있음
 
 ### Server
-- 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+- Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
 - Enhance: '내용 숨기기'로 설정된 노트의 주석도 번역에 포함됨
 
 ---
