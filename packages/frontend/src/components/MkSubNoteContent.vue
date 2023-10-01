@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false">
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || (note.files.length > 0 && defaultStore.state.allMediaNoteCollapse)) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
 			<span v-if="note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
