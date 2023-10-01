@@ -5,7 +5,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <span v-if="errored">:{{ customEmojiName }}:</span>
-<img v-else :class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]" :src="url" :alt="alt" :title="alt" decoding="async" @error="errored = true" @load="errored = false" @mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''" @mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"/>
+<img
+	v-else
+	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
+	:src="url"
+	:alt="alt"
+	:title="alt"
+	decoding="async"
+	@error="errored = true"
+	@load="errored = false"
+	@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+	@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+	@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+/>
 </template>
 
 <script lang="ts" setup>

@@ -5,7 +5,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash :class="$style.inner" :src="url" :hash="user?.avatarBlurhash" :cover="true" :onlyAvgColor="true" @mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''" @mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"/>
+	<MkImgWithBlurhash
+		:class="$style.inner"
+		:src="url"
+		:hash="user?.avatarBlurhash"
+		:cover="true"
+		:onlyAvgColor="true"
+		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	/>
 	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
 	<div v-if="user.isCat" :class="[$style.ears]">
 		<div :class="$style.earLeft">

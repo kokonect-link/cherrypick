@@ -5,7 +5,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash :class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]" :src="url" :hash="user?.avatarBlurhash" :cover="true" :onlyAvgColor="true" :noDrag="true" @mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''" @mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"/>
+	<MkImgWithBlurhash
+		:class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]"
+		:src="url"
+		:hash="user?.avatarBlurhash"
+		:cover="true"
+		:onlyAvgColor="true"
+		:noDrag="true"
+		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	/>
 </component>
 </template>
 

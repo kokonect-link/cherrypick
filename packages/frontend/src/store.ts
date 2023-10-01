@@ -236,7 +236,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showingAnimatedImages: {
 		where: 'device',
-		default: 'always' as 'always' | 'interaction' | 'inactive',
+		default: /mobile|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
 	},
 	emojiStyle: {
 		where: 'device',

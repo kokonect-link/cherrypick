@@ -29,6 +29,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:style="hide ? 'filter: brightness(0.7);' : null"
 			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		/>
 	</component>
 	<template v-if="hide">

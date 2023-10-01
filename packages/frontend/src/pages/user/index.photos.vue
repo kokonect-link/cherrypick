@@ -16,7 +16,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:class="$style.img"
 				:to="notePage(image.note)"
 			>
-				<ImgWithBlurhash :hash="image.file.blurhash" :src="thumbnail(image.file)" :title="image.file.name" @mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''" @mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"/>
+				<ImgWithBlurhash
+					:hash="image.file.blurhash"
+					:src="thumbnail(image.file)"
+					:title="image.file.name"
+					@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+					@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+					@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+					@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+				/>
 			</MkA>
 		</div>
 		<p v-if="!fetching && images.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
