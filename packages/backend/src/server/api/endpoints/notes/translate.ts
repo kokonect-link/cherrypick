@@ -103,12 +103,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (instance.deeplAuthKey == null) {
 					return 204; // TODO: 良い感じのエラー返す
 				}
-				translationResult = await this.translateDeepL(note.text, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
+				translationResult = await this.translateDeepL((note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
 			} else if (instance.translatorType === 'google_no_api') {
 				let targetLang = ps.targetLang;
 				if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 
-				const { text, raw } = await translate(note.text, { to: targetLang });
+				const { text, raw } = await translate((note.cw ? note.cw + '\n' : '') + note.text, { to: targetLang });
 
 				return {
 					sourceLang: raw.src,
@@ -119,7 +119,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (instance.ctav3SaKey == null) { return 204; } else if (instance.ctav3ProjectId == null) { return 204; }
 				else if (instance.ctav3Location == null) { return 204; }
 				translationResult = await this.apiCloudTranslationAdvanced(
-					note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
+					(note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
 				);
 			} else {
 				throw new Error('Unsupported translator type');

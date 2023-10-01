@@ -39,6 +39,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Server
 - 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+- Enhance: '내용 숨기기'로 설정된 노트의 주석도 번역에 포함됨
 
 ---
 
