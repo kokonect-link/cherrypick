@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkInfo v-if="noMaintainerInformation" warn class="info">{{ i18n.ts.noMaintainerInformationWarning }} <MkA to="/admin/settings" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 				<MkInfo v-if="noBotProtection" warn class="info">{{ i18n.ts.noBotProtectionWarning }} <MkA to="/admin/security" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 				<MkInfo v-if="noEmailServer" warn class="info">{{ i18n.ts.noEmailServerWarning }} <MkA to="/admin/email-settings" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
+				<MkInfo v-if="updateAvailable" warn class="info">{{ i18n.ts.newVersionOfClientAvailable }} <MkA to="/admin/update" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 
 				<MkSuperMenu :def="menuDef" :grid="narrow"></MkSuperMenu>
 			</div>
@@ -37,6 +38,7 @@ import * as os from '@/os.js';
 import { lookupUser } from '@/scripts/lookup-user.js';
 import { useRouter } from '@/router.js';
 import { definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.js';
+import { version } from '@/config.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';
 
@@ -61,6 +63,8 @@ let noBotProtection = !instance.disableRegistration && !instance.enableHcaptcha 
 let noEmailServer = !instance.enableEmail;
 let thereIsUnresolvedAbuseReport = $ref(false);
 let currentPage = $computed(() => router.currentRef.value.child);
+let updateAvailable = $ref(false);
+let releasesCherryPick = $ref(null);
 
 os.api('admin/abuse-user-reports', {
 	state: 'unresolved',
@@ -68,6 +72,14 @@ os.api('admin/abuse-user-reports', {
 }).then(reports => {
 	if (reports.length > 0) thereIsUnresolvedAbuseReport = true;
 });
+
+fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+	method: 'GET',
+}).then(res => res.json())
+	.then(res => {
+		releasesCherryPick = res;
+		if (version < releasesCherryPick[0].tag_name) updateAvailable = true;
+	});
 
 const NARROW_THRESHOLD = 600;
 const ro = new ResizeObserver((entries, observer) => {

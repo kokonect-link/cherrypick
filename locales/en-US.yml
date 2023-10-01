@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+youAreRunningBetaClient: "Unreleased version of CherryPick in use!"
+cherrypickUpdate: "CherryPick Update"
 allMediaNoteCollapse: "Collapse all media notes"
 showingAnimatedImagesDescription: "When set to \"Animate on interaction\", the image will play when you hover over it or touch it."
 showFixedPostFormInReplies: "Show posting form in replies"

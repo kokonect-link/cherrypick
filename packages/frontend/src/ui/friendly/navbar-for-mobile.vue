@@ -61,6 +61,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { mainRouter } from '@/router.js';
+import { version } from '@/config.js';
 
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {
@@ -71,6 +72,7 @@ const otherMenuItemIndicated = computed(() => {
 	return false;
 });
 let controlPanelIndicated = $ref(false);
+let releasesCherryPick = $ref(null);
 
 os.api('admin/abuse-user-reports', {
 	state: 'unresolved',
@@ -78,6 +80,14 @@ os.api('admin/abuse-user-reports', {
 }).then(reports => {
 	if (reports.length > 0) controlPanelIndicated = true;
 });
+
+fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+	method: 'GET',
+}).then(res => res.json())
+	.then(res => {
+		releasesCherryPick = res;
+		if (version < releasesCherryPick[0].tag_name) controlPanelIndicated = true;
+	});
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_({

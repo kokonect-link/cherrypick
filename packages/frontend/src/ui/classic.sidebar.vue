@@ -60,6 +60,7 @@ import MkButton from '@/components/MkButton.vue';
 import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
+import { version } from '@/config.js';
 
 const WINDOW_THRESHOLD = 1400;
 
@@ -78,6 +79,7 @@ let el = $shallowRef<HTMLElement>();
 let iconOnly = $ref(false);
 let settingsWindowed = $ref(false);
 let controlPanelIndicated = $ref(false);
+let releasesCherryPick = $ref(null);
 
 os.api('admin/abuse-user-reports', {
 	state: 'unresolved',
@@ -85,6 +87,14 @@ os.api('admin/abuse-user-reports', {
 }).then(reports => {
 	if (reports.length > 0) controlPanelIndicated = true;
 });
+
+fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+	method: 'GET',
+}).then(res => res.json())
+	.then(res => {
+		releasesCherryPick = res;
+		if (version < releasesCherryPick[0].tag_name) controlPanelIndicated = true;
+	});
 
 function calcViewState() {
 	iconOnly = (window.innerWidth <= WINDOW_THRESHOLD) || (menuDisplay.value === 'sideIcon');
