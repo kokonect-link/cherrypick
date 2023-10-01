@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+allMediaNoteCollapse: "Collapse all media notes"
 showingAnimatedImagesDescription: "When set to \"Animate on interaction\", the image will play when you hover over it or touch it."
 showFixedPostFormInReplies: "Show posting form in replies"
 showFixedPostFormInRepliesDescription: "Only visible in desktop and tablet environments."

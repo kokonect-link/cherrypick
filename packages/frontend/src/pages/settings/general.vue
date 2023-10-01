@@ -75,6 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showReplyInNotification">{{ i18n.ts.showReplyInNotification }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts.renoteQuoteButtonSeparation }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -366,6 +367,7 @@ const showReplyInNotification = computed(defaultStore.makeGetterSetter('showRepl
 const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('renoteQuoteButtonSeparation'));
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
+const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -423,6 +425,7 @@ watch([
 	renoteQuoteButtonSeparation,
 	showFixedPostFormInReplies,
 	showingAnimatedImages,
+	allMediaNoteCollapse,
 ], async () => {
 	await reloadAsk();
 });

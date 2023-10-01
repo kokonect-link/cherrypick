@@ -37,10 +37,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false">
-		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false">
+		<span :class="$style.fadeLabel">
+			{{ i18n.ts.showMore }}
+			<span v-if="note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
+		</span>
 	</button>
-	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true">
+	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true">
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
@@ -124,6 +127,7 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { MenuItem } from '@/types/menu.js';
+import { concat } from '@/scripts/array.js';
 
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -139,6 +143,12 @@ const showContent = ref(false);
 const translation = ref<any>(null);
 const translating = ref(false);
 
+const collapseLabel = computed(() => {
+	return concat([
+		props.note.files && props.note.files.length !== 0 ? [i18n.t('_cw.files', { count: props.note.files.length })] : [],
+	] as string[][]).join(' / ');
+});
+
 const props = defineProps<{
 	note: Misskey.entities.Note;
   showSubNoteFooterButton: boolean;
@@ -149,7 +159,7 @@ let note = $ref(deepClone(props.note));
 const isLong = shouldCollapsed(props.note);
 const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault));
+const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse);
 
 useNoteCapture({
 	rootEl: el,

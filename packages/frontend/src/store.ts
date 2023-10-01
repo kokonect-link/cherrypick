@@ -445,6 +445,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	allMediaNoteCollapse: {
+		where: 'device',
+		default: false,
+	},
 
 	// - Settings/Timeline
 	enableHomeTimeline: {

@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+allMediaNoteCollapse: "모든 미디어 노트 간략화하기"
 showingAnimatedImagesDescription: "'건드리면 움직임'으로 설정하면 이미지 위에 마우스를 올리거나 이미지를 터치하면 움직여요."
 showFixedPostFormInReplies: "답글에 글 작성란 표시"
 showFixedPostFormInRepliesDescription: "데스크톱과 태블릿 환경에서만 표시돼요."
