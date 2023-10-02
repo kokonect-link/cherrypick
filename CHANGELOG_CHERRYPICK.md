@@ -37,6 +37,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 미디어가 포함된 모든 노트를 접을 수 있음
 - Feat: 클라이언트 업데이트가 있으면 알림
 - Fix: 로그인하지 않은 상태에서 노트 상세 페이지의 노트 작성 폼을 조작할 수 있음
+- Fix: Chromium 기반 브라우저에서 노트 작성 폼의 스크롤 영역이 잘못된 디자인을 표시함
 
 ### Server
 - Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
