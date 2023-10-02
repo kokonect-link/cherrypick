@@ -87,12 +87,17 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	display: block;
 	margin: 0 .5em 0 0;
 	padding: 0;
-	overflow: hidden;
+	overflow: scroll;
+  overflow-wrap: anywhere;
 	font-size: 1em;
 	font-weight: bold;
 	text-decoration: none;
 	text-overflow: ellipsis;
 	max-width: 300px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
 	&:hover {
 		color: var(--nameHover);
@@ -113,9 +118,14 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 .username {
 	flex-shrink: 9999999;
 	margin: 0 .5em 0 0;
-	overflow: hidden;
+	overflow: scroll;
 	text-overflow: ellipsis;
 	font-size: .95em;
+  max-width: 300px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .info {
@@ -150,7 +160,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 }
 
 @container (max-width: 500px) {
-	.name {
+	.name, .username {
 		max-width: 200px;
 	}
 }

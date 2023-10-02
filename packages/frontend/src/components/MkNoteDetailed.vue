@@ -51,12 +51,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
-			<div style="display: flex; align-items: center;">
-				<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+      <MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+			<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">
 				<div :class="$style.noteHeaderBody">
-					<div>
+					<div :class="$style.noteHeaderName">
 						<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
-							<MkUserName :nowrap="false" :user="appearNote.user"/>
+							<MkUserName :nowrap="true" :user="appearNote.user"/>
 						</MkA>
 						<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
 						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
@@ -829,12 +829,21 @@ onMounted(() => {
 	justify-content: center;
 	padding-left: 16px;
 	font-size: 0.95em;
+  max-width: 300px;
 }
 
 .noteHeaderName {
 	font-weight: bold;
 	line-height: 1.3;
 	margin: 0 .5em 0 0;
+  overflow: scroll;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
 	&:hover {
 		color: var(--nameHover);
@@ -861,6 +870,14 @@ onMounted(() => {
 	margin-bottom: 2px;
 	line-height: 1.3;
 	word-wrap: anywhere;
+  overflow: scroll;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .noteContent {
@@ -1012,6 +1029,10 @@ onMounted(() => {
 	.root {
 		font-size: 0.9em;
 	}
+
+  .noteHeaderBody {
+    max-width: 180px;
+  }
 }
 
 @container (max-width: 480px) {

@@ -77,6 +77,19 @@ $height: 2ex;
 	font-size: 0.9em;
 	font-weight: bold;
 	white-space: nowrap;
-	overflow: visible;
+	overflow: scroll;
+  overflow-wrap: anywhere;
+  max-width: 300px;
+  text-overflow: ellipsis;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@container (max-width: 500px) {
+  .name {
+    max-width: 100px;
+  }
 }
 </style>
