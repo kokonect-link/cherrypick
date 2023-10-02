@@ -26,7 +26,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</div>
-		<MkDetailsButton v-if="note.files.length > 0 || note.poll" v-model="showContent" style="width: 100%" :note="note"/>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
 				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @contextmenu.prevent/>
@@ -37,13 +36,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || (note.files.length > 0 && defaultStore.state.allMediaNoteCollapse)) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false">
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll || defaultStore.state.allMediaNoteCollapse) && collapsed" v-vibrate="5" :class="$style.fade" class="_button" @click="collapsed = false;">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
 			<span v-if="note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
 		</span>
 	</button>
-	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true">
+	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll || defaultStore.state.allMediaNoteCollapse) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true;">
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
@@ -107,7 +106,6 @@ import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
-import MkDetailsButton from '@/components/MkDetailsButton.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -139,7 +137,7 @@ const canRenote = computed(() => ['public', 'home'].includes(props.note.visibili
 const isDeleted = ref(false);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
-const showContent = ref(false);
+const showContent = ref(true);
 const translation = ref<any>(null);
 const translating = ref(false);
 
@@ -159,7 +157,7 @@ let note = $ref(deepClone(props.note));
 const isLong = shouldCollapsed(props.note);
 const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse);
+const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse || note.files.length > 0 || note.poll);
 
 useNoteCapture({
 	rootEl: el,
