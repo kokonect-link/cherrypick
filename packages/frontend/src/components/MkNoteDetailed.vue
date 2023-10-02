@@ -216,7 +216,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-else-if="tab === 'history'" :class="$style.tab_history">
 			<div style="display: grid;">
-				<div v-for="text in appearNote.noteEditHistory" :class="$style.historyRoot" :key="text">
+				<div v-for="(text, index) in appearNote.noteEditHistory" :key="text" :class="$style.historyRoot">
 					<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
 					<div :class="$style.historyMain">
 						<div :class="$style.historyHeader">
@@ -226,6 +226,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<div>
 								<Mfm :text="text.trim()" :author="appearNote.user" :i="$i"/>
 							</div>
+							<CodeDiff
+								:oldString="appearNote.noteEditHistory[index - 1] || ''"
+								:newString="text"
+								:trim="true"
+								:hideHeader="true"
+								diffStyle="char"
+							/>
 						</div>
 					</div>
 				</div>
@@ -245,7 +252,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef } from 'vue';
+import { computed, inject, onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
@@ -281,6 +288,7 @@ import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
+import { CodeDiff } from 'v-code-diff';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
