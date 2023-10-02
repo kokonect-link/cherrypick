@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
-      <MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
 			<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">
 				<div :class="$style.noteHeaderBody">
 					<div :class="$style.noteHeaderName">
@@ -252,12 +252,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, onUnmounted, ref, shallowRef } from 'vue';
+import { computed, inject, onMounted, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import { CodeDiff } from 'v-code-diff';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
-import MkNotePreview from '@/components/MkNotePreview.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
@@ -288,7 +288,6 @@ import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
-import { CodeDiff } from 'v-code-diff';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
