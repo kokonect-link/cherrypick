@@ -72,7 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
-	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
+	<input v-show="useCw && showForm" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
 	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.showForm]: !showForm }]">
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted || !$i" :placeholder="placeholder" data-cy-post-form-text @click="formClick" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
@@ -326,8 +326,6 @@ if (props.reply && props.reply.text != null) {
 
 		// 重複は除外
 		if (text.includes(`${mention} `)) continue;
-
-		text += `${mention} `;
 	}
 }
 
@@ -929,6 +927,27 @@ function openAccountMenu(ev: MouseEvent) {
 
 function formClick() {
 	if ($i) showForm = true;
+
+	if (props.reply && props.reply.text != null) {
+		const ast = mfm.parse(props.reply.text);
+		const otherHost = props.reply.user.host;
+
+		for (const x of extractMentions(ast)) {
+			const mention = x.host ?
+				`@${x.username}@${toASCII(x.host)}` :
+				(otherHost == null || otherHost === host) ?
+					`@${x.username}` :
+					`@${x.username}@${toASCII(otherHost)}`;
+
+			// 自分は除外
+			if ($i.username === x.username && (x.host == null || x.host === host)) continue;
+
+			// 重複は除外
+			if (text.includes(`${mention} `)) continue;
+
+			text += `${mention} `;
+		}
+	}
 }
 
 function signin() {
