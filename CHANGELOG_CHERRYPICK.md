@@ -40,7 +40,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 로그인하지 않은 상태에서 노트 상세 페이지의 노트 작성 폼을 조작할 수 있음
 - Fix: Chromium 기반 브라우저에서 노트 작성 폼의 스크롤 영역이 잘못된 디자인을 표시함
 - Fix: 반응한 사용자 목록의 UI가 드물게 왼쪽 상단에 남아있는 문제 수정 (misskey-dev/misskey#11949)
-- Fix: deck ui에서 user list를 볼 때 리플이 표시되지 않음 (misskey-dev/misskey#11951)
+- Fix: deck ui에서 user list를 볼 때 답글이 표시되지 않음 (misskey-dev/misskey#11951)
 
 ### Server
 - Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
