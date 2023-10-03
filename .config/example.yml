@@ -217,4 +217,4 @@ signToActivityPubGet: true
 #maxFileSize: 262144000
 
 # PID File of master process
-#pidFile: /tmp/misskey.pid
+#pidFile: /tmp/cherrypick.pid
