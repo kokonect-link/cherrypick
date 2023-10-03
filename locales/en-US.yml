@@ -1,5 +1,9 @@
 ---
 _lang_: "English"
+youAreRunningBetaClient: "Unreleased version of CherryPick in use!"
+cherrypickUpdate: "CherryPick Update"
+allMediaNoteCollapse: "Collapse all media notes"
+showingAnimatedImagesDescription: "When set to \"Animate on interaction\", the image will play when you hover over it or touch it."
 showFixedPostFormInReplies: "Show posting form in replies"
 showFixedPostFormInRepliesDescription: "Only visible in desktop and tablet environments."
 renoteQuoteButtonSeparation: "Show renote and quote buttons separately"
@@ -1200,11 +1204,18 @@ authenticationRequiredToContinue: "Please authenticate to continue"
 dateAndTime: "Timestamp"
 showRenotes: "Show renotes"
 edited: "Edited"
+notificationRecieveConfig: "Notification Settings"
+mutualFollow: "Mutual follow"
+fileAttachedOnly: "Only notes with files"
 showCatOnly: "Show only cats"
 additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
+_showingAnimatedImages:
+  always: "Always animate"
+  interaction: "Animate on interaction"
+  inactive: "Stop after a certain amount of time"
 _messaging:
   direct: "Direct Message"
 _tlTutorial:
@@ -2136,6 +2147,7 @@ _visibility:
   disableFederation: "Defederate"
   disableFederationDescription: "Don't transmit to other instances"
 _postForm:
+  signinRequiredPlaceholder: "You must be logged in to create a notes."
   replyPlaceholder: "Reply to this note..."
   quotePlaceholder: "Quote this note..."
   channelPlaceholder: "Post to a channel..."
@@ -2389,6 +2401,9 @@ _moderationLogTypes:
   unmarkSensitiveDriveFile: "File unmarked as sensitive"
   resolveAbuseReport: "Report resolved"
   createInvitation: "Invite generated"
+  createAd: "Ad created"
+  deleteAd: "Ad deleted"
+  updateAd: "Ad updated"
 _abuse:
   _resolver:
     1hour: "one hour"

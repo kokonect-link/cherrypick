@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:enterFromClass="defaultStore.state.animation ? $style.transition_header_enterFrom : ''"
 		:leaveToClass="defaultStore.state.animation ? $style.transition_header_leaveTo : ''"
 	>
-		<header v-if="formClick" :class="$style.header">
+		<header v-if="showForm" :class="$style.header">
 			<div :class="$style.headerLeft">
 				<button v-if="!fixed" :class="$style.cancel" class="_button" @click="cancel"><i class="ti ti-x"></i></button>
 				<button v-click-anime v-tooltip="i18n.ts.switchAccount" :class="[$style.account, { [$style.fixed]: fixed }]" class="_button" @click="openAccountMenu">
@@ -72,16 +72,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
-	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
-	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.formClick]: !formClick }]">
-		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :placeholder="placeholder" data-cy-post-form-text @click="formClick = true" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+	<input v-show="useCw && showForm" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
+	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.showForm]: !showForm }]">
+		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted || !$i" :placeholder="placeholder" data-cy-post-form-text @click="formClick" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
-		<button v-if="!formClick" v-click-anime class="_button" :class="$style.submit" style="position: absolute; bottom: 0; right: 12px;" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
+		<button v-if="!showForm" v-click-anime class="_button" :class="$style.submit" style="position: absolute; bottom: 0; right: 12px;" :disabled="!canPost && $i" data-cy-open-post-form-submit @click="$i ? post : signin()">
 			<div :class="$style.submitInner">
 				<template v-if="posted"></template>
 				<template v-else-if="posting"><MkEllipsis/></template>
 				<template v-else>{{ submitText }}</template>
-				<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+				<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 			</div>
 		</button>
 	</div>
@@ -97,7 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:enterFromClass="defaultStore.state.animation ? $style.transition_footer_enterFrom : ''"
 		:leaveToClass="defaultStore.state.animation ? $style.transition_footer_leaveTo : ''"
 	>
-		<footer v-if="formClick" :class="$style.footer">
+		<footer v-if="showForm" :class="$style.footer">
 			<div :class="$style.footerLeft">
 				<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
 				<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
@@ -150,6 +150,7 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import XSigninDialog from '@/components/MkSigninDialog.vue';
 
 const modal = inject('modal');
 
@@ -186,7 +187,7 @@ const cwInputEl = $shallowRef<HTMLInputElement | null>(null);
 const hashtagsInputEl = $shallowRef<HTMLInputElement | null>(null);
 const visibilityButton = $shallowRef<HTMLElement | null>(null);
 
-let formClick = $ref(false);
+let showForm = $ref(false);
 
 let posting = $ref(false);
 let posted = $ref(false);
@@ -239,7 +240,9 @@ const draftKey = $computed((): string => {
 });
 
 const placeholder = $computed((): string => {
-	if (props.renote) {
+	if (!$i) {
+		return i18n.ts._postForm.signinRequiredPlaceholder;
+	} else if (props.renote) {
 		return i18n.ts._postForm.quotePlaceholder;
 	} else if (props.reply) {
 		return i18n.ts._postForm.replyPlaceholder;
@@ -259,13 +262,15 @@ const placeholder = $computed((): string => {
 });
 
 const submitText = $computed((): string => {
-	return props.renote
-		? i18n.ts.quote
-		: props.reply
-			? i18n.ts.reply
-			: defaultStore.state.renameTheButtonInPostFormToNya
-				? i18n.ts.nya
-				: i18n.ts.note;
+	return !$i
+		? i18n.ts.login
+		: props.renote
+			? i18n.ts.quote
+			: props.reply
+				? i18n.ts.reply
+				: defaultStore.state.renameTheButtonInPostFormToNya
+					? i18n.ts.nya
+					: i18n.ts.note;
 });
 
 const textLength = $computed((): number => {
@@ -321,8 +326,6 @@ if (props.reply && props.reply.text != null) {
 
 		// 重複は除外
 		if (text.includes(`${mention} `)) continue;
-
-		text += `${mention} `;
 	}
 }
 
@@ -922,6 +925,37 @@ function openAccountMenu(ev: MouseEvent) {
 	}, ev);
 }
 
+function formClick() {
+	if ($i) showForm = true;
+
+	if (props.reply && props.reply.text != null) {
+		const ast = mfm.parse(props.reply.text);
+		const otherHost = props.reply.user.host;
+
+		for (const x of extractMentions(ast)) {
+			const mention = x.host ?
+				`@${x.username}@${toASCII(x.host)}` :
+				(otherHost == null || otherHost === host) ?
+					`@${x.username}` :
+					`@${x.username}@${toASCII(otherHost)}`;
+
+			// 自分は除外
+			if ($i.username === x.username && (x.host == null || x.host === host)) continue;
+
+			// 重複は除外
+			if (text.includes(`${mention} `)) continue;
+
+			text += `${mention} `;
+		}
+	}
+}
+
+function signin() {
+	os.popup(XSigninDialog, {
+		autoSet: true,
+	}, {}, 'closed');
+}
+
 onMounted(() => {
 	if (props.autofocus) {
 		focus();
@@ -1229,7 +1263,7 @@ defineExpose({
 		padding-top: 8px;
 	}
 
-  &.formClick {
+  &.showForm {
     margin-top: 20px;
   }
 }

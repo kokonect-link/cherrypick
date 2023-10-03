@@ -127,8 +127,8 @@ onMounted(async () => {
 
 			&.notes {
 				> .icon {
-					background: #86b30026;
-					color: #86b300;
+					background: #ffbcdc26;
+					color: #ffbcdc;
 				}
 			}
 

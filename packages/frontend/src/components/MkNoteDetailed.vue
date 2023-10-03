@@ -51,12 +51,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
 	<article :class="$style.note" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
-			<div style="display: flex; align-items: center;">
-				<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+			<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">
 				<div :class="$style.noteHeaderBody">
-					<div>
+					<div :class="$style.noteHeaderName">
 						<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
-							<MkUserName :nowrap="false" :user="appearNote.user"/>
+							<MkUserName :nowrap="true" :user="appearNote.user"/>
 						</MkA>
 						<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
 						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
@@ -176,6 +176,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.replies }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ti ti-repeat"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ti ti-icons"></i> {{ i18n.ts.reactions }}</button>
+		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history' }]" @click="tab = 'history'"><i class="ti ti-pencil"></i> {{ i18n.ts.edited }}</button>
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
@@ -213,6 +214,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</template>
 			</MkPagination>
 		</div>
+		<div v-else-if="tab === 'history'" :class="$style.tab_history">
+			<div style="display: grid;">
+				<div v-for="(text, index) in appearNote.noteEditHistory" :key="text" :class="$style.historyRoot">
+					<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
+					<div :class="$style.historyMain">
+						<div :class="$style.historyHeader">
+							<MkUserName :user="appearNote.user" :nowrap="true"/>
+						</div>
+						<div>
+							<div>
+								<Mfm :text="text.trim()" :author="appearNote.user" :i="$i"/>
+							</div>
+							<CodeDiff
+								:oldString="appearNote.noteEditHistory[index - 1] || ''"
+								:newString="text"
+								:trim="true"
+								:hideHeader="true"
+								diffStyle="char"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div v-else class="_panel" :class="$style.muted" @click="muted = false">
@@ -230,6 +255,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, onMounted, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import { CodeDiff } from 'v-code-diff';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
@@ -810,12 +836,21 @@ onMounted(() => {
 	justify-content: center;
 	padding-left: 16px;
 	font-size: 0.95em;
+  max-width: 300px;
 }
 
 .noteHeaderName {
 	font-weight: bold;
 	line-height: 1.3;
 	margin: 0 .5em 0 0;
+  overflow: scroll;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
 	&:hover {
 		color: var(--nameHover);
@@ -842,6 +877,14 @@ onMounted(() => {
 	margin-bottom: 2px;
 	line-height: 1.3;
 	word-wrap: anywhere;
+  overflow: scroll;
+  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .noteContent {
@@ -954,6 +997,9 @@ onMounted(() => {
 	padding: 16px;
 }
 
+.tab_history {
+	padding: 16px;
+}
 .reactionTabs {
 	display: flex;
 	gap: 8px;
@@ -990,6 +1036,10 @@ onMounted(() => {
 	.root {
 		font-size: 0.9em;
 	}
+
+  .noteHeaderBody {
+    max-width: 180px;
+  }
 }
 
 @container (max-width: 480px) {
@@ -1016,6 +1066,36 @@ onMounted(() => {
 		width: 50px;
 		height: 50px;
 	}
+}
+
+.historyRoot {
+	display: flex;
+	margin: 0;
+	padding: 10px;
+	overflow: clip;
+	font-size: 0.95em;
+}
+
+.historyMain {
+	flex: 1;
+	min-width: 0;
+}
+
+.historyHeader {
+	margin-bottom: 2px;
+	font-weight: bold;
+	width: 100%;
+	overflow: clip;
+    text-overflow: ellipsis;
+}
+.avatar {
+	flex-shrink: 0 !important;
+	display: block !important;
+	margin: 0 10px 0 0 !important;
+	width: 40px !important;
+	height: 40px !important;
+	border-radius: 8px !important;
+	pointer-events: none !important;
 }
 
 .muted {

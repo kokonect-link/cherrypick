@@ -14,12 +14,13 @@ import { MetaService } from '@/core/MetaService.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { createTemp } from '@/misc/create-temp.js';
+import { RoleService } from '@/core/RoleService.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['notes'],
 
-	requireCredential: false,
+	requireCredential: true,
 
 	res: {
 		type: 'object',
@@ -27,6 +28,11 @@ export const meta = {
 	},
 
 	errors: {
+		unavailable: {
+			message: 'Translate of notes unavailable.',
+			code: 'UNAVAILABLE',
+			id: '50a70314-2d8a-431b-b433-efa5cc56444c',
+		},
 		noSuchNote: {
 			message: 'No such note.',
 			code: 'NO_SUCH_NOTE',
@@ -56,14 +62,20 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private getterService: GetterService,
 		private metaService: MetaService,
 		private httpRequestService: HttpRequestService,
+		private roleService: RoleService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
+			const policies = await this.roleService.getUserPolicies(me.id);
+			if (!policies.canUseTranslator) {
+				throw new ApiError(meta.errors.unavailable);
+			}
+
 			const note = await this.getterService.getNote(ps.noteId).catch(err => {
 				if (err.id === '9725d0ce-ba28-4dde-95a7-2cbb2c15de24') throw new ApiError(meta.errors.noSuchNote);
 				throw err;
 			});
 
-			if (!(await this.noteEntityService.isVisibleForMe(note, me ? me.id : null))) {
+			if (!(await this.noteEntityService.isVisibleForMe(note, me.id))) {
 				return 204; // TODO: 良い感じのエラー返す
 			}
 
@@ -91,12 +103,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (instance.deeplAuthKey == null) {
 					return 204; // TODO: 良い感じのエラー返す
 				}
-				translationResult = await this.translateDeepL(note.text, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
+				translationResult = await this.translateDeepL((note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
 			} else if (instance.translatorType === 'google_no_api') {
 				let targetLang = ps.targetLang;
 				if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 
-				const { text, raw } = await translate(note.text, { to: targetLang });
+				const { text, raw } = await translate((note.cw ? note.cw + '\n' : '') + note.text, { to: targetLang });
 
 				return {
 					sourceLang: raw.src,
@@ -107,7 +119,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (instance.ctav3SaKey == null) { return 204; } else if (instance.ctav3ProjectId == null) { return 204; }
 				else if (instance.ctav3Location == null) { return 204; }
 				translationResult = await this.apiCloudTranslationAdvanced(
-					note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
+					(note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
 				);
 			} else {
 				throw new Error('Unsupported translator type');

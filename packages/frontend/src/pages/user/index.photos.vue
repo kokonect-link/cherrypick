@@ -16,7 +16,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:class="$style.img"
 				:to="notePage(image.note)"
 			>
-				<ImgWithBlurhash :hash="image.file.blurhash" :src="thumbnail(image.file)" :title="image.file.name"/>
+				<ImgWithBlurhash
+					:hash="image.file.blurhash"
+					:src="thumbnail(image.file)"
+					:title="image.file.name"
+					@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+					@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+					@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+					@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+				/>
 			</MkA>
 		</div>
 		<p v-if="!fetching && images.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
@@ -25,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { notePage } from '@/filters/note.js';
@@ -45,13 +53,28 @@ let images = $ref<{
 	file: Misskey.entities.DriveFile;
 }[]>([]);
 
+let playAnimation = $ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
+let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 function thumbnail(image: Misskey.entities.DriveFile): string {
-	return defaultStore.state.disableShowingAnimatedImages
+	return defaultStore.state.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 }
 
+function resetTimer() {
+	playAnimation = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+}
+
 onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+
 	const image = [
 		'image/jpeg',
 		'image/webp',
@@ -77,6 +100,14 @@ onMounted(() => {
 		}
 		fetching = false;
 	});
+});
+
+onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
 });
 </script>
 

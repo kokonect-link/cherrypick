@@ -99,10 +99,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll"/>
 				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
-				<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && collapsed" v-vibrate="5" :class="$style.collapsed" class="_button" @click="collapsed = false">
-					<span :class="$style.collapsedLabel">{{ i18n.ts.showMore }}</span>
+				<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || (appearNote.files.length > 0 && defaultStore.state.allMediaNoteCollapse)) && collapsed" v-vibrate="5" :class="$style.collapsed" class="_button" @click="collapsed = false">
+					<span :class="$style.collapsedLabel">
+						{{ i18n.ts.showMore }}
+						<span v-if="appearNote.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
+					</span>
 				</button>
-				<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault)) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true">
+				<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse) && !collapsed" v-vibrate="5" :class="$style.showLess" class="_button" @click="collapsed = true">
 					<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 				</button>
 			</div>
@@ -185,7 +188,6 @@ import MkCwButton from '@/components/MkCwButton.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import { pleaseLogin } from '@/scripts/please-login.js';
 import { focusPrev, focusNext } from '@/scripts/focus.js';
@@ -212,6 +214,7 @@ import { mainRouter } from '@/router.js';
 import { notePage } from '@/filters/note.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
+import { concat } from '@/scripts/array.js';
 
 let showEl = $ref(false);
 
@@ -259,13 +262,19 @@ const showContent = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;
 const isLong = shouldCollapsed(appearNote);
 const isMFM = shouldMfmCollapsed(appearNote);
-const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault)));
+const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse));
 const isDeleted = ref(false);
 const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
 const translation = ref<any>(null);
 const translating = ref(false);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);
 let renoteCollapsed = $ref(defaultStore.state.collapseRenotes && isRenote && (($i && ($i.id === note.userId || $i.id === appearNote.userId)) || (appearNote.myReaction != null)));
+
+const collapseLabel = computed(() => {
+	return concat([
+		appearNote.files && appearNote.files.length !== 0 ? [i18n.t('_cw.files', { count: appearNote.files.length })] : [],
+	] as string[][]).join(' / ');
+});
 
 const keymap = {
 	'r': () => reply(true),

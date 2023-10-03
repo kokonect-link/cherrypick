@@ -460,6 +460,10 @@ export const routes = [{
 		name: 'invites',
 		component: page(() => import('./pages/admin/invites.vue')),
 	}, {
+		path: '/update',
+		name: 'update',
+		component: page(() => import('./pages/admin/update.vue')),
+	}, {
 		path: '/',
 		component: page(() => import('./pages/_empty_.vue')),
 	}],

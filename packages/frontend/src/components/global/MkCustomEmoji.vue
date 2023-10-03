@@ -5,11 +5,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <span v-if="errored">:{{ customEmojiName }}:</span>
-<img v-else :class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]" :src="url" :alt="alt" :title="alt" decoding="async" @error="errored = true" @load="errored = false"/>
+<img
+	v-else
+	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
+	:src="url"
+	:alt="alt"
+	:title="alt"
+	decoding="async"
+	@error="errored = true"
+	@load="errored = false"
+	@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+	@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+	@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+/>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { defaultStore } from '@/store.js';
 import { customEmojisMap } from '@/custom-emojis.js';
@@ -36,6 +49,9 @@ const rawUrl = computed(() => {
 	return props.host ? `/emoji/${customEmojiName.value}@${props.host}.webp` : `/emoji/${customEmojiName.value}.webp`;
 });
 
+let playAnimation = $ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
+let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 const url = computed(() => {
 	if (rawUrl.value == null) return null;
 
@@ -48,13 +64,35 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value
+	return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
 
 const alt = computed(() => `:${customEmojiName.value}:`);
 let errored = $ref(url.value == null);
+
+function resetTimer() {
+	playAnimation = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+}
+
+onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+});
+
+onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
+});
 </script>
 
 <style lang="scss" module>
