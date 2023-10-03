@@ -15,6 +15,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-for="(image, i) in images" :key="i"
 				:class="$style.img"
 				:style="`background-image: url(${thumbnail(image)})`"
+				@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+				@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+				@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+				@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 			></div>
 		</div>
 	</div>
@@ -22,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import { useStream } from '@/stream.js';
@@ -67,11 +71,20 @@ const onDriveFileCreated = (file) => {
 	}
 };
 
+let playAnimation = $ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
+let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 const thumbnail = (image: any): string => {
-	return defaultStore.state.disableShowingAnimatedImages
+	return defaultStore.state.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 };
+
+function resetTimer() {
+	playAnimation = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+}
 
 os.api('drive/stream', {
 	type: 'image/*',
@@ -82,7 +95,22 @@ os.api('drive/stream', {
 });
 
 connection.on('driveFileCreated', onDriveFileCreated);
+
+onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+});
+
 onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
+
 	connection.dispose();
 });
 

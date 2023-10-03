@@ -1,5 +1,9 @@
 _lang_: "日本語"
 
+youAreRunningBetaClient: "未発売バージョンのCherryPickを利用しています！"
+cherrypickUpdate: "CherryPickアップデート"
+allMediaNoteCollapse: "すべてのメディアノートを省略して表示"
+showingAnimatedImagesDescription: "「インタラクト時に再生」に設定すると、画像の上にマウスを置いたり、画像をタッチすると再生されます。"
 showFixedPostFormInReplies: "返信に投稿フォームを表示する"
 showFixedPostFormInRepliesDescription: "デスクトップとタブレット環境でのみ表示されます。"
 renoteQuoteButtonSeparation: "リノートと引用ボタンを分けて表示する"
@@ -1209,6 +1213,11 @@ thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
 
+_showingAnimatedImages:
+  always: "常に再生"
+  interaction: "インタラクト時に再生"
+  inactive: "一定時間経過すると再生"
+
 _messaging:
   direct: "ダイレクトメッセージ"
 
@@ -1649,7 +1658,8 @@ _role:
     rateLimitFactor: "レートリミット"
     descriptionOfRateLimitFactor: "小さいほど制限が緩和され、大きいほど制限が強化されます。"
     canHideAds: "広告の非表示"
-    canSearchNotes: "ノート検索の利用可否"
+    canSearchNotes: "ノート検索の利用"
+    canUseTranslator: "翻訳機能の利用"
   _condition:
     isLocal: "ローカルユーザー"
     isRemote: "リモートユーザー"
@@ -2191,6 +2201,7 @@ _visibility:
   disableFederationDescription: "他サーバーへの配信を行いません"
 
 _postForm:
+  signinRequiredPlaceholder: "ノートを作成するにはログインが必要です。"
   replyPlaceholder: "このノートに返信..."
   quotePlaceholder: "このノートを引用..."
   channelPlaceholder: "チャンネルに投稿..."

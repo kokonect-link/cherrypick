@@ -67,6 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="medium">{{ i18n.ts.medium }}</option>
 					<option value="large">{{ i18n.ts.large }}</option>
 				</MkRadios>
+				<MkSwitch v-model="hideAvatarsInNote">{{ i18n.ts.hideAvatarsInNote }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="enableMarkByDate" :disabled="defaultStore.state.enableAbsoluteTime">{{ i18n.ts.enableMarkByDate }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showSubNoteFooterButton">{{ i18n.ts.showSubNoteFooterButton }}<template #caption>{{ i18n.ts.showSubNoteFooterButtonDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
@@ -74,6 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showReplyInNotification">{{ i18n.ts.showReplyInNotification }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts.renoteQuoteButtonSeparation }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -130,10 +132,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
-				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption>{{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
+				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption><i class="ti ti-alert-triangle" style="color: var(--warn);"></i> {{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
+				<MkSelect v-if="!disableShowingAnimatedImages" v-model="showingAnimatedImages" style="margin-left: 44px;">
+					<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
+					<option value="interaction">{{ i18n.ts._showingAnimatedImages.interaction }}</option>
+					<option value="inactive">{{ i18n.ts._showingAnimatedImages.inactive }}</option>
+					<template #caption>{{ i18n.ts.showingAnimatedImagesDescription }}</template>
+				</MkSelect>
 				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
-				<MkSwitch v-model="hideAvatarsInNote">{{ i18n.ts.hideAvatarsInNote }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
@@ -359,6 +366,8 @@ const infoButtonForNoteActionsEnabled = computed(defaultStore.makeGetterSetter('
 const showReplyInNotification = computed(defaultStore.makeGetterSetter('showReplyInNotification'));
 const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('renoteQuoteButtonSeparation'));
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
+const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
+const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -415,6 +424,8 @@ watch([
 	showReplyInNotification,
 	renoteQuoteButtonSeparation,
 	showFixedPostFormInReplies,
+	showingAnimatedImages,
+	allMediaNoteCollapse,
 ], async () => {
 	await reloadAsk();
 });

@@ -22,8 +22,36 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.3.2
+출시일: 2023/10/3<br>
+기반 Misskey 버전: 2023.9.3<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+
+### General
+- Feat: 편집한 노트의 기록을 확인할 수 있음 (misskey-dev/misskey#11938)
+
+### Client
+- Feat: 움직이는 이미지를 표시하는 방법을 세분화
+  - 마우스를 움직이거나 화면을 터치하고 있으면 이미지를 재생
+  - 일정 시간이 경과하면 이미지 재생을 중지
+- Feat: 미디어가 포함된 모든 노트를 접을 수 있음
+- Feat: 클라이언트 업데이트가 있으면 알림
+- Enhance: 유저명, 이름, 인스턴스 이름이 길면 스크롤해서 볼 수 있음
+- Fix: 로그인하지 않은 상태에서 노트 상세 페이지의 노트 작성 폼을 조작할 수 있음
+- Fix: Chromium 기반 브라우저에서 노트 작성 폼의 스크롤 영역이 잘못된 디자인을 표시함
+- Fix: 반응한 사용자 목록의 UI가 드물게 왼쪽 상단에 남아있는 문제 수정 (misskey-dev/misskey#11949)
+- Fix: deck ui에서 user list를 볼 때 답글이 표시되지 않음 (misskey-dev/misskey#11951)
+- Fix: 노트 상세 페이지의 노트 작성 폼 입력란에 멘션이 기본으로 입력되어 있음
+  - 작성란을 눌러야 멘션이 입력되도록 변경
+
+### Server
+- Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+- Enhance: '내용 숨기기'로 설정된 노트의 주석도 번역에 포함됨
+
+---
+
 ## 4.3.1
-출시일: 2023/09/29<br>
+출시일: 2023/9/29<br>
 기반 Misskey 버전: 2023.9.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGELOG.md#202392) 문서를 참고하십시오.
 
@@ -34,7 +62,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGE
 ---
 
 ## 4.3.0
-출시일: 2023/09/29<br>
+출시일: 2023/9/29<br>
 기반 Misskey 버전: 2023.9.1<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGELOG.md#202391) 문서를 참고하십시오.
 
@@ -73,7 +101,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGE
 - Feat: 알림에서 답글이 달린 노트의 상위 노트를 표시하지 않도록 하는 설정 추가
 - Feat: 리노트와 인용 버튼을 표시하는 방법을 선택할 수 있음
 - Feat: 알림 위젯에 필터, 모두 읽은 상태로 표시 버튼 추가
-- Feat: 답글에 글 작성란을 표시하는 기능 추가인
+- Feat: 답글에 글 작성란을 표시하는 기능 추가
 - Feat: 모바일 환경에서 유저 페이지의 헤더 디자인을 변경할 수 있음
 - Spec: 사용자 정의 이모티콘 라이센스를 여러 항목으로 추가할 수 있도록 (MisskeyIO/misskey#130)
 - Enhance: 새로운 신고가 있는 경우, 네비게이션 바의 제어판 아이콘과 제어판 페이지의 신고 섹션에 점을 표시
@@ -124,7 +152,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGE
 ---
 
 ## 13.14.2-cp-4.2.0
-출시일: 2023/07/29<br>
+출시일: 2023/7/29<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGELOG.md#13142) 문서를 참고하십시오.
 
 ### General
@@ -179,7 +207,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGEL
 ---
 
 ## 13.13.2-cp-4.1.0
-출시일: 2023/06/20<br>
+출시일: 2023/6/20<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGELOG.md#13132) 문서를 참고하십시오.
 
 ### General
@@ -262,7 +290,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGEL
 ---
 
 ## 13.13.1-cp-4.0.0
-출시일: 2023/06/06<br>
+출시일: 2023/6/6<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGELOG.md#13131) 문서를 참고하십시오.
 
 ### General
@@ -323,7 +351,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGEL
 ---
 
 ## 13.5.6-cp-3.1.0
-출시일: 2023/02/10<br>
+출시일: 2023/2/10<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
@@ -332,7 +360,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md)
 ---
 
 ## 13.5.5-cp-3.1.0
-출시일: 2023/02/10<br>
+출시일: 2023/2/10<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
@@ -362,7 +390,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md)
 ---
 
 ## 12.119.0-cp-3.0.0
-출시일: 2022/09/16<br>
+출시일: 2022/9/16<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE

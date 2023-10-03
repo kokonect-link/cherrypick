@@ -27,6 +27,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:width="image.properties.width"
 			:height="image.properties.height"
 			:style="hide ? 'filter: brightness(0.7);' : null"
+			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		/>
 	</component>
 	<template v-if="hide">
@@ -51,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue';
+import { onMounted, onUnmounted, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import bytes from '@/filters/bytes.js';
@@ -76,9 +80,12 @@ const props = withDefaults(defineProps<{
 let hide = $ref(true);
 let darkMode: boolean = $ref(defaultStore.state.darkMode);
 
+let playAnimation = $ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
+let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 	? props.image.url
-	: defaultStore.state.disableShowingAnimatedImages
+	: defaultStore.state.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(props.image.url)
 		: props.image.thumbnailUrl,
 );
@@ -90,6 +97,12 @@ function onclick() {
 	if (hide) {
 		hide = false;
 	}
+}
+
+function resetTimer() {
+	playAnimation = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 }
 
 // Plugin:register_note_view_interruptor を使って書き換えられる可能性があるためwatchする
@@ -117,6 +130,21 @@ function showMenu(ev: MouseEvent) {
 	}] : [])], ev.currentTarget ?? ev.target);
 }
 
+onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+});
+
+onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
+});
 </script>
 
 <style lang="scss" module>
@@ -126,7 +154,7 @@ function showMenu(ev: MouseEvent) {
 
 .sensitive {
 	position: relative;
-	
+
 	&::after {
 		content: "";
 		position: absolute;

@@ -9,6 +9,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<div class="_gaps">
+				<FormLink to="/admin/update"><template #icon><i class="ti ti-refresh"></i></template>{{ i18n.ts.cherrypickUpdate }}</FormLink>
+
 				<div class="_panel" style="padding: 16px;">
 					<MkSwitch v-model="enableServerMachineStats">
 						<template #label>{{ i18n.ts.enableServerMachineStats }}</template>
@@ -57,6 +59,7 @@ import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkSwitch from '@/components/MkSwitch.vue';
+import FormLink from '@/components/form/link.vue';
 
 let enableServerMachineStats: boolean = $ref(false);
 let enableIdenticonGeneration: boolean = $ref(false);
