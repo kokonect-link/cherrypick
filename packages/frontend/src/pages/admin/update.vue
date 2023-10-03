@@ -8,9 +8,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<div class="_gaps_m">
-			<template v-if="meta">
+			<template>
 				<FormInfo v-if="version > releasesCherryPick[0].tag_name">{{ i18n.ts.youAreRunningBetaClient }}</FormInfo>
-				<FormInfo v-else-if="version === (meta.version && releasesCherryPick[0].tag_name)">{{ i18n.ts.youAreRunningUpToDateClient }}</FormInfo>
+				<FormInfo v-else-if="version === releasesCherryPick[0].tag_name">{{ i18n.ts.youAreRunningUpToDateClient }}</FormInfo>
 				<FormInfo v-else warn>{{ i18n.ts.newVersionOfClientAvailable }}</FormInfo>
 			</template>
 
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #key>{{ i18n.ts.currentVersion }} <i class="ti ti-external-link"></i></template>
 					<template #value>{{ version }}</template>
 				</MkKeyValue>
-				<MkKeyValue style="margin-top: 10px;" @click="whatIsNewLatestCherryPick">
+				<MkKeyValue v-if="version < releasesCherryPick[0].tag_name" style="margin-top: 10px;" @click="whatIsNewLatestCherryPick">
 					<template #key>{{ i18n.ts.latestVersion }} <i class="ti ti-external-link"></i></template>
 					<template v-if="releasesCherryPick" #value>{{ releasesCherryPick[0].tag_name }}</template>
 					<template v-else #value><MkEllipsis/></template>
@@ -59,7 +59,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
@@ -69,17 +68,10 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import XHeader from '@/pages/admin/_header_.vue';
 
-let meta = $ref<Misskey.entities.LiteInstanceMetadata | null>(null);
 let releasesCherryPick = $ref(null);
 let releasesMisskey = $ref(null);
 
 onMounted(() => {
-	os.api('meta', {
-		detail: false,
-	}).then(res => {
-		meta = res;
-	});
-
 	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 		method: 'GET',
 	}).then(res => res.json())
