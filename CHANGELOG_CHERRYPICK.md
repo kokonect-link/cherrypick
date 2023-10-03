@@ -25,7 +25,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ## 4.3.2
 출시일: 2023/10/3<br>
 기반 Misskey 버전: 2023.9.3<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGELOG.md#202393) 문서를 참고하십시오.
 
 ### General
 - Feat: 편집한 노트의 기록을 확인할 수 있음 (misskey-dev/misskey#11938)
