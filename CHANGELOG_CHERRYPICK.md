@@ -51,7 +51,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ---
 
 ## 4.3.1
-출시일: 2023/09/29<br>
+출시일: 2023/9/29<br>
 기반 Misskey 버전: 2023.9.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGELOG.md#202392) 문서를 참고하십시오.
 
@@ -62,7 +62,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGE
 ---
 
 ## 4.3.0
-출시일: 2023/09/29<br>
+출시일: 2023/9/29<br>
 기반 Misskey 버전: 2023.9.1<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGELOG.md#202391) 문서를 참고하십시오.
 
@@ -152,7 +152,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGE
 ---
 
 ## 13.14.2-cp-4.2.0
-출시일: 2023/07/29<br>
+출시일: 2023/7/29<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGELOG.md#13142) 문서를 참고하십시오.
 
 ### General
@@ -207,7 +207,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13142](CHANGEL
 ---
 
 ## 13.13.2-cp-4.1.0
-출시일: 2023/06/20<br>
+출시일: 2023/6/20<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGELOG.md#13132) 문서를 참고하십시오.
 
 ### General
@@ -290,7 +290,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13132](CHANGEL
 ---
 
 ## 13.13.1-cp-4.0.0
-출시일: 2023/06/06<br>
+출시일: 2023/6/6<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGELOG.md#13131) 문서를 참고하십시오.
 
 ### General
@@ -351,7 +351,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGEL
 ---
 
 ## 13.5.6-cp-3.1.0
-출시일: 2023/02/10<br>
+출시일: 2023/2/10<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
@@ -360,7 +360,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md)
 ---
 
 ## 13.5.5-cp-3.1.0
-출시일: 2023/02/10<br>
+출시일: 2023/2/10<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
@@ -390,7 +390,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md)
 ---
 
 ## 12.119.0-cp-3.0.0
-출시일: 2022/09/16<br>
+출시일: 2022/9/16<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
 ## NOTE
