@@ -22,6 +22,17 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.3.3 (Hotfix)
+출시일: 2023/10/3<br>
+기반 Misskey 버전: 2023.9.3<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGELOG.md#202393) 문서를 참고하십시오.
+
+### Server
+- Fix: 마이그레이션 문제
+	- Misskey에서 CherryPick으로 마이그레이션하면 오류가 발생함
+
+---
+
 ## 4.3.2
 출시일: 2023/10/3<br>
 기반 Misskey 버전: 2023.9.3<br>
