@@ -23,6 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
 				<i class="ti ti-dashboard ti-fw"></i>
+				<span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 			</MkA>
 			<button v-click-anime v-vibrate="5" class="item _button" @click="more">
 				<i class="ti ti-dots ti-fw"></i>
@@ -56,6 +57,7 @@ import MkButton from '@/components/MkButton.vue';
 import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
+import { version } from '@/config.js';
 
 const WINDOW_THRESHOLD = 1400;
 
@@ -69,6 +71,28 @@ let otherNavItemIndicated = computed<boolean>(() => {
 	}
 	return false;
 });
+
+let controlPanelIndicated = $ref(false);
+let releasesCherryPick = $ref(null);
+
+if ($i.isAdmin || $i.isModerator) {
+	os.api('admin/abuse-user-reports', {
+		state: 'unresolved',
+		limit: 1,
+	}).then(reports => {
+		if (reports.length > 0) controlPanelIndicated = true;
+	});
+
+	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+		method: 'GET',
+	}).then(res => res.json())
+		.then(async res => {
+			const meta = await os.api('admin/meta');
+			if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
+			else releasesCherryPick = res.filter(x => x.prerelease === false);
+			if (version < releasesCherryPick[0].tag_name) controlPanelIndicated = true;
+		});
+}
 
 function more(ev: MouseEvent) {
 	os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {

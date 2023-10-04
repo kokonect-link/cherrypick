@@ -64,7 +64,7 @@ let noEmailServer = !instance.enableEmail;
 let thereIsUnresolvedAbuseReport = $ref(false);
 let currentPage = $computed(() => router.currentRef.value.child);
 let updateAvailable = $ref(false);
-let releasesCherryPick = $ref(null);
+let releasesCherryPick = $ref();
 
 os.api('admin/abuse-user-reports', {
 	state: 'unresolved',
@@ -76,9 +76,10 @@ os.api('admin/abuse-user-reports', {
 fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 	method: 'GET',
 }).then(res => res.json())
-	.then(res => {
-		if (meta.enableReceivePrerelease) releasesMisskey = res.filter(x => x.prerelease === true);
-		else releasesMisskey = res.filter(x => x.prerelease === false);
+	.then(async res => {
+		const meta = await os.api('admin/meta');
+		if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
+		else releasesCherryPick = res.filter(x => x.prerelease === false);
 		if (version < releasesCherryPick[0].tag_name) updateAvailable = true;
 	});
 

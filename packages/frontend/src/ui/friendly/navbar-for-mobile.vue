@@ -74,20 +74,24 @@ const otherMenuItemIndicated = computed(() => {
 let controlPanelIndicated = $ref(false);
 let releasesCherryPick = $ref(null);
 
-os.api('admin/abuse-user-reports', {
-	state: 'unresolved',
-	limit: 1,
-}).then(reports => {
-	if (reports.length > 0) controlPanelIndicated = true;
-});
-
-fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
-	method: 'GET',
-}).then(res => res.json())
-	.then(res => {
-		releasesCherryPick = res;
-		if (version < releasesCherryPick[0].tag_name) controlPanelIndicated = true;
+if ($i.isAdmin || $i.isModerator) {
+	os.api('admin/abuse-user-reports', {
+		state: 'unresolved',
+		limit: 1,
+	}).then(reports => {
+		if (reports.length > 0) controlPanelIndicated = true;
 	});
+
+	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+		method: 'GET',
+	}).then(res => res.json())
+		.then(async res => {
+			const meta = await os.api('admin/meta');
+			if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
+			else releasesCherryPick = res.filter(x => x.prerelease === false);
+			if (version < releasesCherryPick[0].tag_name) controlPanelIndicated = true;
+		});
+}
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_({
