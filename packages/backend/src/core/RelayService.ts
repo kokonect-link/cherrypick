@@ -110,18 +110,18 @@ export class RelayService {
 		return JSON.stringify(result);
 	}
 
-    @bindThis
-    public async getAcceptedRelays(): Promise<MiRelay[]> {
-        return await this.relaysCache.fetch(() => this.relaysRepository.findBy({
-            status: 'accepted',
-        }));
-    }
+	@bindThis
+	public async getAcceptedRelays(): Promise<MiRelay[]> {
+		return await this.relaysCache.fetch(() => this.relaysRepository.findBy({
+			status: 'accepted',
+		}));
+	}
 
 	@bindThis
 	public async deliverToRelays(user: { id: MiUser['id']; host: null; }, activity: any): Promise<void> {
 		if (activity == null) return;
 
-        const relays = await this.getAcceptedRelays();
+		const relays = await this.getAcceptedRelays();
 		if (relays.length === 0) return;
 
 		const copy = deepClone(activity);
