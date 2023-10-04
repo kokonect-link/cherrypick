@@ -74,14 +74,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				driveFile = await this.driveFilesRepository.findOneBy({ id: ps.fileId });
 				if (driveFile == null) throw new ApiError(meta.errors.noSuchFile);
 			}
-			const oldemoji = await this.customEmojiService.getEmojiById(ps.id);
-			if (oldemoji !== null) {
-				if (ps.name !== oldemoji.name) {
-					const duplicateCheck = await this.customEmojiService.isDuplicateCheck(ps.name);
-					if (duplicateCheck) throw new ApiError(meta.errors.sameNameEmojiExists);
-				}
-			} else {
-				throw new ApiError(meta.errors.noSuchEmoji);
+			if (ps.name) {
+				const duplicateCheck = await this.customEmojiService.isDuplicateCheck(ps.name);
+				if (duplicateCheck != null) throw new ApiError(meta.errors.sameNameEmojiExists);
 			}
 
 			await this.customEmojiService.update(ps.id, {
