@@ -8,6 +8,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<div class="_gaps_m">
+			<div class="_panel" style="padding: 16px;">
+				<MkSwitch v-model="enableReceivePrerelease">
+					<template #label>{{ i18n.ts.enableReceivePrerelease }}</template>
+				</MkSwitch>
+			</div>
+
 			<template>
 				<FormInfo v-if="version > releasesCherryPick[0].tag_name">{{ i18n.ts.youAreRunningBetaClient }}</FormInfo>
 				<FormInfo v-else-if="version === releasesCherryPick[0].tag_name">{{ i18n.ts.youAreRunningUpToDateClient }}</FormInfo>
@@ -58,7 +64,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import * as os from '@/os.js';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
@@ -67,23 +73,50 @@ import { version, instanceName, basedMisskeyVersion } from '@/config.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import XHeader from '@/pages/admin/_header_.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
+import { fetchInstance } from '@/instance.js';
+
+let enableReceivePrerelease: boolean = $ref(false);
 
 let releasesCherryPick = $ref(null);
 let releasesMisskey = $ref(null);
 
+async function init() {
+	const meta = await os.api('admin/meta');
+	enableReceivePrerelease = meta.enableReceivePrerelease;
+}
+
+function save() {
+	os.apiWithDialog('admin/update-meta', {
+		enableReceivePrerelease,
+	}).then(() => {
+		fetchInstance();
+	});
+}
+
+watch([
+	enableReceivePrerelease,
+], () => {
+	save();
+});
+
 onMounted(() => {
+	init();
+
 	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
-			releasesCherryPick = res;
+			if (enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
+			else releasesCherryPick = res.filter(x => x.prerelease === false);
 		});
 
 	fetch('https://api.github.com/repos/misskey-dev/misskey/releases', {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
-			releasesMisskey = res;
+			if (enableReceivePrerelease) releasesMisskey = res.filter(x => x.prerelease === true);
+			else releasesMisskey = res.filter(x => x.prerelease === false);
 		});
 });
 

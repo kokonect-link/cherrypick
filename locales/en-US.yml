@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+enableReceivePrerelease: "Get notified of pre-release versions"
 youAreRunningBetaClient: "Unreleased version of CherryPick in use!"
 cherrypickUpdate: "CherryPick Update"
 allMediaNoteCollapse: "Collapse all media notes"

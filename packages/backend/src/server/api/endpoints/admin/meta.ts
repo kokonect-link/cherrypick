@@ -354,6 +354,10 @@ export const meta = {
 				type: 'object',
 				optional: false, nullable: false,
 			},
+			enableReceivePrerelease: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -484,6 +488,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 				manifestJsonOverride: instance.manifestJsonOverride,
+				enableReceivePrerelease: instance.enableReceivePrerelease,
 			};
 		});
 	}

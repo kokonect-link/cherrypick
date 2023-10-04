@@ -77,7 +77,8 @@ fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 	method: 'GET',
 }).then(res => res.json())
 	.then(res => {
-		releasesCherryPick = res;
+		if (meta.enableReceivePrerelease) releasesMisskey = res.filter(x => x.prerelease === true);
+		else releasesMisskey = res.filter(x => x.prerelease === false);
 		if (version < releasesCherryPick[0].tag_name) updateAvailable = true;
 	});
 

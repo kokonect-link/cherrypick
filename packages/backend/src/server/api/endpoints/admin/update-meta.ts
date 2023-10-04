@@ -553,6 +553,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.manifestJsonOverride = ps.manifestJsonOverride;
 			}
 
+			if (ps.enableReceivePrerelease !== undefined) {
+				set.enableReceivePrerelease = ps.enableReceivePrerelease;
+			}
+
 			const before = await this.metaService.fetch(true);
 
 			await this.metaService.update(set);
