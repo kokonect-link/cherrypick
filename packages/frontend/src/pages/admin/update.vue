@@ -121,7 +121,7 @@ onMounted(() => {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
-			if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
+			if (meta.enableReceivePrerelease) releasesCherryPick = res;
 			else releasesCherryPick = res.filter(x => x.prerelease === false);
 			if (skipCherryPickVersion < releasesCherryPick[0].tag_name) {
 				skipVersion = false;
@@ -133,7 +133,7 @@ onMounted(() => {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
-			if (meta.enableReceivePrerelease) releasesMisskey = res.filter(x => x.prerelease === true);
+			if (meta.enableReceivePrerelease) releasesMisskey = res;
 			else releasesMisskey = res.filter(x => x.prerelease === false);
 		});
 });
@@ -151,7 +151,7 @@ const whatIsNewMisskey = () => {
 };
 
 const whatIsNewLatestMisskey = () => {
-	window.open(`https://misskey-hub.net/docs/releases.html#_${releasesMisskey[0].tag_name.replace(/\./g, '-')}`, '_blank');
+	window.open(`https://github.com/misskey-dev/misskey/blob/develop/CHANGELOG.md#${releasesMisskey[0].tag_name.replace(/\./g, '')}`, '_blank');
 };
 
 const headerActions = $computed(() => [{
