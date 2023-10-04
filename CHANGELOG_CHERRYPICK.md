@@ -42,6 +42,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Server
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+- Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
 
 ---
 
