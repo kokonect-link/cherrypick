@@ -40,6 +40,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 서브 노트에서 더 보기 버튼을 사용할 수 없음
   - 리액션 변경 기능을 사용할 수 없음
 
+### Server
+- Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+
 ---
 
 ## 4.3.3 (Hotfix)
