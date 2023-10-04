@@ -399,11 +399,11 @@ async function toggleReaction(reaction) {
 		});
 	} else {
 		os.api('notes/reactions/create', {
-			noteId: appearNote.id,
+			noteId: note.id,
 			reaction: reaction,
 		});
 	}
-	if (appearNote.text && appearNote.text.length > 100 && (Date.now() - new Date(appearNote.createdAt).getTime() < 1000 * 3)) {
+	if (note.text && note.text.length > 100 && (Date.now() - new Date(note.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
 }
