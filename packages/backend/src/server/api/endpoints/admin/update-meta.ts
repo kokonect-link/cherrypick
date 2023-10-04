@@ -131,6 +131,9 @@ export const paramDef = {
 		serverRules: { type: 'array', items: { type: 'string' } },
 		preservedUsernames: { type: 'array', items: { type: 'string' } },
 		manifestJsonOverride: { type: 'string' },
+		enableReceivePrerelease: { type: 'boolean' },
+		skipVersion: { type: 'boolean' },
+		skipCherryPickVersion: { type: 'string', nullable: true },
 	},
 	required: [],
 } as const;
@@ -555,6 +558,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.enableReceivePrerelease !== undefined) {
 				set.enableReceivePrerelease = ps.enableReceivePrerelease;
+			}
+
+			if (ps.skipVersion !== undefined) {
+				set.skipVersion = ps.skipVersion;
+			}
+
+			if (ps.skipCherryPickVersion !== undefined) {
+				set.skipCherryPickVersion = ps.skipCherryPickVersion;
 			}
 
 			const before = await this.metaService.fetch(true);

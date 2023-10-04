@@ -358,6 +358,14 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			skipVersion: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			skipCherryPickVersion: {
+				type: 'string',
+				optional: true, nullable: true,
+			},
 		},
 	},
 } as const;
@@ -489,6 +497,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 				manifestJsonOverride: instance.manifestJsonOverride,
 				enableReceivePrerelease: instance.enableReceivePrerelease,
+				skipVersion: instance.skipVersion,
+				skipCherryPickVersion: instance.skipCherryPickVersion,
 			};
 		});
 	}

@@ -27,11 +27,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #key>{{ i18n.ts.currentVersion }} <i class="ti ti-external-link"></i></template>
 						<template #value>{{ version }}</template>
 					</MkKeyValue>
-					<MkKeyValue v-if="version < releasesCherryPick[0].tag_name" style="margin-top: 10px;" @click="whatIsNewLatestCherryPick">
+					<MkKeyValue v-if="version < releasesCherryPick[0].tag_name && !skipVersion" style="margin-top: 10px;" @click="whatIsNewLatestCherryPick">
 						<template #key>{{ i18n.ts.latestVersion }} <i class="ti ti-external-link"></i></template>
 						<template v-if="releasesCherryPick" #value>{{ releasesCherryPick[0].tag_name }}</template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
+					<MkButton v-if="!skipVersion && (version < releasesCherryPick[0].tag_name)" style="margin-top: 10px;" @click="skipThisRelease">{{ i18n.ts.skipThisRelease }}</MkButton>
 				</FormSection>
 
 				<FormSection @click="whatIsNewLatestCherryPick">
@@ -78,8 +79,11 @@ import XHeader from '@/pages/admin/_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { fetchInstance } from '@/instance.js';
 import FormSuspense from '@/components/form/suspense.vue';
+import MkButton from '@/components/MkButton.vue';
 
 let enableReceivePrerelease: boolean = $ref(false);
+let skipVersion: boolean = $ref(false);
+let skipCherryPickVersion = $ref<string | null>(null);
 
 let releasesCherryPick = $ref();
 let releasesMisskey = $ref();
@@ -88,11 +92,25 @@ const meta = await os.api('admin/meta');
 
 async function init() {
 	enableReceivePrerelease = meta.enableReceivePrerelease;
+	skipVersion = meta.skipVersion;
+	skipCherryPickVersion = meta.skipCherryPickVersion;
 }
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
 		enableReceivePrerelease,
+	}).then(() => {
+		fetchInstance();
+	});
+}
+
+function skipThisRelease() {
+	skipCherryPickVersion = releasesCherryPick[0].tag_name;
+	skipVersion = true;
+
+	os.apiWithDialog('admin/update-meta', {
+		skipVersion,
+		skipCherryPickVersion,
 	}).then(() => {
 		fetchInstance();
 	});
@@ -105,6 +123,10 @@ onMounted(() => {
 		.then(res => {
 			if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
 			else releasesCherryPick = res.filter(x => x.prerelease === false);
+			if (skipCherryPickVersion < releasesCherryPick[0].tag_name) {
+				skipVersion = false;
+				os.api('admin/update-meta', { skipVersion });
+			}
 		});
 
 	fetch('https://api.github.com/repos/misskey-dev/misskey/releases', {

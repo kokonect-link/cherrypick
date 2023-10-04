@@ -594,4 +594,15 @@ export class MiMeta {
 		default: false,
 	})
 	public enableReceivePrerelease: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public skipVersion: boolean;
+
+	@Column('varchar', {
+		length: 32,
+		nullable: true,
+	})
+	public skipCherryPickVersion: string | null;
 }

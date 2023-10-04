@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+skipThisVersion: "このリリースをスキップする"
 enableReceivePrerelease: "プレリリース版の通知を受け取る"
 youAreRunningBetaClient: "未発売バージョンのCherryPickを利用しています！"
 cherrypickUpdate: "CherryPickアップデート"

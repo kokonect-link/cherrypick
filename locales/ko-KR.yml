@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+skipThisVersion: "이 릴리즈 건너뛰기"
 enableReceivePrerelease: "출시 전 버전 알림 받기"
 youAreRunningBetaClient: "아직 출시되지 않은 버전의 CherryPick를 이용하고 있어요!"
 cherrypickUpdate: "CherryPick 업데이트"

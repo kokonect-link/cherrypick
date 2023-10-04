@@ -80,7 +80,7 @@ fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 		const meta = await os.api('admin/meta');
 		if (meta.enableReceivePrerelease) releasesCherryPick = res.filter(x => x.prerelease === true);
 		else releasesCherryPick = res.filter(x => x.prerelease === false);
-		if (version < releasesCherryPick[0].tag_name) updateAvailable = true;
+		if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) updateAvailable = true;
 	});
 
 const NARROW_THRESHOLD = 600;
