@@ -39,9 +39,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 서브 노트 기능 오류
   - 서브 노트에서 더 보기 버튼을 사용할 수 없음
   - 리액션 변경 기능을 사용할 수 없음
+- Fix: 노트 상세 페이지의 노트 입력 폼을 누르기 전에 일부 요소가 표시될 수 있음
 
 ### Server
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+- Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
 
 ---
 
