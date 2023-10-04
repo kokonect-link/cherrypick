@@ -5,6 +5,7 @@
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ## NOTE
+> 
 
 ### General
 - 
@@ -27,6 +28,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.9.3<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGELOG.md#202393) 문서를 참고하십시오.
 
+## NOTE
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
+
 ### Server
 - Fix: 마이그레이션 문제
 	- Misskey에서 CherryPick으로 마이그레이션하면 오류가 발생함
@@ -37,6 +43,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGE
 출시일: 2023/10/3<br>
 기반 Misskey 버전: 2023.9.3<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGELOG.md#202393) 문서를 참고하십시오.
+
+## NOTE
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ### General
 - Feat: 편집한 노트의 기록을 확인할 수 있음 (misskey-dev/misskey#11938)
@@ -66,6 +77,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGE
 기반 Misskey 버전: 2023.9.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGELOG.md#202392) 문서를 참고하십시오.
 
+## NOTE
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
+
 ### General
 - 미디어, 고양이 타임라인 개선
   - [misskey-dev/misskey@eb740e2](https://github.com/misskey-dev/misskey/commit/eb740e2c72ae6854b244ad099c927c069008720e) 이 추가됨에 따라, 해당 기능에 병합하고 기존 미디어 및 고양이 타임라인을 제거함
@@ -76,6 +92,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGE
 출시일: 2023/9/29<br>
 기반 Misskey 버전: 2023.9.1<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGELOG.md#202391) 문서를 참고하십시오.
+
+## NOTE
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ### General
 - Add: Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))
