@@ -35,9 +35,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ## NOTE
 - Misskey 2023.10.0 에서 삭제된 노트 편집 기능이 계속 유지됩니다.
 
-### Changes
-- Revert: API: notes/global-timelines 는 현재 항상 `[]` 를 반환합니다
-
 ### Client
 - Feat: 클라이언트 업데이트 알림 개선
   - 알림 채널을 선택할 수 있음
