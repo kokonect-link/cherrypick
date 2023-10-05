@@ -51,6 +51,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 히트맵이 표시되지 않음
 - Fix: 대화 페이지에서 일부 요소가 중복으로 표시될 수 있음
 - Fix: 브랜딩에서 적용한 이미지가 대화 페이지에서 반영되지 않음
+- Fix: 유저 검색에서 로컬/리모트 설정이 제대로 작동하지 않음
 
 ### Server
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
