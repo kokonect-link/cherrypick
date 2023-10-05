@@ -9,58 +9,60 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 		<FormSuspense :p="init">
 			<FormSection>
-        <!--
-				<template #label>DeepL Translation</template>
-
+				<template #label>Translation</template>
 				<div class="_gaps_m">
-					<MkInput v-model="deeplAuthKey">
-						<template #prefix><i class="ti ti-key"></i></template>
-						<template #label>DeepL Auth Key</template>
-					</MkInput>
-					<MkSwitch v-model="deeplIsPro">
-						<template #label>Pro account</template>
-					</MkSwitch>
+					<!--
+					<template #label>DeepL Translation</template>
+
+					<div class="_gaps_m">
+						<MkInput v-model="deeplAuthKey">
+							<template #prefix><i class="ti ti-key"></i></template>
+							<template #label>DeepL Auth Key</template>
+						</MkInput>
+						<MkSwitch v-model="deeplIsPro">
+							<template #label>Pro account</template>
+						</MkSwitch>
+					</div>
+					-->
+
+					<MkRadios v-model="provider">
+						<template #label>Translator type</template>
+						<option :value="null">{{ i18n.ts.none }}</option>
+						<option value="deepl">DeepL</option>
+						<option value="google_no_api">Google Translate(without API)</option>
+						<option value="ctav3">Cloud Translation - Advanced(v3)</option>
+					</MkRadios>
+
+					<template v-if="provider === 'deepl'">
+						<div class="_gaps_m">
+							<MkInput v-model="deeplAuthKey">
+								<template #prefix><i class="ti ti-key"></i></template>
+								<template #label>DeepL Auth Key</template>
+							</MkInput>
+							<MkSwitch v-model="deeplIsPro">
+								<template #label>Pro account</template>
+							</MkSwitch>
+						</div>
+					</template>
+					<template v-else-if="provider === 'ctav3'">
+						<MkInput v-model="ctav3SaKey" type="password">
+							<template #prefix><i class="ti ti-key"></i></template>
+							<template #label>Service account key(json)</template>
+						</MkInput>
+						<MkInput v-model="ctav3ProjectId">
+							<template #label>Project ID</template>
+						</MkInput>
+						<MkInput v-model="ctav3Location">
+							<template #label>Location</template>
+						</MkInput>
+						<MkInput v-model="ctav3Model">
+							<template #label>Model ID</template>
+						</MkInput>
+						<MkInput v-model="ctav3Glossary">
+							<template #label>Glossary ID</template>
+						</MkInput>
+					</template>
 				</div>
-				-->
-
-        <template #label>Translation</template>
-        <MkRadios v-model="provider">
-          <template #label>Translator type</template>
-          <option :value="null">{{ i18n.ts.none }}</option>
-          <option value="deepl">DeepL</option>
-          <option value="google_no_api">Google Translate(without API)</option>
-          <option value="ctav3">Cloud Translation - Advanced(v3)</option>
-        </MkRadios>
-
-        <template v-if="provider === 'deepl'">
-          <div class="_gaps_m">
-            <MkInput v-model="deeplAuthKey">
-              <template #prefix><i class="ti ti-key"></i></template>
-              <template #label>DeepL Auth Key</template>
-            </MkInput>
-            <MkSwitch v-model="deeplIsPro">
-              <template #label>Pro account</template>
-            </MkSwitch>
-          </div>
-        </template>
-        <template v-else-if="provider === 'ctav3'">
-          <MkInput v-model="ctav3SaKey" type="password">
-            <template #prefix><i class="ti ti-key"></i></template>
-            <template #label>Service account key(json)</template>
-          </MkInput>
-          <MkInput v-model="ctav3ProjectId">
-            <template #label>Project ID</template>
-          </MkInput>
-          <MkInput v-model="ctav3Location">
-            <template #label>Location</template>
-          </MkInput>
-          <MkInput v-model="ctav3Model">
-            <template #label>Model ID</template>
-          </MkInput>
-          <MkInput v-model="ctav3Glossary">
-            <template #label>Glossary ID</template>
-          </MkInput>
-        </template>
 			</FormSection>
 		</FormSuspense>
 	</MkSpacer>
@@ -79,6 +81,8 @@ import { } from 'vue';
 import XHeader from './_header_.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkButton from '@/components/MkButton.vue';
+import MkRadios from '@/components/MkRadios.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
@@ -97,26 +101,26 @@ let ctav3Glossary: string = $ref('');
 
 async function init() {
 	const meta = await os.api('admin/meta');
-  provider = meta.translatorType;
-  deeplAuthKey = meta.deeplAuthKey;
-  deeplIsPro = meta.deeplIsPro;
-  ctav3SaKey = meta.ctav3SaKey;
-  ctav3ProjectId = meta.ctav3ProjectId;
-  ctav3Location = meta.ctav3Location;
-  ctav3Model = meta.ctav3Model;
-  ctav3Glossary = meta.ctav3Glossary;
+	provider = meta.translatorType;
+	deeplAuthKey = meta.deeplAuthKey;
+	deeplIsPro = meta.deeplIsPro;
+	ctav3SaKey = meta.ctav3SaKey;
+	ctav3ProjectId = meta.ctav3ProjectId;
+	ctav3Location = meta.ctav3Location;
+	ctav3Model = meta.ctav3Model;
+	ctav3Glossary = meta.ctav3Glossary;
 }
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-    translatorType: provider,
-    deeplAuthKey,
-    deeplIsPro,
-    ctav3SaKey,
-    ctav3ProjectId,
-    ctav3Location,
-    ctav3Model,
-    ctav3Glossary,
+		translatorType: provider,
+		deeplAuthKey,
+		deeplIsPro,
+		ctav3SaKey,
+		ctav3ProjectId,
+		ctav3Location,
+		ctav3Model,
+		ctav3Glossary,
 	}).then(() => {
 		fetchInstance();
 	});
