@@ -196,9 +196,9 @@ export class SearchService {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), pagination.sinceId, pagination.untilId);
 
 			if (opts.origin === 'local') {
-				query.andWhere('user.host IS NULL');
+				query.andWhere('note.userHost IS NULL');
 			} else if (opts.origin === 'remote') {
-				query.andWhere('user.host IS NOT NULL');
+				query.andWhere('note.userHost IS NOT NULL');
 			}
 
 			if (opts.userId) {
