@@ -1212,6 +1212,9 @@ export interface Locale {
     "notificationRecieveConfig": string;
     "mutualFollow": string;
     "fileAttachedOnly": string;
+    "showRepliesToOthersInTimeline": string;
+    "hideRepliesToOthersInTimeline": string;
+    "externalServices": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
     "thisFlashRequiresTheFollowingPermissions": string;
@@ -1994,11 +1997,6 @@ export interface Locale {
         "muteWords": string;
         "muteWordsDescription": string;
         "muteWordsDescription2": string;
-        "softDescription": string;
-        "hardDescription": string;
-        "soft": string;
-        "hard": string;
-        "mutedNotes": string;
     };
     "_instanceMute": {
         "instanceMuteDescription": string;

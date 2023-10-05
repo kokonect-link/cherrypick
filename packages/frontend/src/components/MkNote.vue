@@ -264,7 +264,7 @@ const isLong = shouldCollapsed(appearNote);
 const isMFM = shouldMfmCollapsed(appearNote);
 const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse));
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref<any>(null);
 const translating = ref(false);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || appearNote.userId === $i.id);

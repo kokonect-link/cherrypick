@@ -386,6 +386,7 @@ const patronsWithMisskey = [
 	'kino3277',
 	'美少女JKぐーちゃん',
 	'てば',
+	'たっくん',
 ];
 
 let isKokonect = false;

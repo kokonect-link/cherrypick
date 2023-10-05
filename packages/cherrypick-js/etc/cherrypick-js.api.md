@@ -1409,10 +1409,6 @@ export type Endpoints = {
         req: TODO;
         res: TODO;
     };
-    'i/get-word-muted-notes-count': {
-        req: TODO;
-        res: TODO;
-    };
     'i/import-following': {
         req: TODO;
         res: TODO;

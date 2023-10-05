@@ -81,58 +81,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</FormSection>
 
 					<FormSection>
-						<!--
-						<template #label>DeepL Translation</template>
+						<template #label>Timeline caching</template>
 
 						<div class="_gaps_m">
-							<MkInput v-model="deeplAuthKey">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>DeepL Auth Key</template>
+							<MkInput v-model="perLocalUserUserTimelineCacheMax" type="number">
+								<template #label>perLocalUserUserTimelineCacheMax</template>
 							</MkInput>
-							<MkSwitch v-model="deeplIsPro">
-								<template #label>Pro account</template>
-							</MkSwitch>
+
+							<MkInput v-model="perRemoteUserUserTimelineCacheMax" type="number">
+								<template #label>perRemoteUserUserTimelineCacheMax</template>
+							</MkInput>
+
+							<MkInput v-model="perUserHomeTimelineCacheMax" type="number">
+								<template #label>perUserHomeTimelineCacheMax</template>
+							</MkInput>
+
+							<MkInput v-model="perUserListTimelineCacheMax" type="number">
+								<template #label>perUserListTimelineCacheMax</template>
+							</MkInput>
 						</div>
-						-->
-
-						<template #label>Translation</template>
-						<MkRadios v-model="provider">
-							<template #label>Translator type</template>
-							<option :value="null">{{ i18n.ts.none }}</option>
-							<option value="deepl">DeepL</option>
-							<option value="google_no_api">Google Translate(without API)</option>
-							<option value="ctav3">Cloud Translation - Advanced(v3)</option>
-						</MkRadios>
-
-						<template v-if="provider === 'deepl'">
-							<div class="_gaps_m">
-								<MkInput v-model="deeplAuthKey">
-									<template #prefix><i class="ti ti-key"></i></template>
-									<template #label>DeepL Auth Key</template>
-								</MkInput>
-								<MkSwitch v-model="deeplIsPro">
-									<template #label>Pro account</template>
-								</MkSwitch>
-							</div>
-						</template>
-						<template v-else-if="provider === 'ctav3'">
-							<MkInput v-model="ctav3SaKey" type="password">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Service account key(json)</template>
-							</MkInput>
-							<MkInput v-model="ctav3ProjectId">
-								<template #label>Project ID</template>
-							</MkInput>
-							<MkInput v-model="ctav3Location">
-								<template #label>Location</template>
-							</MkInput>
-							<MkInput v-model="ctav3Model">
-								<template #label>Model ID</template>
-							</MkInput>
-							<MkInput v-model="ctav3Glossary">
-								<template #label>Glossary ID</template>
-							</MkInput>
-						</template>
 					</FormSection>
 
 					<FormSection>
@@ -188,14 +155,10 @@ let cacheRemoteSensitiveFiles: boolean = $ref(false);
 let enableServiceWorker: boolean = $ref(false);
 let swPublicKey: any = $ref(null);
 let swPrivateKey: any = $ref(null);
-let provider: string | null = $ref(null);
-let deeplAuthKey: string = $ref('');
-let deeplIsPro: boolean = $ref(false);
-let ctav3SaKey: string = $ref('');
-let ctav3ProjectId: string = $ref('');
-let ctav3Location: string = $ref('');
-let ctav3Model: string = $ref('');
-let ctav3Glossary: string = $ref('');
+let perLocalUserUserTimelineCacheMax: number = $ref(0);
+let perRemoteUserUserTimelineCacheMax: number = $ref(0);
+let perUserHomeTimelineCacheMax: number = $ref(0);
+let perUserListTimelineCacheMax: number = $ref(0);
 
 async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
@@ -211,14 +174,10 @@ async function init(): Promise<void> {
 	enableServiceWorker = meta.enableServiceWorker;
 	swPublicKey = meta.swPublickey;
 	swPrivateKey = meta.swPrivateKey;
-	provider = meta.translatorType;
-	deeplAuthKey = meta.deeplAuthKey;
-	deeplIsPro = meta.deeplIsPro;
-	ctav3SaKey = meta.ctav3SaKey;
-	ctav3ProjectId = meta.ctav3ProjectId;
-	ctav3Location = meta.ctav3Location;
-	ctav3Model = meta.ctav3Model;
-	ctav3Glossary = meta.ctav3Glossary;
+	perLocalUserUserTimelineCacheMax = meta.perLocalUserUserTimelineCacheMax;
+	perRemoteUserUserTimelineCacheMax = meta.perRemoteUserUserTimelineCacheMax;
+	perUserHomeTimelineCacheMax = meta.perUserHomeTimelineCacheMax;
+	perUserListTimelineCacheMax = meta.perUserListTimelineCacheMax;
 }
 
 function save(): void {
@@ -236,14 +195,10 @@ function save(): void {
 		enableServiceWorker,
 		swPublicKey,
 		swPrivateKey,
-		translatorType: provider,
-		deeplAuthKey,
-		deeplIsPro,
-		ctav3SaKey,
-		ctav3ProjectId,
-		ctav3Location,
-		ctav3Model,
-		ctav3Glossary,
+		perLocalUserUserTimelineCacheMax,
+		perRemoteUserUserTimelineCacheMax,
+		perUserHomeTimelineCacheMax,
+		perUserListTimelineCacheMax,
 	}).then(() => {
 		fetchInstance();
 	});

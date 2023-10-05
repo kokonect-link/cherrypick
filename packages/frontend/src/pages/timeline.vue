@@ -33,11 +33,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.tl">
 				<MkTimeline
 					ref="tlComponent"
-					:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
+					:key="src + withRenotes + onlyFiles + onlyCats"
 					:src="src.split(':')[0]"
 					:list="src.split(':')[1]"
 					:withRenotes="withRenotes"
-					:withReplies="withReplies"
 					:onlyFiles="onlyFiles"
 					:onlyCats="onlyCats"
 					:sound="true"
@@ -94,7 +93,6 @@ let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 const withRenotes = $ref(true);
-const withReplies = $ref(false);
 const onlyFiles = $ref(false);
 const onlyCats = $ref(false);
 const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
@@ -224,11 +222,6 @@ const headerActions = $computed(() => [{
 			text: i18n.ts.showRenotes,
 			icon: 'ti ti-repeat',
 			ref: $$(withRenotes),
-		}, {
-			type: 'switch',
-			text: i18n.ts.withReplies,
-			icon: 'ti ti-arrow-back-up',
-			ref: $$(withReplies),
 		}, {
 			type: 'switch',
 			text: i18n.ts.fileAttachedOnly,

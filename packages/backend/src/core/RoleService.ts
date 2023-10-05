@@ -27,7 +27,6 @@ export type RolePolicies = {
 	ltlAvailable: boolean;
 	ctlAvailable: boolean;
 	canPublicNote: boolean;
-	canEditNote: boolean;
 	canInvite: boolean;
 	inviteLimit: number;
 	inviteLimitCycle: number;
@@ -54,7 +53,6 @@ export const DEFAULT_POLICIES: RolePolicies = {
 	ltlAvailable: true,
 	ctlAvailable: true,
 	canPublicNote: true,
-	canEditNote: true,
 	canInvite: false,
 	inviteLimit: 0,
 	inviteLimitCycle: 60 * 24 * 7,
@@ -301,7 +299,6 @@ export class RoleService implements OnApplicationShutdown {
 			ltlAvailable: calc('ltlAvailable', vs => vs.some(v => v === true)),
 			ctlAvailable: calc('ctlAvailable', vs => vs.some(v => v === true)),
 			canPublicNote: calc('canPublicNote', vs => vs.some(v => v === true)),
-			canEditNote: calc('canEditNote', vs => vs.some(v => v === true)),
 			canInvite: calc('canInvite', vs => vs.some(v => v === true)),
 			inviteLimit: calc('inviteLimit', vs => Math.max(...vs)),
 			inviteLimitCycle: calc('inviteLimitCycle', vs => Math.max(...vs)),

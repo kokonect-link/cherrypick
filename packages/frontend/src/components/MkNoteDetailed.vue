@@ -333,7 +333,7 @@ let appearNote = $computed(() => isRenote ? note.renote as Misskey.entities.Note
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;

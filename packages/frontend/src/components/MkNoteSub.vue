@@ -68,7 +68,7 @@ const props = withDefaults(defineProps<{
 	depth: 1,
 });
 
-const muted = ref(checkWordMute(props.note, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);
