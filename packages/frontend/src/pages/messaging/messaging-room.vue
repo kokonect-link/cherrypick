@@ -15,12 +15,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :contentMax="800">
 			<div :class="$style.body">
 				<MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
-					<template #empty>
-						<div class="_fullinfo">
-							<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost"/>
-							<div>{{ i18n.ts.noMessagesYet }}</div>
-						</div>
-					</template>
 					<template #default="{ items: messages, fetching: pFetching }">
 						<MkDateSeparatedList
 							v-if="messages.length > 0"
