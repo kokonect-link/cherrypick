@@ -1142,6 +1142,8 @@ _sfx:
   note: "Wpisy"
   noteMy: "Mój wpis"
   notification: "Powiadomienia"
+  chat: "Wiadomości"
+  chatBg: "Rozmowy (tło)"
   antenna: "Anteny"
   channel: "Powiadomienia kanału"
 _ago:

@@ -647,6 +647,7 @@ _theme:
 _sfx:
   note: "Note"
   notification: "Notificări"
+  chat: "Chat"
 _ago:
   invalid: "Nu e nimic de văzut aici"
 _widgets:

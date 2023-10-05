@@ -438,6 +438,7 @@ _theme:
 _sfx:
   note: "Notities"
   notification: "Meldingen"
+  chat: "Chat"
 _2fa:
   renewTOTPCancel: "Nee, bedankt"
 _widgets:

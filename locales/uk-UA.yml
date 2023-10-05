@@ -1388,6 +1388,8 @@ _sfx:
   note: "Нотатки"
   noteMy: "Мої нотатки"
   notification: "Сповіщення"
+  chat: "Чати"
+  chatBg: "Чати (фон)"
   antenna: "Прийом антени"
   channel: "Повідомлення каналу"
 _ago:
