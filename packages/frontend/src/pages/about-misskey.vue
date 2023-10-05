@@ -217,6 +217,8 @@ import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js
 import { $i } from '@/account.js';
 
 const patronsWithIconWithCherryPick = [{
+	name: '아르페',
+	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/12167100/e2bc361ba5864c0ab40fc435626f4754/eyJ3IjoyMDB9/1.jpeg?token-time=2145916800&token-hash=fTnx80yG8wG6EdVyv8zDULe8qKnrRlnUV5PEVFS5CfA%3D',
 }];
 
 const patronsWithIconWithMisskey = [{
