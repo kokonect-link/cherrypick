@@ -133,9 +133,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('renote.user', 'renoteUser')
 				.leftJoinAndSelect('note.channel', 'channel');
 
-            if (ps.withCats) {
-                query.andWhere('(select "isCat" from "user" where id = note."userId")');
-            }
+			if (ps.withCats) {
+				query.andWhere('(select "isCat" from "user" where id = note."userId")');
+			}
 
 			timeline = await query.getMany();
 

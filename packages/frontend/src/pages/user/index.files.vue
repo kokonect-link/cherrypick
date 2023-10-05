@@ -18,14 +18,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			>
 				<!-- TODO: 画像以外のファイルに対応 -->
 				<ImgWithBlurhash
-            :hash="file.file.blurhash"
-            :src="thumbnail(file.file)"
-            :title="file.file.name"
-            @mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-            @mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-            @touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-            @touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-        />
+					:hash="file.file.blurhash"
+					:src="thumbnail(file.file)"
+					:title="file.file.name"
+					@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+					@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+					@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+					@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+				/>
 			</MkA>
 		</div>
 		<p v-if="!fetching && files.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
