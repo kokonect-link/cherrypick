@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
 
 	<FormSection>
-		<template #label>{{ i18n.ts.vibration }}</template>
+		<template #label>{{ i18n.ts.vibrations }}</template>
 		<div class="_gaps_s">
 			<MkSwitch v-model="vibrate" @click="demoVibrate()">{{ i18n.ts.playVibrationsOnClick }}<template #caption>{{ i18n.ts.playVibrationsOnClickDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 		</div>
