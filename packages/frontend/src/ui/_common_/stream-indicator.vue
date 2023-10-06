@@ -33,12 +33,17 @@ const zIndex = os.claimZIndex('high');
 
 let hasRequireRefresh = $ref(false);
 let hasDisconnected = $ref(false);
+let timeoutId = $ref<number>();
 
 function onDisconnected() {
-	hasDisconnected = true;
+	window.clearTimeout(timeoutId);
+	timeoutId = window.setTimeout(() => {
+		hasDisconnected = true;
+	}, 1000 * 10);
 }
 
 function resetDisconnected() {
+	window.clearTimeout(timeoutId);
 	hasDisconnected = false;
 }
 
@@ -50,6 +55,7 @@ function reload() {
 	location.reload();
 }
 
+useStream().on('_connected_', resetDisconnected);
 useStream().on('_disconnected_', onDisconnected);
 
 onMounted(() => {
@@ -59,6 +65,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+	window.clearTimeout(timeoutId);
+	useStream().off('_connected_', resetDisconnected);
 	useStream().off('_disconnected_', onDisconnected);
 });
 </script>
