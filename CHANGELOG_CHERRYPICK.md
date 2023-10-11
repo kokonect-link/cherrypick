@@ -41,6 +41,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 다음 릴리즈 출시까지 알리지 않도록 설정할 수 있음
 - Enhance: 그룹 대화에서 읽음 표시를 개선
 - Enhance: cli, bios 페이지 개선
+- Enhance: 서버와 연결이 끊겼을 때 stream indicator가 즉시 표시되지 않도록 (MisskeyIO/misskey#172)
 - Fix: 서브 노트 기능 오류
   - 서브 노트에서 더 보기 버튼을 사용할 수 없음
   - 리액션 변경 기능을 사용할 수 없음
@@ -52,9 +53,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 유저 선택 다이얼로그에서 검색 결과가 표시되지 않음
 
 ### Server
+- Feat: Note pack에서 SQL 디바운스 (MisskeyIO/misskey#176)
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
 - Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
 - Fix: Meilisearch가 설정된 상태에서 노트 검색 시 로컬/리모트 설정이 제대로 작동하지 않음
+- Fix: Redis의 TTL이 만료되지 않았다면 메모리에 값을 다시 쓰기 (MisskeyIO/misskey#174)
+- Fix: NoteEntityService의 pack 내에서 CustomEmojiService의 prefetchEmoji를 호출함 (MisskeyIO/misskey#179)
 
 ---
 
