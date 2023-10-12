@@ -26,9 +26,11 @@ export const getBuiltinThemes = () => Promise.all(
 	[
 		'l-cherrypick',
 		'l-rosepinedawn',
+		'l-mirerado',
 		'l-byeolvit-polaris',
 		'l-scone-color',
 		'l-stella-r2',
+		'l-birdsite',
 		'l-light',
 		'l-coffee',
 		'l-apricot',
@@ -38,14 +40,16 @@ export const getBuiltinThemes = () => Promise.all(
 		'l-cherry',
 		'l-sushi',
 		'l-u0',
-		'l-birdsite',
 
 		'd-cherrypick',
 		'd-rosepine',
 		'd-rosepinemoon',
+		'd-mirerado',
 		'd-byeolvit-noctiluca',
 		'd-scone-color',
 		'd-stella-r2',
+		'd-qdon',
+		'd-birdsite',
 		'd-dark',
 		'd-persimmon',
 		'd-astro',
@@ -56,8 +60,6 @@ export const getBuiltinThemes = () => Promise.all(
 		'd-cherry',
 		'd-ice',
 		'd-u0',
-		'd-qdon',
-		'd-birdsite',
 	].map(name => import(`../themes/${name}.json5`).then(({ default: _default }): Theme => _default)),
 );
 

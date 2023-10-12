@@ -1,0 +1,27 @@
+{
+	id: '90b3d615-ce4e-416d-82ae-cc11a1228403',
+	base: 'light',
+	name: 'Mirerado Uranus',
+	author: 'qua.',
+	desc: '미래를 향하는 꼬마전구, MireRado의 디폴트 라이트 테마에요.',
+
+	props: {
+		bg: '#EAEAEE',
+		fg: '#4E4E5E',
+		link: 'rgb(0, 176, 244)',
+		navBg: '#FAFBFC',
+		navFg: '#111111',
+		panel: '#FAFBFC',
+		accent: '#666DFE',
+		header: '#FAFBFC',
+		renote: '#999DFE',
+		hashtag: '@accent',
+		mention: '@accent',
+		navActive: '#111111',
+		navHoverFg: '#dcddde',
+		fgHighlighted: '#ffffff',
+		scrollbarHandle: '#d7d7e1',
+		cwBg: '#e4e6fc',
+		cwFg: '#4E4E5E',
+	},
+}

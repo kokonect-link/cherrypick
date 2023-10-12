@@ -36,6 +36,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Misskey 2023.10.0 에서 제거된 노트 편집 기능이 계속 유지됩니다.
 
 ### General
+- Add: Mirerado 테마 추가 ([mirerado-theme](https://mi.rerac.dev/@notify/pages/mirerado-theme))
 - Feat: 읽지 않은 알림 수를 표시할 수 있음 (misskey-dev/misskey#11982)
 - Feat: 햅틱 피드백 개선
   - 지원 범위 추가
