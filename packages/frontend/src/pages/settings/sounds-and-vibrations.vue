@@ -5,12 +5,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="_gaps_m">
-	<MkRange v-model="masterVolume" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-		<template #label>{{ i18n.ts.masterVolume }}</template>
-	</MkRange>
-
-	<FormSection>
+	<FormSection first>
 		<template #label>{{ i18n.ts.sounds }}</template>
+    <MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+      <template #label>{{ i18n.ts.masterVolume }}</template>
+    </MkRange>
+
 		<div class="_gaps_s">
 			<MkFolder v-for="type in soundsKeys" :key="type">
 				<template #label>{{ i18n.t('_sfx.' + type) }}</template>
