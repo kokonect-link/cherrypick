@@ -36,8 +36,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Misskey 2023.10.0 에서 제거된 노트 편집 기능이 계속 유지됩니다.
 
 ### General
-- Feat: 未読の通知数を表示できるようになりました (misskey-dev/misskey#11982)
-- Fix: サーバーサイドからのテスト通知を正しく行えるように修正 (misskey-dev/misskey#11982)
+- Feat: 읽지 않은 알림 수를 표시할 수 있음 (misskey-dev/misskey#11982)
+- Fix: 서버 측에서 테스트 알림을 올바르게 수행할 수 있도록 수정 (misskey-dev/misskey#11982)
 
 ### Client
 - Feat: 클라이언트 업데이트 알림 개선
