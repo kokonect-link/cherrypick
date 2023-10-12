@@ -37,6 +37,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### General
 - Feat: 읽지 않은 알림 수를 표시할 수 있음 (misskey-dev/misskey#11982)
+- Feat: 햅틱 피드백 개선
+  - 지원 범위 추가
+  - 설정을 세부적으로 변경할 수 있음
 - Fix: 서버 측에서 테스트 알림을 올바르게 수행할 수 있도록 수정 (misskey-dev/misskey#11982)
 
 ### Client

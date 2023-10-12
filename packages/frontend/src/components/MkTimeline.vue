@@ -18,8 +18,9 @@ import { useStream } from '@/stream.js';
 import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
-import { defaultStore } from '@/store.js';
+import {ColdDeviceStorage, defaultStore} from '@/store.js';
 import { i18n } from '@/i18n.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const props = withDefaults(defineProps<{
 	src: string;
@@ -63,6 +64,7 @@ const prepend = note => {
 
 	if (props.sound) {
 		sound.play($i && (note.userId === $i.id) ? 'noteMy' : 'note');
+    vibrate($i && (note.userId === $i.id) ? '' : ColdDeviceStorage.get('vibrateNote') ? [30, 20] : '');
 	}
 };
 
@@ -75,6 +77,7 @@ const prependFilterdMedia = note => {
 
 	if (props.sound) {
 		sound.play($i && (note.userId === $i.id) ? 'noteMy' : 'note');
+		vibrate($i && (note.userId === $i.id) ? '' : ColdDeviceStorage.get('vibrateNote') ? [30, 20] : '');
 	}
 };
 

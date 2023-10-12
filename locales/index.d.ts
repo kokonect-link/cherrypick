@@ -606,8 +606,8 @@ export interface Locale {
     "sound": string;
     "vibrations": string;
     "soundsAndVibrations": string;
-    "playVibrationsOnClick": string;
-    "playVibrationsOnClickDescription": string;
+    "playVibrations": string;
+    "playVibrationsDescription": string;
     "listen": string;
     "none": string;
     "showInPage": string;
@@ -1227,6 +1227,14 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "_vibrations": {
+        "click": string;
+        "note": string;
+        "notification": string;
+        "chat": string;
+        "chatBg": string;
+        "system": string;
+    };
     "_showingAnimatedImages": {
         "always": string;
         "interaction": string;

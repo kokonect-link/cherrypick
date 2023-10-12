@@ -24,16 +24,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
 
 	<FormSection>
-		<template #label>{{ i18n.ts.vibrations }}</template>
+		<template #label>{{ i18n.ts.vibrations }} <span class="_beta">CherryPick</span></template>
 		<div class="_gaps_s">
-			<MkSwitch v-model="vibrate" @click="demoVibrate()">{{ i18n.ts.playVibrationsOnClick }}<template #caption>{{ i18n.ts.playVibrationsOnClickDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
+			<MkSwitch v-model="vibrate" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template #caption>{{ i18n.ts.playVibrationsDescription }}</template></MkSwitch>
+			<MkSwitch v-if="vibrate" v-model="vibrateNote">{{ i18n.ts._vibrations.note }}</MkSwitch>
+			<MkSwitch v-if="vibrate" v-model="vibrateNotification">{{ i18n.ts._vibrations.notification }}</MkSwitch>
+			<MkSwitch v-if="vibrate" v-model="vibrateChat">{{ i18n.ts._vibrations.chat }}</MkSwitch>
+			<MkSwitch v-if="vibrate" v-model="vibrateChatBg">{{ i18n.ts._vibrations.chatBg }}</MkSwitch>
+      <MkSwitch v-if="vibrate" v-model="vibrateSystem" style="margin-top: 10px;">{{ i18n.ts._vibrations.system }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { Ref, computed, ref } from 'vue';
+import {Ref, computed, ref, watch} from 'vue';
+import * as os from "@/os.js";
 import XSound from './sounds.sound.vue';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -44,6 +50,7 @@ import { soundConfigStore } from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { ColdDeviceStorage } from '@/store.js';
+import {unisonReload} from "@/scripts/unison-reload.js";
 
 const masterVolume = computed(soundConfigStore.makeGetterSetter('sound_masterVolume'));
 
@@ -60,6 +67,21 @@ const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
 });
 
 const vibrate = computed(ColdDeviceStorage.makeGetterSetter('vibrate'));
+const vibrateNote = computed(ColdDeviceStorage.makeGetterSetter('vibrateNote'));
+const vibrateNotification = computed(ColdDeviceStorage.makeGetterSetter('vibrateNotification'));
+const vibrateChat = computed(ColdDeviceStorage.makeGetterSetter('vibrateChat'));
+const vibrateChatBg = computed(ColdDeviceStorage.makeGetterSetter('vibrateChatBg'));
+const vibrateSystem = computed(ColdDeviceStorage.makeGetterSetter('vibrateSystem'));
+
+async function reloadAsk() {
+  const { canceled } = await os.confirm({
+    type: 'info',
+    text: i18n.ts.reloadToApplySetting,
+  });
+  if (canceled) return;
+
+  unisonReload();
+}
 
 async function updated(type: keyof typeof sounds.value, sound) {
 	const v = {
@@ -82,6 +104,12 @@ function reset() {
 function demoVibrate() {
 	window.navigator.vibrate(100);
 }
+
+watch([
+  vibrateSystem,
+], async () => {
+  await reloadAsk();
+});
 
 const headerActions = $computed(() => []);
 

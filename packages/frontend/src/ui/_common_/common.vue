@@ -55,8 +55,9 @@ import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import {ColdDeviceStorage, defaultStore} from '@/store.js';
 import { globalEvents } from '@/events.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const XStreamIndicator = defineAsyncComponent(() => import('./stream-indicator.vue'));
 const XUpload = defineAsyncComponent(() => import('./upload.vue'));
@@ -83,6 +84,7 @@ function onNotification(notification: Misskey.entities.Notification, isClient = 
 	}
 
 	sound.play('notification');
+	vibrate(ColdDeviceStorage.get('vibrateNotification') ? [20, 30, 30, 30] : '');
 }
 
 if ($i) {
