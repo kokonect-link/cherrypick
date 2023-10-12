@@ -113,7 +113,7 @@ import XCommon from '@/ui/_common_/common.vue';
 import { instanceName } from '@/config.js';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os.js';
-import {ColdDeviceStorage, defaultStore} from '@/store.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { mainRouter } from '@/router.js';

@@ -139,7 +139,7 @@ import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
 import { selectFiles } from '@/scripts/select-file.js';
-import {ColdDeviceStorage, defaultStore, notePostInterruptors, postFormActions} from '@/store.js';
+import { ColdDeviceStorage, defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';

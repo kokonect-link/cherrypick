@@ -96,7 +96,7 @@ const tosPrivacyPolicyLabel = computed(() => {
 	} else if (availablePrivacyPolicy) {
 		return i18n.ts.privacyPolicy;
 	} else {
-		return "";
+		return '';
 	}
 });
 

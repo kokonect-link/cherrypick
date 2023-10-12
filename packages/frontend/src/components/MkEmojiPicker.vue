@@ -107,7 +107,7 @@ import * as os from '@/os.js';
 import { isTouchUsing } from '@/scripts/touch.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
-import {ColdDeviceStorage, defaultStore} from '@/store.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { customEmojiCategories, customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { $i } from '@/account.js';
 

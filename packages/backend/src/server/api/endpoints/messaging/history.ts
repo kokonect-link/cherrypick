@@ -82,9 +82,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						query.andWhere('message.groupId NOT IN (:...found)', { found: found });
 					}
 				} else {
-					query.where(new Brackets(qb => { qb
-						.where('message.userId = :userId', { userId: me.id })
-						.orWhere('message.recipientId = :userId', { userId: me.id });
+					query.where(new Brackets(qb => {
+						qb
+							.where('message.userId = :userId', { userId: me.id })
+							.orWhere('message.recipientId = :userId', { userId: me.id });
 					}));
 					query.andWhere('message.groupId IS NULL');
 

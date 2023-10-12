@@ -139,7 +139,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button
 				v-if="canRenote"
 				ref="renoteButton"
-        v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 30, 60] : ''"
+				v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 30, 60] : ''"
 				v-tooltip="i18n.ts.renote"
 				class="_button"
 				:class="$style.noteFooterButton"

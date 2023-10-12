@@ -116,8 +116,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					translator: translatorServices,
 				};
 			} else if (instance.translatorType === 'ctav3') {
-				if (instance.ctav3SaKey == null) { return 204; } else if (instance.ctav3ProjectId == null) { return 204; }
-				else if (instance.ctav3Location == null) { return 204; }
+				if (instance.ctav3SaKey == null) return 204;
+				else if (instance.ctav3ProjectId == null) return 204;
+				else if (instance.ctav3Location == null) return 204;
 				translationResult = await this.apiCloudTranslationAdvanced(
 					(note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
 				);

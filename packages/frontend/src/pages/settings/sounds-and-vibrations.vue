@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label>{{ i18n.ts.sounds }}</template>
-    <MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-      <template #label>{{ i18n.ts.masterVolume }}</template>
-    </MkRange>
+		<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+			<template #label>{{ i18n.ts.masterVolume }}</template>
+		</MkRange>
 
 		<div class="_gaps_s">
 			<MkFolder v-for="type in soundsKeys" :key="type">
@@ -31,16 +31,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-if="vibrate" v-model="vibrateNotification">{{ i18n.ts._vibrations.notification }}</MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateChat">{{ i18n.ts._vibrations.chat }}</MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateChatBg">{{ i18n.ts._vibrations.chatBg }}</MkSwitch>
-      <MkSwitch v-if="vibrate" v-model="vibrateSystem" style="margin-top: 10px;">{{ i18n.ts._vibrations.system }}</MkSwitch>
+			<MkSwitch v-if="vibrate" v-model="vibrateSystem" style="margin-top: 10px;">{{ i18n.ts._vibrations.system }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
 </template>
 
 <script lang="ts" setup>
-import {Ref, computed, ref, watch} from 'vue';
-import * as os from "@/os.js";
+import { Ref, computed, ref, watch } from 'vue';
 import XSound from './sounds.sound.vue';
+import * as os from '@/os.js';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
@@ -50,7 +50,7 @@ import { soundConfigStore } from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { ColdDeviceStorage } from '@/store.js';
-import {unisonReload} from "@/scripts/unison-reload.js";
+import { unisonReload } from '@/scripts/unison-reload.js';
 
 const masterVolume = computed(soundConfigStore.makeGetterSetter('sound_masterVolume'));
 
@@ -74,13 +74,13 @@ const vibrateChatBg = computed(ColdDeviceStorage.makeGetterSetter('vibrateChatBg
 const vibrateSystem = computed(ColdDeviceStorage.makeGetterSetter('vibrateSystem'));
 
 async function reloadAsk() {
-  const { canceled } = await os.confirm({
-    type: 'info',
-    text: i18n.ts.reloadToApplySetting,
-  });
-  if (canceled) return;
+	const { canceled } = await os.confirm({
+		type: 'info',
+		text: i18n.ts.reloadToApplySetting,
+	});
+	if (canceled) return;
 
-  unisonReload();
+	unisonReload();
 }
 
 async function updated(type: keyof typeof sounds.value, sound) {
@@ -106,9 +106,9 @@ function demoVibrate() {
 }
 
 watch([
-  vibrateSystem,
+	vibrateSystem,
 ], async () => {
-  await reloadAsk();
+	await reloadAsk();
 });
 
 const headerActions = $computed(() => []);

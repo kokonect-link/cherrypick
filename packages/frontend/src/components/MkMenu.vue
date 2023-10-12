@@ -74,7 +74,7 @@ const childrenCache = new WeakMap<MenuParent, MenuItem[]>();
 </script>
 
 <script lang="ts" setup>
-import {ColdDeviceStorage} from "@/store.js";
+import { ColdDeviceStorage } from '@/store.js';
 const XChild = defineAsyncComponent(() => import('./MkMenu.child.vue'));
 
 const props = defineProps<{

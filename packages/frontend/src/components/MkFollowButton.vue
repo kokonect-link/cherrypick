@@ -47,7 +47,7 @@ import { $i } from '@/account.js';
 import { userName } from '@/filters/user.js';
 import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
-import {ColdDeviceStorage} from "@/store.js";
+import { ColdDeviceStorage } from '@/store.js';
 
 let showFollowButton = $ref(false);
 

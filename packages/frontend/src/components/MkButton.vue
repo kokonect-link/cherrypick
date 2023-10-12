@@ -35,7 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { nextTick, onMounted } from 'vue';
 import { vibrate } from '@/scripts/vibrate.js';
-import {ColdDeviceStorage} from "@/store.js";
+import { ColdDeviceStorage } from '@/store.js';
 
 const props = defineProps<{
 	type?: 'button' | 'submit' | 'reset';

@@ -55,7 +55,7 @@ import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
-import {ColdDeviceStorage, defaultStore} from '@/store.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
 

@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <button
 	ref="buttonEl"
 	v-ripple="canToggle"
-  v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [10, 30, 40] : ''"
+	v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [10, 30, 40] : ''"
 	class="_button"
 	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
 	@click="toggleReaction()"

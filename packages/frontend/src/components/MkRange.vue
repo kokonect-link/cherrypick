@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch, shallowRef } from 'vue';
 import * as os from '@/os.js';
 import { vibrate } from '@/scripts/vibrate.js';
-import {ColdDeviceStorage} from "@/store.js";
+import { ColdDeviceStorage } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	modelValue: number;
