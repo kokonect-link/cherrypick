@@ -44,6 +44,7 @@ export type BadgeNames =
 	| 'antenna'
 	| 'arrow-back-up'
 	| 'at'
+	| 'bell'
 	| 'chart-arrows'
 	| 'circle-check'
 	| 'medal'

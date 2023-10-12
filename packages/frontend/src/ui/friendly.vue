@@ -36,7 +36,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<!-- v-vibrate="5" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
 		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
 		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
-		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')"><i :class="$style.navButtonIcon" class="ti ti-bell"></i><span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')">
+			<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
+			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator">
+				<span v-if="$i?.unreadNotificationCount && defaultStore.state.showUnreadNotificationCount" :class="$style.navButtonIndicateValueIcon"><span>{{ $i.unreadNotificationCount > 99 ? '99+' : $i.unreadNotificationCount }}</span></span>
+				<i v-else class="_indicatorCircle"></i>
+			</span>
+		</button>
 		<button v-vibrate="5" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
 		<button v-vibrate="5" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
 		<!-- <button v-vibrate="5" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
@@ -217,8 +223,7 @@ const calcBg = () => {
 	if (defaultStore.state.useBlurEffect) {
 		tinyBg.setAlpha(0.7);
 		tinyPostBg.setAlpha(0.7);
-	}
-	else {
+	} else {
 		tinyBg.setAlpha(1);
 		tinyPostBg.setAlpha(1);
 	}
@@ -657,6 +662,25 @@ $float-button-size: 65px;
 .navButtonIndicatorHome {
 	composes: navButtonIndicator;
 	animation: none;
+}
+
+.navButtonIndicateValueIcon {
+  display: inline-flex;
+  color: var(--fgOnAccent);
+  font-weight: 700;
+  background: var(--navIndicator);
+  height: 1em;
+  min-width: 1em;
+  align-items: center;
+  justify-content: center;
+  border-radius: 99rem;
+
+  & > span {
+    display: inline-block;
+    padding: 0 .25em;
+    font-size: .75em;
+    line-height: 1em;
+  }
 }
 
 .menuDrawerBg {

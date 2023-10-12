@@ -8,15 +8,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="szkkfdyq _popup _shadow" :class="{ asDrawer: type === 'drawer' }" :style="{ maxHeight: maxHeight ? maxHeight + 'px' : '' }">
 		<div class="main">
 			<template v-for="item in items">
-				<button v-if="item.action" v-click-anime class="_button item" @click="$event => { item.action($event); close(); }">
+				<button v-if="item.action" :key="item.text" v-click-anime class="_button item" @click="$event => { item.action($event); close(); }">
 					<i class="icon" :class="item.icon"></i>
 					<div class="text">{{ item.text }}</div>
-					<span v-if="item.indicate" class="indicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicate && item.indicateValue && defaultStore.state.showUnreadNotificationCount" class="indicatorWithValue"><span>{{ item.indicateValue }}</span></span>
+					<span v-else-if="item.indicate" class="indicator"><i class="_indicatorCircle"></i></span>
 				</button>
-				<MkA v-else v-click-anime :to="item.to" class="item" @click.passive="close()">
+				<MkA v-else :key="item.text" v-click-anime :to="item.to" class="item" @click.passive="close()">
 					<i class="icon" :class="item.icon"></i>
 					<div class="text">{{ item.text }}</div>
-					<span v-if="item.indicate" class="indicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicate && item.indicateValue && defaultStore.state.showUnreadNotificationCount" class="indicatorWithValue"><span>{{ item.indicateValue }}</span></span>
+					<span v-else-if="item.indicate" class="indicator"><i class="_indicatorCircle"></i></span>
 				</MkA>
 			</template>
 		</div>
@@ -57,6 +59,7 @@ const items = Object.keys(navbarItemDef).filter(k => !menu.includes(k)).map(k =>
 	to: def.to,
 	action: def.action,
 	indicate: def.indicated,
+	indicateValue: def.indicateValue,
 }));
 
 function close() {
@@ -114,6 +117,33 @@ function close() {
 				margin-top: 12px;
 				font-size: 0.8em;
 				line-height: 1.5em;
+			}
+
+			> .indicatorWithValue {
+				position: absolute;
+				top: 32px;
+				left: 16px;
+				font-size: 8px;
+				display: inline-flex;
+				color: var(--fgOnAccent);
+				font-weight: 700;
+				background: var(--indicator);
+				height: 1.5em;
+				min-width: 1.5em;
+				align-items: center;
+				justify-content: center;
+				border-radius: 99rem;
+
+				@media (max-width: 500px) {
+					top: 16px;
+					left: 8px;
+				}
+
+				> span {
+					display: inline-block;
+					padding: 0 .25em;
+					line-height: 1.5em;
+				}
 			}
 
 			> .indicator {

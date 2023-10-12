@@ -20,6 +20,15 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-bell',
 		show: computed(() => $i != null),
 		indicated: computed(() => $i != null && $i.hasUnreadNotification),
+		indicateValue: computed(() => {
+			if (!$i || $i.unreadNotificationCount === 0) return '';
+
+			if ($i.unreadNotificationCount > 99) {
+				return '99+';
+			} else {
+				return $i.unreadNotificationCount.toString();
+			}
+		}),
 		to: '/my/notifications',
 	},
 	messaging: {

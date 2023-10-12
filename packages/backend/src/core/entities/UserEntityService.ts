@@ -273,17 +273,34 @@ export class UserEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async getHasUnreadNotification(userId: MiUser['id']): Promise<boolean> {
+	public async getNotificationsInfo(userId: MiUser['id']): Promise<{
+		hasUnread: boolean;
+		unreadCount: number;
+	}> {
+		const response = {
+			hasUnread: false,
+			unreadCount: 0,
+		};
+
 		const latestReadNotificationId = await this.redisClient.get(`latestReadNotification:${userId}`);
 
-		const latestNotificationIdsRes = await this.redisClient.xrevrange(
-			`notificationTimeline:${userId}`,
-			'+',
-			'-',
-			'COUNT', 1);
-		const latestNotificationId = latestNotificationIdsRes[0]?.[0];
+		if (!latestReadNotificationId) {
+			response.unreadCount = await this.redisClient.xlen(`notificationTimeline:${userId}`);
+		} else {
+			const latestNotificationIdsRes = await this.redisClient.xrevrange(
+				`notificationTimeline:${userId}`,
+				'+',
+				latestReadNotificationId,
+			);
 
-		return latestNotificationId != null && (latestReadNotificationId == null || latestReadNotificationId < latestNotificationId);
+			response.unreadCount = (latestNotificationIdsRes.length - 1 >= 0) ? latestNotificationIdsRes.length - 1 : 0;
+		}
+
+		if (response.unreadCount > 0) {
+			response.hasUnread = true;
+		}
+
+		return response;
 	}
 
 	@bindThis
@@ -364,6 +381,8 @@ export class UserEntityService implements OnModuleInit {
 		const isModerator = isMe && opts.detail ? this.roleService.isModerator(user) : null;
 		const isAdmin = isMe && opts.detail ? this.roleService.isAdministrator(user) : null;
 		const unreadAnnouncements = isMe && opts.detail ? await this.announcementService.getUnreadAnnouncements(user) : null;
+
+		const notificationsInfo = isMe && opts.detail ? await this.getNotificationsInfo(user.id) : null;
 
 		const falsy = opts.detail ? false : undefined;
 
@@ -480,8 +499,9 @@ export class UserEntityService implements OnModuleInit {
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
 				hasUnreadChannel: false, // 後方互換性のため
 				hasUnreadMessagingMessage: this.getHasUnreadMessagingMessage(user.id),
-				hasUnreadNotification: this.getHasUnreadNotification(user.id),
+				hasUnreadNotification: notificationsInfo?.hasUnread,
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
+				unreadNotificationCount: notificationsInfo?.unreadCount,
 				mutedWords: profile!.mutedWords,
 				mutedInstances: profile!.mutedInstances,
 				mutingNotificationTypes: [], // 後方互換性のため
