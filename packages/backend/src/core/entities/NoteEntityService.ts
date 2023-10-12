@@ -473,25 +473,10 @@ export class NoteEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async countSameRenotes(userId: string, renoteId: string, excludeNoteId: string | undefined): Promise<number> {
-		// 指定したユーザーの指定したノートのリノートがいくつあるか数える
-		const query = this.notesRepository.createQueryBuilder('note')
-			.where('note.userId = :userId', { userId })
-			.andWhere('note.renoteId = :renoteId', { renoteId });
-
-		// 指定した投稿を除く
-		if (excludeNoteId) {
-			query.andWhere('note.id != :excludeNoteId', { excludeNoteId });
-		}
-
-		return await query.getCount();
-	}
-
-	@bindThis
-	private async findNoteOrFail(id: string): Promise<MiNote> {
-		return await this.notesRepository.findOneOrFail({
+	private findNoteOrFail(id: string): Promise<MiNote> {
+		return this.notesRepository.findOneOrFail({
 			where: { id },
-			relations: ["user"],
+			relations: ['user'],
 		});
 	}
 }

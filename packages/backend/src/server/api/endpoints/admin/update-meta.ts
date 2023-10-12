@@ -94,6 +94,8 @@ export const paramDef = {
 		tosUrl: { type: 'string', nullable: true },
 		repositoryUrl: { type: 'string' },
 		feedbackUrl: { type: 'string' },
+		impressumUrl: { type: 'string' },
+		privacyPolicyUrl: { type: 'string' },
 		useObjectStorage: { type: 'boolean' },
 		objectStorageBaseUrl: { type: 'string', nullable: true },
 		objectStorageBucket: { type: 'string', nullable: true },
@@ -135,6 +137,7 @@ export const paramDef = {
 		perRemoteUserUserTimelineCacheMax: { type: 'integer' },
 		perUserHomeTimelineCacheMax: { type: 'integer' },
 		perUserListTimelineCacheMax: { type: 'integer' },
+		notesPerOneAd: { type: 'integer' },
 		enableReceivePrerelease: { type: 'boolean' },
 		skipVersion: { type: 'boolean' },
 		skipCherryPickVersion: { type: 'string', nullable: true },
@@ -372,6 +375,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.feedbackUrl = ps.feedbackUrl;
 			}
 
+			if (ps.impressumUrl !== undefined) {
+				set.impressumUrl = ps.impressumUrl;
+			}
+
+			if (ps.privacyPolicyUrl !== undefined) {
+				set.privacyPolicyUrl = ps.privacyPolicyUrl;
+			}
+
 			if (ps.useObjectStorage !== undefined) {
 				set.useObjectStorage = ps.useObjectStorage;
 			}
@@ -574,6 +585,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.perUserListTimelineCacheMax !== undefined) {
 				set.perUserListTimelineCacheMax = ps.perUserListTimelineCacheMax;
+			}
+
+			if (ps.notesPerOneAd !== undefined) {
+				set.notesPerOneAd = ps.notesPerOneAd;
 			}
 
 			if (ps.enableReceivePrerelease !== undefined) {

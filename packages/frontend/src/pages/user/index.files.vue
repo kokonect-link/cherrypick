@@ -10,23 +10,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.root">
 		<MkLoading v-if="fetching"/>
 		<div v-if="!fetching && files.length > 0" :class="$style.stream">
-			<MkA
-				v-for="file in files"
-				:key="file.note.id + file.file.id"
-				:class="$style.img"
-				:to="notePage(file.note)"
-			>
-				<!-- TODO: 画像以外のファイルに対応 -->
-				<ImgWithBlurhash
-					:hash="file.file.blurhash"
-					:src="thumbnail(file.file)"
-					:title="file.file.name"
-					@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-					@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-					@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-					@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-				/>
-			</MkA>
+			<template v-for="file in files" :key="file.note.id + file.file.id">
+				<div v-if="file.file.isSensitive && !showingFiles.includes(file.file.id)" :class="$style.sensitive" @click="showingFiles.push(file.file.id)">
+					<div>
+						<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
+						<div>{{ i18n.ts.clickToShow }}</div>
+					</div>
+				</div>
+				<MkA v-else :class="$style.img" :to="notePage(file.note)">
+					<!-- TODO: 画像以外のファイルに対応 -->
+					<ImgWithBlurhash
+						:hash="file.file.blurhash"
+						:src="thumbnail(file.file)"
+						:title="file.file.name"
+						@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+						@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+						@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+						@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+					/>
+				</MkA>
+			</template>
 		</div>
 		<p v-if="!fetching && files.length == 0" :class="$style.empty">{{ i18n.ts.nothing }}</p>
 	</div>
@@ -41,6 +44,8 @@ import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
 import MkContainer from '@/components/MkContainer.vue';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import MkA from '@/components/global/MkA.vue';
+import MkLoading from '@/components/global/MkLoading.vue';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 
@@ -53,6 +58,7 @@ let files = $ref<{
 	note: Misskey.entities.Note;
 	file: Misskey.entities.DriveFile;
 }[]>([]);
+let showingFiles = $ref<string[]>([]);
 
 let playAnimation = $ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
@@ -124,5 +130,10 @@ onUnmounted(() => {
 	margin: 0;
 	padding: 16px;
 	text-align: center;
+}
+
+.sensitive {
+	display: grid;
+  place-items: center;
 }
 </style>

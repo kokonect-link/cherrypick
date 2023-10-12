@@ -341,6 +341,7 @@ import * as ep___users_followers from './endpoints/users/followers.js';
 import * as ep___users_following from './endpoints/users/following.js';
 import * as ep___users_gallery_posts from './endpoints/users/gallery/posts.js';
 import * as ep___users_getFrequentlyRepliedUsers from './endpoints/users/get-frequently-replied-users.js';
+import * as ep___users_featuredNotes from './endpoints/users/featured-notes.js';
 import * as ep___users_groups_create from './endpoints/users/groups/create.js';
 import * as ep___users_groups_delete from './endpoints/users/groups/delete.js';
 import * as ep___users_groups_invitations_accept from './endpoints/users/groups/invitations/accept.js';
@@ -717,6 +718,7 @@ const eps = [
 	['users/following', ep___users_following],
 	['users/gallery/posts', ep___users_gallery_posts],
 	['users/get-frequently-replied-users', ep___users_getFrequentlyRepliedUsers],
+	['users/featured-notes', ep___users_featuredNotes],
 	['users/groups/create', ep___users_groups_create],
 	['users/groups/delete', ep___users_groups_delete],
 	['users/groups/invitations/accept', ep___users_groups_invitations_accept],

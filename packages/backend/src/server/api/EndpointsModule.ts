@@ -342,6 +342,7 @@ import * as ep___users_followers from './endpoints/users/followers.js';
 import * as ep___users_following from './endpoints/users/following.js';
 import * as ep___users_gallery_posts from './endpoints/users/gallery/posts.js';
 import * as ep___users_getFrequentlyRepliedUsers from './endpoints/users/get-frequently-replied-users.js';
+import * as ep___users_featuredNotes from './endpoints/users/featured-notes.js';
 import * as ep___users_groups_create from './endpoints/users/groups/create.js';
 import * as ep___users_groups_delete from './endpoints/users/groups/delete.js';
 import * as ep___users_groups_invitations_accept from './endpoints/users/groups/invitations/accept.js';
@@ -720,6 +721,7 @@ const $users_followers: Provider = { provide: 'ep:users/followers', useClass: ep
 const $users_following: Provider = { provide: 'ep:users/following', useClass: ep___users_following.default };
 const $users_gallery_posts: Provider = { provide: 'ep:users/gallery/posts', useClass: ep___users_gallery_posts.default };
 const $users_getFrequentlyRepliedUsers: Provider = { provide: 'ep:users/get-frequently-replied-users', useClass: ep___users_getFrequentlyRepliedUsers.default };
+const $users_featuredNotes: Provider = { provide: 'ep:users/featured-notes', useClass: ep___users_featuredNotes.default };
 const $users_groups_create: Provider = { provide: 'ep:users/groups/create', useClass: ep___users_groups_create.default };
 const $users_groups_delete: Provider = { provide: 'ep:users/groups/delete', useClass: ep___users_groups_delete.default };
 const $users_groups_invitations_accept: Provider = { provide: 'ep:users/groups/invitations/accept', useClass: ep___users_groups_invitations_accept.default };
@@ -1103,6 +1105,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_following,
 		$users_gallery_posts,
 		$users_getFrequentlyRepliedUsers,
+		$users_featuredNotes,
 		$users_groups_create,
 		$users_groups_delete,
 		$users_groups_invitations_accept,
@@ -1475,6 +1478,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_following,
 		$users_gallery_posts,
 		$users_getFrequentlyRepliedUsers,
+		$users_featuredNotes,
 		$users_groups_create,
 		$users_groups_delete,
 		$users_groups_invitations_accept,

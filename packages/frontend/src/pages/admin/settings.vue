@@ -34,6 +34,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkInput>
 					</FormSplit>
 
+					<MkInput v-model="impressumUrl">
+						<template #label>{{ i18n.ts.impressumUrl }}</template>
+						<template #prefix><i class="ti ti-link"></i></template>
+						<template #caption>{{ i18n.ts.impressumDescription }}</template>
+					</MkInput>
+
 					<MkTextarea v-model="pinnedUsers">
 						<template #label>{{ i18n.ts.pinnedUsers }}</template>
 						<template #caption>{{ i18n.ts.pinnedUsersDescription }}</template>
@@ -103,6 +109,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</FormSection>
 
 					<FormSection>
+						<template #label>{{ i18n.ts._ad.adsSettings }}</template>
+
+						<div class="_gaps_m">
+							<div class="_gaps_s">
+								<MkInput v-model="notesPerOneAd" :min="0" type="number">
+									<template #label>{{ i18n.ts._ad.notesPerOneAd }}</template>
+									<template #caption>{{ i18n.ts._ad.setZeroToDisable }}</template>
+								</MkInput>
+								<MkInfo v-if="notesPerOneAd > 0 && notesPerOneAd < 20" :warn="true">
+									{{ i18n.ts._ad.adsTooClose }}
+								</MkInfo>
+							</div>
+						</div>
+					</FormSection>
+
+					<FormSection>
 						<template #label>{{ i18n.ts.abuseReports }}</template>
 
 						<div class="_gaps_m">
@@ -133,6 +155,7 @@ import XHeader from './_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
@@ -148,6 +171,7 @@ let shortName: string | null = $ref(null);
 let description: string | null = $ref(null);
 let maintainerName: string | null = $ref(null);
 let maintainerEmail: string | null = $ref(null);
+let impressumUrl: string | null = $ref(null);
 let emailToReceiveAbuseReport: string | null = $ref(null);
 let pinnedUsers: string = $ref('');
 let cacheRemoteFiles: boolean = $ref(false);
@@ -159,6 +183,7 @@ let perLocalUserUserTimelineCacheMax: number = $ref(0);
 let perRemoteUserUserTimelineCacheMax: number = $ref(0);
 let perUserHomeTimelineCacheMax: number = $ref(0);
 let perUserListTimelineCacheMax: number = $ref(0);
+let notesPerOneAd: number = $ref(0);
 
 async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
@@ -167,6 +192,7 @@ async function init(): Promise<void> {
 	description = meta.description;
 	maintainerName = meta.maintainerName;
 	maintainerEmail = meta.maintainerEmail;
+	impressumUrl = meta.impressumUrl;
 	emailToReceiveAbuseReport = meta.emailToReceiveAbuseReport;
 	pinnedUsers = meta.pinnedUsers.join('\n');
 	cacheRemoteFiles = meta.cacheRemoteFiles;
@@ -178,15 +204,17 @@ async function init(): Promise<void> {
 	perRemoteUserUserTimelineCacheMax = meta.perRemoteUserUserTimelineCacheMax;
 	perUserHomeTimelineCacheMax = meta.perUserHomeTimelineCacheMax;
 	perUserListTimelineCacheMax = meta.perUserListTimelineCacheMax;
+	notesPerOneAd = meta.notesPerOneAd;
 }
 
-function save(): void {
-	os.apiWithDialog('admin/update-meta', {
+async function save(): void {
+	await os.apiWithDialog('admin/update-meta', {
 		name,
 		shortName: shortName === '' ? null : shortName,
 		description,
 		maintainerName,
 		maintainerEmail,
+		impressumUrl,
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		emailToReceiveAbuseReport: emailToReceiveAbuseReport || null,
 		pinnedUsers: pinnedUsers.split('\n'),
@@ -199,9 +227,10 @@ function save(): void {
 		perRemoteUserUserTimelineCacheMax,
 		perUserHomeTimelineCacheMax,
 		perUserListTimelineCacheMax,
-	}).then(() => {
-		fetchInstance();
+		notesPerOneAd,
 	});
+
+	fetchInstance();
 }
 
 const headerTabs = $computed(() => []);
