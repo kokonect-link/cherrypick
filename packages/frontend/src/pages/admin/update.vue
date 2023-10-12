@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="releasesCherryPick" #value>{{ releasesCherryPick[0].tag_name }}</template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
-					<MkButton v-if="!skipVersion && (version < releasesCherryPick[0].tag_name)" style="margin-top: 10px;" @click="skipThisRelease">{{ i18n.ts.skipThisRelease }}</MkButton>
+					<MkButton v-if="!skipVersion && (version < releasesCherryPick[0].tag_name)" style="margin-top: 10px;" @click="skipThisVersion">{{ i18n.ts.skipThisVersion }}</MkButton>
 				</FormSection>
 
 				<FormSection @click="whatIsNewLatestCherryPick">
@@ -104,7 +104,7 @@ function save() {
 	});
 }
 
-function skipThisRelease() {
+function skipThisVersion() {
 	skipCherryPickVersion = releasesCherryPick[0].tag_name;
 	skipVersion = true;
 
