@@ -206,7 +206,6 @@ const headerActions = $computed(() => [{
 		os.popupMenu([{
 			type: 'switch',
 			text: i18n.ts.friendlyEnableNotifications,
-			icon: 'ti ti-notification',
 			ref: friendlyEnableNotifications,
 			action: () => {
 				friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
@@ -214,7 +213,6 @@ const headerActions = $computed(() => [{
 		}, {
 			type: 'switch',
 			text: i18n.ts.friendlyEnableWidgets,
-			icon: 'ti ti-apps',
 			ref: friendlyEnableWidgets,
 			action: () => {
 				friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
@@ -222,7 +220,6 @@ const headerActions = $computed(() => [{
 		}, {
 			type: 'switch',
 			text: i18n.ts.showRenotes,
-			icon: 'ti ti-repeat',
 			ref: $$(withRenotes),
 		}, src === 'local' || src === 'social' ? {
 			type: 'switch',
@@ -231,12 +228,10 @@ const headerActions = $computed(() => [{
 		} : undefined, {
 			type: 'switch',
 			text: i18n.ts.fileAttachedOnly,
-			icon: 'ti ti-photo',
 			ref: $$(onlyFiles),
 		}, {
 			type: 'switch',
 			text: i18n.ts.showCatOnly,
-			icon: 'ti ti-cat',
 			ref: $$(onlyCats),
 		}], ev.currentTarget ?? ev.target);
 	},

@@ -61,6 +61,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 유저 검색에서 로컬/리모트 설정이 제대로 작동하지 않음
 - Fix: 유저 선택 다이얼로그에서 검색 결과가 표시되지 않음
 - Fix: 게시 양식에서 사용자 변경 사항이 미리보기에 반영되지 않는 문제 (misskey-dev/misskey#12022)
+- Fix: 타임라인 메뉴 요소 수정
 
 ### Server
 - Feat: Note pack에서 SQL 디바운스 (MisskeyIO/misskey#176)
