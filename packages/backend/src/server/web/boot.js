@@ -218,27 +218,8 @@
 		<code>${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/100-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/200-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/300-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/400-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/500-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/600-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/700-italic.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800.css");
-		@import url("https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono/800-italic.css");
-		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-		@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-jp.css");
-
 		* {
-			font-family: "Pretendard JP", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
+			font-family: BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
 		}
 
 		#cherypick_app,
@@ -321,7 +302,7 @@
 		}
 
 		code {
-			font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Fira, FiraCode, monospace;
+			font-family: Fira, FiraCode, monospace;
 		}
 
 		#errorInfo {
@@ -346,6 +327,7 @@
 			#errorInfo {
 				width: 50%;
 			}
+		}
 		`)
 	}
 })();

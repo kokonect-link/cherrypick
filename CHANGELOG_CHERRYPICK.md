@@ -67,6 +67,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Server
 - Feat: Note pack에서 SQL 디바운스 (MisskeyIO/misskey#176)
+- Enhance: 초기 로드 속도 개선
 - Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
 - Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
 - Fix: Meilisearch가 설정된 상태에서 노트 검색 시 로컬/리모트 설정이 제대로 작동하지 않음
