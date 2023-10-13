@@ -42,7 +42,7 @@
 }
 
 html {
-	background: #202020;
+	background: rgb(28, 28, 37);
 }
 
 header {
@@ -50,7 +50,7 @@ header {
 }
 
 main {
-	background: #262626;
+	background: rgb(35, 35, 47);
 	color: #fff;
 }
 
