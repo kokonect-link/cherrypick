@@ -94,7 +94,7 @@ let queue = $ref(0);
 let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
 const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
 const withRenotes = $ref(true);
-const withReplies = $ref(false);
+const withReplies = $ref($i ? defaultStore.state.tlWithReplies : false);
 const onlyFiles = $ref(false);
 const onlyCats = $ref(false);
 const friendlyEnableNotifications = $ref(defaultStore.state.friendlyEnableNotifications);
@@ -103,6 +103,10 @@ const friendlyEnableWidgets = $ref(defaultStore.state.friendlyEnableWidgets);
 watch($$(src), () => {
 	queue = 0;
 	queueUpdated(queue);
+});
+
+watch($$(withReplies), (x) => {
+	if ($i) defaultStore.set('tlWithReplies', x);
 });
 
 watch($$(friendlyEnableNotifications), (x) => {
