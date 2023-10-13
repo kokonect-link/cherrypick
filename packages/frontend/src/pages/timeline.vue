@@ -97,19 +97,22 @@ const withRenotes = $ref(true);
 const withReplies = $ref(false);
 const onlyFiles = $ref(false);
 const onlyCats = $ref(false);
-const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
-const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
+const friendlyEnableNotifications = $ref(defaultStore.state.friendlyEnableNotifications);
+const friendlyEnableWidgets = $ref(defaultStore.state.friendlyEnableWidgets);
 
 watch($$(src), () => {
 	queue = 0;
 	queueUpdated(queue);
 });
 
-watch([
-	friendlyEnableNotifications,
-	friendlyEnableWidgets,
-], async () => {
-	await reloadAsk();
+watch($$(friendlyEnableNotifications), (x) => {
+	defaultStore.set('friendlyEnableNotifications', x);
+	reloadAsk();
+});
+
+watch($$(friendlyEnableWidgets), (x) => {
+	defaultStore.set('friendlyEnableWidgets', x);
+	reloadAsk();
 });
 
 onMounted(() => {
@@ -206,17 +209,11 @@ const headerActions = $computed(() => [{
 		os.popupMenu([{
 			type: 'switch',
 			text: i18n.ts.friendlyEnableNotifications,
-			ref: friendlyEnableNotifications,
-			action: () => {
-				friendlyEnableNotifications.value = !friendlyEnableNotifications.value;
-			},
+			ref: $$(friendlyEnableNotifications),
 		}, {
 			type: 'switch',
 			text: i18n.ts.friendlyEnableWidgets,
-			ref: friendlyEnableWidgets,
-			action: () => {
-				friendlyEnableWidgets.value = !friendlyEnableWidgets.value;
-			},
+			ref: $$(friendlyEnableWidgets),
 		}, {
 			type: 'switch',
 			text: i18n.ts.showRenotes,
@@ -304,9 +301,6 @@ definePageMetadata(computed(() => ({
 .transition_new_enterActive,
 .transition_new_leaveActive {
 	transform: translateY(-64px);
-}
-.transition_new_enterFrom,
-.transition_new_leaveTo {
 }
 
 .new {
