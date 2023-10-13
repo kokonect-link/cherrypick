@@ -47,6 +47,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 클라이언트 업데이트 알림 개선
   - 알림 채널을 선택할 수 있음
   - 다음 릴리즈 출시까지 알리지 않도록 설정할 수 있음
+- Feat: 활동에서 팔로잉, 팔로워 차트를 볼 수 있음
 - Enhance: 그룹 대화에서 읽음 표시를 개선
 - Enhance: cli, bios 페이지 개선
 - Enhance: 서버와 연결이 끊겼을 때 stream indicator가 즉시 표시되지 않도록 (MisskeyIO/misskey#172)
