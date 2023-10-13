@@ -50,6 +50,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 그룹 대화에서 읽음 표시를 개선
 - Enhance: cli, bios 페이지 개선
 - Enhance: 서버와 연결이 끊겼을 때 stream indicator가 즉시 표시되지 않도록 (MisskeyIO/misskey#172)
+- Enhance: 스피너 디자인 변경
 - Fix: (Friendly) 길게 누르면 표시되는 계정 관리 다이얼로그의 UI 관련 오류 수정
 - Fix: 서브 노트 기능 오류
   - 서브 노트에서 더 보기 버튼을 사용할 수 없음
