@@ -196,9 +196,7 @@ export const navbarItemDef = reactive({
 					defaultStore.set('timelineTutorial', 0);
 					defaultStore.set('tlHomeHintClosed', false);
 					defaultStore.set('tlLocalHintClosed', false);
-					defaultStore.set('tlMediaHintClosed', false);
 					defaultStore.set('tlSocialHintClosed', false);
-					defaultStore.set('tlCatHintClosed', false);
 					defaultStore.set('tlGlobalHintClosed', false);
 					setTimeout(unisonReload, 100);
 				},
