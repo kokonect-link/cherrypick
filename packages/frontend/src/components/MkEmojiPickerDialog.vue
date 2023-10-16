@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkEmojiPicker
 		ref="picker"
 		class="_shadow"
-		:class="{ [$style.drawer]: type === 'drawer', _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }"
+		:class="{ [$style.drawer]: type === 'drawer', _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }"
 		:showPinned="showPinned"
 		:asReactionPicker="asReactionPicker"
 		:asDrawer="type === 'drawer'"

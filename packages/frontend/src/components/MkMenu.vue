@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div
 		ref="itemsEl" v-hotkey="keymap" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''"
 		class="_shadow"
-		:class="[$style.root, { [$style.center]: align === 'center', [$style.asDrawer]: asDrawer, _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }]"
+		:class="[$style.root, { [$style.center]: align === 'center', [$style.asDrawer]: asDrawer, _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]"
 		:style="{ width: (width && !asDrawer) ? width + 'px' : '', maxHeight: maxHeight ? maxHeight + 'px' : '' }"
 		@contextmenu.self="e => e.preventDefault()"
 	>

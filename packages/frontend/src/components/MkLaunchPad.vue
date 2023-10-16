@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkModal ref="modal" v-slot="{ type, maxHeight }" :preferType="preferedModalType" :anchor="anchor" :transparentBg="true" :src="src" @click="modal.close()" @closed="emit('closed')">
-	<div class="szkkfdyq _shadow" :class="{ asDrawer: type === 'drawer', _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }" :style="{ maxHeight: maxHeight ? maxHeight + 'px' : '' }">
+	<div class="szkkfdyq _shadow" :class="{ asDrawer: type === 'drawer', _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }" :style="{ maxHeight: maxHeight ? maxHeight + 'px' : '' }">
 		<div class="main">
 			<template v-for="item in items">
 				<button v-if="item.action" :key="item.text" v-click-anime class="_button item" @click="$event => { item.action($event); close(); }">
