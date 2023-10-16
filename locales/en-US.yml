@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+removeModalBgColorForBlur: "Remove modal background color"
 skipThisVersion: "Skip this release"
 enableReceivePrerelease: "Get notified of pre-release versions"
 youAreRunningBetaClient: "Unreleased version of CherryPick in use!"

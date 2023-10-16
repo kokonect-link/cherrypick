@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div
-	:class="[$style.root, { [$style.modal]: modal, _popup: modal }]"
+	:class="[$style.root, { [$style.modal]: modal, _popup: modal && (!defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur), _popupAcrylic: modal && defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"

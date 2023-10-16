@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl" :class="$style.root" class="_popup _shadow" :style="{ zIndex }" @contextmenu.prevent="() => {}">
+<div ref="rootEl" :class="[$style.root, { _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }]" class="_shadow" :style="{ zIndex }" @contextmenu.prevent="() => {}">
 	<ol v-if="type === 'user'" ref="suggests" :class="$style.list">
 		<li v-for="user in users" tabindex="-1" :class="$style.item" @click="complete(type, user)" @keydown="onKeydown">
 			<img :class="$style.avatar" :src="user.avatarUrl"/>

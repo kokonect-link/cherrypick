@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 >
 	<MkEmojiPicker
 		ref="picker"
-		class="_popup _shadow"
-		:class="{ [$style.drawer]: type === 'drawer' }"
+		class="_shadow"
+		:class="{ [$style.drawer]: type === 'drawer', _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }"
 		:showPinned="showPinned"
 		:asReactionPicker="asReactionPicker"
 		:asDrawer="type === 'drawer'"

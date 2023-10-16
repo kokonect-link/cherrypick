@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkModal ref="modal" v-slot="{ type }" :zPriority="'high'" :src="src" @click="modal.close()" @closed="emit('closed')">
-	<div class="_popup" :class="{ [$style.root]: true, [$style.asDrawer]: type === 'drawer' }">
+	<div :class="{ [$style.root]: true, [$style.asDrawer]: type === 'drawer', _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }">
 		<div :class="[$style.label, $style.item]">
 			{{ i18n.ts.visibility }}
 		</div>
@@ -46,6 +46,7 @@ import { nextTick } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModal from '@/components/MkModal.vue';
 import { i18n } from '@/i18n.js';
+import { defaultStore } from '@/store.js';
 
 const modal = $shallowRef<InstanceType<typeof MkModal>>();
 
