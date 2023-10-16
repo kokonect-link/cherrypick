@@ -37,7 +37,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <XStreamIndicator/>
 
-<div v-if="pendingApiRequestsCount > 0" id="wait"></div>
+<div id="wait">
+	<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="25" cy="25" r="20" fill="none" stroke-width="6px" style="fill: none; stroke-width: 6px;"></circle>
+	</svg>
+</div>
 
 <div v-if="dev" id="devTicker"><span>DEV BUILD</span></div>
 
@@ -220,6 +224,21 @@ if ($i) {
 	}
 }
 
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
 #wait {
 	display: block;
 	position: fixed;
@@ -228,18 +247,19 @@ if ($i) {
 	right: 15px;
 	pointer-events: none;
 
-	&:before {
-		content: "";
-		display: block;
-		width: 18px;
-		height: 18px;
-		box-sizing: border-box;
-		border: solid 2px transparent;
-		border-top-color: var(--accent);
-		border-left-color: var(--accent);
-		border-radius: 50%;
-		animation: progress-spinner 400ms linear infinite;
-	}
+  > svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    box-sizing: border-box;
+    animation: progress-spinner 2s linear infinite;
+  }
+
+  > svg > circle {
+    stroke: var(--accent);
+    stroke-linecap: round;
+    animation: dash 1.2s ease-in-out infinite;
+  }
 }
 
 #botWarn {
