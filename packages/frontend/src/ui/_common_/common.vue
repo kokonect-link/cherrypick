@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <XStreamIndicator/>
 
-<div id="wait">
+<div v-if="pendingApiRequestsCount > 0" id="wait">
 	<svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
 		<circle cx="25" cy="25" r="20" fill="none" stroke-width="6px" style="fill: none; stroke-width: 6px;"></circle>
 	</svg>
