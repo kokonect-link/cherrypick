@@ -29,6 +29,7 @@ type Ad = TODO_2;
 // @public (undocumented)
 type AdminInstanceMetadata = DetailedInstanceMetadata & {
     blockedHosts: string[];
+    silencedHosts: string[];
     app192IconUrl: string | null;
     app512IconUrl: string | null;
     manifestJsonOverride: string;
@@ -61,6 +62,7 @@ type Antenna = {
     userGroupId: ID | null;
     users: string[];
     caseSensitive: boolean;
+    localOnly: boolean;
     notify: boolean;
     withReplies: boolean;
     withFile: boolean;
@@ -2414,6 +2416,7 @@ type Instance = {
     lastCommunicatedAt: DateString;
     isNotResponding: boolean;
     isSuspended: boolean;
+    isSilenced: boolean;
     isBlocked: boolean;
     softwareName: string | null;
     softwareVersion: string | null;
@@ -3050,7 +3053,7 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:658:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
 // src/entities.ts:108:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
-// src/entities.ts:610:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/entities.ts:613:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

@@ -9,6 +9,7 @@ import type { AntennasRepository, UserGroupJoiningsRepository } from '@/models/_
 import type { Packed } from '@/misc/json-schema.js';
 import type { MiAntenna } from '@/models/Antenna.js';
 import { bindThis } from '@/decorators.js';
+import { IdService } from '@/core/IdService.js';
 
 @Injectable()
 export class AntennaEntityService {
@@ -18,6 +19,8 @@ export class AntennaEntityService {
 
 		@Inject(DI.userGroupJoiningsRepository)
 		private userGroupJoiningsRepository: UserGroupJoiningsRepository,
+
+		private idService: IdService,
 	) {
 	}
 
@@ -31,7 +34,7 @@ export class AntennaEntityService {
 
 		return {
 			id: antenna.id,
-			createdAt: antenna.createdAt.toISOString(),
+			createdAt: this.idService.parse(antenna.id).date.toISOString(),
 			name: antenna.name,
 			keywords: antenna.keywords,
 			excludeKeywords: antenna.excludeKeywords,
@@ -40,6 +43,7 @@ export class AntennaEntityService {
 			userGroupId: userGroupJoining ? userGroupJoining.userGroupId : null,
 			users: antenna.users,
 			caseSensitive: antenna.caseSensitive,
+			localOnly: antenna.localOnly,
 			notify: antenna.notify,
 			withReplies: antenna.withReplies,
 			withFile: antenna.withFile,

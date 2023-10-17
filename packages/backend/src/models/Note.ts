@@ -19,11 +19,6 @@ export class MiNote {
 	public id: string;
 
 	@Column('timestamp with time zone', {
-		comment: 'The created date of the Note.',
-	})
-	public createdAt: Date;
-
-	@Column('timestamp with time zone', {
 		default: null,
 	})
 	public updatedAt: Date | null;

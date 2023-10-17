@@ -60,14 +60,12 @@ export class AntennaService implements OnApplicationShutdown {
 				case 'antennaCreated':
 					this.antennas.push({
 						...body,
-						createdAt: new Date(body.createdAt),
 						lastUsedAt: new Date(body.lastUsedAt),
 					});
 					break;
 				case 'antennaUpdated':
 					this.antennas[this.antennas.findIndex(a => a.id === body.id)] = {
 						...body,
-						createdAt: new Date(body.createdAt),
 						lastUsedAt: new Date(body.lastUsedAt),
 					};
 					break;
@@ -102,6 +100,8 @@ export class AntennaService implements OnApplicationShutdown {
 	public async checkHitAntenna(antenna: MiAntenna, note: (MiNote | Packed<'Note'>), noteUser: { id: MiUser['id']; username: string; host: string | null; }): Promise<boolean> {
 		if (note.visibility === 'specified') return false;
 		if (note.visibility === 'followers') return false;
+
+		if (antenna.localOnly && noteUser.host != null) return false;
 
 		if (!antenna.withReplies && note.replyId != null) return false;
 

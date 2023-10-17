@@ -564,8 +564,7 @@ export class ApInboxService {
 		if (users.length < 1) return 'skip';
 
 		const report = await this.abuseUserReportsRepository.insert({
-			id: this.idService.genId(),
-			createdAt: new Date(),
+			id: this.idService.gen(),
 			targetUserId: users[0].id,
 			targetUserHost: users[0].host,
 			reporterId: actor.id,
