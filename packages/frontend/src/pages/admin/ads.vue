@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 			<MkButton class="button" @click="more()">
-				<i class="ti ti-reload"></i>{{ i18n.ts.more }}
+				<i class="ti ti-reload"></i> {{ i18n.ts.more }}
 			</MkButton>
 		</div>
 	</MkSpacer>

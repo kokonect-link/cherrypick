@@ -99,19 +99,19 @@ export class NotificationService implements OnApplicationShutdown {
 			}
 
 			if (recieveConfig?.type === 'following') {
-				const isFollowing = await this.cacheService.userFollowingsCache.fetch(notifieeId).then(followings => followings.has(notifierId));
+				const isFollowing = await this.cacheService.userFollowingsCache.fetch(notifieeId).then(followings => Object.hasOwn(followings, notifierId));
 				if (!isFollowing) {
 					return null;
 				}
 			} else if (recieveConfig?.type === 'follower') {
-				const isFollower = await this.cacheService.userFollowingsCache.fetch(notifierId).then(followings => followings.has(notifieeId));
+				const isFollower = await this.cacheService.userFollowingsCache.fetch(notifierId).then(followings => Object.hasOwn(followings, notifieeId));
 				if (!isFollower) {
 					return null;
 				}
 			} else if (recieveConfig?.type === 'mutualFollow') {
 				const [isFollowing, isFollower] = await Promise.all([
-					this.cacheService.userFollowingsCache.fetch(notifieeId).then(followings => followings.has(notifierId)),
-					this.cacheService.userFollowingsCache.fetch(notifierId).then(followings => followings.has(notifieeId)),
+					this.cacheService.userFollowingsCache.fetch(notifieeId).then(followings => Object.hasOwn(followings, notifierId)),
+					this.cacheService.userFollowingsCache.fetch(notifierId).then(followings => Object.hasOwn(followings, notifieeId)),
 				]);
 				if (!isFollowing && !isFollower) {
 					return null;
@@ -144,7 +144,9 @@ export class NotificationService implements OnApplicationShutdown {
 		this.globalEventService.publishMainStream(notifieeId, 'notification', packed);
 
 		// 2秒経っても(今回作成した)通知が既読にならなかったら「未読の通知がありますよ」イベントを発行する
-		setTimeout(2000, 'unread notification', { signal: this.#shutdownController.signal }).then(async () => {
+		// テスト通知の場合は即時発行
+		const interval = notification.type === 'test' ? 0 : 2000;
+		setTimeout(interval, 'unread notification', { signal: this.#shutdownController.signal }).then(async () => {
 			const latestReadNotificationId = await this.redisClient.get(`latestReadNotification:${notifieeId}`);
 			if (latestReadNotificationId && (latestReadNotificationId >= (await redisIdPromise)!)) return;
 

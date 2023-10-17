@@ -47,6 +47,7 @@ import { $i } from '@/account.js';
 import { userName } from '@/filters/user.js';
 import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { ColdDeviceStorage } from '@/store.js';
 
 let showFollowButton = $ref(false);
 
@@ -109,7 +110,7 @@ async function onClick() {
 				await os.api('following/create', {
 					userId: props.user.id,
 				});
-				vibrate([30, 40, 100]);
+				vibrate(ColdDeviceStorage.get('vibrateSystem') ? [30, 40, 100] : '');
 				hasPendingFollowRequestFromYou = true;
 
 				claimAchievement('following1');

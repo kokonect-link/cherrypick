@@ -130,8 +130,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_m">
 			<div class="_gaps_s">
 				<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
-				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}</MkSwitch>
+				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}<template #caption>{{ i18n.ts.useBlurEffectDescription }}</template></MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
+				<MkSwitch v-if="useBlurEffect && useBlurEffectForModal" v-model="removeModalBgColorForBlur">{{ i18n.ts.removeModalBgColorForBlur }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption><i class="ti ti-alert-triangle" style="color: var(--warn);"></i> {{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
 				<MkSelect v-if="!disableShowingAnimatedImages" v-model="showingAnimatedImages" style="margin-left: 44px;">
 					<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
@@ -144,6 +145,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
+				<MkSwitch v-model="showUnreadNotificationCount">{{ i18n.ts.showUnreadNotificationCount }}</MkSwitch>
 				<MkSwitch v-model="enableDataSaverMode">{{ i18n.ts.dataSaver }}</MkSwitch>
 			</div>
 			<div>
@@ -330,6 +332,7 @@ const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
 const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
+const removeModalBgColorForBlur = computed(defaultStore.makeGetterSetter('removeModalBgColorForBlur'));
 const showGapBetweenNotesInTimeline = computed(defaultStore.makeGetterSetter('showGapBetweenNotesInTimeline'));
 const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
 const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
@@ -353,6 +356,7 @@ const mediaListWithOneImageAppearance = computed(defaultStore.makeGetterSetter('
 const notificationPosition = computed(defaultStore.makeGetterSetter('notificationPosition'));
 const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificationStackAxis'));
 const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
+const showUnreadNotificationCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationCount'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
@@ -402,6 +406,7 @@ watch([
 	lang,
 	useBlurEffect,
 	useBlurEffectForModal,
+	removeModalBgColorForBlur,
 	// fontSize,
 	useBoldFont,
 	useSystemFont,
@@ -416,6 +421,7 @@ watch([
 	reactionsDisplaySize,
 	highlightSensitiveMedia,
 	keepScreenOn,
+	showUnreadNotificationCount,
 	enableDataSaverMode,
 	enableAbsoluteTime,
 	enableMarkByDate,

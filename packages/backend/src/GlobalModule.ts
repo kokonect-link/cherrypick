@@ -86,11 +86,19 @@ const $redisForSub: Provider = {
 	inject: [DI.config],
 };
 
+const $redisForTimelines: Provider = {
+	provide: DI.redisForTimelines,
+	useFactory: (config: Config) => {
+		return new Redis.Redis(config.redisForTimelines);
+	},
+	inject: [DI.config],
+};
+
 @Global()
 @Module({
 	imports: [RepositoryModule],
-	providers: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub],
-	exports: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, RepositoryModule],
+	providers: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines],
+	exports: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, RepositoryModule],
 })
 export class GlobalModule implements OnApplicationShutdown {
 	constructor(
@@ -98,6 +106,7 @@ export class GlobalModule implements OnApplicationShutdown {
 		@Inject(DI.redis) private redisClient: Redis.Redis,
 		@Inject(DI.redisForPub) private redisForPub: Redis.Redis,
 		@Inject(DI.redisForSub) private redisForSub: Redis.Redis,
+		@Inject(DI.redisForTimelines) private redisForTimelines: Redis.Redis,
 	) {}
 
 	public async dispose(): Promise<void> {
@@ -114,6 +123,7 @@ export class GlobalModule implements OnApplicationShutdown {
 			this.redisClient.disconnect(),
 			this.redisForPub.disconnect(),
 			this.redisForSub.disconnect(),
+			this.redisForTimelines.disconnect(),
 		]);
 	}
 

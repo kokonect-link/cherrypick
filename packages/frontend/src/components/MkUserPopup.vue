@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:leaveToClass="defaultStore.state.animation ? $style.transition_popup_leaveTo : ''"
 	appear @afterLeave="emit('closed')"
 >
-	<div v-if="showing" :class="$style.root" class="_popup _shadow" :style="{ zIndex, top: top + 'px', left: left + 'px' }" @mouseover="() => { emit('mouseover'); }" @mouseleave="() => { emit('mouseleave'); }">
+	<div v-if="showing" :class="[$style.root, { _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]" class="_shadow" :style="{ zIndex, top: top + 'px', left: left + 'px' }" @mouseover="() => { emit('mouseover'); }" @mouseleave="() => { emit('mouseleave'); }">
 		<div v-if="user != null">
 			<div :class="$style.banner" :style="user.bannerUrl ? `background-image: url(${user.bannerUrl})` : ''">
 				<span v-if="$i && $i.id != user.id && user.isFollowed" :class="$style.followed">{{ i18n.ts.followsYou }}</span>

@@ -11,7 +11,7 @@ export class multipleTranslationServices1660183643857 {
 				await queryRunner.query('SELECT "deeplAuthKey" FROM "meta" where "deeplAuthKey" is not null')
 				.then(deeplAuthKey => {
 					if (deeplAuthKey.length > 0) {
-						return queryRunner.query(`UPDATE "meta" SET "translatorType" = 'DeepL'`);
+						return queryRunner.query(`UPDATE "meta" SET "translatorType" = 'deepl'`);
 					}
 				})
     }

@@ -20,6 +20,15 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-bell',
 		show: computed(() => $i != null),
 		indicated: computed(() => $i != null && $i.hasUnreadNotification),
+		indicateValue: computed(() => {
+			if (!$i || $i.unreadNotificationCount === 0) return '';
+
+			if ($i.unreadNotificationCount > 99) {
+				return '99+';
+			} else {
+				return $i.unreadNotificationCount.toString();
+			}
+		}),
 		to: '/my/notifications',
 	},
 	messaging: {
@@ -187,9 +196,7 @@ export const navbarItemDef = reactive({
 					defaultStore.set('timelineTutorial', 0);
 					defaultStore.set('tlHomeHintClosed', false);
 					defaultStore.set('tlLocalHintClosed', false);
-					defaultStore.set('tlMediaHintClosed', false);
 					defaultStore.set('tlSocialHintClosed', false);
-					defaultStore.set('tlCatHintClosed', false);
 					defaultStore.set('tlGlobalHintClosed', false);
 					setTimeout(unisonReload, 100);
 				},

@@ -212,7 +212,6 @@ import * as ep___i_exportAntennas from './endpoints/i/export-antennas.js';
 import * as ep___i_favorites from './endpoints/i/favorites.js';
 import * as ep___i_gallery_likes from './endpoints/i/gallery/likes.js';
 import * as ep___i_gallery_posts from './endpoints/i/gallery/posts.js';
-import * as ep___i_getWordMutedNotesCount from './endpoints/i/get-word-muted-notes-count.js';
 import * as ep___i_importBlocking from './endpoints/i/import-blocking.js';
 import * as ep___i_importFollowing from './endpoints/i/import-following.js';
 import * as ep___i_importMuting from './endpoints/i/import-muting.js';
@@ -343,6 +342,7 @@ import * as ep___users_followers from './endpoints/users/followers.js';
 import * as ep___users_following from './endpoints/users/following.js';
 import * as ep___users_gallery_posts from './endpoints/users/gallery/posts.js';
 import * as ep___users_getFrequentlyRepliedUsers from './endpoints/users/get-frequently-replied-users.js';
+import * as ep___users_featuredNotes from './endpoints/users/featured-notes.js';
 import * as ep___users_groups_create from './endpoints/users/groups/create.js';
 import * as ep___users_groups_delete from './endpoints/users/groups/delete.js';
 import * as ep___users_groups_invitations_accept from './endpoints/users/groups/invitations/accept.js';
@@ -364,7 +364,9 @@ import * as ep___users_lists_show from './endpoints/users/lists/show.js';
 import * as ep___users_lists_update from './endpoints/users/lists/update.js';
 import * as ep___users_lists_favorite from './endpoints/users/lists/favorite.js';
 import * as ep___users_lists_unfavorite from './endpoints/users/lists/unfavorite.js';
-import * as ep___users_lists_create_from_public from './endpoints/users/lists/create-from-public.js';
+import * as ep___users_lists_createFromPublic from './endpoints/users/lists/create-from-public.js';
+import * as ep___users_lists_updateMembership from './endpoints/users/lists/update-membership.js';
+import * as ep___users_lists_getMemberships from './endpoints/users/lists/get-memberships.js';
 import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_pages from './endpoints/users/pages.js';
 import * as ep___users_flashs from './endpoints/users/flashs.js';
@@ -589,7 +591,6 @@ const $i_exportAntennas: Provider = { provide: 'ep:i/export-antennas', useClass:
 const $i_favorites: Provider = { provide: 'ep:i/favorites', useClass: ep___i_favorites.default };
 const $i_gallery_likes: Provider = { provide: 'ep:i/gallery/likes', useClass: ep___i_gallery_likes.default };
 const $i_gallery_posts: Provider = { provide: 'ep:i/gallery/posts', useClass: ep___i_gallery_posts.default };
-const $i_getWordMutedNotesCount: Provider = { provide: 'ep:i/get-word-muted-notes-count', useClass: ep___i_getWordMutedNotesCount.default };
 const $i_importBlocking: Provider = { provide: 'ep:i/import-blocking', useClass: ep___i_importBlocking.default };
 const $i_importFollowing: Provider = { provide: 'ep:i/import-following', useClass: ep___i_importFollowing.default };
 const $i_importMuting: Provider = { provide: 'ep:i/import-muting', useClass: ep___i_importMuting.default };
@@ -720,6 +721,7 @@ const $users_followers: Provider = { provide: 'ep:users/followers', useClass: ep
 const $users_following: Provider = { provide: 'ep:users/following', useClass: ep___users_following.default };
 const $users_gallery_posts: Provider = { provide: 'ep:users/gallery/posts', useClass: ep___users_gallery_posts.default };
 const $users_getFrequentlyRepliedUsers: Provider = { provide: 'ep:users/get-frequently-replied-users', useClass: ep___users_getFrequentlyRepliedUsers.default };
+const $users_featuredNotes: Provider = { provide: 'ep:users/featured-notes', useClass: ep___users_featuredNotes.default };
 const $users_groups_create: Provider = { provide: 'ep:users/groups/create', useClass: ep___users_groups_create.default };
 const $users_groups_delete: Provider = { provide: 'ep:users/groups/delete', useClass: ep___users_groups_delete.default };
 const $users_groups_invitations_accept: Provider = { provide: 'ep:users/groups/invitations/accept', useClass: ep___users_groups_invitations_accept.default };
@@ -741,7 +743,9 @@ const $users_lists_show: Provider = { provide: 'ep:users/lists/show', useClass: 
 const $users_lists_update: Provider = { provide: 'ep:users/lists/update', useClass: ep___users_lists_update.default };
 const $users_lists_favorite: Provider = { provide: 'ep:users/lists/favorite', useClass: ep___users_lists_favorite.default };
 const $users_lists_unfavorite: Provider = { provide: 'ep:users/lists/unfavorite', useClass: ep___users_lists_unfavorite.default };
-const $users_lists_create_from_public: Provider = { provide: 'ep:users/lists/create-from-public', useClass: ep___users_lists_create_from_public.default };
+const $users_lists_createFromPublic: Provider = { provide: 'ep:users/lists/create-from-public', useClass: ep___users_lists_createFromPublic.default };
+const $users_lists_updateMembership: Provider = { provide: 'ep:users/lists/update-membership', useClass: ep___users_lists_updateMembership.default };
+const $users_lists_getMemberships: Provider = { provide: 'ep:users/lists/get-memberships', useClass: ep___users_lists_getMemberships.default };
 const $users_notes: Provider = { provide: 'ep:users/notes', useClass: ep___users_notes.default };
 const $users_pages: Provider = { provide: 'ep:users/pages', useClass: ep___users_pages.default };
 const $users_flashs: Provider = { provide: 'ep:users/flashs', useClass: ep___users_flashs.default };
@@ -971,7 +975,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$i_favorites,
 		$i_gallery_likes,
 		$i_gallery_posts,
-		$i_getWordMutedNotesCount,
 		$i_importBlocking,
 		$i_importFollowing,
 		$i_importMuting,
@@ -1102,6 +1105,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_following,
 		$users_gallery_posts,
 		$users_getFrequentlyRepliedUsers,
+		$users_featuredNotes,
 		$users_groups_create,
 		$users_groups_delete,
 		$users_groups_invitations_accept,
@@ -1123,7 +1127,9 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_lists_update,
 		$users_lists_favorite,
 		$users_lists_unfavorite,
-		$users_lists_create_from_public,
+		$users_lists_createFromPublic,
+		$users_lists_updateMembership,
+		$users_lists_getMemberships,
 		$users_notes,
 		$users_pages,
 		$users_flashs,
@@ -1346,7 +1352,6 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$i_favorites,
 		$i_gallery_likes,
 		$i_gallery_posts,
-		$i_getWordMutedNotesCount,
 		$i_importBlocking,
 		$i_importFollowing,
 		$i_importMuting,
@@ -1473,6 +1478,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_following,
 		$users_gallery_posts,
 		$users_getFrequentlyRepliedUsers,
+		$users_featuredNotes,
 		$users_groups_create,
 		$users_groups_delete,
 		$users_groups_invitations_accept,
@@ -1494,7 +1500,9 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_lists_update,
 		$users_lists_favorite,
 		$users_lists_unfavorite,
-		$users_lists_create_from_public,
+		$users_lists_createFromPublic,
+		$users_lists_updateMembership,
+		$users_lists_getMemberships,
 		$users_notes,
 		$users_pages,
 		$users_flashs,

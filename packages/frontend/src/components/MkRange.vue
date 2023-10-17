@@ -25,6 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch, shallowRef } from 'vue';
 import * as os from '@/os.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { ColdDeviceStorage } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	modelValue: number;
@@ -101,7 +102,7 @@ const steps = computed(() => {
 });
 
 const onMousedown = (ev: MouseEvent | TouchEvent) => {
-	vibrate(10);
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 10 : '');
 
 	ev.preventDefault();
 

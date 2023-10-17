@@ -211,7 +211,6 @@ import * as ep___i_exportAntennas from './endpoints/i/export-antennas.js';
 import * as ep___i_favorites from './endpoints/i/favorites.js';
 import * as ep___i_gallery_likes from './endpoints/i/gallery/likes.js';
 import * as ep___i_gallery_posts from './endpoints/i/gallery/posts.js';
-import * as ep___i_getWordMutedNotesCount from './endpoints/i/get-word-muted-notes-count.js';
 import * as ep___i_importBlocking from './endpoints/i/import-blocking.js';
 import * as ep___i_importFollowing from './endpoints/i/import-following.js';
 import * as ep___i_importMuting from './endpoints/i/import-muting.js';
@@ -342,6 +341,7 @@ import * as ep___users_followers from './endpoints/users/followers.js';
 import * as ep___users_following from './endpoints/users/following.js';
 import * as ep___users_gallery_posts from './endpoints/users/gallery/posts.js';
 import * as ep___users_getFrequentlyRepliedUsers from './endpoints/users/get-frequently-replied-users.js';
+import * as ep___users_featuredNotes from './endpoints/users/featured-notes.js';
 import * as ep___users_groups_create from './endpoints/users/groups/create.js';
 import * as ep___users_groups_delete from './endpoints/users/groups/delete.js';
 import * as ep___users_groups_invitations_accept from './endpoints/users/groups/invitations/accept.js';
@@ -362,8 +362,10 @@ import * as ep___users_lists_push from './endpoints/users/lists/push.js';
 import * as ep___users_lists_show from './endpoints/users/lists/show.js';
 import * as ep___users_lists_favorite from './endpoints/users/lists/favorite.js';
 import * as ep___users_lists_unfavorite from './endpoints/users/lists/unfavorite.js';
-import * as ep___users_lists_create_from_public from './endpoints/users/lists/create-from-public.js';
+import * as ep___users_lists_createFromPublic from './endpoints/users/lists/create-from-public.js';
 import * as ep___users_lists_update from './endpoints/users/lists/update.js';
+import * as ep___users_lists_updateMembership from './endpoints/users/lists/update-membership.js';
+import * as ep___users_lists_getMemberships from './endpoints/users/lists/get-memberships.js';
 import * as ep___users_notes from './endpoints/users/notes.js';
 import * as ep___users_pages from './endpoints/users/pages.js';
 import * as ep___users_flashs from './endpoints/users/flashs.js';
@@ -586,7 +588,6 @@ const eps = [
 	['i/favorites', ep___i_favorites],
 	['i/gallery/likes', ep___i_gallery_likes],
 	['i/gallery/posts', ep___i_gallery_posts],
-	['i/get-word-muted-notes-count', ep___i_getWordMutedNotesCount],
 	['i/import-blocking', ep___i_importBlocking],
 	['i/import-following', ep___i_importFollowing],
 	['i/import-muting', ep___i_importMuting],
@@ -717,6 +718,7 @@ const eps = [
 	['users/following', ep___users_following],
 	['users/gallery/posts', ep___users_gallery_posts],
 	['users/get-frequently-replied-users', ep___users_getFrequentlyRepliedUsers],
+	['users/featured-notes', ep___users_featuredNotes],
 	['users/groups/create', ep___users_groups_create],
 	['users/groups/delete', ep___users_groups_delete],
 	['users/groups/invitations/accept', ep___users_groups_invitations_accept],
@@ -738,7 +740,9 @@ const eps = [
 	['users/lists/favorite', ep___users_lists_favorite],
 	['users/lists/unfavorite', ep___users_lists_unfavorite],
 	['users/lists/update', ep___users_lists_update],
-	['users/lists/create-from-public', ep___users_lists_create_from_public],
+	['users/lists/create-from-public', ep___users_lists_createFromPublic],
+	['users/lists/update-membership', ep___users_lists_updateMembership],
+	['users/lists/get-memberships', ep___users_lists_getMemberships],
 	['users/notes', ep___users_notes],
 	['users/pages', ep___users_pages],
 	['users/flashs', ep___users_flashs],

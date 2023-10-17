@@ -133,6 +133,7 @@ describe('ユーザー', () => {
 			isMuted: user.isMuted ?? false,
 			isRenoteMuted: user.isRenoteMuted ?? false,
 			notify: user.notify ?? 'none',
+			withReplies: user.withReplies ?? false,
 		});
 	};
 
@@ -163,6 +164,7 @@ describe('ユーザー', () => {
 			hasUnreadAntenna: user.hasUnreadAntenna,
 			hasUnreadChannel: user.hasUnreadChannel,
 			hasUnreadNotification: user.hasUnreadNotification,
+			unreadNotificationCount: user.unreadNotificationCount,
 			hasPendingReceivedFollowRequest: user.hasPendingReceivedFollowRequest,
 			unreadAnnouncements: user.unreadAnnouncements,
 			mutedWords: user.mutedWords,
@@ -413,6 +415,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.hasUnreadAntenna, false);
 		assert.strictEqual(response.hasUnreadChannel, false);
 		assert.strictEqual(response.hasUnreadNotification, false);
+		assert.strictEqual(response.unreadNotificationCount, 0);
 		assert.strictEqual(response.hasPendingReceivedFollowRequest, false);
 		assert.deepStrictEqual(response.unreadAnnouncements, []);
 		assert.deepStrictEqual(response.mutedWords, []);

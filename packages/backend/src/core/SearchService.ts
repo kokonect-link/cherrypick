@@ -173,6 +173,11 @@ export class SearchService {
 			if (pagination.sinceId) filter.qs.push({ op: '>', k: 'createdAt', v: this.idService.parse(pagination.sinceId).date.getTime() });
 			if (opts.userId) filter.qs.push({ op: '=', k: 'userId', v: opts.userId });
 			if (opts.channelId) filter.qs.push({ op: '=', k: 'channelId', v: opts.channelId });
+			if (opts.origin === 'local') {
+				filter.qs.push({ op: 'is null', k: 'userHost' });
+			} else if (opts.origin === 'remote') {
+				filter.qs.push({ op: 'is not null', k: 'userHost' });
+			}
 			if (opts.host) {
 				if (opts.host === '.') {
 					filter.qs.push({ op: 'is null', k: 'userHost' });

@@ -34,6 +34,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkInput>
 					</FormSplit>
 
+					<MkInput v-model="impressumUrl">
+						<template #label>{{ i18n.ts.impressumUrl }}</template>
+						<template #prefix><i class="ti ti-link"></i></template>
+						<template #caption>{{ i18n.ts.impressumDescription }}</template>
+					</MkInput>
+
 					<MkTextarea v-model="pinnedUsers">
 						<template #label>{{ i18n.ts.pinnedUsers }}</template>
 						<template #caption>{{ i18n.ts.pinnedUsersDescription }}</template>
@@ -81,58 +87,41 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</FormSection>
 
 					<FormSection>
-						<!--
-						<template #label>DeepL Translation</template>
+						<template #label>Timeline caching</template>
 
 						<div class="_gaps_m">
-							<MkInput v-model="deeplAuthKey">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>DeepL Auth Key</template>
+							<MkInput v-model="perLocalUserUserTimelineCacheMax" type="number">
+								<template #label>perLocalUserUserTimelineCacheMax</template>
 							</MkInput>
-							<MkSwitch v-model="deeplIsPro">
-								<template #label>Pro account</template>
-							</MkSwitch>
+
+							<MkInput v-model="perRemoteUserUserTimelineCacheMax" type="number">
+								<template #label>perRemoteUserUserTimelineCacheMax</template>
+							</MkInput>
+
+							<MkInput v-model="perUserHomeTimelineCacheMax" type="number">
+								<template #label>perUserHomeTimelineCacheMax</template>
+							</MkInput>
+
+							<MkInput v-model="perUserListTimelineCacheMax" type="number">
+								<template #label>perUserListTimelineCacheMax</template>
+							</MkInput>
 						</div>
-						-->
+					</FormSection>
 
-						<template #label>Translation</template>
-						<MkRadios v-model="provider">
-							<template #label>Translator type</template>
-							<option :value="null">{{ i18n.ts.none }}</option>
-							<option value="deepl">DeepL</option>
-							<option value="google_no_api">Google Translate(without API)</option>
-							<option value="ctav3">Cloud Translation - Advanced(v3)</option>
-						</MkRadios>
+					<FormSection>
+						<template #label>{{ i18n.ts._ad.adsSettings }}</template>
 
-						<template v-if="provider === 'deepl'">
-							<div class="_gaps_m">
-								<MkInput v-model="deeplAuthKey">
-									<template #prefix><i class="ti ti-key"></i></template>
-									<template #label>DeepL Auth Key</template>
+						<div class="_gaps_m">
+							<div class="_gaps_s">
+								<MkInput v-model="notesPerOneAd" :min="0" type="number">
+									<template #label>{{ i18n.ts._ad.notesPerOneAd }}</template>
+									<template #caption>{{ i18n.ts._ad.setZeroToDisable }}</template>
 								</MkInput>
-								<MkSwitch v-model="deeplIsPro">
-									<template #label>Pro account</template>
-								</MkSwitch>
+								<MkInfo v-if="notesPerOneAd > 0 && notesPerOneAd < 20" :warn="true">
+									{{ i18n.ts._ad.adsTooClose }}
+								</MkInfo>
 							</div>
-						</template>
-						<template v-else-if="provider === 'ctav3'">
-							<MkInput v-model="ctav3SaKey" type="password">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Service account key(json)</template>
-							</MkInput>
-							<MkInput v-model="ctav3ProjectId">
-								<template #label>Project ID</template>
-							</MkInput>
-							<MkInput v-model="ctav3Location">
-								<template #label>Location</template>
-							</MkInput>
-							<MkInput v-model="ctav3Model">
-								<template #label>Model ID</template>
-							</MkInput>
-							<MkInput v-model="ctav3Glossary">
-								<template #label>Glossary ID</template>
-							</MkInput>
-						</template>
+						</div>
 					</FormSection>
 
 					<FormSection>
@@ -166,6 +155,7 @@ import XHeader from './_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
@@ -181,6 +171,7 @@ let shortName: string | null = $ref(null);
 let description: string | null = $ref(null);
 let maintainerName: string | null = $ref(null);
 let maintainerEmail: string | null = $ref(null);
+let impressumUrl: string | null = $ref(null);
 let emailToReceiveAbuseReport: string | null = $ref(null);
 let pinnedUsers: string = $ref('');
 let cacheRemoteFiles: boolean = $ref(false);
@@ -188,14 +179,11 @@ let cacheRemoteSensitiveFiles: boolean = $ref(false);
 let enableServiceWorker: boolean = $ref(false);
 let swPublicKey: any = $ref(null);
 let swPrivateKey: any = $ref(null);
-let provider: string | null = $ref(null);
-let deeplAuthKey: string = $ref('');
-let deeplIsPro: boolean = $ref(false);
-let ctav3SaKey: string = $ref('');
-let ctav3ProjectId: string = $ref('');
-let ctav3Location: string = $ref('');
-let ctav3Model: string = $ref('');
-let ctav3Glossary: string = $ref('');
+let perLocalUserUserTimelineCacheMax: number = $ref(0);
+let perRemoteUserUserTimelineCacheMax: number = $ref(0);
+let perUserHomeTimelineCacheMax: number = $ref(0);
+let perUserListTimelineCacheMax: number = $ref(0);
+let notesPerOneAd: number = $ref(0);
 
 async function init(): Promise<void> {
 	const meta = await os.api('admin/meta');
@@ -204,6 +192,7 @@ async function init(): Promise<void> {
 	description = meta.description;
 	maintainerName = meta.maintainerName;
 	maintainerEmail = meta.maintainerEmail;
+	impressumUrl = meta.impressumUrl;
 	emailToReceiveAbuseReport = meta.emailToReceiveAbuseReport;
 	pinnedUsers = meta.pinnedUsers.join('\n');
 	cacheRemoteFiles = meta.cacheRemoteFiles;
@@ -211,23 +200,21 @@ async function init(): Promise<void> {
 	enableServiceWorker = meta.enableServiceWorker;
 	swPublicKey = meta.swPublickey;
 	swPrivateKey = meta.swPrivateKey;
-	provider = meta.translatorType;
-	deeplAuthKey = meta.deeplAuthKey;
-	deeplIsPro = meta.deeplIsPro;
-	ctav3SaKey = meta.ctav3SaKey;
-	ctav3ProjectId = meta.ctav3ProjectId;
-	ctav3Location = meta.ctav3Location;
-	ctav3Model = meta.ctav3Model;
-	ctav3Glossary = meta.ctav3Glossary;
+	perLocalUserUserTimelineCacheMax = meta.perLocalUserUserTimelineCacheMax;
+	perRemoteUserUserTimelineCacheMax = meta.perRemoteUserUserTimelineCacheMax;
+	perUserHomeTimelineCacheMax = meta.perUserHomeTimelineCacheMax;
+	perUserListTimelineCacheMax = meta.perUserListTimelineCacheMax;
+	notesPerOneAd = meta.notesPerOneAd;
 }
 
-function save(): void {
-	os.apiWithDialog('admin/update-meta', {
+async function save(): void {
+	await os.apiWithDialog('admin/update-meta', {
 		name,
 		shortName: shortName === '' ? null : shortName,
 		description,
 		maintainerName,
 		maintainerEmail,
+		impressumUrl,
 		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 		emailToReceiveAbuseReport: emailToReceiveAbuseReport || null,
 		pinnedUsers: pinnedUsers.split('\n'),
@@ -236,17 +223,14 @@ function save(): void {
 		enableServiceWorker,
 		swPublicKey,
 		swPrivateKey,
-		translatorType: provider,
-		deeplAuthKey,
-		deeplIsPro,
-		ctav3SaKey,
-		ctav3ProjectId,
-		ctav3Location,
-		ctav3Model,
-		ctav3Glossary,
-	}).then(() => {
-		fetchInstance();
+		perLocalUserUserTimelineCacheMax,
+		perRemoteUserUserTimelineCacheMax,
+		perUserHomeTimelineCacheMax,
+		perUserListTimelineCacheMax,
+		notesPerOneAd,
 	});
+
+	fetchInstance();
 }
 
 const headerTabs = $computed(() => []);

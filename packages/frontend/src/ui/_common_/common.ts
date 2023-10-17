@@ -71,14 +71,25 @@ export function openInstanceMenu(ev: MouseEvent) {
 			text: i18n.ts.manageCustomEmojis,
 			icon: 'ti ti-icons',
 		} : undefined],
-	}, null, {
-		type: 'button',
+	}, null, (instance.impressumUrl) ? {
+		text: i18n.ts.impressum,
+		icon: 'ti ti-file-invoice',
+		action: () => {
+			window.open(instance.impressumUrl, '_blank');
+		},
+	} : undefined, (instance.tosUrl) ? {
 		text: i18n.ts.termsOfService,
-		icon: 'ti ti-checklist',
+		icon: 'ti ti-notebook',
 		action: () => {
 			window.open(instance.tosUrl, '_blank');
 		},
-	}, {
+	} : undefined, (instance.privacyPolicyUrl) ? {
+		text: i18n.ts.privacyPolicy,
+		icon: 'ti ti-shield-lock',
+		action: () => {
+			window.open(instance.privacyPolicyUrl, '_blank');
+		},
+	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl) ? undefined : null, {
 		type: 'parent',
 		text: i18n.ts.help,
 		icon: 'ti ti-help-circle',
@@ -109,9 +120,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 				defaultStore.set('timelineTutorial', 0);
 				defaultStore.set('tlHomeHintClosed', false);
 				defaultStore.set('tlLocalHintClosed', false);
-				defaultStore.set('tlMediaHintClosed', false);
 				defaultStore.set('tlSocialHintClosed', false);
-				defaultStore.set('tlCatHintClosed', false);
 				defaultStore.set('tlGlobalHintClosed', false);
 				setTimeout(unisonReload, 100);
 			},

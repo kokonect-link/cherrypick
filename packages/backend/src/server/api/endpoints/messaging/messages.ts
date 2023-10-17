@@ -96,15 +96,18 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				});
 
 				const query = this.queryService.makePaginationQuery(this.messagingMessagesRepository.createQueryBuilder('message'), ps.sinceId, ps.untilId)
-					.andWhere(new Brackets(qb => { qb
-						.where(new Brackets(qb => { qb
-							.where('message.userId = :meId')
-							.andWhere('message.recipientId = :recipientId');
-						}))
-						.orWhere(new Brackets(qb => { qb
-							.where('message.userId = :recipientId')
-							.andWhere('message.recipientId = :meId');
-						}));
+					.andWhere(new Brackets(qb => {
+						qb
+							.where(new Brackets(qb => {
+								qb
+									.where('message.userId = :meId')
+									.andWhere('message.recipientId = :recipientId');
+							}))
+							.orWhere(new Brackets(qb => {
+								qb
+									.where('message.userId = :recipientId')
+									.andWhere('message.recipientId = :meId');
+							}));
 					}))
 					.setParameter('meId', me.id)
 					.setParameter('recipientId', recipient.id);

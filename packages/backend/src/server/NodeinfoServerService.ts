@@ -107,6 +107,8 @@ export class NodeinfoServerService {
 					},
 					langs: meta.langs,
 					tosUrl: meta.termsOfServiceUrl,
+					privacyPolicyUrl: meta.privacyPolicyUrl,
+					impressumUrl: meta.impressumUrl,
 					repositoryUrl: meta.repositoryUrl,
 					feedbackUrl: meta.feedbackUrl,
 					disableRegistration: meta.disableRegistration,
@@ -119,7 +121,7 @@ export class NodeinfoServerService {
 					enableEmail: meta.enableEmail,
 					enableServiceWorker: meta.enableServiceWorker,
 					proxyAccountName: proxyAccount ? proxyAccount.username : null,
-					themeColor: meta.themeColor ?? 'rgb(255, 188, 220)',
+					themeColor: meta.themeColor ?? '#ffbcdc',
 				},
 			};
 			if (version >= 21) {
@@ -138,7 +140,11 @@ export class NodeinfoServerService {
 				.type(
 					'application/json; profile="http://nodeinfo.diaspora.software/ns/schema/2.1#"',
 				)
-				.header('Cache-Control', 'public, max-age=600');
+				.header('Cache-Control', 'public, max-age=600')
+				.header('Access-Control-Allow-Headers', 'Accept')
+				.header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+				.header('Access-Control-Allow-Origin', '*')
+				.header('Access-Control-Expose-Headers', 'Vary');
 			return { version: '2.1', ...base };
 		});
 
@@ -151,7 +157,11 @@ export class NodeinfoServerService {
 				.type(
 					'application/json; profile="http://nodeinfo.diaspora.software/ns/schema/2.0#"',
 				)
-				.header('Cache-Control', 'public, max-age=600');
+				.header('Cache-Control', 'public, max-age=600')
+				.header('Access-Control-Allow-Headers', 'Accept')
+				.header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+				.header('Access-Control-Allow-Origin', '*')
+				.header('Access-Control-Expose-Headers', 'Vary');
 			return { version: '2.0', ...base };
 		});
 

@@ -42,15 +42,20 @@
 }
 
 html {
-	background: #ffb4e1;
+	background: rgb(28, 28, 37);
+}
+
+header {
+	color: #fff;
 }
 
 main {
-	background: #dedede;
+	background: rgb(35, 35, 47);
+	color: #fff;
 }
 main > .tabs {
 	padding: 16px;
-	border-bottom: solid 4px #c3c3c3;
+	border-bottom: solid 4px #fff;
 }
 
 #lsEditor > .adder {

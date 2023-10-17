@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div
-	:class="[$style.root, { [$style.modal]: modal, _popup: modal }]"
+	:class="[$style.root, { [$style.modal]: modal, _popup: modal && (!defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur), _popupAcrylic: modal && defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"
@@ -75,7 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
 	<MkPollEditor v-if="poll" v-model="poll" @destroyed="poll = null"/>
-	<MkNotePreview v-if="showPreview" :class="$style.preview" :text="text"/>
+	<MkNotePreview v-if="showPreview" :class="$style.preview" :text="text" :user="postAccount ?? $i"/>
 	<div v-if="showingOptions" style="padding: 8px 16px;">
 	</div>
 	<footer :class="$style.footer">
@@ -119,7 +119,7 @@ import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
 import { selectFiles } from '@/scripts/select-file.js';
-import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
+import { ColdDeviceStorage, defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -851,7 +851,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
-	vibrate([10, 20, 10, 20, 10, 20, 60]);
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [10, 20, 10, 20, 10, 20, 60] : '');
 }
 
 function cancel() {

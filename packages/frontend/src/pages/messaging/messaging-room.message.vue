@@ -29,7 +29,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<footer>
 			<MkTime :time="message.createdAt"/>
 			<template v-if="isGroup">
-				<span v-if="message.reads.length > 0" class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageRead }} {{ message.reads.length }}</span>
+				<span v-if="message.reads.length > 0" class="read">
+					<span style="margin-right: 4px;">•</span>
+					<I18n :src="i18n.ts.nUsersRead" textTag="span">
+						<template #n>{{ message.reads.length }}</template>
+					</I18n>
+				</span>
 			</template>
 			<template v-else-if="isMe">
 				<span v-if="!message.isRead" class="read"><span style="margin-right: 4px;">•</span>{{ i18n.ts.messageSend }}</span>

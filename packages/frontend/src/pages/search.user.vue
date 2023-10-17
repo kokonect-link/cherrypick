@@ -40,7 +40,7 @@ import { useRouter } from '@/router.js';
 
 const router = useRouter();
 
-let key = $ref('');
+let key = $ref(0);
 let searchQuery = $ref('');
 let searchOrigin = $ref('combined');
 let userPagination = $ref();
@@ -77,7 +77,7 @@ async function search() {
 		},
 	};
 
-	key = query;
+	key++;
 }
 
 function onInputKeydown(evt: KeyboardEvent) {

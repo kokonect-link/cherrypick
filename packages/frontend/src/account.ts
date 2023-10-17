@@ -363,10 +363,10 @@ export async function openAccountMenu(opts: {
 		});
 	}
 
-	function accountListFriendly (account: Misskey.entities.UserDetailed) {
+	function accountListFriendly() {
 		popupMenu([...[{
 			type: 'link' as const,
-			text: account.name,
+			text: i18n.ts.profile,
 			to: `/@${$i.username}`,
 			avatar: $i,
 		}, null, ...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises, {

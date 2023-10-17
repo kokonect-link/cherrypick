@@ -17,17 +17,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<div :class="$style.form">
 			<FormSplit :minWidth="170">
-				<MkInput v-model="username" autofocus @update:modelValue="includeHost ? search : searchLocal">
+				<MkInput v-if="includeHost" v-model="username" autofocus @update:modelValue="search">
 					<template #label>{{ i18n.ts.username }}</template>
 					<template #prefix>@</template>
 				</MkInput>
-				<MkInput v-if="includeHost" v-model="host" :datalist="[hostname]" @update:modelValue="includeHost ? search : searchLocal">
+				<MkInput v-else v-model="username" autofocus @update:modelValue="searchLocal">
+					<template #label>{{ i18n.ts.username }}</template>
+					<template #prefix>@</template>
+				</MkInput>
+				<MkInput v-if="includeHost" v-model="host" :datalist="[hostname]" @update:modelValue="search">
 					<template #label>{{ i18n.ts.host }}</template>
 					<template #prefix>@</template>
 				</MkInput>
 			</FormSplit>
 		</div>
-		<div v-if="username != '' || (host != '' && includeHost)" :class="[$style.result, { [$style.hit]: users.length > 0 }]">
+		<div v-if="username != '' || host != ''" :class="[$style.result, { [$style.hit]: users.length > 0 }]">
 			<div v-if="users.length > 0" :class="$style.users">
 				<div v-for="user in users" :key="user.id" class="_button" :class="[$style.user, { [$style.selected]: selected && selected.id === user.id }]" @click="selected = user" @dblclick="ok()">
 					<MkAvatar :user="user" :class="$style.avatar" indicator/>
@@ -109,7 +113,8 @@ const searchLocal = () => {
 		return;
 	}
 	os.api('users/search', {
-		username: username,
+		query: username,
+		origin: 'local',
 		limit: 10,
 		detail: false,
 	}).then(_users => {

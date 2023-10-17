@@ -132,14 +132,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
-			<button v-vibrate="5" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
+			<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
 				<i class="ti ti-arrow-back-up"></i>
 				<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.repliesCount }}</p>
 			</button>
 			<button
 				v-if="canRenote"
 				ref="renoteButton"
-				v-vibrate="[30, 30, 60]"
+				v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 30, 60] : ''"
 				v-tooltip="i18n.ts.renote"
 				class="_button"
 				:class="$style.noteFooterButton"
@@ -151,23 +151,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-vibrate="[30, 50, 50]" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @mousedown="heartReact()">
+			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @mousedown="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="[30, 50, 50]" v-tooltip="i18n.ts.reaction" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
+			<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" v-tooltip="i18n.ts.reaction" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
 				<i v-if="appearNote.myReaction == null" class="ti ti-mood-plus"></i>
 				<i v-else class="ti ti-mood-edit"></i>
 			</button>
-			<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="[30, 50, 50]" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
+			<button v-if="appearNote.myReaction != null && appearNote.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(appearNote)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
-			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="5" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()">
+			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @mousedown="quote()">
 				<i class="ti ti-quote"></i>
 			</button>
-			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="5" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
+			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
-			<button ref="menuButton" v-vibrate="5" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @mousedown="menu()">
+			<button ref="menuButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @mousedown="menu()">
 				<i class="ti ti-dots"></i>
 			</button>
 		</footer>
@@ -271,7 +271,7 @@ import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { userPage } from '@/filters/user.js';
 import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
-import { defaultStore, noteViewInterruptors } from '@/store.js';
+import { ColdDeviceStorage, defaultStore, noteViewInterruptors } from '@/store.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { $i } from '@/account.js';
@@ -333,7 +333,7 @@ let appearNote = $computed(() => isRenote ? note.renote as Misskey.entities.Note
 const isMyRenote = $i && ($i.id === note.userId);
 const showContent = ref(false);
 const isDeleted = ref(false);
-const muted = ref(checkWordMute(appearNote, $i, defaultStore.state.mutedWords));
+const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
 const urls = appearNote.text ? extractUrlFromMfm(mfm.parse(appearNote.text)) : null;

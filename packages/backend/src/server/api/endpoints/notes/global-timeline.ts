@@ -40,7 +40,6 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		withFiles: { type: 'boolean', default: false },
-		withReplies: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
 		withCats: { type: 'boolean', default: false },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
@@ -80,26 +79,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.leftJoinAndSelect('reply.user', 'replyUser')
 				.leftJoinAndSelect('renote.user', 'renoteUser');
 
-			this.queryService.generateRepliesQuery(query, ps.withReplies, me);
 			if (me) {
 				this.queryService.generateMutedUserQuery(query, me);
-				this.queryService.generateMutedNoteQuery(query, me);
 				this.queryService.generateBlockedUserQuery(query, me);
 				this.queryService.generateMutedUserRenotesQueryForNotes(query, me);
 			}
 
 			if (ps.withFiles) {
 				query.andWhere('note.fileIds != \'{}\'');
-			}
-
-			if (ps.withRenotes === false) {
-				query.andWhere(new Brackets(qb => {
-					qb.orWhere('note.renoteId IS NULL');
-					qb.orWhere(new Brackets(qb => {
-						qb.orWhere('note.text IS NOT NULL');
-						qb.orWhere('note.fileIds != \'{}\'');
-					}));
-				}));
 			}
 
 			if (ps.withCats) {

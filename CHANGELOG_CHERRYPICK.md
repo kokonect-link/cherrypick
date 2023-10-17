@@ -5,6 +5,7 @@
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ## NOTE
+- 
 
 ### General
 - 
@@ -22,10 +23,73 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.4.0
+출시일: 2023/10/17<br>
+기반 Misskey 버전: 2023.10.1<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023101](CHANGELOG.md#2023101) 문서를 참고하십시오.
+
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
+
+## NOTE
+- Misskey 2023.10.0 에서 제거된 노트 편집 기능이 계속 유지됩니다.
+
+### General
+- Add: Mirerado 테마 추가 ([mirerado-theme](https://mi.rerac.dev/@notify/pages/mirerado-theme))
+- Feat: 읽지 않은 알림 수를 표시할 수 있음 (misskey-dev/misskey#11982)
+- Feat: 햅틱 피드백 개선
+  - 지원 범위 추가
+  - 설정을 세부적으로 변경할 수 있음
+- Fix: 서버 측에서 테스트 알림을 올바르게 수행할 수 있도록 수정 (misskey-dev/misskey#11982)
+
+### Client
+- Feat: 클라이언트 업데이트 알림 개선
+  - 알림 채널을 선택할 수 있음
+  - 다음 릴리즈 출시까지 알리지 않도록 설정할 수 있음
+- Feat: 활동에서 팔로잉, 팔로워 차트를 볼 수 있음
+- Feat: 모달 디자인을 변경할 수 있음
+  - 흐림 효과를 활성화하면 디자인이 변경됨
+  - 흐림 효과가 활성화 된 상태에서 '모달 배경색 제거' 옵션을 활성화하면 일부 모달의 디자인이 변경됨
+- Enhance: 그룹 대화에서 읽음 표시를 개선
+- Enhance: cli, bios 페이지 개선
+- Enhance: 서버와 연결이 끊겼을 때 stream indicator가 즉시 표시되지 않도록 (MisskeyIO/misskey#172)
+- Enhance: 스피너 디자인 변경
+- Enhance: 후원 버튼의 디자인 개선
+  - 버튼을 하나로 병합함
+  - 버튼을 누르면 팝업 메뉴로 표시됨
+- Fix: (Friendly) 길게 누르면 표시되는 계정 관리 다이얼로그의 UI 관련 오류 수정
+- Fix: 서브 노트 기능 오류
+  - 서브 노트에서 더 보기 버튼을 사용할 수 없음
+  - 리액션 변경 기능을 사용할 수 없음
+- Fix: 노트 상세 페이지의 노트 입력 폼을 누르기 전에 일부 요소가 표시될 수 있음
+- Fix: 히트맵이 표시되지 않음
+- Fix: 대화 페이지에서 일부 요소가 중복으로 표시될 수 있음
+- Fix: 브랜딩에서 적용한 이미지가 대화 페이지에서 반영되지 않음
+- Fix: 유저 검색에서 로컬/리모트 설정이 제대로 작동하지 않음
+- Fix: 유저 선택 다이얼로그에서 검색 결과가 표시되지 않음
+- Fix: 게시 양식에서 사용자 변경 사항이 미리보기에 반영되지 않는 문제 (misskey-dev/misskey#12022)
+- Fix: 타임라인 메뉴 요소 수정
+
+### Server
+- Feat: Note pack에서 SQL 디바운스 (MisskeyIO/misskey#176)
+- Enhance: 초기 로드 속도 개선
+- Revert: Feat: 이모티콘 중복 체크 (misskey-dev/misskey#11941)
+- Fix: Publish notes announced by relay (misskey-dev/misskey#11056)
+- Fix: Meilisearch가 설정된 상태에서 노트 검색 시 로컬/리모트 설정이 제대로 작동하지 않음
+- Fix: Redis의 TTL이 만료되지 않았다면 메모리에 값을 다시 쓰기 (MisskeyIO/misskey#174)
+- Fix: NoteEntityService의 pack 내에서 CustomEmojiService의 prefetchEmoji를 호출함 (MisskeyIO/misskey#179)
+
+---
+
 ## 4.3.3 (Hotfix)
 출시일: 2023/10/3<br>
 기반 Misskey 버전: 2023.9.3<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGELOG.md#202393) 문서를 참고하십시오.
+
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ### Server
 - Fix: 마이그레이션 문제
@@ -37,6 +101,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGE
 출시일: 2023/10/3<br>
 기반 Misskey 버전: 2023.9.3<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGELOG.md#202393) 문서를 참고하십시오.
+
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ### General
 - Feat: 편집한 노트의 기록을 확인할 수 있음 (misskey-dev/misskey#11938)
@@ -66,6 +134,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202393](CHANGE
 기반 Misskey 버전: 2023.9.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGELOG.md#202392) 문서를 참고하십시오.
 
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
+
 ### General
 - 미디어, 고양이 타임라인 개선
   - [misskey-dev/misskey@eb740e2](https://github.com/misskey-dev/misskey/commit/eb740e2c72ae6854b244ad099c927c069008720e) 이 추가됨에 따라, 해당 기능에 병합하고 기존 미디어 및 고양이 타임라인을 제거함
@@ -76,6 +148,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202392](CHANGE
 출시일: 2023/9/29<br>
 기반 Misskey 버전: 2023.9.1<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGELOG.md#202391) 문서를 참고하십시오.
+
+> 버전 관리 방식이 변경되었기 때문에, 기존 버전보다 낮은 것으로 인식되어 업데이트 대화 상자가 표시되지 않을 수 있습니다.
+> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있습니다.
+> 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ### General
 - Add: Rosé Pine 테마 추가 ([rose-pine/misskey](https://github.com/rose-pine/misskey))

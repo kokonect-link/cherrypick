@@ -1058,9 +1058,6 @@ _menuDisplay:
 _wordMute:
   muteWords: "Słowo do wyciszenia"
   muteWordsDescription2: "Otocz słowa kluczowe ukośnikami, aby używać wyrażeń regularnych."
-  soft: "Łagodny"
-  hard: "Twardy"
-  mutedNotes: "Wyciszone wpisy"
 _instanceMute:
   title: "Ukrywa wpisy z wymienionych instancji."
   heading: "Lista instancji do wyciszenia"
@@ -1122,9 +1119,6 @@ _theme:
     infoFg: "Tekst informacji"
     infoWarnBg: "Tło ostrzeżenia"
     infoWarnFg: "Tekst ostrzeżenia"
-    cwBg: "Tło CW"
-    cwFg: "Tekst CW"
-    cwHoverBg: "Tło CW (po najechaniu)"
     toastBg: "Tło powiadomień"
     toastFg: "Tekst powiadomień"
     buttonBg: "Tło przycisku"

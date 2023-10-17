@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="['all', 'bg'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 	<div :class="$style.top">
 		<div v-if="['all', 'topBottom', 'top'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
-		<button v-vibrate="5" class="_button" :class="$style.instance" @click="openInstanceMenu">
+		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="$style.instance" @click="openInstanceMenu">
 			<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon"/>
 		</button>
 	</div>
@@ -18,9 +18,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkA>
 		<template v-for="item in menu">
 			<div v-if="item === '-'" :class="$style.divider"></div>
-			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-vibrate="5" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 				<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
-				<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator">
+					<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationCount" :class="$style.itemIndicateValueIcon"><span>{{ navbarItemDef[item].indicateValue }}</span></span>
+					<i v-else class="_indicatorCircle"></i>
+				</span>
 			</component>
 		</template>
 		<div :class="$style.divider"></div>
@@ -28,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
 			<span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</MkA>
-		<button v-vibrate="5" :class="$style.item" class="_button" @click="more">
+		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.item" class="_button" @click="more">
 			<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 			<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
 		</button>
@@ -38,10 +41,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.bottom">
 		<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-		<button v-vibrate="5" class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
+		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
 			<i :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']" class="ti ti-fw"></i><span style="position: relative;">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 		</button>
-		<button v-vibrate="5" class="_button" :class="$style.account" @click="openAccountMenu">
+		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="$style.account" @click="openAccountMenu">
 			<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct :class="$style.acct" class="_nowrap" :user="$i"/>
 		</button>
 	</div>
@@ -54,7 +57,7 @@ import { openInstanceMenu } from './common';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { defaultStore } from '@/store.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { version } from '@/config.js';
@@ -70,20 +73,24 @@ const otherMenuItemIndicated = computed(() => {
 let controlPanelIndicated = $ref(false);
 let releasesCherryPick = $ref(null);
 
-os.api('admin/abuse-user-reports', {
-	state: 'unresolved',
-	limit: 1,
-}).then(reports => {
-	if (reports.length > 0) controlPanelIndicated = true;
-});
-
-fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
-	method: 'GET',
-}).then(res => res.json())
-	.then(res => {
-		releasesCherryPick = res;
-		if (version < releasesCherryPick[0].tag_name) controlPanelIndicated = true;
+if ($i.isAdmin || $i.isModerator) {
+	os.api('admin/abuse-user-reports', {
+		state: 'unresolved',
+		limit: 1,
+	}).then(reports => {
+		if (reports.length > 0) controlPanelIndicated = true;
 	});
+
+	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
+		method: 'GET',
+	}).then(res => res.json())
+		.then(async res => {
+			const meta = await os.api('admin/meta');
+			if (meta.enableReceivePrerelease) releasesCherryPick = res;
+			else releasesCherryPick = res.filter(x => x.prerelease === false);
+			if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) controlPanelIndicated = true;
+		});
+}
 
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_({
@@ -288,6 +295,30 @@ function more() {
 	color: var(--navIndicator);
 	font-size: 8px;
 	animation: blink 1s infinite;
+
+	&:has(.itemIndicateValueIcon) {
+		animation: none;
+		left: auto;
+		right: 20px;
+	}
+}
+
+.itemIndicateValueIcon {
+	display: inline-flex;
+	color: var(--fgOnAccent);
+	font-weight: 700;
+	background: var(--navIndicator);
+	height: 1.5em;
+	min-width: 1.5em;
+	align-items: center;
+	justify-content: center;
+	border-radius: 99rem;
+
+	& > span {
+		display: inline-block;
+		padding: 0 .25em;
+		line-height: 1.5em;
+	}
 }
 
 .itemText {

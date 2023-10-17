@@ -54,17 +54,12 @@ html {
 	left: 0;
 	width: 28px;
 	height: 28px;
-	fill-rule: evenodd;
-	clip-rule: evenodd;
+	animation: splashSpinner 2s linear infinite;
+}
+#splashSpinner > .spinner > .path {
+	stroke: var(--accent);
 	stroke-linecap: round;
-	stroke-linejoin: round;
-	stroke-miterlimit: 1.5;
-}
-#splashSpinner > .spinner.bg {
-	opacity: 0.275;
-}
-#splashSpinner > .spinner.fg {
-	animation: splashSpinner 0.5s linear infinite;
+	animation: dash 1.2s ease-in-out infinite;
 }
 
 @keyframes splashSpinner {
@@ -73,5 +68,20 @@ html {
 	}
 	100% {
 		transform: rotate(360deg);
+	}
+}
+
+@keyframes dash {
+	0% {
+		stroke-dasharray: 1, 150;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 90, 150;
+		stroke-dashoffset: -35;
+	}
+	100% {
+		stroke-dasharray: 90, 150;
+		stroke-dashoffset: -124;
 	}
 }

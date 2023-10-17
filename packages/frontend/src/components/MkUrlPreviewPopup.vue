@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div :class="$style.root" :style="{ zIndex, top: top + 'px', left: left + 'px' }">
 	<Transition :name="defaultStore.state.animation ? '_transition_zoom' : ''" @afterLeave="emit('closed')">
-		<MkUrlPreview v-if="showing" class="_popup _shadow" :url="url" :showActions="false"/>
+		<MkUrlPreview v-if="showing" class="_shadow" :class="{ _popupAcrylic: defaultStore.state.useBlurEffect, _popup: !defaultStore.state.useBlurEffect }" :url="url" :showActions="false"/>
 	</Transition>
 </div>
 </template>

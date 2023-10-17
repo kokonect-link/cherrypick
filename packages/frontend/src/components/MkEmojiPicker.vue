@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button
 					v-for="emoji in searchResultCustom"
 					:key="emoji.name"
-					v-vibrate="50"
+					v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 50 : ''"
 					class="_button item"
 					:title="emoji.name"
 					tabindex="0"
@@ -107,7 +107,7 @@ import * as os from '@/os.js';
 import { isTouchUsing } from '@/scripts/touch.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { customEmojiCategories, customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { $i } from '@/account.js';
 
@@ -616,6 +616,8 @@ defineExpose({
 						height: 1.25em;
 						vertical-align: -.25em;
 						pointer-events: none;
+						width: 100%;
+						object-fit: contain;
 					}
 				}
 			}

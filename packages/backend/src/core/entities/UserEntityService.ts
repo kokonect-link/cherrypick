@@ -153,64 +153,76 @@ export class UserEntityService implements OnModuleInit {
 
 	@bindThis
 	public async getRelation(me: MiUser['id'], target: MiUser['id']) {
-		const following = await this.followingsRepository.findOneBy({
-			followerId: me,
-			followeeId: target,
-		});
-		return awaitAll({
-			id: target,
+		const [
 			following,
-			isFollowing: following != null,
-			isFollowed: this.followingsRepository.count({
+			isFollowed,
+			hasPendingFollowRequestFromYou,
+			hasPendingFollowRequestToYou,
+			isBlocking,
+			isBlocked,
+			isMuted,
+			isRenoteMuted,
+		] = await Promise.all([
+			this.followingsRepository.findOneBy({
+				followerId: me,
+				followeeId: target,
+			}),
+			this.followingsRepository.exist({
 				where: {
 					followerId: target,
 					followeeId: me,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			hasPendingFollowRequestFromYou: this.followRequestsRepository.count({
+			}),
+			this.followRequestsRepository.exist({
 				where: {
 					followerId: me,
 					followeeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			hasPendingFollowRequestToYou: this.followRequestsRepository.count({
+			}),
+			this.followRequestsRepository.exist({
 				where: {
 					followerId: target,
 					followeeId: me,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isBlocking: this.blockingsRepository.count({
+			}),
+			this.blockingsRepository.exist({
 				where: {
 					blockerId: me,
 					blockeeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isBlocked: this.blockingsRepository.count({
+			}),
+			this.blockingsRepository.exist({
 				where: {
 					blockerId: target,
 					blockeeId: me,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isMuted: this.mutingsRepository.count({
+			}),
+			this.mutingsRepository.exist({
 				where: {
 					muterId: me,
 					muteeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-			isRenoteMuted: this.renoteMutingsRepository.count({
+			}),
+			this.renoteMutingsRepository.exist({
 				where: {
 					muterId: me,
 					muteeId: target,
 				},
-				take: 1,
-			}).then(n => n > 0),
-		});
+			}),
+		]);
+
+		return {
+			id: target,
+			following,
+			isFollowing: following != null,
+			isFollowed,
+			hasPendingFollowRequestFromYou,
+			hasPendingFollowRequestToYou,
+			isBlocking,
+			isBlocked,
+			isMuted,
+			isRenoteMuted,
+		};
 	}
 
 	@bindThis
@@ -261,17 +273,34 @@ export class UserEntityService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async getHasUnreadNotification(userId: MiUser['id']): Promise<boolean> {
+	public async getNotificationsInfo(userId: MiUser['id']): Promise<{
+		hasUnread: boolean;
+		unreadCount: number;
+	}> {
+		const response = {
+			hasUnread: false,
+			unreadCount: 0,
+		};
+
 		const latestReadNotificationId = await this.redisClient.get(`latestReadNotification:${userId}`);
 
-		const latestNotificationIdsRes = await this.redisClient.xrevrange(
-			`notificationTimeline:${userId}`,
-			'+',
-			'-',
-			'COUNT', 1);
-		const latestNotificationId = latestNotificationIdsRes[0]?.[0];
+		if (!latestReadNotificationId) {
+			response.unreadCount = await this.redisClient.xlen(`notificationTimeline:${userId}`);
+		} else {
+			const latestNotificationIdsRes = await this.redisClient.xrevrange(
+				`notificationTimeline:${userId}`,
+				'+',
+				latestReadNotificationId,
+			);
 
-		return latestNotificationId != null && (latestReadNotificationId == null || latestReadNotificationId < latestNotificationId);
+			response.unreadCount = (latestNotificationIdsRes.length - 1 >= 0) ? latestNotificationIdsRes.length - 1 : 0;
+		}
+
+		if (response.unreadCount > 0) {
+			response.hasUnread = true;
+		}
+
+		return response;
 	}
 
 	@bindThis
@@ -327,24 +356,6 @@ export class UserEntityService implements OnModuleInit {
 
 		const user = typeof src === 'object' ? src : await this.usersRepository.findOneByOrFail({ id: src });
 
-		// migration
-		if (user.avatarId != null && user.avatarUrl === null) {
-			const avatar = await this.driveFilesRepository.findOneByOrFail({ id: user.avatarId });
-			user.avatarUrl = this.driveFileEntityService.getPublicUrl(avatar, 'avatar');
-			this.usersRepository.update(user.id, {
-				avatarUrl: user.avatarUrl,
-				avatarBlurhash: avatar.blurhash,
-			});
-		}
-		if (user.bannerId != null && user.bannerUrl === null) {
-			const banner = await this.driveFilesRepository.findOneByOrFail({ id: user.bannerId });
-			user.bannerUrl = this.driveFileEntityService.getPublicUrl(banner);
-			this.usersRepository.update(user.id, {
-				bannerUrl: user.bannerUrl,
-				bannerBlurhash: banner.blurhash,
-			});
-		}
-
 		const meId = me ? me.id : null;
 		const isMe = meId === user.id;
 		const iAmModerator = me ? await this.roleService.isModerator(me as MiUser) : false;
@@ -370,6 +381,8 @@ export class UserEntityService implements OnModuleInit {
 		const isModerator = isMe && opts.detail ? this.roleService.isModerator(user) : null;
 		const isAdmin = isMe && opts.detail ? this.roleService.isAdministrator(user) : null;
 		const unreadAnnouncements = isMe && opts.detail ? await this.announcementService.getUnreadAnnouncements(user) : null;
+
+		const notificationsInfo = isMe && opts.detail ? await this.getNotificationsInfo(user.id) : null;
 
 		const falsy = opts.detail ? false : undefined;
 
@@ -486,8 +499,9 @@ export class UserEntityService implements OnModuleInit {
 				hasUnreadAntenna: this.getHasUnreadAntenna(user.id),
 				hasUnreadChannel: false, // 後方互換性のため
 				hasUnreadMessagingMessage: this.getHasUnreadMessagingMessage(user.id),
-				hasUnreadNotification: this.getHasUnreadNotification(user.id),
+				hasUnreadNotification: notificationsInfo?.hasUnread,
 				hasPendingReceivedFollowRequest: this.getHasPendingReceivedFollowRequest(user.id),
+				unreadNotificationCount: notificationsInfo?.unreadCount,
 				mutedWords: profile!.mutedWords,
 				mutedInstances: profile!.mutedInstances,
 				mutingNotificationTypes: [], // 後方互換性のため
@@ -525,6 +539,7 @@ export class UserEntityService implements OnModuleInit {
 				isMuted: relation.isMuted,
 				isRenoteMuted: relation.isRenoteMuted,
 				notify: relation.following?.notify ?? 'none',
+				withReplies: relation.following?.withReplies ?? false,
 			} : {}),
 		} as Promiseable<Packed<'User'>> as Promiseable<IsMeAndIsUserDetailed<ExpectsMe, D>>;
 

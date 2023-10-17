@@ -48,7 +48,7 @@
 
 body,
 html {
-    background-color: #222;
+    background-color: rgb(28, 28, 37);
     color: #dfddcc;
     justify-content: center;
     margin: auto;
@@ -61,36 +61,40 @@ button {
     padding: 0px 12px 0px 12px;
     border: none;
     cursor: pointer;
-    margin-bottom: 12px;
+    margin-top: 12px;
+
+    &:not(:first-child) {
+        margin-bottom: 12px;
+    }
 }
 
 .button-big {
-    background: linear-gradient(90deg, rgb(134, 179, 0), rgb(74, 179, 0));
+    background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
     line-height: 50px;
 }
 
 .button-big:hover {
-    background: rgb(153, 204, 0);
+    background: rgb(255, 222, 241);
 }
 
 .button-small {
-    background: #444;
+    background: rgb(35, 35, 47);
     line-height: 40px;
 }
 
 .button-small:hover {
-    background: #555;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .button-label-big {
-    color: #222;
+    color: rgb(28, 28, 37);
     font-weight: bold;
     font-size: 20px;
     padding: 12px;
 }
 
 .button-label-small {
-    color: rgb(153, 204, 0);
+    color: rgb(185, 216, 255);
     font-size: 16px;
     padding: 12px;
 }
@@ -123,7 +127,7 @@ h1 {
 code {
     display: block;
     font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    background: #333;
+    background: rgb(35, 35, 47);
     padding: 0.5rem 1rem;
     max-width: 40rem;
     border-radius: 10px;

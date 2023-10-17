@@ -20,6 +20,7 @@ import { mainRouter } from '@/router.js';
 import { initializeSw } from '@/scripts/initialize-sw.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { userName } from '@/filters/user.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 export async function mainBoot() {
 	const { isClientUpdated } = await common(() => createApp(
@@ -227,11 +228,18 @@ export async function mainBoot() {
 		});
 
 		main.on('readAllNotifications', () => {
-			updateAccount({ hasUnreadNotification: false });
+			updateAccount({
+				hasUnreadNotification: false,
+				unreadNotificationCount: 0,
+			});
 		});
 
 		main.on('unreadNotification', () => {
-			updateAccount({ hasUnreadNotification: true });
+			const unreadNotificationCount = ($i?.unreadNotificationCount ?? 0) + 1;
+			updateAccount({
+				hasUnreadNotification: true,
+				unreadNotificationCount,
+			});
 		});
 
 		main.on('unreadMention', () => {
@@ -257,6 +265,7 @@ export async function mainBoot() {
 		main.on('unreadMessagingMessage', () => {
 			updateAccount({ hasUnreadMessagingMessage: true });
 			sound.play('chatBg');
+			vibrate(ColdDeviceStorage.get('vibrateChatBg') ? [50, 40] : '');
 		});
 
 		main.on('readAllAntennas', () => {

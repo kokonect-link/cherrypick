@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div
-	:class="[$style.root, { [$style.modal]: modal, _popup: modal }]"
+	:class="[$style.root, { [$style.modal]: modal, _popup: modal && (!defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur), _popupAcrylic: modal && defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"
@@ -59,9 +59,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</header>
 	</Transition>
-	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
-	<MkEventEditor v-if="event" v-model="event" @destroyed="event = null"/>
-	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
+	<div v-if="quoteId && showForm" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
+	<MkEventEditor v-if="event && showForm" v-model="event" @destroyed="event = null"/>
+	<div v-if="visibility === 'specified' && showForm" :class="$style.toSpecified">
 		<span style="margin-right: 8px;">{{ i18n.ts.recipient }}</span>
 		<div :class="$style.visibleUsers">
 			<span v-for="u in visibleUsers" :key="u.id" :class="$style.visibleUser">
@@ -71,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button class="_buttonPrimary" style="padding: 4px; border-radius: 8px;" @click="addVisibleUser"><i class="ti ti-plus ti-fw"></i></button>
 		</div>
 	</div>
-	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
+	<MkInfo v-if="hasNotSpecifiedMentions && showForm" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 	<input v-show="useCw && showForm" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
 	<div :class="[$style.textOuter, { [$style.withCw]: useCw, [$style.showForm]: !showForm }]">
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted || !$i" :placeholder="placeholder" data-cy-post-form-text @click="formClick" @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
@@ -85,11 +85,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</button>
 	</div>
-	<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
-	<XPostFormAttaches v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
-	<MkPollEditor v-if="poll" v-model="poll" @destroyed="poll = null"/>
-	<MkNotePreview v-if="showPreview" :class="$style.preview" :text="text"/>
-	<div v-if="showingOptions" style="padding: 8px 16px;">
+	<input v-show="withHashtags && showForm" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
+	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
+	<MkPollEditor v-if="poll && showForm" v-model="poll" @destroyed="poll = null"/>
+	<MkNotePreview v-if="showPreview && showForm" :class="$style.preview" :text="text"/>
+	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
 	<Transition
 		:enterActiveClass="defaultStore.state.animation ? $style.transition_footer_enterActive : ''"
@@ -115,7 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</footer>
 	</Transition>
-	<datalist id="hashtags">
+	<datalist v-if="showForm" id="hashtags">
 		<option v-for="hashtag in recentHashtags" :key="hashtag" :value="hashtag"/>
 	</datalist>
 </div>
@@ -139,7 +139,7 @@ import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
 import { selectFiles } from '@/scripts/select-file.js';
-import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
+import { ColdDeviceStorage, defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -872,7 +872,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
-	vibrate([10, 20, 10, 20, 10, 20, 60]);
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [10, 20, 10, 20, 10, 20, 60] : '');
 }
 
 function cancel() {

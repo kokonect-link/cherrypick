@@ -6,9 +6,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div role="menu">
 	<div
-		ref="itemsEl" v-hotkey="keymap" v-vibrate="5"
-		class="_popup _shadow"
-		:class="[$style.root, { [$style.center]: align === 'center', [$style.asDrawer]: asDrawer }]"
+		ref="itemsEl" v-hotkey="keymap" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''"
+		class="_shadow"
+		:class="[$style.root, { [$style.center]: align === 'center', [$style.asDrawer]: asDrawer, _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]"
 		:style="{ width: (width && !asDrawer) ? width + 'px' : '', maxHeight: maxHeight ? maxHeight + 'px' : '' }"
 		@contextmenu.self="e => e.preventDefault()"
 	>
@@ -74,6 +74,7 @@ const childrenCache = new WeakMap<MenuParent, MenuItem[]>();
 </script>
 
 <script lang="ts" setup>
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 const XChild = defineAsyncComponent(() => import('./MkMenu.child.vue'));
 
 const props = defineProps<{

@@ -5,7 +5,7 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { miLocalStorage } from '@/local-storage.js';
+import { miLocalStorage } from './local-storage.js';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -120,10 +120,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	reactionAcceptance: {
 		where: 'account',
 		default: null as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
-	},
-	mutedWords: {
-		where: 'account',
-		default: [],
 	},
 	mutedAds: {
 		where: 'account',
@@ -251,6 +247,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
 	useBlurEffect: {
+		where: 'device',
+		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
+	},
+	removeModalBgColorForBlur: {
 		where: 'device',
 		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()), // 循環参照するのでdevice-kind.tsは参照できない
 	},
@@ -384,6 +384,14 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	keepScreenOn: {
 		where: 'device',
+		default: false,
+	},
+	tlWithReplies: {
+		where: 'device',
+		default: false,
+	},
+	showUnreadNotificationCount: {
+		where: 'deviceAccount',
 		default: false,
 	},
 
@@ -576,6 +584,11 @@ export class ColdDeviceStorage {
 		plugins: [] as Plugin[],
 		mediaVolume: 0.5,
 		vibrate: true,
+		vibrateNote: true,
+		vibrateNotification: true,
+		vibrateChat: true,
+		vibrateChatBg: true,
+		vibrateSystem: true,
 		sound_masterVolume: 0.5,
 		sound_note: { type: 'syuilo/down', volume: 0.5 },
 		sound_noteMy: { type: 'syuilo/up', volume: 0.5 },

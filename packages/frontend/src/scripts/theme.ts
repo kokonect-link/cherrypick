@@ -5,7 +5,11 @@
 
 import { ref } from 'vue';
 import tinycolor from 'tinycolor2';
+import { deepClone } from './clone.js';
 import { globalEvents } from '@/events.js';
+import lightTheme from '@/themes/_light.json5';
+import darkTheme from '@/themes/_dark.json5';
+import { miLocalStorage } from '@/local-storage.js';
 
 export type Theme = {
 	id: string;
@@ -16,20 +20,17 @@ export type Theme = {
 	props: Record<string, string>;
 };
 
-import lightTheme from '@/themes/_light.json5';
-import darkTheme from '@/themes/_dark.json5';
-import { deepClone } from './clone';
-import { miLocalStorage } from '@/local-storage.js';
-
 export const themeProps = Object.keys(lightTheme.props).filter(key => !key.startsWith('X'));
 
 export const getBuiltinThemes = () => Promise.all(
 	[
 		'l-cherrypick',
 		'l-rosepinedawn',
+		'l-mirerado',
 		'l-byeolvit-polaris',
 		'l-scone-color',
 		'l-stella-r2',
+		'l-birdsite',
 		'l-light',
 		'l-coffee',
 		'l-apricot',
@@ -39,14 +40,16 @@ export const getBuiltinThemes = () => Promise.all(
 		'l-cherry',
 		'l-sushi',
 		'l-u0',
-		'l-birdsite',
 
 		'd-cherrypick',
 		'd-rosepine',
 		'd-rosepinemoon',
+		'd-mirerado',
 		'd-byeolvit-noctiluca',
 		'd-scone-color',
 		'd-stella-r2',
+		'd-qdon',
+		'd-birdsite',
 		'd-dark',
 		'd-persimmon',
 		'd-astro',
@@ -57,8 +60,6 @@ export const getBuiltinThemes = () => Promise.all(
 		'd-cherry',
 		'd-ice',
 		'd-u0',
-		'd-qdon',
-		'd-birdsite',
 	].map(name => import(`../themes/${name}.json5`).then(({ default: _default }): Theme => _default)),
 );
 
@@ -115,18 +116,11 @@ export function applyTheme(theme: Theme, persist = true) {
 
 function compile(theme: Theme): Record<string, string> {
 	function getColor(val: string): tinycolor.Instance {
-		// ref (prop)
-		if (val[0] === '@') {
+		if (val[0] === '@') { // ref (prop)
 			return getColor(theme.props[val.substring(1)]);
-		}
-
-		// ref (const)
-		else if (val[0] === '$') {
+		} else if (val[0] === '$') { // ref (const)
 			return getColor(theme.props[val]);
-		}
-
-		// func
-		else if (val[0] === ':') {
+		} else if (val[0] === ':') { // func
 			const parts = val.split('<');
 			const func = parts.shift().substring(1);
 			const arg = parseFloat(parts.shift());

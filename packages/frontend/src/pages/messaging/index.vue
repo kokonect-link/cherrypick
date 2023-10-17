@@ -18,11 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
 				</MkPagination>
 			</div>
-			<div v-if="!fetching && messages.length == 0" class="_fullinfo">
-				<img src="https://xn--931a.moe/assets/info.jpg" class="_ghost" alt=""/>
-				<div>{{ i18n.ts.noHistory }}</div>
-			</div>
-			<MkLoading v-if="fetching"/>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>
@@ -45,7 +40,6 @@ const router = useRouter();
 
 let tab = $ref('direct');
 
-let fetching = $ref(true);
 let messages;
 let connection;
 
@@ -144,7 +138,6 @@ onMounted(() => {
 			const _messages = userMessages.concat(groupMessages);
 			_messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 			messages = _messages;
-			fetching = false;
 		});
 	});
 

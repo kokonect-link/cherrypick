@@ -64,7 +64,7 @@ let noEmailServer = !instance.enableEmail;
 let thereIsUnresolvedAbuseReport = $ref(false);
 let currentPage = $computed(() => router.currentRef.value.child);
 let updateAvailable = $ref(false);
-let releasesCherryPick = $ref(null);
+let releasesCherryPick = $ref();
 
 os.api('admin/abuse-user-reports', {
 	state: 'unresolved',
@@ -76,9 +76,11 @@ os.api('admin/abuse-user-reports', {
 fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 	method: 'GET',
 }).then(res => res.json())
-	.then(res => {
-		releasesCherryPick = res;
-		if (version < releasesCherryPick[0].tag_name) updateAvailable = true;
+	.then(async res => {
+		const meta = await os.api('admin/meta');
+		if (meta.enableReceivePrerelease) releasesCherryPick = res;
+		else releasesCherryPick = res.filter(x => x.prerelease === false);
+		if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) updateAvailable = true;
 	});
 
 const NARROW_THRESHOLD = 600;
@@ -211,6 +213,11 @@ const menuDef = $computed(() => [{
 		text: i18n.ts.proxyAccount,
 		to: '/admin/proxy-account',
 		active: currentPage?.route.name === 'proxy-account',
+	}, {
+		icon: 'ti ti-link',
+		text: i18n.ts.externalServices,
+		to: '/admin/external-services',
+		active: currentPage?.route.name === 'external-services',
 	}, {
 		icon: 'ti ti-adjustments',
 		text: i18n.ts.other,

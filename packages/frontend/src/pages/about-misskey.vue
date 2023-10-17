@@ -58,21 +58,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 							{{ i18n.ts._aboutMisskey._cherrypick.community }}
 							<template #suffix>Discord</template>
 						</FormLink>
-						<FormLink to="https://www.patreon.com/noridev" external>
-							<template #icon><i class="ti ti-pig-money"></i></template>
-							{{ i18n.ts._aboutMisskey._cherrypick.donate }}
-							<template #suffix>Patreon</template>
-						</FormLink>
-						<FormLink to="https://www.paypal.me/noridev" external>
-							<template #icon><i class="ti ti-pig-money"></i></template>
-							{{ i18n.ts._aboutMisskey._cherrypick.donate }}
-							<template #suffix>PayPal</template>
-						</FormLink>
-						<FormLink to="https://toss.me/noridev" external>
-							<template #icon><i class="ti ti-pig-money"></i></template>
-							{{ i18n.ts._aboutMisskey._cherrypick.donate }}
-							<template #suffix>Toss</template>
-						</FormLink>
+						<button :class="$style.main" class="_button" @click="donateCherryPick">
+							<span :class="$style.icon"><i class="ti ti-pig-money"></i></span>
+							<span :class="$style.text">{{ i18n.ts._aboutMisskey._cherrypick.donate }}</span>
+							<span :class="$style.suffix">
+								<i class="ti ti-external-link"></i>
+							</span>
+						</button>
 					</div>
 				</FormSection>
 				<FormSection>
@@ -217,6 +209,8 @@ import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js
 import { $i } from '@/account.js';
 
 const patronsWithIconWithCherryPick = [{
+	name: '아르페',
+	icon: 'https://c10.patreonusercontent.com/4/patreon-media/p/user/12167100/e2bc361ba5864c0ab40fc435626f4754/eyJ3IjoyMDB9/1.jpeg?token-time=2145916800&token-hash=fTnx80yG8wG6EdVyv8zDULe8qKnrRlnUV5PEVFS5CfA%3D',
 }];
 
 const patronsWithIconWithMisskey = [{
@@ -282,6 +276,9 @@ const patronsWithIconWithMisskey = [{
 }, {
 	name: 'フランギ・シュウ',
 	icon: 'https://misskey-hub.net/patrons/3016d37e35f3430b90420176c912d304.jpg',
+}, {
+	name: '百日紅',
+	icon: 'https://misskey-hub.net/patrons/302dce2898dd457ba03c3f7dc037900b.jpg',
 }];
 
 const patronsWithCherryPick = [
@@ -386,6 +383,7 @@ const patronsWithMisskey = [
 	'kino3277',
 	'美少女JKぐーちゃん',
 	'てば',
+	'たっくん',
 ];
 
 let isKokonect = false;
@@ -438,6 +436,28 @@ function iLoveCherryPick() {
 function getTreasure() {
 	thereIsTreasure = false;
 	claimAchievement('foundTreasure');
+}
+
+function donateCherryPick(ev: MouseEvent) {
+	os.popupMenu([{
+		text: 'Patreon',
+		icon: 'ti ti-pig-money',
+		action: () => {
+			window.open('https://www.patreon.com/noridev', '_blank');
+		},
+	}, {
+		text: 'Paypal',
+		icon: 'ti ti-pig-money',
+		action: () => {
+			window.open('https://www.paypal.me/noridev', '_blank');
+		},
+	}, {
+		text: 'Toss (Korea)',
+		icon: 'ti ti-pig-money',
+		action: () => {
+			window.open('https://toss.me/noridev', '_blank');
+		},
+	}], ev.currentTarget ?? ev.target);
 }
 
 onMounted(() => {
@@ -624,5 +644,54 @@ definePageMetadata({
 
 .patronName {
 	margin-left: 12px;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  background: var(--buttonBg);
+  border-radius: 6px;
+  font-size: 0.9em;
+
+  &:hover {
+    text-decoration: none;
+    background: var(--buttonHoverBg);
+  }
+
+  &.active {
+    color: var(--accent);
+    background: var(--buttonHoverBg);
+  }
+}
+
+.icon {
+  margin-right: 0.75em;
+  flex-shrink: 0;
+  text-align: center;
+  color: var(--fgTransparentWeak);
+
+  &:empty {
+    display: none;
+
+    & + .text {
+      padding-left: 4px;
+    }
+  }
+}
+
+.text {
+  flex-shrink: 1;
+  white-space: normal;
+  padding-right: 12px;
+  text-align: center;
+}
+
+.suffix {
+  margin-left: auto;
+  opacity: 0.7;
+  white-space: nowrap;
 }
 </style>
