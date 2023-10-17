@@ -132,7 +132,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="reduceAnimation">{{ i18n.ts.reduceUiAnimation }}</MkSwitch>
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}<template #caption>{{ i18n.ts.useBlurEffectDescription }}</template></MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
-				<MkSwitch v-if="useBlurEffect && useBlurEffectForModal" v-model="removeModalBgColorForBlur">{{ i18n.ts.removeModalBgColorForBlur }}</MkSwitch>
+				<MkSwitch v-if="useBlurEffect && useBlurEffectForModal" v-model="removeModalBgColorForBlur">{{ i18n.ts.removeModalBgColorForBlur }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption><i class="ti ti-alert-triangle" style="color: var(--warn);"></i> {{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
 				<MkSelect v-if="!disableShowingAnimatedImages" v-model="showingAnimatedImages" style="margin-left: 44px;">
 					<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
