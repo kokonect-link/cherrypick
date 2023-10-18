@@ -15,6 +15,7 @@ import * as os from '@/os.js';
 import { mainRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { userName } from '@/filters/user.js';
+import { defaultStore } from '@/store.js';
 
 async function follow(user): Promise<void> {
 	const { canceled } = await os.confirm({
@@ -29,7 +30,9 @@ async function follow(user): Promise<void> {
 
 	os.apiWithDialog('following/create', {
 		userId: user.id,
+		withReplies: defaultStore.state.defaultWithReplies,
 	});
+	user.withReplies = defaultStore.state.defaultWithReplies;
 }
 
 const acct = new URL(location.href).searchParams.get('acct');

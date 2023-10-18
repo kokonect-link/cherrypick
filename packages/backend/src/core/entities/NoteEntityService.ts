@@ -335,7 +335,7 @@ export class NoteEntityService implements OnModuleInit {
 			text: text,
 			cw: note.cw,
 			visibility: note.visibility,
-			localOnly: note.localOnly ?? undefined,
+			localOnly: note.localOnly,
 			reactionAcceptance: note.reactionAcceptance,
 			visibleUserIds: note.visibility === 'specified' ? note.visibleUserIds : undefined,
 			disableRightClick: note.disableRightClick || undefined,

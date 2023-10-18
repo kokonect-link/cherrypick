@@ -29,6 +29,7 @@ import { CacheService } from '@/core/CacheService.js';
 import type { Config } from '@/config.js';
 import { AccountMoveService } from '@/core/AccountMoveService.js';
 import { UtilityService } from '@/core/UtilityService.js';
+import { FunoutTimelineService } from '@/core/FunoutTimelineService.js';
 import Logger from '../logger.js';
 
 const logger = new Logger('following/create');
@@ -83,6 +84,7 @@ export class UserFollowingService implements OnModuleInit {
 		private webhookService: WebhookService,
 		private apRendererService: ApRendererService,
 		private accountMoveService: AccountMoveService,
+		private funoutTimelineService: FunoutTimelineService,
 		private perUserFollowingChart: PerUserFollowingChart,
 		private instanceChart: InstanceChart,
 	) {
@@ -93,7 +95,15 @@ export class UserFollowingService implements OnModuleInit {
 	}
 
 	@bindThis
-	public async follow(_follower: { id: MiUser['id'] }, _followee: { id: MiUser['id'] }, requestId?: string, silent = false): Promise<void> {
+	public async follow(
+		_follower: { id: MiUser['id'] },
+		_followee: { id: MiUser['id'] },
+		{ requestId, silent = false, withReplies }: {
+			requestId?: string,
+			silent?: boolean,
+			withReplies?: boolean,
+		} = {},
+	): Promise<void> {
 		const [follower, followee] = await Promise.all([
 			this.usersRepository.findOneByOrFail({ id: _follower.id }),
 			this.usersRepository.findOneByOrFail({ id: _followee.id }),
@@ -171,12 +181,12 @@ export class UserFollowingService implements OnModuleInit {
 			}
 
 			if (!autoAccept) {
-				await this.createFollowRequest(follower, followee, requestId);
+				await this.createFollowRequest(follower, followee, requestId, withReplies);
 				return;
 			}
 		}
 
-		await this.insertFollowingDoc(followee, follower, silent);
+		await this.insertFollowingDoc(followee, follower, silent, withReplies);
 
 		if (this.userEntityService.isRemoteUser(follower) && this.userEntityService.isLocalUser(followee)) {
 			const content = this.apRendererService.addContext(this.apRendererService.renderAccept(this.apRendererService.renderFollow(follower, followee, requestId), followee));
@@ -193,6 +203,7 @@ export class UserFollowingService implements OnModuleInit {
 			id: MiUser['id']; host: MiUser['host']; uri: MiUser['host']; inbox: MiUser['inbox']; sharedInbox: MiUser['sharedInbox']
 		},
 		silent = false,
+		withReplies?: boolean,
 	): Promise<void> {
 		if (follower.id === followee.id) return;
 
@@ -202,6 +213,7 @@ export class UserFollowingService implements OnModuleInit {
 			id: this.idService.gen(),
 			followerId: follower.id,
 			followeeId: followee.id,
+			withReplies: withReplies,
 
 			// 非正規化
 			followerHost: follower.host,
@@ -278,8 +290,8 @@ export class UserFollowingService implements OnModuleInit {
 			this.perUserFollowingChart.update(follower, followee, true);
 		}
 
-		// Publish follow event
 		if (this.userEntityService.isLocalUser(follower) && !silent) {
+			// Publish follow event
 			this.userEntityService.pack(followee.id, follower, {
 				detail: true,
 			}).then(async packed => {
@@ -292,6 +304,8 @@ export class UserFollowingService implements OnModuleInit {
 					});
 				}
 			});
+
+			this.funoutTimelineService.purge(`homeTimeline:${follower.id}`);
 		}
 
 		// Publish followed event
@@ -345,8 +359,8 @@ export class UserFollowingService implements OnModuleInit {
 
 		this.decrementFollowing(following.follower, following.followee);
 
-		// Publish unfollow event
 		if (!silent && this.userEntityService.isLocalUser(follower)) {
+			// Publish unfollow event
 			this.userEntityService.pack(followee.id, follower, {
 				detail: true,
 			}).then(async packed => {
@@ -359,6 +373,8 @@ export class UserFollowingService implements OnModuleInit {
 					});
 				}
 			});
+
+			this.funoutTimelineService.purge(`homeTimeline:${follower.id}`);
 		}
 
 		if (this.userEntityService.isLocalUser(follower) && this.userEntityService.isRemoteUser(followee)) {
@@ -454,6 +470,7 @@ export class UserFollowingService implements OnModuleInit {
 			id: MiUser['id']; host: MiUser['host']; uri: MiUser['host']; inbox: MiUser['inbox']; sharedInbox: MiUser['sharedInbox'];
 		},
 		requestId?: string,
+		withReplies?: boolean,
 	): Promise<void> {
 		if (follower.id === followee.id) return;
 
@@ -471,6 +488,7 @@ export class UserFollowingService implements OnModuleInit {
 			followerId: follower.id,
 			followeeId: followee.id,
 			requestId,
+			withReplies,
 
 			// 非正規化
 			followerHost: follower.host,
@@ -555,7 +573,7 @@ export class UserFollowingService implements OnModuleInit {
 			throw new IdentifiableError('8884c2dd-5795-4ac9-b27e-6a01d38190f9', 'No follow request.');
 		}
 
-		await this.insertFollowingDoc(followee, follower);
+		await this.insertFollowingDoc(followee, follower, false, request.withReplies);
 
 		if (this.userEntityService.isRemoteUser(follower) && this.userEntityService.isLocalUser(followee)) {
 			const content = this.apRendererService.addContext(this.apRendererService.renderAccept(this.apRendererService.renderFollow(follower, followee as MiPartialLocalUser, request.requestId!), followee));
@@ -694,5 +712,13 @@ export class UserFollowingService implements OnModuleInit {
 				user: packedFollowee,
 			});
 		}
+	}
+
+	@bindThis
+	public getFollowees(userId: MiUser['id']) {
+		return this.followingsRepository.createQueryBuilder('following')
+			.select('following.followeeId')
+			.where('following.followerId = :followerId', { followerId: userId })
+			.getMany();
 	}
 }
