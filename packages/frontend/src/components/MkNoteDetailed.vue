@@ -221,6 +221,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div :class="$style.historyMain">
 						<div :class="$style.historyHeader">
 							<MkUserName :user="appearNote.user" :nowrap="true"/>
+							<MkTime :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]"/>
 						</div>
 						<div>
 							<div>
@@ -235,6 +236,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 							/>
 						</div>
 					</div>
+				</div>
+				<div v-if="appearNote.noteEditHistory == null" class="_fullinfo">
+					<img :src="infoImageUrl" class="_ghost"/>
+					<div>{{ i18n.ts.nothing }}</div>
 				</div>
 			</div>
 		</div>
@@ -289,7 +294,7 @@ import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
 import { miLocalStorage } from '@/local-storage.js';
-import { instance } from '@/instance.js';
+import { infoImageUrl, instance } from '@/instance.js';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
 import { deviceKind } from '@/scripts/device-kind.js';
 
@@ -1082,11 +1087,12 @@ onMounted(() => {
 }
 
 .historyHeader {
+	display: flex;
 	margin-bottom: 2px;
 	font-weight: bold;
 	width: 100%;
 	overflow: clip;
-    text-overflow: ellipsis;
+	text-overflow: ellipsis;
 }
 .avatar {
 	flex-shrink: 0 !important;
@@ -1096,6 +1102,12 @@ onMounted(() => {
 	height: 40px !important;
 	border-radius: 8px !important;
 	pointer-events: none !important;
+}
+
+.updatedAt {
+	flex-shrink: 0;
+	margin-left: auto;
+	font-size: 0.9em;
 }
 
 .muted {
