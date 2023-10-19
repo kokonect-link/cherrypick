@@ -294,7 +294,7 @@ export class MessagingService {
 				.where('message.groupId = :groupId', { groupId: groupId })
 				.andWhere('message.userId != :userId', { userId: userId })
 				.andWhere('NOT (:userId = ANY(message.reads))', { userId: userId })
-				.andWhere('message.createdAt > :joinedAt', { joinedAt: this.idService.parse(joining.id) }) // 自分が加入する前の会話については、未読扱いしない
+				.andWhere('message.id > :joinedAt', { joinedAt: this.idService.parse(joining.id) }) // 自分が加入する前の会話については、未読扱いしない
 				.getOne().then(x => x != null);
 
 			if (!unreadExist) {
