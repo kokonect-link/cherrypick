@@ -526,6 +526,7 @@ export type Endpoints = {
 		}
 	}; res: { createdNote: Note }; };
 	'notes/delete': { req: { noteId: Note['id']; }; res: null; };
+	'notes/update': { req: { noteId: Note['id']; text?: null | string; cw?: null | string; }; res: null; };
 	'notes/favorites/create': { req: { noteId: Note['id']; }; res: null; };
 	'notes/favorites/delete': { req: { noteId: Note['id']; }; res: null; };
 	'notes/featured': { req: TODO; res: Note[]; };
