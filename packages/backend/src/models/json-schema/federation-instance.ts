@@ -94,7 +94,7 @@ export const packedFederationInstanceSchema = {
 			optional: false, nullable: true,
 		},
 		isSilenced: {
-			type: "boolean",
+			type: 'boolean',
 			optional: false,
 			nullable: false,
 		},

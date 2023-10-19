@@ -10,10 +10,10 @@ import type { Packed } from '@/misc/json-schema.js';
 import type { MiUser } from '@/models/User.js';
 import type { MiMessagingMessage } from '@/models/MessagingMessage.js';
 import { bindThis } from '@/decorators.js';
+import { IdService } from '@/core/IdService.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
 import { UserGroupEntityService } from './UserGroupEntityService.js';
-import { IdService } from '@/core/IdService.js';
 
 @Injectable()
 export class MessagingMessageEntityService {

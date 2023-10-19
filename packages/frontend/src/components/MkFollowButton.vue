@@ -117,7 +117,7 @@ async function onClick() {
 				});
 				emit('update:user', {
 					...props.user,
-					withReplies: defaultStore.state.defaultWithReplies
+					withReplies: defaultStore.state.defaultWithReplies,
 				});
 				vibrate(ColdDeviceStorage.get('vibrateSystem') ? [30, 40, 100] : '');
 				hasPendingFollowRequestFromYou = true;

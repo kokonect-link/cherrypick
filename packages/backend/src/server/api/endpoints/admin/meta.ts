@@ -110,11 +110,11 @@ export const meta = {
 				optional: false, nullable: true,
 			},
 			silencedHosts: {
-				type: "array",
+				type: 'array',
 				optional: true,
 				nullable: false,
 				items: {
-					type: "string",
+					type: 'string',
 					optional: false,
 					nullable: false,
 				},

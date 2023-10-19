@@ -127,7 +127,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {defaultStore} from "@/store.js";
 
 const props = defineProps<{
 	type: string;
