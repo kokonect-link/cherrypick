@@ -5,7 +5,6 @@ export class DeleteCreatedAt1697737204579 {
     async up(queryRunner) {
 			await queryRunner.query(`DROP INDEX "public"."IDX_e21cd3646e52ef9c94aaf17c2e"`);
 			await queryRunner.query(`DROP INDEX "public"."IDX_20e30aa35180e317e133d75316"`);
-			await queryRunner.query(`DROP INDEX "public"."IDX_20e30aa35180e317e133d75316"`);
 			await queryRunner.query(`DROP INDEX "public"."IDX_fdd74ab625ed0f6a30c47b00e0"`);
 			await queryRunner.query(`ALTER TABLE "messaging_message" DROP COLUMN "createdAt"`);
 			await queryRunner.query(`ALTER TABLE "user_group" DROP COLUMN "createdAt"`);
