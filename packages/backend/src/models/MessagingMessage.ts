@@ -15,12 +15,6 @@ export class MiMessagingMessage {
 	public id: string;
 
 	@Index()
-	@Column('timestamp with time zone', {
-		comment: 'The created date of the MessagingMessage.',
-	})
-	public createdAt: Date;
-
-	@Index()
 	@Column({
 		...id(),
 		comment: 'The sender user ID.',

@@ -110,17 +110,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			const invitation = await this.userGroupInvitationsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				userId: user.id,
 				userGroupId: userGroup.id,
 			} as MiUserGroupInvitation).then(x => this.userGroupInvitationsRepository.findOneByOrFail(x.identifiers[0]));
 
 			// 通知を作成
 			this.notificationService.createNotification(user.id, 'groupInvited', {
-				notifierId: me.id,
 				userGroupInvitationId: invitation.id,
-			});
+			}, me.id);
 		});
 	}
 }

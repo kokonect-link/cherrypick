@@ -62,8 +62,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			// Push the user
 			await this.userGroupJoiningsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				userId: me.id,
 				userGroupId: invitation.userGroupId,
 			} as MiUserGroupJoining);
