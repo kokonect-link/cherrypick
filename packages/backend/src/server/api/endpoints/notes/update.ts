@@ -80,7 +80,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				cw: ps.cw,
 				text: ps.text,
 				updatedAtHistory: [...updatedAtHistory, new Date()],
-				noteEditHistory: [...note.noteEditHistory, note.text!],
+				noteEditHistory: [...note.noteEditHistory, (note.cw ? note.cw + '\n' : '') + note.text!],
 			});
 
 			this.globalEventService.publishNoteStream(note.id, 'updated', {
