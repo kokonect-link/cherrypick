@@ -28,6 +28,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
+### Client
+- Feat: 노트 편집 시 토스트 알림을 표시하고 사운드를 재생
+
 ### Server
 - Revert: Perf: 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
 

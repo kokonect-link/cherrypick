@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+noteEdited: "ノートを編集しました。"
 removeModalBgColorForBlur: "モーダル背景色を削除"
 skipThisVersion: "このリリースをスキップする"
 enableReceivePrerelease: "プレリリース版の通知を受け取る"
@@ -2018,6 +2019,7 @@ _theme:
 _sfx:
   note: "ノート"
   noteMy: "ノート(自分)"
+  noteEdited: "ノートを編集"
   notification: "通知"
   chat: "チャット"
   chatBg: "チャット(バックグラウンド)"

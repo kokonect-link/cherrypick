@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+noteEdited: "Note are now edited."
 removeModalBgColorForBlur: "Remove modal background color"
 skipThisVersion: "Skip this release"
 enableReceivePrerelease: "Get notified of pre-release versions"
@@ -1977,6 +1978,7 @@ _theme:
 _sfx:
   note: "New note"
   noteMy: "Own note"
+  noteEdited: "Note Edited"
   notification: "Notifications"
   chat: "Chat"
   chatBg: "Chat (Background)"

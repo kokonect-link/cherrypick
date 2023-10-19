@@ -19,6 +19,10 @@ export const soundConfigStore = markRaw(new Storage('sound', {
 		where: 'account',
 		default: { type: 'syuilo/n-cea-4va', volume: 1 },
 	},
+	sound_noteEdited: {
+		where: 'account',
+		default: { type: 'syuilo/n-eca', volume: 1 },
+	},
 	sound_notification: {
 		where: 'account',
 		default: { type: 'syuilo/n-ea', volume: 1 },
@@ -125,7 +129,7 @@ export function setVolume(audio: HTMLAudioElement, volume: number): HTMLAudioEle
 	return audio;
 }
 
-export function play(type: 'noteMy' | 'note' | 'chat' | 'chatBg' | 'antenna' | 'channel' | 'notification') {
+export function play(type: 'noteMy' | 'note' | 'noteEdited' | 'chat' | 'chatBg' | 'antenna' | 'channel' | 'notification') {
 	const sound = soundConfigStore.state[`sound_${type}`];
 	if (_DEV_) console.log('play', type, sound);
 	if (sound.type == null) return;

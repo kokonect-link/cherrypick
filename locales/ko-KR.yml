@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+noteEdited: "노트를 편집했어요!"
 removeModalBgColorForBlur: "모달 배경색 제거"
 skipThisVersion: "이 릴리즈 건너뛰기"
 enableReceivePrerelease: "출시 전 버전 알림 받기"
@@ -1954,6 +1955,7 @@ _theme:
 _sfx:
   note: "새 노트"
   noteMy: "내 노트"
+  noteEdited: "노트 편집"
   notification: "알림"
   chat: "대화"
   chatBg: "대화 (백그라운드)"

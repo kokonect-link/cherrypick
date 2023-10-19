@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ zIndex }">
 			<div style="padding: 16px 24px;">
-				<i :class="icon === 'posted' ? 'ti-check' : icon === 'reply' ? 'ti-arrow-back-up' : icon === 'renote' ? 'ti-repeat' : icon === 'quote' ? 'ti-quote' : 'ti-check'" class="ti"></i>
+				<i :class="icon === 'posted' ? 'ti-check' : icon === 'reply' ? 'ti-arrow-back-up' : icon === 'renote' ? 'ti-repeat' : icon === 'quote' ? 'ti-quote' : icon === 'edited' ? 'ti ti-pencil' : 'ti-check'" class="ti"></i>
 				{{ message }}
 			</div>
 		</div>
