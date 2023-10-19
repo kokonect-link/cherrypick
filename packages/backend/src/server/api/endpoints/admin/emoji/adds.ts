@@ -82,10 +82,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				roleIdsThatCanBeUsedThisEmojiAsReaction: ps.roleIdsThatCanBeUsedThisEmojiAsReaction ?? [],
 			});
 
-			this.moderationLogService.insertModerationLog(me, 'addEmoji', {
-				emojiId: emoji.id,
-			});
-
 			return this.emojiEntityService.packDetailed(emoji);
 		});
 	}

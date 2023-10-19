@@ -9,6 +9,7 @@ import type { UserGroupJoiningsRepository, UserGroupsRepository } from '@/models
 import type { Packed } from '@/misc/json-schema.js';
 import type { MiUserGroup } from '@/models/UserGroup.js';
 import { bindThis } from '@/decorators.js';
+import { IdService } from '@/core/IdService.js';
 
 @Injectable()
 export class UserGroupEntityService {
@@ -18,6 +19,8 @@ export class UserGroupEntityService {
 
 		@Inject(DI.userGroupJoiningsRepository)
 		private userGroupJoiningsRepository: UserGroupJoiningsRepository,
+
+		private idService: IdService,
 	) {
 	}
 
@@ -33,7 +36,7 @@ export class UserGroupEntityService {
 
 		return {
 			id: userGroup.id,
-			createdAt: userGroup.createdAt.toISOString(),
+			createdAt: this.idService.parse(userGroup.id).date.toISOString(),
 			name: userGroup.name,
 			ownerId: userGroup.userId,
 			userIds: users.map((x: { userId: any; }) => x.userId),

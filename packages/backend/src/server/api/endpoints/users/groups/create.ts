@@ -56,16 +56,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const userGroup = await this.userGroupsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				userId: me.id,
 				name: ps.name,
 			} as MiUserGroup).then(x => this.userGroupsRepository.findOneByOrFail(x.identifiers[0]));
 
 			// Push the owner
 			await this.userGroupJoiningsRepository.insert({
-				id: this.idService.genId(),
-				createdAt: new Date(),
+				id: this.idService.gen(),
 				userId: me.id,
 				userGroupId: userGroup.id,
 			} as MiUserGroupJoining);

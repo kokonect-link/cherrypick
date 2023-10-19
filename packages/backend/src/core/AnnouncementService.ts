@@ -80,8 +80,8 @@ export class AnnouncementService {
 		const packed = (await this.packMany([announcement]))[0];
 
 		if (announcement.isActive) {
-			if (announcement.userId) {
-				this.globalEventService.publishMainStream(announcement.userId, 'announcementCreated', {
+			if (values.userId) {
+				this.globalEventService.publishMainStream(values.userId, 'announcementCreated', {
 					announcement: packed,
 				});
 
