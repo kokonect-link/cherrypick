@@ -605,6 +605,7 @@ showFixedPostForm: "タイムライン上部に投稿フォームを表示する
 showFixedPostFormInChannel: "タイムライン上部に投稿フォームを表示する(チャンネル)"
 withRepliesByDefaultForNewlyFollowed: "フォローする際、デフォルトで返信をTLに含むようにする"
 newNoteRecived: "新しいノートがあります"
+newNoteRecivedCount: "{n}個の新しいノートがあります"
 sounds: "サウンド"
 sound: "サウンド"
 vibrations: "振動"

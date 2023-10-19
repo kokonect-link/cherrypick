@@ -31,6 +31,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ### Client
 - Feat: 노트 편집 시 토스트 알림을 표시하고 사운드를 재생
 - Enhance: 노트를 편집할 때 편집 중인 노트임을 강조함
+- Fix: '새 노트 알림'을 '노트 수 표시'로 설정했을 때 한국어 이외의 언어에서 내용이 표시되지 않음
 
 ### Server
 - Revert: Perf: 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)

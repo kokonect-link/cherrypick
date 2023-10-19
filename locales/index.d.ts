@@ -608,6 +608,7 @@ export interface Locale {
     "showFixedPostFormInChannel": string;
     "withRepliesByDefaultForNewlyFollowed": string;
     "newNoteRecived": string;
+    "newNoteRecivedCount": string;
     "sounds": string;
     "sound": string;
     "vibrations": string;
