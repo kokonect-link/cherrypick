@@ -38,7 +38,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 타임라인에서 새 노트가 20개 이상이면 '20+'로 표기
 - Enhance: 노트를 편집한 시간이 개별적으로 표시됨
 - Fix: '새 노트 알림'을 '노트 수 표시'로 설정했을 때 한국어 이외의 언어에서 내용이 표시되지 않음
-- Fix: Use opening quote in notifications (misskey-dev/misskey#12082)
+- Fix: 알림에 여는 인용문 사용 (misskey-dev/misskey#12082)
 
 ### Server
 - Enhance: '내용 숨기기'로 설정된 노트의 주석도 노트 편집 기록에 표시됨
