@@ -241,14 +241,17 @@ const draftKey = $computed((): string => {
 });
 
 const placeholder = $computed((): string => {
+	let postTo = '';
+	postTo = '[' + i18n.ts._visibility[visibility] + '] ';
+
 	if (!$i) {
 		return i18n.ts._postForm.signinRequiredPlaceholder;
 	} else if (props.renote) {
-		return i18n.ts._postForm.quotePlaceholder;
+		return postTo + i18n.ts._postForm.quotePlaceholder;
 	} else if (props.reply) {
-		return i18n.ts._postForm.replyPlaceholder;
+		return postTo + i18n.ts._postForm.replyPlaceholder;
 	} else if (props.channel) {
-		return i18n.ts._postForm.channelPlaceholder;
+		return postTo + i18n.ts._postForm.channelPlaceholder;
 	} else {
 		const xs = [
 			i18n.ts._postForm._placeholders.a,
@@ -258,7 +261,7 @@ const placeholder = $computed((): string => {
 			i18n.ts._postForm._placeholders.e,
 			i18n.ts._postForm._placeholders.f,
 		];
-		return xs[Math.floor(Math.random() * xs.length)];
+		return postTo + xs[Math.floor(Math.random() * xs.length)];
 	}
 });
 

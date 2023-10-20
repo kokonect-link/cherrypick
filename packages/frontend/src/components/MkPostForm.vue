@@ -102,7 +102,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, computed, onMounted, defineAsyncComponent, WritableComputedRef } from 'vue';
+import { inject, watch, nextTick, onMounted, defineAsyncComponent } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -202,17 +202,6 @@ let recentHashtags = $ref(JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]')
 let imeText = $ref('');
 let showingOptions = $ref(false);
 let disableRightClick = $ref(false);
-let postChannel: WritableComputedRef<misskey.entities.Channel> = computed(defaultStore.makeGetterSetter('postChannel'));
-
-watch(postChannel, () => {
-  if (postChannel.value) {
-    if (!postChannel.value.federation) {
-      localOnly = true;
-    }
-  } else {
-    localOnly = false;
-  }
-});
 
 const draftKey = $computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
@@ -230,11 +219,7 @@ const draftKey = $computed((): string => {
 
 const placeholder = $computed((): string => {
 	let postTo = '';
-	if (postChannel.value) {
-		postTo = '[' + postChannel.value.name + '] ';
-	} else {
-		postTo = '[' + i18n.ts._visibility[visibility] + '] ';
-	}
+	postTo = '[' + i18n.ts._visibility[visibility] + '] ';
 
 	if (props.renote) {
 		return postTo + i18n.ts._postForm.quotePlaceholder;
