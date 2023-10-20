@@ -5,14 +5,14 @@
 
 import ms from 'ms';
 import { Inject, Injectable } from '@nestjs/common';
-import type { UsersRepository, NotesRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import { NoteDeleteService } from '@/core/NoteDeleteService.js';
+import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
+import { NoteUpdateService } from '@/core/NoteUpdateService.js';
 import { DI } from '@/di-symbols.js';
 import { GetterService } from '@/server/api/GetterService.js';
-import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { ApiError } from '../../error.js';
+import type { DriveFilesRepository, MiDriveFile } from "@/models/_.js";
 
 export const meta = {
 	tags: ['notes'],
@@ -34,6 +34,16 @@ export const meta = {
 			code: 'NO_SUCH_NOTE',
 			id: 'a6584e14-6e01-4ad3-b566-851e7bf0d474',
 		},
+		noSuchFile: {
+			message: 'Some files are not found.',
+			code: 'NO_SUCH_FILE',
+			id: 'b6992544-63e7-67f0-fa7f-32444b1b5306',
+		},
+		cannotCreateAlreadyExpiredPoll: {
+			message: 'Poll is already expired.',
+			code: 'CANNOT_CREATE_ALREADY_EXPIRED_POLL',
+			id: '04da457d-b083-4055-9082-955525eda5a5',
+		},
 	},
 } as const;
 
@@ -47,7 +57,39 @@ export const paramDef = {
 			maxLength: MAX_NOTE_TEXT_LENGTH,
 			nullable: false,
 		},
+		fileIds: {
+			type: 'array',
+			uniqueItems: true,
+			minItems: 1,
+			maxItems: 16,
+			items: { type: 'string', format: 'misskey:id' },
+		},
+		mediaIds: {
+			type: 'array',
+			uniqueItems: true,
+			minItems: 1,
+			maxItems: 16,
+			items: { type: 'string', format: 'misskey:id' },
+		},
+		poll: {
+			type: 'object',
+			nullable: true,
+			properties: {
+				choices: {
+					type: 'array',
+					uniqueItems: true,
+					minItems: 2,
+					maxItems: 10,
+					items: { type: 'string', minLength: 1, maxLength: 50 },
+				},
+				multiple: { type: 'boolean' },
+				expiresAt: { type: 'integer', nullable: true },
+				expiredAfter: { type: 'integer', nullable: true, minimum: 1 },
+			},
+			required: ['choices'],
+		},
 		cw: { type: 'string', nullable: true, maxLength: 100 },
+		disableRightClick: { type: 'boolean', default: false },
 	},
 	required: ['noteId', 'text', 'cw'],
 } as const;
@@ -55,14 +97,12 @@ export const paramDef = {
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-		@Inject(DI.usersRepository)
-		private usersRepository: UsersRepository,
-
-		@Inject(DI.notesRepository)
-		private notesRepository: NotesRepository,
+		@Inject(DI.driveFilesRepository)
+		private driveFilesRepository: DriveFilesRepository,
 
 		private getterService: GetterService,
-		private globalEventService: GlobalEventService,
+		private noteEntityService: NoteEntityService,
+		private noteUpdateService: NoteUpdateService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const note = await this.getterService.getNote(ps.noteId).catch(err => {
@@ -74,19 +114,50 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new ApiError(meta.errors.noSuchNote);
 			}
 
-			const updatedAtHistory = note.updatedAtHistory ? note.updatedAtHistory : [];
-			await this.notesRepository.update({ id: note.id }, {
-				updatedAt: new Date(),
-				cw: ps.cw,
-				text: ps.text,
-				updatedAtHistory: [...updatedAtHistory, new Date()],
-				noteEditHistory: [...note.noteEditHistory, (note.cw ? note.cw + '\n' : '') + note.text!],
-			});
 
-			this.globalEventService.publishNoteStream(note.id, 'updated', {
-				cw: ps.cw,
+			let files: MiDriveFile[] = [];
+			const fileIds = ps.fileIds ?? ps.mediaIds ?? null;
+			if (fileIds != null) {
+				files = await this.driveFilesRepository.createQueryBuilder('file')
+					.where('file.userId = :userId AND file.id IN (:...fileIds)', {
+						userId: me.id,
+						fileIds,
+					})
+					.orderBy('array_position(ARRAY[:...fileIds], "id"::text)')
+					.setParameters({ fileIds })
+					.getMany();
+
+				if (files.length !== fileIds.length) {
+					throw new ApiError(meta.errors.noSuchFile);
+				}
+			}
+
+			if (ps.poll) {
+				if (typeof ps.poll.expiresAt === 'number') {
+					if (ps.poll.expiresAt < Date.now()) {
+						throw new ApiError(meta.errors.cannotCreateAlreadyExpiredPoll);
+					}
+				} else if (typeof ps.poll.expiredAfter === 'number') {
+					ps.poll.expiresAt = Date.now() + ps.poll.expiredAfter;
+				}
+			}
+
+			const data = {
 				text: ps.text,
-			});
+				files: files,
+				cw: ps.cw,
+				poll: ps.poll ? {
+					choices: ps.poll.choices,
+					multiple: ps.poll.multiple ?? false,
+					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
+				} : undefined,
+			};
+
+			const updatedNote = await this.noteUpdateService.update(me, data, note, false);
+
+			return {
+				updatedNote: await this.noteEntityService.pack(updatedNote!, me),
+			};
 		});
 	}
 }
