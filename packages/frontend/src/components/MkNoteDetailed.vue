@@ -125,10 +125,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<footer>
 			<div :class="$style.noteFooterInfo">
 				<div v-if="appearNote.updatedAt">
-					{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail"/>
+					{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail" colored/>
 				</div>
 				<MkA :to="notePage(appearNote)">
-					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail"/>
+					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail" colored/>
 				</MkA>
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
@@ -221,8 +221,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div :class="$style.historyMain">
 						<div :class="$style.historyHeader">
 							<MkUserName :user="appearNote.user" :nowrap="true"/>
-							<MkTime v-if="defaultStore.state.enableAbsoluteTime" :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="absolute"/>
-							<MkTime v-else :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="relative"/>
+							<MkTime v-if="defaultStore.state.enableAbsoluteTime" :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="absolute" colored/>
+							<MkTime v-else :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="relative" colored/>
 						</div>
 						<div>
 							<div>
