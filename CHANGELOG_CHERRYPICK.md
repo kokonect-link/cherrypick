@@ -38,6 +38,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ### Server
 - Enhance: '내용 숨기기'로 설정된 노트의 주석도 노트 편집 기록에 표시됨
 - Revert: Perf: 부팅 시 MeiliSearch 설정을 업데이트하지 마십시오 (MisskeyIO/misskey#158)
+- Fix: 이모지를 여러 개 추가할 때도 이름의 중복을 확인하도록
 
 ---
 
