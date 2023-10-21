@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+previewNoteProfile: "プロフィールを表示"
 noteEdited: "ノートを編集しました。"
 removeModalBgColorForBlur: "モーダル背景色を削除"
 skipThisVersion: "このリリースをスキップする"

@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+previewNoteProfile: "Show profile"
 noteEdited: "Note are now edited."
 removeModalBgColorForBlur: "Remove modal background color"
 skipThisVersion: "Skip this release"

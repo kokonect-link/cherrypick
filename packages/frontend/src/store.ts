@@ -154,6 +154,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showProfilePreview: {
+		where: 'device',
+		default: true,
+	},
 	statusbars: {
 		where: 'deviceAccount',
 		default: [] as {
