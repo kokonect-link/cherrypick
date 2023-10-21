@@ -36,6 +36,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌리도록
 
 ### Server
+- Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 마이그레이션이 매우 길게 진행될 수 있음
 
 ---
