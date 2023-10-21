@@ -29,6 +29,7 @@ type Ad = TODO_2;
 // @public (undocumented)
 type AdminInstanceMetadata = DetailedInstanceMetadata & {
     blockedHosts: string[];
+    silencedHosts: string[];
     app192IconUrl: string | null;
     app512IconUrl: string | null;
     manifestJsonOverride: string;
@@ -61,6 +62,7 @@ type Antenna = {
     userGroupId: ID | null;
     users: string[];
     caseSensitive: boolean;
+    localOnly: boolean;
     notify: boolean;
     withReplies: boolean;
     withFile: boolean;
@@ -1211,6 +1213,7 @@ export type Endpoints = {
     'following/create': {
         req: {
             userId: User['id'];
+            withReplies?: boolean;
         };
         res: User;
     };
@@ -1784,6 +1787,14 @@ export type Endpoints = {
         };
         res: null;
     };
+    'notes/update': {
+        req: {
+            noteId: Note['id'];
+            text?: null | string;
+            cw?: null | string;
+        };
+        res: null;
+    };
     'notes/favorites/create': {
         req: {
             noteId: Note['id'];
@@ -2282,6 +2293,22 @@ export type Endpoints = {
             };
         };
     };
+    'fetch-rss': {
+        req: {
+            url: string;
+        };
+        res: TODO;
+    };
+    'fetch-external-resources': {
+        req: {
+            url: string;
+            hash: string;
+        };
+        res: {
+            type: string;
+            data: string;
+        };
+    };
 };
 
 declare namespace entities {
@@ -2414,6 +2441,7 @@ type Instance = {
     lastCommunicatedAt: DateString;
     isNotResponding: boolean;
     isSuspended: boolean;
+    isSilenced: boolean;
     isBlocked: boolean;
     softwareName: string | null;
     softwareVersion: string | null;
@@ -2701,6 +2729,7 @@ type Note = {
     id: ID;
     createdAt: DateString;
     updatedAt?: DateString | null;
+    updatedAtHistory: DateString[] | null;
     noteEditHistory: string[];
     text: string | null;
     cw: string | null;
@@ -3023,7 +3052,7 @@ type UserLite = {
     id: ID;
     username: string;
     host: string | null;
-    name: string;
+    name: string | null;
     onlineStatus: 'online' | 'active' | 'offline' | 'unknown';
     avatarUrl: string;
     avatarBlurhash: string;
@@ -3039,6 +3068,8 @@ type UserLite = {
         faviconUrl: Instance['faviconUrl'];
         themeColor: Instance['themeColor'];
     };
+    isCat?: boolean;
+    isBot?: boolean;
 };
 
 // @public (undocumented)
@@ -3048,9 +3079,9 @@ type UserSorting = '+follower' | '-follower' | '+createdAt' | '-createdAt' | '+u
 //
 // src/api.types.ts:16:32 - (ae-forgotten-export) The symbol "TODO" needs to be exported by the entry point index.d.ts
 // src/api.types.ts:18:25 - (ae-forgotten-export) The symbol "NoParams" needs to be exported by the entry point index.d.ts
-// src/api.types.ts:658:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
-// src/entities.ts:108:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
-// src/entities.ts:610:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
+// src/api.types.ts:662:18 - (ae-forgotten-export) The symbol "ShowUserReq" needs to be exported by the entry point index.d.ts
+// src/entities.ts:110:2 - (ae-forgotten-export) The symbol "notificationTypes_2" needs to be exported by the entry point index.d.ts
+// src/entities.ts:616:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:33:4 - (ae-forgotten-export) The symbol "FIXME" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)

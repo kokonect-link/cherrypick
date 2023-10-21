@@ -149,6 +149,13 @@ export type Config = {
 	relashionshipJobPerSec: number | undefined;
 	deliverJobMaxAttempts: number | undefined;
 	inboxJobMaxAttempts: number | undefined;
+
+	cloudLogging?: {
+		projectId: string;
+		saKeyPath: string;
+		logName?: string;
+	}
+
 	apFileBaseUrl: string | undefined;
 	proxyRemoteFiles: boolean | undefined;
 	signToActivityPubGet: boolean | undefined;

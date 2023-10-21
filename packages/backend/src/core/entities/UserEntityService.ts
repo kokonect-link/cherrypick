@@ -21,6 +21,7 @@ import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
+import { IdService } from '@/core/IdService.js';
 import type { OnModuleInit } from '@nestjs/common';
 import type { AnnouncementService } from '../AnnouncementService.js';
 import type { CustomEmojiService } from '../CustomEmojiService.js';
@@ -61,6 +62,7 @@ export class UserEntityService implements OnModuleInit {
 	private announcementService: AnnouncementService;
 	private roleService: RoleService;
 	private federatedInstanceService: FederatedInstanceService;
+	private idService: IdService;
 
 	constructor(
 		private moduleRef: ModuleRef,
@@ -118,13 +120,6 @@ export class UserEntityService implements OnModuleInit {
 
 		@Inject(DI.userMemosRepository)
 		private userMemosRepository: UserMemoRepository,
-
-		//private noteEntityService: NoteEntityService,
-		//private driveFileEntityService: DriveFileEntityService,
-		//private pageEntityService: PageEntityService,
-		//private customEmojiService: CustomEmojiService,
-		//private antennaService: AntennaService,
-		//private roleService: RoleService,
 	) {
 	}
 
@@ -137,6 +132,7 @@ export class UserEntityService implements OnModuleInit {
 		this.announcementService = this.moduleRef.get('AnnouncementService');
 		this.roleService = this.moduleRef.get('RoleService');
 		this.federatedInstanceService = this.moduleRef.get('FederatedInstanceService');
+		this.idService = this.moduleRef.get('IdService');
 	}
 
 	//#region Validators
@@ -237,7 +233,7 @@ export class UserEntityService implements OnModuleInit {
 			.where('message.groupId = :groupId', { groupId: j.userGroupId })
 			.andWhere('message.userId != :userId', { userId: userId })
 			.andWhere('NOT (:userId = ANY(message.reads))', { userId: userId })
-			.andWhere('message.createdAt > :joinedAt', { joinedAt: j.createdAt }) // 自分が加入する前の会話については、未読扱いしない
+			.andWhere('message.id > :joinedAt', { joinedAt: this.idService.parse(j.id) }) // 自分が加入する前の会話については、未読扱いしない
 			.getOne().then(x => x != null)));
 
 		const [withUser, withGroups] = await Promise.all([
@@ -380,7 +376,11 @@ export class UserEntityService implements OnModuleInit {
 
 		const isModerator = isMe && opts.detail ? this.roleService.isModerator(user) : null;
 		const isAdmin = isMe && opts.detail ? this.roleService.isAdministrator(user) : null;
-		const unreadAnnouncements = isMe && opts.detail ? await this.announcementService.getUnreadAnnouncements(user) : null;
+		const unreadAnnouncements = isMe && opts.detail ?
+			(await this.announcementService.getUnreadAnnouncements(user)).map((announcement) => ({
+				createdAt: this.idService.parse(announcement.id).date.toISOString(),
+				...announcement,
+			})) : null;
 
 		const notificationsInfo = isMe && opts.detail ? await this.getNotificationsInfo(user.id) : null;
 
@@ -393,8 +393,8 @@ export class UserEntityService implements OnModuleInit {
 			host: user.host,
 			avatarUrl: user.avatarUrl ?? this.getIdenticonUrl(user),
 			avatarBlurhash: user.avatarBlurhash,
-			isBot: user.isBot ?? falsy,
-			isCat: user.isCat ?? falsy,
+			isBot: user.isBot,
+			isCat: user.isCat,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
@@ -420,14 +420,14 @@ export class UserEntityService implements OnModuleInit {
 					? Promise.all(user.alsoKnownAs.map(uri => this.apPersonService.fetchPerson(uri).then(user => user?.id).catch(() => null)))
 						.then(xs => xs.length === 0 ? null : xs.filter(x => x != null) as string[])
 					: null,
-				createdAt: user.createdAt.toISOString(),
+				createdAt: this.idService.parse(user.id).date.toISOString(),
 				updatedAt: user.updatedAt ? user.updatedAt.toISOString() : null,
 				lastFetchedAt: user.lastFetchedAt ? user.lastFetchedAt.toISOString() : null,
 				bannerUrl: user.bannerUrl,
 				bannerBlurhash: user.bannerBlurhash,
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
-				isSuspended: user.isSuspended ?? falsy,
+				isSuspended: user.isSuspended,
 				description: profile!.description,
 				location: profile!.location,
 				birthday: profile!.birthday,

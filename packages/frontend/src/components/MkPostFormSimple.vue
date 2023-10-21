@@ -53,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="posted"></template>
 						<template v-else-if="posting"><MkEllipsis/></template>
 						<template v-else>{{ submitText }}</template>
-						<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+						<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 					</div>
 				</button>
 			</div>
@@ -81,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template v-if="posted"></template>
 				<template v-else-if="posting"><MkEllipsis/></template>
 				<template v-else>{{ submitText }}</template>
-				<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+				<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : reply ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 			</div>
 		</button>
 	</div>
@@ -151,6 +151,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
+import * as sound from '@/scripts/sound.js';
 
 const modal = inject('modal');
 
@@ -240,14 +241,17 @@ const draftKey = $computed((): string => {
 });
 
 const placeholder = $computed((): string => {
+	let postTo = '';
+	postTo = '[' + i18n.ts._visibility[visibility] + '] ';
+
 	if (!$i) {
 		return i18n.ts._postForm.signinRequiredPlaceholder;
 	} else if (props.renote) {
-		return i18n.ts._postForm.quotePlaceholder;
+		return postTo + i18n.ts._postForm.quotePlaceholder;
 	} else if (props.reply) {
-		return i18n.ts._postForm.replyPlaceholder;
+		return postTo + i18n.ts._postForm.replyPlaceholder;
 	} else if (props.channel) {
-		return i18n.ts._postForm.channelPlaceholder;
+		return postTo + i18n.ts._postForm.channelPlaceholder;
 	} else {
 		const xs = [
 			i18n.ts._postForm._placeholders.a,
@@ -257,7 +261,7 @@ const placeholder = $computed((): string => {
 			i18n.ts._postForm._placeholders.e,
 			i18n.ts._postForm._placeholders.f,
 		];
-		return xs[Math.floor(Math.random() * xs.length)];
+		return postTo + xs[Math.floor(Math.random() * xs.length)];
 	}
 });
 
@@ -268,9 +272,11 @@ const submitText = $computed((): string => {
 			? i18n.ts.quote
 			: props.reply
 				? i18n.ts.reply
-				: defaultStore.state.renameTheButtonInPostFormToNya
-					? i18n.ts.nya
-					: i18n.ts.note;
+				: props.updateMode
+					? i18n.ts.edit
+					: defaultStore.state.renameTheButtonInPostFormToNya
+						? i18n.ts.nya
+						: i18n.ts.note;
 });
 
 const textLength = $computed((): number => {
@@ -811,6 +817,7 @@ async function post(ev?: MouseEvent) {
 		nextTick(() => {
 			if (props.reply) os.noteToast(i18n.ts.replied, 'reply');
 			else if (props.renote) os.noteToast(i18n.ts.quoted, 'quote');
+			else if (props.updateMode) os.noteToast(i18n.ts.noteEdited, 'edited');
 			else os.noteToast(i18n.ts.posted, 'posted');
 
 			deleteDraft();
@@ -872,6 +879,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
+	if (props.updateMode) sound.play('noteEdited');
 	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [10, 20, 10, 20, 10, 20, 60] : '');
 }
 

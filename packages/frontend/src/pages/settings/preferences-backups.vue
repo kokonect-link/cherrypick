@@ -136,6 +136,7 @@ const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'sound_masterVolume',
 	'sound_note',
 	'sound_noteMy',
+	'sound_noteEdited',
 	'sound_notification',
 	'sound_chat',
 	'sound_chatBg',

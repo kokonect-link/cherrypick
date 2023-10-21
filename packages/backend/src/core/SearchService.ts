@@ -79,7 +79,7 @@ export class SearchService {
 	) {
 		if (meilisearch) {
 			this.meilisearchNoteIndex = meilisearch.index(`${config.meilisearch!.index}---notes`);
-			/*this.meilisearchNoteIndex.updateSettings({
+			this.meilisearchNoteIndex.updateSettings({
 				searchableAttributes: [
 					'text',
 					'cw',
@@ -100,7 +100,7 @@ export class SearchService {
 				pagination: {
 					maxTotalHits: 10000,
 				},
-			});*/
+			});
 		}
 
 		if (config.meilisearch?.scope) {
@@ -131,7 +131,7 @@ export class SearchService {
 
 			await this.meilisearchNoteIndex?.addDocuments([{
 				id: note.id,
-				createdAt: note.createdAt.getTime(),
+				createdAt: this.idService.parse(note.id).date.getTime(),
 				userId: note.userId,
 				userHost: note.userHost,
 				channelId: note.channelId,

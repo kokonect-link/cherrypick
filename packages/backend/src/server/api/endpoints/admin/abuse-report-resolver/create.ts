@@ -124,8 +124,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				ps.expiresAt === '1year' ? function () { expirationDate!.setUTCFullYear(expirationDate!.getUTCFullYear() + 1); } : function () { expirationDate = null; })();
 
 			return await this.abuseReportResolverRepository.insert({
-				id: this.idService.genId(),
-				createdAt: now,
+				id: this.idService.gen(),
 				updatedAt: now,
 				name: ps.name,
 				targetUserPattern: ps.targetUserPattern,

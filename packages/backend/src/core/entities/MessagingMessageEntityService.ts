@@ -10,6 +10,7 @@ import type { Packed } from '@/misc/json-schema.js';
 import type { MiUser } from '@/models/User.js';
 import type { MiMessagingMessage } from '@/models/MessagingMessage.js';
 import { bindThis } from '@/decorators.js';
+import { IdService } from '@/core/IdService.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
 import { UserGroupEntityService } from './UserGroupEntityService.js';
@@ -20,6 +21,7 @@ export class MessagingMessageEntityService {
 		@Inject(DI.messagingMessagesRepository)
 		private messagingMessagesRepository: MessagingMessagesRepository,
 
+		private idService: IdService,
 		private userEntityService: UserEntityService,
 		private userGroupEntityService: UserGroupEntityService,
 		private driveFileEntityService: DriveFileEntityService,
@@ -44,7 +46,7 @@ export class MessagingMessageEntityService {
 
 		return {
 			id: message.id,
-			createdAt: message.createdAt.toISOString(),
+			createdAt: this.idService.parse(message.id).date.toISOString(),
 			text: message.text,
 			userId: message.userId,
 			user: await this.userEntityService.pack(message.user ?? message.userId, me),

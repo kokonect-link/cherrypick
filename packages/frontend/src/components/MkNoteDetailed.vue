@@ -125,10 +125,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<footer>
 			<div :class="$style.noteFooterInfo">
 				<div v-if="appearNote.updatedAt">
-					{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail"/>
+					{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail" colored/>
 				</div>
 				<MkA :to="notePage(appearNote)">
-					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail"/>
+					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail" colored/>
 				</MkA>
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
@@ -221,6 +221,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div :class="$style.historyMain">
 						<div :class="$style.historyHeader">
 							<MkUserName :user="appearNote.user" :nowrap="true"/>
+							<MkTime v-if="defaultStore.state.enableAbsoluteTime" :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="absolute" colored/>
+							<MkTime v-else :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="relative" colored/>
 						</div>
 						<div>
 							<div>
@@ -235,6 +237,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 							/>
 						</div>
 					</div>
+				</div>
+				<div v-if="appearNote.noteEditHistory == null" class="_fullinfo">
+					<img :src="infoImageUrl" class="_ghost"/>
+					<div>{{ i18n.ts.nothing }}</div>
 				</div>
 			</div>
 		</div>
@@ -289,7 +295,7 @@ import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
 import { miLocalStorage } from '@/local-storage.js';
-import { instance } from '@/instance.js';
+import { infoImageUrl, instance } from '@/instance.js';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
 import { deviceKind } from '@/scripts/device-kind.js';
 
@@ -374,6 +380,7 @@ const reactionsPagination = $computed(() => ({
 useNoteCapture({
 	rootEl: el,
 	note: $$(appearNote),
+	pureNote: $$(note),
 	isDeletedRef: isDeleted,
 });
 
@@ -1082,11 +1089,12 @@ onMounted(() => {
 }
 
 .historyHeader {
+	display: flex;
 	margin-bottom: 2px;
 	font-weight: bold;
 	width: 100%;
 	overflow: clip;
-    text-overflow: ellipsis;
+	text-overflow: ellipsis;
 }
 .avatar {
 	flex-shrink: 0 !important;
@@ -1096,6 +1104,12 @@ onMounted(() => {
 	height: 40px !important;
 	border-radius: 8px !important;
 	pointer-events: none !important;
+}
+
+.updatedAt {
+	flex-shrink: 0;
+	margin-left: auto;
+	font-size: 0.9em;
 }
 
 .muted {

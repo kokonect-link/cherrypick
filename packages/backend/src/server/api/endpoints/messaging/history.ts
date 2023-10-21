@@ -73,7 +73,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					: history.map(m => (m.userId === me.id) ? m.recipientId! : m.userId!);
 
 				const query = this.messagingMessagesRepository.createQueryBuilder('message')
-					.orderBy('message.createdAt', 'DESC');
+					.orderBy('message.id', 'DESC');
 
 				if (ps.group) {
 					query.where('message.groupId IN (:...groups)', { groups: groups });

@@ -380,6 +380,7 @@ import * as ep___users_achievements from './endpoints/users/achievements.js';
 import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
 import * as ep___users_translate from './endpoints/users/translate.js';
 import * as ep___fetchRss from './endpoints/fetch-rss.js';
+import * as ep___fetchExternalResources from './endpoints/fetch-external-resources.js';
 import * as ep___retention from './endpoints/retention.js';
 
 const eps = [
@@ -757,6 +758,7 @@ const eps = [
 	['users/update-memo', ep___users_updateMemo],
 	['users/translate', ep___users_translate],
 	['fetch-rss', ep___fetchRss],
+	['fetch-external-resources', ep___fetchExternalResources],
 	['retention', ep___retention],
 ];
 

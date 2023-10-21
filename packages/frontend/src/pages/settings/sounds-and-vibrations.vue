@@ -54,11 +54,12 @@ import { unisonReload } from '@/scripts/unison-reload.js';
 
 const masterVolume = computed(soundConfigStore.makeGetterSetter('sound_masterVolume'));
 
-const soundsKeys = ['note', 'noteMy', 'notification', 'chat', 'chatBg', 'antenna', 'channel'] as const;
+const soundsKeys = ['note', 'noteMy', 'noteEdited', 'notification', 'chat', 'chatBg', 'antenna', 'channel'] as const;
 
 const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
 	note: soundConfigStore.reactiveState.sound_note,
 	noteMy: soundConfigStore.reactiveState.sound_noteMy,
+	noteEdited: soundConfigStore.reactiveState.sound_noteEdited,
 	notification: soundConfigStore.reactiveState.sound_notification,
 	chat: soundConfigStore.reactiveState.sound_chat,
 	chatBg: soundConfigStore.reactiveState.sound_chatBg,

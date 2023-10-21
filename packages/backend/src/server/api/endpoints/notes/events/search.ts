@@ -144,7 +144,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.sinceDate && ps.untilDate && ps.sinceDate > ps.untilDate) throw new ApiError(meta.errors.invalidParam);
 
-			if (ps.sinceDate || ps.sortBy !== 'createdAt') {
+			if (ps.sinceDate ?? ps.sortBy !== 'createdAt') {
 				const sinceDate = ps.sinceDate ? new Date(ps.sinceDate) : new Date();
 				query.andWhere('event.start > :sinceDate', { sinceDate: sinceDate })
 					.andWhere('(event.end IS NULL OR event.end > :sinceDate)', { sinceDate: sinceDate });
@@ -155,7 +155,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			}
 
 			if (ps.sortBy === 'createdAt') {
-				query.orderBy('note.createdAt', 'DESC');
+				query.orderBy('note.id', 'DESC');
 			} else {
 				query.orderBy('event.start', 'ASC');
 			}
