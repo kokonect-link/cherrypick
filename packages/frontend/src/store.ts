@@ -392,7 +392,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	tlWithReplies: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	defaultWithReplies: {
 		where: 'account',
