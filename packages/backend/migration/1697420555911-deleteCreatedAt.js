@@ -21,7 +21,6 @@ export class DeleteCreatedAt1697420555911 {
         await queryRunner.query(`DROP INDEX "public"."IDX_582f8fab771a9040a12961f3e7"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_8f1a239bd077c8864a20c62c2c"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_f86d57fbca33c7a4e6897490cc"`);
-        await queryRunner.query(`DROP INDEX "public"."IDX_d1259a2c2b7bb413ff449e8711"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_fbb4297c927a9b85e9cefa2eb1"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_0fb627e1c2f753262a74f0562d"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_149d2e44785707548c82999b01"`);
@@ -125,7 +124,6 @@ export class DeleteCreatedAt1697420555911 {
         await queryRunner.query(`CREATE INDEX "IDX_149d2e44785707548c82999b01" ON "flash" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX "IDX_0fb627e1c2f753262a74f0562d" ON "poll_vote" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX "IDX_fbb4297c927a9b85e9cefa2eb1" ON "page" ("createdAt") `);
-        await queryRunner.query(`CREATE INDEX "IDX_d1259a2c2b7bb413ff449e8711" ON "renote_muting" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX "IDX_f86d57fbca33c7a4e6897490cc" ON "muting" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX "IDX_8f1a239bd077c8864a20c62c2c" ON "gallery_post" ("createdAt") `);
         await queryRunner.query(`CREATE INDEX "IDX_582f8fab771a9040a12961f3e7" ON "following" ("createdAt") `);
