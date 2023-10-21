@@ -130,6 +130,11 @@ const menuDef = $computed(() => [{
 		to: '/admin/emojis',
 		active: currentPage?.route.name === 'emojis',
 	}, {
+		icon: 'ti ti-sparkles',
+		text: i18n.ts.avatarDecorations,
+		to: '/admin/avatar-decorations',
+		active: currentPage?.route.name === 'avatarDecorations',
+	}, {
 		icon: 'ti ti-world',
 		text: i18n.ts.federation,
 		to: '/admin/federation',

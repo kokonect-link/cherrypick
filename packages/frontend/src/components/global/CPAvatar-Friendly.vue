@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkImgWithBlurhash
 		:class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]"
 		:src="url"
-		:hash="user?.avatarBlurhash"
+		:hash="user.avatarBlurhash"
 		:cover="true"
 		:onlyAvgColor="true"
 		:noDrag="true"
@@ -17,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
+	<img v-if="decoration || user.avatarDecorations.length > 0" :class="[$style.decoration]" :src="decoration ?? user.avatarDecorations[0].url" alt="">
 </component>
 </template>
 
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
+	decoration?: string;
 }>(), {
 	target: null,
 	link: false,
@@ -123,5 +125,14 @@ onUnmounted(() => {
 	&.noDrag {
 		-webkit-user-drag: none;
 	}
+}
+
+.decoration {
+  position: absolute;
+  z-index: 1;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  pointer-events: none;
 }
 </style>

@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkImgWithBlurhash
 		:class="$style.inner"
 		:src="url"
-		:hash="user?.avatarBlurhash"
+		:hash="user.avatarBlurhash"
 		:cover="true"
 		:onlyAvgColor="true"
 		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
+	<img v-if="decoration || user.avatarDecorations.length > 0" :class="[$style.decoration]" :src="decoration ?? user.avatarDecorations[0].url" alt="">
 </component>
 </template>
 
@@ -57,6 +58,7 @@ const props = withDefaults(defineProps<{
 	link?: boolean;
 	preview?: boolean;
 	indicator?: boolean;
+	decoration?: string;
 }>(), {
 	target: null,
 	link: false,
@@ -169,7 +171,7 @@ onUnmounted(() => {
 
 .indicator {
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	bottom: 0;
 	left: 0;
 	width: 20%;
@@ -312,5 +314,14 @@ onUnmounted(() => {
 			}
 		}
 	}
+}
+
+.decoration {
+	position: absolute;
+	z-index: 1;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	pointer-events: none;
 }
 </style>
