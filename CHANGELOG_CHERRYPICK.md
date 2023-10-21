@@ -34,6 +34,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ### Client
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
 
+### Server
+- Fix: 마이그레이션이 매우 길게 진행될 수 있음
+
 ---
 
 ## 4.4.1
