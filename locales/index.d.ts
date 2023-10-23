@@ -1234,6 +1234,11 @@ export interface Locale {
     "privacyPolicyUrl": string;
     "tosAndPrivacyPolicy": string;
     "avatarDecorations": string;
+    "attach": string;
+    "detach": string;
+    "angle": string;
+    "flip": string;
+    "showAvatarDecorations": string;
     "showUnreadNotificationCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -1377,6 +1382,7 @@ export interface Locale {
         "manifestJsonOverride": string;
         "shortName": string;
         "shortNameDescription": string;
+        "fanoutTimelineDescription": string;
     };
     "_accountMigration": {
         "moveFrom": string;

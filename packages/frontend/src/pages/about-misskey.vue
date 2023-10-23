@@ -387,6 +387,7 @@ const patronsWithMisskey = [
 	'美少女JKぐーちゃん',
 	'てば',
 	'たっくん',
+	'SHO SEKIGUCHI',
 ];
 
 let isKokonect = false;
