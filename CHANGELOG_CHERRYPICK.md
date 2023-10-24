@@ -32,6 +32,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
 - Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌리도록
 - Enhance: 노트 상세 페이지의 답글 목록 개선
+- Enhance: 유저 페이지 개선
+  - 요약 탭의 하이라이트를 제거
+  - 노트 탭으로 하이라이트를 이동
 - Fix: 외부 리소스 설치 페이지에서 페이지 캐시가 작동하는 문제 수정 (misskey-dev/misskey#12105)
 
 ### Server
