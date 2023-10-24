@@ -30,11 +30,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Client
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
-- Feat: 스와이프하여 타임라인을 다시 불러오도록 (misskey-dev/misskey#12113)
+- Feat: 스와이프하여 타임라인을 다시 불러올 수 있음 (misskey-dev/misskey#12113)
   - PC의 경우 오른쪽 상단의 버튼을 통해서도 다시 불러올 수 있습니다
-- Feat: 타임라인 자동 업데이트를 비활성화할 수 있도록 (misskey-dev/misskey#12113)
+- Feat: 타임라인 자동 업데이트를 비활성화할 수 있음 (misskey-dev/misskey#12113)
 - Feat: 이모티콘 피커의 카테고리를 다중 계층 폴더로 분류할 수 있음 (misskey-dev/misskey#12132)
-- Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌리도록
+- Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌림
 - Enhance: 노트 상세 페이지의 답글 목록 개선
 - Enhance: 유저 페이지 개선
   - 요약 탭의 하이라이트를 제거
@@ -43,7 +43,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Server
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
-- Fix: 마이그레이션이 매우 길게 진행될 수 있음
+- Fix: 장시간 기다려도 마이그레이션이 완료되지 않을 수 있음
 - Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
 
 ---
