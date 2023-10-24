@@ -11,7 +11,7 @@ import { url } from '@/config.js';
 let stream: Misskey.Stream | null = null;
 let timeoutHeadBeat: number | null = null;
 
-export let isReloading: boolean = false;
+export let isReloading = false;
 
 export function useStream(): Misskey.Stream {
 	if (stream) return stream;
