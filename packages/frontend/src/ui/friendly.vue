@@ -435,7 +435,7 @@ $float-button-size: 65px;
 	min-width: 0;
 	overflow: auto;
 	overflow-y: scroll;
-	overscroll-behavior: contain;
+	overscroll-behavior: none;
 	background: var(--bg);
 }
 
