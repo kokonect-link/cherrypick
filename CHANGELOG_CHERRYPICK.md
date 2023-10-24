@@ -30,6 +30,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Client
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
+- Feat: 스와이프하여 타임라인을 다시 불러오도록 (misskey-dev/misskey#12113)
+  - PC의 경우 오른쪽 상단의 버튼을 통해서도 다시 불러올 수 있습니다
+- Feat: 타임라인 자동 업데이트를 비활성화할 수 있도록 (misskey-dev/misskey#12113)
 - Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌리도록
 - Enhance: 노트 상세 페이지의 답글 목록 개선
 - Enhance: 유저 페이지 개선

@@ -4,17 +4,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkInfo v-if="$i && tlHint && !tlHintClosed" :closeable="true" style="margin-bottom: 16px;" @closed="closeHint">
-	<I18n :src="tlHint"><template #icon><i :class="tlIcon"></i></template></I18n>
-</MkInfo>
-<MkNotes ref="tlComponent" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" @queue="emit('queue', $event)"/>
+	<MkInfo v-if="$i && tlHint && !tlHintClosed" :closeable="true" style="margin-bottom: 16px;" @closed="closeHint">
+		<I18n :src="tlHint"><template #icon><i :class="tlIcon"></i></template></I18n>
+	</MkInfo>
+	<MkPullToRefresh ref="prComponent" @refresh="() => reloadTimeline(true)">
+		<MkNotes ref="tlComponent" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" @queue="emit('queue', $event)" @status="prComponent.setDisabled($event)"/>
+	</MkPullToRefresh>
 </template>
 
 <script lang="ts" setup>
 import { computed, provide, onUnmounted } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { useStream } from '@/stream.js';
+import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
+import { useStream, reloadStream } from '@/stream.js';
 import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
@@ -47,6 +50,7 @@ const emit = defineEmits<{
 
 provide('inChannel', computed(() => props.src === 'channel'));
 
+const prComponent: InstanceType<typeof MkPullToRefresh> = $ref();
 const tlComponent: InstanceType<typeof MkNotes> = $ref();
 
 let tlNotesCount = 0;
@@ -91,16 +95,84 @@ let tlHint;
 let tlHintClosed;
 
 const stream = useStream();
+const connectChannel = () => {
+	if (props.src === 'antenna') {
+		connection = stream.useChannel('antenna', {
+			antennaId: props.antenna,
+		});
+	} else if (props.src === 'home') {
+		connection = stream.useChannel('homeTimeline', {
+			withRenotes: props.withRenotes,
+			withFiles: props.onlyFiles ? true : undefined,
+			withCats: props.onlyCats,
+		});
+		connection2 = stream.useChannel('main');
+		tlIcon = 'ti ti-home';
+		tlHint = i18n.ts._tlTutorial.step1_1;
+		tlHintClosed = defaultStore.state.tlHomeHintClosed;
+	} else if (props.src === 'local') {
+		connection = stream.useChannel('localTimeline', {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: props.onlyFiles ? true : undefined,
+			withCats: props.onlyCats,
+		});
+		tlIcon = 'ti ti-planet';
+		tlHint = i18n.ts._tlTutorial.step1_2;
+		tlHintClosed = defaultStore.state.tlLocalHintClosed;
+	} else if (props.src === 'social') {
+		connection = stream.useChannel('hybridTimeline', {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: props.onlyFiles ? true : undefined,
+			withCats: props.onlyCats,
+		});
+		tlIcon = 'ti ti-universe';
+		tlHint = i18n.ts._tlTutorial.step1_3;
+		tlHintClosed = defaultStore.state.tlSocialHintClosed;
+	} else if (props.src === 'global') {
+		connection = stream.useChannel('globalTimeline', {
+			withRenotes: props.withRenotes,
+			withFiles: props.onlyFiles ? true : undefined,
+			withCats: props.onlyCats,
+		});
+		tlIcon = 'ti ti-world';
+		tlHint = i18n.ts._tlTutorial.step1_4;
+		tlHintClosed = defaultStore.state.tlGlobalHintClosed;
+	} else if (props.src === 'mentions') {
+		connection = stream.useChannel('main');
+		connection.on('mention', prepend);
+	} else if (props.src === 'directs') {
+		const onNote = note => {
+			if (note.visibility === 'specified') {
+				prepend(note);
+			}
+		};
+		connection = stream.useChannel('main');
+		connection.on('mention', onNote);
+	} else if (props.src === 'list') {
+		connection = stream.useChannel('userList', {
+			withFiles: props.onlyFiles ? true : undefined,
+			withCats: props.onlyCats,
+			listId: props.list,
+		});
+	} else if (props.src === 'channel') {
+		connection = stream.useChannel('channel', {
+			channelId: props.channel,
+		});
+	} else if (props.src === 'role') {
+		connection = stream.useChannel('roleTimeline', {
+			roleId: props.role,
+		});
+	}
+	if (props.src !== 'directs' || props.src !== 'mentions') connection.on('note', prepend);
+};
 
 if (props.src === 'antenna') {
 	endpoint = 'antennas/notes';
 	query = {
 		antennaId: props.antenna,
 	};
-	connection = stream.useChannel('antenna', {
-		antennaId: props.antenna,
-	});
-	connection.on('note', prepend);
 } else if (props.src === 'home') {
 	endpoint = 'notes/timeline';
 	query = {
@@ -108,15 +180,6 @@ if (props.src === 'antenna') {
 		withFiles: props.onlyFiles ? true : undefined,
 		withCats: props.onlyCats,
 	};
-	connection = stream.useChannel('homeTimeline', {
-		withRenotes: props.withRenotes,
-		withFiles: props.onlyFiles ? true : undefined,
-		withCats: props.onlyCats,
-	});
-	connection.on('note', prepend);
-
-	connection2 = stream.useChannel('main');
-
 	tlIcon = 'ti ti-home';
 	tlHint = i18n.ts._tlTutorial.step1_1;
 	tlHintClosed = defaultStore.state.tlHomeHintClosed;
@@ -128,14 +191,6 @@ if (props.src === 'antenna') {
 		withFiles: props.onlyFiles ? true : undefined,
 		withCats: props.onlyCats,
 	};
-	connection = stream.useChannel('localTimeline', {
-		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
-		withFiles: props.onlyFiles ? true : undefined,
-		withCats: props.onlyCats,
-	});
-	connection.on('note', prepend);
-
 	tlIcon = 'ti ti-planet';
 	tlHint = i18n.ts._tlTutorial.step1_2;
 	tlHintClosed = defaultStore.state.tlLocalHintClosed;
@@ -147,14 +202,6 @@ if (props.src === 'antenna') {
 		withFiles: props.onlyFiles ? true : undefined,
 		withCats: props.onlyCats,
 	};
-	connection = stream.useChannel('hybridTimeline', {
-		withRenotes: props.withRenotes,
-		withReplies: props.withReplies,
-		withFiles: props.onlyFiles ? true : undefined,
-		withCats: props.onlyCats,
-	});
-	connection.on('note', prepend);
-
 	tlIcon = 'ti ti-universe';
 	tlHint = i18n.ts._tlTutorial.step1_3;
 	tlHintClosed = defaultStore.state.tlSocialHintClosed;
@@ -165,32 +212,16 @@ if (props.src === 'antenna') {
 		withFiles: props.onlyFiles ? true : undefined,
 		withCats: props.onlyCats,
 	};
-	connection = stream.useChannel('globalTimeline', {
-		withRenotes: props.withRenotes,
-		withFiles: props.onlyFiles ? true : undefined,
-		withCats: props.onlyCats,
-	});
-	connection.on('note', prepend);
-
 	tlIcon = 'ti ti-world';
 	tlHint = i18n.ts._tlTutorial.step1_4;
 	tlHintClosed = defaultStore.state.tlGlobalHintClosed;
 } else if (props.src === 'mentions') {
 	endpoint = 'notes/mentions';
-	connection = stream.useChannel('main');
-	connection.on('mention', prepend);
 } else if (props.src === 'directs') {
 	endpoint = 'notes/mentions';
 	query = {
 		visibility: 'specified',
 	};
-	const onNote = note => {
-		if (note.visibility === 'specified') {
-			prepend(note);
-		}
-	};
-	connection = stream.useChannel('main');
-	connection.on('mention', onNote);
 } else if (props.src === 'list') {
 	endpoint = 'notes/user-list-timeline';
 	query = {
@@ -198,30 +229,25 @@ if (props.src === 'antenna') {
 		withCats: props.onlyCats,
 		listId: props.list,
 	};
-	connection = stream.useChannel('userList', {
-		withFiles: props.onlyFiles ? true : undefined,
-		withCats: props.onlyCats,
-		listId: props.list,
-	});
-	connection.on('note', prepend);
 } else if (props.src === 'channel') {
 	endpoint = 'channels/timeline';
 	query = {
 		channelId: props.channel,
 	};
-	connection = stream.useChannel('channel', {
-		channelId: props.channel,
-	});
-	connection.on('note', prepend);
 } else if (props.src === 'role') {
 	endpoint = 'roles/notes';
 	query = {
 		roleId: props.role,
 	};
-	connection = stream.useChannel('roleTimeline', {
-		roleId: props.role,
+}
+
+if (!defaultStore.state.disableStreamingTimeline) {
+	connectChannel();
+
+	onUnmounted(() => {
+		connection.dispose();
+		if (connection2) connection2.dispose();
 	});
-	connection.on('note', prepend);
 }
 
 function closeHint() {
@@ -247,9 +273,19 @@ const pagination = {
 	params: query,
 };
 
-onUnmounted(() => {
-	connection.dispose();
-	if (connection2) connection2.dispose();
+const reloadTimeline = (fromPR = false) => {
+	tlNotesCount = 0;
+
+	tlComponent.pagingComponent?.reload().then(() => {
+		reloadStream();
+		if (fromPR) prComponent.refreshFinished();
+	});
+};
+
+//const pullRefresh = () => reloadTimeline(true);
+
+defineExpose({
+	reloadTimeline
 });
 
 /* TODO

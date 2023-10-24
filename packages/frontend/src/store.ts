@@ -402,6 +402,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
+	disableStreamingTimeline: {
+		where: 'device',
+		default: false,
+	},
 	showUnreadNotificationCount: {
 		where: 'deviceAccount',
 		default: false,
