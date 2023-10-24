@@ -132,6 +132,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				shouldFallbackToDb = shouldFallbackToDb || (noteIds.length === 0);
 
+				let redisTimeline: MiNote[] = [];
+
 				if (!shouldFallbackToDb) {
 					const query = this.notesRepository.createQueryBuilder('note')
 						.where('note.id IN (:...noteIds)', { noteIds: noteIds })
@@ -142,13 +144,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						.leftJoinAndSelect('renote.user', 'renoteUser')
 						.leftJoinAndSelect('note.channel', 'channel');
 
-					if (ps.withCats) {
-						query.andWhere('(select "isCat" from "user" where id = note."userId")');
-					}
+                    if (ps.withCats) {
+                        query.andWhere('(select "isCat" from "user" where id = note."userId")');
+                    }
 
-					let timeline = await query.getMany();
+					redisTimeline = await query.getMany();
 
-					timeline = timeline.filter(note => {
+					redisTimeline = redisTimeline.filter(note => {
 						if (note.userId === me.id) {
 							return true;
 						}
@@ -164,15 +166,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						return true;
 					});
 
-					// TODO: フィルタした結果件数が足りなかった場合の対応
+					redisTimeline.sort((a, b) => a.id > b.id ? -1 : 1);
+				}
 
-					timeline.sort((a, b) => a.id > b.id ? -1 : 1);
-
+				if (redisTimeline.length > 0) {
 					process.nextTick(() => {
 						this.activeUsersChart.read(me);
 					});
 
-					return await this.noteEntityService.packMany(timeline, me);
+					return await this.noteEntityService.packMany(redisTimeline, me);
 				} else { // fallback to db
 					return await this.getFromDb({
 						untilId,
@@ -183,6 +185,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						includeLocalRenotes: ps.includeLocalRenotes,
 						withFiles: ps.withFiles,
 						withReplies: ps.withReplies,
+						withCats: ps.withCats,
 					}, me);
 				}
 			} else {
@@ -195,6 +198,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					includeLocalRenotes: ps.includeLocalRenotes,
 					withFiles: ps.withFiles,
 					withReplies: ps.withReplies,
+					withCats: ps.withCats,
 				}, me);
 			}
 		});
@@ -209,6 +213,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		includeLocalRenotes: boolean,
 		withFiles: boolean,
 		withReplies: boolean,
+		withCats: boolean,
 	}, me: MiLocalUser) {
 		const followees = await this.userFollowingService.getFollowees(me.id);
 
@@ -278,6 +283,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		if (ps.withFiles) {
 			query.andWhere('note.fileIds != \'{}\'');
+		}
+
+		if (ps.withCats) {
+			query.andWhere('(select "isCat" from "user" where id = note."userId")');
 		}
 		//#endregion
 

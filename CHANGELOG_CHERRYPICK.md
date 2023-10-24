@@ -40,6 +40,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ### Server
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 마이그레이션이 매우 길게 진행될 수 있음
+- Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
 
 ---
 
