@@ -181,10 +181,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
 			<MkPostForm v-if="!isMobile && defaultStore.state.showFixedPostFormInReplies" class="post-form _panel" fixed :reply="appearNote"></MkPostForm>
-			<div v-if="replies.length > 3 && !repliesLoaded" style="padding: 16px">
-				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadReplies }}</MkButton>
+			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
+			<div v-if="replies.length > 2 && !repliesLoaded" style="padding: 16px">
+				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadMore }}</MkButton>
 			</div>
-			<template v-if="replies.length <= 3 || repliesLoaded"><MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/></template>
 		</div>
 		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
 			<MkPagination :pagination="renotesPagination" :disableAutoLoad="true">
@@ -709,7 +709,7 @@ function blur() {
 function loadRepliesSimple() {
 	os.api('notes/children', {
 		noteId: appearNote.id,
-		limit: 4,
+		limit: 3,
 	}).then(res => {
 		replies.value = res;
 	});
