@@ -12,7 +12,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<div v-if="user">
 			<XHome v-if="tab === 'home'" :user="user"/>
-			<XTimeline v-else-if="tab === 'notes'" :user="user"/>
 			<XEvent v-else-if="tab === 'events'" :user="user"/>
 			<XActivity v-else-if="tab === 'activity'" :user="user"/>
 			<XAchievements v-else-if="tab === 'achievements'" :user="user"/>
@@ -50,7 +49,6 @@ window.addEventListener('resize', () => {
 });
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
-const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 const XEvent = defineAsyncComponent(() => import('./events.vue'));
 const XActivity = defineAsyncComponent(() => import('./activity.vue'));
 const XAchievements = defineAsyncComponent(() => import('./achievements.vue'));
@@ -96,10 +94,6 @@ const headerTabs = $computed(() => user ? [{
 	key: 'home',
 	title: i18n.ts.overview,
 	icon: 'ti ti-home',
-}, {
-	key: 'notes',
-	title: i18n.ts.notes,
-	icon: 'ti ti-pencil',
 }, {
 	key: 'events',
 	title: i18n.ts.events,

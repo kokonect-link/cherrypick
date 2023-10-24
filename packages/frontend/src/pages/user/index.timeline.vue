@@ -4,20 +4,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="800" style="padding-top: 0">
-	<MkStickyContainer>
-		<template #header>
-			<MkTab v-model="include" :class="$style.tab">
-				<option :value="null">{{ i18n.ts.notes }}</option>
-				<option value="all">{{ i18n.ts.all }}</option>
-				<option value="featured">{{ i18n.ts.featured }}</option>
-				<option value="files">{{ i18n.ts.withFiles }}</option>
-			</MkTab>
-		</template>
-		<MkNotes v-if="include === 'featured'" :noGap="true" :pagination="featuredPagination" :class="$style.tl"/>
-		<MkNotes v-else :noGap="true" :pagination="pagination" :class="$style.tl"/>
-	</MkStickyContainer>
-</MkSpacer>
+<MkStickyContainer>
+	<template #header>
+		<MkTab v-model="include" :class="$style.tab">
+			<option :value="null">{{ i18n.ts.notes }}</option>
+			<option value="all">{{ i18n.ts.all }}</option>
+			<option value="featured">{{ i18n.ts.featured }}</option>
+			<option value="files">{{ i18n.ts.withFiles }}</option>
+		</MkTab>
+	</template>
+	<MkNotes v-if="include === 'featured'" :noGap="true" :pagination="featuredPagination" :class="$style.tl"/>
+	<MkNotes v-else :noGap="true" :pagination="pagination" :class="$style.tl"/>
+</MkStickyContainer>
 </template>
 
 <script lang="ts" setup>

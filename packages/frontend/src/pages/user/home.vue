@@ -148,7 +148,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XFiles :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
-				<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
+				<XTimeline v-if="!disableNotes" :user="user"/>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
@@ -204,6 +204,7 @@ function calcAge(birthdate: string): number {
 
 const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
+const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed;
@@ -232,14 +233,6 @@ const translating = ref(false);
 watch($$(moderationNote), async () => {
 	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote });
 });
-
-const pagination = {
-	endpoint: 'users/notes' as const,
-	limit: 10,
-	params: computed(() => ({
-		userId: props.user.id,
-	})),
-};
 
 const style = $computed(() => {
 	if (props.user.bannerUrl == null) return {};
@@ -746,12 +739,6 @@ onUnmounted(() => {
 </style>
 
 <style lang="scss" module>
-.tl {
-	background: var(--bg);
-	border-radius: var(--radius);
-	overflow: clip;
-}
-
 .verifiedLink {
 	margin-left: 4px;
 	color: var(--success);
