@@ -396,7 +396,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	tlWithReplies: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	defaultWithReplies: {
 		where: 'account',

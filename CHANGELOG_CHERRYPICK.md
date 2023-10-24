@@ -28,9 +28,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
-### Changes
-- 타임라인에서 '다른 사람에 대한 답장 포함하기'를 기본 활성화로 변경
-
 ### Client
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
 - Enhance: 노트 작성 폼에서 노트를 게시한 뒤에 textarea의 높이를 원래대로 되돌리도록
