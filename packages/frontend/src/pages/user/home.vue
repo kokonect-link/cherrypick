@@ -148,7 +148,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XFiles :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
-        <MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
+				<MkNotes v-if="!disableNotes" :class="$style.tl" :noGap="true" :pagination="pagination"/>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
