@@ -47,13 +47,13 @@ Please include errors from the developer console and/or server log files if you 
 * Server URL:
   <!-- Example: kokonect.link -->
 * CherryPick:
-  13.x.x-cp-4.x.x
+  4.x.x (Misskey: 2023.x.x)
 
 ### 🛰 Backend (for server admin)
 <!-- If you are using a managed service, put that after the version. -->
 
 * Installation Method or Hosting Service: <!-- Example: docker compose, k8s/docker, systemd, "CherryPick install shell script", development environment -->
-* CherryPick: 13.x.x-cp-4.x.x
+* CherryPick: 4.x.x (Misskey: 2023.x.x)
 * Node: 20.x.x
 * PostgreSQL: 15.x.x
 * Redis: 7.x.x
