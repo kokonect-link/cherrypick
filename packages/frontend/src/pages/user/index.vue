@@ -15,7 +15,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XEvent v-else-if="tab === 'events'" :user="user"/>
 			<XActivity v-else-if="tab === 'activity'" :user="user"/>
 			<XAchievements v-else-if="tab === 'achievements'" :user="user"/>
-			<XReactions v-else-if="tab === 'reactions'" :user="user"/>
 			<XClips v-else-if="tab === 'clips'" :user="user"/>
 			<XLists v-else-if="tab === 'lists'" :user="user"/>
 			<XPages v-else-if="tab === 'pages'" :user="user"/>
@@ -52,7 +51,6 @@ const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XEvent = defineAsyncComponent(() => import('./events.vue'));
 const XActivity = defineAsyncComponent(() => import('./activity.vue'));
 const XAchievements = defineAsyncComponent(() => import('./achievements.vue'));
-const XReactions = defineAsyncComponent(() => import('./reactions.vue'));
 const XClips = defineAsyncComponent(() => import('./clips.vue'));
 const XLists = defineAsyncComponent(() => import('./lists.vue'));
 const XPages = defineAsyncComponent(() => import('./pages.vue'));
@@ -106,11 +104,7 @@ const headerTabs = $computed(() => user ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
 	icon: 'ti ti-medal',
-}] : []), ...($i && ($i.id === user.id)) || user.publicReactions ? [{
-	key: 'reactions',
-	title: i18n.ts.reaction,
-	icon: 'ti ti-mood-happy',
-}] : [], {
+}] : []), {
 	key: 'clips',
 	title: i18n.ts.clips,
 	icon: 'ti ti-paperclip',
