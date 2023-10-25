@@ -154,7 +154,7 @@ function moving(event) {
 
 	if (!isPullEnd) isVibrate = false;
 	else if (isPullEnd && !isVibrate) {
-		vibrate(ColdDeviceStorage.get('vibrateSystem') ? 150 : []);
+		vibrate(ColdDeviceStorage.get('vibrateSystem') ? 10 : []);
 		isVibrate = true;
 	}
 }
