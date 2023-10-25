@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 		<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
+		<div v-if="!thin_ && canBack && (actions && actions.length === 2 && ['index', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
 
 		<template v-if="metadata">
 			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="top">
