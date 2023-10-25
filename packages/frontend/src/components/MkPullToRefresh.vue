@@ -236,10 +236,11 @@ defineExpose({
 			transform: rotate(180deg);
 		}
 	}
+}
 
-	> .text {
-		margin: 5px 0;
-	}
+.text {
+  margin: 5px 0;
+  font-size: 11px;
 }
 
 .slotClip {
