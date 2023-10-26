@@ -100,12 +100,14 @@ const connectChannel = () => {
 		connection = stream.useChannel('antenna', {
 			antennaId: props.antenna,
 		});
+		connection.on('note', prepend);
 	} else if (props.src === 'home') {
 		connection = stream.useChannel('homeTimeline', {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
 			withCats: props.onlyCats,
 		});
+		connection.on('note', prepend);
 		connection2 = stream.useChannel('main');
 		tlIcon = 'ti ti-home';
 		tlHint = i18n.ts._tlTutorial.step1_1;
@@ -117,6 +119,7 @@ const connectChannel = () => {
 			withFiles: props.onlyFiles ? true : undefined,
 			withCats: props.onlyCats,
 		});
+		connection.on('note', prepend);
 		tlIcon = 'ti ti-planet';
 		tlHint = i18n.ts._tlTutorial.step1_2;
 		tlHintClosed = defaultStore.state.tlLocalHintClosed;
@@ -127,6 +130,7 @@ const connectChannel = () => {
 			withFiles: props.onlyFiles ? true : undefined,
 			withCats: props.onlyCats,
 		});
+		connection.on('note', prepend);
 		tlIcon = 'ti ti-universe';
 		tlHint = i18n.ts._tlTutorial.step1_3;
 		tlHintClosed = defaultStore.state.tlSocialHintClosed;
@@ -136,6 +140,7 @@ const connectChannel = () => {
 			withFiles: props.onlyFiles ? true : undefined,
 			withCats: props.onlyCats,
 		});
+		connection.on('note', prepend);
 		tlIcon = 'ti ti-world';
 		tlHint = i18n.ts._tlTutorial.step1_4;
 		tlHintClosed = defaultStore.state.tlGlobalHintClosed;
@@ -156,16 +161,18 @@ const connectChannel = () => {
 			withCats: props.onlyCats,
 			listId: props.list,
 		});
+		connection.on('note', prepend);
 	} else if (props.src === 'channel') {
 		connection = stream.useChannel('channel', {
 			channelId: props.channel,
 		});
+		connection.on('note', prepend);
 	} else if (props.src === 'role') {
 		connection = stream.useChannel('roleTimeline', {
 			roleId: props.role,
 		});
+		connection.on('note', prepend);
 	}
-	if (props.src !== 'directs' || props.src !== 'mentions') connection.on('note', prepend);
 };
 
 if (props.src === 'antenna') {
