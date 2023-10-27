@@ -44,9 +44,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
 			<i :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']" class="ti ti-fw"></i><span style="position: relative;">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 		</button>
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="$style.account" @click="openAccountMenu">
-			<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct :class="$style.acct" class="_nowrap" :user="$i"/>
-		</button>
+		<div :class="$style.profile">
+			<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="$style.account" @click="openAccountMenu">
+				<MkAvatar :user="$i" :class="$style.avatar"/><MkAcct :class="$style.acct" class="_nowrap" :user="$i"/>
+			</button>
+		</div>
 	</div>
 </div>
 </template>
@@ -108,6 +110,7 @@ function more() {
 .root {
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 }
 
 .top {
@@ -159,7 +162,7 @@ function more() {
 .bottom {
 	position: sticky;
 	bottom: 0;
-	padding: 20px 0;
+	padding: 20px 0 calc(env(safe-area-inset-bottom) + 25px);
 	background: var(--X14);
 	-webkit-backdrop-filter: var(--blur, blur(8px));
 	backdrop-filter: var(--blur, blur(8px));
@@ -204,6 +207,11 @@ function more() {
 	width: 32px;
 }
 
+.profile {
+	display: flex;
+	margin-top: 16px;
+}
+
 .account {
 	position: relative;
 	display: flex;
@@ -213,7 +221,6 @@ function more() {
 	width: 100%;
 	text-align: left;
 	box-sizing: border-box;
-	margin-top: 16px;
 }
 
 .avatar {
@@ -293,7 +300,7 @@ function more() {
 	top: 0;
 	left: 20px;
 	color: var(--navIndicator);
-	font-size: 8px;
+	font-size: 6px;
 	animation: blink 1s infinite;
 
 	&:has(.itemIndicateValueIcon) {
