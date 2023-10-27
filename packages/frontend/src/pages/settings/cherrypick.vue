@@ -106,6 +106,7 @@ const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('e
 
 watch([
 	reactableRemoteReactionEnabled,
+	mobileHeaderChange,
 	renameTheButtonInPostFormToNya,
 	friendlyEnableNotifications,
 	friendlyEnableWidgets,

@@ -88,14 +88,14 @@ import { unisonReload } from '@/scripts/unison-reload.js';
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-if (!isFriendly.value && !defaultStore.state.mobileHeaderChange) provide('shouldOmitHeaderTitle', true);
-
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
+
+if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
 
 const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
 

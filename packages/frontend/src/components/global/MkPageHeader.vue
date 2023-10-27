@@ -13,8 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkAvatar v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.avatar" :user="$i"/>
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
-		<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
-		<div v-if="!thin_ && canBack && (actions && actions.length === 2 && ['index', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
+		<div v-if="!thin_ && !narrow && canBack && (actions && actions.length === 2 && mainRouter.currentRoute.value.name === 'index')" :class="$style.buttonsLeft"/>
+		<div v-if="!thin_ && !narrow && canBack && (actions && actions.length === 2 && mainRouter.currentRoute.value.name === 'index')" :class="$style.buttonsLeft" style="margin-right: auto;"/>
 
 		<template v-if="metadata">
 			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="top">
@@ -34,15 +34,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
 		<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
-		<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
+		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
 				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
 		<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
-			<MkFollowButton v-if="narrow && mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="false"/>
-			<MkFollowButton v-else-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="true"/>
+			<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
 	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
@@ -52,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, defineAsyncComponent } from 'vue';
+import { onMounted, onUnmounted, ref, inject } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
@@ -206,7 +205,6 @@ onUnmounted(() => {
 	}
 
 	.tabs_canBack {
-		margin-left: auto;
 		padding: 0 12px;
 	}
 
@@ -325,7 +323,7 @@ onUnmounted(() => {
 }
 
 .titleContainer_canBack {
-	margin-left: -32px;
+	margin-left: -16px;
 }
 
 .titleAvatarContainer {
