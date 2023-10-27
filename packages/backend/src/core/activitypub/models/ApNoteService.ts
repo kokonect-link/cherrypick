@@ -340,7 +340,7 @@ export class ApNoteService {
 	}
 
 	@bindThis
-	public async updateNote(value: string | IObject, resolver?: Resolver, silent = false): Promise<MiNote | null> {
+	public async updateNote(value: string | IObject, target: MiNote, resolver?: Resolver, silent = false): Promise<MiNote | null> {
 		if (resolver == null) resolver = this.apResolverService.createResolver();
 
 		const object = await resolver.resolve(value);
@@ -369,13 +369,6 @@ export class ApNoteService {
 		if (actor.isSuspended) {
 			throw new Error('actor has been suspended');
 		}
-
-		const b_note = await this.notesRepository.findOneBy({
-			uri: entryUri
-		}).then(x => {
-			if (x == null) throw new Error('note not found');
-			return x;
-		});
 
 		const limit = promiseLimit<MiDriveFile>(2);
 		const files = (await Promise.all(toArray(note.attachment).map(attach => (
@@ -418,7 +411,7 @@ export class ApNoteService {
 				apHashtags,
 				apEmojis,
 				poll,
-			}, b_note, silent);
+			}, target, silent);
 		} catch (err: any) {
 			this.logger.warn(`note update failed: ${err}`);
 			return err;
