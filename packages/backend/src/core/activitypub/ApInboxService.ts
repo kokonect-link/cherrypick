@@ -794,12 +794,12 @@ export class ApInboxService {
 		if (isActor(object)) {
 			await this.apPersonService.updatePerson(actor.uri, resolver, object);
 			return 'ok: Person updated';
-		} /*else if (getApType(object) === 'Question') {
-			await this.apQuestionService.updateQuestion(object, resolver).catch(err => console.error(err));
-			return 'ok: Question updated';
-		}*/ else if (getApType(object) === 'Note' || getApType(object) === 'Question') {
+		} else if (getApType(object) === 'Note') {
 			await this.updateNote(resolver, actor, object, false, activity);
 			return 'ok: Note updated';
+		} else if (getApType(object) === 'Question') {
+			await this.apQuestionService.updateQuestion(object, resolver).catch(err => console.error(err));
+			return 'ok: Question updated';
 		} else {
 			return `skip: Unknown type: ${getApType(object)}`;
 		}
