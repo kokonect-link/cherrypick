@@ -794,10 +794,10 @@ export class ApInboxService {
 		if (isActor(object)) {
 			await this.apPersonService.updatePerson(actor.uri, resolver, object);
 			return 'ok: Person updated';
-		} /*else if (getApType(object) === 'Question') {
+		} else if (getApType(object) === 'Question') {
 			await this.apQuestionService.updateQuestion(object, resolver).catch(err => console.error(err));
 			return 'ok: Question updated';
-		}*/ else if (getApType(object) === 'Note' || getApType(object) === 'Question') {
+		} else if (getApType(object) === 'Note') {
 			await this.updateNote(resolver, actor, object, false, activity);
 			return 'ok: Note updated';
 		} else {
@@ -824,9 +824,9 @@ export class ApInboxService {
 		const unlock = await this.appLockService.getApLock(uri);
 
 		try {
-			//const exist = await this.apNoteService.fetchNote(note);
-			//if (exist) return 'skip: note exists';
-			await this.apNoteService.updateNote(note, resolver, silent);
+			const target = await this.notesRepository.findOneBy({uri: uri});
+			if (!target) return `skip: target note not located: ${uri}`;
+			await this.apNoteService.updateNote(note, target, resolver, silent);
 			return 'ok';
 		} catch (err) {
 			if (err instanceof StatusError && err.isClientError) {
