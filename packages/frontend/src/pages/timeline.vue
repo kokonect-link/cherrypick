@@ -224,45 +224,51 @@ async function reloadAsk() {
 	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
-const headerActions = $computed(() => [
-	...[deviceKind === 'desktop' ? {
-		icon: 'ti ti-refresh',
-		text: i18n.ts.reload,
-		handler: () => {
-			tlComponent.reloadTimeline();
+const headerActions = $computed(() => {
+	const tmp = [
+		{
+			icon: 'ti ti-dots',
+			text: i18n.ts.options,
+			handler: (ev) => {
+				os.popupMenu([{
+					type: 'switch',
+					text: i18n.ts.friendlyEnableNotifications,
+					ref: $$(friendlyEnableNotifications),
+				}, {
+					type: 'switch',
+					text: i18n.ts.friendlyEnableWidgets,
+					ref: $$(friendlyEnableWidgets),
+				}, {
+					type: 'switch',
+					text: i18n.ts.showRenotes,
+					ref: $$(withRenotes),
+				}, src === 'local' || src === 'social' ? {
+					type: 'switch',
+					text: i18n.ts.showRepliesToOthersInTimeline,
+					ref: $$(withReplies),
+				} : undefined, {
+					type: 'switch',
+					text: i18n.ts.fileAttachedOnly,
+					ref: $$(onlyFiles),
+				}, {
+					type: 'switch',
+					text: i18n.ts.showCatOnly,
+					ref: $$(onlyCats),
+				}], ev.currentTarget ?? ev.target);
+			},
 		},
-	} : {}], {
-		icon: 'ti ti-dots',
-		text: i18n.ts.options,
-		handler: (ev) => {
-			os.popupMenu([{
-				type: 'switch',
-				text: i18n.ts.friendlyEnableNotifications,
-				ref: $$(friendlyEnableNotifications),
-			}, {
-				type: 'switch',
-				text: i18n.ts.friendlyEnableWidgets,
-				ref: $$(friendlyEnableWidgets),
-			}, {
-				type: 'switch',
-				text: i18n.ts.showRenotes,
-				ref: $$(withRenotes),
-			}, src === 'local' || src === 'social' ? {
-				type: 'switch',
-				text: i18n.ts.showRepliesToOthersInTimeline,
-				ref: $$(withReplies),
-			} : undefined, {
-				type: 'switch',
-				text: i18n.ts.fileAttachedOnly,
-				ref: $$(onlyFiles),
-			}, {
-				type: 'switch',
-				text: i18n.ts.showCatOnly,
-				ref: $$(onlyCats),
-			}], ev.currentTarget ?? ev.target);
-		},
-	},
-]);
+	];
+	if (deviceKind === 'desktop') {
+		tmp.unshift({
+			icon: 'ti ti-refresh',
+			text: i18n.ts.reload,
+			handler: (ev: Event) => {
+				tlComponent.reloadTimeline();
+			},
+		});
+	}
+	return tmp;
+});
 
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,

@@ -12,16 +12,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 			<MkAvatar v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.avatar" :user="$i"/>
 		</div>
-		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" style="width: 42px;"/>
-		<div v-if="!thin_ && (actions && actions.length === 2) && isFriendly" :class="$style.buttonsLeft" style="min-width: initial;">
-			<div v-if="!narrow && canBack" style="width: 42px;"/>
-			<div style="width: 42px;"/>
+		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
+		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
+			<div v-if="!narrow && canBack" style="width: 50px; margin-right: 8px;"/>
+			<div style="width: 34px;"/>
 		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length === 2) && !isFriendly && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
+		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
 			<div style="width: 84px;"/>
 		</div>
-		<div v-if="!thin_ && narrow && (actions && actions.length === 2) && !isFriendly && mainRouter.currentRoute.value.name !== 'index'" :class="$style.buttonsLeft">
-			<div style="width: 42px;"/>
+		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name !== 'index'">
+			<div style="width: 34px;"/>
 		</div>
 
 		<template v-if="metadata">
