@@ -77,17 +77,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-for="child in customEmojiFolderRoot.children"
 				:key="`custom:${child.value}`"
 				:initialShown="false"
-				:emojis="computed(() => customEmojis.filter(e => child.value === i18n.ts.other ? (e.category === 'null' || !e.category) : e.category === child.value).filter(filterAvailable).map(e => `:${e.name}:`))"
-        :isChildrenExits="child.children.length!==0"
+				:emojis="computed(() => customEmojis.filter(e => child.value === '' ? (e.category === 'null' || !e.category) : e.category === child.value).filter(filterAvailable).map(e => `:${e.name}:`))"
+        :hasChildSection="child.children.length !== 0"
         :customEmojiTree="child.children"
 				@chosen="chosen"
 			>
-				{{ child.value }}
+				{{ child.value || i18n.ts.other }}
 			</XSection>
 		</div>
 		<div v-once class="group">
 			<header class="_acrylic">{{ i18n.ts.emoji }}</header>
-			<XSection v-for="category in categories" :key="category" :emojis="emojiCharByCategory.get(category) ?? []" :isChildrenExits="false" @chosen="chosen">{{ category }}</XSection>
+			<XSection v-for="category in categories" :key="category" :emojis="emojiCharByCategory.get(category) ?? []" :hasChildSection="false" @chosen="chosen">{{ category }}</XSection>
 		</div>
 	</div>
 	<div class="tabs">
@@ -157,27 +157,22 @@ const tab = ref<'index' | 'custom' | 'unicode' | 'tags'>('index');
 const customEmojiFolderRoot: CustomEmojiFolderTree = { value: "", category: "", children: [] };
 
 function parseAndMergeCategories(input: string, root: CustomEmojiFolderTree): CustomEmojiFolderTree {
-  const parts = input.split('/');
-  let category = "";
-  let currentNode: CustomEmojiFolderTree = root;
+	const parts = input.split('/').map(p => p.trim());
+	let currentNode: CustomEmojiFolderTree = root;
 
-  for (const part of parts) {
-    if (part) {
-      category += `/${part}`;
-      category = category.replace(/^\//, '');
-      let existingNode = currentNode.children.find((node) => node.value === part);
+	for (const part of parts) {
+		let existingNode = currentNode.children.find((node) => node.value === part);
 
-      if (!existingNode) {
-        const newNode: CustomEmojiFolderTree = { value: part, category, children: [] };
-        currentNode.children.push(newNode);
-        existingNode = newNode;
-      }
+		if (!existingNode) {
+			const newNode: CustomEmojiFolderTree = { value: part, category: input, children: [] };
+			currentNode.children.push(newNode);
+			existingNode = newNode;
+		}
 
-      currentNode = existingNode;
-    }
-  }
+		currentNode = existingNode;
+	}
 
-  return currentNode;
+	return currentNode;
 }
 
 customEmojiCategories.value.forEach(ec => {
@@ -186,7 +181,7 @@ customEmojiCategories.value.forEach(ec => {
   }
 });
 
-parseAndMergeCategories(i18n.ts.other, customEmojiFolderRoot);
+parseAndMergeCategories('', customEmojiFolderRoot);
 
 watch(q, () => {
 	if (emojisEl.value) emojisEl.value.scrollTop = 0;
@@ -616,8 +611,7 @@ defineExpose({
 				position: sticky;
 				top: 0;
 				left: 0;
-				height: 32px;
-				line-height: 32px;
+				line-height: 28px;
 				z-index: 1;
 				padding: 0 8px;
 				font-size: 12px;
