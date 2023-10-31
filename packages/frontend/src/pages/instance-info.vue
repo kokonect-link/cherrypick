@@ -183,6 +183,7 @@ async function toggleBlock(): Promise<void> {
 		blockedHosts: isBlocked ? meta.blockedHosts.concat([host]) : meta.blockedHosts.filter(x => x !== host),
 	});
 }
+
 async function toggleSilenced(): Promise<void> {
 	if (!meta) throw new Error('No meta?');
 	if (!instance) throw new Error('No instance?');
@@ -191,6 +192,7 @@ async function toggleSilenced(): Promise<void> {
 		silencedHosts: isSilenced ? meta.silencedHosts.concat([host]) : meta.silencedHosts.filter(x => x !== host),
 	});
 }
+
 async function toggleSuspend(): Promise<void> {
 	if (!instance) throw new Error('No instance?');
 	await os.api('admin/federation/update-instance', {

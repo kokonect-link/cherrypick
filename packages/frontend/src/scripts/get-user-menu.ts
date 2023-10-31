@@ -132,11 +132,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		globalEvents.emit('refreshUser');
 	}
 
-	async function updateRemoteUser() {
-		await os.apiWithDialog('federation/update-remote-user', { userId: user.id });
-		refreshUser();
-	}
-
 	async function getConfirmed(text: string): Promise<boolean> {
 		const confirm = await os.confirm({
 			type: 'warning',
@@ -145,6 +140,12 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 
 		return !confirm.canceled;
+	}
+
+	async function userInfoUpdate() {
+		os.apiWithDialog('federation/update-remote-user', {
+			userId: user.id,
+		});
 	}
 
 	async function invalidateFollow() {
@@ -376,6 +377,14 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		}]);
 	}
 
+	if (user.host !== null) {
+		menu = menu.concat([null, {
+			icon: 'ti ti-refresh',
+			text: i18n.ts.updateRemoteUser,
+			action: userInfoUpdate,
+		}]);
+	}
+
 	if (defaultStore.state.devMode) {
 		menu = menu.concat([null, {
 			icon: 'ti ti-id',
@@ -404,14 +413,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 				action.handler(user);
 			},
 		}))]);
-	}
-
-	if ($i && meId !== user.id && user.host != null) {
-		menu = menu.concat([null, {
-			icon: 'ti ti-refresh',
-			text: i18n.ts.updateRemoteUser,
-			action: updateRemoteUser,
-		}]);
 	}
 
 	const cleanup = () => {

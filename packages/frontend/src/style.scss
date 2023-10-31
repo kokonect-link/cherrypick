@@ -515,10 +515,6 @@ pre[class*="language-"] {
 	font-family: $code-monospace-font
 }
 
-.prism-editor__textarea:focus {
-	outline: none;
-}
-
 ._zoom {
 	transition-duration: 0.5s, 0.5s;
 	transition-property: opacity, transform;

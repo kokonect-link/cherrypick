@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl">
-	<div v-if="isPullStart" :class="$style.frame" :style="`--frame-min-height: ${currentHeight / 3}px;`">
+	<div v-if="isPullStart" :class="$style.frame" :style="`--frame-min-height: ${pullDistance / (PULL_BRAKE_BASE + (pullDistance / PULL_BRAKE_FACTOR))}px;`">
 		<div :class="$style.frameContent">
 			<MkLoading v-if="isRefreshing" :class="$style.loader" :em="true"/>
 			<i v-else class="ti ti-arrow-bar-to-down" :class="[$style.icon, { [$style.refresh]: isPullEnd }]"></i>
@@ -31,13 +31,15 @@ import { ColdDeviceStorage } from '@/store.js';
 
 const SCROLL_STOP = 10;
 const MAX_PULL_DISTANCE = Infinity;
-const FIRE_THRESHOLD = 200;
+const FIRE_THRESHOLD = 230;
 const RELEASE_TRANSITION_DURATION = 200;
+const PULL_BRAKE_BASE = 2;
+const PULL_BRAKE_FACTOR = 200;
 
 let isPullStart = $ref(false);
 let isPullEnd = $ref(false);
 let isRefreshing = $ref(false);
-let currentHeight = $ref(0);
+let pullDistance = $ref(0);
 
 let supportPointerDesktop = false;
 let startScreenY: number | null = null;
@@ -76,14 +78,14 @@ function moveStart(event) {
 	if (!isPullStart && !isRefreshing && !disabled) {
 		isPullStart = true;
 		startScreenY = getScreenY(event);
-		currentHeight = 0;
+		pullDistance = 0;
 	}
 }
 
 function moveBySystem(to: number): Promise<void> {
 	return new Promise(r => {
-		const startHeight = currentHeight;
-		const overHeight = currentHeight - to;
+		const startHeight = pullDistance;
+		const overHeight = pullDistance - to;
 		if (overHeight < 1) {
 			r();
 			return;
@@ -92,26 +94,26 @@ function moveBySystem(to: number): Promise<void> {
 		let intervalId = setInterval(() => {
 			const time = Date.now() - startTime;
 			if (time > RELEASE_TRANSITION_DURATION) {
-				currentHeight = to;
+				pullDistance = to;
 				clearInterval(intervalId);
 				r();
 				return;
 			}
 			const nextHeight = startHeight - (overHeight / RELEASE_TRANSITION_DURATION) * time;
-			if (currentHeight < nextHeight) return;
-			currentHeight = nextHeight;
+			if (pullDistance < nextHeight) return;
+			pullDistance = nextHeight;
 		}, 1);
 	});
 }
 
 async function fixOverContent() {
-	if (currentHeight > FIRE_THRESHOLD) {
+	if (pullDistance > FIRE_THRESHOLD) {
 		await moveBySystem(FIRE_THRESHOLD);
 	}
 }
 
 async function closeContent() {
-	if (currentHeight > 0) {
+	if (pullDistance > 0) {
 		await moveBySystem(0);
 	}
 }
@@ -135,8 +137,8 @@ function moving(event) {
 	if (!scrollEl) {
 		scrollEl = getScrollableParentElement(rootEl);
 	}
-	if ((scrollEl?.scrollTop ?? 0) > (supportPointerDesktop ? SCROLL_STOP : SCROLL_STOP + currentHeight)) {
-		currentHeight = 0;
+	if ((scrollEl?.scrollTop ?? 0) > (supportPointerDesktop ? SCROLL_STOP : SCROLL_STOP + pullDistance)) {
+		pullDistance = 0;
 		isPullEnd = false;
 		moveEnd();
 		return;
@@ -148,9 +150,9 @@ function moving(event) {
 	const moveScreenY = getScreenY(event);
 
 	const moveHeight = moveScreenY - startScreenY!;
-	currentHeight = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
+	pullDistance = Math.min(Math.max(moveHeight, 0), MAX_PULL_DISTANCE);
 
-	isPullEnd = currentHeight >= FIRE_THRESHOLD;
+	isPullEnd = pullDistance >= FIRE_THRESHOLD;
 
 	if (!isPullEnd) isVibrate = false;
 	else if (isPullEnd && !isVibrate) {
@@ -176,7 +178,8 @@ function setDisabled(value) {
 }
 
 onMounted(() => {
-	supportPointerDesktop = !!window.PointerEvent && deviceKind === 'desktop';
+	// マウス操作でpull to refreshするのは不便そう
+	//supportPointerDesktop = !!window.PointerEvent && deviceKind === 'desktop';
 
 	if (supportPointerDesktop) {
 		rootEl.addEventListener('pointerdown', moveStart);
@@ -240,7 +243,7 @@ defineExpose({
 
 .text {
   margin: 5px 0;
-  font-size: 11px;
+  font-size: initial;
 }
 
 .slotClip {

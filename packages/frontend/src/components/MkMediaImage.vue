@@ -85,7 +85,7 @@ if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = 
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 	? props.image.url
-	: defaultStore.state.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(props.image.url)
 		: props.image.thumbnailUrl,
 );
