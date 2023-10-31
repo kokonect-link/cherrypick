@@ -78,8 +78,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:key="`custom:${child.value}`"
 				:initialShown="false"
 				:emojis="computed(() => customEmojis.filter(e => child.value === '' ? (e.category === 'null' || !e.category) : e.category === child.value).filter(filterAvailable).map(e => `:${e.name}:`))"
-        :hasChildSection="child.children.length !== 0"
-        :customEmojiTree="child.children"
+				:hasChildSection="child.children.length !== 0"
+				:customEmojiTree="child.children"
 				@chosen="chosen"
 			>
 				{{ child.value || i18n.ts.other }}
@@ -104,12 +104,12 @@ import { ref, shallowRef, computed, watch, onMounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XSection from '@/components/MkEmojiPicker.section.vue';
 import {
-  emojilist,
-  emojiCharByCategory,
-  UnicodeEmojiDef,
-  unicodeEmojiCategories as categories,
-  getEmojiName,
-  CustomEmojiFolderTree
+	emojilist,
+	emojiCharByCategory,
+	UnicodeEmojiDef,
+	unicodeEmojiCategories as categories,
+	getEmojiName,
+	CustomEmojiFolderTree,
 } from '@/scripts/emojilist.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import * as os from '@/os.js';
@@ -154,7 +154,7 @@ const searchResultCustom = ref<Misskey.entities.CustomEmoji[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 const tab = ref<'index' | 'custom' | 'unicode' | 'tags'>('index');
 
-const customEmojiFolderRoot: CustomEmojiFolderTree = { value: "", category: "", children: [] };
+const customEmojiFolderRoot: CustomEmojiFolderTree = { value: '', category: '', children: [] };
 
 function parseAndMergeCategories(input: string, root: CustomEmojiFolderTree): CustomEmojiFolderTree {
 	const parts = input.split('/').map(p => p.trim());
@@ -176,9 +176,9 @@ function parseAndMergeCategories(input: string, root: CustomEmojiFolderTree): Cu
 }
 
 customEmojiCategories.value.forEach(ec => {
-  if (ec !== null) {
-    parseAndMergeCategories(ec, customEmojiFolderRoot);
-  }
+	if (ec !== null) {
+		parseAndMergeCategories(ec, customEmojiFolderRoot);
+	}
 });
 
 parseAndMergeCategories('', customEmojiFolderRoot);

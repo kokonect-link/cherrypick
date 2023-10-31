@@ -11,8 +11,8 @@ import { NoteUpdateService } from '@/core/NoteUpdateService.js';
 import { DI } from '@/di-symbols.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { MAX_NOTE_TEXT_LENGTH } from '@/const.js';
+import type { DriveFilesRepository, MiDriveFile } from '@/models/_.js';
 import { ApiError } from '../../error.js';
-import type { DriveFilesRepository, MiDriveFile } from "@/models/_.js";
 
 export const meta = {
 	tags: ['notes'],
@@ -113,7 +113,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (note.userId !== me.id) {
 				throw new ApiError(meta.errors.noSuchNote);
 			}
-
 
 			let files: MiDriveFile[] = [];
 			const fileIds = ps.fileIds ?? ps.mediaIds ?? null;
