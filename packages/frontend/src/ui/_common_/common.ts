@@ -4,6 +4,7 @@
  */
 
 import { defineAsyncComponent } from 'vue';
+import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { host } from '@/config.js';
@@ -11,6 +12,35 @@ import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+
+function toolsMenuItems(): MenuItem[] {
+	return [{
+		type: 'link',
+		to: '/scratchpad',
+		text: i18n.ts.scratchpad,
+		icon: 'ti ti-terminal-2',
+	}, {
+		type: 'link',
+		to: '/api-console',
+		text: 'API Console',
+		icon: 'ti ti-terminal-2',
+	}, {
+		type: 'link',
+		to: '/clicker',
+		text: '🍪👈',
+		icon: 'ti ti-cookie',
+	}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
+		type: 'link',
+		to: '/custom-emojis-manager',
+		text: i18n.ts.manageCustomEmojis,
+		icon: 'ti ti-icons',
+	} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
+		type: 'link',
+		to: '/avatar-decorations',
+		text: i18n.ts.manageAvatarDecorations,
+		icon: 'ti ti-sparkles',
+	} : undefined];
+}
 
 export function openInstanceMenu(ev: MouseEvent) {
 	os.popupMenu([{
@@ -50,32 +80,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		type: 'parent',
 		text: i18n.ts.tools,
 		icon: 'ti ti-tool',
-		children: [{
-			type: 'link',
-			to: '/scratchpad',
-			text: i18n.ts.scratchpad,
-			icon: 'ti ti-terminal-2',
-		}, {
-			type: 'link',
-			to: '/api-console',
-			text: 'API Console',
-			icon: 'ti ti-terminal-2',
-		}, {
-			type: 'link',
-			to: '/clicker',
-			text: '🍪👈',
-			icon: 'ti ti-cookie',
-		}, ($i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) ? {
-			type: 'link',
-			to: '/custom-emojis-manager',
-			text: i18n.ts.manageCustomEmojis,
-			icon: 'ti ti-icons',
-		} : undefined, ($i && ($i.isAdmin || $i.policies.canManageAvatarDecorations)) ? {
-			type: 'link',
-			to: '/avatar-decorations',
-			text: i18n.ts.manageAvatarDecorations,
-			icon: 'ti ti-sparkles',
-		} : undefined],
+		children: toolsMenuItems(),
 	}, null, (instance.impressumUrl) ? {
 		text: i18n.ts.impressum,
 		icon: 'ti ti-file-invoice',
@@ -135,6 +140,12 @@ export function openInstanceMenu(ev: MouseEvent) {
 		text: i18n.ts.aboutMisskey,
 		to: '/about-misskey',
 	}], ev.currentTarget ?? ev.target, {
+		align: 'left',
+	});
+}
+
+export function openToolsMenu(ev: MouseEvent) {
+	os.popupMenu(toolsMenuItems(), ev.currentTarget ?? ev.target, {
 		align: 'left',
 	});
 }
