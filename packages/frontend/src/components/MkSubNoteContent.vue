@@ -154,8 +154,8 @@ const props = defineProps<{
 
 let note = $ref(deepClone(props.note));
 
-const isLong = shouldCollapsed(props.note);
-const isMFM = shouldMfmCollapsed(props.note);
+const isLong = shouldCollapsed(props.note, []);
+const isMFM = shouldMfmCollapsed(props.note, []);
 
 const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse || note.files.length > 0 || note.poll);
 

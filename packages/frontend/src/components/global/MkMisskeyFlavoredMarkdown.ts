@@ -39,6 +39,7 @@ type MfmProps = {
 	emojiUrls?: string[];
 	rootScale?: number;
 	nyaize: boolean | 'account';
+	parsedNodes?: mfm.MfmNode[] | null;
 };
 
 // eslint-disable-next-line import/no-default-export
@@ -49,7 +50,7 @@ export default function(props: MfmProps) {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (props.text == null || props.text === '') return;
 
-	const rootAst = (props.plain ? mfm.parseSimple : mfm.parse)(props.text);
+	const rootAst = props.parsedNodes ?? (props.plain ? mfm.parseSimple : mfm.parse)(props.text);
 
 	const validTime = (t: string | null | undefined) => {
 		if (t == null) return null;
