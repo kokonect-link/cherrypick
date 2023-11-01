@@ -226,13 +226,13 @@ defineExpose({
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	font-size: 14px;
 
 	> .icon, > .loader {
 		margin: 6px 0;
 	}
 
 	> .icon {
+    font-size: 14px;
 		transition: transform .25s;
 
 		&.refresh {
@@ -243,7 +243,6 @@ defineExpose({
 
 .text {
   margin: 5px 0;
-  font-size: initial;
 }
 
 .slotClip {
