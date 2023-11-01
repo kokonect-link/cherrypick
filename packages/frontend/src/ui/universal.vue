@@ -497,7 +497,7 @@ $widgets-hide-threshold: 1090px;
 
 	&:has(.itemIndicateValueIcon) {
 		animation: none;
-		font-size: 12px;
+		font-size: 10px;
 	}
 }
 

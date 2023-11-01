@@ -389,7 +389,6 @@ function openProfile() {
       animation: none;
       left: auto;
       right: 40px;
-      font-size: 10px;
     }
 	}
 
@@ -559,7 +558,6 @@ function openProfile() {
       top: 4px;
       left: auto;
       right: 4px;
-      font-size: 10px;
     }
 	}
 }

@@ -327,6 +327,7 @@ function openProfile() {
     animation: none;
     left: auto;
     right: 20px;
+    font-size: 8px;
   }
 }
 

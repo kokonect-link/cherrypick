@@ -660,7 +660,7 @@ $float-button-size: 65px;
 
   &:has(.itemIndicateValueIcon) {
     animation: none;
-    font-size: 12px;
+    font-size: 6px;
   }
 }
 

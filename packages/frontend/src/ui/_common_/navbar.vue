@@ -361,7 +361,6 @@ function more(ev: MouseEvent) {
 			animation: none;
 			left: auto;
 			right: 40px;
-			font-size: 10px;
 		}
 	}
 
@@ -532,7 +531,6 @@ function more(ev: MouseEvent) {
 			top: 4px;
 			left: auto;
 			right: 4px;
-			font-size: 10px;
 		}
 	}
 }
