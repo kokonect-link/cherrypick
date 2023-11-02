@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="hide" :class="[$style.hidden, (video.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitiveContainer]" @click="hide = false">
+<div v-if="hide" :class="[$style.hidden, (video.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitiveContainer]" data-is-hidden="true" @click="onClick" @dblclick="defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? hide = false : ''">
 	<!-- 【注意】dataSaverMode が有効になっている際には、hide が false になるまでサムネイルや動画を読み込まないようにすること -->
 	<div :class="$style.sensitive">
 		<b v-if="video.isSensitive" style="display: block;"><i class="ti ti-alert-triangle"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.video}${video.size ? ' ' + bytes(video.size) : ''})` : '' }}</b>
@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span>{{ i18n.ts.clickToShow }}</span>
 	</div>
 </div>
-<div v-else :class="[$style.visible, (video.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitiveContainer]">
+<div v-else :class="[$style.visible, (video.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitiveContainer]" data-is-hidden="false">
 	<video
 		ref="videoEl"
 		:class="$style.video"
@@ -37,12 +37,24 @@ import * as Misskey from 'cherrypick-js';
 import bytes from '@/filters/bytes.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
+import * as os from '@/os.js';
+import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 const props = defineProps<{
 	video: Misskey.entities.DriveFile;
 }>();
 
 const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enableDataSaverMode) ? true : (props.video.isSensitive && defaultStore.state.nsfw !== 'ignore'));
+
+function onClick(ev: MouseEvent) {
+	if (!hide.value) return;
+	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
+		os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	}
+	if (defaultStore.state.nsfwOpenBehavior === 'click') {
+		hide.value = false;
+	}
+}
 
 const videoEl = shallowRef<HTMLVideoElement>();
 
@@ -107,6 +119,7 @@ watch(videoEl, () => {
 	align-items: center;
 	background: #111;
 	color: #fff;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .sensitive {
