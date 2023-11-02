@@ -1246,6 +1246,7 @@ additionalPermissionsForFlash: "Allow to add permission to Play"
 thisFlashRequiresTheFollowingPermissions: "This Play requires the following permissions"
 doYouWantToAllowThisPlayToAccessYourAccount: "Do you want to allow this Play to access your account?"
 translateProfile: "Translate profile"
+nsfwOpenBehavior: "NSFW media open behavior"
 _vibrations:
   click: "When an element is clicked"
   note: "When a new note is posted on the timeline"
@@ -2521,3 +2522,6 @@ _imageCompressionMode:
   noResizeCompress: "Compression without resize"
   resizeCompressLossy: "Resize and lossy compression"
   noResizeCompressLossy: "Lossy compression without resize"
+_nsfwOpenBehavior:
+  click: "Click to open"
+  doubleClick: "Double click to open"

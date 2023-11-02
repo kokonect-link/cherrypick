@@ -4,10 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'" @click="onclick">
+<div :data-is-hidden="hide ? 'true' : 'false'" :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'" @click="onClick" @dblclick="onDblclick">
 	<component
-		:is="disableImageLink ? 'div' : 'a'"
-		v-bind="disableImageLink ? {
+		:is="(disableImageLink || hide) ? 'div' : 'a'"
+		v-bind="(disableImageLink || hide) ? {
 			title: image.name,
 			class: $style.imageContainer,
 		} : {
@@ -64,6 +64,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { iAmModerator } from '@/account.js';
+import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 const props = withDefaults(defineProps<{
 	image: Misskey.entities.DriveFile;
@@ -90,11 +91,24 @@ const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 		: props.image.thumbnailUrl,
 );
 
-function onclick() {
+function onClick(ev: MouseEvent) {
 	if (!props.controls) {
 		return;
 	}
-	if (hide) {
+	if (!hide) return;
+	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
+		os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	}
+	if (defaultStore.state.nsfwOpenBehavior === 'click') {
+		hide = false;
+	}
+}
+
+function onDblclick() {
+	if (!props.controls) {
+		return;
+	}
+	if (hide && defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
 		hide = false;
 	}
 }
@@ -150,6 +164,7 @@ onUnmounted(() => {
 <style lang="scss" module>
 .hidden {
 	position: relative;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .sensitive {
@@ -205,6 +220,7 @@ onUnmounted(() => {
 
 .visible {
 	position: relative;
+	-webkit-tap-highlight-color: transparent;
 	//box-shadow: 0 0 0 1px var(--divider) inset;
 	background: var(--bg);
 	background-image: linear-gradient(45deg, var(--c) 16.67%, var(--bg) 16.67%, var(--bg) 50%, var(--c) 50%, var(--c) 66.67%, var(--bg) 66.67%, var(--bg) 100%);

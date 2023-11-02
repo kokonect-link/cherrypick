@@ -1251,6 +1251,7 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "nsfwOpenBehavior": string;
     "_vibrations": {
         "click": string;
         "note": string;
@@ -2707,6 +2708,10 @@ export interface Locale {
                 "description": string;
             };
         };
+    };
+    "_nsfwOpenBehavior": {
+        "click": string;
+        "doubleClick": string;
     };
 }
 declare const locales: {

@@ -1223,6 +1223,7 @@ additionalPermissionsForFlash: "Play에 대한 추가 권한"
 thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구해요"
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
 translateProfile: "프로필 번역하기"
+nsfwOpenBehavior: "열람주의 여는 방법"
 _vibrations:
   click: "요소를 클릭했을 때"
   note: "타임라인에 새 노트가 올라왔을 때"
@@ -2447,3 +2448,6 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "테마 설치에 실패했어요"
       description: "테마를 설치하는 동안 문제가 발생했어요. 다시 시도해 주세요. 오류에 대한 자세한 내용은 자바스크립트 콘솔을 참고해 주세요."
+_nsfwOpenBehavior:
+  click: "탭하여 열기"
+  doubleClick: "더블 탭 하여 열기"
