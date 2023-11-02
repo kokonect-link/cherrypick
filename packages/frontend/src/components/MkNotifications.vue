@@ -41,7 +41,13 @@ const props = defineProps<{
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
-const pagination: Paging = {
+const pagination: Paging = defaultStore.state.useGroupedNotifications ? {
+	endpoint: 'i/notifications-grouped' as const,
+	limit: 20,
+	params: computed(() => ({
+		excludeTypes: props.excludeTypes ?? undefined,
+	})),
+} : {
 	endpoint: 'i/notifications' as const,
 	limit: 20,
 	params: computed(() => ({
