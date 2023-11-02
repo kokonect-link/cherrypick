@@ -157,7 +157,7 @@ watch(v, () => {
 	padding: 12px;
 	line-height: 1.5em;
 	font-size: 1em;
-	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+	font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 }
 
 .textarea::selection {

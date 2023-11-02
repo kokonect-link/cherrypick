@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #default="{ items: notifications }">
 		<MkDateSeparatedList v-slot="{ item: notification }" :class="$style.list" :items="notifications" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline || mainRouter.currentRoute.value.name !== 'my-notifications'">
 			<MkNote v-if="['reply', 'quote', 'mention'].includes(notification.type)" :key="notification.id" :note="notification.note" :notification="true"/>
-			<XNotification v-else :key="notification.id" :notification="notification" :withTime="true" :full="true" class="_panel notification"/>
+			<XNotification v-else :key="notification.id" :notification="notification" :withTime="true" :full="true" class="_panel"/>
 		</MkDateSeparatedList>
 	</template>
 </MkPagination>
@@ -41,7 +41,13 @@ const props = defineProps<{
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
-const pagination: Paging = {
+const pagination: Paging = defaultStore.state.useGroupedNotifications ? {
+	endpoint: 'i/notifications-grouped' as const,
+	limit: 20,
+	params: computed(() => ({
+		excludeTypes: props.excludeTypes ?? undefined,
+	})),
+} : {
 	endpoint: 'i/notifications' as const,
 	limit: 20,
 	params: computed(() => ({
