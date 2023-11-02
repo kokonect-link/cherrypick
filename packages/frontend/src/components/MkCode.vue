@@ -29,7 +29,7 @@ const XCode = defineAsyncComponent(() => import('@/components/MkCode.core.vue'))
 <style module lang="scss">
 .codeInlineRoot {
 	display: inline-block;
-	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+	font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 	overflow-wrap: anywhere;
 	color: #D4D4D4;
 	background: #1E1E1E;
