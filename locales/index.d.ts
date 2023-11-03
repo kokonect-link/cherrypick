@@ -1284,6 +1284,8 @@ export interface Locale {
         "tooManyActiveAnnouncementDescription": string;
         "readConfirmTitle": string;
         "readConfirmText": string;
+        "shouldNotBeUsedToPresentPermanentInfo": string;
+        "dialogAnnouncementUxWarn": string;
     };
     "_group": {
         "leader": string;
@@ -2121,6 +2123,7 @@ export interface Locale {
         "notesCount": string;
         "nameAndDescription": string;
         "nameOnly": string;
+        "allowRenoteToExternal": string;
     };
     "_menuDisplay": {
         "sideFull": string;

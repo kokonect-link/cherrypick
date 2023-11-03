@@ -134,6 +134,20 @@ type Blocking = {
 // @public (undocumented)
 type Channel = {
     id: ID;
+    lastNotedAt: Date | null;
+    userId: User['id'] | null;
+    user: User | null;
+    name: string;
+    description: string | null;
+    bannerId: DriveFile['id'] | null;
+    banner: DriveFile | null;
+    pinnedNoteIds: string[];
+    color: string;
+    isArchived: boolean;
+    notesCount: number;
+    usersCount: number;
+    isSensitive: boolean;
+    allowRenoteToExternal: boolean;
 };
 
 // Warning: (ae-forgotten-export) The symbol "AnyOf" needs to be exported by the entry point index.d.ts
@@ -2757,6 +2771,8 @@ type Note = {
     fileIds: DriveFile['id'][];
     visibility: 'public' | 'home' | 'followers' | 'specified';
     visibleUserIds?: User['id'][];
+    channel?: Channel;
+    channelId?: Channel['id'];
     localOnly?: boolean;
     myReaction?: string;
     reactions: Record<string, number>;

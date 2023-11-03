@@ -20,6 +20,7 @@
 	- 画像のテンプレートはこちらです: https://misskey-hub.net/avatar-decoration-template.png
 		- 最大でも黄色いエリア内にデコレーションを収めることを推奨します。
 		- 画像は512x512pxを推奨します。
+- Feat: チャンネル設定にリノート／引用リノートの可否を設定できる項目を追加
 - Enhance: すでにフォローしたすべての人の返信をTLに追加できるように
 - Enhance: 未読の通知数を表示できるように
 - Enhance: ローカリゼーションの更新
@@ -55,6 +56,7 @@
 - Fix: 個人カードのemojiがバッテリーになっている問題を修正
 - Fix: 標準テーマと同じIDを使用してインストールできてしまう問題を修正
 - Fix: 絵文字ピッカーでバッテリーの絵文字が複数表示される問題を修正 #12197
+- Fix: In deck layout, replies option is not saved after refresh
 
 ### Server
 - Feat: Registry APIがサードパーティから利用可能になりました
