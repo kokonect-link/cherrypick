@@ -93,6 +93,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="force">{{ i18n.ts._displayOfSensitiveMedia.force }}</option>
 			</MkSelect>
 
+			<MkSelect v-model="nsfwOpenBehavior">
+				<template #label>{{ i18n.ts.nsfwOpenBehavior }} <span class="_beta">CherryPick</span></template>
+				<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
+				<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
+			</MkSelect>
+
 			<MkRadios v-model="mediaListWithOneImageAppearance">
 				<template #label>{{ i18n.ts.mediaListWithOneImageAppearance }}</template>
 				<option value="expand">{{ i18n.ts.default }}</option>
@@ -381,6 +387,7 @@ const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('reno
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
+const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
