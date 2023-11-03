@@ -41,7 +41,7 @@
 		"clean": "node ./scripts/clean.js",
 		"clean-all": "node ./scripts/clean-all.js",
 		"cleanall": "pnpm clean-all",
-		"schemasync": "cd packages/backend && pnpm typeorm schema:sync -d ormconfig.js"
+		"schema:sync": "cd packages/backend && pnpm typeorm schema:sync -d ormconfig.js"
 	},
 	"resolutions": {
 		"chokidar": "3.5.3",
