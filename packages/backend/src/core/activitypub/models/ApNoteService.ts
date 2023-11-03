@@ -25,12 +25,11 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { MessagingService } from '@/core/MessagingService.js';
 import { bindThis } from '@/decorators.js';
 import { checkHttps } from '@/misc/check-https.js';
-import type { IObject, IPost } from '../type.js';
+import { NoteUpdateService } from '@/core/NoteUpdateService.js';
 import { getApId, getApType, getOneApHrefNullable, getOneApId, isEmoji, validPost } from '../type.js';
 import { ApLoggerService } from '../ApLoggerService.js';
 import { ApMfmService } from '../ApMfmService.js';
 import { ApDbResolverService } from '../ApDbResolverService.js';
-import type { Resolver } from '../ApResolverService.js';
 import { ApResolverService } from '../ApResolverService.js';
 import { ApAudienceService } from '../ApAudienceService.js';
 import { ApPersonService } from './ApPersonService.js';
@@ -39,7 +38,8 @@ import { ApMentionService } from './ApMentionService.js';
 import { ApQuestionService } from './ApQuestionService.js';
 import { ApEventService } from './ApEventService.js';
 import { ApImageService } from './ApImageService.js';
-import { NoteUpdateService } from '@/core/NoteUpdateService.js';
+import type { Resolver } from '../ApResolverService.js';
+import type { IObject, IPost } from '../type.js';
 
 @Injectable()
 export class ApNoteService {

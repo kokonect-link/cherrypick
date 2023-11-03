@@ -176,7 +176,7 @@ const props = withDefaults(defineProps<{
 }>(), {
 	initialVisibleUsers: () => [],
 	autofocus: false,
-  mock: false,
+	mock: false,
 });
 
 provide('mock', props.mock);
@@ -345,7 +345,7 @@ if (props.reply && props.reply.text != null) {
 }
 
 if ($i?.isSilenced && visibility === 'public') {
-  visibility = 'home';
+	visibility = 'home';
 }
 
 if (props.channel) {
@@ -467,7 +467,7 @@ function focus() {
 }
 
 function chooseFileFrom(ev) {
-  if (props.mock) return;
+	if (props.mock) return;
 
 	selectFiles(ev.currentTarget ?? ev.target, i18n.ts.attachFile).then(files_ => {
 		for (const file of files_) {
@@ -481,9 +481,9 @@ function detachFile(id) {
 }
 
 function updateFileSensitive(file, sensitive) {
-  if (props.mock) {
-    emit('fileChangeSensitive', file.id, sensitive);
-  }
+	if (props.mock) {
+		emit('fileChangeSensitive', file.id, sensitive);
+	}
 	files[files.findIndex(x => x.id === file.id)].isSensitive = sensitive;
 }
 
@@ -496,7 +496,7 @@ function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities
 }
 
 function upload(file: File, name?: string): void {
-  if (props.mock) return;
+	if (props.mock) return;
 
 	uploadFile(file, defaultStore.state.uploadFolder, name).then(res => {
 		files.push(res);
@@ -512,7 +512,7 @@ function setVisibility() {
 
 	os.popup(defineAsyncComponent(() => import('@/components/MkVisibilityPicker.vue')), {
 		currentVisibility: visibility,
-    isSilenced: $i?.isSilenced,
+		isSilenced: $i?.isSilenced,
 		localOnly: localOnly,
 		src: visibilityButton,
 	}, {
@@ -638,7 +638,7 @@ function onCompositionEnd(ev: CompositionEvent) {
 }
 
 async function onPaste(ev: ClipboardEvent) {
-  if (props.mock) return;
+	if (props.mock) return;
 
 	for (const { item, i } of Array.from(ev.clipboardData.items, (item, i) => ({ item, i }))) {
 		if (item.kind === 'file') {
@@ -755,13 +755,13 @@ function deleteDraft() {
 }
 
 async function post(ev?: MouseEvent) {
-  if (useCw && (cw == null || cw.trim() === '')) {
-    os.alert({
-      type: 'error',
-      text: i18n.ts.cwNotationRequired,
-    });
-    return;
-  }
+	if (useCw && (cw == null || cw.trim() === '')) {
+		os.alert({
+			type: 'error',
+			text: i18n.ts.cwNotationRequired,
+		});
+		return;
+	}
 
 	if (ev) {
 		const el = ev.currentTarget ?? ev.target;
@@ -771,7 +771,7 @@ async function post(ev?: MouseEvent) {
 		os.popup(MkRippleEffect, { x, y }, {}, 'end');
 	}
 
-  if (props.mock) return;
+	if (props.mock) return;
 
 	const annoying =
 		text.includes('$[x2') ||

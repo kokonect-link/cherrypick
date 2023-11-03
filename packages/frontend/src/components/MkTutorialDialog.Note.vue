@@ -10,9 +10,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="_gaps_s">
 		<div><i class="ti ti-arrow-back-up"></i> <b>{{ i18n.ts.reply }}</b> … {{ i18n.ts._initialTutorial._note.reply }}</div>
 		<div><i class="ti ti-repeat"></i> <b>{{ i18n.ts.renote }}</b> … {{ i18n.ts._initialTutorial._note.renote }}</div>
-    <div><i class="ti ti-heart"></i> <b>{{ i18n.ts.like }}</b> … {{ i18n.ts._initialTutorial._note.like }}</div>
+		<div><i class="ti ti-heart"></i> <b>{{ i18n.ts.like }}</b> … {{ i18n.ts._initialTutorial._note.like }}</div>
 		<div><i class="ti ti-mood-plus"></i> <b>{{ i18n.ts.reaction }}</b> … {{ i18n.ts._initialTutorial._note.reaction }}</div>
-    <div><i class="ti ti-quote"></i> <b>{{ i18n.ts.quote }}</b> … {{ i18n.ts._initialTutorial._note.quote }}</div>
+		<div><i class="ti ti-quote"></i> <b>{{ i18n.ts.quote }}</b> … {{ i18n.ts._initialTutorial._note.quote }}</div>
 		<div><i class="ti ti-dots"></i> <b>{{ i18n.ts.menu }}</b> … {{ i18n.ts._initialTutorial._note.menu }}</div>
 	</div>
 </div>

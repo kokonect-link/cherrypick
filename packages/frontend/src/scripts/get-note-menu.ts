@@ -532,7 +532,7 @@ export function getRenoteMenu(props: {
 		}]);
 	}
 
-	if (!appearNote.channel || appearNote.channel?.allowRenoteToExternal) {
+	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
 		normalRenoteItems.push(...[{
 			text: i18n.ts.renote,
 			icon: 'ti ti-repeat',
@@ -629,7 +629,7 @@ export function getRenoteOnlyMenu(props: {
 		}
 	}
 
-	if (!appearNote.channel || appearNote.channel?.allowRenoteToExternal) {
+	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
 		const el = props.renoteButton.value as HTMLElement | null | undefined;
 		if (el) {
 			const rect = el.getBoundingClientRect();

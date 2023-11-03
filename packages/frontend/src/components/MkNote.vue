@@ -224,7 +224,7 @@ const props = withDefaults(defineProps<{
   mock?: boolean;
   notification?: boolean;
 }>(), {
-  mock: false,
+	mock: false,
 	notification: false,
 });
 
@@ -306,16 +306,16 @@ onMounted(() => {
 });
 
 if (props.mock) {
-  watch(() => props.note, (to) => {
-    note = deepClone(to);
-  }, { deep: true });
+	watch(() => props.note, (to) => {
+		note = deepClone(to);
+	}, { deep: true });
 } else {
-  useNoteCapture({
-    rootEl: el,
-    note: $$(appearNote),
-    pureNote: $$(note),
-    isDeletedRef: isDeleted,
-  });
+	useNoteCapture({
+		rootEl: el,
+		note: $$(appearNote),
+		pureNote: $$(note),
+		isDeletedRef: isDeleted,
+	});
 }
 
 if (!props.mock) {
@@ -352,14 +352,14 @@ async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 
-  getRenoteOnlyMenu({ note: note, renoteButton, mock: props.mock });
+	getRenoteOnlyMenu({ note: note, renoteButton, mock: props.mock });
 }
 
 function quote(viaKeyboard = false): void {
 	pleaseLogin();
-  if (props.mock) {
-    return;
-  }
+	if (props.mock) {
+		return;
+	}
 	if (appearNote.channel) {
 		os.post({
 			renote: appearNote,
@@ -411,10 +411,10 @@ function react(viaKeyboard = false): void {
 	} else {
 		blur();
 		reactionPicker.show(reactButton.value, reaction => {
-      if (props.mock) {
-        emit('reaction', reaction);
-        return;
-      }
+			if (props.mock) {
+				emit('reaction', reaction);
+				return;
+			}
 			toggleReaction(reaction);
 		}, () => {
 			focus();
@@ -456,9 +456,9 @@ function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
 
-  if (props.mock) {
-    return;
-  }
+	if (props.mock) {
+		return;
+	}
 
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
@@ -538,9 +538,9 @@ async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
 
-  if (props.mock) {
-    return;
-  }
+	if (props.mock) {
+		return;
+	}
 
 	const res = await os.api('notes/translate', {
 		noteId: appearNote.id,

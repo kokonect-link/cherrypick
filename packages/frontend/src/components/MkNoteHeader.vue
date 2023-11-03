@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <header :class="$style.root">
 	<div :class="$style.section">
 		<div style="display: flex;">
-      <div v-if="mock" :class="$style.name">
-        <MkUserName :user="note.user"/>
-      </div>
+			<div v-if="mock" :class="$style.name">
+				<MkUserName :user="note.user"/>
+			</div>
 			<MkA v-else v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
 				<MkUserName :user="note.user"/>
 			</MkA>
@@ -36,9 +36,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
-      <div v-if="mock">
-        <MkTime :time="note.createdAt" colored/>
-      </div>
+			<div v-if="mock">
+				<MkTime :time="note.createdAt" colored/>
+			</div>
 			<MkA v-else :class="$style.time" :to="notePage(note)">
 				<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute" colored/>
 				<MkTime v-else-if="!defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="relative" colored/>

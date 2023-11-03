@@ -824,7 +824,7 @@ export class ApInboxService {
 		const unlock = await this.appLockService.getApLock(uri);
 
 		try {
-			const target = await this.notesRepository.findOneBy({uri: uri});
+			const target = await this.notesRepository.findOneBy({ uri: uri });
 			if (!target) return `skip: target note not located: ${uri}`;
 			await this.apNoteService.updateNote(note, target, resolver, silent);
 			return 'ok';

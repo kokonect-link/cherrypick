@@ -52,7 +52,7 @@ let meta = $ref<Misskey.entities.Instance>();
 let instances = $ref<any[]>();
 
 function getInstanceIcon(instance): string {
-  return getProxiedImageUrl(instance.iconUrl, 'preview');
+	return getProxiedImageUrl(instance.iconUrl, 'preview');
 }
 
 os.api('meta', { detail: true }).then(_meta => {
