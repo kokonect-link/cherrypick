@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+nsfwOpenBehavior: "センシティブなメディアを開くとき"
 previewNoteProfile: "プロフィールを表示"
 noteEdited: "ノートを編集しました。"
 removeModalBgColorForBlur: "モーダル背景色を削除"
@@ -1249,7 +1250,10 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
-nsfwOpenBehavior: "閲覧注意の開き方"
+
+_nsfwOpenBehavior:
+  click: "タップして開く"
+  doubleClick: "二回タップして開く"
 
 _vibrations:
   click: "要素をクリックしたとき"
@@ -2608,7 +2612,3 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "テーマのインストールに失敗しました"
       description: "テーマのインストール中に問題が発生しました。もう一度お試しください。エラーの詳細はJavascriptコンソールをご覧ください。"
-
-_nsfwOpenBehavior:
-  click: "タップして開く"
-  doubleClick: "二回タップして開く"
