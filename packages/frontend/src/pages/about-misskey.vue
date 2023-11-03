@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<FormSection v-if="isKokonect">
 					<template #label>_KOKONECT_</template>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://status.kokonect.link" external>
 							<template #icon><i class="ti ti-activity"></i></template>
 							{{ i18n.ts._aboutMisskey._kokonect.serverStatus }}
@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>CherryPick</template>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://github.com/kokonect-link/cherrypick" external>
 							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>Misskey</template>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://github.com/misskey-dev/misskey" external>
 							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}

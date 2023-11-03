@@ -1,6 +1,6 @@
 ---
 _lang_: "한국어"
-nsfwOpenBehavior: "NSFW로 설정된 미디어를 열 때"
+nsfwOpenBehavior: "민감한 콘텐츠로 표시된 미디어를 열 때"
 previewNoteProfile: "프로필 표시"
 noteEdited: "노트를 편집했어요!"
 removeModalBgColorForBlur: "모달 배경색 제거"
@@ -1240,11 +1240,6 @@ _showingAnimatedImages:
   inactive: "일정 시간이 지나면 멈춤"
 _messaging:
   direct: "다이렉트 메시지"
-_tlTutorial:
-  step1_1: '{icon} 홈 타임라인은 내가 팔로우하고 있는 계정의 게시물을 볼 수 있어요.'
-  step1_2: '{icon} 로컬 타임라인은 이 서버의 모든 유저가 올린 게시물을 볼 수 있어요.'
-  step1_3: '{icon} 소셜 타임라인은 홈 타임라인과 로컬 타임라인을 합친 것과 같아요.'
-  step1_4: '{icon} 글로벌 타임라인에서는 이 서버와 연결된 모든 서버의 게시물을 볼 수 있어요.'
 _announcement:
   forExistingUsers: "기존 유저에게만 알리기"
   forExistingUsersDescription: "활성화하면 이 공지사항을 게시한 시점에서 이미 가입한 유저에게만 표시해요. 비활성화하면 게시 후에 가입한 유저에게도 표시해요."

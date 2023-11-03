@@ -49,25 +49,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 0,
 	},
-	timelineTutorial: {
+	timelineTutorials: {
 		where: 'account',
-		default: 0,
-	},
-	tlHomeHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlLocalHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlSocialHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlGlobalHintClosed: {
-		where: 'device',
-		default: false,
+		default: {
+			home: false,
+			local: false,
+			social: false,
+			global: false,
+		},
 	},
 	keepCw: {
 		where: 'account',

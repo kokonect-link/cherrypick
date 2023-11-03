@@ -1264,11 +1264,6 @@ _showingAnimatedImages:
   inactive: "Stop after a certain amount of time"
 _messaging:
   direct: "Direct Message"
-_tlTutorial:
-  step1_1: 'The {icon} Home timeline is where you can see posts from the accounts you follow.'
-  step1_2: 'The {icon} Local timeline is where you can see posts from everyone else on this server.'
-  step1_3: 'The {icon} Social timeline is a combination of the Home and Local timelines.'
-  step1_4: 'The {icon} Global timeline is where you can see posts from every other connected server.'
 _announcement:
   forExistingUsers: "Existing users only"
   forExistingUsersDescription: "This announcement will only be shown to users existing at the point of publishment if enabled. If disabled, those newly signing up after it has been posted will also see it."

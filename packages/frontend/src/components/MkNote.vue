@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<article v-else :class="$style.article" @contextmenu.stop="onContextmenu">
 		<div style="display: flex; padding-bottom: 10px;">
 			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
-			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" link preview/>
+			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" :link="!mock" :preview="!mock"/>
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
 			</div>
@@ -113,7 +113,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
 		<div>
-			<MkReactionsViewer v-show="appearNote.cw == null || showContent" :note="appearNote" :maxNumber="16">
+			<MkReactionsViewer v-show="appearNote.cw == null || showContent" :note="appearNote" :maxNumber="16" @mockUpdateMyReaction="emitUpdReaction">
 				<template #more>
 					<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
 				</template>
@@ -176,7 +176,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent } from 'vue';
+import { computed, inject, onMounted, ref, shallowRef, Ref, defineAsyncComponent, watch, provide } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
@@ -221,10 +221,19 @@ let showEl = $ref(false);
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
 	pinned?: boolean;
+  mock?: boolean;
   notification?: boolean;
 }>(), {
+  mock: false,
 	notification: false,
 });
+
+provide('mock', props.mock);
+
+const emit = defineEmits<{
+  (ev: 'reaction', emoji: string): void;
+  (ev: 'removeReaction', emoji: string): void;
+}>();
 
 const inChannel = inject('inChannel', null);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
@@ -296,30 +305,38 @@ onMounted(() => {
 	});
 });
 
-useNoteCapture({
-	rootEl: el,
-	note: $$(appearNote),
-	pureNote: $$(note),
-	isDeletedRef: isDeleted,
-});
+if (props.mock) {
+  watch(() => props.note, (to) => {
+    note = deepClone(to);
+  }, { deep: true });
+} else {
+  useNoteCapture({
+    rootEl: el,
+    note: $$(appearNote),
+    pureNote: $$(note),
+    isDeletedRef: isDeleted,
+  });
+}
 
-useTooltip(renoteButton, async (showing) => {
-	const renotes = await os.api('notes/renotes', {
-		noteId: appearNote.id,
-		limit: 11,
+if (!props.mock) {
+	useTooltip(renoteButton, async (showing) => {
+		const renotes = await os.api('notes/renotes', {
+			noteId: appearNote.id,
+			limit: 11,
+		});
+
+		const users = renotes.map(x => x.user);
+
+		if (users.length < 1) return;
+
+		os.popup(MkUsersTooltip, {
+			showing,
+			users,
+			count: appearNote.renoteCount,
+			targetElement: renoteButton.value,
+		}, {}, 'closed');
 	});
-
-	const users = renotes.map(x => x.user);
-
-	if (users.length < 1) return;
-
-	os.popup(MkUsersTooltip, {
-		showing,
-		users,
-		count: appearNote.renoteCount,
-		targetElement: renoteButton.value,
-	}, {}, 'closed');
-});
+}
 
 type Visibility = 'public' | 'home' | 'followers' | 'specified';
 
@@ -351,23 +368,27 @@ function renote(viaKeyboard = false) {
 					os.popup(MkRippleEffect, { x, y }, {}, 'end');
 				}
 
-				os.api('notes/create', {
-					renoteId: appearNote.id,
-					channelId: appearNote.channelId,
-				}).then(() => {
-					os.noteToast(i18n.ts.renoted, 'renote');
-				});
+				if (!props.mock) {
+					os.api('notes/create', {
+						renoteId: appearNote.id,
+						channelId: appearNote.channelId,
+					}).then(() => {
+            os.noteToast(i18n.ts.renoted, 'renote');
+					});
+				}
 			},
 		}, {
 			text: i18n.ts.inChannelQuote,
 			icon: 'ti ti-quote',
 			action: () => {
-				os.post({
-					renote: appearNote,
-					channel: appearNote.channel,
-				}, () => {
-					focus();
-				});
+				if (!props.mock) {
+					os.post({
+						renote: appearNote,
+						channel: appearNote.channel,
+					}, () => {
+            focus();
+          });
+				}
 			},
 		}, null]);
 	}
@@ -393,15 +414,17 @@ function renote(viaKeyboard = false) {
 				visibility = smallerVisibility(visibility, 'home');
 			}
 
-			os.api('notes/create', {
-				localOnly,
-				visibility,
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.noteToast(i18n.ts.renoted, 'renote');
-			});
+			if (!props.mock) {
+				os.api('notes/create', {
+					localOnly,
+					visibility,
+					renoteId: appearNote.id,
+				}).then(() => {
+          os.noteToast(i18n.ts.renoted, 'renote');
+				});
+			}
 		},
-	}, {
+	}, (props.mock) ? undefined : {
 		text: i18n.ts.quote,
 		icon: 'ti ti-quote',
 		action: () => {
@@ -432,21 +455,23 @@ async function renoteOnly() {
 	}
 
 	if (appearNote.channel) {
-		const el = renoteButton.value as HTMLElement | null | undefined;
-		if (el) {
-			const rect = el.getBoundingClientRect();
-			const x = rect.left + (el.offsetWidth / 2);
-			const y = rect.top + (el.offsetHeight / 2);
-			os.popup(MkRippleEffect, { x, y }, {}, 'end');
-		}
+    const el = renoteButton.value as HTMLElement | null | undefined;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const x = rect.left + (el.offsetWidth / 2);
+      const y = rect.top + (el.offsetHeight / 2);
+      os.popup(MkRippleEffect, {x, y}, {}, 'end');
+    }
 
-		os.api('notes/create', {
-			renoteId: appearNote.id,
-			channelId: appearNote.channelId,
-		}).then(() => {
-			os.noteToast(i18n.ts.renoted, 'renote');
-		});
-	}
+    if (!props.mock) {
+      os.api('notes/create', {
+        renoteId: appearNote.id,
+        channelId: appearNote.channelId,
+      }).then(() => {
+        os.noteToast(i18n.ts.renoted, 'renote');
+      });
+    }
+  }
 
 	const el = renoteButton.value as HTMLElement | null | undefined;
 	if (el) {
@@ -465,17 +490,22 @@ async function renoteOnly() {
 		visibility = smallerVisibility(visibility, 'home');
 	}
 
-	os.api('notes/create', {
-		localOnly,
-		visibility,
-		renoteId: appearNote.id,
-	}).then(() => {
-		os.noteToast(i18n.ts.renoted, 'renote');
-	});
+  if (!props.mock) {
+    os.api('notes/create', {
+      localOnly,
+      visibility,
+      renoteId: appearNote.id,
+    }).then(() => {
+      os.noteToast(i18n.ts.renoted, 'renote');
+    });
+  }
 }
 
 function quote(viaKeyboard = false): void {
 	pleaseLogin();
+  if (props.mock) {
+    return;
+  }
 	if (appearNote.channel) {
 		os.post({
 			renote: appearNote,
@@ -494,6 +524,9 @@ function quote(viaKeyboard = false): void {
 
 function reply(viaKeyboard = false): void {
 	pleaseLogin();
+	if (props.mock) {
+		return;
+	}
 	os.post({
 		reply: appearNote,
 		channel: appearNote.channel,
@@ -507,6 +540,9 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.reactionAcceptance === 'likeOnly') {
+		if (props.mock) {
+			return;
+		}
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
 			reaction: '❤️',
@@ -521,6 +557,10 @@ function react(viaKeyboard = false): void {
 	} else {
 		blur();
 		reactionPicker.show(reactButton.value, reaction => {
+      if (props.mock) {
+        emit('reaction', reaction);
+        return;
+      }
 			toggleReaction(reaction);
 		}, () => {
 			focus();
@@ -561,6 +601,11 @@ async function toggleReaction(reaction) {
 function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
+
+  if (props.mock) {
+    return;
+  }
+
 	os.api('notes/reactions/create', {
 		noteId: appearNote.id,
 		reaction: '❤️',
@@ -580,12 +625,22 @@ function heartReact(): void {
 function undoReact(note): void {
 	const oldReaction = note.myReaction;
 	if (!oldReaction) return;
+
+	if (props.mock) {
+		emit('removeReaction', oldReaction);
+		return;
+	}
+
 	os.api('notes/reactions/delete', {
 		noteId: note.id,
 	});
 }
 
 function onContextmenu(ev: MouseEvent): void {
+	if (props.mock) {
+		return;
+	}
+
 	const isLink = (el: HTMLElement) => {
 		if (el.tagName === 'A') return true;
 		// 再生速度の選択などのために、Audio要素のコンテキストメニューはブラウザデフォルトとする。
@@ -607,6 +662,10 @@ function onContextmenu(ev: MouseEvent): void {
 }
 
 function menu(viaKeyboard = false): void {
+	if (props.mock) {
+		return;
+	}
+
 	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
@@ -614,12 +673,21 @@ function menu(viaKeyboard = false): void {
 }
 
 async function clip() {
+	if (props.mock) {
+		return;
+	}
+
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
+
+  if (props.mock) {
+    return;
+  }
+
 	const res = await os.api('notes/translate', {
 		noteId: appearNote.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
@@ -629,6 +697,10 @@ async function translate(): Promise<void> {
 }
 
 function showRenoteMenu(viaKeyboard = false): void {
+	if (props.mock) {
+		return;
+	}
+
 	function getUnrenote(): MenuItem {
 		return {
 			text: i18n.ts.unrenote,
@@ -685,6 +757,14 @@ function readPromo() {
 		noteId: appearNote.id,
 	});
 	isDeleted.value = true;
+}
+
+function emitUpdReaction(emoji: string, delta: number) {
+	if (delta < 0) {
+		emit('removeReaction', emoji);
+	} else if (delta > 0) {
+		emit('reaction', emoji);
+	}
 }
 </script>
 

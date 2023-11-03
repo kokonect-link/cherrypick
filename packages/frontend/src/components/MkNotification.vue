@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="elRef" :class="$style.root">
+<div :class="$style.root">
 	<div :class="$style.head">
 		<MkAvatar v-if="notification.type === 'pollEnded'" :class="$style.icon" :user="notification.note.user" link preview/>
 		<MkAvatar v-else-if="notification.type === 'note'" :class="$style.icon" :user="notification.note.user" link preview/>
@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<!-- notification.reaction が null になることはまずないが、ここでoptional chaining使うと一部ブラウザで刺さるので念の為 -->
 			<MkReactionIcon
 				v-else-if="notification.type === 'reaction'"
-				ref="reactionRef"
+				:withTooltip="true"
 				:reaction="notification.reaction ? notification.reaction.replace(/^:(\w+):$/, ':$1@.:') : notification.reaction"
 				:noStyle="true"
 				style="width: 100%; height: 100%;"
@@ -121,6 +121,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkAvatar :class="$style.reactionsItemAvatar" :user="reaction.user" link preview/>
 					<div :class="$style.reactionsItemReaction">
 						<MkReactionIcon
+							:withTooltip="true"
 							:reaction="reaction.reaction ? reaction.reaction.replace(/^:(\w+):$/, ':$1@.:') : reaction.reaction"
 							:noStyle="true"
 							style="width: 100%; height: 100%;"
@@ -143,14 +144,12 @@ import { ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-import XReactionTooltip from '@/components/MkReactionTooltip.vue';
 import MkButton from '@/components/MkButton.vue';
 import { getNoteSummary } from '@/scripts/get-note-summary.js';
 import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { useTooltip } from '@/scripts/use-tooltip.js';
 import { $i } from '@/account.js';
 import { infoImageUrl } from '@/instance.js';
 import { defaultStore } from '@/store.js';
@@ -163,9 +162,6 @@ const props = withDefaults(defineProps<{
 	withTime: false,
 	full: false,
 });
-
-const elRef = shallowRef<HTMLElement>(null);
-const reactionRef = ref(null);
 
 const followRequestDone = ref(false);
 const groupInviteDone = ref(false);
@@ -189,15 +185,6 @@ const rejectGroupInvitation = () => {
 	groupInviteDone.value = true;
 	os.apiWithDialog('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };
-
-useTooltip(reactionRef, (showing) => {
-	os.popup(XReactionTooltip, {
-		showing,
-		reaction: props.notification.reaction ? props.notification.reaction.replace(/^:(\w+):$/, ':$1@.:') : props.notification.reaction,
-		emojis: props.notification.note.emojis,
-		targetElement: reactionRef.value.$el,
-	}, {}, 'closed');
-});
 </script>
 
 <style lang="scss" module>

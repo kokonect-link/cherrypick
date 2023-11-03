@@ -114,28 +114,22 @@ export function openInstanceMenu(ev: MouseEvent) {
 			text: i18n.ts._mfm.cheatSheet,
 			icon: 'ti ti-help-circle',
 			to: '/mfm-cheat-sheet',
-		}, null, {
-			type: 'button',
-			text: i18n.ts.replayUserSetupDialog,
-			icon: 'ti ti-list-numbers',
-			action: () => {
-				defaultStore.set('accountSetupWizard', 0);
-				os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
-			},
-		}, {
-			type: 'button',
-			text: i18n.ts.replayTutorial,
-			icon: 'ti ti-checkup-list',
-			action: () => {
-				defaultStore.set('timelineTutorial', 0);
-				defaultStore.set('tlHomeHintClosed', false);
-				defaultStore.set('tlLocalHintClosed', false);
-				defaultStore.set('tlSocialHintClosed', false);
-				defaultStore.set('tlGlobalHintClosed', false);
-				setTimeout(unisonReload, 100);
-			},
 		}],
-	}, {
+	}, ($i) ? {
+		type: 'button',
+		text: i18n.ts.replayUserSetupDialog,
+		icon: 'ti ti-list-numbers',
+		action: () => {
+			defaultStore.set('accountSetupWizard', 0);
+			os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
+		},
+	} : undefined, ($i) ? {
+		text: i18n.ts._initialTutorial.launchTutorial,
+		icon: 'ti ti-presentation',
+		action: () => {
+			os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {}, {}, 'closed');
+		},
+	} : undefined, {
 		type: 'link',
 		text: i18n.ts.aboutMisskey,
 		to: '/about-misskey',
