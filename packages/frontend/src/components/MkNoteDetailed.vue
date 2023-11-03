@@ -282,7 +282,7 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { getAbuseNoteMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnlyMenu } from '@/scripts/get-note-menu.js';
+import { getAbuseNoteMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly } from '@/scripts/get-note-menu.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { deepClone } from '@/scripts/clone.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
@@ -419,7 +419,7 @@ async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 
-	getRenoteOnlyMenu({ note: note, renoteButton });
+	getRenoteOnly({ note: note, renoteButton });
 }
 
 function quote(viaKeyboard = false): void {

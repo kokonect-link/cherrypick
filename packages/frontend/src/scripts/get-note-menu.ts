@@ -587,7 +587,7 @@ export function getRenoteMenu(props: {
 	};
 }
 
-export function getRenoteOnlyMenu(props: {
+export function getRenoteOnly(props: {
 	note: Misskey.entities.Note;
 	renoteButton: Ref<HTMLElement>;
 	mock?: boolean;
