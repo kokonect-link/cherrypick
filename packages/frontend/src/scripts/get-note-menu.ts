@@ -587,7 +587,7 @@ export function getRenoteMenu(props: {
 	};
 }
 
-export function getRenoteOnly(props: {
+export async function getRenoteOnly(props: {
 	note: Misskey.entities.Note;
 	renoteButton: Ref<HTMLElement>;
 	mock?: boolean;
@@ -602,7 +602,7 @@ export function getRenoteOnly(props: {
 	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
 
 	if (defaultStore.state.showRenoteConfirmPopup) {
-		const { canceled } = os.confirm({
+		const { canceled } = await os.confirm({
 			type: 'info',
 			text: i18n.ts.renoteConfirm,
 			caption: i18n.ts.renoteConfirmDescription,
