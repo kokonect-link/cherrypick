@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.sensitive">
 		<b v-if="video.isSensitive" style="display: block;"><i class="ti ti-alert-triangle"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.video}${video.size ? ' ' + bytes(video.size) : ''})` : '' }}</b>
 		<b v-else style="display: block;"><i class="ti ti-movie"></i> {{ defaultStore.state.enableDataSaverMode && video.size ? bytes(video.size) : i18n.ts.video }}</b>
-		<span>{{ i18n.ts.clickToShow }}</span>
+		<span>{{ clickToShowMessage }}</span>
 	</div>
 </div>
 <div v-else :class="[$style.visible, (video.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitiveContainer]" data-is-hidden="false">
@@ -45,6 +45,12 @@ const props = defineProps<{
 }>();
 
 const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enableDataSaverMode) ? true : (props.video.isSensitive && defaultStore.state.nsfw !== 'ignore'));
+
+let clickToShowMessage = $computed(() =>
+    defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
+        : defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
+            : ''
+);
 
 function onClick(ev: MouseEvent) {
 	if (!hide.value) return;

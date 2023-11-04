@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.hiddenTextWrapper">
 				<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
 				<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.enableDataSaverMode && image.size ? bytes(image.size) : i18n.ts.image }}</b>
-				<span v-if="controls" style="display: block;">{{ i18n.ts.clickToShow }}</span>
+				<span v-if="controls" style="display: block;">{{ clickToShowMessage }}</span>
 			</div>
 		</div>
 	</template>
@@ -89,6 +89,12 @@ const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(props.image.url)
 		: props.image.thumbnailUrl,
+);
+
+let clickToShowMessage = $computed(() =>
+    defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
+        : defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
+            : ''
 );
 
 function onClick(ev: MouseEvent) {
