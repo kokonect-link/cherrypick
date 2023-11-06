@@ -39,8 +39,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { Ref, computed, ref, watch } from 'vue';
-import * as os from '@/os.js';
 import XSound from './sounds.sound.vue';
+import * as os from '@/os.js';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';

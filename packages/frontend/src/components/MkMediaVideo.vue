@@ -47,9 +47,9 @@ const props = defineProps<{
 const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enableDataSaverMode) ? true : (props.video.isSensitive && defaultStore.state.nsfw !== 'ignore'));
 
 let clickToShowMessage = $computed(() =>
-    defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
-        : defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
-            : ''
+	defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
+	: defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
+	: '',
 );
 
 function onClick(ev: MouseEvent) {

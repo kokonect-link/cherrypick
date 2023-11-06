@@ -92,9 +92,9 @@ const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 );
 
 let clickToShowMessage = $computed(() =>
-    defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
-        : defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
-            : ''
+	defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
+	: defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
+	: '',
 );
 
 function onClick(ev: MouseEvent) {
