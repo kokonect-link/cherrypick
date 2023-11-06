@@ -1247,6 +1247,7 @@ disableStreamingTimeline: "タイムラインのリアルタイム更新を無�
 useGroupedNotifications: "通知をグルーピングして表示する"
 signupPendingError: "メールアドレスの確認中に問題が発生しました。リンクの有効期限が切れている可能性があります。"
 cwNotationRequired: "「内容を隠す」がオンの場合は注釈の記述が必要です。"
+doReaction: "リアクションする"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -1285,6 +1286,8 @@ _announcement:
   readConfirmText: "「{title}」の内容を読み、既読にします。"
   shouldNotBeUsedToPresentPermanentInfo: "特に新規ユーザーのUXを損ねる可能性が高いため、ストック情報ではなくフロー情報の掲示にお知らせを使用することを推奨します。"
   dialogAnnouncementUxWarn: "ダイアログ形式のお知らせが同時に2つ以上ある場合、UXに悪影響を及ぼす可能性が非常に高いため、使用は慎重に行うことを推奨します。"
+  silence: "非通知"
+  silenceDescription: "オンにすると、このお知らせは通知されず、既読にする必要もなくなります。"
 
 _group:
   leader: "グループオーナー"
@@ -1365,7 +1368,7 @@ _initialTutorial:
     description: "CherryPickでの投稿は「ノート」と呼びます。ノートはタイムラインに時系列で並んでいて、リアルタイムで更新されていきます。"
     reply: "返信することができます。返信に対しての返信も可能で、スレッドのように会話を続けることもできます。"
     renote: "そのノートを自分のタイムラインに流して共有することができます。テキストを追加して引用することも可能です。"
-    like: "ハートリアクションを送ることができます。"
+    like: "ハートリアクションを送ることができます。「いいね！」を素早く残したいときに便利です。"
     reaction: "リアクションをつけることができます。詳しくは次のページで解説します。"
     quote: "引用を付けることができます。何らかの内容に基づき意見を付け加えたいときに便利です。"
     menu: "ノートの詳細を表示したり、リンクをコピーしたりなどの様々な操作が行えます。"

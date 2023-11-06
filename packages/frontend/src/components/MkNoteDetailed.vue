@@ -89,13 +89,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.noteContent">
 			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<p v-if="appearNote.cw != null" :class="$style.cw">
-				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'" :i="$i"/>
+				<Mfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'account'"/>
 				<MkCwButton v-model="showContent" :note="appearNote"/>
 			</p>
 			<div v-show="appearNote.cw == null || showContent">
 				<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
 				<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
-				<Mfm v-if="appearNote.text" :parsedNodes="parsed" :text="appearNote.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
+				<Mfm
+					v-if="appearNote.text"
+					:parsedNodes="parsed"
+					:text="appearNote.text"
+					:author="appearNote.user"
+					:nyaize="'account'"
+					:emojiUrls="appearNote.emojis"
+					:enableEmojiMenu="true"
+					:enableEmojiMenuReaction="true"
+				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && appearNote.text" style="padding-top: 5px; color: var(--accent);">
 					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
@@ -105,7 +114,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkLoading v-if="translating" mini/>
 					<div v-else>
 						<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :i="$i" :emojiUrls="appearNote.emojis"/>
+						<Mfm :text="translation.text" :author="appearNote.user" :nyaize="'account'" :emojiUrls="appearNote.emojis"/>
 						<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 							<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 							<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -226,7 +235,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 						<div>
 							<div>
-								<Mfm :text="text.trim()" :author="appearNote.user" :i="$i"/>
+								<Mfm :text="text.trim()" :author="appearNote.user"/>
 							</div>
 							<CodeDiff
 								:oldString="appearNote.noteEditHistory[index - 1] || ''"
@@ -258,7 +267,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef } from 'vue';
+import { computed, inject, onMounted, provide, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import { CodeDiff } from 'v-code-diff';
@@ -359,6 +368,13 @@ const keymap = {
 	'm|o': () => menu(true),
 	's': () => showContent.value !== showContent.value,
 };
+
+provide('react', (reaction: string) => {
+	os.api('notes/reactions/create', {
+		noteId: appearNote.id,
+		reaction: reaction,
+	});
+});
 
 let tab = $ref('replies');
 let reactionTabType = $ref(null);

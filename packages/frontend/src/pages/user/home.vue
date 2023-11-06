@@ -78,7 +78,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="description">
 						<MkOmit>
-							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :i="$i"/>
+							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
 							<div v-if="user.description">
 								<MkButton v-if="!(translating || translation)" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkLoading v-if="translating" mini/>
 								<div v-else>
 									<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-									<Mfm :text="translation.text" :isNote="false" :author="user" :i="$i"/>
+									<Mfm :text="translation.text" :isNote="false" :author="user"/>
 									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -117,7 +117,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<Mfm :text="field.name" :plain="true" :colored="false"/>
 							</dt>
 							<dd class="value">
-								<Mfm :text="field.value" :author="user" :i="$i" :colored="false"/>
+								<Mfm :text="field.value" :author="user" :colored="false"/>
 								<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ti ti-circle-check" :class="$style.verifiedLink"></i>
 							</dd>
 						</dl>
