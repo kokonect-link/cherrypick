@@ -23,6 +23,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name !== 'index'">
 			<div style="width: 34px;"/>
 		</div>
+		<div v-if="metadata && metadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != metadata.avatar.id)">
+			<div style="width: 50px;"/>
+		</div>
 
 		<template v-if="metadata">
 			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="top">
