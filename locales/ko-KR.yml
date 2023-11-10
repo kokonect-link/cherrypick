@@ -1,5 +1,8 @@
 ---
 _lang_: "한국어"
+disableNoteEditConfirm: "노트 편집을 계속 진행할까요?"
+disableNoteEditConfirmWarn: "노트 편집을 대응하는 소프트웨어<small>(Mastodon, CherryPick, FireFish 등)</small>에서만 편집된 내용과 이력을 볼 수 있어요.\n노트 편집이 지원되지 않는 소프트웨어에서는 노트를 편집하기 전의 내용으로 표시되므로, 모든 연합된 서버에서 수정된 내용을 반영하고 싶은 경우, <b>'삭제 후 편집'</b>으로 노트를 재작성해 주세요."
+disableNoteEditOk: "노트 편집하기"
 nsfwOpenBehavior: "민감한 콘텐츠로 표시된 미디어를 열 때"
 previewNoteProfile: "프로필 표시"
 noteEdited: "노트를 편집했어요!"

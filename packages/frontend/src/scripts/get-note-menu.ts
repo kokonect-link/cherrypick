@@ -175,8 +175,40 @@ export function getNoteMenu(props: {
 		});
 	}
 
-	function edit(): void {
-		os.post({ initialNote: appearNote, renote: appearNote.renote, reply: appearNote.reply, channel: appearNote.channel, updateMode: true });
+	async function edit(): Promise<void> {
+		const neverShowInfo = miLocalStorage.getItem('neverShowNoteEditInfo');
+
+		if (neverShowInfo !== 'true') {
+			const confirm = await os.actions({
+				type: 'warning',
+				title: i18n.ts.disableNoteEditConfirm,
+				text: i18n.ts.disableNoteEditConfirmWarn,
+				actions: [
+					{
+						value: 'yes' as const,
+						text: i18n.ts.disableNoteEditOk,
+					},
+					{
+						value: 'neverShow' as const,
+						text: `${i18n.ts.disableNoteEditOk} (${i18n.ts.neverShow})`,
+						danger: true,
+					},
+					{
+						value: 'no' as const,
+						text: i18n.ts.cancel,
+						primary: true,
+					},
+				],
+			});
+			if (confirm.canceled) return;
+			if (confirm.result === 'no') return;
+
+			if (confirm.result === 'neverShow') {
+				miLocalStorage.setItem('neverShowNoteEditInfo', 'true');
+			}
+		}
+
+		await os.post({ initialNote: appearNote, renote: appearNote.renote, reply: appearNote.reply, channel: appearNote.channel, updateMode: true });
 	}
 
 	function copyEdit(): void {

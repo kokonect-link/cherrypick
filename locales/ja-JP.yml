@@ -1,5 +1,8 @@
 _lang_: "日本語"
 
+disableNoteEditConfirm: "ノート編集を続行しますか？"
+disableNoteEditConfirmWarn: "ノート編集に対応しているソフトウェア<small>（Mastodon、CherryPick、FireFishなど）</small>でのみ、編集された内容と履歴を見ることができます。\nノート編集に対応していないソフトウェアでは、ノートを編集する前の内容が表示されるので、すべての連合サーバーで修正した内容を反映させたい場合は、<b>「削除して編集」</b>でノートを書き直してください。"
+disableNoteEditOk: "ノートを編集する"
 nsfwOpenBehavior: "センシティブなメディアを開くとき"
 previewNoteProfile: "プロフィールを表示"
 noteEdited: "ノートを編集しました。"
