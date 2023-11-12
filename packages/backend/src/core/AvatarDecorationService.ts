@@ -140,6 +140,9 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		const avatarDecorations = userData.avatarDecorations?.[0];
 
 		if (!avatarDecorations) {
+			const updates = {} as Partial<MiUser>;
+			updates.avatarDecorations = [];
+			await this.usersRepository.update({id: user.id}, updates);
 			return;
 		}
 
