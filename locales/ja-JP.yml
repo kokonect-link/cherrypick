@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+noNyaization: "ニャ化を使わずに表示"
+revertNoNyaization: "ニャ化の設定を反映する"
 viewTextSource: "テキストのソースを表示する"
 disableNoteEditConfirm: "ノート編集を続行しますか？"
 disableNoteEditConfirmWarn: "ノート編集に対応しているソフトウェア<small>（Mastodon、CherryPick、FireFishなど）</small>でのみ、編集された内容と履歴を見ることができます。\nノート編集に対応していないソフトウェアでは、ノートを編集する前の内容が表示されるので、すべての連合サーバーで修正した内容を反映させたい場合は、<b>「削除して編集」</b>でノートを書き直してください。"

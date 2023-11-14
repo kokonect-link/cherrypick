@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+noNyaization: "Show content without Nyaization"
+revertNoNyaization: "Reflect Nyaization settings"
 viewTextSource: "View text source"
 disableNoteEditConfirm: "Really continue editing the note?"
 disableNoteEditConfirmWarn: "Only software that supports note editing<small>(Mastodon, CherryPick, FireFish, etc.)</small> will be able to see the edits and history.\nSoftware that doesn't support note editing will only show what was in the note before you edited it, so if you want it to reflect your edits across all federated servers, rewrite the note with <b>\"delete and edit\"</b>."

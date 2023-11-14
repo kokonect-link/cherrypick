@@ -40,6 +40,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 이모티콘 피커의 카테고리를 다중 계층 폴더로 분류할 수 있음 (misskey-dev/misskey#12132)
 - Feat: 열람 주의로 설정된 미디어를 두 번 탭 하여 표시하도록 할 수 있음 #392
 - Feat: 노트의 텍스트 소스를 볼 수 있음
+- Feat: 고양이로 설정된 유저의 노트를 냥체를 표시하지 않고 볼 수 있음
 - Enhance: 스와이프하여 타임라인을 다시 불러올 수 있음 (misskey-dev/misskey#12113)
 	- PC의 경우 오른쪽 상단의 버튼을 통해서도 다시 불러올 수 있습니다
 - Enhance: 타임라인 자동 업데이트를 비활성화할 수 있음 (misskey-dev/misskey#12113)

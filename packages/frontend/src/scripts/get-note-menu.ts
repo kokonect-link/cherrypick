@@ -126,6 +126,7 @@ export function getNoteMenu(props: {
 	translation: Ref<any>;
 	translating: Ref<boolean>;
 	viewTextSource: Ref<boolean>;
+	noNyaize: Ref<boolean>;
 	isDeleted: Ref<boolean>;
 	currentClip?: Misskey.entities.Clip;
 }) {
@@ -316,6 +317,14 @@ export function getNoteMenu(props: {
 		props.viewTextSource.value = true;
 	}
 
+	function noNyaizeText(): void {
+		props.noNyaize.value = true;
+	}
+
+	function revertNoNyaizeText(): void {
+		props.noNyaize.value = false;
+	}
+
 	let menu: MenuItem[];
 	if ($i) {
 		const statePromise = os.api('notes/state', {
@@ -380,6 +389,15 @@ export function getNoteMenu(props: {
 				icon: 'ti ti-file-text',
 				text: i18n.ts.viewTextSource,
 				action: showViewTextSource,
+			},
+			props.noNyaize.value ? {
+				icon: 'ti ti-cat',
+				text: i18n.ts.revertNoNyaization,
+				action: revertNoNyaizeText,
+			} : {
+				icon: 'ti ti-cat',
+				text: i18n.ts.noNyaization,
+				action: noNyaizeText,
 			},
 			null,
 			statePromise.then(state => state.isFavorited ? {

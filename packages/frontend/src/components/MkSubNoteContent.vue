@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:parsedNodes="parsed"
 			:text="note.text"
 			:author="note.user"
-			:nyaize="'account'"
+			:nyaize="noNyaize ? false : 'account'"
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="true"
 			:enableEmojiMenuReaction="true"
@@ -164,6 +164,8 @@ const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', nul
 const showContent = ref(true);
 const translation = ref<any>(null);
 const translating = ref(false);
+
+const noNyaize = ref(false);
 
 const parsed = props.note.text ? mfm.parse(props.note.text) : null;
 
@@ -368,7 +370,7 @@ function menu(viaKeyboard = false): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
