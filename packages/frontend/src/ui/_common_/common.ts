@@ -39,6 +39,14 @@ function toolsMenuItems(): MenuItem[] {
 		to: '/avatar-decorations',
 		text: i18n.ts.manageAvatarDecorations,
 		icon: 'ti ti-sparkles',
+	} : undefined, ($i) ? {
+		type: 'button',
+		text: i18n.ts.replayUserSetupDialog,
+		icon: 'ti ti-list-numbers',
+		action: () => {
+			defaultStore.set('accountSetupWizard', 0);
+			os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
+		},
 	} : undefined];
 }
 
@@ -116,14 +124,6 @@ export function openInstanceMenu(ev: MouseEvent) {
 			to: '/mfm-cheat-sheet',
 		}],
 	}, ($i) ? {
-		type: 'button',
-		text: i18n.ts.replayUserSetupDialog,
-		icon: 'ti ti-list-numbers',
-		action: () => {
-			defaultStore.set('accountSetupWizard', 0);
-			os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
-		},
-	} : undefined, ($i) ? {
 		text: i18n.ts._initialTutorial.launchTutorial,
 		icon: 'ti ti-presentation',
 		action: () => {
