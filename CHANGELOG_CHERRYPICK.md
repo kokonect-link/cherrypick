@@ -67,6 +67,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
+- Feat: 리모트 유저의 아바타 장식이 반영됨 ([libnare/cp-castella@7891331](https://github.com/libnare/cp-castella/commit/7891331321e2fbaf4ec5f5c9d4e51b116948d564), [libnare/cp-castella@ae4004c](https://github.com/libnare/cp-castella/commit/ae4004cd41c85f56716a4100c2eb0d8410fbd20a), [libnare/cp-castella@135aa97](https://github.com/libnare/cp-castella/commit/135aa97046548ba5929c04e412622c979a2cad09))
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 장시간 기다려도 마이그레이션이 완료되지 않을 수 있음
 - Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
