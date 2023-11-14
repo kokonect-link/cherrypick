@@ -125,6 +125,7 @@ export function getNoteMenu(props: {
 	menuButton: Ref<HTMLElement>;
 	translation: Ref<any>;
 	translating: Ref<boolean>;
+	viewTextSource: Ref<boolean>;
 	isDeleted: Ref<boolean>;
 	currentClip?: Misskey.entities.Clip;
 }) {
@@ -311,6 +312,10 @@ export function getNoteMenu(props: {
 		props.translation.value = res;
 	}
 
+	function showViewTextSource(): void {
+		props.viewTextSource.value = true;
+	}
+
 	let menu: MenuItem[];
 	if ($i) {
 		const statePromise = os.api('notes/state', {
@@ -369,6 +374,12 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
+			null,
+			{
+				icon: 'ti ti-file-text',
+				text: i18n.ts.viewTextSource,
+				action: showViewTextSource,
+			},
 			null,
 			statePromise.then(state => state.isFavorited ? {
 				icon: 'ti ti-star-off',
