@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="viewTextSource">
 			<hr style="margin: 10px 0;">
-			<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
+			<pre style="margin: initial;"><small>{{ note.text }}</small></pre>
 			<button class="_button" style="padding-top: 5px; color: var(--accent);" @mousedown="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 		</div>
 		<div v-show="showContent">
