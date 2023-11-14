@@ -121,6 +121,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 					</div>
 				</div>
+				<div v-if="viewTextSource">
+					<hr style="margin: 10px 0;">
+					<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
+				</div>
 				<div v-if="appearNote.files.length > 0">
 					<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
 					<MkMediaList v-else :mediaList="appearNote.files"/>
@@ -353,6 +357,7 @@ const isDeleted = ref(false);
 const muted = ref($i ? checkWordMute(appearNote, $i, $i.mutedWords) : false);
 const translation = ref(null);
 const translating = ref(false);
+const viewTextSource = ref(false);
 const noNyaize = ref(false);
 const parsed = appearNote.text ? mfm.parse(appearNote.text) : null;
 const urls = parsed ? extractUrlFromMfm(parsed) : null;
@@ -565,13 +570,13 @@ function onContextmenu(ev: MouseEvent): void {
 		ev.preventDefault();
 		react();
 	} else {
-		const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, noNyaize, menuButton, isDeleted });
+		const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted });
 		os.contextMenu(menu, ev).then(focus).finally(cleanup);
 	}
 }
 
 function menu(viaKeyboard = false): void {
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, noNyaize, menuButton, isDeleted });
+	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);

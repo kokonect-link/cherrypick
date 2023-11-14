@@ -35,6 +35,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</div>
+		<div v-if="viewTextSource">
+			<hr style="margin: 10px 0;">
+			<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
+		</div>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
 				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @contextmenu.prevent/>
@@ -165,6 +169,7 @@ const showContent = ref(true);
 const translation = ref<any>(null);
 const translating = ref(false);
 
+const viewTextSource = ref(false);
 const noNyaize = ref(false);
 
 const parsed = props.note.text ? mfm.parse(props.note.text) : null;
@@ -370,7 +375,7 @@ function menu(viaKeyboard = false): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
