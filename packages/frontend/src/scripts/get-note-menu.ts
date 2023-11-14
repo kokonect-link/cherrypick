@@ -386,16 +386,16 @@ export function getNoteMenu(props: {
 			} : undefined,
 			null,
 			{
-				icon: 'ti ti-file-text',
+				icon: 'ti ti-code',
 				text: i18n.ts.viewTextSource,
 				action: showViewTextSource,
 			},
 			props.noNyaize.value ? {
-				icon: 'ti ti-cat',
+				icon: 'ti ti-paw-filled',
 				text: i18n.ts.revertNoNyaization,
 				action: revertNoNyaizeText,
 			} : {
-				icon: 'ti ti-cat',
+				icon: 'ti ti-paw-off',
 				text: i18n.ts.noNyaization,
 				action: noNyaizeText,
 			},
