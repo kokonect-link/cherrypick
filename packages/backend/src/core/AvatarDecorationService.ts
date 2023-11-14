@@ -5,6 +5,7 @@
 
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import * as Redis from 'ioredis';
+import { IsNull } from 'typeorm';
 import type { AvatarDecorationsRepository, InstancesRepository, UsersRepository, MiAvatarDecoration, MiUser } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -13,10 +14,9 @@ import { bindThis } from '@/decorators.js';
 import { MemorySingleCache } from '@/misc/cache.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
-import { HttpRequestService } from "@/core/HttpRequestService.js";
+import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { appendQuery, query } from '@/misc/prelude/url.js';
 import type { Config } from '@/config.js';
-import {IsNull} from "typeorm";
 
 @Injectable()
 export class AvatarDecorationService implements OnApplicationShutdown {
@@ -112,10 +112,10 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 	private getProxiedUrl(url: string, mode?: 'static' | 'avatar'): string {
 		return appendQuery(
 			`${this.config.mediaProxy}/${mode ?? 'image'}.webp`,
-				query({
-						url,
-						...(mode ? { [mode]: '1' } : {}),
-				}),
+			query({
+				url,
+				...(mode ? { [mode]: '1' } : {}),
+			}),
 		);
 	}
 
@@ -132,8 +132,8 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 
 		const res = await this.httpRequestService.send(showUserApiUrl, {
 			method: 'POST',
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ "username": user.username }),
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ 'username': user.username }),
 		});
 
 		const userData: any = await res.json();
@@ -142,16 +142,16 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		if (!avatarDecorations) {
 			const updates = {} as Partial<MiUser>;
 			updates.avatarDecorations = [];
-			await this.usersRepository.update({id: user.id}, updates);
+			await this.usersRepository.update({ id: user.id }, updates);
 			return;
 		}
 
 		const avatarDecorationId = avatarDecorations.id;
-		const instanceHost = instance?.host;
+		const instanceHost = instance.host;
 		const decorationApiUrl = `https://${instanceHost}/api/get-avatar-decorations`;
 		const allRes = await this.httpRequestService.send(decorationApiUrl, {
 			method: 'POST',
-			headers: {"Content-Type": "application/json"},
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({}),
 		});
 		const allDecorations: any = await allRes.json();
@@ -166,7 +166,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		}
 		const existingDecoration = await this.avatarDecorationsRepository.findOneBy({
 			host: userHost,
-			remoteId: avatarDecorationId
+			remoteId: avatarDecorationId,
 		});
 		const decorationData = {
 			name: name,
@@ -182,7 +182,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		}
 		const findDecoration = await this.avatarDecorationsRepository.findOneBy({
 			host: userHost,
-			remoteId: avatarDecorationId
+			remoteId: avatarDecorationId,
 		});
 		const updates = {} as Partial<MiUser>;
 		updates.avatarDecorations = [{
@@ -190,7 +190,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 			angle: avatarDecorations.angle ?? 0,
 			flipH: avatarDecorations.flipH ?? false,
 		}];
-		await this.usersRepository.update({id: user.id}, updates);
+		await this.usersRepository.update({ id: user.id }, updates);
 	}
 
 	@bindThis
