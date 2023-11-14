@@ -33,7 +33,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 문제가 발생하면 '설정 - 캐시 비우기'를 진행하거나, 브라우저 캐시를 삭제하십시오.
 
 ### General
-- Change: 프로필을 번역할 때 nyaize를 사용하지 않음
+- Change: 프로필과 노트를 번역할 때 nyaize를 사용하지 않음
 
 ### Client
 - Feat: 본문 미리보기의 프로필을 표시하지 않도록 설정할 수 있음
