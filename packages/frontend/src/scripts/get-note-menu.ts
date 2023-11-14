@@ -347,22 +347,12 @@ export function getNoteMenu(props: {
 				text: i18n.ts.copyContent,
 				action: copyContent,
 			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, (appearNote.url || appearNote.uri) ? {
+			, (appearNote.url ?? appearNote.uri) ? {
 				icon: 'ti ti-external-link',
 				text: i18n.ts.showOnRemote,
 				action: () => {
 					window.open(appearNote.url ?? appearNote.uri, '_blank');
 				},
-			} : undefined,
-			(appearNote.userId === $i.id) ? {
-				icon: 'ti ti-edit',
-				text: i18n.ts.copyAndEdit,
-				action: copyEdit,
-			} : undefined,
-			appearNote.userId === $i.id ? {
-				icon: 'ti ti-edit',
-				text: i18n.ts.deleteAndEdit,
-				action: delEdit,
 			} : undefined,
 			{
 				icon: 'ti ti-share',
@@ -373,6 +363,17 @@ export function getNoteMenu(props: {
 				icon: 'ti ti-language-hiragana',
 				text: i18n.ts.translate,
 				action: translate,
+			} : undefined,
+			null,
+			(appearNote.userId === $i.id) ? {
+				icon: 'ti ti-edit',
+				text: i18n.ts.copyAndEdit,
+				action: copyEdit,
+			} : undefined,
+			appearNote.userId === $i.id ? {
+				icon: 'ti ti-edit',
+				text: i18n.ts.deleteAndEdit,
+				action: delEdit,
 			} : undefined,
 			null,
 			{
