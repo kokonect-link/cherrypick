@@ -373,7 +373,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
-			null,
+			(appearNote.userId === $i.id) ? null : undefined,
 			(appearNote.userId === $i.id) ? {
 				icon: 'ti ti-edit',
 				text: i18n.ts.copyAndEdit,
