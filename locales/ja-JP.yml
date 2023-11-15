@@ -1327,6 +1327,7 @@ _cherrypick:
   renameTheButtonInPostFormToNya: "ノート作成画面の「ノート」ボタンを「にゃ！」に変更する"
   renameTheButtonInPostFormToNyaDescription: "にゃあにゃんにゃんにゃんにゃにゃん？"
   enableLongPressOpenAccountMenu: "長押しでアカウントメニューを開く"
+  friendlyShowAvatarDecorationsInNavBtn: "フローティングボタンにアイコンのデコレーションを表示"
 
 _bannerDisplay:
   all: "全て"

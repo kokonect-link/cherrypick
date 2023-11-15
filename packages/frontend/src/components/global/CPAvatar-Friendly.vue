@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
 	<img
-		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0)"
+		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0) && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn"
 		:class="[$style.decoration]"
 		:src="decoration?.url ?? user.avatarDecorations[0].url"
 		:style="{

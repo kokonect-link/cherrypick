@@ -65,6 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
 			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
 			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
+			<MkSwitch v-model="friendlyShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyShowAvatarDecorationsInNavBtn }}</MkSwitch>
 		</div>
 	</FormSection>
 </div>
@@ -103,6 +104,7 @@ const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('r
 const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
 const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
+const friendlyShowAvatarDecorationsInNavBtn = computed(defaultStore.makeGetterSetter('friendlyShowAvatarDecorationsInNavBtn'));
 
 watch([
 	reactableRemoteReactionEnabled,

@@ -1318,6 +1318,7 @@ _cherrypick:
   renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
   renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
   enableLongPressOpenAccountMenu: "Press and hold to open the account menu."
+  friendlyShowAvatarDecorationsInNavBtn: "Show avatar decorations on floating buttons"
 _bannerDisplay:
   all: "All"
   topBottom: "Top and Bottom"

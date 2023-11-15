@@ -1306,6 +1306,7 @@ _cherrypick:
   renameTheButtonInPostFormToNya: "노트 작성 화면의 '노트' 버튼을 '냥!'으로 변경"
   renameTheButtonInPostFormToNyaDescription: "냐앙냥냥냥냐냥?"
   enableLongPressOpenAccountMenu: "길게 눌러 계정 메뉴 열기"
+  friendlyShowAvatarDecorationsInNavBtn: "플로팅 버튼에 아이콘 장식 표시"
 _bannerDisplay:
   all: "전부"
   topBottom: "상단 및 하단"
