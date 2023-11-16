@@ -60,7 +60,7 @@ export async function getNoteClipMenu(props: {
 				},
 			);
 		},
-	})), null, {
+	})), clips.length > 0 ? null : undefined, {
 		icon: 'ti ti-plus',
 		text: i18n.ts.createNew,
 		action: async () => {
