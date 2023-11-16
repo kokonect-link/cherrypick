@@ -340,65 +340,24 @@ export function getNoteMenu(props: {
 					action: unclip,
 				}, null] : []
 			), {
-				icon: 'ti ti-repeat',
-				text: i18n.ts.renotesList,
-				action: showRenotes,
-			}, {
-				icon: 'ti ti-icons',
-				text: i18n.ts.reactionsList,
-				action: showReactions,
-			}, {
 				icon: 'ti ti-info-circle',
 				text: i18n.ts.details,
 				action: openDetail,
+			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
+			, {
+				icon: 'ti ti-share',
+				text: i18n.ts.share,
+				action: share,
 			}, {
 				icon: 'ti ti-copy',
 				text: i18n.ts.copyContent,
 				action: copyContent,
-			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, (appearNote.url ?? appearNote.uri) ? {
-				icon: 'ti ti-external-link',
-				text: i18n.ts.showOnRemote,
-				action: () => {
-					window.open(appearNote.url ?? appearNote.uri, '_blank');
-				},
-			} : undefined,
-			{
-				icon: 'ti ti-share',
-				text: i18n.ts.share,
-				action: share,
 			},
 			$i && $i.policies.canUseTranslator && instance.translatorAvailable ? {
 				icon: 'ti ti-language-hiragana',
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
-			(appearNote.userId === $i.id) ? null : undefined,
-			(appearNote.userId === $i.id) ? {
-				icon: 'ti ti-edit',
-				text: i18n.ts.copyAndEdit,
-				action: copyEdit,
-			} : undefined,
-			appearNote.userId === $i.id ? {
-				icon: 'ti ti-edit',
-				text: i18n.ts.deleteAndEdit,
-				action: delEdit,
-			} : undefined,
-			null,
-			{
-				icon: 'ti ti-code',
-				text: i18n.ts.viewTextSource,
-				action: showViewTextSource,
-			},
-			props.noNyaize.value ? {
-				icon: 'ti ti-paw-filled',
-				text: i18n.ts.revertNoNyaization,
-				action: revertNoNyaizeText,
-			} : {
-				icon: 'ti ti-paw-off',
-				text: i18n.ts.noNyaization,
-				action: noNyaizeText,
-			},
 			null,
 			statePromise.then(state => state.isFavorited ? {
 				icon: 'ti ti-star-off',
@@ -433,6 +392,52 @@ export function getNoteMenu(props: {
 				text: i18n.ts.pin,
 				action: () => togglePin(true),
 			} : undefined,
+			{
+				type: 'parent' as const,
+				icon: 'ti ti-note',
+				text: i18n.ts.note,
+				children: [{
+					icon: 'ti ti-repeat',
+					text: i18n.ts.renotesList,
+					action: showRenotes,
+				}, {
+					icon: 'ti ti-icons',
+					text: i18n.ts.reactionsList,
+					action: showReactions,
+				}, (appearNote.url ?? appearNote.uri) ? {
+					icon: 'ti ti-external-link',
+					text: i18n.ts.showOnRemote,
+					action: () => {
+						window.open(appearNote.url ?? appearNote.uri, '_blank');
+					},
+				} : undefined
+				, (appearNote.userId === $i.id) ? null : undefined
+				, (appearNote.userId === $i.id) ? {
+					icon: 'ti ti-edit',
+					text: i18n.ts.copyAndEdit,
+					action: copyEdit,
+				} : undefined
+				, appearNote.userId === $i.id ? {
+					icon: 'ti ti-edit',
+					text: i18n.ts.deleteAndEdit,
+					action: delEdit,
+				} : undefined
+				, null
+				, {
+					icon: 'ti ti-code',
+					text: i18n.ts.viewTextSource,
+					action: showViewTextSource,
+				}
+				, props.noNyaize.value ? {
+					icon: 'ti ti-paw-filled',
+					text: i18n.ts.revertNoNyaization,
+					action: revertNoNyaizeText,
+				} : {
+					icon: 'ti ti-paw-off',
+					text: i18n.ts.noNyaization,
+					action: noNyaizeText,
+				}],
+			},
 			{
 				type: 'parent' as const,
 				icon: 'ti ti-user',
