@@ -29,9 +29,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 문제가 발생하면 <b>'설정 - 캐시 비우기'</b>를 진행하거나, <b>브라우저 캐시를 삭제</b>하십시오.
 
 ## 4.5.0
-출시일: unreleased<br>
+출시일: 2023/11/16<br>
 기반 Misskey 버전: 2023.11.0<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023110](CHANGELOG.md#2023110) 문서를 참고하십시오.
 
 ### General
 - Change: 프로필과 노트를 번역할 때 nyaize를 사용하지 않음
