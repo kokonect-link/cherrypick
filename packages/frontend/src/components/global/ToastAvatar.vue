@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkImgWithBlurhash
 		:class="$style.inner"
 		:src="url"
-		:hash="user?.avatarBlurhash"
+		:hash="user.avatarBlurhash"
 		:cover="true"
 		:onlyAvgColor="true"
 		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
@@ -16,6 +16,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
+	<img
+		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0)"
+		:class="[$style.decoration]"
+		:src="decoration?.url ?? user.avatarDecorations[0].url"
+		:style="{
+			rotate: getDecorationAngle(),
+			scale: getDecorationScale(),
+		}"
+		alt=""
+	>
 </component>
 </template>
 
@@ -34,15 +44,26 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
+	decoration?: {
+		url: string;
+		angle?: number;
+		flipH?: boolean;
+		flipV?: boolean;
+	};
+	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
+	decoration: undefined,
+	forceShowDecoration: false,
 });
 
 const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;
 }>();
+
+const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
 
 const bound = $computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
@@ -51,13 +72,37 @@ const bound = $computed(() => props.link
 let playAnimation = $ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
-const url = $computed(() => defaultStore.state.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 	? getStaticImageUrl(props.user.avatarUrl)
 	: props.user.avatarUrl);
 
 function onClick(ev: MouseEvent): void {
 	if (props.link) return;
 	emit('click', ev);
+}
+
+function getDecorationAngle() {
+	let angle;
+	if (props.decoration) {
+		angle = props.decoration.angle ?? 0;
+	} else if (props.user.avatarDecorations.length > 0) {
+		angle = props.user.avatarDecorations[0].angle ?? 0;
+	} else {
+		angle = 0;
+	}
+	return angle === 0 ? undefined : `${angle * 360}deg`;
+}
+
+function getDecorationScale() {
+	let scaleX;
+	if (props.decoration) {
+		scaleX = props.decoration.flipH ? -1 : 1;
+	} else if (props.user.avatarDecorations.length > 0) {
+		scaleX = props.user.avatarDecorations[0].flipH ? -1 : 1;
+	} else {
+		scaleX = 1;
+	}
+	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
 function resetTimer() {
@@ -113,5 +158,14 @@ onUnmounted(() => {
 	object-fit: cover;
 	width: 100%;
 	height: 100%;
+}
+
+.decoration {
+  position: absolute;
+  z-index: 1;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  pointer-events: none;
 }
 </style>

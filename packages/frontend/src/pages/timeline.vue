@@ -11,7 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<MkSpacer :contentMax="800">
 		<div ref="rootEl" v-hotkey.global="keymap">
-			<XTutorial v-if="$i && defaultStore.reactiveState.timelineTutorial.value != -1" class="_panel" style="margin-bottom: var(--margin);"/>
+			<MkInfo v-if="['home', 'local', 'social', 'global'].includes(src) && !defaultStore.reactiveState.timelineTutorials.value[src]" style="margin-bottom: var(--margin);" closable @close="closeTutorial()">
+				{{ i18n.ts._timelineDescription[src] }}
+			</MkInfo>
 			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);" :autofocus="false"/>
 
 			<transition
@@ -68,9 +70,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref, provide, onMounted } from 'vue';
+import { computed, watch, ref, provide, onMounted } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import { scroll } from '@/scripts/scroll.js';
 import * as os from '@/os.js';
@@ -88,8 +91,6 @@ import { unisonReload } from '@/scripts/unison-reload.js';
 let showEl = $ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
-if (!isFriendly.value && !defaultStore.state.mobileHeaderChange) provide('shouldOmitHeaderTitle', true);
-
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -97,7 +98,7 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const XTutorial = defineAsyncComponent(() => import('./timeline.tutorial.vue'));
+if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
 
 const isLocalTimelineAvailable = ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable);
 const isGlobalTimelineAvailable = ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable);
@@ -212,6 +213,13 @@ function focus(): void {
 	tlComponent.focus();
 }
 
+function closeTutorial(): void {
+	if (!['home', 'local', 'social', 'global'].includes(src)) return;
+	const before = defaultStore.state.timelineTutorials;
+	before[src] = true;
+	defaultStore.set('timelineTutorials', before);
+}
+
 async function reloadAsk() {
 	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
 		const { canceled } = await os.confirm({
@@ -224,37 +232,51 @@ async function reloadAsk() {
 	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
-const headerActions = $computed(() => [{
-	icon: 'ti ti-dots',
-	text: i18n.ts.options,
-	handler: (ev) => {
-		os.popupMenu([{
-			type: 'switch',
-			text: i18n.ts.friendlyEnableNotifications,
-			ref: $$(friendlyEnableNotifications),
-		}, {
-			type: 'switch',
-			text: i18n.ts.friendlyEnableWidgets,
-			ref: $$(friendlyEnableWidgets),
-		}, {
-			type: 'switch',
-			text: i18n.ts.showRenotes,
-			ref: $$(withRenotes),
-		}, src === 'local' || src === 'social' ? {
-			type: 'switch',
-			text: i18n.ts.showRepliesToOthersInTimeline,
-			ref: $$(withReplies),
-		} : undefined, {
-			type: 'switch',
-			text: i18n.ts.fileAttachedOnly,
-			ref: $$(onlyFiles),
-		}, {
-			type: 'switch',
-			text: i18n.ts.showCatOnly,
-			ref: $$(onlyCats),
-		}], ev.currentTarget ?? ev.target);
-	},
-}]);
+const headerActions = $computed(() => {
+	const tmp = [
+		{
+			icon: 'ti ti-dots',
+			text: i18n.ts.options,
+			handler: (ev) => {
+				os.popupMenu([{
+					type: 'switch',
+					text: i18n.ts.friendlyEnableNotifications,
+					ref: $$(friendlyEnableNotifications),
+				}, {
+					type: 'switch',
+					text: i18n.ts.friendlyEnableWidgets,
+					ref: $$(friendlyEnableWidgets),
+				}, {
+					type: 'switch',
+					text: i18n.ts.showRenotes,
+					ref: $$(withRenotes),
+				}, src === 'local' || src === 'social' ? {
+					type: 'switch',
+					text: i18n.ts.showRepliesToOthersInTimeline,
+					ref: $$(withReplies),
+				} : undefined, {
+					type: 'switch',
+					text: i18n.ts.fileAttachedOnly,
+					ref: $$(onlyFiles),
+				}, {
+					type: 'switch',
+					text: i18n.ts.showCatOnly,
+					ref: $$(onlyCats),
+				}], ev.currentTarget ?? ev.target);
+			},
+		},
+	];
+	if (deviceKind === 'desktop') {
+		tmp.unshift({
+			icon: 'ti ti-refresh',
+			text: i18n.ts.reload,
+			handler: (ev: Event) => {
+				tlComponent.reloadTimeline();
+			},
+		});
+	}
+	return tmp;
+});
 
 const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,

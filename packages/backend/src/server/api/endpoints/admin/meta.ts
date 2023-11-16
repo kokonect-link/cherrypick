@@ -351,6 +351,10 @@ export const meta = {
 				type: 'object',
 				optional: false, nullable: false,
 			},
+			enableFanoutTimeline: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 			perLocalUserUserTimelineCacheMax: {
 				type: 'number',
 				optional: false, nullable: false,
@@ -516,6 +520,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 				manifestJsonOverride: instance.manifestJsonOverride,
+				enableFanoutTimeline: instance.enableFanoutTimeline,
 				perLocalUserUserTimelineCacheMax: instance.perLocalUserUserTimelineCacheMax,
 				perRemoteUserUserTimelineCacheMax: instance.perRemoteUserUserTimelineCacheMax,
 				perUserHomeTimelineCacheMax: instance.perUserHomeTimelineCacheMax,

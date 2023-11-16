@@ -7,7 +7,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <header :class="$style.root">
 	<div :class="$style.section">
 		<div style="display: flex;">
-			<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
+			<div v-if="mock" :class="$style.name">
+				<MkUserName :user="note.user"/>
+			</div>
+			<MkA v-else v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
 				<MkUserName :user="note.user"/>
 			</MkA>
 			<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
@@ -33,7 +36,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
-			<MkA :class="$style.time" :to="notePage(note)">
+			<div v-if="mock">
+				<MkTime :time="note.createdAt" colored/>
+			</div>
+			<MkA v-else :class="$style.time" :to="notePage(note)">
 				<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute" colored/>
 				<MkTime v-else-if="!defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="relative" colored/>
 			</MkA>
@@ -44,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { inject } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { i18n } from '@/i18n.js';
 import { notePage } from '@/filters/note.js';
@@ -57,8 +63,9 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
 
-let note = $ref(deepClone(props.note));
+const mock = inject<boolean>('mock', false);
 
+let note = $ref(deepClone(props.note));
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && note.user.instance);
 </script>
 

@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<FormSection v-if="isKokonect">
 					<template #label>_KOKONECT_</template>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://status.kokonect.link" external>
 							<template #icon><i class="ti ti-activity"></i></template>
 							{{ i18n.ts._aboutMisskey._kokonect.serverStatus }}
@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>CherryPick</template>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://github.com/kokonect-link/cherrypick" external>
 							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label>Misskey</template>
-					<div class="_formLinks">
+					<div class="_gaps_s">
 						<FormLink to="https://github.com/misskey-dev/misskey" external>
 							<template #icon><i class="ti ti-code"></i></template>
 							{{ i18n.ts._aboutMisskey.source }}
@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
+					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
 					<div :class="$style.contributors">
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
@@ -114,25 +114,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/rinsuki" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/6533808?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@rinsuki
+						<a href="https://github.com/kakkokari-gtyih" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/67428053?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@kakkokari-gtyih
 								<span :class="$style.contributorClient">
 									<span :class="$style.misskey">Misskey</span>
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@mei23
-								<span :class="$style.contributorClient">
-									<span :class="$style.misskey">Misskey</span>
-								</span>
-							</span>
-						</a>
-						<a href="https://github.com/robflop" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/8159402?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@robflop
+						<a href="https://github.com/taichanNE30" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/40626578?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@taichanNE30
 								<span :class="$style.contributorClient">
 									<span :class="$style.misskey">Misskey</span>
 								</span>
@@ -147,7 +139,58 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</span>
 						</a>
 					</div>
-					<template #caption><MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink></template>
+				</FormSection>
+				<FormSection>
+					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
+					<div :class="$style.contributors" style="margin-bottom: 8px;">
+						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@mei23
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
+						</a>
+						<a href="https://github.com/rinsuki" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/6533808?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@rinsuki
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
+						</a>
+						<a href="https://github.com/robflop" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/8159402?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@robflop
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
+						</a>
+						<a href="https://github.com/caipira113" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/54402969?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@caipira113
+								<span :class="$style.contributorClient">
+									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
+								</span>
+							</span>
+						</a>
+					</div>
+					<MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink>
+				</FormSection>
+				<FormSection>
+					<template #label>Special thanks</template>
+					<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));grid-gap:24px;align-items:center;">
+						<div>
+							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img style="width: 100%;" src="https://misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
+						</div>
+						<div>
+							<a style="display: inline-block;" class="xserver" title="XServer" href="https://www.xserver.ne.jp/" target="_blank"><img style="width: 100%;" src="https://misskey-hub.net/sponsors/xserver.png" alt="XServer"></a>
+						</div>
+						<div>
+							<a style="display: inline-block;" class="skeb" title="Skeb" href="https://skeb.jp/" target="_blank"><img style="width: 100%;" src="https://misskey-hub.net/sponsors/skeb.svg" alt="Skeb"></a>
+						</div>
+					</div>
 				</FormSection>
 				<FormSection>
 					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
@@ -172,20 +215,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div v-for="patron in patronsWithMisskey" :key="patron">{{ patron }}</div>
 					</div>
 					<p>{{ i18n.ts._aboutMisskey.morePatrons }}</p>
-				</FormSection>
-				<FormSection>
-					<template #label>Special thanks</template>
-					<div class="_gaps" style="text-align: center;">
-						<div>
-							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img width="180" src="https://misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
-						</div>
-						<div>
-							<a style="display: inline-block;" class="skeb" title="Skeb" href="https://skeb.jp/" target="_blank"><img width="180" src="https://misskey-hub.net/sponsors/skeb.svg" alt="Skeb"></a>
-						</div>
-						<div>
-							<a style="display: inline-block;" class="dcadvirth" title="DC Advirth" href="https://www.dotchain.ltd/advirth" target="_blank"><img width="100" src="https://misskey-hub.net/sponsors/dcadvirth.png" alt="DC Advirth"></a>
-						</div>
-					</div>
 				</FormSection>
 			</div>
 		</MkSpacer>
@@ -387,6 +416,7 @@ const patronsWithMisskey = [
 	'美少女JKぐーちゃん',
 	'てば',
 	'たっくん',
+	'SHO SEKIGUCHI',
 ];
 
 let isKokonect = false;

@@ -172,8 +172,11 @@ export default class Stream extends EventEmitter<StreamEvents> {
 	 * ! ストリーム上のやり取りはすべてJSONで行われます !
 	 */
 	public send(typeOrPayload: string): void
+
 	public send(typeOrPayload: string, payload: any): void
+
 	public send(typeOrPayload: Record<string, any> | any[]): void
+
 	public send(typeOrPayload: string | Record<string, any> | any[], payload?: any): void {
 		if (typeof typeOrPayload === 'string') {
 			this.stream.send(JSON.stringify({

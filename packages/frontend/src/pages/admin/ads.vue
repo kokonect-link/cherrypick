@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkInput v-model="ad.url" type="url">
 					<template #label>URL</template>
 				</MkInput>
-				<MkInput v-model="ad.imageUrl">
+				<MkInput v-model="ad.imageUrl" type="url">
 					<template #label>{{ i18n.ts.imageUrl }}</template>
 				</MkInput>
 				<MkRadios v-model="ad.place">
@@ -51,7 +51,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span>
 						{{ i18n.ts._ad.timezoneinfo }}
 						<div v-for="(day, index) in daysOfWeek" :key="index">
-							<input :id="`ad${ad.id}-${index}`" type="checkbox" :checked="(ad.dayOfWeek & (1 << index)) !== 0" @change="toggleDayOfWeek(ad, index)">
+							<input
+								:id="`ad${ad.id}-${index}`" type="checkbox" :checked="(ad.dayOfWeek & (1 << index)) !== 0"
+								@change="toggleDayOfWeek(ad, index)"
+							>
 							<label :for="`ad${ad.id}-${index}`">{{ day }}</label>
 						</div>
 					</span>
@@ -116,6 +119,7 @@ const onChangePublishing = (v) => {
 	publishing = v;
 	refresh();
 };
+
 // 選択された曜日(index)のビットフラグを操作する
 function toggleDayOfWeek(ad, index) {
 	ad.dayOfWeek ^= 1 << index;
@@ -188,6 +192,7 @@ function save(ad) {
 		});
 	}
 }
+
 function more() {
 	os.api('admin/ad/list', { untilId: ads.reduce((acc, ad) => ad.id != null ? ad : acc).id, publishing: publishing }).then(adsResponse => {
 		ads = ads.concat(adsResponse.map(r => {

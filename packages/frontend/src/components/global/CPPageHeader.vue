@@ -13,6 +13,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 	<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
+	<div v-if="!thin_ && canBack && (actions && actions.length > 1 && ['index', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
+	<div v-if="metadata && metadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != metadata.avatar.id)">
+		<div style="width: 50px;"/>
+	</div>
 
 	<template v-if="metadata">
 		<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]">
@@ -42,15 +46,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</template>
 	<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
-	<div v-else-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
+	<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 		<template v-for="action in actions">
 			<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
 	<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
-		<MkFollowButton v-if="narrow && mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="false"/>
-		<MkFollowButton v-else-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="true"/>
+		<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="!narrow"/>
 	</div>
 </div>
 </template>
@@ -103,7 +106,7 @@ const emit = defineEmits<{
 
 const metadata = injectPageMetadata();
 
-const hideTitle = inject('shouldOmitHeaderTitle', false);
+const hideTitle = false;
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
 let el = $shallowRef<HTMLElement | undefined>(undefined);

@@ -4,10 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'" @click="onclick">
+<div :data-is-hidden="hide ? 'true' : 'false'" :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'" @click="onClick" @dblclick="onDblclick">
 	<component
-		:is="disableImageLink ? 'div' : 'a'"
-		v-bind="disableImageLink ? {
+		:is="(disableImageLink || hide) ? 'div' : 'a'"
+		v-bind="(disableImageLink || hide) ? {
 			title: image.name,
 			class: $style.imageContainer,
 		} : {
@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.hiddenTextWrapper">
 				<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
 				<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.enableDataSaverMode && image.size ? bytes(image.size) : i18n.ts.image }}</b>
-				<span v-if="controls" style="display: block;">{{ i18n.ts.clickToShow }}</span>
+				<span v-if="controls" style="display: block;">{{ clickToShowMessage }}</span>
 			</div>
 		</div>
 	</template>
@@ -64,6 +64,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { iAmModerator } from '@/account.js';
+import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 const props = withDefaults(defineProps<{
 	image: Misskey.entities.DriveFile;
@@ -85,16 +86,35 @@ if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = 
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 	? props.image.url
-	: defaultStore.state.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(props.image.url)
 		: props.image.thumbnailUrl,
 );
 
-function onclick() {
+let clickToShowMessage = $computed(() =>
+	defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
+	: defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
+	: '',
+);
+
+function onClick(ev: MouseEvent) {
 	if (!props.controls) {
 		return;
 	}
-	if (hide) {
+	if (!hide) return;
+	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
+		os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	}
+	if (defaultStore.state.nsfwOpenBehavior === 'click') {
+		hide = false;
+	}
+}
+
+function onDblclick() {
+	if (!props.controls) {
+		return;
+	}
+	if (hide && defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
 		hide = false;
 	}
 }
@@ -150,6 +170,7 @@ onUnmounted(() => {
 <style lang="scss" module>
 .hidden {
 	position: relative;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .sensitive {
@@ -205,6 +226,7 @@ onUnmounted(() => {
 
 .visible {
 	position: relative;
+	-webkit-tap-highlight-color: transparent;
 	//box-shadow: 0 0 0 1px var(--divider) inset;
 	background: var(--bg);
 	background-image: linear-gradient(45deg, var(--c) 16.67%, var(--bg) 16.67%, var(--bg) 50%, var(--c) 50%, var(--c) 66.67%, var(--bg) 66.67%, var(--bg) 100%);

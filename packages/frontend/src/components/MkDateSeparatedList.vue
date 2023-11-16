@@ -47,6 +47,7 @@ export default defineComponent({
 
 	setup(props, { slots, expose }) {
 		const $style = useCssModule(); // カスタムレンダラなので使っても大丈夫
+
 		function getDateText(time: string) {
 			const date = new Date(time).getDate();
 			const month = new Date(time).getMonth() + 1;
@@ -128,6 +129,7 @@ export default defineComponent({
 			el.style.top = `${el.offsetTop}px`;
 			el.style.left = `${el.offsetLeft}px`;
 		}
+
 		function onLeaveCanceled(el: HTMLElement) {
 			el.style.top = '';
 			el.style.left = '';

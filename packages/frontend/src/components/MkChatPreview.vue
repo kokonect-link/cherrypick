@@ -149,7 +149,7 @@ function isMe(message) {
 @container (max-width: 500px) {
   .message {
     > div {
-      padding: 20px 30px;
+      padding: 14px 20px;
       font-size: .9em;
     }
   }

@@ -78,7 +78,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="description">
 						<MkOmit>
-							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :i="$i"/>
+							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
 							<div v-if="user.description">
 								<MkButton v-if="!(translating || translation)" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkLoading v-if="translating" mini/>
 								<div v-else>
 									<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-									<Mfm :text="translation.text" :isNote="false" :author="user" :i="$i"/>
+									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false"/>
 									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -117,7 +117,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<Mfm :text="field.name" :plain="true" :colored="false"/>
 							</dt>
 							<dd class="value">
-								<Mfm :text="field.value" :author="user" :i="$i" :colored="false"/>
+								<Mfm :text="field.value" :author="user" :colored="false"/>
 								<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ti ti-circle-check" :class="$style.verifiedLink"></i>
 							</dd>
 						</dl>
@@ -148,10 +148,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<XFiles :key="user.id" :user="user"/>
 					<XActivity :key="user.id" :user="user"/>
 				</template>
-				<div v-if="!disableNotes">
-					<div style="margin-bottom: 8px;">{{ i18n.ts.featured }}</div>
-					<MkNotes :class="$style.tl" :noGap="true" :pagination="pagination"/>
-				</div>
+				<XTimeline v-if="!disableNotes" :user="user"/>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
@@ -207,6 +204,7 @@ function calcAge(birthdate: string): number {
 
 const XFiles = defineAsyncComponent(() => import('./index.files.vue'));
 const XActivity = defineAsyncComponent(() => import('./index.activity.vue'));
+const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed;
@@ -235,14 +233,6 @@ const translating = ref(false);
 watch($$(moderationNote), async () => {
 	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote });
 });
-
-const pagination = {
-	endpoint: 'users/featured-notes' as const,
-	limit: 10,
-	params: computed(() => ({
-		userId: props.user.id,
-	})),
-};
 
 const style = $computed(() => {
 	if (props.user.bannerUrl == null) return {};
@@ -749,12 +739,6 @@ onUnmounted(() => {
 </style>
 
 <style lang="scss" module>
-.tl {
-	background: var(--bg);
-	border-radius: var(--radius);
-	overflow: clip;
-}
-
 .verifiedLink {
 	margin-left: 4px;
 	color: var(--success);

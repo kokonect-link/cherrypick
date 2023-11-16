@@ -12,7 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<img src="/client-assets/remove.png" alt="Delete"/>
 			</button>
 			<div v-if="!message.isDeleted" class="content">
-				<Mfm v-if="message.text" ref="text" class="text" :text="message.text" :i="$i"/>
+				<div v-if="message.text" class="text">
+					<Mfm :text="message.text" :nyaize="false" :enableEmojiMenu="true" :enableEmojiMenuReaction="true"/>
+				</div>
 				<div v-if="message.file" class="file">
 					<a :href="message.file.url" rel="noopener" target="_blank" :title="message.file.name">
 						<img v-if="message.file.type.split('/')[0] == 'image'" :src="message.file.url" :alt="message.file.name"/>
@@ -263,7 +265,7 @@ function del(): void {
 	&.isMe {
 		flex-direction: row-reverse;
 		padding-right: var(--margin);
-		right: var(--margin); // 削除時にposition: absoluteになったときに使う
+		//right: var(--margin); // 削除時にposition: absoluteになったときに使う
 
 		> .content {
 			padding-right: 16px;
@@ -316,7 +318,7 @@ function del(): void {
 	}
 }
 
-@container (max-width: 400px) {
+@container (max-width: 500px) {
 	.thvuemwp {
 		> .content {
 			> .balloon {
@@ -327,6 +329,14 @@ function del(): void {
 				}
 			}
 		}
+
+    &:not(.isMe) {
+      padding-left: initial;
+    }
+
+    &.isMe {
+      padding-right: initial;
+    }
 	}
 }
 </style>

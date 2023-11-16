@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<input v-show="withHashtags && showForm" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
 	<MkPollEditor v-if="poll && showForm" v-model="poll" @destroyed="poll = null"/>
-	<MkNotePreview v-if="showPreview && showForm" :class="$style.preview" :text="text"/>
+	<MkNotePreview v-if="showPreview && showForm" :class="$style.preview" :text="text" :user="postAccount ?? $i" :showProfile="showProfilePreview"/>
 	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
 	<Transition
@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 			</div>
 			<div :class="$style.footerRight">
-				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="[$style.footerButton, { [$style.previewButtonActive]: showPreview }]" @click="showPreview = !showPreview"><i class="ti ti-eye"></i></button>
+				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="$style.footerButton" @click="showPreviewMenu"><i class="ti ti-eye"></i></button>
 				<!--<button v-tooltip="i18n.ts.more" class="_button" :class="$style.footerButton" @click="showingOptions = !showingOptions"><i class="ti ti-dots"></i></button>-->
 			</div>
 		</footer>
@@ -122,7 +122,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, defineAsyncComponent } from 'vue';
+import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -171,16 +171,23 @@ const props = withDefaults(defineProps<{
 	fixed?: boolean;
 	autofocus?: boolean;
 	freezeAfterPosted?: boolean;
+  mock?: boolean;
   updateMode?: boolean;
 }>(), {
 	initialVisibleUsers: () => [],
 	autofocus: false,
+	mock: false,
 });
+
+provide('mock', props.mock);
 
 const emit = defineEmits<{
 	(ev: 'posted'): void;
 	(ev: 'cancel'): void;
 	(ev: 'esc'): void;
+
+  // Mock用
+  (ev: 'fileChangeSensitive', fileId: string, to: boolean): void;
 }>();
 
 const textareaEl = $shallowRef<HTMLTextAreaElement | null>(null);
@@ -208,7 +215,9 @@ let event = $ref<{
 } | null>(null);
 let useCw = $ref(false);
 let showPreview = $ref(defaultStore.state.showPreviewInReplies);
+let showProfilePreview = $ref(defaultStore.state.showProfilePreview);
 watch($$(showPreview), () => defaultStore.set('showPreviewInReplies', showPreview));
+watch($$(showProfilePreview), () => defaultStore.set('showProfilePreview', showProfilePreview));
 let cw = $ref<string | null>(null);
 let localOnly = $ref<boolean>(props.initialLocalOnly ?? defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly);
 let visibility = $ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility) as typeof Misskey.noteVisibilities[number]);
@@ -288,7 +297,7 @@ const maxTextLength = $computed((): number => {
 });
 
 const canPost = $computed((): boolean => {
-	return !posting && !posted &&
+	return !props.mock && !posting && !posted &&
 		(1 <= textLength || 1 <= files.length || !!poll || !!props.renote || !!event) &&
 		(textLength <= maxTextLength) &&
 		(!poll || poll.choices.length >= 2);
@@ -333,6 +342,10 @@ if (props.reply && props.reply.text != null) {
 		// 重複は除外
 		if (text.includes(`${mention} `)) continue;
 	}
+}
+
+if ($i?.isSilenced && visibility === 'public') {
+	visibility = 'home';
 }
 
 if (props.channel) {
@@ -454,6 +467,8 @@ function focus() {
 }
 
 function chooseFileFrom(ev) {
+	if (props.mock) return;
+
 	selectFiles(ev.currentTarget ?? ev.target, i18n.ts.attachFile).then(files_ => {
 		for (const file of files_) {
 			files.push(file);
@@ -466,6 +481,9 @@ function detachFile(id) {
 }
 
 function updateFileSensitive(file, sensitive) {
+	if (props.mock) {
+		emit('fileChangeSensitive', file.id, sensitive);
+	}
 	files[files.findIndex(x => x.id === file.id)].isSensitive = sensitive;
 }
 
@@ -478,6 +496,8 @@ function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities
 }
 
 function upload(file: File, name?: string): void {
+	if (props.mock) return;
+
 	uploadFile(file, defaultStore.state.uploadFolder, name).then(res => {
 		files.push(res);
 	});
@@ -492,6 +512,7 @@ function setVisibility() {
 
 	os.popup(defineAsyncComponent(() => import('@/components/MkVisibilityPicker.vue')), {
 		currentVisibility: visibility,
+		isSilenced: $i?.isSilenced,
 		localOnly: localOnly,
 		src: visibilityButton,
 	}, {
@@ -617,6 +638,8 @@ function onCompositionEnd(ev: CompositionEvent) {
 }
 
 async function onPaste(ev: ClipboardEvent) {
+	if (props.mock) return;
+
 	for (const { item, i } of Array.from(ev.clipboardData.items, (item, i) => ({ item, i }))) {
 		if (item.kind === 'file') {
 			const file = item.getAsFile();
@@ -701,7 +724,7 @@ function onDrop(ev): void {
 }
 
 function saveDraft() {
-	if (props.instant) return;
+	if (props.instant || props.mock) return;
 
 	const draftData = JSON.parse(miLocalStorage.getItem('drafts') ?? '{}');
 
@@ -732,6 +755,14 @@ function deleteDraft() {
 }
 
 async function post(ev?: MouseEvent) {
+	if (useCw && (cw == null || cw.trim() === '')) {
+		os.alert({
+			type: 'error',
+			text: i18n.ts.cwNotationRequired,
+		});
+		return;
+	}
+
 	if (ev) {
 		const el = ev.currentTarget ?? ev.target;
 		const rect = el.getBoundingClientRect();
@@ -739,6 +770,8 @@ async function post(ev?: MouseEvent) {
 		const y = rect.top + (el.offsetHeight / 2);
 		os.popup(MkRippleEffect, { x, y }, {}, 'end');
 	}
+
+	if (props.mock) return;
 
 	const annoying =
 		text.includes('$[x2') ||
@@ -879,6 +912,7 @@ async function post(ev?: MouseEvent) {
 			text: err.message + '\n' + (err as any).id,
 		});
 	});
+	textareaEl.style.height = '35px';
 	if (props.updateMode) sound.play('noteEdited');
 	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [10, 20, 10, 20, 10, 20, 60] : '');
 }
@@ -964,6 +998,20 @@ function signin() {
 	}, {}, 'closed');
 }
 
+function showPreviewMenu(ev: MouseEvent) {
+	os.popupMenu([{
+		type: 'switch',
+		text: i18n.ts.previewNoteText,
+		icon: 'ti ti-eye',
+		ref: $$(showPreview),
+	}, {
+		type: 'switch',
+		text: i18n.ts.previewNoteProfile,
+		icon: 'ti ti-user-circle',
+		ref: $$(showProfilePreview),
+	}], ev.currentTarget ?? ev.target);
+}
+
 onMounted(() => {
 	if (props.autofocus) {
 		focus();
@@ -982,7 +1030,7 @@ onMounted(() => {
 
 	nextTick(() => {
 		// 書きかけの投稿を復元
-		if (!props.instant && !props.mention && !props.specified) {
+		if (!props.instant && !props.mention && !props.specified && !props.mock) {
 			const draft = JSON.parse(miLocalStorage.getItem('drafts') ?? '{}')[draftKey];
 			if (draft) {
 				text = draft.data.text;

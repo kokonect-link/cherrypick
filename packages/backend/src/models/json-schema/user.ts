@@ -37,6 +37,34 @@ export const packedUserLiteSchema = {
 			type: 'string',
 			nullable: true, optional: false,
 		},
+		avatarDecorations: {
+			type: 'array',
+			nullable: false, optional: false,
+			items: {
+				type: 'object',
+				nullable: false, optional: false,
+				properties: {
+					id: {
+						type: 'string',
+						nullable: false, optional: false,
+						format: 'id',
+					},
+					url: {
+						type: 'string',
+						format: 'url',
+						nullable: false, optional: false,
+					},
+					angle: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					flipH: {
+						type: 'boolean',
+						nullable: false, optional: true,
+					},
+				},
+			},
+		},
 		isAdmin: {
 			type: 'boolean',
 			nullable: false, optional: true,
@@ -375,7 +403,7 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
-		unreadNotificationCount: {
+		unreadNotificationsCount: {
 			type: 'number',
 			nullable: false, optional: false,
 		},

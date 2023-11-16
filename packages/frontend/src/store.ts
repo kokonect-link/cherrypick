@@ -49,25 +49,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: 0,
 	},
-	timelineTutorial: {
+	timelineTutorials: {
 		where: 'account',
-		default: 0,
-	},
-	tlHomeHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlLocalHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlSocialHintClosed: {
-		where: 'device',
-		default: false,
-	},
-	tlGlobalHintClosed: {
-		where: 'device',
-		default: false,
+		default: {
+			home: false,
+			local: false,
+			social: false,
+			global: false,
+		},
 	},
 	keepCw: {
 		where: 'account',
@@ -153,6 +142,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	showPreviewInReplies: {
 		where: 'device',
 		default: false,
+	},
+	showProfilePreview: {
+		where: 'device',
+		default: true,
 	},
 	statusbars: {
 		where: 'deviceAccount',
@@ -322,6 +315,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	showAvatarDecorations: {
+		where: 'device',
+		default: true,
+	},
 	postFormWithHashtags: {
 		where: 'device',
 		default: false,
@@ -394,9 +391,54 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
-	showUnreadNotificationCount: {
+	disableStreamingTimeline: {
+		where: 'device',
+		default: false,
+	},
+	useGroupedNotifications: {
+		where: 'device',
+		default: true,
+	},
+	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
+	},
+
+	sound_masterVolume: {
+		where: 'device',
+		default: 0.3,
+	},
+	sound_note: {
+		where: 'device',
+		default: { type: 'syuilo/n-aec', volume: 1 },
+	},
+	sound_noteMy: {
+		where: 'device',
+		default: { type: 'syuilo/n-cea-4va', volume: 1 },
+	},
+	sound_noteEdited: {
+		where: 'device',
+		default: { type: 'syuilo/n-eca', volume: 1 },
+	},
+	sound_notification: {
+		where: 'device',
+		default: { type: 'syuilo/n-ea', volume: 1 },
+	},
+	sound_chat: {
+		where: 'device',
+		default: { type: 'syuilo/pope1', volume: 1 },
+	},
+	sound_chatBg: {
+		where: 'device',
+		default: { type: 'syuilo/waon', volume: 1 },
+	},
+	sound_antenna: {
+		where: 'device',
+		default: { type: 'syuilo/triple', volume: 1 },
+	},
+	sound_channel: {
+		where: 'device',
+		default: { type: 'syuilo/square-pico', volume: 1 },
 	},
 
 	// #region CherryPick
@@ -460,6 +502,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	allMediaNoteCollapse: {
 		where: 'device',
 		default: false,
+	},
+	nsfwOpenBehavior: {
+		where: 'device',
+		default: 'click' as 'click' | 'doubleClick',
 	},
 
 	// - Settings/Timeline
@@ -533,9 +579,17 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	renameTheButtonInPostFormToNyaManualSet: {
+		where: 'account',
+		default: false,
+	},
 	enableLongPressOpenAccountMenu: {
 		where: 'device',
 		default: true,
+	},
+	friendlyShowAvatarDecorationsInNavBtn: {
+		where: 'device',
+		default: false,
 	},
 
 	// - etc

@@ -11,6 +11,7 @@ import { AnnouncementService } from './AnnouncementService.js';
 import { AntennaService } from './AntennaService.js';
 import { AppLockService } from './AppLockService.js';
 import { AchievementService } from './AchievementService.js';
+import { AvatarDecorationService } from './AvatarDecorationService.js';
 import { CaptchaService } from './CaptchaService.js';
 import { CreateSystemUserService } from './CreateSystemUserService.js';
 import { CustomEmojiService } from './CustomEmojiService.js';
@@ -32,6 +33,7 @@ import { MetaService } from './MetaService.js';
 import { MfmService } from './MfmService.js';
 import { ModerationLogService } from './ModerationLogService.js';
 import { NoteCreateService } from './NoteCreateService.js';
+import { NoteUpdateService } from './NoteUpdateService.js';
 import { NoteDeleteService } from './NoteDeleteService.js';
 import { NotePiningService } from './NotePiningService.js';
 import { NoteReadService } from './NoteReadService.js';
@@ -63,6 +65,8 @@ import { SearchService } from './SearchService.js';
 import { ClipService } from './ClipService.js';
 import { FeaturedService } from './FeaturedService.js';
 import { FunoutTimelineService } from './FunoutTimelineService.js';
+import { ChannelFollowingService } from './ChannelFollowingService.js';
+import { RegistryApiService } from './RegistryApiService.js';
 import { ChartLoggerService } from './chart/ChartLoggerService.js';
 import FederationChart from './chart/charts/federation.js';
 import NotesChart from './chart/charts/notes.js';
@@ -145,6 +149,7 @@ const $AnnouncementService: Provider = { provide: 'AnnouncementService', useExis
 const $AntennaService: Provider = { provide: 'AntennaService', useExisting: AntennaService };
 const $AppLockService: Provider = { provide: 'AppLockService', useExisting: AppLockService };
 const $AchievementService: Provider = { provide: 'AchievementService', useExisting: AchievementService };
+const $AvatarDecorationService: Provider = { provide: 'AvatarDecorationService', useExisting: AvatarDecorationService };
 const $CaptchaService: Provider = { provide: 'CaptchaService', useExisting: CaptchaService };
 const $CreateSystemUserService: Provider = { provide: 'CreateSystemUserService', useExisting: CreateSystemUserService };
 const $CustomEmojiService: Provider = { provide: 'CustomEmojiService', useExisting: CustomEmojiService };
@@ -166,6 +171,7 @@ const $MetaService: Provider = { provide: 'MetaService', useExisting: MetaServic
 const $MfmService: Provider = { provide: 'MfmService', useExisting: MfmService };
 const $ModerationLogService: Provider = { provide: 'ModerationLogService', useExisting: ModerationLogService };
 const $NoteCreateService: Provider = { provide: 'NoteCreateService', useExisting: NoteCreateService };
+const $NoteUpdateService: Provider = { provide: 'NoteUpdateService', useExisting: NoteUpdateService };
 const $NoteDeleteService: Provider = { provide: 'NoteDeleteService', useExisting: NoteDeleteService };
 const $NotePiningService: Provider = { provide: 'NotePiningService', useExisting: NotePiningService };
 const $NoteReadService: Provider = { provide: 'NoteReadService', useExisting: NoteReadService };
@@ -197,6 +203,8 @@ const $SearchService: Provider = { provide: 'SearchService', useExisting: Search
 const $ClipService: Provider = { provide: 'ClipService', useExisting: ClipService };
 const $FeaturedService: Provider = { provide: 'FeaturedService', useExisting: FeaturedService };
 const $FunoutTimelineService: Provider = { provide: 'FunoutTimelineService', useExisting: FunoutTimelineService };
+const $ChannelFollowingService: Provider = { provide: 'ChannelFollowingService', useExisting: ChannelFollowingService };
+const $RegistryApiService: Provider = { provide: 'RegistryApiService', useExisting: RegistryApiService };
 
 const $ChartLoggerService: Provider = { provide: 'ChartLoggerService', useExisting: ChartLoggerService };
 const $FederationChart: Provider = { provide: 'FederationChart', useExisting: FederationChart };
@@ -283,6 +291,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		AntennaService,
 		AppLockService,
 		AchievementService,
+		AvatarDecorationService,
 		CaptchaService,
 		CreateSystemUserService,
 		CustomEmojiService,
@@ -304,6 +313,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		MfmService,
 		ModerationLogService,
 		NoteCreateService,
+		NoteUpdateService,
 		NoteDeleteService,
 		NotePiningService,
 		NoteReadService,
@@ -335,6 +345,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ClipService,
 		FeaturedService,
 		FunoutTimelineService,
+		ChannelFollowingService,
+		RegistryApiService,
 		ChartLoggerService,
 		FederationChart,
 		NotesChart,
@@ -414,6 +426,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$AntennaService,
 		$AppLockService,
 		$AchievementService,
+		$AvatarDecorationService,
 		$CaptchaService,
 		$CreateSystemUserService,
 		$CustomEmojiService,
@@ -435,6 +448,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$MfmService,
 		$ModerationLogService,
 		$NoteCreateService,
+		$NoteUpdateService,
 		$NoteDeleteService,
 		$NotePiningService,
 		$NoteReadService,
@@ -466,6 +480,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ClipService,
 		$FeaturedService,
 		$FunoutTimelineService,
+		$ChannelFollowingService,
+		$RegistryApiService,
 		$ChartLoggerService,
 		$FederationChart,
 		$NotesChart,
@@ -546,6 +562,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		AntennaService,
 		AppLockService,
 		AchievementService,
+		AvatarDecorationService,
 		CaptchaService,
 		CreateSystemUserService,
 		CustomEmojiService,
@@ -567,6 +584,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		MfmService,
 		ModerationLogService,
 		NoteCreateService,
+		NoteUpdateService,
 		NoteDeleteService,
 		NotePiningService,
 		NoteReadService,
@@ -598,6 +616,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ClipService,
 		FeaturedService,
 		FunoutTimelineService,
+		ChannelFollowingService,
+		RegistryApiService,
 		FederationChart,
 		NotesChart,
 		UsersChart,
@@ -676,6 +696,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$AntennaService,
 		$AppLockService,
 		$AchievementService,
+		$AvatarDecorationService,
 		$CaptchaService,
 		$CreateSystemUserService,
 		$CustomEmojiService,
@@ -697,6 +718,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$MfmService,
 		$ModerationLogService,
 		$NoteCreateService,
+		$NoteUpdateService,
 		$NoteDeleteService,
 		$NotePiningService,
 		$NoteReadService,
@@ -728,6 +750,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ClipService,
 		$FeaturedService,
 		$FunoutTimelineService,
+		$ChannelFollowingService,
+		$RegistryApiService,
 		$FederationChart,
 		$NotesChart,
 		$UsersChart,

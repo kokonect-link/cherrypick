@@ -89,6 +89,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				query.andWhere('note.fileIds != \'{}\'');
 			}
 
+			if (ps.withRenotes === false) {
+				query.andWhere(new Brackets(qb => {
+					qb.where('note.renoteId IS NULL');
+					qb.orWhere(new Brackets(qb => {
+						qb.where('note.text IS NOT NULL');
+						qb.orWhere('note.fileIds != \'{}\'');
+					}));
+				}));
+			}
+
 			if (ps.withCats) {
 				query.andWhere('(select "isCat" from "user" where id = note."userId")');
 			}

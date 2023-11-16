@@ -73,6 +73,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<FormLink to="/registry"><template #icon><i class="ti ti-adjustments"></i></template>{{ i18n.ts.registry }}</FormLink>
 	</FormSection>
+
+	<FormSection>
+		<div class="_gaps_s">
+			<MkSwitch v-model="defaultWithReplies">{{ i18n.ts.withRepliesByDefaultForNewlyFollowed }}</MkSwitch>
+			<MkButton danger @click="updateRepliesAll(true)"><i class="ti ti-messages"></i> {{ i18n.ts.showRepliesToOthersInTimelineAll }}</MkButton>
+			<MkButton danger @click="updateRepliesAll(false)"><i class="ti ti-messages-off"></i> {{ i18n.ts.hideRepliesToOthersInTimelineAll }}</MkButton>
+		</div>
+	</FormSection>
 </div>
 </template>
 
@@ -96,6 +104,7 @@ import { globalEvents } from '@/events.js';
 const reportError = computed(defaultStore.makeGetterSetter('reportError'));
 const enableCondensedLineForAcct = computed(defaultStore.makeGetterSetter('enableCondensedLineForAcct'));
 const devMode = computed(defaultStore.makeGetterSetter('devMode'));
+const defaultWithReplies = computed(defaultStore.makeGetterSetter('defaultWithReplies'));
 
 function onChangeInjectFeaturedNote(v) {
 	os.api('i/update', {
@@ -139,6 +148,15 @@ async function reloadAsk() {
 
 		unisonReload();
 	} else globalEvents.emit('hasRequireRefresh', true);
+}
+
+async function updateRepliesAll(withReplies: boolean) {
+	const { canceled } = os.confirm({
+		type: 'warning',
+		text: withReplies ? i18n.ts.confirmShowRepliesAll : i18n.ts.confirmHideRepliesAll,
+	});
+	if (canceled) return;
+	await os.api('following/update-all', { withReplies });
 }
 
 watch([

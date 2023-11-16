@@ -1,13 +1,13 @@
 {
 	"name": "cherrypick",
-	"version": "4.4.1",
-	"basedMisskeyVersion": "2023.10.2",
+	"version": "4.5.0",
+	"basedMisskeyVersion": "2023.11.0",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
-	"packageManager": "pnpm@8.9.2",
+	"packageManager": "pnpm@8.10.0",
 	"workspaces": [
 		"packages/frontend",
 		"packages/backend",
@@ -24,6 +24,7 @@
 		"start:test": "cd packages/backend && cross-env NODE_ENV=test node ./built/boot/entry.js",
 		"init": "pnpm migrate",
 		"migrate": "cd packages/backend && pnpm migrate",
+		"revert": "cd packages/backend && pnpm revert",
 		"check:connect": "cd packages/backend && pnpm check:connect",
 		"migrateandstart": "pnpm migrate && pnpm start",
 		"migrateandstart:docker": "pnpm migrate && exec pnpm start:docker",
@@ -39,7 +40,8 @@
 		"test-and-coverage": "pnpm -r test-and-coverage",
 		"clean": "node ./scripts/clean.js",
 		"clean-all": "node ./scripts/clean-all.js",
-		"cleanall": "pnpm clean-all"
+		"cleanall": "pnpm clean-all",
+		"schema:sync": "cd packages/backend && pnpm typeorm schema:sync -d ormconfig.js"
 	},
 	"resolutions": {
 		"chokidar": "3.5.3",
@@ -50,15 +52,15 @@
 		"cssnano": "6.0.1",
 		"js-yaml": "4.1.0",
 		"postcss": "8.4.31",
-		"terser": "5.22.0",
+		"terser": "5.24.0",
 		"typescript": "5.2.2"
 	},
 	"devDependencies": {
-		"@typescript-eslint/eslint-plugin": "6.8.0",
-		"@typescript-eslint/parser": "6.8.0",
+		"@typescript-eslint/eslint-plugin": "6.9.1",
+		"@typescript-eslint/parser": "6.9.1",
 		"cross-env": "7.0.3",
-		"cypress": "13.3.2",
-		"eslint": "8.51.0",
+		"cypress": "13.4.0",
+		"eslint": "8.52.0",
 		"start-server-and-test": "2.0.1"
 	},
 	"optionalDependencies": {

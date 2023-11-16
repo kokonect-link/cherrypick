@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')">
 			<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator">
-				<span v-if="$i?.unreadNotificationCount && defaultStore.state.showUnreadNotificationCount" :class="$style.navButtonIndicateValueIcon"><span>{{ $i.unreadNotificationCount > 99 ? '99+' : $i.unreadNotificationCount }}</span></span>
+				<span v-if="defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
 				<i v-else class="_indicatorCircle"></i>
 			</span>
 		</button>
@@ -657,30 +657,16 @@ $float-button-size: 65px;
 	color: var(--indicator);
 	font-size: 8px;
 	animation: blink 1s infinite;
+
+  &:has(.itemIndicateValueIcon) {
+    animation: none;
+    font-size: 6px;
+  }
 }
 
 .navButtonIndicatorHome {
 	composes: navButtonIndicator;
 	animation: none;
-}
-
-.navButtonIndicateValueIcon {
-  display: inline-flex;
-  color: var(--fgOnAccent);
-  font-weight: 700;
-  background: var(--navIndicator);
-  height: 1em;
-  min-width: 1em;
-  align-items: center;
-  justify-content: center;
-  border-radius: 99rem;
-
-  & > span {
-    display: inline-block;
-    padding: 0 .25em;
-    font-size: .75em;
-    line-height: 1em;
-  }
 }
 
 .menuDrawerBg {

@@ -7,7 +7,7 @@ import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import promiseLimit from 'promise-limit';
 import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { MessagingMessagesRepository, PollsRepository, EmojisRepository } from '@/models/_.js';
+import type { EmojisRepository, MessagingMessagesRepository, NotesRepository, PollsRepository } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import type { MiNote } from '@/models/Note.js';
@@ -25,7 +25,8 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { MessagingService } from '@/core/MessagingService.js';
 import { bindThis } from '@/decorators.js';
 import { checkHttps } from '@/misc/check-https.js';
-import { getOneApId, getApId, getOneApHrefNullable, validPost, isEmoji, getApType } from '../type.js';
+import { NoteUpdateService } from '@/core/NoteUpdateService.js';
+import { getApId, getApType, getOneApHrefNullable, getOneApId, isEmoji, validPost } from '../type.js';
 import { ApLoggerService } from '../ApLoggerService.js';
 import { ApMfmService } from '../ApMfmService.js';
 import { ApDbResolverService } from '../ApDbResolverService.js';
@@ -57,6 +58,9 @@ export class ApNoteService {
 		@Inject(DI.messagingMessagesRepository)
 		private messagingMessagesRepository: MessagingMessagesRepository,
 
+		@Inject(DI.notesRepository)
+		private notesRepository: NotesRepository,
+
 		private idService: IdService,
 		private apMfmService: ApMfmService,
 		private apResolverService: ApResolverService,
@@ -76,6 +80,7 @@ export class ApNoteService {
 		private appLockService: AppLockService,
 		private pollService: PollService,
 		private noteCreateService: NoteCreateService,
+		private noteUpdateService: NoteUpdateService,
 		private apDbResolverService: ApDbResolverService,
 		private apLoggerService: ApLoggerService,
 	) {
@@ -302,6 +307,7 @@ export class ApNoteService {
 		try {
 			return await this.noteCreateService.create(actor, {
 				createdAt: note.published ? new Date(note.published) : null,
+				updatedAt: note.updated ? new Date(note.updated) : null,
 				files,
 				reply,
 				renote: quote,
@@ -330,6 +336,85 @@ export class ApNoteService {
 				throw new Error('The note creation failed with duplication error even when there is no duplication');
 			}
 			return duplicate;
+		}
+	}
+
+	@bindThis
+	public async updateNote(value: string | IObject, target: MiNote, resolver?: Resolver, silent = false): Promise<MiNote | null> {
+		if (resolver == null) resolver = this.apResolverService.createResolver();
+
+		const object = await resolver.resolve(value);
+		const entryUri = getApId(value);
+
+		const err = this.validateNote(object, entryUri);
+		if (err) {
+			this.logger.error(err.message, {
+				resolver: { history: resolver.getHistory() },
+				value,
+				object,
+			});
+			throw new Error('invalid note');
+		}
+
+		const note = object as IPost;
+
+		// 投稿者をフェッチ
+		if (note.attributedTo == null) {
+			throw new Error('invalid note.attributedTo: ' + note.attributedTo);
+		}
+
+		const actor = await this.apPersonService.resolvePerson(getOneApId(note.attributedTo), resolver) as MiRemoteUser;
+
+		// 投稿者が凍結されていたらスキップ
+		if (actor.isSuspended) {
+			throw new Error('actor has been suspended');
+		}
+
+		const limit = promiseLimit<MiDriveFile>(2);
+		const files = (await Promise.all(toArray(note.attachment).map(attach => (
+			limit(() => this.apImageService.resolveImage(actor, {
+				...attach,
+				sensitive: note.sensitive, // Noteがsensitiveなら添付もsensitiveにする
+			}))
+		))));
+
+		const cw = note.summary === '' ? null : note.summary;
+
+		// テキストのパース
+		let text: string | null = null;
+		if (note.source?.mediaType === 'text/x.misskeymarkdown' && typeof note.source.content === 'string') {
+			text = note.source.content;
+		} else if (typeof note._misskey_content !== 'undefined') {
+			text = note._misskey_content;
+		} else if (typeof note.content === 'string') {
+			text = this.apMfmService.htmlToMfm(note.content, note.tag);
+		}
+
+		const apHashtags = extractApHashtags(note.tag);
+
+		const emojis = await this.extractEmojis(note.tag ?? [], actor.host).catch(e => {
+			this.logger.info(`extractEmojis: ${e}`);
+			return [];
+		});
+
+		const apEmojis = emojis.map(emoji => emoji.name);
+
+		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
+
+		try {
+			return await this.noteUpdateService.update(actor, {
+				updatedAt: note.updated ? new Date(note.updated) : null,
+				files,
+				name: note.name,
+				cw,
+				text,
+				apHashtags,
+				apEmojis,
+				poll,
+			}, target, silent);
+		} catch (err: any) {
+			this.logger.warn(`note update failed: ${err}`);
+			return err;
 		}
 	}
 

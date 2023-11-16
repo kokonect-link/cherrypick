@@ -5,14 +5,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.root">
-	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="user" link preview/>
+	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote && showProfile" :class="$style.avatar" :user="user" link preview/>
 	<div :class="$style.main">
-		<div :class="$style.header">
+		<div v-if="showProfile" :class="$style.header">
 			<MkUserName :user="user" :nowrap="true"/>
 		</div>
 		<div>
 			<div>
-				<Mfm :text="text.trim()" :author="user" :i="user"/>
+				<Mfm :text="text.trim()" :author="user" :nyaize="'account'" :i="user"/>
 				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 			</div>
 		</div>
@@ -31,6 +31,7 @@ import { defaultStore } from '@/store.js';
 const props = defineProps<{
 	text: string;
 	user: Misskey.entities.User;
+  showProfile?: boolean;
 }>();
 
 const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;

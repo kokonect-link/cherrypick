@@ -95,7 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted, nextTick } from 'vue';
+import { ref, computed, onActivated, onDeactivated, nextTick } from 'vue';
 import MkLoading from '@/components/global/MkLoading.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
@@ -121,9 +121,8 @@ const errorKV = ref<{
 	description: '',
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-const url = urlParams.get('url');
-const hash = urlParams.get('hash');
+const url = ref<string | null>(null);
+const hash = ref<string | null>(null);
 
 const data = ref<{
 	type: 'plugin' | 'theme';
@@ -153,7 +152,7 @@ function goToMisskey(): void {
 }
 
 async function fetch() {
-	if (!url || !hash) {
+	if (!url.value || !hash.value) {
 		errorKV.value = {
 			title: i18n.ts._externalResourceInstaller._errors._invalidParams.title,
 			description: i18n.ts._externalResourceInstaller._errors._invalidParams.description,
@@ -162,8 +161,8 @@ async function fetch() {
 		return;
 	}
 	const res = await os.api('fetch-external-resources', {
-		url,
-		hash,
+		url: url.value,
+		hash: hash.value,
 	}).catch((err) => {
 		switch (err.id) {
 			case 'bb774091-7a15-4a70-9dc5-6ac8cf125856':
@@ -298,8 +297,15 @@ async function install() {
 	}
 }
 
-onMounted(() => {
+onActivated(() => {
+	const urlParams = new URLSearchParams(window.location.search);
+	url.value = urlParams.get('url');
+	hash.value = urlParams.get('hash');
 	fetch();
+});
+
+onDeactivated(() => {
+	uiPhase.value = 'fetching';
 });
 
 const headerActions = computed(() => []);

@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				>
 					<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
 					<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator">
-						<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationCount" :class="$style.itemIndicateValueIcon"><span>{{ navbarItemDef[item].indicateValue }}</span></span>
+						<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
 						<i v-else class="_indicatorCircle"></i>
 					</span>
 				</component>
@@ -146,7 +146,7 @@ function openProfile() {
 <style lang="scss" module>
 .root {
 	--nav-width: 250px;
-	--nav-icon-only-width: 72px;
+	--nav-icon-only-width: 80px;
 
 	flex: 0 0 var(--nav-width);
 	width: var(--nav-width);
@@ -168,24 +168,6 @@ function openProfile() {
 	contain: strict;
 	display: flex;
 	flex-direction: column;
-}
-
-.itemIndicateValueIcon {
-  display: inline-flex;
-  color: var(--fgOnAccent);
-  font-weight: 700;
-  background: var(--navIndicator);
-  height: 1.5em;
-  min-width: 1.5em;
-  align-items: center;
-  justify-content: center;
-  border-radius: 99rem;
-
-  & > span {
-    display: inline-block;
-    padding: 0 .25em;
-    line-height: 1.5em;
-  }
 }
 
 .root:not(.iconOnly) {
@@ -570,6 +552,13 @@ function openProfile() {
 		color: var(--navIndicator);
 		font-size: 8px;
 		animation: blink 1s infinite;
+
+    &:has(.itemIndicateValueIcon) {
+      animation: none;
+      top: 4px;
+      left: auto;
+      right: 4px;
+    }
 	}
 }
 </style>

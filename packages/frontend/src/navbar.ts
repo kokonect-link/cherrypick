@@ -6,7 +6,7 @@
 import { computed, defineAsyncComponent, reactive } from 'vue';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { openInstanceMenu } from '@/ui/_common_/common.js';
+import { openInstanceMenu, openToolsMenu } from '@/ui/_common_/common.js';
 import { lookup } from '@/scripts/lookup.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
@@ -21,12 +21,12 @@ export const navbarItemDef = reactive({
 		show: computed(() => $i != null),
 		indicated: computed(() => $i != null && $i.hasUnreadNotification),
 		indicateValue: computed(() => {
-			if (!$i || $i.unreadNotificationCount === 0) return '';
+			if (!$i || $i.unreadNotificationsCount === 0) return '';
 
-			if ($i.unreadNotificationCount > 99) {
+			if ($i.unreadNotificationsCount > 99) {
 				return '99+';
 			} else {
-				return $i.unreadNotificationCount.toString();
+				return $i.unreadNotificationsCount.toString();
 			}
 		}),
 		to: '/my/notifications',
@@ -180,26 +180,6 @@ export const navbarItemDef = reactive({
 				text: i18n.ts._mfm.cheatSheet,
 				icon: 'ti ti-help-circle',
 				to: '/mfm-cheat-sheet',
-			}, null, {
-				type: 'button',
-				text: i18n.ts.replayUserSetupDialog,
-				icon: 'ti ti-list-numbers',
-				action: () => {
-					defaultStore.set('accountSetupWizard', 0);
-					os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
-				},
-			}, {
-				type: 'button',
-				text: i18n.ts.replayTutorial,
-				icon: 'ti ti-checkup-list',
-				action: () => {
-					defaultStore.set('timelineTutorial', 0);
-					defaultStore.set('tlHomeHintClosed', false);
-					defaultStore.set('tlLocalHintClosed', false);
-					defaultStore.set('tlSocialHintClosed', false);
-					defaultStore.set('tlGlobalHintClosed', false);
-					setTimeout(unisonReload, 100);
-				},
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
@@ -208,6 +188,13 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-info-circle',
 		action: (ev) => {
 			openInstanceMenu(ev);
+		},
+	},
+	tools: {
+		title: i18n.ts.tools,
+		icon: 'ti ti-tool',
+		action: (ev) => {
+			openToolsMenu(ev);
 		},
 	},
 	reload: {

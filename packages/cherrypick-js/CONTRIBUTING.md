@@ -15,7 +15,7 @@ Issueを作成する前に、以下をご確認ください:
 - 重複を防ぐため、既に同様の内容のIssueが作成されていないか検索してから新しいIssueを作ってください。
 - Issueを質問に使わないでください。
 	- Issueは、要望、提案、問題の報告にのみ使用してください。
-	- 質問は、[Misskey Forum](https://forum.misskey.io/)や[Discord](https://discord.gg/Wp8gVStHW3)でお願いします。
+	- 質問は、[GitHub Discussions](https://github.com/kokonect-link/cherrypick/discussions)や[Discord](https://discord.gg/V8qghB28Aj)でお願いします。
 
 ## PRの作成
 PRを作成する前に、以下をご確認ください:
@@ -23,7 +23,7 @@ PRを作成する前に、以下をご確認ください:
   - fix / refactor / feat / enhance / perf / chore 等
   - また、PRの粒度が適切であることを確認してください。ひとつのPRに複数の種類の変更や関心を含めることは避けてください。
 - このPRによって解決されるIssueがある場合は、そのIssueへの参照を本文内に含めてください。
-- [`CHANGELOG.md`](/CHANGELOG.md)に変更点を追記してください。リファクタリングなど、利用者に影響を与えない変更についてはこの限りではありません。
+- [`CHANGELOG_CHERRYPICK.md`](/CHANGELOG_CHERRYPICK.md)に変更点を追記してください。リファクタリングなど、利用者に影響を与えない変更についてはこの限りではありません。
 - この変更により新たに作成、もしくは更新すべきドキュメントがないか確認してください。
 - 機能追加やバグ修正をした場合は、可能であればテストケースを追加してください。
 - テスト、Lintが通っていることを予め確認してください。
