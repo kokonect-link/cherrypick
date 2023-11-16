@@ -411,17 +411,6 @@ export function getNoteMenu(props: {
 						window.open(appearNote.url ?? appearNote.uri, '_blank');
 					},
 				} : undefined
-				, (appearNote.userId === $i.id) ? null : undefined
-				, (appearNote.userId === $i.id) ? {
-					icon: 'ti ti-edit',
-					text: i18n.ts.copyAndEdit,
-					action: copyEdit,
-				} : undefined
-				, appearNote.userId === $i.id ? {
-					icon: 'ti ti-edit',
-					text: i18n.ts.deleteAndEdit,
-					action: delEdit,
-				} : undefined
 				, null
 				, {
 					icon: 'ti ti-code',
@@ -436,7 +425,18 @@ export function getNoteMenu(props: {
 					icon: 'ti ti-paw-off',
 					text: i18n.ts.noNyaization,
 					action: noNyaizeText,
-				}],
+				}
+				, (appearNote.userId === $i.id) ? null : undefined
+				, (appearNote.userId === $i.id) ? {
+					icon: 'ti ti-edit',
+					text: i18n.ts.copyAndEdit,
+					action: copyEdit,
+				} : undefined
+				, appearNote.userId === $i.id ? {
+					icon: 'ti ti-edit',
+					text: i18n.ts.deleteAndEdit,
+					action: delEdit,
+				} : undefined],
 			},
 			{
 				type: 'parent' as const,
