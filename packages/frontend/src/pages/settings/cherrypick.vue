@@ -107,6 +107,12 @@ const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('e
 const friendlyShowAvatarDecorationsInNavBtn = computed(defaultStore.makeGetterSetter('friendlyShowAvatarDecorationsInNavBtn'));
 
 watch([
+	renameTheButtonInPostFormToNya,
+], async () => {
+	await defaultStore.set('renameTheButtonInPostFormToNyaManualSet', true);
+});
+
+watch([
 	reactableRemoteReactionEnabled,
 	mobileHeaderChange,
 	renameTheButtonInPostFormToNya,

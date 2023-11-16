@@ -139,6 +139,7 @@ import { langmap } from '@/scripts/langmap.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { defaultStore } from '@/store.js';
+import { unisonReload } from '@/scripts/unison-reload.js';
 import MkInfo from '@/components/MkInfo.vue';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
@@ -211,8 +212,16 @@ function save() {
 	if (profile.name === 'syuilo' || profile.name === 'しゅいろ') {
 		claimAchievement('setNameToSyuilo');
 	}
-	if (profile.isCat) {
+	if (profile.isCat && defaultStore.state.renameTheButtonInPostFormToNya) {
 		claimAchievement('markedAsCat');
+	} else if (profile.isCat && !defaultStore.state.renameTheButtonInPostFormToNya) {
+		claimAchievement('markedAsCat');
+		defaultStore.set('renameTheButtonInPostFormToNya', true);
+		defaultStore.set('renameTheButtonInPostFormToNyaManualSet', false);
+		reloadAsk();
+	} else if (!profile.isCat && !defaultStore.state.renameTheButtonInPostFormToNyaManualSet) {
+		defaultStore.set('renameTheButtonInPostFormToNya', false);
+		reloadAsk();
 	}
 }
 
@@ -271,6 +280,16 @@ function openDecoration(avatarDecoration) {
 	os.popup(defineAsyncComponent(() => import('./profile.avatar-decoration-dialog.vue')), {
 		decoration: avatarDecoration,
 	}, {}, 'closed');
+}
+
+async function reloadAsk() {
+	const { canceled } = await os.confirm({
+		type: 'info',
+		text: i18n.ts.reloadToApplySetting,
+	});
+	if (canceled) return;
+
+	unisonReload();
 }
 
 const headerActions = $computed(() => []);

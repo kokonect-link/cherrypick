@@ -579,6 +579,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	renameTheButtonInPostFormToNyaManualSet: {
+		where: 'account',
+		default: false,
+	},
 	enableLongPressOpenAccountMenu: {
 		where: 'device',
 		default: true,
