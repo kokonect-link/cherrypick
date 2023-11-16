@@ -38,9 +38,9 @@ export class MiAvatarDecoration {
 	public roleIdsThatCanBeUsedThisDecoration: string[];
 
 	@Column('varchar', {
-		length: 32,
+		length: 32, nullable: true,
 	})
-	public remoteId: string;
+	public remoteId: string | null;
 
 	@Column('varchar', {
 		length: 128, nullable: true,
