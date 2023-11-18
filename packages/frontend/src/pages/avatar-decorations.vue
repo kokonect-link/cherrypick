@@ -19,9 +19,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkTextarea v-model="avatarDecoration.description">
 						<template #label>{{ i18n.ts.description }}</template>
 					</MkTextarea>
-					<MkInput v-model="avatarDecoration.url">
-						<template #label>{{ i18n.ts.imageUrl }}</template>
-					</MkInput>
+					<div :class="$style.imageSelectdiv">
+						<p>{{ i18n.ts.image }}</p>
+						<MkButton @click="ev => changeImage(ev, avatarDecoration)">{{ i18n.ts.selectFile }}</MkButton>
+					</div>
+					<div v-if="avatarDecoration.url !== ''" :class="$style.imgContainer">
+						<img src="https://misskey-hub.net/avatar-decoration-template.png" :class="$style.img" style="opacity: .5;"/>
+						<img :src="avatarDecoration.url" :class="$style.img"/>
+					</div>
 					<div class="buttons _buttons">
 						<MkButton class="button" inline primary @click="save(avatarDecoration)"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 						<MkButton v-if="avatarDecoration.id != null" class="button" inline danger @click="del(avatarDecoration)"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
@@ -45,8 +50,16 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFolder from '@/components/MkFolder.vue';
+import { selectFile } from '@/scripts/select-file.js';
 
 let avatarDecorations: any[] = $ref([]);
+
+async function changeImage(ev, avatarDecoration) {
+	const file = await selectFile(ev.currentTarget ?? ev.target, null);
+	if (file != null) {
+		avatarDecoration.url = file.url;
+	}
+}
 
 function add() {
 	avatarDecorations.unshift({
@@ -100,3 +113,37 @@ definePageMetadata({
 	icon: 'ti ti-sparkles',
 });
 </script>
+
+<style lang="scss" module>
+.imageSelectdiv {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+
+	> p {
+		margin: 0;
+	}
+}
+
+.imgContainer {
+	position: relative;
+	margin: 8px;
+	width: 128px;
+	height: 128px;
+}
+
+.img {
+	display: block;
+
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	width: 100%;
+	height: 100%;
+
+	object-fit: contain;
+	pointer-events: none;
+}
+
+</style>
