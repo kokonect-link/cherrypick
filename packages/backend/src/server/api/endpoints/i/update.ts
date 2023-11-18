@@ -137,7 +137,7 @@ export const paramDef = {
 		birthday: { ...birthdaySchema, nullable: true },
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)] as string[], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
-		avatarDecorations: { type: 'array', maxItems: 1, items: {
+		avatarDecorations: { type: 'array', maxItems: 5, items: {
 			type: 'object',
 			properties: {
 				id: { type: 'string', format: 'misskey:id' },

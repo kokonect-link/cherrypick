@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+maxinumLayerError: "6枚以上重ねることはできません。他のレイヤーを削除してください。"
+layer: "レイヤー"
 noteUpdatedAt: "編集済み: {date} {time}"
 editReaction: "リアクションを編集"
 removeReaction: "リアクションを削除"

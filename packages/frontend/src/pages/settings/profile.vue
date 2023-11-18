@@ -97,6 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.avatarDecorationName"><MkCondensedLine :minScale="0.5">{{ avatarDecoration.name }}</MkCondensedLine></div>
 				<MkAvatar style="width: 60px; height: 60px;" :user="$i" :decoration="{ url: avatarDecoration.url }" forceShowDecoration/>
 				<i v-if="avatarDecoration.roleIdsThatCanBeUsedThisDecoration.length > 0 && !$i.roles.some(r => avatarDecoration.roleIdsThatCanBeUsedThisDecoration.includes(r.id))" :class="$style.avatarDecorationLock" class="ti ti-lock"></i>
+				<span v-if="$i.avatarDecorations.some(x => x.id === avatarDecoration.id)" :class="$style.layerNum">{{ indexOfDecoration(v => v.id === avatarDecoration.id) + 1 }}</span>
 			</div>
 		</div>
 	</MkFolder>
@@ -162,6 +163,18 @@ watch(() => profile, () => {
 }, {
 	deep: true,
 });
+
+function indexOfDecoration(f) {
+	let result = -1;
+	$i.avatarDecorations.some((e, i) => {
+		if (f(e)) {
+			result = i;
+			return true;
+		}
+		return false;
+	});
+	return result;
+}
 
 const fields = ref($i?.fields.map(field => ({ id: Math.random().toString(), name: field.name, value: field.value })) ?? []);
 const fieldEditMode = ref(false);
@@ -277,6 +290,14 @@ function changeBanner(ev) {
 }
 
 function openDecoration(avatarDecoration) {
+	if (indexOfDecoration(v => v.id === avatarDecoration.id) === -1 && $i.avatarDecorations.length >= 5) {
+		os.alert({
+			type: 'error',
+			title: i18n.ts.error,
+			text: i18n.ts.maxinumLayerError
+		});
+		return;
+	}
 	os.popup(defineAsyncComponent(() => import('./profile.avatar-decoration-dialog.vue')), {
 		decoration: avatarDecoration,
 	}, {}, 'closed');
@@ -414,5 +435,12 @@ definePageMetadata({
 	position: absolute;
 	bottom: 12px;
 	right: 12px;
+}
+
+.layerNum {
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 10px;
 }
 </style>

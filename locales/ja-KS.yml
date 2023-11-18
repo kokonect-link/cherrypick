@@ -1,5 +1,7 @@
 ---
 _lang_: "日本語 (関西弁)"
+maxinumLayerError: "6枚以上重ねられんで。他のレイヤーを削除してなー"
+layer: "レイヤー"
 headlineMisskey: "ノートでつながるネットワーク"
 introMisskey: "ようお越し！CherryPickは、オープンソースの分散型マイクロブログサービスやねん。\n「ノート」を作って、いま起こっとることを共有したり、あんたについて皆に発信しよう📡\n「ツッコミ」機能で、皆のノートに素早く反応を追加したりもできるで✌\nほな、新しい世界を探検しよか🚀"
 poweredByMisskeyDescription: "{name}は、オープンソースのプラットフォーム<b>CherryPick</b>のサーバーのひとつなんやで。"

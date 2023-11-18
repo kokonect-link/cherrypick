@@ -20,6 +20,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkAvatar style="width: 64px; height: 64px; margin-bottom: 20px;" :user="$i" :decoration="{ url: decoration.url, angle, flipH }" forceShowDecoration/>
 			</div>
 			<div class="_gaps_s">
+				<MkRadios v-model="insertLayer">
+					<template #label>{{ i18n.ts.layer }}</template>
+					<option value="0">1</option>
+					<option value="1">2</option>
+					<option value="2">3</option>
+					<option value="3">4</option>
+					<option value="4">5</option>
+				</MkRadios>
 				<MkRange v-model="angle" continuousUpdate :min="-0.5" :max="0.5" :step="0.025" :textConverter="(v) => `${Math.floor(v * 360)}°`">
 					<template #label>{{ i18n.ts.angle }}</template>
 				</MkRange>
@@ -41,6 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { shallowRef, ref, computed } from 'vue';
 import MkButton from '@/components/MkButton.vue';
+import MkRadios from '@/components/MkRadios.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
@@ -63,6 +72,18 @@ const emit = defineEmits<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 const using = computed(() => $i.avatarDecorations.some(x => x.id === props.decoration.id));
+const layerNum = (() => {
+	let result = -1;
+	$i.avatarDecorations.some((x, i) => {
+		if (x.id === props.decoration.id) {
+			result = i;
+			return true;
+		}
+		return false;
+	});
+	return result;
+})();
+const insertLayer = ref(layerNum === -1 ? String($i.avatarDecorations.length) : String(layerNum));
 const angle = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).angle ?? 0 : 0);
 const flipH = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).flipH ?? false : false);
 
@@ -76,19 +97,22 @@ async function attach() {
 		angle: angle.value,
 		flipH: flipH.value,
 	};
+	const updatedDecorations = $i.avatarDecorations.toSpliced(layerNum, layerNum === -1 ? 0 : 1).toSpliced(Number(insertLayer.value), 0, decoration);
 	await os.apiWithDialog('i/update', {
-		avatarDecorations: [decoration],
+		avatarDecorations: updatedDecorations,
 	});
-	$i.avatarDecorations = [decoration];
+	$i.avatarDecorations = updatedDecorations;
 
 	dialog.value.close();
 }
 
 async function detach() {
+	if (layerNum === -1) return;
+	const deletedDecorations = $i.avatarDecorations.toSpliced(layerNum, 1);
 	await os.apiWithDialog('i/update', {
-		avatarDecorations: [],
+		avatarDecorations: deletedDecorations,
 	});
-	$i.avatarDecorations = [];
+	$i.avatarDecorations = deletedDecorations;
 
 	dialog.value.close();
 }

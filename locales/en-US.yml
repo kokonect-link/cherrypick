@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+maxinumLayerError: "You cannot stack more than 6 layers. Please delete other layers."
+layer: "Layer"
 noteUpdatedAt: "Edited: {date} {time}"
 editReaction: "Edit reactions"
 removeReaction: "Remove reactions"
