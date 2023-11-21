@@ -111,7 +111,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					includeLocalRenotes: ps.includeLocalRenotes,
 					withFiles: ps.withFiles,
 					withRenotes: ps.withRenotes,
-                    withCats: ps.withCats,
+					withCats: ps.withCats,
 				}, me);
 			}
 
@@ -175,7 +175,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						includeLocalRenotes: ps.includeLocalRenotes,
 						withFiles: ps.withFiles,
 						withRenotes: ps.withRenotes,
-                        withCats: ps.withCats,
+						withCats: ps.withCats,
 					}, me);
 				} else {
 					return [];
@@ -274,9 +274,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			query.andWhere('note.fileIds != \'{}\'');
 		}
 
-        if (ps.withCats) {
-            query.andWhere('(select "isCat" from "user" where id = note."userId")');
-        }
+		if (ps.withCats) {
+			query.andWhere('(select "isCat" from "user" where id = note."userId")');
+		}
 		//#endregion
 
 		const timeline = await query.limit(ps.limit).getMany();

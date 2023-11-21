@@ -188,7 +188,7 @@ function updatePaginationQuery() {
 		query = {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
-      withCats: props.onlyCats,
+			withCats: props.onlyCats,
 		};
 	} else if (props.src === 'local') {
 		endpoint = 'notes/local-timeline';
@@ -196,7 +196,7 @@ function updatePaginationQuery() {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
 			withFiles: props.onlyFiles ? true : undefined,
-      withCats: props.onlyCats,
+			withCats: props.onlyCats,
 		};
 	} else if (props.src === 'social') {
 		endpoint = 'notes/hybrid-timeline';
@@ -204,14 +204,14 @@ function updatePaginationQuery() {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
 			withFiles: props.onlyFiles ? true : undefined,
-      withCats: props.onlyCats,
+			withCats: props.onlyCats,
 		};
 	} else if (props.src === 'global') {
 		endpoint = 'notes/global-timeline';
 		query = {
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
-      withCats: props.onlyCats,
+			withCats: props.onlyCats,
 		};
 	} else if (props.src === 'mentions') {
 		endpoint = 'notes/mentions';
@@ -225,7 +225,7 @@ function updatePaginationQuery() {
 		endpoint = 'notes/user-list-timeline';
 		query = {
 			withFiles: props.onlyFiles ? true : undefined,
-      withCats: props.onlyCats,
+			withCats: props.onlyCats,
 			listId: props.list,
 		};
 	} else if (props.src === 'channel') {

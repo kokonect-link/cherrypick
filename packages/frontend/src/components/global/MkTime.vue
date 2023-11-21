@@ -53,7 +53,7 @@ const relative = $computed<string>(() => {
 			ago < -3600 ? i18n.t('_timeIn.hours', { n: Math.round(-ago / 3600).toString() }) :
 			ago < -60 ? i18n.t('_timeIn.minutes', { n: (~~(-ago / 60)).toString() }) :
 			i18n.t('_timeIn.seconds', { n: (~~(-ago % 60)).toString() })
-    );
+		);
 	} else {
 		return (
 			ago >= 31536000 ? i18n.t('_ago.yearsAgo', { n: Math.round(ago / 31536000).toString() }) :
@@ -71,7 +71,7 @@ const relative = $computed<string>(() => {
 			ago < -3600 ? i18n.t('_timeIn.hours', { n: Math.round(-ago / 3600).toString() }) :
 			ago < -60 ? i18n.t('_timeIn.minutes', { n: (~~(-ago / 60)).toString() }) :
 			i18n.t('_timeIn.seconds', { n: (~~(-ago % 60)).toString() })
-    );
+		);
 	}
 });
 
