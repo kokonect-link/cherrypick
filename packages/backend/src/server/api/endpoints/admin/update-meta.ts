@@ -144,6 +144,7 @@ export const paramDef = {
 		preservedUsernames: { type: 'array', items: { type: 'string' } },
 		manifestJsonOverride: { type: 'string' },
 		enableFanoutTimeline: { type: 'boolean' },
+		enableFanoutTimelineDbFallback: { type: 'boolean' },
 		perLocalUserUserTimelineCacheMax: { type: 'integer' },
 		perRemoteUserUserTimelineCacheMax: { type: 'integer' },
 		perUserHomeTimelineCacheMax: { type: 'integer' },
@@ -598,6 +599,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.enableFanoutTimeline !== undefined) {
 				set.enableFanoutTimeline = ps.enableFanoutTimeline;
+			}
+
+			if (ps.enableFanoutTimelineDbFallback !== undefined) {
+				set.enableFanoutTimelineDbFallback = ps.enableFanoutTimelineDbFallback;
 			}
 
 			if (ps.perLocalUserUserTimelineCacheMax !== undefined) {

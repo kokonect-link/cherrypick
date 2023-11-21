@@ -1487,6 +1487,8 @@ export interface Locale {
         "shortName": string;
         "shortNameDescription": string;
         "fanoutTimelineDescription": string;
+        "fanoutTimelineDbFallback": string;
+        "fanoutTimelineDbFallbackDescription": string;
     };
     "_accountMigration": {
         "moveFrom": string;
@@ -2248,6 +2250,15 @@ export interface Locale {
         "yearsAgo": string;
         "invalid": string;
     };
+    "_timeIn": {
+        "seconds": string;
+        "minutes": string;
+        "hours": string;
+        "days": string;
+        "weeks": string;
+        "months": string;
+        "years": string;
+    };
     "_time": {
         "second": string;
         "minute": string;
@@ -2720,33 +2731,6 @@ export interface Locale {
         "attachedNotes": string;
         "thisPageCanBeSeenFromTheAuthor": string;
     };
-    "_abuse": {
-        "_resolver": {
-            "1hour": string;
-            "12hours": string;
-            "1day": string;
-            "1week": string;
-            "1month": string;
-            "3months": string;
-            "6months": string;
-            "1year": string;
-            "indefinitely": string;
-            "expiresAt": string;
-            "targetUserPattern": string;
-            "reporterPattern": string;
-            "reportContentPattern": string;
-        };
-        "list": string;
-        "resolver": string;
-    };
-    "_imageCompressionMode": {
-        "title": string;
-        "description": string;
-        "resizeCompress": string;
-        "noResizeCompress": string;
-        "resizeCompressLossy": string;
-        "noResizeCompressLossy": string;
-    };
     "_externalResourceInstaller": {
         "title": string;
         "checkVendorBeforeInstall": string;
@@ -2802,6 +2786,33 @@ export interface Locale {
                 "description": string;
             };
         };
+    };
+    "_abuse": {
+        "_resolver": {
+            "1hour": string;
+            "12hours": string;
+            "1day": string;
+            "1week": string;
+            "1month": string;
+            "3months": string;
+            "6months": string;
+            "1year": string;
+            "indefinitely": string;
+            "expiresAt": string;
+            "targetUserPattern": string;
+            "reporterPattern": string;
+            "reportContentPattern": string;
+        };
+        "list": string;
+        "resolver": string;
+    };
+    "_imageCompressionMode": {
+        "title": string;
+        "description": string;
+        "resizeCompress": string;
+        "noResizeCompress": string;
+        "resizeCompressLossy": string;
+        "noResizeCompressLossy": string;
     };
 }
 declare const locales: {
