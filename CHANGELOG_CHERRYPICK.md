@@ -33,6 +33,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
+### Client
+- Fix: 역할 설정에 내용을 알 수 없는 설정이 표시됨
+
 ### Server
 - Fix: 일부 환경에서 아이콘 장식을 추가할 수 없음
 - Fix: 리모트 유저의 프로필 미디어가 잘못된 URL로 표시될 수 있음
