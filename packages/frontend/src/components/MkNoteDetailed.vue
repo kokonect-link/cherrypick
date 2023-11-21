@@ -146,9 +146,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 			</div>
 			<MkReactionsViewer ref="reactionsViewer" :note="appearNote"/>
-			<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
+			<button v-if="!note.isHidden" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
 				<i class="ti ti-arrow-back-up"></i>
 				<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.repliesCount }}</p>
+			</button>
+			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
+				<i class="ti ti-ban"></i>
 			</button>
 			<button
 				v-if="canRenote"
@@ -194,7 +197,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div>
 		<div v-if="tab === 'replies'" :class="$style.tab_replies">
-			<MkPostForm v-if="!isMobile && defaultStore.state.showFixedPostFormInReplies" class="post-form _panel" fixed :reply="appearNote"></MkPostForm>
+			<MkPostForm v-if="!note.isHidden && !isMobile && defaultStore.state.showFixedPostFormInReplies" class="post-form _panel" fixed :reply="appearNote"></MkPostForm>
 			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
 			<div v-if="replies.length > 2 && !repliesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadMore }}</MkButton>
