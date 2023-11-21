@@ -39,8 +39,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 답글이 달리면서 해당 비공개 노트의 내용을 다른 사람이 볼 수 있음
 
 ### Server
-- Fix: 일부 환경에서 아이콘 장식을 추가할 수 없음
-- Fix: 리모트 유저의 프로필 미디어가 잘못된 URL로 표시될 수 있음
+- Fix: 일부 환경에서 아이콘 장식을 추가할 수 없음 ([libnare/cp-castella@d2d05a5](https://github.com/libnare/cp-castella/commit/d2d05a54570ce1b9cfe2a839bafafe6a27e320db))
+- Fix: 리모트 유저의 프로필 미디어가 잘못된 URL로 표시될 수 있음 ([libnare/cp-castella@6f3f8dc](https://github.com/libnare/cp-castella/commit/6f3f8dcfe8918efdc6ad78d6e2b07441149c3ec7))
 
 ---
 
