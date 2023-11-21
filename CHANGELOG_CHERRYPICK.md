@@ -28,6 +28,17 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있으나 이는 정상적인 동작으로,
 > 문제가 발생하면 <b>'설정 - 캐시 비우기'</b>를 진행하거나, <b>브라우저 캐시를 삭제</b>하십시오.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2023.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+
+### Server
+- Fix: 일부 환경에서 아이콘 장식을 추가할 수 없음
+- Fix: 리모트 유저의 프로필 미디어가 잘못된 URL로 표시될 수 있음
+
+---
+
 ## 4.5.0
 출시일: 2023/11/16<br>
 기반 Misskey 버전: 2023.11.0<br>
@@ -75,7 +86,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023110](CHANG
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
-- Feat: 리모트 유저의 아바타 장식이 반영됨 ([libnare/cp-castella@7891331](https://github.com/libnare/cp-castella/commit/7891331321e2fbaf4ec5f5c9d4e51b116948d564), [libnare/cp-castella@ae4004c](https://github.com/libnare/cp-castella/commit/ae4004cd41c85f56716a4100c2eb0d8410fbd20a), [libnare/cp-castella@135aa97](https://github.com/libnare/cp-castella/commit/135aa97046548ba5929c04e412622c979a2cad09))
+- Feat: 리모트 유저의 아이콘 장식이 반영됨 ([libnare/cp-castella@7891331](https://github.com/libnare/cp-castella/commit/7891331321e2fbaf4ec5f5c9d4e51b116948d564), [libnare/cp-castella@ae4004c](https://github.com/libnare/cp-castella/commit/ae4004cd41c85f56716a4100c2eb0d8410fbd20a), [libnare/cp-castella@135aa97](https://github.com/libnare/cp-castella/commit/135aa97046548ba5929c04e412622c979a2cad09))
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 장시간 기다려도 마이그레이션이 완료되지 않을 수 있음
 - Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
