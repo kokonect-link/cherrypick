@@ -313,6 +313,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { infoImageUrl, instance } from '@/instance.js';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
 import { deviceKind } from '@/scripts/device-kind.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -593,12 +594,17 @@ function menu(viaKeyboard = false): void {
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 5 : []);
+
 	const res = await os.api('notes/translate', {
 		noteId: appearNote.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});
 	translating.value = false;
 	translation.value = res;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [5, 5, 10] : []);
 }
 
 async function clip() {

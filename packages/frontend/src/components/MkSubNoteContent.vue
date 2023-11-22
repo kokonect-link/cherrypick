@@ -141,6 +141,7 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { concat } from '@/scripts/array.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -397,6 +398,8 @@ async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
 
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 5 : []);
+
 	if (props.mock) {
 		return;
 	}
@@ -407,6 +410,8 @@ async function translate(): Promise<void> {
 	});
 	translating.value = false;
 	translation.value = res;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [5, 5, 10] : []);
 }
 
 function focus() {

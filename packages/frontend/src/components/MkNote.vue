@@ -231,6 +231,7 @@ import { notePage } from '@/filters/note.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
 import { concat } from '@/scripts/array.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 let showEl = $ref(false);
 
@@ -569,6 +570,8 @@ async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
 
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 5 : []);
+
 	if (props.mock) {
 		return;
 	}
@@ -579,6 +582,8 @@ async function translate(): Promise<void> {
 	});
 	translating.value = false;
 	translation.value = res;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [5, 5, 10] : []);
 }
 
 function showRenoteMenu(viaKeyboard = false): void {
