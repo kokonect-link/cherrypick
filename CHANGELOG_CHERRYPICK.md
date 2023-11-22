@@ -35,10 +35,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Client
 - Enhance: 리액션 상태에 따라 버튼의 툴팁을 다르게 표시함
+- Enhance: 노트 헤더의 편집됨 아이콘에 커서를 올리면 마지막으로 노트를 편집한 시간을 툴팁으로 표시함
 - Fix: 역할 설정에 잘못된 설정이 표시됨
 - Fix: 비공개 노트에 답글을 달 수 있음
   - 답글이 달리면 해당 비공개 노트의 내용을 다른 사람이 볼 수 있음
-- Fix: 노트 헤더의 수정됨 아이콘의 툴팁 디자인이 잘못 표시됨
+- Fix: 노트 헤더의 편집됨 아이콘의 툴팁 디자인이 잘못 표시됨
 
 ### Server
 - Fix: 일부 환경에서 아이콘 장식을 추가하지 못할 수 있음 ([libnare/cp-castella@d2d05a5](https://github.com/libnare/cp-castella/commit/d2d05a54570ce1b9cfe2a839bafafe6a27e320db))

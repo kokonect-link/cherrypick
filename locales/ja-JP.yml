@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+noteUpdatedAt: "編集済み: {date} {time}"
 editReaction: "リアクションを編集"
 removeReaction: "リアクションを削除"
 noNyaization: "ニャ化を表示しない"

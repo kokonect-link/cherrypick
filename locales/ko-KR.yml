@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+noteUpdatedAt: "편집됨: {date} {time}"
 editReaction: "리액션 편집"
 removeReaction: "리액션 삭제"
 noNyaization: "고양이체를 표시하지 않기"

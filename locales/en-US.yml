@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+noteUpdatedAt: "Edited: {date} {time}"
 editReaction: "Edit reactions"
 removeReaction: "Remove reactions"
 noNyaization: "Show content without Nyaization"
