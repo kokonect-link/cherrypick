@@ -34,6 +34,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### Client
+- Enhance: 리액션 상태에 따라 버튼의 툴팁을 다르게 표시함
 - Fix: 역할 설정에 잘못된 설정이 표시됨
 - Fix: 비공개 노트에 답글을 달 수 있음
   - 답글이 달리면 해당 비공개 노트의 내용을 다른 사람이 볼 수 있음

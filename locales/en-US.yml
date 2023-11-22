@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+editReaction: "Edit reactions"
+removeReaction: "Remove reactions"
 noNyaization: "Show content without Nyaization"
 revertNoNyaization: "Show content including Nyaization"
 viewTextSource: "View text source"
