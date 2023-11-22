@@ -213,7 +213,7 @@ function more(ev: MouseEvent) {
 	.bottom {
 		position: sticky;
 		bottom: 0;
-		padding: 20px 0;
+		padding-top: 20px;
 		background: var(--X14);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
@@ -267,11 +267,10 @@ function more(ev: MouseEvent) {
 		display: flex;
 		z-index: 2;
 		align-items: center;
-		padding-left: 30px;
+		padding: 20px 0 20px 30px;
 		width: 100%;
 		text-align: left;
 		box-sizing: border-box;
-		margin-top: 16px;
 		overflow: clip;
 	}
 
@@ -403,7 +402,7 @@ function more(ev: MouseEvent) {
 	.bottom {
 		position: sticky;
 		bottom: 0;
-		padding: 20px 0;
+		padding-top: 20px;
 		background: var(--X14);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
@@ -414,7 +413,6 @@ function more(ev: MouseEvent) {
 		position: relative;
 		width: 100%;
 		height: 52px;
-		margin-bottom: 16px;
 		text-align: center;
 
 		&:before {
@@ -451,6 +449,7 @@ function more(ev: MouseEvent) {
 	.account {
 		display: block;
 		text-align: center;
+		padding: 20px 0;
 		width: 100%;
 		overflow: clip;
 	}

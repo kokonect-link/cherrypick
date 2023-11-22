@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted } from 'vue';
-import { useStream, isReloading } from '@/stream.js';
+import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
@@ -36,7 +36,6 @@ let hasDisconnected = $ref(false);
 let timeoutId = $ref<number>();
 
 function onDisconnected() {
-	if (isReloading) return;
 	window.clearTimeout(timeoutId);
 	timeoutId = window.setTimeout(() => {
 		hasDisconnected = true;

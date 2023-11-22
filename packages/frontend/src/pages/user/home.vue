@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ti ti-lock"></i></span>
 								<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
-								<button v-if="!isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
+								<button v-if="$i && !isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
 									<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
 								</button>
 							</div>
@@ -183,9 +183,10 @@ import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
-import { defaultStore } from '@/store.js';
+import { ColdDeviceStorage, defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -292,12 +293,17 @@ async function updateMemo() {
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 5 : []);
+
 	const res = await os.api('users/translate', {
 		userId: props.user.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});
 	translating.value = false;
 	translation.value = res;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [5, 5, 10] : []);
 }
 
 watch([props.user], () => {

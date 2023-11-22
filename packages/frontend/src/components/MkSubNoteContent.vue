@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:parsedNodes="parsed"
 			:text="note.text"
 			:author="note.user"
-			:nyaize="noNyaize ? false : 'account'"
+			:nyaize="noNyaize ? false : 'respect'"
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="true"
 			:enableEmojiMenuReaction="true"
@@ -66,9 +66,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</MkReactionsViewer>
 		<footer :class="$style.footer">
-			<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click="reply()">
+			<button v-if="!note.isHidden" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click="reply()">
 				<i class="ti ti-arrow-back-up"></i>
 				<p v-if="note.repliesCount > 0" :class="$style.footerButtonCount">{{ note.repliesCount }}</p>
+			</button>
+			<button v-else :class="$style.footerButton" class="_button" disabled>
+				<i class="ti ti-ban"></i>
 			</button>
 			<button
 				v-if="canRenote"
@@ -88,11 +91,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="note.myReaction == null" ref="heartReactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @mousedown="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" v-tooltip="i18n.ts.reaction" :class="$style.footerButton" class="_button" @mousedown="react()">
-				<i v-if="note.myReaction == null" class="ti ti-mood-plus"></i>
-				<i v-else class="ti ti-mood-edit"></i>
+			<button v-if="note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" :class="$style.footerButton" class="_button" @mousedown="react()">
+				<i v-if="note.myReaction == null" v-tooltip="i18n.ts.reaction" class="ti ti-mood-plus"></i>
+				<i v-else v-tooltip="i18n.ts.editReaction" class="ti ti-mood-edit"></i>
 			</button>
-			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" :class="$style.footerButton" class="_button" @click="undoReact(note)">
+			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [30, 50, 50] : ''" v-tooltip="i18n.ts.removeReaction" :class="$style.footerButton" class="_button" @click="undoReact(note)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
 			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click="quote()">
@@ -138,6 +141,7 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { concat } from '@/scripts/array.js';
+import { vibrate } from '@/scripts/vibrate.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -394,6 +398,8 @@ async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
 
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 5 : []);
+
 	if (props.mock) {
 		return;
 	}
@@ -404,6 +410,8 @@ async function translate(): Promise<void> {
 	});
 	translating.value = false;
 	translation.value = res;
+
+	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [5, 5, 10] : []);
 }
 
 function focus() {

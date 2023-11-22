@@ -428,12 +428,12 @@ export function getNoteMenu(props: {
 				}
 				, (appearNote.userId === $i.id) ? null : undefined
 				, (appearNote.userId === $i.id) ? {
-					icon: 'ti ti-edit',
+					icon: 'ti ti-edit-circle',
 					text: i18n.ts.copyAndEdit,
 					action: copyEdit,
 				} : undefined
 				, appearNote.userId === $i.id ? {
-					icon: 'ti ti-edit',
+					icon: 'ti ti-eraser',
 					text: i18n.ts.deleteAndEdit,
 					action: delEdit,
 				} : undefined],

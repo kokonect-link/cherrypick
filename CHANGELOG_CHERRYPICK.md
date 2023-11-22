@@ -28,6 +28,27 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 > 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있으나 이는 정상적인 동작으로,
 > 문제가 발생하면 <b>'설정 - 캐시 비우기'</b>를 진행하거나, <b>브라우저 캐시를 삭제</b>하십시오.
 
+## 4.5.1
+출시일: 2023/11/22<br>
+기반 Misskey 버전: 2023.11.1<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023111](CHANGELOG.md#2023111) 문서를 참고하십시오.
+
+### Client
+- Enhance: 리액션 상태에 따라 버튼의 툴팁을 다르게 표시함
+- Enhance: 노트 헤더의 편집됨 아이콘에 커서를 올리면 마지막으로 노트를 편집한 시간을 툴팁으로 표시함
+- Enhance: 번역을 완료하면 진동으로 알림
+- Enhance: '내용 복사 후 편집'과 '삭제 후 편집'의 아이콘을 더욱 알아보기 쉽도록 변경함
+- Fix: 역할 설정에 잘못된 설정이 표시됨
+- Fix: 비공개 노트에 답글을 달 수 있음
+  - 답글이 달리면 해당 비공개 노트의 내용을 다른 사람이 볼 수 있음
+- Fix: 노트 헤더의 편집됨 아이콘의 툴팁 디자인이 잘못 표시됨
+
+### Server
+- Fix: 일부 환경에서 아이콘 장식을 추가하지 못할 수 있음 ([libnare/cp-castella@d2d05a5](https://github.com/libnare/cp-castella/commit/d2d05a54570ce1b9cfe2a839bafafe6a27e320db))
+- Fix: 리모트 유저의 프로필 미디어가 잘못된 URL로 표시될 수 있음 ([libnare/cp-castella@6f3f8dc](https://github.com/libnare/cp-castella/commit/6f3f8dcfe8918efdc6ad78d6e2b07441149c3ec7))
+
+---
+
 ## 4.5.0
 출시일: 2023/11/16<br>
 기반 Misskey 버전: 2023.11.0<br>
@@ -75,7 +96,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023110](CHANG
 
 ### Server
 - Feat: 연합에서 노트 수정이 반영됨 (libnare/cp-castella#1)
-- Feat: 리모트 유저의 아바타 장식이 반영됨 ([libnare/cp-castella@7891331](https://github.com/libnare/cp-castella/commit/7891331321e2fbaf4ec5f5c9d4e51b116948d564), [libnare/cp-castella@ae4004c](https://github.com/libnare/cp-castella/commit/ae4004cd41c85f56716a4100c2eb0d8410fbd20a), [libnare/cp-castella@135aa97](https://github.com/libnare/cp-castella/commit/135aa97046548ba5929c04e412622c979a2cad09))
+- Feat: 리모트 유저의 아이콘 장식이 반영됨 ([libnare/cp-castella@7891331](https://github.com/libnare/cp-castella/commit/7891331321e2fbaf4ec5f5c9d4e51b116948d564), [libnare/cp-castella@ae4004c](https://github.com/libnare/cp-castella/commit/ae4004cd41c85f56716a4100c2eb0d8410fbd20a), [libnare/cp-castella@135aa97](https://github.com/libnare/cp-castella/commit/135aa97046548ba5929c04e412622c979a2cad09))
 - Enhance: 사용자 차단 개선 (Renote Part) (misskey-dev/misskey#12089)
 - Fix: 장시간 기다려도 마이그레이션이 완료되지 않을 수 있음
 - Fix: Redis 에서 TL 캐시를 반환하지 않으면 '고양이만 보기'가 작동하지 않을 수 있음
