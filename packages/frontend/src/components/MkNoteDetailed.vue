@@ -42,8 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button ref="renoteTime" class="_button">
 					<i class="ti ti-dots" :class="$style.renoteMenu" @click="showRenoteMenu()"></i>
 				</button>
-				<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
-				<MkTime v-else :time="note.createdAt" mode="relative"/>
+				<MkTime :time="note.createdAt" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'"/>
 			</span>
 		</div>
 	</div>
@@ -238,8 +237,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div :class="$style.historyMain">
 						<div :class="$style.historyHeader">
 							<MkUserName :user="appearNote.user" :nowrap="true"/>
-							<MkTime v-if="defaultStore.state.enableAbsoluteTime" :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="absolute" colored/>
-							<MkTime v-else :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" mode="relative" colored/>
+							<MkTime :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 						</div>
 						<div>
 							<div>

@@ -58,8 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span v-else-if="notification.type === 'reaction:grouped'">{{ i18n.t('_notification.reactedBySomeUsers', { n: notification.reactions.length }) }}</span>
 			<span v-else-if="notification.type === 'renote:grouped'">{{ i18n.t('_notification.renotedBySomeUsers', { n: notification.users.length }) }}</span>
 			<span v-else>{{ notification.header }}</span>
-			<MkTime v-if="withTime && defaultStore.state.enableAbsoluteTime" :time="notification.createdAt" :class="$style.headerTime" mode="absolute"/>
-			<MkTime v-else-if="withTime && !defaultStore.state.enableAbsoluteTime" :time="notification.createdAt" :class="$style.headerTime" mode="relative"/>
+			<MkTime v-if="withTime" :time="notification.createdAt" :class="$style.headerTime" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'"/>
 		</header>
 		<div>
 			<MkA v-if="notification.type === 'reaction' || notification.type === 'reaction:grouped'" :class="$style.text" :to="notePage(notification.note)" :title="getNoteSummary(notification.note)">

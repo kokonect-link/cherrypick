@@ -40,8 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkTime :time="note.createdAt" colored/>
 			</div>
 			<MkA v-else :class="$style.time" :to="notePage(note)">
-				<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute" colored/>
-				<MkTime v-else-if="!defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="relative" colored/>
+				<MkTime :time="note.createdAt" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 			</MkA>
 		</div>
 		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance"/></div>

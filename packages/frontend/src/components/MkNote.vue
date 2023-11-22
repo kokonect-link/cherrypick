@@ -46,8 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i class="ti ti-dots" :class="$style.renoteMenu" @click="showRenoteMenu()"></i>
 				</button>
 				<MkA :to="notePage(note)">
-					<MkTime v-if="defaultStore.state.enableAbsoluteTime" :time="note.createdAt" mode="absolute"/>
-					<MkTime v-else :time="note.createdAt" mode="relative"/>
+					<MkTime :time="note.createdAt" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'"/>
 				</MkA>
 			</span>
 		</div>
