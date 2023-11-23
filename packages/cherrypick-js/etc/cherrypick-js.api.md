@@ -2316,6 +2316,10 @@ export type Endpoints = {
             };
         };
     };
+    'users/stats': {
+        req: TODO;
+        res: TODO;
+    };
     'fetch-rss': {
         req: {
             url: string;

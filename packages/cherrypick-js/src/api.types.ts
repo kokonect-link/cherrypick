@@ -670,7 +670,7 @@ export type Endpoints = {
 			$default: UserDetailed;
 		};
 	}; };
-
+	'users/stats': { req: TODO; res: TODO; };
 	// fetching external data
 	'fetch-rss': { req: { url: string; }; res: TODO; };
 	'fetch-external-resources': {

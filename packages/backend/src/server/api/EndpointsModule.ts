@@ -387,6 +387,7 @@ import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
+import * as ep___users_stats from './endpoints/users/stats.js';
 import * as ep___users_achievements from './endpoints/users/achievements.js';
 import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
 import * as ep___users_translate from './endpoints/users/translate.js';
@@ -777,6 +778,7 @@ const $users_reportAbuse: Provider = { provide: 'ep:users/report-abuse', useClas
 const $users_searchByUsernameAndHost: Provider = { provide: 'ep:users/search-by-username-and-host', useClass: ep___users_searchByUsernameAndHost.default };
 const $users_search: Provider = { provide: 'ep:users/search', useClass: ep___users_search.default };
 const $users_show: Provider = { provide: 'ep:users/show', useClass: ep___users_show.default };
+const $users_stats: Provider = { provide: 'ep:users/stats', useClass: ep___users_stats.default };
 const $users_achievements: Provider = { provide: 'ep:users/achievements', useClass: ep___users_achievements.default };
 const $users_updateMemo: Provider = { provide: 'ep:users/update-memo', useClass: ep___users_updateMemo.default };
 const $users_translate: Provider = { provide: 'ep:users/translate', useClass: ep___users_translate.default };
@@ -1172,6 +1174,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
+		$users_stats,
 		$users_achievements,
 		$users_updateMemo,
 		$users_translate,
@@ -1556,6 +1559,7 @@ const $retention: Provider = { provide: 'ep:retention', useClass: ep___retention
 		$users_searchByUsernameAndHost,
 		$users_search,
 		$users_show,
+		$users_stats,
 		$users_achievements,
 		$users_updateMemo,
 		$users_translate,
