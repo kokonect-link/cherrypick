@@ -340,15 +340,11 @@ export function getNoteMenu(props: {
 					action: unclip,
 				}, null] : []
 			), {
-				icon: 'ti ti-info-circle',
-				text: i18n.ts.details,
-				action: openDetail,
-			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, {
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
 				action: share,
-			}, {
+			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
+			, {
 				icon: 'ti ti-copy',
 				text: i18n.ts.copyContent,
 				action: copyContent,
@@ -397,6 +393,10 @@ export function getNoteMenu(props: {
 				icon: 'ti ti-note',
 				text: i18n.ts.note,
 				children: [{
+					icon: 'ti ti-info-circle',
+					text: i18n.ts.details,
+					action: openDetail,
+				}, {
 					icon: 'ti ti-repeat',
 					text: i18n.ts.renotesList,
 					action: showRenotes,
@@ -431,11 +431,6 @@ export function getNoteMenu(props: {
 					icon: 'ti ti-edit-circle',
 					text: i18n.ts.copyAndEdit,
 					action: copyEdit,
-				} : undefined
-				, appearNote.userId === $i.id ? {
-					icon: 'ti ti-eraser',
-					text: i18n.ts.deleteAndEdit,
-					action: delEdit,
 				} : undefined],
 			},
 			{
@@ -473,6 +468,11 @@ export function getNoteMenu(props: {
 					text: i18n.ts.edit,
 					action: edit,
 				} : undefined,
+				appearNote.userId === $i.id ? {
+					icon: 'ti ti-eraser',
+					text: i18n.ts.deleteAndEdit,
+					action: delEdit,
+				} : undefined,
 				{
 					icon: 'ti ti-trash',
 					text: i18n.ts.delete,
@@ -492,7 +492,7 @@ export function getNoteMenu(props: {
 			text: i18n.ts.copyContent,
 			action: copyContent,
 		}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-		, (appearNote.url || appearNote.uri) ? {
+		, (appearNote.url ?? appearNote.uri) ? {
 			icon: 'ti ti-external-link',
 			text: i18n.ts.showOnRemote,
 			action: () => {
