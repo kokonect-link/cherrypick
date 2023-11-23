@@ -48,7 +48,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 
 const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'));
@@ -66,12 +66,12 @@ const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
 	channel: defaultStore.reactiveState.sound_channel,
 });
 
-const vibrate = computed(ColdDeviceStorage.makeGetterSetter('vibrate'));
-const vibrateNote = computed(ColdDeviceStorage.makeGetterSetter('vibrateNote'));
-const vibrateNotification = computed(ColdDeviceStorage.makeGetterSetter('vibrateNotification'));
-const vibrateChat = computed(ColdDeviceStorage.makeGetterSetter('vibrateChat'));
-const vibrateChatBg = computed(ColdDeviceStorage.makeGetterSetter('vibrateChatBg'));
-const vibrateSystem = computed(ColdDeviceStorage.makeGetterSetter('vibrateSystem'));
+const vibrate = computed(defaultStore.makeGetterSetter('vibrate'));
+const vibrateNote = computed(defaultStore.makeGetterSetter('vibrateNote'));
+const vibrateNotification = computed(defaultStore.makeGetterSetter('vibrateNotification'));
+const vibrateChat = computed(defaultStore.makeGetterSetter('vibrateChat'));
+const vibrateChatBg = computed(defaultStore.makeGetterSetter('vibrateChatBg'));
+const vibrateSystem = computed(defaultStore.makeGetterSetter('vibrateSystem'));
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({

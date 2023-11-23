@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div ref="el" class="fdidabkc" :style="{ background: bg }" @click="onClick">
 	<div class="buttons left">
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
 	<template v-if="metadata">
 		<div class="titleContainer" @click="showTabsPopup">
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template v-if="actions">
 			<template v-for="action in actions">
 				<MkButton v-if="action.asFullButton" class="fullButton" primary @click.stop="action.handler"><i :class="action.icon" style="margin-right: 6px;"></i>{{ action.text }}</MkButton>
-				<button v-else v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip.noDelay="action.text" class="_button button" :class="{ highlighted: action.highlighted }" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				<button v-else v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay="action.text" class="_button button" :class="{ highlighted: action.highlighted }" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</template>
 	</div>
@@ -44,7 +44,7 @@ import MkButton from '@/components/MkButton.vue';
 import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { deviceKind } from '@/scripts/device-kind.js';
-import { ColdDeviceStorage } from '@/store.js';
+import { defaultStore } from '@/store.js';
 
 const MOBILE_THRESHOLD = 500;
 

@@ -122,9 +122,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/taichanNE30" target="_blank" :class="$style.contributor">
+						<a href="https://github.com/tai-cha" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/40626578?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@taichanNE30
+							<span :class="$style.contributorUsername">@tai-cha
 								<span :class="$style.contributorClient">
 									<span :class="$style.misskey">Misskey</span>
 								</span>

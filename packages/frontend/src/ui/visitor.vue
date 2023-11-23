@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkA to="/channels" class="link" activeClass="active"><i class="ti ti-device-tv icon"></i> {{ i18n.ts.channel }}</MkA>
 			</div>
 			<div v-else-if="narrow === true" class="narrow">
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="menu _button" @click="showMenu = true">
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="menu _button" @click="showMenu = true">
 					<i class="ti ti-menu-2 icon"></i>
 				</button>
 			</div>
@@ -59,8 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkA to="/play" class="link" activeClass="active"><i class="ti ti-player-play icon"></i>Play</MkA>
 			<MkA to="/gallery" class="link" activeClass="active"><i class="ti ti-icons icon"></i>{{ i18n.ts.gallery }}</MkA>
 			<div class="action">
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" @click="signin()">{{ i18n.ts.login }}</button>
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" @click="signin()">{{ i18n.ts.login }}</button>
 			</div>
 		</div>
 	</Transition>

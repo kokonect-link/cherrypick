@@ -265,7 +265,7 @@ export async function mainBoot() {
 		main.on('unreadMessagingMessage', () => {
 			updateAccount({ hasUnreadMessagingMessage: true });
 			sound.play('chatBg');
-			vibrate(ColdDeviceStorage.get('vibrateChatBg') ? [50, 40] : '');
+			vibrate(defaultStore.state.vibrateChatBg ? [50, 40] : []);
 		});
 
 		main.on('readAllAntennas', () => {

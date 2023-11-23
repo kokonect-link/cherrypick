@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
-	<button v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button account" @click="openAccountMenu">
+	<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button account" @click="openAccountMenu">
 		<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
 	</button>
 	<div class="post" data-cy-open-post-form @click="os.post">
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkA>
 	<template v-for="item in menu">
 		<div v-if="item === '-'" class="divider"></div>
-		<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+		<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 			<i class="ti-fw" :class="navbarItemDef[item].icon"></i><span class="text">{{ navbarItemDef[item].title }}</span>
 			<span v-if="navbarItemDef[item].indicated" class="indicator">
 				<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i class="ti ti-dashboard ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
 		<span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</MkA>
-	<button v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button" @click="more">
+	<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" @click="more">
 		<i class="ti ti-dots ti-fw"></i><span class="text">{{ i18n.ts.more }}</span>
 		<span v-if="otherNavItemIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</button>
@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkA>
 	<div class="divider"></div>
 	<div class="about">
-		<button v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button" @click="openInstanceMenu">
+		<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" @click="openInstanceMenu">
 			<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
 		</button>
 	</div>
@@ -60,7 +60,7 @@ import MkButton from '@/components/MkButton.vue';
 // import { StickySidebar } from '@/scripts/sticky-sidebar.js';
 // import { mainRouter } from '@/router.js';
 //import CherryPickLogo from '@assets/client/cherrypick.svg';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { version } from '@/config.js';

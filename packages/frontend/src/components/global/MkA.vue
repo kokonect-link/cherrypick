@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<a v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
 </template>
@@ -16,7 +16,7 @@ import { url } from '@/config.js';
 import { popout as popout_ } from '@/scripts/popout.js';
 import { i18n } from '@/i18n.js';
 import { useRouter } from '@/router.js';
-import { ColdDeviceStorage } from '@/store.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	to: string;

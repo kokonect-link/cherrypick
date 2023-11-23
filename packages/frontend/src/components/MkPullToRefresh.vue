@@ -28,7 +28,7 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
 import { getScrollContainer } from '@/scripts/scroll.js';
 import { vibrate } from '@/scripts/vibrate.js';
-import { ColdDeviceStorage } from '@/store.js';
+import { defaultStore } from '@/store.js';
 
 const SCROLL_STOP = 10;
 const MAX_PULL_DISTANCE = Infinity;
@@ -157,7 +157,7 @@ function moving(event: TouchEvent | PointerEvent) {
 
 	if (!isPullEnd) isVibrate = false;
 	else if (isPullEnd && !isVibrate) {
-		vibrate(ColdDeviceStorage.get('vibrateSystem') ? 10 : []);
+		vibrate(defaultStore.state.vibrateSystem ? 10 : []);
 		isVibrate = true;
 	}
 }

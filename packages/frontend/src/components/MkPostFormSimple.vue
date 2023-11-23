@@ -139,7 +139,7 @@ import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
 import { selectFiles } from '@/scripts/select-file.js';
-import { ColdDeviceStorage, defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
+import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -918,7 +918,7 @@ async function post(ev?: MouseEvent) {
 	});
 	textareaEl.style.height = '35px';
 	if (props.updateMode) sound.play('noteEdited');
-	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [10, 20, 10, 20, 10, 20, 60] : '');
+	vibrate(defaultStore.state.vibrateSystem ? [10, 20, 10, 20, 10, 20, 60] : []);
 }
 
 function cancel() {

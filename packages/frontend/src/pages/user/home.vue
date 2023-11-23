@@ -183,7 +183,7 @@ import { confetti } from '@/scripts/confetti.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
 import { vibrate } from '@/scripts/vibrate.js';
@@ -294,7 +294,7 @@ async function translate(): Promise<void> {
 	if (translation.value != null) return;
 	translating.value = true;
 
-	vibrate(ColdDeviceStorage.get('vibrateSystem') ? 5 : []);
+	vibrate(defaultStore.state.vibrateSystem ? 5 : []);
 
 	const res = await os.api('users/translate', {
 		userId: props.user.id,
@@ -303,7 +303,7 @@ async function translate(): Promise<void> {
 	translating.value = false;
 	translation.value = res;
 
-	vibrate(ColdDeviceStorage.get('vibrateSystem') ? [5, 5, 10] : []);
+	vibrate(defaultStore.state.vibrateSystem ? [5, 5, 10] : []);
 }
 
 watch([props.user], () => {

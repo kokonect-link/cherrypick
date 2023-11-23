@@ -538,6 +538,32 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 
+	// - Settings/Sounds & Vibrations
+	vibrate: {
+		where: 'device',
+		default: true,
+	},
+	vibrateNote: {
+		where: 'device',
+		default: true,
+	},
+	vibrateNotification: {
+		where: 'device',
+		default: true,
+	},
+	vibrateChat: {
+		where: 'device',
+		default: true,
+	},
+	vibrateChatBg: {
+		where: 'device',
+		default: true,
+	},
+	vibrateSystem: {
+		where: 'device',
+		default: true,
+	},
+
 	// - Settings/CherryPick
 	nicknameEnabled: {
 		where: 'account',
@@ -640,22 +666,6 @@ export class ColdDeviceStorage {
 		darkTheme,
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
-		mediaVolume: 0.5,
-		vibrate: true,
-		vibrateNote: true,
-		vibrateNotification: true,
-		vibrateChat: true,
-		vibrateChatBg: true,
-		vibrateSystem: true,
-		sound_masterVolume: 0.5,
-		sound_note: { type: 'syuilo/n-aec', volume: 0.5 },
-		sound_noteMy: { type: 'syuilo/n-cea-4va', volume: 0.5 },
-		sound_noteEdited: { type: 'syuilo/n-eca', volume: 0.5 },
-		sound_notification: { type: 'syuilo/n-ea', volume: 0.5 },
-		sound_chat: { type: 'syuilo/pope1', volume: 0.5 },
-		sound_chatBg: { type: 'syuilo/waon', volume: 0.5 },
-		sound_antenna: { type: 'syuilo/triple', volume: 0.5 },
-		sound_channel: { type: 'syuilo/square-pico', volume: 0.5 },
 	};
 
 	public static watchers: Watcher[] = [];

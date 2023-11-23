@@ -69,7 +69,7 @@ import { useStream } from '@/stream.js';
 import * as sound from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -210,7 +210,7 @@ function onDrop(ev: DragEvent): void {
 
 function onMessage(message) {
 	sound.play('chat');
-	vibrate(ColdDeviceStorage.get('vibrateChat') ? [30, 30, 30] : '');
+	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
 
 	const _isBottom = isBottomVisible($$(rootEl).value, 64);
 
