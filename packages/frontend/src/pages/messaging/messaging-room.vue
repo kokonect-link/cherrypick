@@ -148,9 +148,7 @@ async function fetch() {
 	document.addEventListener('visibilitychange', onVisibilitychange);
 
 	nextTick(() => {
-		pagingComponent.value.inited.then(() => {
-			thisScrollToBottom();
-		});
+		thisScrollToBottom();
 		window.setTimeout(() => {
 			fetching = false;
 		}, 300);
