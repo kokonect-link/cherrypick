@@ -324,41 +324,41 @@ async function toggleSuspend(v) {
 }
 
 async function unsetUserAvatar() {
-  const confirm = await os.confirm({
-    type: 'warning',
-    text: i18n.ts.unsetUserAvatarConfirm,
-  });
-  if (confirm.canceled) return;
-  const process = async () => {
-    await os.api('admin/unset-user-avatar', { userId: user.id });
-    os.success();
-  };
-  await process().catch(err => {
-    os.alert({
-      type: 'error',
-      text: err.toString(),
-    });
-  });
-  refreshUser();
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.unsetUserAvatarConfirm,
+	});
+	if (confirm.canceled) return;
+	const process = async () => {
+		await os.api('admin/unset-user-avatar', { userId: user.id });
+		os.success();
+	};
+	await process().catch(err => {
+		os.alert({
+			type: 'error',
+			text: err.toString(),
+		});
+	});
+	refreshUser();
 }
 
 async function unsetUserBanner() {
-  const confirm = await os.confirm({
-    type: 'warning',
-    text: i18n.ts.unsetUserBannerConfirm,
-  });
-  if (confirm.canceled) return;
-  const process = async () => {
-    await os.api('admin/unset-user-banner', { userId: user.id });
-    os.success();
-  };
-  await process().catch(err => {
-    os.alert({
-      type: 'error',
-      text: err.toString(),
-    });
-  });
-  refreshUser();
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.unsetUserBannerConfirm,
+	});
+	if (confirm.canceled) return;
+	const process = async () => {
+		await os.api('admin/unset-user-banner', { userId: user.id });
+		os.success();
+	};
+	await process().catch(err => {
+		os.alert({
+			type: 'error',
+			text: err.toString(),
+		});
+	});
+	refreshUser();
 }
 
 async function deleteAllFiles() {
