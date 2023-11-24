@@ -4,16 +4,16 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import { IsNull } from 'typeorm';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { EmojisRepository } from '@/models/index.js';
+import type { EmojisRepository } from '@/models/_.js';
 import { IdService } from '@/core/IdService.js';
-import type { DriveFile } from '@/models/entities/DriveFile.js';
+import type { MiDriveFile } from '@/models/DriveFile.js';
 import { DI } from '@/di-symbols.js';
 import { DriveService } from '@/core/DriveService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
 import { ApiError } from '../../../error.js';
-import { IsNull } from 'typeorm';
 
 export const meta = {
 	tags: ['admin'],
@@ -56,9 +56,10 @@ export const paramDef = {
 	required: ['name', 'host'],
 } as const;
 
+// TODO: ロジックをサービスに切り出す
+
 @Injectable()
-// eslint-disable-next-line import/no-default-export
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-next-line import/no-default-export
 	constructor(
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
@@ -80,16 +81,17 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				throw new ApiError(meta.errors.localEmojiAlreadyExists);
 			}
 
-			let driveFile: DriveFile;
+			let driveFile: MiDriveFile;
 
 			try {
+				// Create file
 				driveFile = await this.driveService.uploadFromUrl({ url: emoji.originalUrl, user: null, force: true });
 			} catch (e) {
 				throw new ApiError();
 			}
 
 			const copied = await this.emojisRepository.insert({
-				id: this.idService.genId(),
+				id: this.idService.gen(),
 				updatedAt: new Date(),
 				name: emoji.name,
 				host: null,

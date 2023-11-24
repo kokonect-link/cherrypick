@@ -96,8 +96,8 @@ function onClick(ev: MouseEvent) {
 		}, ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
 			text: i18n.ts.import,
 			icon: 'ti ti-plus',
-			action: async () => {
-				await os.apiWithDialog('admin/emoji/steal', {
+			action: () => {
+				os.apiWithDialog('admin/emoji/steal', {
 					name: customEmojiName.value,
 					host: props.host,
 				});
