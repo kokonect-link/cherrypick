@@ -34,6 +34,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### Client
+- Enhance: 사운드 설정을 저장할 때 확실하게 표시하도록
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 반응이 더 보기를 눌러야 표시됨
 

@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<div class="_buttons">
 		<MkButton inline @click="listen"><i class="ti ti-player-play"></i> {{ i18n.ts.listen }}</MkButton>
-		<MkButton inline primary @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+		<MkButton inline primary @click="save"><span :class="{ [$style.saved]: saved }"><i :class="saved ? 'ti ti-check' : 'ti ti-device-floppy'"></i> {{ saved ? i18n.ts.saved : i18n.ts.save }}</span></MkButton>
 	</div>
 </div>
 </template>
@@ -40,11 +40,29 @@ const emit = defineEmits<{
 let type = $ref(props.type);
 let volume = $ref(props.volume);
 
+let saved = $ref(false);
+
 function listen() {
 	playFile(type, volume);
 }
 
 function save() {
 	emit('update', { type, volume });
+
+	saved = true;
+	window.setTimeout(() => {
+		saved = false;
+	}, 500);
 }
 </script>
+
+<style lang="scss" module>
+@keyframes saved {
+	0% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+.saved {
+  animation: saved 1s;
+}
+</style>
