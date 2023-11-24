@@ -33,6 +33,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
+### General
+- Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
+
 ### Client
 - Enhance: 사운드 설정을 저장할 때 확실하게 표시하도록
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
