@@ -38,7 +38,6 @@ import * as ep___admin_emoji_addAliasesBulk from './endpoints/admin/emoji/add-al
 import * as ep___admin_emoji_add from './endpoints/admin/emoji/add.js';
 import * as ep___admin_emoji_adds from './endpoints/admin/emoji/adds.js';
 import * as ep___admin_emoji_copy from './endpoints/admin/emoji/copy.js';
-import * as ep___admin_emoji_steal from './endpoints/admin/emoji/steal.js';
 import * as ep___admin_emoji_deleteBulk from './endpoints/admin/emoji/delete-bulk.js';
 import * as ep___admin_emoji_delete from './endpoints/admin/emoji/delete.js';
 import * as ep___admin_emoji_importZip from './endpoints/admin/emoji/import-zip.js';
@@ -48,6 +47,7 @@ import * as ep___admin_emoji_removeAliasesBulk from './endpoints/admin/emoji/rem
 import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-aliases-bulk.js';
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_setLicenseBulk from './endpoints/admin/emoji/set-license-bulk.js';
+import * as ep___admin_emoji_steal from './endpoints/admin/emoji/steal.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
 import * as ep___admin_federation_deleteAllFiles from './endpoints/admin/federation/delete-all-files.js';
 import * as ep___admin_federation_refreshRemoteInstanceMetadata from './endpoints/admin/federation/refresh-remote-instance-metadata.js';
@@ -428,7 +428,6 @@ const eps = [
 	['admin/emoji/add', ep___admin_emoji_add],
 	['admin/emoji/adds', ep___admin_emoji_adds],
 	['admin/emoji/copy', ep___admin_emoji_copy],
-	['admin/emoji/steal', ep___admin_emoji_steal],
 	['admin/emoji/delete-bulk', ep___admin_emoji_deleteBulk],
 	['admin/emoji/delete', ep___admin_emoji_delete],
 	['admin/emoji/import-zip', ep___admin_emoji_importZip],
@@ -438,6 +437,7 @@ const eps = [
 	['admin/emoji/set-aliases-bulk', ep___admin_emoji_setAliasesBulk],
 	['admin/emoji/set-category-bulk', ep___admin_emoji_setCategoryBulk],
 	['admin/emoji/set-license-bulk', ep___admin_emoji_setLicenseBulk],
+	['admin/emoji/steal', ep___admin_emoji_steal],
 	['admin/emoji/update', ep___admin_emoji_update],
 	['admin/federation/delete-all-files', ep___admin_federation_deleteAllFiles],
 	['admin/federation/refresh-remote-instance-metadata', ep___admin_federation_refreshRemoteInstanceMetadata],

@@ -13,7 +13,7 @@ import { DriveService } from '@/core/DriveService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
 import { ApiError } from '../../../error.js';
-import {IsNull} from "typeorm";
+import { IsNull } from 'typeorm';
 
 export const meta = {
 	tags: ['admin'],
