@@ -27,7 +27,7 @@ globalThis.addEventListener('activate', ev => {
 });
 
 function offlineContentHTML(): string {
-	return `<!doctype html>Offline. Service Worker @${_VERSION_} | @${_BASEDMISSKEYVERSION_} <button onclick="location.reload()">reload</button>`;
+	return `<!doctype html>Offline. Service Worker @${_VERSION_}_${_BASEDMISSKEYVERSION_} <button onclick="location.reload()">reload</button>`;
 }
 
 globalThis.addEventListener('fetch', ev => {
