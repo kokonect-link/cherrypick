@@ -442,5 +442,10 @@ definePageMetadata({
 	left: 0;
 	top: 0;
 	margin: 10px;
+	color: var(--accent);
+	border: solid 1px var(--accent);
+	padding: 0 5px;
+	border-radius: 4px;
+	font-weight: bold;
 }
 </style>
