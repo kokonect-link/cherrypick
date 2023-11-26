@@ -23,6 +23,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<p>{{ i18n.ts.image }}</p>
 						<MkButton @click="ev => changeImage(ev, avatarDecoration)">{{ i18n.ts.selectFile }}</MkButton>
 					</div>
+					<MkInput v-model="avatarDecoration.url">
+						<template #label>{{ i18n.ts.imageUrl }}</template>
+					</MkInput>
 					<div v-if="avatarDecoration.url !== ''" :class="$style.imgContainer">
 						<img src="https://misskey-hub.net/avatar-decoration-template.png" :class="$style.img" style="opacity: .5;"/>
 						<img :src="avatarDecoration.url" :class="$style.img"/>
