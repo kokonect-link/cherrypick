@@ -42,6 +42,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:style="{
 			rotate: getDecorationAngle(avatarDecoration),
 			scale: getDecorationScale(avatarDecoration),
+			transform: getDecorationTransform(avatarDecoration),
+			opacity: getDecorationOpacity(avatarDecoration),
 		}"
 			alt=""
 		>
@@ -53,6 +55,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:style="{
 			rotate: getDecorationAngle(decoration),
 			scale: getDecorationScale(decoration),
+			transform: getDecorationTransform(decoration),
+			opacity: getDecorationOpacity(decoration),
 		}"
 		alt=""
 	>
@@ -85,6 +89,10 @@ const props = withDefaults(defineProps<{
 		angle?: number;
 		flipH?: boolean;
 		flipV?: boolean;
+		scale?: number;
+		moveX?: number;
+		moveY?: number;
+		opacity?: number;
 	};
 	forceShowDecoration?: boolean;
 }>(), {
@@ -126,6 +134,18 @@ function getDecorationAngle(avatarDecoration) {
 function getDecorationScale(avatarDecoration) {
 	let scaleX = avatarDecoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
+}
+
+function getDecorationTransform(avatarDecoration) {
+	let scale = avatarDecoration.scale ?? 1;
+	let moveX = avatarDecoration.moveX ?? 0;
+	let moveY = avatarDecoration.moveY ?? 0;
+	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
+}
+
+function getDecorationOpacity(avatarDecoration) {
+	let opacity = avatarDecoration.opacity ?? 1;
+	return opacity === 1 ? undefined : opacity;
 }
 
 function resetTimer() {

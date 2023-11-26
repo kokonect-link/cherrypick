@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkModalWindow
 	ref="dialog"
 	:width="400"
-	:height="450"
+	:height="600"
 	@close="cancel"
 	@closed="emit('closed')"
 >
@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :marginMin="20" :marginMax="28">
 			<div style="text-align: center;">
 				<div :class="$style.name">{{ decoration.name }}</div>
-				<MkAvatar style="width: 64px; height: 64px; margin-bottom: 20px;" :user="$i" :decoration="{ url: decoration.url, angle, flipH }" forceShowDecoration/>
+				<MkAvatar style="width: 64px; height: 64px; margin-bottom: 20px;" :user="$i" :decoration="{ url: decoration.url, angle, flipH, scale, moveX, moveY, opacity }" forceShowDecoration/>
 			</div>
 			<div class="_gaps_s">
 				<MkRadios v-model="insertLayer">
@@ -34,6 +34,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="flipH">
 					<template #label>{{ i18n.ts.flip }}</template>
 				</MkSwitch>
+				<MkRange v-model="scale" continuousUpdate :min="0.5" :max="1.5" :step="0.05" :textConverter="(v) => `${v.toFixed(2)}x`">
+					<template #label>{{ i18n.ts.scale }}</template>
+				</MkRange>
+				<MkRange v-model="moveX" continuousUpdate :min="-25" :max="25" :step="1">
+					<template #label>{{ i18n.ts.Xcoordinate }}</template>
+				</MkRange>
+				<MkRange v-model="moveY" continuousUpdate :min="-25" :max="25" :step="1">
+					<template #label>{{ i18n.ts.Ycoordinate }}</template>
+				</MkRange>
+				<MkRange v-model="opacity" continuousUpdate :min="0.1" :max="1" :step="0.05" :textConverter="(v) => `${(v * 100).toFixed(2)}%`">
+					<template #label>{{ i18n.ts.opacity }}</template>
+				</MkRange>
 			</div>
 		</MkSpacer>
 
@@ -86,6 +98,10 @@ const layerNum = (() => {
 const insertLayer = ref(layerNum === -1 ? String($i.avatarDecorations.length) : String(layerNum));
 const angle = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).angle ?? 0 : 0);
 const flipH = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).flipH ?? false : false);
+const scale = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).scale ?? 1 : 1);
+const moveX = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).moveX ?? 0 : 0);
+const moveY = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).moveY ?? 0 : 0);
+const opacity = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).opacity ?? 1 : 1);
 
 function cancel() {
 	dialog.value.close();
@@ -96,6 +112,10 @@ async function attach() {
 		id: props.decoration.id,
 		angle: angle.value,
 		flipH: flipH.value,
+		scale: scale.value,
+		moveX: moveX.value,
+		moveY: moveY.value,
+		opacity: opacity.value
 	};
 	const updatedDecorations = $i.avatarDecorations.toSpliced(layerNum, layerNum === -1 ? 0 : 1).toSpliced(Number(insertLayer.value), 0, decoration);
 	await os.apiWithDialog('i/update', {
