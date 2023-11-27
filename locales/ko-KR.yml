@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+maxinumLayerError: "레이어는 6장 이상 겹칠 수 없어요. 다른 레이어를 삭제해 주세요."
+layer: "레이어"
 noteUpdatedAt: "편집됨: {date} {time}"
 editReaction: "리액션 편집"
 removeReaction: "리액션 삭제"

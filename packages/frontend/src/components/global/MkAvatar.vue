@@ -33,18 +33,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<img
-		v-if="showDecoration && !decoration && user.avatarDecorations.length > 0"
-		v-for="avatarDecoration in user.avatarDecorations"
-		:key="avatarDecoration.id"
-		:class="[$style.decoration]"
-		:src="avatarDecoration.url"
-		:style="{
+	<span v-if="showDecoration && !decoration && user.avatarDecorations.length > 0">
+		<img
+			v-for="avatarDecoration in user.avatarDecorations"
+			:key="avatarDecoration.id"
+			:class="[$style.decoration]"
+			:src="avatarDecoration.url"
+			:style="{
 			rotate: getDecorationAngle(avatarDecoration),
 			scale: getDecorationScale(avatarDecoration),
 		}"
-		alt=""
-	>
+			alt=""
+		>
+	</span>
 	<img
 		v-else-if="showDecoration && decoration"
 		:class="[$style.decoration]"
