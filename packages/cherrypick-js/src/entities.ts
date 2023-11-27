@@ -21,6 +21,10 @@ export type UserLite = {
 		url: string;
 		angle?: number;
 		flipH?: boolean;
+		scale?: number;
+		moveX?: number;
+		moveY?: number;
+		opacity?: number;
 	}[];
 	emojis: {
 		name: string;

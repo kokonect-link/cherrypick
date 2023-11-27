@@ -57,6 +57,22 @@ export const packedUserLiteSchema = {
 						type: 'boolean',
 						nullable: false, optional: true,
 					},
+					scale: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					moveX: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					moveY: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					opacity: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
 					url: {
 						type: 'string',
 						format: 'url',
