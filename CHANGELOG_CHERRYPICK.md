@@ -34,12 +34,18 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### General
-- Feat: 리모트 서버의 이모지를 즉시 가져올 수 있음 ([pikokr/cherrypicnic@03d536c](https://github.com/pikokr/cherrypicnic/commit/03d536c00212f2dfbebecf75e5d58e0ddb749444), [pikokr/cherrypicnic@8a2d6f3](https://github.com/pikokr/cherrypicnic/commit/8a2d6f3b518fc13a6c32364780fba3be5eea3e5d))
-- Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
+- Feat: 리모트 서버의 이모지를 즉시 가져올 수 있음 ([pikokr/cherrypicnic@03d536c0](https://github.com/pikokr/cherrypicnic/commit/03d536c00212f2dfbebecf75e5d58e0ddb749444), [pikokr/cherrypicnic@8a2d6f3b](https://github.com/pikokr/cherrypicnic/commit/8a2d6f3b518fc13a6c32364780fba3be5eea3e5d))
+- Feat: 아이콘 장식을 여러 개 겹칠 수 있음 ([Secineralyr/misskey.dream@d929c8bf](https://github.com/Secineralyr/misskey.dream/commit/d929c8bf97add7fac64c12e0bcdfaa164031f864))
+- Feat: 아이콘 장식을 세부 조정할 수 있음 ([Secineralyr/misskey.dream@b3299181](https://github.com/Secineralyr/misskey.dream/commit/b329918194f1991c84633361d8a1319cf203641c), [Secineralyr/misskey.dream@1a9642bb](https://github.com/Secineralyr/misskey.dream/commit/1a9642bb9087a256522767e113c3bbfa87ec2e47))
+  - 위치 조정
+  - 크기 조정
+  - 불투명도 조정
+- Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client
 - Enhance: 사운드 설정을 저장할 때 상태를 확실하게 표시함
 - Enhance: 리모트 서버와 동일한 이모지가 존재하지 않는 경우 '이모지 복사'를 비활성화함
+- Enhance: 아이콘 장식을 바로 업로드 하거나 드라이브에서 불러올 수 있음 ([Secineralyr/misskey.dream@e358212d](https://github.com/Secineralyr/misskey.dream/commit/e358212da93256749e31d9e0ca9dd2ed37fd548e), [Secineralyr/misskey.dream@52592fea](https://github.com/Secineralyr/misskey.dream/commit/52592fea52684497ba7e07f173aac2b1083afcb1))
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 반응이 더 보기를 눌러야 표시됨
 
