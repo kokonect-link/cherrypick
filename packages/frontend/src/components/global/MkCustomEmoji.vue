@@ -26,8 +26,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, onMounted, onUnmounted, inject } from 'vue';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { defaultStore } from '@/store.js';
-import { customEmojisMap } from '@/custom-emojis.js';
+import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
+import * as sound from '@/scripts/sound.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
@@ -86,14 +87,13 @@ function onClick(ev: MouseEvent) {
 		os.popupMenu([{
 			type: 'label',
 			text: `:${props.name}:`,
-		}, {
+		}, ...((customEmojis.value.find(it => it.name === customEmojiName.value)?.name ?? null) ? [{
 			text: i18n.ts.copy,
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
-				os.success();
 			},
-		}, ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
+		}] : []), ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
 			text: i18n.ts.import,
 			icon: 'ti ti-plus',
 			action: () => {
@@ -106,6 +106,7 @@ function onClick(ev: MouseEvent) {
 			text: i18n.ts.doReaction,
 			icon: 'ti ti-mood-plus',
 			action: () => {
+				sound.play('reaction');
 				react(`:${props.name}:`);
 			},
 		}] : [])], ev.currentTarget ?? ev.target);
