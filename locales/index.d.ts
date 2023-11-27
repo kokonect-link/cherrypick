@@ -5,6 +5,10 @@ export interface Locale {
     "_lang_": string;
     "maxinumLayerError": string;
     "layer": string;
+    "Xcoordinate": string;
+    "Ycoordinate": string;
+    "scale": string;
+    "opacity": string;
     "noteUpdatedAt": string;
     "editReaction": string;
     "removeReaction": string;

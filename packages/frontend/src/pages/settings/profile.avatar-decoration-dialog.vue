@@ -115,7 +115,7 @@ async function attach() {
 		scale: scale.value,
 		moveX: moveX.value,
 		moveY: moveY.value,
-		opacity: opacity.value
+		opacity: opacity.value,
 	};
 	const updatedDecorations = $i.avatarDecorations.toSpliced(layerNum, layerNum === -1 ? 0 : 1).toSpliced(Number(insertLayer.value), 0, decoration);
 	await os.apiWithDialog('i/update', {
