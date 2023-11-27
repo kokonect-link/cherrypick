@@ -7,24 +7,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label>{{ i18n.ts.sounds }}</template>
-    <div class="_gaps_s">
-      <MkSwitch v-model="notUseSound">
-        <template #label>{{ i18n.ts.notUseSound }}</template>
-      </MkSwitch>
-      <MkSwitch v-model="useSoundOnlyWhenActive">
-        <template #label>{{ i18n.ts.useSoundOnlyWhenActive }}</template>
-      </MkSwitch>
-      <MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-        <template #label>{{ i18n.ts.masterVolume }}</template>
-      </MkRange>
-    </div>
+		<div class="_gaps_s">
+			<MkSwitch v-model="notUseSound">
+				<template #label>{{ i18n.ts.notUseSound }}</template>
+			</MkSwitch>
+			<MkSwitch v-model="useSoundOnlyWhenActive">
+				<template #label>{{ i18n.ts.useSoundOnlyWhenActive }}</template>
+			</MkSwitch>
+			<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+				<template #label>{{ i18n.ts.masterVolume }}</template>
+			</MkRange>
+		</div>
 
 		<div class="_gaps_s">
-			<MkFolder v-for="type in soundsKeys" :key="type">
+			<MkFolder v-for="type in operationTypes" :key="type">
 				<template #label>{{ i18n.t('_sfx.' + type) }}</template>
-				<template #suffix>{{ sounds[type].type ?? i18n.ts.none }}</template>
+				<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
 
-				<XSound :type="sounds[type].type" :volume="sounds[type].volume" @update="(res) => updated(type, res)"/>
+				<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
 			</MkFolder>
 		</div>
 	</FormSection>
@@ -48,6 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { Ref, computed, ref, watch } from 'vue';
 import XSound from './sounds.sound.vue';
+import type { SoundType, OperationType } from '@/scripts/sound.js';
+import type { SoundStore } from '@/store.js';
 import * as os from '@/os.js';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -56,6 +58,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { operationTypes } from '@/scripts/sound.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 
@@ -63,9 +66,7 @@ const notUseSound = computed(defaultStore.makeGetterSetter('sound_notUseSound'))
 const useSoundOnlyWhenActive = computed(defaultStore.makeGetterSetter('sound_useSoundOnlyWhenActive'));
 const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'));
 
-const soundsKeys = ['note', 'noteMy', 'noteEdited', 'notification', 'chat', 'chatBg', 'antenna', 'channel'] as const;
-
-const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
+const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
 	note: defaultStore.reactiveState.sound_note,
 	noteMy: defaultStore.reactiveState.sound_noteMy,
 	noteEdited: defaultStore.reactiveState.sound_noteEdited,
@@ -94,9 +95,22 @@ async function reloadAsk() {
 	unisonReload();
 }
 
+function getSoundTypeName(f: SoundType): string {
+	switch (f) {
+		case null:
+			return i18n.ts.none;
+		case '_driveFile_':
+			return i18n.ts._soundSettings.driveFile;
+		default:
+			return f;
+	}
+}
+
 async function updated(type: keyof typeof sounds.value, sound) {
-	const v = {
+	const v: SoundStore = {
 		type: sound.type,
+		fileId: sound.fileId,
+		fileUrl: sound.fileUrl,
 		volume: sound.volume,
 	};
 
@@ -110,6 +124,8 @@ function reset() {
 		defaultStore.set(`sound_${sound}`, v);
 		sounds.value[sound] = v;
 	}
+
+  os.success();
 }
 
 function demoVibrate() {

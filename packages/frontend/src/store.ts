@@ -6,6 +6,7 @@
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { miLocalStorage } from './local-storage.js';
+import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -33,6 +34,22 @@ interface NotePostInterruptor {
 
 interface PageViewInterruptor {
 	handler: (page: Misskey.entities.Page) => unknown;
+}
+
+/** サウンド設定 */
+export type SoundStore = {
+	type: Exclude<SoundType, '_driveFile_'>;
+	volume: number;
+} | {
+	type: '_driveFile_';
+
+	/** ドライブのファイルID */
+	fileId: string;
+
+	/** ファイルURL（こちらが優先される） */
+	fileUrl: string;
+
+	volume: number;
 }
 
 export const postFormActions: PostFormAction[] = [];
@@ -422,39 +439,39 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	sound_note: {
 		where: 'device',
-		default: { type: 'syuilo/n-aec', volume: 1 },
+		default: { type: 'syuilo/n-aec', volume: 1 } as SoundStore,
 	},
 	sound_noteMy: {
 		where: 'device',
-		default: { type: 'syuilo/n-cea-4va', volume: 1 },
+		default: { type: 'syuilo/n-cea-4va', volume: 1 } as SoundStore,
 	},
 	sound_noteEdited: {
 		where: 'device',
-		default: { type: 'syuilo/n-eca', volume: 1 },
+		default: { type: 'syuilo/n-eca', volume: 1 } as SoundStore,
 	},
 	sound_notification: {
 		where: 'device',
-		default: { type: 'syuilo/n-ea', volume: 1 },
+		default: { type: 'syuilo/n-ea', volume: 1 } as SoundStore,
 	},
 	sound_chat: {
 		where: 'device',
-		default: { type: 'syuilo/pope1', volume: 1 },
+		default: { type: 'syuilo/pope1', volume: 1 } as SoundStore,
 	},
 	sound_chatBg: {
 		where: 'device',
-		default: { type: 'syuilo/waon', volume: 1 },
+		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
 	},
 	sound_antenna: {
 		where: 'device',
-		default: { type: 'syuilo/triple', volume: 1 },
+		default: { type: 'syuilo/triple', volume: 1 } as SoundStore,
 	},
 	sound_channel: {
 		where: 'device',
-		default: { type: 'syuilo/square-pico', volume: 1 },
+		default: { type: 'syuilo/square-pico', volume: 1 } as SoundStore,
 	},
 	sound_reaction: {
 		where: 'device',
-		default: { type: 'syuilo/bubble2', volume: 1 },
+		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
 	},
 
 	// #region CherryPick
