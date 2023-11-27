@@ -412,6 +412,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 0.3,
 	},
+	sound_notUseSound: {
+		where: 'device',
+		default: false,
+	},
+	sound_useSoundOnlyWhenActive: {
+		where: 'device',
+		default: false,
+	},
 	sound_note: {
 		where: 'device',
 		default: { type: 'syuilo/n-aec', volume: 1 },
@@ -443,6 +451,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	sound_channel: {
 		where: 'device',
 		default: { type: 'syuilo/square-pico', volume: 1 },
+	},
+	sound_reaction: {
+		where: 'device',
+		default: { type: 'syuilo/bubble2', volume: 1 },
 	},
 
 	// #region CherryPick

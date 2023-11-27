@@ -151,6 +151,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'sound_chatBg',
 	'sound_antenna',
 	'sound_channel',
+	'sound_reaction',
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 	'lightTheme',

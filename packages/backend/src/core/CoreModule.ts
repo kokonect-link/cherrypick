@@ -64,7 +64,7 @@ import { FileInfoService } from './FileInfoService.js';
 import { SearchService } from './SearchService.js';
 import { ClipService } from './ClipService.js';
 import { FeaturedService } from './FeaturedService.js';
-import { FunoutTimelineService } from './FunoutTimelineService.js';
+import { FanoutTimelineService } from './FanoutTimelineService.js';
 import { ChannelFollowingService } from './ChannelFollowingService.js';
 import { RegistryApiService } from './RegistryApiService.js';
 import { ChartLoggerService } from './chart/ChartLoggerService.js';
@@ -202,7 +202,7 @@ const $FileInfoService: Provider = { provide: 'FileInfoService', useExisting: Fi
 const $SearchService: Provider = { provide: 'SearchService', useExisting: SearchService };
 const $ClipService: Provider = { provide: 'ClipService', useExisting: ClipService };
 const $FeaturedService: Provider = { provide: 'FeaturedService', useExisting: FeaturedService };
-const $FunoutTimelineService: Provider = { provide: 'FunoutTimelineService', useExisting: FunoutTimelineService };
+const $FanoutTimelineService: Provider = { provide: 'FanoutTimelineService', useExisting: FanoutTimelineService };
 const $ChannelFollowingService: Provider = { provide: 'ChannelFollowingService', useExisting: ChannelFollowingService };
 const $RegistryApiService: Provider = { provide: 'RegistryApiService', useExisting: RegistryApiService };
 
@@ -344,7 +344,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		SearchService,
 		ClipService,
 		FeaturedService,
-		FunoutTimelineService,
+		FanoutTimelineService,
 		ChannelFollowingService,
 		RegistryApiService,
 		ChartLoggerService,
@@ -479,7 +479,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$SearchService,
 		$ClipService,
 		$FeaturedService,
-		$FunoutTimelineService,
+		$FanoutTimelineService,
 		$ChannelFollowingService,
 		$RegistryApiService,
 		$ChartLoggerService,
@@ -615,7 +615,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		SearchService,
 		ClipService,
 		FeaturedService,
-		FunoutTimelineService,
+		FanoutTimelineService,
 		ChannelFollowingService,
 		RegistryApiService,
 		FederationChart,
@@ -749,7 +749,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$SearchService,
 		$ClipService,
 		$FeaturedService,
-		$FunoutTimelineService,
+		$FanoutTimelineService,
 		$ChannelFollowingService,
 		$RegistryApiService,
 		$FederationChart,

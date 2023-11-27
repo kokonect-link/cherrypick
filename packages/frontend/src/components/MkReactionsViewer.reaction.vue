@@ -30,6 +30,7 @@ import { claimAchievement } from '@/scripts/achievements.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
+import * as sound from '@/scripts/sound.js';
 
 const props = defineProps<{
 	reaction: string;
@@ -71,6 +72,10 @@ async function toggleReaction(ev) {
 		});
 		if (confirm.canceled) return;
 
+		if (oldReaction !== props.reaction) {
+			sound.play('reaction');
+		}
+
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count - 1));
 			return;
@@ -87,6 +92,8 @@ async function toggleReaction(ev) {
 			}
 		});
 	} else {
+		sound.play('reaction');
+
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count + 1));
 			return;

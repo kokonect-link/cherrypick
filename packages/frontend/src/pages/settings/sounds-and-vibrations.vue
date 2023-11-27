@@ -7,9 +7,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label>{{ i18n.ts.sounds }}</template>
-		<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-			<template #label>{{ i18n.ts.masterVolume }}</template>
-		</MkRange>
+    <div class="_gaps_s">
+      <MkSwitch v-model="notUseSound">
+        <template #label>{{ i18n.ts.notUseSound }}</template>
+      </MkSwitch>
+      <MkSwitch v-model="useSoundOnlyWhenActive">
+        <template #label>{{ i18n.ts.useSoundOnlyWhenActive }}</template>
+      </MkSwitch>
+      <MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+        <template #label>{{ i18n.ts.masterVolume }}</template>
+      </MkRange>
+    </div>
 
 		<div class="_gaps_s">
 			<MkFolder v-for="type in soundsKeys" :key="type">
@@ -51,6 +59,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 
+const notUseSound = computed(defaultStore.makeGetterSetter('sound_notUseSound'));
+const useSoundOnlyWhenActive = computed(defaultStore.makeGetterSetter('sound_useSoundOnlyWhenActive'));
 const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'));
 
 const soundsKeys = ['note', 'noteMy', 'noteEdited', 'notification', 'chat', 'chatBg', 'antenna', 'channel'] as const;
@@ -64,6 +74,7 @@ const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
 	chatBg: defaultStore.reactiveState.sound_chatBg,
 	antenna: defaultStore.reactiveState.sound_antenna,
 	channel: defaultStore.reactiveState.sound_channel,
+	reaction: defaultStore.reactiveState.sound_reaction,
 });
 
 const vibrate = computed(defaultStore.makeGetterSetter('vibrate'));

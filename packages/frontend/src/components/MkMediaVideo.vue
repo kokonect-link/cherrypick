@@ -39,6 +39,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
+import hasAudio from '@/scripts/media-has-audio.js';
 
 const props = defineProps<{
 	video: Misskey.entities.DriveFile;
@@ -67,6 +68,12 @@ const videoEl = shallowRef<HTMLVideoElement>();
 watch(videoEl, () => {
 	if (videoEl.value) {
 		videoEl.value.volume = 0.3;
+		hasAudio(videoEl.value).then(had => {
+			if (!had) {
+				videoEl.value.loop = videoEl.value.muted = true;
+				videoEl.value.play();
+			}
+		});
 	}
 });
 </script>

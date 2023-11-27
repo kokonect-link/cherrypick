@@ -120,6 +120,7 @@ import { computed, defineAsyncComponent, inject, provide, Ref, ref, shallowRef, 
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
+import * as sound from '@/scripts/sound.js';
 import MkMediaList from '@/components/MkMediaList.vue';
 import MkPoll from '@/components/MkPoll.vue';
 import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
@@ -279,6 +280,8 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (props.note.reactionAcceptance === 'likeOnly') {
+    sound.play('reaction');
+
 		if (props.mock) {
 			return;
 		}
@@ -316,6 +319,8 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
+    sound.play('reaction');
+
 		os.api('notes/reactions/delete', {
 			noteId: note.id,
 		}).then(() => {
@@ -327,6 +332,8 @@ async function toggleReaction(reaction) {
 			}
 		});
 	} else {
+    sound.play('reaction');
+
 		os.api('notes/reactions/create', {
 			noteId: note.id,
 			reaction: reaction,
@@ -340,6 +347,8 @@ async function toggleReaction(reaction) {
 function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
+
+  sound.play('reaction');
 
 	if (props.mock) {
 		return;

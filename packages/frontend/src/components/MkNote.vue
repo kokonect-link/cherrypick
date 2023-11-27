@@ -189,6 +189,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 	</I18n>
 </div>
+<div v-else>
+	<!--
+		MkDateSeparatedList uses TransitionGroup which requires single element in the child elements
+		so MkNote create empty div instead of no elements
+	-->
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -210,6 +216,7 @@ import { focusPrev, focusNext } from '@/scripts/focus.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { userPage } from '@/filters/user.js';
 import * as os from '@/os.js';
+import * as sound from '@/scripts/sound.js';
 import { defaultStore, noteViewInterruptors } from '@/store.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
@@ -437,6 +444,8 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.reactionAcceptance === 'likeOnly') {
+		sound.play('reaction');
+
 		if (props.mock) {
 			return;
 		}
@@ -474,6 +483,8 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
+    sound.play('reaction');
+
 		os.api('notes/reactions/delete', {
 			noteId: note.id,
 		}).then(() => {
@@ -485,6 +496,8 @@ async function toggleReaction(reaction) {
 			}
 		});
 	} else {
+    sound.play('reaction');
+
 		os.api('notes/reactions/create', {
 			noteId: appearNote.id,
 			reaction: reaction,
@@ -498,6 +511,8 @@ async function toggleReaction(reaction) {
 function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
+
+  sound.play('reaction');
 
 	if (props.mock) {
 		return;
