@@ -153,10 +153,10 @@ function save() {
 		volume: volume.value,
 	});
 
-  saved = true;
-  window.setTimeout(() => {
-    saved = false;
-  }, 500);
+	saved = true;
+	window.setTimeout(() => {
+		saved = false;
+	}, 500);
 
 	// os.success();
 }

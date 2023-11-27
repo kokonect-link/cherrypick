@@ -40,11 +40,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:class="[$style.decoration]"
 			:src="avatarDecoration.url"
 			:style="{
-			rotate: getDecorationAngle(avatarDecoration),
-			scale: getDecorationScale(avatarDecoration),
-			transform: getDecorationTransform(avatarDecoration),
-			opacity: getDecorationOpacity(avatarDecoration),
-		}"
+				rotate: getDecorationAngle(avatarDecoration),
+				scale: getDecorationScale(avatarDecoration),
+				transform: getDecorationTransform(avatarDecoration),
+				opacity: getDecorationOpacity(avatarDecoration),
+			}"
 			alt=""
 		>
 	</span>

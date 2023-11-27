@@ -24,11 +24,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:class="[$style.decoration]"
 			:src="avatarDecoration.url"
 			:style="{
-			rotate: getDecorationAngle(avatarDecoration),
-			scale: getDecorationScale(avatarDecoration),
-			transform: getDecorationTransform(avatarDecoration),
-			opacity: getDecorationOpacity(avatarDecoration),
-		}"
+				rotate: getDecorationAngle(avatarDecoration),
+				scale: getDecorationScale(avatarDecoration),
+				transform: getDecorationTransform(avatarDecoration),
+				opacity: getDecorationOpacity(avatarDecoration),
+			}"
 			alt=""
 		>
 	</span>
@@ -114,15 +114,15 @@ function getDecorationScale(avatarDecoration) {
 }
 
 function getDecorationTransform(avatarDecoration) {
-  let scale = avatarDecoration.scale ?? 1;
-  let moveX = avatarDecoration.moveX ?? 0;
-  let moveY = avatarDecoration.moveY ?? 0;
-  return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
+	let scale = avatarDecoration.scale ?? 1;
+	let moveX = avatarDecoration.moveX ?? 0;
+	let moveY = avatarDecoration.moveY ?? 0;
+	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
 }
 
 function getDecorationOpacity(avatarDecoration) {
-  let opacity = avatarDecoration.opacity ?? 1;
-  return opacity === 1 ? undefined : opacity;
+	let opacity = avatarDecoration.opacity ?? 1;
+	return opacity === 1 ? undefined : opacity;
 }
 
 function resetTimer() {

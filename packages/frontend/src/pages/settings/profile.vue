@@ -294,7 +294,7 @@ function openDecoration(avatarDecoration) {
 		os.alert({
 			type: 'error',
 			title: i18n.ts.error,
-			text: i18n.ts.maxinumLayerError
+			text: i18n.ts.maxinumLayerError,
 		});
 		return;
 	}

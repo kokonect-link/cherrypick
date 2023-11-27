@@ -125,7 +125,7 @@ export const meta = {
 
 const muteWords = { type: 'array', items: { oneOf: [
 	{ type: 'array', items: { type: 'string' } },
-	{ type: 'string' }
+	{ type: 'string' },
 ] } } as const;
 
 export const paramDef = {
@@ -255,7 +255,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			function validateMuteWordRegex(mutedWords: (string[] | string)[]) {
 				for (const mutedWord of mutedWords) {
-					if (typeof mutedWord !== "string") continue;
+					if (typeof mutedWord !== 'string') continue;
 
 					const regexp = mutedWord.match(/^\/(.+)\/(.*)$/);
 					if (!regexp) throw new ApiError(meta.errors.invalidRegexp);

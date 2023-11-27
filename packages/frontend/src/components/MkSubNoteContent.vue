@@ -280,7 +280,7 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (props.note.reactionAcceptance === 'likeOnly') {
-    sound.play('reaction');
+		sound.play('reaction');
 
 		if (props.mock) {
 			return;
@@ -319,7 +319,7 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
-    sound.play('reaction');
+		sound.play('reaction');
 
 		os.api('notes/reactions/delete', {
 			noteId: note.id,
@@ -332,7 +332,7 @@ async function toggleReaction(reaction) {
 			}
 		});
 	} else {
-    sound.play('reaction');
+		sound.play('reaction');
 
 		os.api('notes/reactions/create', {
 			noteId: note.id,
@@ -348,7 +348,7 @@ function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
 
-  sound.play('reaction');
+	sound.play('reaction');
 
 	if (props.mock) {
 		return;

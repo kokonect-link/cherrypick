@@ -125,7 +125,7 @@ function reset() {
 		sounds.value[sound] = v;
 	}
 
-  os.success();
+	os.success();
 }
 
 function demoVibrate() {
