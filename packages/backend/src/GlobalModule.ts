@@ -94,11 +94,22 @@ const $redisForTimelines: Provider = {
 	inject: [DI.config],
 };
 
+const $redisForJobQueue: Provider = {
+	provide: DI.redisForJobQueue,
+	useFactory: (config: Config) => {
+		return new Redis.Redis({
+			...config.redisForJobQueue,
+			keyPrefix: undefined,
+		});
+	},
+	inject: [DI.config],
+};
+
 @Global()
 @Module({
 	imports: [RepositoryModule],
-	providers: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines],
-	exports: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, RepositoryModule],
+	providers: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForJobQueue],
+	exports: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForJobQueue, RepositoryModule],
 })
 export class GlobalModule implements OnApplicationShutdown {
 	constructor(
@@ -107,6 +118,7 @@ export class GlobalModule implements OnApplicationShutdown {
 		@Inject(DI.redisForPub) private redisForPub: Redis.Redis,
 		@Inject(DI.redisForSub) private redisForSub: Redis.Redis,
 		@Inject(DI.redisForTimelines) private redisForTimelines: Redis.Redis,
+		@Inject(DI.redisForJobQueue) private redisForJobQueue: Redis.Redis,
 	) {}
 
 	public async dispose(): Promise<void> {
@@ -124,6 +136,7 @@ export class GlobalModule implements OnApplicationShutdown {
 			this.redisForPub.disconnect(),
 			this.redisForSub.disconnect(),
 			this.redisForTimelines.disconnect(),
+			this.redisForJobQueue.disconnect(),
 		]);
 	}
 
