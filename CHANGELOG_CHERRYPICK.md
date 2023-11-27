@@ -49,6 +49,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 반응이 더 보기를 눌러야 표시됨
 
+### Server
+- Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성되도록 (misskey-dev/misskey#12481)
+
 ---
 
 ## 4.5.2 (Hotfix)
