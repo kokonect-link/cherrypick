@@ -164,7 +164,7 @@ export function play(operationType: OperationType) {
 	if (sound.type == null || !canPlay) return;
 
 	canPlay = false;
-	playFile(sound).then(() => {
+	playFile(sound).finally(() => {
 		// ごく短時間に音が重複しないように
 		setTimeout(() => {
 			canPlay = true;
