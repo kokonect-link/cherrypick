@@ -37,6 +37,7 @@ import { unisonReload } from '@/scripts/unison-reload.js';
 import * as os from '@/os.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
+import { clearCache } from '@/scripts/clear-cache.js';
 
 let showChangelog = $ref(false);
 
@@ -66,18 +67,8 @@ const close = async () => {
 		});
 		return;
 	}
-	cacheClear();
+	await clearCache();
 };
-
-function cacheClear() {
-	os.waiting();
-	miLocalStorage.removeItem('locale');
-	miLocalStorage.removeItem('theme');
-	miLocalStorage.removeItem('emojis');
-	miLocalStorage.removeItem('lastEmojisFetchedAt');
-	fetchCustomEmojis(true);
-	unisonReload();
-}
 
 onMounted(() => {
 	confetti({
