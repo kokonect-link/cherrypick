@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:enableEmojiMenuReaction="true"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && note.text" style="padding-top: 5px; color: var(--accent);">
+		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && note.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 			<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 		</div>
@@ -143,6 +143,7 @@ import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { concat } from '@/scripts/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import detectLanguage from '@/scripts/detect-language.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -402,6 +403,12 @@ async function clip() {
 
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
+
+const isForeignLanguage: boolean = note.text != null && (() => {
+	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
+	const postLang = detectLanguage(note.text);
+	return postLang !== '' && postLang !== targetLang;
+})();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

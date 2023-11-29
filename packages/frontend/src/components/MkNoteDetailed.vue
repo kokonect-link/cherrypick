@@ -105,7 +105,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:enableEmojiMenuReaction="true"
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
-				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text" style="padding-top: 5px; color: var(--accent);">
+				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 					<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 				</div>
@@ -315,6 +315,7 @@ import { infoImageUrl, instance } from '@/instance.js';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import detectLanguage from '@/scripts/detect-language.js';
 
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -600,6 +601,12 @@ function menu(viaKeyboard = false): void {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
 }
+
+const isForeignLanguage: boolean = appearNote.text != null && (() => {
+	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
+	const postLang = detectLanguage(appearNote.text);
+	return postLang !== '' && postLang !== targetLang;
+})();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

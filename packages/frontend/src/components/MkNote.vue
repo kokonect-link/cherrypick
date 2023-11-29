@@ -85,7 +85,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenu="true"
 						:enableEmojiMenuReaction="true"
 					/>
-					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text" style="padding-top: 5px; color: var(--accent);">
+					<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
 						<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
 					</div>
@@ -239,6 +239,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
 import { concat } from '@/scripts/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import detectLanguage from '@/scripts/detect-language.js';
 
 let showEl = $ref(false);
 
@@ -591,6 +592,12 @@ async function clip() {
 
 	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
+
+const isForeignLanguage: boolean = appearNote.text != null && (() => {
+	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
+	const postLang = detectLanguage(appearNote.text);
+	return postLang !== '' && postLang !== targetLang;
+})();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

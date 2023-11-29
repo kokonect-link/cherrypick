@@ -80,7 +80,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkOmit>
 							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
-							<div v-if="user.description">
+							<div v-if="user.description && isForeignLanguage">
 								<MkButton v-if="!(translating || translation)" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
 								<MkButton v-else class="translateButton" small @click="translation = null"><i class="ti ti-x"></i> {{ i18n.ts.close }}</MkButton>
 							</div>
@@ -187,6 +187,7 @@ import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import detectLanguage from '@/scripts/detect-language.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -289,6 +290,12 @@ async function updateMemo() {
 	});
 	isEditingMemo = false;
 }
+
+const isForeignLanguage: boolean = user.description != null && (() => {
+	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
+	const postLang = detectLanguage(user.description);
+	return postLang !== '' && postLang !== targetLang;
+})();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
