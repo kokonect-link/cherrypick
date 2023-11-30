@@ -7,6 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <component
 	:is="self ? 'MkA' : 'a'" ref="el" style="word-break: break-all;" class="_link" :[attr]="self ? url.substring(local.length) : url" :rel="rel" :target="target"
 	:title="url"
+	@click.stop
 >
 	<slot></slot>
 	<i v-if="target === '_blank'" class="ti ti-external-link" :class="$style.icon"></i>

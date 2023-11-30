@@ -18,7 +18,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="true"
 			:enableEmojiMenuReaction="true"
-			@click.stop
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 		<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && note.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">

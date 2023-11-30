@@ -4,9 +4,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click="onClick"/>
-<span v-else-if="useOsNativeEmojis" :alt="props.emoji" @pointerenter="computeTitle" @click="onClick">{{ props.emoji }}</span>
-<span v-else>{{ emoji }}</span>
+<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click.stop="onClick"/>
+<span v-else-if="useOsNativeEmojis" :alt="props.emoji" @pointerenter="computeTitle" @click.stop="onClick">{{ props.emoji }}</span>
+<span v-else @click.stop>{{ emoji }}</span>
 </template>
 
 <script lang="ts" setup>
