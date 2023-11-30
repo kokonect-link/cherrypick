@@ -18,6 +18,7 @@ import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { clipsCache } from '@/cache.js';
 import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
+import { isSupportShare } from '@/scripts/navigator.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -339,11 +340,12 @@ export function getNoteMenu(props: {
 					danger: true,
 					action: unclip,
 				}, null] : []
-			), {
+			), ...(isSupportShare() ? [{
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
 				action: share,
-			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
+			}] : []),
+			getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
 			, {
 				icon: 'ti ti-copy',
 				text: i18n.ts.copyContent,

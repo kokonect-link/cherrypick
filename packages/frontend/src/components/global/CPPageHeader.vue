@@ -70,6 +70,7 @@ import { mainRouter } from '@/router.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
+import { PageHeaderItem } from '@/types/page-header.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
 let showFollowButton = $ref(false);
@@ -88,12 +89,7 @@ type Tab = {
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
 	tab?: string;
-	actions?: {
-		text: string;
-		icon: string;
-		highlighted?: boolean;
-		handler: (ev: MouseEvent) => void;
-	}[];
+  actions?: PageHeaderItem[];
 	thin?: boolean;
 	displayMyAvatar?: boolean;
 }>(), {
