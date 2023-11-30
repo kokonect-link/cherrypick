@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div>
 				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
-					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'"/>
+					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'" @click.stop/>
 					<MkCwButton v-model="showContent" style="width: 100%" :note="note" @click.stop/>
 				</p>
 				<div v-show="note.cw == null || showContent">
