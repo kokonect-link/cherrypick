@@ -40,6 +40,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 위치 조정
   - 크기 조정
   - 불투명도 조정
+- Feat: 노트를 클릭하여 자세히 볼 수 있음
 - Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client

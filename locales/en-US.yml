@@ -1317,6 +1317,8 @@ _cherrypick:
   postFormVisibilityHotkeyDescription: "When writing a note, press Ctrl(control) + Shift to switch the visibility range. The hotkey to make it Local only is Ctrl(command or control) + Alt(option)."
   showRenoteConfirmPopup: "Show confirmation popup when renote"
   showRenoteConfirmPopupDescription: "This setting must have the \"General - Show renote and quote buttons separately\" setting turned on."
+  expandOnNoteClick: "Open note on click"
+  expandOnNoteClickDescription: "If disabled, you can still open 'Details' in the notes menu or by clicking the timestamp."
   displayHeaderNavBarWhenScroll: "Show elements when scrolling (header, floating buttons, navigation bar)"
   _displayHeaderNavBarWhenScroll:
     all: "Display all"

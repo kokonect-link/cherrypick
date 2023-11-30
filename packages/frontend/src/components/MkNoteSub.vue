@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
-		<div :class="$style.body">
+		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click="noteClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
 				<MkEvent v-if="note.event" :note="note"/>
@@ -55,6 +55,7 @@ import { $i } from '@/account.js';
 import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { defaultStore } from '@/store.js';
+import { useRouter } from '@/router.js';
 
 let hideLine = $ref(false);
 
@@ -70,6 +71,9 @@ const props = withDefaults(defineProps<{
 
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
+const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const router = useRouter();
+
 let showContent = $ref(false);
 let replies: Misskey.entities.Note[] = $ref([]);
 
@@ -81,6 +85,11 @@ if (props.detail) {
 		replies = res;
 		hideLine = true;
 	});
+}
+
+function noteClick(ev: MouseEvent) {
+	if (document.getSelection().type === 'Range' || !expandOnNoteClick) ev.stopPropagation();
+	else router.push(notePage(props.note));
 }
 </script>
 

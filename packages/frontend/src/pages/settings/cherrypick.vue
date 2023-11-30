@@ -28,6 +28,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="expandOnNoteClick">
+					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
+				</MkSwitch>
 			</div>
 
 			<div>
@@ -96,6 +100,7 @@ const nicknameEnabled = computed(defaultStore.makeGetterSetter('nicknameEnabled'
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const showRenoteConfirmPopup = computed(defaultStore.makeGetterSetter('showRenoteConfirmPopup'));
+const expandOnNoteClick = computed(defaultStore.makeGetterSetter('expandOnNoteClick'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
@@ -113,6 +118,7 @@ watch([
 });
 
 watch([
+	expandOnNoteClick,
 	reactableRemoteReactionEnabled,
 	mobileHeaderChange,
 	renameTheButtonInPostFormToNya,

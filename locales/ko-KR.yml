@@ -1313,6 +1313,8 @@ _cherrypick:
   postFormVisibilityHotkeyDescription: "노트를 작성할 때, Ctrl(control) + Shift 키를 누르면 공개 범위를 전환할 수 있어요. 로컬에만 보이게 하는 단축키는 Ctrl(command 또는 control) + Alt(option) 키에요."
   showRenoteConfirmPopup: "리노트할 때 확인 팝업 표시"
   showRenoteConfirmPopupDescription: "이 설정은 '일반 - 리노트와 인용 버튼을 분리해서 표시하기' 설정이 켜져 있어야 해요."
+  expandOnNoteClick: "노트를 클릭하여 자세히 표시"
+  expandOnNoteClickDescription: "비활성화한 경우에도 노트 메뉴에서 '자세히'를 클릭하거나 타임스탬프를 클릭하여 열 수 있어요."
   displayHeaderNavBarWhenScroll: "스크롤 시 요소 표시 (헤더, 플로팅 버튼, 탐색 모음)"
   _displayHeaderNavBarWhenScroll:
     all: "모두 표시"

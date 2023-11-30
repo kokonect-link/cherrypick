@@ -1330,6 +1330,8 @@ export interface Locale {
         "postFormVisibilityHotkeyDescription": string;
         "showRenoteConfirmPopup": string;
         "showRenoteConfirmPopupDescription": string;
+        "expandOnNoteClick": string;
+        "expandOnNoteClickDescription": string;
         "displayHeaderNavBarWhenScroll": string;
         "_displayHeaderNavBarWhenScroll": {
             "all": string;

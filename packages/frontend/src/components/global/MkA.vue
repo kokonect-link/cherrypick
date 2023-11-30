@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<a v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
 </template>

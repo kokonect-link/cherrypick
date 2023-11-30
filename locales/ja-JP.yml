@@ -1328,6 +1328,8 @@ _cherrypick:
   postFormVisibilityHotkeyDescription: "ノートを作成する際、Ctrl(control) + Shiftキーを押すと公開範囲を切り替えることができます。ローカルのみショートカットキーは、Ctrl(commandまたはcontrol) + Alt(option)キーです。"
   showRenoteConfirmPopup: "Renoteするときに確認ポップアップを表示"
   showRenoteConfirmPopupDescription: "この設定は「全般 - リノートと引用ボタンを分けて表示する」設定がオンになっている必要があります。"
+  expandOnNoteClick: "クリックでノートの詳細を開く"
+  expandOnNoteClickDescription: "オフの場合、ノートメニューの[詳細]をクリックするか、日付をクリックして開けます。"
   displayHeaderNavBarWhenScroll: "スクロール時の要素表示（ヘッダー、フローティングボタン、ナビゲーションバー）"
   _displayHeaderNavBarWhenScroll:
     all: "全て表示"
