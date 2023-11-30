@@ -111,7 +111,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkMediaList v-else :mediaList="appearNote.files" @click.stop/>
 				</div>
 				<MkPoll v-if="appearNote.poll" :note="appearNote" :class="$style.poll" @click.stop/>
-				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview" @click.stop/>
+				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 				<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || (appearNote.files.length > 0 && defaultStore.state.allMediaNoteCollapse)) && collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.collapsed" class="_button" @click.stop="collapsed = false">
 					<span :class="$style.collapsedLabel">
 						{{ i18n.ts.showMore }}
