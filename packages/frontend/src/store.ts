@@ -574,7 +574,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	// - Settings/Sounds & Vibrations
 	vibrate: {
 		where: 'device',
-		default: true,
+		default: !/ipad|iphone/.test(navigator.userAgent.toLowerCase()) && window.navigator.vibrate,
 	},
 	vibrateNote: {
 		where: 'device',

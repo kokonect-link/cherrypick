@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+cannotBeUsedFunc: "この機能は現在使用できません。"
 maxinumLayerError: "6枚以上重ねることはできません。他のレイヤーを削除してください。"
 layer: "レイヤー"
 Xcoordinate: "X座標"
