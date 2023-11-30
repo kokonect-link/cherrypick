@@ -42,11 +42,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-show="showContent">
 			<div v-if="note.files.length > 0">
-				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @contextmenu.prevent/>
-				<MkMediaList v-else :mediaList="note.files"/>
+				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @click.stop @contextmenu.prevent/>
+				<MkMediaList v-else :mediaList="note.files" @click.stop/>
 			</div>
 			<div v-if="note.poll">
-				<MkPoll :note="note"/>
+				<MkPoll :note="note" @click.stop/>
 			</div>
 		</div>
 	</div>
@@ -60,7 +60,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
-		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @mockUpdateMyReaction="emitUpdReaction">
+		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @click.stop @mockUpdateMyReaction="emitUpdReaction">
 			<template #more>
 				<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
 			</template>
