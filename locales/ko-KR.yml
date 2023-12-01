@@ -2623,10 +2623,10 @@ _imageCompressionMode:
   noResizeCompressLossy: "해상도를 축소하지 않고 손실 압축"
 _dataSaver:
   _media:
-    title: "미디어 불러오기"
+    title: "미디어 불러오기 방지"
     description: "이미지/동영상이 자동으로 로드되는 것을 방지해요. 탭하면 숨겨진 이미지/동영상을 불러올 수 있어요."
   _avatar:
-    title: "프로필 아이콘"
+    title: "움직이는 프로필 아이콘"
     description: "움직이는 프로필 아이콘이 정적 이미지로 변경되어 표시돼요. 움직이는 이미지는 일반 이미지보다 파일 크기가 클 수 있기 때문에 데이터 통신량을 더욱 줄일 수 있어요."
   _urlPreview:
     title: "URL 미리보기 썸네일"
