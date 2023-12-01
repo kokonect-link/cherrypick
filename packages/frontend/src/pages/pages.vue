@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
 	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'featured'">
 			<MkPagination v-slot="{items}" :pagination="featuredPagesPagination">
@@ -40,6 +40,7 @@ import { computed } from 'vue';
 import MkPagePreview from '@/components/MkPagePreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
+import { $i } from '@/account.js';
 import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -83,6 +84,12 @@ const headerTabs = $computed(() => [{
 	key: 'liked',
 	title: i18n.ts._pages.liked,
 	icon: 'ti ti-heart',
+}]);
+
+const headerTabsWhenNotLogin = $computed(() => [{
+	key: 'featured',
+	title: i18n.ts._pages.featured,
+	icon: 'ti ti-flare',
 }]);
 
 definePageMetadata(computed(() => ({
