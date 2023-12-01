@@ -75,7 +75,7 @@ let playAnimation = $ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 const thumbnail = (image: any): string => {
-	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 };

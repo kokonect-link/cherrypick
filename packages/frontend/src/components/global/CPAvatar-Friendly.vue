@@ -94,7 +94,7 @@ const bound = $computed(() => props.link
 let playAnimation = $ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
-const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 	? getStaticImageUrl(props.user.avatarUrl)
 	: props.user.avatarUrl);
 

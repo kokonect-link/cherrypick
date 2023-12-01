@@ -45,6 +45,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client
+- Feat: 데이터 절약 모드로 코드 하이라이트 로드를 줄일 수 있음 (misskey-dev/misskey#12526)
 - Enhance: 사운드 설정을 기본값으로 복원하거나 저장할 때 확실하게 표시함
 - Enhance: 리모트 서버와 동일한 이모지가 존재하지 않는 경우 '이모지 복사'를 비활성화함
 - Enhance: 아이콘 장식을 바로 업로드 하거나 드라이브에서 불러올 수 있음 ([Secineralyr/misskey.dream@e358212d](https://github.com/Secineralyr/misskey.dream/commit/e358212da93256749e31d9e0ca9dd2ed37fd548e), [Secineralyr/misskey.dream@52592fea](https://github.com/Secineralyr/misskey.dream/commit/52592fea52684497ba7e07f173aac2b1083afcb1))
@@ -52,6 +53,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Enhance: 진동 개선
   - 진동을 사용할 수 없는 환경에서 스위치를 조작할 수 없도록 비활성화
   - 진동을 사용할 수 없는 이유를 보다 명확하게 표시하도록 개선
+- Enhance: 데이터 절약 모드 적용 범위를 개별적으로 설정할 수 있음 (misskey-dev/misskey#12526)
+  - 기존 데이터 절약 모드 설정이 재설정됩니다.
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 반응이 더 보기를 눌러야 표시됨
 

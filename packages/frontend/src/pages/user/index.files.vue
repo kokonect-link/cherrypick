@@ -69,7 +69,7 @@ if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = 
 let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
 
 function thumbnail(image: Misskey.entities.DriveFile): string {
-	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 }
