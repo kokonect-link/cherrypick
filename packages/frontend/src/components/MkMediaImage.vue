@@ -91,10 +91,12 @@ const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
 		: props.image.thumbnailUrl,
 );
 
-let clickToShowMessage = $computed(() =>
-	defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
-	: defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
-	: '',
+let clickToShowMessage = $computed(() => defaultStore.state.nsfwOpenBehavior === 'click'
+	? i18n.ts.clickToShow
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	: defaultStore.state.nsfwOpenBehavior === 'doubleClick'
+		? i18n.ts.doubleClickToShow
+		: '',
 );
 
 function onClick(ev: MouseEvent) {
