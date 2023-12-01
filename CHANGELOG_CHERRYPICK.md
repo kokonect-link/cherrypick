@@ -46,6 +46,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### Client
 - Feat: 데이터 절약 모드로 코드 하이라이트 로드를 줄일 수 있음 (misskey-dev/misskey#12526)
+- Feat: InstanceTicker를 클릭해 노트를 자세히 볼 수 있음
+  - 리모트에서 수신된 노트인 경우, '리모트에서 보기'로 작동함
 - Enhance: 사운드 설정을 기본값으로 복원하거나 저장할 때 확실하게 표시함
 - Enhance: 리모트 서버와 동일한 이모지가 존재하지 않는 경우 '이모지 복사'를 비활성화함
 - Enhance: 아이콘 장식을 바로 업로드 하거나 드라이브에서 불러올 수 있음 ([Secineralyr/misskey.dream@e358212d](https://github.com/Secineralyr/misskey.dream/commit/e358212da93256749e31d9e0ca9dd2ed37fd548e), [Secineralyr/misskey.dream@52592fea](https://github.com/Secineralyr/misskey.dream/commit/52592fea52684497ba7e07f173aac2b1083afcb1))
