@@ -57,6 +57,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 기존 데이터 절약 모드 설정이 재설정됩니다.
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 반응이 더 보기를 눌러야 표시됨
+- Fix: 채널 이름이 긴 경우 게시 양식 표시가 깨지는 문제 (misskey-dev/misskey#12524)
 
 ### Server
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성되도록 (misskey-dev/misskey#12481)
