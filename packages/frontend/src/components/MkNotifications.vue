@@ -37,6 +37,7 @@ import { infoImageUrl } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import { mainRouter } from '@/router.js';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
+import { globalEvents } from '@/events.js';
 
 const props = defineProps<{
 	excludeTypes?: typeof notificationTypes[number][];
@@ -82,6 +83,8 @@ let connection;
 onMounted(() => {
 	connection = useStream().useChannel('main');
 	connection.on('notification', onNotification);
+
+	globalEvents.on('reloadNotification', () => reload());
 });
 
 onActivated(() => {

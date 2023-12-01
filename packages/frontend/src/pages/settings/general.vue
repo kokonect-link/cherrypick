@@ -365,6 +365,14 @@ async function reloadAsk() {
 	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
+function reloadTimeline() {
+	globalEvents.emit('reloadTimeline');
+}
+
+function reloadNotification() {
+	globalEvents.emit('reloadNotification');
+}
+
 const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));
 const serverDisconnectedBehavior = computed(defaultStore.makeGetterSetter('serverDisconnectedBehavior'));
 const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNoteActionsOnlyHover'));
@@ -456,31 +464,41 @@ watch([
 	// fontSize,
 	useBoldFont,
 	useSystemFont,
-	enableInfiniteScroll,
 	squareAvatars,
+	showGapBetweenNotesInTimeline,
+	overridedDeviceKind,
+	keepScreenOn,
+	disableStreamingTimeline,
+	showUnreadNotificationsCount,
+	showFixedPostFormInReplies,
+	showingAnimatedImages,
+], async () => {
+	await reloadAsk();
+});
+
+watch([
+	enableInfiniteScroll,
 	hideAvatarsInNote,
 	showNoteActionsOnlyHover,
-	showGapBetweenNotesInTimeline,
 	instanceTicker,
-	overridedDeviceKind,
 	mediaListWithOneImageAppearance,
 	reactionsDisplaySize,
 	limitWidthOfReaction,
 	highlightSensitiveMedia,
-	keepScreenOn,
-	disableStreamingTimeline,
-	showUnreadNotificationsCount,
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
 	infoButtonForNoteActionsEnabled,
-	showReplyInNotification,
 	renoteQuoteButtonSeparation,
-	showFixedPostFormInReplies,
-	showingAnimatedImages,
 	allMediaNoteCollapse,
-], async () => {
-	await reloadAsk();
+], () => {
+	reloadTimeline();
+});
+
+watch([
+	showReplyInNotification,
+], () => {
+	reloadNotification();
 });
 
 const emojiIndexLangs = ['en-US'];
