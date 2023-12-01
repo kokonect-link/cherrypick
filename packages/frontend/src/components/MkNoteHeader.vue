@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkTime :time="note.createdAt" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 			</MkA>
 		</div>
-		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance"/></div>
+		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance" @click.stop="showOnRemote"/></div>
 	</div>
 </header>
 </template>
@@ -56,6 +56,7 @@ import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
 import { defaultStore } from '@/store.js';
 import { deepClone } from '@/scripts/clone.js';
+import { useRouter } from '@/router.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{
@@ -66,6 +67,13 @@ const mock = inject<boolean>('mock', false);
 
 let note = $ref(deepClone(props.note));
 const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && note.user.instance);
+const router = useRouter();
+
+function showOnRemote() {
+	if (props.note.url ?? props.note.uri === undefined) router.push(notePage(note));
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	else window.open(props.note.url ?? props.note.uri);
+}
 </script>
 
 <style lang="scss" module>

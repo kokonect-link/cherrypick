@@ -7,8 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div v-if="hide" :class="[$style.hidden, (video.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitiveContainer]" data-is-hidden="true" @click="onClick" @dblclick="defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? hide = false : ''">
 	<!-- 【注意】dataSaverMode が有効になっている際には、hide が false になるまでサムネイルや動画を読み込まないようにすること -->
 	<div :class="$style.sensitive">
-		<b v-if="video.isSensitive" style="display: block;"><i class="ti ti-alert-triangle"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.video}${video.size ? ' ' + bytes(video.size) : ''})` : '' }}</b>
-		<b v-else style="display: block;"><i class="ti ti-movie"></i> {{ defaultStore.state.enableDataSaverMode && video.size ? bytes(video.size) : i18n.ts.video }}</b>
+		<b v-if="video.isSensitive" style="display: block;"><i class="ti ti-alert-triangle"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.dataSaver.media ? ` (${i18n.ts.video}${video.size ? ' ' + bytes(video.size) : ''})` : '' }}</b>
+		<b v-else style="display: block;"><i class="ti ti-movie"></i> {{ defaultStore.state.dataSaver.media && video.size ? bytes(video.size) : i18n.ts.video }}</b>
 		<span>{{ clickToShowMessage }}</span>
 	</div>
 </div>
@@ -45,12 +45,14 @@ const props = defineProps<{
 	video: Misskey.entities.DriveFile;
 }>();
 
-const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.enableDataSaverMode) ? true : (props.video.isSensitive && defaultStore.state.nsfw !== 'ignore'));
+const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) ? true : (props.video.isSensitive && defaultStore.state.nsfw !== 'ignore'));
 
-let clickToShowMessage = $computed(() =>
-	defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
-	: defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
-	: '',
+let clickToShowMessage = $computed(() => defaultStore.state.nsfwOpenBehavior === 'click'
+	? i18n.ts.clickToShow
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	: defaultStore.state.nsfwOpenBehavior === 'doubleClick'
+		? i18n.ts.doubleClickToShow
+		: '',
 );
 
 function onClick(ev: MouseEvent) {

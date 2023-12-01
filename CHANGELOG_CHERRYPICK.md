@@ -34,29 +34,35 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### General
+- Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
 - Feat: 리모트 서버의 이모지를 즉시 가져올 수 있음 ([pikokr/cherrypicnic@03d536c0](https://github.com/pikokr/cherrypicnic/commit/03d536c00212f2dfbebecf75e5d58e0ddb749444), [pikokr/cherrypicnic@8a2d6f3b](https://github.com/pikokr/cherrypicnic/commit/8a2d6f3b518fc13a6c32364780fba3be5eea3e5d))
 - Feat: 아이콘 장식을 여러 개 겹칠 수 있음 ([Secineralyr/misskey.dream@d929c8bf](https://github.com/Secineralyr/misskey.dream/commit/d929c8bf97add7fac64c12e0bcdfaa164031f864))
 - Feat: 아이콘 장식을 세부 조정할 수 있음 ([Secineralyr/misskey.dream@b3299181](https://github.com/Secineralyr/misskey.dream/commit/b329918194f1991c84633361d8a1319cf203641c), [Secineralyr/misskey.dream@1a9642bb](https://github.com/Secineralyr/misskey.dream/commit/1a9642bb9087a256522767e113c3bbfa87ec2e47))
-  - 위치 조정
-  - 크기 조정
-  - 불투명도 조정
+  - 위치, 크기, 불투명도를 추가로 조정할 수 있습니다.
 - Feat: 노트를 클릭하여 자세히 볼 수 있음
-- Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
 - Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client
+- Feat: 데이터 절약 모드로 코드 하이라이트 로드를 줄일 수 있음 (misskey-dev/misskey#12526)
+- Feat: InstanceTicker를 클릭해 노트를 자세히 볼 수 있음
+  - 리모트에서 수신된 노트인 경우, '리모트에서 보기'로 작동함
 - Enhance: 사운드 설정을 기본값으로 복원하거나 저장할 때 확실하게 표시함
 - Enhance: 리모트 서버와 동일한 이모지가 존재하지 않는 경우 '이모지 복사'를 비활성화함
 - Enhance: 아이콘 장식을 바로 업로드 하거나 드라이브에서 불러올 수 있음 ([Secineralyr/misskey.dream@e358212d](https://github.com/Secineralyr/misskey.dream/commit/e358212da93256749e31d9e0ca9dd2ed37fd548e), [Secineralyr/misskey.dream@52592fea](https://github.com/Secineralyr/misskey.dream/commit/52592fea52684497ba7e07f173aac2b1083afcb1))
 - Enhance: 클라이언트 언어와 노트 본문의 언어가 같으면 번역 버튼을 표시하지 않음
-- Enhance: 진동 개선
-  - 진동을 사용할 수 없는 환경에서 스위치를 조작할 수 없도록 비활성화
-  - 진동을 사용할 수 없는 이유를 보다 명확하게 표시하도록 개선
+- Enhance: 진동 기능 개선
+  - 진동 기능을 사용할 수 없는 환경에서 스위치를 조작할 수 없도록 비활성화
+  - 진동 기능을 사용할 수 없는 이유를 보다 명확하게 표시하도록 개선
+- Enhance: 데이터 절약 모드 적용 범위를 개별적으로 설정할 수 있음 (misskey-dev/misskey#12526)
+  - 기존 데이터 절약 모드 설정이 재설정됩니다.
+- Enhance: 컴포넌트만 새로 고쳐도 적용할 수 있는 설정은 페이지를 새로 고치지 않고 설정을 반영함
+  - 각 기능이 적용되는 컴포넌트(타임라인, 알림)에 따라 해당 컴포넌트만 새로 로드됩니다.
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
-- Fix: 열람 주의로 설정된 노트의 반응이 더 보기를 눌러야 표시됨
+- Fix: 열람 주의로 설정된 노트의 리액션이 '더 보기'를 눌러야 표시됨
+- Fix: 채널 이름이 긴 경우 게시 양식 표시가 깨지는 문제 (misskey-dev/misskey#12524)
 
 ### Server
-- Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성되도록 (misskey-dev/misskey#12481)
+- Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)
 
 ---
 

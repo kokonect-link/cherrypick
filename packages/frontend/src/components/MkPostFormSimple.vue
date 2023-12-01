@@ -1231,8 +1231,9 @@ defineExpose({
 
 .visibility {
 	overflow: clip;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 210px;
 
 	&:enabled {
 		> .headerRightButtonText {

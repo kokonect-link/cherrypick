@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onUnmounted, provide } from 'vue';
+import { computed, watch, onUnmounted, provide, onMounted } from 'vue';
 import { Connection } from 'cherrypick-js/built/streaming.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
@@ -29,6 +29,7 @@ import { defaultStore } from '@/store.js';
 import { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{
 	src: string;
@@ -268,6 +269,10 @@ watch(() => [props.list, props.antenna, props.channel, props.role], refreshEndpo
 
 // 初回表示用
 refreshEndpointAndChannel();
+
+onMounted(() => {
+	globalEvents.on('reloadTimeline', () => reloadTimeline());
+});
 
 onUnmounted(() => {
 	disconnectChannel();
