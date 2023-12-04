@@ -5,7 +5,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header>
+		<MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+	</template>
 	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'search'">
 			<div class="_gaps">
@@ -59,6 +61,7 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { useRouter } from '@/router.js';
+import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 
@@ -147,6 +150,16 @@ const headerTabs = $computed(() => [{
 	key: 'owned',
 	title: i18n.ts._channel.owned,
 	icon: 'ti ti-edit',
+}]);
+
+const headerTabsWhenNotLogin = $computed(() => [{
+	key: 'search',
+	title: i18n.ts.search,
+	icon: 'ti ti-search',
+}, {
+	key: 'featured',
+	title: i18n.ts._channel.featured,
+	icon: 'ti ti-comet',
 }]);
 
 definePageMetadata(computed(() => ({
