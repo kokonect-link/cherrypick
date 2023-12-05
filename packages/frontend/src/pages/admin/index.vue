@@ -283,7 +283,7 @@ function invite() {
 	os.api('admin/invite/create').then(x => {
 		os.alert({
 			type: 'info',
-			text: x?.[0].code,
+			text: x[0].code,
 		});
 	}).catch(err => {
 		os.alert({

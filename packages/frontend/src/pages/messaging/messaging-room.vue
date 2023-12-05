@@ -128,13 +128,13 @@ async function fetch() {
 			endpoint: 'messaging/messages',
 			limit: 20,
 			params: {
-				groupId: group?.id,
+				groupId: group.id,
 			},
 			reversed: true,
 			pageEl: $$(rootEl).value,
 		};
 		connection = useStream().useChannel('messaging', {
-			group: group?.id,
+			group: group.id,
 		});
 	}
 

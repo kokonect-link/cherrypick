@@ -97,10 +97,10 @@ async function createWithOptions() {
 	os.alert({
 		type: 'success',
 		title: i18n.ts.inviteCodeCreated,
-		text: tickets?.map(x => x.code).join('\n'),
+		text: tickets.map(x => x.code).join('\n'),
 	});
 
-	tickets?.forEach(ticket => pagingComponent.value?.prepend(ticket));
+	tickets.forEach(ticket => pagingComponent.value?.prepend(ticket));
 }
 
 function deleted(id: string) {
