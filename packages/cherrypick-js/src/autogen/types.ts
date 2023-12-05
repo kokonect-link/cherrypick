@@ -3,7 +3,7 @@
 
 /*
  * version: 4.6.0-beta.1
- * generatedAt: 2023-12-05T08:05:01.998Z
+ * generatedAt: 2023-12-05T08:31:06.141Z
  */
 
 /**
@@ -3492,7 +3492,8 @@ export type components = {
       isBlocked?: boolean;
       isMuted?: boolean;
       isRenoteMuted?: boolean;
-      notify?: string;
+      /** @enum {string} */
+      notify?: 'normal' | 'none';
       withReplies?: boolean;
     };
     MeDetailedOnly: {
@@ -3528,7 +3529,56 @@ export type components = {
       mutedWords: string[][];
       hardMutedWords: string[][];
       mutedInstances: string[] | null;
-      notificationRecieveConfig: Record<string, never>;
+      notificationRecieveConfig: {
+        app?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        quote?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        reply?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        follow?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        renote?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        mention?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        reaction?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        pollEnded?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        achievementEarned?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        receiveFollowRequest?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        followRequestAccepted?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+        groupInvited?: {
+          /** @enum {string} */
+          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
+        };
+      };
       emailNotificationTypes: string[];
       achievements: {
           name: string;
@@ -3562,7 +3612,16 @@ export type components = {
       };
       email?: string | null;
       emailVerified?: boolean | null;
-      securityKeysList?: Record<string, never>[];
+      securityKeysList?: {
+          /**
+           * Format: id
+           * @example xxxxxxxxxx
+           */
+          id: string;
+          name: string;
+          /** Format: date-time */
+          lastUsed: string;
+        }[];
     };
     UserDetailedNotMe: components['schemas']['UserLite'] & components['schemas']['UserDetailedNotMeOnly'];
     MeDetailed: components['schemas']['UserLite'] & components['schemas']['UserDetailedNotMeOnly'] & components['schemas']['MeDetailedOnly'];

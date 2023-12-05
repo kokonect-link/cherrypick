@@ -957,6 +957,9 @@ export class NoteCreateService implements OnApplicationShutdown {
 
 				if (note.visibility === 'public' && note.userHost == null) {
 					this.fanoutTimelineService.push('localTimelineWithReplies', note.id, 300, r);
+					if (note.replyUserHost == null) {
+						this.fanoutTimelineService.push(`localTimelineWithReplyTo:${note.replyUserId}`, note.id, 300 / 10, r);
+					}
 				}
 			} else {
 				this.fanoutTimelineService.push(`userTimeline:${user.id}`, note.id, note.userHost == null ? meta.perLocalUserUserTimelineCacheMax : meta.perRemoteUserUserTimelineCacheMax, r);
