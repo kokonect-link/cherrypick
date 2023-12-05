@@ -2600,6 +2600,19 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "Failed to install theme"
       description: "A problem occurred during theme installation. Please try again. Error details can be viewed in the Javascript console."
+_dataSaver:
+  _media:
+    title: "Load media"
+    description: "Prevents images/videos from being loaded automatically. Hidden images/videos will be loaded when tapped."
+  _avatar:
+    title: "User icon image"
+    description: "Animation of user's icon images stops. Since animated images can be larger in file size than normal images, data traffic can be further reduced."
+  _urlPreview:
+    title: "URL preview thumbnail"
+    description: "URL preview thumbnail images will no longer load."
+  _code:
+    title: "Code Highlights"
+    description: "If code highlighting notation is used, such as MFM, it will not be loaded until tapped. Code highlighting requires loading the definition file for each language to be highlighted, but since these files are no longer loaded automatically, a reduction in communication volume can be expected."
 _abuse:
   _resolver:
     1hour: "one hour"
@@ -2624,16 +2637,3 @@ _imageCompressionMode:
   noResizeCompress: "Compression without resize"
   resizeCompressLossy: "Resize and lossy compression"
   noResizeCompressLossy: "Lossy compression without resize"
-_dataSaver:
-  _media:
-    title: "Load media"
-    description: "Prevents images/videos from being loaded automatically. Hidden images/videos will be loaded when tapped."
-  _avatar:
-    title: "User icon image"
-    description: "Animation of user's icon images stops. Since animated images can be larger in file size than normal images, data traffic can be further reduced."
-  _urlPreview:
-    title: "URL preview thumbnail"
-    description: "URL preview thumbnail images will no longer load."
-  _code:
-    title: "Code Highlights"
-    description: "If code highlighting notation is used, such as MFM, it will not be loaded until tapped. Code highlighting requires loading the definition file for each language to be highlighted, but since these files are no longer loaded automatically, a reduction in communication volume can be expected."

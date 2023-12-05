@@ -1264,7 +1264,7 @@ signupPendingError: "메일 주소 확인중에 문제가 발생했어요. 링�
 cwNotationRequired: "'내용 숨기기'를 체크했을 경우 주석을 작성해야 해요."
 doReaction: "리액션 추가"
 code: "코드"
-tryReloadIfNotApplied: "설정이 반영되지 않으면 새로 고침을 시도해 보세요."
+tryReloadIfNotApplied: "설정을 반영하려면 페이지를 다시 불러와야 해요."
 showUnreadNotificationsCount: "읽지 않은 알림 수 표시"
 showCatOnly: "고양이만 보기"
 additionalPermissionsForFlash: "Play에 대한 추가 권한"
@@ -2597,6 +2597,19 @@ _externalResourceInstaller:
     _themeInstallFailed:
       title: "테마 설치에 실패했어요"
       description: "테마를 설치하는 동안 문제가 발생했어요. 다시 시도해 주세요. 오류에 대한 자세한 내용은 자바스크립트 콘솔을 참고해 주세요."
+_dataSaver:
+  _media:
+    title: "미디어 불러오기 방지"
+    description: "이미지/동영상이 자동으로 로드되는 것을 방지해요. 탭하면 숨겨진 이미지/동영상을 불러올 수 있어요."
+  _avatar:
+    title: "움직이는 프로필 아이콘"
+    description: "움직이는 프로필 아이콘이 정적 이미지로 변경되어 표시돼요. 움직이는 이미지는 일반 이미지보다 파일 크기가 클 수 있기 때문에 데이터 통신량을 더욱 줄일 수 있어요."
+  _urlPreview:
+    title: "URL 미리보기 썸네일"
+    description: "URL 미리보기의 썸네일 이미지를 불러오지 않아요."
+  _code:
+    title: "코드 하이라이트"
+    description: "MFM 등에서 코드 하이라이트 기법을 사용하는 경우, 탭하기 전까지는 코드 하이라이트를 불러오지 않아요. 코드 하이라이트는 강조할 언어마다 해당 정의 파일을 불러와야 하지만, 이를 자동으로 불러오지 않기 때문에 통신량 감소를 기대할 수 있어요."
 _abuse:
   _resolver:
     1hour: "1시간"
@@ -2621,16 +2634,3 @@ _imageCompressionMode:
   noResizeCompress: "해상도를 축소하지 않고 압축"
   resizeCompressLossy: "해상도 축소 및 손실 압축"
   noResizeCompressLossy: "해상도를 축소하지 않고 손실 압축"
-_dataSaver:
-  _media:
-    title: "미디어 불러오기 방지"
-    description: "이미지/동영상이 자동으로 로드되는 것을 방지해요. 탭하면 숨겨진 이미지/동영상을 불러올 수 있어요."
-  _avatar:
-    title: "움직이는 프로필 아이콘"
-    description: "움직이는 프로필 아이콘이 정적 이미지로 변경되어 표시돼요. 움직이는 이미지는 일반 이미지보다 파일 크기가 클 수 있기 때문에 데이터 통신량을 더욱 줄일 수 있어요."
-  _urlPreview:
-    title: "URL 미리보기 썸네일"
-    description: "URL 미리보기의 썸네일 이미지를 불러오지 않아요."
-  _code:
-    title: "코드 하이라이트"
-    description: "MFM 등에서 코드 하이라이트 기법을 사용하는 경우, 탭하기 전까지는 코드 하이라이트를 불러오지 않아요. 코드 하이라이트는 강조할 언어마다 해당 정의 파일을 불러와야 하지만, 이를 자동으로 불러오지 않기 때문에 통신량 감소를 기대할 수 있어요."

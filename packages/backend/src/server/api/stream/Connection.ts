@@ -37,6 +37,7 @@ export default class Connection {
 	public userIdsWhoMeMuting: Set<string> = new Set();
 	public userIdsWhoBlockingMe: Set<string> = new Set();
 	public userIdsWhoMeMutingRenotes: Set<string> = new Set();
+	public userMutedInstances: Set<string> = new Set();
 	private fetchIntervalId: NodeJS.Timeout | null = null;
 
 	constructor(
@@ -70,6 +71,7 @@ export default class Connection {
 		this.userIdsWhoMeMuting = userIdsWhoMeMuting;
 		this.userIdsWhoBlockingMe = userIdsWhoBlockingMe;
 		this.userIdsWhoMeMutingRenotes = userIdsWhoMeMutingRenotes;
+		this.userMutedInstances = new Set(userProfile.mutedInstances);
 	}
 
 	@bindThis

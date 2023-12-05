@@ -270,37 +270,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.numberOfPageCache }}</template>
 				<template #caption>{{ i18n.ts.numberOfPageCacheDescription }}</template>
 			</MkRange>
-		</div>
-	</FormSection>
 
-	<FormSection>
-		<template #label>{{ i18n.ts.dataSaver }} <span class="_beta">CherryPick</span></template>
+			<MkFolder>
+				<template #label>{{ i18n.ts.dataSaver }}</template>
 
-		<div class="_gaps_m">
-			<MkInfo>{{ i18n.ts.tryReloadIfNotApplied }}</MkInfo>
+				<div class="_gaps_m">
+					<MkInfo>{{ i18n.ts.reloadRequiredToApplySettings }}</MkInfo>
 
-			<div class="_buttons">
-				<MkButton inline @click="enableAllDataSaver">{{ i18n.ts.enableAll }}</MkButton>
-				<MkButton inline @click="disableAllDataSaver">{{ i18n.ts.disableAll }}</MkButton>
-			</div>
-			<div class="_gaps_m">
-				<MkSwitch v-model="dataSaver.media">
-					{{ i18n.ts._dataSaver._media.title }}
-					<template #caption>{{ i18n.ts._dataSaver._media.description }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="dataSaver.avatar">
-					{{ i18n.ts._dataSaver._avatar.title }}
-					<template #caption>{{ i18n.ts._dataSaver._avatar.description }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="dataSaver.urlPreview">
-					{{ i18n.ts._dataSaver._urlPreview.title }}
-					<template #caption>{{ i18n.ts._dataSaver._urlPreview.description }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="dataSaver.code">
-					{{ i18n.ts._dataSaver._code.title }}
-					<template #caption>{{ i18n.ts._dataSaver._code.description }}</template>
-				</MkSwitch>
-			</div>
+					<div class="_buttons">
+						<MkButton inline @click="enableAllDataSaver">{{ i18n.ts.enableAll }}</MkButton>
+						<MkButton inline @click="disableAllDataSaver">{{ i18n.ts.disableAll }}</MkButton>
+					</div>
+					<div class="_gaps_m">
+						<MkSwitch v-model="dataSaver.media">
+							{{ i18n.ts._dataSaver._media.title }}
+							<template #caption>{{ i18n.ts._dataSaver._media.description }}</template>
+						</MkSwitch>
+						<MkSwitch v-model="dataSaver.avatar">
+							{{ i18n.ts._dataSaver._avatar.title }}
+							<template #caption>{{ i18n.ts._dataSaver._avatar.description }}</template>
+						</MkSwitch>
+						<MkSwitch v-model="dataSaver.urlPreview">
+							{{ i18n.ts._dataSaver._urlPreview.title }}
+							<template #caption>{{ i18n.ts._dataSaver._urlPreview.description }}</template>
+						</MkSwitch>
+						<MkSwitch v-model="dataSaver.code">
+							{{ i18n.ts._dataSaver._code.title }}
+							<template #caption>{{ i18n.ts._dataSaver._code.description }}</template>
+						</MkSwitch>
+					</div>
+				</div>
+			</MkFolder>
 		</div>
 	</FormSection>
 
@@ -576,13 +576,13 @@ function testNotification(): void {
 }
 
 function enableAllDataSaver() {
-	const g = defaultStore.state.dataSaver;
+	const g = { ...defaultStore.state.dataSaver };
 	Object.keys(g).forEach((key) => { g[key] = true; });
 	dataSaver.value = g;
 }
 
 function disableAllDataSaver() {
-	const g = defaultStore.state.dataSaver;
+	const g = { ...defaultStore.state.dataSaver };
 	Object.keys(g).forEach((key) => { g[key] = false; });
 	dataSaver.value = g;
 }

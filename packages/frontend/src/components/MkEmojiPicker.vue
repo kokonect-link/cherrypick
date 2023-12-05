@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</section>
 
 		<div v-if="tab === 'index'" class="group index">
-			<section v-if="showPinned">
+			<section v-if="showPinned && pinned.length > 0">
 				<div class="body">
 					<button
 						v-for="emoji in pinned"
@@ -138,7 +138,7 @@ const searchEl = shallowRef<HTMLInputElement>();
 const emojisEl = shallowRef<HTMLDivElement>();
 
 const {
-	reactions: pinned,
+	reactions: pinnedReactions,
 	reactionPickerSize,
 	reactionPickerWidth,
 	reactionPickerHeight,
@@ -146,11 +146,12 @@ const {
 	recentlyUsedEmojis,
 } = defaultStore.reactiveState;
 
+const pinned = computed(() => props.asReactionPicker ? pinnedReactions.value : []); // TODO: 非リアクションの絵文字ピッカー用のpinned絵文字を設定可能にする？
 const size = computed(() => props.asReactionPicker ? reactionPickerSize.value : 1);
 const width = computed(() => props.asReactionPicker ? reactionPickerWidth.value : 3);
 const height = computed(() => props.asReactionPicker ? reactionPickerHeight.value : 2);
 const q = ref<string>('');
-const searchResultCustom = ref<Misskey.entities.CustomEmoji[]>([]);
+const searchResultCustom = ref<Misskey.entities.EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 const tab = ref<'index' | 'custom' | 'unicode' | 'tags'>('index');
 
@@ -197,7 +198,7 @@ watch(q, () => {
 	const searchCustom = () => {
 		const max = 100;
 		const emojis = customEmojis.value;
-		const matches = new Set<Misskey.entities.CustomEmoji>();
+		const matches = new Set<Misskey.entities.EmojiSimple>();
 
 		const exactMatch = emojis.find(emoji => emoji.name === newQ);
 		if (exactMatch) matches.add(exactMatch);
@@ -327,7 +328,7 @@ watch(q, () => {
 	searchResultUnicode.value = Array.from(searchUnicode());
 });
 
-function filterAvailable(emoji: Misskey.entities.CustomEmoji): boolean {
+function filterAvailable(emoji: Misskey.entities.EmojiSimple): boolean {
 	return (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction == null || emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0) || ($i && $i.roles.some(r => emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id)));
 }
 
@@ -344,7 +345,7 @@ function reset() {
 	q.value = '';
 }
 
-function getKey(emoji: string | Misskey.entities.CustomEmoji | UnicodeEmojiDef): string {
+function getKey(emoji: string | Misskey.entities.EmojiSimple | UnicodeEmojiDef): string {
 	return typeof emoji === 'string' ? emoji : 'char' in emoji ? emoji.char : `:${emoji.name}:`;
 }
 

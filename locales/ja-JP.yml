@@ -1274,7 +1274,7 @@ signupPendingError: "メールアドレスの確認中に問題が発生しま�
 cwNotationRequired: "「内容を隠す」がオンの場合は注釈の記述が必要です。"
 doReaction: "リアクションする"
 code: "コード"
-tryReloadIfNotApplied: "設定が反映されない場合はリロードをお試しください。"
+reloadRequiredToApplySettings: "設定の反映にはリロードが必要です。"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -2709,6 +2709,20 @@ _externalResourceInstaller:
       title: "テーマのインストールに失敗しました"
       description: "テーマのインストール中に問題が発生しました。もう一度お試しください。エラーの詳細はJavascriptコンソールをご覧ください。"
 
+_dataSaver:
+  _media:
+    title: "メディアの読み込み"
+    description: "画像・動画が自動で読み込まれるのを防止します。隠れている画像・動画はタップすると読み込まれます。"
+  _avatar:
+    title: "アイコン画像"
+    description: "アイコン画像のアニメーションが停止します。アニメーション画像は通常の画像よりファイルサイズが大きいことがあるので、データ通信量をさらに削減できます。"
+  _urlPreview:
+    title: "URLプレビューのサムネイル"
+    description: "URLプレビューのサムネイル画像が読み込まれなくなります。"
+  _code:
+    title: "コードハイライト"
+    description: "MFMなどでコードハイライト記法が使われている場合、タップするまで読み込まれなくなります。コードハイライトではハイライトする言語ごとにその定義ファイルを読み込む必要がありますが、それらが自動で読み込まれなくなるため、通信量の削減が見込めます。"
+
 _abuse:
   _resolver:
     1hour: "一時間"
@@ -2734,17 +2748,3 @@ _imageCompressionMode:
   noResizeCompress: "縮小せず再圧縮する"
   resizeCompressLossy: "縮小して非可逆圧縮する"
   noResizeCompressLossy: "縮小せず非可逆圧縮する"
-
-_dataSaver:
-  _media:
-    title: "メディアの読み込み"
-    description: "画像・動画が自動で読み込まれるのを防止します。隠れている画像・動画はタップすると読み込まれます。"
-  _avatar:
-    title: "アイコン画像"
-    description: "アイコン画像のアニメーションが停止します。アニメーション画像は通常の画像よりファイルサイズが大きいことがあるので、データ通信量をさらに削減できます。"
-  _urlPreview:
-    title: "URLプレビューのサムネイル"
-    description: "URLプレビューのサムネイル画像が読み込まれなくなります。"
-  _code:
-    title: "コードハイライト"
-    description: "MFMなどでコードハイライト記法が使われている場合、タップするまで読み込まれなくなります。コードハイライトではハイライトする言語ごとにその定義ファイルを読み込む必要がありますが、それらが自動で読み込まれなくなるため、通信量の削減が見込めます。"

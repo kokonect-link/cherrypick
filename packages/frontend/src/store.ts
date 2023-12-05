@@ -416,10 +416,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
-	showUnreadNotificationsCount: {
-		where: 'deviceAccount',
-		default: false,
-	},
 	dataSaver: {
 		where: 'device',
 		default: {
@@ -428,6 +424,10 @@ export const defaultStore = markRaw(new Storage('base', {
 			urlPreview: false,
 			code: false,
 		} as Record<string, boolean>,
+	},
+	showUnreadNotificationsCount: {
+		where: 'deviceAccount',
+		default: false,
 	},
 
 	sound_masterVolume: {

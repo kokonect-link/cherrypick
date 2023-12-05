@@ -254,10 +254,12 @@ const headerActions = $computed(() => {
 					type: 'switch',
 					text: i18n.ts.showRepliesToOthersInTimeline,
 					ref: $$(withReplies),
+					disabled: $$(onlyFiles),
 				} : undefined, {
 					type: 'switch',
 					text: i18n.ts.fileAttachedOnly,
 					ref: $$(onlyFiles),
+					disabled: src === 'local' || src === 'social' ? $$(withReplies) : false,
 				}, {
 					type: 'switch',
 					text: i18n.ts.showCatOnly,

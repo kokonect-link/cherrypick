@@ -129,6 +129,7 @@ import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import * as sound from '@/scripts/sound.js';
 
@@ -392,8 +393,8 @@ function checkMissingMention() {
 				return;
 			}
 		}
-		hasNotSpecifiedMentions = false;
 	}
+	hasNotSpecifiedMentions = false;
 }
 
 function addMissingMention() {
@@ -911,7 +912,15 @@ function insertMention() {
 }
 
 async function insertEmoji(ev: MouseEvent) {
-	os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textareaEl);
+	emojiPicker.show(
+		ev.currentTarget ?? ev.target,
+		emoji => {
+			insertTextAtCursor(textareaEl, emoji);
+		},
+		() => {
+			focus();
+		},
+	);
 }
 
 function showActions(ev) {

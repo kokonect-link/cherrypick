@@ -1277,7 +1277,7 @@ export interface Locale {
     "cwNotationRequired": string;
     "doReaction": string;
     "code": string;
-    "tryReloadIfNotApplied": string;
+    "reloadRequiredToApplySettings": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -2824,6 +2824,24 @@ export interface Locale {
             };
         };
     };
+    "_dataSaver": {
+        "_media": {
+            "title": string;
+            "description": string;
+        };
+        "_avatar": {
+            "title": string;
+            "description": string;
+        };
+        "_urlPreview": {
+            "title": string;
+            "description": string;
+        };
+        "_code": {
+            "title": string;
+            "description": string;
+        };
+    };
     "_abuse": {
         "_resolver": {
             "1hour": string;
@@ -2850,24 +2868,6 @@ export interface Locale {
         "noResizeCompress": string;
         "resizeCompressLossy": string;
         "noResizeCompressLossy": string;
-    };
-    "_dataSaver": {
-        "_media": {
-            "title": string;
-            "description": string;
-        };
-        "_avatar": {
-            "title": string;
-            "description": string;
-        };
-        "_urlPreview": {
-            "title": string;
-            "description": string;
-        };
-        "_code": {
-            "title": string;
-            "description": string;
-        };
     };
 }
 declare const locales: {
