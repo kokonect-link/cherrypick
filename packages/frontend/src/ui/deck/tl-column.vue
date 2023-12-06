@@ -124,6 +124,7 @@ const menu = [{
 	type: 'switch',
 	text: i18n.ts.showRenotes,
 	ref: $$(withRenotes),
+	disabled: false,
 }, props.column.tl === 'local' || props.column.tl === 'social' ? {
 	type: 'switch',
 	text: i18n.ts.showRepliesToOthersInTimeline,
@@ -138,6 +139,7 @@ const menu = [{
 	type: 'switch',
 	text: i18n.ts.showCatOnly,
 	ref: $$(onlyCats),
+	disabled: false,
 }];
 </script>
 
