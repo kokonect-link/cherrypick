@@ -11,10 +11,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XNotifications class="notifications" :excludeTypes="excludeTypes"/>
 		</div>
 		<div v-else-if="tab === 'mentions'">
-			<MkNotes :pagination="mentionsPagination"/>
+			<MkNotes :pagination="mentionsPagination" :notification="true"/>
 		</div>
 		<div v-else-if="tab === 'directNotes'">
-			<MkNotes :pagination="directNotesPagination"/>
+			<MkNotes :pagination="directNotesPagination" :notification="true"/>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>

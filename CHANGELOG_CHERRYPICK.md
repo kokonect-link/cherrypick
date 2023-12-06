@@ -60,6 +60,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 리액션이 '더 보기'를 눌러야 표시됨
 - Fix: 채널 이름이 긴 경우 게시 양식 표시가 깨지는 문제 (misskey-dev/misskey#12524)
+- Fix: 알림의 '받은 멘션' 및 '다이렉트 노트' 탭에서 '알림에서 답글이 달린 노트의 상위 노트 표시하기' 옵션이 적용되지 않음
 
 ### Server
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)

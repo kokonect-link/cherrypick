@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:ad="true"
 				:class="$style.notes"
 			>
-				<MkNote :key="note._featuredId_ || note._prId_ || note.id" :class="$style.note" :note="note" :withHardMute="true"/>
+				<MkNote :key="note._featuredId_ || note._prId_ || note.id" :class="$style.note" :note="note" :withHardMute="true" :notification="notification"/>
 			</MkDateSeparatedList>
 		</div>
 	</template>
@@ -33,21 +33,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
+import { shallowRef, onMounted } from 'vue';
 import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import MkPagination, { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
+import { globalEvents } from '@/events.js';
 
 const props = defineProps<{
 	pagination: Paging;
 	noGap?: boolean;
 	getDate?: (any) => string; // custom function to separate notes on something that isn't createdAt
 	disableAutoLoad?: boolean;
+  notification?: boolean;
 }>();
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+
+onMounted(() => {
+	globalEvents.on('reloadNotification', () => reloadNote());
+});
+
+function reloadNote() {
+	return new Promise<void>((res) => {
+		pagingComponent.value?.reload().then(() => {
+			res();
+		});
+	});
+}
 
 defineExpose({
 	pagingComponent,

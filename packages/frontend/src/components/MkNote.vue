@@ -251,7 +251,6 @@ const props = withDefaults(defineProps<{
   notification?: boolean;
 }>(), {
 	mock: false,
-	notification: false,
 });
 
 provide('mock', props.mock);
