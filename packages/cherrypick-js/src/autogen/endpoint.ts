@@ -1,6 +1,7 @@
 /*
  * version: 4.6.0-beta.2
- * generatedAt: 2023-12-06T08:45:38.856Z
+ * basedMisskeyVersion: 2023.12.0-beta.2
+ * generatedAt: 2023-12-06T10:16:11.711Z
  */
 
 import type {

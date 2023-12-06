@@ -7,6 +7,7 @@ import openapiTS from 'openapi-typescript';
 function generateVersionHeaderComment(openApiDocs: OpenAPIV3.Document): string {
 	const contents = {
 		version: openApiDocs.info.version,
+		basedMisskeyVersion: openApiDocs.info.description,
 		generatedAt: new Date().toISOString(),
 	};
 
