@@ -1,6 +1,6 @@
 /*
- * version: 4.6.0-beta.1
- * generatedAt: 2023-12-05T08:31:06.220Z
+ * version: 4.6.0-beta.2
+ * generatedAt: 2023-12-06T08:45:38.856Z
  */
 
 import type {
@@ -96,8 +96,11 @@ import type {
 	AdminDeleteAccountResponse,
 	AdminUpdateUserNoteRequest,
 	AdminRolesCreateRequest,
+	AdminRolesCreateResponse,
 	AdminRolesDeleteRequest,
+	AdminRolesListResponse,
 	AdminRolesShowRequest,
+	AdminRolesShowResponse,
 	AdminRolesUpdateRequest,
 	AdminRolesAssignRequest,
 	AdminRolesUnassignRequest,
@@ -424,7 +427,9 @@ import type {
 	PingResponse,
 	PinnedUsersResponse,
 	PromoReadRequest,
+	RolesListResponse,
 	RolesShowRequest,
+	RolesShowResponse,
 	RolesUsersRequest,
 	RolesNotesRequest,
 	RolesNotesResponse,
@@ -592,10 +597,10 @@ export type Endpoints = {
 	'admin/update-meta': { req: AdminUpdateMetaRequest; res: EmptyResponse };
 	'admin/delete-account': { req: AdminDeleteAccountRequest; res: AdminDeleteAccountResponse };
 	'admin/update-user-note': { req: AdminUpdateUserNoteRequest; res: EmptyResponse };
-	'admin/roles/create': { req: AdminRolesCreateRequest; res: EmptyResponse };
+	'admin/roles/create': { req: AdminRolesCreateRequest; res: AdminRolesCreateResponse };
 	'admin/roles/delete': { req: AdminRolesDeleteRequest; res: EmptyResponse };
-	'admin/roles/list': { req: EmptyRequest; res: EmptyResponse };
-	'admin/roles/show': { req: AdminRolesShowRequest; res: EmptyResponse };
+	'admin/roles/list': { req: EmptyRequest; res: AdminRolesListResponse };
+	'admin/roles/show': { req: AdminRolesShowRequest; res: AdminRolesShowResponse };
 	'admin/roles/update': { req: AdminRolesUpdateRequest; res: EmptyResponse };
 	'admin/roles/assign': { req: AdminRolesAssignRequest; res: EmptyResponse };
 	'admin/roles/unassign': { req: AdminRolesUnassignRequest; res: EmptyResponse };
@@ -808,8 +813,8 @@ export type Endpoints = {
 	'ping': { req: EmptyRequest; res: PingResponse };
 	'pinned-users': { req: EmptyRequest; res: PinnedUsersResponse };
 	'promo/read': { req: PromoReadRequest; res: EmptyResponse };
-	'roles/list': { req: EmptyRequest; res: EmptyResponse };
-	'roles/show': { req: RolesShowRequest; res: EmptyResponse };
+	'roles/list': { req: EmptyRequest; res: RolesListResponse };
+	'roles/show': { req: RolesShowRequest; res: RolesShowResponse };
 	'roles/users': { req: RolesUsersRequest; res: EmptyResponse };
 	'roles/notes': { req: RolesNotesRequest; res: RolesNotesResponse };
 	'request-reset-password': { req: RequestResetPasswordRequest; res: EmptyResponse };
