@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
 		<template #header>
-			<div>
+			<div v-if="!showEl2">
 				<XAnnouncements v-if="$i" :class="$style.announcements"/>
 				<XStatusBars :class="$style.statusbars"/>
 			</div>
@@ -159,6 +159,7 @@ const enablePostButton = [
 ];
 
 let showEl = $ref(false);
+let showEl2 = $ref(false);
 let lastScrollPosition = $ref(0);
 let queue = $ref(0);
 let longTouchNavHome = $ref(false);
@@ -259,15 +260,22 @@ function onScroll() {
 	if (currentScrollPosition < 0) {
 		return;
 	}
+
 	// Stop executing this function if the difference between
 	// current scroll position and last scroll position is less than some offset
 	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
 		return;
 	}
+
 	showEl = currentScrollPosition < lastScrollPosition;
 	lastScrollPosition = currentScrollPosition;
 	showEl = !showEl;
 	globalEvents.emit('showEl', showEl);
+
+	if (isMobile.value) {
+		if (showEl2 === true) showEl2 = showEl;
+		else setTimeout(() => showEl2 = showEl, 50);
+	}
 }
 
 const onContextmenu = (ev) => {
