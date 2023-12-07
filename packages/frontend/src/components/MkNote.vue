@@ -305,7 +305,7 @@ const parsed = $computed(() => appearNote.text ? mfm.parse(appearNote.text) : nu
 const urls = $computed(() => parsed ? extractUrlFromMfm(parsed) : null);
 const isLong = shouldCollapsed(appearNote, urls ?? []);
 const isMFM = shouldMfmCollapsed(appearNote);
-const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault) || defaultStore.state.allMediaNoteCollapse));
+const collapsed = ref(appearNote.cw == null && (isLong || (isMFM && defaultStore.state.collapseDefault) || (appearNote.files.length > 0 && defaultStore.state.allMediaNoteCollapse)));
 const isDeleted = ref(false);
 const muted = ref(checkMute(appearNote, $i?.mutedWords));
 const hardMuted = ref(props.withHardMute && checkMute(appearNote, $i?.hardMutedWords));
