@@ -327,6 +327,7 @@ onUnmounted(() => {
 	font-weight: bold;
 	flex-shrink: 1;
 	margin-left: 24px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .titleContainer_canBack {
