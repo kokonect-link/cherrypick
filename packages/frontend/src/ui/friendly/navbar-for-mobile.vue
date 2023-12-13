@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, toRef } from 'vue';
+import { computed, defineAsyncComponent, ref, toRef } from 'vue';
 import { openInstanceMenu } from '@/ui/_common_/common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
@@ -74,15 +74,15 @@ const otherMenuItemIndicated = computed(() => {
 	}
 	return false;
 });
-let controlPanelIndicated = $ref(false);
-let releasesCherryPick = $ref(null);
+const controlPanelIndicated = ref(false);
+const releasesCherryPick = ref();
 
-if ($i.isAdmin || $i.isModerator) {
+if ($i.isAdmin ?? $i.isModerator) {
 	os.api('admin/abuse-user-reports', {
 		state: 'unresolved',
 		limit: 1,
 	}).then(reports => {
-		if (reports.length > 0) controlPanelIndicated = true;
+		if (reports.length > 0) controlPanelIndicated.value = true;
 	});
 
 	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
@@ -90,9 +90,9 @@ if ($i.isAdmin || $i.isModerator) {
 	}).then(res => res.json())
 		.then(async res => {
 			const meta = await os.api('admin/meta');
-			if (meta.enableReceivePrerelease) releasesCherryPick = res;
-			else releasesCherryPick = res.filter(x => x.prerelease === false);
-			if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) controlPanelIndicated = true;
+			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
+			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
+			if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) controlPanelIndicated.value = true;
 		});
 }
 

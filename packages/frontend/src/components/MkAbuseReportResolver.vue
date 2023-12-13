@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </div>
 </template>
 <script lang="ts" setup>
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { PrismEditor } from 'vue-prism-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import MkInput from '@/components/MkInput.vue';
@@ -75,7 +75,7 @@ const props = defineProps<{
 		previousExpiresAt?: string;
 	}
 }>();
-let expirationDate: Date | null = $ref(null);
+const expirationDate = ref<Date | null>(null);
 
 type NonNullType<T> = {
 	[P in keyof T]: NonNullable<T[P]>
@@ -118,9 +118,9 @@ function highlighter(code) {
 
 function renderExpirationDate(empty = false) {
 	if (value.value.expirationDate && !empty) {
-		expirationDate = new Date(value.value.expirationDate);
+		expirationDate.value = new Date(value.value.expirationDate);
 	} else {
-		expirationDate = null;
+		expirationDate.value = null;
 	}
 }
 

@@ -71,19 +71,19 @@ const onDriveFileCreated = (file) => {
 	}
 };
 
-let playAnimation = $ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
-let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const thumbnail = (image: any): string => {
-	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 };
 
 function resetTimer() {
-	playAnimation = true;
+	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 }
 
 os.api('drive/stream', {

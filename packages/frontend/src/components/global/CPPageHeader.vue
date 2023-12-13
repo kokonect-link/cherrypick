@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, watch, nextTick } from 'vue';
+import { onMounted, onUnmounted, ref, inject, watch, nextTick, shallowRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
 import { globalEvents } from '@/events.js';
@@ -73,7 +73,7 @@ import { defaultStore } from '@/store.js';
 import { PageHeaderItem } from '@/types/page-header.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
-let showFollowButton = $ref(false);
+const showFollowButton = ref(false);
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -105,20 +105,20 @@ const metadata = injectPageMetadata();
 const hideTitle = false;
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-let el = $shallowRef<HTMLElement | undefined>(undefined);
+const el = shallowRef<HTMLElement | undefined>(undefined);
 const tabRefs: Record<string, HTMLElement | null> = {};
-const tabHighlightEl = $shallowRef<HTMLElement | null>(null);
+const tabHighlightEl = shallowRef<HTMLElement | null>(null);
 const bg = ref<string | undefined>(undefined);
-let narrow = $ref(false);
-const hasTabs = $computed(() => props.tabs.length > 0);
-const hasActions = $computed(() => props.actions && props.actions.length > 0);
-const show = $computed(() => {
-	return !hideTitle || hasTabs || hasActions;
+const narrow = ref(false);
+const hasTabs = computed(() => props.tabs.length > 0);
+const hasActions = computed(() => props.actions && props.actions.length > 0);
+const show = computed(() => {
+	return !hideTitle || hasTabs.value || hasActions.value;
 });
 
 const showTabsPopup = (ev: MouseEvent) => {
-	if (!hasTabs) return;
-	if (!narrow) return;
+	if (!hasTabs.value) return;
+	if (!narrow.value) return;
 	ev.preventDefault();
 	ev.stopPropagation();
 	const menu = props.tabs.map(tab => ({
@@ -137,9 +137,9 @@ const preventDrag = (ev: TouchEvent) => {
 };
 
 const top = (ev: MouseEvent) => {
-	const pos = getScrollPosition(el as HTMLElement);
-	if (el && pos !== 0) {
-		scrollToTop(el as HTMLElement, { behavior: 'smooth' });
+	const pos = getScrollPosition(el.value as HTMLElement);
+	if (el.value && pos !== 0) {
+		scrollToTop(el.value as HTMLElement, { behavior: 'smooth' });
 	} else if (pos === 0) {
 		os.popupMenu([{
 			text: i18n.ts.reload,
@@ -182,7 +182,7 @@ function goBack() {
 const calcBg = () => {
 	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (narrow) tinyBg.setAlpha(1);
+	if (narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
@@ -193,34 +193,34 @@ onMounted(() => {
 	watch(() => [props.tab, props.tabs], () => {
 		nextTick(() => {
 			const tabEl = props.tab ? tabRefs[props.tab] : undefined;
-			if (tabEl && tabHighlightEl && tabEl.parentElement) {
+			if (tabEl && tabHighlightEl.value && tabEl.parentElement) {
 				// offsetWidth や offsetLeft は少数を丸めてしまうため getBoundingClientRect を使う必要がある
 				// https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/offsetWidth#%E5%80%A4
 				const parentRect = tabEl.parentElement.getBoundingClientRect();
 				const rect = tabEl.getBoundingClientRect();
-				tabHighlightEl.style.width = rect.width + 'px';
-				tabHighlightEl.style.left = (rect.left - parentRect.left) + 'px';
+				tabHighlightEl.value.style.width = rect.width + 'px';
+				tabHighlightEl.value.style.left = (rect.left - parentRect.left) + 'px';
 			}
 		});
 	}, {
 		immediate: true,
 	});
 
-	if (el && el.parentElement) {
-		narrow = el.parentElement.offsetWidth < 500;
+	if (el.value && el.value.parentElement) {
+		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el.parentElement && document.body.contains(el as HTMLElement)) {
-				narrow = el.parentElement.offsetWidth < 500;
+			if (el.value && el.value.parentElement && document.body.contains(el.value as HTMLElement)) {
+				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
-		ro.observe(el.parentElement as HTMLElement);
+		ro.observe(el.value.parentElement as HTMLElement);
 	}
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
 
 	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
-		showFollowButton = showFollowButton_receive;
+		showFollowButton.value = showFollowButton_receive;
 	});
 });
 

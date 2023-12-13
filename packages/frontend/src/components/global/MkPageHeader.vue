@@ -62,7 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject } from 'vue';
+import { onMounted, onUnmounted, ref, inject, shallowRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
@@ -77,7 +77,7 @@ import { defaultStore } from '@/store.js';
 import { PageHeaderItem } from '@/types/page-header.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
-let showFollowButton = $ref(false);
+const showFollowButton = ref(false);
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -101,13 +101,13 @@ const metadata = injectPageMetadata();
 const hideTitle = inject('shouldOmitHeaderTitle', false);
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-let el = $shallowRef<HTMLElement | undefined>(undefined);
+const el = shallowRef<HTMLElement | undefined>(undefined);
 const bg = ref<string | undefined>(undefined);
-let narrow = $ref(false);
-const hasTabs = $computed(() => props.tabs.length > 0);
-const hasActions = $computed(() => props.actions && props.actions.length > 0);
-const show = $computed(() => {
-	return !hideTitle || hasTabs || hasActions;
+const narrow = ref(false);
+const hasTabs = computed(() => props.tabs.length > 0);
+const hasActions = computed(() => props.actions && props.actions.length > 0);
+const show = computed(() => {
+	return !hideTitle || hasTabs.value || hasActions.value;
 });
 
 const preventDrag = (ev: TouchEvent) => {
@@ -115,9 +115,9 @@ const preventDrag = (ev: TouchEvent) => {
 };
 
 const top = (ev: MouseEvent) => {
-	const pos = getScrollPosition(el as HTMLElement);
-	if (el && pos !== 0) {
-		scrollToTop(el as HTMLElement, { behavior: 'smooth' });
+	const pos = getScrollPosition(el.value as HTMLElement);
+	if (el.value && pos !== 0) {
+		scrollToTop(el.value as HTMLElement, { behavior: 'smooth' });
 	} else if (pos === 0) {
 		os.popupMenu([{
 			text: i18n.ts.reload,
@@ -146,7 +146,7 @@ function goBack() {
 const calcBg = () => {
 	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (narrow) tinyBg.setAlpha(1);
+	if (narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
@@ -154,21 +154,21 @@ const calcBg = () => {
 let ro: ResizeObserver | null;
 
 onMounted(() => {
-	if (el && el.parentElement) {
-		narrow = el.parentElement.offsetWidth < 500;
+	if (el.value && el.value.parentElement) {
+		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el && el.parentElement && document.body.contains(el as HTMLElement)) {
-				narrow = el.parentElement.offsetWidth < 500;
+			if (el.value && el.value.parentElement && document.body.contains(el.value as HTMLElement)) {
+				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
-		ro.observe(el.parentElement as HTMLElement);
+		ro.observe(el.value.parentElement as HTMLElement);
 	}
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
 
 	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
-		showFollowButton = showFollowButton_receive;
+		showFollowButton.value = showFollowButton_receive;
 	});
 });
 

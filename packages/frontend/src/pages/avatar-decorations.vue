@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref, computed } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -55,7 +55,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFolder from '@/components/MkFolder.vue';
 import { selectFile } from '@/scripts/select-file.js';
 
-let avatarDecorations: any[] = $ref([]);
+const avatarDecorations = ref<any[]>([]);
 
 async function changeImage(ev, avatarDecoration) {
 	const file = await selectFile(ev.currentTarget ?? ev.target, null);
@@ -65,7 +65,7 @@ async function changeImage(ev, avatarDecoration) {
 }
 
 function add() {
-	avatarDecorations.unshift({
+	avatarDecorations.value.unshift({
 		_id: Math.random().toString(36),
 		id: null,
 		name: '',
@@ -80,7 +80,7 @@ function del(avatarDecoration) {
 		text: i18n.t('deleteAreYouSure', { x: avatarDecoration.name }),
 	}).then(({ canceled }) => {
 		if (canceled) return;
-		avatarDecorations = avatarDecorations.filter(x => x !== avatarDecoration);
+		avatarDecorations.value = avatarDecorations.value.filter(x => x !== avatarDecoration);
 		os.api('admin/avatar-decorations/delete', avatarDecoration);
 	});
 }
@@ -96,20 +96,20 @@ async function save(avatarDecoration) {
 
 function load() {
 	os.api('admin/avatar-decorations/list').then(_avatarDecorations => {
-		avatarDecorations = _avatarDecorations;
+		avatarDecorations.value = _avatarDecorations;
 	});
 }
 
 load();
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	asFullButton: true,
 	icon: 'ti ti-plus',
 	text: i18n.ts.add,
 	handler: add,
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.avatarDecorations,

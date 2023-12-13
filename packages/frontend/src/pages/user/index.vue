@@ -66,17 +66,17 @@ const props = withDefaults(defineProps<{
 	page: 'home',
 });
 
-let tab = $ref(props.page);
-let user = $ref<null | Misskey.entities.UserDetailed>(null);
-let error = $ref(null);
+const tab = ref(props.page);
+const user = ref<null | Misskey.entities.UserDetailed>(null);
+const error = ref(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
-	user = null;
+	user.value = null;
 	os.api('users/show', Misskey.acct.parse(props.acct)).then(u => {
-		user = u;
+		user.value = u;
 	}).catch(err => {
-		error = err;
+		error.value = err;
 	});
 }
 
@@ -84,13 +84,13 @@ watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-dots',
 	text: i18n.ts.menu,
 	handler: menu,
 }]);
 
-const headerTabs = $computed(() => user ? [{
+const headerTabs = computed(() => user.value ? [{
 	key: 'home',
 	title: i18n.ts.overview,
 	icon: 'ti ti-home',
@@ -102,7 +102,7 @@ const headerTabs = $computed(() => user ? [{
 	key: 'activity',
 	title: i18n.ts.activity,
 	icon: 'ti ti-chart-line',
-}, ...(user.host == null ? [{
+}, ...(user.value.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
 	icon: 'ti ti-medal',
@@ -137,15 +137,15 @@ function menu(ev) {
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
-definePageMetadata(computed(() => user ? {
+definePageMetadata(computed(() => user.value ? {
 	icon: 'ti ti-user',
-	title: user.name ? `${user.name} (@${user.username})` : `@${user.username}`,
-	subtitle: `@${getAcct(user)}`,
-	userName: user,
-	avatar: user,
-	path: `/@${user.username}`,
+	title: user.value.name ? `${user.value.name} (@${user.value.username})` : `@${user.value.username}`,
+	subtitle: `@${getAcct(user.value)}`,
+	userName: user.value,
+	avatar: user.value,
+	path: `/@${user.value.username}`,
 	share: {
-		title: user.name,
+		title: user.value.name,
 	},
 } : null));
 </script>

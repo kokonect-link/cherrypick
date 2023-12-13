@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
@@ -41,15 +41,15 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
 
-let showEl = $ref(false);
+const showEl = ref(false);
 
-const showContent = $ref(false);
+const showContent = ref(false);
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const router = useRouter();
 
 onMounted(() => {
 	globalEvents.on('showEl', (showEl_receive) => {
-		showEl = showEl_receive;
+		showEl.value = showEl_receive;
 	});
 });
 

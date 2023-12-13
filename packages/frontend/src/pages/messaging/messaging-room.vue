@@ -81,68 +81,68 @@ const props = defineProps<{
 	groupId?: string;
 }>();
 
-let rootEl = $shallowRef<HTMLDivElement>();
-let formEl = $shallowRef<InstanceType<typeof XForm>>();
+const rootEl = shallowRef<HTMLDivElement>();
+const formEl = shallowRef<InstanceType<typeof XForm>>();
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
-let fetching = $ref(true);
-let user: Misskey.entities.UserDetailed | null = $ref(null);
-let group: Misskey.entities.UserGroup | null = $ref(null);
-let typers: Misskey.entities.User[] = $ref([]);
-let connection: Misskey.ChannelConnection<Misskey.Channels['messaging']> | null = $ref(null);
-let showIndicator = $ref(false);
+const fetching = ref(true);
+const user = ref<Misskey.entities.UserDetailed | null>(null);
+const group = ref<Misskey.entities.UserGroup | null>(null);
+const typers = ref<Misskey.entities.User[]>([]);
+const connection = ref<Misskey.ChannelConnection<Misskey.Channels['messaging']> | null>(null);
+const showIndicator = ref(false);
 const animation = defaultStore.reactiveState;
 
-let pagination: Paging | null = $ref(null);
+const pagination = ref<Paging | null>(null);
 
 watch([() => props.userAcct, () => props.groupId], () => {
-	if (connection) connection.dispose();
+	if (connection.value) connection.value.dispose();
 	fetch();
 });
 
 async function fetch() {
-	fetching = true;
+	fetching.value = true;
 
 	if (props.userAcct) {
 		const acct = Misskey.acct.parse(props.userAcct);
-		user = await os.api('users/show', { username: acct.username, host: acct.host || undefined });
-		group = null;
+		user.value = await os.api('users/show', { username: acct.username, host: acct.host || undefined });
+		group.value = null;
 
-		pagination = {
+		pagination.value = {
 			endpoint: 'messaging/messages',
 			limit: 20,
 			params: {
-				userId: user.id,
+				userId: user.value.id,
 			},
 			reversed: true,
-			pageEl: $$(rootEl).value,
+			pageEl: rootEl.value,
 		};
-		connection = useStream().useChannel('messaging', {
-			otherparty: user.id,
+		connection.value = useStream().useChannel('messaging', {
+			otherparty: user.value.id,
 		});
 	} else {
-		user = null;
-		group = await os.api('users/groups/show', { groupId: props.groupId });
+		user.value = null;
+		group.value = await os.api('users/groups/show', { groupId: props.groupId });
 
-		pagination = {
+		pagination.value = {
 			endpoint: 'messaging/messages',
 			limit: 20,
 			params: {
-				groupId: group.id,
+				groupId: group.value.id,
 			},
 			reversed: true,
-			pageEl: $$(rootEl).value,
+			pageEl: rootEl.value,
 		};
-		connection = useStream().useChannel('messaging', {
-			group: group.id,
+		connection.value = useStream().useChannel('messaging', {
+			group: group.value.id,
 		});
 	}
 
-	connection.on('message', onMessage);
-	connection.on('read', onRead);
-	connection.on('deleted', onDeleted);
-	connection.on('typers', _typers => {
-		typers = _typers.filter(u => u.id !== $i?.id);
+	connection.value.on('message', onMessage);
+	connection.value.on('read', onRead);
+	connection.value.on('deleted', onDeleted);
+	connection.value.on('typers', _typers => {
+		typers.value = _typers.filter(u => u.id !== $i?.id);
 	});
 
 	document.addEventListener('visibilitychange', onVisibilitychange);
@@ -150,7 +150,7 @@ async function fetch() {
 	nextTick(() => {
 		thisScrollToBottom();
 		window.setTimeout(() => {
-			fetching = false;
+			fetching.value = false;
 		}, 300);
 	});
 }
@@ -188,7 +188,7 @@ function onDrop(ev: DragEvent): void {
 
 	// ファイルだったら
 	if (ev.dataTransfer.files.length === 1) {
-		formEl.upload(ev.dataTransfer.files[0]);
+		formEl.value.upload(ev.dataTransfer.files[0]);
 		return;
 	} else if (ev.dataTransfer.files.length > 1) {
 		os.alert({
@@ -201,7 +201,7 @@ function onDrop(ev: DragEvent): void {
 	//#region ドライブのファイル
 	const driveFile = ev.dataTransfer.getData(_DATA_TRANSFER_DRIVE_FILE_);
 	if (driveFile != null && driveFile !== '') {
-		formEl.file = JSON.parse(driveFile);
+		formEl.value.file = JSON.parse(driveFile);
 	}
 	//#endregion
 }
@@ -210,11 +210,11 @@ function onMessage(message) {
 	sound.play('chat');
 	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
 
-	const _isBottom = isBottomVisible($$(rootEl).value, 64);
+	const _isBottom = isBottomVisible(rootEl.value, 64);
 
 	pagingComponent.value.prepend(message);
 	if (message.userId !== $i?.id && !document.hidden) {
-		connection?.send('read', {
+		connection.value?.send('read', {
 			id: message.id,
 		});
 	}
@@ -231,7 +231,7 @@ function onMessage(message) {
 }
 
 function onRead(x) {
-	if (user) {
+	if (user.value) {
 		if (!Array.isArray(x)) x = [x];
 		for (const id of x) {
 			if (pagingComponent.value.items.some(y => y.id === id)) {
@@ -242,7 +242,7 @@ function onRead(x) {
 				};
 			}
 		}
-	} else if (group) {
+	} else if (group.value) {
 		for (const id of x.ids) {
 			if (pagingComponent.value.items.some(y => y.id === id)) {
 				const exist = pagingComponent.value.items.map(y => y.id).indexOf(id);
@@ -261,23 +261,23 @@ function onDeleted(id) {
 
 function thisScrollToBottom() {
 	if (window.location.href.includes('my/messaging/')) {
-		scrollToBottom($$(rootEl).value, { behavior: 'smooth' });
+		scrollToBottom(rootEl.value, { behavior: 'smooth' });
 	}
 }
 
 function onIndicatorClick() {
-	showIndicator = false;
+	showIndicator.value = false;
 	thisScrollToBottom();
 }
 
-let scrollRemove: (() => void) | null = $ref(null);
+const scrollRemove = ref<(() => void) | null>(null);
 
 function notifyNewMessage() {
-	showIndicator = true;
+	showIndicator.value = true;
 
-	scrollRemove = onScrollBottom($$(rootEl).value, () => {
-		showIndicator = false;
-		scrollRemove = null;
+	scrollRemove.value = onScrollBottom(rootEl.value, () => {
+		showIndicator.value = false;
+		scrollRemove.value = null;
 	});
 }
 
@@ -285,7 +285,7 @@ function onVisibilitychange() {
 	if (document.hidden) return;
 	for (const message of pagingComponent.value.items) {
 		if (message.userId !== $i?.id && !message.isRead) {
-			connection?.send('read', {
+			connection.value?.send('read', {
 				id: message.id,
 			});
 		}
@@ -297,18 +297,18 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-	connection?.dispose();
+	connection.value?.dispose();
 	document.removeEventListener('visibilitychange', onVisibilitychange);
-	if (scrollRemove) scrollRemove();
+	if (scrollRemove.value) scrollRemove();
 });
 
-definePageMetadata(computed(() => !fetching ? user ? {
+definePageMetadata(computed(() => !fetching.value ? user.value ? {
 	title: '',
 	icon: null,
 	userName: user,
 	avatar: user,
 } : {
-	title: group?.name,
+	title: group.value?.name,
 	icon: 'ti ti-users',
 } : null));
 </script>

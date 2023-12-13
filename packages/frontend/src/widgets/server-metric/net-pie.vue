@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 import XPie from './pie-compact.vue';
 import bytes from '@/filters/bytes-net-v.js';
 import bytesSizes from '@/filters/bytes-net-sizes.js';
@@ -43,12 +43,12 @@ const props = defineProps<{
 	meta: any
 }>();
 
-let inRecent: number = $ref(0);
-let outRecent: number = $ref(0);
+const inRecent = ref<number>(0);
+const outRecent = ref<number>(0);
 
 function onStats(connStats) {
-	inRecent = connStats.net.rx;
-	outRecent = connStats.net.tx;
+	inRecent.value = connStats.net.rx;
+	outRecent.value = connStats.net.tx;
 }
 
 onMounted(() => {

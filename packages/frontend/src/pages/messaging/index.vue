@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onUnmounted } from 'vue';
+import { computed, markRaw, onMounted, onUnmounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
@@ -38,7 +38,7 @@ import MkPagination from '@/components/MkPagination.vue';
 
 const router = useRouter();
 
-let tab = $ref('direct');
+const tab = ref('direct');
 
 let messages;
 let connection;
@@ -150,7 +150,7 @@ onUnmounted(() => {
 	if (connection) connection.dispose();
 });
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.create,
 	handler: start,
@@ -160,7 +160,7 @@ const headerActions = $computed(() => [{
 	handler: readAllMessagingMessages,
 }]);
 
-const headerTabs = $computed(() => [{
+const headerTabs = computed(() => [{
 	key: 'direct',
 	title: i18n.ts._messaging.direct,
 	icon: 'ti ti-users',

@@ -45,6 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -54,34 +55,34 @@ import MkFolder from '@/components/MkFolder.vue';
 import { i18n } from '@/i18n.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
-let key = $ref(0);
-let searchQuery = $ref('');
-let searchOrigin = $ref('combined');
-let eventSort = $ref('startDate');
-let eventPagination = $ref();
-let startDate = $ref(null);
-let endDate = $ref(null);
+const key = ref(0);
+const searchQuery = ref('');
+const searchOrigin = ref('combined');
+const eventSort = ref('startDate');
+const eventPagination = ref();
+const startDate = ref(null);
+const endDate = ref(null);
 
 async function search(): Promise<void> {
-	const query = searchQuery.toString().trim();
+	const query = searchQuery.value.toString().trim();
 
 	// only notes/users search require the query string
 	if (query == null || query === '') return;
 
-	eventPagination = {
+	eventPagination.value = {
 		endpoint: 'notes/events/search',
 		limit: 10,
 		offsetMode: true,
 		params: {
-			query: !searchQuery ? undefined : searchQuery,
+			query: !searchQuery.value ? undefined : searchQuery,
 			sortBy: eventSort,
-			sinceDate: startDate ? (new Date(startDate)).getTime() : undefined,
-			untilDate: endDate ? (new Date(endDate)).getTime() + 1000 * 3600 * 24 : undefined,
+			sinceDate: startDate.value ? (new Date(startDate)).getTime() : undefined,
+			untilDate: endDate.value ? (new Date(endDate)).getTime() + 1000 * 3600 * 24 : undefined,
 			origin: searchOrigin,
 		},
 	};
 
-	key++;
+	key.value++;
 }
 
 function onInputKeydown(evt: KeyboardEvent) {

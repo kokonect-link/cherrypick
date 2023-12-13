@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { mainRouter } from '@/router.js';
@@ -52,18 +52,18 @@ const props = defineProps<{
 	groupId: string;
 }>();
 
-let group = $ref(null);
-let users = $ref([]);
+const group = ref(null);
+const users = ref([]);
 
 function fetchGroup() {
 	os.api('users/groups/show', {
 		groupId: props.groupId,
 	}).then(_group => {
-		group = _group;
+		group.value = _group;
 		os.api('users/show', {
-			userIds: group.userIds,
+			userIds: group.value.userIds,
 		}).then(_users => {
-			users = _users;
+			users.value = _users;
 		});
 	});
 }
@@ -74,7 +74,7 @@ function invite() {
 		includeHost: false,
 	}).then(user => {
 		os.apiWithDialog('users/groups/invite', {
-			groupId: group.id,
+			groupId: group.value.id,
 			userId: user.id,
 		});
 	});
@@ -83,31 +83,31 @@ function invite() {
 async function removeUser(user) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('_group.banishConfirm', { name: user.name || user.username, group: group.name }),
+		text: i18n.t('_group.banishConfirm', { name: user.name || user.username, group: group.value.name }),
 	});
 	if (canceled) return;
 
 	os.apiWithDialog('users/groups/pull', {
-		groupId: group.id,
+		groupId: group.value.id,
 		userId: user.id,
 	}).then(() => {
-		users = users.filter(x => x.id !== user.id);
+		users.value = users.value.filter(x => x.id !== user.id);
 	});
 }
 
 async function renameGroup() {
 	const { canceled, result: name } = await os.inputText({
 		title: i18n.ts.groupName,
-		default: group.name,
+		default: group.value.name,
 	});
 	if (canceled) return;
 
 	await os.apiWithDialog('users/groups/update', {
-		groupId: group.id,
+		groupId: group.value.id,
 		name: name,
 	});
 
-	group.name = name;
+	group.value.name = name;
 }
 
 function transfer() {
@@ -116,7 +116,7 @@ function transfer() {
 		includeHost: false,
 	}).then(user => {
 		os.apiWithDialog('users/groups/transfer', {
-			groupId: group.id,
+			groupId: group.value.id,
 			userId: user.id,
 		});
 	});
@@ -125,19 +125,19 @@ function transfer() {
 async function deleteGroup() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: group.name }),
+		text: i18n.t('removeAreYouSure', { x: group.value.name }),
 	});
 	if (canceled) return;
 
 	await os.apiWithDialog('users/groups/delete', {
-		groupId: group.id,
+		groupId: group.value.id,
 	});
 	mainRouter.push('/my/groups');
 }
 
 watch(() => props.listId, fetchGroup, { immediate: true });
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.invite,
 	handler: () => {
@@ -163,10 +163,10 @@ const headerActions = $computed(() => [{
 	},
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
-definePageMetadata(computed(() => group ? {
-	title: group.name,
+definePageMetadata(computed(() => group.value ? {
+	title: group.value.name,
 	icon: 'ti ti-briefcase',
 } : null));
 

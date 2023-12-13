@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted } from 'vue';
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import MkUserList from '@/components/MkUserList.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -40,13 +40,13 @@ import { useRouter } from '@/router.js';
 
 const router = useRouter();
 
-let key = $ref(0);
-let searchQuery = $ref('');
-let searchOrigin = $ref('combined');
-let userPagination = $ref();
+const key = ref(0);
+const searchQuery = ref('');
+const searchOrigin = ref('combined');
+const userPagination = ref();
 
 async function search() {
-	const query = searchQuery.toString().trim();
+	const query = searchQuery.value.toString().trim();
 
 	if (query == null || query === '') return;
 
@@ -68,16 +68,16 @@ async function search() {
 		return;
 	}
 
-	userPagination = {
+	userPagination.value = {
 		endpoint: 'users/search',
 		limit: 10,
 		params: {
 			query: query,
-			origin: searchOrigin,
+			origin: searchOrigin.value,
 		},
 	};
 
-	key++;
+	key.value++;
 }
 
 function onInputKeydown(evt: KeyboardEvent) {

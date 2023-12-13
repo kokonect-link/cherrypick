@@ -146,7 +146,7 @@ import MkInfo from '@/components/MkInfo.vue';
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
 const reactionAcceptance = computed(defaultStore.makeGetterSetter('reactionAcceptance'));
-let avatarDecorations: any[] = $ref([]);
+const avatarDecorations = ref<any[]>([]);
 
 const profile = reactive({
 	name: $i.name,
@@ -180,7 +180,7 @@ const fields = ref($i?.fields.map(field => ({ id: Math.random().toString(), name
 const fieldEditMode = ref(false);
 
 os.api('get-avatar-decorations').then(_avatarDecorations => {
-	avatarDecorations = _avatarDecorations;
+	avatarDecorations.value = _avatarDecorations;
 });
 
 function addField() {
@@ -313,9 +313,9 @@ async function reloadAsk() {
 	unisonReload();
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.profile,

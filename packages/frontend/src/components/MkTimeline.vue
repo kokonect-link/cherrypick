@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onUnmounted, provide, onMounted } from 'vue';
+import { computed, watch, onMounted, onUnmounted, provide, ref } from 'vue';
 import { Connection } from 'cherrypick-js/built/streaming.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
@@ -68,8 +68,8 @@ type TimelineQueryType = {
   roleId?: string
 }
 
-const prComponent: InstanceType<typeof MkPullToRefresh> = $ref();
-const tlComponent: InstanceType<typeof MkNotes> = $ref();
+const prComponent = ref<InstanceType<typeof MkPullToRefresh>>();
+const tlComponent = ref<InstanceType<typeof MkNotes>>();
 
 let tlNotesCount = 0;
 
@@ -80,7 +80,7 @@ const prepend = note => {
 		note._shouldInsertAd_ = true;
 	}
 
-	tlComponent.pagingComponent?.prepend(note);
+	tlComponent.value.pagingComponent?.prepend(note);
 
 	emit('note');
 
@@ -282,7 +282,7 @@ function reloadTimeline() {
 	return new Promise<void>((res) => {
 		tlNotesCount = 0;
 
-		tlComponent.pagingComponent?.reload().then(() => {
+		tlComponent.value.pagingComponent?.reload().then(() => {
 			res();
 		});
 	});

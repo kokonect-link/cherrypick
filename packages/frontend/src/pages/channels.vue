@@ -52,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import MkChannelPreview from '@/components/MkChannelPreview.vue';
 import MkChannelList from '@/components/MkChannelList.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -72,15 +72,15 @@ const props = defineProps<{
 	type?: string;
 }>();
 
-let key = $ref('');
-let tab = $ref('featured');
-let searchQuery = $ref('');
-let searchType = $ref('nameAndDescription');
-let channelPagination = $ref();
+const key = ref('');
+const tab = ref('featured');
+const searchQuery = ref('');
+const searchType = ref('nameAndDescription');
+const channelPagination = ref();
 
 onMounted(() => {
-	searchQuery = props.query ?? '';
-	searchType = props.type ?? 'nameAndDescription';
+	searchQuery.value = props.query ?? '';
+	searchType.value = props.type ?? 'nameAndDescription';
 });
 
 const featuredPagination = {
@@ -102,35 +102,35 @@ const ownedPagination = {
 };
 
 async function search() {
-	const query = searchQuery.toString().trim();
+	const query = searchQuery.value.toString().trim();
 
 	if (query == null) return;
 
-	const type = searchType.toString().trim();
+	const type = searchType.value.toString().trim();
 
-	channelPagination = {
+	channelPagination.value = {
 		endpoint: 'channels/search',
 		limit: 10,
 		params: {
-			query: searchQuery,
+			query: searchQuery.value,
 			type: type,
 		},
 	};
 
-	key = query + type;
+	key.value = query + type;
 }
 
 function create() {
 	router.push('/channels/new');
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.create,
 	handler: create,
 }]);
 
-const headerTabs = $computed(() => [{
+const headerTabs = computed(() => [{
 	key: 'search',
 	title: i18n.ts.search,
 	icon: 'ti ti-search',
@@ -152,7 +152,7 @@ const headerTabs = $computed(() => [{
 	icon: 'ti ti-edit',
 }]);
 
-const headerTabsWhenNotLogin = $computed(() => [{
+const headerTabsWhenNotLogin = computed(() => [{
 	key: 'search',
 	title: i18n.ts.search,
 	icon: 'ti ti-search',

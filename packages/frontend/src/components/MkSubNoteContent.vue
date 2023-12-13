@@ -160,7 +160,7 @@ const emit = defineEmits<{
   (ev: 'removeReaction', emoji: string): void;
 }>();
 
-let note = $ref(deepClone(props.note));
+const note = ref(deepClone(props.note));
 
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
@@ -184,7 +184,7 @@ const parsed = props.note.text ? mfm.parse(props.note.text) : null;
 const isLong = shouldCollapsed(props.note, []);
 const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = $ref(isLong || (isMFM && defaultStore.state.collapseDefault) || props.note.files.length > 0 || props.note.poll);
+const collapsed = ref(isLong || (isMFM && defaultStore.state.collapseDefault) || props.note.files.length > 0 || props.note.poll);
 
 const collapseLabel = computed(() => {
 	return concat([
@@ -194,13 +194,13 @@ const collapseLabel = computed(() => {
 
 if (props.mock) {
 	watch(() => props.note, (to) => {
-		note = deepClone(to);
+		note.value = deepClone(to);
 	}, { deep: true });
 } else {
 	useNoteCapture({
 		rootEl: el,
-		note: $$(note),
-		pureNote: $$(note),
+		note: note,
+		pureNote: note,
 		isDeletedRef: isDeleted,
 	});
 }
@@ -229,7 +229,7 @@ function renote(viaKeyboard = false) {
 	pleaseLogin();
 	showMovedDialog();
 
-	const { menu } = getRenoteMenu({ note: note, renoteButton, mock: props.mock });
+	const { menu } = getRenoteMenu({ note: note.value, renoteButton, mock: props.mock });
 	os.popupMenu(menu, renoteButton.value, {
 		viaKeyboard,
 	});
@@ -239,7 +239,7 @@ async function renoteOnly() {
 	pleaseLogin();
 	showMovedDialog();
 
-	await getRenoteOnly({ note: note, renoteButton, mock: props.mock });
+	await getRenoteOnly({ note: note.value, renoteButton, mock: props.mock });
 }
 
 function quote(viaKeyboard = false): void {
@@ -312,7 +312,7 @@ function react(viaKeyboard = false): void {
 }
 
 async function toggleReaction(reaction) {
-	const oldReaction = note.myReaction;
+	const oldReaction = note.value.myReaction;
 	if (oldReaction) {
 		const confirm = await os.confirm({
 			type: 'warning',
@@ -323,11 +323,11 @@ async function toggleReaction(reaction) {
 		sound.play('reaction');
 
 		os.api('notes/reactions/delete', {
-			noteId: note.id,
+			noteId: note.value.id,
 		}).then(() => {
 			if (oldReaction !== reaction) {
 				os.api('notes/reactions/create', {
-					noteId: note.id,
+					noteId: note.value.id,
 					reaction: reaction,
 				});
 			}
@@ -336,11 +336,11 @@ async function toggleReaction(reaction) {
 		sound.play('reaction');
 
 		os.api('notes/reactions/create', {
-			noteId: note.id,
+			noteId: note.value.id,
 			reaction: reaction,
 		});
 	}
-	if (note.text && note.text.length > 100 && (Date.now() - new Date(note.createdAt).getTime() < 1000 * 3)) {
+	if (note.value.text && note.value.text.length > 100 && (Date.now() - new Date(note.value.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
 }
@@ -390,7 +390,7 @@ function menu(viaKeyboard = false): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
@@ -401,12 +401,12 @@ async function clip() {
 		return;
 	}
 
-	os.popupMenu(await getNoteClipMenu({ note: note, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
+	os.popupMenu(await getNoteClipMenu({ note: note.value, isDeleted, currentClip: currentClip?.value }), clipButton.value).then(focus);
 }
 
-const isForeignLanguage: boolean = note.text != null && (() => {
+const isForeignLanguage: boolean = note.value.text != null && (() => {
 	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
-	const postLang = detectLanguage(note.text);
+	const postLang = detectLanguage(note.value.text);
 	return postLang !== '' && postLang !== targetLang;
 })();
 

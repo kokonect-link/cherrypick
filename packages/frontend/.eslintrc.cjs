@@ -70,12 +70,6 @@ module.exports = {
 		'require': false,
 		'__dirname': false,
 
-		// Vue
-		'$$': false,
-		'$ref': false,
-		'$shallowRef': false,
-		'$computed': false,
-
 		// CherryPick
 		'_DEV_': false,
 		'_LANGS_': false,

@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref, computed } from 'vue';
 import XHeader from './_header_.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import * as os from '@/os.js';
@@ -61,41 +61,41 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormLink from '@/components/form/link.vue';
 
-let enableServerMachineStats: boolean = $ref(false);
-let enableIdenticonGeneration: boolean = $ref(false);
-let enableChartsForRemoteUser: boolean = $ref(false);
-let enableChartsForFederatedInstances: boolean = $ref(false);
-let doNotSendNotificationEmailsForAbuseReport: boolean = $ref(false);
+const enableServerMachineStats = ref<boolean>(false);
+const enableIdenticonGeneration = ref<boolean>(false);
+const enableChartsForRemoteUser = ref<boolean>(false);
+const enableChartsForFederatedInstances = ref<boolean>(false);
+const doNotSendNotificationEmailsForAbuseReport = ref<boolean>(false);
 
 async function init() {
 	const meta = await os.api('admin/meta');
-	enableServerMachineStats = meta.enableServerMachineStats;
-	enableIdenticonGeneration = meta.enableIdenticonGeneration;
-	enableChartsForRemoteUser = meta.enableChartsForRemoteUser;
-	enableChartsForFederatedInstances = meta.enableChartsForFederatedInstances;
-	doNotSendNotificationEmailsForAbuseReport = meta.doNotSendNotificationEmailsForAbuseReport;
+	enableServerMachineStats.value = meta.enableServerMachineStats;
+	enableIdenticonGeneration.value = meta.enableIdenticonGeneration;
+	enableChartsForRemoteUser.value = meta.enableChartsForRemoteUser;
+	enableChartsForFederatedInstances.value = meta.enableChartsForFederatedInstances;
+	doNotSendNotificationEmailsForAbuseReport.value = meta.doNotSendNotificationEmailsForAbuseReport;
 }
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-		enableServerMachineStats,
-		enableIdenticonGeneration,
-		enableChartsForRemoteUser,
-		enableChartsForFederatedInstances,
-		doNotSendNotificationEmailsForAbuseReport,
+		enableServerMachineStats: enableServerMachineStats.value,
+		enableIdenticonGeneration: enableIdenticonGeneration.value,
+		enableChartsForRemoteUser: enableChartsForRemoteUser.value,
+		enableChartsForFederatedInstances: enableChartsForFederatedInstances.value,
+		doNotSendNotificationEmailsForAbuseReport: doNotSendNotificationEmailsForAbuseReport.value,
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	asFullButton: true,
 	icon: 'ti ti-check',
 	text: i18n.ts.save,
 	handler: save,
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.other,

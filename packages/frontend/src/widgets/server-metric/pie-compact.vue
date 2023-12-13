@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 
 const props = defineProps<{
 	value: number;
@@ -34,8 +35,8 @@ const props = defineProps<{
 
 const r = 0.35;
 
-const color = $computed(() => `hsl(${180 - (props.value * 180)}, 80%, 70%)`);
-const strokeDashoffset = $computed(() => (1 - props.value) * (Math.PI * (r * 2)));
+const color = computed(() => `hsl(${180 - (props.value * 180)}, 80%, 70%)`);
+const strokeDashoffset = computed(() => (1 - props.value) * (Math.PI * (r * 2)));
 </script>
 
 <style lang="scss" module>

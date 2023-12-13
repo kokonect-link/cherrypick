@@ -147,6 +147,9 @@ type AdminEmojiDeleteBulkRequest = operations['admin/emoji/delete-bulk']['reques
 type AdminEmojiDeleteRequest = operations['admin/emoji/delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
+type AdminEmojiImportZipRequest = operations['admin/emoji/import-zip']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type AdminEmojiListRemoteRequest = operations['admin/emoji/list-remote']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -402,8 +405,6 @@ class APIClient {
     fetch: FetchLike;
     // (undocumented)
     origin: string;
-    // (undocumented)
-    request<E extends keyof Endpoints, P extends Endpoints[E]['req']>(endpoint: E, params?: P, credential?: string | null): Promise<SwitchCaseResponseType<E, P>>;
 }
 
 // @public (undocumented)
@@ -435,6 +436,9 @@ type ApShowRequest = operations['ap/show']['requestBody']['content']['applicatio
 
 // @public (undocumented)
 type ApShowResponse = operations['ap/show']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type AuthAcceptRequest = operations['auth/accept']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type AuthSessionGenerateRequest = operations['auth/session/generate']['requestBody']['content']['application/json'];
@@ -1121,6 +1125,7 @@ declare namespace entities {
         AdminEmojiCopyResponse,
         AdminEmojiDeleteBulkRequest,
         AdminEmojiDeleteRequest,
+        AdminEmojiImportZipRequest,
         AdminEmojiListRemoteRequest,
         AdminEmojiListRemoteResponse,
         AdminEmojiListRequest,
@@ -1199,6 +1204,7 @@ declare namespace entities {
         AppCreateResponse,
         AppShowRequest,
         AppShowResponse,
+        AuthAcceptRequest,
         AuthSessionGenerateRequest,
         AuthSessionGenerateResponse,
         AuthSessionShowRequest,
@@ -1358,13 +1364,31 @@ declare namespace entities {
         HashtagsUsersRequest,
         HashtagsUsersResponse,
         IResponse,
+        I2faDoneRequest,
+        I2faKeyDoneRequest,
+        I2faPasswordLessRequest,
+        I2faRegisterKeyRequest,
+        I2faRegisterRequest,
+        I2faUpdateKeyRequest,
+        I2faRemoveKeyRequest,
+        I2faUnregisterRequest,
+        IAppsRequest,
+        IAuthorizedAppsRequest,
         IClaimAchievementRequest,
+        IChangePasswordRequest,
+        IDeleteAccountRequest,
+        IExportFollowingRequest,
         IFavoritesRequest,
         IFavoritesResponse,
         IGalleryLikesRequest,
         IGalleryLikesResponse,
         IGalleryPostsRequest,
         IGalleryPostsResponse,
+        IImportBlockingRequest,
+        IImportFollowingRequest,
+        IImportMutingRequest,
+        IImportUserListsRequest,
+        IImportAntennasRequest,
         INotificationsRequest,
         INotificationsResponse,
         INotificationsGroupedRequest,
@@ -1376,6 +1400,7 @@ declare namespace entities {
         IPinRequest,
         IPinResponse,
         IReadAnnouncementRequest,
+        IRegenerateTokenRequest,
         IRegistryGetAllRequest,
         IRegistryGetDetailRequest,
         IRegistryGetRequest,
@@ -1383,12 +1408,17 @@ declare namespace entities {
         IRegistryKeysRequest,
         IRegistryRemoveRequest,
         IRegistrySetRequest,
+        IRevokeTokenRequest,
+        ISigninHistoryRequest,
+        ISigninHistoryResponse,
         IUnpinRequest,
         IUnpinResponse,
+        IUpdateEmailRequest,
         IUpdateRequest,
         IUpdateResponse,
         IUserGroupInvitesRequest,
         IUserGroupInvitesResponse,
+        IMoveRequest,
         IWebhooksCreateRequest,
         IWebhooksShowRequest,
         IWebhooksUpdateRequest,
@@ -1411,6 +1441,8 @@ declare namespace entities {
         EmojisResponse,
         EmojiRequest,
         EmojiResponse,
+        MiauthGenTokenRequest,
+        MiauthGenTokenResponse,
         MuteCreateRequest,
         MuteDeleteRequest,
         MuteListRequest,
@@ -1476,6 +1508,7 @@ declare namespace entities {
         NotesUserListTimelineRequest,
         NotesUserListTimelineResponse,
         NotificationsCreateRequest,
+        PagePushRequest,
         PagesCreateRequest,
         PagesCreateResponse,
         PagesDeleteRequest,
@@ -1488,6 +1521,8 @@ declare namespace entities {
         FlashCreateRequest,
         FlashDeleteRequest,
         FlashFeaturedResponse,
+        FlashGenTokenRequest,
+        FlashGenTokenResponse,
         FlashLikeRequest,
         FlashShowRequest,
         FlashShowResponse,
@@ -1714,6 +1749,12 @@ type FlashDeleteRequest = operations['flash/delete']['requestBody']['content']['
 type FlashFeaturedResponse = operations['flash/featured']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type FlashGenTokenRequest = operations['flash/gen-token']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type FlashGenTokenResponse = operations['flash/gen-token']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
 type FlashLikeRequest = operations['flash/like']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1867,10 +1908,49 @@ type HashtagsUsersRequest = operations['hashtags/users']['requestBody']['content
 type HashtagsUsersResponse = operations['hashtags/users']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type I2faDoneRequest = operations['i/2fa/done']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faKeyDoneRequest = operations['i/2fa/key-done']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faPasswordLessRequest = operations['i/2fa/password-less']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faRegisterKeyRequest = operations['i/2fa/register-key']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faRegisterRequest = operations['i/2fa/register']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faRemoveKeyRequest = operations['i/2fa/remove-key']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faUnregisterRequest = operations['i/2fa/unregister']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type I2faUpdateKeyRequest = operations['i/2fa/update-key']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IAppsRequest = operations['i/apps']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IAuthorizedAppsRequest = operations['i/authorized-apps']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IChangePasswordRequest = operations['i/change-password']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type IClaimAchievementRequest = operations['i/claim-achievement']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type ID = string;
+
+// @public (undocumented)
+type IDeleteAccountRequest = operations['i/delete-account']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IExportFollowingRequest = operations['i/export-following']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type IFavoritesRequest = operations['i/favorites']['requestBody']['content']['application/json'];
@@ -1889,6 +1969,24 @@ type IGalleryPostsRequest = operations['i/gallery/posts']['requestBody']['conten
 
 // @public (undocumented)
 type IGalleryPostsResponse = operations['i/gallery/posts']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type IImportAntennasRequest = operations['i/import-antennas']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IImportBlockingRequest = operations['i/import-blocking']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IImportFollowingRequest = operations['i/import-following']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IImportMutingRequest = operations['i/import-muting']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IImportUserListsRequest = operations['i/import-user-lists']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type IMoveRequest = operations['i/move']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type INotificationsGroupedRequest = operations['i/notifications-grouped']['requestBody']['content']['application/json'];
@@ -1942,6 +2040,9 @@ type IPinResponse = operations['i/pin']['responses']['200']['content']['applicat
 type IReadAnnouncementRequest = operations['i/read-announcement']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
+type IRegenerateTokenRequest = operations['i/regenerate-token']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type IRegistryGetAllRequest = operations['i/registry/get-all']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1966,13 +2067,25 @@ type IRegistrySetRequest = operations['i/registry/set']['requestBody']['content'
 type IResponse = operations['i']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type IRevokeTokenRequest = operations['i/revoke-token']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 function isAPIError(reason: any): reason is APIError;
+
+// @public (undocumented)
+type ISigninHistoryRequest = operations['i/signin-history']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type ISigninHistoryResponse = operations['i/signin-history']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type IUnpinRequest = operations['i/unpin']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type IUnpinResponse = operations['i/unpin']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type IUpdateEmailRequest = operations['i/update-email']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type IUpdateRequest = operations['i/update']['requestBody']['content']['application/json'];
@@ -2036,6 +2149,12 @@ type MetaRequest = operations['meta']['requestBody']['content']['application/jso
 
 // @public (undocumented)
 type MetaResponse = operations['meta']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type MiauthGenTokenRequest = operations['miauth/gen-token']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type MiauthGenTokenResponse = operations['miauth/gen-token']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type ModerationLog = {
@@ -2377,6 +2496,9 @@ type PageEvent = {
     userId: User['id'];
     user: User;
 };
+
+// @public (undocumented)
+type PagePushRequest = operations['page-push']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type PagesCreateRequest = operations['pages/create']['requestBody']['content']['application/json'];

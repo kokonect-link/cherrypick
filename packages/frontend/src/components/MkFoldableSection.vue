@@ -43,7 +43,7 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-let showEl = $ref(false);
+const showEl = ref(false);
 
 const miLocalStoragePrefix = 'ui:folder:' as const;
 
@@ -103,7 +103,7 @@ onMounted(() => {
 	bg.value = _bg.toRgbString();
 
 	globalEvents.on('showEl', (showEl_receive) => {
-		showEl = showEl_receive;
+		showEl.value = showEl_receive;
 	});
 });
 </script>

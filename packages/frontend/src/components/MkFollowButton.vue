@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
@@ -49,7 +49,7 @@ import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { defaultStore } from '@/store.js';
 
-let showFollowButton = $ref(false);
+const showFollowButton = ref(false);
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,
@@ -70,9 +70,9 @@ const emit = defineEmits<{
 	(_: 'update:user', value: Misskey.entities.UserDetailed): void
 }>();
 
-let isFollowing = $ref(props.user.isFollowing);
-let hasPendingFollowRequestFromYou = $ref(props.user.hasPendingFollowRequestFromYou);
-let wait = $ref(false);
+const isFollowing = ref(props.user.isFollowing);
+const hasPendingFollowRequestFromYou = ref(props.user.hasPendingFollowRequestFromYou);
+const wait = ref(false);
 const connection = useStream().useChannel('main');
 
 if (props.user.isFollowing == null) {
@@ -84,16 +84,16 @@ if (props.user.isFollowing == null) {
 
 function onFollowChange(user: Misskey.entities.UserDetailed) {
 	if (user.id === props.user.id) {
-		isFollowing = user.isFollowing;
-		hasPendingFollowRequestFromYou = user.hasPendingFollowRequestFromYou;
+		isFollowing.value = user.isFollowing;
+		hasPendingFollowRequestFromYou.value = user.hasPendingFollowRequestFromYou;
 	}
 }
 
 async function onClick() {
-	wait = true;
+	wait.value = true;
 
 	try {
-		if (isFollowing) {
+		if (isFollowing.value) {
 			const { canceled } = await os.confirm({
 				type: 'warning',
 				text: i18n.t('unfollowConfirm', { name: userName(props.user) }),
@@ -105,11 +105,11 @@ async function onClick() {
 				userId: props.user.id,
 			});
 		} else {
-			if (hasPendingFollowRequestFromYou) {
+			if (hasPendingFollowRequestFromYou.value) {
 				await os.api('following/requests/cancel', {
 					userId: props.user.id,
 				});
-				hasPendingFollowRequestFromYou = false;
+				hasPendingFollowRequestFromYou.value = false;
 			} else {
 				await os.api('following/create', {
 					userId: props.user.id,
@@ -120,7 +120,7 @@ async function onClick() {
 					withReplies: defaultStore.state.defaultWithReplies,
 				});
 				vibrate(defaultStore.state.vibrateSystem ? [30, 40, 100] : []);
-				hasPendingFollowRequestFromYou = true;
+				hasPendingFollowRequestFromYou.value = true;
 
 				claimAchievement('following1');
 
@@ -141,7 +141,7 @@ async function onClick() {
 	} catch (err) {
 		console.error(err);
 	} finally {
-		wait = false;
+		wait.value = false;
 	}
 }
 
@@ -149,7 +149,7 @@ onMounted(() => {
 	connection.on('follow', onFollowChange);
 	connection.on('unfollow', onFollowChange);
 
-	showFollowButton = $i != null && $i.id !== props.user.id;
+	showFollowButton.value = $i != null && $i.id !== props.user.id;
 	globalEvents.emit('showFollowButton', showFollowButton);
 });
 

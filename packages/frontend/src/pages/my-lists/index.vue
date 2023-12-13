@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onActivated } from 'vue';
+import { onActivated, computed } from 'vue';
 import MkAvatars from '@/components/MkAvatars.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
@@ -36,7 +36,7 @@ import { userListsCache } from '@/cache';
 import { infoImageUrl } from '@/instance.js';
 import { $i } from '@/account.js';
 
-const items = $computed(() => userListsCache.value.value ?? []);
+const items = computed(() => userListsCache.value.value ?? []);
 
 function fetch() {
 	userListsCache.fetch();
@@ -54,7 +54,7 @@ async function create() {
 	fetch();
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.createList,
 	handler: create,
@@ -68,7 +68,7 @@ const headerActions = $computed(() => [{
 	},
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.manageLists,

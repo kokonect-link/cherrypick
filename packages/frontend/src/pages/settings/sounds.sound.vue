@@ -109,7 +109,7 @@ function selectSound(ev) {
 	});
 }
 
-let saved = $ref(false);
+const saved = ref(false);
 
 function listen() {
 	if (type.value === '_driveFile_' && (!fileUrl.value || !fileId.value)) {

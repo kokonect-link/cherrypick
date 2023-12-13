@@ -67,7 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import * as os from '@/os.js';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
@@ -81,36 +81,36 @@ import { fetchInstance } from '@/instance.js';
 import FormSuspense from '@/components/form/suspense.vue';
 import MkButton from '@/components/MkButton.vue';
 
-let enableReceivePrerelease: boolean = $ref(false);
-let skipVersion: boolean = $ref(false);
-let skipCherryPickVersion = $ref<string | null>(null);
+const enableReceivePrerelease = ref<boolean>(false);
+const skipVersion = ref<boolean>(false);
+const skipCherryPickVersion = ref<string | null | undefined>(null);
 
-let releasesCherryPick = $ref();
-let releasesMisskey = $ref();
+const releasesCherryPick = ref();
+const releasesMisskey = ref();
 
 const meta = await os.api('admin/meta');
 
 async function init() {
-	enableReceivePrerelease = meta.enableReceivePrerelease;
-	skipVersion = meta.skipVersion;
-	skipCherryPickVersion = meta.skipCherryPickVersion;
+	enableReceivePrerelease.value = meta.enableReceivePrerelease;
+	skipVersion.value = meta.skipVersion;
+	skipCherryPickVersion.value = meta.skipCherryPickVersion;
 }
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-		enableReceivePrerelease,
+		enableReceivePrerelease: enableReceivePrerelease.value,
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
 function skipThisVersion() {
-	skipCherryPickVersion = releasesCherryPick[0].tag_name;
-	skipVersion = true;
+	skipCherryPickVersion.value = releasesCherryPick.value[0].tag_name;
+	skipVersion.value = true;
 
 	os.apiWithDialog('admin/update-meta', {
-		skipVersion,
-		skipCherryPickVersion,
+		skipVersion: skipVersion.value,
+		skipCherryPickVersion: skipCherryPickVersion.value,
 	}).then(() => {
 		fetchInstance();
 	});
@@ -121,11 +121,11 @@ onMounted(() => {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
-			if (meta.enableReceivePrerelease) releasesCherryPick = res;
-			else releasesCherryPick = res.filter(x => x.prerelease === false);
-			if (skipCherryPickVersion < releasesCherryPick[0].tag_name) {
-				skipVersion = false;
-				os.api('admin/update-meta', { skipVersion });
+			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
+			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
+			if (skipCherryPickVersion.value < releasesCherryPick.value[0].tag_name) {
+				skipVersion.value = false;
+				os.api('admin/update-meta', { skipVersion: skipVersion.value });
 			}
 		});
 
@@ -133,8 +133,8 @@ onMounted(() => {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(res => {
-			if (meta.enableReceivePrerelease) releasesMisskey = res;
-			else releasesMisskey = res.filter(x => x.prerelease === false);
+			if (meta.enableReceivePrerelease) releasesMisskey.value = res;
+			else releasesMisskey.value = res.filter(x => x.prerelease === false);
 		});
 });
 
@@ -143,7 +143,7 @@ const whatIsNewCherryPick = () => {
 };
 
 const whatIsNewLatestCherryPick = () => {
-	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${releasesCherryPick[0].tag_name.replace(/\./g, '')}`, '_blank');
+	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${releasesCherryPick.value[0].tag_name.replace(/\./g, '')}`, '_blank');
 };
 
 const whatIsNewMisskey = () => {
@@ -151,17 +151,17 @@ const whatIsNewMisskey = () => {
 };
 
 const whatIsNewLatestMisskey = () => {
-	window.open(`https://github.com/misskey-dev/misskey/blob/develop/CHANGELOG.md#${releasesMisskey[0].tag_name.replace(/\./g, '')}`, '_blank');
+	window.open(`https://github.com/misskey-dev/misskey/blob/develop/CHANGELOG.md#${releasesMisskey.value[0].tag_name.replace(/\./g, '')}`, '_blank');
 };
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	asFullButton: true,
 	icon: 'ti ti-check',
 	text: i18n.ts.save,
 	handler: save,
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.cherrypickUpdate,

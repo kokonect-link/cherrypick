@@ -48,10 +48,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted } from 'vue';
-import { openInstanceMenu } from './_common_/common';
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { openInstanceMenu } from './_common_/common.js';
 import * as os from '@/os.js';
-import { navbarItemDef } from '@/navbar';
+import { navbarItemDef } from '@/navbar.js';
 import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 import MkButton from '@/components/MkButton.vue';
 import { defaultStore } from '@/store.js';
@@ -61,26 +61,26 @@ import { version } from '@/config.js';
 
 const WINDOW_THRESHOLD = 1400;
 
-let settingsWindowed = $ref(window.innerWidth > WINDOW_THRESHOLD);
-let menu = $ref(defaultStore.state.menu);
+const settingsWindowed = ref(window.innerWidth > WINDOW_THRESHOLD);
+const menu = ref(defaultStore.state.menu);
 // const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
-let otherNavItemIndicated = computed<boolean>(() => {
+const otherNavItemIndicated = computed<boolean>(() => {
 	for (const def in navbarItemDef) {
-		if (menu.includes(def)) continue;
+		if (menu.value.includes(def)) continue;
 		if (navbarItemDef[def].indicated) return true;
 	}
 	return false;
 });
 
-let controlPanelIndicated = $ref(false);
-let releasesCherryPick = $ref(null);
+const controlPanelIndicated = ref(false);
+const releasesCherryPick = ref();
 
-if ($i.isAdmin || $i.isModerator) {
+if ($i.isAdmin ?? $i.isModerator) {
 	os.api('admin/abuse-user-reports', {
 		state: 'unresolved',
 		limit: 1,
 	}).then(reports => {
-		if (reports.length > 0) controlPanelIndicated = true;
+		if (reports.length > 0) controlPanelIndicated.value = true;
 	});
 
 	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
@@ -88,9 +88,9 @@ if ($i.isAdmin || $i.isModerator) {
 	}).then(res => res.json())
 		.then(async res => {
 			const meta = await os.api('admin/meta');
-			if (meta.enableReceivePrerelease) releasesCherryPick = res;
-			else releasesCherryPick = res.filter(x => x.prerelease === false);
-			if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) controlPanelIndicated = true;
+			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
+			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
+			if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) controlPanelIndicated.value = true;
 		});
 }
 
@@ -110,7 +110,7 @@ function openAccountMenu(ev: MouseEvent) {
 
 onMounted(() => {
 	window.addEventListener('resize', () => {
-		settingsWindowed = (window.innerWidth >= WINDOW_THRESHOLD);
+		settingsWindowed.value = (window.innerWidth >= WINDOW_THRESHOLD);
 	}, { passive: true });
 });
 

@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import MkContainer from '@/components/MkContainer.vue';
@@ -29,7 +29,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { notificationTypes } from '@/const.js';
 
-let includeTypes = $ref<string[] | null>(null);
+const includeTypes = ref<string[] | null>(null);
 
 const name = 'notifications';
 
@@ -75,16 +75,16 @@ const configureNotification = () => {
 const setFilter = (ev) => {
 	const typeItems = notificationTypes.map(t => ({
 		text: i18n.t(`_notification._types.${t}`),
-		active: includeTypes && includeTypes.includes(t),
+		active: includeTypes.value && includeTypes.value.includes(t),
 		action: () => {
-			includeTypes = [t];
+			includeTypes.value = [t];
 		},
 	}));
-	const items = includeTypes != null ? [{
+	const items = includeTypes.value != null ? [{
 		icon: 'ti ti-x',
 		text: i18n.ts.clear,
 		action: () => {
-			includeTypes = null;
+			includeTypes.value = null;
 		},
 	}, null, ...typeItems] : typeItems;
 	os.popupMenu(items, ev.currentTarget ?? ev.target);

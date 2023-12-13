@@ -156,7 +156,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref, computed } from 'vue';
 import XHeader from './_header_.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -169,97 +169,97 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 
-let useObjectStorage: boolean = $ref(false);
-let objectStorageBaseUrl: string | null = $ref(null);
-let objectStorageBucket: string | null = $ref(null);
-let objectStoragePrefix: string | null = $ref(null);
-let objectStorageEndpoint: string | null = $ref(null);
-let objectStorageRegion: string | null = $ref(null);
-let objectStoragePort: number | null = $ref(null);
-let objectStorageAccessKey: string | null = $ref(null);
-let objectStorageSecretKey: string | null = $ref(null);
-let objectStorageUseSSL: boolean = $ref(false);
-let objectStorageUseProxy: boolean = $ref(false);
-let objectStorageSetPublicRead: boolean = $ref(false);
-let objectStorageS3ForcePathStyle: boolean = $ref(true);
-let useObjectStorageRemote: boolean = $ref(false);
-let objectStorageRemoteBaseUrl: string | null = $ref(null);
-let objectStorageRemoteBucket: string | null = $ref(null);
-let objectStorageRemotePrefix: string | null = $ref(null);
-let objectStorageRemoteEndpoint: string | null = $ref(null);
-let objectStorageRemoteRegion: string | null = $ref(null);
-let objectStorageRemotePort: number | null = $ref(null);
-let objectStorageRemoteAccessKey: string | null = $ref(null);
-let objectStorageRemoteSecretKey: string | null = $ref(null);
-let objectStorageRemoteUseSSL: boolean = $ref(false);
-let objectStorageRemoteUseProxy: boolean = $ref(false);
-let objectStorageRemoteSetPublicRead: boolean = $ref(false);
-let objectStorageRemoteS3ForcePathStyle: boolean = $ref(true);
+const useObjectStorage = ref<boolean>(false);
+const objectStorageBaseUrl = ref<string | null>(null);
+const objectStorageBucket = ref<string | null>(null);
+const objectStoragePrefix = ref<string | null>(null);
+const objectStorageEndpoint = ref<string | null>(null);
+const objectStorageRegion = ref<string | null>(null);
+const objectStoragePort = ref<number | null>(null);
+const objectStorageAccessKey = ref<string | null>(null);
+const objectStorageSecretKey = ref<string | null>(null);
+const objectStorageUseSSL = ref<boolean>(false);
+const objectStorageUseProxy = ref<boolean>(false);
+const objectStorageSetPublicRead = ref<boolean>(false);
+const objectStorageS3ForcePathStyle = ref<boolean>(true);
+const useObjectStorageRemote = ref<boolean>(false);
+const objectStorageRemoteBaseUrl = ref<string | null>(null);
+const objectStorageRemoteBucket = ref<string | null>(null);
+const objectStorageRemotePrefix = ref<string | null>(null);
+const objectStorageRemoteEndpoint = ref<string | null>(null);
+const objectStorageRemoteRegion = ref<string | null>(null);
+const objectStorageRemotePort = ref<number | null>(null);
+const objectStorageRemoteAccessKey = ref<string | null>(null);
+const objectStorageRemoteSecretKey = ref<string | null>(null);
+const objectStorageRemoteUseSSL = ref<boolean>(false);
+const objectStorageRemoteUseProxy = ref<boolean>(false);
+const objectStorageRemoteSetPublicRead = ref<boolean>(false);
+const objectStorageRemoteS3ForcePathStyle = ref<boolean>(true);
 
 async function init() {
 	const meta = await os.api('admin/meta');
-	useObjectStorage = meta.useObjectStorage;
-	objectStorageBaseUrl = meta.objectStorageBaseUrl;
-	objectStorageBucket = meta.objectStorageBucket;
-	objectStoragePrefix = meta.objectStoragePrefix;
-	objectStorageEndpoint = meta.objectStorageEndpoint;
-	objectStorageRegion = meta.objectStorageRegion;
-	objectStoragePort = meta.objectStoragePort;
-	objectStorageAccessKey = meta.objectStorageAccessKey;
-	objectStorageSecretKey = meta.objectStorageSecretKey;
-	objectStorageUseSSL = meta.objectStorageUseSSL;
-	objectStorageUseProxy = meta.objectStorageUseProxy;
-	objectStorageSetPublicRead = meta.objectStorageSetPublicRead;
-	objectStorageS3ForcePathStyle = meta.objectStorageS3ForcePathStyle;
-	useObjectStorageRemote = meta.useObjectStorageRemote;
-	objectStorageRemoteBaseUrl = meta.objectStorageRemoteBaseUrl;
-	objectStorageRemoteBucket = meta.objectStorageRemoteBucket;
-	objectStorageRemotePrefix = meta.objectStorageRemotePrefix;
-	objectStorageRemoteEndpoint = meta.objectStorageRemoteEndpoint;
-	objectStorageRemoteRegion = meta.objectStorageRemoteRegion;
-	objectStorageRemotePort = meta.objectStorageRemotePort;
-	objectStorageRemoteAccessKey = meta.objectStorageRemoteAccessKey;
-	objectStorageRemoteSecretKey = meta.objectStorageRemoteSecretKey;
-	objectStorageRemoteUseSSL = meta.objectStorageRemoteUseSSL;
-	objectStorageRemoteUseProxy = meta.objectStorageRemoteUseProxy;
-	objectStorageRemoteSetPublicRead = meta.objectStorageRemoteSetPublicRead;
-	objectStorageRemoteS3ForcePathStyle = meta.objectStorageRemoteS3ForcePathStyle;
+	useObjectStorage.value = meta.useObjectStorage;
+	objectStorageBaseUrl.value = meta.objectStorageBaseUrl;
+	objectStorageBucket.value = meta.objectStorageBucket;
+	objectStoragePrefix.value = meta.objectStoragePrefix;
+	objectStorageEndpoint.value = meta.objectStorageEndpoint;
+	objectStorageRegion.value = meta.objectStorageRegion;
+	objectStoragePort.value = meta.objectStoragePort;
+	objectStorageAccessKey.value = meta.objectStorageAccessKey;
+	objectStorageSecretKey.value = meta.objectStorageSecretKey;
+	objectStorageUseSSL.value = meta.objectStorageUseSSL;
+	objectStorageUseProxy.value = meta.objectStorageUseProxy;
+	objectStorageSetPublicRead.value = meta.objectStorageSetPublicRead;
+	objectStorageS3ForcePathStyle.value = meta.objectStorageS3ForcePathStyle;
+	useObjectStorageRemote.value = meta.useObjectStorageRemote;
+	objectStorageRemoteBaseUrl.value = meta.objectStorageRemoteBaseUrl;
+	objectStorageRemoteBucket.value = meta.objectStorageRemoteBucket;
+	objectStorageRemotePrefix.value = meta.objectStorageRemotePrefix;
+	objectStorageRemoteEndpoint.value = meta.objectStorageRemoteEndpoint;
+	objectStorageRemoteRegion.value = meta.objectStorageRemoteRegion;
+	objectStorageRemotePort.value = meta.objectStorageRemotePort;
+	objectStorageRemoteAccessKey.value = meta.objectStorageRemoteAccessKey;
+	objectStorageRemoteSecretKey.value = meta.objectStorageRemoteSecretKey;
+	objectStorageRemoteUseSSL.value = meta.objectStorageRemoteUseSSL;
+	objectStorageRemoteUseProxy.value = meta.objectStorageRemoteUseProxy;
+	objectStorageRemoteSetPublicRead.value = meta.objectStorageRemoteSetPublicRead;
+	objectStorageRemoteS3ForcePathStyle.value = meta.objectStorageRemoteS3ForcePathStyle;
 }
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-		useObjectStorage,
-		objectStorageBaseUrl,
-		objectStorageBucket,
-		objectStoragePrefix,
-		objectStorageEndpoint,
-		objectStorageRegion,
-		objectStoragePort,
-		objectStorageAccessKey,
-		objectStorageSecretKey,
-		objectStorageUseSSL,
-		objectStorageUseProxy,
-		objectStorageSetPublicRead,
-		objectStorageS3ForcePathStyle,
-		useObjectStorageRemote,
-		objectStorageRemoteBaseUrl,
-		objectStorageRemoteBucket,
-		objectStorageRemotePrefix,
-		objectStorageRemoteEndpoint,
-		objectStorageRemoteRegion,
-		objectStorageRemotePort,
-		objectStorageRemoteAccessKey,
-		objectStorageRemoteSecretKey,
-		objectStorageRemoteUseSSL,
-		objectStorageRemoteUseProxy,
-		objectStorageRemoteSetPublicRead,
-		objectStorageRemoteS3ForcePathStyle,
+		useObjectStorage: useObjectStorage.value,
+		objectStorageBaseUrl: objectStorageBaseUrl.value,
+		objectStorageBucket: objectStorageBucket.value,
+		objectStoragePrefix: objectStoragePrefix.value,
+		objectStorageEndpoint: objectStorageEndpoint.value,
+		objectStorageRegion: objectStorageRegion.value,
+		objectStoragePort: objectStoragePort.value,
+		objectStorageAccessKey: objectStorageAccessKey.value,
+		objectStorageSecretKey: objectStorageSecretKey.value,
+		objectStorageUseSSL: objectStorageUseSSL.value,
+		objectStorageUseProxy: objectStorageUseProxy.value,
+		objectStorageSetPublicRead: objectStorageSetPublicRead.value,
+		objectStorageS3ForcePathStyle: objectStorageS3ForcePathStyle.value,
+		useObjectStorageRemote: useObjectStorageRemote.value,
+		objectStorageRemoteBaseUrl: objectStorageRemoteBaseUrl.value,
+		objectStorageRemoteBucket: objectStorageRemoteBucket.value,
+		objectStorageRemotePrefix: objectStorageRemotePrefix.value,
+		objectStorageRemoteEndpoint: objectStorageRemoteEndpoint.value,
+		objectStorageRemoteRegion: objectStorageRemoteRegion.value,
+		objectStorageRemotePort: objectStorageRemotePort.value,
+		objectStorageRemoteAccessKey: objectStorageRemoteAccessKey.value,
+		objectStorageRemoteSecretKey: objectStorageRemoteSecretKey.value,
+		objectStorageRemoteUseSSL: objectStorageRemoteUseSSL.value,
+		objectStorageRemoteUseProxy: objectStorageRemoteUseProxy.value,
+		objectStorageRemoteSetPublicRead: objectStorageRemoteSetPublicRead.value,
+		objectStorageRemoteS3ForcePathStyle: objectStorageRemoteS3ForcePathStyle.value,
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.objectStorage,

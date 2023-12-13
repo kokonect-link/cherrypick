@@ -375,6 +375,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import { computed, ref } from 'vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
@@ -384,46 +385,46 @@ defineProps<{
   popup?: boolean;
 }>();
 
-let preview_mention = $ref('@example');
-let preview_hashtag = $ref('#test');
-let preview_url = $ref('https://example.com');
-let preview_link = $ref(`[${i18n.ts._mfm.dummy}](https://example.com)`);
-let preview_emoji = $ref(customEmojis.value.length ? `:${customEmojis.value[0].name}:` : ':emojiname:');
-let preview_bold = $ref(`**${i18n.ts._mfm.dummy}**`);
-let preview_small = $ref(`<small>${i18n.ts._mfm.dummy}</small>`);
-let preview_center = $ref(`<center>${i18n.ts._mfm.dummy}</center>`);
-let preview_inlineCode = $ref('`<: "Hello, world!"`');
-let preview_blockCode = $ref('```\n~ (#i, 100) {\n\t<: ? ((i % 15) = 0) "FizzBuzz"\n\t\t.? ((i % 3) = 0) "Fizz"\n\t\t.? ((i % 5) = 0) "Buzz"\n\t\t. i\n}\n```');
-let preview_inlineMath = $ref('\\(x= \\frac{-b\' \\pm \\sqrt{(b\')^2-ac}}{a}\\)');
-let preview_quote = $ref(`> ${i18n.ts._mfm.dummy}`);
-let preview_search = $ref(`${i18n.ts._mfm.dummy} 検索\n${i18n.ts._mfm.dummy} 검색\n${i18n.ts._mfm.dummy} search`);
-let preview_jelly = $ref('$[jelly 🍮] $[jelly.speed=5s 🍮]');
-let preview_tada = $ref('$[tada 🍮] $[tada.speed=5s 🍮]');
-let preview_jump = $ref('$[jump 🍮] $[jump.speed=5s 🍮]');
-let preview_bounce = $ref('$[bounce 🍮] $[bounce.speed=5s 🍮]');
-let preview_shake = $ref('$[shake 🍮] $[shake.speed=5s 🍮]');
-let preview_twitch = $ref('$[twitch 🍮] $[twitch.speed=5s 🍮]');
-let preview_spin = $ref('$[spin 🍮] $[spin.left 🍮] $[spin.alternate 🍮]\n$[spin.x 🍮] $[spin.x,left 🍮] $[spin.x,alternate 🍮]\n$[spin.y 🍮] $[spin.y,left 🍮] $[spin.y,alternate 🍮]\n\n$[spin.speed=5s 🍮]');
-let preview_flip = $ref(`$[flip ${i18n.ts._mfm.dummy}]\n$[flip.v ${i18n.ts._mfm.dummy}]\n$[flip.h,v ${i18n.ts._mfm.dummy}]`);
-let preview_font = $ref(`$[font.serif ${i18n.ts._mfm.dummy}]\n$[font.monospace ${i18n.ts._mfm.dummy}]\n$[font.cursive ${i18n.ts._mfm.dummy}]\n$[font.fantasy ${i18n.ts._mfm.dummy}]`);
-let preview_x2 = $ref('$[x2 🍮]');
-let preview_x3 = $ref('$[x3 🍮]');
-let preview_x4 = $ref('$[x4 🍮]');
-let preview_blur = $ref(`$[blur ${i18n.ts._mfm.dummy}]`);
-let preview_rainbow = $ref('$[rainbow 🍮] $[rainbow.speed=5s 🍮]');
-let preview_sparkle = $ref('$[sparkle 🍮]');
-let preview_fade = $ref('$[fade 🍮] $[fade.speed=1.5s 🍮]');
-let preview_rotate = $ref('$[rotate.deg=90 🍮]');
-let preview_position = $ref('$[position.x=1 🍮]\n$[position.y=-1 🍮]\n\n$[position.x=3,y=-3 🍮]');
-let preview_scale = $ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,y=2 🍮]');
-let preview_fg = $ref('$[fg.color=ffbcdc Cherry]$[fg.color=b1d3ff Pick]');
-let preview_bg = $ref('$[bg.color=ffbcdc Cherry]$[bg.color=b1d3ff Pick]');
-let preview_plain = $ref('<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>');
-let preview_ruby = $ref('$[ruby CherryPick Misskey]');
+const preview_mention = ref('@example');
+const preview_hashtag = ref('#test');
+const preview_url = ref('https://example.com');
+const preview_link = ref(`[${i18n.ts._mfm.dummy}](https://example.com)`);
+const preview_emoji = ref(customEmojis.value.length ? `:${customEmojis.value[0].name}:` : ':emojiname:');
+const preview_bold = ref(`**${i18n.ts._mfm.dummy}**`);
+const preview_small = ref(`<small>${i18n.ts._mfm.dummy}</small>`);
+const preview_center = ref(`<center>${i18n.ts._mfm.dummy}</center>`);
+const preview_inlineCode = ref('`<: "Hello, world!"`');
+const preview_blockCode = ref('```\n~ (#i, 100) {\n\t<: ? ((i % 15) = 0) "FizzBuzz"\n\t\t.? ((i % 3) = 0) "Fizz"\n\t\t.? ((i % 5) = 0) "Buzz"\n\t\t. i\n}\n```');
+const preview_inlineMath = ref('\\(x= \\frac{-b\' \\pm \\sqrt{(b\')^2-ac}}{a}\\)');
+const preview_quote = ref(`> ${i18n.ts._mfm.dummy}`);
+const preview_search = ref(`${i18n.ts._mfm.dummy} 検索\n${i18n.ts._mfm.dummy} 검색\n${i18n.ts._mfm.dummy} search`);
+const preview_jelly = ref('$[jelly 🍮] $[jelly.speed=5s 🍮]');
+const preview_tada = ref('$[tada 🍮] $[tada.speed=5s 🍮]');
+const preview_jump = ref('$[jump 🍮] $[jump.speed=5s 🍮]');
+const preview_bounce = ref('$[bounce 🍮] $[bounce.speed=5s 🍮]');
+const preview_shake = ref('$[shake 🍮] $[shake.speed=5s 🍮]');
+const preview_twitch = ref('$[twitch 🍮] $[twitch.speed=5s 🍮]');
+const preview_spin = ref('$[spin 🍮] $[spin.left 🍮] $[spin.alternate 🍮]\n$[spin.x 🍮] $[spin.x,left 🍮] $[spin.x,alternate 🍮]\n$[spin.y 🍮] $[spin.y,left 🍮] $[spin.y,alternate 🍮]\n\n$[spin.speed=5s 🍮]');
+const preview_flip = ref(`$[flip ${i18n.ts._mfm.dummy}]\n$[flip.v ${i18n.ts._mfm.dummy}]\n$[flip.h,v ${i18n.ts._mfm.dummy}]`);
+const preview_font = ref(`$[font.serif ${i18n.ts._mfm.dummy}]\n$[font.monospace ${i18n.ts._mfm.dummy}]\n$[font.cursive ${i18n.ts._mfm.dummy}]\n$[font.fantasy ${i18n.ts._mfm.dummy}]`);
+const preview_x2 = ref('$[x2 🍮]');
+const preview_x3 = ref('$[x3 🍮]');
+const preview_x4 = ref('$[x4 🍮]');
+const preview_blur = ref(`$[blur ${i18n.ts._mfm.dummy}]`);
+const preview_rainbow = ref('$[rainbow 🍮] $[rainbow.speed=5s 🍮]');
+const preview_sparkle = ref('$[sparkle 🍮]');
+const preview_fade = ref('$[fade 🍮] $[fade.speed=1.5s 🍮]');
+const preview_rotate = ref('$[rotate.deg=90 🍮]');
+const preview_position = ref('$[position.x=1 🍮]\n$[position.y=-1 🍮]\n\n$[position.x=3,y=-3 🍮]');
+const preview_scale = ref('$[scale.x=2 🍮]\n$[scale.y=2 🍮]\n\n$[scale.x=2.5,y=2 🍮]');
+const preview_fg = ref('$[fg.color=ffbcdc Cherry]$[fg.color=b1d3ff Pick]');
+const preview_bg = ref('$[bg.color=ffbcdc Cherry]$[bg.color=b1d3ff Pick]');
+const preview_plain = ref('<plain>**bold** @mention #hashtag `code` $[x2 🍮]</plain>');
+const preview_ruby = ref('$[ruby CherryPick Misskey]');
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts._mfm.cheatSheet,

@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, watch } from 'vue';
+import { computed, ref, shallowRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import bytes from '@/filters/bytes.js';
 import { defaultStore } from '@/store.js';
@@ -47,7 +47,7 @@ const props = defineProps<{
 
 const hide = ref((defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) ? true : (props.video.isSensitive && defaultStore.state.nsfw !== 'ignore'));
 
-let clickToShowMessage = $computed(() => defaultStore.state.nsfwOpenBehavior === 'click'
+const clickToShowMessage = computed(() => defaultStore.state.nsfwOpenBehavior === 'click'
 	? i18n.ts.clickToShow
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	: defaultStore.state.nsfwOpenBehavior === 'doubleClick'

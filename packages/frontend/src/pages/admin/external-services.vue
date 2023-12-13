@@ -77,7 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref, computed } from 'vue';
 import XHeader from './_header_.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -90,45 +90,45 @@ import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-let provider: string | null = $ref(null);
-let deeplAuthKey: string = $ref('');
-let deeplIsPro: boolean = $ref(false);
-let ctav3SaKey: string = $ref('');
-let ctav3ProjectId: string = $ref('');
-let ctav3Location: string = $ref('');
-let ctav3Model: string = $ref('');
-let ctav3Glossary: string = $ref('');
+const provider = ref<string | null>(null);
+const deeplAuthKey = ref<string>('');
+const deeplIsPro = ref<boolean>(false);
+const ctav3SaKey = ref<string>('');
+const ctav3ProjectId = ref<string>('');
+const ctav3Location = ref<string>('');
+const ctav3Model = ref<string>('');
+const ctav3Glossary = ref<string>('');
 
 async function init() {
 	const meta = await os.api('admin/meta');
-	provider = meta.translatorType;
-	deeplAuthKey = meta.deeplAuthKey;
-	deeplIsPro = meta.deeplIsPro;
-	ctav3SaKey = meta.ctav3SaKey;
-	ctav3ProjectId = meta.ctav3ProjectId;
-	ctav3Location = meta.ctav3Location;
-	ctav3Model = meta.ctav3Model;
-	ctav3Glossary = meta.ctav3Glossary;
+	provider.value = meta.translatorType;
+	deeplAuthKey.value = meta.deeplAuthKey;
+	deeplIsPro.value = meta.deeplIsPro;
+	ctav3SaKey.value = meta.ctav3SaKey;
+	ctav3ProjectId.value = meta.ctav3ProjectId;
+	ctav3Location.value = meta.ctav3Location;
+	ctav3Model.value = meta.ctav3Model;
+	ctav3Glossary.value = meta.ctav3Glossary;
 }
 
 function save() {
 	os.apiWithDialog('admin/update-meta', {
-		translatorType: provider,
-		deeplAuthKey,
-		deeplIsPro,
-		ctav3SaKey,
-		ctav3ProjectId,
-		ctav3Location,
-		ctav3Model,
-		ctav3Glossary,
+		translatorType: provider.value,
+		deeplAuthKey: deeplAuthKey.value,
+		deeplIsPro: deeplIsPro.value,
+		ctav3SaKey: ctav3SaKey.value,
+		ctav3ProjectId: ctav3ProjectId.value,
+		ctav3Location: ctav3Location.value,
+		ctav3Model: ctav3Model.value,
+		ctav3Glossary: ctav3Glossary.value,
 	}).then(() => {
 		fetchInstance();
 	});
 }
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.externalServices,

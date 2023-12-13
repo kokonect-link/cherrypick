@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount } from 'vue';
+import { onMounted, onBeforeUnmount, ref } from 'vue';
 import XPie from './pie-compact.vue';
 
 const props = defineProps<{
@@ -27,12 +27,12 @@ const props = defineProps<{
 	meta: any
 }>();
 
-let cpuUsage: number = $ref(0);
-let memUsage: number = $ref(0);
+const cpuUsage = ref<number>(0);
+const memUsage = ref<number>(0);
 
 function onStats(stats) {
-	cpuUsage = stats.cpu;
-	memUsage = stats.mem.active / props.meta.mem.total;
+	cpuUsage.value = stats.cpu;
+	memUsage.value = stats.mem.active / props.meta.mem.total;
 }
 
 onMounted(() => {
