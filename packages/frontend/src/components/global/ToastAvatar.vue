@@ -16,25 +16,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
-	<span v-if="showDecoration && !decoration && user.avatarDecorations.length > 0">
-		<img
-			v-for="avatarDecoration in user.avatarDecorations"
-			:key="avatarDecoration.id"
-			:class="[$style.decoration]"
-			:src="avatarDecoration.url"
-			:style="{
-				rotate: getDecorationAngle(avatarDecoration),
-				scale: getDecorationScale(avatarDecoration),
-				transform: getDecorationTransform(avatarDecoration),
-				opacity: getDecorationOpacity(avatarDecoration),
-			}"
-			alt=""
-		>
-	</span>
 	<img
-		v-else-if="showDecoration && decoration"
+		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0)"
 		:class="[$style.decoration]"
-		:src="decoration?.url"
+		:src="decoration?.url ?? user.avatarDecorations[0].url"
 		:style="{
 			rotate: getDecorationAngle(decoration),
 			scale: getDecorationScale(decoration),
@@ -102,25 +87,59 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle(avatarDecoration) {
-	let angle = avatarDecoration.angle ?? 0;
+function getDecorationAngle() {
+	let angle;
+	if (props.decoration) {
+		angle = props.decoration.angle ?? 0;
+	} else if (props.user.avatarDecorations.length > 0) {
+		angle = props.user.avatarDecorations[0].angle ?? 0;
+	} else {
+		angle = 0;
+	}
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale(avatarDecoration) {
-	let scaleX = avatarDecoration.flipH ? -1 : 1;
+function getDecorationScale() {
+	let scaleX;
+	if (props.decoration) {
+		scaleX = props.decoration.flipH ? -1 : 1;
+	} else if (props.user.avatarDecorations.length > 0) {
+		scaleX = props.user.avatarDecorations[0].flipH ? -1 : 1;
+	} else {
+		scaleX = 1;
+	}
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function getDecorationTransform(avatarDecoration) {
-	let scale = avatarDecoration.scale ?? 1;
-	let moveX = avatarDecoration.moveX ?? 0;
-	let moveY = avatarDecoration.moveY ?? 0;
+function getDecorationTransform() {
+	let scale;
+	let moveX;
+	let moveY;
+	if (props.decoration) {
+		scale = props.decoration.scale ?? 1;
+		moveX = props.decoration.moveX ?? 0;
+		moveY = props.decoration.moveY ?? 0;
+	} else if (props.user.avatarDecorations.length > 0) {
+		scale = props.user.avatarDecorations[0].scale ?? 1;
+		moveX = props.user.avatarDecorations[0].moveX ?? 0;
+		moveY = props.user.avatarDecorations[0].moveY ?? 0;
+	} else {
+		scale = 1;
+		moveX = 0;
+		moveY = 0;
+	}
 	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
 }
 
-function getDecorationOpacity(avatarDecoration) {
-	let opacity = avatarDecoration.opacity ?? 1;
+function getDecorationOpacity() {
+	let opacity;
+	if (props.decoration) {
+		opacity = props.decoration.opacity ?? 1;
+	} else if (props.user.avatarDecorations.length > 0) {
+		opacity = props.user.avatarDecorations[0].opacity ?? 1;
+	} else {
+		opacity = 1;
+	}
 	return opacity === 1 ? undefined : opacity;
 }
 
