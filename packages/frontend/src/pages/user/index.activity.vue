@@ -52,12 +52,12 @@ function showMenu(ev: MouseEvent) {
 	}, {
 		text: i18n.ts.following,
 		action: () => {
-			chartSrc = 'per-user-following';
+			chartSrc.value = 'per-user-following';
 		},
 	}, {
 		text: i18n.ts.followers,
 		action: () => {
-			chartSrc = 'per-user-followers';
+			chartSrc.value = 'per-user-followers';
 		},
 	}], ev.currentTarget ?? ev.target);
 }

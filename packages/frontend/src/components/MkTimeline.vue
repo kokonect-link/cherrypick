@@ -92,7 +92,7 @@ const prepend = note => {
 
 const prependFilterdMedia = note => {
 	if (note.files !== null && note.files.length > 0) {
-		tlComponent.pagingComponent?.prepend(note);
+		tlComponent.value.pagingComponent?.prepend(note);
 	}
 
 	emit('note');

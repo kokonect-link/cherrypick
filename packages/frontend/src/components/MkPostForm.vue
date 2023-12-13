@@ -274,7 +274,7 @@ const maxTextLength = computed((): number => {
 
 const canPost = computed((): boolean => {
 	return !props.mock && !posting.value && !posted.value &&
-		(1 <= textLength.value || 1 <= files.value.length || !!poll.value || !!props.renote || !!event) &&
+		(1 <= textLength.value || 1 <= files.value.length || !!poll.value || !!props.renote || !!event.value) &&
 		(textLength.value <= maxTextLength.value) &&
 		(!poll.value || poll.value.choices.length >= 2);
 });
@@ -425,10 +425,10 @@ function togglePoll() {
 }
 
 function toggleEvent() {
-	if (event) {
-		event = null;
+	if (event.value) {
+		event.value = null;
 	} else {
-		event = {
+		event.value = {
 			title: '',
 			start: (new Date()).toString(),
 			end: null,
@@ -1031,7 +1031,7 @@ onMounted(() => {
 				};
 			}
 			if (init.event) {
-				event = {
+				event.value = {
 					title: init.event.title,
 					start: init.event.start,
 					end: init.event.end,

@@ -153,9 +153,9 @@ function save() {
 		volume: volume.value,
 	});
 
-	saved = true;
+	saved.value = true;
 	window.setTimeout(() => {
-		saved = false;
+		saved.value = false;
 	}, 500);
 
 	// os.success();

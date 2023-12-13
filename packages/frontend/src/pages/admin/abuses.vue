@@ -175,7 +175,7 @@ function deleteResolver(id: string): void {
 	os.apiWithDialog('admin/abuse-report-resolver/delete', {
 		resolverId: id,
 	}).then(() => {
-		resolverPagingComponent?.value.reload();
+		resolverPagingComponent.value.reload();
 	});
 }
 
@@ -188,8 +188,8 @@ function create(): void {
 		expiresAt: newResolver.value.expiresAt,
 		forward: newResolver.value.forward,
 	}).then(() => {
-		folderComponent?.value.toggle();
-		resolverPagingComponent?.value.reload();
+		folderComponent.value.toggle();
+		resolverPagingComponent.value.reload();
 		newResolver.value.name = '';
 		newResolver.value.targetUserPattern = '';
 		newResolver.value.reporterPattern = '';

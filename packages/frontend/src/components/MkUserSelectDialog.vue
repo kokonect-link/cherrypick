@@ -108,8 +108,8 @@ const search = () => {
 };
 
 const searchLocal = () => {
-	if (username === '') {
-		users = [];
+	if (username.value === '') {
+		users.value = [];
 		return;
 	}
 	os.api('users/search', {
@@ -118,7 +118,7 @@ const searchLocal = () => {
 		limit: 10,
 		detail: false,
 	}).then(_users => {
-		users = _users;
+		users.value = _users;
 	});
 };
 
