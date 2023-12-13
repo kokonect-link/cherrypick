@@ -74,7 +74,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		text: i18n.ts.charts,
 		icon: 'ti ti-chart-line',
 		to: '/about#charts',
-	}, null, {
+	}, { type: 'divider' }, {
 		type: 'link',
 		text: i18n.ts.ads,
 		icon: 'ti ti-ad',
@@ -89,7 +89,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		text: i18n.ts.tools,
 		icon: 'ti ti-tool',
 		children: toolsMenuItems(),
-	}, null, (instance.impressumUrl) ? {
+	}, { type: 'divider' }, (instance.impressumUrl) ? {
 		text: i18n.ts.impressum,
 		icon: 'ti ti-file-invoice',
 		action: () => {
@@ -107,7 +107,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		action: () => {
 			window.open(instance.privacyPolicyUrl, '_blank', 'noopener');
 		},
-	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl) ? undefined : null, {
+	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl) ? undefined : { type: 'divider' }, {
 		type: 'parent',
 		text: i18n.ts.help,
 		icon: 'ti ti-help-circle',

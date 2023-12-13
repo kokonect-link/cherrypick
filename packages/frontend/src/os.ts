@@ -563,7 +563,7 @@ export async function openEmojiPicker(src?: HTMLElement, opts, initialTextarea: 
 	});
 }
 
-export function popupMenu(items: MenuItem[] | Ref<MenuItem[]>, src?: HTMLElement, options?: {
+export function popupMenu(items: MenuItem[] | Ref<MenuItem[]>, src?: HTMLElement | EventTarget | null, options?: {
 	align?: string;
 	width?: number;
 	viaKeyboard?: boolean;

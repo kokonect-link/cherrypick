@@ -48,7 +48,7 @@ import { unisonReload } from '@/scripts/unison-reload.js';
 import { useStream } from '@/stream.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { version, host } from '@/config.js';
+import { version, basedMisskeyVersion, host } from '@/config.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 const { t, ts } = i18n;
@@ -162,13 +162,14 @@ const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
 
 const scope = ['clientPreferencesProfiles'];
 
-const profileProps = ['name', 'createdAt', 'updatedAt', 'cherrypickVersion', 'settings', 'host'];
+const profileProps = ['name', 'createdAt', 'updatedAt', 'cherrypickVersion', 'basedMisskeyVersion', 'settings', 'host'];
 
 type Profile = {
 	name: string;
 	createdAt: string;
 	updatedAt: string | null;
 	cherrypickVersion: string;
+	basedMisskeyVersion: string;
 	host: string;
 	settings: {
 		hot: Record<keyof typeof defaultStoreSaveKeys, unknown>;
@@ -200,6 +201,7 @@ function validate(profile: any): void {
 
 	if (!profile.name) throw new Error('Missing required prop: name');
 	if (!profile.cherrypickVersion) throw new Error('Missing required prop: cherrypickVersion');
+	if (!profile.basedMisskeyVersion) throw new Error('Missing required prop: basedMisskeyVersion');
 
 	// Check if createdAt and updatedAt is Date
 	// https://zenn.dev/lollipop_onl/articles/eoz-judge-js-invalid-date
@@ -257,6 +259,7 @@ async function saveNew(): Promise<void> {
 		createdAt: (new Date()).toISOString(),
 		updatedAt: null,
 		cherrypickVersion: version,
+		basedMisskeyVersion: basedMisskeyVersion,
 		host,
 		settings: getSettings(),
 	};
@@ -398,6 +401,7 @@ async function save(id: string): Promise<void> {
 		createdAt,
 		updatedAt: (new Date()).toISOString(),
 		cherrypickVersion: version,
+		basedMisskeyVersion: basedMisskeyVersion,
 		host,
 		settings: getSettings(),
 	};
@@ -445,7 +449,7 @@ function menu(ev: MouseEvent, profileId: string) {
 		icon: 'ti ti-download',
 		href: URL.createObjectURL(new Blob([JSON.stringify(profiles.value[profileId], null, 2)], { type: 'application/json' })),
 		download: `${profiles.value[profileId].name}.json`,
-	}, null, {
+	}, { type: 'divider' }, {
 		text: ts.rename,
 		icon: 'ti ti-forms',
 		action: () => rename(profileId),
@@ -453,7 +457,7 @@ function menu(ev: MouseEvent, profileId: string) {
 		text: ts._preferencesBackups.save,
 		icon: 'ti ti-device-floppy',
 		action: () => save(profileId),
-	}, null, {
+	}, { type: 'divider' }, {
 		text: ts.delete,
 		icon: 'ti ti-trash',
 		action: () => deleteProfile(profileId),

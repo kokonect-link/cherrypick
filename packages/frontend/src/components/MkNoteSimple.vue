@@ -31,7 +31,6 @@ import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
-import { $i } from '@/account.js';
 import { globalEvents } from '@/events.js';
 import { mainRouter, useRouter } from '@/router.js';
 import { defaultStore } from '@/store.js';

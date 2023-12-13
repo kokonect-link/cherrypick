@@ -61,7 +61,7 @@ export async function getNoteClipMenu(props: {
 				},
 			);
 		},
-	})), clips.length > 0 ? null : undefined, {
+	})), clips.length > 0 ? { type: 'divider' } : undefined, {
 		icon: 'ti ti-plus',
 		text: i18n.ts.createNew,
 		action: async () => {
@@ -339,7 +339,7 @@ export function getNoteMenu(props: {
 					text: i18n.ts.unclip,
 					danger: true,
 					action: unclip,
-				}, null] : []
+				}, { type: 'divider' }] : []
 			), ...(isSupportShare() ? [{
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
@@ -356,7 +356,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
-			null,
+			{ type: 'divider' },
 			statePromise.then(state => state.isFavorited ? {
 				icon: 'ti ti-star-off',
 				text: i18n.ts.unfavorite,
@@ -413,7 +413,7 @@ export function getNoteMenu(props: {
 						window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
 					},
 				} : undefined
-				, null
+				, { type: 'divider' }
 				, {
 					icon: 'ti ti-code',
 					text: i18n.ts.viewTextSource,
@@ -428,7 +428,7 @@ export function getNoteMenu(props: {
 					text: i18n.ts.noNyaization,
 					action: noNyaizeText,
 				}
-				, (appearNote.userId === $i.id) ? null : undefined
+				, (appearNote.userId === $i.id) ? { type: 'divider' } : undefined
 				, (appearNote.userId === $i.id) ? {
 					icon: 'ti ti-edit-circle',
 					text: i18n.ts.copyAndEdit,
@@ -448,7 +448,7 @@ export function getNoteMenu(props: {
 			},
 			/*
 		...($i.isModerator || $i.isAdmin ? [
-			null,
+			{ type: 'divider' },
 			{
 				icon: 'ti ti-speakerphone',
 				text: i18n.ts.promote,
@@ -457,14 +457,14 @@ export function getNoteMenu(props: {
 			: []
 		),*/
 			...(appearNote.userId !== $i.id || (isRenote && props.note.userId !== $i.id) ? [
-				null,
+				{ type: 'divider' },
 				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
 				isRenote && props.note.userId !== $i.id ? getAbuseNoteMenu(props.note, i18n.ts.reportAbuseRenote) : undefined,
 			]
 			: []
 			),
 			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
-				null,
+				{ type: 'divider' },
 				appearNote.userId === $i.id && $i.policies.canEditNote ? {
 					icon: 'ti ti-edit',
 					text: i18n.ts.edit,
@@ -505,7 +505,7 @@ export function getNoteMenu(props: {
 	}
 
 	if (noteActions.length > 0) {
-		menu = menu.concat([null, ...noteActions.map(action => ({
+		menu = menu.concat([{ type: 'divider' }, ...noteActions.map(action => ({
 			icon: 'ti ti-plug',
 			text: action.title,
 			action: () => {
@@ -515,7 +515,7 @@ export function getNoteMenu(props: {
 	}
 
 	if (defaultStore.state.devMode) {
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: 'ti ti-id',
 			text: i18n.ts.copyNoteId,
 			action: () => {
@@ -644,10 +644,9 @@ export function getRenoteMenu(props: {
 		}]);
 	}
 
-	// nullを挟むことで区切り線を出せる
 	const renoteItems = [
 		...normalRenoteItems,
-		...(channelRenoteItems.length > 0 && normalRenoteItems.length > 0) ? [null] : [],
+		...(channelRenoteItems.length > 0 && normalRenoteItems.length > 0) ? [{ type: 'divider' }] : [],
 		...channelRenoteItems,
 	];
 

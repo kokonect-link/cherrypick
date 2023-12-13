@@ -648,7 +648,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 		pleaseLogin();
 		os.popupMenu([
 			getCopyNoteLinkMenu(note.value, i18n.ts.copyLinkRenote),
-			null,
+			{ type: 'divider' },
 			getUnrenote(),
 		], renoteTime.value, {
 			viaKeyboard: viaKeyboard,
@@ -656,7 +656,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 	} else {
 		os.popupMenu([
 			getCopyNoteLinkMenu(note.value, i18n.ts.copyLinkRenote),
-			null,
+			{ type: 'divider' },
 			getAbuseNoteMenu(note.value, i18n.ts.reportAbuseRenote),
 			$i.isModerator || $i.isAdmin ? getUnrenote() : undefined,
 		], renoteTime.value, {
