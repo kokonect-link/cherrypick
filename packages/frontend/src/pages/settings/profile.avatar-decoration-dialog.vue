@@ -97,19 +97,21 @@ async function attach() {
 		moveY: moveY.value,
 		opacity: opacity.value,
 	};
+	const update = [...$i.avatarDecorations, decoration];
 	await os.apiWithDialog('i/update', {
-		avatarDecorations: [...$i.avatarDecorations, decoration],
+		avatarDecorations: update,
 	});
-	$i.avatarDecorations = [...$i.avatarDecorations, decoration];
+	$i.avatarDecorations = update;
 
 	dialog.value.close();
 }
 
 async function detach() {
+	const update = $i.avatarDecorations.filter(x => x.id !== props.decoration.id);
 	await os.apiWithDialog('i/update', {
-		avatarDecorations: $i.avatarDecorations.filter(x => x.id !== props.decoration.id),
+		avatarDecorations: update,
 	});
-	$i.avatarDecorations = $i.avatarDecorations.filter(x => x.id !== props.decoration.id);
+	$i.avatarDecorations = update;
 
 	dialog.value.close();
 }
