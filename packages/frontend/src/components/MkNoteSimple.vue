@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="$style.root" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
+<div :class="$style.root" :style="{ cursor: expandOnNoteClick && enableNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
 	<div style="display: flex; padding-bottom: 10px;">
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
 		<div :class="$style.main">
@@ -36,9 +36,12 @@ import { mainRouter, useRouter } from '@/router.js';
 import { defaultStore } from '@/store.js';
 import { notePage } from '@/filters/note.js';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
-}>();
+	enableNoteClick?: boolean,
+}>(), {
+	enableNoteClick: true,
+});
 
 const showEl = ref(false);
 
@@ -53,7 +56,7 @@ onMounted(() => {
 });
 
 function noteClick(ev: MouseEvent) {
-	if (document.getSelection().type === 'Range' || !expandOnNoteClick) ev.stopPropagation();
+	if (document.getSelection().type === 'Range' || !expandOnNoteClick || !props.enableNoteClick) ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>

@@ -52,8 +52,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</button>
 		</div>
 	</header>
-	<MkNoteSimple v-if="reply" :class="$style.targetNote" :note="reply"/>
-	<MkNoteSimple v-if="renote" :class="$style.targetNote" :note="renote"/>
+	<MkNoteSimple v-if="reply" :class="$style.targetNote" :note="reply" :enableNoteClick="false"/>
+	<MkNoteSimple v-if="renote" :class="$style.targetNote" :note="renote" :enableNoteClick="false"/>
 	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
 	<MkEventEditor v-if="event" v-model="event" @destroyed="event = null"/>
 	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
