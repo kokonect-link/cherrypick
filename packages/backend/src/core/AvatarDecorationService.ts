@@ -158,7 +158,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		let name;
 		let description;
 		for (const decoration of allDecorations) {
-			if (decoration.id == avatarDecorationId) {
+			if (decoration.id === avatarDecorationId) {
 				name = decoration.name;
 				description = decoration.description;
 				break;

@@ -113,7 +113,7 @@ const searchLocal = () => {
 		return;
 	}
 	os.api('users/search', {
-		query: username,
+		query: username.value,
 		origin: 'local',
 		limit: 10,
 		detail: false,
@@ -153,7 +153,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" module>
-
 .form {
 	padding: 0 var(--root-margin);
 }

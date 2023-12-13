@@ -70,10 +70,10 @@ export type MiNotification = {
 	createdAt: string;
 	notifierId: MiUser['id'];
 } | {
-    type: 'groupInvited';
-    id: string;
-    createdAt: string;
-    notifierId: MiUser['id'];
+	type: 'groupInvited';
+	id: string;
+	createdAt: string;
+	notifierId: MiUser['id'];
 	userGroupInvitationId: MiUserGroupInvitation['id'];
 } | {
 	type: 'achievementEarned';

@@ -106,7 +106,7 @@ export class NotificationEntityService implements OnModuleInit {
 			// 	}),
 			// } : {}),
 			...(notification.type === 'groupInvited' ? {
-				invitation: this.userGroupInvitationEntityService.pack(notification.userGroupInvitationId!),
+				invitation: this.userGroupInvitationEntityService.pack(notification.userGroupInvitationId),
 			} : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,
@@ -158,10 +158,10 @@ export class NotificationEntityService implements OnModuleInit {
 			validNotifications = validNotifications.filter(x => (x.type !== 'receiveFollowRequest') || reqs.some(r => r.followerId === x.notifierId));
 		}
 
-		const groupInvitedNotifications = validNotifications.filter(x => x.type === 'groupInvited');
+		const groupInvitedNotifications = validNotifications.filter((x): x is FilterUnionByProperty<MiGroupedNotification, 'type', 'groupInvited'> => x.type === 'groupInvited');
 		if (groupInvitedNotifications.length > 0) {
 			const existingInvitationIds = await this.userGroupInvitationsRepository.find({
-				where: { id: In(groupInvitedNotifications.map(x => x.userGroupInvitationId!)) },
+				where: { id: In(groupInvitedNotifications.map(x => x.userGroupInvitationId)) },
 			});
 			validNotifications = validNotifications.filter(x => (x.type !== 'groupInvited') || existingInvitationIds.some(r => r.id === x.userGroupInvitationId));
 		}
@@ -251,7 +251,7 @@ export class NotificationEntityService implements OnModuleInit {
 				reaction: notification.reaction,
 			} : {}),
 			...(notification.type === 'groupInvited' ? {
-				invitation: this.userGroupInvitationEntityService.pack(notification.userGroupInvitationId!),
+				invitation: this.userGroupInvitationEntityService.pack(notification.userGroupInvitationId),
 			} : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,
@@ -308,10 +308,10 @@ export class NotificationEntityService implements OnModuleInit {
 			validNotifications = validNotifications.filter(x => (x.type !== 'receiveFollowRequest') || reqs.some(r => r.followerId === x.notifierId));
 		}
 
-		const groupInvitedNotifications = validNotifications.filter(x => x.type === 'groupInvited');
+		const groupInvitedNotifications = validNotifications.filter((x): x is FilterUnionByProperty<MiGroupedNotification, 'type', 'groupInvited'> => x.type === 'groupInvited');
 		if (groupInvitedNotifications.length > 0) {
 			const existingInvitationIds = await this.userGroupInvitationsRepository.find({
-				where: { id: In(groupInvitedNotifications.map(x => x.userGroupInvitationId!)) },
+				where: { id: In(groupInvitedNotifications.map(x => x.userGroupInvitationId)) },
 			});
 			validNotifications = validNotifications.filter(x => (x.type !== 'groupInvited') || existingInvitationIds.some(r => r.id === x.userGroupInvitationId));
 		}

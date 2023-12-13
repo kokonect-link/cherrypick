@@ -2,9 +2,9 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 /*
- * version: 4.6.0-beta.2
+ * version: 4.6.0-beta.3
  * basedMisskeyVersion: 2023.12.0-beta.3
- * generatedAt: 2023-12-13T08:44:16.816Z
+ * generatedAt: 2023-12-13T12:46:52.733Z
  */
 
 /**
