@@ -1433,7 +1433,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "发布了包含 Brain Diver 链接的帖子"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "过度测试"
       description: "短时间内连续测试通知"

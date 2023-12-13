@@ -537,7 +537,7 @@ _achievements:
       flavor: "Er du på riktig nettsted?"
     _brainDiver:
       title: "Brain Diver"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
 _role:
   options: "Alternativ"
   _priority:

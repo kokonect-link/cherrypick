@@ -1441,7 +1441,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Posting tautan mengenai Brain Diver"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Tes overflow"
       description: "Picu tes notifikasi secara berulang dalam waktu yang sangat pendek"

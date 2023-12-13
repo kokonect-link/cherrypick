@@ -1728,7 +1728,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Post the link to Brain Diver"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "Test overflow"
       description: "Trigger the notification test repeatedly within an extremely short time"

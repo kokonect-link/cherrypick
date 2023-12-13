@@ -1535,7 +1535,7 @@ _achievements:
     _brainDiver:
       title: "Brain Driver"
       description: "發佈一篇含歌曲《Brain Driver》連結的貼文"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "過度測試"
       description: "極短時間內連續測試通知"

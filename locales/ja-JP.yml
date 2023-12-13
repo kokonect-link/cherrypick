@@ -1753,7 +1753,7 @@ _achievements:
     _brainDiver:
       title: "Brain Diver"
       description: "Brain Diverへのリンクを投稿した"
-      flavor: "CherryPick-CherryPick La-Tu-Ma"
+      flavor: "Misskey-Misskey La-Tu-Ma"
     _smashTestNotificationButton:
       title: "テスト過剰"
       description: "通知のテストをごく短時間のうちに連続して行った"
