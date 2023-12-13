@@ -36,7 +36,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ### General
 - Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
 - Feat: 리모트 서버의 이모지를 즉시 가져올 수 있음 ([pikokr/cherrypicnic@03d536c0](https://github.com/pikokr/cherrypicnic/commit/03d536c00212f2dfbebecf75e5d58e0ddb749444), [pikokr/cherrypicnic@8a2d6f3b](https://github.com/pikokr/cherrypicnic/commit/8a2d6f3b518fc13a6c32364780fba3be5eea3e5d))
-- Feat: 아이콘 장식을 여러 개 겹칠 수 있음 ([Secineralyr/misskey.dream@d929c8bf](https://github.com/Secineralyr/misskey.dream/commit/d929c8bf97add7fac64c12e0bcdfaa164031f864))
 - Feat: 아이콘 장식을 세부 조정할 수 있음 ([Secineralyr/misskey.dream@b3299181](https://github.com/Secineralyr/misskey.dream/commit/b329918194f1991c84633361d8a1319cf203641c), [Secineralyr/misskey.dream@1a9642bb](https://github.com/Secineralyr/misskey.dream/commit/1a9642bb9087a256522767e113c3bbfa87ec2e47))
   - 위치, 크기, 불투명도를 추가로 조정할 수 있습니다.
 - Feat: 노트를 클릭하여 자세히 볼 수 있음
