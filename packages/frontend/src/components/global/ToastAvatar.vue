@@ -4,35 +4,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash
-		:class="$style.inner"
-		:src="url"
-		:hash="user.avatarBlurhash"
-		:cover="true"
-		:onlyAvgColor="true"
-		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-	/>
-	<img
-		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0)"
-		:class="[$style.decoration]"
-		:src="decoration?.url ?? user.avatarDecorations[0].url"
-		:style="{
-			rotate: getDecorationAngle(decoration),
-			scale: getDecorationScale(decoration),
-			transform: getDecorationTransform(decoration),
-			opacity: getDecorationOpacity(decoration),
-		}"
-		alt=""
-	>
-</component>
+	<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click.stop="onClick">
+		<MkImgWithBlurhash
+			:class="$style.inner"
+			:src="url"
+			:hash="user.avatarBlurhash"
+			:cover="true"
+			:onlyAvgColor="true"
+			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		/>
+		<template v-if="showDecoration">
+			<img
+				v-for="decoration in decorations ?? user.avatarDecorations"
+				:class="[$style.decoration]"
+				:src="decoration.url"
+				:style="{
+				rotate: getDecorationAngle(decoration),
+				scale: getDecorationScale(decoration),
+				transform: getDecorationTransform(decoration),
+				opacity: getDecorationOpacity(decoration),
+			}"
+				alt=""
+			>
+		</template>
+	</component>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, watch, ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkA from '@/components/global/MkA.vue';
 import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
@@ -46,22 +48,13 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
-	decoration?: {
-		url: string;
-		angle?: number;
-		flipH?: boolean;
-		flipV?: boolean;
-    scale?: number;
-    moveX?: number;
-    moveY?: number;
-    opacity?: number;
-	};
+	decorations?: Misskey.entities.UserDetailed['avatarDecorations'][number][];
 	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
-	decoration: undefined,
+	decorations: undefined,
 	forceShowDecoration: false,
 });
 
@@ -87,59 +80,25 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle() {
-	let angle;
-	if (props.decoration) {
-		angle = props.decoration.angle ?? 0;
-	} else if (props.user.avatarDecorations.length > 0) {
-		angle = props.user.avatarDecorations[0].angle ?? 0;
-	} else {
-		angle = 0;
-	}
+function getDecorationAngle(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const angle = decoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale() {
-	let scaleX;
-	if (props.decoration) {
-		scaleX = props.decoration.flipH ? -1 : 1;
-	} else if (props.user.avatarDecorations.length > 0) {
-		scaleX = props.user.avatarDecorations[0].flipH ? -1 : 1;
-	} else {
-		scaleX = 1;
-	}
+function getDecorationScale(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const scaleX = decoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function getDecorationTransform() {
-	let scale;
-	let moveX;
-	let moveY;
-	if (props.decoration) {
-		scale = props.decoration.scale ?? 1;
-		moveX = props.decoration.moveX ?? 0;
-		moveY = props.decoration.moveY ?? 0;
-	} else if (props.user.avatarDecorations.length > 0) {
-		scale = props.user.avatarDecorations[0].scale ?? 1;
-		moveX = props.user.avatarDecorations[0].moveX ?? 0;
-		moveY = props.user.avatarDecorations[0].moveY ?? 0;
-	} else {
-		scale = 1;
-		moveX = 0;
-		moveY = 0;
-	}
+function getDecorationTransform(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const scale = decoration.scale ?? 1;
+	const moveX = decoration.moveX ?? 0;
+	const moveY = decoration.moveY ?? 0;
 	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
 }
 
-function getDecorationOpacity() {
-	let opacity;
-	if (props.decoration) {
-		opacity = props.decoration.opacity ?? 1;
-	} else if (props.user.avatarDecorations.length > 0) {
-		opacity = props.user.avatarDecorations[0].opacity ?? 1;
-	} else {
-		opacity = 1;
-	}
+function getDecorationOpacity(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+	const opacity = decoration.opacity ?? 1;
 	return opacity === 1 ? undefined : opacity;
 }
 
@@ -199,11 +158,11 @@ onUnmounted(() => {
 }
 
 .decoration {
-  position: absolute;
-  z-index: 1;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  pointer-events: none;
+	position: absolute;
+	z-index: 1;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	pointer-events: none;
 }
 </style>

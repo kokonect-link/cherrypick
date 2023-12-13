@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0-beta.2
  * basedMisskeyVersion: 2023.12.0-beta.3
- * generatedAt: 2023-12-13T07:55:59.672Z
+ * generatedAt: 2023-12-13T08:44:16.941Z
  */
 
 import { components } from './types.js';

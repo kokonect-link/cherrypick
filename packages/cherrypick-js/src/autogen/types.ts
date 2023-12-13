@@ -4,7 +4,7 @@
 /*
  * version: 4.6.0-beta.2
  * basedMisskeyVersion: 2023.12.0-beta.3
- * generatedAt: 2023-12-13T07:55:59.592Z
+ * generatedAt: 2023-12-13T08:44:16.816Z
  */
 
 /**
@@ -3960,6 +3960,7 @@ export type components = {
         userListLimit: number;
         userEachUserListsLimit: number;
         rateLimitFactor: number;
+        avatarDecorationLimit: number;
       };
       email?: string | null;
       emailVerified?: boolean | null;
@@ -4671,6 +4672,11 @@ export type components = {
           useDefault: boolean;
         };
         canUseTranslator: {
+          value: number | boolean;
+          priority: number;
+          useDefault: boolean;
+        };
+        avatarDecorationLimit: {
           value: number | boolean;
           priority: number;
           useDefault: boolean;
