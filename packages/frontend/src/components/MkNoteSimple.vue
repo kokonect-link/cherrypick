@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkCwButton v-model="showContent" :text="note.text" :files="note.files" :poll="note.poll"/>
 		</p>
 		<div v-show="note.cw == null || showContent">
-			<MkSubNoteContent :class="$style.text" :note="note"/>
+			<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="false"/>
 		</div>
 	</div>
 </div>
