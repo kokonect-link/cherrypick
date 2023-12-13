@@ -1408,6 +1408,9 @@ _achievements:
     _setNameToSyuilo:
       title: "พระเจ้าคอมเพล็กซ์"
       description: "ตั้งชื่อของคุณเป็น \"syuilo\""
+    _setNameToNoriDev:
+      title: "พระเจ้าคอมเพล็กซ์ (CherryPick)"
+      description: "ตั้งชื่อของคุณเป็น \"noridev\""
     _passedSinceAccountCreated1:
       title: "ครบรอบหนึ่งปี"
       description: "ผ่านไปหนึ่งปีแล้วนะตั้งแต่บัญชีของคุณถูกสร้างขึ้นมาน่ะ"

@@ -1435,6 +1435,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Gottkomplex"
       description: "Setze deinen Namen auf \"syuilo\""
+    _setNameToNoriDev:
+      title: "Gottkomplex (CherryPick)"
+      description: "Setze deinen Namen auf \"noridev\""
     _passedSinceAccountCreated1:
       title: "Einjahresjubiläum"
       description: "Seit der Erstellung deines Kontos ist 1 Jahr vergangen"

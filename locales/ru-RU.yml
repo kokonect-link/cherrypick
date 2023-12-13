@@ -1313,6 +1313,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Комплекс бога"
       description: "Установлено «syuilo» в качестве имени"
+    _setNameToNoriDev:
+      title: "Комплекс бога (CherryPick)"
+      description: "Установлено «noridev» в качестве имени"
     _passedSinceAccountCreated1:
       title: "Первая годовщина"
       description: "Прошёл 1 год с момента регистрации"

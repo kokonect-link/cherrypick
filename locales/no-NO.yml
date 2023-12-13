@@ -517,6 +517,8 @@ _achievements:
       title: "Rett og slett heldig"
     _setNameToSyuilo:
       description: "Du satte navnet ditt til \"syuilo\""
+    _setNameToNoriDev:
+      description: "Du satte navnet ditt til \"noridev\""
     _passedSinceAccountCreated1:
       title: "Ett års jubileum"
       description: "Det har gått ett år siden kontoen din ble opprettet"

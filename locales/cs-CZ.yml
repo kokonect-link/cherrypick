@@ -1345,6 +1345,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Boží komplex"
       description: "Nastavte si jméno na \"syuilo\""
+    _setNameToNoriDev:
+      title: "Boží komplex (CherryPick)"
+      description: "Nastavte si jméno na \"noridev\""
     _passedSinceAccountCreated1:
       title: "Roční výročí"
       description: "Od vytvoření vašeho účtu uplynul jeden rok"

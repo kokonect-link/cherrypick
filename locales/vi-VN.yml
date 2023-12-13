@@ -1270,6 +1270,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Ngưỡng mộ với vị thần"
       description: "Đạt tên là syuilo"
+    _setNameToNoriDev:
+      title: "Ngưỡng mộ với vị thần (CherryPick)"
+      description: "Đạt tên là noridev"
     _passedSinceAccountCreated1:
       title: "Kỷ niệm một năm"
     _loggedInOnBirthday:

@@ -1730,6 +1730,9 @@ _achievements:
     _setNameToSyuilo:
       title: "神様コンプレックス"
       description: "名前を syuilo に設定した"
+    _setNameToNoriDev:
+      title: "神様コンプレックス（CherryPick）"
+      description: "名前を noridev に設定した"
     _passedSinceAccountCreated1:
       title: "一周年"
       description: "アカウント作成から1年経過した"

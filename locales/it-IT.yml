@@ -1510,6 +1510,9 @@ _achievements:
     _setNameToSyuilo:
       title: "Complesso divino"
       description: "Hai impostati il tuo nome in «syuilo»"
+    _setNameToNoriDev:
+      title: "Complesso divino (CherryPick)"
+      description: "Hai impostati il tuo nome in «noridev»"
     _passedSinceAccountCreated1:
       title: "Primo Anniversario"
       description: "È passato un anno da quando hai creato il profilo"

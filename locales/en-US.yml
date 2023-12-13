@@ -1705,6 +1705,9 @@ _achievements:
     _setNameToSyuilo:
       title: "God Complex"
       description: "Set your name to \"syuilo\""
+    _setNameToNoriDev:
+      title: "God Complex (CherryPick)"
+      description: "Set your name to \"noridev\""
     _passedSinceAccountCreated1:
       title: "One Year Anniversary"
       description: "One year has passed since your account was created"

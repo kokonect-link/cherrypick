@@ -1418,6 +1418,9 @@ _achievements:
     _setNameToSyuilo:
       title: "God Complex"
       description: "Atur namamu jadi \"syuilo\""
+    _setNameToNoriDev:
+      title: "God Complex (CherryPick)"
+      description: "Atur namamu jadi \"noridev\""
     _passedSinceAccountCreated1:
       title: "Perayaan Satu Tahun"
       description: "Satu tahun telah lewat sejak akunmu dibuat"

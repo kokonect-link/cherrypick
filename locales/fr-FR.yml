@@ -1310,6 +1310,8 @@ _achievements:
       title: "Référence circulaire"
     _setNameToSyuilo:
       description: "Vous avez spécifié « syuilo » comme nom"
+    _setNameToNoriDev:
+      description: "Vous avez spécifié « noridev » comme nom"
     _passedSinceAccountCreated1:
       title: "Premier anniversaire"
     _passedSinceAccountCreated2:

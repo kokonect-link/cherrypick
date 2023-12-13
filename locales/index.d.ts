@@ -1811,6 +1811,10 @@ export interface Locale {
                 "title": string;
                 "description": string;
             };
+            "_setNameToNoriDev": {
+                "title": string;
+                "description": string;
+            };
             "_passedSinceAccountCreated1": {
                 "title": string;
                 "description": string;
