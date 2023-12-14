@@ -1,7 +1,7 @@
 import { MenuItem } from '@/types/menu.js';
 
 // Add dividers between menu sections. if some menu section has menu item
-export default function addDividersBetweenMenuSections(...sections:MenuItem[][]): MenuItem[] {
+export function addDividersBetweenMenuSections(...sections:MenuItem[][]): MenuItem[] {
 	const result:MenuItem[] = [];
 
 	let needDivider = false;
