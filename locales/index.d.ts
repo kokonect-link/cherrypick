@@ -1284,6 +1284,7 @@ export interface Locale {
     "code": string;
     "reloadRequiredToApplySettings": string;
     "remainingN": string;
+    "overwriteContentConfirm": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
