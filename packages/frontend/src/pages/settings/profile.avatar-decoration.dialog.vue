@@ -29,15 +29,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkRange v-model="offsetY" continuousUpdate :min="-0.25" :max="0.25" :step="0.025" :textConverter="(v) => `${Math.floor(v * 100)}%`">
 					<template #label>Y {{ i18n.ts.position }}</template>
 				</MkRange>
-				<MkSwitch v-model="flipH">
-					<template #label>{{ i18n.ts.flip }}</template>
-				</MkSwitch>
 				<MkRange v-model="scale" continuousUpdate :min="0.5" :max="1.5" :step="0.05" :textConverter="(v) => `${v.toFixed(2)}x`">
 					<template #label>{{ i18n.ts.scale }}</template>
 				</MkRange>
 				<MkRange v-model="opacity" continuousUpdate :min="0.1" :max="1" :step="0.05" :textConverter="(v) => `${(v * 100).toFixed(2)}%`">
 					<template #label>{{ i18n.ts.opacity }}</template>
 				</MkRange>
+				<MkSwitch v-model="flipH">
+					<template #label>{{ i18n.ts.flip }}</template>
+				</MkSwitch>
 			</div>
 		</MkSpacer>
 
