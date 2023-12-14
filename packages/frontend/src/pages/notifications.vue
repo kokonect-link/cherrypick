@@ -28,10 +28,16 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { notificationTypes } from '@/const.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+import { globalEvents } from '@/events.js';
 
 const tab = ref('all');
 const includeTypes = ref<string[] | null>(null);
-const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value.includes(t)) : null);
+const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value.includes(t)) : undefined);
+
+const props = defineProps<{
+	disableRefreshButton?: boolean;
+}>();
 
 const mentionsPagination = {
 	endpoint: 'notes/mentions' as const,
@@ -64,7 +70,13 @@ function setFilter(ev) {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-const headerActions = computed(() => [tab.value === 'all' ? {
+const headerActions = computed(() => [deviceKind === 'desktop' && !props.disableRefreshButton ? {
+	icon: 'ti ti-refresh',
+	text: i18n.ts.reload,
+	handler: (ev: Event) => {
+		globalEvents.emit('reloadNotification');
+	},
+} : undefined, tab.value === 'all' ? {
 	text: i18n.ts.filter,
 	icon: 'ti ti-filter',
 	highlighted: includeTypes.value != null,
