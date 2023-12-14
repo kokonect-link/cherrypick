@@ -430,7 +430,7 @@ const whatIsNewCherryPick = () => {
 };
 
 const whatIsNewMisskey = () => {
-	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG.md#${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
+	window.open(`https://github.com/misskey-dev/misskey/blob/develop/CHANGELOG.md#${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
 };
 
 function iconLoaded() {

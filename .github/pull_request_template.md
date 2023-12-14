@@ -23,5 +23,5 @@ https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md
 ## Checklist
 - [ ] Read the [contribution guide](https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md)
 - [ ] Test working in a local environment
-- [ ] (If needed) Update CHANGELOG.md
+- [ ] (If needed) Update CHANGELOG_CHERRYPICK.md
 - [ ] (If possible) Add tests
