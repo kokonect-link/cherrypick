@@ -433,7 +433,6 @@ share: "Chia sẻ"
 notFound: "Không tìm thấy"
 notFoundDescription: "Không tìm thấy trang nào tương ứng với URL này."
 uploadFolder: "Thư mục tải lên mặc định"
-cacheClear: "Xóa bộ nhớ đệm"
 markAsReadAllNotifications: "Đánh dấu tất cả các thông báo là đã đọc"
 markAsReadAllUnreadNotes: "Đánh dấu tất cả các tút là đã đọc"
 markAsReadAllTalkMessages: "Đánh dấu tất cả các tin nhắn là đã đọc"
@@ -1037,7 +1036,7 @@ position: "Vị trí"
 serverRules: "Luật của máy chủ"
 youFollowing: "Đang theo dõi"
 later: "Để sau"
-goToMisskey: "Tới Misskey"
+goToMisskey: "Tới CherryPick"
 installed: "Đã tải xuống"
 branding: "Thương hiệu"
 turnOffToImprovePerformance: "Tắt mục này có thể cải thiện hiệu năng."
@@ -1092,7 +1091,7 @@ _accountMigration:
   moveFromLabel: "Tài khoản gốc #{n}"
   moveTo: "Chuyển tài khoản này vào một tài khoản khác"
   moveCannotBeUndone: "Việc chuyển tài khoản không thể huỷ."
-  moveAccountDescription: "Điều này sẽ chuyển tài khoản này sang một tài khoản khác.\n　・Những người theo dõi sẽ tự động được chuyển sang tài khoản mới\n　・Tài khoản này sẽ tự bỏ theo dõi những người mà bạn đã theo dõi trước đây\n　・Bạn sẽ không thể đăng tút mới, v.v trên tài khoản này\n\nDù việc chuyển người theo dõi được diễn ra tự động, bạn vẫn phải tự chuẩn bị một vài bước để chuyển danh sách những người dùng bạn đang theo dõi. Để làm vậy, vui lòng thực hiện việc xuất dữ liệu những người dùng đã theo dõi mà sau này bạn sẽ dùng để nhập vào tài khoản mới ở menu Cài đặt. Hành động tương tự áp dụng với danh sách những người dùng bị chặn hoặc tắt tiếng.\n\n(Điều này áp dụng cho phiên bản Misskey v13.12.0 và sau này. Các phần mềm ActivityPub khác , ví dụ như Mastodon, sẽ có thể hoạt động khác đi.)"
+  moveAccountDescription: "Điều này sẽ chuyển tài khoản này sang một tài khoản khác.\n　・Những người theo dõi sẽ tự động được chuyển sang tài khoản mới\n　・Tài khoản này sẽ tự bỏ theo dõi những người mà bạn đã theo dõi trước đây\n　・Bạn sẽ không thể đăng tút mới, v.v trên tài khoản này\n\nDù việc chuyển người theo dõi được diễn ra tự động, bạn vẫn phải tự chuẩn bị một vài bước để chuyển danh sách những người dùng bạn đang theo dõi. Để làm vậy, vui lòng thực hiện việc xuất dữ liệu những người dùng đã theo dõi mà sau này bạn sẽ dùng để nhập vào tài khoản mới ở menu Cài đặt. Hành động tương tự áp dụng với danh sách những người dùng bị chặn hoặc tắt tiếng.\n\n(Điều này áp dụng cho phiên bản CherryPick v13.12.0 và sau này. Các phần mềm ActivityPub khác , ví dụ như Mastodon, sẽ có thể hoạt động khác đi.)"
   startMigration: "Chuyển"
   movedAndCannotBeUndone: "\nTài khoản này đã được chuyển đi.\nViệc di chuyển tài khoản không thể bị huỷ bỏ."
   movedTo: "Tài khoản mới:"
@@ -1168,7 +1167,7 @@ _achievements:
       title: "Khách hàng thường xuyên cấp III"
       description: "Tổng số ngày đăng nhập đạt 400 ngày"
     _login1000:
-      flavor: "Cảm ơn bạn đã sử dụng Misskey!"
+      flavor: "Cảm ơn bạn đã sử dụng CherryPick!"
     _noteFavorited1:
       title: "Nhà thiên văn học"
     _myNoteFavorited1:
@@ -1231,9 +1230,9 @@ _achievements:
       description: "Tìm thấy được những kho báu cất giấu"
     _client30min:
       title: "Giải lao xỉu"
-      description: "Giữ Misskey mở trong ít nhất 30 phút"
+      description: "Giữ CherryPick mở trong ít nhất 30 phút"
     _client60min:
-      description: "Giữ Misskey mở trong ít nhất 60 phút"
+      description: "Giữ CherryPick mở trong ít nhất 60 phút"
     _noteDeletedWithin1min:
       title: "Xem như không có gì đâu nha"
     _postedAtLateNight:

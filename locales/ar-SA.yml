@@ -418,7 +418,6 @@ share: "شارِك"
 notFound: "غير موجود"
 notFoundDescription: "تعذر العثور على صفحة يقود إليها هذا الرابط."
 uploadFolder: "المجلد الافتراضي للرفع"
-cacheClear: "مسح ذاكرة التخزين المؤقت"
 markAsReadAllNotifications: "وضع جميع الإشعارات كأنها مقروءة"
 markAsReadAllUnreadNotes: "علّم جميع الملاحظات كمقروءة"
 markAsReadAllTalkMessages: "علّم جميع الرسائل كمقروءة"
@@ -802,7 +801,7 @@ hashtags: "الوسوم"
 troubleshooting: "استكشاف الأخطاء وإصلاحها"
 useBlurEffect: "استخدم تأثير الطمس في الواجهة"
 learnMore: "راجع المزيد"
-misskeyUpdated: "حُدث ميسكي!"
+misskeyUpdated: "حُدث CherryPick!"
 whatIsNew: "اعرض التغييرات"
 translate: "ترجم"
 translatedFrom: "تُرجم من {x}"
@@ -925,7 +924,7 @@ numberOfLikes: "الإعجابات"
 show: "المظهر"
 neverShow: "لا تظهره مجددًا"
 remindMeLater: "ربما لاحقا"
-didYouLikeMisskey: "هل أعجبك ميسكي؟"
+didYouLikeMisskey: "هل أعجبك CherryPick؟"
 pleaseDonate: "يستخدم {host} البرمجية الحرة ميسكي. نتمنى أن تتبرعوا للمشروع مما سيسمح لنا متابعة تطويره!"
 roles: "الأدوار"
 role: "الدور"
@@ -1004,7 +1003,7 @@ rolesThatCanBeUsedThisEmojiAsReactionPublicRoleWarn: "يجب أن تكون ال�
 cancelReactionConfirm: "أتريد حذف تفاعلك؟"
 changeReactionConfirm: "أتريد تعديل تفاعلك؟"
 later: "لاحقاً"
-goToMisskey: "لميسكي"
+goToMisskey: "لCherryPick"
 additionalEmojiDictionary: "قواميس إيموجي إضافية"
 installed: "مُثبت"
 expirationDate: "تاريخ انتهاء الصلاحية"

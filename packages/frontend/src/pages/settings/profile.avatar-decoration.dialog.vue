@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :marginMin="20" :marginMax="28">
 			<div style="text-align: center;">
 				<div :class="$style.name">{{ decoration.name }}</div>
-				<MkAvatar style="width: 64px; height: 64px; margin-bottom: 20px;" :user="$i" :decorations="[...$i.avatarDecorations, { url: decoration.url, angle, flipH, scale, moveX, moveY, opacity }]" forceShowDecoration/>
+				<MkAvatar style="width: 64px; height: 64px; margin-bottom: 20px;" :user="$i" :decorations="decorationsForPreview" forceShowDecoration/>
 			</div>
 			<div class="_gaps_s">
 				<MkRange v-model="angle" continuousUpdate :min="-0.5" :max="0.5" :step="0.025" :textConverter="(v) => `${Math.floor(v * 360)}°`">
@@ -42,9 +42,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkSpacer>
 
 		<div :class="$style.footer" class="_buttonsCenter">
-			<MkButton v-if="using" primary rounded @click="attach"><i class="ti ti-check"></i> {{ i18n.ts.update }}</MkButton>
-			<MkButton v-if="using" rounded @click="detach"><i class="ti ti-x"></i> {{ i18n.ts.detach }}</MkButton>
-			<MkButton v-else primary rounded @click="attach"><i class="ti ti-check"></i> {{ i18n.ts.attach }}</MkButton>
+			<MkButton v-if="usingIndex != null" primary rounded @click="update"><i class="ti ti-check"></i> {{ i18n.ts.update }}</MkButton>
+			<MkButton v-if="usingIndex != null" rounded @click="detach"><i class="ti ti-x"></i> {{ i18n.ts.detach }}</MkButton>
+			<MkButton v-else :disabled="exceeded" primary rounded @click="attach"><i class="ti ti-check"></i> {{ i18n.ts.attach }}</MkButton>
 		</div>
 	</div>
 </MkModalWindow>
@@ -56,40 +56,52 @@ import MkButton from '@/components/MkButton.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
-import * as os from '@/os.js';
-import MkFolder from '@/components/MkFolder.vue';
-import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
 import { $i } from '@/account.js';
 
 const props = defineProps<{
+	usingIndex: number | null;
 	decoration: {
 		id: string;
 		url: string;
 		name: string;
-	}
+	};
 }>();
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
+	(ev: 'attach', payload: {
+		angle: number;
+		flipH: boolean;
+		scale: number;
+		moveX: number;
+		moveY: number;
+		opacity: number;
+	}): void;
+	(ev: 'update', payload: {
+		angle: number;
+		flipH: boolean;
+		scale: number;
+		moveX: number;
+		moveY: number;
+		opacity: number;
+	}): void;
+	(ev: 'detach'): void;
 }>();
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
-const using = computed(() => $i.avatarDecorations.some(x => x.id === props.decoration.id));
-const angle = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).angle ?? 0 : 0);
-const flipH = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).flipH ?? false : false);
-const scale = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).scale ?? 1 : 1);
-const moveX = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).moveX ?? 0 : 0);
-const moveY = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).moveY ?? 0 : 0);
-const opacity = ref(using.value ? $i.avatarDecorations.find(x => x.id === props.decoration.id).opacity ?? 1 : 1);
+const exceeded = computed(() => ($i.policies.avatarDecorationLimit - $i.avatarDecorations.length) <= 0);
+const angle = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].angle : null) ?? 0);
+const flipH = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].flipH : null) ?? false);
+const scale = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].scale : null) ?? 1);
+const moveX = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].moveX : null) ?? 0);
+const moveY = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].moveY : null) ?? 0);
+const opacity = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].opacity : null) ?? 1);
 
-function cancel() {
-	dialog.value.close();
-}
-
-async function attach() {
+const decorationsForPreview = computed(() => {
 	const decoration = {
 		id: props.decoration.id,
+		url: props.decoration.url,
 		angle: angle.value,
 		flipH: flipH.value,
 		scale: scale.value,
@@ -97,22 +109,45 @@ async function attach() {
 		moveY: moveY.value,
 		opacity: opacity.value,
 	};
-	const update = [...$i.avatarDecorations, decoration];
-	await os.apiWithDialog('i/update', {
-		avatarDecorations: update,
-	});
-	$i.avatarDecorations = update;
+	const decorations = [...$i.avatarDecorations];
+	if (props.usingIndex != null) {
+		decorations[props.usingIndex] = decoration;
+	} else {
+		decorations.push(decoration);
+	}
+	return decorations;
+});
 
+function cancel() {
+	dialog.value.close();
+}
+
+async function update() {
+	emit('update', {
+		angle: angle.value,
+		flipH: flipH.value,
+		scale: scale.value,
+		moveX: moveX.value,
+		moveY: moveY.value,
+		opacity: opacity.value,
+	});
+	dialog.value.close();
+}
+
+async function attach() {
+	emit('attach', {
+		angle: angle.value,
+		flipH: flipH.value,
+		scale: scale.value,
+		moveX: moveX.value,
+		moveY: moveY.value,
+		opacity: opacity.value,
+	});
 	dialog.value.close();
 }
 
 async function detach() {
-	const update = $i.avatarDecorations.filter(x => x.id !== props.decoration.id);
-	await os.apiWithDialog('i/update', {
-		avatarDecorations: update,
-	});
-	$i.avatarDecorations = update;
-
+	emit('detach');
 	dialog.value.close();
 }
 </script>

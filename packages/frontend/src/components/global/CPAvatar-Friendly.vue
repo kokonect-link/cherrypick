@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
-	decorations?: Misskey.entities.UserDetailed['avatarDecorations'][number][];
+	decorations?: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>[];
 	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
@@ -81,24 +81,24 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationAngle(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const angle = decoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const scaleX = decoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function getDecorationTransform(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationTransform(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const scale = decoration.scale ?? 1;
 	const moveX = decoration.moveX ?? 0;
 	const moveY = decoration.moveY ?? 0;
 	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
 }
 
-function getDecorationOpacity(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationOpacity(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const opacity = decoration.opacity ?? 1;
 	return opacity === 1 ? undefined : opacity;
 }
