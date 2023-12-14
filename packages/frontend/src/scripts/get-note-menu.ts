@@ -19,6 +19,7 @@ import { clipsCache } from '@/cache.js';
 import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
+import { addDividersBetweenMenuSections } from './add-dividers-between-menu-sections.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -644,11 +645,10 @@ export function getRenoteMenu(props: {
 		}]);
 	}
 
-	const renoteItems = [
-		...normalRenoteItems,
-		...(channelRenoteItems.length > 0 && normalRenoteItems.length > 0) ? [{ type: 'divider' }] : [],
-		...channelRenoteItems,
-	];
+	const renoteItems = addDividersBetweenMenuSections(
+		normalRenoteItems,
+		channelRenoteItems,
+	);
 
 	return {
 		menu: renoteItems,
