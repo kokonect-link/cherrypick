@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkStickyContainer>
 
 	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotifications && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
-		<XNotifications/>
+		<XNotifications disableRefreshButton/>
 	</div>
 
 	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.friendlyEnableWidgets" :class="$style.widgets">
@@ -126,7 +126,7 @@ import { globalEvents } from '@/events.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
-const XNotifications = defineAsyncComponent(() => import('@/ui/friendly/notifications.vue'));
+const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
