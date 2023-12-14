@@ -148,7 +148,7 @@ import detectLanguage from '@/scripts/detect-language.js';
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
   mock?: boolean;
-  showSubNoteFooterButton: boolean;
+  showSubNoteFooterButton?: boolean;
 }>(), {
 	mock: false,
 });
