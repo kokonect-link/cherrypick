@@ -478,14 +478,17 @@ watch([
 });
 
 watch([
+	collapseDefault,
 	hideAvatarsInNote,
 	showNoteActionsOnlyHover,
+	showClipButtonInNoteFooter,
 	instanceTicker,
 	mediaListWithOneImageAppearance,
 	reactionsDisplaySize,
 	limitWidthOfReaction,
 	highlightSensitiveMedia,
 	showReplyInNotification,
+	showTranslateButtonInNote,
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
@@ -498,6 +501,7 @@ watch([
 });
 
 watch([
+	collapseRenotes,
 	enableInfiniteScroll,
 ], () => {
 	reloadTimeline();
