@@ -1,8 +1,6 @@
 _lang_: "日本語"
 
 cannotBeUsedFunc: "この機能は現在使用できません。"
-Xcoordinate: "X座標"
-Ycoordinate: "Y座標"
 scale: "大きさ"
 opacity: "不透明度"
 noteUpdatedAt: "編集済み: {date} {time}"

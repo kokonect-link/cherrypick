@@ -4,8 +4,6 @@
 export interface Locale {
     "_lang_": string;
     "cannotBeUsedFunc": string;
-    "Xcoordinate": string;
-    "Ycoordinate": string;
     "scale": string;
     "opacity": string;
     "noteUpdatedAt": string;

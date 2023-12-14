@@ -4,7 +4,7 @@
 /*
  * version: 4.6.0-beta.4
  * basedMisskeyVersion: 2023.12.0-beta.4
- * generatedAt: 2023-12-14T16:00:54.457Z
+ * generatedAt: 2023-12-14T17:47:05.577Z
  */
 
 /**
@@ -3757,9 +3757,9 @@ export type components = {
           id: string;
           angle?: number;
           flipH?: boolean;
+          offsetX?: number;
+          offsetY?: number;
           scale?: number;
-          moveX?: number;
-          moveY?: number;
           opacity?: number;
           /** Format: url */
           url: string;
@@ -18674,9 +18674,9 @@ export type operations = {
               id: string;
               angle?: number | null;
               flipH?: boolean | null;
+              offsetX?: number | null;
+              offsetY?: number | null;
               scale?: number | null;
-              moveX?: number | null;
-              moveY?: number | null;
               opacity?: number | null;
             })[];
           /** Format: misskey:id */

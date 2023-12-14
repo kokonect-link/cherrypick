@@ -30,7 +30,7 @@
 		"migrateandstart": "pnpm migrate && pnpm start",
 		"migrateandstart:docker": "pnpm migrate && exec pnpm start:docker",
 		"watch": "pnpm dev",
-		"dev": "pnpm -r dev",
+		"dev": "node scripts/dev.mjs",
 		"lint": "pnpm -r lint",
 		"cy:open": "pnpm cypress open --browser --e2e --config-file=cypress.config.ts",
 		"cy:run": "pnpm cypress run",

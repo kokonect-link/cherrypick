@@ -25,6 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:style="{
 				rotate: getDecorationAngle(decoration),
 				scale: getDecorationScale(decoration),
+				translate: getDecorationOffset(decoration),
 				transform: getDecorationTransform(decoration),
 				opacity: getDecorationOpacity(decoration),
 			}"
@@ -91,11 +92,15 @@ function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avat
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
+function getDecorationOffset(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const offsetX = decoration.offsetX ?? 0;
+	const offsetY = decoration.offsetY ?? 0;
+	return offsetX === 0 && offsetY === 0 ? undefined : `${offsetX * 100}% ${offsetY * 100}%`;
+}
+
 function getDecorationTransform(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const scale = decoration.scale ?? 1;
-	const moveX = decoration.moveX ?? 0;
-	const moveY = decoration.moveY ?? 0;
-	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
+	return `${scale === 1 ? '' : `scale(${scale})`}`;
 }
 
 function getDecorationOpacity(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {

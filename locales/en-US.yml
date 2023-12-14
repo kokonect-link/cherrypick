@@ -1,8 +1,6 @@
 ---
 _lang_: "English"
 cannotBeUsedFunc: "This feature is currently unavailable."
-Xcoordinate: "X-Coordinate"
-Ycoordinate: "Y-Coordinate"
 scale: "Scale"
 opacity: "Opacity"
 noteUpdatedAt: "Edited: {date} {time}"

@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkModalWindow
 	ref="dialog"
 	:width="400"
-	:height="450"
+	:height="700"
 	@close="cancel"
 	@closed="emit('closed')"
 >
@@ -23,17 +23,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkRange v-model="angle" continuousUpdate :min="-0.5" :max="0.5" :step="0.025" :textConverter="(v) => `${Math.floor(v * 360)}°`">
 					<template #label>{{ i18n.ts.angle }}</template>
 				</MkRange>
+				<MkRange v-model="offsetX" continuousUpdate :min="-0.25" :max="0.25" :step="0.025" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+					<template #label>X {{ i18n.ts.position }}</template>
+				</MkRange>
+				<MkRange v-model="offsetY" continuousUpdate :min="-0.25" :max="0.25" :step="0.025" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+					<template #label>Y {{ i18n.ts.position }}</template>
+				</MkRange>
 				<MkSwitch v-model="flipH">
 					<template #label>{{ i18n.ts.flip }}</template>
 				</MkSwitch>
 				<MkRange v-model="scale" continuousUpdate :min="0.5" :max="1.5" :step="0.05" :textConverter="(v) => `${v.toFixed(2)}x`">
 					<template #label>{{ i18n.ts.scale }}</template>
-				</MkRange>
-				<MkRange v-model="moveX" continuousUpdate :min="-25" :max="25" :step="1">
-					<template #label>{{ i18n.ts.Xcoordinate }}</template>
-				</MkRange>
-				<MkRange v-model="moveY" continuousUpdate :min="-25" :max="25" :step="1">
-					<template #label>{{ i18n.ts.Ycoordinate }}</template>
 				</MkRange>
 				<MkRange v-model="opacity" continuousUpdate :min="0.1" :max="1" :step="0.05" :textConverter="(v) => `${(v * 100).toFixed(2)}%`">
 					<template #label>{{ i18n.ts.opacity }}</template>
@@ -73,17 +73,17 @@ const emit = defineEmits<{
 	(ev: 'attach', payload: {
 		angle: number;
 		flipH: boolean;
+		offsetX: number;
+		offsetY: number;
 		scale: number;
-		moveX: number;
-		moveY: number;
 		opacity: number;
 	}): void;
 	(ev: 'update', payload: {
 		angle: number;
 		flipH: boolean;
+		offsetX: number;
+		offsetY: number;
 		scale: number;
-		moveX: number;
-		moveY: number;
 		opacity: number;
 	}): void;
 	(ev: 'detach'): void;
@@ -93,9 +93,9 @@ const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 const exceeded = computed(() => ($i.policies.avatarDecorationLimit - $i.avatarDecorations.length) <= 0);
 const angle = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].angle : null) ?? 0);
 const flipH = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].flipH : null) ?? false);
+const offsetX = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].offsetX : null) ?? 0);
+const offsetY = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].offsetY : null) ?? 0);
 const scale = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].scale : null) ?? 1);
-const moveX = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].moveX : null) ?? 0);
-const moveY = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].moveY : null) ?? 0);
 const opacity = ref((props.usingIndex != null ? $i.avatarDecorations[props.usingIndex].opacity : null) ?? 1);
 
 const decorationsForPreview = computed(() => {
@@ -104,9 +104,9 @@ const decorationsForPreview = computed(() => {
 		url: props.decoration.url,
 		angle: angle.value,
 		flipH: flipH.value,
+		offsetX: offsetX.value,
+		offsetY: offsetY.value,
 		scale: scale.value,
-		moveX: moveX.value,
-		moveY: moveY.value,
 		opacity: opacity.value,
 	};
 	const decorations = [...$i.avatarDecorations];
@@ -126,9 +126,9 @@ async function update() {
 	emit('update', {
 		angle: angle.value,
 		flipH: flipH.value,
+		offsetX: offsetX.value,
+		offsetY: offsetY.value,
 		scale: scale.value,
-		moveX: moveX.value,
-		moveY: moveY.value,
 		opacity: opacity.value,
 	});
 	dialog.value.close();
@@ -138,9 +138,9 @@ async function attach() {
 	emit('attach', {
 		angle: angle.value,
 		flipH: flipH.value,
+		offsetX: offsetX.value,
+		offsetY: offsetY.value,
 		scale: scale.value,
-		moveX: moveX.value,
-		moveY: moveY.value,
 		opacity: opacity.value,
 	});
 	dialog.value.close();
