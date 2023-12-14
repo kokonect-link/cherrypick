@@ -106,8 +106,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
 				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
-					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @mousedown="translate()">{{ i18n.ts.translateNote }}</button>
-					<button v-else class="_button" @mousedown="translation = null">{{ i18n.ts.close }}</button>
+					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click="translate()">{{ i18n.ts.translateNote }}</button>
+					<button v-else class="_button" @click="translation = null">{{ i18n.ts.close }}</button>
 				</div>
 				<div v-if="translating || translation" :class="$style.translation">
 					<MkLoading v-if="translating" mini/>
@@ -123,7 +123,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-if="viewTextSource">
 					<hr style="margin: 10px 0;">
 					<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
-					<button class="_button" style="padding-top: 5px; color: var(--accent);" @mousedown="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+					<button class="_button" style="padding-top: 5px; color: var(--accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 				</div>
 				<div v-if="appearNote.files.length > 0">
 					<MkMediaList v-if="appearNote.disableRightClick" :mediaList="appearNote.files" @contextmenu.prevent/>
@@ -159,7 +159,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-tooltip="i18n.ts.renote"
 				class="_button"
 				:class="$style.noteFooterButton"
-				@mousedown="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
+				@click="defaultStore.state.renoteQuoteButtonSeparation ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ appearNote.renoteCount }}</p>
@@ -167,10 +167,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-else class="_button" :class="$style.noteFooterButton" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @mousedown="heartReact()">
+			<button v-if="appearNote.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @click="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.noteFooterButton" class="_button" @mousedown="react()">
+			<button v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.noteFooterButton" class="_button" @click="react()">
 				<i v-if="appearNote.myReaction == null" v-tooltip="i18n.ts.reaction" class="ti ti-mood-plus"></i>
 				<i v-else v-tooltip="i18n.ts.editReaction" class="ti ti-mood-edit"></i>
 			</button>
@@ -180,10 +180,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @click="quote()">
 				<i class="ti ti-quote"></i>
 			</button>
-			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @mousedown="clip()">
+			<button v-if="defaultStore.state.showClipButtonInNoteFooter" ref="clipButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @click="clip()">
 				<i class="ti ti-paperclip"></i>
 			</button>
-			<button ref="menuButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @mousedown="menu()">
+			<button ref="menuButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @click="menu()">
 				<i class="ti ti-dots"></i>
 			</button>
 		</footer>

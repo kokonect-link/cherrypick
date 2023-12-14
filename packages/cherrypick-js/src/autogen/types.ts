@@ -4,7 +4,7 @@
 /*
  * version: 4.6.0-beta.4
  * basedMisskeyVersion: 2023.12.0-beta.4
- * generatedAt: 2023-12-14T11:18:50.281Z
+ * generatedAt: 2023-12-14T16:00:54.457Z
  */
 
 /**
@@ -4096,6 +4096,7 @@ export type components = {
       files?: components['schemas']['DriveFile'][];
       tags?: string[];
       poll?: Record<string, unknown> | null;
+      event?: Record<string, unknown> | null;
       /**
        * Format: id
        * @example xxxxxxxxxx
@@ -20334,6 +20335,7 @@ export type operations = {
           renote?: boolean;
           withFiles?: boolean;
           poll?: boolean;
+          event?: boolean;
           /** @default 10 */
           limit?: number;
           /** Format: misskey:id */
