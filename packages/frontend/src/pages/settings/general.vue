@@ -478,7 +478,6 @@ watch([
 });
 
 watch([
-	enableInfiniteScroll,
 	hideAvatarsInNote,
 	showNoteActionsOnlyHover,
 	instanceTicker,
@@ -486,12 +485,20 @@ watch([
 	reactionsDisplaySize,
 	limitWidthOfReaction,
 	highlightSensitiveMedia,
+	showReplyInNotification,
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
 	infoButtonForNoteActionsEnabled,
 	renoteQuoteButtonSeparation,
 	allMediaNoteCollapse,
+], () => {
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch([
+	enableInfiniteScroll,
 ], () => {
 	reloadTimeline();
 });
