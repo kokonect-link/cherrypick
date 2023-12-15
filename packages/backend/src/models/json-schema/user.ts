@@ -69,15 +69,15 @@ export const packedUserLiteSchema = {
 						type: 'boolean',
 						nullable: false, optional: true,
 					},
+					offsetX: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
+					offsetY: {
+						type: 'number',
+						nullable: false, optional: true,
+					},
 					scale: {
-						type: 'number',
-						nullable: false, optional: true,
-					},
-					moveX: {
-						type: 'number',
-						nullable: false, optional: true,
-					},
-					moveY: {
 						type: 'number',
 						nullable: false, optional: true,
 					},

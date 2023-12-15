@@ -480,20 +480,31 @@ watch([
 });
 
 watch([
-	enableInfiniteScroll,
+	collapseDefault,
 	hideAvatarsInNote,
 	showNoteActionsOnlyHover,
+	showClipButtonInNoteFooter,
 	instanceTicker,
 	mediaListWithOneImageAppearance,
 	reactionsDisplaySize,
 	limitWidthOfReaction,
 	highlightSensitiveMedia,
+	showReplyInNotification,
+	showTranslateButtonInNote,
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
 	infoButtonForNoteActionsEnabled,
 	renoteQuoteButtonSeparation,
 	allMediaNoteCollapse,
+], () => {
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch([
+	collapseRenotes,
+	enableInfiniteScroll,
 ], () => {
 	reloadTimeline();
 });

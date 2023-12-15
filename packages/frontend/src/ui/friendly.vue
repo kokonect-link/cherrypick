@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkStickyContainer>
 
 	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotifications && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
-		<XNotifications/>
+		<XNotifications disableRefreshButton/>
 	</div>
 
 	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.friendlyEnableWidgets" :class="$style.widgets">

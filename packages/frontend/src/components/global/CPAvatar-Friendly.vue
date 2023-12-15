@@ -25,6 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:style="{
 				rotate: getDecorationAngle(decoration),
 				scale: getDecorationScale(decoration),
+				translate: getDecorationOffset(decoration),
 				transform: getDecorationTransform(decoration),
 				opacity: getDecorationOpacity(decoration),
 			}"
@@ -49,7 +50,7 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
-	decorations?: Misskey.entities.UserDetailed['avatarDecorations'][number][];
+	decorations?: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>[];
 	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
@@ -81,24 +82,28 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationAngle(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const angle = decoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const scaleX = decoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function getDecorationTransform(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
-	const scale = decoration.scale ?? 1;
-	const moveX = decoration.moveX ?? 0;
-	const moveY = decoration.moveY ?? 0;
-	return `${scale === 1 ? '' : `scale(${scale})`} ${moveX === 0 && moveY === 0 ? '' : `translate(${moveX}%, ${moveY}%)`}`;
+function getDecorationOffset(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const offsetX = decoration.offsetX ?? 0;
+	const offsetY = decoration.offsetY ?? 0;
+	return offsetX === 0 && offsetY === 0 ? undefined : `${offsetX * 100}% ${offsetY * 100}%`;
 }
 
-function getDecorationOpacity(decoration: Misskey.entities.UserDetailed['avatarDecorations'][number]) {
+function getDecorationTransform(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const scale = decoration.scale ?? 1;
+	return `${scale === 1 ? '' : `scale(${scale})`}`;
+}
+
+function getDecorationOpacity(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const opacity = decoration.opacity ?? 1;
 	return opacity === 1 ? undefined : opacity;
 }

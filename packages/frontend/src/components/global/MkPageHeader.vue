@@ -15,7 +15,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
 			<div v-if="!narrow && canBack" style="width: 50px; margin-right: 8px;"/>
+			<div v-if="actions.length >= 3" style="width: 42px;"/>
 			<div style="width: 34px;"/>
+		</div>
+		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly && mainRouter.currentRoute.value.name === 'my-notifications'">
+			<div style="width: 50px; margin-right: 8px;"/>
 		</div>
 		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
 			<div style="width: 84px;"/>

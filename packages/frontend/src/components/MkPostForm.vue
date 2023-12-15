@@ -923,7 +923,7 @@ async function insertEmoji(ev: MouseEvent) {
 		},
 		() => {
 			textAreaReadOnly.value = false;
-			focus();
+			nextTick(() => focus());
 		},
 	);
 }

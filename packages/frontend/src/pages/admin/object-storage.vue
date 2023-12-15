@@ -182,6 +182,7 @@ const objectStorageUseSSL = ref<boolean>(false);
 const objectStorageUseProxy = ref<boolean>(false);
 const objectStorageSetPublicRead = ref<boolean>(false);
 const objectStorageS3ForcePathStyle = ref<boolean>(true);
+
 const useObjectStorageRemote = ref<boolean>(false);
 const objectStorageRemoteBaseUrl = ref<string | null>(null);
 const objectStorageRemoteBucket = ref<string | null>(null);
@@ -211,6 +212,7 @@ async function init() {
 	objectStorageUseProxy.value = meta.objectStorageUseProxy;
 	objectStorageSetPublicRead.value = meta.objectStorageSetPublicRead;
 	objectStorageS3ForcePathStyle.value = meta.objectStorageS3ForcePathStyle;
+
 	useObjectStorageRemote.value = meta.useObjectStorageRemote;
 	objectStorageRemoteBaseUrl.value = meta.objectStorageRemoteBaseUrl;
 	objectStorageRemoteBucket.value = meta.objectStorageRemoteBucket;
@@ -241,6 +243,7 @@ function save() {
 		objectStorageUseProxy: objectStorageUseProxy.value,
 		objectStorageSetPublicRead: objectStorageSetPublicRead.value,
 		objectStorageS3ForcePathStyle: objectStorageS3ForcePathStyle.value,
+
 		useObjectStorageRemote: useObjectStorageRemote.value,
 		objectStorageRemoteBaseUrl: objectStorageRemoteBaseUrl.value,
 		objectStorageRemoteBucket: objectStorageRemoteBucket.value,

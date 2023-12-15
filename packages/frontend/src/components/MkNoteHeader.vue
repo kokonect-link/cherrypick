@@ -68,9 +68,9 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 const router = useRouter();
 
 function showOnRemote() {
-	if (props.note.url ?? props.note.uri === undefined) router.push(notePage(props.note));
+	if (props.note.user.instance === undefined) router.push(notePage(props.note));
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	else window.open(props.note.url ?? props.note.uri);
+	else window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
 </script>
 
