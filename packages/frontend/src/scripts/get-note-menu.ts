@@ -20,6 +20,7 @@ import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
+import { ap } from 'vitest/dist/reporters-5f784f42.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -549,6 +550,49 @@ function smallerVisibility(a: Visibility | string, b: Visibility | string): Visi
 	return 'public';
 }
 
+export function getQuoteMenu(props: {
+	note: Misskey.entities.Note,
+	mock?: boolean;
+}) {
+	const isRenote = (
+		props.note.renote != null &&
+		props.note.text == null &&
+		props.note.fileIds.length === 0 &&
+		props.note.poll == null
+	);
+	const menu: MenuItem[] = [];
+	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
+
+	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
+		menu.push({
+			text: i18n.ts.quote,
+			icon: 'ti ti-quote',
+			action: () => {
+				os.post({
+					renote: appearNote,
+				});
+			},
+		});
+	}
+
+	if (appearNote.channel) {
+		menu.push({
+			text: i18n.ts.inChannelQuote,
+			icon: 'ti ti-device-tv',
+			action: () => {
+				if (!props.mock) {
+					os.post({
+						renote: appearNote,
+						channel: appearNote.channel,
+					});
+				}
+			},
+		});
+	}
+
+	return { menu };
+}
+
 export function getRenoteMenu(props: {
 	note: Misskey.entities.Note;
 	renoteButton: Ref<HTMLElement>;
@@ -569,7 +613,7 @@ export function getRenoteMenu(props: {
 
 	// Add channel renote/quote buttons
 	if (appearNote.channel) {
-		channelRenoteItems.push({
+		(defaultStore.state.renoteQuoteButtonSeparation ? normalRenoteItems : channelRenoteItems).push({
 			text: i18n.ts.inChannelRenote,
 			icon: 'ti ti-repeat',
 			action: () => {
@@ -657,7 +701,12 @@ export function getRenoteMenu(props: {
 		}
 	}
 
-	if (defaultStore.state.renoteVisibilitySelection && !['followers', 'specified'].includes(appearNote.visibility)) {
+	// Add visibility section
+	if (
+		defaultStore.state.renoteVisibilitySelection &&
+		!['followers', 'specified'].includes(appearNote.visibility)
+		&& (!appearNote.channel || appearNote.channel.allowRenoteToExternal)
+	) {
 		// renote to public
 		if (appearNote.visibility === 'public') {
 			visibilityRenoteItems.push({

@@ -1288,7 +1288,7 @@ doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウント
 translateProfile: "プロフィールを翻訳する"
 renoteToHome: "TRANSLATEME-renoteAsHome"
 renoteToPublic: "TRANSLATEME-renoteAsPublic"
-renoteToFollowers: "TRANSLATEME-renoteAsPublic"
+renoteToFollowers: "TRANSLATEME-renoteAsFollowers"
 showRenoteVisibilitySelector: "TRANSLATME-showRenoteVisibilitySelector"
 
 _nsfwOpenBehavior:
