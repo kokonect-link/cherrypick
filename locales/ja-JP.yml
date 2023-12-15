@@ -1282,6 +1282,10 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
+renoteToHome: "TRANSLATEME-renoteAsHome"
+renoteToPublic: "TRANSLATEME-renoteAsPublic"
+renoteToFollowers: "TRANSLATEME-renoteAsPublic"
+showRenoteVisibilitySelector: "TRANSLATME-showRenoteVisibilitySelector"
 
 _nsfwOpenBehavior:
   click: "タップして開く"

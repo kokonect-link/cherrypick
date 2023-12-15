@@ -19,7 +19,7 @@ import { clipsCache } from '@/cache.js';
 import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
-import { addDividersBetweenMenuSections } from './add-dividers-between-menu-sections.js';
+import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -565,9 +565,11 @@ export function getRenoteMenu(props: {
 
 	const channelRenoteItems: MenuItem[] = [];
 	const normalRenoteItems: MenuItem[] = [];
+	const visibilityRenoteItems: MenuItem[] = [];
 
+	// Add channel renote/quote buttons
 	if (appearNote.channel) {
-		channelRenoteItems.push(...[{
+		channelRenoteItems.push({
 			text: i18n.ts.inChannelRenote,
 			icon: 'ti ti-repeat',
 			action: () => {
@@ -588,22 +590,27 @@ export function getRenoteMenu(props: {
 					});
 				}
 			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ti ti-quote',
-			action: () => {
-				if (!props.mock) {
-					os.post({
-						renote: appearNote,
-						channel: appearNote.channel,
-					});
-				}
-			},
-		}]);
+		});
+
+		// Add quote button if quote button is not separated
+		if (!defaultStore.state.renoteQuoteButtonSeparation) {
+			channelRenoteItems.push({
+				text: i18n.ts.inChannelQuote,
+				icon: 'ti ti-quote',
+				action: () => {
+					if (!props.mock) {
+						os.post({
+							renote: appearNote,
+							channel: appearNote.channel,
+						});
+					}
+				},
+			});
+		}
 	}
 
 	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
-		normalRenoteItems.push(...[{
+		normalRenoteItems.push({
 			text: i18n.ts.renote,
 			icon: 'ti ti-repeat',
 			action: () => {
@@ -634,20 +641,80 @@ export function getRenoteMenu(props: {
 					});
 				}
 			},
-		}, (props.mock) ? undefined : {
-			text: i18n.ts.quote,
-			icon: 'ti ti-quote',
+		});
+
+		// Add quote button if quote button is not separated
+		if (!props.mock && !defaultStore.state.renoteQuoteButtonSeparation) {
+			normalRenoteItems.push({
+				text: i18n.ts.quote,
+				icon: 'ti ti-quote',
+				action: () => {
+					os.post({
+						renote: appearNote,
+					});
+				},
+			});
+		}
+	}
+
+	if (defaultStore.state.renoteVisibilitySelection && !['followers', 'specified'].includes(appearNote.visibility)) {
+		// renote to public
+		if (appearNote.visibility === 'public') {
+			visibilityRenoteItems.push({
+				text: i18n.ts.renoteToPublic,
+				icon: 'ti ti-world',
+				action: () => {
+					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+					os.api('notes/create', {
+						localOnly,
+						visibility: 'public',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.noteToast(i18n.ts.renoted, 'renote');
+					});
+				},
+			});
+		}
+
+		// renote to home
+		if (['home', 'public'].includes(appearNote.visibility)) {
+			visibilityRenoteItems.push({
+				text: i18n.ts.renoteToHome,
+				icon: 'ti ti-home',
+				action: () => {
+					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+					os.api('notes/create', {
+						localOnly,
+						visibility: 'home',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.noteToast(i18n.ts.renoted, 'renote');
+					});
+				},
+			});
+		}
+
+		// renote to followers
+		visibilityRenoteItems.push({
+			text: i18n.ts.renoteToFollowers,
+			icon: 'ti ti-lock',
 			action: () => {
-				os.post({
-					renote: appearNote,
+				const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+				os.api('notes/create', {
+					localOnly,
+					visibility: 'followers',
+					renoteId: appearNote.id,
+				}).then(() => {
+					os.noteToast(i18n.ts.renoted, 'renote');
 				});
 			},
-		}]);
+		});
 	}
 
 	const renoteItems = addDividersBetweenMenuSections(
 		normalRenoteItems,
 		channelRenoteItems,
+		visibilityRenoteItems,
 	);
 
 	return {
