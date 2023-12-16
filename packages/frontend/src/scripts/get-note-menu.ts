@@ -613,7 +613,7 @@ export function getRenoteMenu(props: {
 
 	// Add channel renote/quote buttons
 	if (appearNote.channel) {
-		(defaultStore.state.renoteQuoteButtonSeparation ? normalRenoteItems : channelRenoteItems).push({
+		const channelRenoteButton = {
 			text: i18n.ts.inChannelRenote,
 			icon: 'ti ti-repeat',
 			action: () => {
@@ -634,7 +634,12 @@ export function getRenoteMenu(props: {
 					});
 				}
 			},
-		});
+		};
+		if (defaultStore.state.renoteQuoteButtonSeparation) {
+			normalRenoteItems.unshift(channelRenoteButton);
+		} else {
+			channelRenoteItems.push(channelRenoteButton);
+		}
 
 		// Add quote button if quote button is not separated
 		if (!defaultStore.state.renoteQuoteButtonSeparation) {
