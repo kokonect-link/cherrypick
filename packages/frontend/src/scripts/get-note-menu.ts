@@ -710,7 +710,7 @@ export function getRenoteMenu(props: {
 		// renote to public
 		if (appearNote.visibility === 'public') {
 			visibilityRenoteItems.push({
-				text: i18n.ts.renoteToPublic,
+				text: `${i18n.ts.renote} (${i18n.ts._visibility.public})`,
 				icon: 'ti ti-world',
 				action: () => {
 					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
@@ -728,7 +728,7 @@ export function getRenoteMenu(props: {
 		// renote to home
 		if (['home', 'public'].includes(appearNote.visibility)) {
 			visibilityRenoteItems.push({
-				text: i18n.ts.renoteToHome,
+				text: `${i18n.ts.renote} (${i18n.ts._visibility.home})`,
 				icon: 'ti ti-home',
 				action: () => {
 					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
@@ -746,7 +746,7 @@ export function getRenoteMenu(props: {
 		// renote to followers
 		visibilityRenoteItems.push({
 			text: i18n.ts.renoteToFollowers,
-			icon: 'ti ti-lock',
+			text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
 			action: () => {
 				const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
 				os.api('notes/create', {

@@ -146,7 +146,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					v-tooltip="i18n.ts.renote"
 					:class="$style.footerButton"
 					class="_button"
-					@click.stop="defaultStore.state.renoteQuoteButtonSeparation && !defaultStore.state.renoteVisibilitySelection && (!appearNote.channel || appearNote.channel.allowRenoteToExternal) ? renoteOnly() : renote()"
+					@click.stop="(defaultStore.state.renoteQuoteButtonSeparation && !defaultStore.state.renoteVisibilitySelection && !appearNote.channel) || (defaultStore.state.renoteQuoteButtonSeparation && appearNote.channel && !appearNote.channel.allowRenoteToExternal) || (defaultStore.state.renoteQuoteButtonSeparation && appearNote.visibility === 'followers') ? renoteOnly() : renote()"
 				>
 					<i class="ti ti-repeat"></i>
 					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ appearNote.renoteCount }}</p>
