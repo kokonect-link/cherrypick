@@ -1276,6 +1276,7 @@ showCatOnly: "고양이만 보기"
 additionalPermissionsForFlash: "Play에 대한 추가 권한"
 thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구해요"
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
+translateProfile: "프로필 번역하기"
 showRenoteVisibilitySelector: "리노트 공개범위 옵션 표시"
 _nsfwOpenBehavior:
   click: "탭하여 열기"
