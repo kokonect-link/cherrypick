@@ -745,8 +745,8 @@ export function getRenoteMenu(props: {
 
 		// renote to followers
 		visibilityRenoteItems.push({
-			text: i18n.ts.renoteToFollowers,
 			text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
+			icon: 'ti ti-lock',
 			action: () => {
 				const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
 				os.api('notes/create', {

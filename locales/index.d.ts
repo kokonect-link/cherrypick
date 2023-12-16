@@ -1289,9 +1289,6 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
-    "renoteToHome": string;
-    "renoteToPublic": string;
-    "renoteToFollowers": string;
     "showRenoteVisibilitySelector": string;
     "_nsfwOpenBehavior": {
         "click": string;
