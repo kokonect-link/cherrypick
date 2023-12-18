@@ -722,7 +722,7 @@ function saveDraft() {
 			localOnly: localOnly.value,
 			files: files.value,
 			poll: poll.value,
-			event: event,
+			event: event.value,
 		},
 	};
 
