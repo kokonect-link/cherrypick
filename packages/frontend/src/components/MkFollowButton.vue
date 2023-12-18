@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:class="[$style.root, $style.active, { [$style.full]: full, [$style.large]: large }]"
 	@click="editProfile"
 >
-	<i class="ti ti-pencil"></i>
+	<span v-if="full" :class="$style.text">{{ i18n.ts.editProfile }}</span><i class="ti ti-pencil"></i>
 </button>
 </template>
 
