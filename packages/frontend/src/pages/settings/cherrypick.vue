@@ -68,7 +68,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_m">
 			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
 			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
-			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
+			<MkSwitch v-model="enableLongPressOpenAccountMenu">
+				<template #label>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</template>
+				<template #caption>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</template>
+			</MkSwitch>
 			<MkSwitch v-model="friendlyShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyShowAvatarDecorationsInNavBtn }}</MkSwitch>
 		</div>
 	</FormSection>

@@ -1339,7 +1339,8 @@ _cherrypick:
   mobileHeaderChange: "Header design change in mobile environment"
   renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
   renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
-  enableLongPressOpenAccountMenu: "Press and hold to open the account menu."
+  enableLongPressOpenAccountMenu: "Press and hold to open the account menu"
+  enableLongPressOpenAccountMenuDescription: "It can be opened by long-pressing the Timeline tab at the bottom of the screen."
   friendlyShowAvatarDecorationsInNavBtn: "Show avatar decorations on floating buttons"
 _bannerDisplay:
   all: "All"

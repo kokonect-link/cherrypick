@@ -1361,6 +1361,7 @@ export interface Locale {
         "renameTheButtonInPostFormToNya": string;
         "renameTheButtonInPostFormToNyaDescription": string;
         "enableLongPressOpenAccountMenu": string;
+        "enableLongPressOpenAccountMenuDescription": string;
         "friendlyShowAvatarDecorationsInNavBtn": string;
     };
     "_bannerDisplay": {
