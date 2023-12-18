@@ -70,6 +70,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: '모든 미디어 노트 간략화하기' 옵션을 활성화하면 미디어가 없는 노트가 잘려서 표시될 수 있음
 - Fix: 모바일 환경에서 헤더 타이틀 부분을 터치할 때 영역이 강조되어 표시될 수 있음
 - Fix: 서브 노트에서 액션 버튼의 클릭 가능 영역이 매우 작게 설정될 수 있음
+- Fix: 내 프로필에서 간헐적으로 헤더에 MkFollowButton 컴포넌트가 표시될 수 있음
 
 ### Server
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)

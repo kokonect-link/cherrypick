@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-		<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
+		<div v-if="metadata && metadata.avatar && ($i && $i.username !== metadata.userName?.username)" :class="$style.followButton">
 			<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
@@ -80,8 +80,6 @@ import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { PageHeaderItem } from '@/types/page-header.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-
-const showFollowButton = ref(false);
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -170,10 +168,6 @@ onMounted(() => {
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
-
-	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
-		showFollowButton.value = showFollowButton_receive;
-	});
 });
 
 onUnmounted(() => {

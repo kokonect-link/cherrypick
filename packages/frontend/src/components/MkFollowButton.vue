@@ -53,12 +53,10 @@ import { i18n } from '@/i18n.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
 import { userName } from '@/filters/user.js';
-import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { defaultStore } from '@/store.js';
 import { useRouter } from '@/router.js';
 
-const showFollowButton = ref(false);
 const router = useRouter();
 
 const props = withDefaults(defineProps<{
@@ -162,9 +160,6 @@ function editProfile() {
 onMounted(() => {
 	connection.on('follow', onFollowChange);
 	connection.on('unfollow', onFollowChange);
-
-	showFollowButton.value = $i != null && $i.id !== props.user.id;
-	globalEvents.emit('showFollowButton', showFollowButton);
 });
 
 onBeforeUnmount(() => {
