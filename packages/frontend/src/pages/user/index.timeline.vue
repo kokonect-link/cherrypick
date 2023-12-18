@@ -6,22 +6,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkTab v-if="($i && ($i.id === user.id)) || user.publicReactions" v-model="include" :class="$style.tab">
+		<MkTab v-if="($i && ($i.id === user.id)) || user.publicReactions" v-model="tab" :class="$style.tab">
 			<option :value="null">{{ i18n.ts.notes }}</option>
 			<option value="all">{{ i18n.ts.all }}</option>
 			<option value="featured">{{ i18n.ts.featured }}</option>
 			<option value="files">{{ i18n.ts.withFiles }}</option>
 			<option value="reactions">{{ i18n.ts.reaction }}</option>
 		</MkTab>
-		<MkTab v-else v-model="include" :class="$style.tab">
+		<MkTab v-else v-model="tab" :class="$style.tab">
 			<option :value="null">{{ i18n.ts.notes }}</option>
 			<option value="all">{{ i18n.ts.all }}</option>
 			<option value="featured">{{ i18n.ts.featured }}</option>
 			<option value="files">{{ i18n.ts.withFiles }}</option>
 		</MkTab>
 	</template>
-	<MkNotes v-if="include === 'featured'" :noGap="true" :pagination="featuredPagination" :class="$style.tl"/>
-	<XReactions v-else-if="include === 'reactions'" :user="user"/>
+	<XReactions v-if="tab === 'reactions'" :user="user"/>
 	<MkNotes v-else :noGap="true" :pagination="pagination" :class="$style.tl"/>
 </MkStickyContainer>
 </template>
@@ -39,32 +38,29 @@ const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
 }>();
 
-const include = ref<string | null>(null);
+const tab = ref<string | null>(null);
 
-const pagination = {
-	endpoint: 'users/notes' as const,
-	limit: 10,
-	params: computed(() => ({
-		userId: props.user.id,
-		withRenotes: include.value === 'all',
-		withReplies: include.value === 'all',
-		withChannelNotes: include.value === 'all',
-		withFiles: include.value === 'files',
-	})),
-};
-
-const featuredPagination = {
+const pagination = computed(() => tab.value === 'featured' ? {
 	endpoint: 'users/featured-notes' as const,
 	limit: 10,
-	params: computed(() => ({
+	params: {
 		userId: props.user.id,
-	})),
-};
+	},
+} : {
+	endpoint: 'users/notes' as const,
+	limit: 10,
+	params: {
+		userId: props.user.id,
+		withRenotes: tab.value === 'all',
+		withReplies: tab.value === 'all',
+		withChannelNotes: tab.value === 'all',
+		withFiles: tab.value === 'files',
+	},
+});
 </script>
 
 <style lang="scss" module>
 .tab {
-	margin: calc(var(--margin) / 2) 0;
 	padding: calc(var(--margin) / 2) 0;
 	background: var(--bg);
 }

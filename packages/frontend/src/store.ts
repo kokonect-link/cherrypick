@@ -429,6 +429,10 @@ export const defaultStore = markRaw(new Storage('base', {
 			code: false,
 		} as Record<string, boolean>,
 	},
+	enableSeasonalScreenEffect: {
+		where: 'device',
+		default: false,
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,

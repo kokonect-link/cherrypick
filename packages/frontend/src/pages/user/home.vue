@@ -145,10 +145,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
 				<template v-if="narrow">
-					<XFiles :key="user.id" :user="user"/>
-					<XActivity :key="user.id" :user="user"/>
+					<MkLazy>
+						<XFiles :key="user.id" :user="user"/>
+					</MkLazy>
+					<MkLazy>
+						<XActivity :key="user.id" :user="user"/>
+					</MkLazy>
 				</template>
-				<XTimeline v-if="!disableNotes" :user="user"/>
+				<div v-if="!disableNotes">
+					<MkLazy>
+						<XTimeline :user="user"/>
+					</MkLazy>
+				</div>
 			</div>
 		</div>
 		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
@@ -180,7 +188,6 @@ import { i18n } from '@/i18n.js';
 import { $i, iAmModerator } from '@/account.js';
 import { dateString } from '@/filters/date.js';
 import { confetti } from '@/scripts/confetti.js';
-import MkNotes from '@/components/MkNotes.vue';
 import { api } from '@/os.js';
 import { isFfVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
 import { defaultStore } from '@/store.js';

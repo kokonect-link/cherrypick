@@ -154,6 +154,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
+				<MkSwitch v-model="enableSeasonalScreenEffect">{{ i18n.ts.seasonalScreenEffect }}</MkSwitch>
 				<MkSwitch v-model="showUnreadNotificationsCount">{{ i18n.ts.showUnreadNotificationsCount }}</MkSwitch>
 			</div>
 			<div>
@@ -409,6 +410,7 @@ const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificati
 const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
 const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
+const enableSeasonalScreenEffect = computed(defaultStore.makeGetterSetter('enableSeasonalScreenEffect'));
 const showUnreadNotificationsCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationsCount'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
@@ -473,6 +475,7 @@ watch([
 	showUnreadNotificationsCount,
 	showFixedPostFormInReplies,
 	showingAnimatedImages,
+	enableSeasonalScreenEffect,
 ], async () => {
 	await reloadAsk();
 });
