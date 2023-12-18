@@ -80,7 +80,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-tooltip="i18n.ts.renote"
 				:class="$style.footerButton"
 				class="_button"
-				@click.stop="(defaultStore.state.renoteQuoteButtonSeparation && !defaultStore.state.renoteVisibilitySelection && !note.channel) || (defaultStore.state.renoteQuoteButtonSeparation && note.channel && !note.channel.allowRenoteToExternal) || (defaultStore.state.renoteQuoteButtonSeparation && note.visibility === 'followers') ? renoteOnly() : renote()"
+				@click.stop="(defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !note.channel) || (note.channel && !note.channel.allowRenoteToExternal) || note.visibility === 'followers')) ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ note.renoteCount }}</p>
@@ -165,9 +165,9 @@ const note = ref(deepClone(props.note));
 const el = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
-const quoteButton = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
 const heartReactButton = shallowRef<HTMLElement>();
+const quoteButton = shallowRef<HTMLElement>();
 const clipButton = shallowRef<HTMLElement>();
 const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || props.note.userId === $i.id);
 const isDeleted = ref(false);

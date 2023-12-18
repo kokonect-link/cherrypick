@@ -20,7 +20,6 @@ import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
-import { ap } from 'vitest/dist/reporters-5f784f42.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;

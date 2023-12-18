@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+showRenoteVisibilitySelector: "リノートの公開範囲オプションを表示"
 cannotBeUsedFunc: "この機能は現在使用できません。"
 scale: "大きさ"
 opacity: "不透明度"
@@ -1288,7 +1289,6 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
-showRenoteVisibilitySelector: "TRANSLATME-showRenoteVisibilitySelector"
 
 _nsfwOpenBehavior:
   click: "タップして開く"
