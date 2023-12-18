@@ -1289,6 +1289,7 @@ export interface Locale {
     "thisFlashRequiresTheFollowingPermissions": string;
     "doYouWantToAllowThisPlayToAccessYourAccount": string;
     "translateProfile": string;
+    "showRenoteVisibilitySelector": string;
     "_nsfwOpenBehavior": {
         "click": string;
         "doubleClick": string;
