@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkCwButton v-model="showContent" style="width: 100%" :text="note.text" :files="note.files" :poll="note.poll" @click.stop/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
+					<MkSubNoteContent :class="[$style.text, { [$style.showSubNoteFooterButton]: defaultStore.state.showSubNoteFooterButton }]" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
 				</div>
 			</div>
 		</div>
@@ -165,6 +165,10 @@ function noteClick(ev: MouseEvent) {
 
 .more {
 	padding: 10px 0 0 16px;
+}
+
+.showSubNoteFooterButton {
+	padding-bottom: 5px;
 }
 
 @container (max-width: 580px) {
