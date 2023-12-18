@@ -977,8 +977,8 @@ export interface Locale {
     "classic": string;
     "muteThread": string;
     "unmuteThread": string;
-    "ffVisibility": string;
-    "ffVisibilityDescription": string;
+    "followingVisibility": string;
+    "followersVisibility": string;
     "continueThread": string;
     "deleteAccountConfirm": string;
     "incorrectPassword": string;

@@ -319,7 +319,12 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
-		ffVisibility: {
+		followingVisibility: {
+			type: 'string',
+			nullable: false, optional: false,
+			enum: ['public', 'followers', 'private'],
+		},
+		followersVisibility: {
 			type: 'string',
 			nullable: false, optional: false,
 			enum: ['public', 'followers', 'private'],
