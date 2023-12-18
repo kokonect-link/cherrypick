@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<template v-if="appearNote.reply && appearNote.reply.replyId"><MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note"/></template>
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="$style.replyTo"/>
-	<article :class="$style.note" @contextmenu.stop="onContextmenu">
+	<article :class="$style.note" :style="{ paddingTop: defaultStore.state.showSubNoteFooterButton && appearNote.reply && !renoteCollapsed ? '14px' : '' }" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
 			<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
 			<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">

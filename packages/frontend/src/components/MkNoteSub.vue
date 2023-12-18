@@ -168,7 +168,7 @@ function noteClick(ev: MouseEvent) {
 }
 
 .showSubNoteFooterButton {
-	padding-bottom: 5px;
+	padding-bottom: 15px;
 }
 
 @container (max-width: 580px) {
