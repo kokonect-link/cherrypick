@@ -541,6 +541,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	renoteVisibilitySelection: {
+		where: 'device',
+		default: true,
+	},
 	showFixedPostFormInReplies: {
 		where: 'device',
 		default: true,
