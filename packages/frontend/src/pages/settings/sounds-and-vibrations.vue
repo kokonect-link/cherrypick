@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<template #label>{{ i18n.ts.vibrations }} <span class="_beta">CherryPick</span></template>
 		<div class="_gaps_s">
-			<MkSwitch v-model="vibrate" :disabled="ua" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template v-if="ua" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a href="#" class="_link" @click="learnMorePlayVibrations">{{ i18n.ts.learnMore }}</a></template></MkSwitch>
+			<MkSwitch v-model="vibrate" :disabled="ua" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template v-if="ua" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMorePlayVibrations">{{ i18n.ts.learnMore }}</a></template></MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateNote">{{ i18n.ts._vibrations.note }}</MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateNotification">{{ i18n.ts._vibrations.notification }}</MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateChat">{{ i18n.ts._vibrations.chat }}</MkSwitch>
