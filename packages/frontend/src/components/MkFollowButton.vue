@@ -34,6 +34,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 </button>
 <div v-else-if="disableIfFollowing && isFollowing"><i class="ti ti-circle-check"></i><span style="padding-left: 3px;">{{ i18n.ts.alreadyFollowed }}</span></div>
+<button
+	v-else-if="$i && $i.id == user.id"
+	class="_button"
+	:class="[$style.root, $style.active, { [$style.full]: full, [$style.large]: large }]"
+	@click="editProfile"
+>
+	<i class="ti ti-pencil"></i>
+</button>
 </template>
 
 <script lang="ts" setup>
@@ -48,8 +56,10 @@ import { userName } from '@/filters/user.js';
 import { globalEvents } from '@/events.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { defaultStore } from '@/store.js';
+import { useRouter } from '@/router.js';
 
 const showFollowButton = ref(false);
+const router = useRouter();
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.UserDetailed,
@@ -143,6 +153,10 @@ async function onClick() {
 	} finally {
 		wait.value = false;
 	}
+}
+
+function editProfile() {
+	router.push('/settings/profile');
 }
 
 onMounted(() => {
