@@ -312,7 +312,7 @@ function queueUpdated(q: number): void {
 	queue.value = q;
 }
 
-function openAccountMenu(ev: MouseEvent) {
+function openAccountMenu(ev: TouchEvent) {
 	if (defaultStore.state.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
 		setTimeout(() => {

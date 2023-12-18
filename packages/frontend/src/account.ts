@@ -248,8 +248,8 @@ export async function login(token: Account['token'], redirect?: string) {
 
 export async function openAccountMenu(opts: {
 	includeCurrentAccount?: boolean;
-	withExtraOperation: boolean;
-	withExtraOperationFriendly: boolean;
+	withExtraOperation?: boolean;
+	withExtraOperationFriendly?: boolean;
 	active?: Misskey.entities.UserDetailed['id'];
 	onChoose?: (account: Misskey.entities.UserDetailed) => void;
 }, ev: MouseEvent) {
@@ -369,7 +369,7 @@ export async function openAccountMenu(opts: {
 			text: i18n.ts.profile,
 			to: `/@${$i.username}`,
 			avatar: $i,
-		}, null, ...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises, {
+		}, { type: 'divider' }, ...(opts.includeCurrentAccount ? [createItem($i)] : []), ...accountItemPromises, {
 			type: 'parent' as const,
 			icon: 'ti ti-plus',
 			text: i18n.ts.addAccount,
