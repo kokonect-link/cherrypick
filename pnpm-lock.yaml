@@ -177,8 +177,8 @@ importers:
         specifier: workspace:*
         version: link:../cherrypick-js
       cherrypick-mfm-js:
-        specifier: github:kokonect-link/mfm.js
-        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
+        specifier: 0.24.0-cherrypick.4
+        version: 0.24.0-cherrypick.4
       chokidar:
         specifier: 3.5.3
         version: 3.5.3
@@ -828,8 +828,8 @@ importers:
         specifier: workspace:*
         version: link:../cherrypick-js
       cherrypick-mfm-js:
-        specifier: github:kokonect-link/mfm.js
-        version: github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c
+        specifier: 0.24.0-cherrypick.4
+        version: 0.24.0-cherrypick.4
       chromatic:
         specifier: 10.1.0
         version: 10.1.0
@@ -7564,6 +7564,10 @@ packages:
     engines: {node: '>=14.17'}
     dev: true
 
+  /@twemoji/parser@15.0.0:
+    resolution: {integrity: sha512-lh9515BNsvKSNvyUqbj5yFu83iIDQ77SwVcsN/SnEGawczhsKU6qWuogewN1GweTi5Imo5ToQ9s+nNTf97IXvg==}
+    dev: false
+
   /@types/accepts@1.3.7:
     resolution: {integrity: sha512-Pay9fq2lM2wXPWbteBsRAGiWH2hig4ZE2asK+mm7kUzlxRTfL961rj89I6zV/E3PcIkDqyuBEcMxFT7rccugeQ==}
     dependencies:
@@ -10035,6 +10039,12 @@ packages:
       htmlparser2: 8.0.1
       parse5: 7.1.2
       parse5-htmlparser2-tree-adapter: 7.0.0
+
+  /cherrypick-mfm-js@0.24.0-cherrypick.4:
+    resolution: {integrity: sha512-j+RQtW17aHm7ee7/KAeOEP+jIuzPr0YUgTAzorhLpbYNbshZ9X3BOBZzmuu3B/WhwYGV5rDc1CWjp77gOiFktg==}
+    dependencies:
+      '@twemoji/parser': 15.0.0
+    dev: false
 
   /chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
@@ -20607,14 +20617,6 @@ packages:
     name: aiscript-vscode
     version: 0.0.6
     engines: {vscode: ^1.83.0}
-    dev: false
-
-  github.com/kokonect-link/mfm.js/6cfec923792dce92a5401372a42904ea48e5484c:
-    resolution: {tarball: https://codeload.github.com/kokonect-link/mfm.js/tar.gz/6cfec923792dce92a5401372a42904ea48e5484c}
-    name: cherrypick-mfm-js
-    version: 0.23.3-cherrypick.2
-    dependencies:
-      twemoji-parser: 14.0.0
     dev: false
 
   github.com/misskey-dev/browser-image-resizer/0227e860621e55cbed0aabe6dc601096a7748c4a:

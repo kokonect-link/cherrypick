@@ -100,7 +100,7 @@
 		"chalk": "5.3.0",
 		"chalk-template": "1.1.0",
 		"cherrypick-js": "workspace:*",
-		"cherrypick-mfm-js": "github:kokonect-link/mfm.js",
+		"cherrypick-mfm-js": "0.24.0-cherrypick.4",
 		"chokidar": "3.5.3",
 		"cli-highlight": "2.1.11",
 		"color-convert": "2.0.1",

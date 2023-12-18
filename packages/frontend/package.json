@@ -40,7 +40,7 @@
 		"chartjs-plugin-gradient": "0.6.1",
 		"chartjs-plugin-zoom": "2.0.1",
 		"cherrypick-js": "workspace:*",
-		"cherrypick-mfm-js": "github:kokonect-link/mfm.js",
+		"cherrypick-mfm-js": "0.24.0-cherrypick.4",
 		"chromatic": "10.1.0",
 		"compare-versions": "6.1.0",
 		"cropperjs": "2.0.0-beta.4",
