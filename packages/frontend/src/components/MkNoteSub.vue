@@ -88,7 +88,7 @@ if (props.detail) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (document.getSelection().type === 'Range' || !expandOnNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick) ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>

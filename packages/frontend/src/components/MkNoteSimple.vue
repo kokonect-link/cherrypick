@@ -56,7 +56,7 @@ onMounted(() => {
 });
 
 function noteClick(ev: MouseEvent) {
-	if (document.getSelection().type === 'Range' || !expandOnNoteClick || !props.enableNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick || !props.enableNoteClick) ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>
