@@ -2146,8 +2146,6 @@ _notification:
   youGotReply: "{name} membalas kamu"
   youGotQuote: "{name} mengutip kamu"
   youRenoted: "{name} me-renote kamu"
-  youGotMessagingMessageFromUser: "{name} mengirimi kamu pesan"
-  youGotMessagingMessageFromGroup: "Sebuah pesan telah dikirim ke grup {name}"
   youWereFollowed: "Mengikuti kamu"
   youReceivedFollowRequest: "Kamu menerima permintaan mengikuti"
   yourFollowRequestAccepted: "Permintaan mengikuti kamu telah diterima"

@@ -248,13 +248,14 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						badge: iconUrl('bell'),
 						data,
 					}];
-		
+
 				default:
 					return null;
 			}
 		case 'unreadMessagingMessage':
 			if (data.body.groupId === null) {
-				return [t('_notification.youGotMessagingMessageFromUser', { name: getUserName(data.body.user) }), {
+				return [getUserName(data.body.user), {
+					body: data.body.text ?? '',
 					icon: data.body.user.avatarUrl,
 					badge: iconUrl('messages'),
 					tag: `messaging:user:${data.body.userId}`,
@@ -262,7 +263,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					renotify: true,
 				}];
 			}
-			return [t('_notification.youGotMessagingMessageFromGroup', { name: data.body.group?.name ?? '' }), {
+			return [data.body.group?.name ?? '', {
+				body: `${data.body.user?.username}: ${data.body.text ?? ''}`,
 				icon: data.body.user.avatarUrl,
 				badge: iconUrl('messages'),
 				tag: `messaging:group:${data.body.groupId}`,

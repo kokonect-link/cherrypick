@@ -1977,8 +1977,6 @@ _notification:
   youGotReply: "{name} отвечает вам."
   youGotQuote: "{name} цитирует вас."
   youRenoted: "{name} передаёт вашу заметку."
-  youGotMessagingMessageFromUser: "{name} пишет вам."
-  youGotMessagingMessageFromGroup: "Новое сообщение в группе «{name}»."
   youWereFollowed: "У вас новый подписчик."
   youReceivedFollowRequest: "У вас новый запрос на подписку."
   yourFollowRequestAccepted: "Ваш запрос на подписку одобрен."

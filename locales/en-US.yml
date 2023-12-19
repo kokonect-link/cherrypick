@@ -2452,8 +2452,6 @@ _notification:
   youGotReply: "{name} replied to you"
   youGotQuote: "{name} quoted you"
   youRenoted: "Renote from {name}"
-  youGotMessagingMessageFromUser: "{name} sent you a chat message"
-  youGotMessagingMessageFromGroup: "A chat message was sent to the {name} group"
   youWereFollowed: "followed you"
   youReceivedFollowRequest: "You've received a follow request"
   yourFollowRequestAccepted: "Your follow request was accepted"

@@ -2533,8 +2533,6 @@ _notification:
   youGotReply: "{name}からのリプライ"
   youGotQuote: "{name}による引用"
   youRenoted: "{name}がRenoteしました"
-  youGotMessagingMessageFromUser: "{name}からのチャットがあります"
-  youGotMessagingMessageFromGroup: "{name}のチャットがあります"
   youWereFollowed: "フォローされました"
   youReceivedFollowRequest: "フォローリクエストが来ました"
   yourFollowRequestAccepted: "フォローリクエストが承認されました"

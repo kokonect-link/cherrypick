@@ -1643,8 +1643,6 @@ _notification:
   youGotReply: "{name} відповідає"
   youGotQuote: "{name} цитує вас"
   youRenoted: "{name} поширює"
-  youGotMessagingMessageFromUser: "Повідомлення від {name}"
-  youGotMessagingMessageFromGroup: "Нове повідомлення в групі {name}"
   youWereFollowed: "Новий підписник"
   youReceivedFollowRequest: "Ви отримали запит на підписку"
   yourFollowRequestAccepted: "Запит на підписку прийнято"

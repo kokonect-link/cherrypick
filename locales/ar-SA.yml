@@ -1516,8 +1516,6 @@ _notification:
   youGotReply: "ردّ عليك {name}"
   youGotQuote: "اقتبس {name} منشورك"
   youRenoted: "أعاد {name} نشر منشورك"
-  youGotMessagingMessageFromUser: "لقد تلقيت رسالة مِن {name}"
-  youGotMessagingMessageFromGroup: "لقد أرسِلَت رسالة إلى الفريق {name}"
   youWereFollowed: "يتابعك"
   youReceivedFollowRequest: "تلقيتَ طلب متابعة"
   yourFollowRequestAccepted: "قُبل طلب المتابعة"

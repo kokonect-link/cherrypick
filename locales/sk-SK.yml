@@ -1473,8 +1473,6 @@ _notification:
   youGotReply: "{name} vám odpovedal/a"
   youGotQuote: "{name} vás citoval/a"
   youRenoted: "{name} preposlal/a vašu poznámku"
-  youGotMessagingMessageFromUser: "{name} vám poslal/a správu"
-  youGotMessagingMessageFromGroup: "Prišla správa do skupiny {name}"
   youWereFollowed: "Máte nového sledujúceho"
   youReceivedFollowRequest: "Dostali ste žiadosť o sledovanie"
   yourFollowRequestAccepted: "Vaša žiadosť o sledovanie bola prijatá"

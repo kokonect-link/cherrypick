@@ -2173,8 +2173,6 @@ _notification:
   youGotReply: "Respuesta de {name}"
   youGotQuote: "Citado por {name}"
   youRenoted: "Renotado por {name}"
-  youGotMessagingMessageFromUser: "{name} comenzó un chat contigo"
-  youGotMessagingMessageFromGroup: "Tienes un chat de {name}"
   youWereFollowed: "te ha seguido"
   youReceivedFollowRequest: "Has mandado una solicitud de seguimiento"
   yourFollowRequestAccepted: "Tu solicitud de seguimiento fue aceptada"

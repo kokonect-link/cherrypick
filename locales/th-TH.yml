@@ -2139,8 +2139,6 @@ _notification:
   youGotReply: "{name} ตอบกลับถึงคุณ"
   youGotQuote: "{name} อ้างถึงคุณ"
   youRenoted: "รีโน้ตจาก {name}"
-  youGotMessagingMessageFromUser: "{name} ได้ส่งข้อความแชทถึงคุณ"
-  youGotMessagingMessageFromGroup: "ข้อความแชทถูกส่งไปยัง {name} กลุ่ม"
   youWereFollowed: "ได้ติดตามคุณ"
   youReceivedFollowRequest: "คุณมีคำขอติดตามใหม่น่ะ"
   yourFollowRequestAccepted: "คำขอติดตามของคุณได้รับการยอมรับแล้วน่ะ"

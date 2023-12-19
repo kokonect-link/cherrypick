@@ -1380,8 +1380,6 @@ _notification:
   youGotReply: "{name} আপনাকে জবাব দিয়েছে"
   youGotQuote: "{name} আপনাকে উদ্ধৃত করেছে"
   youRenoted: "{name} এর Renote"
-  youGotMessagingMessageFromUser: "{name} আপনাকে মেসেজ করেছে"
-  youGotMessagingMessageFromGroup: "{name} গ্রুপে একটি নতুন মেসেজ আছে"
   youWereFollowed: "আপনাকে অনুসরণ করছে"
   youReceivedFollowRequest: "অনুসরণ করার জন্য অনুরোধ পাওয়া গেছে"
   yourFollowRequestAccepted: "আপনার অনুসরণ করার অনুরোধ গৃহীত হয়েছে"

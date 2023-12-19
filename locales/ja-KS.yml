@@ -2239,8 +2239,6 @@ _notification:
   youGotReply: "{name}からのリプライ"
   youGotQuote: "{name}による引用"
   youRenoted: "{name}がリノートしたみたいやで"
-  youGotMessagingMessageFromUser: "{name}からのチャットがあるで"
-  youGotMessagingMessageFromGroup: "{name}のチャットがあるで"
   youWereFollowed: "フォローされたで"
   youReceivedFollowRequest: "フォロー許可してほしいみたいやな"
   yourFollowRequestAccepted: "フォローさせてもろたで"

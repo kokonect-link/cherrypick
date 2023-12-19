@@ -2635,8 +2635,6 @@ export interface Locale {
         "youGotReply": string;
         "youGotQuote": string;
         "youRenoted": string;
-        "youGotMessagingMessageFromUser": string;
-        "youGotMessagingMessageFromGroup": string;
         "youWereFollowed": string;
         "youReceivedFollowRequest": string;
         "yourFollowRequestAccepted": string;

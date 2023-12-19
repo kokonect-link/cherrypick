@@ -1969,8 +1969,6 @@ _notification:
   youGotReply: "Réponse de {name}"
   youGotQuote: "Cité·e par {name}"
   youRenoted: "{name} vous a Renoté"
-  youGotMessagingMessageFromUser: "{name} vous envoyé un message"
-  youGotMessagingMessageFromGroup: "Un message a été envoyé au groupe {name}"
   youWereFollowed: "s'est abonné·e à vous"
   youReceivedFollowRequest: "Vous avez reçu une demande d’abonnement"
   yourFollowRequestAccepted: "Votre demande d’abonnement a été accepté"

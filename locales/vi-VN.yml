@@ -1870,8 +1870,6 @@ _notification:
   youGotReply: "{name} trả lời bạn"
   youGotQuote: "{name} trích dẫn tút của bạn"
   youRenoted: "{name} đăng lại tút của bạn"
-  youGotMessagingMessageFromUser: "{name} nhắn tin cho bạn"
-  youGotMessagingMessageFromGroup: "Một tin nhắn trong nhóm {name}"
   youWereFollowed: "đã theo dõi bạn"
   youReceivedFollowRequest: "Bạn vừa có một yêu cầu theo dõi"
   yourFollowRequestAccepted: "Yêu cầu theo dõi của bạn đã được chấp nhận"

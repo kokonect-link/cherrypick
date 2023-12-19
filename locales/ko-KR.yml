@@ -2453,8 +2453,6 @@ _notification:
   youGotReply: "{name} 님이 답글을 달았어요!"
   youGotQuote: "{name} 님이 인용했어요!"
   youRenoted: "{name} 님이 리노트했어요!"
-  youGotMessagingMessageFromUser: "{name} 님이 보낸 채팅이 있어요!"
-  youGotMessagingMessageFromGroup: "{name}에서 보낸 채팅이 있어요!"
   youWereFollowed: "새로운 팔로워가 있어요!"
   youReceivedFollowRequest: "새로운 팔로우 요청이 있어요!"
   yourFollowRequestAccepted: "팔로우 요청이 수락됐어요!"

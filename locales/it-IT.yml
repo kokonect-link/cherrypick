@@ -2239,8 +2239,6 @@ _notification:
   youGotReply: "{name} ti ha risposto"
   youGotQuote: "{name} ha citato la tua Nota e ha detto"
   youRenoted: "{name} ha rinotato"
-  youGotMessagingMessageFromUser: "{name} ti ha mandato un messaggio"
-  youGotMessagingMessageFromGroup: "{name} ti ha mandato un messaggio nella chat"
   youWereFollowed: "Adesso ti segue"
   youReceivedFollowRequest: "Hai ricevuto una richiesta di follow"
   yourFollowRequestAccepted: "La tua richiesta di follow è stata accettata"
