@@ -10,9 +10,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	v-vibrate="defaultStore.state.vibrateSystem ? [10, 30, 40] : []"
 	class="_button"
 	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
-	@click="toggleReaction"
+	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
 >
-	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click="toggleReaction"/>
+	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
 	<span :class="$style.count">{{ count }}</span>
 </button>
 </template>
@@ -87,7 +87,7 @@ async function toggleReaction(ev: MouseEvent) {
 			if (oldReaction !== props.reaction) {
 				os.api('notes/reactions/create', {
 					noteId: props.note.id,
-					reaction: props.reaction,
+					reaction: `:${reactionName.value}:`,
 				});
 			}
 		});
@@ -106,6 +106,38 @@ async function toggleReaction(ev: MouseEvent) {
 		if (props.note.text && props.note.text.length > 100 && (Date.now() - new Date(props.note.createdAt).getTime() < 1000 * 3)) {
 			claimAchievement('reactWithoutRead');
 		}
+	}
+}
+
+function stealReaction(ev: MouseEvent) {
+	if (props.note.user.host && $i && ($i.isAdmin ?? $i.policies.canManageCustomEmojis)) {
+		os.popupMenu([{
+			type: 'label',
+			text: props.reaction,
+		}, {
+			text: i18n.ts.import,
+			icon: 'ti ti-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host,
+				});
+			},
+		}, {
+			text: i18n.ts.doReaction,
+			icon: 'ti ti-mood-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host,
+				});
+
+				await os.api('notes/reactions/create', {
+					noteId: props.note.id,
+					reaction: `:${reactionName.value}:`,
+				});
+			},
+		}], ev.currentTarget ?? ev.target);
 	}
 }
 
