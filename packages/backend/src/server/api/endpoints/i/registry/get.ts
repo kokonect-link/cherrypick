@@ -21,7 +21,7 @@ export const meta = {
 
 	res: {
 		type: 'object',
-	}
+	},
 } as const;
 
 export const paramDef = {

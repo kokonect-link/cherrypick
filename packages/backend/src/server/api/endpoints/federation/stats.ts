@@ -59,7 +59,7 @@ export const meta = {
 							type: 'string',
 							nullable: true,
 						},
-					}
+					},
 				},
 			},
 			otherFollowersCount: { type: 'number' },
@@ -98,12 +98,12 @@ export const meta = {
 							type: 'string',
 							nullable: true,
 						},
-					}
+					},
 				},
 			},
 			otherFollowingCount: { type: 'number' },
 		},
-	}
+	},
 } as const;
 
 export const paramDef = {
