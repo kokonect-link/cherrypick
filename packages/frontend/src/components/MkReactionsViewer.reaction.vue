@@ -124,7 +124,7 @@ function stealReaction(ev: MouseEvent) {
 				});
 			},
 		}, {
-			text: i18n.ts.doReaction,
+			text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
 			icon: 'ti ti-mood-plus',
 			action: async () => {
 				await os.apiWithDialog('admin/emoji/steal', {
