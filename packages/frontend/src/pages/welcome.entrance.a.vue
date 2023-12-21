@@ -40,13 +40,7 @@ import MarqueeText from '@/components/MkMarquee.vue';
 import MkFeaturedPhotos from '@/components/MkFeaturedPhotos.vue';
 import cherrypicksvg from '/client-assets/cherrypick.svg';
 import misskeysvg from '/client-assets/misskey.svg';
-import MkInfo from '@/components/MkInfo.vue';
-import { instanceName } from '@/config.js';
 import * as os from '@/os.js';
-import { i18n } from '@/i18n.js';
-import { instance } from '@/instance.js';
-import number from '@/filters/number.js';
-import MkNumber from '@/components/MkNumber.vue';
 import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
 import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 

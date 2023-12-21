@@ -16,7 +16,6 @@ import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import { TextBlock } from './block.type';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
-import { $i } from '@/account.js';
 
 const MkUrlPreview = defineAsyncComponent(() => import('@/components/MkUrlPreview.vue'));
 
