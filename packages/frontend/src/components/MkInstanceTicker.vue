@@ -77,7 +77,7 @@ $height: 2ex;
 	font-size: 0.9em;
 	font-weight: bold;
 	white-space: nowrap;
-	overflow: scroll;
+	overflow: hidden;
   overflow-wrap: anywhere;
   max-width: 300px;
   text-overflow: ellipsis;

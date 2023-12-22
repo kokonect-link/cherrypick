@@ -805,7 +805,7 @@ onMounted(() => {
 	font-weight: bold;
 	line-height: 1.3;
 	margin: 0 .5em 0 0;
-  overflow: scroll;
+  overflow: hidden;
   overflow-wrap: anywhere;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -839,7 +839,7 @@ onMounted(() => {
 	margin-bottom: 2px;
 	line-height: 1.3;
 	word-wrap: anywhere;
-  overflow: scroll;
+  overflow: hidden;
   overflow-wrap: anywhere;
   text-overflow: ellipsis;
   white-space: nowrap;

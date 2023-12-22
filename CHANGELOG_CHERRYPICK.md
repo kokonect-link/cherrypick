@@ -74,6 +74,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 내 프로필에서 간헐적으로 헤더에 MkFollowButton 컴포넌트가 표시될 수 있음
 - Fix: 다이렉트 노트를 리노트 할 수 있음
 - Fix: 이모지를 변경할 때 이모지가 ❤️로 고정될 수 있음
+- Fix: 일부 환경에서 특정 영역에 스크롤 바가 표시될 수 있음
 
 ### Server
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)
