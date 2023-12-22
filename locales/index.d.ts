@@ -2665,6 +2665,7 @@ export interface Locale {
             "receiveFollowRequest": string;
             "followRequestAccepted": string;
             "groupInvited": string;
+            "roleAssigned": string;
             "achievementEarned": string;
             "app": string;
         };

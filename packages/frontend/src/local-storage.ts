@@ -39,6 +39,7 @@ type Keys =
 	`aiscriptSecure:${string}` |
 	'lastEmojisFetchedAt' | // DEPRECATED, stored in indexeddb (13.9.0~)
 	'emojis' | // DEPRECATED, stored in indexeddb (13.9.0~);
+	`channelLastReadedAt:${string}` |
 	'neverShowNoteEditInfo'
 
 export const miLocalStorage = {

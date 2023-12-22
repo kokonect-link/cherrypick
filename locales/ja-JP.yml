@@ -2564,6 +2564,7 @@ _notification:
     receiveFollowRequest: "フォロー申請を受け取った"
     followRequestAccepted: "フォローが受理された"
     groupInvited: "グループに招待された"
+    roleAssigned: "ロールが付与された"
     achievementEarned: "実績の獲得"
     app: "連携アプリからの通知"
 

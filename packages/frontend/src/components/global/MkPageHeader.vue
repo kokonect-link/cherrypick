@@ -87,7 +87,7 @@ const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includ
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
 	tab?: string;
-	actions?: PageHeaderItem[];
+	actions?: PageHeaderItem[] | null;
 	thin?: boolean;
 	displayMyAvatar?: boolean;
 }>(), {

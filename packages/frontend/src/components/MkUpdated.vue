@@ -45,7 +45,7 @@ const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const whatIsNewMisskey = () => {
 	// modal.value.close();
-	window.open(`https://misskey-hub.net/docs/releases.html#_${basedMisskeyVersion.replace(/\./g, '-')}`, '_blank');
+	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
 };
 
 const whatIsNewCherryPick = () => {

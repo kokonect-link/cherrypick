@@ -1986,6 +1986,7 @@ _notification:
   youWereInvitedToGroup: "Invité·e au groupe"
   pollEnded: "Les résultats du sondage sont disponibles"
   unreadAntennaNote: "Antenne {name}"
+  roleAssigned: "Rôle attribué"
   emptyPushNotificationMessage: "Les notifications push ont été mises à jour"
   achievementEarned: "Accomplissement"
   testNotification: "Tester la notification"
