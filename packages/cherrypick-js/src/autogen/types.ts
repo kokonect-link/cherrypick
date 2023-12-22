@@ -2,9 +2,9 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 /*
- * version: 4.6.0-beta.5
- * basedMisskeyVersion: 2023.12.0-beta.5
- * generatedAt: 2023-12-18T12:22:56.816Z
+ * version: 4.6.0-beta.6
+ * basedMisskeyVersion: 2023.12.0-beta.6
+ * generatedAt: 2023-12-22T05:37:22.228Z
  */
 
 /**
@@ -3914,15 +3914,7 @@ export type components = {
           /** @enum {string} */
           type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
         };
-        achievementEarned?: {
-          /** @enum {string} */
-          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
-        };
         receiveFollowRequest?: {
-          /** @enum {string} */
-          type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
-        };
-        followRequestAccepted?: {
           /** @enum {string} */
           type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'list' | 'never';
         };
@@ -4004,6 +3996,24 @@ export type components = {
       /** Format: id */
       ownerId: string;
       userIds?: string[];
+    };
+    Ad: {
+      /**
+       * Format: id
+       * @example xxxxxxxxxx
+       */
+      id: string;
+      /** Format: date-time */
+      expiresAt: string;
+      /** Format: date-time */
+      startsAt: string;
+      place: string;
+      priority: string;
+      ratio: number;
+      url: string;
+      imageUrl: string;
+      memo: string;
+      dayOfWeek: number;
     };
     Announcement: {
       /**
@@ -4150,7 +4160,7 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       /** @enum {string} */
-      type: 'note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped';
+      type: 'note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped';
       user?: components['schemas']['UserLite'] | null;
       /** Format: id */
       userId?: string | null;
@@ -5313,9 +5323,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['User'];
+        };
       };
       /** @description Client error */
       400: {
@@ -5372,9 +5384,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['Ad'];
+        };
       };
       /** @description Client error */
       400: {
@@ -5482,9 +5496,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['Ad'][];
+        };
       };
       /** @description Client error */
       400: {
@@ -7581,9 +7597,14 @@ export type operations = {
    */
   'admin/get-index-stats': {
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+              tablename: string;
+              indexname: string;
+            }[];
+        };
       };
       /** @description Client error */
       400: {
@@ -7679,9 +7700,15 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+              ip: string;
+              /** Format: date-time */
+              createdAt: string;
+            }[];
+        };
       };
       /** @description Client error */
       400: {
@@ -9620,9 +9647,19 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': ({
+              /** Format: misskey:id */
+              id: string;
+              /** Format: date-time */
+              createdAt: string;
+              user: components['schemas']['UserDetailed'];
+              /** Format: date-time */
+              expiresAt: string | null;
+            })[];
+        };
       };
       /** @description Client error */
       400: {
@@ -13968,6 +14005,17 @@ export type operations = {
       };
     };
     responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            params: {
+                name: string;
+                type: string;
+              }[];
+          } | null;
+        };
+      };
       /** @description OK (without any results) */
       204: {
         content: never;
@@ -14470,9 +14518,64 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            topSubInstances: ({
+                id?: string;
+                firstRetrievedAt?: string;
+                host?: string;
+                usersCount?: number;
+                notesCount?: number;
+                followingCount?: number;
+                followersCount?: number;
+                isNotResponding?: boolean;
+                isSuspended?: boolean;
+                isBlocked?: boolean;
+                softwareName?: string;
+                softwareVersion?: string;
+                openRegistrations?: boolean;
+                name?: string;
+                description?: string;
+                maintainerName?: string;
+                maintainerEmail?: string;
+                isSilenced?: boolean;
+                iconUrl?: string;
+                faviconUrl?: string;
+                themeColor?: string;
+                infoUpdatedAt?: string | null;
+                latestRequestReceivedAt?: string | null;
+              })[];
+            otherFollowersCount: number;
+            topPubInstances: ({
+                id?: string;
+                firstRetrievedAt?: string;
+                host?: string;
+                usersCount?: number;
+                notesCount?: number;
+                followingCount?: number;
+                followersCount?: number;
+                isNotResponding?: boolean;
+                isSuspended?: boolean;
+                isBlocked?: boolean;
+                softwareName?: string;
+                softwareVersion?: string;
+                openRegistrations?: boolean;
+                name?: string;
+                description?: string;
+                maintainerName?: string;
+                maintainerEmail?: string;
+                isSilenced?: boolean;
+                iconUrl?: string;
+                faviconUrl?: string;
+                themeColor?: string;
+                infoUpdatedAt?: string | null;
+                latestRequestReceivedAt?: string | null;
+              })[];
+            otherFollowingCount: number;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -15536,9 +15639,13 @@ export type operations = {
    */
   'get-online-users-count': {
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            count: number;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -16034,9 +16141,14 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            id: string;
+            name: string;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -16139,9 +16251,45 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            rp: {
+              id: string | null;
+            };
+            user: {
+              id: string;
+              name: string;
+              displayName: string;
+            };
+            challenge: string;
+            pubKeyCredParams: {
+                type: string;
+                alg: number;
+              }[];
+            timeout: number | null;
+            excludeCredentials: (({
+                id: string;
+                type: string;
+                transports: ('ble' | 'cable' | 'hybrid' | 'internal' | 'nfc' | 'smart-card' | 'usb')[];
+              })[]) | null;
+            authenticatorSelection: ({
+              /** @enum {string} */
+              authenticatorAttachment: 'cross-platform' | 'platform';
+              requireResidentKey: boolean;
+              /** @enum {string} */
+              userVerification: 'discouraged' | 'preferred' | 'required';
+            }) | null;
+            /** @enum {string|null} */
+            attestation: 'direct' | 'enterprise' | 'indirect' | 'none' | null;
+            extensions: ({
+              appid: string | null;
+              credProps: boolean | null;
+              hmacCreateSecret: boolean | null;
+            }) | null;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -16192,9 +16340,17 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            qr: string;
+            url: string;
+            secret: string;
+            label: string;
+            issuer: string;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -16405,9 +16561,20 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+              /** Format: misskey:id */
+              id: string;
+              name: string;
+              /** Format: date-time */
+              createdAt: string;
+              /** Format: date-time */
+              lastUsedAt: string;
+              permission: string[];
+            }[];
+        };
       };
       /** @description Client error */
       400: {
@@ -16465,9 +16632,18 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': ({
+              /** Format: misskey:id */
+              id: string;
+              name: string;
+              callbackUrl: string | null;
+              permission: string[];
+              isAuthorized: boolean;
+            })[];
+        };
       };
       /** @description Client error */
       400: {
@@ -17519,8 +17695,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
         };
       };
     };
@@ -17587,8 +17763,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
         };
       };
     };
@@ -18020,9 +18196,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
       };
       /** @description Client error */
       400: {
@@ -18074,9 +18252,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
       };
       /** @description Client error */
       400: {
@@ -18128,9 +18308,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
       };
       /** @description Client error */
       400: {
@@ -18181,9 +18363,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
       };
       /** @description Client error */
       400: {
@@ -18333,9 +18517,14 @@ export type operations = {
    */
   'i/registry/scopes-with-domain': {
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': ({
+              scopes: string[][];
+              domain: string | null;
+            })[];
+        };
       };
       /** @description Client error */
       400: {
@@ -18609,9 +18798,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['UserDetailed'];
+        };
       };
       /** @description Client error */
       400: {
@@ -18837,9 +19028,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': Record<string, never>;
+        };
       };
       /** @description Client error */
       400: {
@@ -18898,9 +19091,24 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            /** Format: misskey:id */
+            id: string;
+            /** Format: misskey:id */
+            userId: string;
+            name: string;
+            on: ('mention' | 'unfollow' | 'follow' | 'followed' | 'note' | 'reply' | 'renote' | 'reaction')[];
+            url: string;
+            secret: string;
+            active: boolean;
+            /** Format: date-time */
+            latestSentAt: string | null;
+            latestStatus: number | null;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -18942,9 +19150,24 @@ export type operations = {
    */
   'i/webhooks/list': {
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': ({
+              /** Format: misskey:id */
+              id: string;
+              /** Format: misskey:id */
+              userId: string;
+              name: string;
+              on: ('mention' | 'unfollow' | 'follow' | 'followed' | 'note' | 'reply' | 'renote' | 'reaction')[];
+              url: string;
+              secret: string;
+              active: boolean;
+              /** Format: date-time */
+              latestSentAt: string | null;
+              latestStatus: number | null;
+            })[];
+        };
       };
       /** @description Client error */
       400: {
@@ -18994,9 +19217,24 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            /** Format: misskey:id */
+            id: string;
+            /** Format: misskey:id */
+            userId: string;
+            name: string;
+            on: ('mention' | 'unfollow' | 'follow' | 'followed' | 'note' | 'reply' | 'renote' | 'reaction')[];
+            url: string;
+            secret: string;
+            active: boolean;
+            /** Format: date-time */
+            latestSentAt: string | null;
+            latestStatus: number | null;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -22986,9 +23224,11 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': components['schemas']['Flash'];
+        };
       };
       /** @description Client error */
       400: {
@@ -23798,9 +24038,15 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+              /** Format: misskey:id */
+              id: string;
+              user: components['schemas']['User'];
+            }[];
+        };
       };
       /** @description Client error */
       400: {
@@ -24058,9 +24304,24 @@ export type operations = {
    */
   'server-info': {
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            machine: string;
+            cpu: {
+              model: string;
+              cores: number;
+            };
+            mem: {
+              total: number;
+            };
+            fs: {
+              total: number;
+              used: number;
+            };
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -24404,9 +24665,19 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            /** Format: misskey:id */
+            id: string;
+            required: boolean;
+            string: string;
+            default: string;
+            /** @default hello */
+            nullableDefault: string | null;
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -26187,9 +26458,20 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+              /** Format: misskey:id */
+              id: string;
+              /** Format: date-time */
+              createdAt: string;
+              /** Format: misskey:id */
+              userId: string;
+              user: components['schemas']['User'];
+              withReplies: boolean;
+            }[];
+        };
       };
       /** @description Client error */
       400: {
@@ -26935,9 +27217,14 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+              name: string;
+              unlockedAt: number;
+            }[];
+        };
       };
       /** @description Client error */
       400: {
@@ -27095,9 +27382,13 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            items: Record<string, never>[];
+          };
+        };
       };
       /** @description Client error */
       400: {
@@ -27147,9 +27438,14 @@ export type operations = {
       };
     };
     responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            type: string;
+            data: string;
+          };
+        };
       };
       /** @description Client error */
       400: {

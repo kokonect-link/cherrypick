@@ -1,7 +1,7 @@
 /*
- * version: 4.6.0-beta.5
- * basedMisskeyVersion: 2023.12.0-beta.5
- * generatedAt: 2023-12-18T12:22:56.890Z
+ * version: 4.6.0-beta.6
+ * basedMisskeyVersion: 2023.12.0-beta.6
+ * generatedAt: 2023-12-22T05:37:22.306Z
  */
 
 import { components } from './types.js';
@@ -15,6 +15,7 @@ export type UserDetailed = components['schemas']['UserDetailed'];
 export type User = components['schemas']['User'];
 export type UserList = components['schemas']['UserList'];
 export type UserGroup = components['schemas']['UserGroup'];
+export type Ad = components['schemas']['Ad'];
 export type Announcement = components['schemas']['Announcement'];
 export type App = components['schemas']['App'];
 export type MessagingMessage = components['schemas']['MessagingMessage'];

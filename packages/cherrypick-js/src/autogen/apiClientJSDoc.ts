@@ -1,7 +1,7 @@
 /*
- * version: 4.6.0-beta.5
- * basedMisskeyVersion: 2023.12.0-beta.5
- * generatedAt: 2023-12-18T12:22:56.894Z
+ * version: 4.6.0-beta.6
+ * basedMisskeyVersion: 2023.12.0-beta.6
+ * generatedAt: 2023-12-22T05:37:22.310Z
  */
 
 import type { SwitchCaseResponseType } from '../api.js';
