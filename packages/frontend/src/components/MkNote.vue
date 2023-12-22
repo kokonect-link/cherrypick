@@ -899,6 +899,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 .article {
 	position: relative;
 	padding: 28px 32px;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .colorBar {

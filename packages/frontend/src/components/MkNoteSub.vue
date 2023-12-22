@@ -139,6 +139,7 @@ function noteClick(ev: MouseEvent) {
 .body {
 	flex: 1;
 	min-width: 0;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .header {

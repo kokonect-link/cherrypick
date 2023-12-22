@@ -66,6 +66,7 @@ function noteClick(ev: MouseEvent) {
 	margin: 0;
 	padding: 0;
 	font-size: 0.95em;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .avatar {
