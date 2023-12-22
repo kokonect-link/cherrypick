@@ -56,7 +56,7 @@ onMounted(() => {
 });
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || !props.enableNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick || !props.enableNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>

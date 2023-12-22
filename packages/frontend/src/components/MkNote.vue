@@ -393,7 +393,7 @@ if (!props.mock) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick) ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
 	else router.push(notePage(appearNote.value));
 }
 
