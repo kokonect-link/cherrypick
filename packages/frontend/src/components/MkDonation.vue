@@ -117,6 +117,7 @@ function donateCherryPick(ev: MouseEvent) {
 .main {
 	padding: 25px 25px 25px 0;
 	flex: 1;
+	overflow: auto;
 }
 
 .close {

@@ -76,6 +76,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 이모지를 변경할 때 이모지가 ❤️로 고정될 수 있음
 - Fix: 일부 환경에서 특정 영역에 스크롤 바가 표시될 수 있음
 - Fix: 일부 검색 페이지에서 Enter 키를 눌러 검색할 수 없음
+- Fix: 서버 이름이 매우 긴 경우, 후원 다이얼로그의 디자인이 잘못 표시될 수 있음
 
 ### Server
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)
