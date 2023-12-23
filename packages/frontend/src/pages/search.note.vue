@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" autofocus type="search" @keydown="onInputKeydown">
+		<MkInput v-model="searchQuery" :large="true" autofocus type="search" @keydown.enter="search">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
@@ -109,11 +109,5 @@ async function search() {
 	if (isLocalOnly.value) notePagination.value.params.host = '.';
 
 	key.value++;
-}
-
-function onInputKeydown(evt: KeyboardEvent) {
-	if (evt.key === 'Enter') {
-		search();
-	}
 }
 </script>
