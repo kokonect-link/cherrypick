@@ -23,11 +23,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-> Misskey 또는 CherryPick v4.3.0 이전 버전에서 마이그레이션 하는 경우, 버전 관리 방식의 차이 때문에 기존 버전보다 낮은 것으로 인식되어 마이그레이션 이후 <b>업데이트 관련 대화 상자가 표시되지 않을 수 있습니다.</b>
-> 
-> 또한, 일부 locale이 누락되거나 기능이 정상적으로 작동하지 않는 등의 문제가 발생할 수 있으나 이는 정상적인 동작으로,
-> 문제가 발생하면 <b>'설정 - 캐시 비우기'</b>를 진행하거나, <b>브라우저 캐시를 삭제</b>하십시오.
-
 ## 4.x.x
 출시일: unreleased<br>
 기반 Misskey 버전: 2023.x.x<br>
@@ -35,6 +30,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### General
 - Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
+- Change: Misskey 또는 CherryPick v4.3.0 이전 버전에서 마이그레이션 시, 마이그레이션 관련 다이얼로그가 표시됨
 - Feat: 리모트 서버의 이모지를 즉시 가져올 수 있음 ([pikokr/cherrypicnic@03d536c0](https://github.com/pikokr/cherrypicnic/commit/03d536c00212f2dfbebecf75e5d58e0ddb749444), [pikokr/cherrypicnic@8a2d6f3b](https://github.com/pikokr/cherrypicnic/commit/8a2d6f3b518fc13a6c32364780fba3be5eea3e5d))
   - 노트 본문 및 리액션 뷰어에서 사용 가능
 - Feat: 아이콘 장식을 세부 조정할 수 있음 ([Secineralyr/misskey.dream@b3299181](https://github.com/Secineralyr/misskey.dream/commit/b329918194f1991c84633361d8a1319cf203641c), [Secineralyr/misskey.dream@1a9642bb](https://github.com/Secineralyr/misskey.dream/commit/1a9642bb9087a256522767e113c3bbfa87ec2e47))

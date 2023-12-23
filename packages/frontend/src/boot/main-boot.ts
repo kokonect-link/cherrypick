@@ -24,7 +24,7 @@ import { userName } from '@/filters/user.js';
 import { vibrate } from '@/scripts/vibrate.js';
 
 export async function mainBoot() {
-	const { isClientUpdated } = await common(() => createApp(
+	const { isClientUpdated, isClientMigrated } = await common(() => createApp(
 		new URLSearchParams(window.location.search).has('zen') || (ui === 'deck' && deckStore.state.useSimpleUiForNonRootPages && location.pathname !== '/') ? defineAsyncComponent(() => import('@/ui/zen.vue')) :
 		!$i ? defineAsyncComponent(() => import('@/ui/visitor.vue')) :
 		ui === 'deck' ? defineAsyncComponent(() => import('@/ui/deck.vue')) :
@@ -38,6 +38,8 @@ export async function mainBoot() {
 
 	if (isClientUpdated && $i) {
 		popup(defineAsyncComponent(() => import('@/components/MkUpdated.vue')), {}, {}, 'closed');
+	} else if (isClientMigrated && $i) {
+		popup(defineAsyncComponent(() => import('@/components/MkMigrated.vue')), {}, {}, 'closed');
 	}
 
 	const stream = useStream();

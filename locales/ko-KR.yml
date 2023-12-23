@@ -1,5 +1,9 @@
 ---
 _lang_: "한국어"
+welcome: "환영합니다!"
+cherrypickMigrated: "CherryPick으로 마이그레이션이 완료되었어요!"
+cherrypickMigratedCacheClearTitle: "캐시 삭제 안내"
+cherrypickMigratedCacheClear: "이 서버는 <b>Misskey</b> 또는 <b>CherryPick v4.3.0 이전</b> 버전에서 마이그레이션 되었어요.\n버전 관리 방식이 다르기 때문에 남아있는 캐시가 문제를 일으킬 수 있으므로, 마이그레이션 이후 첫 접속 시 캐시를 삭제하는 작업을 진행해야 해요.\n\n이 작업은 처음 한 번만 진행돼요."
 showRenoteVisibilitySelector: "리노트 공개 범위 옵션 표시"
 cannotBeUsedFunc: "이 기능은 현재 사용할 수 없어요."
 scale: "크기"

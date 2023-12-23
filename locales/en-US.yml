@@ -1,5 +1,9 @@
 ---
 _lang_: "English"
+welcome: "Welcome!"
+cherrypickMigrated: "The migration to CherryPick is complete!"
+cherrypickMigratedCacheClearTitle: "The cache must be cleared."
+cherrypickMigratedCacheClear: "This server was migrated from <b>Misskey</b> or <b>CherryPick v4.3.0 or earlier</b>.\nBecause of the different versioning, any leftover cache can cause problems, so you'll need to clear the cache on the first connection after the migration.\n\nThis will only happen the first time."
 showRenoteVisibilitySelector: "Show renote visibility selector"
 cannotBeUsedFunc: "This feature is currently unavailable."
 scale: "Scale"

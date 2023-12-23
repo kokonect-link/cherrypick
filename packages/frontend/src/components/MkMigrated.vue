@@ -1,12 +1,18 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
+<MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'">
 	<div :class="$style.root">
-		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
+		<div style="display: grid;">
+			<Mfm text="$[tada 🎉]"/>
+			<MkSparkle>
+				<div :class="$style.title">{{ i18n.ts.welcome }}</div>
+				<small style="opacity: 0.7;">{{ i18n.ts.cherrypickMigrated }}</small>
+			</MkSparkle>
+		</div>
 		<div :class="$style.version">
 			<div>✨{{ version }}🚀</div>
 			<div style="font-size: 0.8em;">{{ basedMisskeyVersion }}</div>
@@ -15,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkButton :class="$style.gotIt" primary rounded full @click="close">{{ i18n.ts.gotIt }}</MkButton>
 	</div>
 </MkModal>
-<MkModal v-else-if="showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
+<MkModal v-else-if="showChangelog" ref="modal" :zPriority="'middle'">
 	<div :class="$style.root">
 		<div :class="$style.title" style="margin: 0 0 1.5em; font-weight: normal;">{{ i18n.ts.whatIsNew }}</div>
 		<MkButton rounded full @click="whatIsNewMisskey">Misskey</MkButton>
@@ -35,35 +41,28 @@ import { i18n } from '@/i18n.js';
 import { confetti } from '@/scripts/confetti.js';
 import * as os from '@/os.js';
 import { clearCache } from '@/scripts/clear-cache.js';
+import {miLocalStorage} from "@/local-storage.js";
 
 const showChangelog = ref(false);
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const whatIsNewMisskey = () => {
-	// modal.value.close();
 	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
 };
 
 const whatIsNewCherryPick = () => {
-	// modal.value.close();
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
 };
 
 const close = async () => {
 	modal.value.close();
-	const { canceled } = await os.confirm({
-		type: 'info',
-		title: i18n.ts.cherrypickUpdatedCacheClearTitle,
-		text: i18n.ts.cherrypickUpdatedCacheClear,
+	await os.alert({
+		type: 'warning',
+		title: i18n.ts.cherrypickMigratedCacheClearTitle,
+		text: i18n.ts.cherrypickMigratedCacheClear,
 	});
-	if (canceled) {
-		await os.alert({
-			type: 'info',
-			text: i18n.ts.cherrypickUpdatedCacheClearLater,
-		});
-		return;
-	}
+	miLocalStorage.setItem('lastVersion', version);
 	await clearCache();
 };
 

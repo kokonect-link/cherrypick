@@ -1,5 +1,9 @@
 _lang_: "日本語"
 
+welcome: "ようこそ！"
+cherrypickMigrated: "CherryPickへの移行が完了しました！"
+cherrypickMigratedCacheClearTitle: "キャッシュクリアのご案内"
+cherrypickMigratedCacheClear: "このサーバーは<b>Misskey</b>または<b>CherryPick v4.3.0以前</b>のバージョンから移行されました。\nバージョン管理方式が異なり、残っているキャッシュが問題を引き起こす可能性があるため、移行後、最初の接続時にキャッシュを削除する作業を行う必要があります。\n\nこの作業は最初一度だけ行われます。"
 showRenoteVisibilitySelector: "リノートの公開範囲オプションを表示"
 cannotBeUsedFunc: "この機能は現在使用できません。"
 scale: "大きさ"
