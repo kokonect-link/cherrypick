@@ -149,6 +149,14 @@ export const meta = {
 					type: 'string',
 				},
 			},
+			bannedEmailDomains: {
+				type: 'array',
+				optional: true, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+			},
 			preservedUsernames: {
 				type: 'array',
 				optional: false, nullable: false,
@@ -349,14 +357,6 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: false,
 			},
-			doNotSendNotificationEmailsForAbuseReport: {
-				type: 'boolean',
-				optional: false, nullable: false,
-			},
-			emailToReceiveAbuseReport: {
-				type: 'string',
-				optional: false, nullable: true,
-			},
 			policies: {
 				type: 'object',
 				optional: false, nullable: false,
@@ -468,6 +468,14 @@ export const meta = {
 			version: {
 				type: 'string',
 				optional: false, nullable: false,
+			},
+			doNotSendNotificationEmailsForAbuseReport: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			emailToReceiveAbuseReport: {
+				type: 'string',
+				optional: false, nullable: true,
 			},
 			enableReceivePrerelease: {
 				type: 'boolean',
@@ -612,8 +620,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableChartsForFederatedInstances: instance.enableChartsForFederatedInstances,
 				enableServerMachineStats: instance.enableServerMachineStats,
 				enableIdenticonGeneration: instance.enableIdenticonGeneration,
-				doNotSendNotificationEmailsForAbuseReport: instance.doNotSendNotificationEmailsForAbuseReport,
-				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
+				bannedEmailDomains: instance.bannedEmailDomains,
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 				manifestJsonOverride: instance.manifestJsonOverride,
 				enableFanoutTimeline: instance.enableFanoutTimeline,
@@ -623,6 +630,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				perUserHomeTimelineCacheMax: instance.perUserHomeTimelineCacheMax,
 				perUserListTimelineCacheMax: instance.perUserListTimelineCacheMax,
 				notesPerOneAd: instance.notesPerOneAd,
+				doNotSendNotificationEmailsForAbuseReport: instance.doNotSendNotificationEmailsForAbuseReport,
+				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				enableReceivePrerelease: instance.enableReceivePrerelease,
 				skipVersion: instance.skipVersion,
 				skipCherryPickVersion: instance.skipCherryPickVersion,

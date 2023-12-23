@@ -2493,9 +2493,10 @@ _notification:
     quote: "인용"
     reaction: "리액션"
     pollEnded: "투표가 종료됨"
-    receiveFollowRequest: "팔로우 요청을 받았을 때"
-    followRequestAccepted: "팔로우 요청이 승인되었을 때"
-    groupInvited: "그룹에 초대되었을 때"
+    receiveFollowRequest: "팔로우 요청을 받음"
+    followRequestAccepted: "팔로우 요청이 승인됨"
+    groupInvited: "그룹에 초대됨"
+    roleAssigned: "역할이 할당됨"
     achievementEarned: "도전 과제 획득"
     app: "연동된 앱을 통한 알림"
   _actions:

@@ -2005,6 +2005,7 @@ _notification:
     receiveFollowRequest: "Demande d'abonnement reçue"
     followRequestAccepted: "Demande d'abonnement acceptée"
     groupInvited: "Invitation à un groupe"
+    roleAssigned: "Rôle reçu"
     achievementEarned: "Accomplissement"
     app: "Notifications provenant des apps"
   _actions:
