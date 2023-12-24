@@ -3,8 +3,8 @@
 
 /*
  * version: 4.6.0-beta.6
- * basedMisskeyVersion: 2023.12.0-beta.6
- * generatedAt: 2023-12-22T05:37:22.228Z
+ * basedMisskeyVersion: 2023.12.0
+ * generatedAt: 2023-12-24T04:33:15.554Z
  */
 
 /**
@@ -4750,6 +4750,7 @@ export type operations = {
             hiddenTags: string[];
             blockedHosts: string[];
             sensitiveWords: string[];
+            bannedEmailDomains?: string[];
             preservedUsernames: string[];
             hcaptchaSecretKey: string | null;
             recaptchaSecretKey: string | null;
@@ -4800,8 +4801,6 @@ export type operations = {
             enableServerMachineStats: boolean;
             enableIdenticonGeneration: boolean;
             manifestJsonOverride: string;
-            doNotSendNotificationEmailsForAbuseReport: boolean;
-            emailToReceiveAbuseReport: string | null;
             policies: Record<string, never>;
             enableFanoutTimeline: boolean;
             enableFanoutTimelineDbFallback: boolean;
@@ -4830,6 +4829,8 @@ export type operations = {
             tosUrl: string | null;
             uri: string;
             version: string;
+            doNotSendNotificationEmailsForAbuseReport: boolean;
+            emailToReceiveAbuseReport: string | null;
             enableReceivePrerelease: boolean;
             skipVersion: boolean;
             skipCherryPickVersion?: string | null;
@@ -9015,9 +9016,8 @@ export type operations = {
           enableChartsForFederatedInstances?: boolean;
           enableServerMachineStats?: boolean;
           enableIdenticonGeneration?: boolean;
-          doNotSendNotificationEmailsForAbuseReport?: boolean;
-          emailToReceiveAbuseReport?: string | null;
           serverRules?: string[];
+          bannedEmailDomains?: string[];
           preservedUsernames?: string[];
           manifestJsonOverride?: string;
           enableFanoutTimeline?: boolean;
@@ -9028,6 +9028,8 @@ export type operations = {
           perUserListTimelineCacheMax?: number;
           notesPerOneAd?: number;
           silencedHosts?: string[] | null;
+          doNotSendNotificationEmailsForAbuseReport?: boolean;
+          emailToReceiveAbuseReport?: string | null;
           enableReceivePrerelease?: boolean;
           skipVersion?: boolean;
           skipCherryPickVersion?: string | null;
