@@ -75,6 +75,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 일부 검색 페이지에서 Enter 키를 눌러 검색할 수 없음
 - Fix: 서버 이름이 매우 긴 경우, 후원 다이얼로그의 디자인이 잘못 표시될 수 있음
 - Fix: 화면이 작은 기기에서 Play의 액션 버튼이 잘려서 보일 수 있음
+- Fix: 노트 상세 페이지에서 노트 작성 폼을 클릭했을 때, 노트 작성자가 자동으로 멘션에 포함되지 않을 수 있음
 
 ### Server
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)
