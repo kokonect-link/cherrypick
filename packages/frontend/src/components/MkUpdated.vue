@@ -6,7 +6,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
-		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
+		<div style="display: grid;">
+			<Mfm text="$[tada 🎉]"/>
+			<MkSparkle>
+				<div :class="$style.title">{{ i18n.ts.welcome }}</div>
+				<small style="opacity: 0.7;">{{ i18n.ts.misskeyUpdated }}</small>
+			</MkSparkle>
+		</div>
 		<div :class="$style.version">
 			<div>✨{{ version }}🚀</div>
 			<div style="font-size: 0.8em;">{{ basedMisskeyVersion }}</div>
