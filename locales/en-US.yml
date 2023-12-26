@@ -1,8 +1,8 @@
 ---
 _lang_: "English"
-copiedLink: "링크를 복사했어요!"
-copiedContent: "내용을 복사했어요!"
-copied: "복사했어요!"
+copiedLink: "The link has been copied!"
+copiedContent: "Contents copied!"
+copied: "Copied!"
 welcome: "Welcome!"
 cherrypickMigrated: "The migration to CherryPick is complete!"
 cherrypickMigratedCacheClearTitle: "The cache must be cleared."
