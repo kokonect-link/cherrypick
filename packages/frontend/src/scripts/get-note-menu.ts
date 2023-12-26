@@ -416,7 +416,7 @@ export function getNoteMenu(props: {
 				} : undefined
 				, { type: 'divider' }
 				, {
-					icon: 'ti ti-code',
+					icon: 'ti ti-source-code',
 					text: i18n.ts.viewTextSource,
 					action: showViewTextSource,
 				}
