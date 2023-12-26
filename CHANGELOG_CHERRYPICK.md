@@ -30,7 +30,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 
 ### General
 - Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
-- Change: Misskey 또는 CherryPick v4.3.0 이전 버전에서 마이그레이션 시, 마이그레이션 관련 다이얼로그가 표시됨
+- Change: Misskey 또는 CherryPick v4.3.0 이전 버전에서 마이그레이션 시, 마이그레이션 관련 대화 상자가 표시됨
 - Feat: 리모트 서버의 이모지를 즉시 가져올 수 있음 ([pikokr/cherrypicnic@03d536c0](https://github.com/pikokr/cherrypicnic/commit/03d536c00212f2dfbebecf75e5d58e0ddb749444), [pikokr/cherrypicnic@8a2d6f3b](https://github.com/pikokr/cherrypicnic/commit/8a2d6f3b518fc13a6c32364780fba3be5eea3e5d))
   - 노트 본문 및 리액션 뷰어에서 사용 가능
 - Feat: 아이콘 장식을 세부 조정할 수 있음 ([Secineralyr/misskey.dream@b3299181](https://github.com/Secineralyr/misskey.dream/commit/b329918194f1991c84633361d8a1319cf203641c), [Secineralyr/misskey.dream@1a9642bb](https://github.com/Secineralyr/misskey.dream/commit/1a9642bb9087a256522767e113c3bbfa87ec2e47))
@@ -76,7 +76,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 이모지를 변경할 때 이모지가 ❤️로 고정될 수 있음
 - Fix: 일부 환경에서 특정 영역에 스크롤 바가 표시될 수 있음
 - Fix: 일부 검색 페이지에서 Enter 키를 눌러 검색할 수 없음
-- Fix: 서버 이름이 매우 긴 경우, 후원 다이얼로그의 디자인이 잘못 표시될 수 있음
+- Fix: 서버 이름이 매우 긴 경우, 후원(MkDonation) 대화 상자의 디자인이 잘못 표시될 수 있음
 - Fix: 화면이 작은 기기에서 Play의 액션 버튼이 잘려서 보일 수 있음
 - Fix: 노트 상세 페이지에서 노트 작성 폼을 클릭했을 때, 노트 작성자가 자동으로 멘션에 포함되지 않을 수 있음
 
