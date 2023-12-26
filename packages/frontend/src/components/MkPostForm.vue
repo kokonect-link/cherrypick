@@ -54,7 +54,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</header>
 	<MkNoteSimple v-if="reply" :class="$style.targetNote" :note="reply" :enableNoteClick="false"/>
 	<MkNoteSimple v-if="renote" :class="$style.targetNote" :note="renote" :enableNoteClick="false"/>
-	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button @click="quoteId = null"><i class="ti ti-x"></i></button></div>
+	<div v-if="quoteId" :class="$style.withQuote"><i class="ti ti-quote"></i> {{ i18n.ts.quoteAttached }}<button class="_button" @click="quoteId = null"><i class="ti ti-x"></i></button></div>
 	<MkEventEditor v-if="event" v-model="event" @destroyed="event = null"/>
 	<div v-if="visibility === 'specified'" :class="$style.toSpecified">
 		<span style="margin-right: 8px;">{{ i18n.ts.recipient }}</span>
@@ -1211,8 +1211,21 @@ defineExpose({
 }
 
 .withQuote {
-	margin: 0 0 8px 0;
+	display: flex;
+	align-items: center;
+	gap: .2em;
+	margin-inline: 30px;
+	margin-bottom: 12px;
 	color: var(--accent);
+
+	i {
+		display: flex;
+	}
+
+	button {
+		display: flex;
+		padding: 0;
+	}
 }
 
 .toSpecified {
@@ -1384,11 +1397,15 @@ defineExpose({
 		padding: 16px 14px 0 14px;
 	}
 
-	.cw,
-	.hashtags,
-	.text {
-		// padding: 0 16px;
+	.withQuote {
+		margin-inline: 22px;
 	}
+
+	// .cw,
+	// .hashtags,
+	// .text {
+		// padding: 0 16px;
+	// }
 
 	.cw {
 		padding: 0 22px 8px;
