@@ -85,6 +85,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 팔로우 알림에 Acct 및 host 정보 표시
 - Enhance: 사용자 반응 목록 API 성능 향상 (MisskeyIO/misskey#278)
 - Fix: RedisKVCache에서 Redis에서 읽은 값을 MemoryKVCache에 다시 쓰기 (MisskeyIO/misskey#289)
+- Fix: redisForJobQueue 연결 사용 (MisskeyIO/misskey#268)
+- Fix: redisForJobQueue의 maxRetriesPerRequest를 null로 설정 (MisskeyIO/misskey#272)
 
 ---
 
