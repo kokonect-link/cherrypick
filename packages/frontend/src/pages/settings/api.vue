@@ -18,6 +18,7 @@ import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
 const isDesktop = ref(window.innerWidth >= 1100);
 
@@ -35,6 +36,8 @@ function generateToken() {
 				type: 'success',
 				title: i18n.ts.token,
 				text: token,
+			}).then(() => {
+				copyToClipboard(token);
 			});
 		},
 	}, 'closed');

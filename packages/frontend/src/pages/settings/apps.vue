@@ -65,7 +65,13 @@ const pagination = {
 	},
 };
 
-function revoke(token) {
+async function revoke(token) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.t('removeAreYouSure', { x: token.name ?? '' }),
+	});
+	if (canceled) return;
+
 	os.api('i/revoke-token', { tokenId: token.id }).then(() => {
 		list.value.reload();
 	});
