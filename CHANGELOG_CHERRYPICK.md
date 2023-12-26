@@ -83,6 +83,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 개인간 대화 알림을 받았을 때, 대화 내용을 푸시 알림에 표시
   - 그룹간 대화 알림을 받았을 때, 채팅을 보낸 사용자와 내용을 표시
   - 팔로우 알림에 Acct 및 host 정보 표시
+- Enhance: 사용자 반응 목록 API 성능 향상 (MisskeyIO/misskey#278)
 - Fix: RedisKVCache에서 Redis에서 읽은 값을 MemoryKVCache에 다시 쓰기 (MisskeyIO/misskey#289)
 
 ---
