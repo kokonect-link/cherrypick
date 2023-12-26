@@ -184,6 +184,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		text: i18n.ts.copyUsername,
 		action: () => {
 			copyToClipboard(`@${user.username}@${user.host ?? host}`);
+			os.toast(i18n.ts.copied, 'copied');
 		},
 	}, ...(iAmModerator ? [{
 		icon: 'ti ti-user-exclamation',
@@ -196,6 +197,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		text: i18n.ts.copyRSS,
 		action: () => {
 			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
+			os.toast(i18n.ts.copied, 'copied');
 		},
 	}, {
 		icon: 'ti ti-share',
@@ -203,6 +205,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		action: () => {
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
 			copyToClipboard(`${url}/${canonical}`);
+			os.toast(i18n.ts.copiedLink, 'copied');
 		},
 	}, {
 		icon: 'ti ti-mail',
@@ -391,6 +394,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			text: i18n.ts.copyUserId,
 			action: () => {
 				copyToClipboard(user.id);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}]);
 	}

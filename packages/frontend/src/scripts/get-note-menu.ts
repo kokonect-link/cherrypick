@@ -117,7 +117,7 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 		text,
 		action: (): void => {
 			copyToClipboard(`${url}/notes/${note.id}`);
-			os.success();
+			os.toast(i18n.ts.copiedLink, 'copied');
 		},
 	};
 }
@@ -241,12 +241,12 @@ export function getNoteMenu(props: {
 
 	function copyContent(): void {
 		copyToClipboard(appearNote.text);
-		os.success();
+		os.toast(i18n.ts.copiedContent, 'copied');
 	}
 
 	function copyLink(): void {
 		copyToClipboard(`${url}/notes/${appearNote.id}`);
-		os.success();
+		os.toast(i18n.ts.copiedLink, 'copied');
 	}
 
 	function togglePin(pin: boolean): void {
@@ -521,6 +521,7 @@ export function getNoteMenu(props: {
 			text: i18n.ts.copyNoteId,
 			action: () => {
 				copyToClipboard(appearNote.id);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}]);
 	}
@@ -629,7 +630,7 @@ export function getRenoteMenu(props: {
 						renoteId: appearNote.id,
 						channelId: appearNote.channelId,
 					}).then(() => {
-						os.noteToast(i18n.ts.renoted, 'renote');
+						os.toast(i18n.ts.renoted, 'renote');
 					});
 				}
 			},
@@ -685,7 +686,7 @@ export function getRenoteMenu(props: {
 						visibility,
 						renoteId: appearNote.id,
 					}).then(() => {
-						os.noteToast(i18n.ts.renoted, 'renote');
+						os.toast(i18n.ts.renoted, 'renote');
 					});
 				}
 			},
@@ -723,7 +724,7 @@ export function getRenoteMenu(props: {
 						visibility: 'public',
 						renoteId: appearNote.id,
 					}).then(() => {
-						os.noteToast(i18n.ts.renoted, 'renote');
+						os.toast(i18n.ts.renoted, 'renote');
 					});
 				},
 			});
@@ -741,7 +742,7 @@ export function getRenoteMenu(props: {
 						visibility: 'home',
 						renoteId: appearNote.id,
 					}).then(() => {
-						os.noteToast(i18n.ts.renoted, 'renote');
+						os.toast(i18n.ts.renoted, 'renote');
 					});
 				},
 			});
@@ -758,7 +759,7 @@ export function getRenoteMenu(props: {
 					visibility: 'followers',
 					renoteId: appearNote.id,
 				}).then(() => {
-					os.noteToast(i18n.ts.renoted, 'renote');
+					os.toast(i18n.ts.renoted, 'renote');
 				});
 			},
 		});
@@ -812,7 +813,7 @@ export async function getRenoteOnly(props: {
 				renoteId: appearNote.id,
 				channelId: appearNote.channelId,
 			}).then(() => {
-				os.noteToast(i18n.ts.renoted, 'renote');
+				os.toast(i18n.ts.renoted, 'renote');
 			});
 		}
 	}
@@ -841,7 +842,7 @@ export async function getRenoteOnly(props: {
 				visibility,
 				renoteId: appearNote.id,
 			}).then(() => {
-				os.noteToast(i18n.ts.renoted, 'renote');
+				os.toast(i18n.ts.renoted, 'renote');
 			});
 		}
 	}

@@ -38,6 +38,7 @@ function generateToken() {
 				text: token,
 			}).then(() => {
 				copyToClipboard(token);
+				os.toast(i18n.ts.copied, 'copied');
 			});
 		},
 	}, 'closed');

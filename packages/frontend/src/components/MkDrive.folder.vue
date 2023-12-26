@@ -277,6 +277,7 @@ function onContextmenu(ev: MouseEvent) {
 			text: i18n.ts.copyFolderId,
 			action: () => {
 				copyToClipboard(props.folder.id);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}]);
 	}

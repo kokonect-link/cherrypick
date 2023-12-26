@@ -1,5 +1,8 @@
 ---
 _lang_: "한국어"
+copiedLink: "링크를 복사했어요!"
+copiedContent: "내용을 복사했어요!"
+copied: "복사했어요!"
 welcome: "환영합니다!"
 cherrypickMigrated: "CherryPick으로 마이그레이션이 완료되었어요!"
 cherrypickMigratedCacheClearTitle: "캐시 삭제 안내"

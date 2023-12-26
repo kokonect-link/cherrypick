@@ -131,6 +131,7 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 			text: i18n.ts.copyFileId,
 			action: () => {
 				copyToClipboard(file.id);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}]);
 	}

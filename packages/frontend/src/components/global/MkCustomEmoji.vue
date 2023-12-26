@@ -92,6 +92,7 @@ function onClick(ev: MouseEvent) {
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}] : []), ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
 			text: i18n.ts.import,

@@ -16,7 +16,6 @@ import MkPostFormDialog from '@/components/MkPostFormDialog.vue';
 import MkWaitingDialog from '@/components/MkWaitingDialog.vue';
 import MkPageWindow from '@/components/MkPageWindow.vue';
 import MkToast from '@/components/MkToast.vue';
-import MkNoteToast from '@/components/MkNoteToast.vue';
 import MkWelcomeToast from '@/components/MkWelcomeToast.vue';
 import MkDialog from '@/components/MkDialog.vue';
 import MkPasswordDialog from '@/components/MkPasswordDialog.vue';
@@ -179,14 +178,8 @@ export function pageWindow(path: string) {
 	}, {}, 'closed');
 }
 
-export function toast(message: string) {
+export function toast(message: string, icon?: string) {
 	popup(MkToast, {
-		message,
-	}, {}, 'closed');
-}
-
-export function noteToast(message: string, icon: string) {
-	popup(MkNoteToast, {
 		message,
 		icon,
 	}, {}, 'closed');

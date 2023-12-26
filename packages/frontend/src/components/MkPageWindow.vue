@@ -43,6 +43,7 @@ import { PageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.j
 import { openingWindowsCount } from '@/os.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { getScrollContainer } from '@/scripts/scroll.js';
+import * as os from "@/os.js";
 
 const props = defineProps<{
 	initialPath: string;
@@ -120,6 +121,7 @@ const contextmenu = computed(() => ([{
 	text: i18n.ts.copyLink,
 	action: () => {
 		copyToClipboard(url + router.getCurrentPath());
+		os.toast(i18n.ts.copiedLink, 'copied');
 	},
 }]));
 
