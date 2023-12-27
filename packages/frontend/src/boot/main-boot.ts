@@ -39,7 +39,10 @@ export async function mainBoot() {
 	if (isClientUpdated && $i) {
 		popup(defineAsyncComponent(() => import('@/components/MkUpdated.vue')), {}, {}, 'closed');
 	} else if (isClientMigrated && $i) {
+		miLocalStorage.removeItem('latestDonationInfoShownAt');
+		miLocalStorage.removeItem('neverShowDonationInfo');
 		popup(defineAsyncComponent(() => import('@/components/MkMigrated.vue')), {}, {}, 'closed');
+		popup(defineAsyncComponent(() => import('@/components/MkDonation.vue')), {}, {}, 'closed');
 	}
 
 	const stream = useStream();
