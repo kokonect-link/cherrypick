@@ -105,6 +105,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
 				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
+				<button v-tooltip="i18n.ts.showTextDecoration" :class="['_button', $style.footerButton]" @click="insertFunction"><i class="ti ti-palette"></i></button>
 			</div>
 			<div :class="$style.footerRight">
 				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="$style.footerButton" @click="showPreviewMenu"><i class="ti ti-eye"></i></button>
@@ -150,6 +151,7 @@ import { emojiPicker } from '@/scripts/emoji-picker.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import * as sound from '@/scripts/sound.js';
+import { functionPicker } from '@/scripts/function-picker.js';
 
 const modal = inject('modal');
 
@@ -923,6 +925,14 @@ async function insertEmoji(ev: MouseEvent) {
 	);
 }
 
+async function insertFunction(ev: MouseEvent) {
+	functionPicker(
+		ev.currentTarget ?? ev.target,
+		textareaEl.value,
+		text,
+	);
+}
+
 function showActions(ev) {
 	os.popupMenu(postFormActions.map(action => ({
 		text: action.title,
@@ -1380,9 +1390,17 @@ defineExpose({
 .footerLeft {
 	flex: 1;
 	display: grid;
-	grid-auto-flow: row;
+	grid-auto-flow: column;
 	grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
 	grid-auto-rows: 40px;
+	overflow: scroll;
+	max-width: 80%;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+
+	.scroll::-webkit-scrollbar {
+		display: none;
+	}
 }
 
 .footerRight {

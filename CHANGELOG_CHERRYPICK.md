@@ -36,6 +36,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 아이콘 장식을 세부 조정할 수 있음 ([Secineralyr/misskey.dream@b3299181](https://github.com/Secineralyr/misskey.dream/commit/b329918194f1991c84633361d8a1319cf203641c), [Secineralyr/misskey.dream@1a9642bb](https://github.com/Secineralyr/misskey.dream/commit/1a9642bb9087a256522767e113c3bbfa87ec2e47))
   - 위치, 크기, 불투명도를 추가로 조정할 수 있습니다.
 - Feat: 노트를 클릭하여 자세히 볼 수 있음
+- Feat: 텍스트 장식(MFM, HTML, Markdown)을 보다 편하게 추가할 수 있음
+  - 노트 작성 폼에서 텍스트 장식 버튼을 눌러 사용할 수 있음
+  - 텍스트를 선택한 상태에서도 적용 가능
 - Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client
@@ -64,6 +67,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 토큰을 생성할 때 토큰을 복사할 필요없이 '확인' 버튼을 누르면 자동으로 클립보드에 토큰이 복사됨
   - 토큰을 삭제할 때 삭제 전 대화 상자가 표시됨
 - Enhance: 링크 또는 내용을 복사할 때 토스트 알림 표시
+- Enhance: HTML 태그 및 Markdown 태그가 자동 완성을 지원함
+  - `<`를 입력하면 ``<b>, ~~, <i>, <small>, <center>, <plain>, `, ```, \(\), \(\\ \) `` 태그를 자동으로 입력할 수 있음
 - Fix: '모달 배경색 제거' 옵션이 이모지 피커에 반영되지 않음
 - Fix: 열람 주의로 설정된 노트의 리액션이 '더 보기'를 눌러야 표시됨
 - Fix: 채널 이름이 긴 경우 게시 양식 표시가 깨지는 문제 (misskey-dev/misskey#12524)

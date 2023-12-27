@@ -8,7 +8,7 @@ import getCaretCoordinates from 'textarea-caret';
 import { toASCII } from 'punycode/';
 import { popup } from '@/os.js';
 
-export type SuggestionType = 'user' | 'hashtag' | 'emoji' | 'mfmTag';
+export type SuggestionType = 'user' | 'hashtag' | 'emoji' | 'mfmTag' | 'htmlTag';
 
 export class Autocomplete {
 	private suggestion: {
@@ -49,7 +49,7 @@ export class Autocomplete {
 		this.textarea = textarea;
 		this.textRef = textRef;
 		this.opening = false;
-		this.onlyType = onlyType ?? ['user', 'hashtag', 'emoji', 'mfmTag'];
+		this.onlyType = onlyType ?? ['user', 'hashtag', 'emoji', 'mfmTag', 'htmlTag'];
 
 		this.attach();
 	}
@@ -80,12 +80,14 @@ export class Autocomplete {
 		const hashtagIndex = text.lastIndexOf('#');
 		const emojiIndex = text.lastIndexOf(':');
 		const mfmTagIndex = text.lastIndexOf('$');
+		const htmlTagIndex = text.lastIndexOf('<');
 
 		const max = Math.max(
 			mentionIndex,
 			hashtagIndex,
 			emojiIndex,
-			mfmTagIndex);
+			mfmTagIndex,
+			htmlTagIndex);
 
 		if (max === -1) {
 			this.close();
@@ -95,6 +97,7 @@ export class Autocomplete {
 		const isMention = mentionIndex !== -1;
 		const isHashtag = hashtagIndex !== -1;
 		const isMfmTag = mfmTagIndex !== -1;
+		const isHtmlTag = htmlTagIndex !== -1;
 		const isEmoji = emojiIndex !== -1 && text.split(/:[a-z0-9_+\-]+:/).pop()!.includes(':');
 
 		let opened = false;
@@ -130,6 +133,14 @@ export class Autocomplete {
 			const mfmTag = text.substring(mfmTagIndex + 1);
 			if (!mfmTag.includes(' ')) {
 				this.open('mfmTag', mfmTag.replace('[', ''));
+				opened = true;
+			}
+		}
+
+		if (isHtmlTag && !opened && this.onlyType.includes('htmlTag')) {
+			const htmlTag = text.substring(htmlTagIndex + 1);
+			if (!htmlTag.includes(' ')) {
+				this.open('htmlTag', htmlTag.replace('<', ''));
 				opened = true;
 			}
 		}
@@ -278,6 +289,49 @@ export class Autocomplete {
 			nextTick(() => {
 				this.textarea.focus();
 				const pos = trimmedBefore.length + (value.length + 3);
+				this.textarea.setSelectionRange(pos, pos);
+			});
+		} else if (type === 'htmlTag') {
+			const source = this.text;
+
+			const before = source.substring(0, caret);
+			const trimmedBefore = before.substring(0, before.lastIndexOf('<'));
+			const after = source.substring(caret);
+
+			// 挿入
+			if (value === 'bold') this.text = `${trimmedBefore}<b>${after}</b>`;
+			if (value === 'strike') this.text = `${trimmedBefore}~~${after}~~`;
+			if (value === 'italic') this.text = `${trimmedBefore}<i>${after}</i>`;
+			if (value === 'small') this.text = `${trimmedBefore}<small>${after}</small>`;
+			if (value === 'center') this.text = `${trimmedBefore}<center>${after}</center>`;
+			if (value === 'plain') this.text = `${trimmedBefore}<plain>${after}</plain>`;
+			if (value === 'inlinecode') this.text = trimmedBefore + '`' + after + '`';
+			if (value === 'blockcode') this.text = trimmedBefore + '```' + '\n' + after + '\n' + '```';
+			if (value === 'mathinline') this.text = trimmedBefore + '\\(' + after + '\\)';
+			if (value === 'mathblock') this.text = trimmedBefore + '\\(' + after + '\\\\ \\)';
+
+			// キャレットを戻す
+			nextTick(() => {
+				this.textarea.focus();
+				const pos = trimmedBefore.length + (value.length + (
+					value.includes('bold')
+						? -1
+						: value.includes('strike')
+							?	-4
+							: value.includes('italic')
+								? -3
+								: value.includes('small') || value.includes('center') || value.includes('plain')
+									? 2
+									: value.includes('inlinecode')
+										? -9
+										: value.includes('blockcode')
+											? -5
+											: value.includes('mathinline')
+												? -8
+												: value.includes('mathblock')
+													? -7
+													: 3
+				));
 				this.textarea.setSelectionRange(pos, pos);
 			});
 		}
