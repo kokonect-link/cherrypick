@@ -2643,6 +2643,7 @@ export interface Locale {
         "youGotMention": string;
         "youGotReply": string;
         "youGotQuote": string;
+        "youGotReact": string;
         "youRenoted": string;
         "youWereFollowed": string;
         "youReceivedFollowRequest": string;

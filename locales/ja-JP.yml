@@ -2541,6 +2541,7 @@ _notification:
   youGotMention: "{name}からのメンション"
   youGotReply: "{name}からのリプライ"
   youGotQuote: "{name}による引用"
+  youGotReact: "{name}が反応しました"
   youRenoted: "{name}がRenoteしました"
   youWereFollowed: "フォローされました"
   youReceivedFollowRequest: "フォローリクエストが来ました"

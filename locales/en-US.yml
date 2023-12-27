@@ -2457,6 +2457,7 @@ _notification:
   youGotMention: "{name} mentioned you"
   youGotReply: "{name} replied to you"
   youGotQuote: "{name} quoted you"
+  youGotReact: "{name} reacted to you"
   youRenoted: "Renote from {name}"
   youWereFollowed: "followed you"
   youReceivedFollowRequest: "You've received a follow request"
