@@ -1394,7 +1394,7 @@ defineExpose({
 	grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
 	grid-auto-rows: 40px;
 	overflow: scroll;
-	max-width: 80%;
+	max-width: 85%;
 	-ms-overflow-style: none;
 	scrollbar-width: none;
 
