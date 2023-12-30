@@ -39,6 +39,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 텍스트 장식(MFM, HTML, Markdown)을 보다 편하게 추가할 수 있음
   - 노트 작성 폼에서 텍스트 장식 버튼을 눌러 사용할 수 있음
   - 텍스트를 선택한 상태에서도 적용 가능
+- Enhance: 다양한 자산의 출력 파일 이름에 CherryPick 버전을 포함하도록 설정 ([MisskeyIO/misskey@436ddb8f](https://github.com/MisskeyIO/misskey/commit/436ddb8fdb2e585987f403c1527915947c7aae7c))
 - Revert: 사용자 통계 표시 기능 제거 ([MisskeyIO/misskey@114c7fe6](https://github.com/MisskeyIO/misskey/commit/114c7fe6b37dd6bddbcd9d92406f8b13bf688e8b))
 
 ### Client
