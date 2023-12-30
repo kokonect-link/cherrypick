@@ -127,7 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.centerPage">
 					<MkSpacer :marginMin="20" :marginMax="28">
 						<div class="_gaps" style="text-align: center;">
-							<i class="ti ti-bell-ringing-2" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+							<i class="ti ti-notification" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
 							<div style="font-size: 120%;">{{ i18n.ts.pushNotification }}</div>
 							<div style="padding: 0 16px;">{{ i18n.t('_initialAccountSetting.pushNotificationDescription', { name: instance.name ?? host }) }}</div>
 							<MkPushNotificationAllowButton primary showOnlyToRegister style="margin: 0 auto;"/>

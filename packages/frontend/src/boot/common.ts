@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { computed, watch, version as vueVersion, App } from 'vue';
+import { computed, watch, version as vueVersion, App, defineAsyncComponent } from 'vue';
 import { compareVersions } from 'compare-versions';
 import widgets from '@/widgets/index.js';
 import directives from '@/directives/index.js';
@@ -22,6 +22,7 @@ import { getAccountFromId } from '@/scripts/get-account-from-id.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
+import { popup } from '@/os.js';
 
 export async function common(createVue: () => App<Element>) {
 	console.info(`CherryPick v${version}`);
@@ -67,6 +68,11 @@ export async function common(createVue: () => App<Element>) {
 
 	let isClientUpdated = false;
 	let isClientMigrated = false;
+	const showPushNotificationDialog = miLocalStorage.getItem('showPushNotificationDialog');
+
+	if (instance.swPublickey && ('PushManager' in window) && $i && $i.token && showPushNotificationDialog == null) {
+		popup(defineAsyncComponent(() => import('@/components/MkPushNotification.vue')), {}, {}, 'closed');
+	}
 
 	//#region クライアントが更新されたかチェック
 	const lastVersion = miLocalStorage.getItem('lastVersion');
