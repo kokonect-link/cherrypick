@@ -101,6 +101,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: RedisKVCache에서 Redis에서 읽은 값을 MemoryKVCache에 다시 쓰기 (MisskeyIO/misskey#289)
 - Fix: redisForJobQueue 연결 사용 (MisskeyIO/misskey#268)
 - Fix: redisForJobQueue의 maxRetriesPerRequest를 null로 설정 (MisskeyIO/misskey#272)
+- Fix: Inbox 또는 Deliver 큐에 data 필드가 비어 있는 작업이 등록되지 않도록 (MisskeyIO/misskey#307)
 
 ---
 
