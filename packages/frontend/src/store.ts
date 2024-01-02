@@ -435,7 +435,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	enableSeasonalScreenEffect: {
 		where: 'device',
-		default: !/mobile|iphone|android/.test(navigator.userAgent.toLowerCase()),
+		default: false,
 	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
