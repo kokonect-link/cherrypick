@@ -9,8 +9,8 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import { QueryService } from '@/core/QueryService.js';
 import { NoteReactionEntityService } from '@/core/entities/NoteReactionEntityService.js';
 import { DI } from '@/di-symbols.js';
+import { MiNoteReaction } from '@/models/_.js';
 import { ApiError } from '../../error.js';
-import { MiNoteReaction } from "@/models/_.js";
 
 export const meta = {
 	tags: ['users', 'reactions'],
@@ -79,10 +79,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 						qb
 							.from(this.noteReactionsRepository.metadata.targetName, 'reaction')
 							.where('"reaction"."userId" = :userId', { userId: ps.userId }),
-						ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate
+						ps.sinceId, ps.untilId, ps.sinceDate, ps.untilDate,
 					),
-					'reaction',
-					'"reaction"."noteId" = note.id'
+				'reaction',
+				'"reaction"."noteId" = note.id',
 				);
 
 			this.queryService.generateVisibilityQuery(query, me);

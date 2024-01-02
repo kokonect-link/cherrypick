@@ -10,8 +10,8 @@ import type { Packed } from '@/misc/json-schema.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
-import Channel, { type MiChannelService } from '../channel.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
+import Channel, { type MiChannelService } from '../channel.js';
 
 class ChannelChannel extends Channel {
 	public readonly chName = 'channel';

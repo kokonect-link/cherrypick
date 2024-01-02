@@ -15,8 +15,8 @@ export function mfmFunctionPicker(src: any, textArea: HTMLInputElement | HTMLTex
 		os.popupMenu([{
 			type: 'label',
 		}, ...getHTMLFunctionList(textArea, textRef)
-			, { type: 'divider' }
-			, ...getMFMFunctionList(textArea, textRef)], src);
+		, { type: 'divider' }
+		, ...getMFMFunctionList(textArea, textRef)], src);
 	});
 }
 

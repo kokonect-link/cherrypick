@@ -41,7 +41,7 @@ import { i18n } from '@/i18n.js';
 import { confetti } from '@/scripts/confetti.js';
 import * as os from '@/os.js';
 import { clearCache } from '@/scripts/clear-cache.js';
-import {miLocalStorage} from "@/local-storage.js";
+import { miLocalStorage } from '@/local-storage.js';
 
 const showChangelog = ref(false);
 
