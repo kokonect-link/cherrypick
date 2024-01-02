@@ -43,6 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -52,7 +53,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFolder from '@/components/MkFolder.vue';
 import { selectFile } from '@/scripts/select-file.js';
 
-const avatarDecorations = ref<any[]>([]);
+const avatarDecorations = ref<Misskey.entities.AdminAvatarDecorationsListResponse>([]);
 
 async function changeImage(ev, avatarDecoration) {
 	const file = await selectFile(ev.currentTarget ?? ev.target, null);

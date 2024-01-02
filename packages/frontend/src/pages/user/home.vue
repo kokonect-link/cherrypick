@@ -236,7 +236,7 @@ const isEditingMemo = ref(false);
 const moderationNote = ref(props.user.moderationNote);
 const editModerationNote = ref(false);
 
-const translation = ref<any>(null);
+const translation = ref<Misskey.entities.UsersTranslateResponse | null>(null);
 const translating = ref(false);
 
 watch(moderationNote, async () => {

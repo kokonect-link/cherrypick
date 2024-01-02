@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0-beta.6
- * basedMisskeyVersion: 2023.12.0
- * generatedAt: 2023-12-24T04:33:15.634Z
+ * basedMisskeyVersion: 2023.12.2
+ * generatedAt: 2024-01-02T08:07:43.938Z
  */
 
 import type { SwitchCaseResponseType } from '../api.js';
@@ -12,7 +12,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:meta*
      */
     request<E extends 'admin/meta', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -67,7 +67,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:abuse-user-reports*
      */
     request<E extends 'admin/abuse-user-reports', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -78,7 +78,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No* / **Permission**: *write:admin*
+     * **Credential required**: *No*
      */
     request<E extends 'admin/accounts/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -89,7 +89,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:account*
      */
     request<E extends 'admin/accounts/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -100,7 +100,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:account*
      */
     request<E extends 'admin/accounts/find-by-email', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -111,7 +111,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
      */
     request<E extends 'admin/ad/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -122,7 +122,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
      */
     request<E extends 'admin/ad/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -133,7 +133,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:ad*
      */
     request<E extends 'admin/ad/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -144,7 +144,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:ad*
      */
     request<E extends 'admin/ad/update', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -155,7 +155,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:announcements*
      */
     request<E extends 'admin/announcements/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -166,7 +166,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:announcements*
      */
     request<E extends 'admin/announcements/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -177,7 +177,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:announcements*
      */
     request<E extends 'admin/announcements/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -188,7 +188,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:announcements*
      */
     request<E extends 'admin/announcements/update', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -199,7 +199,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
      */
     request<E extends 'admin/avatar-decorations/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -210,7 +210,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
      */
     request<E extends 'admin/avatar-decorations/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -221,7 +221,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
      */
     request<E extends 'admin/avatar-decorations/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -232,7 +232,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
      */
     request<E extends 'admin/avatar-decorations/update', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -243,7 +243,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:delete-all-files-of-a-user*
      */
     request<E extends 'admin/delete-all-files-of-a-user', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -254,7 +254,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:unset-user-avatar*
      */
     request<E extends 'admin/unset-user-avatar', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -265,7 +265,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:unset-user-banner*
      */
     request<E extends 'admin/unset-user-banner', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -276,7 +276,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:drive*
      */
     request<E extends 'admin/drive/clean-remote-files', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -287,7 +287,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:drive*
      */
     request<E extends 'admin/drive/cleanup', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -298,7 +298,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:drive*
      */
     request<E extends 'admin/drive/files', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -309,7 +309,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:drive*
      */
     request<E extends 'admin/drive/show-file', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -320,7 +320,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/add-aliases-bulk', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -331,7 +331,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/add', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -342,7 +342,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/adds', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -353,7 +353,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/copy', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -364,7 +364,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/delete-bulk', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -375,7 +375,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -386,7 +386,8 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+     * **Credential required**: *Yes*
      */
     request<E extends 'admin/emoji/import-zip', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -397,7 +398,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:emoji*
      */
     request<E extends 'admin/emoji/list-remote', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -408,7 +409,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:emoji*
      */
     request<E extends 'admin/emoji/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -419,7 +420,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/remove-aliases-bulk', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -430,7 +431,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/set-aliases-bulk', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -441,7 +442,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/set-category-bulk', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -452,7 +453,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/set-license-bulk', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -463,7 +464,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/steal', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -474,7 +475,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:emoji*
      */
     request<E extends 'admin/emoji/update', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -485,7 +486,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:federation*
      */
     request<E extends 'admin/federation/delete-all-files', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -496,7 +497,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:federation*
      */
     request<E extends 'admin/federation/refresh-remote-instance-metadata', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -507,7 +508,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:federation*
      */
     request<E extends 'admin/federation/remove-all-following', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -518,7 +519,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:federation*
      */
     request<E extends 'admin/federation/update-instance', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -529,7 +530,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:index-stats*
      */
     request<E extends 'admin/get-index-stats', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -540,7 +541,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:table-stats*
      */
     request<E extends 'admin/get-table-stats', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -551,7 +552,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:user-ips*
      */
     request<E extends 'admin/get-user-ips', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -562,7 +563,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:invite-codes*
      */
     request<E extends 'admin/invite/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -573,7 +574,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:invite-codes*
      */
     request<E extends 'admin/invite/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -584,7 +585,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:invite-codes*
      */
     request<E extends 'admin/invite/revoke', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -595,7 +596,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:promo*
      */
     request<E extends 'admin/promo/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -606,7 +607,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:queue*
      */
     request<E extends 'admin/queue/clear', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -617,7 +618,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:queue*
      */
     request<E extends 'admin/queue/deliver-delayed', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -628,7 +629,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:queue*
      */
     request<E extends 'admin/queue/inbox-delayed', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -639,7 +640,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:queue*
      */
     request<E extends 'admin/queue/promote', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -650,7 +651,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:emoji*
      */
     request<E extends 'admin/queue/stats', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -661,7 +662,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:relays*
      */
     request<E extends 'admin/relays/add', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -672,7 +673,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:relays*
      */
     request<E extends 'admin/relays/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -683,7 +684,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:relays*
      */
     request<E extends 'admin/relays/remove', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -694,7 +695,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:reset-password*
      */
     request<E extends 'admin/reset-password', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -705,7 +706,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
      */
     request<E extends 'admin/resolve-abuse-user-report', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -716,7 +717,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:send-email*
      */
     request<E extends 'admin/send-email', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -727,7 +728,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:server-info*
      */
     request<E extends 'admin/server-info', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -738,7 +739,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:show-moderation-log*
      */
     request<E extends 'admin/show-moderation-logs', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -749,7 +750,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:show-user*
      */
     request<E extends 'admin/show-user', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -760,7 +761,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:show-users*
      */
     request<E extends 'admin/show-users', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -771,7 +772,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:suspend-user*
      */
     request<E extends 'admin/suspend-user', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -782,7 +783,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:unsuspend-user*
      */
     request<E extends 'admin/unsuspend-user', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -793,7 +794,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:meta*
      */
     request<E extends 'admin/update-meta', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -804,7 +805,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:delete-account*
      */
     request<E extends 'admin/delete-account', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -815,7 +816,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:user-note*
      */
     request<E extends 'admin/update-user-note', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -826,7 +827,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:roles*
      */
     request<E extends 'admin/roles/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -837,7 +838,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:roles*
      */
     request<E extends 'admin/roles/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -848,7 +849,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:roles*
      */
     request<E extends 'admin/roles/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -859,7 +860,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *read:admin*
+     * **Credential required**: *Yes* / **Permission**: *read:admin:roles*
      */
     request<E extends 'admin/roles/show', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -870,7 +871,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:roles*
      */
     request<E extends 'admin/roles/update', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -881,7 +882,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:roles*
      */
     request<E extends 'admin/roles/assign', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -892,7 +893,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:roles*
      */
     request<E extends 'admin/roles/unassign', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -903,7 +904,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes* / **Permission**: *write:admin*
+     * **Credential required**: *Yes* / **Permission**: *write:admin:roles*
      */
     request<E extends 'admin/roles/update-default-policies', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -914,7 +915,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *No* / **Permission**: *read:admin*
+     * **Credential required**: *No* / **Permission**: *read:admin:roles*
      */
     request<E extends 'admin/roles/users', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1002,7 +1003,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:federation*
      */
     request<E extends 'ap/get', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1013,7 +1014,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'ap/show', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -1807,7 +1808,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *No*
      */
     request<E extends 'federation/update-remote-user', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2115,7 +2116,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'i', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2246,7 +2247,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'i/claim-achievement', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2558,7 +2559,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'i/registry/get-all', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2569,7 +2570,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'i/registry/get-detail', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2580,7 +2581,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'i/registry/get', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2591,7 +2592,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'i/registry/keys-with-type', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2602,7 +2603,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'i/registry/keys', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2613,7 +2614,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'i/registry/remove', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2636,7 +2637,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'i/registry/set', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2783,7 +2784,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:invite-codes*
      */
     request<E extends 'invite/create', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2794,7 +2795,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:invite-codes*
      */
     request<E extends 'invite/delete', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2805,7 +2806,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:invite-codes*
      */
     request<E extends 'invite/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2816,7 +2817,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:invite-codes*
      */
     request<E extends 'invite/limit', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -2993,7 +2994,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'my/apps', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3125,7 +3126,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/hybrid-timeline', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3147,7 +3148,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/mentions', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3158,7 +3159,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/polls/recommendation', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3279,7 +3280,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/state', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3312,7 +3313,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/timeline', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3323,7 +3324,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/translate', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3345,7 +3346,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'notes/user-list-timeline', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3611,7 +3612,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'promo/read', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3622,7 +3623,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'roles/list', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3655,7 +3656,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'roles/notes', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -3721,6 +3722,7 @@ declare module '../api.js' {
     /**
      * Check push notification registration exists.
      * 
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
      * **Credential required**: *Yes*
      */
     request<E extends 'sw/show-registration', P extends Endpoints[E]['req']>(
@@ -3732,6 +3734,7 @@ declare module '../api.js' {
     /**
      * Update push notification registration.
      * 
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
      * **Credential required**: *Yes*
      */
     request<E extends 'sw/update-registration', P extends Endpoints[E]['req']>(
@@ -3743,6 +3746,7 @@ declare module '../api.js' {
     /**
      * Register to receive push notifications.
      * 
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
      * **Credential required**: *Yes*
      */
     request<E extends 'sw/register', P extends Endpoints[E]['req']>(
@@ -4062,7 +4066,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'users/lists/favorite', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4073,7 +4077,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'users/lists/unfavorite', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4095,7 +4099,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'users/lists/create-from-public', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4183,7 +4187,7 @@ declare module '../api.js' {
     /**
      * Show the different kinds of relations between the authenticated user and the specified user(s).
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'users/relation', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4194,7 +4198,7 @@ declare module '../api.js' {
     /**
      * File a report.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *write:report-abuse*
      */
     request<E extends 'users/report-abuse', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4249,7 +4253,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *No*
      */
     request<E extends 'users/achievements', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4271,7 +4275,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
-     * **Credential required**: *Yes*
+     * **Credential required**: *Yes* / **Permission**: *read:account*
      */
     request<E extends 'users/translate', P extends Endpoints[E]['req']>(
       endpoint: E,
@@ -4293,6 +4297,7 @@ declare module '../api.js' {
     /**
      * No description provided.
      * 
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
      * **Credential required**: *Yes*
      */
     request<E extends 'fetch-external-resources', P extends Endpoints[E]['req']>(

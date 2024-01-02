@@ -3,20 +3,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { nextTick, Ref } from 'vue';
+import { Ref, nextTick } from 'vue';
 import * as os from '@/os.js';
 import { MFM_TAGS, HTML_TAGS } from '@/const.js';
 
 /**
  * MFMの装飾のリストを表示する
  */
-export function functionPicker(src: any, textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) {
+export function mfmFunctionPicker(src: any, textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) {
 	return new Promise((res, rej) => {
 		os.popupMenu([{
 			type: 'label',
 		}, ...getHTMLFunctionList(textArea, textRef)
-		, { type: 'divider' }
-		, ...getMFMFunctionList(textArea, textRef)], src);
+			, { type: 'divider' }
+			, ...getMFMFunctionList(textArea, textRef)], src);
 	});
 }
 

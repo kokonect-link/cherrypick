@@ -74,8 +74,6 @@ const host = ref(toUnicode(configHost));
 const totpLogin = ref(false);
 const queryingKey = ref(false);
 const credentialRequest = ref<CredentialRequestOptions | null>(null);
-const hCaptchaResponse = ref(null);
-const reCaptchaResponse = ref(null);
 
 const emit = defineEmits<{
 	(ev: 'login', v: any): void;
@@ -129,8 +127,6 @@ async function queryKey(): Promise<void> {
 				username: username.value,
 				password: password.value,
 				credential: credential.toJSON(),
-				'hcaptcha-response': hCaptchaResponse.value,
-				'g-recaptcha-response': reCaptchaResponse.value,
 			});
 		}).then(res => {
 			emit('login', res);
@@ -152,8 +148,6 @@ function onSubmit(): void {
 			os.api('signin', {
 				username: username.value,
 				password: password.value,
-				'hcaptcha-response': hCaptchaResponse.value,
-				'g-recaptcha-response': reCaptchaResponse.value,
 			}).then(res => {
 				totpLogin.value = true;
 				signing.value = false;
@@ -171,8 +165,6 @@ function onSubmit(): void {
 		os.api('signin', {
 			username: username.value,
 			password: password.value,
-			'hcaptcha-response': hCaptchaResponse.value,
-			'g-recaptcha-response': reCaptchaResponse.value,
 			token: user.value?.twoFactorEnabled ? token.value : undefined,
 		}).then(res => {
 			emit('login', res);

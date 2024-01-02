@@ -12,10 +12,9 @@ import { IdService } from '@/core/IdService.js';
 export const meta = {
 	tags: ['admin'],
 
-	kind: 'read:admin',
-
 	requireCredential: true,
 	requireModerator: true,
+	kind: 'read:admin:user-ips',
 	res: {
 		type: 'array',
 		optional: false,

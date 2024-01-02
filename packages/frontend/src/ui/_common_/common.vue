@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { swInject } from './sw-inject';
+import { swInject } from './sw-inject.js';
 import XNotification from './notification.vue';
 import { popups, pendingApiRequestsCount } from '@/os.js';
 import { uploads } from '@/scripts/upload.js';

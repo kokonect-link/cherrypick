@@ -4,7 +4,7 @@
  */
 
 /**
- * Basic OAuth tests to make sure the library is correctly integrated to Misskey
+ * Basic OAuth tests to make sure the library is correctly integrated to CherryPick
  * and not regressed by version updates or potential migration to another library.
  */
 
@@ -134,7 +134,7 @@ function assertIndirectError(response: Response, error: string): void {
 	assert.strictEqual(location.searchParams.get('error'), error);
 
 	// https://datatracker.ietf.org/doc/html/rfc9207#name-response-parameter-iss
-	assert.strictEqual(location.searchParams.get('iss'), 'http://misskey.local');
+	assert.strictEqual(location.searchParams.get('iss'), 'http://cherrypick.local');
 	// https://datatracker.ietf.org/doc/html/rfc6749.html#section-4.1.2.1
 	assert.ok(location.searchParams.has('state'));
 }
@@ -168,12 +168,12 @@ describe('OAuth', () => {
 	}, 1000 * 60 * 2);
 
 	beforeEach(async () => {
-		process.env.MISSKEY_TEST_CHECK_IP_RANGE = '';
+		process.env.CHERRYPICK_TEST_CHECK_IP_RANGE = '';
 		sender = (reply): void => {
 			reply.send(`
 				<!DOCTYPE html>
 				<link rel="redirect_uri" href="/redirect" />
-				<div class="h-app"><a href="/" class="u-url p-name">Misklient
+				<div class="h-app"><a href="/" class="u-url p-name">Crpklient
 			`);
 		};
 	});
@@ -200,7 +200,7 @@ describe('OAuth', () => {
 		const meta = getMeta(await response.text());
 		assert.strictEqual(typeof meta.transactionId, 'string');
 		assert.ok(meta.transactionId);
-		assert.strictEqual(meta.clientName, 'Misklient');
+		assert.strictEqual(meta.clientName, 'Crpklient');
 
 		const decisionResponse = await fetchDecision(meta.transactionId, alice);
 		assert.strictEqual(decisionResponse.status, 302);
@@ -812,7 +812,7 @@ describe('OAuth', () => {
 					reply.header('Link', '</redirect>; rel="redirect_uri"');
 					reply.send(`
 						<!DOCTYPE html>
-						<div class="h-app"><a href="/" class="u-url p-name">Misklient
+						<div class="h-app"><a href="/" class="u-url p-name">Crpklient
 					`);
 				},
 				'Mixed links': reply => {
@@ -820,14 +820,14 @@ describe('OAuth', () => {
 					reply.send(`
 						<!DOCTYPE html>
 						<link rel="redirect_uri" href="/redirect2" />
-						<div class="h-app"><a href="/" class="u-url p-name">Misklient
+						<div class="h-app"><a href="/" class="u-url p-name">Crpklient
 					`);
 				},
 				'Multiple items in Link header': reply => {
 					reply.header('Link', '</redirect2>; rel="redirect_uri",</redirect>; rel="redirect_uri"');
 					reply.send(`
 						<!DOCTYPE html>
-						<div class="h-app"><a href="/" class="u-url p-name">Misklient
+						<div class="h-app"><a href="/" class="u-url p-name">Crpklient
 					`);
 				},
 				'Multiple items in HTML': reply => {
@@ -835,7 +835,7 @@ describe('OAuth', () => {
 						<!DOCTYPE html>
 						<link rel="redirect_uri" href="/redirect2" />
 						<link rel="redirect_uri" href="/redirect" />
-						<div class="h-app"><a href="/" class="u-url p-name">Misklient
+						<div class="h-app"><a href="/" class="u-url p-name">Crpklient
 					`);
 				},
 			};
@@ -861,7 +861,7 @@ describe('OAuth', () => {
 				sender = (reply): void => {
 					reply.send(`
 						<!DOCTYPE html>
-						<div class="h-app"><a href="/" class="u-url p-name">Misklient
+						<div class="h-app"><a href="/" class="u-url p-name">Crpklient
 					`);
 				};
 
@@ -881,7 +881,7 @@ describe('OAuth', () => {
 		});
 
 		test('Disallow loopback', async () => {
-			process.env.MISSKEY_TEST_CHECK_IP_RANGE = '1';
+			process.env.CHERRYPICK_TEST_CHECK_IP_RANGE = '1';
 
 			const client = new AuthorizationCode(clientConfig);
 			const response = await fetch(client.authorizeURL({
@@ -918,7 +918,7 @@ describe('OAuth', () => {
 				reply.header('Link', '</redirect>; rel="redirect_uri"');
 				reply.send(`
 					<!DOCTYPE html>
-					<div class="h-app"><a href="/foo" class="u-url p-name">Misklient
+					<div class="h-app"><a href="/foo" class="u-url p-name">Crpklient
 				`);
 				reply.send();
 			};
@@ -940,5 +940,25 @@ describe('OAuth', () => {
 	test('Unknown OAuth endpoint', async () => {
 		const response = await fetch(new URL('/oauth/foo', host));
 		assert.strictEqual(response.status, 404);
+	});
+
+	describe('CORS', () => {
+		test('Token endpoint should support CORS', async () => {
+			const response = await fetch(new URL('/oauth/token', host), { method: 'POST' });
+			assert.ok(!response.ok);
+			assert.strictEqual(response.headers.get('Access-Control-Allow-Origin'), '*');
+		});
+
+		test('Authorize endpoint should not support CORS', async () => {
+			const response = await fetch(new URL('/oauth/authorize', host), { method: 'GET' });
+			assert.ok(!response.ok);
+			assert.ok(!response.headers.has('Access-Control-Allow-Origin'));
+		});
+
+		test('Decision endpoint should not support CORS', async () => {
+			const response = await fetch(new URL('/oauth/decision', host), { method: 'POST' });
+			assert.ok(!response.ok);
+			assert.ok(!response.headers.has('Access-Control-Allow-Origin'));
+		});
 	});
 });

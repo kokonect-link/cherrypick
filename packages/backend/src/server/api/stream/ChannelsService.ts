@@ -21,6 +21,7 @@ import { MessagingIndexChannelService } from './channels/messaging-index.js';
 import { DriveChannelService } from './channels/drive.js';
 import { HashtagChannelService } from './channels/hashtag.js';
 import { RoleTimelineChannelService } from './channels/role-timeline.js';
+import { type MiChannelService } from './channel.js';
 
 @Injectable()
 export class ChannelsService {
@@ -45,7 +46,7 @@ export class ChannelsService {
 	}
 
 	@bindThis
-	public getChannelService(name: string) {
+	public getChannelService(name: string): MiChannelService<boolean> {
 		switch (name) {
 			case 'main': return this.mainChannelService;
 			case 'homeTimeline': return this.homeTimelineChannelService;

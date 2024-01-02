@@ -77,6 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, shallowRef, ref, computed } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
@@ -88,6 +89,7 @@ import XStats from './overview.stats.vue';
 import XRetention from './overview.retention.vue';
 import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
+import type { InstanceForPie } from './overview.pie.vue';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
@@ -96,15 +98,15 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 
 const rootEl = shallowRef<HTMLElement>();
-const serverInfo = ref<any>(null);
-const topSubInstancesForPie = ref<any>(null);
-const topPubInstancesForPie = ref<any>(null);
+const serverInfo = ref<Misskey.entities.ServerInfoResponse | null>(null);
+const topSubInstancesForPie = ref<InstanceForPie[] | null>(null);
+const topPubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const federationPubActive = ref<number | null>(null);
 const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
 const federationSubActiveDiff = ref<number | null>(null);
-const newUsers = ref(null);
-const activeInstances = shallowRef(null);
+const newUsers = ref<Misskey.entities.UserDetailed[] | null>(null);
+const activeInstances = shallowRef<Misskey.entities.FederationInstance | null>(null);
 const queueStatsConnection = markRaw(useStream().useChannel('queueStats'));
 const connection = useStream().useChannel('serverStats');
 const now = new Date();
@@ -139,22 +141,28 @@ onMounted(async () => {
 	});
 
 	os.apiGet('federation/stats', { limit: 10 }).then(res => {
-		topSubInstancesForPie.value = res.topSubInstances.map(x => ({
-			name: x.host,
-			color: x.themeColor,
-			value: x.followersCount,
-			onClick: () => {
-				os.pageWindow(`/instance-info/${x.host}`);
-			},
-		})).concat([{ name: '(other)', color: '#80808080', value: res.otherFollowersCount }]);
-		topPubInstancesForPie.value = res.topPubInstances.map(x => ({
-			name: x.host,
-			color: x.themeColor,
-			value: x.followingCount,
-			onClick: () => {
-				os.pageWindow(`/instance-info/${x.host}`);
-			},
-		})).concat([{ name: '(other)', color: '#80808080', value: res.otherFollowingCount }]);
+		topSubInstancesForPie.value = [
+			...res.topSubInstances.map(x => ({
+				name: x.host,
+				color: x.themeColor,
+				value: x.followersCount,
+				onClick: () => {
+					os.pageWindow(`/instance-info/${x.host}`);
+				},
+			})),
+			{ name: '(other)', color: '#80808080', value: res.otherFollowersCount },
+		];
+		topPubInstancesForPie.value = [
+			...res.topPubInstances.map(x => ({
+				name: x.host,
+				color: x.themeColor,
+				value: x.followingCount,
+				onClick: () => {
+					os.pageWindow(`/instance-info/${x.host}`);
+				},
+			})),
+			{ name: '(other)', color: '#80808080', value: res.otherFollowingCount },
+		];
 	});
 
 	os.api('admin/server-info').then(serverInfoResponse => {

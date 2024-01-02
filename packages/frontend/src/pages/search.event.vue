@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" autofocus type="search" @keydown.enter="search">
+		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
@@ -60,8 +60,8 @@ const searchQuery = ref('');
 const searchOrigin = ref('combined');
 const eventSort = ref('startDate');
 const eventPagination = ref();
-const startDate = ref(null);
-const endDate = ref(null);
+const startDate = ref<any>(null);
+const endDate = ref<any>(null);
 
 async function search(): Promise<void> {
 	const query = searchQuery.value.toString().trim();

@@ -164,7 +164,10 @@ export class EmailService {
 			email: emailAddress,
 		});
 
-		let validated;
+		let validated: {
+			valid: boolean,
+			reason?: string | null,
+		};
 
 		if (meta.enableActiveEmailValidation) {
 			if (meta.enableVerifymailApi && meta.verifymailAuthKey != null) {

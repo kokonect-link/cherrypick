@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, Ref, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { NoteBlock } from './block.type';
+import { NoteBlock } from './block.type.js';
 import MkNote from '@/components/MkNote.vue';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import * as os from '@/os.js';
@@ -23,7 +23,7 @@ const props = defineProps<{
 	page: Misskey.entities.Page,
 }>();
 
-const note: Ref<Misskey.entities.Note | null> = ref(null);
+const note = ref<Misskey.entities.Note | null>(null);
 
 onMounted(() => {
 	os.api('notes/show', { noteId: props.block.note })
