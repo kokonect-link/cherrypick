@@ -903,8 +903,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       temml:
-        specifier: 0.10.13
-        version: 0.10.13
+        specifier: 0.10.20
+        version: 0.10.20
       textarea-caret:
         specifier: 3.1.0
         version: 3.1.0
@@ -19049,8 +19049,8 @@ packages:
       memoizerific: 1.11.3
     dev: true
 
-  /temml@0.10.13:
-    resolution: {integrity: sha512-tW7MGueYNp/TEqYl1gEJLzov98Z6wQlZQ0VQ7xdGD4qzSKC2W5d05KmI66PGqDHEqbGXPrG2a/nynkni/G9AVA==}
+  /temml@0.10.20:
+    resolution: {integrity: sha512-UqT8IbGQnb/IWEqEP6Yh2TCUeS9oKwgP3VO7E/qfKN1jQ2rVr5KCmpFor+hkeRIxIyynvPlkJwGRGRYfO8qhoA==}
     engines: {node: '>=18.13.0'}
     dev: false
 

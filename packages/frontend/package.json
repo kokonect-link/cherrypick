@@ -65,7 +65,7 @@
 		"sass": "1.69.5",
 		"shiki": "0.14.7",
 		"strict-event-emitter-types": "2.0.0",
-		"temml": "0.10.13",
+		"temml": "0.10.20",
 		"textarea-caret": "3.1.0",
 		"three": "0.159.0",
 		"throttle-debounce": "5.0.0",
