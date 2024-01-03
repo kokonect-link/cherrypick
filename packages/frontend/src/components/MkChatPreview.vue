@@ -19,8 +19,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkTime :time="message.createdAt" :class="$style.time"/>
 		</header>
 		<header v-else>
-			<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
-			<span :class="$style.username">@{{ Misskey.acct.toString(isMe(message) ? message.recipient : message.user) }}</span>
+			<div style="display: flex; flex-direction: column; max-width: 90%;">
+				<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
+				<span :class="$style.username">@{{ Misskey.acct.toString(isMe(message) ? message.recipient : message.user) }}</span>
+			</div>
 			<MkTime :time="message.createdAt" :class="$style.time"/>
 		</header>
 		<div>
@@ -78,7 +80,6 @@ function isMe(message) {
 
     > header {
       display: flex;
-      align-items: center;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
@@ -92,7 +93,7 @@ function isMe(message) {
 
 .indicator {
   position: absolute;
-  top: 41px;
+  top: 50px;
   left: 12px;
   color: var(--indicator);
   font-size: 9px;
@@ -103,10 +104,11 @@ function isMe(message) {
   padding: 0;
   font-weight: bold;
   transition: all 0.1s ease;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .username {
-  margin: 0 8px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -118,8 +120,8 @@ function isMe(message) {
 
 .avatar {
   float: left;
-  width: 42px;
-  height: 42px;
+	width: 52px;
+	height: 52px;
   margin: 0 16px 0 0;
   border-radius: 8px;
   transition: all 0.1s ease;
@@ -160,7 +162,7 @@ function isMe(message) {
   }
 
   .avatar {
-    margin: 0 12px 0 0;
+    margin: 0 8px;
   }
 }
 </style>
