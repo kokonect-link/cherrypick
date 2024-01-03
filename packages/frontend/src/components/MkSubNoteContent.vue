@@ -473,6 +473,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 			width: 100%;
 			height: 74px;
 			background: linear-gradient(0deg, var(--panel), var(--X15));
+			z-index: 2;
 
 			> .fadeLabel {
 				display: inline-block;
