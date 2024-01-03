@@ -126,7 +126,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
 		<div>
-			<MkReactionsViewer :note="appearNote" :maxNumber="16" @click.stop @mockUpdateMyReaction="emitUpdReaction">
+			<MkReactionsViewer :note="appearNote" :maxNumber="16" @click.stop @contextmenu.prevent.stop @mockUpdateMyReaction="emitUpdReaction">
 				<template #more>
 					<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
 				</template>

@@ -11,6 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	class="_button"
 	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
 	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
+	@contextmenu.prevent.stop="(ev) => onContextMenu(ev)"
 >
 	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
 	<span :class="$style.count">{{ count }}</span>
@@ -31,6 +32,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
 import * as sound from '@/scripts/sound.js';
+import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
 const props = defineProps<{
 	reaction: string;
@@ -136,6 +138,22 @@ function stealReaction(ev: MouseEvent) {
 					noteId: props.note.id,
 					reaction: `:${reactionName.value}:`,
 				});
+			},
+		}], ev.currentTarget ?? ev.target);
+	}
+}
+
+function onContextMenu(ev: MouseEvent) {
+	if (customEmojis.value.find(it => it.name === reactionName.value)?.name) {
+		os.popupMenu([{
+			type: 'label',
+			text: `:${reactionName.value}:`,
+		}, {
+			text: i18n.ts.copy,
+			icon: 'ti ti-copy',
+			action: () => {
+				copyToClipboard(`:${reactionName.value}:`);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}], ev.currentTarget ?? ev.target);
 	}
