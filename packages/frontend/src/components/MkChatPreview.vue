@@ -24,7 +24,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkTime :time="message.createdAt" :class="$style.time"/>
 		</header>
 		<div>
-			<p :class="$style.text"><span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}: </span>{{ message.text }}</p>
+			<p :class="$style.text">
+				<span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}: </span>
+				<Mfm v-if="message.text != null && message.text.length > 0" :text="message.text"/>
+				<span v-if="message.file?.id.length != undefined"><span v-if="message.text != null && message.text.length > 0" style="margin-right: 5px;"/>📎</span>
+			</p>
 		</div>
 	</div>
 </MkA>
@@ -36,7 +40,7 @@ import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-  message: Record<string, any>;
+  message: Misskey.entities.MessagingMessage;
 }>();
 
 function isMe(message): boolean {
