@@ -241,9 +241,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 						<div>
 							<div>
-								<Mfm :text="text.trim()" :author="appearNote.user"/>
+								<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
+								<Mfm v-else :text="text.trim()" :author="appearNote.user"/>
 							</div>
 							<CodeDiff
+								v-if="!appearNote.isHidden"
 								:oldString="appearNote.noteEditHistory[index - 1] || ''"
 								:newString="text"
 								:trim="true"
