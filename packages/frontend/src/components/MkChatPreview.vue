@@ -5,14 +5,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkA
-	v-anim="i"
 	class="_panel"
-	:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead)) }]"
+	:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i?.id) : message.isRead)) }]"
 	:to="message.groupId ? `/my/messaging/group/${ message.groupId }` : `/my/messaging/@${Misskey.acct.toString(isMe(message) ? message.recipient : message.user)}`"
-	:data-index="i"
 >
 	<div>
-		<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
+		<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i?.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
 		<MkAvatar :class="$style.avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" indicator link preview/>
 		<header v-if="message.groupId">
 			<span :class="$style.name">{{ message.group.name }}</span>
@@ -41,8 +39,8 @@ const props = defineProps<{
   message: Record<string, any>;
 }>();
 
-function isMe(message) {
-	return message.userId === $i.id;
+function isMe(message): boolean {
+	return message.userId === $i?.id;
 }
 </script>
 
@@ -92,11 +90,12 @@ function isMe(message) {
 }
 
 .indicator {
-  position: absolute;
-  top: 50px;
-  left: 12px;
+  position: relative;
+  top: 25px;
+  left: -12px;
   color: var(--indicator);
   font-size: 9px;
+	float: left;
 }
 
 .name {
