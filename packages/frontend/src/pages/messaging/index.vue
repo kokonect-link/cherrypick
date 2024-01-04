@@ -9,12 +9,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :contentMax="800">
 		<div>
 			<div v-if="tab === 'direct'">
-				<MkPagination v-slot="{ items }" :pagination="directPagination">
+				<MkPagination v-slot="{ items }" ref="pagingComponent" :pagination="directPagination">
 					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
 				</MkPagination>
 			</div>
 			<div v-else-if="tab === 'groups'">
-				<MkPagination v-slot="{ items }" :pagination="groupsPagination">
+				<MkPagination v-slot="{ items }" ref="pagingComponent" :pagination="groupsPagination">
 					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
 				</MkPagination>
 			</div>
@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, onMounted, onUnmounted, ref } from 'vue';
+import { computed, markRaw, onActivated, onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
@@ -35,6 +35,8 @@ import { $i } from '@/account.js';
 import { globalEvents } from '@/events.js';
 import MkChatPreview from '@/components/MkChatPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
+
+const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
 const router = useRouter();
 
@@ -144,6 +146,10 @@ onMounted(() => {
 	globalEvents.on('openMessage', (ev) => {
 		start(ev);
 	});
+});
+
+onActivated(() => {
+	pagingComponent.value?.reload();
 });
 
 onUnmounted(() => {
