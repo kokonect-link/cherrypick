@@ -1443,19 +1443,20 @@ defineExpose({
 	.footer {
 		padding: 0 8px 8px 8px;
 	}
+
+	.footerLeft {
+		grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+		padding-left: 2px;
+	}
+
+	.footerRight {
+		grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+	}
 }
 
 @container (max-width: 350px) {
 	.footer {
 		font-size: 0.9em;
-	}
-
-	.footerLeft {
-		grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
-	}
-
-	.footerRight {
-		grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
 	}
 
 	.headerRight {
