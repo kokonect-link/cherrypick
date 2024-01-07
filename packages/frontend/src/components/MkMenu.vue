@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<template v-for="(item, i) in items2">
 			<div v-if="item.type === 'divider'" role="separator" :class="$style.divider"></div>
+			<span v-else-if="item.type === 'label' && item.text == undefined"/>
 			<span v-else-if="item.type === 'label'" role="menuitem" :class="[$style.label, $style.item]">
 				<span style="opacity: 0.7;">{{ item.text }}</span>
 			</span>
