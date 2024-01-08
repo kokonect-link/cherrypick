@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
 	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'featured'">
 			<MkPagination v-slot="{items}" :pagination="featuredPagesPagination">
@@ -36,17 +36,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import MkPagePreview from '@/components/MkPagePreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
+import { $i } from '@/account.js';
 import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const router = useRouter();
 
-let tab = $ref('featured');
+const tab = ref('featured');
 
 const featuredPagesPagination = {
 	endpoint: 'pages/featured' as const,
@@ -65,13 +66,13 @@ function create() {
 	router.push('/pages/new');
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.create,
 	handler: create,
 }]);
 
-const headerTabs = $computed(() => [{
+const headerTabs = computed(() => [{
 	key: 'featured',
 	title: i18n.ts._pages.featured,
 	icon: 'ti ti-flare',
@@ -83,6 +84,12 @@ const headerTabs = $computed(() => [{
 	key: 'liked',
 	title: i18n.ts._pages.liked,
 	icon: 'ti ti-heart',
+}]);
+
+const headerTabsWhenNotLogin = computed(() => [{
+	key: 'featured',
+	title: i18n.ts._pages.featured,
+	icon: 'ti ti-flare',
 }]);
 
 definePageMetadata(computed(() => ({

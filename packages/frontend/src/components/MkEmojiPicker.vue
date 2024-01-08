@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button
 					v-for="emoji in searchResultCustom"
 					:key="emoji.name"
-					v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 50 : ''"
+					v-vibrate="defaultStore.state.vibrateSystem ? 50 : []"
 					class="_button item"
 					:title="emoji.name"
 					tabindex="0"
@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</section>
 
 		<div v-if="tab === 'index'" class="group index">
-			<section v-if="showPinned">
+			<section v-if="showPinned && pinned.length > 0">
 				<div class="body">
 					<button
 						v-for="emoji in pinned"
@@ -116,16 +116,17 @@ import * as os from '@/os.js';
 import { isTouchUsing } from '@/scripts/touch.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { i18n } from '@/i18n.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { customEmojiCategories, customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { $i } from '@/account.js';
 
 const props = withDefaults(defineProps<{
 	showPinned?: boolean;
-	asReactionPicker?: boolean;
+  pinnedEmojis?: string[];
 	maxHeight?: number;
 	asDrawer?: boolean;
 	asWindow?: boolean;
+	asReactionPicker?: boolean; // 今は使われてないが将来的に使いそう
 }>(), {
 	showPinned: true,
 });
@@ -138,19 +139,18 @@ const searchEl = shallowRef<HTMLInputElement>();
 const emojisEl = shallowRef<HTMLDivElement>();
 
 const {
-	reactions: pinned,
-	reactionPickerSize,
-	reactionPickerWidth,
-	reactionPickerHeight,
-	disableShowingAnimatedImages,
+	emojiPickerScale,
+	emojiPickerWidth,
+	emojiPickerHeight,
 	recentlyUsedEmojis,
 } = defaultStore.reactiveState;
 
-const size = computed(() => props.asReactionPicker ? reactionPickerSize.value : 1);
-const width = computed(() => props.asReactionPicker ? reactionPickerWidth.value : 3);
-const height = computed(() => props.asReactionPicker ? reactionPickerHeight.value : 2);
+const pinned = computed(() => props.pinnedEmojis);
+const size = computed(() => emojiPickerScale.value);
+const width = computed(() => emojiPickerWidth.value);
+const height = computed(() => emojiPickerHeight.value);
 const q = ref<string>('');
-const searchResultCustom = ref<Misskey.entities.CustomEmoji[]>([]);
+const searchResultCustom = ref<Misskey.entities.EmojiSimple[]>([]);
 const searchResultUnicode = ref<UnicodeEmojiDef[]>([]);
 const tab = ref<'index' | 'custom' | 'unicode' | 'tags'>('index');
 
@@ -197,7 +197,7 @@ watch(q, () => {
 	const searchCustom = () => {
 		const max = 100;
 		const emojis = customEmojis.value;
-		const matches = new Set<Misskey.entities.CustomEmoji>();
+		const matches = new Set<Misskey.entities.EmojiSimple>();
 
 		const exactMatch = emojis.find(emoji => emoji.name === newQ);
 		if (exactMatch) matches.add(exactMatch);
@@ -327,7 +327,7 @@ watch(q, () => {
 	searchResultUnicode.value = Array.from(searchUnicode());
 });
 
-function filterAvailable(emoji: Misskey.entities.CustomEmoji): boolean {
+function filterAvailable(emoji: Misskey.entities.EmojiSimple): boolean {
 	return (emoji.roleIdsThatCanBeUsedThisEmojiAsReaction == null || emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.length === 0) || ($i && $i.roles.some(r => emoji.roleIdsThatCanBeUsedThisEmojiAsReaction.includes(r.id)));
 }
 
@@ -344,7 +344,7 @@ function reset() {
 	q.value = '';
 }
 
-function getKey(emoji: string | Misskey.entities.CustomEmoji | UnicodeEmojiDef): string {
+function getKey(emoji: string | Misskey.entities.EmojiSimple | UnicodeEmojiDef): string {
 	return typeof emoji === 'string' ? emoji : 'char' in emoji ? emoji.char : `:${emoji.name}:`;
 }
 
@@ -368,7 +368,7 @@ function chosen(emoji: any, ev?: MouseEvent) {
 	emit('chosen', key);
 
 	// 最近使った絵文字更新
-	if (!pinned.value.includes(key)) {
+	if (!pinned.value?.includes(key)) {
 		let recents = defaultStore.state.recentlyUsedEmojis;
 		recents = recents.filter((emoji: any) => emoji !== key);
 		recents.unshift(key);

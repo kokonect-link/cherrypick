@@ -11,9 +11,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkUserName :user="user" :nowrap="true"/>
 		</div>
 		<div>
-			<div>
+			<p v-if="useCw" :class="$style.cw">
+				<Mfm v-if="cw != ''" :text="cw" :author="user" :nyaize="'respect'" :i="user" style="margin-right: 8px;"/>
+				<MkCwButton v-model="showContent" :text="text.trim()" :files="files" :poll="poll" style="margin: 4px 0;"/>
+			</p>
+			<div v-show="!useCw || showContent">
 				<Mfm :text="text.trim()" :author="user" :nyaize="'respect'" :i="user"/>
-				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 			</div>
 		</div>
 	</div>
@@ -21,20 +24,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as mfm from 'cherrypick-mfm-js';
-import MkUrlPreview from '@/components/MkUrlPreview.vue';
-import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
+import MkCwButton from '@/components/MkCwButton.vue';
 import { defaultStore } from '@/store.js';
+
+const showContent = ref(false);
 
 const props = defineProps<{
 	text: string;
+	files: Misskey.entities.DriveFile[];
+	poll?: {
+		choices: string[];
+		multiple: boolean;
+		expiresAt: string | null;
+		expiredAfter: string | null;
+	};
+	useCw: boolean;
+	cw: string | null;
 	user: Misskey.entities.User;
   showProfile?: boolean;
 }>();
-
-const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;
 </script>
 
 <style lang="scss" module>
@@ -62,17 +72,20 @@ const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;
 	min-width: 0;
 }
 
+.cw {
+	cursor: default;
+	display: block;
+	margin: 0;
+	padding: 0;
+	overflow-wrap: break-word;
+}
+
 .header {
 	margin-bottom: 2px;
 	font-weight: bold;
 	width: 100%;
 	overflow: clip;
-    text-overflow: ellipsis;
-}
-
-.urlPreview {
-	margin-top: 8px;
-	margin-bottom: 8px;
+	text-overflow: ellipsis;
 }
 
 @container (min-width: 350px) {

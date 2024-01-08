@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { computed, ref, shallowRef } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
@@ -55,7 +55,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 
-const pagingComponent = $ref<InstanceType<typeof MkPagination>>();
+const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
 const ownedPagination = {
 	endpoint: 'users/groups/owned' as const,
@@ -71,7 +71,7 @@ const invitationPagination = {
 	limit: 10,
 };
 
-let tab = $ref('owned');
+const tab = ref('owned');
 
 async function create() {
 	const { canceled, result: name } = await os.inputText({
@@ -79,7 +79,7 @@ async function create() {
 	});
 	if (canceled) return;
 	await os.apiWithDialog('users/groups/create', { name: name });
-	pagingComponent.reload();
+	pagingComponent.value.reload();
 }
 
 async function acceptInvite(invitation) {
@@ -87,7 +87,7 @@ async function acceptInvite(invitation) {
 		invitationId: invitation.id,
 	}).then(() => {
 		os.success();
-		pagingComponent.reload();
+		pagingComponent.value.reload();
 	});
 }
 
@@ -95,7 +95,7 @@ function rejectInvite(invitation) {
 	os.apiWithDialog('users/groups/invitations/reject', {
 		invitationId: invitation.id,
 	}).then(() => {
-		pagingComponent.reload();
+		pagingComponent.value.reload();
 		// this.$refs.invitations.reload();
 	});
 }
@@ -109,17 +109,17 @@ async function leave(group) {
 	os.apiWithDialog('users/groups/leave', {
 		groupId: group.id,
 	}).then(() => {
-		pagingComponent.reload();
+		pagingComponent.value.reload();
 	});
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.createGroup,
 	handler: create,
 }]);
 
-const headerTabs = $computed(() => [{
+const headerTabs = computed(() => [{
 	key: 'owned',
 	title: i18n.ts.ownedGroups,
 	icon: 'ti ti-flag',

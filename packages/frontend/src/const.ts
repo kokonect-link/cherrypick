@@ -54,7 +54,22 @@ https://github.com/sindresorhus/file-type/blob/main/core.js
 https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers
 */
 
-export const notificationTypes = ['note', 'follow', 'mention', 'reply', 'renote', 'quote', 'reaction', 'pollEnded', 'receiveFollowRequest', 'followRequestAccepted', 'groupInvited', 'achievementEarned', 'app'] as const;
+export const notificationTypes = [
+	'note',
+	'follow',
+	'mention',
+	'reply',
+	'renote',
+	'quote',
+	'reaction',
+	'pollEnded',
+	'receiveFollowRequest',
+	'followRequestAccepted',
+	'roleAssigned',
+	'groupInvited',
+	'achievementEarned',
+	'app',
+] as const;
 export const obsoleteNotificationTypes = ['pollVote'/*, 'groupInvited'*/] as const;
 
 export const ROLE_POLICIES = [
@@ -82,6 +97,7 @@ export const ROLE_POLICIES = [
 	'userListLimit',
 	'userEachUserListsLimit',
 	'rateLimitFactor',
+	'avatarDecorationLimit',
 ] as const;
 
 // なんか動かない
@@ -95,3 +111,4 @@ export const DEFAULT_NOT_FOUND_IMAGE_URL = 'https://xn--931a.moe/assets/not-foun
 export const DEFAULT_INFO_IMAGE_URL = 'https://xn--931a.moe/assets/info.jpg';
 
 export const MFM_TAGS = ['tada', 'jelly', 'twitch', 'shake', 'spin', 'jump', 'bounce', 'flip', 'x2', 'x3', 'x4', 'scale', 'position', 'fg', 'bg', 'font', 'blur', 'rainbow', 'sparkle', 'fade', 'rotate', 'ruby', 'unixtime'];
+export const HTML_TAGS = ['bold', 'strike', 'italic', 'small', 'center', 'plain', 'inlinecode', 'blockcode', 'mathinline', 'mathblock'];

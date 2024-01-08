@@ -60,9 +60,9 @@ const enableListTimeline = computed(defaultStore.makeGetterSetter('enableListTim
 const enableAntennaTimeline = computed(defaultStore.makeGetterSetter('enableAntennaTimeline'));
 const enableChannelTimeline = computed(defaultStore.makeGetterSetter('enableChannelTimeline'));
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.timeline,

@@ -9,8 +9,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
 		<template #header>
-			<div>
-				<XAnnouncements v-if="$i" :class="$style.announcements"/>
+			<div v-if="!showEl2">
+				<XAnnouncements v-if="$i"/>
 				<XStatusBars :class="$style.statusbars"/>
 			</div>
 		</template>
@@ -18,24 +18,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop" :class="$style.widgets">
+	<div v-if="isDesktop && !pageMetadata?.needWideArea" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 
-	<button v-if="!isDesktop && !isMobile" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
+	<button v-if="(!isDesktop || pageMetadata?.needWideArea) && !isMobile" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
 	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]">
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.navButton" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.push('/')"><i :class="$style.navButtonIcon" class="ti ti-home"></i></button>
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.navButton" class="_button" @click="mainRouter.push('/my/notifications')">
+		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="mainRouter.currentRoute.value.name === 'index' ? top() : mainRouter.push('/')"><i :class="$style.navButtonIcon" class="ti ti-home"></i></button>
+		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="mainRouter.push('/my/notifications')">
 			<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator">
 				<span v-if="defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
 				<i v-else class="_indicatorCircle"></i>
 			</span>
 		</button>
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
-		<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button>
+		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
+		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button>
 	</div>
 
 	<Transition
@@ -96,13 +96,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref, ComputedRef, watch, shallowRef, Ref, onBeforeUnmount } from 'vue';
+import { defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef, Ref, onBeforeUnmount } from 'vue';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import { instanceName } from '@/config.js';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
 import * as os from '@/os.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { navbarItemDef } from '@/navbar.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
@@ -129,17 +129,18 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-let showEl = $ref(false);
-let lastScrollPosition = $ref(0);
+const showEl = ref(false);
+const showEl2 = ref(false);
+const lastScrollPosition = ref(0);
 
-let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
-const widgetsShowing = $ref(false);
-const navFooter = $shallowRef<HTMLElement>();
+const pageMetadata = ref<null | PageMetadata>();
+const widgetsShowing = ref(false);
+const navFooter = shallowRef<HTMLElement>();
 const contents = shallowRef<InstanceType<typeof MkStickyContainer>>();
 
 provide('router', mainRouter);
 provideMetadataReceiver((info) => {
-	pageMetadata = info;
+	pageMetadata.value = info.value;
 	if (pageMetadata.value) {
 		document.title = `${pageMetadata.value.title} | ${instanceName}`;
 	}
@@ -202,15 +203,22 @@ function onScroll() {
 	if (currentScrollPosition < 0) {
 		return;
 	}
+
 	// Stop executing this function if the difference between
 	// current scroll position and last scroll position is less than some offset
-	if (Math.abs(currentScrollPosition - lastScrollPosition) < 60) {
+	if (Math.abs(currentScrollPosition - lastScrollPosition.value) < 60) {
 		return;
 	}
-	showEl = currentScrollPosition < lastScrollPosition;
-	lastScrollPosition = currentScrollPosition;
-	showEl = !showEl;
-	globalEvents.emit('showEl', showEl);
+
+	showEl.value = currentScrollPosition < lastScrollPosition.value;
+	lastScrollPosition.value = currentScrollPosition;
+	showEl.value = !showEl.value;
+	globalEvents.emit('showEl', showEl.value);
+
+	if (isMobile.value) {
+		if (showEl2.value === true) showEl2.value = showEl.value;
+		else setTimeout(() => showEl2.value = showEl.value, 50);
+	}
 }
 
 const onContextmenu = (ev) => {
@@ -243,16 +251,16 @@ function top() {
 	});
 }
 
-let navFooterHeight = $ref(0);
-provide<Ref<number>>(CURRENT_STICKY_BOTTOM, $$(navFooterHeight));
+const navFooterHeight = ref(0);
+provide<Ref<number>>(CURRENT_STICKY_BOTTOM, navFooterHeight);
 
-watch($$(navFooter), () => {
-	if (navFooter) {
-		navFooterHeight = navFooter.offsetHeight;
-		document.body.style.setProperty('--stickyBottom', `${navFooterHeight}px`);
+watch(navFooter, () => {
+	if (navFooter.value) {
+		navFooterHeight.value = navFooter.value.offsetHeight;
+		document.body.style.setProperty('--stickyBottom', `${navFooterHeight.value}px`);
 		document.body.style.setProperty('--minBottomSpacing', 'var(--minBottomSpacingMobile)');
 	} else {
-		navFooterHeight = 0;
+		navFooterHeight.value = 0;
 		document.body.style.setProperty('--stickyBottom', '0px');
 		document.body.style.setProperty('--minBottomSpacing', '0px');
 	}

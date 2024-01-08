@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<div v-show="showBody" ref="contentEl" :class="[$style.content, { [$style.omitted]: omitted }]">
 			<slot></slot>
-			<button v-if="omitted" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
+			<button v-if="omitted" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
 				<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 			</button>
 		</div>
@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 
 const props = withDefaults(defineProps<{

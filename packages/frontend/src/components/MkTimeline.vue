@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onUnmounted, provide } from 'vue';
+import { computed, watch, onMounted, onUnmounted, provide, ref } from 'vue';
 import { Connection } from 'cherrypick-js/built/streaming.js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
@@ -25,10 +25,11 @@ import { useStream } from '@/stream.js';
 import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { Paging } from '@/components/MkPagination.vue';
 import { i18n } from '@/i18n.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{
 	src: string;
@@ -67,8 +68,8 @@ type TimelineQueryType = {
   roleId?: string
 }
 
-const prComponent: InstanceType<typeof MkPullToRefresh> = $ref();
-const tlComponent: InstanceType<typeof MkNotes> = $ref();
+const prComponent = ref<InstanceType<typeof MkPullToRefresh>>();
+const tlComponent = ref<InstanceType<typeof MkNotes>>();
 
 let tlNotesCount = 0;
 
@@ -79,26 +80,26 @@ const prepend = note => {
 		note._shouldInsertAd_ = true;
 	}
 
-	tlComponent.pagingComponent?.prepend(note);
+	tlComponent.value.pagingComponent?.prepend(note);
 
 	emit('note');
 
 	if (props.sound) {
 		sound.play($i && (note.userId === $i.id) ? 'noteMy' : 'note');
-		vibrate($i && (note.userId === $i.id) ? '' : ColdDeviceStorage.get('vibrateNote') ? [30, 20] : '');
+		vibrate($i && (note.userId === $i.id) ? [] : defaultStore.state.vibrateNote ? [30, 20] : []);
 	}
 };
 
 const prependFilterdMedia = note => {
 	if (note.files !== null && note.files.length > 0) {
-		tlComponent.pagingComponent?.prepend(note);
+		tlComponent.value.pagingComponent?.prepend(note);
 	}
 
 	emit('note');
 
 	if (props.sound) {
 		sound.play($i && (note.userId === $i.id) ? 'noteMy' : 'note');
-		vibrate($i && (note.userId === $i.id) ? '' : ColdDeviceStorage.get('vibrateNote') ? [30, 20] : '');
+		vibrate($i && (note.userId === $i.id) ? [] : defaultStore.state.vibrateNote ? [30, 20] : []);
 	}
 };
 
@@ -269,6 +270,10 @@ watch(() => [props.list, props.antenna, props.channel, props.role], refreshEndpo
 // 初回表示用
 refreshEndpointAndChannel();
 
+onMounted(() => {
+	globalEvents.on('reloadTimeline', () => reloadTimeline());
+});
+
 onUnmounted(() => {
 	disconnectChannel();
 });
@@ -277,7 +282,7 @@ function reloadTimeline() {
 	return new Promise<void>((res) => {
 		tlNotesCount = 0;
 
-		tlComponent.pagingComponent?.reload().then(() => {
+		tlComponent.value.pagingComponent?.reload().then(() => {
 			res();
 		});
 	});

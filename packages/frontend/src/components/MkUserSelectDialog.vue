@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import FormSplit from '@/components/form/split.vue';
@@ -85,58 +85,58 @@ const props = withDefaults(defineProps<{
 	includeHost: true,
 });
 
-let username = $ref('');
-let host = $ref('');
-let users: Misskey.entities.UserDetailed[] = $ref([]);
-let recentUsers: Misskey.entities.UserDetailed[] = $ref([]);
-let selected: Misskey.entities.UserDetailed | null = $ref(null);
-let dialogEl = $ref();
+const username = ref('');
+const host = ref('');
+const users = ref<Misskey.entities.UserDetailed[]>([]);
+const recentUsers = ref<Misskey.entities.UserDetailed[]>([]);
+const selected = ref<Misskey.entities.UserDetailed | null>(null);
+const dialogEl = ref();
 
 const search = () => {
-	if (username === '' && host === '') {
-		users = [];
+	if (username.value === '' && host.value === '') {
+		users.value = [];
 		return;
 	}
 	os.api('users/search-by-username-and-host', {
-		username: username,
-		host: host,
+		username: username.value,
+		host: host.value,
 		limit: 10,
 		detail: false,
 	}).then(_users => {
-		users = _users;
+		users.value = _users;
 	});
 };
 
 const searchLocal = () => {
-	if (username === '') {
-		users = [];
+	if (username.value === '') {
+		users.value = [];
 		return;
 	}
 	os.api('users/search', {
-		query: username,
+		query: username.value,
 		origin: 'local',
 		limit: 10,
 		detail: false,
 	}).then(_users => {
-		users = _users;
+		users.value = _users;
 	});
 };
 
 const ok = () => {
-	if (selected == null) return;
-	emit('ok', selected);
-	dialogEl.close();
+	if (selected.value == null) return;
+	emit('ok', selected.value);
+	dialogEl.value.close();
 
 	// 最近使ったユーザー更新
 	let recents = defaultStore.state.recentlyUsedUsers;
-	recents = recents.filter(x => x !== selected.id);
-	recents.unshift(selected.id);
+	recents = recents.filter(x => x !== selected.value.id);
+	recents.unshift(selected.value.id);
 	defaultStore.set('recentlyUsedUsers', recents.splice(0, 16));
 };
 
 const cancel = () => {
 	emit('cancel');
-	dialogEl.close();
+	dialogEl.value.close();
 };
 
 onMounted(() => {
@@ -144,16 +144,15 @@ onMounted(() => {
 		userIds: defaultStore.state.recentlyUsedUsers,
 	}).then(users => {
 		if (props.includeSelf && users.find(x => $i ? x.id === $i.id : true) == null) {
-			recentUsers = [$i, ...users];
+			recentUsers.value = [$i, ...users];
 		} else {
-			recentUsers = users;
+			recentUsers.value = users;
 		}
 	});
 });
 </script>
 
 <style lang="scss" module>
-
 .form {
 	padding: 0 var(--root-margin);
 }

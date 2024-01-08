@@ -20,15 +20,20 @@ export const meta = {
 	tags: ['users'],
 
 	requireCredential: true,
+	kind: 'read:account',
 
 	res: {
 		type: 'object',
 		optional: false, nullable: false,
+		properties: {
+			sourceLang: { type: 'string' },
+			text: { type: 'string' },
+		},
 	},
 
 	errors: {
 		unavailable: {
-			message: 'Translate of notes unavailable.',
+			message: 'Translate of description unavailable.',
 			code: 'UNAVAILABLE',
 			id: '50a70314-2d8a-431b-b433-efa5cc56444c',
 		},

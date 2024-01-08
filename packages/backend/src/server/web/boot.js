@@ -183,6 +183,7 @@
 			<p>Clear the browser cache / ブラウザのキャッシュをクリアする / 브라우저의 캐시 지우기</p>
 			<p>Update your os and browser / ブラウザおよびOSを最新バージョンに更新する / 브라우저와 OS를 최신 버전으로 업데이트 하기</p>
 			<p>Disable an adblocker / アドブロッカーを無効にする / 광고 차단기를 비활성화 하기</p>
+			<p>&#40;Tor Browser&#41; Set dom.webaudio.enabled to true / dom.webaudio.enabledをtrueに設定する / dom.webaudio.enabled를 true로 설정하기</p>
 			<details style="color: rgb(255, 197, 230);">
 				<summary>Other options / その他のオプション / 기타 옵션</summary>
 				<a href="/flush">

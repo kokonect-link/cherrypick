@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkA to="/channels" class="link" activeClass="active"><i class="ti ti-device-tv icon"></i> {{ i18n.ts.channel }}</MkA>
 			</div>
 			<div v-else-if="narrow === true" class="narrow">
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="menu _button" @click="showMenu = true">
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="menu _button" @click="showMenu = true">
 					<i class="ti ti-menu-2 icon"></i>
 				</button>
 			</div>
@@ -59,8 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkA to="/play" class="link" activeClass="active"><i class="ti ti-player-play icon"></i>Play</MkA>
 			<MkA to="/gallery" class="link" activeClass="active"><i class="ti ti-icons icon"></i>{{ i18n.ts.gallery }}</MkA>
 			<div class="action">
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" @click="signin()">{{ i18n.ts.login }}</button>
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" @click="signin()">{{ i18n.ts.login }}</button>
 			</div>
 		</div>
 	</Transition>
@@ -69,9 +69,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef, onMounted, provide } from 'vue';
+import { ComputedRef, onMounted, provide, ref, computed } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import XCommon from './_common_/common.vue';
-import { host, instanceName } from '@/config.js';
+import { instanceName } from '@/config.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
@@ -84,13 +85,13 @@ import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 
-let pageMetadata = $ref<null | ComputedRef<PageMetadata>>();
+const pageMetadata = ref<null | ComputedRef<PageMetadata>>();
 
 provide('router', mainRouter);
 provideMetadataReceiver((info) => {
-	pageMetadata = info;
-	if (pageMetadata.value) {
-		document.title = `${pageMetadata.value.title} | ${instanceName}`;
+	pageMetadata.value = info;
+	if (pageMetadata.value.value) {
+		document.title = `${pageMetadata.value.value.title} | ${instanceName}`;
 	}
 });
 
@@ -99,14 +100,14 @@ const announcements = {
 	limit: 10,
 };
 
-const isTimelineAvailable = $ref(instance.policies?.ltlAvailable || instance.policies?.gtlAvailable);
+const isTimelineAvailable = ref(instance.policies?.ltlAvailable || instance.policies?.gtlAvailable);
 
-let showMenu = $ref(false);
-let isDesktop = $ref(window.innerWidth >= DESKTOP_THRESHOLD);
-let narrow = $ref(window.innerWidth < 1280);
-let meta = $ref();
+const showMenu = ref(false);
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
+const narrow = ref(window.innerWidth < 1280);
+const meta = ref<Misskey.entities.MetaResponse>();
 
-const keymap = $computed(() => {
+const keymap = computed(() => {
 	return {
 		'd': () => {
 			if (ColdDeviceStorage.get('syncDeviceDarkMode')) return;
@@ -118,10 +119,10 @@ const keymap = $computed(() => {
 	};
 });
 
-const root = $computed(() => mainRouter.currentRoute.value.name === 'index');
+const root = computed(() => mainRouter.currentRoute.value.name === 'index');
 
 os.api('meta', { detail: true }).then(res => {
-	meta = res;
+	meta.value = res;
 });
 
 function signin() {
@@ -137,15 +138,15 @@ function signup() {
 }
 
 onMounted(() => {
-	if (!isDesktop) {
+	if (!isDesktop.value) {
 		window.addEventListener('resize', () => {
-			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop = true;
+			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
 		}, { passive: true });
 	}
 });
 
 defineExpose({
-	showMenu: $$(showMenu),
+	showMenu: showMenu,
 });
 </script>
 

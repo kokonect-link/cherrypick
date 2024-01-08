@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkTime :time="note.createdAt" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 			</MkA>
 		</div>
-		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance"/></div>
+		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance" @click.stop="showOnRemote"/></div>
 	</div>
 </header>
 </template>
@@ -55,7 +55,7 @@ import { i18n } from '@/i18n.js';
 import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
 import { defaultStore } from '@/store.js';
-import { deepClone } from '@/scripts/clone.js';
+import { useRouter } from '@/router.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{
@@ -64,8 +64,14 @@ const props = defineProps<{
 
 const mock = inject<boolean>('mock', false);
 
-let note = $ref(deepClone(props.note));
-const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && note.user.instance);
+const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultStore.state.instanceTicker === 'remote' && props.note.user.instance);
+const router = useRouter();
+
+function showOnRemote() {
+	if (props.note.user.instance === undefined) router.push(notePage(props.note));
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	else window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
+}
 </script>
 
 <style lang="scss" module>
@@ -93,7 +99,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 	display: block;
 	margin: 0 .5em 0 0;
 	padding: 0;
-	overflow: scroll;
+	overflow: hidden;
   overflow-wrap: anywhere;
 	font-size: 1em;
 	font-weight: bold;
@@ -124,7 +130,7 @@ const showTicker = (defaultStore.state.instanceTicker === 'always') || (defaultS
 .username {
 	flex-shrink: 9999999;
 	margin: 0 .5em 0 0;
-	overflow: scroll;
+	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: .95em;
   max-width: 300px;

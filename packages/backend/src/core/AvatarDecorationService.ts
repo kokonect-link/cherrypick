@@ -158,7 +158,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		let name;
 		let description;
 		for (const decoration of allDecorations) {
-			if (decoration.id == avatarDecorationId) {
+			if (decoration.id === avatarDecorationId) {
 				name = decoration.name;
 				description = decoration.description;
 				break;
@@ -189,6 +189,10 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 			id: findDecoration?.id ?? '',
 			angle: avatarDecorations.angle ?? 0,
 			flipH: avatarDecorations.flipH ?? false,
+			offsetX: avatarDecorations.offsetX ?? 0,
+			offsetY: avatarDecorations.offsetY ?? 0,
+			scale: avatarDecorations.scale ?? 1,
+			opacity: avatarDecorations.opacity ?? 1,
 		}];
 		await this.usersRepository.update({ id: user.id }, updates);
 	}

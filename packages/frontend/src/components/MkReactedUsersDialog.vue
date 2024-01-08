@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, shallowRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
@@ -57,30 +57,30 @@ const props = defineProps<{
 	noteId: Misskey.entities.Note['id'];
 }>();
 
-const dialog = $shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-let note = $ref<Misskey.entities.Note>();
-let tab = $ref<string>();
-let reactions = $ref<string[]>();
-let users = $ref();
+const note = ref<Misskey.entities.Note>();
+const tab = ref<string>();
+const reactions = ref<string[]>();
+const users = ref();
 
-watch($$(tab), async () => {
+watch(tab, async () => {
 	const res = await os.api('notes/reactions', {
 		noteId: props.noteId,
 		type: tab,
 		limit: 30,
 	});
 
-	users = res.map(x => x.user);
+	users.value = res.map(x => x.user);
 });
 
 onMounted(() => {
 	os.api('notes/show', {
 		noteId: props.noteId,
 	}).then((res) => {
-		reactions = Object.keys(res.reactions);
-		tab = reactions[0];
-		note = res;
+		reactions.value = Object.keys(res.reactions);
+		tab.value = reactions.value[0];
+		note.value = res;
 	});
 });
 </script>

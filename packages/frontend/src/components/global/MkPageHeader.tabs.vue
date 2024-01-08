@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="el" :class="$style.tabs" @wheel="onTabWheel">
 	<div :class="$style.tabsInner">
 		<button
-			v-for="t in tabs" :ref="(el) => tabRefs[t.key] = (el as HTMLElement)" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip.noDelay="t.title"
+			v-for="t in tabs" :ref="(el) => tabRefs[t.key] = (el as HTMLElement)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay="t.title"
 			class="_button" :class="[$style.tab, { [$style.active]: t.key != null && t.key === props.tab, [$style.animate]: defaultStore.reactiveState.animation.value }]"
 			@mousedown="(ev) => onTabMousedown(t, ev)" @click="(ev) => onTabClick(t, ev)"
 		>
@@ -54,7 +54,7 @@ export type Tab = {
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, watch, nextTick, shallowRef } from 'vue';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];

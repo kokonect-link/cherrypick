@@ -3,3 +3,4 @@ packages:
  - 'packages/frontend'
  - 'packages/sw'
  - 'packages/cherrypick-js'
+ - 'packages/cherrypick-js/generator'

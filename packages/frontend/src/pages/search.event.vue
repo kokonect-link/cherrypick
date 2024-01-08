@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" autofocus type="search" @keydown="onInputKeydown">
+		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
@@ -45,6 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -54,39 +55,33 @@ import MkFolder from '@/components/MkFolder.vue';
 import { i18n } from '@/i18n.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
-let key = $ref(0);
-let searchQuery = $ref('');
-let searchOrigin = $ref('combined');
-let eventSort = $ref('startDate');
-let eventPagination = $ref();
-let startDate = $ref(null);
-let endDate = $ref(null);
+const key = ref(0);
+const searchQuery = ref('');
+const searchOrigin = ref('combined');
+const eventSort = ref('startDate');
+const eventPagination = ref();
+const startDate = ref<any>(null);
+const endDate = ref<any>(null);
 
 async function search(): Promise<void> {
-	const query = searchQuery.toString().trim();
+	const query = searchQuery.value.toString().trim();
 
 	// only notes/users search require the query string
 	if (query == null || query === '') return;
 
-	eventPagination = {
+	eventPagination.value = {
 		endpoint: 'notes/events/search',
 		limit: 10,
 		offsetMode: true,
 		params: {
-			query: !searchQuery ? undefined : searchQuery,
-			sortBy: eventSort,
-			sinceDate: startDate ? (new Date(startDate)).getTime() : undefined,
-			untilDate: endDate ? (new Date(endDate)).getTime() + 1000 * 3600 * 24 : undefined,
-			origin: searchOrigin,
+			query: !searchQuery.value ? undefined : searchQuery.value,
+			sortBy: eventSort.value,
+			sinceDate: startDate.value ? (new Date(startDate.value)).getTime() : undefined,
+			untilDate: endDate.value ? (new Date(endDate.value)).getTime() + 1000 * 3600 * 24 : undefined,
+			origin: searchOrigin.value,
 		},
 	};
 
-	key++;
-}
-
-function onInputKeydown(evt: KeyboardEvent) {
-	if (evt.key === 'Enter') {
-		search();
-	}
+	key.value++;
 }
 </script>

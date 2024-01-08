@@ -55,7 +55,10 @@ export class RedisKVCache<T> {
 
 		const cached = await this.redisClient.get(`kvcache:${this.name}:${key}`);
 		if (cached == null) return undefined;
-		return this.fromRedisConverter(cached);
+		const parsed = this.fromRedisConverter(cached);
+		if (parsed == null) return undefined;
+		this.memoryCache.set(key, parsed);
+		return parsed;
 	}
 
 	@bindThis

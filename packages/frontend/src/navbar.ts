@@ -4,6 +4,7 @@
  */
 
 import { computed, defineAsyncComponent, reactive } from 'vue';
+import { clearCache } from './scripts/clear-cache.js';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { openInstanceMenu, openToolsMenu } from '@/ui/_common_/common.js';
@@ -209,5 +210,12 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-user',
 		show: computed(() => $i != null),
 		to: `/@${$i?.username}`,
+	},
+	cacheClear: {
+		title: i18n.ts.clearCache,
+		icon: 'ti ti-trash',
+		action: (ev) => {
+			clearCache();
+		},
 	},
 });

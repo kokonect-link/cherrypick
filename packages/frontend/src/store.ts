@@ -6,6 +6,7 @@
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { miLocalStorage } from './local-storage.js';
+import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
 
 interface PostFormAction {
@@ -33,6 +34,22 @@ interface NotePostInterruptor {
 
 interface PageViewInterruptor {
 	handler: (page: Misskey.entities.Page) => unknown;
+}
+
+/** サウンド設定 */
+export type SoundStore = {
+	type: Exclude<SoundType, '_driveFile_'>;
+	volume: number;
+} | {
+	type: '_driveFile_';
+
+	/** ドライブのファイルID */
+	fileId: string;
+
+	/** ファイルURL（こちらが優先される） */
+	fileUrl: string;
+
+	volume: number;
 }
 
 export const postFormActions: PostFormAction[] = [];
@@ -105,6 +122,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	reactions: {
 		where: 'account',
 		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
+	},
+	pinnedEmojis: {
+		where: 'account',
+		default: [],
 	},
 	reactionAcceptance: {
 		where: 'account',
@@ -207,15 +228,15 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	enableQuickAddMfmFunction: {
+		where: 'device',
+		default: true,
+	},
 	loadRawImages: {
 		where: 'device',
 		default: false,
 	},
 	imageNewTab: {
-		where: 'device',
-		default: false,
-	},
-	enableDataSaverMode: {
 		where: 'device',
 		default: false,
 	},
@@ -275,19 +296,19 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'remote' as 'always' | 'remote' | 'none',
 	},
-	reactionPickerSize: {
+	emojiPickerScale: {
 		where: 'device',
 		default: 3,
 	},
-	reactionPickerWidth: {
+	emojiPickerWidth: {
 		where: 'device',
 		default: 2,
 	},
-	reactionPickerHeight: {
+	emojiPickerHeight: {
 		where: 'device',
 		default: 3,
 	},
-	reactionPickerUseDrawerForMobile: {
+	emojiPickerUseDrawerForMobile: {
 		where: 'device',
 		default: true,
 	},
@@ -347,6 +368,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'small' as 'small' | 'medium' | 'large',
 	},
+	limitWidthOfReaction: {
+		where: 'device',
+		default: true,
+	},
 	forceShowAds: {
 		where: 'device',
 		default: true,
@@ -399,6 +424,19 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	dataSaver: {
+		where: 'device',
+		default: {
+			media: false,
+			avatar: false,
+			urlPreview: false,
+			code: false,
+		} as Record<string, boolean>,
+	},
+	enableSeasonalScreenEffect: {
+		where: 'device',
+		default: false,
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
@@ -408,37 +446,49 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 0.3,
 	},
+	sound_notUseSound: {
+		where: 'device',
+		default: false,
+	},
+	sound_useSoundOnlyWhenActive: {
+		where: 'device',
+		default: false,
+	},
 	sound_note: {
 		where: 'device',
-		default: { type: 'syuilo/n-aec', volume: 1 },
+		default: { type: 'syuilo/n-aec', volume: 1 } as SoundStore,
 	},
 	sound_noteMy: {
 		where: 'device',
-		default: { type: 'syuilo/n-cea-4va', volume: 1 },
+		default: { type: 'syuilo/n-cea-4va', volume: 1 } as SoundStore,
 	},
 	sound_noteEdited: {
 		where: 'device',
-		default: { type: 'syuilo/n-eca', volume: 1 },
+		default: { type: 'syuilo/n-eca', volume: 1 } as SoundStore,
 	},
 	sound_notification: {
 		where: 'device',
-		default: { type: 'syuilo/n-ea', volume: 1 },
+		default: { type: 'syuilo/n-ea', volume: 1 } as SoundStore,
 	},
 	sound_chat: {
 		where: 'device',
-		default: { type: 'syuilo/pope1', volume: 1 },
+		default: { type: 'syuilo/pope1', volume: 1 } as SoundStore,
 	},
 	sound_chatBg: {
 		where: 'device',
-		default: { type: 'syuilo/waon', volume: 1 },
+		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
 	},
 	sound_antenna: {
 		where: 'device',
-		default: { type: 'syuilo/triple', volume: 1 },
+		default: { type: 'syuilo/triple', volume: 1 } as SoundStore,
 	},
 	sound_channel: {
 		where: 'device',
-		default: { type: 'syuilo/square-pico', volume: 1 },
+		default: { type: 'syuilo/square-pico', volume: 1 } as SoundStore,
+	},
+	sound_reaction: {
+		where: 'device',
+		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
 	},
 
 	// #region CherryPick
@@ -495,6 +545,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	renoteVisibilitySelection: {
+		where: 'device',
+		default: true,
+	},
 	showFixedPostFormInReplies: {
 		where: 'device',
 		default: true,
@@ -538,6 +592,32 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 
+	// - Settings/Sounds & Vibrations
+	vibrate: {
+		where: 'device',
+		default: !/ipad|iphone/.test(navigator.userAgent.toLowerCase()) && window.navigator.vibrate,
+	},
+	vibrateNote: {
+		where: 'device',
+		default: true,
+	},
+	vibrateNotification: {
+		where: 'device',
+		default: true,
+	},
+	vibrateChat: {
+		where: 'device',
+		default: true,
+	},
+	vibrateChatBg: {
+		where: 'device',
+		default: true,
+	},
+	vibrateSystem: {
+		where: 'device',
+		default: true,
+	},
+
 	// - Settings/CherryPick
 	nicknameEnabled: {
 		where: 'account',
@@ -556,6 +636,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 	showRenoteConfirmPopup: {
+		where: 'device',
+		default: true,
+	},
+	expandOnNoteClick: {
 		where: 'device',
 		default: true,
 	},
@@ -640,22 +724,6 @@ export class ColdDeviceStorage {
 		darkTheme,
 		syncDeviceDarkMode: true,
 		plugins: [] as Plugin[],
-		mediaVolume: 0.5,
-		vibrate: true,
-		vibrateNote: true,
-		vibrateNotification: true,
-		vibrateChat: true,
-		vibrateChatBg: true,
-		vibrateSystem: true,
-		sound_masterVolume: 0.5,
-		sound_note: { type: 'syuilo/n-aec', volume: 0.5 },
-		sound_noteMy: { type: 'syuilo/n-cea-4va', volume: 0.5 },
-		sound_noteEdited: { type: 'syuilo/n-eca', volume: 0.5 },
-		sound_notification: { type: 'syuilo/n-ea', volume: 0.5 },
-		sound_chat: { type: 'syuilo/pope1', volume: 0.5 },
-		sound_chatBg: { type: 'syuilo/waon', volume: 0.5 },
-		sound_antenna: { type: 'syuilo/triple', volume: 0.5 },
-		sound_channel: { type: 'syuilo/square-pico', volume: 0.5 },
 	};
 
 	public static watchers: Watcher[] = [];

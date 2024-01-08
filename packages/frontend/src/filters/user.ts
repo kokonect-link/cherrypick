@@ -13,7 +13,7 @@ export const acct = (user: Misskey.Acct) => {
 
 export const userName = (user: Misskey.entities.User) => {
 	if (!defaultStore.state.nicknameEnabled) {
-		return user.name || user.username;
+		return user.name ?? user.username;
 	}
 	return defaultStore.reactiveState.nicknameMap.value[user.id] || user.name || user.username;
 };

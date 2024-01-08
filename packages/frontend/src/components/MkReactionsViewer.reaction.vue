@@ -7,12 +7,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <button
 	ref="buttonEl"
 	v-ripple="canToggle"
-	v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? [10, 30, 40] : ''"
+	v-vibrate="defaultStore.state.vibrateSystem ? [10, 30, 40] : []"
 	class="_button"
 	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
-	@click="toggleReaction()"
+	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
+	@contextmenu.prevent.stop="(ev) => onContextMenu(ev)"
 >
-	<MkReactionIcon :class="$style.icon" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]"/>
+	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
 	<span :class="$style.count">{{ count }}</span>
 </button>
 </template>
@@ -27,9 +28,11 @@ import { useTooltip } from '@/scripts/use-tooltip.js';
 import { $i } from '@/account.js';
 import MkReactionEffect from '@/components/MkReactionEffect.vue';
 import { claimAchievement } from '@/scripts/achievements.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
+import * as sound from '@/scripts/sound.js';
+import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
 const props = defineProps<{
 	reaction: string;
@@ -55,7 +58,7 @@ const alternative: ComputedRef<string | null> = computed(() => defaultStore.stat
 
 const canToggle = computed(() => !props.reaction.match(/@\w/) && $i);
 
-async function toggleReaction(ev) {
+async function toggleReaction(ev: MouseEvent) {
 	if (!canToggle.value) {
 		chooseAlternative(ev);
 		return;
@@ -71,6 +74,10 @@ async function toggleReaction(ev) {
 		});
 		if (confirm.canceled) return;
 
+		if (oldReaction !== props.reaction) {
+			sound.play('reaction');
+		}
+
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count - 1));
 			return;
@@ -82,11 +89,13 @@ async function toggleReaction(ev) {
 			if (oldReaction !== props.reaction) {
 				os.api('notes/reactions/create', {
 					noteId: props.note.id,
-					reaction: props.reaction,
+					reaction: `:${reactionName.value}:`,
 				});
 			}
 		});
 	} else {
+		sound.play('reaction');
+
 		if (mock) {
 			emit('reactionToggled', props.reaction, (props.count + 1));
 			return;
@@ -99,6 +108,54 @@ async function toggleReaction(ev) {
 		if (props.note.text && props.note.text.length > 100 && (Date.now() - new Date(props.note.createdAt).getTime() < 1000 * 3)) {
 			claimAchievement('reactWithoutRead');
 		}
+	}
+}
+
+function stealReaction(ev: MouseEvent) {
+	if (props.note.user.host && $i && ($i.isAdmin ?? $i.policies.canManageCustomEmojis)) {
+		os.popupMenu([{
+			type: 'label',
+			text: props.reaction,
+		}, {
+			text: i18n.ts.import,
+			icon: 'ti ti-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host,
+				});
+			},
+		}, {
+			text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
+			icon: 'ti ti-mood-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host,
+				});
+
+				await os.api('notes/reactions/create', {
+					noteId: props.note.id,
+					reaction: `:${reactionName.value}:`,
+				});
+			},
+		}], ev.currentTarget ?? ev.target);
+	}
+}
+
+function onContextMenu(ev: MouseEvent) {
+	if (customEmojis.value.find(it => it.name === reactionName.value)?.name) {
+		os.popupMenu([{
+			type: 'label',
+			text: `:${reactionName.value}:`,
+		}, {
+			text: i18n.ts.copy,
+			icon: 'ti ti-copy',
+			action: () => {
+				copyToClipboard(`:${reactionName.value}:`);
+				os.toast(i18n.ts.copied, 'copied');
+			},
+		}], ev.currentTarget ?? ev.target);
 	}
 }
 
@@ -155,12 +212,13 @@ if (!mock) {
 <style lang="scss" module>
 .root {
 	display: inline-flex;
-	align-items: center;
 	height: 38px;
 	margin: 2px;
 	padding: 0 12px;
 	font-size: 1.35em;
 	border-radius: 999px;
+	align-items: center;
+	justify-content: center;
 
 	&.canToggle {
 		background: var(--buttonBg);
@@ -199,7 +257,7 @@ if (!mock) {
 	&.reacted, &.reacted:hover {
 		background: var(--accentedBg);
 		color: var(--accent);
-		box-shadow: 0 0 0px 1px var(--accent) inset;
+		box-shadow: 0 0 0 1px var(--accent) inset;
 
 		> .count {
 			color: var(--accent);
@@ -211,8 +269,9 @@ if (!mock) {
 	}
 }
 
-.icon {
-	max-width: 150px;
+.limitWidth {
+	max-width: 70px;
+	object-fit: contain;
 }
 
 .count {

@@ -19,9 +19,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkTextarea v-model="avatarDecoration.description">
 						<template #label>{{ i18n.ts.description }}</template>
 					</MkTextarea>
+					<div :class="$style.imageSelectdiv">
+						<p>{{ i18n.ts.image }}</p>
+						<MkButton @click="ev => changeImage(ev, avatarDecoration)">{{ i18n.ts.selectFile }}</MkButton>
+					</div>
 					<MkInput v-model="avatarDecoration.url">
 						<template #label>{{ i18n.ts.imageUrl }}</template>
 					</MkInput>
+					<div v-if="avatarDecoration.url !== ''" :class="$style.imgContainer">
+						<img src="https://misskey-hub.net/avatar-decoration-template.png" :class="$style.img" style="opacity: .5;"/>
+						<img :src="avatarDecoration.url" :class="$style.img"/>
+					</div>
 					<div class="buttons _buttons">
 						<MkButton class="button" inline primary @click="save(avatarDecoration)"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 						<MkButton v-if="avatarDecoration.id != null" class="button" inline danger @click="del(avatarDecoration)"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
@@ -34,22 +42,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { ref, computed } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
-import MkRadios from '@/components/MkRadios.vue';
-import MkInfo from '@/components/MkInfo.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkFolder from '@/components/MkFolder.vue';
+import { selectFile } from '@/scripts/select-file.js';
 
-let avatarDecorations: any[] = $ref([]);
+const avatarDecorations = ref<Misskey.entities.AdminAvatarDecorationsListResponse>([]);
+
+async function changeImage(ev, avatarDecoration) {
+	const file = await selectFile(ev.currentTarget ?? ev.target, null);
+	if (file != null) {
+		avatarDecoration.url = file.url;
+	}
+}
 
 function add() {
-	avatarDecorations.unshift({
+	avatarDecorations.value.unshift({
 		_id: Math.random().toString(36),
 		id: null,
 		name: '',
@@ -64,7 +78,7 @@ function del(avatarDecoration) {
 		text: i18n.t('deleteAreYouSure', { x: avatarDecoration.name }),
 	}).then(({ canceled }) => {
 		if (canceled) return;
-		avatarDecorations = avatarDecorations.filter(x => x !== avatarDecoration);
+		avatarDecorations.value = avatarDecorations.value.filter(x => x !== avatarDecoration);
 		os.api('admin/avatar-decorations/delete', avatarDecoration);
 	});
 }
@@ -80,23 +94,57 @@ async function save(avatarDecoration) {
 
 function load() {
 	os.api('admin/avatar-decorations/list').then(_avatarDecorations => {
-		avatarDecorations = _avatarDecorations;
+		avatarDecorations.value = _avatarDecorations;
 	});
 }
 
 load();
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	asFullButton: true,
 	icon: 'ti ti-plus',
 	text: i18n.ts.add,
 	handler: add,
 }]);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.avatarDecorations,
 	icon: 'ti ti-sparkles',
 });
 </script>
+
+<style lang="scss" module>
+.imageSelectdiv {
+	display: flex;
+	align-items: center;
+	gap: 1em;
+
+	> p {
+		margin: 0;
+	}
+}
+
+.imgContainer {
+	position: relative;
+	margin: 8px;
+	width: 128px;
+	height: 128px;
+}
+
+.img {
+	display: block;
+
+	position: absolute;
+	left: 0;
+	top: 0;
+
+	width: 100%;
+	height: 100%;
+
+	object-fit: contain;
+	pointer-events: none;
+}
+
+</style>

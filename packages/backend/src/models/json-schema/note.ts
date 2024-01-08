@@ -140,6 +140,10 @@ export const packedNoteSchema = {
 			type: 'object',
 			optional: true, nullable: true,
 		},
+		event: {
+			type: 'object',
+			optional: true, nullable: true,
+		},
 		channelId: {
 			type: 'string',
 			optional: true, nullable: true,
@@ -149,22 +153,26 @@ export const packedNoteSchema = {
 		channel: {
 			type: 'object',
 			optional: true, nullable: true,
-			items: {
-				type: 'object',
-				optional: false, nullable: false,
-				properties: {
-					id: {
-						type: 'string',
-						optional: false, nullable: false,
-					},
-					name: {
-						type: 'string',
-						optional: false, nullable: true,
-					},
-					isSensitive: {
-						type: 'boolean',
-						optional: true, nullable: false,
-					},
+			properties: {
+				id: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+				name: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+				color: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+				isSensitive: {
+					type: 'boolean',
+					optional: false, nullable: false,
+				},
+				allowRenoteToExternal: {
+					type: 'boolean',
+					optional: false, nullable: false,
 				},
 			},
 		},
@@ -203,6 +211,10 @@ export const packedNoteSchema = {
 				type: 'string',
 				optional: false, nullable: false,
 			},
+		},
+		clippedCount: {
+			type: 'number',
+			optional: true, nullable: false,
 		},
 
 		myReaction: {

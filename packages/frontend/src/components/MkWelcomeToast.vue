@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
 import { $i } from '@/account.js';
@@ -31,11 +31,11 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex('high');
-let showing = $ref(true);
+const showing = ref(true);
 
 onMounted(() => {
 	window.setTimeout(() => {
-		showing = false;
+		showing.value = false;
 	}, 4000);
 });
 </script>

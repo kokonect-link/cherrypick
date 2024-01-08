@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div
 	v-adaptive-border
-	v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''"
+	v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
 	:class="[$style.root, { [$style.disabled]: disabled, [$style.checked]: checked }]"
 	:aria-checked="checked"
 	:aria-disabled="disabled"
@@ -25,8 +25,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import { ColdDeviceStorage } from '@/store.js';
+import { computed } from 'vue';
+import { defaultStore } from '@/store.js';
 
 const props = defineProps<{
 	modelValue: any;
@@ -38,7 +38,7 @@ const emit = defineEmits<{
 	(ev: 'update:modelValue', value: any): void;
 }>();
 
-let checked = $computed(() => props.modelValue === props.value);
+const checked = computed(() => props.modelValue === props.value);
 
 function toggle(): void {
 	if (props.disabled) return;

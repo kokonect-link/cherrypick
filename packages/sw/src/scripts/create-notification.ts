@@ -59,7 +59,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					if (!account) return null;
 					const userDetail = await cli.request('users/show', { userId: data.body.userId }, account.token);
 					return [t('_notification.youWereFollowed'), {
-						body: getUserName(data.body.user),
+						body: `${getUserName(data.body.user)} (@${data.body.user?.username}${data.body.user?.host != null ? '@' + data.body.user.host : ''})`,
 						icon: data.body.user.avatarUrl,
 						badge: iconUrl('user-plus'),
 						data,
@@ -162,8 +162,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					}
 
 					const tag = `reaction:${data.body.note.id}`;
-					return [`${reaction} ${getUserName(data.body.user)}`, {
-						body: data.body.note.text ?? '',
+					return [t('_notification.youGotReact', { name: getUserName(data.body.user) }), {
+						body: reaction + '\n' + data.body.note.text ?? '',
 						icon: data.body.user.avatarUrl,
 						tag,
 						badge,
@@ -248,13 +248,14 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						badge: iconUrl('bell'),
 						data,
 					}];
-		
+
 				default:
 					return null;
 			}
 		case 'unreadMessagingMessage':
 			if (data.body.groupId === null) {
-				return [t('_notification.youGotMessagingMessageFromUser', { name: getUserName(data.body.user) }), {
+				return [getUserName(data.body.user), {
+					body: data.body.text ?? '',
 					icon: data.body.user.avatarUrl,
 					badge: iconUrl('messages'),
 					tag: `messaging:user:${data.body.userId}`,
@@ -262,7 +263,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					renotify: true,
 				}];
 			}
-			return [t('_notification.youGotMessagingMessageFromGroup', { name: data.body.group?.name ?? '' }), {
+			return [data.body.group?.name ?? '', {
+				body: `${getUserName(data.body.user)}: ${data.body.text ?? ''}`,
 				icon: data.body.user.avatarUrl,
 				badge: iconUrl('messages'),
 				tag: `messaging:group:${data.body.groupId}`,

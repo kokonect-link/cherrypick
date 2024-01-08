@@ -5,16 +5,16 @@ For more information on the release instructions, please see:
 https://github.com/kokonect-link/cherrypick/blob/develop/CONTRIBUTING.md#release
 
 ## For reviewers
-- CHANGELOGに抜け漏れは無いか
-- バージョンの上げ方は適切か
-- 他にこのリリースに含めなければならない変更は無いか
-- 全体的な変更内容を俯瞰し問題は無いか
-- レビューされていないコミットがある場合は、それが問題ないか
-- 最終的な動作確認を行い問題は無いか
+- CHANGELOG_CHERRYPICK에 누락된 부분은 없는가?
+- 버전업 방법은 적절한가?
+- 이 릴리스에 포함시켜야 할 다른 변경사항은 없는가?
+- 전체적인 변경 내용을 비교하고 문제는 없는지
+- 검토되지 않은 커밋이 있다면, 그것이 문제가 없는지
+- 최종 동작을 확인하여 문제가 없는지
 
-などを確認し、リリースする準備が整っていると思われる場合は approve してください。
+등을 확인하고 출시할 준비가 되었다고 판단되면 approve 를 해주세요.
 
 ## Checklist
-- [ ] package.jsonのバージョンが正しく更新されている
-- [ ] CHANGELOGが過不足無く更新されている
-- [ ] CIが全て通っている
+- [ ] package.json의 버전이 올바르게 업데이트됨
+- [ ] CHANGELOG_CHERRYPICK가 누락 또는 오류 없이 업데이트됨
+- [ ] CI가 모두 통과됨

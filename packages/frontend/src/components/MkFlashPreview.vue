@@ -31,6 +31,7 @@ const props = defineProps<{
 <style lang="scss" scoped>
 .vhpxefrk {
 	display: block;
+	padding: 4px 8px 8px;
 
 	&:hover {
 		text-decoration: none;
@@ -62,10 +63,11 @@ const props = defineProps<{
 
 			> img {
 				display: inline-block;
-				width: 16px;
-				height: 16px;
+				width: 18px;
+				height: 18px;
 				margin-right: 4px;
 				vertical-align: top;
+				border-radius: 999px;
 			}
 
 			> p {
@@ -83,7 +85,7 @@ const props = defineProps<{
 	}
 
 	@media (max-width: 550px) {
-		font-size: 12px;
+		// font-size: 12px;
 
 		> article {
 			padding: 12px;
@@ -91,7 +93,7 @@ const props = defineProps<{
 	}
 
 	@media (max-width: 500px) {
-		font-size: 10px;
+		// font-size: 10px;
 
 		> article {
 			padding: 8px;
@@ -104,8 +106,8 @@ const props = defineProps<{
 				margin-top: 4px;
 
 				> img {
-					width: 12px;
-					height: 12px;
+					width: 16px;
+					height: 16px;
 				}
 			}
 		}

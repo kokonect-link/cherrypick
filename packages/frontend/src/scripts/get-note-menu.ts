@@ -18,6 +18,8 @@ import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { clipsCache } from '@/cache.js';
 import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
+import { isSupportShare } from '@/scripts/navigator.js';
+import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -60,7 +62,7 @@ export async function getNoteClipMenu(props: {
 				},
 			);
 		},
-	})), clips.length > 0 ? null : undefined, {
+	})), clips.length > 0 ? { type: 'divider' } : undefined, {
 		icon: 'ti ti-plus',
 		text: i18n.ts.createNew,
 		action: async () => {
@@ -115,7 +117,7 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 		text,
 		action: (): void => {
 			copyToClipboard(`${url}/notes/${note.id}`);
-			os.success();
+			os.toast(i18n.ts.copiedLink, 'copied');
 		},
 	};
 }
@@ -123,7 +125,7 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 export function getNoteMenu(props: {
 	note: Misskey.entities.Note;
 	menuButton: Ref<HTMLElement>;
-	translation: Ref<any>;
+	translation: Ref<Misskey.entities.NotesTranslateResponse | null>;
 	translating: Ref<boolean>;
 	viewTextSource: Ref<boolean>;
 	noNyaize: Ref<boolean>;
@@ -239,12 +241,12 @@ export function getNoteMenu(props: {
 
 	function copyContent(): void {
 		copyToClipboard(appearNote.text);
-		os.success();
+		os.toast(i18n.ts.copiedContent, 'copied');
 	}
 
 	function copyLink(): void {
 		copyToClipboard(`${url}/notes/${appearNote.id}`);
-		os.success();
+		os.toast(i18n.ts.copiedLink, 'copied');
 	}
 
 	function togglePin(pin: boolean): void {
@@ -338,17 +340,14 @@ export function getNoteMenu(props: {
 					text: i18n.ts.unclip,
 					danger: true,
 					action: unclip,
-				}, null] : []
-			), {
-				icon: 'ti ti-info-circle',
-				text: i18n.ts.details,
-				action: openDetail,
-			}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-			, {
+				}, { type: 'divider' }] : []
+			), ...(isSupportShare() ? [{
 				icon: 'ti ti-share',
 				text: i18n.ts.share,
 				action: share,
-			}, {
+			}] : []),
+			getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
+			, {
 				icon: 'ti ti-copy',
 				text: i18n.ts.copyContent,
 				action: copyContent,
@@ -358,7 +357,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.translate,
 				action: translate,
 			} : undefined,
-			null,
+			{ type: 'divider' },
 			statePromise.then(state => state.isFavorited ? {
 				icon: 'ti ti-star-off',
 				text: i18n.ts.unfavorite,
@@ -397,6 +396,10 @@ export function getNoteMenu(props: {
 				icon: 'ti ti-note',
 				text: i18n.ts.note,
 				children: [{
+					icon: 'ti ti-info-circle',
+					text: i18n.ts.details,
+					action: openDetail,
+				}, {
 					icon: 'ti ti-repeat',
 					text: i18n.ts.renotesList,
 					action: showRenotes,
@@ -408,12 +411,12 @@ export function getNoteMenu(props: {
 					icon: 'ti ti-external-link',
 					text: i18n.ts.showOnRemote,
 					action: () => {
-						window.open(appearNote.url ?? appearNote.uri, '_blank');
+						window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
 					},
 				} : undefined
-				, null
+				, { type: 'divider' }
 				, {
-					icon: 'ti ti-code',
+					icon: 'ti ti-source-code',
 					text: i18n.ts.viewTextSource,
 					action: showViewTextSource,
 				}
@@ -426,16 +429,11 @@ export function getNoteMenu(props: {
 					text: i18n.ts.noNyaization,
 					action: noNyaizeText,
 				}
-				, (appearNote.userId === $i.id) ? null : undefined
+				, (appearNote.userId === $i.id) ? { type: 'divider' } : undefined
 				, (appearNote.userId === $i.id) ? {
 					icon: 'ti ti-edit-circle',
 					text: i18n.ts.copyAndEdit,
 					action: copyEdit,
-				} : undefined
-				, appearNote.userId === $i.id ? {
-					icon: 'ti ti-eraser',
-					text: i18n.ts.deleteAndEdit,
-					action: delEdit,
 				} : undefined],
 			},
 			{
@@ -451,7 +449,7 @@ export function getNoteMenu(props: {
 			},
 			/*
 		...($i.isModerator || $i.isAdmin ? [
-			null,
+			{ type: 'divider' },
 			{
 				icon: 'ti ti-speakerphone',
 				text: i18n.ts.promote,
@@ -460,18 +458,23 @@ export function getNoteMenu(props: {
 			: []
 		),*/
 			...(appearNote.userId !== $i.id || (isRenote && props.note.userId !== $i.id) ? [
-				null,
+				{ type: 'divider' },
 				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
 				isRenote && props.note.userId !== $i.id ? getAbuseNoteMenu(props.note, i18n.ts.reportAbuseRenote) : undefined,
 			]
 			: []
 			),
 			...(appearNote.userId === $i.id || $i.isModerator || $i.isAdmin ? [
-				null,
+				{ type: 'divider' },
 				appearNote.userId === $i.id && $i.policies.canEditNote ? {
 					icon: 'ti ti-edit',
 					text: i18n.ts.edit,
 					action: edit,
+				} : undefined,
+				appearNote.userId === $i.id ? {
+					icon: 'ti ti-eraser',
+					text: i18n.ts.deleteAndEdit,
+					action: delEdit,
 				} : undefined,
 				{
 					icon: 'ti ti-trash',
@@ -492,18 +495,18 @@ export function getNoteMenu(props: {
 			text: i18n.ts.copyContent,
 			action: copyContent,
 		}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
-		, (appearNote.url || appearNote.uri) ? {
+		, (appearNote.url ?? appearNote.uri) ? {
 			icon: 'ti ti-external-link',
 			text: i18n.ts.showOnRemote,
 			action: () => {
-				window.open(appearNote.url ?? appearNote.uri, '_blank');
+				window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
 			},
 		} : undefined]
 			.filter(x => x !== undefined);
 	}
 
 	if (noteActions.length > 0) {
-		menu = menu.concat([null, ...noteActions.map(action => ({
+		menu = menu.concat([{ type: 'divider' }, ...noteActions.map(action => ({
 			icon: 'ti ti-plug',
 			text: action.title,
 			action: () => {
@@ -513,11 +516,12 @@ export function getNoteMenu(props: {
 	}
 
 	if (defaultStore.state.devMode) {
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: 'ti ti-id',
 			text: i18n.ts.copyNoteId,
 			action: () => {
 				copyToClipboard(appearNote.id);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}]);
 	}
@@ -546,6 +550,49 @@ function smallerVisibility(a: Visibility | string, b: Visibility | string): Visi
 	return 'public';
 }
 
+export function getQuoteMenu(props: {
+	note: Misskey.entities.Note,
+	mock?: boolean;
+}) {
+	const isRenote = (
+		props.note.renote != null &&
+		props.note.text == null &&
+		props.note.fileIds.length === 0 &&
+		props.note.poll == null
+	);
+	const menu: MenuItem[] = [];
+	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
+
+	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
+		menu.push({
+			text: i18n.ts.quote,
+			icon: 'ti ti-quote',
+			action: () => {
+				os.post({
+					renote: appearNote,
+				});
+			},
+		});
+	}
+
+	if (appearNote.channel) {
+		menu.push({
+			text: i18n.ts.inChannelQuote,
+			icon: 'ti ti-device-tv',
+			action: () => {
+				if (!props.mock) {
+					os.post({
+						renote: appearNote,
+						channel: appearNote.channel,
+					});
+				}
+			},
+		});
+	}
+
+	return { menu };
+}
+
 export function getRenoteMenu(props: {
 	note: Misskey.entities.Note;
 	renoteButton: Ref<HTMLElement>;
@@ -562,9 +609,11 @@ export function getRenoteMenu(props: {
 
 	const channelRenoteItems: MenuItem[] = [];
 	const normalRenoteItems: MenuItem[] = [];
+	const visibilityRenoteItems: MenuItem[] = [];
 
+	// Add channel renote/quote buttons
 	if (appearNote.channel) {
-		channelRenoteItems.push(...[{
+		const channelRenoteButton = {
 			text: i18n.ts.inChannelRenote,
 			icon: 'ti ti-repeat',
 			action: () => {
@@ -581,26 +630,36 @@ export function getRenoteMenu(props: {
 						renoteId: appearNote.id,
 						channelId: appearNote.channelId,
 					}).then(() => {
-						os.noteToast(i18n.ts.renoted, 'renote');
+						os.toast(i18n.ts.renoted, 'renote');
 					});
 				}
 			},
-		}, {
-			text: i18n.ts.inChannelQuote,
-			icon: 'ti ti-quote',
-			action: () => {
-				if (!props.mock) {
-					os.post({
-						renote: appearNote,
-						channel: appearNote.channel,
-					});
-				}
-			},
-		}]);
+		};
+		if (defaultStore.state.renoteQuoteButtonSeparation) {
+			normalRenoteItems.unshift(channelRenoteButton);
+		} else {
+			channelRenoteItems.push(channelRenoteButton);
+		}
+
+		// Add quote button if quote button is not separated
+		if (!defaultStore.state.renoteQuoteButtonSeparation) {
+			channelRenoteItems.push({
+				text: i18n.ts.inChannelQuote,
+				icon: 'ti ti-quote',
+				action: () => {
+					if (!props.mock) {
+						os.post({
+							renote: appearNote,
+							channel: appearNote.channel,
+						});
+					}
+				},
+			});
+		}
 	}
 
 	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
-		normalRenoteItems.push(...[{
+		normalRenoteItems.push({
 			text: i18n.ts.renote,
 			icon: 'ti ti-repeat',
 			action: () => {
@@ -627,27 +686,90 @@ export function getRenoteMenu(props: {
 						visibility,
 						renoteId: appearNote.id,
 					}).then(() => {
-						os.noteToast(i18n.ts.renoted, 'renote');
+						os.toast(i18n.ts.renoted, 'renote');
 					});
 				}
 			},
-		}, (props.mock) ? undefined : {
-			text: i18n.ts.quote,
-			icon: 'ti ti-quote',
-			action: () => {
-				os.post({
-					renote: appearNote,
-				});
-			},
-		}]);
+		});
+
+		// Add quote button if quote button is not separated
+		if (!props.mock && !defaultStore.state.renoteQuoteButtonSeparation) {
+			normalRenoteItems.push({
+				text: i18n.ts.quote,
+				icon: 'ti ti-quote',
+				action: () => {
+					os.post({
+						renote: appearNote,
+					});
+				},
+			});
+		}
 	}
 
-	// nullを挟むことで区切り線を出せる
-	const renoteItems = [
-		...normalRenoteItems,
-		...(channelRenoteItems.length > 0 && normalRenoteItems.length > 0) ? [null] : [],
-		...channelRenoteItems,
-	];
+	// Add visibility section
+	if (
+		defaultStore.state.renoteVisibilitySelection &&
+		!['followers', 'specified'].includes(appearNote.visibility)
+		&& (!appearNote.channel || appearNote.channel.allowRenoteToExternal)
+	) {
+		// renote to public
+		if (appearNote.visibility === 'public') {
+			visibilityRenoteItems.push({
+				text: `${i18n.ts.renote} (${i18n.ts._visibility.public})`,
+				icon: 'ti ti-world',
+				action: () => {
+					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+					os.api('notes/create', {
+						localOnly,
+						visibility: 'public',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				},
+			});
+		}
+
+		// renote to home
+		if (['home', 'public'].includes(appearNote.visibility)) {
+			visibilityRenoteItems.push({
+				text: `${i18n.ts.renote} (${i18n.ts._visibility.home})`,
+				icon: 'ti ti-home',
+				action: () => {
+					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+					os.api('notes/create', {
+						localOnly,
+						visibility: 'home',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				},
+			});
+		}
+
+		// renote to followers
+		visibilityRenoteItems.push({
+			text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
+			icon: 'ti ti-lock',
+			action: () => {
+				const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+				os.api('notes/create', {
+					localOnly,
+					visibility: 'followers',
+					renoteId: appearNote.id,
+				}).then(() => {
+					os.toast(i18n.ts.renoted, 'renote');
+				});
+			},
+		});
+	}
+
+	const renoteItems = addDividersBetweenMenuSections(
+		normalRenoteItems,
+		channelRenoteItems,
+		visibilityRenoteItems,
+	);
 
 	return {
 		menu: renoteItems,
@@ -691,7 +813,7 @@ export async function getRenoteOnly(props: {
 				renoteId: appearNote.id,
 				channelId: appearNote.channelId,
 			}).then(() => {
-				os.noteToast(i18n.ts.renoted, 'renote');
+				os.toast(i18n.ts.renoted, 'renote');
 			});
 		}
 	}
@@ -720,7 +842,7 @@ export async function getRenoteOnly(props: {
 				visibility,
 				renoteId: appearNote.id,
 			}).then(() => {
-				os.noteToast(i18n.ts.renoted, 'renote');
+				os.toast(i18n.ts.renoted, 'renote');
 			});
 		}
 	}

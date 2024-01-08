@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef } from 'vue';
+import { onMounted, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import MkModal from '@/components/MkModal.vue';

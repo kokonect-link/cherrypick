@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { permissions } from 'cherrypick-js';
 import type { Schema } from '@/misc/json-schema.js';
 import { RolePolicies } from '@/core/RoleService.js';
 
@@ -28,6 +29,8 @@ import * as ep___admin_avatarDecorations_delete from './endpoints/admin/avatar-d
 import * as ep___admin_avatarDecorations_list from './endpoints/admin/avatar-decorations/list.js';
 import * as ep___admin_avatarDecorations_update from './endpoints/admin/avatar-decorations/update.js';
 import * as ep___admin_deleteAllFilesOfAUser from './endpoints/admin/delete-all-files-of-a-user.js';
+import * as ep___admin_unsetUserAvatar from './endpoints/admin/unset-user-avatar.js';
+import * as ep___admin_unsetUserBanner from './endpoints/admin/unset-user-banner.js';
 import * as ep___admin_drive_cleanRemoteFiles from './endpoints/admin/drive/clean-remote-files.js';
 import * as ep___admin_drive_cleanup from './endpoints/admin/drive/cleanup.js';
 import * as ep___admin_drive_files from './endpoints/admin/drive/files.js';
@@ -45,6 +48,7 @@ import * as ep___admin_emoji_removeAliasesBulk from './endpoints/admin/emoji/rem
 import * as ep___admin_emoji_setAliasesBulk from './endpoints/admin/emoji/set-aliases-bulk.js';
 import * as ep___admin_emoji_setCategoryBulk from './endpoints/admin/emoji/set-category-bulk.js';
 import * as ep___admin_emoji_setLicenseBulk from './endpoints/admin/emoji/set-license-bulk.js';
+import * as ep___admin_emoji_steal from './endpoints/admin/emoji/steal.js';
 import * as ep___admin_emoji_update from './endpoints/admin/emoji/update.js';
 import * as ep___admin_federation_deleteAllFiles from './endpoints/admin/federation/delete-all-files.js';
 import * as ep___admin_federation_refreshRemoteInstanceMetadata from './endpoints/admin/federation/refresh-remote-instance-metadata.js';
@@ -384,6 +388,7 @@ import * as ep___users_reportAbuse from './endpoints/users/report-abuse.js';
 import * as ep___users_searchByUsernameAndHost from './endpoints/users/search-by-username-and-host.js';
 import * as ep___users_search from './endpoints/users/search.js';
 import * as ep___users_show from './endpoints/users/show.js';
+import * as ep___users_stats from './endpoints/users/stats.js';
 import * as ep___users_achievements from './endpoints/users/achievements.js';
 import * as ep___users_updateMemo from './endpoints/users/update-memo.js';
 import * as ep___users_translate from './endpoints/users/translate.js';
@@ -414,6 +419,8 @@ const eps = [
 	['admin/avatar-decorations/list', ep___admin_avatarDecorations_list],
 	['admin/avatar-decorations/update', ep___admin_avatarDecorations_update],
 	['admin/delete-all-files-of-a-user', ep___admin_deleteAllFilesOfAUser],
+	['admin/unset-user-avatar', ep___admin_unsetUserAvatar],
+	['admin/unset-user-banner', ep___admin_unsetUserBanner],
 	['admin/drive/clean-remote-files', ep___admin_drive_cleanRemoteFiles],
 	['admin/drive/cleanup', ep___admin_drive_cleanup],
 	['admin/drive/files', ep___admin_drive_files],
@@ -431,6 +438,7 @@ const eps = [
 	['admin/emoji/set-aliases-bulk', ep___admin_emoji_setAliasesBulk],
 	['admin/emoji/set-category-bulk', ep___admin_emoji_setCategoryBulk],
 	['admin/emoji/set-license-bulk', ep___admin_emoji_setLicenseBulk],
+	['admin/emoji/steal', ep___admin_emoji_steal],
 	['admin/emoji/update', ep___admin_emoji_update],
 	['admin/federation/delete-all-files', ep___admin_federation_deleteAllFiles],
 	['admin/federation/refresh-remote-instance-metadata', ep___admin_federation_refreshRemoteInstanceMetadata],
@@ -770,6 +778,7 @@ const eps = [
 	['users/search-by-username-and-host', ep___users_searchByUsernameAndHost],
 	['users/search', ep___users_search],
 	['users/show', ep___users_show],
+	['users/stats', ep___users_stats],
 	['users/achievements', ep___users_achievements],
 	['users/update-memo', ep___users_updateMemo],
 	['users/translate', ep___users_translate],
@@ -778,7 +787,7 @@ const eps = [
 	['retention', ep___retention],
 ];
 
-export interface IEndpointMeta {
+interface IEndpointMetaBase {
 	readonly stability?: 'deprecated' | 'experimental' | 'stable';
 
 	readonly tags?: ReadonlyArray<string>;
@@ -876,6 +885,23 @@ export interface IEndpointMeta {
 	 */
 	readonly cacheSec?: number;
 }
+
+export type IEndpointMeta = (Omit<IEndpointMetaBase, 'requireCrential' | 'requireModerator' | 'requireAdmin'> & {
+	requireCredential?: false,
+	requireAdmin?: false,
+	requireModerator?: false,
+}) | (Omit<IEndpointMetaBase, 'secure'> & {
+	secure: true,
+}) | (Omit<IEndpointMetaBase, 'requireCredential' | 'kind'> & {
+	requireCredential: true,
+	kind: (typeof permissions)[number],
+}) | (Omit<IEndpointMetaBase, 'requireModerator' | 'kind'> & {
+	requireModerator: true,
+	kind: (typeof permissions)[number],
+}) | (Omit<IEndpointMetaBase, 'requireAdmin' | 'kind'> & {
+	requireAdmin: true,
+	kind: (typeof permissions)[number],
+})
 
 export interface IEndpoint {
 	name: string;

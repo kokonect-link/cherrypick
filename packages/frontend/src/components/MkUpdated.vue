@@ -6,7 +6,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
-		<div :class="$style.title"><MkSparkle>{{ i18n.ts.misskeyUpdated }}</MkSparkle></div>
+		<div style="display: grid;">
+			<Mfm text="$[tada 🎉]"/>
+			<MkSparkle>
+				<div :class="$style.title">{{ i18n.ts.welcome }}</div>
+				<small style="opacity: 0.7;">{{ i18n.ts.misskeyUpdated }}</small>
+			</MkSparkle>
+		</div>
 		<div :class="$style.version">
 			<div>✨{{ version }}🚀</div>
 			<div style="font-size: 0.8em;">{{ basedMisskeyVersion }}</div>
@@ -26,25 +32,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef } from 'vue';
+import { onMounted, ref, shallowRef } from 'vue';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import { version, basedMisskeyVersion } from '@/config.js';
 import { i18n } from '@/i18n.js';
 import { confetti } from '@/scripts/confetti.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
 import * as os from '@/os.js';
-import { miLocalStorage } from '@/local-storage.js';
-import { fetchCustomEmojis } from '@/custom-emojis.js';
+import { clearCache } from '@/scripts/clear-cache.js';
 
-let showChangelog = $ref(false);
+const showChangelog = ref(false);
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const whatIsNewMisskey = () => {
 	// modal.value.close();
-	window.open(`https://misskey-hub.net/docs/releases.html#_${basedMisskeyVersion.replace(/\./g, '-')}`, '_blank');
+	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
 };
 
 const whatIsNewCherryPick = () => {
@@ -66,18 +70,8 @@ const close = async () => {
 		});
 		return;
 	}
-	cacheClear();
+	await clearCache();
 };
-
-function cacheClear() {
-	os.waiting();
-	miLocalStorage.removeItem('locale');
-	miLocalStorage.removeItem('theme');
-	miLocalStorage.removeItem('emojis');
-	miLocalStorage.removeItem('lastEmojisFetchedAt');
-	fetchCustomEmojis(true);
-	unisonReload();
-}
 
 onMounted(() => {
 	confetti({

@@ -184,6 +184,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		text: i18n.ts.copyUsername,
 		action: () => {
 			copyToClipboard(`@${user.username}@${user.host ?? host}`);
+			os.toast(i18n.ts.copied, 'copied');
 		},
 	}, ...(iAmModerator ? [{
 		icon: 'ti ti-user-exclamation',
@@ -196,6 +197,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		text: i18n.ts.copyRSS,
 		action: () => {
 			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
+			os.toast(i18n.ts.copied, 'copied');
 		},
 	}, {
 		icon: 'ti ti-share',
@@ -203,6 +205,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		action: () => {
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
 			copyToClipboard(`${url}/${canonical}`);
+			os.toast(i18n.ts.copiedLink, 'copied');
 		},
 	}, {
 		icon: 'ti ti-mail',
@@ -220,7 +223,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-users',
 		text: i18n.ts.inviteToGroup,
 		action: inviteGroup,
-	} : undefined, null, ...(defaultStore.state.nicknameEnabled ? [{
+	} : undefined, { type: 'divider' }, ...(defaultStore.state.nicknameEnabled ? [{
 		icon: 'ti ti-edit',
 		text: i18n.ts.editNickName,
 		action: () => {
@@ -348,7 +351,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		}]);
 		//}
 
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: user.isMuted ? 'ti ti-eye' : 'ti ti-eye-off',
 			text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 			action: toggleMute,
@@ -370,7 +373,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			}]);
 		}
 
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: 'ti ti-exclamation-circle',
 			text: i18n.ts.reportAbuse,
 			action: reportAbuse,
@@ -378,7 +381,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 	}
 
 	if (user.host !== null) {
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: 'ti ti-refresh',
 			text: i18n.ts.updateRemoteUser,
 			action: userInfoUpdate,
@@ -386,17 +389,18 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 	}
 
 	if (defaultStore.state.devMode) {
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: 'ti ti-id',
 			text: i18n.ts.copyUserId,
 			action: () => {
 				copyToClipboard(user.id);
+				os.toast(i18n.ts.copied, 'copied');
 			},
 		}]);
 	}
 
 	if ($i && meId === user.id) {
-		menu = menu.concat([null, {
+		menu = menu.concat([{ type: 'divider' }, {
 			icon: 'ti ti-pencil',
 			text: i18n.ts.editProfile,
 			action: () => {
@@ -406,7 +410,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 	}
 
 	if (userActions.length > 0) {
-		menu = menu.concat([null, ...userActions.map(action => ({
+		menu = menu.concat([{ type: 'divider' }, ...userActions.map(action => ({
 			icon: 'ti ti-plug',
 			text: action.title,
 			action: () => {

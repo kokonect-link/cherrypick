@@ -27,7 +27,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import * as Misskey from 'cherrypick-js';
+import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import { useStream } from '@/stream.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
@@ -61,7 +62,7 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 );
 
 const connection = useStream().useChannel('main');
-const images = ref([]);
+const images = ref<Misskey.entities.DriveFile[]>([]);
 const fetching = ref(true);
 
 const onDriveFileCreated = (file) => {
@@ -71,19 +72,19 @@ const onDriveFileCreated = (file) => {
 	}
 };
 
-let playAnimation = $ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
-let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const thumbnail = (image: any): string => {
-	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 };
 
 function resetTimer() {
-	playAnimation = true;
+	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 }
 
 os.api('drive/stream', {

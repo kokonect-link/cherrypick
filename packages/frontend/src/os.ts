@@ -5,8 +5,8 @@
 
 // TODO: なんでもかんでもos.tsに突っ込むのやめたいのでよしなに分割する
 
-import { pendingApiRequestsCount, api, apiExternal, apiGet } from '@/scripts/api.js';
-export { pendingApiRequestsCount, api, apiExternal, apiGet };
+import { pendingApiRequestsCount, api, apiGet } from '@/scripts/api.js';
+export { pendingApiRequestsCount, api, apiGet };
 import { Component, markRaw, Ref, ref, defineAsyncComponent } from 'vue';
 import { EventEmitter } from 'eventemitter3';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -16,7 +16,6 @@ import MkPostFormDialog from '@/components/MkPostFormDialog.vue';
 import MkWaitingDialog from '@/components/MkWaitingDialog.vue';
 import MkPageWindow from '@/components/MkPageWindow.vue';
 import MkToast from '@/components/MkToast.vue';
-import MkNoteToast from '@/components/MkNoteToast.vue';
 import MkWelcomeToast from '@/components/MkWelcomeToast.vue';
 import MkDialog from '@/components/MkDialog.vue';
 import MkPasswordDialog from '@/components/MkPasswordDialog.vue';
@@ -179,14 +178,8 @@ export function pageWindow(path: string) {
 	}, {}, 'closed');
 }
 
-export function toast(message: string) {
+export function toast(message: string, icon?: string) {
 	popup(MkToast, {
-		message,
-	}, {}, 'closed');
-}
-
-export function noteToast(message: string, icon: string) {
-	popup(MkNoteToast, {
 		message,
 		icon,
 	}, {}, 'closed');
@@ -563,7 +556,7 @@ export async function openEmojiPicker(src?: HTMLElement, opts, initialTextarea: 
 	});
 }
 
-export function popupMenu(items: MenuItem[] | Ref<MenuItem[]>, src?: HTMLElement, options?: {
+export function popupMenu(items: MenuItem[] | Ref<MenuItem[]>, src?: HTMLElement | EventTarget | null, options?: {
 	align?: string;
 	width?: number;
 	viaKeyboard?: boolean;

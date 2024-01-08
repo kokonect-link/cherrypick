@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <span
-	v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''"
+	v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
 	v-tooltip="checked ? i18n.ts.itsOn : i18n.ts.itsOff"
 	:class="{
 		[$style.button]: true,
@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { toRefs, Ref } from 'vue';
 import { i18n } from '@/i18n.js';
-import { ColdDeviceStorage } from '@/store.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	checked: boolean | Ref<boolean>;

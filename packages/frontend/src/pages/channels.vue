@@ -5,11 +5,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+	<template #header>
+		<MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
+	</template>
 	<MkSpacer :contentMax="700">
 		<div v-if="tab === 'search'">
 			<div class="_gaps">
-				<MkInput v-model="searchQuery" :large="true" autofocus type="search">
+				<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">
 					<template #prefix><i class="ti ti-search"></i></template>
 				</MkInput>
 				<MkRadios v-model="searchType" @update:modelValue="search()">
@@ -50,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import MkChannelPreview from '@/components/MkChannelPreview.vue';
 import MkChannelList from '@/components/MkChannelList.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -59,6 +61,7 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { useRouter } from '@/router.js';
+import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 
@@ -69,15 +72,15 @@ const props = defineProps<{
 	type?: string;
 }>();
 
-let key = $ref('');
-let tab = $ref('featured');
-let searchQuery = $ref('');
-let searchType = $ref('nameAndDescription');
-let channelPagination = $ref();
+const key = ref('');
+const tab = ref('featured');
+const searchQuery = ref('');
+const searchType = ref('nameAndDescription');
+const channelPagination = ref();
 
 onMounted(() => {
-	searchQuery = props.query ?? '';
-	searchType = props.type ?? 'nameAndDescription';
+	searchQuery.value = props.query ?? '';
+	searchType.value = props.type ?? 'nameAndDescription';
 });
 
 const featuredPagination = {
@@ -99,35 +102,35 @@ const ownedPagination = {
 };
 
 async function search() {
-	const query = searchQuery.toString().trim();
+	const query = searchQuery.value.toString().trim();
 
 	if (query == null) return;
 
-	const type = searchType.toString().trim();
+	const type = searchType.value.toString().trim();
 
-	channelPagination = {
+	channelPagination.value = {
 		endpoint: 'channels/search',
 		limit: 10,
 		params: {
-			query: searchQuery,
+			query: searchQuery.value,
 			type: type,
 		},
 	};
 
-	key = query + type;
+	key.value = query + type;
 }
 
 function create() {
 	router.push('/channels/new');
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.create,
 	handler: create,
 }]);
 
-const headerTabs = $computed(() => [{
+const headerTabs = computed(() => [{
 	key: 'search',
 	title: i18n.ts.search,
 	icon: 'ti ti-search',
@@ -147,6 +150,16 @@ const headerTabs = $computed(() => [{
 	key: 'owned',
 	title: i18n.ts._channel.owned,
 	icon: 'ti ti-edit',
+}]);
+
+const headerTabsWhenNotLogin = computed(() => [{
+	key: 'search',
+	title: i18n.ts.search,
+	icon: 'ti ti-search',
+}, {
+	key: 'featured',
+	title: i18n.ts._channel.featured,
+	icon: 'ti ti-comet',
 }]);
 
 definePageMetadata(computed(() => ({

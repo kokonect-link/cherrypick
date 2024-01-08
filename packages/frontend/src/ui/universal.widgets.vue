@@ -7,19 +7,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div>
 	<XWidgets :edit="editMode" :widgets="widgets" @addWidget="addWidget" @removeWidget="removeWidget" @updateWidget="updateWidget" @updateWidgets="updateWidgets" @exit="editMode = false"/>
 
-	<button v-if="editMode" v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_textButton" style="font-size: 0.9em;" @click="editMode = false"><i class="ti ti-check"></i> {{ i18n.ts.editWidgetsExit }}</button>
-	<button v-else v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_textButton" data-cy-widget-edit :class="$style.edit" style="font-size: 0.9em;" @click="editMode = true"><i class="ti ti-pencil"></i> {{ i18n.ts.editWidgets }}</button>
+	<button v-if="editMode" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_textButton" style="font-size: 0.9em;" @click="editMode = false"><i class="ti ti-check"></i> {{ i18n.ts.editWidgetsExit }}</button>
+	<button v-else v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_textButton" data-cy-widget-edit :class="$style.edit" style="font-size: 0.9em;" @click="editMode = true"><i class="ti ti-pencil"></i> {{ i18n.ts.editWidgets }}</button>
 </div>
 </template>
 
 <script lang="ts">
-let editMode = $ref(false);
+import { computed, ref } from 'vue';
+const editMode = ref(false);
 </script>
 <script lang="ts" setup>
-import { } from 'vue';
 import XWidgets from '@/components/MkWidgets.vue';
 import { i18n } from '@/i18n.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	// null = 全てのウィジェットを表示
@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<{
 	place: null,
 });
 
-const widgets = $computed(() => {
+const widgets = computed(() => {
 	if (props.place === null) return defaultStore.reactiveState.widgets.value;
 	if (props.place === 'left') return defaultStore.reactiveState.widgets.value.filter(w => w.place === 'left');
 	return defaultStore.reactiveState.widgets.value.filter(w => w.place !== 'left');

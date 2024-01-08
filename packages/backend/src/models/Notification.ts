@@ -3,12 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { notificationTypes } from '@/types.js';
 import { MiUser } from './User.js';
 import { MiNote } from './Note.js';
-import { MiFollowRequest } from './FollowRequest.js';
 import { MiUserGroupInvitation } from './UserGroupInvitation.js';
 import { MiAccessToken } from './AccessToken.js';
+import { MiRole } from './Role.js';
 
 export type MiNotification = {
 	type: 'note';
@@ -70,10 +69,15 @@ export type MiNotification = {
 	createdAt: string;
 	notifierId: MiUser['id'];
 } | {
-    type: 'groupInvited';
-    id: string;
-    createdAt: string;
-    notifierId: MiUser['id'];
+	type: 'roleAssigned';
+	id: string;
+	createdAt: string;
+	roleId: MiRole['id'];
+} | {
+	type: 'groupInvited';
+	id: string;
+	createdAt: string;
+	notifierId: MiUser['id'];
 	userGroupInvitationId: MiUserGroupInvitation['id'];
 } | {
 	type: 'achievementEarned';

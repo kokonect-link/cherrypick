@@ -4,9 +4,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click="onClick"/>
-<span v-else-if="useOsNativeEmojis" :alt="props.emoji" @pointerenter="computeTitle" @click="onClick">{{ props.emoji }}</span>
-<span v-else>{{ emoji }}</span>
+<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click.stop="onClick"/>
+<span v-else-if="useOsNativeEmojis" :alt="props.emoji" @pointerenter="computeTitle" @click.stop="onClick">{{ props.emoji }}</span>
+<span v-else @click.stop>{{ emoji }}</span>
 </template>
 
 <script lang="ts" setup>
@@ -16,6 +16,7 @@ import { defaultStore } from '@/store.js';
 import { getEmojiName } from '@/scripts/emojilist.js';
 import * as os from '@/os.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
+import * as sound from '@/scripts/sound.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
@@ -56,6 +57,7 @@ function onClick(ev: MouseEvent) {
 			icon: 'ti ti-plus',
 			action: () => {
 				react(props.emoji);
+				sound.play('reaction');
 			},
 		}] : [])], ev.currentTarget ?? ev.target);
 	}

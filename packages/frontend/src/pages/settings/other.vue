@@ -31,6 +31,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #key>{{ i18n.ts.registeredDate }}</template>
 						<template #value><MkTime :time="$i.createdAt" mode="detail"/></template>
 					</MkKeyValue>
+
+					<FormLink to="/settings/account-stats"><template #icon><i class="ti ti-info-circle"/></template>{{ i18n.ts.statistics }}</FormLink>
 				</div>
 			</MkFolder>
 
@@ -166,9 +168,9 @@ watch([
 	await reloadAsk();
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.other,

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="npcljfve" :class="{ iconOnly }">
-	<button v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button account" @click="openAccountMenu">
+	<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button account" @click="openAccountMenu">
 		<MkAvatar :user="$i" class="avatar"/><MkAcct class="text" :user="$i"/>
 	</button>
 	<div class="post" data-cy-open-post-form @click="os.post">
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkA>
 	<template v-for="item in menu">
 		<div v-if="item === '-'" class="divider"></div>
-		<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+		<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 			<i class="ti-fw" :class="navbarItemDef[item].icon"></i><span class="text">{{ navbarItemDef[item].title }}</span>
 			<span v-if="navbarItemDef[item].indicated" class="indicator">
 				<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i class="ti ti-dashboard ti-fw"></i><span class="text">{{ i18n.ts.controlPanel }}</span>
 		<span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</MkA>
-	<button v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button" @click="more">
+	<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" @click="more">
 		<i class="ti ti-dots ti-fw"></i><span class="text">{{ i18n.ts.more }}</span>
 		<span v-if="otherNavItemIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
 	</button>
@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkA>
 	<div class="divider"></div>
 	<div class="about">
-		<button v-click-anime v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="item _button" @click="openInstanceMenu">
+		<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" @click="openInstanceMenu">
 			<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
 		</button>
 	</div>
@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted, computed, watch, nextTick } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, shallowRef } from 'vue';
 import { openInstanceMenu } from './_common_/common.js';
 // import { host } from '@/config.js';
 import * as os from '@/os.js';
@@ -59,37 +59,37 @@ import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 import MkButton from '@/components/MkButton.vue';
 // import { StickySidebar } from '@/scripts/sticky-sidebar.js';
 // import { mainRouter } from '@/router.js';
-//import CherryPickLogo from '@assets/client/cherrypick.svg';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+// import CherryPickLogo from '@assets/client/cherrypick.svg';
+import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { version } from '@/config.js';
 
 const WINDOW_THRESHOLD = 1400;
 
-const menu = $ref(defaultStore.state.menu);
+const menu = ref(defaultStore.state.menu);
 const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
 const otherNavItemIndicated = computed<boolean>(() => {
 	for (const def in navbarItemDef) {
-		if (menu.includes(def)) continue;
+		if (menu.value.includes(def)) continue;
 		if (navbarItemDef[def].indicated) return true;
 	}
 	return false;
 });
-let el = $shallowRef<HTMLElement>();
-// let accounts = $ref([]);
-// let connection = $ref(null);
-let iconOnly = $ref(false);
-let settingsWindowed = $ref(false);
-let controlPanelIndicated = $ref(false);
-let releasesCherryPick = $ref(null);
+const el = shallowRef<HTMLElement>();
+// const accounts = ref([]);
+// const connection = ref(null);
+const iconOnly = ref(false);
+const settingsWindowed = ref(false);
+const controlPanelIndicated = ref(false);
+const releasesCherryPick = ref();
 
-if ($i.isAdmin || $i.isModerator) {
+if ($i.isAdmin ?? $i.isModerator) {
 	os.api('admin/abuse-user-reports', {
 		state: 'unresolved',
 		limit: 1,
 	}).then(reports => {
-		if (reports.length > 0) controlPanelIndicated = true;
+		if (reports.length > 0) controlPanelIndicated.value = true;
 	});
 
 	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
@@ -97,15 +97,15 @@ if ($i.isAdmin || $i.isModerator) {
 	}).then(res => res.json())
 		.then(async res => {
 			const meta = await os.api('admin/meta');
-			if (meta.enableReceivePrerelease) releasesCherryPick = res;
-			else releasesCherryPick = res.filter(x => x.prerelease === false);
-			if ((version < releasesCherryPick[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick[0].tag_name)) controlPanelIndicated = true;
+			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
+			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
+			if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) controlPanelIndicated.value = true;
 		});
 }
 
 function calcViewState() {
-	iconOnly = (window.innerWidth <= WINDOW_THRESHOLD) || (menuDisplay.value === 'sideIcon');
-	settingsWindowed = (window.innerWidth > WINDOW_THRESHOLD);
+	iconOnly.value = (window.innerWidth <= WINDOW_THRESHOLD) || (menuDisplay.value === 'sideIcon');
+	settingsWindowed.value = (window.innerWidth > WINDOW_THRESHOLD);
 }
 
 function more(ev: MouseEvent) {

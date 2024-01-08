@@ -58,6 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<Mfm :key="emojiStyle" text="🍮 🍪 🍭"/>
 					</div>
 				</div>
+				<MkSwitch v-if="advancedMfm" v-model="enableQuickAddMfmFunction">{{ i18n.ts.enableQuickAddMfmFunction }}</MkSwitch>
 				<MkSwitch v-model="showGapBetweenNotesInTimeline">{{ i18n.ts.showGapBetweenNotesInTimeline }}</MkSwitch>
 				<MkSwitch v-model="loadRawImages">{{ i18n.ts.loadRawImages }}</MkSwitch>
 				<MkRadios v-model="reactionsDisplaySize">
@@ -66,6 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="medium">{{ i18n.ts.medium }}</option>
 					<option value="large">{{ i18n.ts.large }}</option>
 				</MkRadios>
+				<MkSwitch v-model="limitWidthOfReaction">{{ i18n.ts.limitWidthOfReaction }}</MkSwitch>
 				<MkSwitch v-model="hideAvatarsInNote">{{ i18n.ts.hideAvatarsInNote }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="enableAbsoluteTime">{{ i18n.ts.enableAbsoluteTime }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="enableMarkByDate" :disabled="defaultStore.state.enableAbsoluteTime">{{ i18n.ts.enableMarkByDate }} <span class="_beta">CherryPick</span></MkSwitch>
@@ -73,6 +75,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="infoButtonForNoteActionsEnabled">{{ i18n.ts.infoButtonForNoteActions }}<template #caption>{{ i18n.ts.infoButtonForNoteActionsDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showReplyInNotification">{{ i18n.ts.showReplyInNotification }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts.renoteQuoteButtonSeparation }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="renoteVisibilitySelection">{{ i18n.ts.showRenoteVisibilitySelector }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
@@ -153,8 +156,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="disableDrawer">{{ i18n.ts.disableDrawer }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
+				<MkSwitch v-model="enableSeasonalScreenEffect">{{ i18n.ts.seasonalScreenEffect }}</MkSwitch>
 				<MkSwitch v-model="showUnreadNotificationsCount">{{ i18n.ts.showUnreadNotificationsCount }}</MkSwitch>
-				<MkSwitch v-model="enableDataSaverMode">{{ i18n.ts.dataSaver }}</MkSwitch>
 			</div>
 			<div>
 				<MkRadios v-model="emojiStyle">
@@ -270,6 +273,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.numberOfPageCache }}</template>
 				<template #caption>{{ i18n.ts.numberOfPageCacheDescription }}</template>
 			</MkRange>
+
+			<MkFolder>
+				<template #label>{{ i18n.ts.dataSaver }}</template>
+
+				<div class="_gaps_m">
+					<MkInfo>{{ i18n.ts.reloadRequiredToApplySettings }}</MkInfo>
+
+					<div class="_buttons">
+						<MkButton inline @click="enableAllDataSaver">{{ i18n.ts.enableAll }}</MkButton>
+						<MkButton inline @click="disableAllDataSaver">{{ i18n.ts.disableAll }}</MkButton>
+					</div>
+					<div class="_gaps_m">
+						<MkSwitch v-model="dataSaver.media">
+							{{ i18n.ts._dataSaver._media.title }}
+							<template #caption>{{ i18n.ts._dataSaver._media.description }}</template>
+						</MkSwitch>
+						<MkSwitch v-model="dataSaver.avatar">
+							{{ i18n.ts._dataSaver._avatar.title }}
+							<template #caption>{{ i18n.ts._dataSaver._avatar.description }}</template>
+						</MkSwitch>
+						<MkSwitch v-model="dataSaver.urlPreview">
+							{{ i18n.ts._dataSaver._urlPreview.title }}
+							<template #caption>{{ i18n.ts._dataSaver._urlPreview.description }}</template>
+						</MkSwitch>
+						<MkSwitch v-model="dataSaver.code">
+							{{ i18n.ts._dataSaver._code.title }}
+							<template #caption>{{ i18n.ts._dataSaver._code.description }}</template>
+						</MkSwitch>
+					</div>
+				</div>
+			</MkFolder>
 		</div>
 	</FormSection>
 
@@ -303,6 +337,7 @@ import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import FormLink from '@/components/form/link.vue';
 import MkLink from '@/components/MkLink.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import { langs } from '@/config.js';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
@@ -312,11 +347,11 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/scripts/achievements.js';
-import MkInfo from '@/components/MkInfo.vue';
 
 const lang = ref(miLocalStorage.getItem('lang'));
 // const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
+const dataSaver = ref(defaultStore.state.dataSaver);
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
@@ -333,11 +368,20 @@ async function reloadAsk() {
 	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
+function reloadTimeline() {
+	globalEvents.emit('reloadTimeline');
+}
+
+function reloadNotification() {
+	globalEvents.emit('reloadNotification');
+}
+
 const overridedDeviceKind = computed(defaultStore.makeGetterSetter('overridedDeviceKind'));
 const serverDisconnectedBehavior = computed(defaultStore.makeGetterSetter('serverDisconnectedBehavior'));
 const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNoteActionsOnlyHover'));
 const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
+const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
@@ -346,13 +390,13 @@ const removeModalBgColorForBlur = computed(defaultStore.makeGetterSetter('remove
 const showGapBetweenNotesInTimeline = computed(defaultStore.makeGetterSetter('showGapBetweenNotesInTimeline'));
 const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
 const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
+const enableQuickAddMfmFunction = computed(defaultStore.makeGetterSetter('enableQuickAddMfmFunction'));
 const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
 const disableDrawer = computed(defaultStore.makeGetterSetter('disableDrawer'));
 const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
 const forceShowAds = computed(defaultStore.makeGetterSetter('forceShowAds'));
 const loadRawImages = computed(defaultStore.makeGetterSetter('loadRawImages'));
 const highlightSensitiveMedia = computed(defaultStore.makeGetterSetter('highlightSensitiveMedia'));
-const enableDataSaverMode = computed(defaultStore.makeGetterSetter('enableDataSaverMode'));
 const imageNewTab = computed(defaultStore.makeGetterSetter('imageNewTab'));
 const nsfw = computed(defaultStore.makeGetterSetter('nsfw'));
 const showFixedPostForm = computed(defaultStore.makeGetterSetter('showFixedPostForm'));
@@ -369,6 +413,7 @@ const notificationStackAxis = computed(defaultStore.makeGetterSetter('notificati
 const keepScreenOn = computed(defaultStore.makeGetterSetter('keepScreenOn'));
 const disableStreamingTimeline = computed(defaultStore.makeGetterSetter('disableStreamingTimeline'));
 const useGroupedNotifications = computed(defaultStore.makeGetterSetter('useGroupedNotifications'));
+const enableSeasonalScreenEffect = computed(defaultStore.makeGetterSetter('enableSeasonalScreenEffect'));
 const showUnreadNotificationsCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationsCount'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
@@ -386,10 +431,12 @@ const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showF
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
+const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
 	miLocalStorage.removeItem('locale');
+	miLocalStorage.removeItem('localeVersion');
 });
 
 watch(fontSize, () => {
@@ -424,31 +471,53 @@ watch([
 	// fontSize,
 	useBoldFont,
 	useSystemFont,
-	enableInfiniteScroll,
 	squareAvatars,
-	hideAvatarsInNote,
-	showNoteActionsOnlyHover,
 	showGapBetweenNotesInTimeline,
-	instanceTicker,
 	overridedDeviceKind,
-	mediaListWithOneImageAppearance,
-	reactionsDisplaySize,
-	highlightSensitiveMedia,
 	keepScreenOn,
 	disableStreamingTimeline,
 	showUnreadNotificationsCount,
-	enableDataSaverMode,
+	showFixedPostFormInReplies,
+	showingAnimatedImages,
+	enableSeasonalScreenEffect,
+], async () => {
+	await reloadAsk();
+});
+
+watch([
+	collapseDefault,
+	hideAvatarsInNote,
+	showNoteActionsOnlyHover,
+	showClipButtonInNoteFooter,
+	instanceTicker,
+	mediaListWithOneImageAppearance,
+	reactionsDisplaySize,
+	limitWidthOfReaction,
+	highlightSensitiveMedia,
+	showReplyInNotification,
+	showTranslateButtonInNote,
 	enableAbsoluteTime,
 	enableMarkByDate,
 	showSubNoteFooterButton,
 	infoButtonForNoteActionsEnabled,
-	showReplyInNotification,
 	renoteQuoteButtonSeparation,
-	showFixedPostFormInReplies,
-	showingAnimatedImages,
 	allMediaNoteCollapse,
-], async () => {
-	await reloadAsk();
+], () => {
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch([
+	collapseRenotes,
+	enableInfiniteScroll,
+], () => {
+	reloadTimeline();
+});
+
+watch([
+	showReplyInNotification,
+], () => {
+	reloadNotification();
 });
 
 const emojiIndexLangs = ['en-US'];
@@ -525,15 +594,33 @@ function testNotification(): void {
 	}, 300);
 }
 
+function enableAllDataSaver() {
+	const g = { ...defaultStore.state.dataSaver };
+	Object.keys(g).forEach((key) => { g[key] = true; });
+	dataSaver.value = g;
+}
+
+function disableAllDataSaver() {
+	const g = { ...defaultStore.state.dataSaver };
+	Object.keys(g).forEach((key) => { g[key] = false; });
+	dataSaver.value = g;
+}
+
+watch(dataSaver, (to) => {
+	defaultStore.set('dataSaver', to);
+}, {
+	deep: true,
+});
+
 onMounted(() => {
 	if (fontSizeBefore.value == null) {
 		fontSizeBefore.value = fontSize.value as string;
 	}
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.general,

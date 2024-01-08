@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<ImgWithBlurhash
 			:hash="image.blurhash"
-			:src="(defaultStore.state.enableDataSaverMode && hide) ? null : url"
+			:src="(defaultStore.state.dataSaver.media && hide) ? null : url"
 			:forceBlurhash="hide"
 			:cover="hide || cover"
 			:alt="image.comment || image.name"
@@ -36,8 +36,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template v-if="hide">
 		<div :class="$style.hiddenText">
 			<div :class="$style.hiddenTextWrapper">
-				<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.enableDataSaverMode ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
-				<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.enableDataSaverMode && image.size ? bytes(image.size) : i18n.ts.image }}</b>
+				<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.dataSaver.media ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
+				<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.dataSaver.media && image.size ? bytes(image.size) : i18n.ts.image }}</b>
 				<span v-if="controls" style="display: block;">{{ clickToShowMessage }}</span>
 			</div>
 		</div>
@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch } from 'vue';
+import { onMounted, onUnmounted, watch, ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import bytes from '@/filters/bytes.js';
@@ -78,35 +78,37 @@ const props = withDefaults(defineProps<{
 	controls: true,
 });
 
-let hide = $ref(true);
-let darkMode: boolean = $ref(defaultStore.state.darkMode);
+const hide = ref(true);
+const darkMode = ref<boolean>(defaultStore.state.darkMode);
 
-let playAnimation = $ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
-let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
-const url = $computed(() => (props.raw || defaultStore.state.loadRawImages)
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+const url = computed(() => (props.raw || defaultStore.state.loadRawImages)
 	? props.image.url
-	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(props.image.url)
 		: props.image.thumbnailUrl,
 );
 
-let clickToShowMessage = $computed(() =>
-	defaultStore.state.nsfwOpenBehavior === 'click' ? i18n.ts.clickToShow
-	: defaultStore.state.nsfwOpenBehavior === 'doubleClick' ? i18n.ts.doubleClickToShow
-	: '',
+const clickToShowMessage = computed(() => defaultStore.state.nsfwOpenBehavior === 'click'
+	? i18n.ts.clickToShow
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	: defaultStore.state.nsfwOpenBehavior === 'doubleClick'
+		? i18n.ts.doubleClickToShow
+		: '',
 );
 
 function onClick(ev: MouseEvent) {
 	if (!props.controls) {
 		return;
 	}
-	if (!hide) return;
+	if (!hide.value) return;
 	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
 		os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
 	}
 	if (defaultStore.state.nsfwOpenBehavior === 'click') {
-		hide = false;
+		hide.value = false;
 	}
 }
 
@@ -114,20 +116,20 @@ function onDblclick() {
 	if (!props.controls) {
 		return;
 	}
-	if (hide && defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
-		hide = false;
+	if (hide.value && defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
+		hide.value = false;
 	}
 }
 
 function resetTimer() {
-	playAnimation = true;
+	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 }
 
 // Plugin:register_note_view_interruptor を使って書き換えられる可能性があるためwatchする
 watch(() => props.image, () => {
-	hide = (defaultStore.state.nsfw === 'force' || defaultStore.state.enableDataSaverMode) ? true : (props.image.isSensitive && defaultStore.state.nsfw !== 'ignore');
+	hide.value = (defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) ? true : (props.image.isSensitive && defaultStore.state.nsfw !== 'ignore');
 }, {
 	deep: true,
 	immediate: true,
@@ -138,7 +140,7 @@ function showMenu(ev: MouseEvent) {
 		text: i18n.ts.hide,
 		icon: 'ti ti-eye-off',
 		action: () => {
-			hide = true;
+			hide.value = true;
 		},
 	}, ...(iAmModerator ? [{
 		text: i18n.ts.markAsSensitive,

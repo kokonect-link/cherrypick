@@ -8,6 +8,7 @@
     <node-interpreter value="project" />
     <envs>
       <env name="NODE_ENV" value="development" />
+      <env name="CHERRYPICK_WEBFINGER_USE_HTTP" value="true" />
     </envs>
     <method v="2" />
   </configuration>

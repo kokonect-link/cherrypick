@@ -5,26 +5,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkA
-	v-anim="i"
 	class="_panel"
-	:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead)) }]"
+	:class="[$style.message, { [$style.isRead]: (isMe(message) || (message.groupId ? message.reads.includes($i?.id) : message.isRead)) }]"
 	:to="message.groupId ? `/my/messaging/group/${ message.groupId }` : `/my/messaging/@${Misskey.acct.toString(isMe(message) ? message.recipient : message.user)}`"
-	:data-index="i"
 >
 	<div>
-		<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
+		<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i?.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
 		<MkAvatar :class="$style.avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" indicator link preview/>
 		<header v-if="message.groupId">
 			<span :class="$style.name">{{ message.group.name }}</span>
 			<MkTime :time="message.createdAt" :class="$style.time"/>
 		</header>
 		<header v-else>
-			<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
-			<span :class="$style.username">@{{ Misskey.acct.toString(isMe(message) ? message.recipient : message.user) }}</span>
+			<div style="display: flex; flex-direction: column; max-width: 90%;">
+				<span :class="$style.name"><MkUserName :user="isMe(message) ? message.recipient : message.user"/></span>
+				<span :class="$style.username">@{{ Misskey.acct.toString(isMe(message) ? message.recipient : message.user) }}</span>
+			</div>
 			<MkTime :time="message.createdAt" :class="$style.time"/>
 		</header>
 		<div>
-			<p :class="$style.text"><span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}: </span>{{ message.text }}</p>
+			<p :class="$style.text">
+				<span v-if="isMe(message)" :class="$style.me">{{ i18n.ts.you }}: </span>
+				<Mfm v-if="message.text != null && message.text.length > 0" :text="message.text"/>
+				<span v-if="message.file?.id.length != undefined"><span v-if="message.text != null && message.text.length > 0" style="margin-right: 5px;"/>📎</span>
+			</p>
 		</div>
 	</div>
 </MkA>
@@ -36,11 +40,11 @@ import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-  message: Record<string, any>;
+  message: Misskey.entities.MessagingMessage;
 }>();
 
-function isMe(message) {
-	return message.userId === $i.id;
+function isMe(message): boolean {
+	return message.userId === $i?.id;
 }
 </script>
 
@@ -78,7 +82,6 @@ function isMe(message) {
 
     > header {
       display: flex;
-      align-items: center;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
@@ -91,11 +94,12 @@ function isMe(message) {
 }
 
 .indicator {
-  position: absolute;
-  top: 41px;
-  left: 12px;
+  position: relative;
+  top: 25px;
+  left: -12px;
   color: var(--indicator);
   font-size: 9px;
+	float: left;
 }
 
 .name {
@@ -103,10 +107,11 @@ function isMe(message) {
   padding: 0;
   font-weight: bold;
   transition: all 0.1s ease;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .username {
-  margin: 0 8px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -118,15 +123,15 @@ function isMe(message) {
 
 .avatar {
   float: left;
-  width: 42px;
-  height: 42px;
+	width: 52px;
+	height: 52px;
   margin: 0 16px 0 0;
   border-radius: 8px;
   transition: all 0.1s ease;
 }
 
 .text {
-  display: block;
+  display: -webkit-box;
   margin: 0 0 0 0;
   padding: 0;
   overflow: hidden;
@@ -134,6 +139,8 @@ function isMe(message) {
   line-height: 1.35;
   max-height: 4.05em;
   color: var(--faceText);
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 }
 
 .me {
@@ -160,7 +167,7 @@ function isMe(message) {
   }
 
   .avatar {
-    margin: 0 12px 0 0;
+    margin: 0 8px;
   }
 }
 </style>

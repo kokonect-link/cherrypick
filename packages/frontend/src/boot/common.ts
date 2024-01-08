@@ -3,28 +3,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { computed, createApp, watch, markRaw, version as vueVersion, defineAsyncComponent, App } from 'vue';
+import { computed, watch, version as vueVersion, App, defineAsyncComponent } from 'vue';
 import { compareVersions } from 'compare-versions';
 import widgets from '@/widgets/index.js';
 import directives from '@/directives/index.js';
 import components from '@/components/index.js';
-import { version, basedMisskeyVersion, ui, lang, updateLocale } from '@/config.js';
+import { version, basedMisskeyVersion, lang, updateLocale, locale } from '@/config.js';
 import { applyTheme } from '@/scripts/theme.js';
 import { isDeviceDarkmode } from '@/scripts/is-device-darkmode.js';
-import { i18n, updateI18n } from '@/i18n.js';
-import { confirm, alert, post, popup, toast } from '@/os.js';
-import { $i, refreshAccount, login, updateAccount, signout } from '@/account.js';
+import { updateI18n } from '@/i18n.js';
+import { $i, refreshAccount, login } from '@/account.js';
 import { defaultStore, ColdDeviceStorage } from '@/store.js';
 import { fetchInstance, instance } from '@/instance.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { reloadChannel } from '@/scripts/unison-reload.js';
-import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { getUrlWithoutLoginId } from '@/scripts/login-id.js';
 import { getAccountFromId } from '@/scripts/get-account-from-id.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
-import { mainRouter } from '@/router.js';
+import { popup } from '@/os.js';
 
 export async function common(createVue: () => App<Element>) {
 	console.info(`CherryPick v${version}`);
@@ -69,39 +67,35 @@ export async function common(createVue: () => App<Element>) {
 	});
 
 	let isClientUpdated = false;
+	let isClientMigrated = false;
+	const showPushNotificationDialog = miLocalStorage.getItem('showPushNotificationDialog');
+
+	if (instance.swPublickey && ('PushManager' in window) && $i && $i.token && showPushNotificationDialog == null) {
+		popup(defineAsyncComponent(() => import('@/components/MkPushNotification.vue')), {}, {}, 'closed');
+	}
 
 	//#region クライアントが更新されたかチェック
 	const lastVersion = miLocalStorage.getItem('lastVersion');
 	const lastBasedMisskeyVersion = miLocalStorage.getItem('lastBasedMisskeyVersion');
-	if (lastVersion !== version) {
-		miLocalStorage.setItem('lastVersion', version);
-
-		// テーマリビルドするため
-		miLocalStorage.removeItem('theme');
-
-		try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			if (lastVersion != null && compareVersions(version, lastVersion) === 1) {
-				isClientUpdated = true;
-			}
-		} catch (err) { /* empty */ }
-	}
-	if (lastBasedMisskeyVersion !== basedMisskeyVersion) {
+	if (lastVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion) {
+		if (lastVersion == null) miLocalStorage.setItem('lastVersion', version);
+		else if (compareVersions(version, lastVersion) === 0 || compareVersions(version, lastVersion) === 1) miLocalStorage.setItem('lastVersion', version);
 		miLocalStorage.setItem('lastBasedMisskeyVersion', basedMisskeyVersion);
 
 		// テーマリビルドするため
 		miLocalStorage.removeItem('theme');
 
 		try { // 変なバージョン文字列来るとcompareVersionsでエラーになるため
-			if (lastBasedMisskeyVersion != null && compareVersions(basedMisskeyVersion, lastBasedMisskeyVersion) === 1) {
+			if ((lastVersion != null && compareVersions(version, lastVersion) === 1) || (lastBasedMisskeyVersion != null && compareVersions(basedMisskeyVersion, lastBasedMisskeyVersion) === 1)) {
 				isClientUpdated = true;
-			}
+			} else if (lastVersion != null && compareVersions(version, lastVersion) === -1) isClientMigrated = true;
 		} catch (err) { /* empty */ }
 	}
 	//#endregion
 
 	//#region Detect language & fetch translations
 	const localeVersion = miLocalStorage.getItem('localeVersion');
-	const localeOutdated = (localeVersion == null || localeVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion);
+	const localeOutdated = (localeVersion == null || localeVersion !== version || lastBasedMisskeyVersion !== basedMisskeyVersion || locale == null);
 	if (localeOutdated) {
 		const res = await window.fetch(`/assets/locales/${lang}.${version}.json`);
 		if (res.status === 200) {
@@ -201,6 +195,12 @@ export async function common(createVue: () => App<Element>) {
 			if (instance.defaultLightTheme != null) ColdDeviceStorage.set('lightTheme', JSON.parse(instance.defaultLightTheme));
 			if (instance.defaultDarkTheme != null) ColdDeviceStorage.set('darkTheme', JSON.parse(instance.defaultDarkTheme));
 			defaultStore.set('themeInitial', false);
+		} else {
+			if (defaultStore.state.darkMode) {
+				applyTheme(darkTheme.value);
+			} else {
+				applyTheme(lightTheme.value);
+			}
 		}
 	});
 
@@ -216,16 +216,24 @@ export async function common(createVue: () => App<Element>) {
 		}
 	}, { immediate: true });
 
-	if (defaultStore.state.keepScreenOn) {
-		if ('wakeLock' in navigator) {
+	// Keep screen on
+	const onVisibilityChange = () => document.addEventListener('visibilitychange', () => {
+		if (document.visibilityState === 'visible') {
 			navigator.wakeLock.request('screen');
-
-			document.addEventListener('visibilitychange', async () => {
-				if (document.visibilityState === 'visible') {
-					navigator.wakeLock.request('screen');
-				}
-			});
 		}
+	});
+	if (defaultStore.state.keepScreenOn && 'wakeLock' in navigator) {
+		navigator.wakeLock.request('screen')
+			.then(onVisibilityChange)
+			.catch(() => {
+				// On WebKit-based browsers, user activation is required to send wake lock request
+				// https://webkit.org/blog/13862/the-user-activation-api/
+				document.addEventListener(
+					'click',
+					() => navigator.wakeLock.request('screen').then(onVisibilityChange),
+					{ once: true },
+				);
+			});
 	}
 
 	//#region Fetch user
@@ -280,6 +288,7 @@ export async function common(createVue: () => App<Element>) {
 
 	return {
 		isClientUpdated,
+		isClientMigrated,
 		app,
 	};
 }

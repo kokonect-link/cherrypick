@@ -15,7 +15,6 @@ export class Event1681429921400 {
 		await queryRunner.query(`COMMENT ON COLUMN "user"."isRoot" IS 'Whether the User is the root.'`);
 		await queryRunner.query(`COMMENT ON COLUMN "ad"."startsAt" IS 'The expired date of the Ad.'`);
 		await queryRunner.query(`ALTER TABLE "antenna" ALTER COLUMN "lastUsedAt" DROP DEFAULT`);
-		await queryRunner.query(`COMMENT ON COLUMN "renote_muting"."createdAt" IS 'The created date of the Muting.'`);
 		await queryRunner.query(`COMMENT ON COLUMN "renote_muting"."muteeId" IS 'The mutee user ID.'`);
 		await queryRunner.query(`COMMENT ON COLUMN "renote_muting"."muterId" IS 'The muter user ID.'`);
 		await queryRunner.query(`ALTER TABLE "poll" DROP CONSTRAINT "FK_da851e06d0dfe2ef397d8b1bf1b"`);

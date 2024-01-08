@@ -17,21 +17,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
-	<img
-		v-if="showDecoration && (decoration || user.avatarDecorations.length > 0) && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn"
-		:class="[$style.decoration]"
-		:src="decoration?.url ?? user.avatarDecorations[0].url"
-		:style="{
-			rotate: getDecorationAngle(),
-			scale: getDecorationScale(),
-		}"
-		alt=""
-	>
+	<template v-if="showDecoration && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn">
+		<img
+			v-for="decoration in decorations ?? user.avatarDecorations"
+			:class="[$style.decoration]"
+			:src="decoration.url"
+			:style="{
+				rotate: getDecorationAngle(decoration),
+				scale: getDecorationScale(decoration),
+				translate: getDecorationOffset(decoration),
+				transform: getDecorationTransform(decoration),
+				opacity: getDecorationOpacity(decoration),
+			}"
+			alt=""
+		>
+	</template>
 </component>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, watch } from 'vue';
+import { onMounted, onUnmounted, watch, ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import MkA from '@/components/global/MkA.vue';
@@ -45,18 +50,13 @@ const props = withDefaults(defineProps<{
 	target?: string | null;
 	link?: boolean;
 	preview?: boolean;
-	decoration?: {
-		url: string;
-		angle?: number;
-		flipH?: boolean;
-		flipV?: boolean;
-	};
+	decorations?: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>[];
 	forceShowDecoration?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
-	decoration: undefined,
+	decorations: undefined,
 	forceShowDecoration: false,
 });
 
@@ -66,14 +66,14 @@ const emit = defineEmits<{
 
 const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
 
-const bound = $computed(() => props.link
+const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
 	: {});
 
-let playAnimation = $ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
-let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
-const url = $computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.enableDataSaverMode) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation)
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+const url = computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
 	? getStaticImageUrl(props.user.avatarUrl)
 	: props.user.avatarUrl);
 
@@ -82,40 +82,42 @@ function onClick(ev: MouseEvent): void {
 	emit('click', ev);
 }
 
-function getDecorationAngle() {
-	let angle;
-	if (props.decoration) {
-		angle = props.decoration.angle ?? 0;
-	} else if (props.user.avatarDecorations.length > 0) {
-		angle = props.user.avatarDecorations[0].angle ?? 0;
-	} else {
-		angle = 0;
-	}
+function getDecorationAngle(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const angle = decoration.angle ?? 0;
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
-function getDecorationScale() {
-	let scaleX;
-	if (props.decoration) {
-		scaleX = props.decoration.flipH ? -1 : 1;
-	} else if (props.user.avatarDecorations.length > 0) {
-		scaleX = props.user.avatarDecorations[0].flipH ? -1 : 1;
-	} else {
-		scaleX = 1;
-	}
+function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const scaleX = decoration.flipH ? -1 : 1;
 	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
-function resetTimer() {
-	playAnimation = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+function getDecorationOffset(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const offsetX = decoration.offsetX ?? 0;
+	const offsetY = decoration.offsetY ?? 0;
+	return offsetX === 0 && offsetY === 0 ? undefined : `${offsetX * 100}% ${offsetY * 100}%`;
 }
 
-let color = $ref<string | undefined>();
+function getDecorationTransform(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const scale = decoration.scale ?? 1;
+	return `${scale === 1 ? '' : `scale(${scale})`}`;
+}
+
+function getDecorationOpacity(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const opacity = decoration.opacity ?? 1;
+	return opacity === 1 ? undefined : opacity;
+}
+
+function resetTimer() {
+	playAnimation.value = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+}
+
+const color = ref<string | undefined>();
 
 watch(() => props.user.avatarBlurhash, () => {
-	color = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
+	color.value = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
 }, {
 	immediate: true,
 });
@@ -171,11 +173,11 @@ onUnmounted(() => {
 }
 
 .decoration {
-  position: absolute;
-  z-index: 1;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  pointer-events: none;
+	position: absolute;
+	z-index: 1;
+	top: -50%;
+	left: -50%;
+	width: 200%;
+	pointer-events: none;
 }
 </style>

@@ -79,6 +79,7 @@ export const ACHIEVEMENT_TYPES = [
 	'clickedClickHere',
 	'justPlainLucky',
 	'setNameToSyuilo',
+	'setNameToNoriDev',
 	'cookieClicked',
 	'brainDiver',
 	'smashTestNotificationButton',
@@ -417,6 +418,11 @@ export const ACHIEVEMENT_BADGES = {
 		frame: 'silver',
 	},
 	'setNameToSyuilo': {
+		img: '/fluent-emoji/1f36e.png',
+		bg: 'linear-gradient(0deg, rgb(187 183 59), rgb(255 143 77))',
+		frame: 'bronze',
+	},
+	'setNameToNoriDev': {
 		img: '/fluent-emoji/1f36e.png',
 		bg: 'linear-gradient(0deg, rgb(187 183 59), rgb(255 143 77))',
 		frame: 'bronze',

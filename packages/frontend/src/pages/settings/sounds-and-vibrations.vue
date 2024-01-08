@@ -7,16 +7,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label>{{ i18n.ts.sounds }}</template>
-		<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-			<template #label>{{ i18n.ts.masterVolume }}</template>
-		</MkRange>
+		<div class="_gaps_s">
+			<MkSwitch v-model="notUseSound">
+				<template #label>{{ i18n.ts.notUseSound }}</template>
+			</MkSwitch>
+			<MkSwitch v-model="useSoundOnlyWhenActive">
+				<template #label>{{ i18n.ts.useSoundOnlyWhenActive }}</template>
+			</MkSwitch>
+			<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+				<template #label>{{ i18n.ts.masterVolume }}</template>
+			</MkRange>
+		</div>
 
 		<div class="_gaps_s">
-			<MkFolder v-for="type in soundsKeys" :key="type">
+			<MkFolder v-for="type in operationTypes" :key="type">
 				<template #label>{{ i18n.t('_sfx.' + type) }}</template>
-				<template #suffix>{{ sounds[type].type ?? i18n.ts.none }}</template>
+				<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
 
-				<XSound :type="sounds[type].type" :volume="sounds[type].volume" @update="(res) => updated(type, res)"/>
+				<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
 			</MkFolder>
 		</div>
 	</FormSection>
@@ -26,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<template #label>{{ i18n.ts.vibrations }} <span class="_beta">CherryPick</span></template>
 		<div class="_gaps_s">
-			<MkSwitch v-model="vibrate" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template #caption>{{ i18n.ts.playVibrationsDescription }}</template></MkSwitch>
+			<MkSwitch v-model="vibrate" :disabled="ua" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template v-if="ua" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMorePlayVibrations">{{ i18n.ts.learnMore }}</a></template></MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateNote">{{ i18n.ts._vibrations.note }}</MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateNotification">{{ i18n.ts._vibrations.notification }}</MkSwitch>
 			<MkSwitch v-if="vibrate" v-model="vibrateChat">{{ i18n.ts._vibrations.chat }}</MkSwitch>
@@ -40,6 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { Ref, computed, ref, watch } from 'vue';
 import XSound from './sounds.sound.vue';
+import type { SoundType, OperationType } from '@/scripts/sound.js';
+import type { SoundStore } from '@/store.js';
 import * as os from '@/os.js';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -48,14 +58,17 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { operationTypes } from '@/scripts/sound.js';
+import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 
+const ua = /ipad|iphone/.test(navigator.userAgent.toLowerCase()) || !window.navigator.vibrate;
+
+const notUseSound = computed(defaultStore.makeGetterSetter('sound_notUseSound'));
+const useSoundOnlyWhenActive = computed(defaultStore.makeGetterSetter('sound_useSoundOnlyWhenActive'));
 const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'));
 
-const soundsKeys = ['note', 'noteMy', 'noteEdited', 'notification', 'chat', 'chatBg', 'antenna', 'channel'] as const;
-
-const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
+const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
 	note: defaultStore.reactiveState.sound_note,
 	noteMy: defaultStore.reactiveState.sound_noteMy,
 	noteEdited: defaultStore.reactiveState.sound_noteEdited,
@@ -64,14 +77,15 @@ const sounds = ref<Record<typeof soundsKeys[number], Ref<any>>>({
 	chatBg: defaultStore.reactiveState.sound_chatBg,
 	antenna: defaultStore.reactiveState.sound_antenna,
 	channel: defaultStore.reactiveState.sound_channel,
+	reaction: defaultStore.reactiveState.sound_reaction,
 });
 
-const vibrate = computed(ColdDeviceStorage.makeGetterSetter('vibrate'));
-const vibrateNote = computed(ColdDeviceStorage.makeGetterSetter('vibrateNote'));
-const vibrateNotification = computed(ColdDeviceStorage.makeGetterSetter('vibrateNotification'));
-const vibrateChat = computed(ColdDeviceStorage.makeGetterSetter('vibrateChat'));
-const vibrateChatBg = computed(ColdDeviceStorage.makeGetterSetter('vibrateChatBg'));
-const vibrateSystem = computed(ColdDeviceStorage.makeGetterSetter('vibrateSystem'));
+const vibrate = computed(defaultStore.makeGetterSetter('vibrate'));
+const vibrateNote = computed(defaultStore.makeGetterSetter('vibrateNote'));
+const vibrateNotification = computed(defaultStore.makeGetterSetter('vibrateNotification'));
+const vibrateChat = computed(defaultStore.makeGetterSetter('vibrateChat'));
+const vibrateChatBg = computed(defaultStore.makeGetterSetter('vibrateChatBg'));
+const vibrateSystem = computed(defaultStore.makeGetterSetter('vibrateSystem'));
 
 async function reloadAsk() {
 	const { canceled } = await os.confirm({
@@ -83,9 +97,22 @@ async function reloadAsk() {
 	unisonReload();
 }
 
+function getSoundTypeName(f: SoundType): string {
+	switch (f) {
+		case null:
+			return i18n.ts.none;
+		case '_driveFile_':
+			return i18n.ts._soundSettings.driveFile;
+		default:
+			return f;
+	}
+}
+
 async function updated(type: keyof typeof sounds.value, sound) {
-	const v = {
+	const v: SoundStore = {
 		type: sound.type,
+		fileId: sound.fileId,
+		fileUrl: sound.fileUrl,
 		volume: sound.volume,
 	};
 
@@ -99,10 +126,19 @@ function reset() {
 		defaultStore.set(`sound_${sound}`, v);
 		sounds.value[sound] = v;
 	}
+
+	os.success();
 }
 
 function demoVibrate() {
 	window.navigator.vibrate(100);
+}
+
+function learnMorePlayVibrations() {
+	os.alert({
+		type: 'info',
+		text: i18n.ts.playVibrationsDescription,
+	});
 }
 
 watch([
@@ -111,9 +147,9 @@ watch([
 	await reloadAsk();
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.soundsAndVibrations,

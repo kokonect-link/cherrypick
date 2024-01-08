@@ -49,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
+import { computed } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
@@ -65,8 +65,8 @@ const props = defineProps<{
 	isGroup?: boolean;
 }>();
 
-const isMe = $computed(() => props.message.userId === $i?.id);
-const urls = $computed(() => props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : []);
+const isMe = computed(() => props.message.userId === $i?.id);
+const urls = computed(() => props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : []);
 
 function del(): void {
 	os.api('messaging/messages/delete', {

@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useWidgetPropsManager, Widget, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import { GetFormResultType } from '@/scripts/form.js';
 import * as os from '@/os.js';
 import MkContainer from '@/components/MkContainer.vue';
@@ -131,7 +131,7 @@ const choose = async (ev) => {
 		text: i18n.ts._timelines.global,
 		icon: 'ti ti-world',
 		action: () => { setSrc('global'); },
-	}, antennaItems.length > 0 ? null : undefined, ...antennaItems, listItems.length > 0 ? null : undefined, ...listItems], ev.currentTarget ?? ev.target).then(() => {
+	}, antennaItems.length > 0 ? { type: 'divider' } : undefined, ...antennaItems, listItems.length > 0 ? { type: 'divider' } : undefined, ...listItems], ev.currentTarget ?? ev.target).then(() => {
 		menuOpened.value = false;
 	});
 };

@@ -70,7 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref, provide, onMounted } from 'vue';
+import { computed, watch, shallowRef, ref, provide, onMounted } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
@@ -82,13 +82,14 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { miLocalStorage } from '@/local-storage.js';
 import { antennasCache, userListsCache } from '@/cache.js';
 import { globalEvents } from '@/events.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { MenuItem } from '@/types/menu.js';
+import { miLocalStorage } from '@/local-storage.js';
 
-let showEl = $ref(false);
+const showEl = ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const MOBILE_THRESHOLD = 500;
@@ -106,71 +107,89 @@ const keymap = {
 	't': focus,
 };
 
-const tlComponent = $shallowRef<InstanceType<typeof MkTimeline>>();
-const rootEl = $shallowRef<HTMLElement>();
+const tlComponent = shallowRef<InstanceType<typeof MkTimeline>>();
+const rootEl = shallowRef<HTMLElement>();
 
-let queue = $ref(0);
-let srcWhenNotSignin = $ref(isLocalTimelineAvailable ? 'local' : 'global');
-const src = $computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin), set: (x) => saveSrc(x) });
-const withRenotes = $ref(true);
-const withReplies = $ref($i ? defaultStore.state.tlWithReplies : false);
-const onlyFiles = $ref(false);
-const onlyCats = $ref(false);
-const friendlyEnableNotifications = $ref(defaultStore.state.friendlyEnableNotifications);
-const friendlyEnableWidgets = $ref(defaultStore.state.friendlyEnableWidgets);
+const queue = ref(0);
+const srcWhenNotSignin = ref(isLocalTimelineAvailable ? 'local' : 'global');
+const src = computed({ get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin.value), set: (x) => saveSrc(x) });
+const withRenotes = ref(true);
+const withReplies = ref($i ? defaultStore.state.tlWithReplies : false);
+const onlyFiles = ref(false);
+const onlyCats = ref(false);
+const friendlyEnableNotifications = ref(defaultStore.state.friendlyEnableNotifications);
+const friendlyEnableWidgets = ref(defaultStore.state.friendlyEnableWidgets);
 
-watch($$(src), () => {
-	queue = 0;
+watch(src, () => {
+	queue.value = 0;
 	queueUpdated(queue);
 });
 
-watch($$(withReplies), (x) => {
+watch(withReplies, (x) => {
 	if ($i) defaultStore.set('tlWithReplies', x);
 });
 
-watch($$(friendlyEnableNotifications), (x) => {
+watch(friendlyEnableNotifications, (x) => {
 	defaultStore.set('friendlyEnableNotifications', x);
 	reloadAsk();
 });
 
-watch($$(friendlyEnableWidgets), (x) => {
+watch(friendlyEnableWidgets, (x) => {
 	defaultStore.set('friendlyEnableWidgets', x);
 	reloadAsk();
 });
 
 onMounted(() => {
 	globalEvents.on('showEl', (showEl_receive) => {
-		showEl = showEl_receive;
+		showEl.value = showEl_receive;
 	});
 });
 
 function queueUpdated(q: number): void {
-	queue = q;
+	queue.value = q;
 	globalEvents.emit('queueUpdated', q);
 }
 
 function top(): void {
-	if (rootEl) scroll(rootEl, { top: 0 });
+	if (rootEl.value) scroll(rootEl.value, { top: 0 });
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
 	const lists = await userListsCache.fetch();
-	const items = lists.map(list => ({
-		type: 'link' as const,
-		text: list.name,
-		to: `/timeline/list/${list.id}`,
-	}));
+	const items: MenuItem[] = [
+		...lists.map(list => ({
+			type: 'link' as const,
+			text: list.name,
+			to: `/timeline/list/${list.id}`,
+		})),
+		(lists.length === 0 ? undefined : { type: 'divider' }),
+		{
+			type: 'link' as const,
+			icon: 'ti ti-plus',
+			text: i18n.ts.createNew,
+			to: '/my/lists',
+		},
+	];
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
 async function chooseAntenna(ev: MouseEvent): Promise<void> {
 	const antennas = await antennasCache.fetch();
-	const items = antennas.map(antenna => ({
-		type: 'link' as const,
-		text: antenna.name,
-		indicate: antenna.hasUnreadNote,
-		to: `/timeline/antenna/${antenna.id}`,
-	}));
+	const items: MenuItem[] = [
+		...antennas.map(antenna => ({
+			type: 'link' as const,
+			text: antenna.name,
+			indicate: antenna.hasUnreadNote,
+			to: `/timeline/antenna/${antenna.id}`,
+		})),
+		(antennas.length === 0 ? undefined : { type: 'divider' }),
+		{
+			type: 'link' as const,
+			icon: 'ti ti-plus',
+			text: i18n.ts.createNew,
+			to: '/my/antennas',
+		},
+	];
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
@@ -178,12 +197,26 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	const channels = await os.api('channels/my-favorites', {
 		limit: 100,
 	});
-	const items = channels.map(channel => ({
-		type: 'link' as const,
-		text: channel.name,
-		indicate: channel.hasUnreadNote,
-		to: `/channels/${channel.id}`,
-	}));
+	const items: MenuItem[] = [
+		...channels.map(channel => {
+			const lastReadedAt = miLocalStorage.getItemAsJson(`channelLastReadedAt:${channel.id}`) ?? null;
+			const hasUnreadNote = (lastReadedAt && channel.lastNotedAt) ? Date.parse(channel.lastNotedAt) > lastReadedAt : !!(!lastReadedAt && channel.lastNotedAt);
+
+			return {
+				type: 'link' as const,
+				text: channel.name,
+				indicate: hasUnreadNote,
+				to: `/channels/${channel.id}`,
+			};
+		}),
+		(channels.length === 0 ? undefined : { type: 'divider' }),
+		{
+			type: 'link' as const,
+			icon: 'ti ti-plus',
+			text: i18n.ts.createNew,
+			to: '/channels',
+		},
+	];
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
@@ -197,7 +230,7 @@ function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global' | `list:${string
 		src: newSrc,
 		userList,
 	});
-	srcWhenNotSignin = newSrc;
+	srcWhenNotSignin.value = newSrc;
 }
 
 async function timetravel(): Promise<void> {
@@ -206,17 +239,17 @@ async function timetravel(): Promise<void> {
 	});
 	if (canceled) return;
 
-	tlComponent.timetravel(date);
+	tlComponent.value.timetravel(date);
 }
 
 function focus(): void {
-	tlComponent.focus();
+	tlComponent.value.focus();
 }
 
 function closeTutorial(): void {
-	if (!['home', 'local', 'social', 'global'].includes(src)) return;
+	if (!['home', 'local', 'social', 'global'].includes(src.value)) return;
 	const before = defaultStore.state.timelineTutorials;
-	before[src] = true;
+	before[src.value] = true;
 	defaultStore.set('timelineTutorials', before);
 }
 
@@ -232,7 +265,7 @@ async function reloadAsk() {
 	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
-const headerActions = $computed(() => {
+const headerActions = computed(() => {
 	const tmp = [
 		{
 			icon: 'ti ti-dots',
@@ -241,27 +274,29 @@ const headerActions = $computed(() => {
 				os.popupMenu([{
 					type: 'switch',
 					text: i18n.ts.friendlyEnableNotifications,
-					ref: $$(friendlyEnableNotifications),
+					ref: friendlyEnableNotifications,
 				}, {
 					type: 'switch',
 					text: i18n.ts.friendlyEnableWidgets,
-					ref: $$(friendlyEnableWidgets),
+					ref: friendlyEnableWidgets,
 				}, {
 					type: 'switch',
 					text: i18n.ts.showRenotes,
-					ref: $$(withRenotes),
-				}, src === 'local' || src === 'social' ? {
+					ref: withRenotes,
+				}, src.value === 'local' || src.value === 'social' ? {
 					type: 'switch',
 					text: i18n.ts.showRepliesToOthersInTimeline,
-					ref: $$(withReplies),
+					ref: withReplies,
+					disabled: onlyFiles,
 				} : undefined, {
 					type: 'switch',
 					text: i18n.ts.fileAttachedOnly,
-					ref: $$(onlyFiles),
+					ref: onlyFiles,
+					disabled: src.value === 'local' || src.value === 'social' ? withReplies : false,
 				}, {
 					type: 'switch',
 					text: i18n.ts.showCatOnly,
-					ref: $$(onlyCats),
+					ref: onlyCats,
 				}], ev.currentTarget ?? ev.target);
 			},
 		},
@@ -271,14 +306,14 @@ const headerActions = $computed(() => {
 			icon: 'ti ti-refresh',
 			text: i18n.ts.reload,
 			handler: (ev: Event) => {
-				tlComponent.reloadTimeline();
+				tlComponent.value.reloadTimeline();
 			},
 		});
 	}
 	return tmp;
 });
 
-const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
+const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,
 	title: l.name,
 	icon: 'ti ti-star',
@@ -320,7 +355,7 @@ const headerTabs = $computed(() => [...(defaultStore.reactiveState.pinnedUserLis
 	onClick: chooseChannel,
 }] : [])] as Tab[]);
 
-const headerTabsWhenNotLogin = $computed(() => [
+const headerTabsWhenNotLogin = computed(() => [
 	...(isLocalTimelineAvailable ? [{
 		key: 'local',
 		title: i18n.ts._timelines.local,
@@ -337,7 +372,7 @@ const headerTabsWhenNotLogin = $computed(() => [
 
 definePageMetadata(computed(() => ({
 	title: i18n.ts.timeline,
-	icon: src === 'local' ? 'ti ti-planet' : src === 'social' ? 'ti ti-universe' : src === 'global' ? 'ti ti-world' : 'ti ti-home',
+	icon: src.value === 'local' ? 'ti ti-planet' : src.value === 'social' ? 'ti ti-universe' : src.value === 'global' ? 'ti ti-world' : 'ti ti-home',
 })));
 </script>
 

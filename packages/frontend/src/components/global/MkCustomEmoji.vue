@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	decoding="async"
 	@error="errored = true"
 	@load="errored = false"
-	@click="onClick"
+	@click.stop="onClick"
 	@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 	@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
@@ -23,13 +23,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, inject } from 'vue';
+import { computed, onMounted, onUnmounted, inject, ref } from 'vue';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { defaultStore } from '@/store.js';
-import { customEmojisMap } from '@/custom-emojis.js';
+import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
+import * as sound from '@/scripts/sound.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
+import { $i } from '@/account.js';
 
 const props = defineProps<{
 	name: string;
@@ -57,9 +59,9 @@ const rawUrl = computed(() => {
 	return props.host ? `/emoji/${customEmojiName.value}@${props.host}.webp` : `/emoji/${customEmojiName.value}.webp`;
 });
 
-let playAnimation = $ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation = false;
-let playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (rawUrl.value == null) return null;
 
@@ -72,40 +74,50 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation)
+	return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
 
 const alt = computed(() => `:${customEmojiName.value}:`);
-let errored = $ref(url.value == null);
+const errored = ref(url.value == null);
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
 		os.popupMenu([{
 			type: 'label',
 			text: `:${props.name}:`,
-		}, {
+		}, ...((customEmojis.value.find(it => it.name === customEmojiName.value)?.name ?? null) ? [{
 			text: i18n.ts.copy,
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
-				os.success();
+				os.toast(i18n.ts.copied, 'copied');
 			},
-		}, ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
+		}] : []), ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
+			text: i18n.ts.import,
 			icon: 'ti ti-plus',
 			action: () => {
+				os.apiWithDialog('admin/emoji/steal', {
+					name: customEmojiName.value,
+					host: props.host,
+				});
+			},
+		}] : []), ...(props.menuReaction && react ? [{
+			text: i18n.ts.doReaction,
+			icon: 'ti ti-mood-plus',
+			action: () => {
 				react(`:${props.name}:`);
+				sound.play('reaction');
 			},
 		}] : [])], ev.currentTarget ?? ev.target);
 	}
 }
 
 function resetTimer() {
-	playAnimation = true;
+	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation = false, 5000);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 }
 
 onMounted(() => {

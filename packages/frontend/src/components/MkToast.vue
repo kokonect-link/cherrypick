@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ zIndex }">
 			<div style="padding: 16px 24px;">
+				<i v-if="icon" :class="icon === 'posted' ? 'ti-check' : icon === 'reply' ? 'ti-arrow-back-up' : icon === 'renote' ? 'ti-repeat' : icon === 'quote' ? 'ti-quote' : icon === 'edited' ? 'ti ti-pencil' : icon === 'copied' ? 'ti-copy' : 'ti-check'" class="ti"></i>
 				{{ message }}
 			</div>
 		</div>
@@ -22,12 +23,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
 
 defineProps<{
 	message: string;
+	icon?: string;
 }>();
 
 const emit = defineEmits<{
@@ -35,11 +37,11 @@ const emit = defineEmits<{
 }>();
 
 const zIndex = os.claimZIndex('high');
-let showing = $ref(true);
+const showing = ref(true);
 
 onMounted(() => {
 	window.setTimeout(() => {
-		showing = false;
+		showing.value = false;
 	}, 4000);
 });
 </script>

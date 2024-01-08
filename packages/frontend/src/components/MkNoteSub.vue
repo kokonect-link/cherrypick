@@ -9,16 +9,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
-		<div :class="$style.body">
+		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
 				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'"/>
-					<MkCwButton v-model="showContent" style="width: 100%" :note="note"/>
+					<MkCwButton v-model="showContent" style="width: 100%" :text="note.text" :files="note.files" :poll="note.poll" @click.stop/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
+					<MkSubNoteContent :class="[$style.text, { [$style.showSubNoteFooterButton]: defaultStore.state.showSubNoteFooterButton }]" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
 				</div>
 			</div>
 		</div>
@@ -55,8 +55,9 @@ import { $i } from '@/account.js';
 import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { defaultStore } from '@/store.js';
+import { useRouter } from '@/router.js';
 
-let hideLine = $ref(false);
+const hideLine = ref(false);
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
@@ -70,17 +71,25 @@ const props = withDefaults(defineProps<{
 
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
-let showContent = $ref(false);
-let replies: Misskey.entities.Note[] = $ref([]);
+const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const router = useRouter();
+
+const showContent = ref(false);
+const replies = ref<Misskey.entities.Note[]>([]);
 
 if (props.detail) {
 	os.api('notes/children', {
 		noteId: props.note.id,
 		limit: 5,
 	}).then(res => {
-		replies = res;
-		hideLine = true;
+		replies.value = res;
+		hideLine.value = true;
 	});
+}
+
+function noteClick(ev: MouseEvent) {
+	if (!expandOnNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
+	else router.push(notePage(props.note));
 }
 </script>
 
@@ -130,6 +139,7 @@ if (props.detail) {
 .body {
 	flex: 1;
 	min-width: 0;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .header {
@@ -156,6 +166,10 @@ if (props.detail) {
 
 .more {
 	padding: 10px 0 0 16px;
+}
+
+.showSubNoteFooterButton {
+	padding-bottom: 15px;
 }
 
 @container (max-width: 580px) {

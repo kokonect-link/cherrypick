@@ -7,9 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label>{{ i18n.ts._cherrypick.function }}</template>
+		<template #description>{{ i18n.ts._cherrypick.functionDescription }}</template>
 		<div class="_gaps_m">
-			<div>{{ i18n.ts._cherrypick.functionDescription }}</div>
-
 			<MkSwitch v-model="nicknameEnabled">
 				{{ i18n.ts._cherrypick.nickname }}
 				<template #caption>{{ i18n.ts._cherrypick.nicknameDescription }}</template>
@@ -27,6 +26,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showRenoteConfirmPopup">
 					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="expandOnNoteClick">
+					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
 				</MkSwitch>
 			</div>
 
@@ -46,9 +49,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
+		<template #description>{{ i18n.ts._cherrypick.patchDescription }}</template>
 		<div class="_gaps_m">
-			<div>{{ i18n.ts._cherrypick.patchDescription }}</div>
-
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
 			<MkSwitch v-model="mobileHeaderChange">{{ i18n.ts._cherrypick.mobileHeaderChange }}</MkSwitch>
@@ -64,8 +66,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div class="_gaps_m">
 			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
 			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
-			<MkSwitch v-model="enableLongPressOpenAccountMenu">{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</MkSwitch>
+			<MkSwitch v-model="enableLongPressOpenAccountMenu">
+				<template #label>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</template>
+				<template #caption>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</template>
+			</MkSwitch>
 			<MkSwitch v-model="friendlyShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyShowAvatarDecorationsInNavBtn }}</MkSwitch>
+		</div>
+	</FormSection>
+
+	<FormSection>
+		<template #label><i class="ti ti-flask"/> {{ i18n.ts.cherrypickLabs }}</template>
+		<template #description>{{ i18n.ts.cherrypickLabsDescription }}</template>
+		<div class="_gaps_m">
 		</div>
 	</FormSection>
 </div>
@@ -96,10 +108,11 @@ const nicknameEnabled = computed(defaultStore.makeGetterSetter('nicknameEnabled'
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const showRenoteConfirmPopup = computed(defaultStore.makeGetterSetter('showRenoteConfirmPopup'));
+const expandOnNoteClick = computed(defaultStore.makeGetterSetter('expandOnNoteClick'));
+const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
 const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
-const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
 const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
 const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
@@ -113,6 +126,7 @@ watch([
 });
 
 watch([
+	expandOnNoteClick,
 	reactableRemoteReactionEnabled,
 	mobileHeaderChange,
 	renameTheButtonInPostFormToNya,
@@ -122,9 +136,9 @@ watch([
 	await reloadAsk();
 });
 
-const headerActions = $computed(() => []);
+const headerActions = computed(() => []);
 
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: 'CherryPick',

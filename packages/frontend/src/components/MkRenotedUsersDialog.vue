@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
@@ -50,11 +50,11 @@ const props = defineProps<{
 	noteId: Misskey.entities.Note['id'];
 }>();
 
-const dialog = $shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-let note = $ref<Misskey.entities.Note>();
-let renotes = $ref();
-let users = $ref();
+const note = ref<Misskey.entities.Note>();
+const renotes = ref();
+const users = ref();
 
 onMounted(async () => {
 	const res = await os.api('notes/renotes', {
@@ -62,8 +62,8 @@ onMounted(async () => {
 		limit: 30,
 	});
 
-	renotes = res;
-	users = res.map(x => x.user);
+	renotes.value = res;
+	users.value = res.map(x => x.user);
 });
 </script>
 

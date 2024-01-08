@@ -32,6 +32,7 @@ export const paramDef = {
 		renote: { type: 'boolean' },
 		withFiles: { type: 'boolean' },
 		poll: { type: 'boolean' },
+		event: { type: 'boolean' },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
@@ -76,6 +77,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.poll !== undefined) {
 				query.andWhere(ps.poll ? 'note.hasPoll = TRUE' : 'note.hasPoll = FALSE');
+			}
+
+			if (ps.event !== undefined) {
+				query.andWhere(ps.event ? 'note.hasEvent = TRUE' : 'note.hasEvent = FALSE');
 			}
 
 			// TODO

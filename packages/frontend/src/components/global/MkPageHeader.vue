@@ -7,15 +7,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ background: bg }">
 	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly }]">
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-			<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 		</div>
 		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-			<MkAvatar v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" :class="$style.avatar" :user="$i"/>
+			<MkAvatar v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.avatar" :user="$i"/>
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
 			<div v-if="!narrow && canBack" style="width: 50px; margin-right: 8px;"/>
+			<div v-if="actions.length >= 3" style="width: 42px;"/>
 			<div style="width: 34px;"/>
+		</div>
+		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly && mainRouter.currentRoute.value.name === 'my-notifications'">
+			<div style="width: 50px; margin-right: 8px;"/>
 		</div>
 		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
 			<div style="width: 84px;"/>
@@ -47,11 +51,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
-				<button v-vibrate="ColdDeviceStorage.get('vibrateSystem') ? 5 : ''" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-		<div v-if="metadata && metadata.avatar && showFollowButton" :class="$style.followButton">
+		<div v-if="metadata && metadata.avatar && ($i && $i.id !== metadata.userName?.id)" :class="$style.followButton">
 			<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
@@ -62,7 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject } from 'vue';
+import { onMounted, onUnmounted, ref, inject, shallowRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
@@ -73,10 +77,9 @@ import { miLocalStorage } from '@/local-storage.js';
 import { mainRouter } from '@/router.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
+import { defaultStore } from '@/store.js';
+import { PageHeaderItem } from '@/types/page-header.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-
-let showFollowButton = $ref(false);
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
@@ -84,12 +87,7 @@ const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includ
 const props = withDefaults(defineProps<{
 	tabs?: Tab[];
 	tab?: string;
-	actions?: {
-		text: string;
-		icon: string;
-		highlighted?: boolean;
-		handler: (ev: MouseEvent) => void;
-	}[];
+	actions?: PageHeaderItem[] | null;
 	thin?: boolean;
 	displayMyAvatar?: boolean;
 }>(), {
@@ -105,13 +103,13 @@ const metadata = injectPageMetadata();
 const hideTitle = inject('shouldOmitHeaderTitle', false);
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-let el = $shallowRef<HTMLElement | undefined>(undefined);
+const el = shallowRef<HTMLElement | undefined>(undefined);
 const bg = ref<string | undefined>(undefined);
-let narrow = $ref(false);
-const hasTabs = $computed(() => props.tabs.length > 0);
-const hasActions = $computed(() => props.actions && props.actions.length > 0);
-const show = $computed(() => {
-	return !hideTitle || hasTabs || hasActions;
+const narrow = ref(false);
+const hasTabs = computed(() => props.tabs.length > 0);
+const hasActions = computed(() => props.actions && props.actions.length > 0);
+const show = computed(() => {
+	return !hideTitle || hasTabs.value || hasActions.value;
 });
 
 const preventDrag = (ev: TouchEvent) => {
@@ -119,9 +117,9 @@ const preventDrag = (ev: TouchEvent) => {
 };
 
 const top = (ev: MouseEvent) => {
-	const pos = getScrollPosition(el as HTMLElement);
-	if (el && pos !== 0) {
-		scrollToTop(el as HTMLElement, { behavior: 'smooth' });
+	const pos = getScrollPosition(el.value as HTMLElement);
+	if (el.value && pos !== 0) {
+		scrollToTop(el.value as HTMLElement, { behavior: 'smooth' });
 	} else if (pos === 0) {
 		os.popupMenu([{
 			text: i18n.ts.reload,
@@ -150,7 +148,7 @@ function goBack() {
 const calcBg = () => {
 	const rawBg = 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (narrow) tinyBg.setAlpha(1);
+	if (narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
 };
@@ -158,22 +156,18 @@ const calcBg = () => {
 let ro: ResizeObserver | null;
 
 onMounted(() => {
-	if (el && el.parentElement) {
-		narrow = el.parentElement.offsetWidth < 500;
+	if (el.value && el.value.parentElement) {
+		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el && el.parentElement && document.body.contains(el as HTMLElement)) {
-				narrow = el.parentElement.offsetWidth < 500;
+			if (el.value && el.value.parentElement && document.body.contains(el.value as HTMLElement)) {
+				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
-		ro.observe(el.parentElement as HTMLElement);
+		ro.observe(el.value.parentElement as HTMLElement);
 	}
 
 	calcBg();
 	globalEvents.on('themeChanged', calcBg);
-
-	globalEvents.on('showFollowButton', (showFollowButton_receive) => {
-		showFollowButton = showFollowButton_receive;
-	});
 });
 
 onUnmounted(() => {
@@ -331,6 +325,7 @@ onUnmounted(() => {
 	font-weight: bold;
 	flex-shrink: 1;
 	margin-left: 24px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .titleContainer_canBack {

@@ -70,8 +70,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
-let type = ref('all');
-let sort = ref('+createdAt');
+const type = ref('all');
+const sort = ref('+createdAt');
 
 const pagination: Paging = {
 	endpoint: 'admin/invite/list' as const,
@@ -97,10 +97,10 @@ async function createWithOptions() {
 	os.alert({
 		type: 'success',
 		title: i18n.ts.inviteCodeCreated,
-		text: tickets?.map(x => x.code).join('\n'),
+		text: tickets.map(x => x.code).join('\n'),
 	});
 
-	tickets?.forEach(ticket => pagingComponent.value?.prepend(ticket));
+	tickets.forEach(ticket => pagingComponent.value?.prepend(ticket));
 }
 
 function deleted(id: string) {
@@ -119,12 +119,12 @@ function inviteRevoke() {
 	});
 }
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	text: i18n.ts.inviteRevoke,
 	icon: 'ti ti-trash',
 	handler: inviteRevoke,
 }]);
-const headerTabs = $computed(() => []);
+const headerTabs = computed(() => []);
 
 definePageMetadata({
 	title: i18n.ts.invite,

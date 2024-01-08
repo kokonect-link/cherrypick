@@ -20,6 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XPages v-else-if="tab === 'pages'" :user="user"/>
 			<XFlashs v-else-if="tab === 'flashs'" :user="user"/>
 			<XGallery v-else-if="tab === 'gallery'" :user="user"/>
+			<XRaw v-else-if="tab === 'raw'" :user="user"/>
 		</div>
 		<MkError v-else-if="error" @retry="fetchUser()"/>
 		<MkLoading v-else/>
@@ -56,6 +57,7 @@ const XLists = defineAsyncComponent(() => import('./lists.vue'));
 const XPages = defineAsyncComponent(() => import('./pages.vue'));
 const XFlashs = defineAsyncComponent(() => import('./flashs.vue'));
 const XGallery = defineAsyncComponent(() => import('./gallery.vue'));
+const XRaw = defineAsyncComponent(() => import('./raw.vue'));
 
 const props = withDefaults(defineProps<{
 	acct: string;
@@ -64,17 +66,17 @@ const props = withDefaults(defineProps<{
 	page: 'home',
 });
 
-let tab = $ref(props.page);
-let user = $ref<null | Misskey.entities.UserDetailed>(null);
-let error = $ref(null);
+const tab = ref(props.page);
+const user = ref<null | Misskey.entities.UserDetailed>(null);
+const error = ref<any>(null);
 
 function fetchUser(): void {
 	if (props.acct == null) return;
-	user = null;
+	user.value = null;
 	os.api('users/show', Misskey.acct.parse(props.acct)).then(u => {
-		user = u;
+		user.value = u;
 	}).catch(err => {
-		error = err;
+		error.value = err;
 	});
 }
 
@@ -82,13 +84,13 @@ watch(() => props.acct, fetchUser, {
 	immediate: true,
 });
 
-const headerActions = $computed(() => [{
+const headerActions = computed(() => [{
 	icon: 'ti ti-dots',
 	text: i18n.ts.menu,
 	handler: menu,
 }]);
 
-const headerTabs = $computed(() => user ? [{
+const headerTabs = computed(() => user.value ? [{
 	key: 'home',
 	title: i18n.ts.overview,
 	icon: 'ti ti-home',
@@ -100,7 +102,7 @@ const headerTabs = $computed(() => user ? [{
 	key: 'activity',
 	title: i18n.ts.activity,
 	icon: 'ti ti-chart-line',
-}, ...(user.host == null ? [{
+}, ...(user.value.host == null ? [{
 	key: 'achievements',
 	title: i18n.ts.achievements,
 	icon: 'ti ti-medal',
@@ -124,22 +126,26 @@ const headerTabs = $computed(() => user ? [{
 	key: 'gallery',
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
+}, {
+	key: 'raw',
+	title: 'Raw',
+	icon: 'ti ti-code',
 }] : []);
 
 function menu(ev) {
-	const { menu, cleanup } = getUserMenu(user, mainRouter);
+	const { menu, cleanup } = getUserMenu(user.value, mainRouter);
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
-definePageMetadata(computed(() => user ? {
+definePageMetadata(computed(() => user.value ? {
 	icon: 'ti ti-user',
-	title: user.name ? `${user.name} (@${user.username})` : `@${user.username}`,
-	subtitle: `@${getAcct(user)}`,
-	userName: user,
-	avatar: user,
-	path: `/@${user.username}`,
+	title: user.value.name ? `${user.value.name} (@${user.value.username})` : `@${user.value.username}`,
+	subtitle: `@${getAcct(user.value)}`,
+	userName: user.value,
+	avatar: user.value,
+	path: `/@${user.value.username}`,
 	share: {
-		title: user.name,
+		title: user.value.name,
 	},
 } : null));
 </script>
