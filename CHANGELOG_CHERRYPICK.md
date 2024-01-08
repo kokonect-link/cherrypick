@@ -28,8 +28,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 기반 Misskey 버전: 2023.12.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANGELOG.md#2023122) 문서를 참고하십시오.
 
-> Misskey에서의 마이그레이션 문제를 해결하기 위해, 기존 CherryPick 서버에서는 이 버전으로 업데이트 후 노트 편집 시각 기록이 모두 삭제됩니다.
-
 ### General
 - Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
 - Change: Misskey 또는 CherryPick v4.3.0 이전 버전에서 마이그레이션 시, 마이그레이션 관련 대화 상자가 표시됨
@@ -113,7 +111,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANG
 - Fix: redisForJobQueue의 maxRetriesPerRequest를 null로 설정 (MisskeyIO/misskey#272)
 - Fix: Inbox 또는 Deliver 큐에 data 필드가 비어 있는 작업이 등록되지 않도록 (MisskeyIO/misskey#307)
 - Fix: Misskey에서 CherryPick으로 마이그레이션 하면 타임라인이 표시되지 않음
-  - 이 변경으로 인해 기존 CherryPick 서버에서 노트 편집 시각 기록이 모두 삭제됩니다.
 
 ---
 
