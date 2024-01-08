@@ -7,9 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormSection first>
 		<template #label>{{ i18n.ts._cherrypick.function }}</template>
+		<template #description>{{ i18n.ts._cherrypick.functionDescription }}</template>
 		<div class="_gaps_m">
-			<div>{{ i18n.ts._cherrypick.functionDescription }}</div>
-
 			<MkSwitch v-model="nicknameEnabled">
 				{{ i18n.ts._cherrypick.nickname }}
 				<template #caption>{{ i18n.ts._cherrypick.nicknameDescription }}</template>
@@ -50,9 +49,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
+		<template #description>{{ i18n.ts._cherrypick.patchDescription }}</template>
 		<div class="_gaps_m">
-			<div>{{ i18n.ts._cherrypick.patchDescription }}</div>
-
 			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
 			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
 			<MkSwitch v-model="mobileHeaderChange">{{ i18n.ts._cherrypick.mobileHeaderChange }}</MkSwitch>
