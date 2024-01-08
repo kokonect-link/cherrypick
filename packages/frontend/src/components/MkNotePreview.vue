@@ -17,7 +17,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</p>
 			<div v-show="!useCw || showContent">
 				<Mfm :text="text.trim()" :author="user" :nyaize="'respect'" :i="user"/>
-				<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 			</div>
 		</div>
 	</div>
@@ -27,10 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as mfm from 'cherrypick-mfm-js';
-import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
-import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { defaultStore } from '@/store.js';
 
 const showContent = ref(false);
@@ -49,8 +45,6 @@ const props = defineProps<{
 	user: Misskey.entities.User;
   showProfile?: boolean;
 }>();
-
-const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;
 </script>
 
 <style lang="scss" module>
@@ -92,11 +86,6 @@ const urls = props.text ? extractUrlFromMfm(mfm.parse(props.text)) : null;
 	width: 100%;
 	overflow: clip;
     text-overflow: ellipsis;
-}
-
-.urlPreview {
-	margin-top: 8px;
-	margin-bottom: 8px;
 }
 
 @container (min-width: 350px) {
