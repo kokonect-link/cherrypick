@@ -23,10 +23,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
-출시일: unreleased<br>
-기반 Misskey 버전: 2023.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+## 4.6.0
+출시일: 2024/1/08<br>
+기반 Misskey 버전: 2023.12.2<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANGELOG.md#2023122) 문서를 참고하십시오.
 
 > Misskey에서의 마이그레이션 문제를 해결하기 위해, 기존 CherryPick 서버에서는 이 버전으로 업데이트 후 노트 편집 시각 기록이 모두 삭제됩니다.
 
