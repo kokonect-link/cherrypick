@@ -73,6 +73,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="friendlyShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyShowAvatarDecorationsInNavBtn }}</MkSwitch>
 		</div>
 	</FormSection>
+
+	<FormSection>
+		<template #label><i class="ti ti-flask"/> {{ i18n.ts.cherrypickLabs }}</template>
+		<template #description>{{ i18n.ts.cherrypickLabsDescription }}</template>
+		<div class="_gaps_m">
+		</div>
+	</FormSection>
 </div>
 </template>
 
