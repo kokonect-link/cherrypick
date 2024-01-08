@@ -100,6 +100,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 노트 작성 폼에서 링크 프리뷰가 표시될 수 있음
 
 ### Server
+- Feat: Bearcaps URL 지원 (MisskeyIO/misskey#330)
 - Enhance: (dev) 개발 모드에서 locale 및 유형 정의가 자동으로 재생성됨 (misskey-dev/misskey#12481)
 - Enhance: 푸시 알림 개선
   - 개인간 대화 알림을 받았을 때, 대화 내용을 푸시 알림에 표시
