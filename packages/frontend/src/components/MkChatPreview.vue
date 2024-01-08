@@ -131,7 +131,7 @@ function isMe(message): boolean {
 }
 
 .text {
-  display: block;
+  display: -webkit-box;
   margin: 0 0 0 0;
   padding: 0;
   overflow: hidden;
@@ -139,6 +139,8 @@ function isMe(message): boolean {
   line-height: 1.35;
   max-height: 4.05em;
   color: var(--faceText);
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 }
 
 .me {
