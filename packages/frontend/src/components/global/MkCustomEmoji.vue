@@ -108,7 +108,7 @@ function onClick(ev: MouseEvent) {
 			icon: 'ti ti-mood-plus',
 			action: () => {
 				react(`:${props.name}:`);
-				sound.play('reaction');
+				sound.playMisskeySfx('reaction');
 			},
 		}] : [])], ev.currentTarget ?? ev.target);
 	}

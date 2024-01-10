@@ -39,8 +39,8 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import * as os from '@/os.js';
 import { infoImageUrl } from '@/instance.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void,
@@ -52,12 +52,11 @@ const props = defineProps<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-const note = ref<Misskey.entities.Note>();
 const renotes = ref();
 const users = ref();
 
 onMounted(async () => {
-	const res = await os.api('notes/renotes', {
+	const res = await misskeyApi('notes/renotes', {
 		noteId: props.noteId,
 		limit: 30,
 	});

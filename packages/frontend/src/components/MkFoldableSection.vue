@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import tinycolor from 'tinycolor2';
 import { miLocalStorage } from '@/local-storage.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import { defaultStore } from '@/store.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { globalEvents } from '@/events.js';

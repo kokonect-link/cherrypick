@@ -29,6 +29,7 @@ import * as Misskey from 'cherrypick-js';
 import MkPagination from '@/components/MkPagination.vue';
 import MkClipPreview from '@/components/MkClipPreview.vue';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { clipsCache } from '@/cache.js';
@@ -45,7 +46,7 @@ const favorites = ref<Misskey.entities.Clip[] | null>(null);
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
 watch(tab, async () => {
-	favorites.value = await os.api('clips/my-favorites');
+	favorites.value = await misskeyApi('clips/my-favorites');
 });
 
 async function create() {

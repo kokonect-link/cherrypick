@@ -1,6 +1,12 @@
 name: API report (cherrypick.js)
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - packages/cherrypick-js/**
+  pull_request:
+    paths:
+      - packages/cherrypick-js/**
 
 jobs:
   report:

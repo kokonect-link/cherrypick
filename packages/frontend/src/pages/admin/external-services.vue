@@ -86,6 +86,7 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -100,7 +101,7 @@ const ctav3Model = ref<string>('');
 const ctav3Glossary = ref<string>('');
 
 async function init() {
-	const meta = await os.api('admin/meta');
+	const meta = await misskeyApi('admin/meta');
 	provider.value = meta.translatorType;
 	deeplAuthKey.value = meta.deeplAuthKey;
 	deeplIsPro.value = meta.deeplIsPro;

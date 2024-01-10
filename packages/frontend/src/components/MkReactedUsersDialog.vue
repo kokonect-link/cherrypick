@@ -46,7 +46,7 @@ import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
@@ -65,7 +65,7 @@ const reactions = ref<string[]>();
 const users = ref();
 
 watch(tab, async () => {
-	const res = await os.api('notes/reactions', {
+	const res = await misskeyApi('notes/reactions', {
 		noteId: props.noteId,
 		type: tab,
 		limit: 30,
@@ -75,7 +75,7 @@ watch(tab, async () => {
 });
 
 onMounted(() => {
-	os.api('notes/show', {
+	misskeyApi('notes/show', {
 		noteId: props.noteId,
 	}).then((res) => {
 		reactions.value = Object.keys(res.reactions);

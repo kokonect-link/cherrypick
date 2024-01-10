@@ -66,7 +66,7 @@ import { globalEvents } from '@/events.js';
 import { injectPageMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';

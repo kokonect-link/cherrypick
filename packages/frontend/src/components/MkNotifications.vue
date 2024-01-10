@@ -34,7 +34,7 @@ import { i18n } from '@/i18n.js';
 import { notificationTypes } from '@/const.js';
 import { infoImageUrl } from '@/instance.js';
 import { defaultStore } from '@/store.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { globalEvents } from '@/events.js';
 

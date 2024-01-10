@@ -66,7 +66,7 @@ import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
@@ -97,7 +97,7 @@ const search = () => {
 		users.value = [];
 		return;
 	}
-	os.api('users/search-by-username-and-host', {
+	misskeyApi('users/search-by-username-and-host', {
 		username: username.value,
 		host: host.value,
 		limit: 10,
@@ -112,7 +112,7 @@ const searchLocal = () => {
 		users.value = [];
 		return;
 	}
-	os.api('users/search', {
+	misskeyApi('users/search', {
 		query: username.value,
 		origin: 'local',
 		limit: 10,
@@ -140,7 +140,7 @@ const cancel = () => {
 };
 
 onMounted(() => {
-	os.api('users/show', {
+	misskeyApi('users/show', {
 		userIds: defaultStore.state.recentlyUsedUsers,
 	}).then(users => {
 		if (props.includeSelf && users.find(x => $i ? x.id === $i.id : true) == null) {

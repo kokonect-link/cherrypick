@@ -41,6 +41,7 @@ import autosize from 'autosize';
 import { formatTimeString } from '@/scripts/format-time-string.js';
 import { selectFile } from '@/scripts/select-file.js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useStream } from '@/stream.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
@@ -173,7 +174,7 @@ function upload(fileToUpload: File, name?: string) {
 
 function send() {
 	sending.value = true;
-	os.api('messaging/messages/create', {
+	misskeyApi('messaging/messages/create', {
 		userId: props.user ? props.user.id : undefined,
 		groupId: props.group ? props.group.id : undefined,
 		text: text.value ? text.value : undefined,

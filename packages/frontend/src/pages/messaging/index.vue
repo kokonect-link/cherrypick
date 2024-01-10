@@ -27,8 +27,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, markRaw, onActivated, onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useStream } from '@/stream.js';
-import { useRouter } from '@/router.js';
+import { useRouter } from '@/global/router/supplier.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { $i } from '@/account.js';
@@ -105,8 +106,8 @@ async function startUser() {
 }
 
 async function startGroup() {
-	const groups1 = await os.api('users/groups/owned');
-	const groups2 = await os.api('users/groups/joined');
+	const groups1 = await misskeyApi('users/groups/owned');
+	const groups2 = await misskeyApi('users/groups/joined');
 	if (groups1.length === 0 && groups2.length === 0) {
 		os.alert({
 			type: 'warning',
@@ -135,8 +136,8 @@ onMounted(() => {
 	connection.on('message', onMessage);
 	connection.on('read', onRead);
 
-	os.api('messaging/history', { group: false }).then(userMessages => {
-		os.api('messaging/history', { group: true }).then(groupMessages => {
+	misskeyApi('messaging/history', { group: false }).then(userMessages => {
+		misskeyApi('messaging/history', { group: true }).then(groupMessages => {
 			const _messages = userMessages.concat(groupMessages);
 			_messages.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 			messages = _messages;

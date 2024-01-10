@@ -4,11 +4,12 @@
  */
 
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { mainRouter } from '@/router.js';
-import { Router } from '@/nirax.js';
+import { IRouter } from '@/nirax.js';
+import { mainRouter } from '@/global/router/main.js';
 
-export async function lookup(router?: Router) {
+export async function lookup(router?: IRouter) {
 	const _router = router ?? mainRouter;
 
 	const { canceled, result: temp } = await os.inputText({
@@ -28,7 +29,7 @@ export async function lookup(router?: Router) {
 	}
 
 	if (query.startsWith('https://')) {
-		const promise = os.api('ap/show', {
+		const promise = misskeyApi('ap/show', {
 			uri: query,
 		});
 

@@ -31,7 +31,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { antennasCache } from '@/cache.js';
 import { infoImageUrl } from '@/instance.js';
-import { useRouter } from '@/router.js';
+import { useRouter } from '@/global/router/supplier.js';
 
 const router = useRouter();
 

@@ -22,7 +22,7 @@ import { onMounted, onUnmounted, provide, inject, Ref, ref, watch, shallowRef } 
 
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const.js';
 import { deviceKind } from '@/scripts/device-kind.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import { defaultStore } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import { miLocalStorage } from '@/local-storage.js';

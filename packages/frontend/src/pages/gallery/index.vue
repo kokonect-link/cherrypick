@@ -53,7 +53,7 @@ import MkGalleryPostPreview from '@/components/MkGalleryPostPreview.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { useRouter } from '@/router.js';
+import { useRouter } from '@/global/router/supplier.js';
 
 const router = useRouter();
 

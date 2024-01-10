@@ -32,12 +32,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { defineAsyncComponent, computed, watch, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { acct as getAcct } from '@/filters/user.js';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import { defaultStore } from '@/store.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 
@@ -73,7 +72,7 @@ const error = ref<any>(null);
 function fetchUser(): void {
 	if (props.acct == null) return;
 	user.value = null;
-	os.api('users/show', Misskey.acct.parse(props.acct)).then(u => {
+	misskeyApi('users/show', Misskey.acct.parse(props.acct)).then(u => {
 		user.value = u;
 	}).catch(err => {
 		error.value = err;

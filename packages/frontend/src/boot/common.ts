@@ -22,6 +22,7 @@ import { getAccountFromId } from '@/scripts/get-account-from-id.js';
 import { deckStore } from '@/ui/deck/deck-store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
+import { setupRouter } from '@/global/router/definition.js';
 import { popup } from '@/os.js';
 
 export async function common(createVue: () => App<Element>) {
@@ -251,6 +252,8 @@ export async function common(createVue: () => App<Element>) {
 	} catch (err) { /* empty */ }
 
 	const app = createVue();
+
+	setupRouter(app);
 
 	if (_DEV_) {
 		app.config.performance = true;

@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0
  * basedMisskeyVersion: 2023.12.2
- * generatedAt: 2024-01-08T10:34:58.484Z
+ * generatedAt: 2024-01-10T07:26:44.256Z
  */
 
 import type { SwitchCaseResponseType } from '../api.js';
@@ -2322,6 +2322,18 @@ declare module '../api.js' {
      * **Credential required**: *Yes*
      */
     request<E extends 'i/export-notes', P extends Endpoints[E]['req']>(
+      endpoint: E,
+      params: P,
+      credential?: string | null,
+    ): Promise<SwitchCaseResponseType<E, P>>;
+
+    /**
+     * No description provided.
+     * 
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+     * **Credential required**: *Yes*
+     */
+    request<E extends 'i/export-clips', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,

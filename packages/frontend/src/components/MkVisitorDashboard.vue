@@ -61,20 +61,21 @@ import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { instanceName } from '@/config.js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import MkNumber from '@/components/MkNumber.vue';
 import XActiveUsersChart from '@/components/MkVisitorDashboard.ActiveUsersChart.vue';
 
 const meta = ref<Misskey.entities.MetaResponse | null>(null);
 const stats = ref<Misskey.entities.StatsResponse | null>(null);
 
-os.api('meta', { detail: true }).then(_meta => {
+misskeyApi('meta', { detail: true }).then(_meta => {
 	meta.value = _meta;
 });
 
-os.api('stats', {}).then((res) => {
+misskeyApi('stats', {}).then((res) => {
 	stats.value = res;
 });
 

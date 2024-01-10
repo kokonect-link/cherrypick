@@ -42,11 +42,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref, watch } from 'vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { userPage } from '@/filters/user.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const props = defineProps<{
 	groupId: string;
@@ -56,11 +57,11 @@ const group = ref(null);
 const users = ref([]);
 
 function fetchGroup() {
-	os.api('users/groups/show', {
+	misskeyApi('users/groups/show', {
 		groupId: props.groupId,
 	}).then(_group => {
 		group.value = _group;
-		os.api('users/show', {
+		misskeyApi('users/show', {
 			userIds: group.value.userIds,
 		}).then(_users => {
 			users.value = _users;

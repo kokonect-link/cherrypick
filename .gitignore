@@ -41,6 +41,7 @@ docker-compose.yml
 # cherrypick
 /build
 built
+built-test
 /data
 /.cache-loader
 /db

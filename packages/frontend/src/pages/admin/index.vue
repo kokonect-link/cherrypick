@@ -35,9 +35,10 @@ import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { instance } from '@/instance.js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { lookupUser, lookupUserByEmail } from '@/scripts/lookup-user.js';
-import { useRouter } from '@/router.js';
 import { PageMetadata, definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.js';
+import { useRouter } from '@/global/router/supplier.js';
 import { version } from '@/config.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';
@@ -66,7 +67,7 @@ const currentPage = computed(() => router.currentRef.value.child);
 const updateAvailable = ref(false);
 const releasesCherryPick = ref();
 
-os.api('admin/abuse-user-reports', {
+misskeyApi('admin/abuse-user-reports', {
 	state: 'unresolved',
 	limit: 1,
 }).then(reports => {
@@ -77,7 +78,7 @@ fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 	method: 'GET',
 }).then(res => res.json())
 	.then(async res => {
-		const meta = await os.api('admin/meta');
+		const meta = await misskeyApi('admin/meta');
 		if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
 		else releasesCherryPick.value = res.filter(x => x.prerelease === false);
 		if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) updateAvailable.value = true;
@@ -281,7 +282,7 @@ provideMetadataReceiver((info) => {
 });
 
 function invite() {
-	os.api('admin/invite/create').then(x => {
+	misskeyApi('admin/invite/create').then(x => {
 		os.alert({
 			type: 'info',
 			text: x[0].code,

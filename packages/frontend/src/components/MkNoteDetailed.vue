@@ -294,6 +294,7 @@ import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { userPage } from '@/filters/user.js';
 import { notePage } from '@/filters/note.js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import * as sound from '@/scripts/sound.js';
 import { defaultStore, noteViewInterruptors } from '@/store.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
@@ -389,7 +390,7 @@ const keymap = {
 };
 
 provide('react', (reaction: string) => {
-	os.api('notes/reactions/create', {
+	misskeyApi('notes/reactions/create', {
 		noteId: appearNote.value.id,
 		reaction: reaction,
 	});
@@ -423,7 +424,7 @@ useNoteCapture({
 });
 
 useTooltip(renoteButton, async (showing) => {
-	const renotes = await os.api('notes/renotes', {
+	const renotes = await misskeyApi('notes/renotes', {
 		noteId: appearNote.value.id,
 		limit: 11,
 	});
@@ -491,9 +492,9 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.value.reactionAcceptance === 'likeOnly') {
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/create', {
+		misskeyApi('notes/reactions/create', {
 			noteId: appearNote.value.id,
 			reaction: '❤️',
 		});
@@ -523,26 +524,27 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/delete', {
+		misskeyApi('notes/reactions/delete', {
 			noteId: note.value.id,
 		}).then(() => {
 			if (oldReaction !== reaction) {
-				os.api('notes/reactions/create', {
+				misskeyApi('notes/reactions/create', {
 					noteId: note.value.id,
 					reaction: reaction,
 				});
 			}
 		});
 	} else {
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/create', {
+		misskeyApi('notes/reactions/create', {
 			noteId: appearNote.value.id,
 			reaction: reaction,
 		});
 	}
+
 	if (appearNote.value.text && appearNote.value.text.length > 100 && (Date.now() - new Date(appearNote.value.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
@@ -552,15 +554,17 @@ function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
 
-	sound.play('reaction');
+	sound.playMisskeySfx('reaction');
 
-	os.api('notes/reactions/create', {
+	misskeyApi('notes/reactions/create', {
 		noteId: appearNote.value.id,
 		reaction: '❤️',
 	});
+
 	if (appearNote.value.text && appearNote.value.text.length > 100 && (Date.now() - new Date(appearNote.value.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
+
 	const el = heartReactButton.value as HTMLElement | null | undefined;
 	if (el) {
 		const rect = el.getBoundingClientRect();
@@ -573,7 +577,7 @@ function heartReact(): void {
 function undoReact(note): void {
 	const oldReaction = note.myReaction;
 	if (!oldReaction) return;
-	os.api('notes/reactions/delete', {
+	misskeyApi('notes/reactions/delete', {
 		noteId: note.id,
 	});
 }
@@ -616,7 +620,7 @@ async function translate(): Promise<void> {
 
 	vibrate(defaultStore.state.vibrateSystem ? 5 : []);
 
-	const res = await os.api('notes/translate', {
+	const res = await misskeyApi('notes/translate', {
 		noteId: appearNote.value.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});
@@ -638,7 +642,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 			icon: 'ti ti-trash',
 			danger: true,
 			action: () => {
-				os.api('notes/delete', {
+				misskeyApi('notes/delete', {
 					noteId: note.value.id,
 				});
 				isDeleted.value = true;
@@ -662,7 +666,7 @@ function blur() {
 }
 
 function loadRepliesSimple() {
-	os.api('notes/children', {
+	misskeyApi('notes/children', {
 		noteId: appearNote.value.id,
 		limit: 3,
 	}).then(res => {
@@ -674,7 +678,7 @@ const repliesLoaded = ref(false);
 
 function loadReplies() {
 	repliesLoaded.value = true;
-	os.api('notes/children', {
+	misskeyApi('notes/children', {
 		noteId: appearNote.value.id,
 		limit: 30,
 	}).then(res => {
@@ -686,7 +690,7 @@ const conversationLoaded = ref(false);
 
 function loadConversation() {
 	conversationLoaded.value = true;
-	os.api('notes/conversation', {
+	misskeyApi('notes/conversation', {
 		noteId: appearNote.value.replyId,
 	}).then(res => {
 		conversation.value = res.reverse();

@@ -69,6 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
@@ -88,7 +89,7 @@ const skipCherryPickVersion = ref<string | null | undefined>(null);
 const releasesCherryPick = ref();
 const releasesMisskey = ref();
 
-const meta = await os.api('admin/meta');
+const meta = await misskeyApi('admin/meta');
 
 async function init() {
 	enableReceivePrerelease.value = meta.enableReceivePrerelease;
@@ -125,7 +126,7 @@ onMounted(() => {
 			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
 			if (skipCherryPickVersion.value < releasesCherryPick.value[0].tag_name) {
 				skipVersion.value = false;
-				os.api('admin/update-meta', { skipVersion: skipVersion.value });
+				misskeyApi('admin/update-meta', { skipVersion: skipVersion.value });
 			}
 		});
 

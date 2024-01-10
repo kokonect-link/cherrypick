@@ -217,6 +217,7 @@ import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { userPage } from '@/filters/user.js';
 import * as os from '@/os.js';
 import * as sound from '@/scripts/sound.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore, noteViewInterruptors } from '@/store.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
@@ -233,7 +234,8 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed.js';
 import { globalEvents } from '@/events.js';
-import { mainRouter, useRouter } from '@/router.js';
+import { mainRouter } from '@/global/router/main.js';
+import { useRouter } from '@/global/router/supplier.js';
 import { notePage } from '@/filters/note.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
@@ -347,7 +349,7 @@ const keymap = {
 };
 
 provide('react', (reaction: string) => {
-	os.api('notes/reactions/create', {
+	misskeyApi('notes/reactions/create', {
 		noteId: appearNote.value.id,
 		reaction: reaction,
 	});
@@ -374,7 +376,7 @@ if (props.mock) {
 
 if (!props.mock) {
 	useTooltip(renoteButton, async (showing) => {
-		const renotes = await os.api('notes/renotes', {
+		const renotes = await misskeyApi('notes/renotes', {
 			noteId: appearNote.value.id,
 			limit: 11,
 		});
@@ -461,12 +463,13 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (appearNote.value.reactionAcceptance === 'likeOnly') {
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
 		if (props.mock) {
 			return;
 		}
-		os.api('notes/reactions/create', {
+
+		misskeyApi('notes/reactions/create', {
 			noteId: appearNote.value.id,
 			reaction: '❤️',
 		});
@@ -500,26 +503,27 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/delete', {
+		misskeyApi('notes/reactions/delete', {
 			noteId: note.value.id,
 		}).then(() => {
 			if (oldReaction !== reaction) {
-				os.api('notes/reactions/create', {
+				misskeyApi('notes/reactions/create', {
 					noteId: note.value.id,
 					reaction: reaction,
 				});
 			}
 		});
 	} else {
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/create', {
+		misskeyApi('notes/reactions/create', {
 			noteId: appearNote.value.id,
 			reaction: reaction,
 		});
 	}
+
 	if (appearNote.value.text && appearNote.value.text.length > 100 && (Date.now() - new Date(appearNote.value.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
@@ -529,19 +533,21 @@ function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
 
-	sound.play('reaction');
+	sound.playMisskeySfx('reaction');
 
 	if (props.mock) {
 		return;
 	}
 
-	os.api('notes/reactions/create', {
+	misskeyApi('notes/reactions/create', {
 		noteId: appearNote.value.id,
 		reaction: '❤️',
 	});
+
 	if (appearNote.value.text && appearNote.value.text.length > 100 && (Date.now() - new Date(appearNote.value.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
+
 	const el = heartReactButton.value as HTMLElement | null | undefined;
 	if (el) {
 		const rect = el.getBoundingClientRect();
@@ -560,7 +566,7 @@ function undoReact(note): void {
 		return;
 	}
 
-	os.api('notes/reactions/delete', {
+	misskeyApi('notes/reactions/delete', {
 		noteId: note.id,
 	});
 }
@@ -625,7 +631,7 @@ async function translate(): Promise<void> {
 		return;
 	}
 
-	const res = await os.api('notes/translate', {
+	const res = await misskeyApi('notes/translate', {
 		noteId: appearNote.value.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});
@@ -646,7 +652,7 @@ function showRenoteMenu(viaKeyboard = false): void {
 			icon: 'ti ti-trash',
 			danger: true,
 			action: () => {
-				os.api('notes/delete', {
+				misskeyApi('notes/delete', {
 					noteId: note.value.id,
 				});
 				isDeleted.value = true;
@@ -692,7 +698,7 @@ function focusAfter() {
 }
 
 function readPromo() {
-	os.api('promo/read', {
+	misskeyApi('promo/read', {
 		noteId: appearNote.value.id,
 	});
 	isDeleted.value = true;

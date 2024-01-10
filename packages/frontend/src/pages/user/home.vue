@@ -183,13 +183,13 @@ import { getUserMenu } from '@/scripts/get-user-menu.js';
 import number from '@/filters/number.js';
 import { userPage } from '@/filters/user.js';
 import * as os from '@/os.js';
-import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { $i, iAmModerator } from '@/account.js';
 import { dateString } from '@/filters/date.js';
 import { confetti } from '@/scripts/confetti.js';
-import { api } from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+import { useRouter } from '@/global/router/supplier.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
@@ -240,7 +240,7 @@ const translation = ref<Misskey.entities.UsersTranslateResponse | null>(null);
 const translating = ref(false);
 
 watch(moderationNote, async () => {
-	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote.value });
+	await misskeyApi('admin/update-user-note', { userId: props.user.id, text: moderationNote.value });
 });
 
 const style = computed(() => {
@@ -291,7 +291,7 @@ function adjustMemoTextarea() {
 }
 
 async function updateMemo() {
-	await api('users/update-memo', {
+	await misskeyApi('users/update-memo', {
 		memo: memoDraft.value,
 		userId: props.user.id,
 	});
@@ -310,7 +310,7 @@ async function translate(): Promise<void> {
 
 	vibrate(defaultStore.state.vibrateSystem ? 5 : []);
 
-	const res = await os.api('users/translate', {
+	const res = await misskeyApi('users/translate', {
 		userId: props.user.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});

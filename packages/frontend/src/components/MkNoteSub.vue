@@ -49,13 +49,13 @@ import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import { notePage } from '@/filters/note.js';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/scripts/check-word-mute.js';
 import { defaultStore } from '@/store.js';
-import { useRouter } from '@/router.js';
+import { useRouter } from '@/global/router/supplier.js';
 
 const hideLine = ref(false);
 
@@ -78,7 +78,7 @@ const showContent = ref(false);
 const replies = ref<Misskey.entities.Note[]>([]);
 
 if (props.detail) {
-	os.api('notes/children', {
+	misskeyApi('notes/children', {
 		noteId: props.note.id,
 		limit: 5,
 	}).then(res => {

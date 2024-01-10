@@ -6,8 +6,12 @@ name: Test (cherrypick.js)
 on:
   push:
     branches: [ develop ]
+    paths:
+      - packages/cherrypick-js/**
   pull_request:
     branches: [ develop ]
+    paths:
+      - packages/cherrypick-js/**
 
 jobs:
   test:

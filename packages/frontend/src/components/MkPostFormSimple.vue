@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -136,12 +136,13 @@ import { extractMentions } from '@/scripts/extract-mentions.js';
 import { formatTimeString } from '@/scripts/format-time-string.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { selectFiles } from '@/scripts/select-file.js';
 import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { $i, notesCount, incNotesCount, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { signinRequired, notesCount, incNotesCount, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { uploadFile } from '@/scripts/upload.js';
 import { deepClone } from '@/scripts/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
@@ -152,6 +153,8 @@ import { vibrate } from '@/scripts/vibrate.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import * as sound from '@/scripts/sound.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
+
+const $i = signinRequired();
 
 const modal = inject('modal');
 
@@ -324,7 +327,7 @@ watch(visibleUsers, () => {
 	deep: true,
 });
 
-if ($i?.isSilenced && visibility.value === 'public') {
+if ($i.isSilenced && visibility.value === 'public') {
 	visibility.value = 'home';
 }
 
@@ -345,7 +348,7 @@ if (props.reply && ['home', 'followers', 'specified'].includes(props.reply.visib
 
 	if (visibility.value === 'specified') {
 		if (props.reply.visibleUserIds) {
-			os.api('users/show', {
+			misskeyApi('users/show', {
 				userIds: props.reply.visibleUserIds.filter(uid => uid !== $i.id && uid !== props.reply.userId),
 			}).then(users => {
 				users.forEach(pushVisibleUser);
@@ -353,7 +356,7 @@ if (props.reply && ['home', 'followers', 'specified'].includes(props.reply.visib
 		}
 
 		if (props.reply.userId !== $i.id) {
-			os.api('users/show', { userId: props.reply.userId }).then(user => {
+			misskeyApi('users/show', { userId: props.reply.userId }).then(user => {
 				pushVisibleUser(user);
 			});
 		}
@@ -402,7 +405,7 @@ function addMissingMention() {
 
 	for (const x of extractMentions(ast)) {
 		if (!visibleUsers.value.some(u => (u.username === x.username) && (u.host === x.host))) {
-			os.api('users/show', { username: x.username, host: x.host }).then(user => {
+			misskeyApi('users/show', { username: x.username, host: x.host }).then(user => {
 				visibleUsers.value.push(user);
 			});
 		}
@@ -492,7 +495,7 @@ function setVisibility() {
 
 	os.popup(defineAsyncComponent(() => import('@/components/MkVisibilityPicker.vue')), {
 		currentVisibility: visibility.value,
-		isSilenced: $i?.isSilenced,
+		isSilenced: $i.isSilenced,
 		localOnly: localOnly.value,
 		src: visibilityButton.value,
 	}, {
@@ -803,7 +806,17 @@ async function post(ev?: MouseEvent) {
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== '') {
 		const hashtags_ = hashtags.value.trim().split(' ').map(x => x.startsWith('#') ? x : '#' + x).join(' ');
-		postData.text = postData.text ? `${postData.text} ${hashtags_}` : hashtags_;
+		if (!postData.text) {
+			postData.text = hashtags_;
+		} else {
+			const postTextLines = postData.text.split('\n');
+			if (postTextLines[postTextLines.length - 1].trim() === '') {
+				postTextLines[postTextLines.length - 1] += hashtags_;
+			} else {
+				postTextLines[postTextLines.length - 1] += ' ' + hashtags_;
+			}
+			postData.text = postTextLines.join('\n');
+		}
 	}
 
 	// plugin
@@ -825,7 +838,7 @@ async function post(ev?: MouseEvent) {
 	}
 
 	posting.value = true;
-	os.api(props.updateMode ? 'notes/update' : 'notes/create', postData, token).then(() => {
+	misskeyApi(props.updateMode ? 'notes/update' : 'notes/create', postData, token).then(() => {
 		if (props.freezeAfterPosted) {
 			posted.value = true;
 		} else {
@@ -898,7 +911,7 @@ async function post(ev?: MouseEvent) {
 	});
 	textareaEl.value.style.height = '35px';
 	showForm.value = false;
-	if (props.updateMode) sound.play('noteEdited');
+	if (props.updateMode) sound.playMisskeySfx('noteEdited');
 	vibrate(defaultStore.state.vibrateSystem ? [10, 20, 10, 20, 10, 20, 60] : []);
 }
 
@@ -1473,7 +1486,7 @@ defineExpose({
 	// .cw,
 	// .hashtags,
 	// .text {
-		// padding: 0 16px;
+	// padding: 0 16px;
 	// }
 
 	.cw {
