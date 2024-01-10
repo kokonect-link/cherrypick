@@ -733,6 +733,7 @@ export interface Locale {
     "small": string;
     "generateAccessToken": string;
     "permission": string;
+    "adminPermission": string;
     "enableAll": string;
     "disableAll": string;
     "tokenRequested": string;
@@ -1306,6 +1307,9 @@ export interface Locale {
     "bubbleGame": string;
     "sfx": string;
     "soundWillBePlayed": string;
+    "showReplay": string;
+    "replay": string;
+    "replaying": string;
     "showUnreadNotificationsCount": string;
     "showCatOnly": string;
     "additionalPermissionsForFlash": string;
@@ -1331,6 +1335,14 @@ export interface Locale {
     };
     "_messaging": {
         "direct": string;
+    };
+    "_bubbleGame": {
+        "howToPlay": string;
+        "_howToPlay": {
+            "section1": string;
+            "section2": string;
+            "section3": string;
+        };
     };
     "_announcement": {
         "forExistingUsers": string;
