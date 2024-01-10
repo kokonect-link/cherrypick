@@ -280,25 +280,25 @@ export class EmailService {
 				headers: {
 					'Content-Type': 'application/json',
 					Accept: 'application/json',
-					Authorization: truemailAuthKey
+					Authorization: truemailAuthKey,
 				},
 			});
-			
+
 			const json = (await res.json()) as {
 				email: string;
 				success: boolean;
-				errors?: { 
+				errors?: {
 					list_match?: string;
 					regex?: string;
 					mx?: string;
 					smtp?: string;
 				} | null;
 			};
-			
+
 			if (json.email === undefined || (json.email !== undefined && json.errors?.regex)) {
 				return {
-						valid: false,
-						reason: 'format',
+					valid: false,
+					reason: 'format',
 				};
 			}
 			if (json.errors?.smtp) {
@@ -319,7 +319,7 @@ export class EmailService {
 					reason: json.errors?.list_match as T || 'blacklist',
 				};
 			}
-			
+
 			return {
 				valid: true,
 				reason: null,

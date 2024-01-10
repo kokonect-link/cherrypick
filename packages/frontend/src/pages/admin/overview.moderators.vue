@@ -18,8 +18,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
 import * as Misskey from 'cherrypick-js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 
 const moderators = ref<Misskey.entities.UserDetailed[] | null>(null);
