@@ -5,6 +5,7 @@
 
 import { EventEmitter } from 'eventemitter3';
 import * as Matter from 'matter-js';
+import seedrandom from 'seedrandom';
 import * as sound from '@/scripts/sound.js';
 
 export type Mono = {
@@ -20,6 +21,18 @@ export type Mono = {
 	spriteScale: number;
 };
 
+type Log = {
+	frame: number;
+	operation: 'drop';
+	x: number;
+} | {
+	frame: number;
+	operation: 'hold';
+} | {
+	frame: number;
+	operation: 'surrender';
+};
+
 export class DropAndFusionGame extends EventEmitter<{
 	changeScore: (newScore: number) => void;
 	changeCombo: (newCombo: number) => void;
@@ -31,22 +44,27 @@ export class DropAndFusionGame extends EventEmitter<{
 	gameOver: () => void;
 }> {
 	private PHYSICS_QUALITY_FACTOR = 16; // 低いほどパフォーマンスが高いがガタガタして安定しなくなる、逆に高すぎても何故か不安定になる
-	private COMBO_INTERVAL = 1000;
+	private COMBO_INTERVAL = 60; // frame
 	public readonly DROP_INTERVAL = 500;
 	public readonly PLAYAREA_MARGIN = 25;
 	private STOCK_MAX = 4;
+	private TICK_DELTA = 1000 / 60; // 60fps
 	private loaded = false;
+	private frame = 0;
 	private engine: Matter.Engine;
 	private render: Matter.Render;
-	private runner: Matter.Runner;
+	private tickRaf: ReturnType<typeof requestAnimationFrame> | null = null;
+	private tickCallbackQueue: { frame: number; callback: () => void; }[] = [];
 	private overflowCollider: Matter.Body;
 	private isGameOver = false;
-
 	private gameWidth: number;
 	private gameHeight: number;
 	private monoDefinitions: Mono[] = [];
 	private monoTextures: Record<string, Blob> = {};
 	private monoTextureUrls: Record<string, string> = {};
+	private rng: () => number;
+	private logs: Log[] = [];
+	private replaying = false;
 
 	private sfxVolume = 1;
 
@@ -58,7 +76,7 @@ export class DropAndFusionGame extends EventEmitter<{
 	private latestDroppedBodyId: Matter.Body['id'] | null = null;
 
 	private latestDroppedAt = 0;
-	private latestFusionedAt = 0;
+	private latestFusionedAt = 0; // frame
 	private stock: { id: string; mono: Mono }[] = [];
 	private holding: { id: string; mono: Mono } | null = null;
 
@@ -82,18 +100,24 @@ export class DropAndFusionGame extends EventEmitter<{
 
 	private comboIntervalId: number | null = null;
 
+	public replayPlaybackRate = 1;
+
 	constructor(opts: {
 		canvas: HTMLCanvasElement;
 		width: number;
 		height: number;
 		monoDefinitions: Mono[];
+		seed: string;
 		sfxVolume?: number;
 	}) {
 		super();
 
+		this.tick = this.tick.bind(this);
+
 		this.gameWidth = opts.width;
 		this.gameHeight = opts.height;
 		this.monoDefinitions = opts.monoDefinitions;
+		this.rng = seedrandom(opts.seed);
 
 		if (opts.sfxVolume) {
 			this.sfxVolume = opts.sfxVolume;
@@ -129,13 +153,11 @@ export class DropAndFusionGame extends EventEmitter<{
 
 		Matter.Render.run(this.render);
 
-		this.runner = Matter.Runner.create();
-		Matter.Runner.run(this.runner, this.engine);
-
 		this.engine.world.bodies = [];
 
 		//#region walls
 		const WALL_OPTIONS: Matter.IChamferableBodyDefinition = {
+			label: '_wall_',
 			isStatic: true,
 			friction: 0.7,
 			slop: 1.0,
@@ -200,13 +222,12 @@ export class DropAndFusionGame extends EventEmitter<{
 	}
 
 	private fusion(bodyA: Matter.Body, bodyB: Matter.Body) {
-		const now = Date.now();
-		if (this.latestFusionedAt > now - this.COMBO_INTERVAL) {
+		if (this.latestFusionedAt > this.frame - this.COMBO_INTERVAL) {
 			this.combo++;
 		} else {
 			this.combo = 1;
 		}
-		this.latestFusionedAt = now;
+		this.latestFusionedAt = this.frame;
 
 		// TODO: 単に位置だけでなくそれぞれの動きベクトルも融合する？
 		const newX = (bodyA.position.x + bodyB.position.x) / 2;
@@ -223,20 +244,25 @@ export class DropAndFusionGame extends EventEmitter<{
 			Matter.Composite.add(this.engine.world, body);
 
 			// 連鎖してfusionした場合の分かりやすさのため少し間を置いてからfusion対象になるようにする
-			window.setTimeout(() => {
-				this.activeBodyIds.push(body.id);
-			}, 100);
+			this.tickCallbackQueue.push({
+				frame: this.frame + 6,
+				callback: () => {
+					this.activeBodyIds.push(body.id);
+				},
+			});
 
 			const comboBonus = 1 + ((this.combo - 1) / 5);
 			const additionalScore = Math.round(currentMono.score * comboBonus);
 			this.score += additionalScore;
 
-			// TODO: 効果音再生はコンポーネント側の責務なので移動する
-			const pan = ((newX / this.gameWidth) - 0.5) * 2;
+			// TODO: 効果音再生はコンポーネント側の責務なので移動するべき？
+			const panV = newX - this.PLAYAREA_MARGIN;
+			const panW = this.gameWidth - this.PLAYAREA_MARGIN - this.PLAYAREA_MARGIN;
+			const pan = ((panV / panW) - 0.5) * 2;
 			sound.playUrl('/client-assets/drop-and-fusion/bubble2.mp3', {
 				volume: this.sfxVolume,
 				pan,
-				playbackRate: nextMono.sfxPitch,
+				playbackRate: nextMono.sfxPitch * this.replayPlaybackRate,
 			});
 
 			this.emit('monoAdded', nextMono);
@@ -244,7 +270,7 @@ export class DropAndFusionGame extends EventEmitter<{
 		} else {
 			//const VELOCITY = 30;
 			//for (let i = 0; i < 10; i++) {
-			//	const body = createBody(FRUITS.find(x => x.level === (1 + Math.floor(Math.random() * 3)))!, x + ((Math.random() * VELOCITY) - (VELOCITY / 2)), y + ((Math.random() * VELOCITY) - (VELOCITY / 2)));
+			//	const body = createBody(FRUITS.find(x => x.level === (1 + Math.floor(this.rng() * 3)))!, x + ((this.rng() * VELOCITY) - (VELOCITY / 2)), y + ((this.rng() * VELOCITY) - (VELOCITY / 2)));
 			//	Matter.Composite.add(world, body);
 			//	bodies.push(body);
 			//}
@@ -255,10 +281,25 @@ export class DropAndFusionGame extends EventEmitter<{
 		}
 	}
 
+	public surrender() {
+		this.logs.push({
+			frame: this.frame,
+			operation: 'surrender',
+		});
+
+		this.gameOver();
+	}
+
 	private gameOver() {
 		this.isGameOver = true;
-		Matter.Runner.stop(this.runner);
+		if (this.tickRaf) window.cancelAnimationFrame(this.tickRaf);
+		this.tickRaf = null;
 		this.emit('gameOver');
+
+		// TODO: 効果音再生はコンポーネント側の責務なので移動するべき？
+		sound.playUrl('/client-assets/drop-and-fusion/gameover.mp3', {
+			volume: this.sfxVolume,
+		});
 	}
 
 	/** テクスチャをすべてキャッシュする */
@@ -292,13 +333,14 @@ export class DropAndFusionGame extends EventEmitter<{
 		return Promise.all(this.monoDefinitions.map(x => loadSingleMonoTexture(x, this)));
 	}
 
-	public start() {
+	public start(logs?: Log[]) {
 		if (!this.loaded) throw new Error('game is not loaded yet');
+		if (logs) this.replaying = true;
 
 		for (let i = 0; i < this.STOCK_MAX; i++) {
 			this.stock.push({
-				id: Math.random().toString(),
-				mono: this.monoDefinitions.filter(x => x.dropCandidate)[Math.floor(Math.random() * this.monoDefinitions.filter(x => x.dropCandidate).length)],
+				id: this.rng().toString(),
+				mono: this.monoDefinitions.filter(x => x.dropCandidate)[Math.floor(this.rng() * this.monoDefinitions.filter(x => x.dropCandidate).length)],
 			});
 		}
 		this.emit('changeStock', this.stock);
@@ -327,33 +369,106 @@ export class DropAndFusionGame extends EventEmitter<{
 						this.fusion(bodyA, bodyB);
 					} else {
 						fusionReservedPairs.push({ bodyA, bodyB });
-						window.setTimeout(() => {
-							fusionReservedPairs = fusionReservedPairs.filter(x => x.bodyA.id !== bodyA.id && x.bodyB.id !== bodyB.id);
-							this.fusion(bodyA, bodyB);
-						}, 100);
+						this.tickCallbackQueue.push({
+							frame: this.frame + 6,
+							callback: () => {
+								fusionReservedPairs = fusionReservedPairs.filter(x => x.bodyA.id !== bodyA.id && x.bodyB.id !== bodyB.id);
+								this.fusion(bodyA, bodyB);
+							},
+						});
 					}
 				} else {
 					const energy = pairs.collision.depth;
 					if (energy > minCollisionEnergyForSound) {
-						// TODO: 効果音再生はコンポーネント側の責務なので移動する
+						// TODO: 効果音再生はコンポーネント側の責務なので移動するべき？
 						const vol = ((Math.min(maxCollisionEnergyForSound, energy - minCollisionEnergyForSound) / maxCollisionEnergyForSound) / 4) * this.sfxVolume;
-						const pan = ((((bodyA.position.x + bodyB.position.x) / 2) / this.gameWidth) - 0.5) * 2;
+						const panV =
+							pairs.bodyA.label === '_wall_' ? bodyB.position.x - this.PLAYAREA_MARGIN :
+							pairs.bodyB.label === '_wall_' ? bodyA.position.x - this.PLAYAREA_MARGIN :
+							((bodyA.position.x + bodyB.position.x) / 2) - this.PLAYAREA_MARGIN;
+						const panW = this.gameWidth - this.PLAYAREA_MARGIN - this.PLAYAREA_MARGIN;
+						const pan = ((panV / panW) - 0.5) * 2;
 						const pitch = soundPitchMin + ((soundPitchMax - soundPitchMin) * (1 - (Math.min(10, energy) / 10)));
 						sound.playUrl('/client-assets/drop-and-fusion/poi1.mp3', {
 							volume: vol,
 							pan,
-							playbackRate: pitch,
+							playbackRate: pitch * this.replayPlaybackRate,
 						});
 					}
 				}
 			}
 		});
 
-		this.comboIntervalId = window.setInterval(() => {
-			if (this.latestFusionedAt < Date.now() - this.COMBO_INTERVAL) {
-				this.combo = 0;
+		if (logs) {
+			const playTick = () => {
+				for (let i = 0; i < this.replayPlaybackRate; i++) {
+					this.frame++;
+					if (this.latestFusionedAt < this.frame - this.COMBO_INTERVAL) {
+						this.combo = 0;
+					}
+					const log = logs.find(x => x.frame === this.frame - 1);
+					if (log) {
+						switch (log.operation) {
+							case 'drop': {
+								this.drop(log.x);
+								break;
+							}
+							case 'hold': {
+								this.hold();
+								break;
+							}
+							case 'surrender': {
+								this.surrender();
+								break;
+							}
+							default:
+								break;
+						}
+					}
+					this.tickCallbackQueue = this.tickCallbackQueue.filter(x => {
+						if (x.frame === this.frame) {
+							x.callback();
+							return false;
+						} else {
+							return true;
+						}
+					});
+
+					Matter.Engine.update(this.engine, this.TICK_DELTA);
+				}
+
+				if (!this.isGameOver) {
+					this.tickRaf = window.requestAnimationFrame(playTick);
+				}
+			};
+
+			playTick();
+		} else {
+			this.tick();
+		}
+	}
+
+	public getLogs() {
+		return this.logs;
+	}
+
+	private tick() {
+		this.frame++;
+		if (this.latestFusionedAt < this.frame - this.COMBO_INTERVAL) {
+			this.combo = 0;
+		}
+		this.tickCallbackQueue = this.tickCallbackQueue.filter(x => {
+			if (x.frame === this.frame) {
+				x.callback();
+				return false;
+			} else {
+				return true;
 			}
-		}, 500);
+		});
+		Matter.Engine.update(this.engine, this.TICK_DELTA);
+		if (!this.isGameOver) {
+			this.tickRaf = window.requestAnimationFrame(this.tick);
+		}
 	}
 
 	public async load() {
@@ -387,17 +502,23 @@ export class DropAndFusionGame extends EventEmitter<{
 
 	public drop(_x: number) {
 		if (this.isGameOver) return;
-		if (Date.now() - this.latestDroppedAt < this.DROP_INTERVAL) return;
+		if (!this.replaying && (Date.now() - this.latestDroppedAt < this.DROP_INTERVAL)) return;
 
 		const head = this.stock.shift()!;
 		this.stock.push({
-			id: Math.random().toString(),
-			mono: this.monoDefinitions.filter(x => x.dropCandidate)[Math.floor(Math.random() * this.monoDefinitions.filter(x => x.dropCandidate).length)],
+			id: this.rng().toString(),
+			mono: this.monoDefinitions.filter(x => x.dropCandidate)[Math.floor(this.rng() * this.monoDefinitions.filter(x => x.dropCandidate).length)],
 		});
 		this.emit('changeStock', this.stock);
 
-		const x = Math.min(this.gameWidth - this.PLAYAREA_MARGIN - (head.mono.size / 2), Math.max(this.PLAYAREA_MARGIN + (head.mono.size / 2), _x));
+		const inputX = Math.round(_x);
+		const x = Math.min(this.gameWidth - this.PLAYAREA_MARGIN - (head.mono.size / 2), Math.max(this.PLAYAREA_MARGIN + (head.mono.size / 2), inputX));
 		const body = this.createBody(head.mono, x, 50 + head.mono.size / 2);
+		this.logs.push({
+			frame: this.frame,
+			operation: 'drop',
+			x: inputX,
+		});
 		Matter.Composite.add(this.engine.world, body);
 		this.activeBodyIds.push(body.id);
 		this.latestDroppedBodyId = body.id;
@@ -405,16 +526,24 @@ export class DropAndFusionGame extends EventEmitter<{
 		this.emit('dropped');
 		this.emit('monoAdded', head.mono);
 
-		// TODO: 効果音再生はコンポーネント側の責務なので移動する
-		const pan = ((x / this.gameWidth) - 0.5) * 2;
+		// TODO: 効果音再生はコンポーネント側の責務なので移動するべき？
+		const panV = x - this.PLAYAREA_MARGIN;
+		const panW = this.gameWidth - this.PLAYAREA_MARGIN - this.PLAYAREA_MARGIN;
+		const pan = ((panV / panW) - 0.5) * 2;
 		sound.playUrl('/client-assets/drop-and-fusion/poi2.mp3', {
 			volume: this.sfxVolume,
 			pan,
+			playbackRate: this.replayPlaybackRate,
 		});
 	}
 
 	public hold() {
 		if (this.isGameOver) return;
+
+		this.logs.push({
+			frame: this.frame,
+			operation: 'hold',
+		});
 
 		if (this.holding) {
 			const head = this.stock.shift()!;
@@ -426,8 +555,8 @@ export class DropAndFusionGame extends EventEmitter<{
 			const head = this.stock.shift()!;
 			this.holding = head;
 			this.stock.push({
-				id: Math.random().toString(),
-				mono: this.monoDefinitions.filter(x => x.dropCandidate)[Math.floor(Math.random() * this.monoDefinitions.filter(x => x.dropCandidate).length)],
+				id: this.rng().toString(),
+				mono: this.monoDefinitions.filter(x => x.dropCandidate)[Math.floor(this.rng() * this.monoDefinitions.filter(x => x.dropCandidate).length)],
 			});
 			this.emit('changeHolding', this.holding);
 			this.emit('changeStock', this.stock);
@@ -440,8 +569,9 @@ export class DropAndFusionGame extends EventEmitter<{
 
 	public dispose() {
 		if (this.comboIntervalId) window.clearInterval(this.comboIntervalId);
+		if (this.tickRaf) window.cancelAnimationFrame(this.tickRaf);
+		this.tickRaf = null;
 		Matter.Render.stop(this.render);
-		Matter.Runner.stop(this.runner);
 		Matter.World.clear(this.engine.world, false);
 		Matter.Engine.clear(this.engine);
 	}

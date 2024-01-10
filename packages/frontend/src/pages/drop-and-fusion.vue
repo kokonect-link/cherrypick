@@ -8,13 +8,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><MkPageHeader/></template>
 	<MkSpacer :contentMax="800">
 		<div v-show="!gameStarted" :class="$style.root">
-			<div style="text-align: center;" class="_gaps">
-				<div :class="$style.frame">
+			<div class="_gaps">
+				<div :class="$style.frame" style="text-align: center;">
 					<div :class="$style.frameInner">
 						<img src="/client-assets/drop-and-fusion/logo.png" style="display: block; max-width: 100%; max-height: 200px; margin: auto;"/>
 					</div>
 				</div>
-				<div :class="$style.frame">
+				<div :class="$style.frame" style="text-align: center;">
 					<div :class="$style.frameInner">
 						<div class="_gaps" style="padding: 16px;">
 							<MkSelect v-model="gameMode">
@@ -31,6 +31,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<template #label>{{ i18n.ts.mute }}</template>
 							</MkSwitch>
 						</div>
+					</div>
+				</div>
+				<div :class="$style.frame">
+					<div :class="$style.frameInner">
+						<div>{{ i18n.ts._bubbleGame.howToPlay }}</div>
+						<ol>
+							<li>{{ i18n.ts._bubbleGame._howToPlay.section1 }}</li>
+							<li>{{ i18n.ts._bubbleGame._howToPlay.section2 }}</li>
+							<li>{{ i18n.ts._bubbleGame._howToPlay.section3 }}</li>
+						</ol>
 					</div>
 				</div>
 			</div>
@@ -61,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 			</div>
-			<div ref="containerEl" :class="[$style.gameContainer, { [$style.gameOver]: gameOver }]" @contextmenu.stop.prevent @click.stop.prevent="onClick" @touchmove.stop.prevent="onTouchmove" @touchend="onTouchend" @mousemove="onMousemove">
+			<div ref="containerEl" :class="[$style.gameContainer, { [$style.gameOver]: isGameOver && !replaying }]" @contextmenu.stop.prevent @click.stop.prevent="onClick" @touchmove.stop.prevent="onTouchmove" @touchend="onTouchend" @mousemove="onMousemove">
 				<img v-if="defaultStore.state.darkMode" src="/client-assets/drop-and-fusion/frame-dark.svg" :class="$style.mainFrameImg"/>
 				<img v-else src="/client-assets/drop-and-fusion/frame-light.svg" :class="$style.mainFrameImg"/>
 				<canvas ref="canvasEl" :class="$style.canvas"/>
@@ -74,7 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				>
 					<div v-show="combo > 1" :class="$style.combo" :style="{ fontSize: `${100 + ((comboPrev - 2) * 15)}%` }">{{ comboPrev }} Chain!</div>
 				</Transition>
-				<div :class="$style.dropperContainer" :style="{ left: dropperX + 'px' }">
+				<div v-if="!isGameOver && !replaying" :class="$style.dropperContainer" :style="{ left: dropperX + 'px' }">
 					<!--<img v-if="currentPick" src="/client-assets/drop-and-fusion/dropper.png" :class="$style.dropper" :style="{ left: dropperX + 'px' }"/>-->
 					<Transition
 						:enterActiveClass="$style.transition_picked_enterActive"
@@ -91,15 +101,33 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div :class="$style.dropGuide"/>
 					</template>
 				</div>
-				<div v-if="gameOver" :class="$style.gameOverLabel">
+				<div v-if="isGameOver && !replaying" :class="$style.gameOverLabel">
 					<div class="_gaps_s">
 						<img src="/client-assets/drop-and-fusion/gameover.png" style="width: 200px; max-width: 100%; display: block; margin: auto; margin-bottom: -5px;"/>
 						<div>SCORE: <MkNumber :value="score"/></div>
 						<div>MAX CHAIN: <MkNumber :value="maxCombo"/></div>
+					</div>
+				</div>
+				<div v-if="replaying" :class="$style.replayIndicator"><span :class="$style.replayIndicatorText"><i class="ti ti-player-play"></i> {{ i18n.ts.replaying }}</span></div>
+			</div>
+			<div v-if="replaying" style="display: flex;">
+				<div :class="$style.frame" style="flex: 1; margin-right: 10px;">
+					<div :class="$style.frameInner">
 						<div class="_buttonsCenter">
-							<MkButton primary rounded @click="restart">Restart</MkButton>
-							<MkButton primary rounded @click="share">Share</MkButton>
+							<MkButton @click="endReplay"><i class="ti ti-player-stop"></i> END REPLAY</MkButton>
+							<MkButton :primary="replayPlaybackRate === 2" @click="replayPlaybackRate = replayPlaybackRate === 2 ? 1 : 2"><i class="ti ti-player-track-next"></i> x2</MkButton>
+							<MkButton :primary="replayPlaybackRate === 4" @click="replayPlaybackRate = replayPlaybackRate === 4 ? 1 : 4"><i class="ti ti-player-track-next"></i> x4</MkButton>
 						</div>
+					</div>
+				</div>
+			</div>
+			<div v-if="isGameOver" :class="$style.frame">
+				<div :class="$style.frameInner">
+					<div class="_buttonsCenter">
+						<MkButton primary rounded @click="end">{{ i18n.ts.done }}</MkButton>
+						<MkButton primary rounded @click="replay">{{ i18n.ts.showReplay }}</MkButton>
+						<MkButton primary rounded @click="share">{{ i18n.ts.share }}</MkButton>
+						<MkButton rounded @click="exportLog">Copy replay data</MkButton>
 					</div>
 				</div>
 			</div>
@@ -139,7 +167,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<div :class="$style.frame">
 				<div :class="$style.frameInner">
-					<MkButton @click="restart">Restart</MkButton>
+					<MkButton v-if="!isGameOver && !replaying" full danger @click="surrender">Surrender</MkButton>
+					<MkButton v-else full @click="retry">Retry</MkButton>
 				</div>
 			</div>
 		</div>
@@ -168,6 +197,7 @@ import { DropAndFusionGame, Mono } from '@/scripts/drop-and-fusion-engine.js';
 import * as sound from '@/scripts/sound.js';
 import MkRange from '@/components/MkRange.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
+import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
 const NORMAL_BASE_SIZE = 30;
 const NORAML_MONOS: Mono[] = [{
@@ -401,6 +431,8 @@ const GAME_HEIGHT = 600;
 let viewScale = 1;
 let game: DropAndFusionGame;
 let containerElRect: DOMRect | null = null;
+let seed: string;
+let logs: ReturnType<DropAndFusionGame['getLogs']> | null = null;
 
 const containerEl = shallowRef<HTMLElement>();
 const canvasEl = shallowRef<HTMLCanvasElement>();
@@ -414,22 +446,30 @@ const comboPrev = ref(0);
 const maxCombo = ref(0);
 const dropReady = ref(true);
 const gameMode = ref<'normal' | 'square'>('normal');
-const gameOver = ref(false);
+const isGameOver = ref(false);
 const gameStarted = ref(false);
 const highScore = ref<number | null>(null);
 const showConfig = ref(false);
+const replaying = ref(false);
+const replayPlaybackRate = ref(1);
 const mute = ref(false);
 const bgmVolume = ref(defaultStore.state.dropAndFusion.bgmVolume);
 const sfxVolume = ref(defaultStore.state.dropAndFusion.sfxVolume);
 
+watch(replayPlaybackRate, (newValue) => {
+	game.replayPlaybackRate = newValue;
+});
+
 function onClick(ev: MouseEvent) {
 	if (!containerElRect) return;
+	if (replaying.value) return;
 	const x = (ev.clientX - containerElRect.left) / viewScale;
 	game.drop(x);
 }
 
 function onTouchend(ev: TouchEvent) {
 	if (!containerElRect) return;
+	if (replaying.value) return;
 	const x = (ev.changedTouches[0].clientX - containerElRect.left) / viewScale;
 	game.drop(x);
 }
@@ -454,17 +494,73 @@ function hold() {
 	game.hold();
 }
 
-function restart() {
+async function surrender() {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.areYouSure,
+	});
+	if (canceled) return;
+	game.surrender();
+}
+
+async function retry() {
+	end();
+	await start();
+}
+
+function end() {
 	game.dispose();
-	gameOver.value = false;
+	isGameOver.value = false;
+	replaying.value = false;
+	replayPlaybackRate.value = 1;
 	currentPick.value = null;
 	dropReady.value = true;
 	stock.value = [];
 	score.value = 0;
 	combo.value = 0;
 	comboPrev.value = 0;
+	maxCombo.value = 0;
 	bgmNodes?.soundSource.stop();
 	gameStarted.value = false;
+}
+
+function replay() {
+	replaying.value = true;
+	game.dispose();
+	game = new DropAndFusionGame({
+		width: GAME_WIDTH,
+		height: GAME_HEIGHT,
+		canvas: canvasEl.value!,
+		seed: seed,
+		sfxVolume: mute.value ? 0 : sfxVolume.value,
+		...(
+			gameMode.value === 'normal' ? {
+				monoDefinitions: NORAML_MONOS,
+			} : {
+				monoDefinitions: SQUARE_MONOS,
+			}
+		),
+	});
+	attachGameEvents();
+	os.promiseDialog(game.load(), async () => {
+		game.start(logs!);
+	});
+}
+
+function endReplay() {
+	replaying.value = false;
+	game.dispose();
+}
+
+function exportLog() {
+	if (!logs) return;
+	const data = JSON.stringify({
+		seed: seed,
+		date: new Date().toISOString(),
+		logs: logs,
+	});
+	copyToClipboard(data);
+	os.success();
 }
 
 function attachGameEvents() {
@@ -492,9 +588,11 @@ function attachGameEvents() {
 	});
 
 	game.addListener('dropped', () => {
+		if (replaying.value) return;
+
 		dropReady.value = false;
 		window.setTimeout(() => {
-			if (!gameOver.value) {
+			if (!isGameOver.value) {
 				dropReady.value = true;
 			}
 		}, game.DROP_INTERVAL);
@@ -511,6 +609,8 @@ function attachGameEvents() {
 	});
 
 	game.addListener('monoAdded', (mono) => {
+		if (replaying.value) return;
+
 		// 実績関連
 		if (mono.level === 10) {
 			claimAchievement('bubbleGameExplodingHead');
@@ -523,9 +623,15 @@ function attachGameEvents() {
 	});
 
 	game.addListener('gameOver', () => {
+		if (replaying.value) {
+			endReplay();
+			return;
+		}
+
+		logs = game.getLogs();
 		currentPick.value = null;
 		dropReady.value = false;
-		gameOver.value = true;
+		isGameOver.value = true;
 
 		if (score.value > (highScore.value ?? 0)) {
 			highScore.value = score.value;
@@ -551,10 +657,13 @@ async function start() {
 		highScore.value = null;
 	}
 
+	seed = Date.now().toString();
+
 	game = new DropAndFusionGame({
 		width: GAME_WIDTH,
 		height: GAME_HEIGHT,
 		canvas: canvasEl.value!,
+		seed: seed,
 		sfxVolume: mute.value ? 0 : sfxVolume.value,
 		...(
 			gameMode.value === 'normal' ? {
@@ -690,7 +799,7 @@ useInterval(() => {
 }, 1000, { immediate: false, afterMounted: true });
 
 onDeactivated(() => {
-	restart();
+	end();
 });
 
 definePageMetadata({
@@ -920,6 +1029,29 @@ definePageMetadata({
 	.canvas {
 		filter: grayscale(1);
 	}
+}
+
+.replayIndicator {
+	position: absolute;
+	z-index: 10;
+	left: 10px;
+	bottom: 10px;
+	padding: 6px 8px;
+	color: #f00;
+	font-weight: bold;
+	background: #0008;
+	border-radius: 6px;
+	pointer-events: none;
+}
+
+.replayIndicatorText {
+	animation: replayIndicator-blink 2s infinite;
+}
+
+@keyframes replayIndicator-blink {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
 }
 
 @keyframes currentMonoArrow {

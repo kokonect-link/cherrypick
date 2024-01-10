@@ -730,6 +730,7 @@ medium: "中"
 small: "小"
 generateAccessToken: "アクセストークンの発行"
 permission: "権限"
+adminPermission: "管理者権限"
 enableAll: "全て有効にする"
 disableAll: "全て無効にする"
 tokenRequested: "アカウントへのアクセス許可"
@@ -1303,6 +1304,9 @@ enableQuickAddMfmFunction: "高度なMFMのピッカーを表示する"
 bubbleGame: "バブルゲーム"
 sfx: "効果音"
 soundWillBePlayed: "サウンドが再生されます"
+showReplay: "リプレイを見る"
+replay: "リプレイ"
+replaying: "リプレイ中"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -1329,6 +1333,13 @@ _showingAnimatedImages:
 
 _messaging:
   direct: "ダイレクトメッセージ"
+
+_bubbleGame:
+  howToPlay: "遊び方"
+  _howToPlay:
+    section1: "位置を調整してハコにモノを落とします。"
+    section2: "同じ種類のモノがくっつくと別のモノに変化して、スコアが得られます。"
+    section3: "モノがハコからあふれるとゲームオーバーです。ハコからあふれないようにしつつモノを融合させてハイスコアを目指そう！"
 
 _announcement:
   forExistingUsers: "既存ユーザーのみ"
