@@ -36,7 +36,15 @@ async function install(code: string): Promise<void> {
 			text: i18n.t('_theme.installed', { name: theme.name }),
 		});
 	} catch (err) {
+		console.log(err.message.toLowerCase());
 		switch (err.message.toLowerCase()) {
+			case 'builtin theme':
+				os.alert({
+					type: 'info',
+					text: i18n.ts._theme.alreadyInstalled,
+				});
+				break;
+
 			case 'this theme is already installed':
 				os.alert({
 					type: 'info',

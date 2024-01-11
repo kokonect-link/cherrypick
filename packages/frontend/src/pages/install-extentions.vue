@@ -235,6 +235,13 @@ async function fetch() {
 				};
 			} catch (err) {
 				switch (err.message.toLowerCase()) {
+					case 'builtin theme':
+						errorKV.value = {
+							title: i18n.ts._externalResourceInstaller._errors._themeParseFailed.title,
+							description: i18n.ts._theme.alreadyInstalled,
+						};
+						break;
+
 					case 'this theme is already installed':
 						errorKV.value = {
 							title: i18n.ts._externalResourceInstaller._errors._themeParseFailed.title,
