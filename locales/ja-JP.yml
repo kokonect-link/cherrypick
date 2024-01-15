@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+forceRenoteVisibilitySelector: "リノートの公開範囲を指定"
 cherrypickLabs: "CherryPick研究室"
 cherrypickLabsDescription: "まだ開発中の機能を試してみませんか。一部の機能はちゃんと動かないかもしれません。"
 copiedLink: "リンクをコピーしました！"

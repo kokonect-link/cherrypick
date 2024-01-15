@@ -29,9 +29,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### Client
+- Feat: 리노트 공개 범위를 지정할 수 있음 (kokonect-link/cherrypick#406)
+  - 이 기능은 '리노트 공개 범위 옵션 표시' 기능이 꺼져있어야 합니다.
 - Enhance: 빌트인 테마를 설치하려고 할 때 오류 메시지 개선
 - Fix: 장식 추가로 일부 태그를 추가할 수 없음
-- Fix: 알림 위젯 필터링이 작동하지 않을 수 있음 #404
+- Fix: 알림 위젯 필터링이 작동하지 않을 수 있음 (kokonect-link/cherrypick#404)
 
 ---
 

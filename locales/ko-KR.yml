@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+forceRenoteVisibilitySelector: "리노트 공개 범위 지정"
 cherrypickLabs: "CherryPick 실험실"
 cherrypickLabsDescription: "개발 중인 기능을 사용해 보시겠어요? 아직 개발 중인 기능이므로 제대로 작동하지 않을 수 있어요."
 copiedLink: "링크를 복사했어요!"

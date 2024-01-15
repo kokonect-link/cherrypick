@@ -746,8 +746,8 @@ export function getRenoteMenu(props: {
 	// Add visibility section
 	if (
 		defaultStore.state.renoteVisibilitySelection &&
-		!['followers', 'specified'].includes(appearNote.visibility)
-		&& (!appearNote.channel || appearNote.channel.allowRenoteToExternal)
+		!['followers', 'specified'].includes(appearNote.visibility) &&
+		(!appearNote.channel || appearNote.channel.allowRenoteToExternal)
 	) {
 		// renote to public
 		if (appearNote.visibility === 'public') {
@@ -873,10 +873,54 @@ export async function getRenoteOnly(props: {
 			visibility = smallerVisibility(visibility, 'home');
 		}
 
-		if (!props.mock) {
+		if (!props.mock && defaultStore.state.renoteVisibilitySelection) {
 			misskeyApi('notes/create', {
 				localOnly,
 				visibility,
+				renoteId: appearNote.id,
+			}).then(() => {
+				os.toast(i18n.ts.renoted, 'renote');
+			});
+		}
+	}
+
+	// Add visibility section
+	if (
+		!defaultStore.state.renoteVisibilitySelection &&
+		defaultStore.state.forceRenoteVisibilitySelection !== 'none' &&
+		!['followers', 'specified'].includes(appearNote.visibility) &&
+		(!appearNote.channel || appearNote.channel.allowRenoteToExternal)
+	) {
+		// renote to public
+		if (appearNote.visibility === 'public' && defaultStore.state.forceRenoteVisibilitySelection === 'public') {
+			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+			misskeyApi('notes/create', {
+				localOnly,
+				visibility: 'public',
+				renoteId: appearNote.id,
+			}).then(() => {
+				os.toast(i18n.ts.renoted, 'renote');
+			});
+		}
+
+		// renote to home
+		if (['home', 'public'].includes(appearNote.visibility) && defaultStore.state.forceRenoteVisibilitySelection === 'home') {
+			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+			misskeyApi('notes/create', {
+				localOnly,
+				visibility: 'home',
+				renoteId: appearNote.id,
+			}).then(() => {
+				os.toast(i18n.ts.renoted, 'renote');
+			});
+		}
+
+		// renote to followers
+		if (defaultStore.state.forceRenoteVisibilitySelection === 'followers') {
+			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
+			misskeyApi('notes/create', {
+				localOnly,
+				visibility: 'followers',
 				renoteId: appearNote.id,
 			}).then(() => {
 				os.toast(i18n.ts.renoted, 'renote');

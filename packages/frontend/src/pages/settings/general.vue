@@ -76,6 +76,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showReplyInNotification">{{ i18n.ts.showReplyInNotification }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="renoteQuoteButtonSeparation">{{ i18n.ts.renoteQuoteButtonSeparation }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="renoteVisibilitySelection">{{ i18n.ts.showRenoteVisibilitySelector }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSelect v-if="!renoteVisibilitySelection" v-model="forceRenoteVisibilitySelection">
+					<template #label>{{ i18n.ts.forceRenoteVisibilitySelector }}</template>
+					<option value="none">{{ i18n.ts.none }}</option>
+					<option value="public">{{ i18n.ts._visibility.public }}</option>
+					<option value="home">{{ i18n.ts._visibility.home }}</option>
+					<option value="followers">{{ i18n.ts._visibility.followers }}</option>
+				</MkSelect>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
@@ -433,6 +440,7 @@ const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAni
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
 const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
+const forceRenoteVisibilitySelection = computed(defaultStore.makeGetterSetter('forceRenoteVisibilitySelection'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
