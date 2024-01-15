@@ -989,7 +989,7 @@ function openAccountMenu(ev: MouseEvent) {
 function formClick() {
 	if ($i) showForm.value = true;
 
-	if (props.reply && (props.reply.user.username !== $i.username || (props.reply.user.host != null && props.reply.user.host !== host))) {
+	if (text.value === '' && props.reply && (props.reply.user.username !== $i.username || (props.reply.user.host != null && props.reply.user.host !== host))) {
 		text.value = `@${props.reply.user.username}${props.reply.user.host != null ? '@' + toASCII(props.reply.user.host) : ''} `;
 	}
 
