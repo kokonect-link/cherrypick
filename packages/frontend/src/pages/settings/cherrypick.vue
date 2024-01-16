@@ -137,6 +137,7 @@ watch([
 	renameTheButtonInPostFormToNya,
 	friendlyEnableNotifications,
 	friendlyEnableWidgets,
+	showQuickHeartReaction,
 ], async () => {
 	await reloadAsk();
 });
@@ -146,7 +147,7 @@ const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
 
 definePageMetadata({
-	title: 'LycheeBridge',
+	title: 'CherryPick',
 	icon: 'ti ti-bulb-filled',
 });
 </script>
