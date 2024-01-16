@@ -686,6 +686,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showQuickHeartReaction: {
+		where: 'device',
+		default: true,
+	},
 
 	// - etc
 	friendlyEnableNotifications: {

@@ -1337,6 +1337,8 @@ _cherrypick:
   showRenoteConfirmPopupDescription: "This setting must have the \"General - Show renote and quote buttons separately\" setting turned on."
   expandOnNoteClick: "Open note on click"
   expandOnNoteClickDescription: "If disabled, you can still open 'Details' in the notes menu or by clicking the timestamp."
+  showQuickHeartReaction: Show quick 'Like!' reaction button"
+  showQuickHeartReactionDescription: "Shows heart button on the left of add reaction button."
   displayHeaderNavBarWhenScroll: "Show elements when scrolling (header, floating buttons, navigation bar)"
   _displayHeaderNavBarWhenScroll:
     all: "Display all"

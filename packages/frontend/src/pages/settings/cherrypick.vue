@@ -31,6 +31,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="showQuickHeartReaction">
+					<template #label>{{ i18n.ts._cherrypick.showQuickHeartReaction }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.showQuickHeartReactionDescription }}</template>
+				</MkSwitch>
 			</div>
 
 			<div>
@@ -118,6 +122,7 @@ const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('frie
 const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
 const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
 const friendlyShowAvatarDecorationsInNavBtn = computed(defaultStore.makeGetterSetter('friendlyShowAvatarDecorationsInNavBtn'));
+const showQuickHeartReaction = computed(defaultStore.makeGetterSetter('showQuickHeartReaction'));
 
 watch([
 	renameTheButtonInPostFormToNya,
@@ -141,7 +146,7 @@ const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
 
 definePageMetadata({
-	title: 'CherryPick',
+	title: 'LycheeBridge',
 	icon: 'ti ti-bulb-filled',
 });
 </script>
