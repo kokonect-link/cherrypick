@@ -1377,6 +1377,8 @@ export interface Locale {
         "showRenoteConfirmPopupDescription": string;
         "expandOnNoteClick": string;
         "expandOnNoteClickDescription": string;
+        "showQuickHeartReaction": string;
+        "showQuickHeartReactionDescription": string;
         "expandOnNoteClickBehavior": string;
         "_expandOnNoteClickBehavior": {
             "click": string;
