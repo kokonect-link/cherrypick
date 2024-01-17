@@ -1374,6 +1374,10 @@ _cherrypick:
   showRenoteConfirmPopupDescription: "この設定は「全般 - リノートと引用ボタンを分けて表示する」設定がオンになっている必要があります。"
   expandOnNoteClick: "クリックでノートの詳細を開く"
   expandOnNoteClickDescription: "オフの場合、ノートメニューの[詳細]をクリックするか、日付をクリックして開けます。"
+  expandOnNoteClickBehavior: "ノートをクリックして開くとき"
+  _expandOnNoteClickBehavior:
+    click: "クリックして開く"
+    doubleClick: "ダブルクリックで開く"
   displayHeaderNavBarWhenScroll: "スクロール時の要素表示（ヘッダー、フローティングボタン、ナビゲーションバー）"
   _displayHeaderNavBarWhenScroll:
     all: "全て表示"

@@ -1377,6 +1377,11 @@ export interface Locale {
         "showRenoteConfirmPopupDescription": string;
         "expandOnNoteClick": string;
         "expandOnNoteClickDescription": string;
+        "expandOnNoteClickBehavior": string;
+        "_expandOnNoteClickBehavior": {
+            "click": string;
+            "doubleClick": string;
+        };
         "displayHeaderNavBarWhenScroll": string;
         "_displayHeaderNavBarWhenScroll": {
             "all": string;

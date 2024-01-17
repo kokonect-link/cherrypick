@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="$style.root" :style="{ cursor: expandOnNoteClick && enableNoteClick ? 'pointer' : '' }" @click.stop="noteClick">
+<div :class="$style.root" :style="{ cursor: expandOnNoteClick && enableNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
 	<div style="display: flex; padding-bottom: 10px;">
 		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview/>
 		<div :class="$style.main">
@@ -57,7 +57,12 @@ onMounted(() => {
 });
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || !props.enableNoteClick || window.getSelection().toString() !== '') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection().toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
+	else router.push(notePage(props.note));
+}
+
+function noteDblClick(ev: MouseEvent) {
+	if (!expandOnNoteClick || window.getSelection().toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>
