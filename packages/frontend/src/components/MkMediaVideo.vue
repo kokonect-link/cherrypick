@@ -57,12 +57,8 @@ const clickToShowMessage = computed(() => defaultStore.state.nsfwOpenBehavior ==
 
 function onClick(ev: MouseEvent) {
 	if (!hide.value) return;
-	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
-		os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
-	}
-	if (defaultStore.state.nsfwOpenBehavior === 'click') {
-		hide.value = false;
-	}
+	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	if (defaultStore.state.nsfwOpenBehavior === 'click') hide.value = false;
 }
 
 const videoEl = shallowRef<HTMLVideoElement>();

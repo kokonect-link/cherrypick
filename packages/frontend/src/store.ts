@@ -654,6 +654,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	expandOnNoteClickBehavior: {
+		where: 'device',
+		default: 'click' as 'click' | 'doubleClick',
+	},
 	displayHeaderNavBarWhenScroll: {
 		where: 'device',
 		default: 'hideHeaderFloatBtn' as 'all' | 'hideHeaderOnly' | 'hideHeaderFloatBtn' | 'hideFloatBtnOnly' | 'hideFloatBtnNavBar' | 'hide',

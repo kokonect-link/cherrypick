@@ -32,6 +32,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Feat: 리노트 공개 범위를 지정할 수 있음 (kokonect-link/cherrypick#406)
   - 이 기능은 '리노트 공개 범위 옵션 표시' 기능이 꺼져있어야 합니다.
 - Enhance: 빌트인 테마를 설치하려고 할 때 오류 메시지 개선
+- Enhance: '노트를 클릭하여 자세히 표시' 기능 개선
+  - 노트를 두 번 클릭해서 열 수 있음
 - Fix: 장식 추가로 일부 태그를 추가할 수 없음
 - Fix: 알림 위젯 필터링이 작동하지 않을 수 있음 (kokonect-link/cherrypick#404)
 - Fix: 노트 자세히 보기에서 노트 작성 폼을 클릭하면 내용이 초기화될 수 있음  (kokonect-link/cherrypick#410)

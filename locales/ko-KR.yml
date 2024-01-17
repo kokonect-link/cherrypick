@@ -1349,6 +1349,10 @@ _cherrypick:
   expandOnNoteClickDescription: "비활성화한 경우에도 노트 메뉴에서 '자세히'를 클릭하거나 타임스탬프를 클릭하여 열 수 있어요."
   showQuickHeartReaction: "빠른 좋아요! 버튼 표시"
   showQuickHeartReactionDescription: "리액션 버튼 옆에 빠르게 좋아요를 붙일 수 있는 하트 버튼을 표시해요."
+  expandOnNoteClickBehavior: "노트를 클릭해서 열 때"
+  _expandOnNoteClickBehavior:
+    click: "클릭해서 열기"
+    doubleClick: "두 번 클릭해서 열기"
   displayHeaderNavBarWhenScroll: "스크롤 시 요소 표시 (헤더, 플로팅 버튼, 탐색 모음)"
   _displayHeaderNavBarWhenScroll:
     all: "모두 보이기"

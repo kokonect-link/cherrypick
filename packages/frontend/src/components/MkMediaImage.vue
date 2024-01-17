@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :data-is-hidden="hide ? 'true' : 'false'" :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'" @click="onClick" @dblclick="onDblclick">
+<div :data-is-hidden="hide ? 'true' : 'false'" :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" :style="darkMode ? '--c: rgb(255 255 255 / 2%);' : '--c: rgb(0 0 0 / 2%);'" @click="onClick" @dblclick="onDblClick">
 	<component
 		:is="(disableImageLink || hide) ? 'div' : 'a'"
 		v-bind="(disableImageLink || hide) ? {
@@ -100,25 +100,15 @@ const clickToShowMessage = computed(() => defaultStore.state.nsfwOpenBehavior ==
 );
 
 function onClick(ev: MouseEvent) {
-	if (!props.controls) {
-		return;
-	}
+	if (!props.controls) return;
 	if (!hide.value) return;
-	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
-		os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
-	}
-	if (defaultStore.state.nsfwOpenBehavior === 'click') {
-		hide.value = false;
-	}
+	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	if (defaultStore.state.nsfwOpenBehavior === 'click') hide.value = false;
 }
 
-function onDblclick() {
-	if (!props.controls) {
-		return;
-	}
-	if (hide.value && defaultStore.state.nsfwOpenBehavior === 'doubleClick') {
-		hide.value = false;
-	}
+function onDblClick() {
+	if (!props.controls) return;
+	if (hide.value && defaultStore.state.nsfwOpenBehavior === 'doubleClick') hide.value = false;
 }
 
 function resetTimer() {
