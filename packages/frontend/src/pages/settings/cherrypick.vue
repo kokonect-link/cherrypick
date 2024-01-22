@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
 				</MkSwitch>
-				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior">
+				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior" style="margin-left: 44px;">
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</template>
 					<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
 					<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
