@@ -1347,8 +1347,13 @@ _cherrypick:
   showRenoteConfirmPopupDescription: "이 설정은 '일반 - 리노트와 인용 버튼을 분리해서 표시하기' 설정이 켜져 있어야 해요."
   expandOnNoteClick: "노트를 클릭하여 자세히 표시"
   expandOnNoteClickDescription: "비활성화한 경우에도 노트 메뉴에서 '자세히'를 클릭하거나 타임스탬프를 클릭하여 열 수 있어요."
-  showQuickHeartReaction: "빠른 좋아요! 버튼 표시"
-  showQuickHeartReactionDescription: "리액션 버튼 옆에 빠르게 좋아요를 붙일 수 있는 하트 버튼을 표시해요."
+  showQuickHeartReaction: "리액션 추가 버튼 표시"
+  showQuickHeartReactionDescription: "리액션 버튼 옆에 빠르게 좋아요를 붙일 수 있는 하트 버튼을 표시할 수 있어요."
+  _showQuickHeartReaction:
+    showAll: "모두 보이기"
+    heartOnly: "좋아요! 만 보이기"
+    reactionOnly: "리액션 추가만 보이기"
+    hideAll: "모두 숨기기"
   expandOnNoteClickBehavior: "노트를 클릭해서 열 때"
   _expandOnNoteClickBehavior:
     click: "클릭해서 열기"

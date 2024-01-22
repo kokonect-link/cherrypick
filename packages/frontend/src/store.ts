@@ -692,7 +692,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showQuickHeartReaction: {
 		where: 'device',
-		default: true,
+		default: 'showAll' as 'showAll' | 'heartOnly' | 'reactionOnly' | 'hideAll',
 	},
 
 	// - etc

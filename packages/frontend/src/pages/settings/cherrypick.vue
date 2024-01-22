@@ -31,10 +31,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
 				</MkSwitch>
-				<MkSwitch v-model="showQuickHeartReaction">
+				<MkSelect v-model="showQuickHeartReaction">
 					<template #label>{{ i18n.ts._cherrypick.showQuickHeartReaction }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.showQuickHeartReactionDescription }}</template>
-				</MkSwitch>
+					<option value="showAll">{{ i18n.ts._cherrypick._showQuickHeartReaction.showAll }}</option>
+					<option value="heartOnly">{{ i18n.ts._cherrypick._showQuickHeartReaction.heartOnly }}</option>
+					<option value="reactionOnly">{{ i18n.ts._cherrypick._showQuickHeartReaction.reactionOnly }}</option>
+					<option value="hideAll">{{ i18n.ts._cherrypick._showQuickHeartReaction.hideAll }}</option>
+				</MkSelect>
 				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior">
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</template>
 					<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
