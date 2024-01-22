@@ -477,6 +477,8 @@ export class ClientServerService {
 				isSuspended: false,
 			});
 
+			vary(reply.raw, 'Accept');
+
 			if (user != null) {
 				const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 				const meta = await this.metaService.fetch();
@@ -515,6 +517,8 @@ export class ClientServerService {
 				reply.code(404);
 				return;
 			}
+
+			vary(reply.raw, 'Accept');
 
 			reply.redirect(`/@${user.username}${ user.host == null ? '' : '@' + user.host}`);
 		});

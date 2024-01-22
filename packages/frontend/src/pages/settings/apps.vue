@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<details>
 							<summary>{{ i18n.ts.details }}</summary>
 							<ul>
-								<li v-for="p in token.permission" :key="p">{{ i18n.t(`_permissions.${p}`) }}</li>
+								<li v-for="p in token.permission" :key="p">{{ i18n.ts._permissions[p] }}</li>
 							</ul>
 						</details>
 						<div>
@@ -69,7 +69,7 @@ const pagination = {
 async function revoke(token) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: token.name ?? '' }),
+		text: i18n.tsx.removeAreYouSure({ x: token.name ?? '' }),
 	});
 	if (canceled) return;
 

@@ -302,7 +302,7 @@ function more() {
 	left: 20px;
 	color: var(--navIndicator);
 	font-size: 6px;
-	animation: blink 1s infinite;
+	animation: global-blink 1s infinite;
 
 	&:has(.itemIndicateValueIcon) {
 		animation: none;

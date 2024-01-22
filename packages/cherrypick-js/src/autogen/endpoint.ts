@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0
- * basedMisskeyVersion: 2023.12.2
- * generatedAt: 2024-01-22T08:06:37.330Z
+ * basedMisskeyVersion: 2024.2.0-beta.2
+ * generatedAt: 2024-01-22T10:26:06.809Z
  */
 
 import type {
@@ -589,6 +589,16 @@ import type {
 	BubbleGameRegisterResponse,
 	BubbleGameRankingRequest,
 	BubbleGameRankingResponse,
+	ReversiCancelMatchRequest,
+	ReversiCancelMatchResponse,
+	ReversiGamesRequest,
+	ReversiGamesResponse,
+	ReversiMatchRequest,
+	ReversiMatchResponse,
+	ReversiInvitationsResponse,
+	ReversiShowGameRequest,
+	ReversiShowGameResponse,
+	ReversiSurrenderRequest,
 } from './entities.js';
 
 export type Endpoints = {
@@ -983,4 +993,10 @@ export type Endpoints = {
 	'retention': { req: EmptyRequest; res: RetentionResponse };
 	'bubble-game/register': { req: BubbleGameRegisterRequest; res: BubbleGameRegisterResponse };
 	'bubble-game/ranking': { req: BubbleGameRankingRequest; res: BubbleGameRankingResponse };
+	'reversi/cancel-match': { req: ReversiCancelMatchRequest; res: ReversiCancelMatchResponse };
+	'reversi/games': { req: ReversiGamesRequest; res: ReversiGamesResponse };
+	'reversi/match': { req: ReversiMatchRequest; res: ReversiMatchResponse };
+	'reversi/invitations': { req: EmptyRequest; res: ReversiInvitationsResponse };
+	'reversi/show-game': { req: ReversiShowGameRequest; res: ReversiShowGameResponse };
+	'reversi/surrender': { req: ReversiSurrenderRequest; res: EmptyResponse };
 }

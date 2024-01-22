@@ -84,7 +84,7 @@ function invite() {
 async function removeUser(user) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('_group.banishConfirm', { name: user.name || user.username, group: group.value.name }),
+		text: i18n.tsx._group.banishConfirm({ name: user.name || user.username, group: group.value.name }),
 	});
 	if (canceled) return;
 
@@ -126,7 +126,7 @@ function transfer() {
 async function deleteGroup() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: group.value.name }),
+		text: i18n.tsx.removeAreYouSure({ x: group.value.name }),
 	});
 	if (canceled) return;
 

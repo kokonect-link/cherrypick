@@ -103,7 +103,7 @@ function rejectInvite(invitation) {
 async function leave(group) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('leaveGroupConfirm', { name: group.name }),
+		text: i18n.tsx.leaveGroupConfirm({ name: group.name }),
 	});
 	if (canceled) return;
 	os.apiWithDialog('users/groups/leave', {

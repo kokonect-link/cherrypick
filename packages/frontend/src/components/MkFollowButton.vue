@@ -105,7 +105,7 @@ async function onClick() {
 		if (isFollowing.value) {
 			const { canceled } = await os.confirm({
 				type: 'warning',
-				text: i18n.t('unfollowConfirm', { name: userName(props.user) }),
+				text: i18n.tsx.unfollowConfirm({ name: userName(props.user) }),
 			});
 
 			if (canceled) return;

@@ -84,9 +84,18 @@ export async function mainBoot() {
 
 	if (defaultStore.state.enableSeasonalScreenEffect) {
 		const month = new Date().getMonth() + 1;
-		if (month === 12 || month === 1) {
-			const SnowfallEffect = (await import('@/scripts/snowfall-effect.js')).SnowfallEffect;
-			new SnowfallEffect().render();
+		if (defaultStore.state.hemisphere === 'S') {
+			// ▼南半球
+			if (month === 7 || month === 8) {
+				const SnowfallEffect = (await import('@/scripts/snowfall-effect.js')).SnowfallEffect;
+				new SnowfallEffect().render();
+			}
+		} else {
+			// ▼北半球
+			if (month === 12 || month === 1) {
+				const SnowfallEffect = (await import('@/scripts/snowfall-effect.js')).SnowfallEffect;
+				new SnowfallEffect().render();
+			}
 		}
 	}
 
@@ -212,7 +221,7 @@ export async function mainBoot() {
 			const lastUsedDate = parseInt(lastUsed, 10);
 			// 二時間以上前なら
 			if (Date.now() - lastUsedDate > 1000 * 60 * 60 * 2) {
-				welcomeToast(i18n.t('welcomeBackWithName', {
+				welcomeToast(i18n.tsx.welcomeBackWithName({
 					name: userName($i),
 				}));
 			}
