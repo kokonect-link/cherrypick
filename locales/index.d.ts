@@ -5510,6 +5510,32 @@ export interface Locale extends ILocale {
          */
         "expandOnNoteClickDescription": string;
         /**
+         * クイック[いいね！]ボタン表示
+         */
+        "showQuickHeartReaction": string;
+        /**
+         * リアクションボタンの横に素早く「いいね！」を付けることができるボタンを表示します。
+         */
+        "showQuickHeartReactionDescription": string;
+        "_showQuickHeartReaction": {
+            /**
+             * 全て表示
+             */
+            "showAll": string;
+            /**
+             * 「いいね！」だけを表示
+             */
+            "heartOnly": string;
+            /**
+             * リアクションボタンだけを表示
+             */
+            "reactionOnly": string;
+            /**
+             * 全て隠す
+             */
+            "hideAll": string;
+        };
+        /**
          * ノートをクリックして開くとき
          */
         "expandOnNoteClickBehavior": string;
