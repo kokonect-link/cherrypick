@@ -112,6 +112,10 @@ const routes = [{
 		name: 'navbar',
 		component: page(() => import('@/pages/settings/navbar.vue')),
 	}, {
+		path: '/timeline',
+		name: 'timeline',
+		component: page(() => import('@/pages/settings/timeline.vue')),
+	}, {
 		path: '/statusbar',
 		name: 'statusbar',
 		component: page(() => import('@/pages/settings/statusbar.vue')),
