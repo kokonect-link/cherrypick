@@ -23,10 +23,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.6.1
-출시일: 2024/1/22<br>
-기반 Misskey 버전: 2023.12.2<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANGELOG.md#2023122) 문서를 참고하십시오.
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2023.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
 
 ### Client
 - Feat: 리노트 공개 범위를 지정할 수 있음 (kokonect-link/cherrypick#406)
