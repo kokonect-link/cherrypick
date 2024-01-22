@@ -3,8 +3,8 @@
 
 /*
  * version: 4.6.0
- * basedMisskeyVersion: 2024.2.0-beta.2
- * generatedAt: 2024-01-22T10:26:06.702Z
+ * basedMisskeyVersion: 2024.2.0-beta.3
+ * generatedAt: 2024-01-22T11:38:57.091Z
  */
 
 /**
