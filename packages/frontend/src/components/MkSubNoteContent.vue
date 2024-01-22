@@ -88,14 +88,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-else :class="$style.footerButton" class="_button" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="note.myReaction == null && defaultStore.state.showQuickHeartReaction !== 'reactionOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll' || note.myReaction == null && note.reactionAcceptance === 'likeOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll'" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @click="heartReact()">
+			<button v-if="note.myReaction == null && defaultStore.state.showQuickHeartReaction !== 'reactionOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll' || note.myReaction == null && note.reactionAcceptance === 'likeOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll'" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="note.reactionAcceptance !== 'likeOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll' && defaultStore.state.showQuickHeartReaction !== 'heartOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.noteFooterButton" class="_button" @click="react()">
+			<button v-if="note.reactionAcceptance !== 'likeOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll' && defaultStore.state.showQuickHeartReaction !== 'heartOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @click.stop="react()">
 				<i v-if="note.myReaction == null" v-tooltip="i18n.ts.reaction" class="ti ti-mood-plus"></i>
 				<i v-else v-tooltip="i18n.ts.editReaction" class="ti ti-mood-edit"></i>
 			</button>
-			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="[$style.noteFooterButton, $style.reacted]" class="_button" @click="undoReact(note)">
+			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly' && defaultStore.state.showQuickHeartReaction !== 'hideAll'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="[$style.footerButton, $style.reacted]" class="_button" @click.stop="undoReact(note)">
 				<i class="ti ti-heart-minus"></i>
 			</button>
 			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" ref="quoteButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
