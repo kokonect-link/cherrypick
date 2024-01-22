@@ -35,6 +35,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span>{{ tag }}</span>
 		</li>
 	</ol>
+	<ol v-else-if="mfmParams.length > 0" ref="suggests" :class="$style.list">
+		<li v-for="param in mfmParams" tabindex="-1" :class="$style.item" @click="complete(type, q.params.toSpliced(-1, 1, param).join(','))" @keydown="onKeydown">
+			<span>{{ param }}</span>
+		</li>
+	</ol>
 	<ol v-else-if="htmlTags.length > 0" ref="suggests" :class="$style.list">
 		<li v-for="tag in htmlTags" tabindex="-1" :class="$style.item" @click="complete(type, tag)" @keydown="onKeydown">
 			<span>{{ tag }}</span>
@@ -56,7 +61,7 @@ import { emojilist, getEmojiName } from '@/scripts/emojilist.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { customEmojis } from '@/custom-emojis.js';
-import { MFM_TAGS, HTML_TAGS } from '@/const.js';
+import { MFM_TAGS, MFM_PARAMS, HTML_TAGS } from '@/const.js';
 
 type EmojiDef = {
 	emoji: string;
@@ -136,7 +141,7 @@ export default {
 
 const props = defineProps<{
 	type: string;
-	q: string | null;
+	q: any;
 	textarea: HTMLTextAreaElement;
 	close: () => void;
 	x: number;
@@ -157,6 +162,7 @@ const hashtags = ref<any[]>([]);
 const emojis = ref<(EmojiDef)[]>([]);
 const items = ref<Element[] | HTMLCollection>([]);
 const mfmTags = ref<string[]>([]);
+const mfmParams = ref<string[]>([]);
 const htmlTags = ref<string[]>([]);
 const select = ref(-1);
 const zIndex = os.claimZIndex('high');
@@ -258,6 +264,13 @@ function exec() {
 		}
 
 		mfmTags.value = MFM_TAGS.filter(tag => tag.startsWith(props.q ?? ''));
+	} else if (props.type === 'mfmParam') {
+		if (props.q.params.at(-1) === '') {
+			mfmParams.value = MFM_PARAMS[props.q.tag] ?? [];
+			return;
+		}
+
+		mfmParams.value = MFM_PARAMS[props.q.tag].filter(param => param.startsWith(props.q.params.at(-1) ?? ''));
 	} else if (props.type === 'htmlTag') {
 		if (!props.q || props.q === '') {
 			htmlTags.value = HTML_TAGS;

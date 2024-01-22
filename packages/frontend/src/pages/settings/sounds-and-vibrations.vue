@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_s">
 			<MkFolder v-for="type in operationTypes" :key="type">
-				<template #label>{{ i18n.t('_sfx.' + type) }}</template>
+				<template #label>{{ i18n.ts._sfx[type] }}</template>
 				<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
 
 				<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>

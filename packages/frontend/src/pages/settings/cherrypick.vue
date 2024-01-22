@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="reactionOnly">{{ i18n.ts._cherrypick._showQuickHeartReaction.reactionOnly }}</option>
 					<option value="hideAll">{{ i18n.ts._cherrypick._showQuickHeartReaction.hideAll }}</option>
 				</MkSelect>
-				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior">
+				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior" style="margin-left: 44px;">
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</template>
 					<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
 					<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>

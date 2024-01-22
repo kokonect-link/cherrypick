@@ -11,16 +11,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<div>
 		<div v-if="user">
-			<XHome v-if="tab === 'home'" :user="user"/>
-			<XEvent v-else-if="tab === 'events'" :user="user"/>
-			<XActivity v-else-if="tab === 'activity'" :user="user"/>
-			<XAchievements v-else-if="tab === 'achievements'" :user="user"/>
-			<XClips v-else-if="tab === 'clips'" :user="user"/>
-			<XLists v-else-if="tab === 'lists'" :user="user"/>
-			<XPages v-else-if="tab === 'pages'" :user="user"/>
-			<XFlashs v-else-if="tab === 'flashs'" :user="user"/>
-			<XGallery v-else-if="tab === 'gallery'" :user="user"/>
-			<XRaw v-else-if="tab === 'raw'" :user="user"/>
+			<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
+				<XHome v-if="tab === 'home'" key="home" :user="user"/>
+				<MkSpacer v-else-if="tab === 'notes'" key="notes" :contentMax="800" style="padding-top: 0">
+					<XTimeline :user="user"/>
+				</MkSpacer>
+				<XEvent v-else-if="tab === 'events'" key="events" :user="user"/>
+				<XActivity v-else-if="tab === 'activity'" key="activity" :user="user"/>
+				<XAchievements v-else-if="tab === 'achievements'" key="achievements" :user="user"/>
+				<XClips v-else-if="tab === 'clips'" key="clips" :user="user"/>
+				<XLists v-else-if="tab === 'lists'" key="lists" :user="user"/>
+				<XPages v-else-if="tab === 'pages'" key="pages" :user="user"/>
+				<XFlashs v-else-if="tab === 'flashs'" key="flashs" :user="user"/>
+				<XGallery v-else-if="tab === 'gallery'" key="gallery" :user="user"/>
+				<XRaw v-else-if="tab === 'raw'" key="raw" :user="user"/>
+			</MkHorizontalSwipe>
 		</div>
 		<MkError v-else-if="error" @retry="fetchUser()"/>
 		<MkLoading v-else/>
@@ -30,6 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, computed, watch, ref } from 'vue';
+import * as os from '@/os.js';
 import * as Misskey from 'cherrypick-js';
 import { acct as getAcct } from '@/filters/user.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -39,6 +45,7 @@ import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { mainRouter } from '@/global/router/main.js';
 import { defaultStore } from '@/store.js';
 import { deviceKind } from '@/scripts/device-kind.js';
+import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const MOBILE_THRESHOLD = 500;
 
@@ -48,6 +55,7 @@ window.addEventListener('resize', () => {
 });
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
+const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
 const XEvent = defineAsyncComponent(() => import('./events.vue'));
 const XActivity = defineAsyncComponent(() => import('./activity.vue'));
 const XAchievements = defineAsyncComponent(() => import('./achievements.vue'));
@@ -66,6 +74,7 @@ const props = withDefaults(defineProps<{
 });
 
 const tab = ref(props.page);
+
 const user = ref<null | Misskey.entities.UserDetailed>(null);
 const error = ref<any>(null);
 
@@ -93,6 +102,10 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'home',
 	title: i18n.ts.overview,
 	icon: 'ti ti-home',
+}, {
+	key: 'notes',
+	title: i18n.ts.notes,
+	icon: 'ti ti-pencil',
 }, {
 	key: 'events',
 	title: i18n.ts.events,

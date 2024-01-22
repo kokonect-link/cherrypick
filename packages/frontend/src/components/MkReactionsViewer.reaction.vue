@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	class="_button"
 	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
 	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
-	@contextmenu.prevent.stop="(ev) => onContextMenu(ev)"
+	@contextmenu.prevent.stop="menu"
 >
 	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
 	<span :class="$style.count">{{ count }}</span>
@@ -23,6 +23,7 @@ import { computed, ComputedRef, inject, onMounted, shallowRef, watch } from 'vue
 import * as Misskey from 'cherrypick-js';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
+import MkCustomEmojiDetailedDialog from './MkCustomEmojiDetailedDialog.vue';
 import * as os from '@/os.js';
 import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
@@ -144,20 +145,30 @@ function stealReaction(ev: MouseEvent) {
 	}
 }
 
-function onContextMenu(ev: MouseEvent) {
-	if (customEmojis.value.find(it => it.name === reactionName.value)?.name) {
-		os.popupMenu([{
-			type: 'label',
-			text: `:${reactionName.value}:`,
-		}, {
-			text: i18n.ts.copy,
-			icon: 'ti ti-copy',
-			action: () => {
-				copyToClipboard(`:${reactionName.value}:`);
-				os.toast(i18n.ts.copied, 'copied');
-			},
-		}], ev.currentTarget ?? ev.target);
-	}
+async function menu(ev) {
+	if (!canToggle.value) return;
+	if (!props.reaction.includes(':')) return;
+	os.popupMenu([{
+		type: 'label',
+		text: `:${reactionName.value}:`,
+	}, {
+		text: i18n.ts.info,
+		icon: 'ti ti-info-circle',
+		action: async () => {
+			os.popup(MkCustomEmojiDetailedDialog, {
+				emoji: await misskeyApiGet('emoji', {
+					name: props.reaction.replace(/:/g, '').replace(/@\./, ''),
+				}),
+			});
+		},
+	}, customEmojis.value.find(it => it.name === reactionName.value)?.name ? {
+		text: i18n.ts.copy,
+		icon: 'ti ti-copy',
+		action: () => {
+			copyToClipboard(`:${reactionName.value}:`);
+			os.toast(i18n.ts.copied, 'copied');
+		},
+	} : undefined], ev.currentTarget ?? ev.target);
 }
 
 function anime() {

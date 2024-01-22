@@ -36,7 +36,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
   - 노트를 두 번 클릭해서 열 수 있음
 - Fix: 장식 추가로 일부 태그를 추가할 수 없음
 - Fix: 알림 위젯 필터링이 작동하지 않을 수 있음 (kokonect-link/cherrypick#404)
-- Fix: 노트 자세히 보기에서 노트 작성 폼을 클릭하면 내용이 초기화될 수 있음  (kokonect-link/cherrypick#410)
+- Fix: 노트 자세히 보기에서 노트 작성 폼을 클릭하면 내용이 초기화될 수 있음 (kokonect-link/cherrypick#410)
+- Fix: '설정 - 타임라인' 페이지가 표시되지 않음
 
 ---
 

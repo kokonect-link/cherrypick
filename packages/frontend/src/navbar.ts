@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { computed, defineAsyncComponent, reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { clearCache } from './scripts/clear-cache.js';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -130,6 +130,11 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-medal',
 		show: computed(() => $i != null),
 		to: '/my/achievements',
+	},
+	games: {
+		title: 'CherryPick Games',
+		icon: 'ti ti-device-gamepad',
+		to: '/games',
 	},
 	ui: {
 		title: i18n.ts.switchUi,

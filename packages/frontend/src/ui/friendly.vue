@@ -664,7 +664,7 @@ $float-button-size: 65px;
 	right: 20px;
 	color: var(--indicator);
 	font-size: 8px;
-	animation: blink 1s infinite;
+	animation: global-blink 1s infinite;
 
   &:has(.itemIndicateValueIcon) {
     animation: none;

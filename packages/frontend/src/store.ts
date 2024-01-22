@@ -8,6 +8,7 @@ import * as Misskey from 'cherrypick-js';
 import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
+import { hemisphere } from '@/scripts/intl-const.js';
 
 interface PostFormAction {
 	title: string,
@@ -193,6 +194,13 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: {
 			src: 'home' as 'home' | 'local' | 'social' | 'global' | `list:${string}`,
 			userList: null as Misskey.entities.UserList | null,
+			filter: {
+				withReplies: true,
+				withRenotes: true,
+				withSensitive: true,
+				onlyFiles: false,
+				onlyCats: false,
+			},
 		},
 	},
 	pinnedUserLists: {
@@ -408,10 +416,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
-	tlWithReplies: {
-		where: 'device',
-		default: false,
-	},
 	defaultWithReplies: {
 		where: 'account',
 		default: true,
@@ -443,6 +447,14 @@ export const defaultStore = markRaw(new Storage('base', {
 			bgmVolume: 0.25,
 			sfxVolume: 1,
 		},
+	},
+  hemisphere: {
+		where: 'device',
+		default: hemisphere as 'N' | 'S',
+  },
+	enableHorizontalSwipe: {
+		where: 'device',
+		default: true,
 	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',

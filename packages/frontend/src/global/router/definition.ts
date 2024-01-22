@@ -15,6 +15,7 @@ const page = (loader: AsyncComponentLoader<any>) => defineAsyncComponent({
 	loadingComponent: MkLoading,
 	errorComponent: MkError,
 });
+
 const routes = [{
 	path: '/@:initUser/pages/:initPageName/view-source',
 	component: page(() => import('@/pages/page-editor/page-editor.vue')),
@@ -110,6 +111,10 @@ const routes = [{
 		path: '/navbar',
 		name: 'navbar',
 		component: page(() => import('@/pages/settings/navbar.vue')),
+	}, {
+		path: '/timeline',
+		name: 'timeline',
+		component: page(() => import('@/pages/settings/timeline.vue')),
 	}, {
 		path: '/statusbar',
 		name: 'statusbar',
@@ -336,7 +341,12 @@ const routes = [{
 	component: page(() => import('@/pages/registry.vue')),
 }, {
 	path: '/install-extentions',
-	component: page(() => import('@/pages/install-extentions.vue')),
+	// Note: This path is kept for compatibility. It may be deleted.
+	component: page(() => import('@/pages/install-extensions.vue')),
+	loginRequired: true,
+}, {
+	path: '/install-extensions',
+	component: page(() => import('@/pages/install-extensions.vue')),
 	loginRequired: true,
 }, {
 	path: '/admin/user/:userId',
@@ -561,9 +571,21 @@ const routes = [{
 	component: page(() => import('@/pages/clicker.vue')),
 	loginRequired: true,
 }, {
+	path: '/games',
+	component: page(() => import('@/pages/games.vue')),
+	loginRequired: false,
+}, {
 	path: '/bubble-game',
 	component: page(() => import('@/pages/drop-and-fusion.vue')),
 	loginRequired: true,
+}, {
+	path: '/reversi',
+	component: page(() => import('@/pages/reversi/index.vue')),
+	loginRequired: false,
+}, {
+	path: '/reversi/g/:gameId',
+	component: page(() => import('@/pages/reversi/game.vue')),
+	loginRequired: false,
 }, {
 	path: '/timeline',
 	component: page(() => import('@/pages/timeline.vue')),

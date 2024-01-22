@@ -148,6 +148,7 @@ export const meta = {
 					'enterprise',
 					'indirect',
 					'none',
+					null,
 				],
 			},
 			extensions: {

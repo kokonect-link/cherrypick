@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="translating || translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>
 			<div v-else>
-				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+				<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
 				<Mfm :text="translation.text" :author="note.user" :nyaize="noNyaize ? false : 'respect'" :emojiUrls="note.emojis" @click.stop/>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
@@ -190,7 +190,7 @@ const collapsed = ref(isLong || (isMFM && defaultStore.state.collapseDefault) ||
 
 const collapseLabel = computed(() => {
 	return concat([
-		props.note.files && props.note.files.length !== 0 ? [i18n.t('_cw.files', { count: props.note.files.length })] : [],
+		props.note.files && props.note.files.length !== 0 ? [i18n.tsx._cw.files({ count: props.note.files.length })] : [],
 	] as string[][]).join(' / ');
 });
 
