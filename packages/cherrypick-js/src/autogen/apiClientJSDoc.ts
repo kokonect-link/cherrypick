@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0
  * basedMisskeyVersion: 2023.12.2
- * generatedAt: 2024-01-10T07:26:44.256Z
+ * generatedAt: 2024-01-22T08:06:37.332Z
  */
 
 import type { SwitchCaseResponseType } from '../api.js';
@@ -4324,6 +4324,28 @@ declare module '../api.js' {
      * **Credential required**: *No*
      */
     request<E extends 'retention', P extends Endpoints[E]['req']>(
+      endpoint: E,
+      params: P,
+      credential?: string | null,
+    ): Promise<SwitchCaseResponseType<E, P>>;
+
+    /**
+     * No description provided.
+     * 
+     * **Credential required**: *Yes* / **Permission**: *write:account*
+     */
+    request<E extends 'bubble-game/register', P extends Endpoints[E]['req']>(
+      endpoint: E,
+      params: P,
+      credential?: string | null,
+    ): Promise<SwitchCaseResponseType<E, P>>;
+
+    /**
+     * No description provided.
+     * 
+     * **Credential required**: *No*
+     */
+    request<E extends 'bubble-game/ranking', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,

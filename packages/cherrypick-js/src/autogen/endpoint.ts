@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0
  * basedMisskeyVersion: 2023.12.2
- * generatedAt: 2024-01-10T07:26:44.254Z
+ * generatedAt: 2024-01-22T08:06:37.330Z
  */
 
 import type {
@@ -585,6 +585,10 @@ import type {
 	FetchExternalResourcesRequest,
 	FetchExternalResourcesResponse,
 	RetentionResponse,
+	BubbleGameRegisterRequest,
+	BubbleGameRegisterResponse,
+	BubbleGameRankingRequest,
+	BubbleGameRankingResponse,
 } from './entities.js';
 
 export type Endpoints = {
@@ -977,4 +981,6 @@ export type Endpoints = {
 	'fetch-rss': { req: FetchRssRequest; res: FetchRssResponse };
 	'fetch-external-resources': { req: FetchExternalResourcesRequest; res: FetchExternalResourcesResponse };
 	'retention': { req: EmptyRequest; res: RetentionResponse };
+	'bubble-game/register': { req: BubbleGameRegisterRequest; res: BubbleGameRegisterResponse };
+	'bubble-game/ranking': { req: BubbleGameRankingRequest; res: BubbleGameRankingResponse };
 }

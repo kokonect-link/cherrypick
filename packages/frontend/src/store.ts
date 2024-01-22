@@ -444,6 +444,10 @@ export const defaultStore = markRaw(new Storage('base', {
 			sfxVolume: 1,
 		},
 	},
+	enableHorizontalSwipe: {
+		where: 'device',
+		default: true,
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,

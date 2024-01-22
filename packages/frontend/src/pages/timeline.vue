@@ -10,61 +10,48 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
 	</template>
 	<MkSpacer :contentMax="800">
-		<div ref="rootEl" v-hotkey.global="keymap">
-			<MkInfo v-if="['home', 'local', 'social', 'global'].includes(src) && !defaultStore.reactiveState.timelineTutorials.value[src]" style="margin-bottom: var(--margin);" closable @close="closeTutorial()">
-				{{ i18n.ts._timelineDescription[src] }}
-			</MkInfo>
-			<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);" :autofocus="false"/>
+		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
+			<div :key="src + withRenotes + withReplies + onlyFiles + onlyCats" ref="rootEl" v-hotkey.global="keymap">
+				<MkInfo v-if="['home', 'local', 'social', 'global'].includes(src) && !defaultStore.reactiveState.timelineTutorials.value[src]" style="margin-bottom: var(--margin);" closable @close="closeTutorial()">
+					{{ i18n.ts._timelineDescription[src] }}
+				</MkInfo>
+				<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--margin);" :autofocus="false"/>
 
-			<transition
-				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
-				:leaveActiveClass="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
-				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
-				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
-			>
-				<div
-					v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'default'"
-					:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"
+				<transition
+					:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
+					:leaveActiveClass="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
+					:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
+					:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
 				>
-					<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
-						<i class="ti ti-arrow-up"></i>
-						{{ i18n.ts.newNoteRecived }}
-					</button>
+					<div
+						v-if="queue > 0 && ['default', 'count'].includes(defaultStore.state.newNoteReceivedNotificationBehavior)"
+						:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"
+					>
+						<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
+							<i class="ti ti-arrow-up"></i>
+							<I18n :src="defaultStore.state.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : defaultStore.state.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
+								<template v-if="defaultStore.state.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
+							</I18n>
+						</button>
+					</div>
+				</transition>
+
+				<div :class="$style.tl">
+					<MkTimeline
+						ref="tlComponent"
+						:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
+						:src="src.split(':')[0]"
+						:list="src.split(':')[1]"
+						:withRenotes="withRenotes"
+						:withReplies="withReplies"
+						:onlyFiles="onlyFiles"
+						:onlyCats="onlyCats"
+						:sound="true"
+						@queue="queueUpdated"
+					/>
 				</div>
-			</transition>
-			<transition
-				:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
-				:leaveActiveClass="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
-				:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
-				:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
-			>
-				<div
-					v-if="queue > 0 && defaultStore.state.newNoteReceivedNotificationBehavior === 'count'"
-					:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"
-				>
-					<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
-						<i class="ti ti-arrow-up"></i>
-						<I18n :src="i18n.ts.newNoteRecivedCount" textTag="span">
-							<template #n>{{ queue > 19 ? queue + '+' : queue }}</template>
-						</I18n>
-					</button>
-				</div>
-			</transition>
-			<div :class="$style.tl">
-				<MkTimeline
-					ref="tlComponent"
-					:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
-					:src="src.split(':')[0]"
-					:list="src.split(':')[1]"
-					:withRenotes="withRenotes"
-					:withReplies="withReplies"
-					:onlyFiles="onlyFiles"
-					:onlyCats="onlyCats"
-					:sound="true"
-					@queue="queueUpdated"
-				/>
 			</div>
-		</div>
+		</MkHorizontalSwipe>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
@@ -75,6 +62,7 @@ import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
+import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { scroll } from '@/scripts/scroll.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';

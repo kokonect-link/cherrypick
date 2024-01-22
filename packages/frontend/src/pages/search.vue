@@ -7,22 +7,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 
-	<MkSpacer v-if="tab === 'note'" :contentMax="800">
-		<div v-if="notesSearchAvailable">
-			<XNote/>
-		</div>
-		<div v-else>
-			<MkInfo warn>{{ i18n.ts.notesSearchNotAvailable }}</MkInfo>
-		</div>
-	</MkSpacer>
+	<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
+		<MkSpacer v-if="tab === 'note'" key="note" :contentMax="800">
+			<div v-if="notesSearchAvailable">
+				<XNote/>
+			</div>
+			<div v-else>
+				<MkInfo warn>{{ i18n.ts.notesSearchNotAvailable }}</MkInfo>
+			</div>
+		</MkSpacer>
 
-	<MkSpacer v-else-if="tab === 'user'" :contentMax="800">
-		<XUser/>
-	</MkSpacer>
+		<MkSpacer v-else-if="tab === 'user'" key="user" :contentMax="800">
+			<XUser/>
+		</MkSpacer>
 
-	<MkSpacer v-else-if="tab === 'event'" :contentMax="800">
-		<XEvent/>
-	</MkSpacer>
+		<MkSpacer v-else-if="tab === 'event'" key="event" :contentMax="800">
+			<XEvent/>
+		</MkSpacer>
+	</MkHorizontalSwipe>
 </MkStickyContainer>
 </template>
 
@@ -33,6 +35,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
 import MkInfo from '@/components/MkInfo.vue';
+import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 
 const XNote = defineAsyncComponent(() => import('./search.note.vue'));
 const XUser = defineAsyncComponent(() => import('./search.user.vue'));

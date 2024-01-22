@@ -28,9 +28,11 @@ import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js'
 import { defaultStore } from '@/store.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
+import { misskeyApiGet } from '@/scripts/misskey-api.js';
 import * as sound from '@/scripts/sound.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
+import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
 import { $i } from '@/account.js';
 
 const props = defineProps<{
@@ -110,7 +112,19 @@ function onClick(ev: MouseEvent) {
 				react(`:${props.name}:`);
 				sound.playMisskeySfx('reaction');
 			},
-		}] : [])], ev.currentTarget ?? ev.target);
+		}] : []), {
+			text: i18n.ts.info,
+			icon: 'ti ti-info-circle',
+			action: async () => {
+				os.popup(MkCustomEmojiDetailedDialog, {
+					emoji: await misskeyApiGet('emoji', {
+						name: customEmojiName.value,
+					}),
+				}, {
+					anchor: ev.target,
+				});
+			},
+		}], ev.currentTarget ?? ev.target);
 	}
 }
 
