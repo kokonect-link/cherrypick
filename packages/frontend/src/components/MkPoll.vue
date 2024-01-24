@@ -48,15 +48,15 @@ const total = computed(() => sum(props.note.poll.choices.map(x => x.votes)));
 const closed = computed(() => remaining.value === 0);
 const isVoted = computed(() => !props.note.poll.multiple && props.note.poll.choices.some(c => c.isVoted));
 const timer = computed(() => i18n.tsx._poll[
-		remaining.value >= 86400 ? 'remainingDays' :
-		remaining.value >= 3600 ? 'remainingHours' :
-		remaining.value >= 60 ? 'remainingMinutes' : 'remainingSeconds'
-	]({
-		s: Math.floor(remaining.value % 60),
-		m: Math.floor(remaining.value / 60) % 60,
-		h: Math.floor(remaining.value / 3600) % 24,
-		d: Math.floor(remaining.value / 86400),
-	}));
+	remaining.value >= 86400 ? 'remainingDays' :
+	remaining.value >= 3600 ? 'remainingHours' :
+	remaining.value >= 60 ? 'remainingMinutes' : 'remainingSeconds'
+]({
+	s: Math.floor(remaining.value % 60),
+	m: Math.floor(remaining.value / 60) % 60,
+	h: Math.floor(remaining.value / 3600) % 24,
+	d: Math.floor(remaining.value / 86400),
+}));
 
 const showResult = ref(props.readOnly || isVoted.value);
 
