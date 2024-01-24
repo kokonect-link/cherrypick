@@ -42,7 +42,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 ---
 
 ## 4.6.0
-출시일: 2024/1/08<br>
+출시일: 2024/1/8<br>
 기반 Misskey 버전: 2023.12.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANGELOG.md#2023122) 문서를 참고하십시오.
 
