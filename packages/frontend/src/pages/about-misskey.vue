@@ -130,6 +130,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</span>
 							</span>
 						</a>
+						<a href="https://github.com/samunohito" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/46447427?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@samunohito
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
+						</a>
+						<a href="https://github.com/anatawa12" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/22656849?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@anatawa12
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
+						</a>
 						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@noridev
@@ -137,14 +153,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
 								</span>
 							</span>
-						</a>
-						<a href="https://github.com/samunohito" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/46447427?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@samunohito</span>
-						</a>
-						<a href="https://github.com/anatawa12" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/22656849?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@anatawa12</span>
 						</a>
 					</div>
 				</FormSection>
