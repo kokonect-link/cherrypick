@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0
- * basedMisskeyVersion: 2024.2.0-beta.3
- * generatedAt: 2024-01-22T11:38:57.200Z
+ * basedMisskeyVersion: 2024.2.0-beta.6
+ * generatedAt: 2024-01-24T07:33:32.527Z
  */
 
 import type { SwitchCaseResponseType } from '../api.js';
@@ -4412,6 +4412,17 @@ declare module '../api.js' {
      * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     request<E extends 'reversi/surrender', P extends Endpoints[E]['req']>(
+      endpoint: E,
+      params: P,
+      credential?: string | null,
+    ): Promise<SwitchCaseResponseType<E, P>>;
+
+    /**
+     * No description provided.
+     * 
+     * **Credential required**: *No*
+     */
+    request<E extends 'reversi/verify', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,

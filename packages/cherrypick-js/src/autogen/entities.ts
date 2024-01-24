@@ -1,7 +1,7 @@
 /*
  * version: 4.6.0
- * basedMisskeyVersion: 2024.2.0-beta.3
- * generatedAt: 2024-01-22T11:38:57.195Z
+ * basedMisskeyVersion: 2024.2.0-beta.6
+ * generatedAt: 2024-01-24T07:33:32.523Z
  */
 
 import { operations } from './types.js';
@@ -601,3 +601,5 @@ export type ReversiInvitationsResponse = operations['reversi/invitations']['resp
 export type ReversiShowGameRequest = operations['reversi/show-game']['requestBody']['content']['application/json'];
 export type ReversiShowGameResponse = operations['reversi/show-game']['responses']['200']['content']['application/json'];
 export type ReversiSurrenderRequest = operations['reversi/surrender']['requestBody']['content']['application/json'];
+export type ReversiVerifyRequest = operations['reversi/verify']['requestBody']['content']['application/json'];
+export type ReversiVerifyResponse = operations['reversi/verify']['responses']['200']['content']['application/json'];

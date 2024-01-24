@@ -3,8 +3,8 @@
 
 /*
  * version: 4.6.0
- * basedMisskeyVersion: 2024.2.0-beta.3
- * generatedAt: 2024-01-22T11:38:57.091Z
+ * basedMisskeyVersion: 2024.2.0-beta.6
+ * generatedAt: 2024-01-24T07:33:32.436Z
  */
 
 /**
@@ -3806,6 +3806,15 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *write:account*
      */
     post: operations['reversi/surrender'];
+  };
+  '/reversi/verify': {
+    /**
+     * reversi/verify
+     * @description No description provided.
+     *
+     * **Credential required**: *No*
+     */
+    post: operations['reversi/verify'];
   };
 };
 
@@ -27982,6 +27991,8 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           userId?: string | null;
+          /** @default false */
+          multiple?: boolean;
         };
       };
     };
@@ -28143,6 +28154,64 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * reversi/verify
+   * @description No description provided.
+   *
+   * **Credential required**: *No*
+   */
+  'reversi/verify': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          gameId: string;
+          crc32: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            desynced: boolean;
+            game?: components['schemas']['ReversiGameDetailed'] | null;
+          };
+        };
       };
       /** @description Client error */
       400: {
