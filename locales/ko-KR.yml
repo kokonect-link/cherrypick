@@ -2801,7 +2801,7 @@ _reversi:
   freeMatch: "프리 매치"
   lookingForPlayer: "대전 상대를 찾고 있어요"
   gameCanceled: "대국이 취소되었어요"
-  shareToTlTheGameWhenStart: "대국 시작 시 타임라인에 대국 게시"
+  shareToTlTheGameWhenStart: "시작 시 대국을 타임라인에 게시"
   iStartedAGame: "대국이 시작되었어요! #MisskeyReversi"
   opponentHasSettingsChanged: "상대방이 게임 설정을 변경했어요"
   allowIrregularRules: "변칙 허용(완전 자유)"
