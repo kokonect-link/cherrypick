@@ -3,8 +3,8 @@
 
 /*
  * version: 4.7.0-beta.1
- * basedMisskeyVersion: 2024.2.0-beta.6
- * generatedAt: 2024-01-24T08:25:14.421Z
+ * basedMisskeyVersion: 2024.2.0-beta.7
+ * generatedAt: 2024-01-25T07:07:45.651Z
  */
 
 /**
@@ -4826,6 +4826,7 @@ export type components = {
       timeoutUserId: string | null;
       black: number | null;
       bw: string;
+      noIrregularRules: boolean;
       isLlotheo: boolean;
       canPutEverywhere: boolean;
       loopedBoard: boolean;
@@ -4861,6 +4862,7 @@ export type components = {
       timeoutUserId: string | null;
       black: number | null;
       bw: string;
+      noIrregularRules: boolean;
       isLlotheo: boolean;
       canPutEverywhere: boolean;
       loopedBoard: boolean;
@@ -27991,6 +27993,8 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           userId?: string | null;
+          /** @default false */
+          noIrregularRules?: boolean;
           /** @default false */
           multiple?: boolean;
         };

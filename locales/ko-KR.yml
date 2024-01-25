@@ -2804,6 +2804,8 @@ _reversi:
   shareToTlTheGameWhenStart: "대국 시작 시 타임라인에 대국 게시"
   iStartedAGame: "대국이 시작되었어요! #MisskeyReversi"
   opponentHasSettingsChanged: "상대방이 게임 설정을 변경했어요"
+  allowIrregularRules: "변칙 허용(완전 자유)"
+  disallowIrregularRules: "변칙 없음"
 _offlineScreen:
   title: "오프라인 - 서버에 연결할 수 없음"
   header: "서버에 연결할 수 없어요"

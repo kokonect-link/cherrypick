@@ -1,7 +1,7 @@
 /*
  * version: 4.7.0-beta.1
- * basedMisskeyVersion: 2024.2.0-beta.6
- * generatedAt: 2024-01-24T08:25:14.504Z
+ * basedMisskeyVersion: 2024.2.0-beta.7
+ * generatedAt: 2024-01-25T07:07:45.740Z
  */
 
 import { operations } from './types.js';
