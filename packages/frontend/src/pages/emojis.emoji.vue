@@ -14,8 +14,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import * as os from '@/os.js';
 import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
 import { misskeyApiGet } from '@/scripts/misskey-api.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
@@ -43,7 +43,7 @@ function menu(ev) {
 			os.popup(MkCustomEmojiDetailedDialog, {
 				emoji: await misskeyApiGet('emoji', {
 					name: props.emoji.name,
-				})
+				}),
 			}, {
 				anchor: ev.target,
 			});

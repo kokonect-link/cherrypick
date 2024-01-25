@@ -2,9 +2,9 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 /*
- * version: 4.6.0
- * basedMisskeyVersion: 2024.2.0-beta.3
- * generatedAt: 2024-01-22T11:38:57.091Z
+ * version: 4.7.0-beta.1
+ * basedMisskeyVersion: 2024.2.0-beta.7
+ * generatedAt: 2024-01-25T07:07:45.651Z
  */
 
 /**
@@ -3807,6 +3807,15 @@ export type paths = {
      */
     post: operations['reversi/surrender'];
   };
+  '/reversi/verify': {
+    /**
+     * reversi/verify
+     * @description No description provided.
+     *
+     * **Credential required**: *No*
+     */
+    post: operations['reversi/verify'];
+  };
 };
 
 export type webhooks = Record<string, never>;
@@ -4817,6 +4826,7 @@ export type components = {
       timeoutUserId: string | null;
       black: number | null;
       bw: string;
+      noIrregularRules: boolean;
       isLlotheo: boolean;
       canPutEverywhere: boolean;
       loopedBoard: boolean;
@@ -4852,6 +4862,7 @@ export type components = {
       timeoutUserId: string | null;
       black: number | null;
       bw: string;
+      noIrregularRules: boolean;
       isLlotheo: boolean;
       canPutEverywhere: boolean;
       loopedBoard: boolean;
@@ -27982,6 +27993,10 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           userId?: string | null;
+          /** @default false */
+          noIrregularRules?: boolean;
+          /** @default false */
+          multiple?: boolean;
         };
       };
     };
@@ -28143,6 +28158,64 @@ export type operations = {
       /** @description OK (without any results) */
       204: {
         content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * reversi/verify
+   * @description No description provided.
+   *
+   * **Credential required**: *No*
+   */
+  'reversi/verify': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          gameId: string;
+          crc32: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            desynced: boolean;
+            game?: components['schemas']['ReversiGameDetailed'] | null;
+          };
+        };
       };
       /** @description Client error */
       400: {

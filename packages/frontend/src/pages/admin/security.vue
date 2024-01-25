@@ -196,7 +196,7 @@ async function init() {
 	enableTruemailApi.value = meta.enableTruemailApi;
 	truemailInstance.value = meta.truemailInstance;
 	truemailAuthKey.value = meta.truemailAuthKey;
-	bannedEmailDomains.value = meta.bannedEmailDomains?.join('\n') || "";
+	bannedEmailDomains.value = meta.bannedEmailDomains?.join('\n') || '';
 }
 
 function save() {

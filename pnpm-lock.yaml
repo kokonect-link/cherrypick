@@ -200,9 +200,6 @@ importers:
       content-disposition:
         specifier: 0.5.4
         version: 0.5.4
-      crc-32:
-        specifier: ^1.2.2
-        version: 1.2.2
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
@@ -866,18 +863,12 @@ importers:
       compare-versions:
         specifier: 6.1.0
         version: 6.1.0
-      crc-32:
-        specifier: ^1.2.2
-        version: 1.2.2
       cropperjs:
         specifier: 2.0.0-beta.4
         version: 2.0.0-beta.4
       date-fns:
         specifier: 2.30.0
         version: 2.30.0
-      defu:
-        specifier: ^6.1.4
-        version: 6.1.4
       escape-regexp:
         specifier: 0.0.1
         version: 0.0.1
@@ -1176,15 +1167,15 @@ importers:
 
   packages/misskey-bubble-game:
     dependencies:
-      '@types/matter-js':
-        specifier: 0.19.6
-        version: 0.19.6
-      '@types/seedrandom':
-        specifier: 3.0.8
-        version: 3.0.8
+      esbuild:
+        specifier: 0.19.11
+        version: 0.19.11
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
+      glob:
+        specifier: ^10.3.10
+        version: 10.3.10
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
@@ -1195,9 +1186,15 @@ importers:
       '@misskey-dev/eslint-plugin':
         specifier: 1.0.0
         version: 1.0.0(@typescript-eslint/eslint-plugin@6.18.1)(@typescript-eslint/parser@6.18.1)(eslint-plugin-import@2.29.1)(eslint@8.56.0)
+      '@types/matter-js':
+        specifier: 0.19.6
+        version: 0.19.6
       '@types/node':
         specifier: 20.11.5
         version: 20.11.5
+      '@types/seedrandom':
+        specifier: 3.0.8
+        version: 3.0.8
       '@typescript-eslint/eslint-plugin':
         specifier: 6.18.1
         version: 6.18.1(@typescript-eslint/parser@6.18.1)(eslint@8.56.0)(typescript@5.3.3)
@@ -1215,6 +1212,16 @@ importers:
         version: 5.3.3
 
   packages/misskey-reversi:
+    dependencies:
+      crc-32:
+        specifier: 1.2.2
+        version: 1.2.2
+      esbuild:
+        specifier: 0.19.11
+        version: 0.19.11
+      glob:
+        specifier: 10.3.10
+        version: 10.3.10
     devDependencies:
       '@misskey-dev/eslint-plugin':
         specifier: 1.0.0
@@ -8095,6 +8102,7 @@ packages:
 
   /@types/matter-js@0.19.6:
     resolution: {integrity: sha512-ffk6tqJM5scla+ThXmnox+mdfCo3qYk6yMjQsNcrbo6eQ5DqorVdtnaL+1agCoYzxUjmHeiNB7poBMAmhuLY7w==}
+    dev: true
 
   /@types/mdurl@1.0.2:
     resolution: {integrity: sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==}
@@ -8306,7 +8314,7 @@ packages:
 
   /@types/seedrandom@3.0.8:
     resolution: {integrity: sha512-TY1eezMU2zH2ozQoAFAQFOPpvP15g+ZgSfTZt31AUUH/Rxtnz3H+A/Sv1Snw2/amp//omibc+AEkTaA8KUeOLQ==}
-    dev: false
+    dev: true
 
   /@types/semver@7.5.6:
     resolution: {integrity: sha512-dn1l8LaMea/IjDoHNd9J52uBbInB796CDffS6VdIxvqYCPSG0V0DzHp76GpaWnlhg88uYyPbXCDIowa86ybd5A==}
@@ -11150,6 +11158,7 @@ packages:
 
   /defu@6.1.4:
     resolution: {integrity: sha512-mEQCMmwJu317oSz8CwdIOdwf3xMif1ttiM8LTufzc3g6kR+9Pe236twL8j3IYT1F7GfRgGcW6MWxzZjLIkuHIg==}
+    dev: true
 
   /del@6.1.1:
     resolution: {integrity: sha512-ua8BhapfP0JUJKC/zV9yHHDW/rDoDxP4Zhn3AkA6/xT6gY7jYXJiaeyBZznYVujhZZET+UgcbZiQ7sN3WqcImg==}

@@ -90,6 +90,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
 					<div :class="$style.contributors">
+						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@noridev
+								<span :class="$style.contributorClient">
+									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
+								</span>
+							</span>
+						</a>
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo
@@ -130,27 +138,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@noridev
+						<a href="https://github.com/samunohito" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/46447427?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@samunohito
 								<span :class="$style.contributorClient">
-									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
+									<span :class="$style.misskey">Misskey</span>
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/samunohito" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/46447427?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@samunohito</span>
-						</a>
 						<a href="https://github.com/anatawa12" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/22656849?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@anatawa12</span>
+							<span :class="$style.contributorUsername">@anatawa12
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 					</div>
 				</FormSection>
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
 					<div :class="$style.contributors" style="margin-bottom: 8px;">
+						<a href="https://github.com/caipira113" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/54402969?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@caipira113
+								<span :class="$style.contributorClient">
+									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
+								</span>
+							</span>
+						</a>
 						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@mei23
@@ -172,14 +188,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<span :class="$style.contributorUsername">@robflop
 								<span :class="$style.contributorClient">
 									<span :class="$style.misskey">Misskey</span>
-								</span>
-							</span>
-						</a>
-						<a href="https://github.com/caipira113" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/54402969?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@caipira113
-								<span :class="$style.contributorClient">
-									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
 								</span>
 							</span>
 						</a>
