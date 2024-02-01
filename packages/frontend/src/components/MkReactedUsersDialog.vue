@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkSpacer :marginMin="20" :marginMax="28">
 		<div v-if="note" class="_gaps">
-			<div v-if="reactions.length === 0" class="_fullinfo">
+			<div v-if="reactions && reactions.length === 0" class="_fullinfo">
 				<img :src="infoImageUrl" class="_ghost"/>
 				<div>{{ i18n.ts.nothing }}</div>
 			</div>
@@ -46,7 +46,7 @@ import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
 import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
@@ -65,9 +65,9 @@ const reactions = ref<string[]>();
 const users = ref();
 
 watch(tab, async () => {
-	const res = await misskeyApi('notes/reactions', {
+	const res = await misskeyApiGet('notes/reactions', {
 		noteId: props.noteId,
-		type: tab,
+		type: tab.value,
 		limit: 30,
 	});
 
