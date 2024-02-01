@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref, watch } from 'vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
-import { mainRouter } from '@/global/router/main.js';
+import { mainRouter } from '@/router/main.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
@@ -72,7 +72,7 @@ function fetchGroup() {
 function invite() {
 	os.selectUser({
 		includeSelf: false,
-		includeHost: false,
+		localOnly: true,
 	}).then(user => {
 		os.apiWithDialog('users/groups/invite', {
 			groupId: group.value.id,
@@ -114,7 +114,7 @@ async function renameGroup() {
 function transfer() {
 	os.selectUser({
 		includeSelf: false,
-		includeHost: false,
+		localOnly: true,
 	}).then(user => {
 		os.apiWithDialog('users/groups/transfer', {
 			groupId: group.value.id,

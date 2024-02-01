@@ -26,7 +26,7 @@ import { packedBlockingSchema } from '@/models/json-schema/blocking.js';
 import { packedNoteReactionSchema } from '@/models/json-schema/note-reaction.js';
 import { packedHashtagSchema } from '@/models/json-schema/hashtag.js';
 import { packedInviteCodeSchema } from '@/models/json-schema/invite-code.js';
-import { packedPageSchema } from '@/models/json-schema/page.js';
+import { packedPageSchema, packedPageBlockSchema } from '@/models/json-schema/page.js';
 import { packedUserGroupSchema } from '@/models/json-schema/user-group.js';
 import { packedNoteFavoriteSchema } from '@/models/json-schema/note-favorite.js';
 import { packedChannelSchema } from '@/models/json-schema/channel.js';
@@ -39,7 +39,7 @@ import { packedEmojiDetailedSchema, packedEmojiSimpleSchema } from '@/models/jso
 import { packedFlashSchema } from '@/models/json-schema/flash.js';
 import { packedAnnouncementSchema } from '@/models/json-schema/announcement.js';
 import { packedSigninSchema } from '@/models/json-schema/signin.js';
-import { packedRoleLiteSchema, packedRoleSchema } from '@/models/json-schema/role.js';
+import { packedRoleLiteSchema, packedRoleSchema, packedRolePoliciesSchema } from '@/models/json-schema/role.js';
 import { packedAdSchema } from '@/models/json-schema/ad.js';
 import { packedReversiGameLiteSchema, packedReversiGameDetailedSchema } from '@/models/json-schema/reversi-game.js';
 
@@ -71,6 +71,7 @@ export const refs = {
 	Hashtag: packedHashtagSchema,
 	InviteCode: packedInviteCodeSchema,
 	Page: packedPageSchema,
+	PageBlock: packedPageBlockSchema,
 	Channel: packedChannelSchema,
 	QueueCount: packedQueueCountSchema,
 	Antenna: packedAntennaSchema,
@@ -83,11 +84,15 @@ export const refs = {
 	Signin: packedSigninSchema,
 	RoleLite: packedRoleLiteSchema,
 	Role: packedRoleSchema,
+	RolePolicies: packedRolePoliciesSchema,
 	ReversiGameLite: packedReversiGameLiteSchema,
 	ReversiGameDetailed: packedReversiGameDetailedSchema,
 };
 
 export type Packed<x extends keyof typeof refs> = SchemaType<typeof refs[x]>;
+
+export type KeyOf<x extends keyof typeof refs> = PropertiesToUnion<typeof refs[x]>;
+type PropertiesToUnion<p extends Schema> = p['properties'] extends NonNullable<Obj> ? keyof p['properties'] : never;
 
 type TypeStringef = 'null' | 'boolean' | 'integer' | 'number' | 'string' | 'array' | 'object' | 'any';
 type StringDefToType<T extends TypeStringef> =

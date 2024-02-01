@@ -26,7 +26,7 @@ import { defaultStore } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	checked: boolean | Ref<boolean>;
-	disabled?: boolean;
+	disabled?: boolean | Ref<boolean>;
 }>(), {
 	disabled: false,
 });

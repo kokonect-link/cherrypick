@@ -28,7 +28,7 @@ import { miLocalStorage } from '@/local-storage.js';
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const close = async () => {
-	modal.value.close();
+	modal.value?.close();
 	miLocalStorage.setItem('showPushNotificationDialog', 'false');
 };
 </script>

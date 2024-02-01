@@ -56,7 +56,7 @@ import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { userName } from '@/filters/user.js';
 import { vibrate } from '@/scripts/vibrate.js';
-import { useRouter } from '@/global/router/supplier.js';
+import { useRouter } from '@/router/supplier.js';
 
 const router = useRouter();
 

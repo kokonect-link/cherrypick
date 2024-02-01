@@ -42,7 +42,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
-import { mainRouter } from '@/global/router/main.js';
+import { mainRouter } from '@/router/main.js';
 import { defaultStore } from '@/store.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';

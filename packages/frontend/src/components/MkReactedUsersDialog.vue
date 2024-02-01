@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	ref="dialog"
 	:width="400"
 	:height="450"
-	@close="dialog.close()"
+	@close="dialog?.close()"
 	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.reactionsList }}</template>
@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span style="margin-left: 4px;">{{ note.reactions[reaction] }}</span>
 					</button>
 				</div>
-				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog.close()">
+				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog?.close()">
 					<MkUserCardMini :user="user" :withChart="false"/>
 				</MkA>
 			</template>

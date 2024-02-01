@@ -11,21 +11,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { NoteBlock } from './block.type.js';
 import MkNote from '@/components/MkNote.vue';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const props = defineProps<{
-	block: NoteBlock,
+	block: Misskey.entities.PageBlock,
 	page: Misskey.entities.Page,
 }>();
 
 const note = ref<Misskey.entities.Note | null>(null);
 
 onMounted(() => {
+	if (props.block.note == null) return;
 	misskeyApi('notes/show', { noteId: props.block.note })
 		.then(result => {
 			note.value = result;

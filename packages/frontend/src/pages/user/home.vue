@@ -86,7 +86,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 							<div v-if="translating || translation" class="translation">
 								<MkLoading v-if="translating" mini/>
-								<div v-else>
+								<div v-else-if="translation">
 									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
 									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false"/>
 									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
@@ -189,7 +189,7 @@ import { dateString } from '@/filters/date.js';
 import { confetti } from '@/scripts/confetti.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
-import { useRouter } from '@/global/router/supplier.js';
+import { useRouter } from '@/router/supplier.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';

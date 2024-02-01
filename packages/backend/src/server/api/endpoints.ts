@@ -4,8 +4,7 @@
  */
 
 import { permissions } from 'cherrypick-js';
-import type { Schema } from '@/misc/json-schema.js';
-import { RolePolicies } from '@/core/RoleService.js';
+import type { KeyOf, Schema } from '@/misc/json-schema.js';
 
 import * as ep___admin_meta from './endpoints/admin/meta.js';
 import * as ep___admin_abuseReportResolver_create from './endpoints/admin/abuse-report-resolver/create.js';
@@ -838,7 +837,7 @@ interface IEndpointMetaBase {
 	 */
 	readonly requireAdmin?: boolean;
 
-	readonly requireRolePolicy?: keyof RolePolicies;
+	readonly requireRolePolicy?: KeyOf<'RolePolicies'>;
 
 	/**
 	 * 引っ越し済みのユーザーによるリクエストを禁止するか

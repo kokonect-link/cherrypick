@@ -121,7 +121,7 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { CURRENT_STICKY_BOTTOM } from '@/const.js';
 import { useScrollPositionManager } from '@/nirax.js';
-import { mainRouter } from '@/global/router/main.js';
+import { mainRouter } from '@/router/main.js';
 import { globalEvents } from '@/events.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 

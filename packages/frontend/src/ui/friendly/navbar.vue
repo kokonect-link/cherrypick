@@ -79,7 +79,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { mainRouter } from '@/global/router/main.js';
+import { mainRouter } from '@/router/main.js';
 import { version } from '@/config.js';
 
 const iconOnly = ref(false);

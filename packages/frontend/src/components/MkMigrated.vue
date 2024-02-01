@@ -56,7 +56,7 @@ const whatIsNewCherryPick = () => {
 };
 
 const close = async () => {
-	modal.value.close();
+	modal.value?.close();
 	await os.alert({
 		type: 'warning',
 		title: i18n.ts.cherrypickMigratedCacheClearTitle,
