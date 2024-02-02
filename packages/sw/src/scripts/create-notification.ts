@@ -59,7 +59,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					if (!account) return null;
 					const userDetail = await cli.request('users/show', { userId: data.body.userId }, account.token);
 					return [t('_notification.youWereFollowed'), {
-						body: `${getUserName(data.body.user)} (@${data.body.user?.username}${data.body.user?.host != null ? '@' + data.body.user.host : ''})`,
+						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
 						icon: data.body.user.avatarUrl,
 						badge: iconUrl('user-plus'),
 						data,
