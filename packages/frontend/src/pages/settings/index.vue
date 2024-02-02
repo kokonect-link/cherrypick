@@ -129,7 +129,7 @@ const menuDef = computed(() => [{
 		icon: 'ti ti-music',
 		text: i18n.ts.soundsAndVibrations,
 		to: '/settings/sounds-and-vibrations',
-		active: currentPage.value?.route.name === 'soundsAndVibrations',
+		active: currentPage.value?.route.name === 'sounds-and-vibrations',
 	}, {
 		icon: 'ti ti-plug',
 		text: i18n.ts.plugins,

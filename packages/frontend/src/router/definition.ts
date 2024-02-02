@@ -122,7 +122,7 @@ const routes: RouteDef[] = [{
 		component: page(() => import('@/pages/settings/statusbar.vue')),
 	}, {
 		path: '/sounds-and-vibrations',
-		name: 'soundsAndVibrations',
+		name: 'sounds-and-vibrations',
 		component: page(() => import('@/pages/settings/sounds-and-vibrations.vue')),
 	}, {
 		path: '/plugin/install',
