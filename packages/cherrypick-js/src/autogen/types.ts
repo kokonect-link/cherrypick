@@ -4,7 +4,7 @@
 /*
  * version: 4.7.0-beta.1
  * basedMisskeyVersion: 2024.2.0-beta.8
- * generatedAt: 2024-01-31T08:08:55.464Z
+ * generatedAt: 2024-02-02T07:19:50.682Z
  */
 
 /**

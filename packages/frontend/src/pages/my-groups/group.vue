@@ -70,10 +70,7 @@ function fetchGroup() {
 }
 
 function invite() {
-	os.selectUser({
-		includeSelf: false,
-		localOnly: true,
-	}).then(user => {
+	os.selectUser({ includeSelf: false, localOnly: true }).then(user => {
 		os.apiWithDialog('users/groups/invite', {
 			groupId: group.value.id,
 			userId: user.id,
@@ -112,10 +109,7 @@ async function renameGroup() {
 }
 
 function transfer() {
-	os.selectUser({
-		includeSelf: false,
-		localOnly: true,
-	}).then(user => {
+	os.selectUser({ includeSelf: false, localOnly: true }).then(user => {
 		os.apiWithDialog('users/groups/transfer', {
 			groupId: group.value.id,
 			userId: user.id,
