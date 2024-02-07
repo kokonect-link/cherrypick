@@ -57,6 +57,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 								[$style.boardCell_prev]: engine.prevPos === i
 							}]"
 							@click="putStone(i)"
+							@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = true : ''"
+							@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = false : ''"
+							@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = true : ''"
+							@touchend="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = false : ''"
 						>
 							<Transition
 								:enterActiveClass="$style.transition_flip_enterActive"
@@ -66,8 +70,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 								mode="default"
 							>
 								<template v-if="useAvatarAsStone">
-									<img v-if="stone === true" :class="$style.boardCellStone" :src="blackUser.avatarUrl ?? undefined"/>
-									<img v-else-if="stone === false" :class="$style.boardCellStone" :src="whiteUser.avatarUrl ?? undefined"/>
+									<img v-if="stone === true" :class="$style.boardCellStone" :src="blackUserUrl ?? undefined"/>
+									<img v-else-if="stone === false" :class="$style.boardCellStone" :src="whiteUserUrl ?? undefined"/>
 								</template>
 								<template v-else>
 									<img v-if="stone === true" :class="$style.boardCellStone" src="/client-assets/reversi/stone_b.png"/>
@@ -157,6 +161,8 @@ import { userPage } from '@/filters/user.js';
 import * as sound from '@/scripts/sound.js';
 import * as os from '@/os.js';
 import { confetti } from '@/scripts/confetti.js';
+import { defaultStore } from '@/store.js';
+import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 
 const $i = signinRequired();
 
@@ -225,6 +231,20 @@ const cellsStyle = computed(() => {
 		'grid-template-rows': `repeat(${game.value.map.length}, 1fr)`,
 		'grid-template-columns': `repeat(${game.value.map[0].length}, 1fr)`,
 	};
+});
+
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+const blackUserUrl = computed(() => {
+	if (blackUser.value.avatarUrl == null) return null;
+	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(blackUser.value.avatarUrl);
+	return blackUser.value.avatarUrl;
+});
+const whiteUserUrl = computed(() => {
+	if (whiteUser.value.avatarUrl == null) return null;
+	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(whiteUser.value.avatarUrl);
+	return whiteUser.value.avatarUrl;
 });
 
 watch(logPos, (v) => {
@@ -447,10 +467,22 @@ function share() {
 	});
 }
 
+function resetTimer() {
+	playAnimation.value = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+}
+
 onMounted(() => {
 	if (props.connection != null) {
 		props.connection.on('log', onStreamLog);
 		props.connection.on('ended', onStreamEnded);
+	}
+
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
 	}
 });
 
@@ -472,6 +504,12 @@ onUnmounted(() => {
 	if (props.connection != null) {
 		props.connection.off('log', onStreamLog);
 		props.connection.off('ended', onStreamEnded);
+	}
+
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
 	}
 });
 </script>
