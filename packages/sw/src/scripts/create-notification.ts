@@ -163,7 +163,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 
 					const tag = `reaction:${data.body.note.id}`;
 					return [t('_notification.youGotReact', { name: getUserName(data.body.user) }), {
-						body: reaction + '\n' + data.body.note.text ?? '',
+						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+						body: `:${ reaction }:` + '\n' + data.body.note.text ?? '',
 						icon: data.body.user.avatarUrl,
 						tag,
 						badge,
