@@ -920,7 +920,7 @@ function cancel() {
 }
 
 function insertMention() {
-	os.selectUser().then(user => {
+	os.selectUser({ localOnly: localOnly.value, includeSelf: true }).then(user => {
 		insertTextAtCursor(textareaEl.value, '@' + Misskey.acct.toString(user) + ' ');
 	});
 }

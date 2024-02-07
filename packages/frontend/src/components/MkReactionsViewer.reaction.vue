@@ -32,8 +32,9 @@ import MkReactionEffect from '@/components/MkReactionEffect.vue';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
-import { customEmojis } from '@/custom-emojis.js';
 import * as sound from '@/scripts/sound.js';
+import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
+import { customEmojis } from '@/custom-emojis.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
 const props = defineProps<{
@@ -51,6 +52,16 @@ const emit = defineEmits<{
 
 const buttonEl = shallowRef<HTMLElement>();
 
+const isCustomEmoji = computed(() => props.reaction.includes(':'));
+const emoji = computed(() => isCustomEmoji.value ? customEmojis.value.find(emoji => emoji.name === props.reaction.replace(/:/g, '').replace(/@\./, '')) : null);
+
+const canToggle = computed(() => {
+	return !props.reaction.match(/@\w/) && $i
+			&& (emoji.value && checkReactionPermissions($i, props.note, emoji.value))
+			|| !isCustomEmoji.value;
+});
+const canGetInfo = computed(() => !props.reaction.match(/@\w/) && props.reaction.includes(':'));
+
 const reactionName = computed(() => {
 	const r = props.reaction.replace(':', '');
 	return r.slice(0, r.indexOf('@'));
@@ -58,15 +69,11 @@ const reactionName = computed(() => {
 
 const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
 
-const canToggle = computed(() => !props.reaction.match(/@\w/) && $i);
-
 async function toggleReaction(ev: MouseEvent) {
 	if (!canToggle.value) {
 		chooseAlternative(ev);
 		return;
 	}
-
-	// TODO: その絵文字を使う権限があるかどうか確認
 
 	const oldReaction = props.note.myReaction;
 	if (oldReaction) {
@@ -146,8 +153,8 @@ function stealReaction(ev: MouseEvent) {
 }
 
 async function menu(ev) {
-	if (!canToggle.value) return;
-	if (!props.reaction.includes(':')) return;
+	if (!canGetInfo.value) return;
+
 	os.popupMenu([{
 		type: 'label',
 		text: `:${reactionName.value}:`,
