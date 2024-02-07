@@ -1,9 +1,3 @@
-/*
- * version: 4.7.0-beta.1
- * basedMisskeyVersion: 2024.2.0-beta.10
- * generatedAt: 2024-02-07T07:14:28.044Z
- */
-
 import { components } from './types.js';
 export type Error = components['schemas']['Error'];
 export type UserLite = components['schemas']['UserLite'];
