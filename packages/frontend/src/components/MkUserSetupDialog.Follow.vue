@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import Misskey from 'cherrypick-js';
+import * as Misskey from 'cherrypick-js';
 import { i18n } from '@/i18n.js';
 import MkFolder from '@/components/MkFolder.vue';
 import XUser from '@/components/MkUserSetupDialog.User.vue';

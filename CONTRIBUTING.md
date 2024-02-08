@@ -281,24 +281,22 @@ You can override the component meta by creating a meta story file (`MyComponent.
 ```ts
 export const argTypes = {
 	scale: {
-        control: {
-            type: 'range',
-            min: 1,
-            max: 4,
-        },
-    },
+		control: {
+			type: 'range',
+			min: 1,
+			max: 4,
+		},
+	},
 };
 ```
 
 Also, you can use msw to mock API requests in the storybook. Creating a `MyComponent.stories.msw.ts` file to define the mock handlers.
 
 ```ts
-import { rest } from 'msw';
+import { HttpResponse, http } from 'msw';
 export const handlers = [
-	rest.post('/api/notes/timeline', (req, res, ctx) => {
-		return res(
-			ctx.json([]),
-		);
+	http.post('/api/notes/timeline', ({ request }) => {
+		return HttpResponse.json([]);
 	}),
 ];
 ```

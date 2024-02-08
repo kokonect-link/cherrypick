@@ -216,7 +216,7 @@ describe('OAuth', () => {
 		assert.ok(location.searchParams.has('code'));
 		assert.strictEqual(location.searchParams.get('state'), 'state');
 		// https://datatracker.ietf.org/doc/html/rfc9207#name-response-parameter-iss
-		assert.strictEqual(location.searchParams.get('iss'), 'http://misskey.local');
+		assert.strictEqual(location.searchParams.get('iss'), 'http://cherrypick.local');
 
 		const code = new URL(location).searchParams.get('code');
 		assert.ok(code);
@@ -704,7 +704,7 @@ describe('OAuth', () => {
 		assert.strictEqual(response.status, 200);
 
 		const body = await response.json();
-		assert.strictEqual(body.issuer, 'http://misskey.local');
+		assert.strictEqual(body.issuer, 'http://cherrypick.local');
 		assert.ok(body.scopes_supported.includes('write:notes'));
 	});
 
