@@ -41,6 +41,10 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: false,
 			},
+			providesTarball: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 			name: {
 				type: 'string',
 				optional: false, nullable: false,
@@ -73,12 +77,12 @@ export const meta = {
 			},
 			repositoryUrl: {
 				type: 'string',
-				optional: false, nullable: false,
+				optional: false, nullable: true,
 				default: 'https://github.com/kokonect-link/cherrypick',
 			},
 			feedbackUrl: {
 				type: 'string',
-				optional: false, nullable: false,
+				optional: false, nullable: true,
 				default: 'https://github.com/kokonect-link/cherrypick/issues/new',
 			},
 			defaultDarkTheme: {
@@ -357,6 +361,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				version: this.config.version,
 				basedMisskeyVersion: this.config.basedMisskeyVersion,
+				providesTarball: this.config.publishTarballInsteadOfProvideRepositoryUrl,
 
 				name: instance.name,
 				shortName: instance.shortName,

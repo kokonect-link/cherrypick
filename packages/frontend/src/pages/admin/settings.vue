@@ -34,6 +34,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkInput>
 					</FormSplit>
 
+					<MkInput v-model="repositoryUrl" type="url">
+						<template #label>{{ i18n.ts.repositoryUrl }}</template>
+						<template #prefix><i class="ti ti-link"></i></template>
+						<template #caption>{{ i18n.ts.repositoryUrlDescription }}</template>
+					</MkInput>
+
+					<MkInfo v-if="!instance.providesTarball && !repositoryUrl" warn>
+						{{ i18n.ts.repositoryUrlOrTarballRequired }}
+					</MkInfo>
+
 					<MkInput v-model="impressumUrl" type="url">
 						<template #label>{{ i18n.ts.impressumUrl }}</template>
 						<template #prefix><i class="ti ti-link"></i></template>
@@ -171,7 +181,7 @@ import FormSplit from '@/components/form/split.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { fetchInstance } from '@/instance.js';
+import { fetchInstance, instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
@@ -181,6 +191,7 @@ const shortName = ref<string | null>(null);
 const description = ref<string | null>(null);
 const maintainerName = ref<string | null>(null);
 const maintainerEmail = ref<string | null>(null);
+const repositoryUrl = ref<string | null>(null);
 const impressumUrl = ref<string | null>(null);
 const emailToReceiveAbuseReport = ref<string | null>(null);
 const pinnedUsers = ref<string>('');
@@ -204,6 +215,7 @@ async function init(): Promise<void> {
 	description.value = meta.description;
 	maintainerName.value = meta.maintainerName;
 	maintainerEmail.value = meta.maintainerEmail;
+	repositoryUrl.value = meta.repositoryUrl;
 	impressumUrl.value = meta.impressumUrl;
 	emailToReceiveAbuseReport.value = meta.emailToReceiveAbuseReport;
 	pinnedUsers.value = meta.pinnedUsers.join('\n');
@@ -228,6 +240,7 @@ async function save(): void {
 		description: description.value,
 		maintainerName: maintainerName.value,
 		maintainerEmail: maintainerEmail.value,
+		repositoryUrl: repositoryUrl.value,
 		impressumUrl: impressumUrl.value,
 		emailToReceiveAbuseReport: emailToReceiveAbuseReport.value ?? null,
 		pinnedUsers: pinnedUsers.value.split('\n'),
@@ -250,10 +263,10 @@ async function save(): void {
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.general,
 	icon: 'ti ti-settings',
-});
+}));
 </script>
 
 <style lang="scss" module>

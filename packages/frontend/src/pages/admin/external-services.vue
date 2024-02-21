@@ -131,10 +131,10 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.externalServices,
 	icon: 'ti ti-link',
-});
+}));
 </script>
 
 <style lang="scss" module>

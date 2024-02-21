@@ -103,12 +103,15 @@ export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): Men
 		icon: 'ti ti-exclamation-circle',
 		text,
 		action: (): void => {
-			const u = note.url ?? note.uri ?? `${url}/notes/${note.id}`;
+			const localUrl = `${url}/notes/${note.id}`;
 			const username = '@' + note.user.username;
 			const host = note.user.host ? '@' + note.user.host : '';
+			let noteInfo = '';
+			if (note.url ?? note.uri != null) noteInfo = `Note: ${note.url ?? note.uri}\n`;
+			noteInfo += `Local Note: ${localUrl}\n`;
 			os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 				user: note.user,
-				initialComment: `Note: ${u}\nUser: ${username + host}\n-----\n`,
+				initialComment: `${noteInfo}User: ${username + host}\n-----\n`,
 			}, {}, 'closed');
 		},
 	};

@@ -125,10 +125,10 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-icons',
 }]);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
-});
+}));
 </script>
 
 <style lang="scss" module>

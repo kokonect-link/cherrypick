@@ -68,8 +68,8 @@ const headerTabs = computed(() => [{
 	title: 'Inbox',
 }] as Tab[]);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.jobQueue,
 	icon: 'ti ti-clock-play',
-});
+}));
 </script>

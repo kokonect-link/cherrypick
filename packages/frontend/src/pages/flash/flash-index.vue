@@ -95,8 +95,8 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-flare',
 }]);
 
-definePageMetadata(computed(() => ({
+definePageMetadata(() => ({
 	title: 'Play',
 	icon: 'ti ti-player-play',
-})));
+}));
 </script>

@@ -177,10 +177,10 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-users-group',
 }]);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.messaging,
 	icon: 'ti ti-messages',
-});
+}));
 </script>
 
 <style lang="scss" module>

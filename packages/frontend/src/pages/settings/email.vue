@@ -118,8 +118,8 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.email,
 	icon: 'ti ti-mail',
-});
+}));
 </script>

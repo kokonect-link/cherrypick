@@ -147,8 +147,8 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: 'CherryPick',
 	icon: 'ti ti-bulb-filled',
-});
+}));
 </script>

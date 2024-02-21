@@ -437,10 +437,10 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts._mfm.cheatSheet,
 	icon: 'ti ti-help-circle',
-});
+}));
 </script>
 
 <style lang="scss" module>

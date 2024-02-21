@@ -165,8 +165,8 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-comet',
 }]);
 
-definePageMetadata(computed(() => ({
+definePageMetadata(() => ({
 	title: i18n.ts.channel,
 	icon: 'ti ti-device-tv',
-})));
+}));
 </script>

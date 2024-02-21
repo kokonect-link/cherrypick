@@ -27,22 +27,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name !== 'index'">
 			<div style="width: 34px;"/>
 		</div>
-		<div v-if="metadata && metadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != metadata.avatar.id)">
+		<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id)">
 			<div style="width: 50px;"/>
 		</div>
 
-		<template v-if="metadata">
+		<template v-if="pageMetadata">
 			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="top">
-				<div v-if="metadata.avatar" :class="$style.titleAvatarContainer">
-					<MkAvatar :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
+				<div v-if="pageMetadata.avatar" :class="$style.titleAvatarContainer">
+					<MkAvatar :class="$style.titleAvatar" :user="pageMetadata.avatar" indicator/>
 				</div>
-				<i v-else-if="metadata.icon" :class="[$style.titleIcon, metadata.icon]"></i>
+				<i v-else-if="pageMetadata.icon" :class="[$style.titleIcon, pageMetadata.icon]"></i>
 
 				<div :class="$style.title">
-					<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true"/>
-					<div v-else-if="metadata.title">{{ metadata.title }}</div>
-					<div v-if="metadata.subtitle" :class="$style.subtitle">
-						{{ metadata.subtitle }}
+					<MkUserName v-if="pageMetadata.userName" :user="pageMetadata.userName" :nowrap="true"/>
+					<div v-else-if="pageMetadata.title">{{ pageMetadata.title }}</div>
+					<div v-if="pageMetadata.subtitle" :class="$style.subtitle">
+						{{ pageMetadata.subtitle }}
 					</div>
 				</div>
 			</div>
@@ -55,8 +55,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-		<div v-if="metadata && metadata.avatar && ($i && $i.id !== metadata.userName?.id)" :class="$style.followButton">
-			<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="!narrow"/>
+		<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id)" :class="$style.followButton">
+			<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
 	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
@@ -71,7 +71,7 @@ import tinycolor from 'tinycolor2';
 import XTabs, { Tab } from './MkPageHeader.tabs.vue';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
 import { globalEvents } from '@/events.js';
-import { injectPageMetadata } from '@/scripts/page-metadata.js';
+import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { mainRouter } from '@/router/main.js';
@@ -98,7 +98,7 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const metadata = injectPageMetadata();
+const pageMetadata = injectReactiveMetadata();
 
 const hideTitle = inject('shouldOmitHeaderTitle', false);
 const thin_ = props.thin || inject('shouldHeaderThin', false);

@@ -143,10 +143,10 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.navbar,
 	icon: 'ti ti-list',
-});
+}));
 </script>
 
 <style lang="scss" module>

@@ -79,6 +79,11 @@ export class MiMeta {
 	@Column('varchar', {
 		length: 1024, array: true, default: '{}',
 	})
+	public prohibitedWords: string[];
+
+	@Column('varchar', {
+		length: 1024, array: true, default: '{}',
+	})
 	public silencedHosts: string[];
 
 	@Column('varchar', {
@@ -248,6 +253,8 @@ export class MiMeta {
 	})
 	public turnstileSecretKey: string | null;
 
+	// chaptcha系を追加した際にはnodeinfoのレスポンスに追加するのを忘れないようにすること
+
 	@Column('enum', {
 		enum: ['none', 'all', 'local', 'remote'],
 		default: 'none',
@@ -388,9 +395,9 @@ export class MiMeta {
 	@Column('varchar', {
 		length: 1024,
 		default: 'https://github.com/kokonect-link/cherrypick',
-		nullable: false,
+		nullable: true,
 	})
-	public repositoryUrl: string;
+	public repositoryUrl: string | null;
 
 	@Column('varchar', {
 		length: 1024,
