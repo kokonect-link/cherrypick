@@ -39,6 +39,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 - Fix: 노트 자세히 보기에서 노트 작성 폼을 클릭하면 내용이 초기화될 수 있음 (kokonect-link/cherrypick#410)
 - Fix: '설정 - 타임라인' 페이지가 표시되지 않음
 - Fix: '노트 - 리액션 목록' 기능이 작동하지 않음
+- Fix: oswithdialogをMkNotification.vueで使わないように。
 
 ---
 
