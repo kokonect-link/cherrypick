@@ -188,12 +188,12 @@ const rejectFollowRequest = () => {
 
 const acceptGroupInvitation = () => {
 	groupInviteDone.value = true;
-	os.apiWithDialog('users/groups/invitations/accept', { invitationId: props.notification.invitation.id });
+	misskeyApi('users/groups/invitations/accept', { invitationId: props.notification.invitation.id });
 };
 
 const rejectGroupInvitation = () => {
 	groupInviteDone.value = true;
-	os.apiWithDialog('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
+	misskeyApi('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };
 </script>
 
