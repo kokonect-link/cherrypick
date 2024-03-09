@@ -138,7 +138,7 @@ export const paramDef = {
 		birthday: { ...birthdaySchema, nullable: true },
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)] as string[], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
-		avatarDecorations: { type: 'array', maxItems: 16, items: {
+		avatarDecorations: { type: 'array', maxItems: 128, items: {
 			type: 'object',
 			properties: {
 				id: { type: 'string', format: 'misskey:id' },
@@ -269,7 +269,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			function checkMuteWordCount(mutedWords: (string[] | string)[], limit: number) {
 				// TODO: ちゃんと数える
-				const length = JSON.stringify(mutedWords).length;
+				const length = ps.mutedWords.length;
 				if (length > limit) {
 					throw new ApiError(meta.errors.tooManyMutedWords);
 				}
