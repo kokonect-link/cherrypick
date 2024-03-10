@@ -125,11 +125,6 @@ const choose = async (ev) => {
 		icon: 'ti ti-planet',
 		action: () => { setSrc('local'); },
 	}, {
-		text: i18n.ts._timelines.media,
-		icon: 'ti ti-photo',
-		action: () => { setSrc('media');},
-	},
-	{
 		text: i18n.ts._timelines.social,
 		icon: 'ti ti-universe',
 		action: () => { setSrc('social'); },
