@@ -603,6 +603,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	enableMediaTimeline: {
+		where: 'device',
+		default: true,
+	},
 	enableListTimeline: {
 		where: 'device',
 		default: true,
