@@ -9733,6 +9733,10 @@ export interface Locale extends ILocale {
          * ローカル
          */
         "local": string;
+				/**
+				 * メディア
+				 */
+				"media": string;
         /**
          * ソーシャル
          */

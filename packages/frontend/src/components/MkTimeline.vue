@@ -118,7 +118,17 @@ function connectChannel() {
 			withFiles: props.onlyFiles ? true : undefined,
 			withCats: props.onlyCats,
 		});
-	} else if (props.src === 'social') {
+	} else if (props.src === 'media') {
+		connection = stream.useChannel('globalTimeline', {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: true,
+			withCats: props.onlyCats,
+		}
+		);
+	}
+
+	else if (props.src === 'social') {
 		connection = stream.useChannel('hybridTimeline', {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
@@ -193,7 +203,17 @@ function updatePaginationQuery() {
 			withFiles: props.onlyFiles ? true : undefined,
 			withCats: props.onlyCats,
 		};
-	} else if (props.src === 'social') {
+	} else if (props.src === 'media') {
+		endpoint = 'notes/global-timeline';
+		query = {
+			withRenotes: props.withRenotes,
+			withReplies: props.withReplies,
+			withFiles: true,
+			withCats: props.onlyCats,
+		};
+	}
+
+	else if (props.src === 'social') {
 		endpoint = 'notes/hybrid-timeline';
 		query = {
 			withRenotes: props.withRenotes,

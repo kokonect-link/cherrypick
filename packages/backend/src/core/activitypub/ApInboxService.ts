@@ -333,14 +333,12 @@ export class ApInboxService {
 						this.logger.warn(`Ignored announce target ${targetUri} - ${err.statusCode}`);
 						return;
 					}
-
 					this.logger.warn(`Error in announce target ${targetUri} - ${err.statusCode}`);
 				} else if (err.message === 'actor has been suspended') {
 					this.logger.warn('skip: actor has been suspended');
 				} else {
 					throw err;
 				}
-
 			}
 
 			if (!await this.noteEntityService.isVisibleForMe(renote, actor.id)) {
@@ -849,7 +847,7 @@ export class ApInboxService {
 		} catch (err) {
 			if (err instanceof StatusError && err.isClientError) {
 				return `skip ${err.statusCode}`;
-			} else if(err.message === 'actor has been suspended') {
+			} else if (err.message === 'actor has been suspended') {
 				return 'skip: actor has been suspended';
 			} else {
 				throw err;
