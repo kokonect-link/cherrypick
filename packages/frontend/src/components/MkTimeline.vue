@@ -119,7 +119,7 @@ function connectChannel() {
 			withCats: props.onlyCats,
 		});
 	} else if (props.src === 'media') {
-		connection = stream.useChannel('mediaTimeline', {
+		connection = stream.useChannel('globalTimeline', {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
 			withFiles: true,
@@ -203,7 +203,7 @@ function updatePaginationQuery() {
 			withCats: props.onlyCats,
 		};
 	} else if (props.src === 'media') {
-		endpoint = 'notes/media-timeline';
+		endpoint = 'notes/global-timeline';
 		query = {
 			withRenotes: props.withRenotes,
 			withReplies: props.withReplies,
