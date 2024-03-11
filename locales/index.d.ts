@@ -5195,6 +5195,10 @@ export interface Locale extends ILocale {
      * 利用規約・プライバシーポリシー
      */
     "tosAndPrivacyPolicy": string;
+		/**
+		 * ステータスページ
+		 */
+		"statusUrl": string;
     /**
      * アイコンデコレーション
      */
