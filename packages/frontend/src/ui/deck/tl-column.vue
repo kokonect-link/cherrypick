@@ -8,6 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header>
 		<i v-if="column.tl === 'home'" class="ti ti-home"></i>
 		<i v-else-if="column.tl === 'local'" class="ti ti-planet"></i>
+		<i v-else-if="column.tl === 'media'" class="ti ti-photo"></i>
 		<i v-else-if="column.tl === 'social'" class="ti ti-universe"></i>
 		<i v-else-if="column.tl === 'global'" class="ti ti-world"></i>
 		<span style="margin-left: 8px;">{{ column.name }}</span>
@@ -42,6 +43,7 @@ import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+import column from './column.vue';
 
 const props = defineProps<{
 	column: Column;
@@ -100,6 +102,9 @@ async function setType() {
 		}, {
 			value: 'local' as const, text: i18n.ts._timelines.local,
 		}, {
+			value: 'media' as const, text: i18n.ts._timelines.media,
+		},
+		{
 			value: 'social' as const, text: i18n.ts._timelines.social,
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,

@@ -33,7 +33,7 @@
 - ロケール変更
 
 
-## engawa-0.1.2 (unreleased)
+## engawa-0.2.0 (unreleased)
 
 ### General
 - メディアタイムラインの実装
