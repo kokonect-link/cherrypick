@@ -124,7 +124,8 @@ function connectChannel() {
 			withReplies: props.withReplies,
 			withFiles: true,
 			withCats: props.onlyCats,
-		})
+		}
+		);
 	}
 
 	else if (props.src === 'social') {
@@ -209,7 +210,7 @@ function updatePaginationQuery() {
 			withReplies: props.withReplies,
 			withFiles: true,
 			withCats: props.onlyCats,
-		}
+		};
 	}
 
 	else if (props.src === 'social') {
