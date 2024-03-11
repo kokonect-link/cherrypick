@@ -87,6 +87,17 @@ export type Channels = {
 		};
 		receives: null;
 	};
+	mediaTimeline: {
+		params: {
+			withRenotes?: boolean;
+			withRepliies?: boolean;
+			withCats?: boolean;
+		};
+		events: {
+			note: (payload: Note) => void;
+		};
+		recieves: null;
+	};
 	hybridTimeline: {
 		params: {
 			withRenotes?: boolean;
