@@ -1,6 +1,8 @@
 <!--
 ## engawa-x.x.x (unreleased)
 
+### Release Date
+
 ### General
 -
 
@@ -14,6 +16,9 @@
 
 -->
 ## engawa-0.3.0 (unreleased)
+
+### Release Date
+
 
 ### General
 - aboutにステータスページを表示できるように
@@ -29,7 +34,10 @@
 ### Misc
 - devcontainerが起動しない問題を修正
 
-## engawa-0.2.0 (2024-03-11)
+## engawa-0.2.0
+
+### Release Date
+2024-03-11
 
 ### General
 - メディアタイムラインの実装
@@ -39,12 +47,18 @@
 - CHANGELOG_engawaを昇順に修正
 - OthersをMiscに変更
 
-## engawa-0.1.1 (2024-03-09)
+## engawa-0.1.1
+
+### Release Date
+2024-03-09
 
 ### Client
 - ロケール変更
 
-## engawa-0.1.0 (2024-03-09)
+## engawa-0.1.0
+
+### Release Date
+2024-03-09
 
 ### General
 - アバターデコレーションの最大数を変更
