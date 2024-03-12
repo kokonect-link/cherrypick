@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export class AddSomeUrls1696003580220 {
-	name = 'AddSomeUrls1696003580220'
+export class AddSomeUrl1710210658917 {
+	name = 'AddSomeUrl1710210658917'
 
 	async up(queryRunner) {
 			await queryRunner.query(`ALTER TABLE "meta" ADD "statusUrl" character varying(1024)`);
