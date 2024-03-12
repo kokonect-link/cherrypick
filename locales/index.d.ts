@@ -4740,7 +4740,7 @@ export interface Locale extends ILocale {
      */
     "events": string;
     /**
-     * 逆時系列
+     * 終了済み
      */
     "reverseChronological": string;
     /**
