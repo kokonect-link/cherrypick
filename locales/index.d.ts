@@ -4740,7 +4740,7 @@ export interface Locale extends ILocale {
      */
     "events": string;
     /**
-     * 倒叙
+     * 逆時系列
      */
     "reverseChronological": string;
     /**
@@ -5196,6 +5196,10 @@ export interface Locale extends ILocale {
      */
     "tosAndPrivacyPolicy": string;
     /**
+     * ステータスページ
+     */
+    "statusUrl": string;
+    /**
      * アイコンデコレーション
      */
     "avatarDecorations": string;
@@ -5344,7 +5348,7 @@ export interface Locale extends ILocale {
      */
     "showUnreadNotificationsCount": string;
     /**
-     * キャット付きのみ
+     * ネコミミ付きのみ
      */
     "showCatOnly": string;
     /**
@@ -6082,7 +6086,7 @@ export interface Locale extends ILocale {
          */
         "price": string;
         /**
-         * 可用性
+         * 予約可能
          */
         "availability": string;
         /**
@@ -6094,11 +6098,11 @@ export interface Locale extends ILocale {
          */
         "until": string;
         /**
-         * アベイラビリティ開始
+         * 予約開始
          */
         "availabilityStart": string;
         /**
-         * アベイラビリティ終了
+         * 予約終了
          */
         "availabilityEnd": string;
         /**
@@ -9733,10 +9737,10 @@ export interface Locale extends ILocale {
          * ローカル
          */
         "local": string;
-				/**
-				 * メディア
-				 */
-				"media": string;
+        /**
+         * メディア
+         */
+        "media": string;
         /**
          * ソーシャル
          */

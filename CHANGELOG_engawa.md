@@ -13,11 +13,26 @@
 ### Misc
 
 -->
-## engawa-0.2.0 (unreleased)
+## engawa-0.2.1 (unreleased)
+
+### General
+- aboutにステータスページを表示できるように
+  - コントロールパネル>設定>全般から設定できます
+
+### Client
+- 
+
+### Server
+-
+
+### Misc
+- devcontainerが起動しない問題を修正
+
+## engawa-0.2.0 (2024-03-11)
 
 ### General
 - メディアタイムラインの実装
- - グローバルタイムラインを閲覧できる場合に閲覧できます
+  - グローバルタイムラインを閲覧できる場合に閲覧できます
 
 ### Misc
 - CHANGELOG_engawaを昇順に修正
