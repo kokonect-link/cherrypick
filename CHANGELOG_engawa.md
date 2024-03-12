@@ -13,7 +13,7 @@
 ### Misc
 
 -->
-## engawa-0.2.1 (unreleased)
+## engawa-0.3.0 (unreleased)
 
 ### General
 - aboutにステータスページを表示できるように
