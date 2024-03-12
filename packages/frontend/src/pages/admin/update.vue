@@ -48,6 +48,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkKeyValue>
 				</FormSection>
 
+				<FormSection @click="whatIsNewCherryPickEngawa">
+					<template #label>Engawa <i class="ti ti-external-link"></i></template>
+					<MkKeyValue>
+						<template #key>{{ i18n.ts.latestVersion }}</template>
+						<template v-if="releasesCherryPickEngawa" #value>{{ releasesCherryPickEngawa[0].tag_name }}</template>
+						<template v-else #value><MkEllipsis/></template>
+					</MkKeyValue>
+					<MkKeyValue style="margin: 8px 0 0; color: var(--fgTransparentWeak); font-size: 0.85em;">
+						<template v-if="releasesCherryPickEngawa" #value>{{ releasesCherryPickEngawa[0].tag_name }}</template>
+						<template v-else #value><MkEllipsis/></template>
+					</MkKeyValue>
+				</FormSection>
+
 				<FormSection @click="whatIsNewLatestMisskey">
 					<template #label>Misskey <i class="ti ti-external-link"></i></template>
 					<MkKeyValue>
@@ -86,6 +99,7 @@ const enableReceivePrerelease = ref<boolean>(false);
 const skipVersion = ref<boolean>(false);
 const skipCherryPickVersion = ref<string | null | undefined>(null);
 
+const releasesCherryPickEngawa = ref();
 const releasesCherryPick = ref();
 const releasesMisskey = ref();
 
@@ -130,6 +144,14 @@ onMounted(() => {
 			}
 		});
 
+	fetch('https://api.github.com/repos/1673beta/cherrypick/releases', {
+		method: 'GET',
+	}).then(res => res.json())
+		.then(res => {
+			if (meta.enableReceivePrerelease) releasesCherryPickEngawa.value = res;
+			else releasesCherryPickEngawa.value = res.filter(x => x.prerelease === false);
+		});
+
 	fetch('https://api.github.com/repos/misskey-dev/misskey/releases', {
 		method: 'GET',
 	}).then(res => res.json())
@@ -145,6 +167,10 @@ const whatIsNewCherryPick = () => {
 
 const whatIsNewLatestCherryPick = () => {
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${releasesCherryPick.value[0].tag_name.replace(/\./g, '')}`, '_blank');
+};
+
+const whatIsNewCherryPickEngawa = () => {
+	window.open(`https://github.com/1673beta/cherrypick/blob/develop/CHANGELOG_engawa.md#${releasesCherryPickEngawa.value[0].tag_name.replace(/\./g, '')}`, '_blank');
 };
 
 const whatIsNewMisskey = () => {
