@@ -15,7 +15,7 @@
 ### Misc
 
 -->
-## engawa-0.3.0 (unreleased)
+## 0.3.0 (unreleased)
 
 ### Release Date
 
@@ -34,7 +34,7 @@
 ### Misc
 - devcontainerが起動しない問題を修正
 
-## engawa-0.2.0
+## 0.2.0
 
 ### Release Date
 2024-03-11
@@ -47,7 +47,7 @@
 - CHANGELOG_engawaを昇順に修正
 - OthersをMiscに変更
 
-## engawa-0.1.1
+## 0.1.1
 
 ### Release Date
 2024-03-09
@@ -55,7 +55,7 @@
 ### Client
 - ロケール変更
 
-## engawa-0.1.0
+## 0.1.0
 
 ### Release Date
 2024-03-09
