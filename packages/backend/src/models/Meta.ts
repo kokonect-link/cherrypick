@@ -419,6 +419,12 @@ export class MiMeta {
 	public privacyPolicyUrl: string | null;
 
 	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public statusUrl: string | null;
+
+	@Column('varchar', {
 		length: 8192,
 		nullable: true,
 	})

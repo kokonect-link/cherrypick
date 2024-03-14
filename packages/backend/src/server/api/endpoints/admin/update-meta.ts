@@ -116,6 +116,7 @@ export const paramDef = {
 		feedbackUrl: { type: 'string', nullable: true },
 		impressumUrl: { type: 'string', nullable: true },
 		privacyPolicyUrl: { type: 'string', nullable: true },
+		statusUrl: { type: 'string', nullable: true },
 		useObjectStorage: { type: 'boolean' },
 		objectStorageBaseUrl: { type: 'string', nullable: true },
 		objectStorageBucket: { type: 'string', nullable: true },
@@ -442,6 +443,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.privacyPolicyUrl !== undefined) {
 				set.privacyPolicyUrl = ps.privacyPolicyUrl;
+			}
+
+			if (ps.statusUrl !== undefined) {
+				set.statusUrl = ps.statusUrl;
 			}
 
 			if (ps.useObjectStorage !== undefined) {

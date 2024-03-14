@@ -1284,6 +1284,7 @@ impressumDescription: "In some countries, like germany, the inclusion of operato
 privacyPolicy: "Privacy Policy"
 privacyPolicyUrl: "Privacy Policy URL"
 tosAndPrivacyPolicy: "Terms of Service and Privacy Policy"
+statusUrl: "Servis Status URL"
 avatarDecorations: "Avatar decorations"
 attach: "Attach"
 detach: "Remove"
