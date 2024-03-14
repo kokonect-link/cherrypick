@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkInput>
 
 					<MkInput v-model="statusUrl" type="url">
-					  <template #label>{{ i18n.ts.statusUrl }}</template>
+						<template #label>{{ i18n.ts.statusUrl }}</template>
 						<template #prefix><i class="ti ti-link"></i></template>
 					</MkInput>
 

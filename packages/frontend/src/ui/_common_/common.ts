@@ -107,7 +107,13 @@ export function openInstanceMenu(ev: MouseEvent) {
 		action: () => {
 			window.open(instance.privacyPolicyUrl, '_blank', 'noopener');
 		},
-	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl) ? undefined : { type: 'divider' }, {
+	} : undefined, (instance.statusUrl) ? {
+		text: i18n.ts.statusUrl,
+		icon: 'ti ti-activity',
+		action: () => {
+			window.open(instance.statusUrl, '_blank', 'noopener');
+		},
+	} : undefined, (!instance.impressumUrl && !instance.tosUrl && !instance.privacyPolicyUrl && !instance.statusUrl) ? undefined : { type: 'divider' }, {
 		type: 'parent',
 		text: i18n.ts.help,
 		icon: 'ti ti-help-circle',
