@@ -12,6 +12,7 @@ import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { WebhookDeliverProcessorService } from './processors/WebhookDeliverProcessorService.js';
 import { EndedPollNotificationProcessorService } from './processors/EndedPollNotificationProcessorService.js';
+import { ScheduledNoteDeleteProcessorService } from './processors/ScheduledNoteDeleteService.js';
 import { DeliverProcessorService } from './processors/DeliverProcessorService.js';
 import { InboxProcessorService } from './processors/InboxProcessorService.js';
 import { DeleteDriveFilesProcessorService } from './processors/DeleteDriveFilesProcessorService.js';
@@ -75,6 +76,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 	private logger: Logger;
 	private systemQueueWorker: Bull.Worker;
 	private dbQueueWorker: Bull.Worker;
+	private scheduleNoteDeleteQueueWorker: Bull.Worker;
 	private deliverQueueWorker: Bull.Worker;
 	private inboxQueueWorker: Bull.Worker;
 	private webhookDeliverQueueWorker: Bull.Worker;
@@ -121,6 +123,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private aggregateRetentionProcessorService: AggregateRetentionProcessorService,
 		private checkExpiredMutingsProcessorService: CheckExpiredMutingsProcessorService,
 		private cleanProcessorService: CleanProcessorService,
+		private scheduledNoteDeleteProcessorService: ScheduledNoteDeleteProcessorService,
 	) {
 		this.logger = this.queueLoggerService.logger;
 
@@ -336,6 +339,13 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			autorun: false,
 		});
 		//#endregion
+
+		//#region scheduled note delete
+		this.scheduledNoteDeleteProcessorService = new Bull.Worker(QUEUE.SCHEDULED_NOTE_DELETE, (job) => this.scheduledNoteDeleteProcessorService.process(job), {
+			...baseQueueOptions(this.config, QUEUE.SCHEDULED_NOTE_DELETE),
+			autorun: false,
+		});
+		//#endregion
 	}
 
 	@bindThis
@@ -349,6 +359,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.relationshipQueueWorker.run(),
 			this.objectStorageQueueWorker.run(),
 			this.endedPollNotificationQueueWorker.run(),
+			this.scheduleNoteDeleteQueueWorker.run(),
 		]);
 	}
 
@@ -363,6 +374,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.relationshipQueueWorker.close(),
 			this.objectStorageQueueWorker.close(),
 			this.endedPollNotificationQueueWorker.close(),
+			this.scheduleNoteDeleteQueueWorker.close(),
 		]);
 	}
 
