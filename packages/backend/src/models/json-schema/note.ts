@@ -187,11 +187,6 @@ export const packedNoteSchema = {
 			type: 'object',
 			optional: true, nullable: true,
 		},
-		deleteAt: {
-			type: 'string',
-			optional: true, nullable: true,
-			format: 'date-time',
-		},
 		channelId: {
 			type: 'string',
 			optional: true, nullable: true,

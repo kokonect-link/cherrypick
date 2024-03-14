@@ -14,7 +14,7 @@ import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { Antenna } from '@/server/api/endpoints/i/import-antennas.js';
 import { ApRequestCreator } from '@/core/activitypub/ApRequestService.js';
-import type { DbQueue, DeliverQueue, EndedPollNotificationQueue, InboxQueue, ObjectStorageQueue, RelationshipQueue, SystemQueue, WebhookDeliverQueue, ScheduledNoteDeleteJobQueue } from './QueueModule.js';
+import type { DbQueue, DeliverQueue, EndedPollNotificationQueue, InboxQueue, ObjectStorageQueue, RelationshipQueue, SystemQueue, WebhookDeliverQueue } from './QueueModule.js';
 import type { DbJobData, DeliverJobData, RelationshipJobData, ThinUser } from '../queue/types.js';
 import type httpSignature from '@peertube/http-signature';
 import type * as Bull from 'bullmq';
@@ -27,7 +27,6 @@ export class QueueService {
 
 		@Inject('queue:system') public systemQueue: SystemQueue,
 		@Inject('queue:endedPollNotification') public endedPollNotificationQueue: EndedPollNotificationQueue,
-		@Inject('queue:scheduledNoteDelete') public scheduledNoteDeleteQueue: ScheduledNoteDeleteJobQueue,
 		@Inject('queue:deliver') public deliverQueue: DeliverQueue,
 		@Inject('queue:inbox') public inboxQueue: InboxQueue,
 		@Inject('queue:db') public dbQueue: DbQueue,

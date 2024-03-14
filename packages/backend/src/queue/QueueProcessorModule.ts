@@ -8,7 +8,6 @@ import { CoreModule } from '@/core/CoreModule.js';
 import { GlobalModule } from '@/GlobalModule.js';
 import { QueueLoggerService } from './QueueLoggerService.js';
 import { QueueProcessorService } from './QueueProcessorService.js';
-import { ScheduledNoteDeleteProcessorService } from './processors/ScheduledNoteDeleteService.js';
 import { DeliverProcessorService } from './processors/DeliverProcessorService.js';
 import { EndedPollNotificationProcessorService } from './processors/EndedPollNotificationProcessorService.js';
 import { InboxProcessorService } from './processors/InboxProcessorService.js';
@@ -76,7 +75,6 @@ import { RelationshipProcessorService } from './processors/RelationshipProcessor
 		ReportAbuseProcessorService,
 		WebhookDeliverProcessorService,
 		EndedPollNotificationProcessorService,
-		ScheduledNoteDeleteProcessorService,
 		DeliverProcessorService,
 		InboxProcessorService,
 		AggregateRetentionProcessorService,

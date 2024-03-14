@@ -189,14 +189,6 @@ export const paramDef = {
 				metadata: { type: 'object' },
 			},
 		},
-		scheduledDelete: {
-			type: 'object',
-			nullable: true,
-			properties: {
-				deleteAt: { type: 'integer', nullable: true },
-				deleteAfter: { type: 'integer', nullable: true, minimum: 1 },
-			},
-		},
 	},
 	// (re)note with text, files and poll are optional
 	if: {
@@ -357,16 +349,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				}
 			}
 
-			if (ps.scheduledDelete) {
-				if (typeof ps.scheduledDelete.deleteAt === 'number') {
-					if (ps.scheduledDelete.deleteAt < Date.now()) {
-						throw new ApiError(meta.errors.cannotScheduleDeleteEarlierThanNow);
-					}
-				} else if (typeof ps.scheduledDelete.deleteAfter === 'number') {
-					ps.scheduledDelete.deleteAt = Date.now() + ps.scheduledDelete.deleteAfter;
-				}
-			}
-
 			let channel: MiChannel | null = null;
 			if (ps.channelId != null) {
 				channel = await this.channelsRepository.findOneBy({ id: ps.channelId, isArchived: false });
@@ -405,7 +387,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					apMentions: ps.noExtractMentions ? [] : undefined,
 					apHashtags: ps.noExtractHashtags ? [] : undefined,
 					apEmojis: ps.noExtractEmojis ? [] : undefined,
-					deleteAt: ps.scheduledDelete?.deleteAt ? new Date(ps.scheduledDelete.deleteAt) : null,
 				});
 
 				return {
