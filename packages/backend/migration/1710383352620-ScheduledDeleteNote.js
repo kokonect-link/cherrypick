@@ -7,10 +7,10 @@ export class ScheduledDeleteNote1710383352620 {
 	name = 'ScheduledDeleteNote1710383352620'
 
 	async up(queryRunner) {
-		await queryRunner.query(`ALTER TABLE "notes" ADD "deleteAt" TIMESTAMP WITH TIME ZONE`)
+		await queryRunner.query(`ALTER TABLE "note" ADD "deleteAt" TIMESTAMP WITH TIME ZONE`)
 	}
 
 	async down(queryRunner) {
-		await queryRunner.query(`ALTER TABLE "notes" DROP COLUMN "deleteAt"`)
+		await queryRunner.query(`ALTER TABLE "note" DROP COLUMN "deleteAt"`)
 	}
 }
