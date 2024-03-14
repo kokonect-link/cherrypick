@@ -39,6 +39,7 @@ import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.j
 import type { AccountMoveService } from '@/core/AccountMoveService.js';
 import { checkHttps } from '@/misc/check-https.js';
 import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
+import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { getApId, getApType, getOneApHrefNullable, isActor, isCollection, isCollectionOrOrderedCollection, isPropertyValue } from '../type.js';
 import { extractApHashtags } from './tag.js';
 import type { OnModuleInit } from '@nestjs/common';
@@ -103,6 +104,7 @@ export class ApPersonService implements OnModuleInit {
 		private followingsRepository: FollowingsRepository,
 
 		private avatarDecorationService: AvatarDecorationService,
+		private httpRequestService: HttpRequestService,
 	) {
 	}
 
@@ -371,6 +373,34 @@ export class ApPersonService implements OnModuleInit {
 			});
 		//#endregion
 
+		let isReactionPublic = false;
+		let followingVisibility: 'private' | 'followers' | 'public' | undefined = typeof person.following === 'string' ? 'private' : 'public';
+		let followersVisibility: 'private' | 'followers' | 'public' | undefined = typeof person.followers === 'string' ? 'private' : 'public';
+		const instance = await this.instancesRepository.findOneBy({ host: host });
+
+		if (instance?.softwareName === 'misskey' || instance?.softwareName === 'cherrypick') {
+			const userHostUrl = `https://${host}`;
+			const showUserApiUrl = `${userHostUrl}/api/users/show`;
+			const res = await this.httpRequestService.send(showUserApiUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ 'username': person.preferredUsername }),
+			});
+
+			const userData: any = await res.json();
+			if (userData.publicReactions === undefined ) {
+				isReactionPublic = userData.publicReactions;
+			}
+
+			if (userData._ffVisibility === undefined) {
+				followingVisibility = userData._ffVisibility;
+				followersVisibility = userData._ffVisibility;
+			} else {
+				followingVisibility = userData.followingVisibility;
+				followersVisibility = userData.followersVisibility;
+			}
+		}
+
 		try {
 			// Start transaction
 			await this.db.transaction(async transactionalEntityManager => {
@@ -439,6 +469,9 @@ export class ApPersonService implements OnModuleInit {
 					birthday: bday?.[0] ?? null,
 					location: person['vcard:Address'] ?? null,
 					userHost: host,
+					followersVisibility: followersVisibility,
+					followingVisibility: followingVisibility,
+					publicReactions: isReactionPublic,
 				}));
 
 				if (person.publicKey) {
@@ -549,8 +582,35 @@ export class ApPersonService implements OnModuleInit {
 
 		const url = getOneApHrefNullable(person.url);
 
+		const host = this.punyHost(uri);
+
 		if (url && !checkHttps(url)) {
 			throw new Error('unexpected schema of person url: ' + url);
+		}
+
+		let isReactionPublic = false;
+		let followingVisibility: 'private' | 'followers' | 'public' | undefined = typeof person.following === 'string' ? 'private' : 'public';
+		let followersVisibility: 'private' | 'followers' | 'public' | undefined = typeof person.followers === 'string' ? 'private' : 'public';
+		const instance = await this.instancesRepository.findOneBy({ host: host });
+
+		if (instance?.softwareName === 'misskey' || instance?.softwareName === 'cherrypick') {
+			const userHostUrl = `https://${host}`;
+			const showUserApiUrl = `${userHostUrl}/api/users/show`;
+			const res = await this.httpRequestService.send(showUserApiUrl, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ 'username': person.preferredUsername }),
+			});
+			const userData: any = await res.json();
+
+			if (userData.publicReactions === undefined ) {
+				isReactionPublic = userData.publicReactions;
+			}
+
+			if (userData._ffVisibility === undefined) {
+				followingVisibility = userData._ffVisibility;
+				followersVisibility = userData._ffVisibility;
+			}
 		}
 
 		let followersCount: number | undefined;
@@ -686,6 +746,9 @@ export class ApPersonService implements OnModuleInit {
 			description: _description,
 			birthday: bday?.[0] ?? null,
 			location: person['vcard:Address'] ?? null,
+			followersVisibility: followersVisibility,
+			followingVisibility: followingVisibility,
+			publicReactions: isReactionPublic,
 		});
 
 		this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: exist.id });
