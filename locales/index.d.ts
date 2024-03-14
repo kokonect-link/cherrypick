@@ -4595,10 +4595,6 @@ export interface Locale extends ILocale {
      * 非センシティブのみ (リモートはいいねのみ)
      */
     "nonSensitiveOnlyForLocalLikeOnlyForRemote": string;
-		/**
-		 * 時限消滅
-		 */
-		"scheduledNoteDelete"
     /**
      * 自分に割り当てられたロール
      */
