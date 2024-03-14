@@ -42,7 +42,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span v-else><i class="ti ti-icons"></i></span>
 			</button>
 			<button v-tooltip="i18n.ts._mfm.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
-			<button v-tooltip="i18n.ts.scheduledNoteDelete" class="_button" :class="$style.headerRightItem" @click="openScheduledNoteDelete"><i class="ti ti-clock-hour-9"></i></button>
 			<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 				<div :class="$style.submitInner">
 					<template v-if="posted"></template>
@@ -110,7 +109,6 @@ import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode/';
-import MkScheduledNoteDeleteEditor, { type ScheduledDeleteDateModelValue } from '@/components/MkScheduledNoteDeleteEditor.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
@@ -196,7 +194,6 @@ const event = ref<{
 	metadata: Record<string, string>;
 } | null>(null);
 const useCw = ref<boolean>(!!props.initialCw);
-const scheduledDelete = ref<ScheduledDeleteDateModelValue | null>(null);
 const showPreview = ref(defaultStore.state.showPreview);
 const showProfilePreview = ref(defaultStore.state.showProfilePreview);
 watch(showPreview, () => defaultStore.set('showPreview', showPreview.value));
@@ -730,7 +727,6 @@ function saveDraft() {
 			files: files.value,
 			poll: poll.value,
 			event: event.value,
-			scheduledDelete: scheduledDelete.value,
 		},
 	};
 
@@ -806,7 +802,6 @@ async function post(ev?: MouseEvent) {
 		channelId: props.channel ? props.channel.id : undefined,
 		poll: poll.value,
 		event: event.value,
-		scheduledDelete: scheduledDelete.value,
 		cw: useCw.value ? cw.value ?? '' : null,
 		localOnly: localOnly.value,
 		visibility: visibility.value,
@@ -981,17 +976,6 @@ async function openMfmCheatSheet() {
 	os.popup(defineAsyncComponent(() => import('@/components/MkMfmCheatSheetDialog.vue')), {}, {}, 'closed');
 }
 
-async function openScheduledNoteDelete() {
-	if (scheduledDelete.value) {
-		scheduledDelete.value = null;
-	} else {
-		scheduledDelete.value = {
-			deleteAt: null,
-			deleteAfter: null,
-		};
-	}
-}
-
 const postAccount = ref<Misskey.entities.UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
@@ -1057,9 +1041,6 @@ onMounted(() => {
 				if (draft.data.event) {
 					event.value = draft.data.event;
 				}
-				if (draft.data.scheduledDelete) {
-					scheduledDelete.value = draft.data.scheduledDelete;
-				}
 			}
 		}
 
@@ -1084,12 +1065,6 @@ onMounted(() => {
 					start: init.event.start,
 					end: init.event.end,
 					metadata: init.event.metadata,
-				};
-			}
-			if (init.scheduledDelete) {
-				scheduledDelete.value = {
-					deleteAt: init.deleteAt ? (new Date(init.deleteAt)).getTime() : null,
-					deleteAfter: null,
 				};
 			}
 			visibility.value = init.visibility;
