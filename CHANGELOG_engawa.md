@@ -15,7 +15,7 @@
 ### Misc
 
 -->
-## 0.3.0 (unreleased)
+## 0.3.0
 
 ### Release Date
 2024-03-14
