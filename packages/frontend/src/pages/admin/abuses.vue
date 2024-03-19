@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -209,10 +209,10 @@ const headerTabs = computed(() => [{
 	title: i18n.ts._abuse.resolver,
 }]);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.abuseReports,
 	icon: 'ti ti-exclamation-circle',
-});
+}));
 </script>
 <style lang="scss" module>
 .input-base {

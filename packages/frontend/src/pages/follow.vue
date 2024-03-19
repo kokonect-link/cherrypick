@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -12,15 +12,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
-import { mainRouter } from '@/router.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { userName } from '@/filters/user.js';
 import { defaultStore } from '@/store.js';
+import { mainRouter } from '@/router/main.js';
+import { userName } from '@/filters/user.js';
 
 async function follow(user): Promise<void> {
 	const { canceled } = await os.confirm({
 		type: 'question',
-		text: i18n.t('followConfirm', { name: userName(user) }),
+		text: i18n.tsx.followConfirm({ name: userName(user) }),
 	});
 
 	if (canceled) {
@@ -43,7 +44,7 @@ if (acct == null) {
 let promise;
 
 if (acct.startsWith('https://')) {
-	promise = os.api('ap/show', {
+	promise = misskeyApi('ap/show', {
 		uri: acct,
 	});
 	promise.then(res => {
@@ -61,7 +62,7 @@ if (acct.startsWith('https://')) {
 		}
 	});
 } else {
-	promise = os.api('users/show', Misskey.acct.parse(acct));
+	promise = misskeyApi('users/show', Misskey.acct.parse(acct));
 	promise.then(user => {
 		follow(user);
 	});

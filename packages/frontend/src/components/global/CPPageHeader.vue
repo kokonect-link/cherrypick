@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -14,22 +14,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 	<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
 	<div v-if="!thin_ && canBack && (actions && actions.length > 1 && ['index', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
-	<div v-if="metadata && metadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != metadata.avatar.id)">
+	<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id)">
 		<div style="width: 50px;"/>
 	</div>
 
-	<template v-if="metadata">
+	<template v-if="pageMetadata">
 		<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]">
-			<div v-if="metadata.avatar" :class="$style.titleAvatarContainer" @click="top">
-				<MkAvatar :class="$style.titleAvatar" :user="metadata.avatar" indicator/>
+			<div v-if="pageMetadata.avatar" :class="$style.titleAvatarContainer" @click="top">
+				<MkAvatar :class="$style.titleAvatar" :user="pageMetadata.avatar" indicator/>
 			</div>
-			<i v-else-if="metadata.icon" :class="[$style.titleIcon, metadata.icon]" @click="top"></i>
+			<i v-else-if="pageMetadata.icon" :class="[$style.titleIcon, pageMetadata.icon]" @click="top"></i>
 
 			<div :class="$style.title">
-				<MkUserName v-if="metadata.userName" :user="metadata.userName" :nowrap="true" @click="top"/>
-				<div v-else-if="metadata.title" @click="top">{{ metadata.title }}</div>
-				<div v-if="!narrow && metadata.subtitle" :class="$style.subtitle" @click="top">
-					{{ metadata.subtitle }}
+				<MkUserName v-if="pageMetadata.userName" :user="pageMetadata.userName" :nowrap="true" @click="top"/>
+				<div v-else-if="pageMetadata.title" @click="top">{{ pageMetadata.title }}</div>
+				<div v-if="!narrow && pageMetadata.subtitle" :class="$style.subtitle" @click="top">
+					{{ pageMetadata.subtitle }}
 				</div>
 				<div v-if="narrow && hasTabs" :class="[$style.subtitle, $style.activeTab]" @click="showTabsPopup">
 					{{ tabs.find(tab => tab.key === props.tab)?.title }}
@@ -52,8 +52,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-	<div v-if="metadata && metadata.avatar && ($i && $i.id !== metadata.userName?.id)" :class="$style.followButton">
-		<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="metadata.avatar" :transparent="false" :full="!narrow"/>
+	<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id)" :class="$style.followButton">
+		<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
 	</div>
 </div>
 </template>
@@ -63,10 +63,10 @@ import { onMounted, onUnmounted, ref, inject, watch, nextTick, shallowRef, compu
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@/scripts/scroll.js';
 import { globalEvents } from '@/events.js';
-import { injectPageMetadata } from '@/scripts/page-metadata.js';
+import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/router/main.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
@@ -98,7 +98,7 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const metadata = injectPageMetadata();
+const pageMetadata = injectReactiveMetadata();
 
 const hideTitle = false;
 const thin_ = props.thin || inject('shouldHeaderThin', false);
@@ -291,8 +291,8 @@ onUnmounted(() => {
 }
 
 .followButton {
-  composes: buttons;
-  margin: 0 var(--margin) 0 0;
+	composes: buttons;
+	margin: 0 var(--margin) 0 0;
 }
 
 .goBack {
@@ -348,7 +348,7 @@ onUnmounted(() => {
 	font-weight: bold;
 	flex-shrink: 1;
 	margin-left: 24px;
-  -webkit-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
 }
 
 .titleContainer_canBack {
@@ -356,13 +356,13 @@ onUnmounted(() => {
 }
 
 .titleAvatarContainer {
-  $size: 32px;
-  contain: strict;
-  overflow: clip;
-  width: $size;
-  height: $size;
-  padding: 8px;
-  flex-shrink: 0;
+	$size: 32px;
+	contain: strict;
+	overflow: clip;
+	width: $size;
+	height: $size;
+	padding: 8px;
+	flex-shrink: 0;
 }
 
 .titleAvatar {
@@ -443,8 +443,8 @@ onUnmounted(() => {
 }
 
 @container (max-width: 500px) {
-  .followButton {
-    margin: 0;
-  }
+	.followButton {
+		margin: 0;
+	}
 }
 </style>

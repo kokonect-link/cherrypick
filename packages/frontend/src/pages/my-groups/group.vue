@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -42,11 +42,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref, watch } from 'vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/router/main.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { userPage } from '@/filters/user.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const props = defineProps<{
 	groupId: string;
@@ -56,11 +57,11 @@ const group = ref(null);
 const users = ref([]);
 
 function fetchGroup() {
-	os.api('users/groups/show', {
+	misskeyApi('users/groups/show', {
 		groupId: props.groupId,
 	}).then(_group => {
 		group.value = _group;
-		os.api('users/show', {
+		misskeyApi('users/show', {
 			userIds: group.value.userIds,
 		}).then(_users => {
 			users.value = _users;
@@ -69,10 +70,7 @@ function fetchGroup() {
 }
 
 function invite() {
-	os.selectUser({
-		includeSelf: false,
-		includeHost: false,
-	}).then(user => {
+	os.selectUser({ includeSelf: false, localOnly: true }).then(user => {
 		os.apiWithDialog('users/groups/invite', {
 			groupId: group.value.id,
 			userId: user.id,
@@ -83,7 +81,7 @@ function invite() {
 async function removeUser(user) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('_group.banishConfirm', { name: user.name || user.username, group: group.value.name }),
+		text: i18n.tsx._group.banishConfirm({ name: user.name || user.username, group: group.value.name }),
 	});
 	if (canceled) return;
 
@@ -111,10 +109,7 @@ async function renameGroup() {
 }
 
 function transfer() {
-	os.selectUser({
-		includeSelf: false,
-		includeHost: false,
-	}).then(user => {
+	os.selectUser({ includeSelf: false, localOnly: true }).then(user => {
 		os.apiWithDialog('users/groups/transfer', {
 			groupId: group.value.id,
 			userId: user.id,
@@ -125,7 +120,7 @@ function transfer() {
 async function deleteGroup() {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: group.value.name }),
+		text: i18n.tsx.removeAreYouSure({ x: group.value.name }),
 	});
 	if (canceled) return;
 

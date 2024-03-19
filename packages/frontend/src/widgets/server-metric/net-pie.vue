@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -40,17 +40,12 @@ import bytes from '@/filters/bytes-net-v.js';
 import bytesSizes from '@/filters/bytes-net-sizes.js';
 
 const props = defineProps<{
-	connection: any,
+	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
 	meta: Misskey.entities.ServerInfoResponse
 }>();
 
 const inRecent = ref<number>(0);
 const outRecent = ref<number>(0);
-
-function onStats(connStats) {
-	inRecent.value = connStats.net.rx;
-	outRecent.value = connStats.net.tx;
-}
 
 onMounted(() => {
 	props.connection.on('stats', onStats);
@@ -59,6 +54,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	props.connection.off('stats', onStats);
 });
+
+function onStats(connStats: Misskey.entities.ServerStats) {
+	inRecent.value = connStats.net.rx;
+	outRecent.value = connStats.net.tx;
+}
 </script>
 
 <style lang="scss" module>

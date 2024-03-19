@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -7,11 +7,22 @@ import { defineAsyncComponent } from 'vue';
 import { permissions as MkPermissions } from 'cherrypick-js';
 import { utils, values } from '@syuilo/aiscript';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { customEmojis } from '@/custom-emojis.js';
 import { url, lang } from '@/config.js';
 import { nyaize } from '@/scripts/nyaize.js';
+
+export function aiScriptReadline(q: string): Promise<string> {
+	return new Promise(ok => {
+		os.inputText({
+			title: q,
+		}).then(({ result: a }) => {
+			ok(a ?? '');
+		});
+	});
+}
 
 export function createAiScriptEnv(opts) {
 	const table = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -50,7 +61,7 @@ export function createAiScriptEnv(opts) {
 				if (typeof token.value !== 'string') throw new Error('invalid token');
 			}
 			const actualToken: string|null = token?.value ?? miLocalStorage.getItem(`aiscriptSecure:${opts.storageKey}:${randomString}:accessToken`) ?? opts.token ?? null;
-			return os.api(ep.value, utils.valToJs(param), actualToken).then(res => {
+			return misskeyApi(ep.value, utils.valToJs(param), actualToken).then(res => {
 				return utils.jsToVal(res);
 			}, err => {
 				return values.ERROR('request_failed', utils.jsToVal(err));
@@ -93,7 +104,7 @@ export function createAiScriptEnv(opts) {
 					permissions,
 				}, {
 					accept: () => {
-						os.api('flash/gen-token', {
+						misskeyApi('flash/gen-token', {
 							permissions,
 						}).then(res => {
 							miLocalStorage.setItem(`aiscriptSecure:${opts.storageKey}:${randomString}:accessToken`, res!.token);

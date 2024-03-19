@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<img
 			v-for="decoration in decorations ?? user.avatarDecorations"
 			:class="[$style.decoration]"
-			:src="decoration.url"
+			:src="getDecorationUrl(decoration)"
 			:style="{
 				rotate: getDecorationAngle(decoration),
 				scale: getDecorationScale(decoration),
@@ -72,13 +72,20 @@ const bound = computed(() => props.link
 const playAnimation = ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
-const url = computed(() => (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
-	? getStaticImageUrl(props.user.avatarUrl)
-	: props.user.avatarUrl);
+const url = computed(() => {
+	if (props.user.avatarUrl == null) return null;
+	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
+	return props.user.avatarUrl;
+});
 
 function onClick(ev: MouseEvent): void {
 	if (props.link) return;
 	emit('click', ev);
+}
+
+function getDecorationUrl(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(decoration.url);
+	return decoration.url;
 }
 
 function getDecorationAngle(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
@@ -86,15 +93,15 @@ function getDecorationAngle(decoration: Omit<Misskey.entities.UserDetailed['avat
 	return angle === 0 ? undefined : `${angle * 360}deg`;
 }
 
+function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
+	const scaleX = decoration.flipH ? -1 : 1;
+	return scaleX === 1 ? undefined : `${scaleX} 1`;
+}
+
 function getDecorationOffset(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
 	const offsetX = decoration.offsetX ?? 0;
 	const offsetY = decoration.offsetY ?? 0;
 	return offsetX === 0 && offsetY === 0 ? undefined : `${offsetX * 100}% ${offsetY * 100}%`;
-}
-
-function getDecorationScale(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
-	const scaleX = decoration.flipH ? -1 : 1;
-	return scaleX === 1 ? undefined : `${scaleX} 1`;
 }
 
 function getDecorationTransform(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
@@ -116,6 +123,7 @@ function resetTimer() {
 const color = ref<string | undefined>();
 
 watch(() => props.user.avatarBlurhash, () => {
+	if (props.user.avatarBlurhash == null) return;
 	color.value = extractAvgColorFromBlurhash(props.user.avatarBlurhash);
 }, {
 	immediate: true,

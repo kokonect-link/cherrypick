@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -59,7 +59,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					if (!account) return null;
 					const userDetail = await cli.request('users/show', { userId: data.body.userId }, account.token);
 					return [t('_notification.youWereFollowed'), {
-						body: `${getUserName(data.body.user)} (@${data.body.user?.username}${data.body.user?.host != null ? '@' + data.body.user.host : ''})`,
+						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
 						icon: data.body.user.avatarUrl,
 						badge: iconUrl('user-plus'),
 						data,
@@ -163,7 +163,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 
 					const tag = `reaction:${data.body.note.id}`;
 					return [t('_notification.youGotReact', { name: getUserName(data.body.user) }), {
-						body: reaction + '\n' + data.body.note.text ?? '',
+						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+						body: `:${ reaction }:` + '\n' + data.body.note.text ?? '',
 						icon: data.body.user.avatarUrl,
 						tag,
 						badge,

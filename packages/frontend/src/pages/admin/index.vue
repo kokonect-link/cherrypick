@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -29,15 +29,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ComputedRef, Ref, onActivated, onMounted, onUnmounted, provide, watch, ref, computed } from 'vue';
+import { onActivated, onMounted, onUnmounted, provide, watch, ref, computed } from 'vue';
 import { i18n } from '@/i18n.js';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { instance } from '@/instance.js';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { lookupUser, lookupUserByEmail } from '@/scripts/lookup-user.js';
-import { useRouter } from '@/router.js';
-import { PageMetadata, definePageMetadata, provideMetadataReceiver } from '@/scripts/page-metadata.js';
+import { PageMetadata, definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import { useRouter } from '@/router/supplier.js';
 import { version } from '@/config.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';
@@ -53,7 +54,7 @@ const indexInfo = {
 provide('shouldOmitHeaderTitle', false);
 
 const INFO = ref(indexInfo);
-const childInfo: Ref<ComputedRef<PageMetadata> | null> = ref(null);
+const childInfo = ref<null | PageMetadata>(null);
 const narrow = ref(false);
 const view = ref(null);
 const el = ref<HTMLDivElement | null>(null);
@@ -66,7 +67,7 @@ const currentPage = computed(() => router.currentRef.value.child);
 const updateAvailable = ref(false);
 const releasesCherryPick = ref();
 
-os.api('admin/abuse-user-reports', {
+misskeyApi('admin/abuse-user-reports', {
 	state: 'unresolved',
 	limit: 1,
 }).then(reports => {
@@ -77,7 +78,7 @@ fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
 	method: 'GET',
 }).then(res => res.json())
 	.then(async res => {
-		const meta = await os.api('admin/meta');
+		const meta = await misskeyApi('admin/meta');
 		if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
 		else releasesCherryPick.value = res.filter(x => x.prerelease === false);
 		if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) updateAvailable.value = true;
@@ -271,17 +272,19 @@ watch(router.currentRef, (to) => {
 	}
 });
 
-provideMetadataReceiver((info) => {
+provideMetadataReceiver((metadataGetter) => {
+	const info = metadataGetter();
 	if (info == null) {
 		childInfo.value = null;
 	} else {
 		childInfo.value = info;
-		INFO.value.needWideArea = info.value.needWideArea ?? undefined;
+		INFO.value.needWideArea = info.needWideArea ?? undefined;
 	}
 });
+provideReactiveMetadata(INFO);
 
 function invite() {
-	os.api('admin/invite/create').then(x => {
+	misskeyApi('admin/invite/create').then(x => {
 		os.alert({
 			type: 'info',
 			text: x[0].code,
@@ -332,7 +335,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(INFO.value);
+definePageMetadata(() => INFO.value);
 
 defineExpose({
 	header: {

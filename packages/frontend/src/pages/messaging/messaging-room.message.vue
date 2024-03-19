@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -59,6 +59,7 @@ import MkTime from '@/components/global/MkTime.vue';
 import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const props = defineProps<{
 	message: Misskey.entities.MessagingMessage;
@@ -69,7 +70,7 @@ const isMe = computed(() => props.message.userId === $i?.id);
 const urls = computed(() => props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : []);
 
 function del(): void {
-	os.api('messaging/messages/delete', {
+	misskeyApi('messaging/messages/delete', {
 		messageId: props.message.id,
 	});
 }

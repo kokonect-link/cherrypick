@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -33,10 +33,18 @@ async function install(code: string): Promise<void> {
 		await installTheme(code);
 		os.alert({
 			type: 'success',
-			text: i18n.t('_theme.installed', { name: theme.name }),
+			text: i18n.tsx._theme.installed({ name: theme.name }),
 		});
 	} catch (err) {
+		console.log(err.message.toLowerCase());
 		switch (err.message.toLowerCase()) {
+			case 'builtin theme':
+				os.alert({
+					type: 'info',
+					text: i18n.ts._theme.alreadyInstalled,
+				});
+				break;
+
 			case 'this theme is already installed':
 				os.alert({
 					type: 'info',
@@ -59,8 +67,8 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts._theme.install,
 	icon: 'ti ti-download',
-});
+}));
 </script>

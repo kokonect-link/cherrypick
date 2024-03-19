@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -73,6 +73,7 @@ import { defaultStore } from '@/store.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { miLocalStorage } from '@/local-storage.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
@@ -105,7 +106,7 @@ async function fetch() {
 
 	if (props.userAcct) {
 		const acct = Misskey.acct.parse(props.userAcct);
-		user.value = await os.api('users/show', { username: acct.username, host: acct.host || undefined });
+		user.value = await misskeyApi('users/show', { username: acct.username, host: acct.host || undefined });
 		group.value = null;
 
 		pagination.value = {
@@ -122,7 +123,7 @@ async function fetch() {
 		});
 	} else {
 		user.value = null;
-		group.value = await os.api('users/groups/show', { groupId: props.groupId });
+		group.value = await misskeyApi('users/groups/show', { groupId: props.groupId });
 
 		pagination.value = {
 			endpoint: 'messaging/messages',
@@ -207,7 +208,7 @@ function onDrop(ev: DragEvent): void {
 }
 
 function onMessage(message) {
-	sound.play('chat');
+	sound.playMisskeySfx('chat');
 	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
 
 	const _isBottom = isBottomVisible(rootEl.value, 64);

@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -22,7 +22,7 @@ import { onMounted, onUnmounted, provide, inject, Ref, ref, watch, shallowRef } 
 
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@/const.js';
 import { deviceKind } from '@/scripts/device-kind.js';
-import { mainRouter } from '@/router.js';
+import { mainRouter } from '@/router/main.js';
 import { defaultStore } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -79,27 +79,32 @@ onMounted(() => {
 	watch([parentStickyTop, parentStickyBottom], calc);
 
 	watch(childStickyTop, () => {
+		if (bodyEl.value == null) return;
 		bodyEl.value.style.setProperty('--stickyTop', `${childStickyTop.value}px`);
 	}, {
 		immediate: true,
 	});
 
 	watch(childStickyBottom, () => {
+		if (bodyEl.value == null) return;
 		bodyEl.value.style.setProperty('--stickyBottom', `${childStickyBottom.value}px`);
 	}, {
 		immediate: true,
 	});
 
-	headerEl.value.style.position = 'sticky';
-	headerEl.value.style.top = 'var(--stickyTop, 0)';
-	headerEl.value.style.zIndex = '1000';
+	if (headerEl.value != null) {
+		headerEl.value.style.position = 'sticky';
+		headerEl.value.style.top = 'var(--stickyTop, 0)';
+		headerEl.value.style.zIndex = '1000';
+		observer.observe(headerEl.value);
+	}
 
-	footerEl.value.style.position = 'sticky';
-	footerEl.value.style.bottom = 'var(--stickyBottom, 0)';
-	footerEl.value.style.zIndex = '1000';
-
-	observer.observe(headerEl.value);
-	observer.observe(footerEl.value);
+	if (footerEl.value != null) {
+		footerEl.value.style.position = 'sticky';
+		footerEl.value.style.bottom = 'var(--stickyBottom, 0)';
+		footerEl.value.style.zIndex = '1000';
+		observer.observe(footerEl.value);
+	}
 
 	globalEvents.on('showEl', (showEl_receive) => {
 		showEl.value = showEl_receive;

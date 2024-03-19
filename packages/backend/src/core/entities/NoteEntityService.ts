@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -111,7 +111,7 @@ export class NoteEntityService implements OnModuleInit {
 				hide = false;
 			} else {
 				// フォロワーかどうか
-				const isFollowing = await this.followingsRepository.exist({
+				const isFollowing = await this.followingsRepository.exists({
 					where: {
 						followeeId: packedNote.userId,
 						followerId: meId,
@@ -167,7 +167,7 @@ export class NoteEntityService implements OnModuleInit {
 
 		return {
 			multiple: poll.multiple,
-			expiresAt: poll.expiresAt,
+			expiresAt: poll.expiresAt?.toISOString() ?? null,
 			choices,
 		};
 	}
@@ -342,9 +342,7 @@ export class NoteEntityService implements OnModuleInit {
 			updatedAtHistory: note.updatedAtHistory ? note.updatedAtHistory.map(x => x.toISOString()) : undefined,
 			noteEditHistory: note.noteEditHistory.length ? note.noteEditHistory : undefined,
 			userId: note.userId,
-			user: this.userEntityService.pack(note.user ?? note.userId, me, {
-				detail: false,
-			}),
+			user: this.userEntityService.pack(note.user ?? note.userId, me),
 			text: text,
 			cw: note.cw,
 			visibility: note.visibility,
@@ -370,6 +368,7 @@ export class NoteEntityService implements OnModuleInit {
 				color: channel.color,
 				isSensitive: channel.isSensitive,
 				allowRenoteToExternal: channel.allowRenoteToExternal,
+				userId: channel.userId,
 			} : undefined,
 			mentions: note.mentions.length > 0 ? note.mentions : undefined,
 			uri: note.uri ?? undefined,

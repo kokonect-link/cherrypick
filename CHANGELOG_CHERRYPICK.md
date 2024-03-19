@@ -1,8 +1,8 @@
 <!--
 ## 4.x.x
 출시일: unreleased<br>
-기반 Misskey 버전: 2023.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGELOG.md#2023xx) 문서를 참고하십시오.
+기반 Misskey 버전: 2024.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ## NOTE
 - 
@@ -23,12 +23,29 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.7.0
+출시일: 2024/3/19<br>
+기반 Misskey 버전: 2024.2.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202420](CHANGELOG.md#202420) 문서를 참고하십시오.
+
+### Client
+- Feat: 리노트 공개 범위를 지정할 수 있음 (kokonect-link/cherrypick#406)
+  - 이 기능은 '리노트 공개 범위 옵션 표시' 기능이 꺼져있어야 합니다.
+- Enhance: 빌트인 테마를 설치하려고 할 때 오류 메시지 개선
+- Enhance: '노트를 클릭하여 자세히 표시' 기능 개선
+  - 노트를 두 번 클릭해서 열 수 있음
+- Fix: 장식 추가로 일부 태그를 추가할 수 없음
+- Fix: 알림 위젯 필터링이 작동하지 않을 수 있음 (kokonect-link/cherrypick#404)
+- Fix: 노트 자세히 보기에서 노트 작성 폼을 클릭하면 내용이 초기화될 수 있음 (kokonect-link/cherrypick#410)
+- Fix: '설정 - 타임라인' 페이지가 표시되지 않음
+- Fix: '노트 - 리액션 목록' 기능이 작동하지 않음
+
+---
+
 ## 4.6.0
-출시일: 2024/1/08<br>
+출시일: 2024/1/8<br>
 기반 Misskey 버전: 2023.12.2<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANGELOG.md#2023122) 문서를 참고하십시오.
-
-> Misskey에서의 마이그레이션 문제를 해결하기 위해, 기존 CherryPick 서버에서는 이 버전으로 업데이트 후 노트 편집 시각 기록이 모두 삭제됩니다.
 
 ### General
 - Change: 노트를 번역할 때 유저가 고양이로 설정되어 있으면 nyaize를 적용
@@ -113,7 +130,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023122](CHANG
 - Fix: redisForJobQueue의 maxRetriesPerRequest를 null로 설정 (MisskeyIO/misskey#272)
 - Fix: Inbox 또는 Deliver 큐에 data 필드가 비어 있는 작업이 등록되지 않도록 (MisskeyIO/misskey#307)
 - Fix: Misskey에서 CherryPick으로 마이그레이션 하면 타임라인이 표시되지 않음
-  - 이 변경으로 인해 기존 CherryPick 서버에서 노트 편집 시각 기록이 모두 삭제됩니다.
 
 ---
 

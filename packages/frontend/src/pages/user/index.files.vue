@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -45,7 +45,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { notePage } from '@/filters/note.js';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkContainer from '@/components/MkContainer.vue';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import MkA from '@/components/global/MkA.vue';
@@ -87,7 +87,7 @@ onMounted(() => {
 		window.addEventListener('touchend', resetTimer);
 	}
 
-	os.api('users/notes', {
+	misskeyApi('users/notes', {
 		userId: props.user.id,
 		withFiles: true,
 		limit: 15,

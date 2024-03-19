@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<header :class="$style.editHeader">
 			<MkSelect v-model="widgetAdderSelected" style="margin-bottom: var(--margin)" data-cy-widget-select>
 				<template #label>{{ i18n.ts.selectWidget }}</template>
-				<option v-for="widget in widgetDefs" :key="widget" :value="widget">{{ i18n.t(`_widgets.${widget}`) }}</option>
+				<option v-for="widget in widgetDefs" :key="widget" :value="widget">{{ i18n.ts._widgets[widget] }}</option>
 			</MkSelect>
 			<MkButton primary data-cy-widget-add :class="$style.btn" @click="addWidget"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
 			<MkButton :class="$style.btn" @click="$emit('exit')"><i class="ti ti-check"></i> {{ i18n.ts.close }}</MkButton>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<header class="handle">
 						<span :class="$style.widgetContainerHandle"><i class="ti ti-menu"/></span>
 						<div style="position: absolute; top: 0; left: 35px; font-size: 12px; font-weight: bold; line-height: 33px;">
-							{{ i18n.t('_widgets.' + element.name) }}
+							{{ i18n.ts._widgets[element.name] }}
 						</div>
 						<button :class="$style.widgetContainerConfig" class="_button" @click.prevent.stop="configWidget(element.id)"><i class="ti ti-settings"></i></button>
 						<button :class="$style.widgetContainerRemove" data-cy-customize-container-remove class="_button" @click.prevent.stop="removeWidget(element)"><i class="ti ti-x"></i></button>
@@ -103,19 +103,21 @@ const updateWidget = (id, data) => {
 };
 
 function onContextmenu(widget: Widget, ev: MouseEvent) {
-	const isLink = (el: HTMLElement) => {
+	const element = ev.target as HTMLElement | null;
+	const isLink = (el: HTMLElement): boolean => {
 		if (el.tagName === 'A') return true;
 		if (el.parentElement) {
 			return isLink(el.parentElement);
 		}
+		return false;
 	};
-	if (isLink(ev.target)) return;
-	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
+	if (element && isLink(element)) return;
+	if (element && (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(element.tagName) || element.attributes['contenteditable'])) return;
 	if (window.getSelection()?.toString() !== '') return;
 
 	os.contextMenu([{
 		type: 'label',
-		text: i18n.t(`_widgets.${widget.name}`),
+		text: i18n.ts._widgets[widget.name],
 	}, {
 		icon: 'ti ti-settings',
 		text: i18n.ts.settings,

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -71,7 +71,7 @@ function add(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<stri
 				if (tag === 'center') textRef.value = `${textRef.value.substring(0, caretStart)}<center></center>${textRef.value.substring(caretEnd)}`;
 				if (tag === 'plain') textRef.value = `${textRef.value.substring(0, caretStart)}<plain></plain>${textRef.value.substring(caretEnd)}`;
 				if (tag === 'inlinecode') textRef.value = textRef.value.substring(0, caretStart) + '``' + textRef.value.substring(caretEnd);
-				if (tag === 'inlineblock') textRef.value = textRef.value.substring(0, caretStart) + '```' + '\n' + '\n' + '```' + textRef.value.substring(caretEnd);
+				if (tag === 'blockcode') textRef.value = textRef.value.substring(0, caretStart) + '```' + '\n' + '\n' + '```' + textRef.value.substring(caretEnd);
 				if (tag === 'mathinline') textRef.value = textRef.value.substring(0, caretStart) + '\\(\\)' + textRef.value.substring(caretEnd);
 				if (tag === 'mathblock') textRef.value = textRef.value.substring(0, caretStart) + '\\(\\\\ \\)' + textRef.value.substring(caretEnd);
 			} else {
@@ -83,7 +83,7 @@ function add(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<stri
 				if (tag === 'center') textRef.value = `${textRef.value.substring(0, caretStart)}<center>${textRef.value.substring(caretStart, caretEnd)}</center>${textRef.value.substring(caretEnd)}`;
 				if (tag === 'plain') textRef.value = `${textRef.value.substring(0, caretStart)}<plain>${textRef.value.substring(caretStart, caretEnd)}</plain>${textRef.value.substring(caretEnd)}`;
 				if (tag === 'inlinecode') textRef.value = textRef.value.substring(0, caretStart) + '`' + textRef.value.substring(caretStart, caretEnd) + '`' + textRef.value.substring(caretEnd);
-				if (tag === 'inlineblock') textRef.value = textRef.value.substring(0, caretStart) + '```' + '\n' + textRef.value.substring(caretStart, caretEnd) + '\n' + '```' + textRef.value.substring(caretEnd);
+				if (tag === 'blockcode') textRef.value = textRef.value.substring(0, caretStart) + '```' + '\n' + textRef.value.substring(caretStart, caretEnd) + '\n' + '```' + textRef.value.substring(caretEnd);
 				if (tag === 'mathinline') textRef.value = textRef.value.substring(0, caretStart) + '\\(' + textRef.value.substring(caretStart, caretEnd) + '\\)' + textRef.value.substring(caretEnd);
 				if (tag === 'mathblock') textRef.value = textRef.value.substring(0, caretStart) + '\\(' + textRef.value.substring(caretStart, caretEnd) + '\\\\ \\)' + textRef.value.substring(caretEnd);
 			}
@@ -101,7 +101,7 @@ function add(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<stri
 						? 2
 						: type.includes('inlinecode')
 							? -9
-							: type.includes('inlineblock')
+							: type.includes('blockcode')
 								? -5
 								: type.includes('mathinline')
 									? -8

@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	ref="dialog"
 	:width="400"
 	:height="450"
-	@close="dialog.close()"
+	@close="dialog?.close()"
 	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.renotesList }}</template>
@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div>{{ i18n.ts.nothing }}</div>
 			</div>
 			<template v-else>
-				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog.close()">
+				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog?.close()">
 					<MkUserCardMini :user="user" :withChart="false"/>
 				</MkA>
 			</template>
@@ -39,8 +39,8 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import * as os from '@/os.js';
 import { infoImageUrl } from '@/instance.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void,
@@ -52,12 +52,11 @@ const props = defineProps<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-const note = ref<Misskey.entities.Note>();
 const renotes = ref();
 const users = ref();
 
 onMounted(async () => {
-	const res = await os.api('notes/renotes', {
+	const res = await misskeyApi('notes/renotes', {
 		noteId: props.noteId,
 		limit: 30,
 	});

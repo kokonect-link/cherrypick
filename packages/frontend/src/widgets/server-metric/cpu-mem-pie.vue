@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -24,17 +24,12 @@ import * as Misskey from 'cherrypick-js';
 import XPie from './pie-compact.vue';
 
 const props = defineProps<{
-	connection: any,
+	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
 	meta: Misskey.entities.ServerInfoResponse
 }>();
 
 const cpuUsage = ref<number>(0);
 const memUsage = ref<number>(0);
-
-function onStats(stats) {
-	cpuUsage.value = stats.cpu;
-	memUsage.value = stats.mem.active / props.meta.mem.total;
-}
 
 onMounted(() => {
 	props.connection.on('stats', onStats);
@@ -43,6 +38,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	props.connection.off('stats', onStats);
 });
+
+function onStats(stats: Misskey.entities.ServerStats) {
+	cpuUsage.value = stats.cpu;
+	memUsage.value = stats.mem.active / props.meta.mem.total;
+}
 </script>
 
 <style lang="scss" module>

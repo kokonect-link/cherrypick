@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -103,7 +103,7 @@ function rejectInvite(invitation) {
 async function leave(group) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('leaveGroupConfirm', { name: group.name }),
+		text: i18n.tsx.leaveGroupConfirm({ name: group.name }),
 	});
 	if (canceled) return;
 	os.apiWithDialog('users/groups/leave', {
@@ -133,11 +133,10 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail-opened',
 }]);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.groups,
 	icon: 'ti ti-users',
-});
-
+}));
 </script>
 
 <style lang="scss" module>

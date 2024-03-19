@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -8,14 +8,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	ref="dialog"
 	:width="400"
 	:height="450"
-	@close="dialog.close()"
+	@close="dialog?.close()"
 	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.reactionsList }}</template>
 
 	<MkSpacer :marginMin="20" :marginMax="28">
 		<div v-if="note" class="_gaps">
-			<div v-if="reactions.length === 0" class="_fullinfo">
+			<div v-if="reactions && reactions.length === 0" class="_fullinfo">
 				<img :src="infoImageUrl" class="_ghost"/>
 				<div>{{ i18n.ts.nothing }}</div>
 			</div>
@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span style="margin-left: 4px;">{{ note.reactions[reaction] }}</span>
 					</button>
 				</div>
-				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog.close()">
+				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog?.close()">
 					<MkUserCardMini :user="user" :withChart="false"/>
 				</MkA>
 			</template>
@@ -46,7 +46,7 @@ import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import * as os from '@/os.js';
+import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
 import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
@@ -65,9 +65,9 @@ const reactions = ref<string[]>();
 const users = ref();
 
 watch(tab, async () => {
-	const res = await os.api('notes/reactions', {
+	const res = await misskeyApiGet('notes/reactions', {
 		noteId: props.noteId,
-		type: tab,
+		type: tab.value,
 		limit: 30,
 	});
 
@@ -75,7 +75,7 @@ watch(tab, async () => {
 });
 
 onMounted(() => {
-	os.api('notes/show', {
+	misskeyApi('notes/show', {
 		noteId: props.noteId,
 	}).then((res) => {
 		reactions.value = Object.keys(res.reactions);

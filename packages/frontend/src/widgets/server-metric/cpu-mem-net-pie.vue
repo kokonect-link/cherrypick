@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -55,7 +55,7 @@ import bytes from '@/filters/bytes-net-v.js';
 import bytesSizes from '@/filters/bytes-net-sizes.js';
 
 const props = defineProps<{
-	connection: any,
+	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
 	meta: Misskey.entities.ServerInfoResponse
 }>();
 
@@ -64,12 +64,12 @@ const memUsage = ref<number>(0);
 const inRecent = ref<number>(0);
 const outRecent = ref<number>(0);
 
-function onStats(stats) {
+function onStats(stats: Misskey.entities.ServerStats) {
 	cpuUsage.value = stats.cpu;
 	memUsage.value = stats.mem.active / props.meta.mem.total;
 }
 
-function onConnStats(connStats) {
+function onConnStats(connStats: Misskey.entities.ServerStats) {
 	inRecent.value = connStats.net.rx;
 	outRecent.value = connStats.net.tx;
 }

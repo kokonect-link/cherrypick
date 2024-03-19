@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<p>{{ i18n.ts.thisFlashRequiresTheFollowingPermissions }}</p>
 		<ul>
 			<li v-for="permission in props.permissions" :key="permission">
-				{{ i18n.t(`_permissions.${permission}`) }}
+				{{ i18n.ts._permissions[permission] }}
 			</li>
 		</ul>
 		<p>{{ i18n.ts.doYouWantToAllowThisPlayToAccessYourAccount }}</p>

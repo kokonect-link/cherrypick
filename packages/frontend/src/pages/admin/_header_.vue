@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -8,12 +8,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="buttons left">
 		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
-	<template v-if="metadata">
+	<template v-if="pageMetadata">
 		<div class="titleContainer" @click="showTabsPopup">
-			<i v-if="metadata.icon" class="icon" :class="metadata.icon"></i>
+			<i v-if="pageMetadata.icon" class="icon" :class="pageMetadata.icon"></i>
 
 			<div class="title">
-				<div class="title">{{ metadata.title }}</div>
+				<div class="title">{{ pageMetadata.title }}</div>
 			</div>
 		</div>
 		<div class="tabs">
@@ -42,7 +42,7 @@ import { popupMenu } from '@/os.js';
 import { scrollToTop } from '@/scripts/scroll.js';
 import MkButton from '@/components/MkButton.vue';
 import { globalEvents } from '@/events.js';
-import { injectPageMetadata } from '@/scripts/page-metadata.js';
+import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { defaultStore } from '@/store.js';
 
@@ -77,7 +77,7 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const metadata = injectPageMetadata();
+const pageMetadata = injectReactiveMetadata();
 
 const el = shallowRef<HTMLElement>(null);
 const tabRefs = {};
@@ -134,7 +134,7 @@ function goBack() {
 }
 
 const calcBg = () => {
-	const rawBg = metadata?.bg ?? 'var(--bg)';
+	const rawBg = pageMetadata.value?.bg ?? 'var(--bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	if (isMobile.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);

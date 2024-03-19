@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<details>
 							<summary>{{ i18n.ts.details }}</summary>
 							<ul>
-								<li v-for="p in token.permission" :key="p">{{ i18n.t(`_permissions.${p}`) }}</li>
+								<li v-for="p in token.permission" :key="p">{{ i18n.ts._permissions[p] }}</li>
 							</ul>
 						</details>
 						<div>
@@ -48,6 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref, computed } from 'vue';
 import FormPagination from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkKeyValue from '@/components/MkKeyValue.vue';
@@ -68,11 +69,11 @@ const pagination = {
 async function revoke(token) {
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.t('removeAreYouSure', { x: token.name ?? '' }),
+		text: i18n.tsx.removeAreYouSure({ x: token.name ?? '' }),
 	});
 	if (canceled) return;
 
-	os.api('i/revoke-token', { tokenId: token.id }).then(() => {
+	misskeyApi('i/revoke-token', { tokenId: token.id }).then(() => {
 		list.value.reload();
 	});
 }
@@ -81,10 +82,10 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.installedApps,
 	icon: 'ti ti-plug',
-});
+}));
 </script>
 
 <style lang="scss" module>

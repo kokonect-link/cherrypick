@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -122,6 +122,8 @@ export class NodeinfoServerService {
 					emailRequiredForSignup: meta.emailRequiredForSignup,
 					enableHcaptcha: meta.enableHcaptcha,
 					enableRecaptcha: meta.enableRecaptcha,
+					enableMcaptcha: meta.enableMcaptcha,
+					enableTurnstile: meta.enableTurnstile,
 					maxNoteTextLength: MAX_NOTE_TEXT_LENGTH,
 					enableEmail: meta.enableEmail,
 					enableServiceWorker: meta.enableServiceWorker,

@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -19,14 +19,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 
 const moderators = ref<Misskey.entities.UserDetailed[] | null>(null);
 const fetching = ref(true);
 
 onMounted(async () => {
-	moderators.value = await os.api('admin/show-users', {
+	moderators.value = await misskeyApi('admin/show-users', {
 		sort: '+lastActiveDate',
 		state: 'adminOrModerator',
 		limit: 30,

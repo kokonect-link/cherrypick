@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -17,3 +17,8 @@ declare const _DATA_TRANSFER_DECK_COLUMN_: string;
 
 // for dev-mode
 declare const _LANGS_FULL_: string[][];
+
+// TagCanvas
+interface Window {
+	TagCanvas: any;
+}

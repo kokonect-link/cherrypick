@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -7,31 +7,33 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
 	<MkSpacer :contentMax="700">
-		<div v-if="tab === 'featured'">
-			<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
-				<div class="_gaps_s">
-					<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
-				</div>
-			</MkPagination>
-		</div>
-
-		<div v-else-if="tab === 'my'">
-			<div class="_gaps">
-				<MkPagination v-slot="{items}" :pagination="myFlashsPagination">
+		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
+			<div v-if="tab === 'featured'" key="featured">
+				<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
 					<div class="_gaps_s">
 						<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
 					</div>
 				</MkPagination>
 			</div>
-		</div>
 
-		<div v-else-if="tab === 'liked'">
-			<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
-				<div class="_gaps_s">
-					<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
+			<div v-else-if="tab === 'my'" key="my">
+				<div class="_gaps">
+					<MkPagination v-slot="{items}" :pagination="myFlashsPagination">
+						<div class="_gaps_s">
+							<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
+						</div>
+					</MkPagination>
 				</div>
-			</MkPagination>
-		</div>
+			</div>
+
+			<div v-else-if="tab === 'liked'" key="liked">
+				<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
+					<div class="_gaps_s">
+						<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
+					</div>
+				</MkPagination>
+			</div>
+		</MkHorizontalSwipe>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
@@ -40,10 +42,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 import MkFlashPreview from '@/components/MkFlashPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import { useRouter } from '@/router.js';
+import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { useRouter } from '@/router/supplier.js';
 
 const router = useRouter();
 
@@ -92,8 +95,8 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-flare',
 }]);
 
-definePageMetadata(computed(() => ({
+definePageMetadata(() => ({
 	title: 'Play',
 	icon: 'ti ti-player-play',
-})));
+}));
 </script>

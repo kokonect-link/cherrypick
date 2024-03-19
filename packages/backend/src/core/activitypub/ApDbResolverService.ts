@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -127,12 +127,12 @@ export class ApDbResolverService implements OnApplicationShutdown {
 
 			return await this.cacheService.userByIdCache.fetchMaybe(
 				parsed.id,
-				() => this.usersRepository.findOneBy({ id: parsed.id }).then(x => x ?? undefined),
+				() => this.usersRepository.findOneBy({ id: parsed.id, isDeleted: false }).then(x => x ?? undefined),
 			) as MiLocalUser | undefined ?? null;
 		} else {
 			return await this.cacheService.uriPersonCache.fetch(
 				parsed.uri,
-				() => this.usersRepository.findOneBy({ uri: parsed.uri }),
+				() => this.usersRepository.findOneBy({ uri: parsed.uri, isDeleted: false }),
 			) as MiRemoteUser | null;
 		}
 	}
@@ -157,8 +157,12 @@ export class ApDbResolverService implements OnApplicationShutdown {
 
 		if (key == null) return null;
 
+		const user = await this.cacheService.findUserById(key.userId).catch(() => null) as MiRemoteUser | null;
+		if (user == null) return null;
+		if (user.isDeleted) return null;
+
 		return {
-			user: await this.cacheService.findUserById(key.userId) as MiRemoteUser,
+			user,
 			key,
 		};
 	}
@@ -172,6 +176,7 @@ export class ApDbResolverService implements OnApplicationShutdown {
 		key: MiUserPublickey | null;
 	} | null> {
 		const user = await this.apPersonService.resolvePerson(uri) as MiRemoteUser;
+		if (user.isDeleted) return null;
 
 		const key = await this.publicKeyByUserIdCache.fetch(
 			user.id,

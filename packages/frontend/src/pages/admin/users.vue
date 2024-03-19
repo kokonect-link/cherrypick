@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -92,7 +92,7 @@ const pagination = {
 };
 
 function searchUser() {
-	os.selectUser().then(user => {
+	os.selectUser({ includeSelf: true }).then(user => {
 		show(user);
 	});
 }
@@ -138,10 +138,10 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(computed(() => ({
+definePageMetadata(() => ({
 	title: i18n.ts.users,
 	icon: 'ti ti-users',
-})));
+}));
 </script>
 
 <style lang="scss" module>

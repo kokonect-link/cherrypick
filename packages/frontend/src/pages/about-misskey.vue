@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div class="_gaps_s">
 						<FormLink to="https://github.com/kokonect-link/cherrypick" external>
 							<template #icon><i class="ti ti-code"></i></template>
-							{{ i18n.ts._aboutMisskey.source }}
+							{{ i18n.ts._aboutMisskey.source }} ({{ i18n.ts._aboutMisskey.original }})
 							<template #suffix>GitHub</template>
 						</FormLink>
 						<!--
@@ -87,9 +87,36 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</FormLink>
 					</div>
 				</FormSection>
+				<FormSection v-if="instance.repositoryUrl !== 'https://github.com/kokonect-link/cherrypick'">
+					<div class="_gaps_s">
+						<MkInfo>
+							{{ i18n.tsx._aboutMisskey.thisIsModifiedVersion({ name: instance.name }) }}
+						</MkInfo>
+						<FormLink v-if="instance.repositoryUrl" :to="instance.repositoryUrl" external>
+							<template #icon><i class="ti ti-code"></i></template>
+							{{ i18n.ts._aboutMisskey.source }}
+						</FormLink>
+						<FormLink v-if="instance.providesTarball" :to="`/tarball/cherrypick-${version}.tar.gz`" external>
+							<template #icon><i class="ti ti-download"></i></template>
+							{{ i18n.ts._aboutMisskey.source }}
+							<template #suffix>Tarball</template>
+						</FormLink>
+						<MkInfo v-if="!instance.repositoryUrl && !instance.providesTarball" warn>
+							{{ i18n.ts.sourceCodeIsNotYetProvided }}
+						</MkInfo>
+					</div>
+				</FormSection>
 				<FormSection>
 					<template #label>{{ i18n.ts._aboutMisskey.projectMembers }}</template>
 					<div :class="$style.contributors">
+						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
+							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
+							<span :class="$style.contributorUsername">@noridev
+								<span :class="$style.contributorClient">
+									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
+								</span>
+							</span>
+						</a>
 						<a href="https://github.com/syuilo" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/4439005?v=4" :class="$style.contributorAvatar">
 							<span :class="$style.contributorUsername">@syuilo
@@ -130,61 +157,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</span>
 							</span>
 						</a>
-						<a href="https://github.com/noridev" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/11006910?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@noridev
-								<span :class="$style.contributorClient">
-									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
-								</span>
-							</span>
-						</a>
 						<a href="https://github.com/samunohito" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/46447427?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@samunohito</span>
+							<span :class="$style.contributorUsername">@samunohito
+								<span :class="$style.contributorClient">
+									<span :class="$style.misskey">Misskey</span>
+								</span>
+							</span>
 						</a>
 						<a href="https://github.com/anatawa12" target="_blank" :class="$style.contributor">
 							<img src="https://avatars.githubusercontent.com/u/22656849?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@anatawa12</span>
-						</a>
-					</div>
-				</FormSection>
-				<FormSection>
-					<template #label>{{ i18n.ts._aboutMisskey.contributors }}</template>
-					<div :class="$style.contributors" style="margin-bottom: 8px;">
-						<a href="https://github.com/mei23" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/30769358?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@mei23
+							<span :class="$style.contributorUsername">@anatawa12
 								<span :class="$style.contributorClient">
 									<span :class="$style.misskey">Misskey</span>
-								</span>
-							</span>
-						</a>
-						<a href="https://github.com/rinsuki" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/6533808?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@rinsuki
-								<span :class="$style.contributorClient">
-									<span :class="$style.misskey">Misskey</span>
-								</span>
-							</span>
-						</a>
-						<a href="https://github.com/robflop" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/8159402?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@robflop
-								<span :class="$style.contributorClient">
-									<span :class="$style.misskey">Misskey</span>
-								</span>
-							</span>
-						</a>
-						<a href="https://github.com/caipira113" target="_blank" :class="$style.contributor">
-							<img src="https://avatars.githubusercontent.com/u/54402969?v=4" :class="$style.contributorAvatar">
-							<span :class="$style.contributorUsername">@caipira113
-								<span :class="$style.contributorClient">
-									<span :class="$style.cherry">Cherry</span><span :class="$style.pick">Pick</span>
 								</span>
 							</span>
 						</a>
 					</div>
-					<MkLink url="https://github.com/kokonect-link/cherrypick/graphs/contributors">{{ i18n.ts._aboutMisskey.allContributors }}</MkLink>
 				</FormSection>
 				<FormSection>
 					<template #label>Special thanks</template>
@@ -236,9 +225,10 @@ import { version, basedMisskeyVersion } from '@/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
-import MkLink from '@/components/MkLink.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import { physics } from '@/scripts/physics.js';
 import { i18n } from '@/i18n.js';
+import { instance } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
@@ -315,7 +305,13 @@ const patronsWithIconWithMisskey = [{
 	icon: 'https://assets.misskey-hub.net/patrons/302dce2898dd457ba03c3f7dc037900b.jpg',
 }, {
 	name: 'taichan',
-	icon: 'https://assets.misskey-hub.net/patrons/f981ab0159fb4e2c998e05f7263e1cd9.png',
+	icon: 'https://assets.misskey-hub.net/patrons/f981ab0159fb4e2c998e05f7263e1cd9.jpg',
+}, {
+	name: '猫吉よりお',
+	icon: 'https://assets.misskey-hub.net/patrons/a11518b3b34b4536a4bdd7178ba76a7b.jpg',
+}, {
+	name: '有栖かずみ',
+	icon: 'https://assets.misskey-hub.net/patrons/9240e8e0ba294a8884143e99ac7ed6a0.jpg',
 }];
 
 const patronsWithCherryPick = [
@@ -522,10 +518,10 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.aboutMisskey,
 	icon: null,
-});
+}));
 </script>
 
 <style lang="scss" scoped>

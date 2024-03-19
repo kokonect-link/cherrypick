@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -31,6 +31,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
 					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
 				</MkSwitch>
+				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior" style="margin-left: 44px;">
+					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</template>
+					<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
+					<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
+				</MkSelect>
 			</div>
 
 			<div>
@@ -86,6 +91,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, watch } from 'vue';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkSelect from '@/components/MkSelect.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store.js';
@@ -109,6 +115,7 @@ const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'))
 const postFormVisibilityHotkey = computed(defaultStore.makeGetterSetter('postFormVisibilityHotkey'));
 const showRenoteConfirmPopup = computed(defaultStore.makeGetterSetter('showRenoteConfirmPopup'));
 const expandOnNoteClick = computed(defaultStore.makeGetterSetter('expandOnNoteClick'));
+const expandOnNoteClickBehavior = computed(defaultStore.makeGetterSetter('expandOnNoteClickBehavior'));
 const displayHeaderNavBarWhenScroll = computed(defaultStore.makeGetterSetter('displayHeaderNavBarWhenScroll'));
 const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('reactableRemoteReactionEnabled'));
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
@@ -140,8 +147,8 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: 'CherryPick',
 	icon: 'ti ti-bulb-filled',
-});
+}));
 </script>

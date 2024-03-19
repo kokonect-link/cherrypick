@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -86,8 +86,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 							<div v-if="translating || translation" class="translation">
 								<MkLoading v-if="translating" mini/>
-								<div v-else>
-									<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+								<div v-else-if="translation">
+									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
 									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false"/>
 									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
@@ -104,7 +104,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</dl>
 						<dl v-if="user.birthday" class="field">
 							<dt class="name"><i class="ti ti-cake ti-fw"></i> {{ i18n.ts.birthday }}</dt>
-							<dd class="value">{{ user.birthday.replace('-', '/').replace('-', '/') }} ({{ i18n.t('yearsOld', { age }) }})</dd>
+							<dd class="value">{{ user.birthday.replace('-', '/').replace('-', '/') }} ({{ i18n.tsx.yearsOld({ age }) }})</dd>
 						</dl>
 						<dl class="field">
 							<dt class="name"><i class="ti ti-calendar ti-fw"></i> {{ i18n.ts.registeredDate }}</dt>
@@ -183,13 +183,13 @@ import { getUserMenu } from '@/scripts/get-user-menu.js';
 import number from '@/filters/number.js';
 import { userPage } from '@/filters/user.js';
 import * as os from '@/os.js';
-import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { $i, iAmModerator } from '@/account.js';
 import { dateString } from '@/filters/date.js';
 import { confetti } from '@/scripts/confetti.js';
-import { api } from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
+import { useRouter } from '@/router/supplier.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
@@ -240,7 +240,7 @@ const translation = ref<Misskey.entities.UsersTranslateResponse | null>(null);
 const translating = ref(false);
 
 watch(moderationNote, async () => {
-	await os.api('admin/update-user-note', { userId: props.user.id, text: moderationNote.value });
+	await misskeyApi('admin/update-user-note', { userId: props.user.id, text: moderationNote.value });
 });
 
 const style = computed(() => {
@@ -291,7 +291,7 @@ function adjustMemoTextarea() {
 }
 
 async function updateMemo() {
-	await api('users/update-memo', {
+	await misskeyApi('users/update-memo', {
 		memo: memoDraft.value,
 		userId: props.user.id,
 	});
@@ -310,7 +310,7 @@ async function translate(): Promise<void> {
 
 	vibrate(defaultStore.state.vibrateSystem ? 5 : []);
 
-	const res = await os.api('users/translate', {
+	const res = await misskeyApi('users/translate', {
 		userId: props.user.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});

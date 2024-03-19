@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -129,11 +129,12 @@ import bytes from '@/filters/bytes.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const stats = ref<any>({});
 
 onMounted(() => {
-	os.api('users/stats', {
+	misskeyApi('users/stats', {
 		userId: $i!.id,
 	}).then(response => {
 		stats.value = response;
@@ -144,8 +145,8 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.accountInfo,
 	icon: 'ti ti-info-circle',
-});
+}));
 </script>

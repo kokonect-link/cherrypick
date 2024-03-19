@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -16,16 +16,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header>{{ i18n.ts.selectUser }}</template>
 	<div>
 		<div :class="$style.form">
-			<FormSplit :minWidth="170">
-				<MkInput v-if="includeHost" v-model="username" autofocus @update:modelValue="search">
+			<MkInput v-if="localOnly" v-model="username" :autofocus="true" @update:modelValue="search">
+				<template #label>{{ i18n.ts.username }}</template>
+				<template #prefix>@</template>
+			</MkInput>
+			<FormSplit v-else :minWidth="170">
+				<MkInput v-model="username" :autofocus="true" @update:modelValue="search">
 					<template #label>{{ i18n.ts.username }}</template>
 					<template #prefix>@</template>
 				</MkInput>
-				<MkInput v-else v-model="username" autofocus @update:modelValue="searchLocal">
-					<template #label>{{ i18n.ts.username }}</template>
-					<template #prefix>@</template>
-				</MkInput>
-				<MkInput v-if="includeHost" v-model="host" :datalist="[hostname]" @update:modelValue="search">
+				<MkInput v-model="host" :datalist="[hostname]" @update:modelValue="search">
 					<template #label>{{ i18n.ts.host }}</template>
 					<template #prefix>@</template>
 				</MkInput>
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span>{{ i18n.ts.noUsers }}</span>
 			</div>
 		</div>
-		<div v-if="(username == '' && !includeHost) || (username == '' && host == '' && includeHost)" :class="$style.recent">
+		<div v-if="username == '' && host == ''" :class="$style.recent">
 			<div :class="$style.users">
 				<div v-for="user in recentUsers" :key="user.id" class="_button" :class="[$style.user, { [$style.selected]: selected && selected.id === user.id }]" @click="selected = user" @dblclick="ok()">
 					<MkAvatar :user="user" :class="$style.avatar" indicator/>
@@ -66,11 +66,11 @@ import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
-import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { hostname } from '@/config.js';
+import { host as currentHost, hostname } from '@/config.js';
 
 const emit = defineEmits<{
 	(ev: 'ok', selected: Misskey.entities.UserDetailed): void;
@@ -80,81 +80,89 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<{
 	includeSelf?: boolean;
-  includeHost?: boolean;
+	localOnly?: boolean;
 }>(), {
-	includeHost: true,
+	includeSelf: false,
+	localOnly: false,
 });
 
 const username = ref('');
 const host = ref('');
-const users = ref<Misskey.entities.UserDetailed[]>([]);
+const users = ref<Misskey.entities.UserLite[]>([]);
 const recentUsers = ref<Misskey.entities.UserDetailed[]>([]);
-const selected = ref<Misskey.entities.UserDetailed | null>(null);
+const selected = ref<Misskey.entities.UserLite | null>(null);
 const dialogEl = ref();
 
-const search = () => {
+function search() {
 	if (username.value === '' && host.value === '') {
 		users.value = [];
 		return;
 	}
-	os.api('users/search-by-username-and-host', {
+	misskeyApi('users/search-by-username-and-host', {
 		username: username.value,
-		host: host.value,
+		host: props.localOnly ? '.' : host.value,
 		limit: 10,
 		detail: false,
 	}).then(_users => {
-		users.value = _users;
+		users.value = _users.filter((u) => {
+			if (props.includeSelf) {
+				return true;
+			} else {
+				return u.id !== $i?.id;
+			}
+		});
 	});
-};
+}
 
-const searchLocal = () => {
-	if (username.value === '') {
-		users.value = [];
-		return;
-	}
-	os.api('users/search', {
-		query: username.value,
-		origin: 'local',
-		limit: 10,
-		detail: false,
-	}).then(_users => {
-		users.value = _users;
-	});
-};
-
-const ok = () => {
+async function ok() {
 	if (selected.value == null) return;
-	emit('ok', selected.value);
+
+	const user = await misskeyApi('users/show', {
+		userId: selected.value.id,
+	});
+	emit('ok', user);
+
 	dialogEl.value.close();
 
 	// 最近使ったユーザー更新
 	let recents = defaultStore.state.recentlyUsedUsers;
-	recents = recents.filter(x => x !== selected.value.id);
+	recents = recents.filter(x => x !== selected.value?.id);
 	recents.unshift(selected.value.id);
 	defaultStore.set('recentlyUsedUsers', recents.splice(0, 16));
-};
+}
 
-const cancel = () => {
+function cancel() {
 	emit('cancel');
 	dialogEl.value.close();
-};
+}
 
 onMounted(() => {
-	os.api('users/show', {
+	misskeyApi('users/show', {
 		userIds: defaultStore.state.recentlyUsedUsers,
-	}).then(users => {
-		if (props.includeSelf && users.find(x => $i ? x.id === $i.id : true) == null) {
-			recentUsers.value = [$i, ...users];
-		} else {
-			recentUsers.value = users;
-		}
+	}).then(foundUsers => {
+		let _users = foundUsers;
+		_users = _users.filter((u) => {
+			if (props.localOnly) {
+				return u.host == null;
+			} else {
+				return true;
+			}
+		});
+		_users = _users.filter((u) => {
+			if (props.includeSelf) {
+				return true;
+			} else {
+				return u.id !== $i?.id;
+			}
+		});
+		recentUsers.value = _users;
 	});
 });
 </script>
 
 <style lang="scss" module>
 .form {
-	padding: 0 var(--root-margin);
+	padding: calc(var(--root-margin) / 2) var(--root-margin);
 }
 
 .result,

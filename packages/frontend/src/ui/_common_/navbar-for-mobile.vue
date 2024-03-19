@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -63,6 +63,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { version } from '@/config.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {
@@ -76,7 +77,7 @@ const controlPanelIndicated = ref(false);
 const releasesCherryPick = ref();
 
 if ($i.isAdmin ?? $i.isModerator) {
-	os.api('admin/abuse-user-reports', {
+	misskeyApi('admin/abuse-user-reports', {
 		state: 'unresolved',
 		limit: 1,
 	}).then(reports => {
@@ -87,7 +88,7 @@ if ($i.isAdmin ?? $i.isModerator) {
 		method: 'GET',
 	}).then(res => res.json())
 		.then(async res => {
-			const meta = await os.api('admin/meta');
+			const meta = await misskeyApi('admin/meta');
 			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
 			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
 			if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) controlPanelIndicated.value = true;
@@ -301,7 +302,7 @@ function more() {
 	left: 20px;
 	color: var(--navIndicator);
 	font-size: 6px;
-	animation: blink 1s infinite;
+	animation: global-blink 1s infinite;
 
 	&:has(.itemIndicateValueIcon) {
 		animation: none;

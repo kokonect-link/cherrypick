@@ -1,12 +1,12 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
 <MkStickyContainer>
 	<template #header>
-		<MkTab v-if="($i && ($i.id === user.id)) || user.publicReactions" v-model="tab" :class="$style.tab">
+		<MkTab v-if="($i && ($i.id === user.id || $i.isAdmin || $i.isModerator)) || user.publicReactions" v-model="tab" :class="$style.tab">
 			<option :value="null">{{ i18n.ts.notes }}</option>
 			<option value="all">{{ i18n.ts.all }}</option>
 			<option value="featured">{{ i18n.ts.featured }}</option>

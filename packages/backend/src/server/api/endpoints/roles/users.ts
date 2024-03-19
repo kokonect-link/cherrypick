@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -37,7 +37,7 @@ export const meta = {
 				},
 				user: {
 					type: 'object',
-					ref: 'User',
+					ref: 'UserDetailed',
 				},
 			},
 			required: ['id', 'user'],
@@ -94,7 +94,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			return await Promise.all(assigns.map(async assign => ({
 				id: assign.id,
-				user: await this.userEntityService.pack(assign.user!, me, { detail: true }),
+				user: await this.userEntityService.pack(assign.user!, me, { schema: 'UserDetailed' }),
 			})));
 		});
 	}

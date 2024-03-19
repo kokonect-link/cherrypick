@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -74,6 +74,9 @@ import { MiRoleAssignment } from '@/models/RoleAssignment.js';
 import { MiFlash } from '@/models/Flash.js';
 import { MiFlashLike } from '@/models/FlashLike.js';
 import { MiUserListFavorite } from '@/models/UserListFavorite.js';
+import { MiBubbleGameRecord } from '@/models/BubbleGameRecord.js';
+import { MiReversiGame } from '@/models/ReversiGame.js';
+
 import type { Repository } from 'typeorm';
 
 export {
@@ -148,6 +151,8 @@ export {
 	MiFlash,
 	MiFlashLike,
 	MiUserMemo,
+	MiBubbleGameRecord,
+	MiReversiGame,
 };
 
 export type AbuseReportResolversRepository = Repository<MiAbuseReportResolver>;
@@ -221,3 +226,5 @@ export type RoleAssignmentsRepository = Repository<MiRoleAssignment>;
 export type FlashsRepository = Repository<MiFlash>;
 export type FlashLikesRepository = Repository<MiFlashLike>;
 export type UserMemoRepository = Repository<MiUserMemo>;
+export type BubbleGameRecordsRepository = Repository<MiBubbleGameRecord>;
+export type ReversiGamesRepository = Repository<MiReversiGame>;

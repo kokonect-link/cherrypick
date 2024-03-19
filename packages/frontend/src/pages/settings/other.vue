@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -96,25 +96,20 @@ import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
-import { signout, $i } from '@/account.js';
+import { signout, signinRequired } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 import { globalEvents } from '@/events.js';
 
+const $i = signinRequired();
+
 const reportError = computed(defaultStore.makeGetterSetter('reportError'));
 const enableCondensedLineForAcct = computed(defaultStore.makeGetterSetter('enableCondensedLineForAcct'));
 const devMode = computed(defaultStore.makeGetterSetter('devMode'));
 const defaultWithReplies = computed(defaultStore.makeGetterSetter('defaultWithReplies'));
-
-function onChangeInjectFeaturedNote(v) {
-	os.api('i/update', {
-		injectFeaturedNote: v,
-	}).then((i) => {
-		$i!.injectFeaturedNote = i.injectFeaturedNote;
-	});
-}
 
 async function deleteAccount() {
 	{
@@ -159,7 +154,7 @@ async function updateRepliesAll(withReplies: boolean) {
 	});
 	if (canceled) return;
 
-	os.api('following/update-all', { withReplies });
+	misskeyApi('following/update-all', { withReplies });
 }
 
 watch([
@@ -172,8 +167,8 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata({
+definePageMetadata(() => ({
 	title: i18n.ts.other,
 	icon: 'ti ti-dots',
-});
+}));
 </script>

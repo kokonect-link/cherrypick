@@ -1,13 +1,13 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey, cherrypick contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="el" :class="[$style.root, { [$style.collapsed]: collapsed }]">
+<div ref="rootEl" :class="[$style.root, { [$style.collapsed]: collapsed }]">
 	<div>
-		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
-		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deleted }})</span>
+		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
+		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deletedNote }})</span>
 		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
 		<Mfm
 			v-if="note.text"
@@ -26,8 +26,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="translating || translation" :class="$style.translation">
 			<MkLoading v-if="translating" mini/>
-			<div v-else>
-				<b>{{ i18n.t('translatedFrom', { x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+			<div v-else-if="translation">
+				<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
 				<Mfm :text="translation.text" :author="note.user" :nyaize="noNyaize ? false : 'respect'" :emojiUrls="note.emojis" @click.stop/>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
@@ -53,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click.stop="collapsed = false;">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
-			<span v-if="note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
+			<span v-if="note.files && note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
 		</span>
 	</button>
 	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && !collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.showLess" class="_button" @click.stop="collapsed = true;">
@@ -80,7 +80,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-tooltip="i18n.ts.renote"
 				:class="$style.footerButton"
 				class="_button"
-				@click.stop="(defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !note.channel) || (note.channel && !note.channel.allowRenoteToExternal) || note.visibility === 'followers')) ? renoteOnly() : renote()"
+				@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !note.channel) || (note.channel && !note.channel.allowRenoteToExternal) || note.visibility === 'followers') ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
 				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ note.renoteCount }}</p>
@@ -107,7 +107,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkA v-if="defaultStore.state.infoButtonForNoteActionsEnabled && defaultStore.state.showNoteActionsOnlyHover" v-tooltip="i18n.ts.details" :to="notePage(note)" :class="$style.footerButton" style="text-decoration: none;" class="_button">
 				<i class="ti ti-info-circle"></i>
 			</MkA>
-			<button ref="menuButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @click.stop="menu()">
+			<button ref="menuButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.more" :class="$style.footerButton" class="_button" @click.stop="showMenu()">
 				<i class="ti ti-dots"></i>
 			</button>
 		</footer>
@@ -116,7 +116,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, inject, provide, Ref, ref, shallowRef, watch } from 'vue';
+import { computed, inject, provide, Ref, ref, shallowRef, watch } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
@@ -143,6 +143,7 @@ import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
 import { concat } from '@/scripts/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
 
 const props = withDefaults(defineProps<{
@@ -162,7 +163,7 @@ const emit = defineEmits<{
 
 const note = ref(deepClone(props.note));
 
-const el = shallowRef<HTMLElement>();
+const rootEl = shallowRef<HTMLElement>();
 const menuButton = shallowRef<HTMLElement>();
 const renoteButton = shallowRef<HTMLElement>();
 const reactButton = shallowRef<HTMLElement>();
@@ -185,11 +186,11 @@ const parsed = props.note.text ? mfm.parse(props.note.text) : null;
 const isLong = shouldCollapsed(props.note, []);
 const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = ref(isLong || (isMFM && defaultStore.state.collapseDefault) || props.note.files.length > 0 || props.note.poll);
+const collapsed = ref(isLong || (isMFM && defaultStore.state.collapseDefault) || (props.note.files && props.note.files.length > 0) || props.note.poll);
 
 const collapseLabel = computed(() => {
 	return concat([
-		props.note.files && props.note.files.length !== 0 ? [i18n.t('_cw.files', { count: props.note.files.length })] : [],
+		props.note.files && props.note.files.length !== 0 ? [i18n.tsx._cw.files({ count: props.note.files.length })] : [],
 	] as string[][]).join(' / ');
 });
 
@@ -199,7 +200,7 @@ if (props.mock) {
 	}, { deep: true });
 } else {
 	useNoteCapture({
-		rootEl: el,
+		rootEl: rootEl,
 		note: note,
 		pureNote: note,
 		isDeletedRef: isDeleted,
@@ -208,7 +209,7 @@ if (props.mock) {
 
 if (!props.mock) {
 	useTooltip(renoteButton, async (showing) => {
-		const renotes = await os.api('notes/renotes', {
+		const renotes = await misskeyApi('notes/renotes', {
 			noteId: props.note.id,
 			limit: 11,
 		});
@@ -281,7 +282,7 @@ function reply(viaKeyboard = false): void {
 		reply: props.note,
 		channel: props.note.channel,
 		animation: !viaKeyboard,
-	}, () => {
+	}).then(() => {
 		focus();
 	});
 }
@@ -290,16 +291,16 @@ function react(viaKeyboard = false): void {
 	pleaseLogin();
 	showMovedDialog();
 	if (props.note.reactionAcceptance === 'likeOnly') {
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
 		if (props.mock) {
 			return;
 		}
-		os.api('notes/reactions/create', {
+		misskeyApi('notes/reactions/create', {
 			noteId: props.note.id,
 			reaction: '❤️',
 		});
-		const el = reactButton.value as HTMLElement | null | undefined;
+		const el = reactButton.value;
 		if (el) {
 			const rect = el.getBoundingClientRect();
 			const x = rect.left + (el.offsetWidth / 2);
@@ -308,7 +309,7 @@ function react(viaKeyboard = false): void {
 		}
 	} else {
 		blur();
-		reactionPicker.show(reactButton.value, reaction => {
+		reactionPicker.show(reactButton.value ?? null, note.value, reaction => {
 			if (props.mock) {
 				emit('reaction', reaction);
 				return;
@@ -329,22 +330,22 @@ async function toggleReaction(reaction) {
 		});
 		if (confirm.canceled) return;
 
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/delete', {
+		misskeyApi('notes/reactions/delete', {
 			noteId: note.value.id,
 		}).then(() => {
 			if (oldReaction !== reaction) {
-				os.api('notes/reactions/create', {
+				misskeyApi('notes/reactions/create', {
 					noteId: note.value.id,
 					reaction: reaction,
 				});
 			}
 		});
 	} else {
-		sound.play('reaction');
+		sound.playMisskeySfx('reaction');
 
-		os.api('notes/reactions/create', {
+		misskeyApi('notes/reactions/create', {
 			noteId: note.value.id,
 			reaction: reaction,
 		});
@@ -358,20 +359,20 @@ function heartReact(): void {
 	pleaseLogin();
 	showMovedDialog();
 
-	sound.play('reaction');
+	sound.playMisskeySfx('reaction');
 
 	if (props.mock) {
 		return;
 	}
 
-	os.api('notes/reactions/create', {
+	misskeyApi('notes/reactions/create', {
 		noteId: props.note.id,
 		reaction: '❤️',
 	});
 	if (props.note.text && props.note.text.length > 100 && (Date.now() - new Date(props.note.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
 	}
-	const el = heartReactButton.value as HTMLElement | null | undefined;
+	const el = heartReactButton.value;
 	if (el) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + (el.offsetWidth / 2);
@@ -380,8 +381,8 @@ function heartReact(): void {
 	}
 }
 
-function undoReact(note): void {
-	const oldReaction = note.myReaction;
+function undoReact(targetNote: Misskey.entities.Note): void {
+	const oldReaction = targetNote.myReaction;
 	if (!oldReaction) return;
 
 	if (props.mock) {
@@ -389,17 +390,17 @@ function undoReact(note): void {
 		return;
 	}
 
-	os.api('notes/reactions/delete', {
-		noteId: note.id,
+	misskeyApi('notes/reactions/delete', {
+		noteId: targetNote.id,
 	});
 }
 
-function menu(viaKeyboard = false): void {
+function showMenu(viaKeyboard = false): void {
 	if (props.mock) {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, viewTextSource, noNyaize, menuButton, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, viewTextSource, noNyaize, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value, {
 		viaKeyboard,
 	}).then(focus).finally(cleanup);
@@ -429,7 +430,7 @@ async function translate(): Promise<void> {
 		return;
 	}
 
-	const res = await os.api('notes/translate', {
+	const res = await misskeyApi('notes/translate', {
 		noteId: props.note.id,
 		targetLang: miLocalStorage.getItem('lang') ?? navigator.language,
 	});
@@ -440,11 +441,11 @@ async function translate(): Promise<void> {
 }
 
 function focus() {
-	el.value.focus();
+	rootEl.value?.focus();
 }
 
 function blur() {
-	el.value.blur();
+	rootEl.value?.blur();
 }
 
 function emitUpdReaction(emoji: string, delta: number) {
