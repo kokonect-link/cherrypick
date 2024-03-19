@@ -63,7 +63,7 @@
 		"prismjs": "1.29.0",
 		"punycode": "2.3.1",
 		"rollup": "4.9.6",
-		"sanitize-html": "2.11.0",
+		"sanitize-html": "2.12.1",
 		"sass": "1.70.0",
 		"shiki": "1.0.0-beta.3",
 		"strict-event-emitter-types": "2.0.0",
