@@ -60,7 +60,7 @@ export class FetchInstanceMetadataService {
 		return await this.redisClient.set(
 			`fetchInstanceMetadata:mutex:v2:${host}`, '1',
 			'EX', 30, // 30秒したら自動でロック解除 https://github.com/misskey-dev/misskey/issues/13506#issuecomment-1975375395
-			'GET' // 古い値を返す（なかったらnull）
+			'GET', // 古い値を返す（なかったらnull）
 		);
 	}
 

@@ -25,6 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onUnmounted, onDeactivated, onMounted, computed, shallowRef, onActivated } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import MkPagination from '@/components/MkPagination.vue';
 import XNotification from '@/components/MkNotification.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
@@ -36,7 +37,6 @@ import { infoImageUrl } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import { mainRouter } from '@/router/main.js';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
-import * as Misskey from 'cherrypick-js';
 import { globalEvents } from '@/events.js';
 
 const props = defineProps<{
