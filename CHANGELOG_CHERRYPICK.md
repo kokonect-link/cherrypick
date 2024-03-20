@@ -28,17 +28,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
-## NOTE
-- 
-
-### General
-- 
-
 ### Client
 - Fix: 노트를 내보낼 때 노트의 편집 기록을 포함
 
 ### Server
-- 
+- Enhance: 디버깅을 보다 편하게 할 수 있도록 vite 생성 파일의 이름 개선
 
 ---
 
