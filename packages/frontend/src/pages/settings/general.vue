@@ -464,7 +464,7 @@ watch(fontSize, () => {
 	if (fontSize.value == null) {
 		miLocalStorage.removeItem('fontSize');
 	} else {
-		miLocalStorage.setItem('fontSize', fontSize.value as string);
+		miLocalStorage.setItem('fontSize', fontSize.value as number);
 	}
 });
 

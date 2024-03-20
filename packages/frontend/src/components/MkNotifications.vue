@@ -36,6 +36,7 @@ import { infoImageUrl } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import { mainRouter } from '@/router/main.js';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
+import * as Misskey from 'cherrypick-js';
 import { globalEvents } from '@/events.js';
 
 const props = defineProps<{
@@ -77,11 +78,12 @@ function reload() {
 	});
 }
 
-let connection;
+let connection: Misskey.ChannelConnection<Misskey.Channels['main']>;
 
 onMounted(() => {
 	connection = useStream().useChannel('main');
 	connection.on('notification', onNotification);
+	connection.on('notificationFlushed', reload);
 
 	globalEvents.on('reloadNotification', () => reload());
 });
@@ -90,6 +92,7 @@ onActivated(() => {
 	pagingComponent.value?.reload();
 	connection = useStream().useChannel('main');
 	connection.on('notification', onNotification);
+	connection.on('notificationFlushed', reload);
 });
 
 onUnmounted(() => {

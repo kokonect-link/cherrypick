@@ -109,7 +109,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				.limit(ps.limit)
 				.getRawMany<MiNoteReaction>();
 
-			return await Promise.all(reactions.map(reaction => this.noteReactionEntityService.pack(reaction, me, { withNote: true })));
+			return await this.noteReactionEntityService.packMany(reactions, me, { withNote: true });
 		});
 	}
 }
