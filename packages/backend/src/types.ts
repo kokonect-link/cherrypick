@@ -14,8 +14,8 @@
  * pollEnded - 自分のアンケートもしくは自分が投票したアンケートが終了した
  * receiveFollowRequest - フォローリクエストされた
  * followRequestAccepted - 自分の送ったフォローリクエストが承認された
- * roleAssigned - ロールが付与された
  * groupInvited - グループに招待された
+ * roleAssigned - ロールが付与された
  * achievementEarned - 実績を獲得
  * app - アプリ通知
  * test - テスト通知（サーバー側）
@@ -31,8 +31,8 @@ export const notificationTypes = [
 	'pollEnded',
 	'receiveFollowRequest',
 	'followRequestAccepted',
-	'roleAssigned',
 	'groupInvited',
+	'roleAssigned',
 	'achievementEarned',
 	'app',
 	'test',

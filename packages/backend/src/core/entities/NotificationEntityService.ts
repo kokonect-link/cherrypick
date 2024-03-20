@@ -164,11 +164,11 @@ export class NotificationEntityService implements OnModuleInit {
 			...(notification.type === 'reaction' ? {
 				reaction: notification.reaction,
 			} : {}),
-			...(notification.type === 'roleAssigned' ? {
-				role: role,
-			} : {}),
 			...(notification.type === 'groupInvited' ? {
 				invitation: this.userGroupInvitationEntityService.pack(notification.userGroupInvitationId),
+			} : {}),
+			...(notification.type === 'roleAssigned' ? {
+				role: role,
 			} : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,

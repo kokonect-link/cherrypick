@@ -2371,6 +2371,10 @@ export interface Locale extends ILocale {
      */
     "showNoteActionsOnlyHover": string;
     /**
+     * ノートのリアクション数を表示する
+     */
+    "showReactionsCount": string;
+    /**
      * 履歴はありません
      */
     "noHistory": string;
@@ -7677,6 +7681,10 @@ export interface Locale extends ILocale {
          * ソースを表示
          */
         "viewSource": string;
+        /**
+         * ログを表示
+         */
+        "viewLog": string;
     };
     "_preferencesBackups": {
         /**
@@ -9865,6 +9873,10 @@ export interface Locale extends ILocale {
          * 説明
          */
         "summary": string;
+        /**
+         * 非公開に設定するとプロフィールに表示されなくなりますが、URLを知っている人は引き続きアクセスできます。
+         */
+        "visibilityDescription": string;
     };
     "_pages": {
         /**
@@ -10155,6 +10167,10 @@ export interface Locale extends ILocale {
          * {n}人がリアクションしました
          */
         "reactedBySomeUsers": ParameterizedString<"n">;
+        /**
+         * {n}人がいいねしました
+         */
+        "likedBySomeUsers": ParameterizedString<"n">;
         /**
          * {n}人がリノートしました
          */

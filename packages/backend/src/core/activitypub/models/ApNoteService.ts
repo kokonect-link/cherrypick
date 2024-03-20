@@ -141,7 +141,7 @@ export class ApNoteService {
 				value,
 				object,
 			});
-			throw new Error('invalid note');
+			throw err;
 		}
 
 		const note = object as IPost;

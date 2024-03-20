@@ -4322,6 +4322,7 @@ export type components = {
       reactions: {
         [key: string]: number;
       };
+      reactionCount: number;
       renoteCount: number;
       repliesCount: number;
       uri?: string;
@@ -4515,6 +4516,15 @@ export type components = {
       createdAt: string;
       /** @enum {string} */
       type: 'test';
+    } | {
+      /** Format: id */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** @enum {string} */
+      type: 'groupInvited';
+      /** Format: id */
+      invitation: string;
     };
     DriveFile: {
       /**
@@ -9297,6 +9307,15 @@ export type operations = {
                 /** Format: misskey:id */
                 userListId: string;
               }]>;
+              groupInvited?: OneOf<[{
+                /** @enum {string} */
+                type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+              }, {
+                /** @enum {string} */
+                type: 'list';
+                /** Format: misskey:id */
+                userListId: string;
+              }]>;
               roleAssigned?: OneOf<[{
                 /** @enum {string} */
                 type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
@@ -10712,21 +10731,21 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           antennaId: string;
-          name: string;
+          name?: string;
           /** @enum {string} */
-          src: 'home' | 'all' | 'users' | 'list' | 'group' | 'users_blacklist';
+          src?: 'home' | 'all' | 'users' | 'list' | 'group' | 'users_blacklist';
           /** Format: misskey:id */
           userListId?: string | null;
           /** Format: misskey:id */
           userGroupId?: string | null;
-          keywords: string[][];
-          excludeKeywords: string[][];
-          users: string[];
-          caseSensitive: boolean;
+          keywords?: string[][];
+          excludeKeywords?: string[][];
+          users?: string[];
+          caseSensitive?: boolean;
           localOnly?: boolean;
-          withReplies: boolean;
-          withFile: boolean;
-          notify: boolean;
+          withReplies?: boolean;
+          withFile?: boolean;
+          notify?: boolean;
         };
       };
     };
@@ -18420,8 +18439,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'pollVote')[];
         };
       };
     };
@@ -18488,8 +18507,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'roleAssigned' | 'groupInvited' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'pollVote')[];
         };
       };
     };
@@ -19714,6 +19733,15 @@ export type operations = {
               userListId: string;
             }]>;
             followRequestAccepted?: OneOf<[{
+              /** @enum {string} */
+              type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
+            }, {
+              /** @enum {string} */
+              type: 'list';
+              /** Format: misskey:id */
+              userListId: string;
+            }]>;
+            groupInvited?: OneOf<[{
               /** @enum {string} */
               type: 'all' | 'following' | 'follower' | 'mutualFollow' | 'followingOrFollower' | 'never';
             }, {
@@ -24053,6 +24081,11 @@ export type operations = {
           summary: string;
           script: string;
           permissions: string[];
+          /**
+           * @default public
+           * @enum {string}
+           */
+          visibility?: 'public' | 'private';
         };
       };
     };
