@@ -286,8 +286,8 @@ const headerTabs = computed(() => [{
 
 definePageMetadata(() => ({
 	title: props.initPageId ? i18n.ts._pages.editPage
-				: props.initPageName && props.initUser ? i18n.ts._pages.readPage
-				: i18n.ts._pages.newPage,
+	: props.initPageName && props.initUser ? i18n.ts._pages.readPage
+	: i18n.ts._pages.newPage,
 	icon: 'ti ti-pencil',
 }));
 </script>
