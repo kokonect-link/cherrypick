@@ -45,6 +45,7 @@ describe('アンテナ', () => {
 		users: [''],
 		withFile: false,
 		withReplies: false,
+		excludeBots: false,
 	};
 
 	let root: User;
@@ -158,6 +159,7 @@ describe('アンテナ', () => {
 			users: [''],
 			withFile: false,
 			withReplies: false,
+			excludeBots: false,
 			localOnly: false,
 		};
 		assert.deepStrictEqual(response, expected);
