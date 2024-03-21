@@ -7,6 +7,7 @@
 
 import { Component, markRaw, Ref, ref, defineAsyncComponent } from 'vue';
 import { EventEmitter } from 'eventemitter3';
+import insertTextAtCursor from 'insert-text-at-cursor';
 import * as Misskey from 'cherrypick-js';
 import type { ComponentProps as CP } from 'vue-component-type-helpers';
 import type { Form, GetFormResultType } from '@/scripts/form.js';
@@ -20,6 +21,7 @@ import MkWelcomeToast from '@/components/MkWelcomeToast.vue';
 import MkDialog from '@/components/MkDialog.vue';
 import MkPasswordDialog from '@/components/MkPasswordDialog.vue';
 import MkEmojiPickerDialog from '@/components/MkEmojiPickerDialog.vue';
+import MkEmojiPickerWindow from '@/components/MkEmojiPickerWindow.vue';
 import MkPopupMenu from '@/components/MkPopupMenu.vue';
 import MkContextMenu from '@/components/MkContextMenu.vue';
 import { MenuItem } from '@/types/menu.js';
@@ -607,6 +609,60 @@ export async function cropImage(image: Misskey.entities.DriveFile, options: {
 				resolve(x);
 			},
 		}, 'closed');
+	});
+}
+
+type AwaitType<T> =
+	T extends Promise<infer U> ? U :
+	T extends (...args: any[]) => Promise<infer V> ? V :
+	T;
+let openingEmojiPicker: AwaitType<ReturnType<typeof popup>> | null = null;
+let activeTextarea: HTMLTextAreaElement | HTMLInputElement | null = null;
+export async function openEmojiPicker(src?: HTMLElement, opts, initialTextarea: typeof activeTextarea) {
+	if (openingEmojiPicker) return;
+
+	activeTextarea = initialTextarea;
+
+	const textareas = document.querySelectorAll('textarea, input');
+	for (const textarea of Array.from(textareas)) {
+		textarea.addEventListener('focus', () => {
+			activeTextarea = textarea;
+		});
+	}
+
+	const observer = new MutationObserver(records => {
+		for (const record of records) {
+			for (const node of Array.from(record.addedNodes).filter(node => node instanceof HTMLElement) as HTMLElement[]) {
+				const textareas = node.querySelectorAll('textarea, input') as NodeListOf<NonNullable<typeof activeTextarea>>;
+				for (const textarea of Array.from(textareas).filter(textarea => textarea.dataset.preventEmojiInsert == null)) {
+					if (document.activeElement === textarea) activeTextarea = textarea;
+					textarea.addEventListener('focus', () => {
+						activeTextarea = textarea;
+					});
+				}
+			}
+		}
+	});
+
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true,
+		attributes: false,
+		characterData: false,
+	});
+
+	openingEmojiPicker = await popup(MkEmojiPickerWindow, {
+		src,
+		...opts,
+	}, {
+		chosen: emoji => {
+			insertTextAtCursor(activeTextarea, emoji);
+		},
+		closed: () => {
+			openingEmojiPicker!.dispose();
+			openingEmojiPicker = null;
+			observer.disconnect();
+		},
 	});
 }
 
