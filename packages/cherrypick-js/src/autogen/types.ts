@@ -4301,8 +4301,6 @@ export type components = {
         [key: string]: string;
       };
       event?: Record<string, never> | null;
-      /** Format: date-time */
-      deleteAt?: string | null;
       /**
        * Format: id
        * @example xxxxxxxxxx
@@ -21665,10 +21663,6 @@ export type operations = {
             start?: number;
             end?: number | null;
             metadata?: Record<string, never>;
-          }) | null;
-          scheduledDelete?: ({
-            deleteAt?: number | null;
-            deleteAfter?: number | null;
           }) | null;
         };
       };
