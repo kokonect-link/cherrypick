@@ -10176,10 +10176,6 @@ export interface Locale extends ILocale {
          */
         "reactedBySomeUsers": ParameterizedString<"n">;
         /**
-         * {n}人がいいねしました
-         */
-        "likedBySomeUsers": ParameterizedString<"n">;
-        /**
          * {n}人がリノートしました
          */
         "renotedBySomeUsers": ParameterizedString<"n">;
