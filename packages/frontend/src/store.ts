@@ -7,7 +7,6 @@ import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
-import type { BuiltinTheme as ShikiBuiltinTheme } from 'shiki';
 import { Storage } from '@/pizzax.js';
 import { hemisphere } from '@/scripts/intl-const.js';
 
@@ -234,6 +233,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 	advancedMfm: {
+		where: 'device',
+		default: true,
+	},
+	showReactionsCount: {
 		where: 'device',
 		default: true,
 	},
