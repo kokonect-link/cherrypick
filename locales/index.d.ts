@@ -8179,6 +8179,14 @@ export interface Locale extends ILocale {
          * 文字の上にルビを表示します。
          */
         "rubyDescription": string;
+				/**
+				 * ボーダー
+				 */
+				"border": string;
+				/**
+				 * 内容を枠線で囲みます。
+				 */
+				"borderDescription": string;
     };
     "_instanceTicker": {
         /**
