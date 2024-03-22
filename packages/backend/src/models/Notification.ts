@@ -69,16 +69,16 @@ export type MiNotification = {
 	createdAt: string;
 	notifierId: MiUser['id'];
 } | {
-	type: 'roleAssigned';
-	id: string;
-	createdAt: string;
-	roleId: MiRole['id'];
-} | {
 	type: 'groupInvited';
 	id: string;
 	createdAt: string;
 	notifierId: MiUser['id'];
 	userGroupInvitationId: MiUserGroupInvitation['id'];
+} | {
+	type: 'roleAssigned';
+	id: string;
+	createdAt: string;
+	roleId: MiRole['id'];
 } | {
 	type: 'achievementEarned';
 	id: string;
