@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: syuilo and misskey-project
- * SPDX-License-Identifier: AGPL-3.0-only
- */
-
 export class User2faBackupCodes1690569881926 {
 	name = 'User2faBackupCodes1690569881926'
 

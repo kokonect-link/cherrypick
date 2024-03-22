@@ -74,7 +74,7 @@ export const paramDef = {
 		withFile: { type: 'boolean' },
 		notify: { type: 'boolean' },
 	},
-	required: ['antennaId'],
+	required: ['antennaId', 'name', 'src', 'keywords', 'excludeKeywords', 'users', 'caseSensitive', 'withReplies', 'withFile', 'notify'],
 } as const;
 
 @Injectable()
@@ -93,10 +93,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private globalEventService: GlobalEventService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
-			if (ps.keywords && ps.excludeKeywords) {
-				if (ps.keywords.flat().every(x => x === '') && ps.excludeKeywords.flat().every(x => x === '')) {
-					throw new Error('either keywords or excludeKeywords is required.');
-				}
+			if (ps.keywords.flat().every(x => x === '') && ps.excludeKeywords.flat().every(x => x === '')) {
+				throw new Error('either keywords or excludeKeywords is required.');
 			}
 			// Fetch the antenna
 			const antenna = await this.antennasRepository.findOneBy({
@@ -111,7 +109,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			let userList;
 			let userGroupJoining;
 
-			if ((ps.src === 'list' || antenna.src === 'list') && ps.userListId) {
+			if (ps.src === 'list' && ps.userListId) {
 				userList = await this.userListsRepository.findOneBy({
 					id: ps.userListId,
 					userId: me.id,
@@ -134,7 +132,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			await this.antennasRepository.update(antenna.id, {
 				name: ps.name,
 				src: ps.src,
-				userListId: ps.userListId !== undefined ? userList ? userList.id : null : undefined,
+				userListId: userList ? userList.id : null,
 				userGroupJoiningId: userGroupJoining ? userGroupJoining.id : null,
 				keywords: ps.keywords,
 				excludeKeywords: ps.excludeKeywords,

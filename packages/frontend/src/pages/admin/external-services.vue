@@ -123,7 +123,7 @@ function save() {
 		ctav3Model: ctav3Model.value,
 		ctav3Glossary: ctav3Glossary.value,
 	}).then(() => {
-		fetchInstance(true);
+		fetchInstance();
 	});
 }
 

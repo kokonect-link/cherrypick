@@ -1223,7 +1223,6 @@ hemisphere: "Letak kamu tinggal"
 withSensitive: "Lampirkan catatan dengan berkas sensitif"
 userSaysSomethingSensitive: "Postingan oleh {name} mengandung konten sensitif"
 enableHorizontalSwipe: "Geser untuk mengganti tab"
-surrender: "Batalkan"
 _bubbleGame:
   howToPlay: "Cara bermain"
   _howToPlay:

@@ -6,7 +6,7 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { UserToken, api, post, signup } from '../utils.js';
+import { api, post, signup } from '../utils.js';
 import type * as misskey from 'cherrypick-js';
 
 describe('API visibility', () => {
@@ -24,38 +24,38 @@ describe('API visibility', () => {
 		let target2: misskey.entities.SignupResponse;
 
 		/** public-post */
-		let pub: misskey.entities.Note;
+		let pub: any;
 		/** home-post */
-		let home: misskey.entities.Note;
+		let home: any;
 		/** followers-post */
-		let fol: misskey.entities.Note;
+		let fol: any;
 		/** specified-post */
-		let spe: misskey.entities.Note;
+		let spe: any;
 
 		/** public-reply to target's post */
-		let pubR: misskey.entities.Note;
+		let pubR: any;
 		/** home-reply to target's post */
-		let homeR: misskey.entities.Note;
+		let homeR: any;
 		/** followers-reply to target's post */
-		let folR: misskey.entities.Note;
+		let folR: any;
 		/** specified-reply to target's post */
-		let speR: misskey.entities.Note;
+		let speR: any;
 
 		/** public-mention to target */
-		let pubM: misskey.entities.Note;
+		let pubM: any;
 		/** home-mention to target */
-		let homeM: misskey.entities.Note;
+		let homeM: any;
 		/** followers-mention to target */
-		let folM: misskey.entities.Note;
+		let folM: any;
 		/** specified-mention to target */
-		let speM: misskey.entities.Note;
+		let speM: any;
 
 		/** reply target post */
-		let tgt: misskey.entities.Note;
+		let tgt: any;
 		//#endregion
 
-		const show = async (noteId: misskey.entities.Note['id'], by?: UserToken) => {
-			return await api('notes/show', {
+		const show = async (noteId: any, by: any) => {
+			return await api('/notes/show', {
 				noteId,
 			}, by);
 		};
@@ -70,7 +70,7 @@ describe('API visibility', () => {
 			target2 = await signup({ username: 'target2' });
 
 			// follow alice <= follower
-			await api('following/create', { userId: alice.id }, follower);
+			await api('/following/create', { userId: alice.id }, follower);
 
 			// normal posts
 			pub = await post(alice, { text: 'x', visibility: 'public' });
@@ -111,7 +111,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] public-postを未認証が見れる', async () => {
-			const res = await show(pub.id);
+			const res = await show(pub.id, null);
 			assert.strictEqual(res.body.text, 'x');
 		});
 
@@ -132,7 +132,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] home-postを未認証が見れる', async () => {
-			const res = await show(home.id);
+			const res = await show(home.id, null);
 			assert.strictEqual(res.body.text, 'x');
 		});
 
@@ -153,7 +153,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] followers-postを未認証が見れない', async () => {
-			const res = await show(fol.id);
+			const res = await show(fol.id, null);
 			assert.strictEqual(res.body.isHidden, true);
 		});
 
@@ -179,7 +179,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] specified-postを未認証が見れない', async () => {
-			const res = await show(spe.id);
+			const res = await show(spe.id, null);
 			assert.strictEqual(res.body.isHidden, true);
 		});
 		//#endregion
@@ -207,7 +207,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] public-replyを未認証が見れる', async () => {
-			const res = await show(pubR.id);
+			const res = await show(pubR.id, null);
 			assert.strictEqual(res.body.text, 'x');
 		});
 
@@ -233,7 +233,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] home-replyを未認証が見れる', async () => {
-			const res = await show(homeR.id);
+			const res = await show(homeR.id, null);
 			assert.strictEqual(res.body.text, 'x');
 		});
 
@@ -259,7 +259,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] followers-replyを未認証が見れない', async () => {
-			const res = await show(folR.id);
+			const res = await show(folR.id, null);
 			assert.strictEqual(res.body.isHidden, true);
 		});
 
@@ -290,7 +290,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] specified-replyを未認証が見れない', async () => {
-			const res = await show(speR.id);
+			const res = await show(speR.id, null);
 			assert.strictEqual(res.body.isHidden, true);
 		});
 		//#endregion
@@ -318,7 +318,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] public-mentionを未認証が見れる', async () => {
-			const res = await show(pubM.id);
+			const res = await show(pubM.id, null);
 			assert.strictEqual(res.body.text, '@target x');
 		});
 
@@ -344,7 +344,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] home-mentionを未認証が見れる', async () => {
-			const res = await show(homeM.id);
+			const res = await show(homeM.id, null);
 			assert.strictEqual(res.body.text, '@target x');
 		});
 
@@ -370,7 +370,7 @@ describe('API visibility', () => {
 		});
 
 		test('[show] followers-mentionを未認証が見れない', async () => {
-			const res = await show(folM.id);
+			const res = await show(folM.id, null);
 			assert.strictEqual(res.body.isHidden, true);
 		});
 
@@ -401,28 +401,28 @@ describe('API visibility', () => {
 		});
 
 		test('[show] specified-mentionを未認証が見れない', async () => {
-			const res = await show(speM.id);
+			const res = await show(speM.id, null);
 			assert.strictEqual(res.body.isHidden, true);
 		});
 		//#endregion
 
 		//#region HTL
 		test('[HTL] public-post が 自分が見れる', async () => {
-			const res = await api('notes/timeline', { limit: 100 }, alice);
+			const res = await api('/notes/timeline', { limit: 100 }, alice);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === pub.id);
 			assert.strictEqual(notes[0].text, 'x');
 		});
 
 		test('[HTL] public-post が 非フォロワーから見れない', async () => {
-			const res = await api('notes/timeline', { limit: 100 }, other);
+			const res = await api('/notes/timeline', { limit: 100 }, other);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === pub.id);
 			assert.strictEqual(notes.length, 0);
 		});
 
 		test('[HTL] followers-post が フォロワーから見れる', async () => {
-			const res = await api('notes/timeline', { limit: 100 }, follower);
+			const res = await api('/notes/timeline', { limit: 100 }, follower);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === fol.id);
 			assert.strictEqual(notes[0].text, 'x');
@@ -431,21 +431,21 @@ describe('API visibility', () => {
 
 		//#region RTL
 		test('[replies] followers-reply が フォロワーから見れる', async () => {
-			const res = await api('notes/replies', { noteId: tgt.id, limit: 100 }, follower);
+			const res = await api('/notes/replies', { noteId: tgt.id, limit: 100 }, follower);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === folR.id);
 			assert.strictEqual(notes[0].text, 'x');
 		});
 
 		test('[replies] followers-reply が 非フォロワー (リプライ先ではない) から見れない', async () => {
-			const res = await api('notes/replies', { noteId: tgt.id, limit: 100 }, other);
+			const res = await api('/notes/replies', { noteId: tgt.id, limit: 100 }, other);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === folR.id);
 			assert.strictEqual(notes.length, 0);
 		});
 
 		test('[replies] followers-reply が 非フォロワー (リプライ先である) から見れる', async () => {
-			const res = await api('notes/replies', { noteId: tgt.id, limit: 100 }, target);
+			const res = await api('/notes/replies', { noteId: tgt.id, limit: 100 }, target);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === folR.id);
 			assert.strictEqual(notes[0].text, 'x');
@@ -454,14 +454,14 @@ describe('API visibility', () => {
 
 		//#region MTL
 		test('[mentions] followers-reply が 非フォロワー (リプライ先である) から見れる', async () => {
-			const res = await api('notes/mentions', { limit: 100 }, target);
+			const res = await api('/notes/mentions', { limit: 100 }, target);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === folR.id);
 			assert.strictEqual(notes[0].text, 'x');
 		});
 
 		test('[mentions] followers-mention が 非フォロワー (メンション先である) から見れる', async () => {
-			const res = await api('notes/mentions', { limit: 100 }, target);
+			const res = await api('/notes/mentions', { limit: 100 }, target);
 			assert.strictEqual(res.status, 200);
 			const notes = res.body.filter((n: any) => n.id === folM.id);
 			assert.strictEqual(notes[0].text, '@target x');

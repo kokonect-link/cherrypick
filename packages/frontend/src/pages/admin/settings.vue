@@ -266,7 +266,7 @@ async function save(): void {
 		notesPerOneAd: notesPerOneAd.value,
 	});
 
-	fetchInstance(true);
+	fetchInstance();
 }
 
 const headerTabs = computed(() => []);

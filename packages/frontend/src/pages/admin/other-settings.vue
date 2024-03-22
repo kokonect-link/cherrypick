@@ -85,7 +85,7 @@ function save() {
 		enableChartsForFederatedInstances: enableChartsForFederatedInstances.value,
 		doNotSendNotificationEmailsForAbuseReport: doNotSendNotificationEmailsForAbuseReport.value,
 	}).then(() => {
-		fetchInstance(true);
+		fetchInstance();
 	});
 }
 

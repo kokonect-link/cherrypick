@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div class="version" @click="whatIsNewCherryPick">v{{ version }}</div>
 						<div class="version" style="font-size: 11px;" @click="whatIsNewMisskey">v{{ basedMisskeyVersion }} (Based on Misskey)</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
-							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true" :fallbackToImage="true"/>
+							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true"/>
 							<MkEmoji v-else class="emoji" :emoji="emoji.emoji" :normal="true" :noStyle="true"/>
 						</span>
 					</div>
@@ -312,15 +312,6 @@ const patronsWithIconWithMisskey = [{
 }, {
 	name: '有栖かずみ',
 	icon: 'https://assets.misskey-hub.net/patrons/9240e8e0ba294a8884143e99ac7ed6a0.jpg',
-}, {
-	name: 'イカロ(コアラ)',
-	icon: 'https://assets.misskey-hub.net/patrons/50b9bdc03735412c80807dbdf32cecb6.jpg',
-}, {
-	name: 'ハチノス３号',
-	icon: 'https://assets.misskey-hub.net/patrons/030347a6f8ce4e82bc5184b5aad09a18.jpg',
-}, {
-	name: 'Takeno',
-	icon: 'https://assets.misskey-hub.net/patrons/6fba81536aea48fe94a30909c502dfa1.jpg',
 }];
 
 const patronsWithCherryPick = [
@@ -427,8 +418,6 @@ const patronsWithMisskey = [
 	'てば',
 	'たっくん',
 	'SHO SEKIGUCHI',
-	'塩キャベツ',
-	'はとぽぷさん',
 ];
 
 let isKokonect = false;

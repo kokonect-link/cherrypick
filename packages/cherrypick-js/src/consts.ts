@@ -121,7 +121,6 @@ export const moderationLogTypes = [
 	'resetPassword',
 	'suspendRemoteInstance',
 	'unsuspendRemoteInstance',
-	'updateRemoteInstanceNote',
 	'markSensitiveDriveFile',
 	'unmarkSensitiveDriveFile',
 	'resolveAbuseReport',
@@ -261,12 +260,6 @@ export type ModerationLogPayloads = {
 	unsuspendRemoteInstance: {
 		id: string;
 		host: string;
-	};
-	updateRemoteInstanceNote: {
-		id: string;
-		host: string;
-		before: string | null;
-		after: string | null;
 	};
 	markSensitiveDriveFile: {
 		fileId: string;

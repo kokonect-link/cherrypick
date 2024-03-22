@@ -401,8 +401,7 @@ function toStories(component: string): Promise<string> {
 // glob('src/{components,pages,ui,widgets}/**/*.vue')
 (async () => {
 	const globs = await Promise.all([
-		glob('src/components/global/Mk*.vue'),
-		glob('src/components/global/RouterView.vue'),
+		glob('src/components/global/*.vue'),
 		glob('src/components/Mk{A,B}*.vue'),
 		glob('src/components/MkDigitalClock.vue'),
 		glob('src/components/MkEvent.vue'),
@@ -412,7 +411,6 @@ function toStories(component: string): Promise<string> {
 		glob('src/components/MkUserSetupDialog.*.vue'),
 		glob('src/components/MkInviteCode.vue'),
 		glob('src/pages/user/home.vue'),
-		glob('src/components/global/CP*.vue'),
 	]);
 	const components = globs.flat();
 	await Promise.all(components.map(async (component) => {

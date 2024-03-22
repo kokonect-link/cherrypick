@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: syuilo and misskey-project
- * SPDX-License-Identifier: AGPL-3.0-only
- */
-
 export class PollVotePoll1696604572677 {
 		name = 'PollVotePoll1696604572677';
 

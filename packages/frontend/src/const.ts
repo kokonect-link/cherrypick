@@ -65,8 +65,8 @@ export const notificationTypes = [
 	'pollEnded',
 	'receiveFollowRequest',
 	'followRequestAccepted',
-	'groupInvited',
 	'roleAssigned',
+	'groupInvited',
 	'achievementEarned',
 	'app',
 ] as const;
@@ -77,7 +77,6 @@ export const ROLE_POLICIES = [
 	'ltlAvailable',
 	'canPublicNote',
 	'canEditNote',
-	'mentionLimit',
 	'canInvite',
 	'inviteLimit',
 	'inviteLimitCycle',

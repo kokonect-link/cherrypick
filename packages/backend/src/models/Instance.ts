@@ -144,9 +144,4 @@ export class MiInstance {
 		nullable: true,
 	})
 	public infoUpdatedAt: Date | null;
-
-	@Column('varchar', {
-		length: 16384, default: '',
-	})
-	public moderationNote: string;
 }

@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'done', v: string): void;
+	(ev: 'done', v: any): void;
 	(ev: 'close'): void;
 	(ev: 'closed'): void;
 }>();
@@ -64,7 +64,7 @@ const emit = defineEmits<{
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 const picker = shallowRef<InstanceType<typeof MkEmojiPicker>>();
 
-function chosen(emoji: string) {
+function chosen(emoji: any) {
 	emit('done', emoji);
 	if (props.choseAndClose) {
 		modal.value?.close();

@@ -4,13 +4,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<a ref="el" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef } from 'vue';
+import { computed } from 'vue';
 import * as os from '@/os.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { url } from '@/config.js';
@@ -26,10 +26,6 @@ const props = withDefaults(defineProps<{
 	activeClass: null,
 	behavior: null,
 });
-
-const el = shallowRef<HTMLElement>();
-
-defineExpose({ $el: el });
 
 const router = useRouter();
 

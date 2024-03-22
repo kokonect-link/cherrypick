@@ -39,9 +39,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkSwitch v-model="isBlocked" :disabled="!meta || !instance" @update:modelValue="toggleBlock">{{ i18n.ts.blockThisInstance }}</MkSwitch>
 						<MkSwitch v-model="isSilenced" :disabled="!meta || !instance" @update:modelValue="toggleSilenced">{{ i18n.ts.silenceThisInstance }}</MkSwitch>
 						<MkButton @click="refreshMetadata"><i class="ti ti-refresh"></i> Refresh metadata</MkButton>
-						<MkTextarea v-model="moderationNote" manualSave>
-							<template #label>{{ i18n.ts.moderationNote }}</template>
-						</MkTextarea>
 					</div>
 				</FormSection>
 
@@ -122,7 +119,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkChart from '@/components/MkChart.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
@@ -144,7 +141,6 @@ import MkPagination from '@/components/MkPagination.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
 import { dateString } from '@/filters/date.js';
-import MkTextarea from '@/components/MkTextarea.vue';
 
 const props = defineProps<{
 	host: string;
@@ -159,7 +155,6 @@ const suspended = ref(false);
 const isBlocked = ref(false);
 const isSilenced = ref(false);
 const faviconUrl = ref<string | null>(null);
-const moderationNote = ref('');
 
 const usersPagination = {
 	endpoint: iAmModerator ? 'admin/show-users' : 'users' as const,
@@ -172,10 +167,6 @@ const usersPagination = {
 	offsetMode: true,
 };
 
-watch(moderationNote, async () => {
-	await misskeyApi('admin/federation/update-instance', { host: instance.value.host, moderationNote: moderationNote.value });
-});
-
 async function fetch(): Promise<void> {
 	if (iAmAdmin) {
 		meta.value = await misskeyApi('admin/meta');
@@ -187,7 +178,6 @@ async function fetch(): Promise<void> {
 	isBlocked.value = instance.value?.isBlocked ?? false;
 	isSilenced.value = instance.value?.isSilenced ?? false;
 	faviconUrl.value = getProxiedImageUrlNullable(instance.value?.faviconUrl, 'preview') ?? getProxiedImageUrlNullable(instance.value?.iconUrl, 'preview');
-	moderationNote.value = instance.value?.moderationNote;
 }
 
 async function toggleBlock(): Promise<void> {

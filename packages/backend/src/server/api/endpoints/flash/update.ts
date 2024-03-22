@@ -51,7 +51,7 @@ export const paramDef = {
 		} },
 		visibility: { type: 'string', enum: ['public', 'private'] },
 	},
-	required: ['flashId'],
+	required: ['flashId', 'title', 'summary', 'script', 'permissions'],
 } as const;
 
 @Injectable()
@@ -71,11 +71,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			await this.flashsRepository.update(flash.id, {
 				updatedAt: new Date(),
-				...Object.fromEntries(
-					Object.entries(ps).filter(
-						([key, val]) => (key !== 'flashId') && Object.hasOwn(paramDef.properties, key),
-					),
-				),
+				title: ps.title,
+				summary: ps.summary,
+				script: ps.script,
+				permissions: ps.permissions,
+				visibility: ps.visibility,
 			});
 		});
 	}

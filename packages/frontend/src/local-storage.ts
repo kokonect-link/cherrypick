@@ -9,7 +9,6 @@ type Keys =
 	'lastVersion' |
 	'lastBasedMisskeyVersion' |
 	'instance' |
-	'instanceCachedAt' |
 	'account' |
 	'accounts' |
 	'latestDonationInfoShownAt' |

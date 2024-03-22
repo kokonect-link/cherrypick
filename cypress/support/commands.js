@@ -30,7 +30,7 @@ Cypress.Commands.add('visitHome', () => {
 })
 
 Cypress.Commands.add('resetState', () => {
-	cy.window().then(win => {
+	cy.window(win => {
 		win.indexedDB.deleteDatabase('keyval-store');
 	});
 	cy.request('POST', '/api/reset-db', {}).as('reset');

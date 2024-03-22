@@ -54,6 +54,8 @@ const pagination = {
 	})),
 };
 
+console.log(Misskey);
+
 const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);

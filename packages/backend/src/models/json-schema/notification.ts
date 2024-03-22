@@ -386,20 +386,5 @@ export const packedNotificationSchema = {
 				enum: ['test'],
 			},
 		},
-	}, {
-		type: 'object',
-		properties: {
-			...baseSchema.properties,
-			type: {
-				type: 'string',
-				optional: false, nullable: false,
-				enum: ['groupInvited'],
-			},
-			invitation: {
-				type: 'string',
-				optional: false, nullable: false,
-				format: 'id',
-			},
-		},
 	}],
 } as const;

@@ -463,7 +463,6 @@ options: "Alternativ"
 icon: "Avatar"
 replies: "Svar"
 renotes: "Renote"
-surrender: "Avbryt"
 _initialAccountSetting:
   theseSettingsCanEditLater: "Du kan endre disse innstillingene senere."
 _achievements:

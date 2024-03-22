@@ -15,13 +15,6 @@
 ### Misc
 
 -->
-## 0.3.1
-
-### Release Date
-- 一部不具合を修正
-- Misskey 2023.3.1に対応
-
-
 ## 0.3.0
 
 ### Release Date

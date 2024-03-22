@@ -15,12 +15,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:key="emoji.name"
 					v-vibrate="defaultStore.state.vibrateSystem ? 50 : []"
 					class="_button item"
-					:disabled="!canReact(emoji)"
 					:title="emoji.name"
 					tabindex="0"
 					@click="chosen(emoji, $event)"
 				>
-					<MkCustomEmoji class="emoji" :name="emoji.name" :fallbackToImage="true"/>
+					<MkCustomEmoji class="emoji" :name="emoji.name"/>
 				</button>
 			</div>
 			<div v-if="searchResultUnicode.length > 0" class="body">
@@ -41,17 +40,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<section v-if="showPinned && (pinned && pinned.length > 0)">
 				<div class="body">
 					<button
-						v-for="emoji in pinnedEmojisDef"
-						:key="getKey(emoji)"
-						:data-emoji="getKey(emoji)"
+						v-for="emoji in pinned"
+						:key="emoji"
+						:data-emoji="emoji"
 						class="_button item"
-						:disabled="!canReact(emoji)"
 						tabindex="0"
 						@pointerenter="computeButtonTitle"
 						@click="chosen(emoji, $event)"
 					>
-						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true"/>
-						<MkEmoji v-else class="emoji" :emoji="getKey(emoji)" :normal="true"/>
+						<MkCustomEmoji v-if="emoji[0] === ':'" class="emoji" :name="emoji" :normal="true"/>
+						<MkEmoji v-else class="emoji" :emoji="emoji" :normal="true"/>
 					</button>
 				</div>
 			</section>
@@ -60,16 +58,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<header class="_acrylic"><i class="ti ti-clock ti-fw"></i> {{ i18n.ts.recentUsed }}</header>
 				<div class="body">
 					<button
-						v-for="emoji in recentlyUsedEmojisDef"
-						:key="getKey(emoji)"
+						v-for="emoji in recentlyUsedEmojis"
+						:key="emoji"
 						class="_button item"
-						:disabled="!canReact(emoji)"
-						:data-emoji="getKey(emoji)"
+						:data-emoji="emoji"
 						@pointerenter="computeButtonTitle"
 						@click="chosen(emoji, $event)"
 					>
-						<MkCustomEmoji v-if="!emoji.hasOwnProperty('char')" class="emoji" :name="getKey(emoji)" :normal="true"/>
-						<MkEmoji v-else class="emoji" :emoji="getKey(emoji)" :normal="true"/>
+						<MkCustomEmoji v-if="emoji[0] === ':'" class="emoji" :name="emoji" :normal="true"/>
+						<MkEmoji v-else class="emoji" :emoji="emoji" :normal="true"/>
 					</button>
 				</div>
 			</section>
@@ -80,8 +77,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-for="child in customEmojiFolderRoot.children"
 				:key="`custom:${child.value}`"
 				:initialShown="false"
-				:emojis="computed(() => customEmojis.filter(e => filterCategory(e, child.value)).map(e => `:${e.name}:`))"
-				:disabledEmojis="computed(() => customEmojis.filter(e => filterCategory(e, child.value)).filter(e => !canReact(e)).map(e => `:${e.name}:`))"
+				:emojis="computed(() => customEmojis.filter(e => child.value === '' ? (e.category === 'null' || !e.category) : e.category === child.value).filter(filterAvailable).map(e => `:${e.name}:`))"
 				:hasChildSection="child.children.length !== 0"
 				:customEmojiTree="child.children"
 				@chosen="chosen"
@@ -114,7 +110,6 @@ import {
 	unicodeEmojiCategories as categories,
 	getEmojiName,
 	CustomEmojiFolderTree,
-	getUnicodeEmoji,
 } from '@/scripts/emojilist.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import * as os from '@/os.js';
@@ -151,13 +146,6 @@ const {
 	emojiPickerHeight,
 	recentlyUsedEmojis,
 } = defaultStore.reactiveState;
-
-const recentlyUsedEmojisDef = computed(() => {
-	return recentlyUsedEmojis.value.map(getDef);
-});
-const pinnedEmojisDef = computed(() => {
-	return pinned.value?.map(getDef);
-});
 
 const pinned = computed(() => props.pinnedEmojis);
 const size = computed(() => emojiPickerScale.value);
@@ -350,16 +338,12 @@ watch(q, () => {
 		return matches;
 	};
 
-	searchResultCustom.value = Array.from(searchCustom());
+	searchResultCustom.value = Array.from(searchCustom()).filter(filterAvailable);
 	searchResultUnicode.value = Array.from(searchUnicode());
 });
 
-function canReact(emoji: Misskey.entities.EmojiSimple | UnicodeEmojiDef | string): boolean {
+function filterAvailable(emoji: Misskey.entities.EmojiSimple): boolean {
 	return !props.targetNote || checkReactionPermissions($i!, props.targetNote, emoji);
-}
-
-function filterCategory(emoji: Misskey.entities.EmojiSimple, category: string): boolean {
-	return category === '' ? (emoji.category === 'null' || !emoji.category) : emoji.category === category;
 }
 
 function focus() {
@@ -379,22 +363,11 @@ function getKey(emoji: string | Misskey.entities.EmojiSimple | UnicodeEmojiDef):
 	return typeof emoji === 'string' ? emoji : 'char' in emoji ? emoji.char : `:${emoji.name}:`;
 }
 
-function getDef(emoji: string): string | Misskey.entities.EmojiSimple | UnicodeEmojiDef {
-	if (emoji.includes(':')) {
-		// カスタム絵文字が存在する場合はその情報を持つオブジェクトを返し、
-		// サーバの管理画面から削除された等で情報が見つからない場合は名前の文字列をそのまま返しておく（undefinedを返すとエラーになるため）
-		const name = emoji.replaceAll(':', '');
-		return customEmojisMap.get(name) ?? emoji;
-	} else {
-		return getUnicodeEmoji(emoji);
-	}
-}
-
 /** @see MkEmojiPicker.section.vue */
 function computeButtonTitle(ev: MouseEvent): void {
 	const elm = ev.target as HTMLElement;
 	const emoji = elm.dataset.emoji as string;
-	elm.title = getEmojiName(emoji);
+	elm.title = getEmojiName(emoji) ?? emoji;
 }
 
 function chosen(emoji: any, ev?: MouseEvent) {
@@ -554,18 +527,6 @@ defineExpose({
 						width: auto;
 						height: auto;
 						min-width: 0;
-
-						&:disabled {
-							cursor: not-allowed;
-							background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
-							opacity: 1;
-
-							> .emoji {
-								filter: grayscale(1);
-								mix-blend-mode: exclusion;
-								opacity: 0.8;
-							}
-						}
 					}
 				}
 			}
@@ -588,18 +549,6 @@ defineExpose({
 						width: auto;
 						height: auto;
 						min-width: 0;
-
-						&:disabled {
-							cursor: not-allowed;
-							background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
-							opacity: 1;
-
-							> .emoji {
-								filter: grayscale(1);
-								mix-blend-mode: exclusion;
-								opacity: 0.8;
-							}
-						}
 					}
 				}
 			}
@@ -713,18 +662,6 @@ defineExpose({
 					&:active {
 						background: var(--accent);
 						box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15);
-					}
-
-					&:disabled {
-						cursor: not-allowed;
-						background: linear-gradient(-45deg, transparent 0% 48%, var(--X6) 48% 52%, transparent 52% 100%);
-						opacity: 1;
-
-						> .emoji {
-							filter: grayscale(1);
-							mix-blend-mode: exclusion;
-							opacity: 0.8;
-						}
 					}
 
 					> .emoji {

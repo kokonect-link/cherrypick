@@ -51,7 +51,7 @@ describe('AnnouncementService', () => {
 
 	function createAnnouncement(data: Partial<MiAnnouncement & { createdAt: Date }> = {}) {
 		return announcementsRepository.insert({
-			id: genAidx(data.createdAt?.getTime() ?? Date.now()),
+			id: genAidx(data.createdAt ?? new Date()),
 			updatedAt: null,
 			title: 'Title',
 			text: 'Text',

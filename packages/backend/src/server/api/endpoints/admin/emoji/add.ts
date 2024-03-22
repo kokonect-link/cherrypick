@@ -31,10 +31,7 @@ export const meta = {
 		},
 	},
 
-	res: {
-		type: 'object',
-		ref: 'EmojiDetailed',
-	},
+	ref: 'EmojiDetailed',
 } as const;
 
 export const paramDef = {

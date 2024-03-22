@@ -94,7 +94,7 @@ import * as os from '@/os.js';
 import { isFullscreenNotSupported } from '@/scripts/device-kind.js';
 import hasAudio from '@/scripts/media-has-audio.js';
 import MkMediaRange from '@/components/MkMediaRange.vue';
-import { $i, iAmModerator } from '@/account.js';
+import { iAmModerator } from '@/account.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 const props = defineProps<{
@@ -138,21 +138,12 @@ function showMenu(ev: MouseEvent) {
 
 	if (iAmModerator) {
 		menu.push({
+			type: 'divider',
+		}, {
 			text: props.video.isSensitive ? i18n.ts.unmarkAsSensitive : i18n.ts.markAsSensitive,
 			icon: props.video.isSensitive ? 'ti ti-eye' : 'ti ti-eye-exclamation',
 			danger: true,
 			action: () => toggleSensitive(props.video),
-		});
-	}
-
-	if ($i?.id === props.video.userId) {
-		menu.push({
-			type: 'divider',
-		}, {
-			type: 'link' as const,
-			text: i18n.ts._fileViewer.title,
-			icon: 'ti ti-info-circle',
-			to: `/my/drive/file/${props.video.id}`,
 		});
 	}
 

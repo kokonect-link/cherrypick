@@ -1,8 +1,3 @@
-/*
- * SPDX-FileCopyrightText: syuilo and misskey-project
- * SPDX-License-Identifier: AGPL-3.0-only
- */
-
 export class MutingNotificationTypes1695605508898 {
     name = 'MutingNotificationTypes1695605508898'
 

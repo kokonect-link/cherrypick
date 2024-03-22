@@ -142,7 +142,7 @@ function save() {
 		turnstileSiteKey: turnstileSiteKey.value,
 		turnstileSecretKey: turnstileSecretKey.value,
 	}).then(() => {
-		fetchInstance(true);
+		fetchInstance();
 	});
 }
 </script>

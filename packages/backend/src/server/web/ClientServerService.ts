@@ -19,7 +19,6 @@ import fastifyView from '@fastify/view';
 import fastifyCookie from '@fastify/cookie';
 import fastifyProxy from '@fastify/http-proxy';
 import vary from 'vary';
-import htmlSafeJsonStringify from 'htmlescape';
 import type { Config } from '@/config.js';
 import { getNoteSummary } from '@/misc/get-note-summary.js';
 import { DI } from '@/di-symbols.js';
@@ -29,12 +28,12 @@ import type { DbQueue, DeliverQueue, EndedPollNotificationQueue, InboxQueue, Obj
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { PageEntityService } from '@/core/entities/PageEntityService.js';
-import { MetaEntityService } from '@/core/entities/MetaEntityService.js';
 import { GalleryPostEntityService } from '@/core/entities/GalleryPostEntityService.js';
 import { ClipEntityService } from '@/core/entities/ClipEntityService.js';
 import { ChannelEntityService } from '@/core/entities/ChannelEntityService.js';
 import type { ChannelsRepository, ClipsRepository, FlashsRepository, GalleryPostsRepository, MiMeta, NotesRepository, PagesRepository, ReversiGamesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
+import { deepClone } from '@/misc/clone.js';
 import { handleRequestRedirectToOmitSearch } from '@/misc/fastify-hook-handlers.js';
 import { bindThis } from '@/decorators.js';
 import { FlashEntityService } from '@/core/entities/FlashEntityService.js';
@@ -94,7 +93,6 @@ export class ClientServerService {
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
 		private pageEntityService: PageEntityService,
-		private metaEntityService: MetaEntityService,
 		private galleryPostEntityService: GalleryPostEntityService,
 		private clipEntityService: ClipEntityService,
 		private channelEntityService: ChannelEntityService,
@@ -175,7 +173,7 @@ export class ClientServerService {
 	}
 
 	@bindThis
-	private async generateCommonPugData(meta: MiMeta) {
+	private generateCommonPugData(meta: MiMeta) {
 		return {
 			instanceName: meta.name ?? 'CherryPick',
 			icon: meta.iconUrl,
@@ -185,8 +183,6 @@ export class ClientServerService {
 			infoImageUrl: meta.infoImageUrl ?? 'https://xn--931a.moe/assets/info.jpg',
 			notFoundImageUrl: meta.notFoundImageUrl ?? 'https://xn--931a.moe/assets/not-found.jpg',
 			instanceUrl: this.config.url,
-			metaJson: htmlSafeJsonStringify(await this.metaEntityService.packDetailed(meta)),
-			now: Date.now(),
 		};
 	}
 
@@ -438,7 +434,7 @@ export class ClientServerService {
 				url: this.config.url,
 				title: meta.name ?? 'CherryPick',
 				desc: meta.description,
-				...await this.generateCommonPugData(meta),
+				...this.generateCommonPugData(meta),
 			});
 		};
 
@@ -525,7 +521,7 @@ export class ClientServerService {
 					user, profile, me,
 					avatarUrl: user.avatarUrl ?? this.userEntityService.getIdenticonUrl(user),
 					sub: request.params.sub,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				// リモートユーザーなので
@@ -575,7 +571,7 @@ export class ClientServerService {
 					avatarUrl: _note.user.avatarUrl,
 					// TODO: Let locale changeable by instance setting
 					summary: getNoteSummary(_note),
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);
@@ -614,7 +610,7 @@ export class ClientServerService {
 					page: _page,
 					profile,
 					avatarUrl: _page.user.avatarUrl,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);
@@ -640,7 +636,7 @@ export class ClientServerService {
 					flash: _flash,
 					profile,
 					avatarUrl: _flash.user.avatarUrl,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);
@@ -666,7 +662,7 @@ export class ClientServerService {
 					clip: _clip,
 					profile,
 					avatarUrl: _clip.user.avatarUrl,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);
@@ -690,7 +686,7 @@ export class ClientServerService {
 					post: _post,
 					profile,
 					avatarUrl: _post.user.avatarUrl,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);
@@ -709,7 +705,7 @@ export class ClientServerService {
 				reply.header('Cache-Control', 'public, max-age=15');
 				return await reply.view('channel', {
 					channel: _channel,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);
@@ -728,7 +724,7 @@ export class ClientServerService {
 				reply.header('Cache-Control', 'public, max-age=3600');
 				return await reply.view('reversi-game', {
 					game: _game,
-					...await this.generateCommonPugData(meta),
+					...this.generateCommonPugData(meta),
 				});
 			} else {
 				return await renderBase(reply);

@@ -32,8 +32,7 @@ export const Default = {
 	async play({ canvasElement }) {
 		const canvas = within(canvasElement);
 		const a = canvas.getByRole<HTMLAnchorElement>('link');
-		// FIXME: 通るけどその後落ちるのでコメントアウト
-		// await expect(a.href).toMatch(/^https?:\/\/.*#test$/);
+		await expect(a.href).toMatch(/^https?:\/\/.*#test$/);
 		await userEvent.pointer({ keys: '[MouseRight]', target: a });
 		await tick();
 		const menu = canvas.getByRole('menu');
@@ -45,7 +44,6 @@ export const Default = {
 	},
 	args: {
 		to: '#test',
-		behavior: 'browser',
 	},
 	parameters: {
 		layout: 'centered',

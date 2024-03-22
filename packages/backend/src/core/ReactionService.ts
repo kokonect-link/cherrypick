@@ -322,36 +322,35 @@ export class ReactionService {
 		//#endregion
 	}
 
-	/**
-	 * 文字列タイプのレガシーな形式のリアクションを現在の形式に変換しつつ、
-	 * データベース上には存在する「0個のリアクションがついている」という情報を削除する。
-	 */
 	@bindThis
-	public convertLegacyReactions(reactions: MiNote['reactions']): MiNote['reactions'] {
-		return Object.entries(reactions)
-			.filter(([, count]) => {
-				// `ReactionService.prototype.delete`ではリアクション削除時に、
-				// `MiNote['reactions']`のエントリの値をデクリメントしているが、
-				// デクリメントしているだけなのでエントリ自体は0を値として持つ形で残り続ける。
-				// そのため、この処理がなければ、「0個のリアクションがついている」ということになってしまう。
-				return count > 0;
-			})
-			.map(([reaction, count]) => {
-				// unchecked indexed access
-				const convertedReaction = legacies[reaction] as string | undefined;
+	public convertLegacyReactions(reactions: Record<string, number>) {
+		const _reactions = {} as Record<string, number>;
 
-				const key = this.decodeReaction(convertedReaction ?? reaction).reaction;
+		for (const reaction of Object.keys(reactions)) {
+			if (reactions[reaction] <= 0) continue;
 
-				return [key, count] as const;
-			})
-			.reduce<MiNote['reactions']>((acc, [key, count]) => {
-				// unchecked indexed access
-				const prevCount = acc[key] as number | undefined;
+			if (Object.keys(legacies).includes(reaction)) {
+				if (_reactions[legacies[reaction]]) {
+					_reactions[legacies[reaction]] += reactions[reaction];
+				} else {
+					_reactions[legacies[reaction]] = reactions[reaction];
+				}
+			} else {
+				if (_reactions[reaction]) {
+					_reactions[reaction] += reactions[reaction];
+				} else {
+					_reactions[reaction] = reactions[reaction];
+				}
+			}
+		}
 
-				acc[key] = (prevCount ?? 0) + count;
+		const _reactions2 = {} as Record<string, number>;
 
-				return acc;
-			}, {});
+		for (const reaction of Object.keys(_reactions)) {
+			_reactions2[this.decodeReaction(reaction).reaction] = _reactions[reaction];
+		}
+
+		return _reactions2;
 	}
 
 	@bindThis

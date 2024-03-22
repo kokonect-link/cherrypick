@@ -259,7 +259,7 @@ function save() {
 		objectStorageRemoteSetPublicRead: objectStorageRemoteSetPublicRead.value,
 		objectStorageRemoteS3ForcePathStyle: objectStorageRemoteS3ForcePathStyle.value,
 	}).then(() => {
-		fetchInstance(true);
+		fetchInstance();
 	});
 }
 

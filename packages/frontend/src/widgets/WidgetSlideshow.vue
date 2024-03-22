@@ -93,10 +93,10 @@ const fetch = () => {
 
 const choose = () => {
 	os.selectDriveFolder(false).then(folder => {
-		if (folder[0] == null) {
+		if (folder == null) {
 			return;
 		}
-		widgetProps.folderId = folder[0].id;
+		widgetProps.folderId = folder.id;
 		save();
 		fetch();
 	});

@@ -373,7 +373,7 @@ export class Router extends EventEmitter<RouterEvent> implements IRouter {
 		this.currentRoute.value = res.route;
 		this.currentKey = res.route.globalCacheKey ?? key ?? path;
 
-		if (emitChange && res.route.path !== '/:(*)') {
+		if (emitChange) {
 			this.emit('change', {
 				beforePath,
 				path,
@@ -408,17 +408,13 @@ export class Router extends EventEmitter<RouterEvent> implements IRouter {
 			if (cancel) return;
 		}
 		const res = this.navigate(path, null);
-		if (res.route.path === '/:(*)') {
-			location.href = path;
-		} else {
-			this.emit('push', {
-				beforePath,
-				path: res._parsedRoute.fullPath,
-				route: res.route,
-				props: res.props,
-				key: this.currentKey,
-			});
-		}
+		this.emit('push', {
+			beforePath,
+			path: res._parsedRoute.fullPath,
+			route: res.route,
+			props: res.props,
+			key: this.currentKey,
+		});
 	}
 
 	public replace(path: string, key?: string | null) {

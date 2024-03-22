@@ -39,13 +39,13 @@ withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{
-	(ev: 'done', r?: Misskey.entities.DriveFile[] | Misskey.entities.DriveFolder[]): void;
+	(ev: 'done', r?: Misskey.entities.DriveFile[]): void;
 	(ev: 'closed'): void;
 }>();
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-const selected = ref<Misskey.entities.DriveFile[] | Misskey.entities.DriveFolder[]>([]);
+const selected = ref<Misskey.entities.DriveFile[]>([]);
 
 function ok() {
 	emit('done', selected.value);
@@ -57,7 +57,7 @@ function cancel() {
 	dialog.value?.close();
 }
 
-function onChangeSelection(v: Misskey.entities.DriveFile[] | Misskey.entities.DriveFolder[]) {
-	selected.value = v;
+function onChangeSelection(files: Misskey.entities.DriveFile[]) {
+	selected.value = files;
 }
 </script>

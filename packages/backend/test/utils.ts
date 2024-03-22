@@ -9,10 +9,11 @@ import { basename, isAbsolute } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { inspect } from 'node:util';
 import WebSocket, { ClientOptions } from 'ws';
-import fetch, { File, RequestInit, type Headers } from 'node-fetch';
+import fetch, { File, RequestInit } from 'node-fetch';
 import { DataSource } from 'typeorm';
 import { JSDOM } from 'jsdom';
 import { DEFAULT_POLICIES } from '@/core/RoleService.js';
+import { Packed } from '@/misc/json-schema.js';
 import { validateContentTypeSetAsActivityPub } from '@/core/activitypub/misc/validator.js';
 import { entities } from '@/postgres.js';
 import { loadConfig } from '@/config.js';
@@ -20,7 +21,7 @@ import type * as misskey from 'cherrypick-js';
 
 export { server as startServer, jobQueue as startJobQueue } from '@/boot/common.js';
 
-export interface UserToken {
+interface UserToken {
 	token: string;
 	bearer?: boolean;
 }
@@ -34,15 +35,20 @@ export const cookie = (me: UserToken): string => {
 	return `token=${me.token};`;
 };
 
-export type ApiRequest<E extends keyof misskey.Endpoints, P extends misskey.Endpoints[E]['req'] = misskey.Endpoints[E]['req']> = {
-	endpoint: E,
-	parameters: P,
+export const api = async (endpoint: string, params: any, me?: UserToken) => {
+	const normalized = endpoint.replace(/^\//, '');
+	return await request(`api/${normalized}`, params, me);
+};
+
+export type ApiRequest = {
+	endpoint: string,
+	parameters: object,
 	user: UserToken | undefined,
 };
 
-export const successfulApiCall = async <E extends keyof misskey.Endpoints, P extends misskey.Endpoints[E]['req']>(request: ApiRequest<E, P>, assertion: {
+export const successfulApiCall = async <T, >(request: ApiRequest, assertion: {
 	status?: number,
-} = {}): Promise<misskey.api.SwitchCaseResponseType<E, P>> => {
+} = {}): Promise<T> => {
 	const { endpoint, parameters, user } = request;
 	const res = await api(endpoint, parameters, user);
 	const status = assertion.status ?? (res.body == null ? 204 : 200);
@@ -50,7 +56,7 @@ export const successfulApiCall = async <E extends keyof misskey.Endpoints, P ext
 	return res.body;
 };
 
-export const failedApiCall = async <T, E extends keyof misskey.Endpoints, P extends misskey.Endpoints[E]['req']>(request: ApiRequest<E, P>, assertion: {
+export const failedApiCall = async <T, >(request: ApiRequest, assertion: {
 	status: number,
 	code: string,
 	id: string
@@ -64,7 +70,7 @@ export const failedApiCall = async <T, E extends keyof misskey.Endpoints, P exte
 	return res.body;
 };
 
-export const api = async <E extends keyof misskey.Endpoints>(path: E, params: misskey.Endpoints[E]['req'], me?: UserToken): Promise<{
+const request = async (path: string, params: any, me?: UserToken): Promise<{
 	status: number,
 	headers: Headers,
 	body: any
@@ -80,7 +86,7 @@ export const api = async <E extends keyof misskey.Endpoints>(path: E, params: mi
 		bodyAuth.i = me.token;
 	}
 
-	const res = await relativeFetch(`api/${path}`, {
+	const res = await relativeFetch(path, {
 		method: 'POST',
 		headers,
 		body: JSON.stringify(Object.assign(bodyAuth, params)),
@@ -135,7 +141,7 @@ export const signup = async (params?: Partial<misskey.Endpoints['signup']['req']
 	return res.body;
 };
 
-export const post = async (user: UserToken, params: misskey.Endpoints['notes/create']['req']): Promise<misskey.entities.Note> => {
+export const post = async (user: UserToken, params?: misskey.Endpoints['notes/create']['req']): Promise<misskey.entities.Note> => {
 	const q = params;
 
 	const res = await api('notes/create', q, user);
@@ -153,8 +159,8 @@ export const createAppToken = async (user: UserToken, permissions: (typeof missk
 };
 
 // 非公開ノートをAPI越しに見たときのノート NoteEntityService.ts
-export const hiddenNote = (note: misskey.entities.Note): misskey.entities.Note => {
-	const temp: misskey.entities.Note = {
+export const hiddenNote = (note: any): any => {
+	const temp = {
 		...note,
 		fileIds: [],
 		files: [],
@@ -167,22 +173,21 @@ export const hiddenNote = (note: misskey.entities.Note): misskey.entities.Note =
 	return temp;
 };
 
-export const react = async (user: UserToken, note: misskey.entities.Note, reaction: string): Promise<void> => {
+export const react = async (user: UserToken, note: any, reaction: string): Promise<any> => {
 	await api('notes/reactions/create', {
 		noteId: note.id,
 		reaction: reaction,
 	}, user);
 };
 
-export const userList = async (user: UserToken, userList: Partial<misskey.entities.UserList> = {}): Promise<misskey.entities.UserList> => {
+export const userList = async (user: UserToken, userList: any = {}): Promise<any> => {
 	const res = await api('users/lists/create', {
 		name: 'test',
-		...userList,
 	}, user);
 	return res.body;
 };
 
-export const page = async (user: UserToken, page: Partial<misskey.entities.Page> = {}): Promise<misskey.entities.Page> => {
+export const page = async (user: UserToken, page: any = {}): Promise<any> => {
 	const res = await api('pages/create', {
 		alignCenter: false,
 		content: [
@@ -193,7 +198,7 @@ export const page = async (user: UserToken, page: Partial<misskey.entities.Page>
 			},
 		],
 		eyeCatchingImageId: null,
-		font: 'sans-serif' as any,
+		font: 'sans-serif',
 		hideTitleWhenPinned: false,
 		name: '1678594845072',
 		script: '',
@@ -205,7 +210,7 @@ export const page = async (user: UserToken, page: Partial<misskey.entities.Page>
 	return res.body;
 };
 
-export const play = async (user: UserToken, play: Partial<misskey.entities.Flash> = {}): Promise<misskey.entities.Flash> => {
+export const play = async (user: UserToken, play: any = {}): Promise<any> => {
 	const res = await api('flash/create', {
 		permissions: [],
 		script: 'test',
@@ -216,7 +221,7 @@ export const play = async (user: UserToken, play: Partial<misskey.entities.Flash
 	return res.body;
 };
 
-export const clip = async (user: UserToken, clip: Partial<misskey.entities.Clip> = {}): Promise<misskey.entities.Clip> => {
+export const clip = async (user: UserToken, clip: any = {}): Promise<any> => {
 	const res = await api('clips/create', {
 		description: null,
 		isPublic: true,
@@ -226,18 +231,18 @@ export const clip = async (user: UserToken, clip: Partial<misskey.entities.Clip>
 	return res.body;
 };
 
-export const galleryPost = async (user: UserToken, galleryPost: Partial<misskey.entities.GalleryPost> = {}): Promise<misskey.entities.GalleryPost> => {
+export const galleryPost = async (user: UserToken, channel: any = {}): Promise<any> => {
 	const res = await api('gallery/posts/create', {
 		description: null,
 		fileIds: [],
 		isSensitive: false,
 		title: 'test',
-		...galleryPost,
+		...channel,
 	}, user);
 	return res.body;
 };
 
-export const channel = async (user: UserToken, channel: Partial<misskey.entities.Channel> = {}): Promise<misskey.entities.Channel> => {
+export const channel = async (user: UserToken, channel: any = {}): Promise<any> => {
 	const res = await api('channels/create', {
 		bannerId: null,
 		description: null,
@@ -247,7 +252,7 @@ export const channel = async (user: UserToken, channel: Partial<misskey.entities
 	return res.body;
 };
 
-export const role = async (user: UserToken, role: Partial<misskey.entities.Role> = {}, policies: any = {}): Promise<misskey.entities.Role> => {
+export const role = async (user: UserToken, role: any = {}, policies: any = {}): Promise<any> => {
 	const res = await api('admin/roles/create', {
 		asBadge: false,
 		canEditMembersByModerator: false,
@@ -255,7 +260,7 @@ export const role = async (user: UserToken, role: Partial<misskey.entities.Role>
 		condFormula: {
 			id: 'ebef1684-672d-49b6-ad82-1b3ec3784f85',
 			type: 'isRemote',
-		} as any,
+		},
 		description: '',
 		displayOrder: 0,
 		iconUrl: null,
@@ -293,7 +298,7 @@ interface UploadOptions {
 export const uploadFile = async (user?: UserToken, { path, name, blob }: UploadOptions = {}): Promise<{
 	status: number,
 	headers: Headers,
-	body: misskey.entities.DriveFile | null
+	body: misskey.Endpoints['drive/files/create']['res'] | null
 }> => {
 	const absPath = path == null
 		? new URL('resources/Lenna.jpg', import.meta.url)
@@ -330,14 +335,14 @@ export const uploadFile = async (user?: UserToken, { path, name, blob }: UploadO
 	};
 };
 
-export const uploadUrl = async (user: UserToken, url: string): Promise<misskey.entities.DriveFile> => {
+export const uploadUrl = async (user: UserToken, url: string): Promise<Packed<'DriveFile'>> => {
 	const marker = Math.random().toString();
 
 	const catcher = makeStreamCatcher(
 		user,
 		'main',
 		(msg) => msg.type === 'urlUploadFinished' && msg.body.marker === marker,
-		(msg) => msg.body.file,
+		(msg) => msg.body.file as Packed<'DriveFile'>,
 		60 * 1000,
 	);
 
@@ -350,7 +355,7 @@ export const uploadUrl = async (user: UserToken, url: string): Promise<misskey.e
 	return catcher;
 };
 
-export function connectStream<C extends keyof misskey.Channels>(user: UserToken, channel: C, listener: (message: Record<string, any>) => any, params?: misskey.Channels[C]['params']): Promise<WebSocket> {
+export function connectStream(user: UserToken, channel: string, listener: (message: Record<string, any>) => any, params?: any): Promise<WebSocket> {
 	return new Promise((res, rej) => {
 		const url = new URL(`ws://127.0.0.1:${port}/streaming`);
 		const options: ClientOptions = {};
@@ -385,7 +390,7 @@ export function connectStream<C extends keyof misskey.Channels>(user: UserToken,
 	});
 }
 
-export const waitFire = async <C extends keyof misskey.Channels>(user: UserToken, channel: C, trgr: () => any, cond: (msg: Record<string, any>) => boolean, params?: misskey.Channels[C]['params']) => {
+export const waitFire = async (user: UserToken, channel: string, trgr: () => any, cond: (msg: Record<string, any>) => boolean, params?: any) => {
 	return new Promise<boolean>(async (res, rej) => {
 		let timer: NodeJS.Timeout | null = null;
 
@@ -430,7 +435,7 @@ export const waitFire = async <C extends keyof misskey.Channels>(user: UserToken
  */
 export function makeStreamCatcher<T>(
 	user: UserToken,
-	channel: keyof misskey.Channels,
+	channel: string,
 	cond: (message: Record<string, any>) => boolean,
 	extractor: (message: Record<string, any>) => T,
 	timeout = 60 * 1000): Promise<T> {

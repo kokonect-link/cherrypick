@@ -8,7 +8,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.head">
 		<MkAvatar v-if="['pollEnded', 'note'].includes(notification.type) && notification.note" :class="$style.icon" :user="notification.note.user" link preview/>
 		<MkAvatar v-else-if="['roleAssigned', 'achievementEarned'].includes(notification.type)" :class="$style.icon" :user="$i" link preview/>
-		<div v-else-if="notification.type === 'reaction:grouped' && notification.note.reactionAcceptance === 'likeOnly'" :class="[$style.icon, $style.icon_reactionGroupHeart]"><i class="ti ti-heart" style="line-height: 1;"></i></div>
 		<div v-else-if="notification.type === 'reaction:grouped'" :class="[$style.icon, $style.icon_reactionGroup]"><i class="ti ti-plus" style="line-height: 1;"></i></div>
 		<div v-else-if="notification.type === 'renote:grouped'" :class="[$style.icon, $style.icon_renoteGroup]"><i class="ti ti-repeat" style="line-height: 1;"></i></div>
 		<img v-else-if="notification.type === 'test'" :class="$style.icon" :src="infoImageUrl"/>
@@ -60,7 +59,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span v-else-if="notification.type === 'achievementEarned'">{{ i18n.ts._notification.achievementEarned }}</span>
 			<span v-else-if="notification.type === 'test'">{{ i18n.ts._notification.testNotification }}</span>
 			<MkA v-else-if="notification.type === 'follow' || notification.type === 'mention' || notification.type === 'reply' || notification.type === 'renote' || notification.type === 'quote' || notification.type === 'reaction' || notification.type === 'receiveFollowRequest' || notification.type === 'followRequestAccepted'" v-user-preview="notification.user.id" :class="$style.headerName" :to="userPage(notification.user)"><MkUserName :user="notification.user"/></MkA>
-			<span v-else-if="notification.type === 'reaction:grouped' && notification.note.reactionAcceptance === 'likeOnly'">{{ i18n.tsx._notification.likedBySomeUsers({ n: notification.reactions.length }) }}</span>
 			<span v-else-if="notification.type === 'reaction:grouped'">{{ i18n.tsx._notification.reactedBySomeUsers({ n: notification.reactions.length }) }}</span>
 			<span v-else-if="notification.type === 'renote:grouped'">{{ i18n.tsx._notification.renotedBySomeUsers({ n: notification.users.length }) }}</span>
 			<span v-else-if="notification.type === 'app'">{{ notification.header }}</span>
@@ -190,12 +188,12 @@ const rejectFollowRequest = () => {
 
 const acceptGroupInvitation = () => {
 	groupInviteDone.value = true;
-	misskeyApi('users/groups/invitations/accept', { invitationId: props.notification.invitation.id });
+	os.apiWithDialog('users/groups/invitations/accept', { invitationId: props.notification.invitation.id });
 };
 
 const rejectGroupInvitation = () => {
 	groupInviteDone.value = true;
-	misskeyApi('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
+	os.apiWithDialog('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };
 </script>
 
@@ -226,7 +224,6 @@ const rejectGroupInvitation = () => {
 }
 
 .icon_reactionGroup,
-.icon_reactionGroupHeart,
 .icon_renoteGroup {
 	display: grid;
 	align-items: center;
@@ -239,15 +236,11 @@ const rejectGroupInvitation = () => {
 }
 
 .icon_reactionGroup {
-	background: var(--eventReaction);
-}
-
-.icon_reactionGroupHeart {
-	background: var(--eventReactionHeart);
+	background: #e99a0b;
 }
 
 .icon_renoteGroup {
-	background: var(--eventRenote);
+	background: #36d298;
 }
 
 .icon_app {
@@ -276,49 +269,49 @@ const rejectGroupInvitation = () => {
 
 .t_follow, .t_followRequestAccepted, .t_receiveFollowRequest, .t_groupInvited {
 	padding: 3px;
-	background: var(--eventFollow);
+	background: #36aed2;
 	pointer-events: none;
 }
 
 .t_renote {
 	padding: 3px;
-	background: var(--eventRenote);
+	background: #36d298;
 	pointer-events: none;
 }
 
 .t_quote {
 	padding: 3px;
-	background: var(--eventRenote);
+	background: #36d298;
 	pointer-events: none;
 }
 
 .t_reply {
 	padding: 3px;
-	background: var(--eventReply);
+	background: #007aff;
 	pointer-events: none;
 }
 
 .t_mention {
 	padding: 3px;
-	background: var(--eventOther);
+	background: #88a6b7;
 	pointer-events: none;
 }
 
 .t_pollEnded {
 	padding: 3px;
-	background: var(--eventOther);
+	background: #88a6b7;
 	pointer-events: none;
 }
 
 .t_achievementEarned {
 	padding: 3px;
-	background: var(--eventAchievement);
+	background: #cb9a11;
 	pointer-events: none;
 }
 
 .t_roleAssigned {
 	padding: 3px;
-	background: var(--eventOther);
+	background: #88a6b7;
 	pointer-events: none;
 }
 

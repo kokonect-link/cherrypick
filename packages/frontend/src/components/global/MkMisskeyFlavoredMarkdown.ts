@@ -417,7 +417,6 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 						useOriginalSize: scale >= 2.5,
 						menu: props.enableEmojiMenu,
 						menuReaction: props.enableEmojiMenuReaction,
-						fallbackToImage: false,
 					})];
 				} else {
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

@@ -9,7 +9,6 @@ import { QueueService } from '@/core/QueueService.js';
 import { UserSuspendService } from '@/core/UserSuspendService.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
-import { GlobalEventService } from '@/core/GlobalEventService.js';
 
 @Injectable()
 export class DeleteAccountService {
@@ -19,7 +18,6 @@ export class DeleteAccountService {
 
 		private userSuspendService: UserSuspendService,
 		private queueService: QueueService,
-		private globalEventService: GlobalEventService,
 	) {
 	}
 
@@ -41,7 +39,5 @@ export class DeleteAccountService {
 		await this.usersRepository.update(user.id, {
 			isDeleted: true,
 		});
-
-		this.globalEventService.publishInternalEvent('userChangeDeletedState', { id: user.id, isDeleted: true });
 	}
 }
