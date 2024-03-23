@@ -25,6 +25,7 @@ const languages = [
 	'it-IT',
 	'ja-JP',
 	'ja-KS',
+	'ja-YO',
 	'kab-KAB',
 	'kn-IN',
 	'ko-KR',
@@ -44,7 +45,7 @@ const languages = [
 
 const primaries = {
 	'en': 'US',
-	'ja': 'JP',
+	'ja': 'YO',
 	'ko': 'KR',
 	'zh': 'CN',
 };
