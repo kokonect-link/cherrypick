@@ -2119,7 +2119,7 @@ _mfm:
   plainDescription: "内側の構文を全て無効にします。"
   ruby: "ルビ"
   rubyDescription: "文字の上にルビを表示します。"
-  border: "border"
+  border: "ボーダー"
   borderDescription: "内容を枠線で囲むことができます。"
 
 _instanceTicker:
