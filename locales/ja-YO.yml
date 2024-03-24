@@ -883,7 +883,7 @@ saveConfirm: "保存しますか？"
 deleteConfirm: "削除しますか？"
 invalidValue: "有効な値ではありません。"
 registry: "レジストリ"
-closeAccount: "アカウントを閉鎖する"
+closeAccount: "ばいばいする"
 currentVersion: "現在のバージョン"
 latestVersion: "最新のバージョン"
 youAreRunningUpToDateClient: "お使いのクライアントは最新です。"
@@ -995,7 +995,7 @@ unmuteThread: "スレッドのミュートを解除"
 followingVisibility: "フォローの公開範囲"
 followersVisibility: "フォロワーの公開範囲"
 continueThread: "さらにスレッドを見る"
-deleteAccountConfirm: "アカウントが削除されます。よろしいですか？"
+deleteAccountConfirm: "ほんとうにばいばいするの？"
 incorrectPassword: "パスワードが間違っています。"
 voteConfirm: "「{choice}」に投票しますか？"
 hide: "隠す"
@@ -1939,7 +1939,7 @@ _emailUnavailable:
   banned: "このメールアドレスでは登録できません"
 
 _ffVisibility:
-  public: "こーかい"
+  public: "みんな"
   followers: "ふぉろわーさんだけ"
   private: "ひみつ"
 
@@ -1949,12 +1949,12 @@ _signup:
   emailSent: "({email})におてがみをおくったよ！おてがみにかかれたところにいくと、あかうんとができるよ！\nもしおてがみがこなかったら、ちがうところをみてみてね!\n30ふんでじかんぎれになっちゃうよ!"
 
 _accountDelete:
-  accountDelete: "アカウントの削除"
-  mayTakeTime: "アカウントの削除は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。"
-  sendEmail: "アカウントの削除が完了する際は、登録してあったメールアドレス宛に通知を送信します。"
-  requestAccountDelete: "アカウント削除をリクエスト"
-  started: "削除処理が開始されました。"
-  inProgress: "削除が進行中"
+  accountDelete: "ばいばい"
+  mayTakeTime: "いっぱいおはなししてたりするとじかんがかかるかも"
+  sendEmail: "けしおわったら、とうろくしてためーるあどれすにおてがみをおくるね"
+  requestAccountDelete: "ばいばいする"
+  started: "いまからけすね、つかってくれてありがとう。またね"
+  inProgress: "けしてるさいちゅうだよ"
 
 _ad:
   back: "戻る"
