@@ -75,14 +75,14 @@ importers:
         specifier: 3.412.0
         version: 3.412.0(@aws-sdk/client-s3@3.412.0)
       '@bull-board/api':
-        specifier: 5.14.0
-        version: 5.14.0(@bull-board/ui@5.14.0)
+        specifier: 5.15.2
+        version: 5.15.2(@bull-board/ui@5.15.2)
       '@bull-board/fastify':
-        specifier: 5.14.0
-        version: 5.14.0
+        specifier: 5.15.2
+        version: 5.15.2
       '@bull-board/ui':
-        specifier: 5.14.0
-        version: 5.14.0
+        specifier: 5.15.2
+        version: 5.15.2
       '@discordapp/twemoji':
         specifier: 15.0.2
         version: 15.0.2
@@ -3202,29 +3202,29 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@bull-board/api@5.14.0(@bull-board/ui@5.14.0):
-    resolution: {integrity: sha512-ppN9GeCH8QmCzs47CpDFwVb4Q5W2nK2QvcnbxKpjktCTonZ+5PnoWyXQvLStbcKU9SbMKAM0/OXhj4xOcSRllQ==}
+  /@bull-board/api@5.15.2(@bull-board/ui@5.15.2):
+    resolution: {integrity: sha512-HOqh5/Z0W5GR0WHVS/G83DTn8JwDn0NZs2H5u0bMFnvEmKZexysdnZyeox8Y31A6azRO/tqK3o/LrT1Hhtaxtw==}
     peerDependencies:
-      '@bull-board/ui': 5.14.0
+      '@bull-board/ui': 5.15.2
     dependencies:
-      '@bull-board/ui': 5.14.0
+      '@bull-board/ui': 5.15.2
       redis-info: 3.1.0
     dev: false
 
-  /@bull-board/fastify@5.14.0:
-    resolution: {integrity: sha512-MEZbfUY74wL2dc9OJZGgYABZADlohp62MP1ZMOlC+6ZF4i7X95yxTQ9DmtIV6kkva7+abJgFGNUhtKi7Mq15Fg==}
+  /@bull-board/fastify@5.15.2:
+    resolution: {integrity: sha512-QXXgWG1XKmar4mlYCcY7hipnomD8C/x/yFvYMBydUv/8RboW4bJ5NxRswpTdkOJrkMoa2yNX6oRK/8ANhcCs5w==}
     dependencies:
-      '@bull-board/api': 5.14.0(@bull-board/ui@5.14.0)
-      '@bull-board/ui': 5.14.0
+      '@bull-board/api': 5.15.2(@bull-board/ui@5.15.2)
+      '@bull-board/ui': 5.15.2
       '@fastify/static': 6.12.0
       '@fastify/view': 8.2.0
       ejs: 3.1.9
     dev: false
 
-  /@bull-board/ui@5.14.0:
-    resolution: {integrity: sha512-quustWmLsLbqdbCQd4Mud9Eo/2BQzfJSNSiyJt9OrtYT4AXHMgGtbFUy2Ycyda7iQjC4ScKl8f+WdFs4y+KUJA==}
+  /@bull-board/ui@5.15.2:
+    resolution: {integrity: sha512-OlDCAaBOjdR7ke3vGkm/vEwC8Cwrt/r9ivc8jL+hQbgDluauKl/o9NSPp3BgC2Fo0MRszAxTgSitR0pGLRhAwg==}
     dependencies:
-      '@bull-board/api': 5.14.0(@bull-board/ui@5.14.0)
+      '@bull-board/api': 5.15.2(@bull-board/ui@5.15.2)
     dev: false
 
   /@bundled-es-modules/cookie@2.0.0:
@@ -3243,48 +3243,48 @@ packages:
     resolution: {integrity: sha512-BxOqI5LgsIQP1odU5KMwV9yoijleOPzHL18/YvNqF9KFSGF2K/DLlYAbDQsWqd/1nbaFuSkYD/191dpMtNh4vw==}
     dev: false
 
-  /@cbor-extract/cbor-extract-darwin-arm64@2.1.1:
-    resolution: {integrity: sha512-blVBy5MXz6m36Vx0DfLd7PChOQKEs8lK2bD1WJn/vVgG4FXZiZmZb2GECHFvVPA5T7OnODd9xZiL3nMCv6QUhA==}
+  /@cbor-extract/cbor-extract-darwin-arm64@2.2.0:
+    resolution: {integrity: sha512-P7swiOAdF7aSi0H+tHtHtr6zrpF3aAq/W9FXx5HektRvLTM2O89xCyXF3pk7pLc7QpaY7AoaE8UowVf9QBdh3w==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@cbor-extract/cbor-extract-darwin-x64@2.1.1:
-    resolution: {integrity: sha512-h6KFOzqk8jXTvkOftyRIWGrd7sKQzQv2jVdTL9nKSf3D2drCvQB/LHUxAOpPXo3pv2clDtKs3xnHalpEh3rDsw==}
+  /@cbor-extract/cbor-extract-darwin-x64@2.2.0:
+    resolution: {integrity: sha512-1liF6fgowph0JxBbYnAS7ZlqNYLf000Qnj4KjqPNW4GViKrEql2MgZnAsExhY9LSy8dnvA4C0qHEBgPrll0z0w==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@cbor-extract/cbor-extract-linux-arm64@2.1.1:
-    resolution: {integrity: sha512-SxAaRcYf8S0QHaMc7gvRSiTSr7nUYMqbUdErBEu+HYA4Q6UNydx1VwFE68hGcp1qvxcy9yT5U7gA+a5XikfwSQ==}
+  /@cbor-extract/cbor-extract-linux-arm64@2.2.0:
+    resolution: {integrity: sha512-rQvhNmDuhjTVXSPFLolmQ47/ydGOFXtbR7+wgkSY0bdOxCFept1hvg59uiLPT2fVDuJFuEy16EImo5tE2x3RsQ==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@cbor-extract/cbor-extract-linux-arm@2.1.1:
-    resolution: {integrity: sha512-ds0uikdcIGUjPyraV4oJqyVE5gl/qYBpa/Wnh6l6xLE2lj/hwnjT2XcZCChdXwW/YFZ1LUHs6waoYN8PmK0nKQ==}
+  /@cbor-extract/cbor-extract-linux-arm@2.2.0:
+    resolution: {integrity: sha512-QeBcBXk964zOytiedMPQNZr7sg0TNavZeuUCD6ON4vEOU/25+pLhNN6EDIKJ9VLTKaZ7K7EaAriyYQ1NQ05s/Q==}
     cpu: [arm]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@cbor-extract/cbor-extract-linux-x64@2.1.1:
-    resolution: {integrity: sha512-GVK+8fNIE9lJQHAlhOROYiI0Yd4bAZ4u++C2ZjlkS3YmO6hi+FUxe6Dqm+OKWTcMpL/l71N6CQAmaRcb4zyJuA==}
+  /@cbor-extract/cbor-extract-linux-x64@2.2.0:
+    resolution: {integrity: sha512-cWLAWtT3kNLHSvP4RKDzSTX9o0wvQEEAj4SKvhWuOVZxiDAeQazr9A+PSiRILK1VYMLeDml89ohxCnUNQNQNCw==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: false
     optional: true
 
-  /@cbor-extract/cbor-extract-win32-x64@2.1.1:
-    resolution: {integrity: sha512-2Niq1C41dCRIDeD8LddiH+mxGlO7HJ612Ll3D/E73ZWBmycued+8ghTr/Ho3CMOWPUEr08XtyBMVXAjqF+TcKw==}
+  /@cbor-extract/cbor-extract-win32-x64@2.2.0:
+    resolution: {integrity: sha512-l2M+Z8DO2vbvADOBNLbbh9y5ST1RY5sqkWOg/58GkUPBYou/cuNZ68SGQ644f1CvZ8kcOxyZtw06+dxWHIoN/w==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
@@ -6692,7 +6692,7 @@ packages:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.18(typescript@5.3.3)
-      vue-component-type-helpers: 1.8.27
+      vue-component-type-helpers: 2.0.7
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -7988,8 +7988,8 @@ packages:
       '@types/yargs-parser': 21.0.0
     dev: true
 
-  /@types/yauzl@2.10.0:
-    resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
+  /@types/yauzl@2.10.3:
+    resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
       '@types/node': 20.11.17
@@ -9661,26 +9661,26 @@ packages:
       lodash: 4.17.21
     dev: false
 
-  /cbor-extract@2.1.1:
-    resolution: {integrity: sha512-1UX977+L+zOJHsp0mWFG13GLwO6ucKgSmSW6JTl8B9GUvACvHeIVpFqhU92299Z6PfD09aTXDell5p+lp1rUFA==}
+  /cbor-extract@2.2.0:
+    resolution: {integrity: sha512-Ig1zM66BjLfTXpNgKpvBePq271BPOvu8MR0Jl080yG7Jsl+wAZunfrwiwA+9ruzm/WEdIV5QF/bjDZTqyAIVHA==}
     hasBin: true
     requiresBuild: true
     dependencies:
-      node-gyp-build-optional-packages: 5.0.3
+      node-gyp-build-optional-packages: 5.1.1
     optionalDependencies:
-      '@cbor-extract/cbor-extract-darwin-arm64': 2.1.1
-      '@cbor-extract/cbor-extract-darwin-x64': 2.1.1
-      '@cbor-extract/cbor-extract-linux-arm': 2.1.1
-      '@cbor-extract/cbor-extract-linux-arm64': 2.1.1
-      '@cbor-extract/cbor-extract-linux-x64': 2.1.1
-      '@cbor-extract/cbor-extract-win32-x64': 2.1.1
+      '@cbor-extract/cbor-extract-darwin-arm64': 2.2.0
+      '@cbor-extract/cbor-extract-darwin-x64': 2.2.0
+      '@cbor-extract/cbor-extract-linux-arm': 2.2.0
+      '@cbor-extract/cbor-extract-linux-arm64': 2.2.0
+      '@cbor-extract/cbor-extract-linux-x64': 2.2.0
+      '@cbor-extract/cbor-extract-win32-x64': 2.2.0
     dev: false
     optional: true
 
   /cbor-x@1.5.4:
     resolution: {integrity: sha512-PVKILDn+Rf6MRhhcyzGXi5eizn1i0i3F8Fe6UMMxXBnWkalq9+C5+VTmlIjAYM4iF2IYF2N+zToqAfYOp+3rfw==}
     optionalDependencies:
-      cbor-extract: 2.1.1
+      cbor-extract: 2.2.0
     dev: false
 
   /cbor@9.0.2:
@@ -10843,6 +10843,13 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /detect-libc@2.0.3:
+    resolution: {integrity: sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw==}
+    engines: {node: '>=8'}
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /detect-newline@3.1.0:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
@@ -11899,7 +11906,7 @@ packages:
       get-stream: 5.2.0
       yauzl: 2.10.0
     optionalDependencies:
-      '@types/yauzl': 2.10.0
+      '@types/yauzl': 2.10.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -15930,17 +15937,19 @@ packages:
     engines: {node: '>= 6.13.0'}
     dev: false
 
-  /node-gyp-build-optional-packages@5.0.3:
-    resolution: {integrity: sha512-k75jcVzk5wnnc/FMxsf4udAoTEUv2jY3ycfdSd3yWu6Cnd1oee6/CfZJApyscA4FJOmdoixWwiwOyf16RzD5JA==}
+  /node-gyp-build-optional-packages@5.0.7:
+    resolution: {integrity: sha512-YlCCc6Wffkx0kHkmam79GKvDQ6x+QZkMjFGrIMxgFNILFvGSbCp2fCBC55pGTT9gVaz8Na5CLmxt/urtzRv36w==}
     hasBin: true
     requiresBuild: true
     dev: false
     optional: true
 
-  /node-gyp-build-optional-packages@5.0.7:
-    resolution: {integrity: sha512-YlCCc6Wffkx0kHkmam79GKvDQ6x+QZkMjFGrIMxgFNILFvGSbCp2fCBC55pGTT9gVaz8Na5CLmxt/urtzRv36w==}
+  /node-gyp-build-optional-packages@5.1.1:
+    resolution: {integrity: sha512-+P72GAjVAbTxjjwUmwjVrqrdZROD4nf8KgpBoDxqXXTiYZZt/ud60dE5yvCSr9lRO8e8yv6kgJIC0K0PfZFVQw==}
     hasBin: true
     requiresBuild: true
+    dependencies:
+      detect-libc: 2.0.3
     dev: false
     optional: true
 
@@ -20351,6 +20360,10 @@ packages:
 
   /vue-component-type-helpers@1.8.4:
     resolution: {integrity: sha512-6bnLkn8O0JJyiFSIF0EfCogzeqNXpnjJ0vW/SZzNHfe6sPx30lTtTXlE5TFs2qhJlAtDFybStVNpL73cPe3OMQ==}
+    dev: true
+
+  /vue-component-type-helpers@2.0.7:
+    resolution: {integrity: sha512-7e12Evdll7JcTIocojgnCgwocX4WzIYStGClBQ+QuWPinZo/vQolv2EMq4a3lg16TKfwWafLimG77bxb56UauA==}
     dev: true
 
   /vue-demi@0.13.11(vue@3.4.18):
