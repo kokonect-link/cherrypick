@@ -2062,7 +2062,7 @@ _mfm:
   inlineCode: "コード(インライン)"
   inlineCodeDescription: "プログラムなどのコードをインラインでシンタックスハイライトします。"
   blockCode: "コード(ブロック)"
-  blockCodeDescription: "複数行のプログラムなどのコードをブロックでシンタックスハイライトします。"
+  blockCodeDescription: "複数行のプログラムなどのコードをブロックでシンタックスハイライトします。いくつかの言語を指定するとその言語に合わせたシンタックスハイライトになります。"
   inlineMath: "数式(インライン)"
   inlineMathDescription: "数式(KaTeX)をインラインで表示します。"
   blockMath: "数式(ブロック)"
@@ -2119,6 +2119,8 @@ _mfm:
   plainDescription: "内側の構文を全て無効にします。"
   ruby: "ルビ"
   rubyDescription: "文字の上にルビを表示します。"
+  border: "ボーダー"
+  borderDescription: "内容を枠線で囲むことができます。"
 
 _instanceTicker:
   none: "表示しない"
