@@ -33,6 +33,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 
 ### Server
 - Enhance: 디버깅을 보다 편하게 할 수 있도록 vite 생성 파일의 이름 개선
+- Fix: 엔드포인트 `users/translate` 에러 개선
 
 ---
 

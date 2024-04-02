@@ -15,12 +15,18 @@ importers:
       cssnano:
         specifier: 6.0.5
         version: 6.0.5(postcss@8.4.35)
+      esbuild:
+        specifier: 0.19.11
+        version: 0.19.11
       execa:
         specifier: 8.0.1
         version: 8.0.1
       fast-glob:
         specifier: 3.3.2
         version: 3.3.2
+      glob:
+        specifier: 10.3.10
+        version: 10.3.10
       ignore-walk:
         specifier: 6.0.4
         version: 6.0.4
@@ -691,12 +697,6 @@ importers:
 
   packages/cherrypick-js:
     dependencies:
-      '@swc/cli':
-        specifier: 0.1.63
-        version: 0.1.63(@swc/core@1.3.105)
-      '@swc/core':
-        specifier: 1.3.105
-        version: 1.3.105
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
@@ -725,9 +725,18 @@ importers:
       '@typescript-eslint/parser':
         specifier: 7.1.0
         version: 7.1.0(eslint@8.57.0)(typescript@5.3.3)
+      esbuild:
+        specifier: 0.19.11
+        version: 0.19.11
       eslint:
         specifier: 8.57.0
         version: 8.57.0
+      execa:
+        specifier: 8.0.1
+        version: 8.0.1
+      glob:
+        specifier: 10.3.10
+        version: 10.3.10
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@20.11.22)
@@ -1182,15 +1191,9 @@ importers:
 
   packages/misskey-bubble-game:
     dependencies:
-      esbuild:
-        specifier: 0.19.11
-        version: 0.19.11
       eventemitter3:
         specifier: 5.0.1
         version: 5.0.1
-      glob:
-        specifier: ^10.3.10
-        version: 10.3.10
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
@@ -1216,9 +1219,18 @@ importers:
       '@typescript-eslint/parser':
         specifier: 7.1.0
         version: 7.1.0(eslint@8.57.0)(typescript@5.3.3)
+      esbuild:
+        specifier: 0.19.11
+        version: 0.19.11
       eslint:
         specifier: 8.57.0
         version: 8.57.0
+      execa:
+        specifier: 8.0.1
+        version: 8.0.1
+      glob:
+        specifier: 10.3.10
+        version: 10.3.10
       nodemon:
         specifier: 3.0.2
         version: 3.0.2
@@ -1231,12 +1243,6 @@ importers:
       crc-32:
         specifier: 1.2.2
         version: 1.2.2
-      esbuild:
-        specifier: 0.19.11
-        version: 0.19.11
-      glob:
-        specifier: 10.3.10
-        version: 10.3.10
     devDependencies:
       '@misskey-dev/eslint-plugin':
         specifier: 1.0.0
@@ -1250,9 +1256,18 @@ importers:
       '@typescript-eslint/parser':
         specifier: 7.1.0
         version: 7.1.0(eslint@8.57.0)(typescript@5.3.3)
+      esbuild:
+        specifier: 0.19.11
+        version: 0.19.11
       eslint:
         specifier: 8.57.0
         version: 8.57.0
+      execa:
+        specifier: 8.0.1
+        version: 8.0.1
+      glob:
+        specifier: 10.3.10
+        version: 10.3.10
       nodemon:
         specifier: 3.0.2
         version: 3.0.2
@@ -7040,31 +7055,11 @@ packages:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.21(typescript@5.3.3)
-      vue-component-type-helpers: 2.0.6
+      vue-component-type-helpers: 2.0.7
     transitivePeerDependencies:
       - encoding
       - supports-color
     dev: true
-
-  /@swc/cli@0.1.63(@swc/core@1.3.105):
-    resolution: {integrity: sha512-EM9oxxHzmmsprYRbGqsS2M4M/Gr5Gkcl0ROYYIdlUyTkhOiX822EQiRCpPCwdutdnzH2GyaTN7wc6i0Y+CKd3A==}
-    engines: {node: '>= 12.13'}
-    hasBin: true
-    peerDependencies:
-      '@swc/core': ^1.2.66
-      chokidar: 3.5.3
-    peerDependenciesMeta:
-      chokidar:
-        optional: true
-    dependencies:
-      '@mole-inc/bin-wrapper': 8.0.1
-      '@swc/core': 1.3.105
-      commander: 7.2.0
-      fast-glob: 3.3.2
-      semver: 7.5.4
-      slash: 3.0.0
-      source-map: 0.7.4
-    dev: false
 
   /@swc/cli@0.1.63(@swc/core@1.3.107)(chokidar@3.5.3):
     resolution: {integrity: sha512-EM9oxxHzmmsprYRbGqsS2M4M/Gr5Gkcl0ROYYIdlUyTkhOiX822EQiRCpPCwdutdnzH2GyaTN7wc6i0Y+CKd3A==}
@@ -7104,6 +7099,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-darwin-arm64@1.3.107:
@@ -7129,6 +7125,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-darwin-x64@1.3.107:
@@ -7165,6 +7162,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-linux-arm-gnueabihf@1.3.107:
@@ -7190,6 +7188,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-linux-arm64-gnu@1.3.107:
@@ -7215,6 +7214,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-linux-arm64-musl@1.3.107:
@@ -7240,6 +7240,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-linux-x64-gnu@1.3.107:
@@ -7265,6 +7266,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-linux-x64-musl@1.3.107:
@@ -7290,6 +7292,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-win32-arm64-msvc@1.3.107:
@@ -7315,6 +7318,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-win32-ia32-msvc@1.3.107:
@@ -7340,6 +7344,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
+    dev: true
     optional: true
 
   /@swc/core-win32-x64-msvc@1.3.107:
@@ -7382,6 +7387,7 @@ packages:
       '@swc/core-win32-arm64-msvc': 1.3.105
       '@swc/core-win32-ia32-msvc': 1.3.105
       '@swc/core-win32-x64-msvc': 1.3.105
+    dev: true
 
   /@swc/core@1.3.107:
     resolution: {integrity: sha512-zKhqDyFcTsyLIYK1iEmavljZnf4CCor5pF52UzLAz4B6Nu/4GLU+2LQVAf+oRHjusG39PTPjd2AlRT3f3QWfsQ==}
@@ -20600,8 +20606,8 @@ packages:
     resolution: {integrity: sha512-6bnLkn8O0JJyiFSIF0EfCogzeqNXpnjJ0vW/SZzNHfe6sPx30lTtTXlE5TFs2qhJlAtDFybStVNpL73cPe3OMQ==}
     dev: true
 
-  /vue-component-type-helpers@2.0.6:
-    resolution: {integrity: sha512-qdGXCtoBrwqk1BT6r2+1Wcvl583ZVkuSZ3or7Y1O2w5AvWtlvvxwjGhmz5DdPJS9xqRdDlgTJ/38ehWnEi0tFA==}
+  /vue-component-type-helpers@2.0.7:
+    resolution: {integrity: sha512-7e12Evdll7JcTIocojgnCgwocX4WzIYStGClBQ+QuWPinZo/vQolv2EMq4a3lg16TKfwWafLimG77bxb56UauA==}
     dev: true
 
   /vue-demi@0.14.7(vue@3.4.21):

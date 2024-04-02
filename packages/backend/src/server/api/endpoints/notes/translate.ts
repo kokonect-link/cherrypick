@@ -25,7 +25,7 @@ export const meta = {
 
 	res: {
 		type: 'object',
-		optional: false, nullable: false,
+		optional: true, nullable: false,
 		properties: {
 			sourceLang: { type: 'string' },
 			text: { type: 'string' },
@@ -42,6 +42,11 @@ export const meta = {
 			message: 'No such note.',
 			code: 'NO_SUCH_NOTE',
 			id: 'bea9b03f-36e0-49c5-a4db-627a029f8971',
+		},
+		cannotTranslateInvisibleNote: {
+			message: 'Cannot translate invisible note.',
+			code: 'CANNOT_TRANSLATE_INVISIBLE_NOTE',
+			id: 'ea29f2ca-c368-43b3-aaf1-5ac3e74bbe5d',
 		},
 		noTranslateService: {
 			message: 'Translate service is not available.',
@@ -81,11 +86,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			});
 
 			if (!(await this.noteEntityService.isVisibleForMe(note, me.id))) {
-				return 204; // TODO: 良い感じのエラー返す
+				throw new ApiError(meta.errors.cannotTranslateInvisibleNote);
 			}
 
 			if (note.text == null) {
-				return 204;
+				return;
 			}
 
 			const instance = await this.metaService.fetch();
@@ -106,7 +111,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			let translationResult;
 			if (instance.translatorType === 'deepl') {
 				if (instance.deeplAuthKey == null) {
-					return 204; // TODO: 良い感じのエラー返す
+					throw new ApiError(meta.errors.unavailable);
 				}
 				translationResult = await this.translateDeepL((note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
 			} else if (instance.translatorType === 'google_no_api') {

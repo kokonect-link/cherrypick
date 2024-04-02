@@ -24,7 +24,7 @@ export const meta = {
 
 	res: {
 		type: 'object',
-		optional: false, nullable: false,
+		optional: true, nullable: false,
 		properties: {
 			sourceLang: { type: 'string' },
 			text: { type: 'string' },
@@ -79,7 +79,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			});
 
 			if (target.description == null) {
-				return 204;
+				return;
 			}
 
 			const instance = await this.metaService.fetch();
@@ -100,7 +100,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			let translationResult;
 			if (instance.translatorType === 'deepl') {
 				if (instance.deeplAuthKey == null) {
-					return 204; // TODO: 良い感じのエラー返す
+					throw new ApiError(meta.errors.unavailable);
 				}
 				translationResult = await this.translateDeepL(target.description, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
 			} else if (instance.translatorType === 'google_no_api') {

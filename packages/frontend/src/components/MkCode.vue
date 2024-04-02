@@ -80,7 +80,6 @@ function copy() {
 .codePlaceholderRoot {
 	display: block;
 	width: 100%;
-	background: none;
 	border: none;
 	outline: none;
   font: inherit;
