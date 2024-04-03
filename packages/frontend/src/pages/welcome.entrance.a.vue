@@ -130,15 +130,8 @@ misskeyApiGet('federation/instances', {
 			margin-bottom: 2px;
 		}
 
-		> .misskey {
+		> .misskey, .cherrypick {
 			width: 140px;
-			@media (max-width: 450px) {
-				width: 130px;
-			}
-		}
-
-		> .cherrypick {
-			width: 180px;
 			@media (max-width: 450px) {
 				width: 130px;
 			}
