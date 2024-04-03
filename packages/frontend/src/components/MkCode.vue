@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.codeBlockRoot">
-	<button :class="$style.codeBlockCopyButton" class="_button" @click="copy">
+	<button :class="$style.codeBlockCopyButton" class="_button" @click.stop="copy">
 		<i class="ti ti-copy"></i>
 	</button>
 	<Suspense>
