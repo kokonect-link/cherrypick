@@ -30,9 +30,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 
 ### Client
 - Fix: 노트를 내보낼 때 노트의 편집 기록을 포함
-- Fix: MkA 컴포넌트를 사용하는 항목이 작동하지 않을 수 있음
+- Fix: MkA 컴포넌트를 사용하는 항목이 작동하지 않을 수 있음 (kokonect-link/cherrypick#422)
   - 알림의 읽음 표시, 테스트 알림, 기본 업로드 위치 등
-- Fix: 코드 복사 버튼을 누르면 노트 상세 페이지가 표시될 수 있음
+- Fix: 코드 복사 버튼을 누르면 노트 상세 페이지가 표시될 수 있음 (kokonect-link/cherrypick#414)
 - Fix: 창으로 제어판을 열었을 때 뒤로 가기 버튼이 잘못된 작동을 야기할 수 있음 (kokonect-link/cherrypick#407)
 
 ### Server
