@@ -25,7 +25,6 @@ const languages = [
 	'it-IT',
 	'ja-JP',
 	'ja-KS',
-	'ja-YO',
 	'kab-KAB',
 	'kn-IN',
 	'ko-KR',
@@ -45,7 +44,7 @@ const languages = [
 
 const primaries = {
 	'en': 'US',
-	'ja': 'YO',
+	'ja': 'JP',
 	'ko': 'KR',
 	'zh': 'CN',
 };
@@ -73,11 +72,11 @@ export function build() {
 		.reduce((a, [k, v]) => (a[k] = (() => {
 			const [lang] = k.split('-');
 			switch (k) {
-				case 'ja-YO': return v;
+				case 'ja-JP': return v;
 				case 'ja-KS':
-				case 'en-US': return merge(locales['ja-YO'], v);
+				case 'en-US': return merge(locales['ja-JP'], v);
 				default: return merge(
-					locales['ja-YO'],
+					locales['ja-JP'],
 					locales['ko-KR'],
 					locales['en-US'],
 					locales[`${lang}-${primaries[lang]}`] ?? {},

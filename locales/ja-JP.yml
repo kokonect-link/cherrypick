@@ -1647,15 +1647,15 @@ _achievements:
       title: "ビギナーⅢ"
       description: "通算ログイン日数が15日"
     _login30:
-      title: "チェリーピッカーⅠ"
+      title: "ミスキストⅠ"
       description: "通算ログイン日数が30日"
     _login60:
-      title: "チェリーピッカーⅡ"
+      title: "ミスキストⅡ"
       description: "通算ログイン日数が60日"
     _login100:
-      title: "チェリーピッカーⅢ"
+      title: "ミスキストⅢ"
       description: "通算ログイン日数が100日"
-      flavor: "そのユーザー、チェリーピッカーにつき"
+      flavor: "そのユーザー、ミスキストにつき"
     _login200:
       title: "常連Ⅰ"
       description: "通算ログイン日数が200日"
