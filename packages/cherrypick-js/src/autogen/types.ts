@@ -4806,6 +4806,7 @@ export type components = {
       isPublic: boolean;
       favoritedCount: number;
       isFavorited?: boolean;
+      notesCount?: number;
     };
     FederationInstance: {
       /** Format: id */

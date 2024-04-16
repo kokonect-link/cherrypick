@@ -44,6 +44,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.keepOriginalUploading }}</template>
 				<template #caption>{{ i18n.ts.keepOriginalUploadingDescription }}</template>
 			</MkSwitch>
+			<MkSwitch v-model="keepOriginalFilename">
+				<template #label>{{ i18n.ts.keepOriginalFilename }}</template>
+				<template #caption>{{ i18n.ts.keepOriginalFilenameDescription }}</template>
+			</MkSwitch>
 			<MkSelect v-model="imageCompressionMode">
 				<template #label>{{ i18n.ts._imageCompressionMode.title }}</template>
 				<option value="resizeCompress">{{ i18n.ts._imageCompressionMode.resizeCompress }}</option>
@@ -105,6 +109,7 @@ const meterStyle = computed(() => {
 });
 
 const keepOriginalUploading = computed(defaultStore.makeGetterSetter('keepOriginalUploading'));
+const keepOriginalFilename = computed(defaultStore.makeGetterSetter('keepOriginalFilename'));
 const imageCompressionMode = computed(defaultStore.makeGetterSetter('imageCompressionMode'));
 
 misskeyApi('drive').then(info => {

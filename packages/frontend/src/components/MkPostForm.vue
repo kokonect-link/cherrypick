@@ -415,7 +415,7 @@ function addMissingMention() {
 	for (const x of extractMentions(ast)) {
 		if (!visibleUsers.value.some(u => (u.username === x.username) && (u.host === x.host))) {
 			misskeyApi('users/show', { username: x.username, host: x.host }).then(user => {
-				visibleUsers.value.push(user);
+				pushVisibleUser(user);
 			});
 		}
 	}
@@ -735,6 +735,7 @@ function saveDraft() {
 			files: files.value,
 			poll: poll.value,
 			event: event.value,
+			visibleUserIds: visibility.value === 'specified' ? visibleUsers.value.map(x => x.id) : undefined,
 		},
 	};
 
@@ -1048,6 +1049,15 @@ onMounted(() => {
 				}
 				if (draft.data.event) {
 					event.value = draft.data.event;
+				}
+				if (draft.data.visibleUserIds) {
+					misskeyApi('users/show', { userIds: draft.data.visibleUserIds }).then(users => {
+						for (let i = 0; i < users.length; i++) {
+							if (users[i].id === draft.data.visibleUserIds[i]) {
+								pushVisibleUser(users[i]);
+							}
+						}
+					});
 				}
 			}
 		}

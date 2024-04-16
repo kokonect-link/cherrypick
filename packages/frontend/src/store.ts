@@ -464,6 +464,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	keepOriginalFilename: {
+		where: 'device',
+		default: true,
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
