@@ -113,7 +113,7 @@ class MessagingChannel extends Channel {
 			if (now.getTime() - date.getTime() > 5000) delete this.typers[userId];
 		}
 
-		const users = await this.userEntityService.packMany(Object.keys(this.typers), null, { detail: false });
+		const users = await this.userEntityService.packMany(Object.keys(this.typers), null, { schema: "UserLite" });
 
 		this.send({
 			type: 'typers',
@@ -133,6 +133,7 @@ class MessagingChannel extends Channel {
 export class MessagingChannelService {
 	public readonly shouldShare = MessagingChannel.shouldShare;
 	public readonly requireCredential = MessagingChannel.requireCredential;
+	public readonly kind: string = 'messaging'; // kind の型を string に変更し、適切な値に設定する
 
 	constructor(
 		@Inject(DI.usersRepository)

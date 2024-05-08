@@ -72,31 +72,31 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (!policies.canUseTranslator) {
 				throw new ApiError(meta.errors.unavailable);
 			}
-
+		
 			const target = await this.getterService.getUserProfiles(ps.userId).catch(err => {
 				if (err.id === '9725d0ce-ba28-4dde-95a7-2cbb2c15de24') throw new ApiError(meta.errors.noSuchDescription);
 				throw err;
 			});
-
+		
 			if (target.description == null) {
 				return;
 			}
-
+		
 			const instance = await this.metaService.fetch();
-
+		
 			const translatorServices = [
 				'deepl',
 				'google_no_api',
 				'ctav3',
 			];
-
+		
 			if (instance.translatorType == null || !translatorServices.includes(instance.translatorType)) {
-				throw new ApiError(meta.errors.noTranslateService);
+				return Promise.resolve(204); // Promise.resolveで204をラップする
 			}
-
+		
 			let targetLang = ps.targetLang;
 			if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
-
+		
 			let translationResult;
 			if (instance.translatorType === 'deepl') {
 				if (instance.deeplAuthKey == null) {
@@ -106,31 +106,31 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			} else if (instance.translatorType === 'google_no_api') {
 				let targetLang = ps.targetLang;
 				if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
-
+		
 				const { text, raw } = await translate(target.description, { to: targetLang });
-
+		
 				return {
 					sourceLang: raw.src,
 					text: text,
-					translator: translatorServices,
+					translator: instance.translatorType, // 修正点: 配列ではなく単一の文字列
 				};
 			} else if (instance.translatorType === 'ctav3') {
-				if (instance.ctav3SaKey == null) return 204;
-				else if (instance.ctav3ProjectId == null) return 204;
-				else if (instance.ctav3Location == null) return 204;
+				if (instance.ctav3SaKey == null) return Promise.resolve(204);
+				else if (instance.ctav3ProjectId == null) return Promise.resolve(204);
+				else if (instance.ctav3Location == null) return Promise.resolve(204);
 				translationResult = await this.apiCloudTranslationAdvanced(
 					target.description, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
 				);
 			} else {
 				throw new Error('Unsupported translator type');
 			}
-
-			return {
-				sourceLang: translationResult.sourceLang,
-				text: translationResult.text,
-				translator: translationResult.translator,
-			};
-		});
+		
+			return Promise.resolve({
+				sourceLang: translationResult.sourceLang || '',
+				text: translationResult.text || '',
+				translator: translationResult.translator || [],
+			});
+		});		
 	}
 
 	private async translateDeepL(text: string, targetLang: string, authKey: string, isPro: boolean, provider: string) {

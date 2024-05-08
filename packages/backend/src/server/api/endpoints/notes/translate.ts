@@ -126,9 +126,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					translator: translatorServices,
 				};
 			} else if (instance.translatorType === 'ctav3') {
-				if (instance.ctav3SaKey == null) return 204;
-				else if (instance.ctav3ProjectId == null) return 204;
-				else if (instance.ctav3Location == null) return 204;
+				if (instance.ctav3SaKey == null) return Promise.resolve(204);
+				else if (instance.ctav3ProjectId == null) return Promise.resolve(204);
+				else if (instance.ctav3Location == null) return Promise.resolve(204);
 				translationResult = await this.apiCloudTranslationAdvanced(
 					(note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
 				);
@@ -136,11 +136,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new Error('Unsupported translator type');
 			}
 
-			return {
-				sourceLang: translationResult.sourceLang,
-				text: translationResult.text,
-				translator: translationResult.translator,
-			};
+			return Promise.resolve({
+				sourceLang: translationResult.sourceLang || '',
+				text: translationResult.text || '',
+				translator: translationResult.translator || [],
+			});
 		});
 	}
 
@@ -162,11 +162,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		});
 
 		const json = (await res.json()) as {
-      translations: {
-        detected_source_language: string;
-        text: string;
-      }[];
-    };
+			translations: {
+				detected_source_language: string;
+				text: string;
+			}[];
+		};
 
 		return {
 			sourceLang: json.translations[0].detected_source_language,
