@@ -45,7 +45,7 @@ import { globalEvents } from '@/events.js';
 import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { defaultStore } from '@/store.js';
-import {mainRouter} from "@/router/main.js";
+import { mainRouter } from "@/router/main.js";
 
 const MOBILE_THRESHOLD = 500;
 
