@@ -29,6 +29,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### Client
+- Fix: (Friendly) 타임라인 헤더와 알림 위젯 헤더의 타이틀이 잘못 표시될 수 있음 (kokonect-link/cherrypick#461)
 - Fix: 노트를 내보낼 때 노트의 편집 기록을 포함
 - Fix: MkA 컴포넌트를 사용하는 항목이 작동하지 않을 수 있음 (kokonect-link/cherrypick#422)
   - 알림의 읽음 표시, 테스트 알림, 기본 업로드 위치 등

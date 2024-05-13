@@ -126,7 +126,7 @@ import { globalEvents } from '@/events.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
-const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
+const XNotifications = defineAsyncComponent(() => import('@/pages/notifications-friendly.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
