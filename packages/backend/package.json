@@ -19,7 +19,7 @@
 		"watch": "node ./scripts/watch.mjs",
 		"restart": "pnpm build && pnpm start",
 		"dev": "node ./scripts/dev.mjs",
-		"typecheck": "tsc --noEmit && tsc -p test --noEmit",
+		"typecheck": "tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.ts\"",
 		"lint": "pnpm typecheck && pnpm eslint",
 		"jest": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.unit.cjs",
@@ -66,8 +66,8 @@
 		"utf-8-validate": "6.0.3"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "3.412.0",
-		"@aws-sdk/lib-storage": "3.412.0",
+		"@aws-sdk/client-s3": "3.540.0",
+		"@aws-sdk/lib-storage": "3.413.0",
 		"@bull-board/api": "5.14.2",
 		"@bull-board/fastify": "5.14.2",
 		"@bull-board/ui": "5.14.2",

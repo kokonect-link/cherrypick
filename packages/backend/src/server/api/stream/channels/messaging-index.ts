@@ -25,10 +25,9 @@ class MessagingIndexChannel extends Channel {
 export class MessagingIndexChannelService {
 	public readonly shouldShare = MessagingIndexChannel.shouldShare;
 	public readonly requireCredential = MessagingIndexChannel.requireCredential;
+	public readonly kind: string = 'messagingIndex'; // kind の型を string に変更し、適切な値を代入する
 
-	constructor(
-	) {
-	}
+	constructor() {}
 
 	@bindThis
 	public create(id: string, connection: Channel['connection']): MessagingIndexChannel {
