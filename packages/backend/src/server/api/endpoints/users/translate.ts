@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -72,31 +72,31 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (!policies.canUseTranslator) {
 				throw new ApiError(meta.errors.unavailable);
 			}
-		
+
 			const target = await this.getterService.getUserProfiles(ps.userId).catch(err => {
 				if (err.id === '9725d0ce-ba28-4dde-95a7-2cbb2c15de24') throw new ApiError(meta.errors.noSuchDescription);
 				throw err;
 			});
-		
+
 			if (target.description == null) {
 				return;
 			}
-		
+
 			const instance = await this.metaService.fetch();
-		
+
 			const translatorServices = [
 				'deepl',
 				'google_no_api',
 				'ctav3',
 			];
-		
+
 			if (instance.translatorType == null || !translatorServices.includes(instance.translatorType)) {
 				return Promise.resolve(204); // Promise.resolveで204をラップする
 			}
-		
+
 			let targetLang = ps.targetLang;
 			if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
-		
+
 			let translationResult;
 			if (instance.translatorType === 'deepl') {
 				if (instance.deeplAuthKey == null) {
@@ -106,9 +106,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			} else if (instance.translatorType === 'google_no_api') {
 				let targetLang = ps.targetLang;
 				if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
-		
+
 				const { text, raw } = await translate(target.description, { to: targetLang });
-		
+
 				return {
 					sourceLang: raw.src,
 					text: text,
@@ -124,13 +124,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			} else {
 				throw new Error('Unsupported translator type');
 			}
-		
+
 			return Promise.resolve({
 				sourceLang: translationResult.sourceLang || '',
 				text: translationResult.text || '',
 				translator: translationResult.translator || [],
 			});
-		});		
+		});
 	}
 
 	private async translateDeepL(text: string, targetLang: string, authKey: string, isPro: boolean, provider: string) {

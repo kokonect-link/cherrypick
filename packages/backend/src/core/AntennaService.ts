@@ -17,8 +17,8 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { bindThis } from '@/decorators.js';
 import type { GlobalEvents } from '@/core/GlobalEventService.js';
 import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
-import type { OnApplicationShutdown } from '@nestjs/common';
 import { deserializeAntenna } from './deserializeAntenna.js';
+import type { OnApplicationShutdown } from '@nestjs/common';
 
 @Injectable()
 export class AntennaService implements OnApplicationShutdown {

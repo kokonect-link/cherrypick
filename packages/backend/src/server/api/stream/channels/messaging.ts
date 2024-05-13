@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -113,7 +113,7 @@ class MessagingChannel extends Channel {
 			if (now.getTime() - date.getTime() > 5000) delete this.typers[userId];
 		}
 
-		const users = await this.userEntityService.packMany(Object.keys(this.typers), null, { schema: "UserLite" });
+		const users = await this.userEntityService.packMany(Object.keys(this.typers), null, { schema: 'UserLite' });
 
 		this.send({
 			type: 'typers',
