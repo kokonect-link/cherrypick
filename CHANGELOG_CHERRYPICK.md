@@ -37,6 +37,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 코드 복사 버튼을 누르면 노트 상세 페이지가 표시될 수 있음 (kokonect-link/cherrypick#414)
 - Fix: 창으로 제어판을 열었을 때 뒤로 가기 버튼이 잘못된 작동을 야기할 수 있음 (kokonect-link/cherrypick#407)
 - Fix: 서버 이름이 매우 긴 경우, CherryPick에 대하여(MkSourceCodeAvailablePopup) 대화 상자의 디자인이 잘못 표시될 수 있음
+- Fix: '노트를 클릭하여 자세히 표시' 기능을 활성화하면 일부 기능이 올바르게 작동하지 않을 수 있음 (kokonect-link/cherrypick#451)
+  - 타임라인에서 노트의 프로필 아이콘을 클릭하면 프로필로 이동하지 않음
+  - 노트 본문 내의 프로필 아이콘을 클릭하면 화면에 아무것도 표시되지 않음
 
 ### Server
 - Enhance: 디버깅을 보다 편하게 할 수 있도록 vite 생성 파일의 이름 개선
