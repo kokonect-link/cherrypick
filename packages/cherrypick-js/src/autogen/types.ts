@@ -26,7 +26,8 @@ export type paths = {
      * admin/abuse-report-resolver/create
      * @description No description provided.
      *
-     * **Credential required**: *Yes*
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+     * **Credential required**: *Yes* / **Permission**: *arr-create*
      */
     post: operations['admin___abuse-report-resolver___create'];
   };
@@ -35,7 +36,8 @@ export type paths = {
      * admin/abuse-report-resolver/list
      * @description No description provided.
      *
-     * **Credential required**: *Yes*
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+     * **Credential required**: *Yes* / **Permission**: *arr-list*
      */
     post: operations['admin___abuse-report-resolver___list'];
   };
@@ -44,7 +46,8 @@ export type paths = {
      * admin/abuse-report-resolver/delete
      * @description No description provided.
      *
-     * **Credential required**: *No*
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+     * **Credential required**: *No* / **Permission**: *arr-delete*
      */
     post: operations['admin___abuse-report-resolver___delete'];
   };
@@ -53,7 +56,8 @@ export type paths = {
      * admin/abuse-report-resolver/update
      * @description No description provided.
      *
-     * **Credential required**: *Yes*
+     * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+     * **Credential required**: *Yes* / **Permission**: *arr-update*
      */
     post: operations['admin___abuse-report-resolver___update'];
   };
@@ -5025,6 +5029,7 @@ export type components = {
       userEachUserListsLimit: number;
       rateLimitFactor: number;
       avatarDecorationLimit: number;
+      canEditNote: boolean;
     };
     ReversiGameLite: {
       /** Format: id */
@@ -5384,7 +5389,8 @@ export type operations = {
    * admin/abuse-report-resolver/create
    * @description No description provided.
    *
-   * **Credential required**: *Yes*
+   * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+   * **Credential required**: *Yes* / **Permission**: *arr-create*
    */
   'admin___abuse-report-resolver___create': {
     requestBody: {
@@ -5450,7 +5456,8 @@ export type operations = {
    * admin/abuse-report-resolver/list
    * @description No description provided.
    *
-   * **Credential required**: *Yes*
+   * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+   * **Credential required**: *Yes* / **Permission**: *arr-list*
    */
   'admin___abuse-report-resolver___list': {
     requestBody: {
@@ -5515,7 +5522,8 @@ export type operations = {
    * admin/abuse-report-resolver/delete
    * @description No description provided.
    *
-   * **Credential required**: *No*
+   * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+   * **Credential required**: *No* / **Permission**: *arr-delete*
    */
   'admin___abuse-report-resolver___delete': {
     requestBody: {
@@ -5567,7 +5575,8 @@ export type operations = {
    * admin/abuse-report-resolver/update
    * @description No description provided.
    *
-   * **Credential required**: *Yes*
+   * **Internal Endpoint**: This endpoint is an API for the cherrypick mainframe and is not intended for use by third parties.
+   * **Credential required**: *Yes* / **Permission**: *arr-update*
    */
   'admin___abuse-report-resolver___update': {
     requestBody: {
