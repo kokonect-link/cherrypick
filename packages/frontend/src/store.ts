@@ -195,7 +195,7 @@ export const defaultStore = markRaw(new Storage('base', {
 			src: 'home' as 'home' | 'local' | 'social' | 'global' | `list:${string}`,
 			userList: null as Misskey.entities.UserList | null,
 			filter: {
-				withReplies: true,
+				withReplies: false,
 				withRenotes: true,
 				withSensitive: true,
 				onlyFiles: false,

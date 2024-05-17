@@ -28,6 +28,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
+### General
+- Change: '타임라인에 다른 사람에게 보내는 답글을 포함'의 기본값을 비활성으로 설정
+
 ### Client
 - Fix: (Friendly) 타임라인 헤더와 알림 영역의 헤더 타이틀이 잘못 표시될 수 있음 (kokonect-link/cherrypick#461)
 - Fix: (Friendly) 윈도우 크기를 조정하면 타임라인 탭의 하이라이트가 잘못된 위치에 표시될 수 있음 (kokonect-link/cherrypick#415)
