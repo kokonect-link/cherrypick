@@ -23,6 +23,38 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.8.0
+출시일: 2024/5/20<br>
+기반 Misskey 버전: 2024.3.1<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202431](CHANGELOG.md#202431) 문서를 참고하십시오.
+
+### General
+- Change: '타임라인에 다른 사람에게 보내는 답글을 포함'의 기본값을 비활성으로 설정
+
+### Client
+- Enhance: 노트 메뉴에 '새 탭에서 열기' 추가
+- Fix: (Friendly) 타임라인 헤더와 알림 영역의 헤더 타이틀이 잘못 표시될 수 있음 (kokonect-link/cherrypick#461)
+- Fix: (Friendly) 윈도우 크기를 조정하면 타임라인 탭의 하이라이트가 잘못된 위치에 표시될 수 있음 (kokonect-link/cherrypick#415)
+- Fix: (Friendly) 일부 페이지에서 알림 영역의 디자인이 잘못 표시될 수 있음
+  - 사용자 프로필 페이지
+  - 노트 상세 페이지
+- Fix: 노트를 내보낼 때 노트의 편집 기록을 포함
+- Fix: MkA 컴포넌트를 사용하는 항목이 작동하지 않을 수 있음 (kokonect-link/cherrypick#422)
+  - 알림의 읽음 표시, 테스트 알림, 기본 업로드 위치 등
+- Fix: 코드 복사 버튼을 누르면 노트 상세 페이지가 표시될 수 있음 (kokonect-link/cherrypick#414)
+- Fix: 창으로 제어판을 열었을 때 뒤로 가기 버튼이 잘못된 작동을 야기할 수 있음 (kokonect-link/cherrypick#407)
+- Fix: 서버 이름이 매우 긴 경우, CherryPick에 대하여(MkSourceCodeAvailablePopup) 대화 상자의 디자인이 잘못 표시될 수 있음
+- Fix: '노트를 클릭하여 자세히 표시' 기능을 활성화하면 일부 기능이 올바르게 작동하지 않을 수 있음 (kokonect-link/cherrypick#451)
+  - 타임라인에서 노트의 프로필 아이콘을 클릭하면 프로필로 이동하지 않음
+  - 노트 본문 내의 프로필 아이콘을 클릭하면 화면에 아무것도 표시되지 않음
+
+### Server
+- Enhance: 디버깅을 보다 편하게 할 수 있도록 vite 생성 파일의 이름 개선
+- Fix: 엔드포인트 `users/translate` 에러 개선
+- Fix: Mastodon 사용자에게 대화를 보낼 때 [#objectobject] 태그가 추가될 수 있음
+
+---
+
 ## 4.7.0
 출시일: 2024/3/19<br>
 기반 Misskey 버전: 2024.2.0<br>

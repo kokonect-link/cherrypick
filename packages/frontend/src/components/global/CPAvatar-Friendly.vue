@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
-		:class="[$style.inner, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.noDrag]: noDrag }]"
+		:class="[$style.inner, $style.noDrag, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"
 		:src="url"
 		:hash="user.avatarBlurhash"
 		:cover="true"

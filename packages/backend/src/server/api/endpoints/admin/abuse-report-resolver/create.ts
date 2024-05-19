@@ -13,41 +13,45 @@ import { IdService } from '@/core/IdService.js';
 
 export const meta = {
 	tags: ['admin'],
-
 	requireCredential: true,
-
+	secure: true,
 	requireAdmin: true,
-
+	kind: 'arr-create', // ここにkindプロパティを追加
 	res: {
 		type: 'object',
 		properties: {
 			name: {
 				type: 'string',
-				nullable: false, optional: false,
+				nullable: false,
+				optional: false,
 			},
 			targetUserPattern: {
 				type: 'string',
-				nullable: true, optional: false,
+				nullable: true,
+				optional: false,
 			},
 			reporterPattern: {
 				type: 'string',
-				nullable: true, optional: false,
+				nullable: true,
+				optional: false,
 			},
 			reportContentPattern: {
 				type: 'string',
-				nullable: true, optional: false,
+				nullable: true,
+				optional: false,
 			},
 			expiresAt: {
 				type: 'string',
-				nullable: false, optional: false,
+				nullable: false,
+				optional: false,
 			},
 			forward: {
 				type: 'boolean',
-				nullable: false, optional: false,
+				nullable: false,
+				optional: false,
 			},
 		},
 	},
-
 	errors: {
 		invalidRegularExpressionForTargetUser: {
 			message: 'Invalid regular expression for target user.',

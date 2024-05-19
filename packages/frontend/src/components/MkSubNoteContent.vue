@@ -62,7 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="showSubNoteFooterButton">
 		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @click.stop @contextmenu.prevent.stop @mockUpdateMyReaction="emitUpdReaction">
 			<template #more>
-				<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
+				<MkA :to="`/notes/${note.id}/reactions`" :class="[$style.reactionOmitted]">{{ i18n.ts.more }}</MkA>
 			</template>
 		</MkReactionsViewer>
 		<footer :class="$style.footer">
@@ -83,20 +83,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 				@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !note.channel) || (note.channel && !note.channel.allowRenoteToExternal) || note.visibility === 'followers') ? renoteOnly() : renote()"
 			>
 				<i class="ti ti-repeat"></i>
-				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ note.renoteCount }}</p>
+				<p v-if="note.renoteCount > 0" :class="$style.footerButtonCount">{{ number(note.renoteCount) }}</p>
 			</button>
 			<button v-else :class="$style.footerButton" class="_button" disabled>
 				<i class="ti ti-ban"></i>
 			</button>
-			<button v-if="note.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
+			<button v-if="note.reactionAcceptance !== 'likeOnly' && note.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button v-if="note.reactionAcceptance !== 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @click.stop="react()">
-				<i v-if="note.myReaction == null" v-tooltip="i18n.ts.reaction" class="ti ti-mood-plus"></i>
-				<i v-else v-tooltip="i18n.ts.editReaction" class="ti ti-mood-edit"></i>
-			</button>
-			<button v-if="note.myReaction != null && note.reactionAcceptance == 'likeOnly'" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.removeReaction" :class="$style.footerButton" class="_button" @click.stop="undoReact(note)">
-				<i class="ti ti-heart-minus"></i>
+			<button ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
+				<i v-if="note.reactionAcceptance === 'likeOnly' && note.myReaction != null" class="ti ti-heart-filled" style="color: var(--eventReactionHeart);"></i>
+				<i v-else-if="note.myReaction != null" class="ti ti-mood-edit" style="color: var(--accent);"></i>
+				<i v-else-if="note.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
+				<i v-else class="ti ti-mood-plus"></i>
+				<p v-if="(note.reactionAcceptance === 'likeOnly' || defaultStore.state.showReactionsCount) && note.reactionCount > 0" :class="$style.footerButtonCount">{{ number(note.reactionCount) }}</p>
 			</button>
 			<button v-if="canRenote && defaultStore.state.renoteQuoteButtonSeparation" ref="quoteButton" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.quote" class="_button" :class="$style.footerButton" @click.stop="quote()">
 				<i class="ti ti-quote"></i>
@@ -145,6 +145,7 @@ import { concat } from '@/scripts/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
+import number from '@/filters/number.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -395,6 +396,14 @@ function undoReact(targetNote: Misskey.entities.Note): void {
 	});
 }
 
+function toggleReact() {
+	if (note.value.myReaction != null && note.value.reactionAcceptance === 'likeOnly') {
+		undoReact(note.value);
+	} else {
+		react();
+	}
+}
+
 function showMenu(viaKeyboard = false): void {
 	if (props.mock) {
 		return;
@@ -580,5 +589,12 @@ function emitUpdReaction(emoji: string, delta: number) {
 	font-size: 0.8em;
 	border-radius: 999px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+}
+
+.reactionOmitted {
+	display: inline-block;
+	margin-left: 8px;
+	opacity: .8;
+	font-size: 95%;
 }
 </style>
