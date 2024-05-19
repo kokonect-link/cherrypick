@@ -6,26 +6,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-@import "@fontsource/jetbrains-mono/100.css";
-@import "@fontsource/jetbrains-mono/100-italic.css";
-@import "@fontsource/jetbrains-mono/200.css";
-@import "@fontsource/jetbrains-mono/200-italic.css";
-@import "@fontsource/jetbrains-mono/300.css";
-@import "@fontsource/jetbrains-mono/300-italic.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/400-italic.css";
-@import "@fontsource/jetbrains-mono/500.css";
-@import "@fontsource/jetbrains-mono/500-italic.css";
-@import "@fontsource/jetbrains-mono/600.css";
-@import "@fontsource/jetbrains-mono/600-italic.css";
-@import "@fontsource/jetbrains-mono/700.css";
-@import "@fontsource/jetbrains-mono/700-italic.css";
-@import "@fontsource/jetbrains-mono/800.css";
-@import "@fontsource/jetbrains-mono/800-italic.css";
-@import "pretendard/dist/web/static/pretendard.css";
-@import "pretendard-jp/dist/web/static/pretendard-jp.css";
-// @import "pretendard/dist/web/static/pretendard-dynamic-subset.css";
-// @import "pretendard-jp/dist/web/static/pretendard-jp-dynamic-subset.css";
+@import url("https://cdn.jsdelivr.net/npm/jetbrains-mono@1.0.6/css/jetbrains-mono.min.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-jp.min.css");
 
 $default-font: "Pretendard JP", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Hiragino Sans", "Apple SD Gothic Neo", Meiryo, "Noto Sans JP", "Noto Sans KR", "Malgun Gothic", Osaka, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 $system-font: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", Roboto, "Noto Sans KR", "Segoe UI", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
@@ -48,6 +31,13 @@ $code-monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, M
 	}
 
 	//--ad: rgb(255 169 0 / 10%);
+	--eventFollow: #36aed2;
+	--eventRenote: #36d298;
+	--eventReply: #007aff;
+	--eventReactionHeart: #dd2e44;
+	--eventReaction: #e99a0b;
+	--eventAchievement: #cb9a11;
+	--eventOther: #88a6b7;
 
 	--cherry: rgb(255, 188, 220);
 	--pick: rgb(177, 211, 255);
@@ -530,6 +520,40 @@ pre[class*="language-"] {
 	transition-duration: 0.5s, 0.5s;
 	transition-property: opacity, transform;
 	transition-timing-function: cubic-bezier(0,.5,.5,1);
+}
+
+._woodenFrame {
+	padding: 7px;
+	background: #8C4F26;
+	box-shadow: 0 6px 16px #0007, 0 0 1px 1px #693410, inset 0 0 2px 1px #ce8a5c;
+	border-radius: 10px;
+
+	--bg: #F1E8DC;
+	--fg: #693410;
+}
+
+html[data-color-mode=dark] ._woodenFrame {
+	--bg: #1d0c02;
+	--fg: #F1E8DC;
+	--panel: #192320;
+}
+
+._woodenFrameH {
+	display: flex;
+	gap: 6px;
+}
+
+._woodenFrameInner {
+	padding: 8px;
+	margin-top: 8px;
+	background: var(--bg);
+	box-shadow: 0 0 2px 1px #ce8a5c, inset 0 0 1px 1px #693410;
+	border-radius: 6px;
+	color: var(--fg);
+
+	&:first-child {
+		margin-top: 0;
+	}
 }
 
 ._transition_zoom-enter-active, ._transition_zoom-leave-active {

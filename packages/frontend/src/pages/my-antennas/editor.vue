@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.users }}</template>
 					<template #caption>{{ i18n.ts.antennaUsersDescription }} <button class="_textButton" @click="addUser">{{ i18n.ts.addUser }}</button></template>
 				</MkTextarea>
+				<MkSwitch v-model="excludeBots">{{ i18n.ts.antennaExcludeBots }}</MkSwitch>
 				<MkSwitch v-model="withReplies">{{ i18n.ts.withReplies }}</MkSwitch>
 				<MkTextarea v-model="keywords">
 					<template #label>{{ i18n.ts.antennaKeywords }}</template>
@@ -87,6 +88,7 @@ const keywords = ref<string>(props.antenna.keywords.map(x => x.join(' ')).join('
 const excludeKeywords = ref<string>(props.antenna.excludeKeywords.map(x => x.join(' ')).join('\n'));
 const caseSensitive = ref<boolean>(props.antenna.caseSensitive);
 const localOnly = ref<boolean>(props.antenna.localOnly);
+const excludeBots = ref<boolean>(props.antenna.excludeBots);
 const withReplies = ref<boolean>(props.antenna.withReplies);
 const withFile = ref<boolean>(props.antenna.withFile);
 const notify = ref<boolean>(props.antenna.notify);
@@ -116,6 +118,7 @@ async function saveAntenna() {
 		src: src.value,
 		userListId: userListId.value,
 		userGroupId: userGroupId.value,
+		excludeBots: excludeBots.value,
 		withReplies: withReplies.value,
 		withFile: withFile.value,
 		notify: notify.value,

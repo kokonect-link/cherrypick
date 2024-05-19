@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div ref="el" class="fdidabkc" :style="{ background: bg }" @click="onClick">
 	<div class="buttons left">
-		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+		<button v-if="mainRouter.currentRoute.value.name === 'admin'" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button button goBack" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
 	<template v-if="pageMetadata">
 		<div class="titleContainer" @click="showTabsPopup">
@@ -45,6 +45,7 @@ import { globalEvents } from '@/events.js';
 import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { defaultStore } from '@/store.js';
+import { mainRouter } from '@/router/main.js';
 
 const MOBILE_THRESHOLD = 500;
 

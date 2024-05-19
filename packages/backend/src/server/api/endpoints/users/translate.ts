@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -24,7 +24,7 @@ export const meta = {
 
 	res: {
 		type: 'object',
-		optional: false, nullable: false,
+		optional: true, nullable: false,
 		properties: {
 			sourceLang: { type: 'string' },
 			text: { type: 'string' },
@@ -79,7 +79,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			});
 
 			if (target.description == null) {
-				return 204;
+				return;
 			}
 
 			const instance = await this.metaService.fetch();
@@ -91,7 +91,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			];
 
 			if (instance.translatorType == null || !translatorServices.includes(instance.translatorType)) {
-				throw new ApiError(meta.errors.noTranslateService);
+				return Promise.resolve(204); // Promise.resolveで204をラップする
 			}
 
 			let targetLang = ps.targetLang;
@@ -100,7 +100,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			let translationResult;
 			if (instance.translatorType === 'deepl') {
 				if (instance.deeplAuthKey == null) {
-					return 204; // TODO: 良い感じのエラー返す
+					throw new ApiError(meta.errors.unavailable);
 				}
 				translationResult = await this.translateDeepL(target.description, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
 			} else if (instance.translatorType === 'google_no_api') {
@@ -112,12 +112,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				return {
 					sourceLang: raw.src,
 					text: text,
-					translator: translatorServices,
+					translator: instance.translatorType, // 修正点: 配列ではなく単一の文字列
 				};
 			} else if (instance.translatorType === 'ctav3') {
-				if (instance.ctav3SaKey == null) return 204;
-				else if (instance.ctav3ProjectId == null) return 204;
-				else if (instance.ctav3Location == null) return 204;
+				if (instance.ctav3SaKey == null) return Promise.resolve(204);
+				else if (instance.ctav3ProjectId == null) return Promise.resolve(204);
+				else if (instance.ctav3Location == null) return Promise.resolve(204);
 				translationResult = await this.apiCloudTranslationAdvanced(
 					target.description, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
 				);
@@ -125,11 +125,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new Error('Unsupported translator type');
 			}
 
-			return {
-				sourceLang: translationResult.sourceLang,
-				text: translationResult.text,
-				translator: translationResult.translator,
-			};
+			return Promise.resolve({
+				sourceLang: translationResult.sourceLang || '',
+				text: translationResult.text || '',
+				translator: translationResult.translator || [],
+			});
 		});
 	}
 

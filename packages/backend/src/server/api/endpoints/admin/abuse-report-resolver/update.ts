@@ -12,7 +12,8 @@ import { ApiError } from '../../../error.js';
 
 export const meta = {
 	requireCredential: true,
-
+	kind: 'arr-update', // ここにkindプロパティを追加
+	secure: true,
 	requireAdmin: true,
 
 	errors: {

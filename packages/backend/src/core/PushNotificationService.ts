@@ -106,7 +106,7 @@ export class PushNotificationService implements OnApplicationShutdown {
 				type,
 				body: (type === 'notification' || type === 'unreadAntennaNote') ? truncateBody(type, body) : body,
 				userId,
-				dateTime: (new Date()).getTime(),
+				dateTime: Date.now(),
 			}), {
 				proxy: this.config.proxy,
 			}).catch((err: any) => {
@@ -120,10 +120,17 @@ export class PushNotificationService implements OnApplicationShutdown {
 						endpoint: subscription.endpoint,
 						auth: subscription.auth,
 						publickey: subscription.publickey,
+					}).then(() => {
+						this.refreshCache(userId);
 					});
 				}
 			});
 		}
+	}
+
+	@bindThis
+	public refreshCache(userId: string): void {
+		this.subscriptionsCache.refresh(userId);
 	}
 
 	@bindThis

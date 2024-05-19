@@ -88,6 +88,11 @@ export class MiAntenna {
 	@Column('boolean', {
 		default: false,
 	})
+	public excludeBots: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
 	public withReplies: boolean;
 
 	@Column('boolean')
