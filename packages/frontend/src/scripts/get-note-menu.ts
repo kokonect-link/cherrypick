@@ -284,6 +284,10 @@ export function getNoteMenu(props: {
 		os.toast(i18n.ts.copiedLink, 'copied');
 	}
 
+	function openInNewTab(): void {
+		window.open(`${url}/notes/${appearNote.id}`, '_blank', 'noopener');
+	}
+
 	function togglePin(pin: boolean): void {
 		os.apiWithDialog(pin ? 'i/pin' : 'i/unpin', {
 			noteId: appearNote.id,
@@ -386,6 +390,10 @@ export function getNoteMenu(props: {
 				icon: 'ti ti-copy',
 				text: i18n.ts.copyContent,
 				action: copyContent,
+			}, {
+				icon: 'ti ti-external-link',
+				text: i18n.ts.openInNewTab,
+				action: openInNewTab,
 			},
 			$i && $i.policies.canUseTranslator && instance.translatorAvailable ? {
 				icon: 'ti ti-language-hiragana',
