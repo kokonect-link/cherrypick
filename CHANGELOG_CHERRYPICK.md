@@ -23,10 +23,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
-출시일: unreleased<br>
-기반 Misskey 버전: 2024.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+## 4.8.0
+출시일: 2024/5/20<br>
+기반 Misskey 버전: 2024.3.1<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202431](CHANGELOG.md#202431) 문서를 참고하십시오.
 
 ### General
 - Change: '타임라인에 다른 사람에게 보내는 답글을 포함'의 기본값을 비활성으로 설정
