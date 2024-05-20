@@ -20,6 +20,10 @@ export const emojilist: UnicodeEmojiDef[] = _emojilist.map(x => ({
 	category: unicodeEmojiCategories[x[2]],
 }));
 
+const unicodeEmojisMap = new Map<string, UnicodeEmojiDef>(
+	emojilist.map(x => [x.char, x]),
+);
+
 const _indexByChar = new Map<string, number>();
 const _charGroupByCategory = new Map<string, string[]>();
 for (let i = 0; i < emojilist.length; i++) {
@@ -35,11 +39,17 @@ for (let i = 0; i < emojilist.length; i++) {
 
 export const emojiCharByCategory = _charGroupByCategory;
 
+export function getUnicodeEmoji(char: string): UnicodeEmojiDef | string {
+	return unicodeEmojisMap.get(colorizeEmoji(char))
+			?? unicodeEmojisMap.get(char)
+			?? char;
+}
+
 export function getEmojiName(char: string): string | null {
 	// Colorize it because emojilist.json assumes that
-	const idx = _indexByChar.get(colorizeEmoji(char));
-	if (idx == null) {
-		return null;
+	const idx = _indexByChar.get(colorizeEmoji(char)) ?? _indexByChar.get(char);
+	if (idx === undefined) {
+		return char;
 	} else {
 		return emojilist[idx].name;
 	}

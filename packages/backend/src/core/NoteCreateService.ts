@@ -55,6 +55,7 @@ import { DB_MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { RoleService } from '@/core/RoleService.js';
 import { MetaService } from '@/core/MetaService.js';
 import { SearchService } from '@/core/SearchService.js';
+import { AdvancedSearchService } from '@/core/AdvancedSearchService.js';
 import { FeaturedService } from '@/core/FeaturedService.js';
 import { FanoutTimelineService } from '@/core/FanoutTimelineService.js';
 import { UtilityService } from '@/core/UtilityService.js';
@@ -218,6 +219,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 		private roleService: RoleService,
 		private metaService: MetaService,
 		private searchService: SearchService,
+		private advancedSearchService: AdvancedSearchService,
 		private notesChart: NotesChart,
 		private perUserNotesChart: PerUserNotesChart,
 		private activeUsersChart: ActiveUsersChart,
@@ -822,6 +824,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 		if (note.text == null && note.cw == null) return;
 
 		this.searchService.indexNote(note);
+		this.advancedSearchService.indexNote(note);
 	}
 
 	@bindThis

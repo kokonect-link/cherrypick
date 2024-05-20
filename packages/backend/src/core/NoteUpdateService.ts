@@ -22,6 +22,7 @@ import { ApDeliverManagerService } from '@/core/activitypub/ApDeliverManagerServ
 import { bindThis } from '@/decorators.js';
 import { DB_MAX_NOTE_TEXT_LENGTH } from '@/const.js';
 import { SearchService } from '@/core/SearchService.js';
+import { AdvancedSearchService } from '@/core/AdvancedSearchService.js';
 import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import { MiDriveFile } from '@/models/_.js';
 import { MiPoll, IPoll } from '@/models/Poll.js';
@@ -67,6 +68,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		private apDeliverManagerService: ApDeliverManagerService,
 		private apRendererService: ApRendererService,
 		private searchService: SearchService,
+		private advancedSearchService: AdvancedSearchService,
 		private activeUsersChart: ActiveUsersChart,
 	) { }
 
@@ -284,6 +286,8 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 		this.searchService.unindexNote(note);
 		this.searchService.indexNote(note);
+		this.advancedSearchService.unindexNote(note);
+		this.advancedSearchService.indexNote(note);
 	}
 
 	@bindThis

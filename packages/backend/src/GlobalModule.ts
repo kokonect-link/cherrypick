@@ -8,6 +8,7 @@ import { Global, Inject, Module } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DataSource } from 'typeorm';
 import { MeiliSearch } from 'meilisearch';
+import { Client as OpenSearch } from '@opensearch-project/opensearch';
 import { Logging } from '@google-cloud/logging';
 import { DI } from './di-symbols.js';
 import { Config, loadConfig } from './config.js';
@@ -37,6 +38,29 @@ const $meilisearch: Provider = {
 			return new MeiliSearch({
 				host: `${config.meilisearch.ssl ? 'https' : 'http'}://${config.meilisearch.host}:${config.meilisearch.port}`,
 				apiKey: config.meilisearch.apiKey,
+			});
+		} else {
+			return null;
+		}
+	},
+	inject: [DI.config],
+};
+
+const $opensearch: Provider = {
+	provide: DI.opensearch,
+	useFactory: (config: Config) => {
+		if (config.opensearch) {
+			return new OpenSearch({
+				nodes: {
+					url: new URL(`${config.opensearch.ssl ? 'https' : 'http'}://${config.opensearch.host}:${config.opensearch.port}`),
+					ssl: {
+						rejectUnauthorized: config.opensearch.rejectUnauthorized,
+					},
+				},
+				auth: {
+					username: config.opensearch.user,
+					password: config.opensearch.pass,
+				},
 			});
 		} else {
 			return null;
@@ -109,8 +133,8 @@ const $redisForJobQueue: Provider = {
 @Global()
 @Module({
 	imports: [RepositoryModule],
-	providers: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForJobQueue],
-	exports: [$config, $db, $meilisearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForJobQueue, RepositoryModule],
+	providers: [$config, $db, $meilisearch, $opensearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForJobQueue],
+	exports: [$config, $db, $meilisearch, $opensearch, $cloudLogging, $redis, $redisForPub, $redisForSub, $redisForTimelines, $redisForJobQueue, RepositoryModule],
 })
 export class GlobalModule implements OnApplicationShutdown {
 	constructor(

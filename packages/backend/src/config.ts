@@ -44,6 +44,7 @@ type Source = {
 		user: string;
 		pass: string;
 	}[];
+	pgroonga?: boolean;
 	redis: RedisOptionsSource;
 	redisForPubsub?: RedisOptionsSource;
 	redisForJobQueue?: RedisOptionsSource;
@@ -56,6 +57,15 @@ type Source = {
 		index: string;
 		scope?: 'local' | 'global' | string[];
 	};
+	opensearch?: {
+		host: string;
+		port: string;
+		user: string;
+		pass: string;
+		ssl?: boolean;
+		rejectUnauthorized?: boolean;
+		index: string;
+	} | undefined;
 
 	publishTarballInsteadOfProvideRepositoryUrl?: boolean;
 
@@ -126,6 +136,7 @@ export type Config = {
 		user: string;
 		pass: string;
 	}[] | undefined;
+	pgroonga: boolean | undefined;
 	meilisearch: {
 		host: string;
 		port: string;
@@ -133,6 +144,15 @@ export type Config = {
 		ssl?: boolean;
 		index: string;
 		scope?: 'local' | 'global' | string[];
+	} | undefined;
+	opensearch: {
+		host: string;
+		port: string;
+		user: string;
+		pass: string;
+		ssl?: boolean;
+		rejectUnauthorized?: boolean;
+		index: string;
 	} | undefined;
 	proxy: string | undefined;
 	proxySmtp: string | undefined;
@@ -248,7 +268,9 @@ export function loadConfig(): Config {
 		db: config.db,
 		dbReplications: config.dbReplications,
 		dbSlaves: config.dbSlaves,
+		pgroonga: config.pgroonga,
 		meilisearch: config.meilisearch,
+		opensearch: config.opensearch,
 		redis,
 		redisForPubsub: config.redisForPubsub ? convertRedisOptions(config.redisForPubsub, host) : redis,
 		redisForJobQueue: config.redisForJobQueue ? convertRedisOptions(config.redisForJobQueue, host) : redis,

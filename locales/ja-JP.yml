@@ -1899,6 +1899,7 @@ _role:
     descriptionOfRateLimitFactor: "小さいほど制限が緩和され、大きいほど制限が強化されます。"
     canHideAds: "広告の非表示"
     canSearchNotes: "ノート検索の利用"
+    canAdvancedSearchNotes: "高度な検索の利用"
     canUseTranslator: "翻訳機能の利用"
     avatarDecorationLimit: "アイコンデコレーションの最大取付個数"
   _condition:
@@ -2935,3 +2936,20 @@ _imageCompressionMode:
   noResizeCompress: "縮小せず再圧縮する"
   resizeCompressLossy: "縮小して非可逆圧縮する"
   noResizeCompressLossy: "縮小せず非可逆圧縮する"
+
+_advancedSearch:
+  _fileOption:
+    title: "ファイルの添付状態"
+    fileAttachedOnly: "あり"
+    noFile: "なし"
+    combined: "全て"
+  _searchOption:
+    toggleNsfw: "CW付きを除外する"
+    toggleReply: "リプライを除外する"
+    toggleDate: "日時を指定する"
+    toggleAdvancedSearch: "高度な検索を有効にする"
+  _specifyDate:
+    startDate: "から"
+    endDate: "まで"
+  _description:
+    other: "その他の設定"

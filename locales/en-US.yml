@@ -2837,3 +2837,20 @@ _imageCompressionMode:
   noResizeCompress: "Compression without resize"
   resizeCompressLossy: "Resize and lossy compression"
   noResizeCompressLossy: "Lossy compression without resize"
+
+_advancedSearch:
+  _fileOption:
+    title: "File attachment status"
+    fileAttachedOnly: "with file"
+    noFile: "No file"
+    combined: "both"
+  _searchOption:
+    toggleNsfw: "Exclude CW"
+    toggleReply: "Exclude Reply"
+    toggleDate: "Specify date and time"
+    toggleAdvancedSearch: "Enable Advanced Search"
+  _specifyDate:
+    startDate: "From"
+    endDate: "Until"
+  _description:
+    other: "Other settings"

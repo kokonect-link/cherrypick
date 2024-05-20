@@ -7329,6 +7329,10 @@ export interface Locale extends ILocale {
              */
             "canSearchNotes": string;
             /**
+             * 高度な検索の利用
+             */
+            "canAdvancedSearchNotes": string;
+            /**
              * 翻訳機能の利用
              */
             "canUseTranslator": string;
@@ -7878,7 +7882,7 @@ export interface Locale extends ILocale {
          */
         "blockCode": string;
         /**
-         * 複数行のプログラムなどのコードをブロックでシンタックスハイライトします。
+         * 複数行のプログラムなどのコードをブロックでシンタックスハイライトします。いくつかの言語を指定するとその言語に合わせたシンタックスハイライトになります。
          */
         "blockCodeDescription": string;
         /**
@@ -8105,14 +8109,14 @@ export interface Locale extends ILocale {
          * 文字の上にルビを表示します。
          */
         "rubyDescription": string;
-				/**
-				 * ボーダー
-				 */
-				"border": string;
-				/**
-				 * 内容を枠線で囲みます。
-				 */
-				"borderDescription": string;
+        /**
+         * ボーダー
+         */
+        "border": string;
+        /**
+         * 内容を枠線で囲むことができます。
+         */
+        "borderDescription": string;
     };
     "_instanceTicker": {
         /**
@@ -11025,6 +11029,60 @@ export interface Locale extends ILocale {
          * 縮小せず非可逆圧縮する
          */
         "noResizeCompressLossy": string;
+    };
+    "_advancedSearch": {
+        "_fileOption": {
+            /**
+             * ファイルの添付状態
+             */
+            "title": string;
+            /**
+             * あり
+             */
+            "fileAttachedOnly": string;
+            /**
+             * なし
+             */
+            "noFile": string;
+            /**
+             * 全て
+             */
+            "combined": string;
+        };
+        "_searchOption": {
+            /**
+             * CW付きを除外する
+             */
+            "toggleNsfw": string;
+            /**
+             * リプライを除外する
+             */
+            "toggleReply": string;
+            /**
+             * 日時を指定する
+             */
+            "toggleDate": string;
+            /**
+             * 高度な検索を有効にする
+             */
+            "toggleAdvancedSearch": string;
+        };
+        "_specifyDate": {
+            /**
+             * から
+             */
+            "startDate": string;
+            /**
+             * まで
+             */
+            "endDate": string;
+        };
+				"_description": {
+					/**
+					 * その他
+					 */
+					"other": string;
+				}
     };
 }
 declare const locales: {

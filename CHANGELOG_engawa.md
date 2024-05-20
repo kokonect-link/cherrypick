@@ -1,5 +1,5 @@
 <!--
-## engawa-x.x.x (unreleased)
+## x.x.x (unreleased)
 
 ### Release Date
 
@@ -15,6 +15,19 @@
 ### Misc
 
 -->
+## 0.3.1
+
+### Release Date
+
+### General
+- feat: 高度な検索機能の追加
+  - PGroongaやOpenSearchを利用できるようになります
+
+### Client
+- fix: 投稿にされたリアクションが正常に表示されない問題
+
+### Server
+
 ## 0.3.0
 
 ### Release Date

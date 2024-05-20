@@ -5,7 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { NotesRepository, UsersRepository, UserProfilesRepository } from '@/models/_.js';
+import type { NotesRepository, UsersRepository, UserProfilesRepository, MessagingMessagesRepository, MiMessagingMessage } from '@/models/_.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import type { MiLocalUser, MiRemoteUser, MiUser } from '@/models/User.js';
 import type { MiUserProfile } from '@/models/UserProfile.js';
@@ -26,6 +26,9 @@ export class GetterService {
 		private userProfilesRepository: UserProfilesRepository,
 
 		private userEntityService: UserEntityService,
+
+		@Inject(DI.messagingMessagesRepository)
+		private messagingMessagesRepository: MessagingMessagesRepository,
 	) {
 	}
 
@@ -94,6 +97,21 @@ export class GetterService {
 		}
 
 		return user;
+	}
+
+	/**
+	 * Get message for API processing
+	 */
+
+	@bindThis
+	public async getMessages(messageId: MiMessagingMessage['id']) {
+		const messages = await this.messagingMessagesRepository.findOneBy({ id: messageId });
+
+		if (messages == null) {
+			throw new IdentifiableError('bfdbac90-f762-11ee-9c67-00155d403610', 'No such message.');
+		}
+
+		return messages;
 	}
 }
 

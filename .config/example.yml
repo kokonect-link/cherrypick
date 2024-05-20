@@ -129,6 +129,9 @@ dbReplications: false
 #    user:
 #    pass:
 
+# You can use PGroonga when enabled.
+#pgroonga: false
+
 #   ┌─────────────────────┐
 #───┘ Redis configuration └─────────────────────────────────────
 
@@ -185,6 +188,22 @@ redis:
 #  ssl: true
 #  index: ''
 #  scope: local
+
+
+#   ┌───────────────────────────┐
+#───┘ OpenSearch configuration └─────────────────────────────
+
+# You can use OpenSearch when you enabled AdvancedSearch.
+# THIS DOES NOT WORK BECAUSE OF WIP
+
+#opensearch:
+#  host: localhost
+#  port: 9200
+#  user: ''
+#  pass: ''
+#  ssl: false
+#  index: ''
+#  dictName: ''
 
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
