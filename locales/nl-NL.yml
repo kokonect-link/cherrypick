@@ -498,4 +498,3 @@ _webhookSettings:
 _moderationLogTypes:
   suspend: "Opschorten"
   resetPassword: "Wachtwoord terugzetten"
-
