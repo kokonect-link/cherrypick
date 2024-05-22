@@ -763,6 +763,10 @@ export interface Locale extends ILocale {
      */
     "renoted": string;
     /**
+     * {name} にリノートしました。
+     */
+    "renotedToX": ParameterizedString<"name">;
+    /**
      * ノートを引用しました。
      */
     "quoted": string;
@@ -790,6 +794,14 @@ export interface Locale extends ILocale {
      * チャンネル内引用
      */
     "inChannelQuote": string;
+    /**
+     * チャンネルにリノート
+     */
+    "renoteToChannel": string;
+    /**
+     * 他のチャンネルにリノート
+     */
+    "renoteToOtherChannel": string;
     /**
      * ピン留めされたノート
      */
@@ -1231,7 +1243,7 @@ export interface Locale extends ILocale {
      */
     "silencedInstances": string;
     /**
-     * サイレンスしたいサーバーのホストを改行で区切って設定します。サイレンスされたサーバーに所属するアカウントはすべて「サイレンス」として扱われ、フォローがすべてリクエストになり、フォロワーでないローカルアカウントにはメンションできなくなります。ブロックしたインスタンスには影響しません。
+     * サイレンスしたいサーバーのホストを改行で区切って設定します。サイレンスされたサーバーに所属するアカウントはすべて「サイレンス」として扱われ、フォローがすべてリクエストになります。ブロックしたインスタンスには影響しません。
      */
     "silencedInstancesDescription": string;
     /**
