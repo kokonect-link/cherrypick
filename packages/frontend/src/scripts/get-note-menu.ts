@@ -818,65 +818,63 @@ export function getRenoteMenu(props: {
 				}));
 			},
 		});
-	}
 
-	// Add visibility section
-	if (
-		defaultStore.state.renoteVisibilitySelection &&
-		!['followers', 'specified'].includes(appearNote.visibility) &&
-		(!appearNote.channel || appearNote.channel.allowRenoteToExternal)
-	) {
-		// renote to public
-		if (appearNote.visibility === 'public') {
-			visibilityRenoteItems.push({
-				text: `${i18n.ts.renote} (${i18n.ts._visibility.public})`,
-				icon: 'ti ti-world',
-				action: () => {
-					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-					misskeyApi('notes/create', {
-						localOnly,
-						visibility: 'public',
-						renoteId: appearNote.id,
-					}).then(() => {
-						os.toast(i18n.ts.renoted, 'renote');
-					});
-				},
-			});
-		}
+		// Add visibility section
+		if (
+			defaultStore.state.renoteVisibilitySelection &&
+			!['followers', 'specified'].includes(appearNote.visibility)
+		) {
+			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
 
-		// renote to home
-		if (['home', 'public'].includes(appearNote.visibility)) {
-			visibilityRenoteItems.push({
-				text: `${i18n.ts.renote} (${i18n.ts._visibility.home})`,
-				icon: 'ti ti-home',
-				action: () => {
-					const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-					misskeyApi('notes/create', {
-						localOnly,
-						visibility: 'home',
-						renoteId: appearNote.id,
-					}).then(() => {
-						os.toast(i18n.ts.renoted, 'renote');
-					});
-				},
-			});
-		}
-
-		// renote to followers
-		visibilityRenoteItems.push({
-			text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
-			icon: 'ti ti-lock',
-			action: () => {
-				const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-				misskeyApi('notes/create', {
-					localOnly,
-					visibility: 'followers',
-					renoteId: appearNote.id,
-				}).then(() => {
-					os.toast(i18n.ts.renoted, 'renote');
+			// renote to public
+			if (appearNote.visibility === 'public') {
+				visibilityRenoteItems.push({
+					text: `${i18n.ts.renote} (${i18n.ts._visibility.public})`,
+					icon: 'ti ti-world',
+					action: () => {
+						misskeyApi('notes/create', {
+							localOnly,
+							visibility: 'public',
+							renoteId: appearNote.id,
+						}).then(() => {
+							os.toast(i18n.ts.renoted, 'renote');
+						});
+					},
 				});
-			},
-		});
+			}
+
+			// renote to home
+			if (['home', 'public'].includes(appearNote.visibility)) {
+				visibilityRenoteItems.push({
+					text: `${i18n.ts.renote} (${i18n.ts._visibility.home})`,
+					icon: 'ti ti-home',
+					action: () => {
+						misskeyApi('notes/create', {
+							localOnly,
+							visibility: 'home',
+							renoteId: appearNote.id,
+						}).then(() => {
+							os.toast(i18n.ts.renoted, 'renote');
+						});
+					},
+				});
+			}
+
+			// renote to followers
+			visibilityRenoteItems.push({
+				text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
+				icon: 'ti ti-lock',
+				action: () => {
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'followers',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				},
+			});
+		}
 	}
 
 	const renoteItems = addDividersBetweenMenuSections(
@@ -960,49 +958,45 @@ export async function getRenoteOnly(props: {
 				os.toast(i18n.ts.renoted, 'renote');
 			});
 		}
-	}
 
-	// Add visibility section
-	if (
-		!defaultStore.state.renoteVisibilitySelection &&
-		defaultStore.state.forceRenoteVisibilitySelection !== 'none' &&
-		!['followers', 'specified'].includes(appearNote.visibility) &&
-		(!appearNote.channel || appearNote.channel.allowRenoteToExternal)
-	) {
-		// renote to public
-		if (appearNote.visibility === 'public' && defaultStore.state.forceRenoteVisibilitySelection === 'public') {
-			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-			misskeyApi('notes/create', {
-				localOnly,
-				visibility: 'public',
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted, 'renote');
-			});
-		}
+		// Add visibility section
+		if (
+			!defaultStore.state.renoteVisibilitySelection &&
+			defaultStore.state.forceRenoteVisibilitySelection !== 'none' &&
+			!['followers', 'specified'].includes(appearNote.visibility)
+		) {
+			// renote to public
+			if (appearNote.visibility === 'public' && defaultStore.state.forceRenoteVisibilitySelection === 'public') {
+				misskeyApi('notes/create', {
+					localOnly,
+					visibility: 'public',
+					renoteId: appearNote.id,
+				}).then(() => {
+					os.toast(i18n.ts.renoted, 'renote');
+				});
+			}
 
-		// renote to home
-		if (['home', 'public'].includes(appearNote.visibility) && defaultStore.state.forceRenoteVisibilitySelection === 'home') {
-			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-			misskeyApi('notes/create', {
-				localOnly,
-				visibility: 'home',
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted, 'renote');
-			});
-		}
+			// renote to home
+			if (['home', 'public'].includes(appearNote.visibility) && defaultStore.state.forceRenoteVisibilitySelection === 'home') {
+				misskeyApi('notes/create', {
+					localOnly,
+					visibility: 'home',
+					renoteId: appearNote.id,
+				}).then(() => {
+					os.toast(i18n.ts.renoted, 'renote');
+				});
+			}
 
-		// renote to followers
-		if (defaultStore.state.forceRenoteVisibilitySelection === 'followers') {
-			const localOnly = defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly;
-			misskeyApi('notes/create', {
-				localOnly,
-				visibility: 'followers',
-				renoteId: appearNote.id,
-			}).then(() => {
-				os.toast(i18n.ts.renoted, 'renote');
-			});
+			// renote to followers
+			if (defaultStore.state.forceRenoteVisibilitySelection === 'followers') {
+				misskeyApi('notes/create', {
+					localOnly,
+					visibility: 'followers',
+					renoteId: appearNote.id,
+				}).then(() => {
+					os.toast(i18n.ts.renoted, 'renote');
+				});
+			}
 		}
 	}
 }
