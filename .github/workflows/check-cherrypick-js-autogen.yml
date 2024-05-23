@@ -64,9 +64,9 @@ jobs:
             const run_id = workflows.find(x => x.name.includes("Get api.json from CherryPick")).id;
 
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-               owner: context.repo.owner,
-               repo: context.repo.repo,
-               run_id: run_id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: run_id,
             });
 
             let matchArtifacts = allArtifacts.data.artifacts.filter((artifact) => {
