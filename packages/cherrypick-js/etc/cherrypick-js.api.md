@@ -143,13 +143,7 @@ type AdminEmojiAddAliasesBulkRequest = operations['admin___emoji___add-aliases-b
 type AdminEmojiAddRequest = operations['admin___emoji___add']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
-type AdminEmojiAddResponse = operations['admin___emoji___add']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type AdminEmojiAddsRequest = operations['admin/emoji/adds']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type AdminEmojiAddsResponse = operations['admin/emoji/adds']['responses']['200']['content']['application/json'];
+type AdminEmojiAddsRequest = operations['admin___emoji___adds']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type AdminEmojiCopyRequest = operations['admin___emoji___copy']['requestBody']['content']['application/json'];
@@ -2367,15 +2361,6 @@ type MessagingMessagesRequest = operations['messaging___messages']['requestBody'
 
 // @public (undocumented)
 type MessagingMessagesResponse = operations['messaging___messages']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type MetaDetailed = components['schemas']['MetaDetailed'];
-
-// @public (undocumented)
-type MetaDetailedOnly = components['schemas']['MetaDetailedOnly'];
-
-// @public (undocumented)
-type MetaLite = components['schemas']['MetaLite'];
 
 // @public (undocumented)
 type MetaRequest = operations['meta']['requestBody']['content']['application/json'];

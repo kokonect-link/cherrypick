@@ -2927,15 +2927,6 @@ export type paths = {
      */
     post: operations['notifications___create'];
   };
-  '/notifications/flush': {
-    /**
-     * notifications/flush
-     * @description No description provided.
-     *
-     * **Credential required**: *Yes* / **Permission**: *write:notifications*
-     */
-    post: operations['notifications___flush'];
-  };
   '/notifications/mark-all-as-read': {
     /**
      * notifications/mark-all-as-read
@@ -5087,98 +5078,6 @@ export type components = {
       logs: number[][];
       map: string[];
     };
-    MetaLite: {
-      maintainerName: string | null;
-      maintainerEmail: string | null;
-      version: string;
-      basedMisskeyVersion: string;
-      providesTarball: boolean;
-      name: string | null;
-      shortName: string | null;
-      /**
-       * Format: url
-       * @example https://cherrypick.example.com
-       */
-      uri: string;
-      description: string | null;
-      langs: string[];
-      tosUrl: string | null;
-      /** @default https://github.com/kokonect-link/cherrypick */
-      repositoryUrl: string | null;
-      /** @default https://github.com/kokonect-link/cherrypick/issues/new */
-      feedbackUrl: string | null;
-      defaultDarkTheme: string | null;
-      defaultLightTheme: string | null;
-      disableRegistration: boolean;
-      emailRequiredForSignup: boolean;
-      enableHcaptcha: boolean;
-      hcaptchaSiteKey: string | null;
-      enableMcaptcha: boolean;
-      mcaptchaSiteKey: string | null;
-      mcaptchaInstanceUrl: string | null;
-      enableRecaptcha: boolean;
-      recaptchaSiteKey: string | null;
-      enableTurnstile: boolean;
-      turnstileSiteKey: string | null;
-      swPublickey: string | null;
-      /** @default /assets/ai.png */
-      mascotImageUrl: string;
-      bannerUrl: string | null;
-      serverErrorImageUrl: string | null;
-      infoImageUrl: string | null;
-      notFoundImageUrl: string | null;
-      iconUrl: string | null;
-      maxNoteTextLength: number;
-      ads: {
-          /**
-           * Format: id
-           * @example xxxxxxxxxx
-           */
-          id: string;
-          /** Format: url */
-          url: string;
-          place: string;
-          ratio: number;
-          /** Format: url */
-          imageUrl: string;
-          dayOfWeek: number;
-        }[];
-      /** @default 0 */
-      notesPerOneAd: number;
-      enableEmail: boolean;
-      enableServiceWorker: boolean;
-      translatorAvailable: boolean;
-      mediaProxy: string;
-      enableUrlPreview: boolean;
-      backgroundImageUrl: string | null;
-      impressumUrl: string | null;
-      logoImageUrl: string | null;
-      privacyPolicyUrl: string | null;
-      serverRules: string[];
-      themeColor: string | null;
-      policies: components['schemas']['RolePolicies'];
-    };
-    MetaDetailedOnly: {
-      features?: {
-        registration: boolean;
-        emailRequiredForSignup: boolean;
-        localTimeline: boolean;
-        globalTimeline: boolean;
-        hcaptcha: boolean;
-        turnstile: boolean;
-        recaptcha: boolean;
-        objectStorage: boolean;
-        serviceWorker: boolean;
-        /** @default true */
-        miauth?: boolean;
-      };
-      proxyAccountName: string | null;
-      /** @example false */
-      requireSetup: boolean;
-      cacheRemoteFiles: boolean;
-      cacheRemoteSensitiveFiles: boolean;
-    };
-    MetaDetailed: components['schemas']['MetaLite'] & components['schemas']['MetaDetailedOnly'];
   };
   responses: never;
   parameters: never;
@@ -10748,9 +10647,9 @@ export type operations = {
           caseSensitive: boolean;
           localOnly?: boolean;
           excludeBots?: boolean;
-          withReplies?: boolean;
-          withFile?: boolean;
-          notify?: boolean;
+          withReplies: boolean;
+          withFile: boolean;
+          notify: boolean;
         };
       };
     };
@@ -23001,7 +22900,7 @@ export type operations = {
    *
    * **Credential required**: *No*
    */
-  'notes/advanced-search': {
+  'notes___advanced-search': {
     requestBody: {
       content: {
         'application/json': {
@@ -23643,50 +23542,6 @@ export type operations = {
       };
       /** @description To many requests */
       429: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notifications/flush
-   * @description No description provided.
-   *
-   * **Credential required**: *Yes* / **Permission**: *write:notifications*
-   */
-  notifications___flush: {
-    responses: {
-      /** @description OK (without any results) */
-      204: {
-        content: never;
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
         content: {
           'application/json': components['schemas']['Error'];
         };
