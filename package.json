@@ -1,13 +1,13 @@
 {
 	"name": "cherrypick",
-	"version": "4.7.0-engawa0.3.0",
-	"basedMisskeyVersion": "2024.2.0",
+	"version": "4.8.0",
+	"basedMisskeyVersion": "2024.3.1",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
-	"packageManager": "pnpm@9.1.1+sha256.9551e803dcb7a1839fdf5416153a844060c7bce013218ce823410532504ac10b",
+	"packageManager": "pnpm@9.1.2+sha256.19c17528f9ca20bd442e4ca42f00f1b9808a9cb419383cd04ba32ef19322aba7",
 	"workspaces": [
 		"packages/frontend",
 		"packages/backend",
@@ -59,8 +59,10 @@
 		"js-yaml": "4.1.0",
 		"postcss": "8.4.33",
 		"tar": "6.2.0",
-		"terser": "5.27.0",
-		"typescript": "5.3.3"
+		"terser": "5.28.1",
+		"typescript": "5.3.3",
+		"esbuild": "0.19.11",
+		"glob": "10.3.10"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "6.18.1",

@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -137,7 +137,7 @@ export class MessagingService {
 				userId: message.userId,
 				visibility: 'specified',
 				emojis: [{}],
-				tags: [{}],
+				tags: [],
 				mentions: [recipientUser].map(u => u.id),
 				mentionedRemoteUsers: JSON.stringify([recipientUser].map(u => ({
 					uri: u.uri,
@@ -146,7 +146,7 @@ export class MessagingService {
 					host: u.host,
 				} as IMentionedRemoteUsers[0]
 				))),
-			} as MiNote;
+			} as unknown as MiNote;
 
 			const activity = this.apRendererService.addContext(this.apRendererService.renderCreate(await this.apRendererService.renderNote(note, false, true), note));
 

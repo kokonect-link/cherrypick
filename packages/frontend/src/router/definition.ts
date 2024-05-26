@@ -35,7 +35,7 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/user/index.vue')),
 }, {
 	name: 'note',
-	path: '/notes/:noteId',
+	path: '/notes/:noteId/:initialTab?',
 	component: page(() => import('@/pages/note.vue')),
 }, {
 	name: 'list',
@@ -360,6 +360,7 @@ const routes: RouteDef[] = [{
 	component: iAmModerator ? page(() => import('@/pages/admin-file.vue')) : page(() => import('@/pages/not-found.vue')),
 }, {
 	path: '/admin',
+	name: 'admin',
 	component: iAmModerator ? page(() => import('@/pages/admin/index.vue')) : page(() => import('@/pages/not-found.vue')),
 	children: [{
 		path: '/overview',

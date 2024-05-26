@@ -1,3 +1,7 @@
+/*
+ * SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 
 export class DeleteCreatedAt1697737204579 {
 		name = 'DeleteCreatedAt1697737204579'

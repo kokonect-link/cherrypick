@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: syuilo and noridev and other misskey, cherrypick contributors
+ * SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
@@ -128,7 +128,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					}
 				}
 
-				return await Promise.all(messages.map(message => this.messagingMessageEntityService.pack(message, me, {
+				return Promise.all(messages.map(message => this.messagingMessageEntityService.pack(message, me, {
 					populateRecipient: false,
 				})));
 			} else if (ps.groupId != null) {
@@ -160,13 +160,16 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				// Mark all as read
 				if (ps.markAsRead) {
-					this.messagingService.readGroupMessagingMessage(me.id, recipientGroup.id, messages.map(x => x.id));
+					await this.messagingService.readGroupMessagingMessage(me.id, recipientGroup.id, messages.map(x => x.id));
 				}
 
-				return await Promise.all(messages.map(message => this.messagingMessageEntityService.pack(message, me, {
+				return Promise.all(messages.map(message => this.messagingMessageEntityService.pack(message, me, {
 					populateGroup: false,
 				})));
 			}
+
+			// 必要に応じて適切な戻り値を提供する
+			return []; // デフォルトの戻り値を返す
 		});
 	}
 }

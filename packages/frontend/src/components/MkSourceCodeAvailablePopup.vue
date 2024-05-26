@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ instance.name ?? host }}
 				</template>
 			</I18n>
-			<I18n :src="i18n.ts.correspondingSourceIsAvailable" tag="span">
+			<I18n :src="i18n.ts.correspondingSourceIsAvailable" tag="span" style="display: block;">
 				<template #anchor>
 					<MkA to="/about-misskey" class="_link">{{ i18n.ts.aboutMisskey }}</MkA>
 				</template>
@@ -93,6 +93,7 @@ function close() {
 .main {
 	padding: 25px 25px 25px 0;
 	flex: 1;
+	overflow: auto;
 }
 
 .close {

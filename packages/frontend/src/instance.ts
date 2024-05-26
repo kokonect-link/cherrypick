@@ -25,6 +25,8 @@ export const infoImageUrl = computed(() => instance.infoImageUrl ?? DEFAULT_INFO
 
 export const notFoundImageUrl = computed(() => instance.notFoundImageUrl ?? DEFAULT_NOT_FOUND_IMAGE_URL);
 
+export const isEnabledUrlPreview = computed(() => instance.enableUrlPreview ?? true);
+
 export async function fetchInstance() {
 	const meta = await misskeyApi('meta', {
 		detail: false,
