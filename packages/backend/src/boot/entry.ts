@@ -16,6 +16,7 @@ import Logger from '@/logger.js';
 import { envOption } from '../env.js';
 import { masterMain } from './master.js';
 import { workerMain } from './worker.js';
+import { readyRef } from './ready.js';
 
 import 'reflect-metadata';
 
@@ -101,6 +102,8 @@ if (cluster.isPrimary || envOption.disableClustering) {
 if (cluster.isWorker || envOption.disableClustering) {
 	await workerMain();
 }
+
+readyRef.value = true;
 
 // ユニットテスト時にMisskeyが子プロセスで起動された時のため
 // それ以外のときは process.send は使えないので弾く

@@ -86,6 +86,7 @@ import ApRequestChart from './chart/charts/ap-request.js';
 import { ChartManagementService } from './chart/ChartManagementService.js';
 
 import { AbuseUserReportEntityService } from './entities/AbuseUserReportEntityService.js';
+import { AnnouncementEntityService } from './entities/AnnouncementEntityService.js';
 import { AntennaEntityService } from './entities/AntennaEntityService.js';
 import { AppEntityService } from './entities/AppEntityService.js';
 import { AuthSessionEntityService } from './entities/AuthSessionEntityService.js';
@@ -231,6 +232,7 @@ const $ApRequestChart: Provider = { provide: 'ApRequestChart', useExisting: ApRe
 const $ChartManagementService: Provider = { provide: 'ChartManagementService', useExisting: ChartManagementService };
 
 const $AbuseUserReportEntityService: Provider = { provide: 'AbuseUserReportEntityService', useExisting: AbuseUserReportEntityService };
+const $AnnouncementEntityService: Provider = { provide: 'AnnouncementEntityService', useExisting: AnnouncementEntityService };
 const $AntennaEntityService: Provider = { provide: 'AntennaEntityService', useExisting: AntennaEntityService };
 const $AppEntityService: Provider = { provide: 'AppEntityService', useExisting: AppEntityService };
 const $AuthSessionEntityService: Provider = { provide: 'AuthSessionEntityService', useExisting: AuthSessionEntityService };
@@ -377,6 +379,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ChartManagementService,
 
 		AbuseUserReportEntityService,
+		AnnouncementEntityService,
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
@@ -519,6 +522,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ChartManagementService,
 
 		$AbuseUserReportEntityService,
+		$AnnouncementEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,
@@ -661,6 +665,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ChartManagementService,
 
 		AbuseUserReportEntityService,
+		AnnouncementEntityService,
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
@@ -802,6 +807,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ChartManagementService,
 
 		$AbuseUserReportEntityService,
+		$AnnouncementEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,

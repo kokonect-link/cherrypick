@@ -467,7 +467,9 @@ export class ClientServerService {
 		};
 
 		// Atom
-		fastify.get<{ Params: { user: string; } }>('/@:user.atom', async (request, reply) => {
+		fastify.get<{ Params: { user?: string; } }>('/@:user.atom', async (request, reply) => {
+			if (request.params.user == null) return await renderBase(reply);
+
 			const feed = await getFeed(request.params.user);
 
 			if (feed) {
@@ -480,7 +482,9 @@ export class ClientServerService {
 		});
 
 		// RSS
-		fastify.get<{ Params: { user: string; } }>('/@:user.rss', async (request, reply) => {
+		fastify.get<{ Params: { user?: string; } }>('/@:user.rss', async (request, reply) => {
+			if (request.params.user == null) return await renderBase(reply);
+
 			const feed = await getFeed(request.params.user);
 
 			if (feed) {
@@ -493,7 +497,9 @@ export class ClientServerService {
 		});
 
 		// JSON
-		fastify.get<{ Params: { user: string; } }>('/@:user.json', async (request, reply) => {
+		fastify.get<{ Params: { user?: string; } }>('/@:user.json', async (request, reply) => {
+			if (request.params.user == null) return await renderBase(reply);
+
 			const feed = await getFeed(request.params.user);
 
 			if (feed) {

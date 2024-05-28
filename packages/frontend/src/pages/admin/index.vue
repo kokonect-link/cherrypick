@@ -34,9 +34,10 @@ import { i18n } from '@/i18n.js';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { instance } from '@/instance.js';
+import { lookup } from '@/scripts/lookup.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { lookupUser, lookupUserByEmail } from '@/scripts/lookup-user.js';
+import { lookupUser, lookupUserByEmail, lookupFile } from '@/scripts/admin-lookup.js';
 import { PageMetadata, definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
 import { useRouter } from '@/router/supplier.js';
 import { version } from '@/config.js';
@@ -96,7 +97,7 @@ const menuDef = computed(() => [{
 		type: 'button',
 		icon: 'ti ti-search',
 		text: i18n.ts.lookup,
-		action: lookup,
+		action: adminLookup,
 	}, ...(instance.disableRegistration ? [{
 		type: 'button',
 		icon: 'ti ti-user-plus',
@@ -297,7 +298,7 @@ function invite() {
 	});
 }
 
-function lookup(ev: MouseEvent) {
+function adminLookup(ev: MouseEvent) {
 	os.popupMenu([{
 		text: i18n.ts.user,
 		icon: 'ti ti-user',
@@ -311,22 +312,16 @@ function lookup(ev: MouseEvent) {
 			lookupUserByEmail();
 		},
 	}, {
-		text: i18n.ts.note,
-		icon: 'ti ti-pencil',
-		action: () => {
-			alert('TODO');
-		},
-	}, {
 		text: i18n.ts.file,
 		icon: 'ti ti-cloud',
 		action: () => {
-			alert('TODO');
+			lookupFile();
 		},
 	}, {
-		text: i18n.ts.instance,
-		icon: 'ti ti-planet',
+		text: i18n.ts.lookup,
+		icon: 'ti ti-world-search',
 		action: () => {
-			alert('TODO');
+			lookup();
 		},
 	}], ev.currentTarget ?? ev.target);
 }

@@ -1364,6 +1364,10 @@ _showingAnimatedImages:
   inactive: "일정 시간이 지나면 멈춤"
 _messaging:
   direct: "다이렉트 메시지"
+_delivery:
+  stop: "정지됨"
+  _type:
+    none: "배포 중"
 _bubbleGame:
   howToPlay: "플레이 방법"
   hold: "홀드"
@@ -2334,7 +2338,6 @@ _permissions:
   "read:admin:server-info": "서버 정보 보기"
   "read:admin:show-moderation-log": "모더레이션 기록 보기"
   "read:admin:show-user": "사용자 개인정보 보기"
-  "read:admin:show-users": "사용자 개인정보 보기"
   "write:admin:suspend-user": "사용자 정지하기"
   "write:admin:unset-user-avatar": "사용자 아바타 삭제하기"
   "write:admin:unset-user-banner": "사용자 배너 삭제하기"
