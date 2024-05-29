@@ -28,17 +28,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
-## NOTE
-- 
-
-### General
-- 
-
 ### Client
 - Fix: 타임라인 노트의 리액션 뷰어에 리모트 서버의 커스텀 이모지가 표시되지 않음
-
-### Server
-- 
 
 ---
 
