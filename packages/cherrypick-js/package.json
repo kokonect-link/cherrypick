@@ -4,6 +4,7 @@
 	"version": "4.8.0",
 	"basedMisskeyVersion": "2024.3.1",
 	"description": "CherryPick SDK for JavaScript",
+	"license": "MIT",
 	"main": "./built/index.js",
 	"types": "./built/index.d.ts",
 	"exports": {
@@ -31,7 +32,8 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/misskey-dev/misskey.js.git"
+		"url": "https://github.com/kokonect-link/cherrypick.git",
+		"directory": "packages/cherrypick-js"
 	},
 	"devDependencies": {
 		"@microsoft/api-extractor": "7.43.1",
