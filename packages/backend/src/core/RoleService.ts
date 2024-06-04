@@ -474,12 +474,12 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			}
 		}
 
-		const created = await this.roleAssignmentsRepository.insert({
+		const created = await this.roleAssignmentsRepository.insertOne({
 			id: this.idService.gen(now),
 			expiresAt: expiresAt,
 			roleId: roleId,
 			userId: userId,
-		}).then(x => this.roleAssignmentsRepository.findOneByOrFail(x.identifiers[0]));
+		});
 
 		this.rolesRepository.update(roleId, {
 			lastUsedAt: new Date(),
@@ -561,7 +561,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 	@bindThis
 	public async create(values: Partial<MiRole>, moderator?: MiUser): Promise<MiRole> {
 		const date = new Date();
-		const created = await this.rolesRepository.insert({
+		const created = await this.rolesRepository.insertOne({
 			id: this.idService.gen(date.getTime()),
 			updatedAt: date,
 			lastUsedAt: date,
@@ -579,7 +579,7 @@ export class RoleService implements OnApplicationShutdown, OnModuleInit {
 			canEditMembersByModerator: values.canEditMembersByModerator,
 			displayOrder: values.displayOrder,
 			policies: values.policies,
-		}).then(x => this.rolesRepository.findOneByOrFail(x.identifiers[0]));
+		});
 
 		this.globalEventService.publishInternalEvent('roleCreated', created);
 

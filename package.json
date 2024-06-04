@@ -1,7 +1,7 @@
 {
 	"name": "cherrypick",
 	"version": "4.8.0",
-	"basedMisskeyVersion": "2024.3.1",
+	"basedMisskeyVersion": "2024.5.0",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
