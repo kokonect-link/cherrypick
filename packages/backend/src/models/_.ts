@@ -12,6 +12,7 @@ import { ObjectUtils } from 'typeorm/util/ObjectUtils.js';
 import { OrmUtils } from 'typeorm/util/OrmUtils.js';
 import { MiAbuseReportResolver } from '@/models/AbuseReportResolver.js';
 import { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
+import { MiAbuseReportNotificationRecipient } from '@/models/AbuseReportNotificationRecipient.js';
 import { MiAccessToken } from '@/models/AccessToken.js';
 import { MiAd } from '@/models/Ad.js';
 import { MiAnnouncement } from '@/models/Announcement.js';
@@ -74,6 +75,7 @@ import { MiUserPublickey } from '@/models/UserPublickey.js';
 import { MiUserSecurityKey } from '@/models/UserSecurityKey.js';
 import { MiUserMemo } from '@/models/UserMemo.js';
 import { MiWebhook } from '@/models/Webhook.js';
+import { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import { MiChannel } from '@/models/Channel.js';
 import { MiRetentionAggregation } from '@/models/RetentionAggregation.js';
 import { MiRole } from '@/models/Role.js';
@@ -151,6 +153,7 @@ export const miRepository = {
 export {
 	MiAbuseReportResolver,
 	MiAbuseUserReport,
+	MiAbuseReportNotificationRecipient,
 	MiAccessToken,
 	MiAd,
 	MiAnnouncement,
@@ -213,6 +216,7 @@ export {
 	MiUserPublickey,
 	MiUserSecurityKey,
 	MiWebhook,
+	MiSystemWebhook,
 	MiChannel,
 	MiRetentionAggregation,
 	MiRole,
@@ -226,6 +230,7 @@ export {
 
 export type AbuseReportResolversRepository = Repository<MiAbuseReportResolver> & MiRepository<MiAbuseReportResolver>;
 export type AbuseUserReportsRepository = Repository<MiAbuseUserReport> & MiRepository<MiAbuseUserReport>;
+export type AbuseReportNotificationRecipientRepository = Repository<MiAbuseReportNotificationRecipient> & MiRepository<MiAbuseReportNotificationRecipient>;
 export type AccessTokensRepository = Repository<MiAccessToken> & MiRepository<MiAccessToken>;
 export type AdsRepository = Repository<MiAd> & MiRepository<MiAd>;
 export type AnnouncementsRepository = Repository<MiAnnouncement> & MiRepository<MiAnnouncement>;
@@ -288,6 +293,7 @@ export type UserProfilesRepository = Repository<MiUserProfile> & MiRepository<Mi
 export type UserPublickeysRepository = Repository<MiUserPublickey> & MiRepository<MiUserPublickey>;
 export type UserSecurityKeysRepository = Repository<MiUserSecurityKey> & MiRepository<MiUserSecurityKey>;
 export type WebhooksRepository = Repository<MiWebhook> & MiRepository<MiWebhook>;
+export type SystemWebhooksRepository = Repository<MiSystemWebhook> & MiRepository<MiWebhook>;
 export type ChannelsRepository = Repository<MiChannel> & MiRepository<MiChannel>;
 export type RetentionAggregationsRepository = Repository<MiRetentionAggregation> & MiRepository<MiRetentionAggregation>;
 export type RolesRepository = Repository<MiRole> & MiRepository<MiRole>;
