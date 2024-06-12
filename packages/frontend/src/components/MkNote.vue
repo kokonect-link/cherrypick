@@ -443,12 +443,12 @@ if (!props.mock) {
 }
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || window.getSelection().toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
 	else router.push(notePage(appearNote.value));
 }
 
 function noteDblClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || window.getSelection().toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
 	else router.push(notePage(appearNote.value));
 }
 
