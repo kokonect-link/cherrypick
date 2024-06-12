@@ -635,6 +635,7 @@ export function getQuoteMenu(props: {
 	const isRenote = (
 		props.note.renote != null &&
 		props.note.text == null &&
+		props.note.fileIds &&
 		props.note.fileIds.length === 0 &&
 		props.note.poll == null
 	);
@@ -679,6 +680,7 @@ export function getRenoteMenu(props: {
 	const isRenote = (
 		props.note.renote != null &&
 		props.note.text == null &&
+		props.note.fileIds &&
 		props.note.fileIds.length === 0 &&
 		props.note.poll == null
 	);
@@ -889,12 +891,13 @@ export function getRenoteMenu(props: {
 
 export async function getRenoteOnly(props: {
 	note: Misskey.entities.Note;
-	renoteButton: Ref<HTMLElement>;
+	renoteButton: ShallowRef<HTMLElement | undefined>;
 	mock?: boolean;
 }) {
 	const isRenote = (
 		props.note.renote != null &&
 		props.note.text == null &&
+		props.note.fileIds &&
 		props.note.fileIds.length === 0 &&
 		props.note.poll == null
 	);
@@ -960,40 +963,60 @@ export async function getRenoteOnly(props: {
 		// Add visibility section
 		if (
 			!defaultStore.state.renoteVisibilitySelection &&
-			defaultStore.state.forceRenoteVisibilitySelection !== 'none' &&
-			!['followers', 'specified'].includes(appearNote.visibility)
+			appearNote.visibility !== 'specified'
 		) {
-			// renote to public
-			if (appearNote.visibility === 'public' && defaultStore.state.forceRenoteVisibilitySelection === 'public') {
-				misskeyApi('notes/create', {
-					localOnly,
-					visibility: 'public',
-					renoteId: appearNote.id,
-				}).then(() => {
-					os.toast(i18n.ts.renoted, 'renote');
-				});
-			}
-
-			// renote to home
-			if (['home', 'public'].includes(appearNote.visibility) && defaultStore.state.forceRenoteVisibilitySelection === 'home') {
-				misskeyApi('notes/create', {
-					localOnly,
-					visibility: 'home',
-					renoteId: appearNote.id,
-				}).then(() => {
-					os.toast(i18n.ts.renoted, 'renote');
-				});
-			}
-
-			// renote to followers
-			if (defaultStore.state.forceRenoteVisibilitySelection === 'followers') {
-				misskeyApi('notes/create', {
-					localOnly,
-					visibility: 'followers',
-					renoteId: appearNote.id,
-				}).then(() => {
-					os.toast(i18n.ts.renoted, 'renote');
-				});
+			if (defaultStore.state.forceRenoteVisibilitySelection !== 'none') {
+				if (appearNote.visibility === 'public' && defaultStore.state.forceRenoteVisibilitySelection === 'public') { // renote to public
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'public',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				} else if (['home', 'public'].includes(appearNote.visibility) && defaultStore.state.forceRenoteVisibilitySelection === 'home') { // renote to home
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'home',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				} else if (appearNote.visibility === 'followers' && defaultStore.state.forceRenoteVisibilitySelection === 'followers') { // renote to followers
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'followers',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				}
+			} else {
+				if (appearNote.visibility === 'public') { // renote to public
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'public',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				} else if (['home', 'public'].includes(appearNote.visibility)) { // renote to home
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'home',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				} else if (appearNote.visibility === 'followers') { // renote to followers
+					misskeyApi('notes/create', {
+						localOnly,
+						visibility: 'followers',
+						renoteId: appearNote.id,
+					}).then(() => {
+						os.toast(i18n.ts.renoted, 'renote');
+					});
+				}
 			}
 		}
 	}
