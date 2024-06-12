@@ -29,6 +29,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### Client
+- Enhance: 노트 작성 폼에서 '공개 범위 기억하기' 설정을 변경할 수 있음
 - Fix: 타임라인 노트의 리액션 뷰어에 리모트 서버의 커스텀 이모지가 표시되지 않음
 - Fix: '리노트 공개 범위 지정' 옵션이 `없음`으로 설정된 경우 리노트를 할 수 없음 
 
