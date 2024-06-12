@@ -74,7 +74,6 @@ import * as Misskey from 'cherrypick-js';
 import XCommon from './_common_/common.vue';
 import { instanceName } from '@/config.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
 import { instance } from '@/instance.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import XSignupDialog from '@/components/MkSignupDialog.vue';
@@ -114,7 +113,6 @@ const isTimelineAvailable = ref(instance.policies.ltlAvailable || instance.polic
 const showMenu = ref(false);
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const narrow = ref(window.innerWidth < 1280);
-const meta = ref<Misskey.entities.MetaResponse>();
 
 const keymap = computed(() => {
 	return {
@@ -126,10 +124,6 @@ const keymap = computed(() => {
 			mainRouter.push('/search');
 		},
 	};
-});
-
-misskeyApi('meta', { detail: true }).then(res => {
-	meta.value = res;
 });
 
 function signin() {

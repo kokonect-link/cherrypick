@@ -20,6 +20,7 @@ import type { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import type { MiSignin } from '@/models/Signin.js';
 import type { MiPage } from '@/models/Page.js';
 import type { MiWebhook } from '@/models/Webhook.js';
+import type { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import type { MiMeta } from '@/models/Meta.js';
 import { MiAvatarDecoration, MiReversiGame, MiRole, MiRoleAssignment } from '@/models/_.js';
 import type { Packed } from '@/misc/json-schema.js';
@@ -258,6 +259,9 @@ export interface InternalEventTypes {
 	webhookCreated: MiWebhook;
 	webhookDeleted: MiWebhook;
 	webhookUpdated: MiWebhook;
+	systemWebhookCreated: MiSystemWebhook;
+	systemWebhookDeleted: MiSystemWebhook;
+	systemWebhookUpdated: MiSystemWebhook;
 	antennaCreated: MiAntenna;
 	antennaDeleted: MiAntenna;
 	antennaUpdated: MiAntenna;

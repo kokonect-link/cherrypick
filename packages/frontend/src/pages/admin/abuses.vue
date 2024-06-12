@@ -8,43 +8,46 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><XHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="900">
 		<div v-if="tab === 'list'">
-			<div class="reports">
-				<div class="">
-					<div class="inputs" style="display: flex;">
-						<MkSelect v-model="state" :class="$style.state">
-							<template #label>{{ i18n.ts.state }}</template>
-							<option value="all">{{ i18n.ts.all }}</option>
-							<option value="unresolved">{{ i18n.ts.unresolved }}</option>
-							<option value="resolved">{{ i18n.ts.resolved }}</option>
-						</MkSelect>
-						<MkSelect v-model="targetUserOrigin" :class="$style.targetUserOrigin">
-							<template #label>{{ i18n.ts.reporteeOrigin }}</template>
-							<option value="combined">{{ i18n.ts.all }}</option>
-							<option value="local">{{ i18n.ts.local }}</option>
-							<option value="remote">{{ i18n.ts.remote }}</option>
-						</MkSelect>
-						<MkSelect v-model="reporterOrigin" :class="$style.reporterOrigin">
-							<template #label>{{ i18n.ts.reporterOrigin }}</template>
-							<option value="combined">{{ i18n.ts.all }}</option>
-							<option value="local">{{ i18n.ts.local }}</option>
-							<option value="remote">{{ i18n.ts.remote }}</option>
-						</MkSelect>
-					</div>
-					<!-- TODO
-			<div class="inputs" style="display: flex; padding-top: 1.2em;">
-				<MkInput v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
-					<span>{{ i18n.ts.username }}</span>
-				</MkInput>
-				<MkInput v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
-					<span>{{ i18n.ts.host }}</span>
-				</MkInput>
-			</div>
-			-->
-
-					<MkPagination v-slot="{items}" ref="reports" :pagination="pagination" style="margin-top: var(--margin);">
-						<XAbuseReport v-for="report in items" :key="report.id" :report="report" @resolved="resolved"/>
-					</MkPagination>
+			<div :class="$style.root" class="_gaps">
+				<div :class="$style.subMenus" class="_gaps">
+					<MkButton link to="/admin/abuse-report-notification-recipient" primary>{{ "通知設定" }}</MkButton>
 				</div>
+
+				<div :class="$style.inputs" class="_gaps">
+					<MkSelect v-model="state" :class="$style.state">
+						<template #label>{{ i18n.ts.state }}</template>
+						<option value="all">{{ i18n.ts.all }}</option>
+						<option value="unresolved">{{ i18n.ts.unresolved }}</option>
+						<option value="resolved">{{ i18n.ts.resolved }}</option>
+					</MkSelect>
+					<MkSelect v-model="targetUserOrigin" :class="$style.targetUserOrigin">
+						<template #label>{{ i18n.ts.reporteeOrigin }}</template>
+						<option value="combined">{{ i18n.ts.all }}</option>
+						<option value="local">{{ i18n.ts.local }}</option>
+						<option value="remote">{{ i18n.ts.remote }}</option>
+					</MkSelect>
+					<MkSelect v-model="reporterOrigin" :class="$style.reporterOrigin">
+						<template #label>{{ i18n.ts.reporterOrigin }}</template>
+						<option value="combined">{{ i18n.ts.all }}</option>
+						<option value="local">{{ i18n.ts.local }}</option>
+						<option value="remote">{{ i18n.ts.remote }}</option>
+					</MkSelect>
+				</div>
+
+				<!-- TODO
+				<div class="inputs" style="display: flex; padding-top: 1.2em;">
+					<MkInput v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
+						<span>{{ i18n.ts.username }}</span>
+					</MkInput>
+					<MkInput v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
+						<span>{{ i18n.ts.host }}</span>
+					</MkInput>
+				</div>
+				-->
+
+				<MkPagination v-slot="{items}" ref="reports" :pagination="pagination" style="margin-top: var(--margin);">
+					<XAbuseReport v-for="report in items" :key="report.id" :report="report" @resolved="resolved"/>
+				</MkPagination>
 			</div>
 		</div>
 		<div v-else>
@@ -83,13 +86,13 @@ import { computed, shallowRef, ref } from 'vue';
 import XHeader from './_header_.vue';
 import * as os from '@/os.js';
 import MkSelect from '@/components/MkSelect.vue';
-import MkButton from '@/components/MkButton.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkAbuseReportResolver from '@/components/MkAbuseReportResolver.vue';
 import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import MkButton from '@/components/MkButton.vue';
 
 const reports = shallowRef<InstanceType<typeof MkPagination>>();
 const resolverPagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
@@ -148,7 +151,7 @@ const resolverPagination = {
 };
 
 function resolved(reportId) {
-	reports!.value.removeItem(reportId);
+	reports.value?.removeItem(reportId);
 }
 
 function edit(id: string) {
@@ -214,7 +217,29 @@ definePageMetadata(() => ({
 	icon: 'ti ti-exclamation-circle',
 }));
 </script>
-<style lang="scss" module>
+
+<style module lang="scss">
+.root {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.subMenus {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.inputs {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .input-base {
 	margin: 0;
 	flex: 1;

@@ -103,9 +103,6 @@ export class MiAntenna {
 	})
 	public expression: string | null;
 
-	@Column('boolean')
-	public notify: boolean;
-
 	@Index()
 	@Column('boolean', {
 		default: true,
