@@ -34,7 +34,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### Server
 - Feat: 리모트 유저의 아바타 장식을 여러 개 불러올 수 있음([yunochi/misskey@696787b3](https://github.com/yunochi/misskey/commit/696787b38bac31e7586899a5a59611a6fe50b9a1), [yunochi/misskey@4a5fcfe4](https://github.com/yunochi/misskey/commit/4a5fcfe43880f08380541caa6b7593b90306d103))
 - Enhance: 노트를 삭제해도 답글을 유지하도록 변경([yunochi/misskey@72feaecd](https://github.com/yunochi/misskey/commit/72feaecdc1d9bd358396053f6505c46ccb23ef74))
-- Fix: 유니코드 이모지로 리액션한 경우에도 리액션 알림에 `:`가 표시됨
+- Fix: 유니코드 이모지로 리액션한 경우에도 리액션 알림의 양 끝에 `:`가 표시됨
 
 ---
 
