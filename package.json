@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
-	"packageManager": "pnpm@9.1.1+sha256.9551e803dcb7a1839fdf5416153a844060c7bce013218ce823410532504ac10b",
+	"packageManager": "pnpm@8.15.8+sha256.691fe176eea9a8a80df20e4976f3dfb44a04841ceb885638fe2a26174f81e65e",
 	"workspaces": [
 		"packages/frontend",
 		"packages/backend",
