@@ -277,7 +277,14 @@ const maxTextLength = computed((): number => {
 
 const canPost = computed((): boolean => {
 	return !props.mock && !posting.value && !posted.value &&
-		(1 <= textLength.value || 1 <= files.value.length || !!poll.value || !!props.renote || !!event.value) &&
+		(
+			1 <= textLength.value ||
+			1 <= files.value.length ||
+			poll.value != null ||
+			event.value != null ||
+			props.renote != null ||
+			(props.reply != null && quoteId.value != null)
+		) &&
 		(textLength.value <= maxTextLength.value) &&
 		(!poll.value || poll.value.choices.length >= 2);
 });
@@ -408,7 +415,7 @@ function addMissingMention() {
 	for (const x of extractMentions(ast)) {
 		if (!visibleUsers.value.some(u => (u.username === x.username) && (u.host === x.host))) {
 			misskeyApi('users/show', { username: x.username, host: x.host }).then(user => {
-				visibleUsers.value.push(user);
+				pushVisibleUser(user);
 			});
 		}
 	}
@@ -727,6 +734,7 @@ function saveDraft() {
 			files: files.value,
 			poll: poll.value,
 			event: event.value,
+			visibleUserIds: visibility.value === 'specified' ? visibleUsers.value.map(x => x.id) : undefined,
 		},
 	};
 
@@ -1040,6 +1048,15 @@ onMounted(() => {
 				}
 				if (draft.data.event) {
 					event.value = draft.data.event;
+				}
+				if (draft.data.visibleUserIds) {
+					misskeyApi('users/show', { userIds: draft.data.visibleUserIds }).then(users => {
+						for (let i = 0; i < users.length; i++) {
+							if (users[i].id === draft.data.visibleUserIds[i]) {
+								pushVisibleUser(users[i]);
+							}
+						}
+					});
 				}
 			}
 		}

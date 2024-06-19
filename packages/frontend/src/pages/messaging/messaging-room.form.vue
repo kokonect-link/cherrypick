@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, onMounted, ref, shallowRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
-// import insertTextAtCursor from 'insert-text-at-cursor';
+import insertTextAtCursor from 'insert-text-at-cursor';
 import { formatTimeString } from '@/scripts/format-time-string.js';
 import { selectFile } from '@/scripts/select-file.js';
 import * as os from '@/os.js';
@@ -48,6 +48,7 @@ import { i18n } from '@/i18n.js';
 import { Autocomplete } from '@/scripts/autocomplete.js';
 import { uploadFile } from '@/scripts/upload.js';
 import { miLocalStorage } from '@/local-storage.js';
+import { emojiPicker } from '@/scripts/emoji-picker.js';
 import MkLoading from '@/components/global/MkLoading.vue';
 
 const props = defineProps<{
@@ -218,7 +219,15 @@ function deleteDraft() {
 }
 
 async function insertEmoji(ev: MouseEvent) {
-	await os.openEmojiPicker(ev.currentTarget ?? ev.target, {}, textEl.value);
+	emojiPicker.show(
+		ev.currentTarget ?? ev.target,
+		emoji => {
+			insertTextAtCursor(textEl.value, emoji);
+		},
+		() => {
+			focus();
+		},
+	);
 }
 
 onMounted(() => {

@@ -62,7 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="showSubNoteFooterButton">
 		<MkReactionsViewer v-show="note.cw == null || showContent" :note="note" :maxNumber="16" @click.stop @contextmenu.prevent.stop @mockUpdateMyReaction="emitUpdReaction">
 			<template #more>
-				<div :class="$style.reactionOmitted">{{ i18n.ts.more }}</div>
+				<MkA :to="`/notes/${note.id}/reactions`" :class="[$style.reactionOmitted]">{{ i18n.ts.more }}</MkA>
 			</template>
 		</MkReactionsViewer>
 		<footer :class="$style.footer">
@@ -580,5 +580,12 @@ function emitUpdReaction(emoji: string, delta: number) {
 	font-size: 0.8em;
 	border-radius: 999px;
 	box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
+}
+
+.reactionOmitted {
+	display: inline-block;
+	margin-left: 8px;
+	opacity: .8;
+	font-size: 95%;
 }
 </style>

@@ -55,11 +55,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-		<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id)" :class="$style.followButton">
-			<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
+		<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id) && mainRouter.currentRoute.value.name === 'user'" :class="$style.followButton">
+			<MkFollowButton :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
-	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_ }]">
+	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_, [$style.lowerFriendly]: isFriendly}]">
+		<div v-if="!thin_ && isFriendly" :class="$style.buttonsLeft" style="min-width: 0; width: 0; margin-right: auto;">
+		</div>
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 	</div>
 </div>
@@ -240,6 +242,10 @@ onUnmounted(() => {
 .lower {
 	--height: 40px;
 	height: var(--height);
+
+	.tabs {
+		margin-right: auto;
+	}
 }
 
 .hideTitle {
@@ -378,6 +384,10 @@ onUnmounted(() => {
 			margin-left: 6px;
 		}
 	}
+}
+
+.lowerFriendly {
+	display: flex;
 }
 
 @container (max-width: 500px) {

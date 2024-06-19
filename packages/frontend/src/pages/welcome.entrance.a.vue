@@ -116,12 +116,22 @@ misskeyApiGet('federation/instances', {
 
 	> .cherrypick, .misskey {
 		position: fixed;
-		top: 42px;
-		left: 42px;
-		width: 180px;
+		top: 36px;
+		left: 36px;
+		flex: auto;
+		color: #fff;
+		user-select: none;
+		pointer-events: none;
 
-		@media (max-width: 450px) {
-			width: 130px;
+		> .powered-by {
+			margin-bottom: 2px;
+		}
+
+		> .misskey, .cherrypick {
+			width: 140px;
+			@media (max-width: 450px) {
+				width: 130px;
+			}
 		}
 	}
 
