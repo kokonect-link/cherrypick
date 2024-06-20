@@ -246,6 +246,10 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: false,
 			},
+			urlPreviewEndpoint: {
+				type: 'string',
+				optional: false, nullable: false,
+			},
 			features: {
 				type: 'object',
 				optional: true, nullable: false,
@@ -419,6 +423,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				policies: { ...DEFAULT_POLICIES, ...instance.policies },
 
 				mediaProxy: this.config.mediaProxy,
+				// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+				urlPreviewEndpoint: instance.directSummalyProxy ? (instance.urlPreviewSummaryProxyUrl || `${this.config.url}/url` ) : `${this.config.url}/url`,
 
 				...(ps.detail ? {
 					cacheRemoteFiles: instance.cacheRemoteFiles,

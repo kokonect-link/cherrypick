@@ -92,6 +92,8 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import MkButton from '@/components/MkButton.vue';
 import { versatileLang } from '@/scripts/intl-const.js';
 import { defaultStore } from '@/store.js';
+import { instance } from '@/instance.js';
+import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
 
 type SummalyResult = Awaited<ReturnType<typeof summaly>>;
 
@@ -149,7 +151,7 @@ if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/
 
 requestUrl.hash = '';
 
-window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
+window.fetch(`${instance.urlPreviewEndpoint}?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLang}`)
 	.then(res => {
 		if (!res.ok) {
 			if (_DEV_) {
@@ -172,8 +174,8 @@ window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLa
 
 		title.value = info.title;
 		description.value = info.description;
-		thumbnail.value = info.thumbnail;
-		icon.value = info.icon;
+		thumbnail.value = getProxiedImageUrlNullable(info.thumbnail, 'avatar', true);
+		icon.value = getProxiedImageUrlNullable(info.icon, 'emoji', true);
 		sitename.value = info.sitename;
 		player.value = info.player;
 		sensitive.value = info.sensitive ?? false;

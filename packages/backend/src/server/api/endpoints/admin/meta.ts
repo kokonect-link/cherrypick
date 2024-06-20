@@ -709,6 +709,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				urlPreviewRequireContentLength: instance.urlPreviewRequireContentLength,
 				urlPreviewUserAgent: instance.urlPreviewUserAgent,
 				urlPreviewSummaryProxyUrl: instance.urlPreviewSummaryProxyUrl,
+				urlPreviewDirectSummalyProxy: instance.directSummalyProxy,
 				doNotSendNotificationEmailsForAbuseReport: instance.doNotSendNotificationEmailsForAbuseReport,
 				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				enableReceivePrerelease: instance.enableReceivePrerelease,

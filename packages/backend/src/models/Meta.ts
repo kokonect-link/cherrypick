@@ -280,6 +280,11 @@ export class MiMeta {
 	@Column('boolean', {
 		default: false,
 	})
+	public directSummalyProxy: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
 	public enableEmail: boolean;
 
 	@Column('varchar', {
