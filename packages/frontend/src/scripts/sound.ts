@@ -69,6 +69,9 @@ export const soundsTypes = [
 	'noizenecio/kick_gaba5',
 	'noizenecio/kick_gaba6',
 	'noizenecio/kick_gaba7',
+	'mujin/bubble',
+	'mujin/notification_1',
+	'mujin/test_notification',
 ] as const;
 
 export const operationTypes = [
