@@ -9615,6 +9615,7 @@ export type operations = {
           urlPreviewRequireContentLength?: boolean;
           urlPreviewUserAgent?: string | null;
           urlPreviewSummaryProxyUrl?: string | null;
+          urlPreviewDirectSummalyProxy?: boolean;
           doNotSendNotificationEmailsForAbuseReport?: boolean;
           emailToReceiveAbuseReport?: string | null;
           enableReceivePrerelease?: boolean;
@@ -20745,6 +20746,7 @@ export type operations = {
             translatorAvailable: boolean;
             proxyAccountName: string | null;
             mediaProxy: string;
+            urlPreviewEndpoint: string;
             features?: {
               registration: boolean;
               localTimeline: boolean;

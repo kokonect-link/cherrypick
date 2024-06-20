@@ -181,6 +181,7 @@ export const paramDef = {
 		urlPreviewRequireContentLength: { type: 'boolean' },
 		urlPreviewUserAgent: { type: 'string', nullable: true },
 		urlPreviewSummaryProxyUrl: { type: 'string', nullable: true },
+		urlPreviewDirectSummalyProxy: { type: 'boolean' },
 		doNotSendNotificationEmailsForAbuseReport: { type: 'boolean' },
 		emailToReceiveAbuseReport: { type: 'string', nullable: true },
 		enableReceivePrerelease: { type: 'boolean' },
@@ -722,6 +723,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.summalyProxy !== undefined || ps.urlPreviewSummaryProxyUrl !== undefined) {
 				const value = ((ps.urlPreviewSummaryProxyUrl ?? ps.summalyProxy) ?? '').trim();
 				set.urlPreviewSummaryProxyUrl = value === '' ? null : value;
+			}
+
+			if (ps.urlPreviewDirectSummalyProxy !== undefined) {
+				set.directSummalyProxy = ps.urlPreviewDirectSummalyProxy;
 			}
 
 			if (ps.doNotSendNotificationEmailsForAbuseReport !== undefined) {

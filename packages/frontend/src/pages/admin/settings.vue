@@ -156,6 +156,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkSwitch v-model="urlPreviewEnabled">
 								<template #label>{{ i18n.ts._urlPreviewSetting.enable }}</template>
 							</MkSwitch>
+							<MkSwitch v-model="urlPreviewDirectSummalyProxy">
+								<template #label>DirectAccess</template>
+							</MkSwitch>
 
 							<MkSwitch v-model="urlPreviewRequireContentLength">
 								<template #label>{{ i18n.ts._urlPreviewSetting.requireContentLength }}</template>
@@ -268,6 +271,7 @@ const urlPreviewMaximumContentLength = ref<number>(1024 * 1024 * 10);
 const urlPreviewRequireContentLength = ref<boolean>(true);
 const urlPreviewUserAgent = ref<string | null>(null);
 const urlPreviewSummaryProxyUrl = ref<string | null>(null);
+const urlPreviewDirectSummalyProxy = ref<boolean>(false);
 
 async function init(): Promise<void> {
 	const meta = await misskeyApi('admin/meta');
@@ -299,6 +303,7 @@ async function init(): Promise<void> {
 	urlPreviewRequireContentLength.value = meta.urlPreviewRequireContentLength;
 	urlPreviewUserAgent.value = meta.urlPreviewUserAgent;
 	urlPreviewSummaryProxyUrl.value = meta.urlPreviewSummaryProxyUrl;
+	urlPreviewDirectSummalyProxy.value = meta.urlPreviewDirectSummalyProxy;
 }
 
 async function save() {
@@ -331,6 +336,7 @@ async function save() {
 		urlPreviewRequireContentLength: urlPreviewRequireContentLength.value,
 		urlPreviewUserAgent: urlPreviewUserAgent.value,
 		urlPreviewSummaryProxyUrl: urlPreviewSummaryProxyUrl.value,
+		urlPreviewDirectSummalyProxy: urlPreviewDirectSummalyProxy.value,
 	});
 
 	fetchInstance();
