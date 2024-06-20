@@ -30,6 +30,10 @@
 - add: 通知音を追加 [@mujin-nohuman (無人)](https://github.com/mujin-nohuman)
 - fix: "キャッシュをクリア"してもインスタンス情報が更新されない不具合を修正 [#101](https://github.com/yojo-art/cherrypick/issues/101)
 
+### Client
+- enhance: ノートとユーザーの検索時に照会を行うかが選択できるようになりました
+	- @foo@example.com 形式でユーザ検索した場合に照会ができるようになりました
+
 ### Server
 - remoteProxyエンドポイント設定を追加
 - webpublic生成時にドライブの縮小設定を見るように
