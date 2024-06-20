@@ -187,6 +187,10 @@ proxyBypassHosts:
 # Media Proxy
 #mediaProxy: https://example.com/proxy
 
+# Proxy remote files endpoint
+# remoteProxy: https://example.com/files/
+# remoteProxy: /files/
+
 # Proxy remote files (default: true)
 proxyRemoteFiles: true
 
