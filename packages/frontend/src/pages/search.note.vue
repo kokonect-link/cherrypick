@@ -111,21 +111,30 @@ async function search() {
 	if (query == null || query === '') return;
 
 	if (query.startsWith('https://')) {
-		const promise = misskeyApi('ap/show', {
-			uri: query,
+		const { canceled } = await os.confirm({
+			type: 'question',
+			text: i18n.ts._searchOrApShow.question,
+			okText: i18n.ts._searchOrApShow.lookup,
+			cancelText: i18n.ts._searchOrApShow.search,
 		});
 
-		os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
+		if (!canceled) {
+			const promise = misskeyApi('ap/show', {
+				uri: query,
+			});
 
-		const res = await promise;
+			os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
 
-		if (res.type === 'User') {
-			router.push(`/@${res.object.username}@${res.object.host}`);
-		} else if (res.type === 'Note') {
-			router.push(`/notes/${res.object.id}`);
+			const res = await promise;
+
+			if (res.type === 'User') {
+				router.push(`/@${res.object.username}@${res.object.host}`);
+			} else if (res.type === 'Note') {
+				router.push(`/notes/${res.object.id}`);
+			}
+
+			return;
 		}
-
-		return;
 	}
 
 	if (isAdvancedSearchAvailable === true && advancedSearch.value === true) {

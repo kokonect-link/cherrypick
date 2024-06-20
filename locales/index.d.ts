@@ -11208,6 +11208,20 @@ export interface Locale extends ILocale {
             "other": string;
         };
     };
+    "_searchOrApShow": {
+        /**
+         * 照会を行いますか？
+         */
+        "question": string;
+        /**
+         * 検索
+         */
+        "search": string;
+        /**
+         * 照会
+         */
+        "lookup": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

@@ -2854,3 +2854,8 @@ _advancedSearch:
     endDate: "Until"
   _description:
     other: "Other settings"
+
+_searchOrApShow:
+  question: "Want to search?"
+  search: "Search"
+  lookup: "Lookup"

@@ -2987,3 +2987,8 @@ _advancedSearch:
     endDate: "まで"
   _description:
     other: "その他の設定"
+
+_searchOrApShow:
+  question: "照会を行いますか？"
+  search: "検索"
+  lookup: "照会"
