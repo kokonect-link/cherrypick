@@ -1,13 +1,13 @@
 {
 	"name": "cherrypick",
-	"version": "4.8.0",
+	"version": "4.8.0-yojo0.1.0",
 	"basedMisskeyVersion": "2024.3.1",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
-	"packageManager": "pnpm@9.1.2+sha256.19c17528f9ca20bd442e4ca42f00f1b9808a9cb419383cd04ba32ef19322aba7",
+	"packageManager": "pnpm@8.15.8+sha256.691fe176eea9a8a80df20e4976f3dfb44a04841ceb885638fe2a26174f81e65e",
 	"workspaces": [
 		"packages/frontend",
 		"packages/backend",
