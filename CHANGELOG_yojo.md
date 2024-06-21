@@ -32,6 +32,7 @@
 
 ### Server
 - remoteProxyエンドポイント設定を追加
+- webpublic生成時にドライブの縮小設定を見るように
 
 ### Others
 - engawaをマージ
