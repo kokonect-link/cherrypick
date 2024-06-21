@@ -28,6 +28,7 @@
 - enhance: ノートとユーザーの検索時に照会を行うかが選択できるようになりました
 	- @foo&#8203;@example.com 形式でユーザ検索した場合に照会ができるようになりました
 - add: 通知音を追加 [@mujin-nohuman (無人)](https://github.com/mujin-nohuman)
+- fix: "キャッシュをクリア"してもインスタンス情報が更新されない不具合を修正 [#101](https://github.com/yojo-art/cherrypick/issues/101)
 
 ### Server
 - remoteProxyエンドポイント設定を追加
