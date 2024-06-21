@@ -493,6 +493,12 @@ export class DriveService {
 			sensitiveThresholdForPorn: 0.75,
 			enableSensitiveMediaDetectionForVideos: instance.enableSensitiveMediaDetectionForVideos,
 		});
+		//ファイル単位の容量制限チェック
+		if (user == null) {
+			//system user skip
+		} else if (info.size > (await this.roleService.getUserPolicies(user.id)).fileSizeLimit * 1024 * 1024) {
+			throw new IdentifiableError('e5989b6d-ae66-49ed-88af-516ded10ca0c', 'File size limit over');
+		}
 		this.registerLogger.info(`${JSON.stringify(info)}`);
 
 		// 現状 false positive が多すぎて実用に耐えない

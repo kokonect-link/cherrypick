@@ -228,6 +228,10 @@ export const packedRolePoliciesSchema = {
 			type: 'integer',
 			optional: false, nullable: false,
 		},
+		fileSizeLimit: {
+			type: 'integer',
+			optional: false, nullable: false,
+		},
 		canEditNote: {
 			type: 'boolean',
 			optional: false, nullable: false,

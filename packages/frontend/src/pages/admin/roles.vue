@@ -214,6 +214,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkInput v-model="policies.avatarDecorationLimit" type="number" :min="0">
 							</MkInput>
 						</MkFolder>
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.fileSizeLimit, 'fileSizeLimit'])">
+							<template #label>{{ i18n.ts._role._options.fileSizeLimit }}</template>
+							<template #suffix>{{ policies.fileSizeLimit }}MB</template>
+							<MkInput v-model="policies.fileSizeLimit" type="number" :min="0">
+								<template #suffix>MB</template>
+							</MkInput>
+						</MkFolder>
 
 						<MkButton primary rounded @click="updateBaseRole">{{ i18n.ts.save }}</MkButton>
 					</div>

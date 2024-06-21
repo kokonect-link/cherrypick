@@ -5006,6 +5006,7 @@ export type components = {
       userEachUserListsLimit: number;
       rateLimitFactor: number;
       avatarDecorationLimit: number;
+      fileSizeLimit: number;
       canEditNote: boolean;
     };
     ReversiGameLite: {

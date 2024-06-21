@@ -1898,6 +1898,7 @@ _role:
     canManageCustomEmojis: "カスタム絵文字の管理"
     canManageAvatarDecorations: "アバターデコレーションの管理"
     driveCapacity: "ドライブ容量"
+    fileSizeLimit: "ファイルサイズ上限"
     alwaysMarkNsfw: "ファイルにNSFWを常に付与"
     pinMax: "ノートのピン留めの最大数"
     antennaMax: "アンテナの作成可能数"
