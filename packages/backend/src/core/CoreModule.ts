@@ -122,6 +122,7 @@ import { FlashEntityService } from './entities/FlashEntityService.js';
 import { FlashLikeEntityService } from './entities/FlashLikeEntityService.js';
 import { RoleEntityService } from './entities/RoleEntityService.js';
 import { ReversiGameEntityService } from './entities/ReversiGameEntityService.js';
+import { MetaEntityService } from './entities/MetaEntityService.js';
 
 import { ApAudienceService } from './activitypub/ApAudienceService.js';
 import { ApDbResolverService } from './activitypub/ApDbResolverService.js';
@@ -267,6 +268,7 @@ const $FlashEntityService: Provider = { provide: 'FlashEntityService', useExisti
 const $FlashLikeEntityService: Provider = { provide: 'FlashLikeEntityService', useExisting: FlashLikeEntityService };
 const $RoleEntityService: Provider = { provide: 'RoleEntityService', useExisting: RoleEntityService };
 const $ReversiGameEntityService: Provider = { provide: 'ReversiGameEntityService', useExisting: ReversiGameEntityService };
+const $MetaEntityService: Provider = { provide: 'MetaEntityService', useExisting: MetaEntityService };
 
 const $ApAudienceService: Provider = { provide: 'ApAudienceService', useExisting: ApAudienceService };
 const $ApDbResolverService: Provider = { provide: 'ApDbResolverService', useExisting: ApDbResolverService };
@@ -413,6 +415,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		FlashLikeEntityService,
 		RoleEntityService,
 		ReversiGameEntityService,
+		MetaEntityService,
 
 		ApAudienceService,
 		ApDbResolverService,
@@ -555,6 +558,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$FlashLikeEntityService,
 		$RoleEntityService,
 		$ReversiGameEntityService,
+		$MetaEntityService,
 
 		$ApAudienceService,
 		$ApDbResolverService,
@@ -697,6 +701,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		FlashLikeEntityService,
 		RoleEntityService,
 		ReversiGameEntityService,
+		MetaEntityService,
 
 		ApAudienceService,
 		ApDbResolverService,
@@ -838,6 +843,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$FlashLikeEntityService,
 		$RoleEntityService,
 		$ReversiGameEntityService,
+		$MetaEntityService,
 
 		$ApAudienceService,
 		$ApDbResolverService,

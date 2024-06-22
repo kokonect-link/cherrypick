@@ -251,7 +251,7 @@ export function loadConfig(): Config {
 
 	const remoteProxy = config.remoteProxy ?
 		config.remoteProxy.endsWith('/') ? config.remoteProxy.substring(0, config.remoteProxy.length - 1) : config.remoteProxy
-		: null;
+		: undefined;
 
 	const redis = convertRedisOptions(config.redis, host);
 

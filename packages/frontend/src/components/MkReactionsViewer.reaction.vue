@@ -35,7 +35,7 @@ import { i18n } from '@/i18n.js';
 import * as sound from '@/scripts/sound.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
 import { customEmojisMap } from '@/custom-emojis.js';
-import { getUnicodeEmoji } from '@/scripts/emojilist';
+import { getUnicodeEmoji } from '@/scripts/emojilist.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
 const props = defineProps<{
@@ -57,7 +57,7 @@ const emojiName = computed(() => props.reaction.replace(/:/g, '').replace(/@\./,
 const emoji = computed(() => customEmojisMap.get(emojiName.value) ?? getUnicodeEmoji(props.reaction));
 
 const canToggle = computed(() => {
-	return !props.reaction.match(/@\w/) && $i && checkReactionPermissions($i, props.note, emoji.value);
+	return !props.reaction.match(/@\w/) && $i && emoji.value && checkReactionPermissions($i, props.note, emoji.value);
 });
 const canGetInfo = computed(() => !props.reaction.match(/@\w/) && props.reaction.includes(':'));
 
@@ -66,7 +66,7 @@ const reactionName = computed(() => {
 	return r.slice(0, r.indexOf('@'));
 });
 
-const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojisMap.get(reactionName.value)?.name ?? null) : null);
+const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojisMap.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
 
 async function toggleReaction(ev: MouseEvent) {
 	if (!canToggle.value) {
@@ -167,9 +167,7 @@ async function menu(ev) {
 				}),
 			});
 		},
-
-	}, customEmojisMap.get(reactionName.value)?.name ? {
-
+	}, customEmojisMap.value.find(it => it.name === reactionName.value)?.name ? {
 		text: i18n.ts.copy,
 		icon: 'ti ti-copy',
 		action: () => {

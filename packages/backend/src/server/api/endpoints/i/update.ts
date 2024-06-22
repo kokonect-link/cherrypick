@@ -138,7 +138,7 @@ export const paramDef = {
 		birthday: { ...birthdaySchema, nullable: true },
 		lang: { type: 'string', enum: [null, ...Object.keys(langmap)] as string[], nullable: true },
 		avatarId: { type: 'string', format: 'misskey:id', nullable: true },
-		avatarDecorations: { type: 'array', maxItems: 128, items: {
+		avatarDecorations: { type: 'array', maxItems: 16, items: {
 			type: 'object',
 			properties: {
 				id: { type: 'string', format: 'misskey:id' },
@@ -201,6 +201,7 @@ export const paramDef = {
 				pollEnded: notificationRecieveConfig,
 				receiveFollowRequest: notificationRecieveConfig,
 				followRequestAccepted: notificationRecieveConfig,
+				groupInvited: notificationRecieveConfig,
 				roleAssigned: notificationRecieveConfig,
 				achievementEarned: notificationRecieveConfig,
 				app: notificationRecieveConfig,
@@ -269,7 +270,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			function checkMuteWordCount(mutedWords: (string[] | string)[], limit: number) {
 				// TODO: ちゃんと数える
-				const length = ps.mutedWords.length;
+				const length = JSON.stringify(mutedWords).length;
 				if (length > limit) {
 					throw new ApiError(meta.errors.tooManyMutedWords);
 				}
@@ -460,9 +461,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			this.hashtagService.updateUsertags(user, tags);
 			//#endregion
 
-			if (Object.keys(updates).length > 0) await this.usersRepository.update(user.id, updates);
-			if (Object.keys(updates).includes('alsoKnownAs')) {
-				this.cacheService.uriPersonCache.set(this.userEntityService.genLocalUserUri(user.id), { ...user, ...updates });
+			if (Object.keys(updates).length > 0) {
+				await this.usersRepository.update(user.id, updates);
+				this.globalEventService.publishInternalEvent('localUserUpdated', { id: user.id });
 			}
 
 			await this.userProfilesRepository.update(user.id, {

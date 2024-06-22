@@ -148,8 +148,10 @@ export class DriveService {
 	@bindThis
 	private async save(file: MiDriveFile, path: string, name: string, type: string, hash: string, size: number, isRemote: boolean): Promise<MiDriveFile> {
 	// thunbnail, webpublic を必要なら生成
-		const alts = await this.generateAlts(path, type, !file.uri, file.userId);
-
+		const alts = file.userId == null ? {
+			webpublic: null,
+			thumbnail: null,
+		} : await this.generateAlts(path, type, !file.uri, file.userId);
 		const meta = await this.metaService.fetch();
 
 		if (meta.useObjectStorage) {
@@ -326,8 +328,8 @@ export class DriveService {
 			metadata.width && metadata.width <= 2048 &&
 			metadata.height && metadata.height <= 2048
 			);
-			width = metadata.width;
-			height = metadata.height;
+			width = Number(metadata.width);
+			height = Number(metadata.height);
 		} catch (err) {
 			this.registerLogger.warn(`sharp failed: ${err}`);
 			return {

@@ -9,7 +9,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XTimeline class="tl"/>
 	<div class="shape1"></div>
 	<div class="shape2"></div>
-	<img :src="cherrypicksvg" class="cherrypick"/>
+	<div class="logo-wrapper">
+		<div class="powered-by">Powered by</div>
+		<img :src="cherrypicksvg" class="cherrypick"/>
+	</div>
 	<div class="emojis">
 		<MkEmoji :normal="true" :noStyle="true" emoji="👍"/>
 		<MkEmoji :normal="true" :noStyle="true" emoji="❤"/>
@@ -114,7 +117,7 @@ misskeyApiGet('federation/instances', {
 		opacity: 0.5;
 	}
 
-	> .cherrypick, .misskey {
+	> .logo-wrapper {
 		position: fixed;
 		top: 36px;
 		left: 36px;

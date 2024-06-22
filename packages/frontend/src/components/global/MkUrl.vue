@@ -51,7 +51,7 @@ if (props.showUrlPreview && isEnabledUrlPreview.value) {
 		os.popup(defineAsyncComponent(() => import('@/components/MkUrlPreviewPopup.vue')), {
 			showing,
 			url: props.url,
-			source: el.value,
+			source: el.value instanceof HTMLElement ? el.value : el.value?.$el,
 		}, {}, 'closed');
 	});
 }

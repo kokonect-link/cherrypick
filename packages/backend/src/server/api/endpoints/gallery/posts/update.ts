@@ -10,6 +10,7 @@ import type { DriveFilesRepository, GalleryPostsRepository } from '@/models/_.js
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import { GalleryPostEntityService } from '@/core/entities/GalleryPostEntityService.js';
 import { DI } from '@/di-symbols.js';
+import { isNotNull } from '@/misc/is-not-null.js';
 
 export const meta = {
 	tags: ['gallery'],
@@ -42,7 +43,7 @@ export const paramDef = {
 		postId: { type: 'string', format: 'misskey:id' },
 		title: { type: 'string', minLength: 1 },
 		description: { type: 'string', nullable: true },
-		fileIds: { type: 'array', uniqueItems: true, minItems: 1, maxItems: 128, items: {
+		fileIds: { type: 'array', uniqueItems: true, minItems: 1, maxItems: 32, items: {
 			type: 'string', format: 'misskey:id',
 		} },
 		isSensitive: { type: 'boolean', default: false },
@@ -67,7 +68,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					id: fileId,
 					userId: me.id,
 				}),
-			))).filter((file): file is MiDriveFile => file != null);
+			))).filter(isNotNull);
 
 			if (files.length === 0) {
 				throw new Error();
