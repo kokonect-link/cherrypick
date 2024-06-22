@@ -144,6 +144,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 				case 'reaction': {
 					let reaction = data.body.reaction;
 					let badge: string | undefined;
+					const reaction1 = data.body.reaction;
 
 					if (reaction.startsWith(':')) {
 						// カスタム絵文字の場合
@@ -164,7 +165,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					const tag = `reaction:${data.body.note.id}`;
 					return [t('_notification.youGotReact', { name: getUserName(data.body.user) }), {
 						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-						body: `:${ reaction }:` + '\n' + data.body.note.text ?? '',
+						body: (reaction1.startsWith(':') ? `:${ reaction }:` : `${ reaction }`) + '\n' + data.body.note.text ?? '',
 						icon: data.body.user.avatarUrl,
 						tag,
 						badge,

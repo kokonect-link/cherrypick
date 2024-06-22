@@ -185,6 +185,7 @@ enterEmoji: "絵文字を入力"
 renote: "リノート"
 unrenote: "リノート解除"
 renoted: "リノートしました。"
+renotedToX: "{name} にリノートしました。"
 quoted: "ノートを引用しました。"
 replied: "返信を投稿しました。"
 cantRenote: "この投稿はリノートできません。"
@@ -192,6 +193,8 @@ cantReRenote: "リノートをリノートすることはできません。"
 quote: "引用"
 inChannelRenote: "チャンネル内リノート"
 inChannelQuote: "チャンネル内引用"
+renoteToChannel: "チャンネルにリノート"
+renoteToOtherChannel: "他のチャンネルにリノート"
 pinnedNote: "ピン留めされたノート"
 pinned: "ピン留め"
 you: "あなた"
@@ -302,7 +305,7 @@ clearCachedFilesConfirm: "キャッシュされたリモートファイルをす
 blockedInstances: "ブロックしたサーバー"
 blockedInstancesDescription: "ブロックしたいサーバーのホストを改行で区切って設定します。ブロックされたサーバーは、このインスタンスとやり取りできなくなります。"
 silencedInstances: "サイレンスしたサーバー"
-silencedInstancesDescription: "サイレンスしたいサーバーのホストを改行で区切って設定します。サイレンスされたサーバーに所属するアカウントはすべて「サイレンス」として扱われ、フォローがすべてリクエストになり、フォロワーでないローカルアカウントにはメンションできなくなります。ブロックしたインスタンスには影響しません。"
+silencedInstancesDescription: "サイレンスしたいサーバーのホストを改行で区切って設定します。サイレンスされたサーバーに所属するアカウントはすべて「サイレンス」として扱われ、フォローがすべてリクエストになります。ブロックしたインスタンスには影響しません。"
 muteAndBlock: "ミュートとブロック"
 mutedUsers: "ミュートしたユーザー"
 blockedUsers: "ブロックしたユーザー"
@@ -394,6 +397,7 @@ selectFile: "ファイルを選択"
 selectFiles: "ファイルを選択"
 selectFolder: "フォルダーを選択"
 selectFolders: "フォルダーを選択"
+fileNotSelected: "ファイルが選択されていません"
 renameFile: "ファイル名を変更"
 folderName: "フォルダー名"
 createFolder: "フォルダーを作成"
@@ -558,6 +562,7 @@ noteOf: "{user}のノート"
 inviteToGroup: "グループに招待"
 quoteAttached: "引用付き"
 quoteQuestion: "引用として添付しますか？"
+attachAsFileQuestion: "クリップボードのテキストが長いです。テキストファイルとして添付しますか？"
 noMessagesYet: "まだチャットはありません"
 newMessageExists: "新しいメッセージがあります"
 onlyOneFileCanBeAttached: "メッセージに添付できるファイルはひとつです"
@@ -934,6 +939,7 @@ administration: "管理"
 accounts: "アカウント"
 switch: "切り替え"
 noMaintainerInformationWarning: "管理者情報が設定されていません。"
+noInquiryUrlWarning: "問い合わせ先URLが設定されていません。"
 noBotProtectionWarning: "Botプロテクションが設定されていません。"
 configure: "設定する"
 postToGallery: "ギャラリーへ投稿"
@@ -1125,7 +1131,8 @@ thisPostMayBeAnnoying: "この投稿は迷惑になる可能性があります�
 thisPostMayBeAnnoyingHome: "ホームに投稿"
 thisPostMayBeAnnoyingCancel: "やめる"
 thisPostMayBeAnnoyingIgnore: "このまま投稿"
-collapseRenotes: "見たことのあるリノートを省略して表示"
+collapseRenotes: "リノートのスマート省略"
+collapseRenotesDescription: "リアクションやリノートをしたことがあるノートをたたんで表示します。"
 collapseDefault: "特定のMFM構文を含むノートを省略して表示"
 internalServerError: "サーバー内部エラー"
 internalServerErrorDescription: "サーバー内部で予期しないエラーが発生しました。"
@@ -1346,6 +1353,8 @@ useNativeUIForVideoAudioPlayer: "動画・音声の再生にブラウザのUIを
 keepOriginalFilename: "オリジナルのファイル名を保持"
 keepOriginalFilenameDescription: "この設定をオフにすると、アップロード時にファイル名が自動でランダム文字列に置き換えられます。"
 noDescription: "説明文はありません"
+alwaysConfirmFollow: "フォローの際常に確認する"
+inquiry: "お問い合わせ"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "ネコミミ付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -1372,6 +1381,16 @@ _showingAnimatedImages:
 
 _messaging:
   direct: "ダイレクトメッセージ"
+
+_delivery:
+  status: "配信状態"
+  stop: "配信停止"
+  resume: "配信再開"
+  _type:
+    none: "配信中"
+    manuallySuspended: "手動停止中"
+    goneSuspended: "サーバー削除のため停止中"
+    autoSuspendedForNotResponding: "サーバー応答なしのため停止中"
 
 _bubbleGame:
   howToPlay: "遊び方"
@@ -1590,6 +1609,8 @@ _serverSettings:
   fanoutTimelineDescription: "有効にすると、各種タイムラインを取得する際のパフォーマンスが大幅に向上し、データベースへの負荷を軽減することが可能です。ただし、Redisのメモリ使用量は増加します。サーバーのメモリ容量が少ない場合、または動作が不安定な場合は無効にすることができます。"
   fanoutTimelineDbFallback: "データベースへのフォールバック"
   fanoutTimelineDbFallbackDescription: "有効にすると、タイムラインがキャッシュされていない場合にDBへ追加で問い合わせを行うフォールバック処理を行います。無効にすると、フォールバック処理を行わないことでさらにサーバーの負荷を軽減することができますが、タイムラインが取得できる範囲に制限が生じます。"
+  inquiryUrl: "問い合わせ先URL"
+  inquiryUrlDescription: "サーバー運営者へのお問い合わせフォームのURLや、運営者の連絡先等が記載されたWebページのURLを指定します。"
 
 _accountMigration:
   moveFrom: "別のアカウントからこのアカウントに移行"
@@ -1825,6 +1846,10 @@ _achievements:
     _setNameToNoriDev:
       title: "神様コンプレックス（CherryPick）"
       description: "名前を noridev に設定した"
+    _setNameToYojo:
+      title: "ロリータコンプレックス"
+      description: "名前を 幼女 に設定した"
+      flavor: "これであなたもロリコン"
     _passedSinceAccountCreated1:
       title: "一周年"
       description: "アカウント作成から1年経過した"
@@ -1862,6 +1887,22 @@ _achievements:
       title: "ダブル🤯"
       description: "バブルゲームで最も大きいモノを2つ同時に出した"
       flavor: "これくらいの　おべんとばこに　🤯　🤯　ちょっとつめて"
+    _ohayoujo1:
+      title: "今日も一日！"
+      description: "おはようようじょー！と投稿した"
+      flavor: "おはようじょー！"
+    _ohayoujo7:
+      title: "元気いっぱい！"
+      description: "おはようようじょー！と7日投稿した"
+      flavor: "おはようじょー！"
+    _ohayoujo30:
+      title: "笑顔満点"
+      description: "おはようようじょー！と30日投稿した"
+      flavor: "おはようじょー！"
+    _ohayoujo365:
+      title: "皆勤賞"
+      description: "おはようようじょー！と365日投稿した"
+      flavor: "おはようじょー！"
 
 _role:
   new: "ロールの作成"
@@ -1933,6 +1974,11 @@ _role:
     roleAssignedTo: "マニュアルロールにアサイン済み"
     isLocal: "ローカルユーザー"
     isRemote: "リモートユーザー"
+    isCat: "猫ユーザー"
+    isBot: "botユーザー"
+    isSuspended: "サスペンド済みユーザー"
+    isLocked: "鍵アカウントユーザー"
+    isExplorable: "「アカウントを見つけやすくする」が有効なユーザー"
     createdLessThan: "アカウント作成から～以内"
     createdMoreThan: "アカウント作成から～経過"
     followersLessThanOrEq: "フォロワー数が～以下"
@@ -2393,7 +2439,6 @@ _permissions:
   "read:admin:server-info": "サーバーの情報を見る"
   "read:admin:show-moderation-log": "モデレーションログを見る"
   "read:admin:show-user": "ユーザーのプライベートな情報を見る"
-  "read:admin:show-users": "ユーザーのプライベートな情報を見る"
   "write:admin:suspend-user": "ユーザーを凍結する"
   "write:admin:unset-user-avatar": "ユーザーのアバターを削除する"
   "write:admin:unset-user-banner": "ユーザーのバーナーを削除する"
@@ -2734,6 +2779,7 @@ _deck:
   alwaysShowMainColumn: "常にメインカラムを表示"
   columnAlign: "カラムの寄せ"
   addColumn: "カラムを追加"
+  newNoteNotificationSettings: "新着ノート通知の設定"
   configureColumn: "カラムの設定"
   swapLeft: "左に移動"
   swapRight: "右に移動"
@@ -2777,6 +2823,7 @@ _drivecleaner:
 
 _webhookSettings:
   createWebhook: "Webhookを作成"
+  modifyWebhook: "Webhookを編集"
   name: "名前"
   secret: "シークレット"
   events: "Webhookを実行するタイミング"
@@ -2789,6 +2836,26 @@ _webhookSettings:
     renote: "Renoteされたとき"
     reaction: "リアクションがあったとき"
     mention: "メンションされたとき"
+  _systemEvents:
+    abuseReport: "ユーザーから通報があったとき"
+    abuseReportResolved: "ユーザーからの通報を処理したとき"
+  deleteConfirm: "Webhookを削除しますか？"
+
+_abuseReport:
+  _notificationRecipient:
+    createRecipient: "通報の通知先を追加"
+    modifyRecipient: "通報の通知先を編集"
+    recipientType: "通知先の種類"
+    _recipientType:
+      mail: "メール"
+      webhook: "Webhook"
+      _captions:
+        mail: "モデレーター権限を持つユーザーのメールアドレスに通知を送ります(通報を受けた時のみ)"
+        webhook: "指定したSystemWebhookに通知を送ります(通報を受けた時と通報を解決した時にそれぞれ発信)"
+    keywords: "キーワード"
+    notifiedUser: "通知先ユーザー"
+    notifiedWebhook: "使用するWebhook"
+    deleteConfirm: "通知先を削除しますか？"
 
 _moderationLogTypes:
   createRole: "ロールを作成"
@@ -2827,6 +2894,12 @@ _moderationLogTypes:
   deleteAvatarDecoration: "アイコンデコレーションを削除"
   unsetUserAvatar: "ユーザーのアイコンを解除"
   unsetUserBanner: "ユーザーのバナーを解除"
+  createSystemWebhook: "SystemWebhookを作成"
+  updateSystemWebhook: "SystemWebhookを更新"
+  deleteSystemWebhook: "SystemWebhookを削除"
+  createAbuseReportNotificationRecipient: "通報の通知先を作成"
+  updateAbuseReportNotificationRecipient: "通報の通知先を更新"
+  deleteAbuseReportNotificationRecipient: "通報の通知先を削除"
 
 _fileViewer:
   title: "ファイルの詳細"

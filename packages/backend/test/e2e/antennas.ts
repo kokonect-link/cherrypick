@@ -38,7 +38,6 @@ describe('アンテナ', () => {
 		excludeKeywords: [['']],
 		keywords: [['keyword']],
 		name: 'test',
-		notify: false,
 		src: 'all' as const,
 		userGroupId: null,
 		userListId: null,
@@ -152,7 +151,6 @@ describe('アンテナ', () => {
 			isActive: true,
 			keywords: [['keyword']],
 			name: 'test',
-			notify: false,
 			src: 'all',
 			userGroupId: null,
 			userListId: null,
@@ -161,6 +159,7 @@ describe('アンテナ', () => {
 			withReplies: false,
 			excludeBots: false,
 			localOnly: false,
+			notify: false,
 		};
 		assert.deepStrictEqual(response, expected);
 	});
@@ -222,8 +221,6 @@ describe('アンテナ', () => {
 		{ parameters: () => ({ withReplies: true }) },
 		{ parameters: () => ({ withFile: false }) },
 		{ parameters: () => ({ withFile: true }) },
-		{ parameters: () => ({ notify: false }) },
-		{ parameters: () => ({ notify: true }) },
 	];
 	test.each(antennaParamPattern)('を作成できること($#)', async ({ parameters }) => {
 		const response = await successfulApiCall({
