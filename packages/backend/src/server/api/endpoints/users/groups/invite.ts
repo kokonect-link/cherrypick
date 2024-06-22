@@ -109,11 +109,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new ApiError(meta.errors.alreadyInvited);
 			}
 
-			const invitation = await this.userGroupInvitationsRepository.insert({
+			const invitation = await this.userGroupInvitationsRepository.insertOne({
 				id: this.idService.gen(),
 				userId: user.id,
 				userGroupId: userGroup.id,
-			} as MiUserGroupInvitation).then(x => this.userGroupInvitationsRepository.findOneByOrFail(x.identifiers[0]));
+			} as MiUserGroupInvitation);
 
 			// 通知を作成
 			this.notificationService.createNotification(user.id, 'groupInvited', {

@@ -422,6 +422,7 @@ export class MiMeta {
 		nullable: true,
 	})
 	public statusUrl: string | null;
+	public inquiryUrl: string | null;
 
 	@Column('varchar', {
 		length: 8192,

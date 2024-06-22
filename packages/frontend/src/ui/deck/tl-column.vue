@@ -30,6 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:withReplies="withReplies"
 		:onlyFiles="onlyFiles"
 		:onlyCats="onlyCats"
+		@note="onNote"
 	/>
 </XColumn>
 </template>
@@ -43,7 +44,10 @@ import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import column from './column.vue';
+import { MenuItem } from '@/types/menu.js';
+import { SoundStore } from '@/store.js';
+import { soundSettingsButton } from '@/ui/deck/tl-note-notification.js';
+import * as sound from '@/scripts/sound.js';
 
 const props = defineProps<{
 	column: Column;
@@ -55,6 +59,7 @@ const timeline = shallowRef<InstanceType<typeof MkTimeline>>();
 
 const isLocalTimelineAvailable = (($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable));
 const isGlobalTimelineAvailable = (($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable));
+const soundSetting = ref<SoundStore>(props.column.soundSetting ?? { type: null, volume: 1 });
 const withRenotes = ref(props.column.withRenotes ?? true);
 const withReplies = ref(props.column.withReplies ?? false);
 const onlyFiles = ref(props.column.onlyFiles ?? false);
@@ -82,6 +87,10 @@ watch(onlyCats, v => {
 	updateColumn(props.column.id, {
 		onlyCats: v,
 	});
+});
+
+watch(soundSetting, v => {
+	updateColumn(props.column.id, { soundSetting: v });
 });
 
 onMounted(() => {
@@ -121,10 +130,18 @@ async function setType() {
 	});
 }
 
-const menu = [{
+function onNote() {
+	sound.playMisskeySfxFile(soundSetting.value);
+}
+
+const menu: MenuItem[] = [{
 	icon: 'ti ti-pencil',
 	text: i18n.ts.timeline,
 	action: setType,
+}, {
+	icon: 'ti ti-bell',
+	text: i18n.ts._deck.newNoteNotificationSettings,
+	action: () => soundSettingsButton(soundSetting),
 }, {
 	type: 'switch',
 	text: i18n.ts.showRenotes,
