@@ -71,7 +71,7 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { $i } from '@/account.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { antennasCache, userListsCache } from '@/cache.js';
+import { antennasCache, userListsCache, favoritedChannelsCache } from '@/cache.js';
 import { globalEvents } from '@/events.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { deepMerge } from '@/scripts/merge.js';
@@ -102,7 +102,7 @@ const rootEl = shallowRef<HTMLElement>();
 
 const queue = ref(0);
 const srcWhenNotSignin = ref<'local' | 'global'>(isLocalTimelineAvailable ? 'local' : 'global');
-const src = computed<'home' | 'local' | 'social' | 'global' | `list:${string}`>({
+const src = computed<'home' | 'local' | 'media' | 'social' | 'global' | `list:${string}`>({
 	get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin.value),
 	set: (x) => saveSrc(x),
 });
@@ -233,9 +233,7 @@ async function chooseAntenna(ev: MouseEvent): Promise<void> {
 }
 
 async function chooseChannel(ev: MouseEvent): Promise<void> {
-	const channels = await misskeyApi('channels/my-favorites', {
-		limit: 100,
-	});
+	const channels = await favoritedChannelsCache.fetch();
 	const items: MenuItem[] = [
 		...channels.map(channel => {
 			const lastReadedAt = miLocalStorage.getItemAsJson(`channelLastReadedAt:${channel.id}`) ?? null;
@@ -259,7 +257,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 	os.popupMenu(items, ev.currentTarget ?? ev.target);
 }
 
-function saveSrc(newSrc: 'home' | 'local' | 'social' | 'global' | `list:${string}`): void {
+function saveSrc(newSrc: 'home' | 'local' | 'media' | 'social' | 'global' | `list:${string}`): void {
 	const out = deepMerge({ src: newSrc }, defaultStore.state.tl);
 
 	if (newSrc.startsWith('userList:')) {
@@ -388,6 +386,11 @@ const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserList
 	key: 'global',
 	title: i18n.ts._timelines.global,
 	icon: 'ti ti-world',
+	iconOnly: true,
+}] : []), ...(isGlobalTimelineAvailable && defaultStore.state.enableGlobalTimeline ? [{
+	key: 'media',
+	title: i18n.ts._timelines.media,
+	icon: 'ti ti-photo',
 	iconOnly: true,
 }] : []), ...(defaultStore.state.enableListTimeline ? [{
 	icon: 'ti ti-list',

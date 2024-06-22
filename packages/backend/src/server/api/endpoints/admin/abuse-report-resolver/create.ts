@@ -127,7 +127,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				ps.expiresAt === '6months' ? function () { expirationDate!.setUTCMonth((expirationDate!.getUTCMonth() + 6 + 1) % 12 - 1); expirationDate!.setUTCFullYear(expirationDate!.getUTCFullYear() + (Math.floor((previousMonth + 6 + 1) / 12))); } :
 				ps.expiresAt === '1year' ? function () { expirationDate!.setUTCFullYear(expirationDate!.getUTCFullYear() + 1); } : function () { expirationDate = null; })();
 
-			return await this.abuseReportResolverRepository.insert({
+			return await this.abuseReportResolverRepository.insertOne({
 				id: this.idService.gen(),
 				updatedAt: now,
 				name: ps.name,
@@ -137,7 +137,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				expirationDate,
 				expiresAt: ps.expiresAt,
 				forward: ps.forward,
-			}).then(x => this.abuseReportResolverRepository.findOneByOrFail(x.identifiers[0]));
+			});
 		});
 	}
 }
