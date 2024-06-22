@@ -205,7 +205,7 @@ function save() {
 		truemailAuthKey: truemailAuthKey.value,
 		bannedEmailDomains: bannedEmailDomains.value.split('\n'),
 	}).then(() => {
-		fetchInstance();
+		fetchInstance(true);
 	});
 }
 

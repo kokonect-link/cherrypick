@@ -14,8 +14,8 @@
  * pollEnded - 自分のアンケートもしくは自分が投票したアンケートが終了した
  * receiveFollowRequest - フォローリクエストされた
  * followRequestAccepted - 自分の送ったフォローリクエストが承認された
- * roleAssigned - ロールが付与された
  * groupInvited - グループに招待された
+ * roleAssigned - ロールが付与された
  * achievementEarned - 実績を獲得
  * app - アプリ通知
  * test - テスト通知（サーバー側）
@@ -31,11 +31,19 @@ export const notificationTypes = [
 	'pollEnded',
 	'receiveFollowRequest',
 	'followRequestAccepted',
-	'roleAssigned',
 	'groupInvited',
+	'roleAssigned',
 	'achievementEarned',
 	'app',
-	'test'] as const;
+	'test',
+] as const;
+
+export const groupedNotificationTypes = [
+	...notificationTypes,
+	'reaction:grouped',
+	'renote:grouped',
+] as const;
+
 export const obsoleteNotificationTypes = ['pollVote'/*, 'groupInvited'*/] as const;
 
 export const noteVisibilities = ['public', 'home', 'followers', 'specified'] as const;
@@ -71,6 +79,7 @@ export const moderationLogTypes = [
 	'resetPassword',
 	'suspendRemoteInstance',
 	'unsuspendRemoteInstance',
+	'updateRemoteInstanceNote',
 	'markSensitiveDriveFile',
 	'unmarkSensitiveDriveFile',
 	'resolveAbuseReport',
@@ -210,6 +219,12 @@ export type ModerationLogPayloads = {
 	unsuspendRemoteInstance: {
 		id: string;
 		host: string;
+	};
+	updateRemoteInstanceNote: {
+		id: string;
+		host: string;
+		before: string | null;
+		after: string | null;
 	};
 	markSensitiveDriveFile: {
 		fileId: string;

@@ -339,7 +339,7 @@ async function save() {
 		urlPreviewDirectSummalyProxy: urlPreviewDirectSummalyProxy.value,
 	});
 
-	fetchInstance();
+	fetchInstance(true);
 }
 
 const headerTabs = computed(() => []);

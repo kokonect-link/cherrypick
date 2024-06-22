@@ -17,7 +17,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkFolder>
 			<template #label>{{ i18n.ts.options }}</template>
 			<div class="_gaps_m">
-				<MkFolder>
+				<!-- <MkSwitch v-model="isLocalOnly">{{ i18n.ts.localOnly }}</MkSwitch> -->
+
+				<MkFolder :defaultOpen="true">
 					<template #label>{{ i18n.ts.specifyUser }}</template>
 					<template v-if="user" #suffix>@{{ user.username }}</template>
 

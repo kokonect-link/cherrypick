@@ -31,7 +31,7 @@ const self = props.url.startsWith(local);
 const attr = self ? 'to' : 'href';
 const target = self ? null : '_blank';
 
-const el = ref<HTMLElement>();
+const el = ref<HTMLElement | { $el: HTMLElement }>();
 
 if (isEnabledUrlPreview.value) {
 	useTooltip(el, (showing) => {

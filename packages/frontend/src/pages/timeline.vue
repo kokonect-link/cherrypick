@@ -389,12 +389,7 @@ const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserList
 	title: i18n.ts._timelines.global,
 	icon: 'ti ti-world',
 	iconOnly: true,
-}, ...(defaultStore.state.enableMediaTimeline ? [{
-	key: 'media',
-	title: i18n.ts._timelines.media,
-	icon: 'ti ti-photo',
-	iconOnly: true,
-}] : [])] : []), ...(defaultStore.state.enableListTimeline ? [{
+}] : []), ...(defaultStore.state.enableListTimeline ? [{
 	icon: 'ti ti-list',
 	title: i18n.ts.lists,
 	iconOnly: true,
