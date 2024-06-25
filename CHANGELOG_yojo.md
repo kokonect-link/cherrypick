@@ -1,5 +1,5 @@
 <!--
-## engawa-x.x.x (unreleased)
+## yojo-x.x.x (unreleased)
 
 ### Release Date
 
@@ -16,14 +16,17 @@
 
 -->
 ## 0.2.0 (unreleased)
+### General
 - enhance: ノートとユーザーの検索時に照会を行うかが選択できるようになりました
 	- @foo@example.com 形式でユーザ検索した場合に照会ができるようになりました
+### Server
+- fix: リモートユーザーにはファイルサイズ制限を適用しない
 
 ## 0.1.0 (unreleased)
 
 ### General
-- メディアプロキシurlと拡大画像urlを分割
-- 1ファイルの容量をロールでも制限できるように
+- enhance: メディアプロキシurlと拡大画像urlを分割
+- enhance: 1ファイルの容量をロールでも制限できるように
 
 ### Client
 - enhance: ノートとユーザーの検索時に照会を行うかが選択できるようになりました
@@ -32,8 +35,8 @@
 - fix: "キャッシュをクリア"してもインスタンス情報が更新されない不具合を修正 [#101](https://github.com/yojo-art/cherrypick/issues/101)
 
 ### Server
-- remoteProxyエンドポイント設定を追加
-- webpublic生成時にドライブの縮小設定を見るように
+- enhance: remoteProxyエンドポイント設定を追加
+- fix: webpublic生成時にドライブの縮小設定を見るように
 
 ### Others
 - engawaをマージ
