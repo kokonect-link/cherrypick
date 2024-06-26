@@ -75,7 +75,7 @@ export async function mainBoot() {
 	}
 
 	const hotkeys = {
-		'd': (): void => {
+		'ctrl+d': (): void => {
 			defaultStore.set('darkMode', !defaultStore.state.darkMode);
 		},
 		's': (): void => {
@@ -103,7 +103,7 @@ export async function mainBoot() {
 					}).render();
 				}
 			}
-		}	
+		}
 	} catch (error) {
 		// console.error(error);
 		console.error('Failed to initialise the seasonal screen effect canvas context:', error);
