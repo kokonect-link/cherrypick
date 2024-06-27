@@ -200,6 +200,12 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
 			os.toast(i18n.ts.copied, 'copied');
 		},
+	}, {
+		icon: 'ti ti-qrcode',
+		text: i18n.ts.getQrCode,
+		action: () => {
+			os.displayQrCode(`https://${user.host ?? host}/@${user.username}`);
+		},
 	}, ...(user.host != null && user.url != null ? [{
 		icon: 'ti ti-external-link',
 		text: i18n.ts.showOnRemote,
