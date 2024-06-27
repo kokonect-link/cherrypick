@@ -4776,7 +4776,7 @@ export interface Locale extends ILocale {
      */
     "events": string;
     /**
-     * 倒叙
+     * 終了済み
      */
     "reverseChronological": string;
     /**
@@ -5448,7 +5448,7 @@ export interface Locale extends ILocale {
      */
     "showUnreadNotificationsCount": string;
     /**
-     * キャット付きのみ
+     * ネコミミ付きのみ
      */
     "showCatOnly": string;
     /**
@@ -5467,6 +5467,10 @@ export interface Locale extends ILocale {
      * プロフィールを翻訳する
      */
     "translateProfile": string;
+    /**
+     * QRコードを取得
+     */
+    "getQrCode": string;
     "_nsfwOpenBehavior": {
         /**
          * タップして開く
@@ -6252,7 +6256,7 @@ export interface Locale extends ILocale {
          */
         "price": string;
         /**
-         * 可用性
+         * 予約可能
          */
         "availability": string;
         /**
@@ -6264,11 +6268,11 @@ export interface Locale extends ILocale {
          */
         "until": string;
         /**
-         * アベイラビリティ開始
+         * 予約開始
          */
         "availabilityStart": string;
         /**
-         * アベイラビリティ終了
+         * 予約終了
          */
         "availabilityEnd": string;
         /**
@@ -7142,7 +7146,7 @@ export interface Locale extends ILocale {
                  */
                 "title": string;
                 /**
-                 *  名前を 幼女 に設定した
+                 * 名前を 幼女 に設定した
                  */
                 "description": string;
                 /**
@@ -7296,7 +7300,7 @@ export interface Locale extends ILocale {
                  */
                 "title": string;
                 /**
-                 * おはようようじょー！と7回投稿した
+                 * おはようようじょー！と7日投稿した
                  */
                 "description": string;
                 /**
@@ -7306,11 +7310,11 @@ export interface Locale extends ILocale {
             };
             "_ohayoujo30": {
                 /**
-                 * 元気いっぱい
+                 * 笑顔満点
                  */
                 "title": string;
                 /**
-                 * おはようようじょー！と30回投稿した
+                 * おはようようじょー！と30日投稿した
                  */
                 "description": string;
                 /**
@@ -7324,7 +7328,7 @@ export interface Locale extends ILocale {
                  */
                 "title": string;
                 /**
-                 * おはようようじょー！と365回投稿した
+                 * おはようようじょー！と365日投稿した
                  */
                 "description": string;
                 /**
@@ -7524,10 +7528,10 @@ export interface Locale extends ILocale {
              * ドライブ容量
              */
             "driveCapacity": string;
-						/**
-						 * ファイルサイズ上限
-						 */
-						"fileSizeLimit": string;
+            /**
+             * ファイルサイズ上限
+             */
+            "fileSizeLimit": string;
             /**
              * ファイルにNSFWを常に付与
              */
@@ -7580,6 +7584,10 @@ export interface Locale extends ILocale {
              * ノート検索の利用
              */
             "canSearchNotes": string;
+            /**
+             * 高度な検索の利用
+             */
+            "canAdvancedSearchNotes": string;
             /**
              * 翻訳機能の利用
              */
@@ -8158,7 +8166,7 @@ export interface Locale extends ILocale {
          */
         "blockCode": string;
         /**
-         * 複数行のプログラムなどのコードをブロックでシンタックスハイライトします。
+         * 複数行のプログラムなどのコードをブロックでシンタックスハイライトします。いくつかの言語を指定するとその言語に合わせたシンタックスハイライトになります。
          */
         "blockCodeDescription": string;
         /**

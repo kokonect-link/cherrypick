@@ -22,6 +22,7 @@ import MkPasswordDialog from '@/components/MkPasswordDialog.vue';
 import MkEmojiPickerDialog from '@/components/MkEmojiPickerDialog.vue';
 import MkPopupMenu from '@/components/MkPopupMenu.vue';
 import MkContextMenu from '@/components/MkContextMenu.vue';
+import MkQrcode from '@/components/MkQrcode.vue';
 import { MenuItem } from '@/types/menu.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
@@ -692,3 +693,22 @@ export function checkExistence(fileData: ArrayBuffer): Promise<any> {
 		});
 	});
 }*/
+
+export async function displayQrCode(qrCode: string) {
+	(
+		await new Promise<(() => void ) | undefined>((resolve) => {
+			let dispose: (() => void ) | undefined;
+			popup(
+				MkQrcode,
+				{ qrCode },
+				{
+					closed: () => {
+						resolve(dispose);
+					},
+				},
+			).then((res) =>{
+				dispose = res.dispose;
+			});
+		})
+	)?.();
+}

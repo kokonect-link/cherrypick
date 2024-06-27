@@ -435,6 +435,13 @@ export function getNoteMenu(props: {
 				action: () => togglePin(true),
 			} : undefined,
 			{
+				icon: 'ti ti-qrcode',
+				text: i18n.ts.getQrCode,
+				action: () => {
+					os.displayQrCode(`${url}/notes/${appearNote.id}`);
+				}
+			},
+			{
 				type: 'parent' as const,
 				icon: 'ti ti-note',
 				text: i18n.ts.note,

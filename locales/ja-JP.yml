@@ -1361,6 +1361,7 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
+getQrCode: "QRコードを取得"
 
 _nsfwOpenBehavior:
   click: "タップして開く"
