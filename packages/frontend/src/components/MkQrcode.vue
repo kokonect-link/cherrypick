@@ -4,6 +4,20 @@
 		<div :class="$style.title">
 			<QRCodeVue3
 				:value="qrCode"
+				:qrOptions="{  errorCorrectionLevel: 'H' }"
+				:cornersSquareOptions="{ type: 'extra-rounded' }"
+				:cornersDotOptions="{ type: 'square' }"
+				:dotsOptions="{
+					type: 'rounded',
+					color: '#DEC5E3',
+					gradient: {
+						type: 'linear',
+						rotation: 160,
+						colorStops: [
+							{ offset: 0, color: '#02129B' },
+							{ offset: 1, color: '#9E1FFC' }
+						]
+					}, }"
 			/>
 		</div>
 		<div class="_flexList" style="gap: 0.6rem">

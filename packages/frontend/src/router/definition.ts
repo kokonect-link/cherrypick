@@ -253,6 +253,9 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/follow.vue')),
 	loginRequired: true,
 }, {
+	path: '/follow-me',
+	component: page(() => import('@/pages/follow-me.vue')),
+}, {
 	path: '/share',
 	component: page(() => import('@/pages/share.vue')),
 	loginRequired: true,
