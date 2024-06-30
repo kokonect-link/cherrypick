@@ -706,7 +706,7 @@ export async function displayQrCode(qrCode: string) {
 						resolve(dispose);
 					},
 				},
-			).then((res) =>{
+			).then((res) => {
 				dispose = res.dispose;
 			});
 		})

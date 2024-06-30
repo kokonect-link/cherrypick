@@ -128,7 +128,7 @@ function shareWithNote() {
 }
 
 function shareQrCode() {
-	os.displayQrCode(`${url}/gallery/${post.value.id}`)
+	os.displayQrCode(`${url}/gallery/${post.value.id}`);
 }
 
 function like() {

@@ -63,6 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 						<div :class="$style.other">
 							<button v-tooltip="i18n.ts.copyLink" class="_button" :class="$style.generalActionButton" @click="copyLink"><i class="ti ti-link ti-fw"></i></button>
+							<button v-tooltip="i18n.ts.getQrCode" class="_button" :class="$style.generalActionButton" @click="shareQrCode"><i class="ti ti-qrcode ti-fw"></i></button>
 							<button v-tooltip="i18n.ts.share" class="_button" :class="$style.generalActionButton" @click="share"><i class="ti ti-share ti-fw"></i></button>
 						</div>
 					</div>
@@ -186,6 +187,12 @@ function copyLink() {
 
 	copyToClipboard(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
 	os.success();
+}
+
+function shareQrCode() {
+	if (!page.value) return;
+
+	os.displayQrCode(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
 }
 
 function shareWithNote() {

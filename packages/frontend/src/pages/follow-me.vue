@@ -54,7 +54,7 @@ if (!remoteAccountId.result) {
 			const subscribeUri = data.links.find(
 				(link: { rel: string }) => link.rel === "http://ostatus.org/schema/1.0/subscribe",
 		).template;
-		window.location.href = subscribeUri.replace("{uri}", accountUri.includes("@") ? accountUri: `${accountUri}@${hostRaw}`,);
+		window.location.href = subscribeUri.replace("{uri}", accountUri.includes("@") ? accountUri : `${accountUri}@${hostRaw}`,);
 		})
 		.catch((_) => {
 			window.location.href = `/@${accountUri}`;

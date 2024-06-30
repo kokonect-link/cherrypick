@@ -4,7 +4,7 @@
 		<div :class="$style.title">
 			<QRCodeVue3
 				:value="qrCode"
-				:qrOptions="{  errorCorrectionLevel: 'H' }"
+				:qrOptions="{ errorCorrectionLevel: 'H' }"
 				:cornersSquareOptions="{ type: 'extra-rounded' }"
 				:cornersDotOptions="{ type: 'square' }"
 				:dotsOptions="{
