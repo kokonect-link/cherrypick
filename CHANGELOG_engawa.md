@@ -15,6 +15,23 @@
 ### Misc
 
 -->
+
+## x.x.x (unreleased)
+
+### Release Date
+
+### General
+-
+
+### Client
+- 
+
+### Server
+- 管理者アカウントを別サーバーに移行できるように
+
+### Misc
+
+
 ## 0.4.0
 
 ### Release Date
