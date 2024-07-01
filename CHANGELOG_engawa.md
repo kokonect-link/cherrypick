@@ -15,6 +15,26 @@
 ### Misc
 
 -->
+## 0.4.0
+
+### Release Date
+
+### General
+- yojo-artフォークで実装された機能の取り込み
+
+### Client
+- Catppuccin Themeをビルトインテーマとして利用可能に (https://github.com/catppuccin/misskey?tab=readme-ov-file)
+- ユーザー、ノート、ギャラリー、ページをQRCodeで共有可能に
+- オフライン画面のデザインを変更
+- ダークモードを切り替えるショートカットキーの変更
+- 検索boxを統一
+
+### Server
+- 
+
+### Misc
+
+
 ## 0.3.1
 
 ### Release Date
