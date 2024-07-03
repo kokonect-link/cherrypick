@@ -36,12 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span v-if="!localOnly"><i class="ti ti-rocket"></i></span>
 				<span v-else><i class="ti ti-rocket-off"></i></span>
 			</button>
-			<button v-click-anime v-tooltip="i18n.ts.reactionAcceptance" class="_button" :class="[$style.headerRightItem, { [$style.danger]: reactionAcceptance === 'likeOnly' }]" @click="toggleReactionAcceptance">
-				<span v-if="reactionAcceptance === 'likeOnly'"><i class="ti ti-heart"></i></span>
-				<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ti ti-heart-plus"></i></span>
-				<span v-else><i class="ti ti-icons"></i></span>
-			</button>
-			<button v-tooltip="i18n.ts._mfm.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
+			<button v-tooltip="i18n.ts.otherSettings" class="_button" :class="[$style.headerRightItem]" @click="showOtherMenu"><i class="ti ti-dots"></i></button>
 			<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 				<div :class="$style.submitInner">
 					<template v-if="posted"></template>
@@ -85,9 +80,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
 			<button v-tooltip="i18n.ts.event" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: event }]" @click="toggleEvent"><i class="ti ti-calendar"></i></button>
 			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
-			<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
-			<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-			<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
 			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 			<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 			<button v-if="showAddMfmFunction" v-tooltip="i18n.ts.addMfmFunction" :class="['_button', $style.footerButton]" @click="insertMfmFunction"><i class="ti ti-palette"></i></button>
@@ -446,10 +438,6 @@ function toggleEvent() {
 			metadata: {},
 		};
 	}
-}
-
-function addTag(tag: string) {
-	insertTextAtCursor(textareaEl.value, ` #${tag} `);
 }
 
 function focus() {
@@ -961,6 +949,14 @@ function insertMention() {
 	});
 }
 
+const toggleTag = () => {
+	withHashtags.value = !withHashtags.value;
+};
+
+const toggleDisableRightClick = () => {
+	disableRightClick.value = !disableRightClick.value;
+};
+
 async function insertEmoji(ev: MouseEvent) {
 	textAreaReadOnly.value = true;
 	const target = ev.currentTarget ?? ev.target;
@@ -1037,6 +1033,63 @@ function showPreviewMenu(ev: MouseEvent) {
 		icon: 'ti ti-user-circle',
 		ref: showProfilePreview,
 	}], ev.currentTarget ?? ev.target);
+}
+
+function showOtherMenu(ev: MouseEvent) {
+	let reactionAcceptanceIcon: string;
+	switch (reactionAcceptance.value) {
+		case 'likeOnly':
+			reactionAcceptanceIcon = 'ti ti-heart';
+			break;
+		case 'likeOnlyForRemote':
+			reactionAcceptanceIcon = 'ti ti-heart-plus';
+			break;
+		case 'nonSensitiveOnly':
+			reactionAcceptanceIcon = 'ti ti-eye-exclamation';
+			break;
+		case 'nonSensitiveOnlyForLocalLikeOnlyForRemote':
+			reactionAcceptanceIcon = 'ti ti-eye-heart';
+			break;
+		default:
+			reactionAcceptanceIcon = 'ti ti-icons';
+			break;
+	}
+
+	let toggleDisableRightClickIcon: string;
+	if (disableRightClick.value) {
+		toggleDisableRightClickIcon = 'ti ti-mouse-off';
+	} else {
+		toggleDisableRightClickIcon = 'ti ti-mouse';
+	}
+
+	os.popupMenu([{
+		type: 'button',
+		text: i18n.ts.reactionAcceptance,
+		icon: reactionAcceptanceIcon,
+		action: toggleReactionAcceptance,
+	}, {
+		type: 'button',
+		text: i18n.ts._mfm.cheatSheet,
+		icon: 'ti ti-help',
+		action: openMfmCheatSheet,
+	}, {
+		type: 'button',
+		text: i18n.ts.mention,
+		icon: 'ti ti-at',
+		action: insertMention,
+	}, {
+		type: 'button',
+		text: i18n.ts.hashtags,
+		icon: 'ti ti-hash',
+		action: toggleTag,
+	}, {
+		type: 'button',
+		text: i18n.ts.disableRightClick,
+		icon: toggleDisableRightClickIcon,
+		action: toggleDisableRightClick,
+	}], ev.currentTarget ?? ev.target, {
+		align: 'right',
+	});
 }
 
 onMounted(() => {
