@@ -58,7 +58,7 @@ jobs:
         cache: 'pnpm'
     - run: corepack enable
     - run: pnpm i --frozen-lockfile
-    - run: pnpm --filter ${{ matrix.workspace }} run eslint
+    - run: pnpm --filter ${{ matrix.workspace }} run oxlint
 
   typecheck:
     needs: [pnpm_install]
