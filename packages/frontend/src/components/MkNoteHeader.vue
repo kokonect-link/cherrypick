@@ -36,6 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
+			<span v-if="note.deletedAt" style="margin-right: 0.5em;"><i class="ti ti-bomb"></i></span>
 			<div v-if="mock">
 				<MkTime :time="note.createdAt" colored/>
 			</div>
@@ -57,6 +58,7 @@ import { userPage } from '@/filters/user.js';
 import { defaultStore } from '@/store.js';
 import { useRouter } from '@/router/supplier.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
+import { dateTimeFormat } from '@/scripts/intl-const';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;

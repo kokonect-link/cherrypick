@@ -4419,6 +4419,8 @@ export type components = {
             votes: number;
           }[];
       }) | null;
+      /** Format: date-time */
+      deleteAt?: string | null;
       emojis?: {
         [key: string]: string;
       };
@@ -22473,6 +22475,10 @@ export type operations = {
             start?: number;
             end?: number | null;
             metadata?: Record<string, never>;
+          }) | null;
+          scheduledDelete?: ({
+            deleteAt?: number | null;
+            deleteAfter?: number | null;
           }) | null;
         };
       };

@@ -71,6 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
 	<MkPollEditor v-if="poll" v-model="poll" @destroyed="poll = null"/>
+	<MkScheduledNoteDelete v-if="scheduledNoteDelete" v-model="scheduledNoteDelete" @destroyed="scheduledNoteDelete = null" />
 	<MkNotePreview v-if="showPreview" :class="$style.preview" :text="text" :files="files" :poll="poll ?? undefined" :useCw="useCw" :cw="cw" :user="postAccount ?? $i" :showProfile="showProfilePreview"/>
 	<div v-if="showingOptions" style="padding: 8px 16px;">
 	</div>
@@ -106,6 +107,7 @@ import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
 import MkPollEditor, { type PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import MkEventEditor from '@/components/MkEventEditor.vue';
+import MkScheduledNoteDelete, { type DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
 import { host, url } from '@/config.js';
 import { erase, unique } from '@/scripts/array.js';
 import { extractMentions } from '@/scripts/extract-mentions.js';
@@ -210,6 +212,7 @@ const imeText = ref('');
 const showingOptions = ref(false);
 const disableRightClick = ref(false);
 const textAreaReadOnly = ref(false);
+const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
 
 const draftKey = computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
@@ -386,6 +389,7 @@ function watchForDraft() {
 	watch(files, () => saveDraft(), { deep: true });
 	watch(visibility, () => saveDraft());
 	watch(localOnly, () => saveDraft());
+	watch(scheduledNoteDelete, () => saveDraft());
 }
 
 function checkMissingMention() {
@@ -745,6 +749,7 @@ function saveDraft() {
 			poll: poll.value,
 			event: event.value,
 			visibleUserIds: visibility.value === 'specified' ? visibleUsers.value.map(x => x.id) : undefined,
+			scheduledNoteDelete: scheduledNoteDelete.value,
 		},
 	};
 
@@ -827,6 +832,7 @@ async function post(ev?: MouseEvent) {
 		reactionAcceptance: reactionAcceptance.value,
 		disableRightClick: disableRightClick.value,
 		noteId: props.updateMode ? props.initialNote?.id : undefined,
+		scheduledDelete: scheduledNoteDelete.value,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== '') {
@@ -1002,6 +1008,17 @@ async function openMfmCheatSheet() {
 	os.popup(defineAsyncComponent(() => import('@/components/MkMfmCheatSheetDialog.vue')), {}, {}, 'closed');
 }
 
+function toggleScheduledNoteDelete() {
+	if (scheduledNoteDelete.value) {
+		scheduledNoteDelete.value = null;
+	} else {
+		scheduledNoteDelete.value = {
+			deleteAt: null,
+			deleteAfter: null,
+		};
+	}
+}
+
 const postAccount = ref<Misskey.entities.UserDetailed | null>(null);
 
 function openAccountMenu(ev: MouseEvent) {
@@ -1063,6 +1080,11 @@ function showOtherMenu(ev: MouseEvent) {
 	}
 
 	os.popupMenu([{
+		type: 'button',
+		text: i18n.ts.scheduledNoteDelete,
+		icon: 'ti ti-bomb',
+		action: toggleScheduledNoteDelete,
+	},{
 		type: 'button',
 		text: i18n.ts.reactionAcceptance,
 		icon: reactionAcceptanceIcon,
@@ -1145,6 +1167,12 @@ onMounted(() => {
 					multiple: init.poll.multiple,
 					expiresAt: init.poll.expiresAt ? (new Date(init.poll.expiresAt)).getTime() : null,
 					expiredAfter: null,
+				};
+			}
+			if (init.deletedAt) {
+				scheduledNoteDelete.value = {
+					deleteAt: init.deletedAt ? (new Date(init.deletedAt)).getTime() : null,
+					deleteAfter: null,
 				};
 			}
 			if (init.event) {

@@ -21,7 +21,7 @@
 ### Release Date
 
 ### General
--
+- ノートの自動削除機能を追加
 
 ### Client
 - 

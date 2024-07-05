@@ -211,6 +211,11 @@ export class MiNote {
 	})
 	public hasPoll: boolean;
 
+	@Column('timestamp with time zone', {
+		nullable: true,
+	})
+	public deleteAt: Date | null;
+
 	@Index()
 	@Column({
 		...id(),

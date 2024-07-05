@@ -85,6 +85,10 @@ export interface Locale extends ILocale {
      */
     "removeReaction": string;
     /**
+     * ノートの削除を予約
+     */
+    "scheduledNoteDelete": string;
+    /**
      * ニャ化を表示しない
      */
     "noNyaization": string;
