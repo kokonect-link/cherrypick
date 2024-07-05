@@ -394,7 +394,7 @@ export class OAuth2ProviderService {
 			},
 		});
 
-		fastify.register(rateLimit, {
+		await fastify.register(rateLimit, {
 			max: 100,
 			timeWindow: '1 hour'
 		});
