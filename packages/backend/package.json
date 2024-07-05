@@ -79,6 +79,7 @@
 		"@fastify/express": "3.0.0",
 		"@fastify/http-proxy": "9.5.0",
 		"@fastify/multipart": "8.2.0",
+		"@fastify/rate-limit": "^9.1.0",
 		"@fastify/static": "7.0.3",
 		"@fastify/view": "9.1.0",
 		"@google-cloud/logging": "^10.5.0",
