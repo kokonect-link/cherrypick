@@ -10,6 +10,7 @@ import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import Fastify, { FastifyInstance } from 'fastify';
 import fastifyStatic from '@fastify/static';
 import fastifyRawBody from 'fastify-raw-body';
+import rateLimit from '@fastify/rate-limit'
 import { IsNull } from 'typeorm';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import type { Config } from '@/config.js';
@@ -100,6 +101,11 @@ export class ServerService implements OnApplicationShutdown {
 		fastify.register(fastifyStatic, {
 			root: _dirname,
 			serve: false,
+		});
+
+		fastify.register(rateLimit, {
+			max: 100,
+			timeWindow: '1 hour'
 		});
 
 		fastify.register(this.apiServerService.createServer, { prefix: '/api' });
