@@ -1,4 +1,5 @@
 <template>
+<MkContainer :naked="widgetProps.transparent" :showHeader="false">
 	<div class="_monospace" :class="[$style.root, {_panel: !widgetProps.transparent}]">
 		<MkDice
 			:showMinTotal="widgetProps.showMinTotal"
@@ -6,6 +7,7 @@
 			:showAverageTotal="widgetProps.showAverageTotal"
 		/>
 	</div>
+</MkContainer>
 </template>
 
 <script lang="ts" setup>
@@ -13,6 +15,7 @@ import { Ref, ref } from 'vue';
 import { GetFormResultType } from '@/scripts/form.js';
 import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import MkDice from '@/components/MkDice.vue';
+import MkContainer from '@/components/MkContainer.vue';
 import { i18n }	from '@/i18n.js';
 
 const name = 'dice';
