@@ -2451,6 +2451,8 @@ _widgets:
     chooseList: "Select a list"
   clicker: "Clicker"
   birthdayFollowings: "Users who celebrate their birthday today"
+  dice: "Dice"
+
 _cw:
   hide: "Hide"
   show: "Show content"
@@ -2943,3 +2945,8 @@ _searchOrApShow:
   question: "Want to search?"
   search: "Search"
   lookup: "Lookup"
+
+_dice:
+  rollDice: "Roll!"
+  diceCount: "Number of dice"
+  diceFaces: "Number of dice's faces"
