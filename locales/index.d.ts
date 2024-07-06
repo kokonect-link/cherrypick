@@ -11580,6 +11580,20 @@ export interface Locale extends ILocale {
          */
         "lookup": string;
     };
+    "_dice": {
+        /**
+         * サイコロを振る
+         */
+        "rollDice": string;
+        /**
+         * サイコロの数
+         */
+        "diceCount": string;
+        /**
+         * サイコロの面数
+         */
+        "diceFaces": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

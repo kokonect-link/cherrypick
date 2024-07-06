@@ -3090,3 +3090,8 @@ _searchOrApShow:
   question: "照会を行いますか？"
   search: "検索"
   lookup: "照会"
+
+_dice:
+  rollDice: "サイコロを振る"
+  diceCount: "サイコロの数"
+  diceFaces: "サイコロの面数"
