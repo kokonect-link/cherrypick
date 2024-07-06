@@ -103,11 +103,6 @@ export class ServerService implements OnApplicationShutdown {
 			serve: false,
 		});
 
-		fastify.register(rateLimit, {
-			max: 100,
-			timeWindow: '1 hour'
-		});
-
 		fastify.register(this.apiServerService.createServer, { prefix: '/api' });
 		fastify.register(this.openApiServerService.createServer);
 		fastify.register(this.fileServerService.createServer);
