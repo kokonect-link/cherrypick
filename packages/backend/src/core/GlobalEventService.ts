@@ -22,6 +22,7 @@ import type { MiPage } from '@/models/Page.js';
 import type { MiWebhook } from '@/models/Webhook.js';
 import type { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import type { MiMeta } from '@/models/Meta.js';
+import type { MiNotification } from '@/models/Notification.js';
 import { MiAvatarDecoration, MiReversiGame, MiRole, MiRoleAssignment } from '@/models/_.js';
 import type { Packed } from '@/misc/json-schema.js';
 import { DI } from '@/di-symbols.js';
@@ -73,6 +74,7 @@ export interface MainEventTypes {
 	};
 	readAllNotifications: undefined;
 	notificationFlushed: undefined;
+	notificationDeleted: MiNotification['id'];
 	unreadNotification: Packed<'Notification'>;
 	unreadMention: MiNote['id'];
 	readAllUnreadMentions: undefined;

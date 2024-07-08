@@ -624,6 +624,7 @@ export type Channels = {
             unreadMention: (payload: Note['id']) => void;
             readAllUnreadMentions: () => void;
             notificationFlushed: () => void;
+            notificationDeleted: () => void;
             unreadSpecifiedNote: (payload: Note['id']) => void;
             readAllUnreadSpecifiedNotes: () => void;
             readAllMessagingMessages: () => void;
@@ -1716,6 +1717,7 @@ declare namespace entities {
         NotesUserListTimelineRequest,
         NotesUserListTimelineResponse,
         NotificationsCreateRequest,
+        NotificationsDeleteRequest,
         PagePushRequest,
         PagesCreateRequest,
         PagesCreateResponse,
@@ -2831,6 +2833,9 @@ type Notification_2 = components['schemas']['Notification'];
 
 // @public (undocumented)
 type NotificationsCreateRequest = operations['notifications___create']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type NotificationsDeleteRequest = operations['notifications___delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 export const notificationTypes: readonly ["note", "follow", "mention", "reply", "renote", "quote", "reaction", "pollVote", "pollEnded", "receiveFollowRequest", "followRequestAccepted", "groupInvited", "app", "roleAssigned", "achievementEarned"];

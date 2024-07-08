@@ -223,6 +223,26 @@ export class NotificationService implements OnApplicationShutdown {
 		this.globalEventService.publishMainStream(userId, 'notificationFlushed');
 	}
 
+	async #getNotifications(userId: MiUser['id'], notificationId: MiNotification['id']) {
+		const notificationRes = await this.redisClient.xrange(
+			`notificationTimeline:${userId}`,
+			`${this.idService.parse(notificationId).date.getTime() - 1000}-0`,
+			`${this.idService.parse(notificationId).date.getTime() + 1000}-9999 `,
+			'COUNT', 50
+		);
+		return notificationRes.find(x => JSON.parse(x[1][1]).id === notificationId);
+	}
+
+	@bindThis
+	public async deleteNotification(userId: MiUser['id'], notificationId: MiNotification['id']) : Promise<MiNotification['id'] | void> {
+		const targetResId = (await this.#getNotifications(userId, notificationId))?.[0];
+		if (!targetResId) return;
+
+		await this.redisClient.xdel(`notificationTimeline:${userId}`, targetResId);
+		this.globalEventService.publishMainStream(userId, 'notificationDeleted', notificationId);
+		return notificationId;
+	}
+
 	@bindThis
 	public dispose(): void {
 		this.#shutdownController.abort();

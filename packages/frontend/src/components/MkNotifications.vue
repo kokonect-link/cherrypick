@@ -83,6 +83,7 @@ let connection: Misskey.ChannelConnection<Misskey.Channels['main']>;
 onMounted(() => {
 	connection = useStream().useChannel('main');
 	connection.on('notification', onNotification);
+	connection.on('notificationDeleted', reload);
 	connection.on('notificationFlushed', reload);
 
 	globalEvents.on('reloadNotification', () => reload());
@@ -92,6 +93,7 @@ onActivated(() => {
 	pagingComponent.value?.reload();
 	connection = useStream().useChannel('main');
 	connection.on('notification', onNotification);
+	connection.on('notificationDeleted', reload);
 	connection.on('notificationFlushed', reload);
 });
 

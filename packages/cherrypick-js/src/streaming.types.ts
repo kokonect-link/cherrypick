@@ -43,6 +43,7 @@ export type Channels = {
 			unreadMention: (payload: Note['id']) => void;
 			readAllUnreadMentions: () => void;
 			notificationFlushed: () => void;
+			notificationDeleted: () => void;
 			unreadSpecifiedNote: (payload: Note['id']) => void;
 			readAllUnreadSpecifiedNotes: () => void;
 			readAllMessagingMessages: () => void;

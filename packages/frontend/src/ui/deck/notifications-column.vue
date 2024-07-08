@@ -39,9 +39,24 @@ function func() {
 	}, 'closed');
 }
 
+async function flushNotification() {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts.resetAreYouSure,
+	});
+
+	if (canceled) return;
+
+	os.apiWithDialog('notifications/flush');
+}
+
 const menu = [{
 	icon: 'ti ti-pencil',
 	text: i18n.ts.notificationSetting,
 	action: func,
+}, {
+	icon: 'ti ti-trash',
+	text: i18n.ts.notificationFlush,
+	action: flushNotification,
 }];
 </script>
