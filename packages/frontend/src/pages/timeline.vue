@@ -39,13 +39,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.tl">
 					<MkTimeline
 						ref="tlComponent"
-						:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
+						:key="src + withRenotes + withReplies + onlyFiles + onlyCats + withoutBots"
 						:src="src.split(':')[0]"
 						:list="src.split(':')[1]"
 						:withRenotes="withRenotes"
 						:withReplies="withReplies"
 						:onlyFiles="onlyFiles"
 						:onlyCats="onlyCats"
+						:withoutBots="withoutBots"
 						:sound="true"
 						@queue="queueUpdated"
 					/>
@@ -138,6 +139,11 @@ const onlyFiles = computed<boolean>({
 const onlyCats = computed({
 	get: () => defaultStore.reactiveState.tl.value.filter.onlyCats,
 	set: (x: boolean) => saveTlFilter('onlyCats', x),
+});
+
+const withoutBots = computed({
+	get: () => defaultStore.reactiveState.tl.value.filter.withoutBots,
+	set: (x: boolean) => saveTlFilter('withoutBots', x),
 });
 
 watch([withReplies, onlyFiles], ([withRepliesTo, onlyFilesTo]) => {
@@ -346,6 +352,10 @@ const headerActions = computed(() => {
 					type: 'switch',
 					text: i18n.ts.showCatOnly,
 					ref: onlyCats,
+				}, {
+					type: 'switch',
+					text: i18n.ts.antennaExcludeBots,
+					ref: withoutBots,
 				}], ev.currentTarget ?? ev.target);
 			},
 		},

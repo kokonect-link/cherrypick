@@ -20,6 +20,7 @@ class HybridTimelineChannel extends Channel {
 	private withRenotes: boolean;
 	private withReplies: boolean;
 	private withFiles: boolean;
+	private withoutBots: boolean;
 
 	constructor(
 		private metaService: MetaService,
@@ -41,6 +42,7 @@ class HybridTimelineChannel extends Channel {
 		this.withRenotes = params.withRenotes ?? true;
 		this.withReplies = params.withReplies ?? false;
 		this.withFiles = params.withFiles ?? false;
+		this.withoutBots = params.withoutBots ?? false;
 
 		// Subscribe events
 		this.subscriber.on('notesStream', this.onNote);
@@ -51,6 +53,7 @@ class HybridTimelineChannel extends Channel {
 		const isMe = this.user!.id === note.userId;
 
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
+		if (this.withoutBots && note.user.isBot) return;
 
 		// チャンネルの投稿ではなく、自分自身の投稿 または
 		// チャンネルの投稿ではなく、その投稿のユーザーをフォローしている または

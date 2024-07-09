@@ -42,6 +42,7 @@ export const paramDef = {
 		withFiles: { type: 'boolean', default: false },
 		withRenotes: { type: 'boolean', default: true },
 		withCats: { type: 'boolean', default: false },
+		withoutBots: { type: 'boolean', default: false },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
@@ -101,6 +102,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.withCats) {
 				query.andWhere('(select "isCat" from "user" where id = note."userId")');
+			}
+
+			if (ps.withoutBots) {
+				query.andWhere('(SELECT "isBot" FROM "user" WHERE id = note."userId") = FALSE');
 			}
 			//#endregion
 

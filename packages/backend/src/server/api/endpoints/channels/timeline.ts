@@ -102,6 +102,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				redisTimelines: [`channelTimeline:${channel.id}`],
 				excludePureRenotes: false,
 				withCats: false,
+				withoutBots: false,
 				dbFallback: async (untilId, sinceId, limit) => {
 					return await this.getFromDb({ untilId, sinceId, limit, channelId: channel.id }, me);
 				},

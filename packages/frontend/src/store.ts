@@ -200,6 +200,7 @@ export const defaultStore = markRaw(new Storage('base', {
 				withSensitive: true,
 				onlyFiles: false,
 				onlyCats: false,
+				withoutBots: false,
 			},
 		},
 	},

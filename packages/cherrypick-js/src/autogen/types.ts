@@ -22851,6 +22851,8 @@ export type operations = {
           withRenotes?: boolean;
           /** @default false */
           withCats?: boolean;
+          /** @default false */
+          withoutBots?: boolean;
           /** @default 10 */
           limit?: number;
           /** Format: misskey:id */
@@ -22935,6 +22937,8 @@ export type operations = {
           withReplies?: boolean;
           /** @default false */
           withCats?: boolean;
+          /** @default false */
+          withoutBots?: boolean;
         };
       };
     };
@@ -22995,6 +22999,8 @@ export type operations = {
           withReplies?: boolean;
           /** @default false */
           withCats?: boolean;
+          /** @default false */
+          withoutBots?: boolean;
           /** @default 10 */
           limit?: number;
           /** Format: misskey:id */
@@ -24102,6 +24108,8 @@ export type operations = {
           withRenotes?: boolean;
           /** @default false */
           withCats?: boolean;
+          /** @default false */
+          withoutBots?: boolean;
         };
       };
     };
@@ -28383,6 +28391,8 @@ export type operations = {
           withRenotes?: boolean;
           /** @default false */
           withChannelNotes?: boolean;
+          /** @default false */
+          withoutBots?: boolean;
           /** @default 10 */
           limit?: number;
           /** Format: misskey:id */
