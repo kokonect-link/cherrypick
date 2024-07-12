@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@dragover.prevent.stop="onDragover"
 		@drop.prevent.stop="onDrop"
 	>
-		<MkSpacer :contentMax="800">
+		<MkSpacer :contentMax="700">
 			<div :class="$style.body">
 				<MkPagination v-if="pagination" ref="pagingComponent" :key="userAcct || groupId" :pagination="pagination">
 					<template #default="{ items: messages, fetching: pFetching }">
@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef, ref } from 'vue';
+import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef, ref, onUpdated } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XMessage from './messaging-room.message.vue';
 import XForm from './messaging-room.form.vue';
@@ -100,6 +100,13 @@ watch([() => props.userAcct, () => props.groupId], () => {
 	if (connection.value) connection.value.dispose();
 	fetch();
 });
+
+onUpdated(() => {
+	if (pagingComponent.value) {
+		pagingComponent.value.$el.scrollTop = pagingComponent.value.$el.scrollHeight;
+	}
+});
+
 
 async function fetch() {
 	fetching.value = true;
