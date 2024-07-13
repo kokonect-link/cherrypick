@@ -16,7 +16,26 @@
 
 -->
 
-## 0.4.1 (unreleased)
+## 0.4.2
+
+### Release Date
+
+### General
+- Vueのバージョンをアップデート
+  - 画面に何も表示されなくなるバグが修正
+
+### Client
+- Botの投稿をタイムラインから除外できるように
+- Pageの可読性を向上
+
+### Server
+-
+
+### Misc
+
+
+
+## 0.4.1
 
 ### Release Date
 
