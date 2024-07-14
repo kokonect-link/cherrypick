@@ -208,29 +208,33 @@ function onDrop(ev: DragEvent): void {
 }
 
 function onMessage(message) {
-	sound.playMisskeySfx('chat');
-	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
+    sound.playMisskeySfx('chat');
+    vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
 
-	const _isBottom = isBottomVisible(rootEl.value, 64);
+    // 現在のスクロール位置を確認
+    const _isBottom = isBottomVisible(rootEl.value, 64);
 
-	pagingComponent.value.prepend(message);
+    // 新しいメッセージをリストに追加
+    pagingComponent.value.prepend(message);
 
-	// メッセージの順序を再度ソートする
-	pagingComponent.value.items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    // メッセージの順序を再度ソートする
+    pagingComponent.value.items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
-	if (message.userId !== $i?.id && !document.hidden) {
-		connection.value?.send('read', {
-			id: message.id,
-		});
-	}
+    // メッセージを読み込んだことを通知
+    if (message.userId !== $i?.id && !document.hidden) {
+        connection.value?.send('read', {
+            id: message.id,
+        });
+    }
 
-	if (_isBottom) {
-		nextTick(() => {
-			thisScrollToBottom();
-		});
-	} else if (message.userId !== $i?.id) {
-		notifyNewMessage();
-	}
+    // スクロール位置の調整
+    if (_isBottom) {
+        nextTick(() => {
+            thisScrollToBottom();
+        });
+    } else if (message.userId !== $i?.id) {
+        notifyNewMessage();
+    }
 }
 
 function onRead(x) {
@@ -251,7 +255,7 @@ function onRead(x) {
 				const exist = pagingComponent.value.items.map(y => y.id).indexOf(id);
 				pagingComponent.value.items[exist] = {
 					...pagingComponent.value.items[exist],
-					readCount: x.readCount,
+					reads: [...pagingComponent.value.items[exist].reads, x.userId],
 				};
 			}
 		}
@@ -259,39 +263,7 @@ function onRead(x) {
 }
 
 function onDeleted(id) {
-	if (pagingComponent.value.items.some(y => y.id === id)) {
-		const exist = pagingComponent.value.items.map(y => y.id).indexOf(id);
-		pagingComponent.value.items.splice(exist, 1);
-	}
-}
-
-function onVisibilitychange() {
-	if (!document.hidden && user.value) {
-		const unread = pagingComponent.value.items.filter(
-			message => message.userId !== $i?.id && message.isRead === false,
-		);
-
-		if (unread.length > 0) {
-			connection.value?.send('read', {
-				id: unread.map(message => message.id),
-			});
-
-			for (const i of unread.map(message => pagingComponent.value.items.map(y => y.id).indexOf(message.id))) {
-				pagingComponent.value.items[i] = {
-					...pagingComponent.value.items[i],
-					isRead: true,
-				};
-			}
-		}
-	}
-}
-
-function onIndicatorClick() {
-	showIndicator.value = false;
-
-	nextTick(() => {
-		thisScrollToBottom();
-	});
+	pagingComponent.value.items.delete(id);
 }
 
 function thisScrollToBottom() {
@@ -300,12 +272,15 @@ function thisScrollToBottom() {
 	}
 }
 
+function onIndicatorClick() {
+	showIndicator.value = false;
+	thisScrollToBottom();
+}
+
+const scrollRemove = ref<(() => void) | null>(null);
+
 function notifyNewMessage() {
 	showIndicator.value = true;
-
-	if (scrollRemove.value) {
-		scrollRemove.value();
-	}
 
 	scrollRemove.value = onScrollBottom(rootEl.value, () => {
 		showIndicator.value = false;
@@ -313,21 +288,36 @@ function notifyNewMessage() {
 	});
 }
 
-onMounted(() => {
-	const resizeObserver = new ResizeObserver(() => {
-		if (isBottomVisible(rootEl.value, 64)) {
-			nextTick(() => {
-				scrollToBottom(rootEl.value, { behavior: 'auto' });
+function onVisibilitychange() {
+	if (document.hidden) return;
+	for (const message of pagingComponent.value.items) {
+		if (message.userId !== $i?.id && !message.isRead) {
+			connection.value?.send('read', {
+				id: message.id,
 			});
 		}
-	});
-	resizeObserver.observe(rootEl.value);
+	}
+}
+
+onMounted(() => {
+	fetch();
 });
 
 onBeforeUnmount(() => {
 	connection.value?.dispose();
 	document.removeEventListener('visibilitychange', onVisibilitychange);
+	if (scrollRemove.value) scrollRemove();
 });
+
+definePageMetadata(computed(() => !fetching.value ? user.value ? {
+	title: '',
+	icon: null,
+	userName: user,
+	avatar: user,
+} : {
+	title: group.value?.name,
+	icon: 'ti ti-users',
+} : null));
 </script>
 
 <style lang="scss" module>
