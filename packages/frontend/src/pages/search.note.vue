@@ -46,13 +46,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 					</FormSection>
 					<FormSection>
+						<template #label>{{ i18n.ts._advancedSearch._fileNsfwOption.title }}</template>
+
+						<div style="text-align: center;" class="_gaps_m">
+							<MkRadios v-model="sensitiveFilter" @update:modelValue="search()">
+								<option value="combined">{{ i18n.ts._advancedSearch._fileNsfwOption.combined }}</option>
+								<option value="withOutSensitive">{{ i18n.ts._advancedSearch._fileNsfwOption.withOutSensitive }}</option>
+								<option value="includeSensitive">{{ i18n.ts._advancedSearch._fileNsfwOption.includeSensitive }}</option>
+								<option value="sensitiveOnly">{{ i18n.ts._advancedSearch._fileNsfwOption.sensitiveOnly }}</option>
+							</MkRadios>
+						</div>
+					</FormSection>
+					<FormSection>
 						<template #label>{{ i18n.ts.other }}</template>
 						<template #caption>{{ i18n.ts._advancedSearch._description.other }}</template>
 						<template #prefix></template>
 
 						<div style="text-align: center;" class="_gaps">
 							<MkSwitch v-model="excludeReply">{{ i18n.ts._advancedSearch._searchOption.toggleReply }}</MkSwitch>
-							<MkSwitch v-model="excludeNsfw">{{ i18n.ts._advancedSearch._searchOption.toggleNsfw }}</MkSwitch>
+							<MkSwitch v-model="excludeCW">{{ i18n.ts._advancedSearch._searchOption.toggleCW }}</MkSwitch>
+							<MkSwitch v-model="excludeQuote">{{ i18n.ts._advancedSearch._searchOption.toggleQuote }}</MkSwitch>
 						</div>
 					</FormSection>
 				</MkFolder>
@@ -96,8 +109,10 @@ const user = ref<any>(null);
 const isLocalOnly = ref(false);
 const isfileOnly = ref('combined');
 const advancedSearch = ref(false);
-const excludeNsfw = ref(false);
+const excludeCW = ref(false);
 const excludeReply = ref(false);
+const excludeQuote = ref(false);
+const sensitiveFilter = ref('combined');
 
 const isAdvancedSearchAvailable = ($i != null && instance.policies.canAdvancedSearchNotes ) || ($i != null && $i.policies.canAdvancedSearchNotes );
 
@@ -148,8 +163,10 @@ async function search() {
 				userId: user.value ? user.value.id : null,
 				origin: searchOrigin.value,
 				fileOption: isfileOnly.value,
-				excludeNsfw: excludeNsfw.value,
+				excludeCW: excludeCW.value,
 				excludeReply: excludeReply.value,
+				excludeQuote: excludeQuote.value,
+				sensitiveFilter: sensitiveFilter.value,
 			},
 		};
 	} else {
@@ -169,3 +186,6 @@ async function search() {
 	key.value++;
 }
 </script>
+<style lang="scss" scoped>
+
+</style>

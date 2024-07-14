@@ -933,4 +933,16 @@ export class DriveService {
 			cleanup();
 		}
 	}
+
+	@bindThis
+	public async getSensitiveFileCount(FileIds: string[]): Promise<number> {
+		let SensitiveCount = 0;
+
+		for (const FileId of FileIds) {
+			const file = await this.driveFilesRepository.findOneBy({ id: FileId });
+			if (file?.isSensitive) SensitiveCount++;
+		}
+
+		return SensitiveCount;
+	}
 }

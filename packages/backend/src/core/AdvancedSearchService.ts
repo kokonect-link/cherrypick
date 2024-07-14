@@ -19,6 +19,8 @@ import { CacheService } from '@/core/CacheService.js';
 import { QueryService } from '@/core/QueryService.js';
 import { IdService } from '@/core/IdService.js';
 import { LoggerService } from '@/core/LoggerService.js';
+import { isQuote, isRenote } from '@/misc/is-renote.js';
+import { DriveService } from './DriveService.js';
 
 type K = string;
 type V = string | number | boolean;
@@ -81,6 +83,7 @@ export class AdvancedSearchService {
 		private queryService: QueryService,
 		private idService: IdService,
 		private loggerService: LoggerService,
+		private driveService: DriveService,
 	) {
 		if (opensearch && config.opensearch && config.opensearch.index) {
 			const indexname = `${config.opensearch.index}---notes`;
@@ -91,61 +94,45 @@ export class AdvancedSearchService {
 			}).then((indexExists) => {
 				if (!indexExists) [
 					this.opensearch?.indices.create({
-						index: indexname + `-${new Date().toISOString().slice(0, 7).split(/-/g).join('')}` + `-${randomUUID()}`,
+						index: indexname,
 						body: {
 							mappings: {
 								properties: {
-									text: { type: 'text' },
-									cw: { type: 'text' },
+									text: {
+										type: 'text',
+										analyzer: 'sudachi_analyzer' },
+									cw: {
+										type: 'text',
+										analyzer: 'sudachi_analyzer' },
 									userId: { type: 'keyword' },
 									userHost: { type: 'keyword' },
-									channelId: { type: 'keyword' },
+									createdAt: { type: 'date' },
 									tags: { type: 'keyword' },
 									replyId: { type: 'keyword' },
-									fileId: { type: 'keyword' },
+									fileIds: { type: 'keyword' },
+									isQuote: { type: 'bool' },
+									sensitiveFileCount: { type: 'byte' },
+									nonSensitiveFileCount: { type: 'byte' },
 								},
 							},
-							settings: {
-								// TODO: いい感じにする
-								index: {
-									analysis: {
-										tokenizer: {
-											sudachi_c_tokenizer: {
-												type: 'sudachi_tokenizer',
-												additional_settings: '',
-												split_mode: 'C',
-												discard_punctuation: true,
-											},
-											sudachi_b_tokenizer: {
-												type: 'sudachi_tokenizer',
-												additional_settings: '',
-												split_mode: 'B',
-												discard_punctuation: true,
-											},
-											sudachi_a_tokenizer: {
-												type: 'sudachi_tokenizer',
-												additional_settings: '',
-												split_mode: 'A',
-												discard_punctuation: true,
-											},
-										},
-										analyzer: {
-											c_analyzer: {
-												filter: [],
-												tokenizer: 'sudachi_c_tokenizer',
-												type: 'custom',
-											},
-											b_analyzer: {
-												filter: [],
-												tokenizer: 'sudachi_b_tokenizer',
-												type: 'custom',
-											},
-											a_normalization_analyzer: {
-												filter: [],
-												tokenizer: 'sudachi_a_tokenizer',
-												type: 'custom',
-											},
-										},
+							analysis: {
+								analyzer: {
+									sudachi_analyzer: {
+										filter: [
+											'sudachi_base_form',
+											'sudachi_readingform',
+											'sudachi_normalizedform',
+										],
+										tokenizer: 'sudachi_a_tokenizer',
+										type: 'custom',
+									},
+								},
+								tokenizer: {
+									sudachi_a_tokenizer: {
+										type: 'sudachi_tokenizer',
+										additional_settings: '{"systemDict":"system_full.dic"}',
+										split_mode: 'A',
+										discard_punctuation: true,
 									},
 								},
 							},
@@ -169,19 +156,30 @@ export class AdvancedSearchService {
 		if (!['home', 'public', 'followers'].includes(note.visibility)) return;
 
 		if (this.opensearch) {
+			let sensitiveCount = 0;
+			let nonSensitiveCount = 0;
+			if (note.fileIds) {
+				sensitiveCount = await	this.driveService.getSensitiveFileCount(note.fileIds);
+				nonSensitiveCount = note.fileIds.length - sensitiveCount;
+			}
+			const Quote = isRenote(note) && isQuote(note);
+
 			const body = {
 				text: note.text,
 				cw: note.cw,
 				userId: note.userId,
 				userHost: note.userHost,
-				channelId: note.channelId,
 				createdAt: this.idService.parse(note.id).date.getTime(),
 				tags: note.tags,
 				replyId: note.replyId,
+				fileIds: note.fileIds,
+				isQuote: Quote,
+				sensitiveFileCount: sensitiveCount,
+				nonSensitiveFileCount: nonSensitiveCount,
 			};
 
 			await this.opensearch.index({
-				index: this.opensearchNoteIndex + `-${new Date().toISOString().slice(0, 7).split(/-/g).join('')}` + `${randomUUID()}` as string,
+				index: this.opensearchNoteIndex as string,
 				id: note.id,
 				body: body,
 			}).catch((error) => {
@@ -217,7 +215,7 @@ export class AdvancedSearchService {
 
 		if (this.opensearch) {
 			this.opensearch.delete({
-				index: this.opensearchNoteIndex + `-${new Date().toISOString().slice(0, 7).split(/-/g).join('')}` + `${randomUUID()}` as string,
+				index: this.opensearchNoteIndex as string,
 				id: note.id,
 			}).catch((error) => {
 				console.error(error);
@@ -228,13 +226,14 @@ export class AdvancedSearchService {
 	@bindThis
 	public async searchNote(q: string, me: MiUser | null, opts: {
 		userId?: MiNote['userId'] | null;
-		channelId?: MiNote['channelId'] | null;
 		host?: string | null;
 		origin?: string | null;
 		fileOption?: string | null;
 		visibility?: MiNote['visibility'] | null;
-		excludeNsfw?: boolean;
+		excludeCW?: boolean;
 		excludeReply?: boolean;
+		excludeQuote?: boolean;
+		sensitiveFilter?: string | null;
 	}, pagination: {
 		untilId?: MiNote['id'];
 		sinceId?: MiNote['id'];
@@ -244,46 +243,75 @@ export class AdvancedSearchService {
 			const osFilter: any = {
 				bool: {
 					must: [],
+					must_not: [],
 				},
 			};
 
 			if (pagination.untilId) osFilter.bool.must.push({ range: { createdAt: { lt: this.idService.parse(pagination.untilId).date.getTime() } } });
 			if (pagination.sinceId) osFilter.bool.must.push({ range: { createdAt: { gt: this.idService.parse(pagination.sinceId).date.getTime() } } });
 			if (opts.userId) osFilter.bool.must.push({ term: { userId: opts.userId } });
-			if (opts.channelId) osFilter.bool.must.push({ term: { channelId: opts.channelId } });
 			if (opts.host) {
 				if (opts.host === '.') {
-					osFilter.bool.must.push({ term: { must_not: [{ exists: { field: 'userHost' } }] } });
+					osFilter.bool.must_not.push({ exists: { field: 'userHost' } });
 				} else {
 					osFilter.bool.must.push({ term: { userHost: opts.host } });
 				}
 			}
-			if (opts.excludeReply) osFilter.bool.must.push({ term: { must_not: [{ exists: { field: 'replyId' } }] } });
-			if (opts.excludeNsfw) osFilter.bool.must.push({ term: { must_not: [{ exists: { field: 'cw' } }] } });
+			if (opts.origin) {
+				if (opts.origin === 'local') {
+					osFilter.bool.must_not.push({ exists: { field: 'userHost' } });
+				} else if (opts.origin === 'remote') {
+					osFilter.bool.must.push({ exists: { field: 'userHost' } } );
+				}
+			}
+			if (opts.excludeReply) osFilter.bool.must_not.push({ exists: { field: 'replyId' } });
+			if (opts.excludeCW) osFilter.bool.must_not.push({ exists: { field: 'cw' } });
+			if (opts.excludeQuote) osFilter.bool.must.push({ term: { isQuote: false } });
 			if (opts.fileOption) {
 				if (opts.fileOption === 'file-only') {
-					osFilter.bool.must.push({ term: { must: [{ exists: { field: 'fileId' } }] } });
+					osFilter.bool.must.push({ exists: { field: 'fileIds' } });
 				} else if (opts.fileOption === 'no-file') {
-					osFilter.bool.must.push({ term: { must_not: [{ exists: { field: 'fileId' } }] } });
+					osFilter.bool.must_not.push({ exists: { field: 'fileIds' } });
+				}
+			}
+			if (opts.sensitiveFilter) {
+				if (opts.sensitiveFilter === 'includeSensitive') {
+					osFilter.bool.must.push({ range: { sensitiveFileCount: { gte: 1 } } });
+				} else if (opts.sensitiveFilter === 'withOutSensitive') {
+					osFilter.bool.must.push({ term: { sensitiveFileCount: 0 } } );
+				} else if (opts.sensitiveFilter === 'sensitiveOnly') {
+					osFilter.bool.must.push({ term: { nonSensitiveFileCount: 0 } } );
+					osFilter.bool.must.push({ range: { sensitiveFileCount: { gte: 1 } } });
 				}
 			}
 
 			if (q !== '') {
-				osFilter.bool.must.push({
-					bool: {
-						should: [
-							{ wildcard: { 'text': { value: q } } },
-							{ simple_query_string: { fields: ['text'], 'query': q, default_operator: 'and' } },
-							{ wildcard: { 'cw': { value: q } } },
-							{ simple_query_string: { fields: ['cw'], 'query': q, default_operator: 'and' } },
-						],
-						minimum_should_match: 1,
-					},
-				});
+				if (opts.excludeCW) {
+					osFilter.bool.must.push({
+						bool: {
+							should: [
+								{ wildcard: { 'text': { value: q } } },
+								{ simple_query_string: { fields: ['text'], 'query': q, default_operator: 'and' } },
+							],
+							minimum_should_match: 1,
+						},
+					});
+				} else {
+					osFilter.bool.must.push({
+						bool: {
+							should: [
+								{ wildcard: { 'text': { value: q } } },
+								{ wildcard: { 'cw': { value: q } } },
+								{ simple_query_string: { fields: ['text', 'cw'], 'query': q, default_operator: 'and' } },
+							],
+							minimum_should_match: 1,
+						},
+					});
+				}
 			}
 
 			const res = await this.opensearch.search({
-				index: this.opensearchNoteIndex + `-${new Date().toISOString().slice(0, 7).split(/-/g).join('')}` + `${randomUUID()}` as string,
+				index: this.opensearchNoteIndex as string,
 				body: {
 					query: osFilter,
 					sort: [{ createdAt: { order: 'desc' } }],
@@ -315,8 +343,6 @@ export class AdvancedSearchService {
 
 			if (opts.userId) {
 				query.andWhere('note.userId = :userId', { userId: opts.userId });
-			} else if (opts.channelId) {
-				query.andWhere('note.channelId = :channelId', { channelId: opts.channelId });
 			}
 
 			if (opts.origin === 'local') {
@@ -356,8 +382,9 @@ export class AdvancedSearchService {
 				}
 			}
 
-			if (opts.excludeNsfw) {
+			if (opts.excludeCW) {
 				query.andWhere('note.cw IS NULL');
+				query.andWhere('0 = (SELECT COUNT(*) FROM drive_file df WHERE df.id = ANY(note."fileIds") AND df."isSensitive" = TRUE)');
 			}
 
 			if (opts.excludeReply) {

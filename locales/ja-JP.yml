@@ -3078,15 +3078,22 @@ _advancedSearch:
     noFile: "なし"
     combined: "全て"
   _searchOption:
-    toggleNsfw: "CW付きを除外する"
+    toggleCW: "CW付きを除外する"
     toggleReply: "リプライを除外する"
     toggleDate: "日時を指定する"
     toggleAdvancedSearch: "高度な検索を有効にする"
+    toggleQuote: "引用を除外する"
   _specifyDate:
     startDate: "から"
     endDate: "まで"
   _description:
     other: "その他の設定"
+  _fileNsfwOption:
+    title: "添付ファイルのセンシティブ状態"
+    combined: "フィルタしない"
+    withOutSensitive: "除外"
+    includeSensitive: "含むもの"
+    sensitiveOnly: "全てセンシティブ"
 
 _searchOrApShow:
   question: "照会を行いますか？"

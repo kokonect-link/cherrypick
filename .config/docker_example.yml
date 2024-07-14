@@ -117,6 +117,19 @@ redis:
 #  index: ''
 #  scope: local
 
+#   ┌───────────────────────────┐
+#───┘ OpenSearch configuration  └─────────────────────────────
+
+# You can use OpenSearch when you enabled AdvancedSearch.
+
+#opensearch:
+#  host: opensearch
+#  port: 9200
+#  user: 'admin'
+#  pass: 'opensearch-adminpassword' #強めのパスワードじゃないと怒られる
+#  ssl: false
+#  index: 'instancename' #なんでもいい
+
 #   ┌───────────────┐
 #───┘ ID generation └───────────────────────────────────────────
 

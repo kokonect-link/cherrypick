@@ -11543,7 +11543,7 @@ export interface Locale extends ILocale {
             /**
              * CW付きを除外する
              */
-            "toggleNsfw": string;
+            "toggleCW": string;
             /**
              * リプライを除外する
              */
@@ -11556,6 +11556,10 @@ export interface Locale extends ILocale {
              * 高度な検索を有効にする
              */
             "toggleAdvancedSearch": string;
+            /**
+             * 引用を除外する
+             */
+            "toggleQuote": string;
         };
         "_specifyDate": {
             /**
@@ -11572,6 +11576,28 @@ export interface Locale extends ILocale {
              * その他の設定
              */
             "other": string;
+        };
+        "_fileNsfwOption": {
+            /**
+             * 添付ファイルのセンシティブ状態
+             */
+            "title": string;
+            /**
+             * フィルタしない
+             */
+            "combined": string;
+            /**
+             * 除外
+             */
+            "withOutSensitive": string;
+            /**
+             * 含むもの
+             */
+            "includeSensitive": string;
+            /**
+             * 全てセンシティブ
+             */
+            "sensitiveOnly": string;
         };
     };
     "_searchOrApShow": {

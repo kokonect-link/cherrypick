@@ -2951,7 +2951,7 @@ export type paths = {
      * notes/advanced-search
      * @description 高度な検索ができます
      *
-     * **Credential required**: *No*
+     * **Credential required**: *Yes*
      */
     post: operations['notes___advanced-search'];
   };
@@ -23752,7 +23752,7 @@ export type operations = {
    * notes/advanced-search
    * @description 高度な検索ができます
    *
-   * **Credential required**: *No*
+   * **Credential required**: *Yes*
    */
   'notes___advanced-search': {
     requestBody: {
@@ -23787,32 +23787,37 @@ export type operations = {
            * @enum {string}
            */
           fileOption?: 'file-only' | 'no-file' | 'combined';
+          /**
+           * @description 添付ファイルのセンシティブ状態
+           * @default combined
+           * @enum {string}
+           */
+          sensitiveFilter?: 'includeSensitive' | 'withOutSensitive' | 'sensitiveOnly' | 'combined';
           /** @default 0 */
           offset?: number;
           /** @description ノートが作成されたインスタンス。ローカルの場合は`.`を指定します */
           host?: string;
           /**
-           * @description trueを指定するとCWを含むノートを除外します
+           * @description CWを含むノートを除外するか
            * @default false
            */
-          excludeNsfw?: boolean;
+          excludeCW?: boolean;
           /**
-           * @description trueを指定するとリプライのノートを除外します
+           * @description リプライのノートを除外するか
            * @default false
            */
           excludeReply?: boolean;
+          /**
+           * @description 引用のノートを除外するか
+           * @default false
+           */
+          excludeQuote?: boolean;
           /**
            * Format: misskey:id
            * @description ノートを作成したユーザーのID
            * @default null
            */
           userId?: string | null;
-          /**
-           * Format: misskey:id
-           * @description 指定されたチャンネル内のノートを返します
-           * @default null
-           */
-          channelId?: string | null;
         };
       };
     };

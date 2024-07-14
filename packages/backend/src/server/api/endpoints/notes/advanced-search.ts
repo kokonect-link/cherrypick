@@ -13,7 +13,7 @@ import { ApiError } from '../../error.js';
 export const meta = {
 	description: '高度な検索ができます',
 	tags: ['notes'],
-	requireCredential: false,
+	requireCredential: true,
 	res: {
 		type: 'array',
 		optional: false, nullable: false,
@@ -70,6 +70,12 @@ export const paramDef = {
 			default: 'combined',
 			description: 'ファイルの添付状態',
 		},
+		sensitiveFilter: {
+			type: 'string',
+			enum: ['includeSensitive', 'withOutSensitive', 'sensitiveOnly', 'combined'],
+			default: 'combined',
+			description: '添付ファイルのセンシティブ状態',
+		},
 		offset: {
 			type: 'integer',
 			default: 0,
@@ -78,15 +84,20 @@ export const paramDef = {
 			type: 'string',
 			description: 'ノートが作成されたインスタンス。ローカルの場合は`.`を指定します',
 		},
-		excludeNsfw: {
+		excludeCW: {
 			type: 'boolean',
 			default: false,
-			description: 'trueを指定するとCWを含むノートを除外します',
+			description: 'CWを含むノートを除外するか',
 		},
 		excludeReply: {
 			type: 'boolean',
 			default: false,
-			description: 'trueを指定するとリプライのノートを除外します',
+			description: 'リプライのノートを除外するか',
+		},
+		excludeQuote: {
+			type: 'boolean',
+			default: false,
+			description: '引用のノートを除外するか',
 		},
 		userId: {
 			type: 'string',
@@ -94,13 +105,6 @@ export const paramDef = {
 			nullable: true,
 			default: null,
 			description: 'ノートを作成したユーザーのID',
-		},
-		channelId: {
-			type: 'string',
-			format: 'misskey:id',
-			nullable: true,
-			default: null,
-			description: '指定されたチャンネル内のノートを返します',
 		},
 	},
 	required: ['query'],
@@ -123,12 +127,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 
 			const notes = await this.advancedSearchService.searchNote(ps.query, me, {
 				userId: ps.userId,
-				channelId: ps.channelId,
 				host: ps.host,
 				origin: ps.origin,
 				fileOption: ps.fileOption,
-				excludeNsfw: ps.excludeNsfw,
+				sensitiveFilter: ps.sensitiveFilter,
+				excludeCW: ps.excludeCW,
 				excludeReply: ps.excludeReply,
+				excludeQuote: ps.excludeQuote,
 			}, {
 				untilId: ps.untilId,
 				sinceId: ps.sinceId,
