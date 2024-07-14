@@ -207,36 +207,6 @@ function onDrop(ev: DragEvent): void {
 	//#endregion
 }
 
-function onMessage(message) {
-    sound.playMisskeySfx('chat');
-    vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
-
-    // 現在のスクロール位置を確認
-    const _isBottom = isBottomVisible(rootEl.value, 64);
-
-    // 新しいメッセージをリストに追加
-    pagingComponent.value.prepend(message);
-
-    // メッセージの順序を再度ソートする
-    pagingComponent.value.items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-
-    // メッセージを読み込んだことを通知
-    if (message.userId !== $i?.id && !document.hidden) {
-        connection.value?.send('read', {
-            id: message.id,
-        });
-    }
-
-    // スクロール位置の調整
-    if (_isBottom) {
-        nextTick(() => {
-            thisScrollToBottom();
-        });
-    } else if (message.userId !== $i?.id) {
-        notifyNewMessage();
-    }
-}
-
 function onRead(x) {
 	if (user.value) {
 		if (!Array.isArray(x)) x = [x];
@@ -266,27 +236,61 @@ function onDeleted(id) {
 	pagingComponent.value.items.delete(id);
 }
 
-function thisScrollToBottom() {
-	if (window.location.href.includes('my/messaging/')) {
-		scrollToBottom(rootEl.value, { behavior: 'smooth' });
-	}
-}
-
 function onIndicatorClick() {
-	showIndicator.value = false;
-	thisScrollToBottom();
+    // インジケーターを非表示にする
+    showIndicator.value = false;
+
+    // スクロール位置を下に移動
+    nextTick(() => {
+        thisScrollToBottom();
+    });
 }
 
-const scrollRemove = ref<(() => void) | null>(null);
+function thisScrollToBottom() {
+    if (window.location.href.includes('my/messaging/')) {
+        scrollToBottom(rootEl.value, { behavior: 'smooth' });
+    }
+}
+
+function onMessage(message) {
+    sound.playMisskeySfx('chat');
+    vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
+
+    const _isBottom = isBottomVisible(rootEl.value, 64);
+
+    pagingComponent.value.prepend(message);
+
+    // メッセージの順序を再度ソートする
+    pagingComponent.value.items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+    if (message.userId !== $i?.id && !document.hidden) {
+        connection.value?.send('read', {
+            id: message.id,
+        });
+    }
+
+    if (_isBottom) {
+        nextTick(() => {
+            thisScrollToBottom();
+        });
+    } else if (message.userId !== $i?.id) {
+        notifyNewMessage();
+    }
+}
 
 function notifyNewMessage() {
-	showIndicator.value = true;
+    showIndicator.value = true;
 
-	scrollRemove.value = onScrollBottom(rootEl.value, () => {
-		showIndicator.value = false;
-		scrollRemove.value = null;
-	});
+    if (scrollRemove.value) {
+        scrollRemove.value();
+    }
+
+    scrollRemove.value = onScrollBottom(rootEl.value, () => {
+        showIndicator.value = false;
+        scrollRemove.value = null;
+    });
 }
+
 
 function onVisibilitychange() {
 	if (document.hidden) return;
