@@ -208,27 +208,33 @@ function onDrop(ev: DragEvent): void {
 }
 
 function onMessage(message) {
-	sound.playMisskeySfx('chat');
-	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
+    sound.playMisskeySfx('chat');
+    vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
 
-	const _isBottom = isBottomVisible(rootEl.value, 64);
+    // 現在のスクロール位置を確認
+    const _isBottom = isBottomVisible(rootEl.value, 64);
 
-	pagingComponent.value.prepend(message);
-	if (message.userId !== $i?.id && !document.hidden) {
-		connection.value?.send('read', {
-			id: message.id,
-		});
-	}
+    // 新しいメッセージをリストに追加
+    pagingComponent.value.prepend(message);
 
-	if (_isBottom) {
-		// Scroll to bottom
-		nextTick(() => {
-			thisScrollToBottom();
-		});
-	} else if (message.userId !== $i?.id) {
-		// Notify
-		notifyNewMessage();
-	}
+    // メッセージの順序を再度ソートする
+    pagingComponent.value.items.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+    // メッセージを読み込んだことを通知
+    if (message.userId !== $i?.id && !document.hidden) {
+        connection.value?.send('read', {
+            id: message.id,
+        });
+    }
+
+    // スクロール位置の調整
+    if (_isBottom) {
+        nextTick(() => {
+            thisScrollToBottom();
+        });
+    } else if (message.userId !== $i?.id) {
+        notifyNewMessage();
+    }
 }
 
 function onRead(x) {
