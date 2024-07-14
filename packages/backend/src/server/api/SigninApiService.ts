@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import bcrypt from 'bcryptjs';
+import { comparePassword, hashPassword, isOldAlgorithm } from '@/misc/password.js';
 import * as OTPAuth from 'otpauth';
 import { IsNull } from 'typeorm';
 import { DI } from '@/di-symbols.js';
@@ -123,7 +123,12 @@ export class SigninApiService {
 		const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 
 		// Compare password
-		const same = await bcrypt.compare(password, profile.password!);
+		const same = await comparePassword(password, profile.password!);
+
+		if (same && isOldAlgorithm(profile.password!)) {
+			profile.password = await hashPassword(password);
+			await this.userProfilesRepository.save(profile);
+		}
 
 		const fail = async (status?: number, failure?: { id: string }) => {
 			// Append signin history

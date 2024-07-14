@@ -4,7 +4,6 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import bcrypt from 'bcryptjs';
 import { IsNull } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { RegistrationTicketsRepository, UsedUsernamesRepository, UserPendingsRepository, UserProfilesRepository, UsersRepository, MiRegistrationTicket } from '@/models/_.js';
@@ -21,6 +20,7 @@ import { bindThis } from '@/decorators.js';
 import { L_CHARS, secureRndstr } from '@/misc/secure-rndstr.js';
 import { SigninService } from './SigninService.js';
 import type { FastifyRequest, FastifyReply } from 'fastify';
+import { hashPassword } from '@/misc/password.js';
 
 @Injectable()
 export class SignupApiService {
@@ -180,8 +180,7 @@ export class SignupApiService {
 			const code = secureRndstr(16, { chars: L_CHARS });
 
 			// Generate hash of password
-			const salt = await bcrypt.genSalt(8);
-			const hash = await bcrypt.hash(password, salt);
+			const hash = await hashPassword(password);
 
 			const pendingUser = await this.userPendingsRepository.insertOne({
 				id: this.idService.gen(),

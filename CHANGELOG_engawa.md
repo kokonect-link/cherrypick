@@ -16,6 +16,22 @@
 
 -->
 
+## 0.4.3 (unreleased)
+
+### Release Date
+
+### General
+- パスワードのハッシュでArgon2idをサポート
+	- bcryptによるハッシュは再ログイン時にArgon2idに置き換えられます
+
+### Client
+- 
+
+### Server
+-
+
+### Misc
+
 ## 0.4.2
 
 ### Release Date
