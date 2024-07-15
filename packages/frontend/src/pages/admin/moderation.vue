@@ -8,58 +8,63 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkStickyContainer>
 		<template #header><XHeader :tabs="headerTabs"/></template>
 		<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
-			<FormSuspense :p="init">
-				<div class="_gaps_m">
-					<MkSwitch v-model="enableRegistration">
-						<template #label>{{ i18n.ts.enableRegistration }}</template>
-					</MkSwitch>
+			<div v-if="$i.isAdmin">
+				<FormSuspense :p="init">
+					<div class="_gaps_m">
+						<MkSwitch v-model="enableRegistration">
+							<template #label>{{ i18n.ts.enableRegistration }}</template>
+						</MkSwitch>
 
-					<MkSwitch v-model="emailRequiredForSignup">
-						<template #label>{{ i18n.ts.emailRequiredForSignup }}</template>
-					</MkSwitch>
+						<MkSwitch v-model="emailRequiredForSignup">
+							<template #label>{{ i18n.ts.emailRequiredForSignup }}</template>
+						</MkSwitch>
 
-					<FormLink to="/admin/server-rules">{{ i18n.ts.serverRules }}</FormLink>
+						<FormLink to="/admin/server-rules">{{ i18n.ts.serverRules }}</FormLink>
 
-					<MkInput v-model="tosUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.tosUrl }}</template>
-					</MkInput>
+						<MkInput v-model="tosUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.tosUrl }}</template>
+						</MkInput>
 
-					<MkInput v-model="privacyPolicyUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.privacyPolicyUrl }}</template>
-					</MkInput>
+						<MkInput v-model="privacyPolicyUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.privacyPolicyUrl }}</template>
+						</MkInput>
 
-					<MkInput v-model="inquiryUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts._serverSettings.inquiryUrl }}</template>
-						<template #caption>{{ i18n.ts._serverSettings.inquiryUrlDescription }}</template>
-					</MkInput>
+						<MkInput v-model="inquiryUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts._serverSettings.inquiryUrl }}</template>
+							<template #caption>{{ i18n.ts._serverSettings.inquiryUrlDescription }}</template>
+						</MkInput>
 
-					<MkTextarea v-model="preservedUsernames">
-						<template #label>{{ i18n.ts.preservedUsernames }}</template>
-						<template #caption>{{ i18n.ts.preservedUsernamesDescription }}</template>
-					</MkTextarea>
+						<MkTextarea v-model="preservedUsernames">
+							<template #label>{{ i18n.ts.preservedUsernames }}</template>
+							<template #caption>{{ i18n.ts.preservedUsernamesDescription }}</template>
+						</MkTextarea>
 
-					<MkTextarea v-model="sensitiveWords">
-						<template #label>{{ i18n.ts.sensitiveWords }}</template>
-						<template #caption>{{ i18n.ts.sensitiveWordsDescription }}<br>{{ i18n.ts.sensitiveWordsDescription2 }}</template>
-					</MkTextarea>
+						<MkTextarea v-model="sensitiveWords">
+							<template #label>{{ i18n.ts.sensitiveWords }}</template>
+							<template #caption>{{ i18n.ts.sensitiveWordsDescription }}<br>{{ i18n.ts.sensitiveWordsDescription2 }}</template>
+						</MkTextarea>
 
-					<MkTextarea v-model="prohibitedWords">
-						<template #label>{{ i18n.ts.prohibitedWords }}</template>
-						<template #caption>{{ i18n.ts.prohibitedWordsDescription }}<br>{{ i18n.ts.prohibitedWordsDescription2 }}</template>
-					</MkTextarea>
+						<MkTextarea v-model="prohibitedWords">
+							<template #label>{{ i18n.ts.prohibitedWords }}</template>
+							<template #caption>{{ i18n.ts.prohibitedWordsDescription }}<br>{{ i18n.ts.prohibitedWordsDescription2 }}</template>
+						</MkTextarea>
 
-					<MkTextarea v-model="hiddenTags">
-						<template #label>{{ i18n.ts.hiddenTags }}</template>
-						<template #caption>{{ i18n.ts.hiddenTagsDescription }}</template>
-					</MkTextarea>
-				</div>
-			</FormSuspense>
+						<MkTextarea v-model="hiddenTags">
+							<template #label>{{ i18n.ts.hiddenTags }}</template>
+							<template #caption>{{ i18n.ts.hiddenTagsDescription }}</template>
+						</MkTextarea>
+					</div>
+				</FormSuspense>
+			</div>
+			<div v-else>
+				<MkInfo warn>この管理設定は<strong>管理者権限</strong>が必要です。</MkInfo>
+			</div>
 		</MkSpacer>
 		<template #footer>
-			<div :class="$style.footer">
+			<div v-if="$i.isAdmin" :class="$style.footer">
 				<MkSpacer :contentMax="700" :marginMin="16" :marginMax="16">
 					<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 				</MkSpacer>
@@ -83,6 +88,8 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 import FormLink from '@/components/form/link.vue';
+import MkInfo from '@/components/MkInfo.vue';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 
 const enableRegistration = ref<boolean>(false);
 const emailRequiredForSignup = ref<boolean>(false);

@@ -7,45 +7,50 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
-		<FormSuspense :p="init">
-			<div class="_gaps">
-				<FormLink to="/admin/update"><template #icon><i class="ti ti-refresh"></i></template>{{ i18n.ts.cherrypickUpdate }}</FormLink>
+		<div v-if="$i.isAdmin">
+			<FormSuspense :p="init">
+				<div class="_gaps">
+					<FormLink to="/admin/update"><template #icon><i class="ti ti-refresh"></i></template>{{ i18n.ts.cherrypickUpdate }}</FormLink>
 
-				<div class="_panel" style="padding: 16px;">
-					<MkSwitch v-model="enableServerMachineStats">
-						<template #label>{{ i18n.ts.enableServerMachineStats }}</template>
-						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
-					</MkSwitch>
-				</div>
+					<div class="_panel" style="padding: 16px;">
+						<MkSwitch v-model="enableServerMachineStats">
+							<template #label>{{ i18n.ts.enableServerMachineStats }}</template>
+							<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
+						</MkSwitch>
+					</div>
 
-				<div class="_panel" style="padding: 16px;">
-					<MkSwitch v-model="enableIdenticonGeneration">
-						<template #label>{{ i18n.ts.enableIdenticonGeneration }}</template>
-						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
-					</MkSwitch>
-				</div>
+					<div class="_panel" style="padding: 16px;">
+						<MkSwitch v-model="enableIdenticonGeneration">
+							<template #label>{{ i18n.ts.enableIdenticonGeneration }}</template>
+							<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
+						</MkSwitch>
+					</div>
 
-				<div class="_panel" style="padding: 16px;">
-					<MkSwitch v-model="enableChartsForRemoteUser">
-						<template #label>{{ i18n.ts.enableChartsForRemoteUser }}</template>
-						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
-					</MkSwitch>
-				</div>
+					<div class="_panel" style="padding: 16px;">
+						<MkSwitch v-model="enableChartsForRemoteUser">
+							<template #label>{{ i18n.ts.enableChartsForRemoteUser }}</template>
+							<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
+						</MkSwitch>
+					</div>
 
-				<div class="_panel" style="padding: 16px;">
-					<MkSwitch v-model="enableChartsForFederatedInstances">
-						<template #label>{{ i18n.ts.enableChartsForFederatedInstances }}</template>
-						<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
-					</MkSwitch>
-				</div>
+					<div class="_panel" style="padding: 16px;">
+						<MkSwitch v-model="enableChartsForFederatedInstances">
+							<template #label>{{ i18n.ts.enableChartsForFederatedInstances }}</template>
+							<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
+						</MkSwitch>
+					</div>
 
-				<div class="_panel" style="padding: 16px;">
-					<MkSwitch v-model="doNotSendNotificationEmailsForAbuseReport">
-						<template #label>{{ i18n.ts.doNotSendNotificationEmailsForAbuseReport }}</template>
-					</MkSwitch>
+					<div class="_panel" style="padding: 16px;">
+						<MkSwitch v-model="doNotSendNotificationEmailsForAbuseReport">
+							<template #label>{{ i18n.ts.doNotSendNotificationEmailsForAbuseReport }}</template>
+						</MkSwitch>
+					</div>
 				</div>
-			</div>
-		</FormSuspense>
+			</FormSuspense>
+		</div>
+		<div v-else>
+			<MkInfo warn>この管理設定は<strong>管理者権限</strong>が必要です。</MkInfo>
+		</div>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
@@ -61,6 +66,8 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import FormLink from '@/components/form/link.vue';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const enableServerMachineStats = ref<boolean>(false);
 const enableIdenticonGeneration = ref<boolean>(false);

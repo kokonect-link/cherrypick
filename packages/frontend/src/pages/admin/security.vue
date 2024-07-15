@@ -7,119 +7,124 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
-		<FormSuspense :p="init">
-			<div class="_gaps_m">
-				<MkFolder>
-					<template #icon><i class="ti ti-shield"></i></template>
-					<template #label>{{ i18n.ts.botProtection }}</template>
-					<template v-if="enableHcaptcha" #suffix>hCaptcha</template>
-					<template v-else-if="enableMcaptcha" #suffix>mCaptcha</template>
-					<template v-else-if="enableRecaptcha" #suffix>reCAPTCHA</template>
-					<template v-else-if="enableTurnstile" #suffix>Turnstile</template>
-					<template v-else #suffix>{{ i18n.ts.none }} ({{ i18n.ts.notRecommended }})</template>
+		<div v-if="$i.isAdmin">
+			<FormSuspense :p="init">
+				<div class="_gaps_m">
+					<MkFolder>
+						<template #icon><i class="ti ti-shield"></i></template>
+						<template #label>{{ i18n.ts.botProtection }}</template>
+						<template v-if="enableHcaptcha" #suffix>hCaptcha</template>
+						<template v-else-if="enableMcaptcha" #suffix>mCaptcha</template>
+						<template v-else-if="enableRecaptcha" #suffix>reCAPTCHA</template>
+						<template v-else-if="enableTurnstile" #suffix>Turnstile</template>
+						<template v-else #suffix>{{ i18n.ts.none }} ({{ i18n.ts.notRecommended }})</template>
 
-					<XBotProtection/>
-				</MkFolder>
+						<XBotProtection/>
+					</MkFolder>
 
-				<MkFolder>
-					<template #icon><i class="ti ti-eye-off"></i></template>
-					<template #label>{{ i18n.ts.sensitiveMediaDetection }}</template>
-					<template v-if="sensitiveMediaDetection === 'all'" #suffix>{{ i18n.ts.all }}</template>
-					<template v-else-if="sensitiveMediaDetection === 'local'" #suffix>{{ i18n.ts.localOnly }}</template>
-					<template v-else-if="sensitiveMediaDetection === 'remote'" #suffix>{{ i18n.ts.remoteOnly }}</template>
-					<template v-else #suffix>{{ i18n.ts.none }}</template>
+					<MkFolder>
+						<template #icon><i class="ti ti-eye-off"></i></template>
+						<template #label>{{ i18n.ts.sensitiveMediaDetection }}</template>
+						<template v-if="sensitiveMediaDetection === 'all'" #suffix>{{ i18n.ts.all }}</template>
+						<template v-else-if="sensitiveMediaDetection === 'local'" #suffix>{{ i18n.ts.localOnly }}</template>
+						<template v-else-if="sensitiveMediaDetection === 'remote'" #suffix>{{ i18n.ts.remoteOnly }}</template>
+						<template v-else #suffix>{{ i18n.ts.none }}</template>
 
-					<div class="_gaps_m">
-						<span>{{ i18n.ts._sensitiveMediaDetection.description }}</span>
+						<div class="_gaps_m">
+							<span>{{ i18n.ts._sensitiveMediaDetection.description }}</span>
 
-						<MkRadios v-model="sensitiveMediaDetection">
-							<option value="none">{{ i18n.ts.none }}</option>
-							<option value="all">{{ i18n.ts.all }}</option>
-							<option value="local">{{ i18n.ts.localOnly }}</option>
-							<option value="remote">{{ i18n.ts.remoteOnly }}</option>
-						</MkRadios>
+							<MkRadios v-model="sensitiveMediaDetection">
+								<option value="none">{{ i18n.ts.none }}</option>
+								<option value="all">{{ i18n.ts.all }}</option>
+								<option value="local">{{ i18n.ts.localOnly }}</option>
+								<option value="remote">{{ i18n.ts.remoteOnly }}</option>
+							</MkRadios>
 
-						<MkRange v-model="sensitiveMediaDetectionSensitivity" :min="0" :max="4" :step="1" :textConverter="(v) => `${v + 1}`">
-							<template #label>{{ i18n.ts._sensitiveMediaDetection.sensitivity }}</template>
-							<template #caption>{{ i18n.ts._sensitiveMediaDetection.sensitivityDescription }}</template>
-						</MkRange>
+							<MkRange v-model="sensitiveMediaDetectionSensitivity" :min="0" :max="4" :step="1" :textConverter="(v) => `${v + 1}`">
+								<template #label>{{ i18n.ts._sensitiveMediaDetection.sensitivity }}</template>
+								<template #caption>{{ i18n.ts._sensitiveMediaDetection.sensitivityDescription }}</template>
+							</MkRange>
 
-						<MkSwitch v-model="enableSensitiveMediaDetectionForVideos">
-							<template #label>{{ i18n.ts._sensitiveMediaDetection.analyzeVideos }}<span class="_beta">{{ i18n.ts.beta }}</span></template>
-							<template #caption>{{ i18n.ts._sensitiveMediaDetection.analyzeVideosDescription }}</template>
-						</MkSwitch>
+							<MkSwitch v-model="enableSensitiveMediaDetectionForVideos">
+								<template #label>{{ i18n.ts._sensitiveMediaDetection.analyzeVideos }}<span class="_beta">{{ i18n.ts.beta }}</span></template>
+								<template #caption>{{ i18n.ts._sensitiveMediaDetection.analyzeVideosDescription }}</template>
+							</MkSwitch>
 
-						<MkSwitch v-model="setSensitiveFlagAutomatically">
-							<template #label>{{ i18n.ts._sensitiveMediaDetection.setSensitiveFlagAutomatically }} ({{ i18n.ts.notRecommended }})</template>
-							<template #caption>{{ i18n.ts._sensitiveMediaDetection.setSensitiveFlagAutomaticallyDescription }}</template>
-						</MkSwitch>
+							<MkSwitch v-model="setSensitiveFlagAutomatically">
+								<template #label>{{ i18n.ts._sensitiveMediaDetection.setSensitiveFlagAutomatically }} ({{ i18n.ts.notRecommended }})</template>
+								<template #caption>{{ i18n.ts._sensitiveMediaDetection.setSensitiveFlagAutomaticallyDescription }}</template>
+							</MkSwitch>
 
-						<!-- 現状 false positive が多すぎて実用に耐えない
+							<!-- 現状 false positive が多すぎて実用に耐えない
 						<MkSwitch v-model="disallowUploadWhenPredictedAsPorn">
 							<template #label>{{ i18n.ts._sensitiveMediaDetection.disallowUploadWhenPredictedAsPorn }}</template>
 						</MkSwitch>
 						-->
 
-						<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-					</div>
-				</MkFolder>
+							<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+						</div>
+					</MkFolder>
 
-				<MkFolder>
-					<template #label>Active Email Validation</template>
-					<template v-if="enableActiveEmailValidation" #suffix>Enabled</template>
-					<template v-else #suffix>Disabled</template>
+					<MkFolder>
+						<template #label>Active Email Validation</template>
+						<template v-if="enableActiveEmailValidation" #suffix>Enabled</template>
+						<template v-else #suffix>Disabled</template>
 
-					<div class="_gaps_m">
-						<span>{{ i18n.ts.activeEmailValidationDescription }}</span>
-						<MkSwitch v-model="enableActiveEmailValidation">
-							<template #label>Enable</template>
-						</MkSwitch>
-						<MkSwitch v-model="enableVerifymailApi">
-							<template #label>Use Verifymail.io API</template>
-						</MkSwitch>
-						<MkInput v-model="verifymailAuthKey">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>Verifymail.io API Auth Key</template>
-						</MkInput>
-						<MkSwitch v-model="enableTruemailApi">
-							<template #label>Use TrueMail API</template>
-						</MkSwitch>
-						<MkInput v-model="truemailInstance">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>TrueMail API Instance</template>
-						</MkInput>
-						<MkInput v-model="truemailAuthKey">
-							<template #prefix><i class="ti ti-key"></i></template>
-							<template #label>TrueMail API Auth Key</template>
-						</MkInput>
-						<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-					</div>
-				</MkFolder>
+						<div class="_gaps_m">
+							<span>{{ i18n.ts.activeEmailValidationDescription }}</span>
+							<MkSwitch v-model="enableActiveEmailValidation">
+								<template #label>Enable</template>
+							</MkSwitch>
+							<MkSwitch v-model="enableVerifymailApi">
+								<template #label>Use Verifymail.io API</template>
+							</MkSwitch>
+							<MkInput v-model="verifymailAuthKey">
+								<template #prefix><i class="ti ti-key"></i></template>
+								<template #label>Verifymail.io API Auth Key</template>
+							</MkInput>
+							<MkSwitch v-model="enableTruemailApi">
+								<template #label>Use TrueMail API</template>
+							</MkSwitch>
+							<MkInput v-model="truemailInstance">
+								<template #prefix><i class="ti ti-key"></i></template>
+								<template #label>TrueMail API Instance</template>
+							</MkInput>
+							<MkInput v-model="truemailAuthKey">
+								<template #prefix><i class="ti ti-key"></i></template>
+								<template #label>TrueMail API Auth Key</template>
+							</MkInput>
+							<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+						</div>
+					</MkFolder>
 
-				<MkFolder>
-					<template #label>Banned Email Domains</template>
+					<MkFolder>
+						<template #label>Banned Email Domains</template>
 
-					<div class="_gaps_m">
-						<MkTextarea v-model="bannedEmailDomains">
-							<template #label>Banned Email Domains List</template>
-						</MkTextarea>
-						<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-					</div>
-				</MkFolder>
+						<div class="_gaps_m">
+							<MkTextarea v-model="bannedEmailDomains">
+								<template #label>Banned Email Domains List</template>
+							</MkTextarea>
+							<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+						</div>
+					</MkFolder>
 
-				<MkFolder>
-					<template #label>Log IP address</template>
-					<template v-if="enableIpLogging" #suffix>Enabled</template>
-					<template v-else #suffix>Disabled</template>
+					<MkFolder>
+						<template #label>Log IP address</template>
+						<template v-if="enableIpLogging" #suffix>Enabled</template>
+						<template v-else #suffix>Disabled</template>
 
-					<div class="_gaps_m">
-						<MkSwitch v-model="enableIpLogging" @update:modelValue="save">
-							<template #label>Enable</template>
-						</MkSwitch>
-					</div>
-				</MkFolder>
-			</div>
-		</FormSuspense>
+						<div class="_gaps_m">
+							<MkSwitch v-model="enableIpLogging" @update:modelValue="save">
+								<template #label>Enable</template>
+							</MkSwitch>
+						</div>
+					</MkFolder>
+				</div>
+			</FormSuspense>
+		</div>
+		<div v-else>
+			<MkInfo warn>この管理設定は<strong>管理者権限</strong>が必要です。</MkInfo>
+		</div>
 	</MkSpacer>
 </MkStickyContainer>
 </template>
@@ -141,6 +146,8 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import MkInfo from '@/components/MkInfo.vue';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 
 const enableHcaptcha = ref<boolean>(false);
 const enableMcaptcha = ref<boolean>(false);

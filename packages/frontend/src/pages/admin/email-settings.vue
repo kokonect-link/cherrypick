@@ -7,51 +7,56 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkStickyContainer>
 	<template #header><XHeader :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
-		<FormSuspense :p="init">
-			<div class="_gaps_m">
-				<MkSwitch v-model="enableEmail">
-					<template #label>{{ i18n.ts.enableEmail }} ({{ i18n.ts.recommended }})</template>
-					<template #caption>{{ i18n.ts.emailConfigInfo }}</template>
-				</MkSwitch>
+		<div v-if="$i.isAdmin">
+			<FormSuspense :p="init">
+				<div class="_gaps_m">
+					<MkSwitch v-model="enableEmail">
+						<template #label>{{ i18n.ts.enableEmail }} ({{ i18n.ts.recommended }})</template>
+						<template #caption>{{ i18n.ts.emailConfigInfo }}</template>
+					</MkSwitch>
 
-				<template v-if="enableEmail">
-					<MkInput v-model="email" type="email">
-						<template #label>{{ i18n.ts.emailAddress }}</template>
-					</MkInput>
+					<template v-if="enableEmail">
+						<MkInput v-model="email" type="email">
+							<template #label>{{ i18n.ts.emailAddress }}</template>
+						</MkInput>
 
-					<FormSection>
-						<template #label>{{ i18n.ts.smtpConfig }}</template>
+						<FormSection>
+							<template #label>{{ i18n.ts.smtpConfig }}</template>
 
-						<div class="_gaps_m">
-							<FormSplit :minWidth="280">
-								<MkInput v-model="smtpHost">
-									<template #label>{{ i18n.ts.smtpHost }}</template>
-								</MkInput>
-								<MkInput v-model="smtpPort" type="number">
-									<template #label>{{ i18n.ts.smtpPort }}</template>
-								</MkInput>
-							</FormSplit>
-							<FormSplit :minWidth="280">
-								<MkInput v-model="smtpUser">
-									<template #label>{{ i18n.ts.smtpUser }}</template>
-								</MkInput>
-								<MkInput v-model="smtpPass" type="password">
-									<template #label>{{ i18n.ts.smtpPass }}</template>
-								</MkInput>
-							</FormSplit>
-							<FormInfo>{{ i18n.ts.emptyToDisableSmtpAuth }}</FormInfo>
-							<MkSwitch v-model="smtpSecure">
-								<template #label>{{ i18n.ts.smtpSecure }}</template>
-								<template #caption>{{ i18n.ts.smtpSecureInfo }}</template>
-							</MkSwitch>
-						</div>
-					</FormSection>
-				</template>
-			</div>
-		</FormSuspense>
+							<div class="_gaps_m">
+								<FormSplit :minWidth="280">
+									<MkInput v-model="smtpHost">
+										<template #label>{{ i18n.ts.smtpHost }}</template>
+									</MkInput>
+									<MkInput v-model="smtpPort" type="number">
+										<template #label>{{ i18n.ts.smtpPort }}</template>
+									</MkInput>
+								</FormSplit>
+								<FormSplit :minWidth="280">
+									<MkInput v-model="smtpUser">
+										<template #label>{{ i18n.ts.smtpUser }}</template>
+									</MkInput>
+									<MkInput v-model="smtpPass" type="password">
+										<template #label>{{ i18n.ts.smtpPass }}</template>
+									</MkInput>
+								</FormSplit>
+								<FormInfo>{{ i18n.ts.emptyToDisableSmtpAuth }}</FormInfo>
+								<MkSwitch v-model="smtpSecure">
+									<template #label>{{ i18n.ts.smtpSecure }}</template>
+									<template #caption>{{ i18n.ts.smtpSecureInfo }}</template>
+								</MkSwitch>
+							</div>
+						</FormSection>
+					</template>
+				</div>
+			</FormSuspense>
+		</div>
+		<div v-else>
+			<MkInfo warn>この管理設定は<strong>管理者権限</strong>が必要です。</MkInfo>
+		</div>
 	</MkSpacer>
 	<template #footer>
-		<div :class="$style.footer">
+		<div v-if="$i.isAdmin" :class="$style.footer">
 			<MkSpacer :contentMax="700" :marginMin="16" :marginMax="16">
 				<div class="_buttons">
 					<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
@@ -78,6 +83,8 @@ import { fetchInstance, instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const enableEmail = ref<boolean>(false);
 const email = ref<string | null>(null);

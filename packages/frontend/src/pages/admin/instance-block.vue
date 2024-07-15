@@ -16,7 +16,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span>{{ i18n.ts.silencedInstances }}</span>
 				<template #caption>{{ i18n.ts.silencedInstancesDescription }}</template>
 			</MkTextarea>
-			<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			<div v-if="$i.isAdmin">
+				<MkButton primary @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			</div>
+			<div v-else>
+				<MkInfo info>管理者ではないため設定の保存はできません</MkInfo>
+			</div>
 		</FormSuspense>
 	</MkSpacer>
 </MkStickyContainer>
@@ -33,6 +38,8 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const blockedHosts = ref<string>('');
 const silencedHosts = ref<string>('');

@@ -8,92 +8,97 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkStickyContainer>
 		<template #header><XHeader :tabs="headerTabs"/></template>
 		<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
-			<FormSuspense :p="init">
-				<div class="_gaps_m">
-					<MkInput v-model="iconUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts._serverSettings.iconUrl }}</template>
-					</MkInput>
+			<div v-if="$i.isAdmin">
+				<FormSuspense :p="init">
+					<div class="_gaps_m">
+						<MkInput v-model="iconUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts._serverSettings.iconUrl }}</template>
+						</MkInput>
 
-					<MkInput v-model="app192IconUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px)</template>
-						<template #caption>
-							<div>{{ i18n.tsx._serverSettings.appIconDescription({ host: instance.name ?? host }) }}</div>
-							<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
-							<div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
-							<div><strong>{{ i18n.tsx._serverSettings.appIconResolutionMustBe({ resolution: '192x192px' }) }}</strong></div>
-						</template>
-					</MkInput>
+						<MkInput v-model="app192IconUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/192px)</template>
+							<template #caption>
+								<div>{{ i18n.tsx._serverSettings.appIconDescription({ host: instance.name ?? host }) }}</div>
+								<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
+								<div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
+								<div><strong>{{ i18n.tsx._serverSettings.appIconResolutionMustBe({ resolution: '192x192px' }) }}</strong></div>
+							</template>
+						</MkInput>
 
-					<MkInput v-model="app512IconUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/512px)</template>
-						<template #caption>
-							<div>{{ i18n.tsx._serverSettings.appIconDescription({ host: instance.name ?? host }) }}</div>
-							<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
-							<div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
-							<div><strong>{{ i18n.tsx._serverSettings.appIconResolutionMustBe({ resolution: '512x512px' }) }}</strong></div>
-						</template>
-					</MkInput>
+						<MkInput v-model="app512IconUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts._serverSettings.iconUrl }} (App/512px)</template>
+							<template #caption>
+								<div>{{ i18n.tsx._serverSettings.appIconDescription({ host: instance.name ?? host }) }}</div>
+								<div>({{ i18n.ts._serverSettings.appIconUsageExample }})</div>
+								<div>{{ i18n.ts._serverSettings.appIconStyleRecommendation }}</div>
+								<div><strong>{{ i18n.tsx._serverSettings.appIconResolutionMustBe({ resolution: '512x512px' }) }}</strong></div>
+							</template>
+						</MkInput>
 
-					<MkInput v-model="bannerUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.bannerUrl }}</template>
-					</MkInput>
+						<MkInput v-model="bannerUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.bannerUrl }}</template>
+						</MkInput>
 
-					<MkInput v-model="backgroundImageUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.backgroundImageUrl }}</template>
-					</MkInput>
+						<MkInput v-model="backgroundImageUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.backgroundImageUrl }}</template>
+						</MkInput>
 
-					<MkInput v-model="notFoundImageUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.notFoundDescription }}</template>
-					</MkInput>
+						<MkInput v-model="notFoundImageUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.notFoundDescription }}</template>
+						</MkInput>
 
-					<MkInput v-model="infoImageUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.nothing }}</template>
-					</MkInput>
+						<MkInput v-model="infoImageUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.nothing }}</template>
+						</MkInput>
 
-					<MkInput v-model="serverErrorImageUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.somethingHappened }}</template>
-					</MkInput>
+						<MkInput v-model="serverErrorImageUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.somethingHappened }}</template>
+						</MkInput>
 
-					<MkColorInput v-model="themeColor">
-						<template #label>{{ i18n.ts.themeColor }}</template>
-					</MkColorInput>
+						<MkColorInput v-model="themeColor">
+							<template #label>{{ i18n.ts.themeColor }}</template>
+						</MkColorInput>
 
-					<MkTextarea v-model="defaultLightTheme">
-						<template #label>{{ i18n.ts.instanceDefaultLightTheme }}</template>
-						<template #caption>{{ i18n.ts.instanceDefaultThemeDescription }}</template>
-					</MkTextarea>
+						<MkTextarea v-model="defaultLightTheme">
+							<template #label>{{ i18n.ts.instanceDefaultLightTheme }}</template>
+							<template #caption>{{ i18n.ts.instanceDefaultThemeDescription }}</template>
+						</MkTextarea>
 
-					<MkTextarea v-model="defaultDarkTheme">
-						<template #label>{{ i18n.ts.instanceDefaultDarkTheme }}</template>
-						<template #caption>{{ i18n.ts.instanceDefaultThemeDescription }}</template>
-					</MkTextarea>
+						<MkTextarea v-model="defaultDarkTheme">
+							<template #label>{{ i18n.ts.instanceDefaultDarkTheme }}</template>
+							<template #caption>{{ i18n.ts.instanceDefaultThemeDescription }}</template>
+						</MkTextarea>
 
-					<MkInput v-model="repositoryUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.repositoryUrl }}</template>
-					</MkInput>
+						<MkInput v-model="repositoryUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.repositoryUrl }}</template>
+						</MkInput>
 
-					<MkInput v-model="feedbackUrl" type="url">
-						<template #prefix><i class="ti ti-link"></i></template>
-						<template #label>{{ i18n.ts.feedbackUrl }}</template>
-					</MkInput>
+						<MkInput v-model="feedbackUrl" type="url">
+							<template #prefix><i class="ti ti-link"></i></template>
+							<template #label>{{ i18n.ts.feedbackUrl }}</template>
+						</MkInput>
 
-					<MkTextarea v-model="manifestJsonOverride">
-						<template #label>{{ i18n.ts._serverSettings.manifestJsonOverride }}</template>
-					</MkTextarea>
-				</div>
-			</FormSuspense>
+						<MkTextarea v-model="manifestJsonOverride">
+							<template #label>{{ i18n.ts._serverSettings.manifestJsonOverride }}</template>
+						</MkTextarea>
+					</div>
+				</FormSuspense>
+			</div>
+			<div v-else>
+				<MkInfo warn>この管理設定は<strong>管理者権限</strong>が必要です。</MkInfo>
+			</div>
 		</MkSpacer>
 		<template #footer>
-			<div :class="$style.footer">
+			<div v-if="$i.isAdmin" :class="$style.footer">
 				<MkSpacer :contentMax="700" :marginMin="16" :marginMax="16">
 					<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 				</MkSpacer>
@@ -118,6 +123,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
 import MkColorInput from '@/components/MkColorInput.vue';
 import { host } from '@/config.js';
+import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const iconUrl = ref<string | null>(null);
 const app192IconUrl = ref<string | null>(null);
