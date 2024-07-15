@@ -1,11 +1,11 @@
 {
-	"name": "cherrypick",
-	"version": "4.9.0-beta.2",
+	"name": "MSNIS",
+	"version": "MSNIS-1.0-c4.9.0-beta2",
 	"basedMisskeyVersion": "2024.5.0",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kokonect-link/cherrypick.git"
+		"url": "https://github.com/MSNIC/MSNIS.git"
 	},
 	"packageManager": "pnpm@9.0.6",
 	"workspaces": [
