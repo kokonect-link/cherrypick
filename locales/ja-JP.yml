@@ -3104,3 +3104,7 @@ _dice:
   rollDice: "サイコロを振る"
   diceCount: "サイコロの数"
   diceFaces: "サイコロの面数"
+
+_isIndexable:
+  title: "公開ノートをインデックス化"
+  description: "kmy互換機能。公開ノートをインデックス化するかどうかを設定します。"

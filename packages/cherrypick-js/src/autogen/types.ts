@@ -4103,6 +4103,7 @@ export type components = {
       noCrawle: boolean;
       preventAiLearning: boolean;
       isExplorable: boolean;
+      isIndexable: boolean;
       isDeleted: boolean;
       /** @enum {string} */
       twoFactorBackupCodesStock: 'full' | 'partial' | 'none';
@@ -20457,6 +20458,7 @@ export type operations = {
           autoAcceptFollowed?: boolean;
           noCrawle?: boolean;
           preventAiLearning?: boolean;
+          isIndexable?: boolean;
           isBot?: boolean;
           isCat?: boolean;
           injectFeaturedNote?: boolean;

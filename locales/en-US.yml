@@ -2951,3 +2951,7 @@ _dice:
   rollDice: "Roll!"
   diceCount: "Number of dice"
   diceFaces: "Number of dice's faces"
+
+_isIndexable:
+  title: "Indexable"
+  description: "This is kmyblue compatible feature. If you want to prevent your account from being indexed by search engines, please disable this option."

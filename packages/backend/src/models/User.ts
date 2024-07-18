@@ -256,6 +256,13 @@ export class MiUser {
 	})
 	public token: string | null;
 
+	@Index()
+	@Column('boolean', {
+		default: true,
+		comment: 'Whether the User is indexable',
+	})
+	public isIndexable: boolean;
+
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;
 

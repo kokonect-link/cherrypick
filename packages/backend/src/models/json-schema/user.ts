@@ -489,6 +489,10 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},
+		isIndexable: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		isDeleted: {
 			type: 'boolean',
 			nullable: false, optional: false,

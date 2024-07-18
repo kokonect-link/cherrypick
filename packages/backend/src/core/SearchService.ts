@@ -233,7 +233,8 @@ export class SearchService {
 				.leftJoinAndSelect('note.reply', 'reply')
 				.leftJoinAndSelect('note.renote', 'renote')
 				.leftJoinAndSelect('reply.user', 'replyUser')
-				.leftJoinAndSelect('renote.user', 'renoteUser');
+				.leftJoinAndSelect('renote.user', 'renoteUser')
+				.andWhere('user.isIndexable = true');
 
 			if (opts.host) {
 				if (opts.host === '.') {

@@ -11628,6 +11628,16 @@ export interface Locale extends ILocale {
          */
         "diceFaces": string;
     };
+    "_isIndexable": {
+        /**
+         * 公開ノートをインデックス化
+         */
+        "title": string;
+        /**
+         * kmy互換機能。公開ノートをインデックス化するかどうかを設定します。
+         */
+        "description": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

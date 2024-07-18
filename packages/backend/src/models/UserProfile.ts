@@ -173,6 +173,12 @@ export class MiUserProfile {
 
 	@Column('boolean', {
 		default: true,
+		comment: 'Whether User is indexable.',
+	})
+	public isIndexable: boolean;
+
+	@Column('boolean', {
+		default: true,
 	})
 	public preventAiLearning: boolean;
 

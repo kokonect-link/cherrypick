@@ -78,6 +78,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
+		isIndexable: MiUser['isIndexable'];
 	}, data: Option, note: MiNote, silent = false): Promise<MiNote | null> {
 		if (data.updatedAt == null) data.updatedAt = new Date();
 
@@ -213,6 +214,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		username: MiUser['username'];
 		host: MiUser['host'];
 		isBot: MiUser['isBot'];
+		isIndexable: MiUser['isIndexable'];
 	}, silent: boolean) {
 		if (!silent) {
 			if (this.userEntityService.isLocalUser(user)) this.activeUsersChart.write(user);

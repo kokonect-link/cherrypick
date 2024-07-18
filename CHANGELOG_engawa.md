@@ -28,7 +28,7 @@
 - fix: URLスキーマのチェックが不完全だった問題
 
 ### Server
--
+- feat: isIndexableプロパティ
 
 ### Misc
 

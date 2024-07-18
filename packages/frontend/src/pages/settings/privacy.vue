@@ -43,6 +43,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		{{ i18n.ts.makeExplorable }}
 		<template #caption>{{ i18n.ts.makeExplorableDescription }}</template>
 	</MkSwitch>
+	<MkSwitch v-model="isIndexable" @update:modelValue="save()">
+		{{ i18n.ts._isIndexable.title }}
+		<template #caption>{{ i18n.ts._isIndexable.description }}</template>
+	</MkSwitch>
 
 	<FormSection>
 		<div class="_gaps_m">
@@ -89,6 +93,7 @@ const isLocked = ref($i.isLocked);
 const autoAcceptFollowed = ref($i.autoAcceptFollowed);
 const noCrawle = ref($i.noCrawle);
 const preventAiLearning = ref($i.preventAiLearning);
+const isIndexable = ref($i.isIndexable);
 const isExplorable = ref($i.isExplorable);
 const hideOnlineStatus = ref($i.hideOnlineStatus);
 const publicReactions = ref($i.publicReactions);
@@ -106,6 +111,7 @@ function save() {
 		autoAcceptFollowed: !!autoAcceptFollowed.value,
 		noCrawle: !!noCrawle.value,
 		preventAiLearning: !!preventAiLearning.value,
+		isIndexable: !!isIndexable.value,
 		isExplorable: !!isExplorable.value,
 		hideOnlineStatus: !!hideOnlineStatus.value,
 		publicReactions: !!publicReactions.value,
