@@ -52,7 +52,7 @@ const props = defineProps<{
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
 const gotIt = () => {
-	modal.value.close();
+	modal.value?.close();
 };
 
 const copyLink = () => {
