@@ -19,7 +19,9 @@
 				"Vue.volar",
 				"Orta.vscode-jest",
 				"dbaeumer.vscode-eslint",
-				"mrmlnc.vscode-json5"
+				"mrmlnc.vscode-json5",
+				"ms-vscode.vscode-typescript-next",
+				"oderwat.indent-rainbow"
 			]
 		}
 	}
