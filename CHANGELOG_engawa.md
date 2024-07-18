@@ -25,7 +25,7 @@
 	- bcryptによるハッシュは再ログイン時にArgon2idに置き換えられます
 
 ### Client
-- 
+- fix: URLスキーマのチェックが不完全だった問題
 
 ### Server
 -
