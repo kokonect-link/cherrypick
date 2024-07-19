@@ -23,6 +23,9 @@
 ### General
 - パスワードのハッシュでArgon2idをサポート
 	- bcryptによるハッシュは再ログイン時にArgon2idに置き換えられます
+- `notes/advanced-search`を廃止
+- `notes/search`でmeilisearchを利用するのを廃止
+	- リソースを多く消費してしまうことと、日本語全文検索に向いていないため
 
 ### Client
 - fix: URLスキーマのチェックが不完全だった問題
