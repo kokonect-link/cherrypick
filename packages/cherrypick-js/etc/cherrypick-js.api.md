@@ -1705,8 +1705,6 @@ declare namespace entities {
         NotesSearchByTagResponse,
         NotesSearchRequest,
         NotesSearchResponse,
-        NotesAdvancedSearchRequest,
-        NotesAdvancedSearchResponse,
         NotesShowRequest,
         NotesShowResponse,
         NotesStateRequest,
@@ -2660,12 +2658,6 @@ type NoteFavorite = components['schemas']['NoteFavorite'];
 
 // @public (undocumented)
 type NoteReaction = components['schemas']['NoteReaction'];
-
-// @public (undocumented)
-type NotesAdvancedSearchRequest = operations['notes___advanced-search']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type NotesAdvancedSearchResponse = operations['notes___advanced-search']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesChildrenRequest = operations['notes___children']['requestBody']['content']['application/json'];

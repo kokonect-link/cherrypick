@@ -2946,15 +2946,6 @@ export type paths = {
      */
     post: operations['notes___search'];
   };
-  '/notes/advanced-search': {
-    /**
-     * notes/advanced-search
-     * @description 高度な検索ができます
-     *
-     * **Credential required**: *Yes*
-     */
-    post: operations['notes___advanced-search'];
-  };
   '/notes/show': {
     /**
      * notes/show
@@ -23708,118 +23699,6 @@ export type operations = {
            * @default null
            */
           channelId?: string | null;
-        };
-      };
-    };
-    responses: {
-      /** @description OK (with results) */
-      200: {
-        content: {
-          'application/json': components['schemas']['Note'][];
-        };
-      };
-      /** @description Client error */
-      400: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Authentication error */
-      401: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Forbidden error */
-      403: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description I'm Ai */
-      418: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-      /** @description Internal server error */
-      500: {
-        content: {
-          'application/json': components['schemas']['Error'];
-        };
-      };
-    };
-  };
-  /**
-   * notes/advanced-search
-   * @description 高度な検索ができます
-   *
-   * **Credential required**: *Yes*
-   */
-  'notes___advanced-search': {
-    requestBody: {
-      content: {
-        'application/json': {
-          /** @description 指定した文字列を含むノートを返します */
-          query: string;
-          /**
-           * Format: misskey:id
-           * @description 指定されたID以降のノートを返します
-           */
-          sinceId?: string;
-          /**
-           * Format: misskey:id
-           * @description 指定されたID以前のノートを返します
-           */
-          untilId?: string;
-          /**
-           * @description ノートを取得する件数
-           * @default 10
-           */
-          limit?: number;
-          /**
-           * @description ノートが作成された場所
-           * @default combined
-           * @enum {string}
-           */
-          origin?: 'local' | 'remote' | 'combined';
-          /**
-           * @description ファイルの添付状態
-           * @default combined
-           * @enum {string}
-           */
-          fileOption?: 'file-only' | 'no-file' | 'combined';
-          /**
-           * @description 添付ファイルのセンシティブ状態
-           * @default combined
-           * @enum {string}
-           */
-          sensitiveFilter?: 'includeSensitive' | 'withOutSensitive' | 'sensitiveOnly' | 'combined';
-          /** @default 0 */
-          offset?: number;
-          /** @description ノートが作成されたインスタンス。ローカルの場合は`.`を指定します */
-          host?: string;
-          /**
-           * @description CWを含むノートを除外するか
-           * @default false
-           */
-          excludeCW?: boolean;
-          /**
-           * @description リプライのノートを除外するか
-           * @default false
-           */
-          excludeReply?: boolean;
-          /**
-           * @description 引用のノートを除外するか
-           * @default false
-           */
-          excludeQuote?: boolean;
-          /**
-           * Format: misskey:id
-           * @description ノートを作成したユーザーのID
-           * @default null
-           */
-          userId?: string | null;
         };
       };
     };

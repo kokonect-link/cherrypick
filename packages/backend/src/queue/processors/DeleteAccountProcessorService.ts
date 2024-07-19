@@ -14,7 +14,6 @@ import type { MiNote } from '@/models/Note.js';
 import { EmailService } from '@/core/EmailService.js';
 import { bindThis } from '@/decorators.js';
 import { SearchService } from '@/core/SearchService.js';
-import { AdvancedSearchService } from '@/core/AdvancedSearchService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
@@ -42,7 +41,6 @@ export class DeleteAccountProcessorService {
 		private emailService: EmailService,
 		private queueLoggerService: QueueLoggerService,
 		private searchService: SearchService,
-		private advancedSearchService: AdvancedSearchService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('delete-account');
 	}
@@ -79,11 +77,6 @@ export class DeleteAccountProcessorService {
 				cursor = notes.at(-1)?.id ?? null;
 
 				await this.notesRepository.delete(notes.map(note => note.id));
-
-				for (const note of notes) {
-					await this.searchService.unindexNote(note);
-					await this.advancedSearchService.unindexNote(note);
-				}
 			}
 
 			this.logger.succ(`All of notes deleted: ${job.data.user.id}`);

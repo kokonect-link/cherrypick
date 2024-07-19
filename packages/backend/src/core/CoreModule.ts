@@ -70,7 +70,6 @@ import { ProxyAccountService } from './ProxyAccountService.js';
 import { UtilityService } from './UtilityService.js';
 import { FileInfoService } from './FileInfoService.js';
 import { SearchService } from './SearchService.js';
-import { AdvancedSearchService } from './AdvancedSearchService.js';
 import { ClipService } from './ClipService.js';
 import { FeaturedService } from './FeaturedService.js';
 import { FanoutTimelineService } from './FanoutTimelineService.js';
@@ -219,7 +218,6 @@ const $SystemWebhookService: Provider = { provide: 'SystemWebhookService', useEx
 const $UtilityService: Provider = { provide: 'UtilityService', useExisting: UtilityService };
 const $FileInfoService: Provider = { provide: 'FileInfoService', useExisting: FileInfoService };
 const $SearchService: Provider = { provide: 'SearchService', useExisting: SearchService };
-const $AdvancedSearchService: Provider = { provide: 'AdvancedSearchService', useExisting: AdvancedSearchService };
 const $ClipService: Provider = { provide: 'ClipService', useExisting: ClipService };
 const $FeaturedService: Provider = { provide: 'FeaturedService', useExisting: FeaturedService };
 const $FanoutTimelineService: Provider = { provide: 'FanoutTimelineService', useExisting: FanoutTimelineService };
@@ -372,7 +370,6 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		UtilityService,
 		FileInfoService,
 		SearchService,
-		AdvancedSearchService,
 		ClipService,
 		FeaturedService,
 		FanoutTimelineService,
@@ -521,7 +518,6 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$UtilityService,
 		$FileInfoService,
 		$SearchService,
-		$AdvancedSearchService,
 		$ClipService,
 		$FeaturedService,
 		$FanoutTimelineService,
@@ -671,7 +667,6 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		UtilityService,
 		FileInfoService,
 		SearchService,
-		AdvancedSearchService,
 		ClipService,
 		FeaturedService,
 		FanoutTimelineService,
@@ -819,7 +814,6 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$UtilityService,
 		$FileInfoService,
 		$SearchService,
-		$AdvancedSearchService,
 		$ClipService,
 		$FeaturedService,
 		$FanoutTimelineService,

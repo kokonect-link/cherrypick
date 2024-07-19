@@ -33,45 +33,11 @@ type Q =
 	{ op: 'or', qs: Q[] } |
 	{ op: 'not', q: Q };
 
-function compileValue(value: V): string {
-	if (typeof value === 'string') {
-		return `'${value}'`; // TODO: escape
-	} else if (typeof value === 'number') {
-		return value.toString();
-	} else if (typeof value === 'boolean') {
-		return value.toString();
-	}
-	throw new Error('unrecognized value');
-}
-
-function compileQuery(q: Q): string {
-	switch (q.op) {
-		case '=': return `(${q.k} = ${compileValue(q.v)})`;
-		case '!=': return `(${q.k} != ${compileValue(q.v)})`;
-		case '>': return `(${q.k} > ${compileValue(q.v)})`;
-		case '<': return `(${q.k} < ${compileValue(q.v)})`;
-		case '>=': return `(${q.k} >= ${compileValue(q.v)})`;
-		case '<=': return `(${q.k} <= ${compileValue(q.v)})`;
-		case 'and': return q.qs.length === 0 ? '' : `(${ q.qs.map(_q => compileQuery(_q)).join(' AND ') })`;
-		case 'or': return q.qs.length === 0 ? '' : `(${ q.qs.map(_q => compileQuery(_q)).join(' OR ') })`;
-		case 'is null': return `(${q.k} IS NULL)`;
-		case 'is not null': return `(${q.k} IS NOT NULL)`;
-		case 'not': return `(NOT ${compileQuery(q.q)})`;
-		default: throw new Error('unrecognized query operator');
-	}
-}
-
 @Injectable()
 export class SearchService {
-	private readonly meilisearchIndexScope: 'local' | 'global' | string[] = 'local';
-	private meilisearchNoteIndex: Index | null = null;
-
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
-
-		@Inject(DI.meilisearch)
-		private meilisearch: MeiliSearch | null,
 
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
@@ -80,81 +46,13 @@ export class SearchService {
 		private queryService: QueryService,
 		private idService: IdService,
 	) {
-		if (meilisearch) {
-			this.meilisearchNoteIndex = meilisearch.index(`${config.meilisearch!.index}---notes`);
-			this.meilisearchNoteIndex.updateSettings({
-				searchableAttributes: [
-					'text',
-					'cw',
-				],
-				sortableAttributes: [
-					'createdAt',
-				],
-				filterableAttributes: [
-					'createdAt',
-					'userId',
-					'userHost',
-					'channelId',
-					'tags',
-				],
-				typoTolerance: {
-					enabled: false,
-				},
-				pagination: {
-					maxTotalHits: 10000,
-				},
-			});
-		}
-
-		if (config.meilisearch?.scope) {
-			this.meilisearchIndexScope = config.meilisearch.scope;
-		}
 	}
 
-	@bindThis
-	public async indexNote(note: MiNote): Promise<void> {
-		if (note.text == null && note.cw == null) return;
-		if (!['home', 'public'].includes(note.visibility)) return;
-
-		if (this.meilisearch) {
-			switch (this.meilisearchIndexScope) {
-				case 'global':
-					break;
-
-				case 'local':
-					if (note.userHost == null) break;
-					return;
-
-				default: {
-					if (note.userHost == null) break;
-					if (this.meilisearchIndexScope.includes(note.userHost)) break;
-					return;
-				}
-			}
-
-			await this.meilisearchNoteIndex?.addDocuments([{
-				id: note.id,
-				createdAt: this.idService.parse(note.id).date.getTime(),
-				userId: note.userId,
-				userHost: note.userHost,
-				channelId: note.channelId,
-				cw: note.cw,
-				text: note.text,
-				tags: note.tags,
-			}], {
-				primaryKey: 'id',
-			});
-		}
-	}
-
-	@bindThis
-	public async unindexNote(note: MiNote): Promise<void> {
-		if (!['home', 'public'].includes(note.visibility)) return;
-
-		if (this.meilisearch) {
-			this.meilisearchNoteIndex!.deleteDocument(note.id);
-		}
-	}
+	/**
+	 * TODO:
+	 * 1. FTSの処理を書く
+	 * 2. PGroongaの統合(Advanced Search廃止によるもの)
+	 */
 
 	@bindThis
 	public async searchNote(q: string, me: MiUser | null, opts: {
@@ -168,51 +66,6 @@ export class SearchService {
 		sinceId?: MiNote['id'];
 		limit?: number;
 	}): Promise<MiNote[]> {
-		if (this.meilisearch) {
-			const filter: Q = {
-				op: 'and',
-				qs: [],
-			};
-			if (pagination.untilId) filter.qs.push({ op: '<', k: 'createdAt', v: this.idService.parse(pagination.untilId).date.getTime() });
-			if (pagination.sinceId) filter.qs.push({ op: '>', k: 'createdAt', v: this.idService.parse(pagination.sinceId).date.getTime() });
-			if (opts.userId) filter.qs.push({ op: '=', k: 'userId', v: opts.userId });
-			if (opts.channelId) filter.qs.push({ op: '=', k: 'channelId', v: opts.channelId });
-			if (opts.origin === 'local') {
-				filter.qs.push({ op: 'is null', k: 'userHost' });
-			} else if (opts.origin === 'remote') {
-				filter.qs.push({ op: 'is not null', k: 'userHost' });
-			}
-			if (opts.host) {
-				if (opts.host === '.') {
-					filter.qs.push({ op: 'is null', k: 'userHost' });
-				} else {
-					filter.qs.push({ op: '=', k: 'userHost', v: opts.host });
-				}
-			}
-			const res = await this.meilisearchNoteIndex!.search(q, {
-				sort: ['createdAt:desc'],
-				matchingStrategy: 'all',
-				attributesToRetrieve: ['id', 'createdAt'],
-				filter: compileQuery(filter),
-				limit: pagination.limit,
-			});
-			if (res.hits.length === 0) return [];
-			const [
-				userIdsWhoMeMuting,
-				userIdsWhoBlockingMe,
-			] = me ? await Promise.all([
-				this.cacheService.userMutingsCache.fetch(me.id),
-				this.cacheService.userBlockedCache.fetch(me.id),
-			]) : [new Set<string>(), new Set<string>()];
-			const notes = (await this.notesRepository.findBy({
-				id: In(res.hits.map(x => x.id)),
-			})).filter(note => {
-				if (me && isUserRelated(note, userIdsWhoBlockingMe)) return false;
-				if (me && isUserRelated(note, userIdsWhoMeMuting)) return false;
-				return true;
-			});
-			return notes.sort((a, b) => a.id > b.id ? -1 : 1);
-		} else {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), pagination.sinceId, pagination.untilId);
 
 			if (opts.origin === 'local') {
@@ -244,11 +97,19 @@ export class SearchService {
 				}
 			}
 
+			/**
+			 * if (this.config.pgroonga) {
+			 *	query.andWhere('note.text &@~ :q', { q: `%${sqlLikeEscape(q)}%` });
+			 *} else {
+			 *	query.andWhere('note.text ILIKE :q', { q: `%${sqlLikeEscape(q)}%` });
+			 *}
+			 * TODO: PGroongaの統合
+			 */
+
 			this.queryService.generateVisibilityQuery(query, me);
 			if (me) this.queryService.generateMutedUserQuery(query, me);
 			if (me) this.queryService.generateBlockedUserQuery(query, me);
 
 			return await query.limit(pagination.limit).getMany();
-		}
 	}
 }
