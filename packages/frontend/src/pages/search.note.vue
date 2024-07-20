@@ -31,44 +31,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 					</div>
 				</MkFolder>
-				<MkSwitch v-model="advancedSearch" :disabled="!isAdvancedSearchAvailable">{{ i18n.ts._advancedSearch._searchOption.toggleAdvancedSearch }}</MkSwitch>
-				<MkFolder v-if="advancedSearch" class="_gaps">
-					<template #label>{{ i18n.ts.options }}</template>
-					<FormSection>
-						<template #label>{{ i18n.ts._advancedSearch._fileOption.title }}</template>
-
-						<div style="text-align: center;" class="_gaps_m">
-							<MkRadios v-model="isfileOnly" @update:modelValue="search()">
-								<option value="combined">{{ i18n.ts._advancedSearch._fileOption.combined }}</option>
-								<option value="file-only">{{ i18n.ts._advancedSearch._fileOption.fileAttachedOnly }}</option>
-								<option value="no-file">{{ i18n.ts._advancedSearch._fileOption.noFile }}</option>
-							</MkRadios>
-						</div>
-					</FormSection>
-					<FormSection>
-						<template #label>{{ i18n.ts._advancedSearch._fileNsfwOption.title }}</template>
-
-						<div style="text-align: center;" class="_gaps_m">
-							<MkRadios v-model="sensitiveFilter" @update:modelValue="search()">
-								<option value="combined">{{ i18n.ts._advancedSearch._fileNsfwOption.combined }}</option>
-								<option value="withOutSensitive">{{ i18n.ts._advancedSearch._fileNsfwOption.withOutSensitive }}</option>
-								<option value="includeSensitive">{{ i18n.ts._advancedSearch._fileNsfwOption.includeSensitive }}</option>
-								<option value="sensitiveOnly">{{ i18n.ts._advancedSearch._fileNsfwOption.sensitiveOnly }}</option>
-							</MkRadios>
-						</div>
-					</FormSection>
-					<FormSection>
-						<template #label>{{ i18n.ts.other }}</template>
-						<template #caption>{{ i18n.ts._advancedSearch._description.other }}</template>
-						<template #prefix></template>
-
-						<div style="text-align: center;" class="_gaps">
-							<MkSwitch v-model="excludeReply">{{ i18n.ts._advancedSearch._searchOption.toggleReply }}</MkSwitch>
-							<MkSwitch v-model="excludeCW">{{ i18n.ts._advancedSearch._searchOption.toggleCW }}</MkSwitch>
-							<MkSwitch v-model="excludeQuote">{{ i18n.ts._advancedSearch._searchOption.toggleQuote }}</MkSwitch>
-						</div>
-					</FormSection>
-				</MkFolder>
 			</div>
 		</MkFolder>
 		<div>
@@ -87,7 +49,6 @@ import { ref } from 'vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
-import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -107,14 +68,6 @@ const searchOrigin = ref('combined');
 const notePagination = ref();
 const user = ref<any>(null);
 const isLocalOnly = ref(false);
-const isfileOnly = ref('combined');
-const advancedSearch = ref(false);
-const excludeCW = ref(false);
-const excludeReply = ref(false);
-const excludeQuote = ref(false);
-const sensitiveFilter = ref('combined');
-
-const isAdvancedSearchAvailable = ($i != null && instance.policies.canAdvancedSearchNotes ) || ($i != null && $i.policies.canAdvancedSearchNotes );
 
 function selectUser() {
 	os.selectUser({ includeSelf: true }).then(_user => {
@@ -154,31 +107,14 @@ async function search() {
 		}
 	}
 
-	if (isAdvancedSearchAvailable === true && advancedSearch.value === true) {
-		notePagination.value = {
-			endpoint: 'notes/advanced-search',
-			limit: 10,
-			params: {
-				query: searchQuery.value,
-				userId: user.value ? user.value.id : null,
-				origin: searchOrigin.value,
-				fileOption: isfileOnly.value,
-				excludeCW: excludeCW.value,
-				excludeReply: excludeReply.value,
-				excludeQuote: excludeQuote.value,
-				sensitiveFilter: sensitiveFilter.value,
-			},
-		};
-	} else {
-		notePagination.value = {
-			endpoint: 'notes/search',
-			limit: 10,
-			params: {
-				query: searchQuery.value,
-				userId: user.value ? user.value.id : null,
-				origin: searchOrigin.value,
-			},
-		};
+	notePagination.value = {
+		endpoint: 'notes/search',
+		limit: 10,
+		params: {
+			query: searchQuery.value,
+			userId: user.value ? user.value.id : null,
+			origin: searchOrigin.value,
+		}
 	}
 
 	if (isLocalOnly.value) notePagination.value.params.host = '.';

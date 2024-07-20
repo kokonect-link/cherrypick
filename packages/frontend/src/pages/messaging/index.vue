@@ -8,7 +8,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div>
-			<MkSearchInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">{{ i18n.ts.search }}</MkSearchInput>
 			<div v-if="tab === 'direct'">
 				<MkPagination v-slot="{ items }" ref="pagingComponent" :pagination="directPagination">
 					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
