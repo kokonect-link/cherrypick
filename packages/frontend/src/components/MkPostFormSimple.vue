@@ -29,6 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span v-if="visibility === 'home'"><i class="ti ti-home"></i></span>
 						<span v-if="visibility === 'followers'"><i class="ti ti-lock"></i></span>
 						<span v-if="visibility === 'specified'"><i class="ti ti-mail"></i></span>
+						<span v-if="visibility === 'private'"><i class="ti ti-notebook"></i></span>
 						<span :class="$style.headerRightButtonText">{{ i18n.ts._visibility[visibility] }}</span>
 					</button>
 					<button v-else class="_button" :class="[$style.headerRightItem, $style.visibility]" disabled>

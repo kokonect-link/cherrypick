@@ -9784,6 +9784,14 @@ export interface Locale extends ILocale {
          */
         "specifiedDescription": string;
         /**
+         * プライベート
+         */
+        "private": string;
+        /**
+         * あなたのみが見れます
+         */
+        "privateDescription": string;
+        /**
          * 連合なし
          */
         "disableFederation": string;

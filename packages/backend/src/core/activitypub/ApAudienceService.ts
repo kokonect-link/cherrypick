@@ -14,7 +14,7 @@ import { ApPersonService } from './models/ApPersonService.js';
 import type { ApObject } from './type.js';
 import type { Resolver } from './ApResolverService.js';
 
-type Visibility = 'public' | 'home' | 'followers' | 'specified';
+type Visibility = 'public' | 'home' | 'followers' | 'specified' | 'private';
 
 type AudienceInfo = {
 	visibility: Visibility,

@@ -4404,7 +4404,7 @@ export type components = {
       disableRightClick?: boolean;
       isHidden?: boolean;
       /** @enum {string} */
-      visibility: 'public' | 'home' | 'followers' | 'specified';
+      visibility: 'public' | 'home' | 'followers' | 'specified' | 'private';
       mentions?: string[];
       visibleUserIds?: string[];
       fileIds?: string[];
@@ -22439,7 +22439,7 @@ export type operations = {
            * @default public
            * @enum {string}
            */
-          visibility?: 'public' | 'home' | 'followers' | 'specified';
+          visibility?: 'public' | 'home' | 'followers' | 'specified' | 'private';
           visibleUserIds?: string[];
           cw?: string | null;
           /** @default false */

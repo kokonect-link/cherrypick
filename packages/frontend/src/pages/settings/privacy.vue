@@ -57,6 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template v-else-if="defaultNoteVisibility === 'home'" #suffix>{{ i18n.ts._visibility.home }}</template>
 				<template v-else-if="defaultNoteVisibility === 'followers'" #suffix>{{ i18n.ts._visibility.followers }}</template>
 				<template v-else-if="defaultNoteVisibility === 'specified'" #suffix>{{ i18n.ts._visibility.specified }}</template>
+				<template v-else-if="defaultNoteVisibility === 'private'" #suffix>{{ i18n.ts._visibility.private }}</template>
 
 				<div class="_gaps_m">
 					<MkSelect v-model="defaultNoteVisibility">
@@ -64,6 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<option value="home">{{ i18n.ts._visibility.home }}</option>
 						<option value="followers">{{ i18n.ts._visibility.followers }}</option>
 						<option value="specified">{{ i18n.ts._visibility.specified }}</option>
+						<option value="private">{{ i18n.ts._visibility.private }}</option>
 					</MkSelect>
 					<MkSwitch v-model="defaultNoteLocalOnly">{{ i18n.ts._visibility.disableFederation }}</MkSwitch>
 				</div>

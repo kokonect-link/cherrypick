@@ -2577,6 +2577,8 @@ _visibility:
   followersDescription: "自分のフォロワーのみに公開"
   specified: "ダイレクト"
   specifiedDescription: "指定したユーザーのみに公開"
+  private: "プライベート"
+  privateDescription: "あなたのみが見れます"
   disableFederation: "連合なし"
   disableFederationDescription: "他サーバーへの配信を行いません"
 

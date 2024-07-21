@@ -2490,6 +2490,8 @@ _visibility:
   followersDescription: "Make visible to your followers only"
   specified: "Direct"
   specifiedDescription: "Make visible for specified users only"
+  private: "Private"
+  privateDescription: "Make visible for only yourself"
   disableFederation: "Defederate"
   disableFederationDescription: "Don't transmit to other instances"
 _postForm:

@@ -142,6 +142,7 @@ export class MiNote {
 	 * home ... ホームタイムライン(ユーザーページのタイムライン含む)のみに流す
 	 * followers ... フォロワーのみ
 	 * specified ... visibleUserIds で指定したユーザーのみ
+	 * private ... 投稿者のみ
 	 */
 	@Column('enum', { enum: noteVisibilities })
 	public visibility: typeof noteVisibilities[number];
