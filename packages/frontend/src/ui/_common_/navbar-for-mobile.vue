@@ -156,8 +156,10 @@ function more() {
 
 .instanceIcon {
 	display: inline-block;
-	width: 38px;
+	width: 50px;
 	aspect-ratio: 1;
+	margin-right: 150px;
+	border-radius: 18px;
 }
 
 .bottom {
