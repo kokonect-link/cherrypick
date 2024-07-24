@@ -1,0 +1,24 @@
+name: About Development
+description: 開発に関する問題
+labels: ["Dev"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        開発に関する問題を報告してください。
+        重複するIssueを避けるために、問題がすでに報告されていないかを検索してください。
+
+  - type: textarea
+    attributes:
+      label: Summary
+      description: Tell us what you want
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Purpose
+      description: Why do you want this?
+    validations:
+      required: true
