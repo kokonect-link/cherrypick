@@ -15,8 +15,23 @@
 ### Misc
 
 -->
+## x.x.x (unreleased)
 
-## 0.4.3 (unreleased)
+### Release Date
+
+### General
+-
+
+### Client
+- Deck UIのサーバーアイコンのスタイルを調整
+
+### Server
+-
+
+### Misc
+
+
+## 0.4.3
 
 ### Release Date
 
