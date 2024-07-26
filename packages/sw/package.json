@@ -6,14 +6,17 @@
 		"build": "node build.js",
 		"typecheck": "tsc --noEmit",
 		"eslint": "eslint --quiet src/**/*.ts",
-		"lint": "pnpm typecheck && pnpm eslint"
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write",
+		"lint": "pnpm typecheck && pnpm biome lint"
 	},
 	"dependencies": {
+		"cherrypick-js": "workspace:*",
 		"esbuild": "0.20.2",
-		"idb-keyval": "6.2.1",
-		"cherrypick-js": "workspace:*"
+		"idb-keyval": "6.2.1"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
 		"@misskey-dev/eslint-plugin": "1.0.0",
 		"@typescript-eslint/parser": "7.7.1",
 		"@typescript/lib-webworker": "npm:@types/serviceworker@0.0.67",

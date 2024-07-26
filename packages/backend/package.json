@@ -21,8 +21,9 @@
 		"dev": "node ./scripts/dev.mjs",
 		"typecheck": "tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.ts\"",
-		"oxlint": "pnpm dlx oxlint@latest --quiet",
-		"lint": "pnpm typecheck && pnpm oxlint",
+		"lint": "pnpm typecheck && pnpm biome lint",
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write",
 		"jest": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.unit.cjs",
 		"jest:e2e": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.e2e.cjs",
 		"jest-and-coverage": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --coverage --forceExit --config jest.config.unit.cjs",
@@ -194,6 +195,7 @@
 		"xev": "3.0.2"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
 		"@jest/globals": "29.7.0",
 		"@misskey-dev/eslint-plugin": "1.0.0",
 		"@nestjs/platform-express": "10.3.8",

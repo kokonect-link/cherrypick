@@ -14,8 +14,9 @@
 		"test-and-coverage": "vitest --run --coverage --globals",
 		"typecheck": "vue-tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.{ts,vue}\"",
-		"oxlint": "pnpm dlx oxlint@latest --quiet",
-		"lint": "pnpm typecheck && pnpm oxlint"
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write",
+		"lint": "pnpm typecheck && pnpm biome lint"
 	},
 	"dependencies": {
 		"@dice-roller/rpg-dice-roller": "^5.5.0",
@@ -85,6 +86,7 @@
 		"vuedraggable": "next"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
 		"@misskey-dev/eslint-plugin": "1.0.0",
 		"@misskey-dev/summaly": "5.1.0",
 		"@storybook/addon-actions": "8.0.9",
