@@ -27,6 +27,14 @@ const externalPackages = [
 				: id;
 		},
 	},
+	// tinyld가 특수 UTF-8 문자를 사용하므로 Vite 빌드 과정에서 제외하고 CDN을 통해 로드함.
+	{
+		name: 'tinyld',
+		match: /^tinyld$/,
+		path(): string {
+			return `https://cdn.jsdelivr.net/npm/tinyld@${packageInfo.dependencies.tinyld}/dist/tinyld.normal.node.mjs`
+		},
+	},
 ];
 
 const hash = (str: string, seed = 0): number => {
