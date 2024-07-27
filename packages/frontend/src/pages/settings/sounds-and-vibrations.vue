@@ -75,8 +75,6 @@ const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
 	notification: defaultStore.reactiveState.sound_notification,
 	chat: defaultStore.reactiveState.sound_chat,
 	chatBg: defaultStore.reactiveState.sound_chatBg,
-	antenna: defaultStore.reactiveState.sound_antenna,
-	channel: defaultStore.reactiveState.sound_channel,
 	reaction: defaultStore.reactiveState.sound_reaction,
 });
 

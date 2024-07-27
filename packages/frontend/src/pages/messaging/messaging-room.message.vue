@@ -105,7 +105,7 @@ function del(): void {
 			border-radius: 16px;
 			max-width: 100%;
 
-			&:before {
+			&::before {
 				content: "";
 				pointer-events: none;
 				display: block;

@@ -77,8 +77,6 @@ export const operationTypes = [
 	'noteEdited',
 	'chat',
 	'chatBg',
-	'antenna',
-	'channel',
 	'notification',
 	'reaction',
 ] as const;

@@ -1063,6 +1063,22 @@ export interface Locale extends ILocale {
      */
     "showOnRemote": string;
     /**
+     * リモートで続行
+     */
+    "continueOnRemote": string;
+    /**
+     * Misskey Hubからサーバーを選択
+     */
+    "chooseServerOnMisskeyHub": string;
+    /**
+     * サーバーのドメインを直接指定
+     */
+    "specifyServerHost": string;
+    /**
+     * ドメインを入力してください
+     */
+    "inputHostName": string;
+    /**
      * 全般
      */
     "general": string;
@@ -2287,9 +2303,13 @@ export interface Locale extends ILocale {
      */
     "onlyOneFileCanBeAttached": string;
     /**
-     * 続行する前に、サインアップまたはサインインが必要です
+     * 続行する前に、登録またはログインが必要です
      */
     "signinRequired": string;
+    /**
+     * 続行するには、お使いのサーバーに移動するか、このサーバーに登録・ログインする必要があります
+     */
+    "signinOrContinueOnRemote": string;
     /**
      * 招待
      */
@@ -5440,6 +5460,18 @@ export interface Locale extends ILocale {
      */
     "inquiry": string;
     /**
+     * もう一度お試しください。
+     */
+    "tryAgain": string;
+    /**
+     * センシティブなメディアを表示するとき確認する
+     */
+    "confirmWhenRevealingSensitiveMedia": string;
+    /**
+     * センシティブなメディアです。表示しますか？
+     */
+    "sensitiveMediaRevealConfirm": string;
+    /**
      * 未読の通知の数を表示する
      */
     "showUnreadNotificationsCount": string;
@@ -7455,6 +7487,10 @@ export interface Locale extends ILocale {
              */
             "alwaysMarkNsfw": string;
             /**
+             * アイコンとバナーの更新を許可
+             */
+            "canUpdateBioMedia": string;
+            /**
              * ノートのピン留めの最大数
              */
             "pinMax": string;
@@ -8745,14 +8781,6 @@ export interface Locale extends ILocale {
          * チャット(バックグラウンド)
          */
         "chatBg": string;
-        /**
-         * アンテナ受信
-         */
-        "antenna": string;
-        /**
-         * チャンネル通知
-         */
-        "channel": string;
         /**
          * リアクション選択時
          */
@@ -11015,7 +11043,7 @@ export interface Locale extends ILocale {
     "_dataSaver": {
         "_media": {
             /**
-             * メディアの読み込み
+             * メディアの読み込みを無効化
              */
             "title": string;
             /**
@@ -11025,7 +11053,7 @@ export interface Locale extends ILocale {
         };
         "_avatar": {
             /**
-             * アイコン画像
+             * アイコン画像のアニメーションを無効化
              */
             "title": string;
             /**
@@ -11035,7 +11063,7 @@ export interface Locale extends ILocale {
         };
         "_urlPreview": {
             /**
-             * URLプレビューのサムネイル
+             * URLプレビューのサムネイルを非表示
              */
             "title": string;
             /**
@@ -11045,7 +11073,7 @@ export interface Locale extends ILocale {
         };
         "_code": {
             /**
-             * コードハイライト
+             * コードハイライトを非表示
              */
             "title": string;
             /**

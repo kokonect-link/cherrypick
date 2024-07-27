@@ -4647,7 +4647,7 @@ export type components = {
       id: string;
       /** Format: date-time */
       createdAt: string;
-      /** @example lenna.jpg */
+      /** @example 192.jpg */
       name: string;
       /** @example image/jpeg */
       type: string;
@@ -5136,6 +5136,7 @@ export type components = {
       canHideAds: boolean;
       driveCapacityMb: number;
       alwaysMarkNsfw: boolean;
+      canUpdateBioMedia: boolean;
       pinLimit: number;
       antennaLimit: number;
       wordMuteLimit: number;
@@ -6498,15 +6499,15 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           id: string;
-          memo: string;
-          url: string;
-          imageUrl: string;
-          place: string;
-          priority: string;
-          ratio: number;
-          expiresAt: number;
-          startsAt: number;
-          dayOfWeek: number;
+          memo?: string;
+          url?: string;
+          imageUrl?: string;
+          place?: string;
+          priority?: string;
+          ratio?: number;
+          expiresAt?: number;
+          startsAt?: number;
+          dayOfWeek?: number;
         };
       };
     };
@@ -7416,7 +7417,7 @@ export type operations = {
              * @example 15eca7fba0480996e2245f5185bf39f2
              */
             md5: string;
-            /** @example lenna.jpg */
+            /** @example 192.jpg */
             name: string;
             /** @example image/jpeg */
             type: string;
@@ -10557,21 +10558,21 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           roleId: string;
-          name: string;
-          description: string;
-          color: string | null;
-          iconUrl: string | null;
+          name?: string;
+          description?: string;
+          color?: string | null;
+          iconUrl?: string | null;
           /** @enum {string} */
-          target: 'manual' | 'conditional';
-          condFormula: Record<string, never>;
-          isPublic: boolean;
-          isModerator: boolean;
-          isAdministrator: boolean;
+          target?: 'manual' | 'conditional';
+          condFormula?: Record<string, never>;
+          isPublic?: boolean;
+          isModerator?: boolean;
+          isAdministrator?: boolean;
           isExplorable?: boolean;
-          asBadge: boolean;
-          canEditMembersByModerator: boolean;
-          displayOrder: number;
-          policies: Record<string, never>;
+          asBadge?: boolean;
+          canEditMembersByModerator?: boolean;
+          displayOrder?: number;
+          policies?: Record<string, never>;
         };
       };
     };
@@ -14217,7 +14218,7 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           clipId: string;
-          name: string;
+          name?: string;
           isPublic?: boolean;
           description?: string | null;
         };
@@ -14667,7 +14668,7 @@ export type operations = {
            * Format: binary
            * @description The file contents.
            */
-          file: string;
+          file: Blob;
         };
       };
     };
@@ -17064,9 +17065,9 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           postId: string;
-          title: string;
+          title?: string;
           description?: string | null;
-          fileIds: string[];
+          fileIds?: string[];
           /** @default false */
           isSensitive?: boolean;
         };
@@ -20964,12 +20965,11 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           webhookId: string;
-          name: string;
-          url: string;
-          /** @default */
-          secret?: string;
-          on: ('mention' | 'unfollow' | 'follow' | 'followed' | 'note' | 'reply' | 'renote' | 'reaction')[];
-          active: boolean;
+          name?: string;
+          url?: string;
+          secret?: string | null;
+          on?: ('mention' | 'unfollow' | 'follow' | 'followed' | 'note' | 'reply' | 'renote' | 'reaction')[];
+          active?: boolean;
         };
       };
     };
@@ -24808,16 +24808,16 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           pageId: string;
-          title: string;
-          name: string;
+          title?: string;
+          name?: string;
           summary?: string | null;
-          content: {
+          content?: {
               [key: string]: unknown;
             }[];
-          variables: {
+          variables?: {
               [key: string]: unknown;
             }[];
-          script: string;
+          script?: string;
           /** Format: misskey:id */
           eyeCatchingImageId?: string | null;
           /** @enum {string} */

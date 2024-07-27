@@ -23,7 +23,7 @@ type RedisOptionsSource = Partial<RedisOptions> & {
  * 設定ファイルの型
  */
 type Source = {
-	url: string;
+	url?: string;
 	port?: number;
 	socket?: string;
 	chmodSocket?: string;
@@ -31,9 +31,9 @@ type Source = {
 	db: {
 		host: string;
 		port: number;
-		db: string;
-		user: string;
-		pass: string;
+		db?: string;
+		user?: string;
+		pass?: string;
 		disableCache?: boolean;
 		extra?: { [x: string]: string };
 	};
@@ -219,13 +219,17 @@ export function loadConfig(): Config {
 		: { 'src/_boot_.ts': { file: 'src/_boot_.ts' } };
 	const config = yaml.load(fs.readFileSync(path, 'utf-8')) as Source;
 
-	const url = tryCreateUrl(config.url);
+	const url = tryCreateUrl(config.url ?? process.env.CHERRYPICK_URL ?? '');
 	const version = meta.version;
 	const basedMisskeyVersion = meta.basedMisskeyVersion;
 	const host = url.host;
 	const hostname = url.hostname;
 	const scheme = url.protocol.replace(/:$/, '');
 	const wsScheme = scheme.replace('http', 'ws');
+
+	const dbDb = config.db.db ?? process.env.DATABASE_DB ?? '';
+	const dbUser = config.db.user ?? process.env.DATABASE_USER ?? '';
+	const dbPass = config.db.pass ?? process.env.DATABASE_PASSWORD ?? '';
 
 	const externalMediaProxy = config.mediaProxy ?
 		config.mediaProxy.endsWith('/') ? config.mediaProxy.substring(0, config.mediaProxy.length - 1) : config.mediaProxy
@@ -250,7 +254,7 @@ export function loadConfig(): Config {
 		apiUrl: `${scheme}://${host}/api`,
 		authUrl: `${scheme}://${host}/auth`,
 		driveUrl: `${scheme}://${host}/files`,
-		db: config.db,
+		db: { ...config.db, db: dbDb, user: dbUser, pass: dbPass },
 		dbReplications: config.dbReplications,
 		dbSlaves: config.dbSlaves,
 		meilisearch: config.meilisearch,
@@ -278,7 +282,7 @@ export function loadConfig(): Config {
 		deliverJobMaxAttempts: config.deliverJobMaxAttempts,
 		inboxJobMaxAttempts: config.inboxJobMaxAttempts,
 		proxyRemoteFiles: config.proxyRemoteFiles,
-		signToActivityPubGet: config.signToActivityPubGet,
+		signToActivityPubGet: config.signToActivityPubGet ?? true,
 		apFileBaseUrl: config.apFileBaseUrl,
 		mediaProxy: externalMediaProxy ?? internalMediaProxy,
 		externalMediaProxyEnabled: externalMediaProxy !== null && externalMediaProxy !== internalMediaProxy,

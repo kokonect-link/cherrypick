@@ -82,6 +82,10 @@ RUN apt-get update \
 USER cherrypick
 WORKDIR /cherrypick
 
+# add package.json to add pnpm
+COPY --chown=cherrypick:cherrypick ./package.json ./package.json
+RUN corepack install
+
 COPY --chown=cherrypick:cherrypick --from=target-builder /cherrypick/node_modules ./node_modules
 COPY --chown=cherrypick:cherrypick --from=target-builder /cherrypick/packages/backend/node_modules ./packages/backend/node_modules
 COPY --chown=cherrypick:cherrypick --from=target-builder /cherrypick/packages/cherrypick-js/node_modules ./packages/cherrypick-js/node_modules

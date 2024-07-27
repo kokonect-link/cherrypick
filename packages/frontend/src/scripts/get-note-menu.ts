@@ -11,7 +11,7 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import copyToClipboard from '@/scripts/copy-to-clipboard.js';
+import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { url } from '@/config.js';
 import { defaultStore, noteActions } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -139,10 +139,12 @@ export function getAbuseNoteMenu(note: Misskey.entities.Note, text: string): Men
 			let noteInfo = '';
 			if (note.url ?? note.uri != null) noteInfo = `Note: ${note.url ?? note.uri}\n`;
 			noteInfo += `Local Note: ${localUrl}\n`;
-			os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
+			const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
 				user: note.user,
 				initialComment: `${noteInfo}User: ${username + host}\n-----\n`,
-			}, {}, 'closed');
+			}, {
+				closed: () => dispose(),
+			});
 		},
 	};
 }
@@ -703,7 +705,9 @@ export function getRenoteMenu(props: {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + (el.offsetWidth / 2);
 					const y = rect.top + (el.offsetHeight / 2);
-					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+					const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+						end: () => dispose(),
+					});
 				}
 
 				if (!props.mock) {
@@ -749,7 +753,9 @@ export function getRenoteMenu(props: {
 					const rect = el.getBoundingClientRect();
 					const x = rect.left + (el.offsetWidth / 2);
 					const y = rect.top + (el.offsetHeight / 2);
-					os.popup(MkRippleEffect, { x, y }, {}, 'end');
+					const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+						end: () => dispose(),
+					});
 				}
 
 				const configuredVisibility = defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility;
@@ -803,7 +809,9 @@ export function getRenoteMenu(props: {
 							const rect = el.getBoundingClientRect();
 							const x = rect.left + (el.offsetWidth / 2);
 							const y = rect.top + (el.offsetHeight / 2);
-							os.popup(MkRippleEffect, { x, y }, {}, 'end');
+							const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+								end: () => dispose(),
+							});
 						}
 
 						if (!props.mock) {

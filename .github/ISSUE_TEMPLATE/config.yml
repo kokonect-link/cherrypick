@@ -2,6 +2,13 @@ contact_links:
   - name: 💬 Misskey official Discord
     url: https://discord.gg/Wp8gVStHW3
     about: Chat freely about Misskey
+  # 仮
+  - name: 💬 Start discussion (Misskey)
+    url: https://github.com/misskey-dev/misskey/discussions
+    about: The official forum to join conversation and ask question
   - name: 💬 CherryPick official Discord
     url: https://discord.gg/V8qghB28Aj
     about: Chat freely about CherryPick
+  - name: 💬 Start discussion (CherryPick)
+    url: https://github.com/kokonect-link/cherrypick/discussions
+    about: The official forum to join conversation and ask question

@@ -65,7 +65,7 @@ function isMe(message): boolean {
     }
   }
 
-  &:after {
+  &::after {
     content: "";
     display: block;
     clear: both;
@@ -74,7 +74,7 @@ function isMe(message): boolean {
   > div {
     padding: 25px 30px;
 
-    &:after {
+    &::after {
       content: "";
       display: block;
       clear: both;
