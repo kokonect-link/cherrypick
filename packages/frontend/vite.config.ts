@@ -28,6 +28,7 @@ const externalPackages = [
 		},
 	},
 	// tinyld가 특수 UTF-8 문자를 사용하므로 Vite 빌드 과정에서 제외하고 CDN을 통해 로드함.
+	// https://github.com/komodojp/tinyld/issues/29#issuecomment-2165835459
 	{
 		name: 'tinyld',
 		match: /^tinyld$/,
