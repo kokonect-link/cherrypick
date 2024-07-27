@@ -34,7 +34,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import * as sound from '@/scripts/sound.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
-import { customEmojisMap } from '@/custom-emojis.js';
+import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { getUnicodeEmoji } from '@/scripts/emojilist.js';
 import copyToClipboard from '@/scripts/copy-to-clipboard.js';
 
@@ -66,7 +66,7 @@ const reactionName = computed(() => {
 	return r.slice(0, r.indexOf('@'));
 });
 
-const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojisMap.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
+const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
 
 async function toggleReaction(ev: MouseEvent) {
 	if (!canToggle.value) {
@@ -120,35 +120,35 @@ async function toggleReaction(ev: MouseEvent) {
 }
 
 function stealReaction(ev: MouseEvent) {
-	if (props.note.user.host && $i && ($i.isAdmin ?? $i.policies.canManageCustomEmojis)) {
-		os.popupMenu([{
-			type: 'label',
-			text: props.reaction,
-		}, {
-			text: i18n.ts.import,
-			icon: 'ti ti-plus',
-			action: async () => {
-				await os.apiWithDialog('admin/emoji/steal', {
-					name: reactionName.value,
-					host: props.note.user.host,
-				});
-			},
-		}, {
-			text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
-			icon: 'ti ti-mood-plus',
-			action: async () => {
-				await os.apiWithDialog('admin/emoji/steal', {
-					name: reactionName.value,
-					host: props.note.user.host,
-				});
+	if (!props.note.user.host && $i && !($i.isAdmin ?? $i.policies.canManageCustomEmojis)) return;
 
-				await misskeyApi('notes/reactions/create', {
-					noteId: props.note.id,
-					reaction: `:${reactionName.value}:`,
-				});
-			},
-		}], ev.currentTarget ?? ev.target);
-	}
+	os.popupMenu([{
+		type: 'label',
+		text: props.reaction,
+	}, {
+		text: i18n.ts.import,
+		icon: 'ti ti-plus',
+		action: async () => {
+			await os.apiWithDialog('admin/emoji/steal', {
+				name: reactionName.value,
+				host: props.note.user.host,
+			});
+		},
+	}, {
+		text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
+		icon: 'ti ti-mood-plus',
+		action: async () => {
+			await os.apiWithDialog('admin/emoji/steal', {
+				name: reactionName.value,
+				host: props.note.user.host,
+			});
+
+			await misskeyApi('notes/reactions/create', {
+				noteId: props.note.id,
+				reaction: `:${reactionName.value}:`,
+			});
+		},
+	}], ev.currentTarget ?? ev.target);
 }
 
 async function menu(ev) {
@@ -167,7 +167,7 @@ async function menu(ev) {
 				}),
 			});
 		},
-	}, customEmojisMap.value.find(it => it.name === reactionName.value)?.name ? {
+	}, customEmojis.value.find(it => it.name === reactionName.value)?.name ? {
 		text: i18n.ts.copy,
 		icon: 'ti ti-copy',
 		action: () => {

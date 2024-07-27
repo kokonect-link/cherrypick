@@ -23,8 +23,8 @@ export class LoggerService {
 	}
 
 	@bindThis
-	public getLogger(domain: string, color?: KEYWORD | undefined, store?: boolean) {
+	public getLogger(domain: string, color?: KEYWORD | undefined) {
 		const logger = this.cloudLogging?.log(this.config.cloudLogging?.logName ?? 'cherrypick');
-		return new Logger(domain, color, store, logger);
+		return new Logger(domain, color, logger);
 	}
 }

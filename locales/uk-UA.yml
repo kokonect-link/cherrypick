@@ -928,6 +928,10 @@ renotes: "Поширити"
 sourceCode: "Вихідний код"
 flip: "Перевернути"
 lastNDays: "Останні {n} днів"
+_delivery:
+  stop: "Призупинено"
+  _type:
+    none: "Публікація"
 _achievements:
   earnedAt: "Відкрито"
   _types:
@@ -1704,4 +1708,3 @@ _moderationLogTypes:
   resetPassword: "Скинути пароль"
 _reversi:
   total: "Всього"
-

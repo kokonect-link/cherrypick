@@ -5,6 +5,13 @@
 
 import { Module } from '@nestjs/common';
 import { FanoutTimelineEndpointService } from '@/core/FanoutTimelineEndpointService.js';
+import { AbuseReportService } from '@/core/AbuseReportService.js';
+import { SystemWebhookEntityService } from '@/core/entities/SystemWebhookEntityService.js';
+import {
+	AbuseReportNotificationRecipientEntityService,
+} from '@/core/entities/AbuseReportNotificationRecipientEntityService.js';
+import { AbuseReportNotificationService } from '@/core/AbuseReportNotificationService.js';
+import { SystemWebhookService } from '@/core/SystemWebhookService.js';
 import { AccountMoveService } from './AccountMoveService.js';
 import { AccountUpdateService } from './AccountUpdateService.js';
 import { AiService } from './AiService.js';
@@ -58,7 +65,7 @@ import { UserMutingService } from './UserMutingService.js';
 import { UserSuspendService } from './UserSuspendService.js';
 import { UserAuthService } from './UserAuthService.js';
 import { VideoProcessingService } from './VideoProcessingService.js';
-import { WebhookService } from './WebhookService.js';
+import { UserWebhookService } from './UserWebhookService.js';
 import { ProxyAccountService } from './ProxyAccountService.js';
 import { UtilityService } from './UtilityService.js';
 import { FileInfoService } from './FileInfoService.js';
@@ -86,6 +93,7 @@ import ApRequestChart from './chart/charts/ap-request.js';
 import { ChartManagementService } from './chart/ChartManagementService.js';
 
 import { AbuseUserReportEntityService } from './entities/AbuseUserReportEntityService.js';
+import { AnnouncementEntityService } from './entities/AnnouncementEntityService.js';
 import { AntennaEntityService } from './entities/AntennaEntityService.js';
 import { AppEntityService } from './entities/AppEntityService.js';
 import { AuthSessionEntityService } from './entities/AuthSessionEntityService.js';
@@ -132,7 +140,7 @@ import { ApMfmService } from './activitypub/ApMfmService.js';
 import { ApRendererService } from './activitypub/ApRendererService.js';
 import { ApRequestService } from './activitypub/ApRequestService.js';
 import { ApResolverService } from './activitypub/ApResolverService.js';
-import { LdSignatureService } from './activitypub/LdSignatureService.js';
+import { JsonLdService } from './activitypub/JsonLdService.js';
 import { RemoteLoggerService } from './RemoteLoggerService.js';
 import { RemoteUserResolveService } from './RemoteUserResolveService.js';
 import { WebfingerService } from './WebfingerService.js';
@@ -149,6 +157,8 @@ import type { Provider } from '@nestjs/common';
 
 //#region 文字列ベースでのinjection用(循環参照対応のため)
 const $LoggerService: Provider = { provide: 'LoggerService', useExisting: LoggerService };
+const $AbuseReportService: Provider = { provide: 'AbuseReportService', useExisting: AbuseReportService };
+const $AbuseReportNotificationService: Provider = { provide: 'AbuseReportNotificationService', useExisting: AbuseReportNotificationService };
 const $AccountMoveService: Provider = { provide: 'AccountMoveService', useExisting: AccountMoveService };
 const $AccountUpdateService: Provider = { provide: 'AccountUpdateService', useExisting: AccountUpdateService };
 const $AiService: Provider = { provide: 'AiService', useExisting: AiService };
@@ -203,7 +213,8 @@ const $UserMutingService: Provider = { provide: 'UserMutingService', useExisting
 const $UserSuspendService: Provider = { provide: 'UserSuspendService', useExisting: UserSuspendService };
 const $UserAuthService: Provider = { provide: 'UserAuthService', useExisting: UserAuthService };
 const $VideoProcessingService: Provider = { provide: 'VideoProcessingService', useExisting: VideoProcessingService };
-const $WebhookService: Provider = { provide: 'WebhookService', useExisting: WebhookService };
+const $UserWebhookService: Provider = { provide: 'UserWebhookService', useExisting: UserWebhookService };
+const $SystemWebhookService: Provider = { provide: 'SystemWebhookService', useExisting: SystemWebhookService };
 const $UtilityService: Provider = { provide: 'UtilityService', useExisting: UtilityService };
 const $FileInfoService: Provider = { provide: 'FileInfoService', useExisting: FileInfoService };
 const $SearchService: Provider = { provide: 'SearchService', useExisting: SearchService };
@@ -231,6 +242,8 @@ const $ApRequestChart: Provider = { provide: 'ApRequestChart', useExisting: ApRe
 const $ChartManagementService: Provider = { provide: 'ChartManagementService', useExisting: ChartManagementService };
 
 const $AbuseUserReportEntityService: Provider = { provide: 'AbuseUserReportEntityService', useExisting: AbuseUserReportEntityService };
+const $AnnouncementEntityService: Provider = { provide: 'AnnouncementEntityService', useExisting: AnnouncementEntityService };
+const $AbuseReportNotificationRecipientEntityService: Provider = { provide: 'AbuseReportNotificationRecipientEntityService', useExisting: AbuseReportNotificationRecipientEntityService };
 const $AntennaEntityService: Provider = { provide: 'AntennaEntityService', useExisting: AntennaEntityService };
 const $AppEntityService: Provider = { provide: 'AppEntityService', useExisting: AppEntityService };
 const $AuthSessionEntityService: Provider = { provide: 'AuthSessionEntityService', useExisting: AuthSessionEntityService };
@@ -267,6 +280,7 @@ const $FlashLikeEntityService: Provider = { provide: 'FlashLikeEntityService', u
 const $RoleEntityService: Provider = { provide: 'RoleEntityService', useExisting: RoleEntityService };
 const $ReversiGameEntityService: Provider = { provide: 'ReversiGameEntityService', useExisting: ReversiGameEntityService };
 const $MetaEntityService: Provider = { provide: 'MetaEntityService', useExisting: MetaEntityService };
+const $SystemWebhookEntityService: Provider = { provide: 'SystemWebhookEntityService', useExisting: SystemWebhookEntityService };
 
 const $ApAudienceService: Provider = { provide: 'ApAudienceService', useExisting: ApAudienceService };
 const $ApDbResolverService: Provider = { provide: 'ApDbResolverService', useExisting: ApDbResolverService };
@@ -277,7 +291,7 @@ const $ApMfmService: Provider = { provide: 'ApMfmService', useExisting: ApMfmSer
 const $ApRendererService: Provider = { provide: 'ApRendererService', useExisting: ApRendererService };
 const $ApRequestService: Provider = { provide: 'ApRequestService', useExisting: ApRequestService };
 const $ApResolverService: Provider = { provide: 'ApResolverService', useExisting: ApResolverService };
-const $LdSignatureService: Provider = { provide: 'LdSignatureService', useExisting: LdSignatureService };
+const $JsonLdService: Provider = { provide: 'JsonLdService', useExisting: JsonLdService };
 const $RemoteLoggerService: Provider = { provide: 'RemoteLoggerService', useExisting: RemoteLoggerService };
 const $RemoteUserResolveService: Provider = { provide: 'RemoteUserResolveService', useExisting: RemoteUserResolveService };
 const $WebfingerService: Provider = { provide: 'WebfingerService', useExisting: WebfingerService };
@@ -295,6 +309,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 	],
 	providers: [
 		LoggerService,
+		AbuseReportService,
+		AbuseReportNotificationService,
 		AccountMoveService,
 		AccountUpdateService,
 		AiService,
@@ -349,7 +365,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		UserSuspendService,
 		UserAuthService,
 		VideoProcessingService,
-		WebhookService,
+		UserWebhookService,
+		SystemWebhookService,
 		UtilityService,
 		FileInfoService,
 		SearchService,
@@ -377,6 +394,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ChartManagementService,
 
 		AbuseUserReportEntityService,
+		AnnouncementEntityService,
+		AbuseReportNotificationRecipientEntityService,
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
@@ -413,6 +432,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		RoleEntityService,
 		ReversiGameEntityService,
 		MetaEntityService,
+		SystemWebhookEntityService,
 
 		ApAudienceService,
 		ApDbResolverService,
@@ -423,7 +443,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ApRendererService,
 		ApRequestService,
 		ApResolverService,
-		LdSignatureService,
+		JsonLdService,
 		RemoteLoggerService,
 		RemoteUserResolveService,
 		WebfingerService,
@@ -437,6 +457,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 
 		//#region 文字列ベースでのinjection用(循環参照対応のため)
 		$LoggerService,
+		$AbuseReportService,
+		$AbuseReportNotificationService,
 		$AccountMoveService,
 		$AccountUpdateService,
 		$AiService,
@@ -491,7 +513,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$UserSuspendService,
 		$UserAuthService,
 		$VideoProcessingService,
-		$WebhookService,
+		$UserWebhookService,
+		$SystemWebhookService,
 		$UtilityService,
 		$FileInfoService,
 		$SearchService,
@@ -519,6 +542,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ChartManagementService,
 
 		$AbuseUserReportEntityService,
+		$AnnouncementEntityService,
+		$AbuseReportNotificationRecipientEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,
@@ -555,6 +580,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$RoleEntityService,
 		$ReversiGameEntityService,
 		$MetaEntityService,
+		$SystemWebhookEntityService,
 
 		$ApAudienceService,
 		$ApDbResolverService,
@@ -565,7 +591,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ApRendererService,
 		$ApRequestService,
 		$ApResolverService,
-		$LdSignatureService,
+		$JsonLdService,
 		$RemoteLoggerService,
 		$RemoteUserResolveService,
 		$WebfingerService,
@@ -580,6 +606,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 	exports: [
 		QueueModule,
 		LoggerService,
+		AbuseReportService,
+		AbuseReportNotificationService,
 		AccountMoveService,
 		AccountUpdateService,
 		AiService,
@@ -634,7 +662,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		UserSuspendService,
 		UserAuthService,
 		VideoProcessingService,
-		WebhookService,
+		UserWebhookService,
+		SystemWebhookService,
 		UtilityService,
 		FileInfoService,
 		SearchService,
@@ -661,6 +690,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ChartManagementService,
 
 		AbuseUserReportEntityService,
+		AnnouncementEntityService,
+		AbuseReportNotificationRecipientEntityService,
 		AntennaEntityService,
 		AppEntityService,
 		AuthSessionEntityService,
@@ -697,6 +728,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		RoleEntityService,
 		ReversiGameEntityService,
 		MetaEntityService,
+		SystemWebhookEntityService,
 
 		ApAudienceService,
 		ApDbResolverService,
@@ -707,7 +739,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		ApRendererService,
 		ApRequestService,
 		ApResolverService,
-		LdSignatureService,
+		JsonLdService,
 		RemoteLoggerService,
 		RemoteUserResolveService,
 		WebfingerService,
@@ -721,6 +753,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 
 		//#region 文字列ベースでのinjection用(循環参照対応のため)
 		$LoggerService,
+		$AbuseReportService,
+		$AbuseReportNotificationService,
 		$AccountMoveService,
 		$AccountUpdateService,
 		$AiService,
@@ -775,7 +809,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$UserSuspendService,
 		$UserAuthService,
 		$VideoProcessingService,
-		$WebhookService,
+		$UserWebhookService,
+		$SystemWebhookService,
 		$UtilityService,
 		$FileInfoService,
 		$SearchService,
@@ -802,6 +837,8 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ChartManagementService,
 
 		$AbuseUserReportEntityService,
+		$AnnouncementEntityService,
+		$AbuseReportNotificationRecipientEntityService,
 		$AntennaEntityService,
 		$AppEntityService,
 		$AuthSessionEntityService,
@@ -838,6 +875,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$RoleEntityService,
 		$ReversiGameEntityService,
 		$MetaEntityService,
+		$SystemWebhookEntityService,
 
 		$ApAudienceService,
 		$ApDbResolverService,
@@ -848,7 +886,7 @@ const $ApEventService: Provider = { provide: 'ApEventService', useExisting: ApEv
 		$ApRendererService,
 		$ApRequestService,
 		$ApResolverService,
-		$LdSignatureService,
+		$JsonLdService,
 		$RemoteLoggerService,
 		$RemoteUserResolveService,
 		$WebfingerService,
