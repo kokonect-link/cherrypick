@@ -6,20 +6,29 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div>
 	<div :class="$style.label" @click="focus"><slot name="label"></slot></div>
-	<div ref="container" :class="[$style.input, { [$style.inline]: inline, [$style.disabled]: disabled, [$style.focused]: focused }]" @mousedown.prevent="show">
+	<div
+		ref="container"
+		tabindex="0"
+		:class="[$style.input, { [$style.inline]: inline, [$style.disabled]: disabled, [$style.focused]: focused || opening }]"
+		@focus="focused = true"
+		@blur="focused = false"
+		@mousedown.prevent="show"
+		@keydown.space.enter="show"
+	>
 		<div ref="prefixEl" :class="$style.prefix"><slot name="prefix"></slot></div>
 		<select
 			ref="inputEl"
 			v-model="v"
 			v-adaptive-border
+			tabindex="-1"
 			:class="$style.inputCore"
 			:disabled="disabled"
 			:required="required"
 			:readonly="readonly"
 			:placeholder="placeholder"
-			@focus="focused = true"
-			@blur="focused = false"
 			@input="onInput"
+			@mousedown.prevent="() => {}"
+			@keydown.prevent="() => {}"
 		>
 			<slot></slot>
 		</select>
@@ -75,7 +84,7 @@ const height =
 	props.large ? 39 :
 	36;
 
-const focus = () => inputEl.value?.focus();
+const focus = () => container.value?.focus();
 const onInput = (ev) => {
 	changed.value = true;
 };
@@ -129,7 +138,10 @@ function show() {
 	if (inputEl.value && inputEl.value.hasAttribute('disabled')) {
 		return;
 	}
-	focused.value = true;
+
+	if (opening.value) return;
+	focus();
+
 	opening.value = true;
 
 	const menu: MenuItem[] = [];
@@ -176,8 +188,6 @@ function show() {
 		onClosing: () => {
 			opening.value = false;
 		},
-	}).then(() => {
-		focused.value = false;
 	});
 }
 </script>
@@ -226,6 +236,10 @@ function show() {
 		> .inputCore {
 			cursor: not-allowed !important;
 		}
+	}
+
+	&:focus {
+		outline: none;
 	}
 
 	&:hover {

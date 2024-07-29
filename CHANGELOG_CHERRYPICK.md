@@ -23,16 +23,17 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
-출시일: unreleased<br>
-기반 Misskey 버전: 2024.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+## 4.9.0
+출시일: 2024/7/27<br>
+기반 Misskey 버전: 2024.5.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202450](CHANGELOG.md#202450) 문서를 참고하십시오.
 
 ### Client
 - Enhance: 노트 작성 폼에서 '공개 범위 기억하기' 설정을 변경할 수 있음
 - Fix: 타임라인 노트의 리액션 뷰어에 리모트 서버의 커스텀 이모지가 표시되지 않음
 - Fix: '리노트 공개 범위 지정' 옵션이 `없음`으로 설정된 경우 리노트를 할 수 없음
 - Fix: 아바타 장식을 설정할 때 설정 팝업이 두 번 표시될 수 있음
+- Fix: 코드 블록의 하이라이트가 실제 위치와 다르게 표시될 수 있음 (kokonect-link/cherrypick#475)
 
 ### Server
 - Feat: 리모트 유저의 아바타 장식을 여러 개 불러올 수 있음([yunochi/misskey@696787b3](https://github.com/yunochi/misskey/commit/696787b38bac31e7586899a5a59611a6fe50b9a1), [yunochi/misskey@4a5fcfe4](https://github.com/yunochi/misskey/commit/4a5fcfe43880f08380541caa6b7593b90306d103))

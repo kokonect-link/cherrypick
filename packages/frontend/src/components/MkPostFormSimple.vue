@@ -496,11 +496,12 @@ function setVisibility() {
 		return;
 	}
 
-	os.popup(defineAsyncComponent(() => import('@/components/MkVisibilityPicker.vue')), {
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkVisibilityPicker.vue')), {
 		currentVisibility: visibility.value,
 		isSilenced: $i.isSilenced,
 		localOnly: localOnly.value,
 		src: visibilityButton.value,
+		...(props.reply ? { isReplyVisibilitySpecified: props.reply.visibility === 'specified' } : {}),
 	}, {
 		changeVisibility: v => {
 			visibility.value = v;
@@ -508,7 +509,8 @@ function setVisibility() {
 				defaultStore.set('visibility', visibility.value);
 			}
 		},
-	}, 'closed');
+		closed: () => dispose(),
+	});
 }
 
 async function toggleLocalOnly() {
@@ -599,9 +601,9 @@ function clear() {
 
 function onKeydown(ev: KeyboardEvent) {
 	if (defaultStore.state.useEnterToSend && !ev.shiftKey) {
-		if (ev.key === 'Enter' && canPost) post();
+		if (ev.key === 'Enter' && canPost.value) post();
 	} else {
-		if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey) && canPost) post();
+		if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey) && canPost.value) post();
 	}
 
 	if (defaultStore.state.postFormVisibilityHotkey) {
@@ -776,7 +778,9 @@ async function post(ev?: MouseEvent) {
 			const rect = el.getBoundingClientRect();
 			const x = rect.left + (el.offsetWidth / 2);
 			const y = rect.top + (el.offsetHeight / 2);
-			os.popup(MkRippleEffect, { x, y }, {}, 'end');
+			const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+				end: () => dispose(),
+			});
 		}
 	}
 
@@ -1226,6 +1230,15 @@ defineExpose({
 .submit {
 	margin: 12px 12px 12px 6px;
 	vertical-align: bottom;
+
+	&:focus-visible {
+		outline: none;
+
+		.submitInner {
+			outline: 2px solid var(--fgOnAccent);
+			outline-offset: -4px;
+		}
+	}
 
 	&:disabled {
 		opacity: 0.7;

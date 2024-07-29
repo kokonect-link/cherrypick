@@ -143,6 +143,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				timelineConfig = [
 					`homeTimeline:${me.id}`,
 					'localTimeline',
+					`localTimelineWithReplyTo:${me.id}`,
 				];
 			}
 

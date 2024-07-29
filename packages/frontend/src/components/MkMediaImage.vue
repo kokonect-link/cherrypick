@@ -99,9 +99,24 @@ const clickToShowMessage = computed(() => defaultStore.state.nsfwOpenBehavior ==
 		: '',
 );
 
-function onClick(ev: MouseEvent) {
-	if (!props.controls) return;
-	if (!hide.value) return;
+async function onClick(ev: MouseEvent) {
+	if (!props.controls) {
+		return;
+	}
+
+	if (hide.value) {
+		ev.stopPropagation();
+		if (props.image.isSensitive && defaultStore.state.confirmWhenRevealingSensitiveMedia) {
+			const { canceled } = await os.confirm({
+				type: 'question',
+				text: i18n.ts.sensitiveMediaRevealConfirm,
+			});
+			if (canceled) return;
+		}
+
+		hide.value = false;
+	}
+
 	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
 	if (defaultStore.state.nsfwOpenBehavior === 'click') hide.value = false;
 }
