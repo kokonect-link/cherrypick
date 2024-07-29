@@ -15,12 +15,12 @@
 ### Misc
 
 -->
-## x.x.x (unreleased)
+## 0.4.4
 
 ### Release Date
 
 ### General
--
+- CherryPick 4.10.0-beta.1に追従
 
 ### Client
 - Deck UIのサーバーアイコンのスタイルを調整
