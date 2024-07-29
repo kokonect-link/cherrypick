@@ -1348,6 +1348,7 @@ export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'mul
 	'notes/unrenote': 'application/json',
 	'notes/user-list-timeline': 'application/json',
 	'notifications/create': 'application/json',
+	'notifications/delete': 'application/json',
 	'notifications/flush': 'application/json',
 	'notifications/mark-all-as-read': 'application/json',
 	'notifications/test-notification': 'application/json',
