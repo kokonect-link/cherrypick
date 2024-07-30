@@ -1192,7 +1192,7 @@ _achievements:
     _login3:
       title: "Začátečník I"
       description: "Přihlaste se celkově za 3 dny"
-      flavor: "Ode dneška mi říkejte Misskista."
+      flavor: "Ode dneška mi říkejte Cherrypikista."
     _login7:
       title: "Začátečník II"
       description: "Přihlaste se celkově za 7 dní"
@@ -1650,8 +1650,6 @@ _sfx:
   notification: "Oznámení"
   chat: "Zprávy"
   chatBg: "Chat (Pozadí)"
-  antenna: "Antény"
-  channel: "Oznámení kanálu"
 _ago:
   future: "Budoucí"
   justNow: "Teď"
@@ -2027,6 +2025,10 @@ _webhookSettings:
     renote: "Při renotaci poznámky"
     reaction: "Při obdržení reakce"
     mention: "Při zmínce"
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "Email"
 _moderationLogTypes:
   suspend: "Zmrazit"
   resetPassword: "Resetovat heslo"

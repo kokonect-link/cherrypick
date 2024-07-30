@@ -291,6 +291,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="count">{{ i18n.ts._newNoteReceivedNotificationBehavior.count }}</option>
 				<option value="none">{{ i18n.ts._newNoteReceivedNotificationBehavior.none }}</option>
 			</MkSelect>
+			<MkSelect v-model="contextMenu">
+				<template #label>{{ i18n.ts._contextMenu.title }}</template>
+				<option value="app">{{ i18n.ts._contextMenu.app }}</option>
+				<option value="appWithShift">{{ i18n.ts._contextMenu.appWithShift }}</option>
+				<option value="native">{{ i18n.ts._contextMenu.native }}</option>
+			</MkSelect>
 			<MkRange v-model="numberOfPageCache" :min="1" :max="10" :step="1" easing>
 				<template #label>{{ i18n.ts.numberOfPageCache }}</template>
 				<template #caption>{{ i18n.ts.numberOfPageCacheDescription }}</template>
@@ -445,6 +451,7 @@ const enableHorizontalSwipe = computed(defaultStore.makeGetterSetter('enableHori
 const useNativeUIForVideoAudioPlayer = computed(defaultStore.makeGetterSetter('useNativeUIForVideoAudioPlayer'));
 const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfirmFollow'));
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
+const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const showUnreadNotificationsCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationsCount'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
@@ -515,6 +522,7 @@ watch([
 	enableSeasonalScreenEffect,
 	alwaysConfirmFollow,
 	confirmWhenRevealingSensitiveMedia,
+	contextMenu,
 ], async () => {
 	await reloadAsk();
 });
