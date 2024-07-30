@@ -249,7 +249,7 @@ const routes: RouteDef[] = [{
 		origin: 'origin',
 	},
 }, {
-	// Legacy Compatibility	
+	// Legacy Compatibility
 	path: '/authorize-follow',
 	redirect: '/lookup',
 	loginRequired: true,
@@ -262,9 +262,6 @@ const routes: RouteDef[] = [{
 	path: '/lookup',
 	component: page(() => import('@/pages/lookup.vue')),
 	loginRequired: true,
-}, {
-	path: '/follow-me',
-	component: page(() => import('@/pages/follow-me.vue')),
 }, {
 	path: '/share',
 	component: page(() => import('@/pages/share.vue')),

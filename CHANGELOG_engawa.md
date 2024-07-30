@@ -15,6 +15,21 @@
 ### Misc
 
 -->
+## x.x.x (unreleased)
+
+### Release Date
+
+### General
+- `follow-me`は廃止されました
+
+### Client
+- 
+
+### Server
+-
+
+### Misc
+
 ## 0.4.4
 
 ### Release Date
