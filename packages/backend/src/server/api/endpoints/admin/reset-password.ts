@@ -25,8 +25,8 @@ export const meta = {
 			password: {
 				type: 'string',
 				optional: false, nullable: false,
-				minLength: 8,
-				maxLength: 8,
+				minLength: 16,
+				maxLength: 16,
 			},
 		},
 	},
