@@ -1190,7 +1190,7 @@ _achievements:
     _login3:
       title: "Новичок Ⅰ"
       description: "3 дня на сайте"
-      flavor: "С сегодняшнего дня зовите меня просто мискиец"
+      flavor: "С сегодняшнего дня зовите меня просто Черрипикиец"
     _login7:
       title: "Новичок Ⅱ"
       description: "Неделя на сайте"
@@ -1697,8 +1697,6 @@ _sfx:
   notification: "Уведомления"
   chat: "Сообщения"
   chatBg: "Сообщения (фон)"
-  antenna: "Антенна"
-  channel: "Канал"
 _ago:
   future: "Из будущего"
   justNow: "Только что"
@@ -2072,6 +2070,10 @@ _webhookSettings:
   createWebhook: "Создать вебхук"
   name: "Название"
   active: "Вкл."
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "Электронная почта"
 _moderationLogTypes:
   suspend: "Заморозить"
   addCustomEmoji: "Добавлено эмодзи"

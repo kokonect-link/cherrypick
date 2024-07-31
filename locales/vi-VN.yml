@@ -376,6 +376,7 @@ mcaptcha: "mCaptcha"
 enableMcaptcha: "Bật mCaptcha"
 mcaptchaSiteKey: "Khóa của trang"
 mcaptchaSecretKey: "Khóa bí mật"
+mcaptchaInstanceUrl: "URL mCaptcha máy chủ"
 recaptcha: "reCAPTCHA"
 enableRecaptcha: "Bật reCAPTCHA"
 recaptchaSiteKey: "Khóa của trang"
@@ -426,6 +427,7 @@ moderator: "Kiểm duyệt viên"
 moderation: "Kiểm duyệt"
 moderationNote: "Ghi chú kiểm duyệt"
 addModerationNote: "Thêm ghi chú kiểm duyệt"
+moderationLogs: "Nhật kí quản trị"
 nUsersMentioned: "Dùng bởi {n} người"
 securityKeyAndPasskey: "Mã bảo mật・Passkey"
 securityKey: "Khóa bảo mật"
@@ -467,6 +469,7 @@ noteOf: "Tút của {user}"
 inviteToGroup: "Mời vào nhóm"
 quoteAttached: "Trích dẫn"
 quoteQuestion: "Trích dẫn lại?"
+attachAsFileQuestion: "Văn bản ở trong bộ nhớ tạm rất dài. Bạn có muốn đăng nó dưới dạng một tệp văn bản không?"
 noMessagesYet: "Chưa có tin nhắn"
 newMessageExists: "Bạn có tin nhắn mới"
 onlyOneFileCanBeAttached: "Bạn chỉ có thể đính kèm một tập tin"
@@ -1214,7 +1217,7 @@ _achievements:
     _login3:
       title: "Sơ cấp I"
       description: "Tổng số ngày đăng nhập đạt 3 ngày"
-      flavor: "Từ nay các bạn cứ xem như mình là một Misskist đó"
+      flavor: "Từ nay các bạn cứ xem như mình là một Cherrypikist đó"
     _login7:
       title: "Sơ cấp II"
       description: "Tổng số ngày đăng nhập đạt 7 ngày"
@@ -1644,8 +1647,6 @@ _sfx:
   notification: "Thông báo"
   chat: "Trò chuyện"
   chatBg: "Chat (Nền)"
-  antenna: "Trạm phát sóng"
-  channel: "Kênh"
 _ago:
   future: "Tương lai"
   justNow: "Vừa xong"
@@ -2011,6 +2012,10 @@ _webhookSettings:
   _events:
     reaction: "Khi nhận được sự kiện"
     mention: "Khi có người nhắc tới bạn"
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "Email"
 _moderationLogTypes:
   suspend: "Vô hiệu hóa"
   resetPassword: "Đặt lại mật khẩu"

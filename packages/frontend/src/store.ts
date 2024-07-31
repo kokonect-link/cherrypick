@@ -476,6 +476,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	contextMenu: {
+		where: 'device',
+		default: 'app' as 'app' | 'appWithShift' | 'native',
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
