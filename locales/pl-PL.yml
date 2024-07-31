@@ -1299,8 +1299,6 @@ _sfx:
   notification: "Powiadomienia"
   chat: "Wiadomości"
   chatBg: "Rozmowy (tło)"
-  antenna: "Anteny"
-  channel: "Powiadomienia kanału"
 _ago:
   future: "W przyszłości"
   justNow: "Przed chwilą"
@@ -1636,6 +1634,10 @@ _webhookSettings:
     renote: "Po udostępnieniu wpisu"
     reaction: "Po otrzymaniu reakcji"
     mention: "Po zostaniu wspomnianym"
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "Adres e-mail"
 _moderationLogTypes:
   suspend: "Zawieś"
   resetPassword: "Zresetuj hasło"

@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkSearchInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">
+		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
 			<template #prefix><i class="ti ti-search"></i></template>
 		</MkSearchInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
@@ -25,7 +25,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, toRef } from 'vue';
+import type { Endpoints } from 'cherrypick-js';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkUserList from '@/components/MkUserList.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSearchInput from '@/components/MkSearchInput.vue';
@@ -37,53 +39,73 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useRouter } from '@/router/supplier.js';
 
+const props = withDefaults(defineProps<{
+  query?: string,
+  origin?: Endpoints['users/search']['req']['origin'],
+}>(), {
+	query: '',
+	origin: 'combined',
+});
+
 const router = useRouter();
 
-const key = ref(0);
-const searchQuery = ref('');
-const searchOrigin = ref('combined');
-const userPagination = ref();
-const isApUserName = RegExp('^@[a-zA-Z0-9_.]+@[a-zA-Z0-9-_.]+[a-zA-Z]$');
+const key = ref('');
+const searchQuery = ref(toRef(props, 'query').value);
+const searchOrigin = ref(toRef(props, 'origin').value);
+const userPagination = ref<Paging>();
 
 async function search() {
 	const query = searchQuery.value.toString().trim();
 
 	if (query == null || query === '') return;
 
-	if (query.startsWith('https://') || isApUserName.test(query)) {
-		const { canceled } = await os.confirm({
-			type: 'question',
-			text: i18n.ts._searchOrApShow.question,
-			okText: i18n.ts._searchOrApShow.lookup,
-			cancelText: i18n.ts._searchOrApShow.search,
+	//#region AP lookup
+	if (query.startsWith('https://') && !query.includes(' ')) {
+		const confirm = await os.confirm({
+			type: 'info',
+			text: i18n.ts.lookupConfirm,
 		});
+		if (!confirm.canceled) {
+			const promise = misskeyApi('ap/show', {
+				uri: query,
+			});
 
-		if (!canceled) {
-			if (isApUserName.test(query)) {
-				const querys = query.split('@');
-				const promise = misskeyApi('users/show', {
-					username: querys[1],
-					host: querys[2],
-				});
-				os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
-				const res = await promise;
-				if (typeof res.error === 'undefined') {
-					router.push(`/@${res.username}@${res.host}`);
-				}
-			} else {
-				const promise = misskeyApi('ap/show', {
-					uri: query,
-				});
-				os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
-				const res = await promise;
+			os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
 
-				if (res.type === 'User') {
-					router.push(`/@${res.object.username}@${res.object.host}`);
-				} else if (res.type === 'Note') {
-					router.push(`/notes/${res.object.id}`);
-				}
+			const res = await promise;
+
+			if (res.type === 'User') {
+				router.push(`/@${res.object.username}@${res.object.host}`);
+			} else if (res.type === 'Note') {
+				router.push(`/notes/${res.object.id}`);
 			}
+
 			return;
+		}
+	}
+	//#endregion
+
+	if (query.length > 1 && !query.includes(' ')) {
+		if (query.startsWith('@')) {
+			const confirm = await os.confirm({
+				type: 'info',
+				text: i18n.ts.lookupConfirm,
+			});
+			if (!confirm.canceled) {
+				router.push(`/${query}`);
+				return;
+			}
+		}
+
+		if (query.startsWith('#')) {
+			const confirm = await os.confirm({
+				type: 'info',
+				text: i18n.ts.openTagPageConfirm,
+			});
+			if (!confirm.canceled) {
+				router.push(`/user-tags/${encodeURIComponent(query.substring(1))}`);
+				return;
+			}
 		}
 	}
 
@@ -96,6 +118,6 @@ async function search() {
 		},
 	};
 
-	key.value++;
+	key.value = query;
 }
 </script>

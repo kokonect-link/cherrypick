@@ -59,7 +59,6 @@ export class SearchService {
 		userId?: MiNote['userId'] | null;
 		channelId?: MiNote['channelId'] | null;
 		host?: string | null;
-		origin?: string | null;
 		fileOption?: string | null;
 	}, pagination: {
 		untilId?: MiNote['id'];
@@ -67,12 +66,6 @@ export class SearchService {
 		limit?: number;
 	}): Promise<MiNote[]> {
 			const query = this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), pagination.sinceId, pagination.untilId);
-
-			if (opts.origin === 'local') {
-				query.andWhere('note.userHost IS NULL');
-			} else if (opts.origin === 'remote') {
-				query.andWhere('note.userHost IS NOT NULL');
-			}
 
 			if (opts.userId) {
 				query.andWhere('note.userId = :userId', { userId: opts.userId });

@@ -302,7 +302,7 @@ location: "Lugar"
 theme: "Tema"
 themeForLightMode: "Tema para usar en Modo Linterna"
 themeForDarkMode: "Tema para usar en Modo Oscuro"
-light: "Linterna"
+light: "Claro"
 dark: "Oscuro"
 lightThemes: "Tema claro"
 darkThemes: "Tema oscuro"
@@ -1447,7 +1447,7 @@ _achievements:
     _login3:
       title: "Principiante I"
       description: "Días desde el inicio de sesión: 3"
-      flavor: "Desde hoy, soy Misskero"
+      flavor: "Desde hoy, soy Cherrypikero"
     _login7:
       title: "Principiante II"
       description: "Días desde el inicio de sesión: 7"
@@ -2005,8 +2005,6 @@ _sfx:
   notification: "Notificaciones"
   chat: "Chat"
   chatBg: "Chat (Fondo)"
-  antenna: "Antena receptora"
-  channel: "Notificaciones del canal"
   reaction: "Al seleccionar una reacción"
 _soundSettings:
   driveFile: "Usar un archivo de audio en Drive"
@@ -2483,6 +2481,10 @@ _webhookSettings:
     renote: "Cuando reciba un \"re-note\""
     reaction: "Cuando se recibe una reacción"
     mention: "Cuando hay una mención"
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "Correo"
 _moderationLogTypes:
   createRole: "Rol creado"
   deleteRole: "Rol eliminado"

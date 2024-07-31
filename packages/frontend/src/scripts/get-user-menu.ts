@@ -13,9 +13,11 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore, userActions } from '@/store.js';
 import { $i, iAmModerator } from '@/account.js';
+import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
 import { IRouter } from '@/nirax.js';
 import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { mainRouter } from '@/router/main.js';
+import { MenuItem } from '@/types/menu.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
 import { globalEvents } from '@/events.js';
 
@@ -105,15 +107,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		});
 	}
 
-	async function toggleWithReplies() {
-		os.apiWithDialog('following/update', {
-			userId: user.id,
-			withReplies: !user.withReplies,
-		}).then(() => {
-			user.withReplies = !user.withReplies;
-		});
-	}
-
 	async function toggleNotify() {
 		os.apiWithDialog('following/update', {
 			userId: user.id,
@@ -182,14 +175,21 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		});
 	}
 
-	let menu = [{
+	let menu: MenuItem[] = [{
 		icon: 'ti ti-at',
 		text: i18n.ts.copyUsername,
 		action: () => {
 			copyToClipboard(`@${user.username}@${user.host ?? host}`);
 			os.toast(i18n.ts.copied, 'copied');
 		},
-	}, ...(iAmModerator ? [{
+	}, ...( notesSearchAvailable && (user.host == null || canSearchNonLocalNotes) ? [{
+		icon: 'ti ti-search',
+		text: i18n.ts.searchThisUsersNotes,
+		action: () => {
+			router.push(`/search?username=${encodeURIComponent(user.username)}${user.host != null ? '&host=' + encodeURIComponent(user.host) : ''}`);
+		},
+	}] : [])
+	, ...(iAmModerator ? [{
 		icon: 'ti ti-user-exclamation',
 		text: i18n.ts.moderation,
 		action: () => {
@@ -356,15 +356,25 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 
 		// フォローしたとしても user.isFollowing はリアルタイム更新されないので不便なため
 		//if (user.isFollowing) {
+		const withRepliesRef = ref(user.withReplies);
 		menu = menu.concat([{
-			icon: user.withReplies ? 'ti ti-messages-off' : 'ti ti-messages',
-			text: user.withReplies ? i18n.ts.hideRepliesToOthersInTimeline : i18n.ts.showRepliesToOthersInTimeline,
-			action: toggleWithReplies,
+			type: 'switch',
+			icon: 'ti ti-messages',
+			text: i18n.ts.showRepliesToOthersInTimeline,
+			ref: withRepliesRef,
 		}, {
 			icon: user.notify === 'none' ? 'ti ti-bell' : 'ti ti-bell-off',
 			text: user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes,
 			action: toggleNotify,
 		}]);
+		watch(withRepliesRef, (withReplies) => {
+			misskeyApi('following/update', {
+				userId: user.id,
+				withReplies,
+			}).then(() => {
+				user.withReplies = withReplies;
+			});
+		});
 		//}
 
 		menu = menu.concat([{ type: 'divider' }, {

@@ -281,7 +281,7 @@ const canPost = computed((): boolean => {
 			poll.value != null ||
 			event.value != null ||
 			props.renote != null ||
-			(props.reply != null && quoteId.value != null)
+			quoteId.value != null
 		) &&
 		(textLength.value <= maxTextLength.value) &&
 		(!poll.value || poll.value.choices.length >= 2);
@@ -403,6 +403,8 @@ function watchForDraft() {
 	watch(visibility, () => saveDraft());
 	watch(localOnly, () => saveDraft());
 	watch(scheduledNoteDelete, () => saveDraft());
+	watch(quoteId, () => saveDraft());
+	watch(reactionAcceptance, () => saveDraft());
 }
 
 function checkMissingMention() {
@@ -764,6 +766,8 @@ function saveDraft() {
 			event: event.value,
 			visibleUserIds: visibility.value === 'specified' ? visibleUsers.value.map(x => x.id) : undefined,
 			scheduledNoteDelete: scheduledNoteDelete.value,
+			quoteId: quoteId.value,
+			reactionAcceptance: reactionAcceptance.value,
 		},
 	};
 
@@ -983,10 +987,23 @@ async function insertEmoji(ev: MouseEvent) {
 	textAreaReadOnly.value = true;
 	const target = ev.currentTarget ?? ev.target;
 	if (target == null) return;
+
+	// emojiPickerはダイアログが閉じずにtextareaとやりとりするので、
+	// focustrapをかけているとinsertTextAtCursorが効かない
+	// そのため、投稿フォームのテキストに直接注入する
+	// See: https://github.com/misskey-dev/misskey/pull/14282
+	//      https://github.com/misskey-dev/misskey/issues/14274
+
+	let pos = textareaEl.value?.selectionStart ?? 0;
+	let posEnd = textareaEl.value?.selectionEnd ?? text.value.length;
 	emojiPicker.show(
 		target as HTMLElement,
 		emoji => {
-			insertTextAtCursor(textareaEl.value, emoji);
+			const textBefore = text.value.substring(0, pos);
+			const textAfter = text.value.substring(posEnd);
+			text.value = textBefore + emoji + textAfter;
+			pos += emoji.length;
+			posEnd += emoji.length;
 		},
 		() => {
 			textAreaReadOnly.value = false;
@@ -1167,6 +1184,8 @@ onMounted(() => {
 						users.forEach(u => pushVisibleUser(u));
 					});
 				}
+				quoteId.value = draft.data.quoteId;
+				reactionAcceptance.value = draft.data.reactionAcceptance;
 			}
 		}
 
@@ -1174,9 +1193,11 @@ onMounted(() => {
 		if (props.initialNote) {
 			const init = props.initialNote;
 			text.value = init.text ? init.text : '';
-			files.value = init.files ?? [];
-			cw.value = init.cw ?? null;
 			useCw.value = init.cw != null;
+			cw.value = init.cw ?? null;
+			visibility.value = init.visibility;
+			localOnly.value = init.localOnly ?? false;
+			files.value = init.files ?? [];
 			if (init.poll) {
 				poll.value = {
 					choices: init.poll.choices.map(x => x.text),
@@ -1199,9 +1220,13 @@ onMounted(() => {
 					metadata: init.event.metadata,
 				};
 			}
-			visibility.value = init.visibility;
-			localOnly.value = init.localOnly ?? false;
+			if (init.visibleUserIds) {
+				misskeyApi('users/show', { userIds: init.visibleUserIds }).then(users => {
+					users.forEach(u => pushVisibleUser(u));
+				});
+			}
 			quoteId.value = init.renote ? init.renote.id : null;
+			reactionAcceptance.value = init.reactionAcceptance;
 			disableRightClick.value = init.disableRightClick != null;
 		}
 
