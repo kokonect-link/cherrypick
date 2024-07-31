@@ -6,9 +6,10 @@
 import ms from 'ms';
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
-import type { UsersRepository, BlockingsRepository } from '@/models/_.js';
+import type { UsersRepository, BlockingsRepository, MutingsRepository } from '@/models/_.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { UserBlockingService } from '@/core/UserBlockingService.js';
+import { UserMutingService } from '@/core/UserMutingService.js';
 import { DI } from '@/di-symbols.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { ApiError } from '../../error.js';
@@ -69,9 +70,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		@Inject(DI.blockingsRepository)
 		private blockingsRepository: BlockingsRepository,
 
+		@Inject(DI.mutingsRepository)
+		private mutingsRepository: MutingsRepository,
+
 		private userEntityService: UserEntityService,
 		private getterService: GetterService,
 		private userBlockingService: UserBlockingService,
+		private userMutingService: UserMutingService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			const blocker = await this.usersRepository.findOneByOrFail({ id: me.id });
@@ -99,7 +104,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				throw new ApiError(meta.errors.alreadyBlocking);
 			}
 
-			await this.userBlockingService.block(blocker, blockee);
+			await Promise.all([
+				this.userBlockingService.block(blocker, blockee),
+				this.mutingsRepository.exists({
+					where: {
+						muteeId: blockee.id,
+						muterId: blocker.id,
+					},
+				}).then(exists => {
+					if (!exists) {
+						this.userMutingService.mute(blocker, blockee, null);
+					}
+				}),
+			]);
 
 			return await this.userEntityService.pack(blockee.id, blocker, {
 				schema: 'UserDetailedNotMe',
