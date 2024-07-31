@@ -531,6 +531,7 @@ export class UserEntityService implements OnModuleInit {
 			isBot: user.isBot,
 			isCat: user.isCat,
 			isIndexable: user.isIndexable,
+			isSensitive: user.isSensitive,
 			instance: user.host ? this.federatedInstanceService.federatedInstanceCache.fetch(user.host).then(instance => instance ? {
 				name: instance.name,
 				softwareName: instance.softwareName,
@@ -568,6 +569,7 @@ export class UserEntityService implements OnModuleInit {
 				isLocked: user.isLocked,
 				isSilenced: this.roleService.getUserPolicies(user.id).then(r => !r.canPublicNote),
 				isSuspended: user.isSuspended,
+				isSensitive: user.isSensitive,
 				description: profile!.description,
 				location: profile!.location,
 				birthday: profile!.birthday,

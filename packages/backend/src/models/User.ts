@@ -263,6 +263,13 @@ export class MiUser {
 	})
 	public isIndexable: boolean;
 
+	@Index()
+	@Column('boolean', {
+		default: false,
+		comment: 'Whether the User is sensitive.',
+	})
+	public isSensitive: boolean;
+
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;
 

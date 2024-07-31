@@ -87,7 +87,8 @@ export class SearchService {
 				.leftJoinAndSelect('note.renote', 'renote')
 				.leftJoinAndSelect('reply.user', 'replyUser')
 				.leftJoinAndSelect('renote.user', 'renoteUser')
-				.andWhere('user.isIndexable = true');
+				.andWhere('user.isIndexable = true')
+				.andWhere('user.isSensitive = false');
 
 			if (opts.host) {
 				if (opts.host === '.') {

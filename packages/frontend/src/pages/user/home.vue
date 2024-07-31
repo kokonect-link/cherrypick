@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="profile _gaps">
 				<MkAccountMoved v-if="user.movedTo" :movedTo="user.movedTo"/>
 				<MkRemoteCaution v-if="user.host != null" :href="user.url ?? user.uri!" class="warn"/>
+				<MkUserSensitiveCaution v-if="user.isSensitive" />
 
 				<div :key="user.id" class="main _panel">
 					<div class="banner-container" :style="style">
@@ -174,6 +175,7 @@ import MkNote from '@/components/MkNote.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 import MkAccountMoved from '@/components/MkAccountMoved.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
+import MkUserSensitiveCaution from '@/components/MkUserSensitiveCaution.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkOmit from '@/components/MkOmit.vue';
 import MkInfo from '@/components/MkInfo.vue';

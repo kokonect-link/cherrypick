@@ -254,6 +254,11 @@ export const packedUserDetailedNotMeOnlySchema = {
 			nullable: false, optional: false,
 			example: false,
 		},
+		isSensitive: {
+			type: 'boolean',
+			nullable: false, optional: false,
+			example: false,
+		},
 		description: {
 			type: 'string',
 			nullable: true, optional: false,
@@ -490,6 +495,10 @@ export const packedMeDetailedOnlySchema = {
 			nullable: false, optional: false,
 		},
 		isIndexable: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
+		isSensitive: {
 			type: 'boolean',
 			nullable: false, optional: false,
 		},

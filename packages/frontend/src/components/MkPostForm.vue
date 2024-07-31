@@ -132,6 +132,7 @@ import { vibrate } from '@/scripts/vibrate.js';
 import * as sound from '@/scripts/sound.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
 
+
 const $i = signinRequired();
 
 const modal = inject('modal');
@@ -341,6 +342,11 @@ if (props.reply && props.reply.text != null) {
 
 if ($i.isSilenced && visibility.value === 'public') {
 	visibility.value = 'home';
+}
+
+if ($i.isSensitive && !useCw.value) {
+	useCw.value = true;
+	cw.value = i18n.ts.sensitiveUserCaution
 }
 
 if (props.channel) {

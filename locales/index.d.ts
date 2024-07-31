@@ -1039,6 +1039,14 @@ export interface Locale extends ILocale {
      */
     "flagAsCatDescription": string;
     /**
+     * センシティブとして設定
+     */
+    "flagAsSensitive": string;
+    /**
+     * このオプションを有効にすると、このアカウントはセンシティブなアカウントとして他者に表示されます。この機能を有効にすると、検索結果に表示されなくなります。現在ローカル限定の機能です。
+     */
+    "flagAsSensitiveDescription": string;
+    /**
      * タイムラインにノートへの返信を表示する
      */
     "flagShowTimelineReplies": string;
@@ -1546,6 +1554,10 @@ export interface Locale extends ILocale {
      * リモートユーザーのため、情報が不完全です。
      */
     "remoteUserCaution": string;
+    /**
+     * センシティブなユーザーです。
+     */
+    "sensitiveUserCaution": string;
     /**
      * アクティビティ
      */

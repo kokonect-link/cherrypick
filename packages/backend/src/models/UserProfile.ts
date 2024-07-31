@@ -178,6 +178,12 @@ export class MiUserProfile {
 	public isIndexable: boolean;
 
 	@Column('boolean', {
+		default: false,
+		comment: 'Whether User is sensitive.',
+	})
+	public isSensitive: boolean;
+
+	@Column('boolean', {
 		default: true,
 	})
 	public preventAiLearning: boolean;
