@@ -2476,6 +2476,7 @@ _widgets:
   birthdayFollowings: "Users who celebrate their birthday today"
   dice: "Dice"
 
+  search: "Search"
 _cw:
   hide: "Hide"
   show: "Show content"

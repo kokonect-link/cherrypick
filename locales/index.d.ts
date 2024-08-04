@@ -9749,6 +9749,7 @@ export interface Locale extends ILocale {
          * サイコロ
          */
         "dice": string;
+        "search": string;
     };
     "_cw": {
         /**

@@ -71,6 +71,13 @@ const props = defineProps<{
 	edit: boolean;
 }>();
 
+// This will not be available for now as I don't think this is needed
+// const notesSearchAvailable = (($i == null && instance.policies.canSearchNotes) || ($i != null && $i.policies.canSearchNotes));
+/* if (!notesSearchAvailable) {
+	const wid = widgetDefs.findIndex(widget => widget === 'search');
+	widgetDefs.splice(wid, 1);
+} */
+
 const emit = defineEmits<{
 	(ev: 'updateWidgets', widgets: Widget[]): void;
 	(ev: 'addWidget', widget: Widget): void;
