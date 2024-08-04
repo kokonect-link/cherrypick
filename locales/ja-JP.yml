@@ -261,6 +261,8 @@ flagAsSensitiveDescription: "このオプションを有効にすると、この
 flagShowTimelineReplies: "タイムラインにノートへの返信を表示する"
 flagShowTimelineRepliesDescription: "オンにすると、タイムラインにユーザーのノート以外にもそのユーザーの他のノートへの返信を表示します。"
 autoAcceptFollowed: "フォロー中ユーザーからのフォロリクを自動承認"
+carefulBot: "Botからのフォローを承認制にする"
+carefulBotDescription: "この設定を有効にすると、Botからのフォローリクエストを承認制にします。"
 addAccount: "アカウントを追加"
 reloadAccountsList: "アカウントリストの情報を更新"
 loginFailed: "ログインに失敗しました"

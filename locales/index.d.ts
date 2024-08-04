@@ -1067,6 +1067,14 @@ export interface Locale extends ILocale {
      */
     "autoAcceptFollowed": string;
     /**
+     * Botからのフォローを承認制にする
+     */
+    "carefulBot": string;
+    /**
+     * この設定を有効にすると、Botからのフォローリクエストを承認制にします。
+     */
+    "carefulBotDescription": string;
+    /**
      * アカウントを追加
      */
     "addAccount": string;
