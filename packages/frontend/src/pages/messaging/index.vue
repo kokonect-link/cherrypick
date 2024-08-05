@@ -8,6 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div>
+			<MkDeprecatedWarning />
 			<div v-if="tab === 'direct'">
 				<MkPagination v-slot="{ items }" ref="pagingComponent" :pagination="directPagination">
 					<MkChatPreview v-for="message in items" :key="message.id" :message="message"/>
@@ -36,7 +37,7 @@ import { $i } from '@/account.js';
 import { globalEvents } from '@/events.js';
 import MkChatPreview from '@/components/MkChatPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import MkSearchInput from '@/components/MkSearchInput.vue';
+import MkDeprecatedWarning from '@/components/MkDeprecatedWarning.vue';
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
@@ -66,36 +67,6 @@ const groupsPagination = {
 		group: true,
 	},
 };
-
-async function search() {
-	const query = searchQuery.value.toString().trim();
-
-	if (query == null || query === '') return;
-
-	if (query.startsWith('https://')) {
-		const promise = misskeyApi('ap/show', {
-			uri: query,
-		});
-
-		os.promiseDialog(promise, null, null, i18n.ts.fetchingAsApObject);
-
-		const res = await promise;
-
-		if (res.type === 'User') {
-			router.push(`/@${res.object.username}@${res.object.host}`);
-		} else if (res.type === 'Note') {
-			router.push(`/notes/${res.object.id}`);
-		}
-
-		return;
-	}
-	messagePagination.value = {
-		endpoint: 'messaging/message/search',
-		recipientId: recipientId.value,
-		groupId: groupId.value,
-	};
-	key.value++;
-}
 
 function onMessage(message) {
 	if (message.recipientId) {

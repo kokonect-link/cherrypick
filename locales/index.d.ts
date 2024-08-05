@@ -1591,6 +1591,11 @@ export interface Locale extends ILocale {
      */
     "sensitiveUserCaution": string;
     /**
+     * この機能は非推奨です。
+     *  必要であれば、バックアップを取ることをお勧めします。
+     */
+    "deprecatedCaution": string;
+    /**
      * アクティビティ
      */
     "activity": string;
@@ -9749,6 +9754,9 @@ export interface Locale extends ILocale {
          * サイコロ
          */
         "dice": string;
+        /**
+         * 検索
+         */
         "search": string;
     };
     "_cw": {
