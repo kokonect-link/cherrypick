@@ -370,7 +370,12 @@ const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserList
 	title: i18n.ts._timelines[tl],
 	icon: basicTimelineIconClass(tl),
 	iconOnly: true,
-})), ...(defaultStore.state.enableAntennaTimeline ? [{
+})), ...(defaultStore.state.enableListTimeline ? [{
+	icon: 'ti ti-list',
+	title: i18n.ts.lists,
+	iconOnly: true,
+	onClick: chooseList,
+}] : []), ...(defaultStore.state.enableAntennaTimeline ? [{
 	icon: 'ti ti-antenna',
 	title: i18n.ts.antennas,
 	iconOnly: true,
