@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.root">
-	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote && showProfile" :class="$style.avatar" :user="user" link preview/>
+	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote && showProfile" :class="$style.avatar" :user="user"/>
 	<div :class="$style.main">
 		<div v-if="showProfile" :class="$style.header">
 			<MkUserName :user="user" :nowrap="true"/>

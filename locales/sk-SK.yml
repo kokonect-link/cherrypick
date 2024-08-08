@@ -1206,8 +1206,6 @@ _sfx:
   notification: "Oznámenia"
   chat: "Chat"
   chatBg: "Chat (pozadie)"
-  antenna: "Antény"
-  channel: "Upozornenia kanála"
 _ago:
   future: "Budúcnosť"
   justNow: "Teraz"
@@ -1533,6 +1531,10 @@ _deck:
 _webhookSettings:
   name: "Názov"
   active: "Zapnuté"
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "Email"
 _moderationLogTypes:
   suspend: "Zmraziť"
   resetPassword: "Resetovať heslo"

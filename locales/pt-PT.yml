@@ -1082,7 +1082,7 @@ _achievements:
     _login3:
       title: "Iniciante I"
       description: "Fez login por um total de 3 dias"
-      flavor: "De hoje em diante, me chame apenas de Misskist"
+      flavor: "De hoje em diante, me chame apenas de Cherrypikist"
     _login7:
       title: "Iniciante II"
       description: "Fez login por um total de 7 dias"
@@ -1501,6 +1501,10 @@ _webhookSettings:
     follow: "Quando seguindo um usuário"
     followed: "Quando sendo seguido"
     renote: "Quando repostado"
+_abuseReport:
+  _notificationRecipient:
+    _recipientType:
+      mail: "E-mail"
 _moderationLogTypes:
   suspend: "Suspender"
   resetPassword: "Redefinir senha"

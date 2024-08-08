@@ -5,7 +5,7 @@ import { type UserConfig, defineConfig } from 'vite';
 
 import locales from '../../locales/index.js';
 import meta from '../../package.json';
-import packageInfo from './package.json' assert { type: 'json' };
+import packageInfo from './package.json' with { type: 'json' };
 import pluginUnwindCssModuleClassName from './lib/rollup-plugin-unwind-css-module-class-name.js';
 import pluginJson5 from './vite.json5.js';
 
@@ -25,6 +25,15 @@ const externalPackages = [
 			return match
 				? `https://esm.sh/shiki@${packageInfo.dependencies.shiki}/${match['subPkg']}`
 				: id;
+		},
+	},
+	// tinyld가 특수 UTF-8 문자를 사용하므로 Vite 빌드 과정에서 제외하고 CDN을 통해 로드함.
+	// https://github.com/komodojp/tinyld/issues/29#issuecomment-2165835459
+	{
+		name: 'tinyld',
+		match: /^tinyld$/,
+		path(): string {
+			return `https://cdn.jsdelivr.net/npm/tinyld@${packageInfo.dependencies.tinyld}/dist/tinyld.normal.node.mjs`
 		},
 	},
 ];

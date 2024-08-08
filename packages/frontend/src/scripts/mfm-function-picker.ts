@@ -5,43 +5,36 @@
 
 import { Ref, nextTick } from 'vue';
 import * as os from '@/os.js';
+import { i18n } from '@/i18n.js';
 import { MFM_TAGS, HTML_TAGS } from '@/const.js';
+import type { MenuItem } from '@/types/menu.js';
 
 /**
  * MFMの装飾のリストを表示する
  */
-export function mfmFunctionPicker(src: any, textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) {
-	return new Promise((res, rej) => {
+export function mfmFunctionPicker(src: HTMLElement | EventTarget | null, textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) {
 		os.popupMenu([{
+			text: i18n.ts.addMfmFunction,
 			type: 'label',
 		}, ...getHTMLFunctionList(textArea, textRef)
 		, { type: 'divider' }
 		, ...getMFMFunctionList(textArea, textRef)], src);
-	});
 }
 
-function getHTMLFunctionList(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) : object[] {
-	const ret: object[] = [];
-	HTML_TAGS.forEach(tag => {
-		ret.push({
+function getHTMLFunctionList(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>): MenuItem[] {
+	return HTML_TAGS.map(tag => ({
 			text: tag,
 			icon: tag === 'bold' ? 'ti ti-bold' : tag === 'strike' ? 'ti ti-strikethrough' : tag === 'italic' ? 'ti ti-italic' : tag === 'small' ? 'ti ti-text-decrease' : tag === 'center' ? 'ti ti-align-center' : tag === 'plain' ? 'ti ti-clear-formatting' : tag === 'inlinecode' ? 'ti ti-code' : tag === 'blockcode' ? 'ti ti-script' : tag === 'mathinline' ? 'ti ti-math' : tag === 'mathblock' ? 'ti ti-math-function' : 'ti ti-icons',
 			action: () => add(textArea, textRef, tag),
-		});
-	});
-	return ret;
+		}));
 }
 
-function getMFMFunctionList(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) : object[] {
-	const ret: object[] = [];
-	MFM_TAGS.forEach(tag => {
-		ret.push({
+function getMFMFunctionList(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>): MenuItem[] {
+	return MFM_TAGS.map(tag => ({
 			text: tag,
 			icon: 'ti ti-icons',
 			action: () => add(textArea, textRef, tag),
-		});
-	});
-	return ret;
+		}));
 }
 
 function add(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>, type: string) {

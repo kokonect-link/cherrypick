@@ -188,7 +188,7 @@ const emit = defineEmits<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-// eslint-disable-next-line vue/no-setup-props-destructure
+// eslint-disable-next-line vue/no-setup-props-reactivity-loss
 const page = ref(defaultStore.state.accountSetupWizard);
 
 watch(page, () => {
@@ -218,9 +218,11 @@ function setupComplete() {
 function launchTutorial() {
 	setupComplete();
 	nextTick(() => {
-		os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {
+		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkTutorialDialog.vue')), {
 			initialPage: 1,
-		}, {}, 'closed');
+		}, {
+			closed: () => dispose(),
+		});
 	});
 }
 

@@ -47,14 +47,13 @@ await fs.readFile(
 				)
 			)
 			.map((path) => path.replace(/(?:(?<=\.stories)\.(?:impl|meta)|\.msw)(?=\.ts$)/g, ''))
-			.map((path) => (path.startsWith('.') ? path : `./${path}`))
 	);
 	if (
 		micromatch(Array.from(modules), [
 			'../../assets/**',
 			'../../fluent-emojis/**',
+			'../../locales/ja-JP.yml',
 			'../../locales/ko-KR.yml',
-			'../../misskey-assets/**',
 			'assets/**',
 			'public/**',
 			'../../pnpm-lock.yaml',

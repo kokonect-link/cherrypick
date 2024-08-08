@@ -104,7 +104,7 @@ const meterStyle = computed(() => {
 			h: 180 - (usage.value / capacity.value * 180),
 			s: 0.7,
 			l: 0.5,
-		}),
+		}).toHslString(),
 	};
 });
 
