@@ -27,6 +27,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage" >
+		<span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span>
+		<i v-if="mainRouter.currentRoute.value.name === 'messaging' && !([ 'messaging-room', 'messaging-room-group' ].includes(<string>mainRouter.currentRoute.value.name) )" class="ti ti-plus"></i>
+		<i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil" ></i>
+	</button>
+
 	<button v-if="(!isDesktop || pageMetadata?.needWideArea) && !isMobile" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
 	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: bg }">
