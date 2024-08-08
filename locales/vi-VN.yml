@@ -2007,7 +2007,6 @@ _webhookSettings:
   createWebhook: "Tạo Webhook"
   name: "Tên"
   secret: "Mã bí mật"
-  events: "Sự kiện Webhook"
   active: "Đã bật"
   _events:
     reaction: "Khi nhận được sự kiện"

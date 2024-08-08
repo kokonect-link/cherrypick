@@ -2490,7 +2490,6 @@ _webhookSettings:
   modifyWebhook: "Sunting Webhook"
   name: "Nama"
   secret: "Secret"
-  events: "Webhook Events"
   active: "Aktif"
   _events:
     follow: "Ketika mengikuti pengguna"
