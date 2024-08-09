@@ -15,7 +15,7 @@
 ### Misc
 
 -->
-## x.x.x (unreleased)
+## 0.4.6
 
 ### Release Date
 
