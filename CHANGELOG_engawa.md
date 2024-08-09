@@ -15,6 +15,23 @@
 ### Misc
 
 -->
+## x.x.x (unreleased)
+
+### Release Date
+
+### General
+-
+
+### Client
+- 検索ウィジェットにオートフォーカスが当たらなくなりました
+
+### Server
+-
+
+### Misc
+
+
+
 ## 0.4.6
 
 ### Release Date
