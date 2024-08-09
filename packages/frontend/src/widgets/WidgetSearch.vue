@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 	<MkContainer :showHeader="widgetProps.showHeader" class="skw-search">
-		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @keydown="onInputKeydown">
+		<MkInput v-model="searchQuery" :large="true" type="search" @keydown="onInputKeydown">
 			<template #suffix>
 				<button style="border: none; background: none; z-index: 2; pointer-events: auto; position: relative; margin: 0 auto;" @click="search"><i class="ti ti-zoom"></i></button>
 			</template>
