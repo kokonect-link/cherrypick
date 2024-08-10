@@ -11,7 +11,6 @@ import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { IdService } from '@/core/IdService.js';
 import type { Config } from '@/config.js';
-import { ReversiService } from '@/core/ReversiService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 
@@ -33,7 +32,6 @@ export class CleanProcessorService {
 		private roleAssignmentsRepository: RoleAssignmentsRepository,
 
 		private queueLoggerService: QueueLoggerService,
-		private reversiService: ReversiService,
 		private idService: IdService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('clean');
@@ -66,8 +64,6 @@ export class CleanProcessorService {
 				id: In(expiredRoleAssignments.map(x => x.id)),
 			});
 		}
-
-		this.reversiService.cleanOutdatedGames();
 
 		this.logger.succ('Cleaned.');
 	}

@@ -5,7 +5,6 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import * as Redis from 'ioredis';
-import * as Reversi from 'misskey-reversi';
 import type { MiChannel } from '@/models/Channel.js';
 import type { MiUser } from '@/models/User.js';
 import type { MiUserProfile } from '@/models/UserProfile.js';
@@ -23,7 +22,7 @@ import type { MiWebhook } from '@/models/Webhook.js';
 import type { MiSystemWebhook } from '@/models/SystemWebhook.js';
 import type { MiMeta } from '@/models/Meta.js';
 import type { MiNotification } from '@/models/Notification.js';
-import { MiAvatarDecoration, MiReversiGame, MiRole, MiRoleAssignment } from '@/models/_.js';
+import { MiAvatarDecoration, MiRole, MiRoleAssignment } from '@/models/_.js';
 import type { Packed } from '@/misc/json-schema.js';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
@@ -195,38 +194,6 @@ export interface AdminEventTypes {
 		comment: string;
 	};
 }
-
-export interface ReversiEventTypes {
-	matched: {
-		game: Packed<'ReversiGameDetailed'>;
-	};
-	invited: {
-		user: Packed<'User'>;
-	};
-}
-
-export interface ReversiGameEventTypes {
-	changeReadyStates: {
-		user1: boolean;
-		user2: boolean;
-	};
-	updateSettings: {
-		userId: MiUser['id'];
-		key: string;
-		value: any;
-	};
-	log: Reversi.Serializer.Log & { id: string | null };
-	started: {
-		game: Packed<'ReversiGameDetailed'>;
-	};
-	ended: {
-		winnerId: MiUser['id'] | null;
-		game: Packed<'ReversiGameDetailed'>;
-	};
-	canceled: {
-		userId: MiUser['id'];
-	};
-}
 //#endregion
 
 // 辞書(interface or type)から{ type, body }ユニオンを定義
@@ -344,14 +311,6 @@ export type GlobalEvents = {
 		name: 'notesStream';
 		payload: Serialized<Packed<'Note'>>;
 	};
-	reversi: {
-		name: `reversiStream:${MiUser['id']}`;
-		payload: EventTypesToEventPayload<ReversiEventTypes>;
-	};
-	reversiGame: {
-		name: `reversiGameStream:${MiReversiGame['id']}`;
-		payload: EventTypesToEventPayload<ReversiGameEventTypes>;
-	};
 };
 
 // API event definitions
@@ -455,15 +414,5 @@ export class GlobalEventService {
 	@bindThis
 	public publishAdminStream<K extends keyof AdminEventTypes>(userId: MiUser['id'], type: K, value?: AdminEventTypes[K]): void {
 		this.publish(`adminStream:${userId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
-	public publishReversiStream<K extends keyof ReversiEventTypes>(userId: MiUser['id'], type: K, value?: ReversiEventTypes[K]): void {
-		this.publish(`reversiStream:${userId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
-	public publishReversiGameStream<K extends keyof ReversiGameEventTypes>(gameId: MiReversiGame['id'], type: K, value?: ReversiGameEventTypes[K]): void {
-		this.publish(`reversiGameStream:${gameId}`, type, typeof value === 'undefined' ? null : value);
 	}
 }

@@ -43,13 +43,12 @@ import { MetaEntityService } from '@/core/entities/MetaEntityService.js';
 import { GalleryPostEntityService } from '@/core/entities/GalleryPostEntityService.js';
 import { ClipEntityService } from '@/core/entities/ClipEntityService.js';
 import { ChannelEntityService } from '@/core/entities/ChannelEntityService.js';
-import type { ChannelsRepository, ClipsRepository, FlashsRepository, GalleryPostsRepository, MiMeta, NotesRepository, PagesRepository, ReversiGamesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { ChannelsRepository, ClipsRepository, FlashsRepository, GalleryPostsRepository, MiMeta, NotesRepository, PagesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
 import { handleRequestRedirectToOmitSearch } from '@/misc/fastify-hook-handlers.js';
 import { bindThis } from '@/decorators.js';
 import { FlashEntityService } from '@/core/entities/FlashEntityService.js';
 import { RoleService } from '@/core/RoleService.js';
-import { ReversiGameEntityService } from '@/core/entities/ReversiGameEntityService.js';
 import { FeedService } from './FeedService.js';
 import { UrlPreviewService } from './UrlPreviewService.js';
 import { ClientLoggerService } from './ClientLoggerService.js';
@@ -97,9 +96,6 @@ export class ClientServerService {
 		@Inject(DI.flashsRepository)
 		private flashsRepository: FlashsRepository,
 
-		@Inject(DI.reversiGamesRepository)
-		private reversiGamesRepository: ReversiGamesRepository,
-
 		private flashEntityService: FlashEntityService,
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
@@ -108,7 +104,6 @@ export class ClientServerService {
 		private galleryPostEntityService: GalleryPostEntityService,
 		private clipEntityService: ClipEntityService,
 		private channelEntityService: ChannelEntityService,
-		private reversiGameEntityService: ReversiGameEntityService,
 		private metaService: MetaService,
 		private urlPreviewService: UrlPreviewService,
 		private feedService: FeedService,
@@ -745,26 +740,6 @@ export class ClientServerService {
 				return await renderBase(reply);
 			}
 		});
-
-		// Reversi game
-		fastify.get<{ Params: { game: string; } }>('/reversi/g/:game', async (request, reply) => {
-			const game = await this.reversiGamesRepository.findOneBy({
-				id: request.params.game,
-			});
-
-			if (game) {
-				const _game = await this.reversiGameEntityService.packDetail(game);
-				const meta = await this.metaService.fetch();
-				reply.header('Cache-Control', 'public, max-age=3600');
-				return await reply.view('reversi-game', {
-					game: _game,
-					...await this.generateCommonPugData(meta),
-				});
-			} else {
-				return await renderBase(reply);
-			}
-		});
-		//#endregion
 
 		//region noindex pages
 		// Tags

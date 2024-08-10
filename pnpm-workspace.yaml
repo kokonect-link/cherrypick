@@ -4,5 +4,4 @@ packages:
  - 'packages/sw'
  - 'packages/cherrypick-js'
  - 'packages/cherrypick-js/generator'
- - 'packages/misskey-reversi'
  - 'packages/misskey-bubble-game'

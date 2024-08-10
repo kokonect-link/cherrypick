@@ -21,8 +21,6 @@ import { MessagingIndexChannelService } from './channels/messaging-index.js';
 import { DriveChannelService } from './channels/drive.js';
 import { HashtagChannelService } from './channels/hashtag.js';
 import { RoleTimelineChannelService } from './channels/role-timeline.js';
-import { ReversiChannelService } from './channels/reversi.js';
-import { ReversiGameChannelService } from './channels/reversi-game.js';
 import { type MiChannelService } from './channel.js';
 
 @Injectable()
@@ -44,8 +42,6 @@ export class ChannelsService {
 		private serverStatsChannelService: ServerStatsChannelService,
 		private queueStatsChannelService: QueueStatsChannelService,
 		private adminChannelService: AdminChannelService,
-		private reversiChannelService: ReversiChannelService,
-		private reversiGameChannelService: ReversiGameChannelService,
 	) {
 	}
 
@@ -69,8 +65,6 @@ export class ChannelsService {
 			case 'serverStats': return this.serverStatsChannelService;
 			case 'queueStats': return this.queueStatsChannelService;
 			case 'admin': return this.adminChannelService;
-			case 'reversi': return this.reversiChannelService;
-			case 'reversiGame': return this.reversiGameChannelService;
 
 			default:
 				throw new Error(`no such channel: ${name}`);

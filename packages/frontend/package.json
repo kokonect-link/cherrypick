@@ -58,7 +58,6 @@
 		"json5": "2.2.3",
 		"matter-js": "0.19.0",
 		"misskey-bubble-game": "workspace:*",
-		"misskey-reversi": "workspace:*",
 		"photoswipe": "5.4.4",
 		"prismjs": "1.29.0",
 		"punycode": "2.3.1",

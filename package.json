@@ -13,7 +13,6 @@
 		"packages/backend",
 		"packages/sw",
 		"packages/cherrypick-js",
-		"packages/misskey-reversi",
 		"packages/misskey-bubble-game"
 	],
 	"private": true,
