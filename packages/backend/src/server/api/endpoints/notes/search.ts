@@ -41,7 +41,6 @@ export const paramDef = {
 		sinceId: { type: 'string', format: 'misskey:id' },
 		untilId: { type: 'string', format: 'misskey:id' },
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
-		origin: { type: 'string', enum: ['local', 'remote', 'combined'], default: 'combined' },
 		offset: { type: 'integer', default: 0 },
 		host: {
 			type: 'string',
@@ -49,6 +48,9 @@ export const paramDef = {
 		},
 		userId: { type: 'string', format: 'misskey:id', nullable: true, default: null },
 		channelId: { type: 'string', format: 'misskey:id', nullable: true, default: null },
+		fileOption: { type: 'string', enum: ['combined', 'fileOnly', 'noFile'], default: 'combined' },
+		excludeNsfw: { type: 'boolean', default: false },
+		excludeBot: { type: 'boolean', default: false },
 	},
 	required: ['query'],
 } as const;
@@ -72,7 +74,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				userId: ps.userId,
 				channelId: ps.channelId,
 				host: ps.host,
-				origin: ps.origin,
+				fileOption: ps.fileOption,
+				excludeNsfw: ps.excludeNsfw,
+				excludeBot: ps.excludeBot,
 			}, {
 				untilId: ps.untilId,
 				sinceId: ps.sinceId,

@@ -26,7 +26,7 @@
 - 検索ウィジェットにオートフォーカスが当たらなくなりました
 
 ### Server
--
+- 検索機能に新しいパラメータを追加( [1673beta/cherrypick#94](https://github.com/1673beta/cherrypick/issues/94) )
 
 ### Misc
 
