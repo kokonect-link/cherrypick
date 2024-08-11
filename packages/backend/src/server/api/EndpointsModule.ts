@@ -83,6 +83,8 @@ import * as ep___admin_showUser from './endpoints/admin/show-user.js';
 import * as ep___admin_showUsers from './endpoints/admin/show-users.js';
 import * as ep___admin_suspendUser from './endpoints/admin/suspend-user.js';
 import * as ep___admin_unsuspendUser from './endpoints/admin/unsuspend-user.js';
+import * as ep___admin_setUserSensitive from './endpoints/admin/set-user-sensitive.js';
+import * as ep___admin_unsetUserSensitive from './endpoints/admin/unset-user-sensitive.js';
 import * as ep___admin_updateMeta from './endpoints/admin/update-meta.js';
 import * as ep___admin_deleteAccount from './endpoints/admin/delete-account.js';
 import * as ep___admin_updateUserNote from './endpoints/admin/update-user-note.js';
@@ -491,6 +493,8 @@ const $admin_showUser: Provider = { provide: 'ep:admin/show-user', useClass: ep_
 const $admin_showUsers: Provider = { provide: 'ep:admin/show-users', useClass: ep___admin_showUsers.default };
 const $admin_suspendUser: Provider = { provide: 'ep:admin/suspend-user', useClass: ep___admin_suspendUser.default };
 const $admin_unsuspendUser: Provider = { provide: 'ep:admin/unsuspend-user', useClass: ep___admin_unsuspendUser.default };
+const $admin_setUserSensitive: Provider = { provide: 'ep:admin/set-user-sensitive', useClass: ep___admin_setUserSensitive.default };
+const $admin_unsetUserSensitive: Provider = { provide: 'ep:admin/unset-user-sensitive', useClass: ep___admin_unsetUserSensitive.default };
 const $admin_updateMeta: Provider = { provide: 'ep:admin/update-meta', useClass: ep___admin_updateMeta.default };
 const $admin_deleteAccount: Provider = { provide: 'ep:admin/delete-account', useClass: ep___admin_deleteAccount.default };
 const $admin_updateUserNote: Provider = { provide: 'ep:admin/update-user-note', useClass: ep___admin_updateUserNote.default };
@@ -904,6 +908,8 @@ const $bubbleGame_ranking: Provider = { provide: 'ep:bubble-game/ranking', useCl
 		$admin_showUsers,
 		$admin_suspendUser,
 		$admin_unsuspendUser,
+		$admin_setUserSensitive,
+		$admin_unsetUserSensitive,
 		$admin_updateMeta,
 		$admin_deleteAccount,
 		$admin_updateUserNote,
@@ -1310,6 +1316,8 @@ const $bubbleGame_ranking: Provider = { provide: 'ep:bubble-game/ranking', useCl
 		$admin_showUsers,
 		$admin_suspendUser,
 		$admin_unsuspendUser,
+		$admin_setUserSensitive,
+		$admin_unsetUserSensitive,
 		$admin_updateMeta,
 		$admin_deleteAccount,
 		$admin_updateUserNote,

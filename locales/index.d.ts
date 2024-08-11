@@ -931,6 +931,14 @@ export interface Locale extends ILocale {
      */
     "unsuspend": string;
     /**
+     * センシティブとして設定
+     */
+    "setAsSensitive": string;
+    /**
+     * センシティブを解除
+     */
+    "unsetAsSensitive": string;
+    /**
      * ブロックしますか？
      */
     "blockConfirm": string;
@@ -946,6 +954,14 @@ export interface Locale extends ILocale {
      * 解凍しますか？
      */
     "unsuspendConfirm": string;
+    /**
+     * センシティブとして設定しますか？
+     */
+    "setSensitiveConfirm": string;
+    /**
+     * センシティブを解除しますか？
+     */
+    "unsetSensitiveConfirm": string;
     /**
      * リストを選択
      */

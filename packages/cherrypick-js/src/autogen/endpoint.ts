@@ -103,6 +103,8 @@ import type {
 	AdminShowUsersResponse,
 	AdminSuspendUserRequest,
 	AdminUnsuspendUserRequest,
+	AdminSetUserSensitiveRequest,
+	AdminUnsetUserSensitiveRequest,
 	AdminUpdateMetaRequest,
 	AdminDeleteAccountRequest,
 	AdminUpdateUserNoteRequest,
@@ -685,6 +687,8 @@ export type Endpoints = {
 	'admin/show-users': { req: AdminShowUsersRequest; res: AdminShowUsersResponse };
 	'admin/suspend-user': { req: AdminSuspendUserRequest; res: EmptyResponse };
 	'admin/unsuspend-user': { req: AdminUnsuspendUserRequest; res: EmptyResponse };
+	'admin/set-user-sensitive': { req: AdminSetUserSensitiveRequest; res: EmptyResponse };
+	'admin/unset-user-sensitive': { req: AdminUnsetUserSensitiveRequest; res: EmptyResponse };
 	'admin/update-meta': { req: AdminUpdateMetaRequest; res: EmptyResponse };
 	'admin/delete-account': { req: AdminDeleteAccountRequest; res: EmptyResponse };
 	'admin/update-user-note': { req: AdminUpdateUserNoteRequest; res: EmptyResponse };
@@ -1092,6 +1096,8 @@ export const endpointReqTypes: Record<keyof Endpoints, 'application/json' | 'mul
 	'admin/show-users': 'application/json',
 	'admin/suspend-user': 'application/json',
 	'admin/unsuspend-user': 'application/json',
+	'admin/set-user-sensitive': 'application/json',
+	'admin/unset-user-sensitive': 'application/json',
 	'admin/update-meta': 'application/json',
 	'admin/delete-account': 'application/json',
 	'admin/update-user-note': 'application/json',

@@ -347,6 +347,9 @@ type AdminSendEmailRequest = operations['admin___send-email']['requestBody']['co
 type AdminServerInfoResponse = operations['admin___server-info']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type AdminSetUserSensitiveRequest = operations['admin___set-user-sensitive']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type AdminShowModerationLogsRequest = operations['admin___show-moderation-logs']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -399,6 +402,9 @@ type AdminUnsetUserAvatarRequest = operations['admin___unset-user-avatar']['requ
 
 // @public (undocumented)
 type AdminUnsetUserBannerRequest = operations['admin___unset-user-banner']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type AdminUnsetUserSensitiveRequest = operations['admin___unset-user-sensitive']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
 type AdminUnsuspendUserRequest = operations['admin___unsuspend-user']['requestBody']['content']['application/json'];
@@ -1316,6 +1322,8 @@ declare namespace entities {
         AdminShowUsersResponse,
         AdminSuspendUserRequest,
         AdminUnsuspendUserRequest,
+        AdminSetUserSensitiveRequest,
+        AdminUnsetUserSensitiveRequest,
         AdminUpdateMetaRequest,
         AdminDeleteAccountRequest,
         AdminUpdateUserNoteRequest,

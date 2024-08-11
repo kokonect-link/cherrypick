@@ -706,6 +706,24 @@ export type paths = {
      */
     post: operations['admin___unsuspend-user'];
   };
+  '/admin/set-user-sensitive': {
+    /**
+     * admin/set-user-sensitive
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:suspend-user*
+     */
+    post: operations['admin___set-user-sensitive'];
+  };
+  '/admin/unset-user-sensitive': {
+    /**
+     * admin/unset-user-sensitive
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:suspend-user*
+     */
+    post: operations['admin___unset-user-sensitive'];
+  };
   '/admin/update-meta': {
     /**
      * admin/update-meta
@@ -9709,6 +9727,7 @@ export type operations = {
             isModerator: boolean;
             isSilenced: boolean;
             isSuspended: boolean;
+            isSensitive: boolean;
             isHibernated: boolean;
             lastActiveDate: string | null;
             moderationNote: string;
@@ -9889,6 +9908,110 @@ export type operations = {
    * **Credential required**: *Yes* / **Permission**: *write:admin:unsuspend-user*
    */
   'admin___unsuspend-user': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          userId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/set-user-sensitive
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:suspend-user*
+   */
+  'admin___set-user-sensitive': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          userId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/unset-user-sensitive
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:suspend-user*
+   */
+  'admin___unset-user-sensitive': {
     requestBody: {
       content: {
         'application/json': {
@@ -20335,7 +20458,6 @@ export type operations = {
           noCrawle?: boolean;
           preventAiLearning?: boolean;
           isIndexable?: boolean;
-          isSensitive?: boolean;
           isBot?: boolean;
           isCat?: boolean;
           injectFeaturedNote?: boolean;

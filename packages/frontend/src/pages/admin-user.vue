@@ -92,6 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<FormSection>
 					<div class="_gaps">
 						<MkSwitch v-model="suspended" @update:modelValue="toggleSuspend">{{ i18n.ts.suspend }}</MkSwitch>
+						<MkSwitch v-model="isSensitive" @update:modelValue="toggleSensitive">{{ i18n.ts.sensitive }}</MkSwitch>
 
 						<div>
 							<MkButton v-if="user.host == null" inline style="margin-right: 8px;" @click="resetPassword"><i class="ti ti-key"></i> {{ i18n.ts.resetPassword }}</MkButton>
@@ -244,6 +245,7 @@ const ap = ref<any>(null);
 const moderator = ref(false);
 const silenced = ref(false);
 const suspended = ref(false);
+const isSensitive = ref(false);
 const moderationNote = ref('');
 const filesPagination = {
 	endpoint: 'admin/drive/files' as const,
@@ -275,6 +277,7 @@ function createFetcher() {
 		moderator.value = info.value.isModerator;
 		silenced.value = info.value.isSilenced;
 		suspended.value = info.value.isSuspended;
+		isSensitive.value = info.value.isSensitive;
 		moderationNote.value = info.value.moderationNote;
 
 		watch(moderationNote, async () => {
@@ -320,6 +323,19 @@ async function toggleSuspend(v) {
 		suspended.value = !v;
 	} else {
 		await misskeyApi(v ? 'admin/suspend-user' : 'admin/unsuspend-user', { userId: user.value.id });
+		await refreshUser();
+	}
+}
+
+async function toggleSensitive(v) {
+	const confirm = await os.confirm({
+		type: 'warning',
+		text: v ? i18n.ts.setSensitiveConfirm : i18n.ts.unsetSensitiveConfirm,
+	});
+	if (confirm.canceled) {
+		isSensitive.value = !v;
+	} else {
+		await misskeyApi(v? 'admin/set-user-sensitive' : 'admin/unset-user-sensitive', { userId: user.value.id });
 		await refreshUser();
 	}
 }

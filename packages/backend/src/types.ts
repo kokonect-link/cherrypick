@@ -57,6 +57,8 @@ export const moderationLogTypes = [
 	'updateServerSettings',
 	'suspend',
 	'unsuspend',
+	'setSensitive',
+	'unsetSensitive',
 	'updateUserNote',
 	'addCustomEmoji',
 	'updateCustomEmoji',
@@ -111,6 +113,16 @@ export type ModerationLogPayloads = {
 		userHost: string | null;
 	};
 	unsuspend: {
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
+	};
+	setSensitive: {
+		userId: string;
+		userUsername: string;
+		userHost: string | null;
+	};
+	unsetSensitive: {
 		userId: string;
 		userUsername: string;
 		userHost: string | null;
