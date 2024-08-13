@@ -159,7 +159,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showPreview: {
 		where: 'device',
-		default: false,
+		default: true,
 	},
 	showPreviewInReplies: {
 		where: 'device',
