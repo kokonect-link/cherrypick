@@ -81,6 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
 			<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
 			<button v-tooltip="i18n.ts.event" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: event }]" @click="toggleEvent"><i class="ti ti-calendar"></i></button>
+			<button v-tooltip="i18n.ts.scheduledNoteDelete" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: scheduledNoteDelete }]" @click="toggleScheduledNoteDelete"><i class="ti ti-bomb"></i></button>
 			<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
 			<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 			<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
@@ -1113,11 +1114,6 @@ function showOtherMenu(ev: MouseEvent) {
 	}
 
 	os.popupMenu([{
-		type: 'button',
-		text: i18n.ts.scheduledNoteDelete,
-		icon: 'ti ti-bomb',
-		action: toggleScheduledNoteDelete,
-	},{
 		type: 'button',
 		text: i18n.ts.reactionAcceptance,
 		icon: reactionAcceptanceIcon,
