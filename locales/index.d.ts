@@ -11797,6 +11797,20 @@ export interface Locale extends ILocale {
          */
         "description": string;
     };
+    "_altWarning": {
+        /**
+         * ファイルに代替テキストが設定されていません。
+         */
+        "noAltWarning": string;
+        /**
+         * 画像に代替テキストが設定されていない場合に警告を表示する
+         */
+        "showNoAltWarning": string;
+        /**
+         * 投稿フォームへ
+         */
+        "postAnyWay": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

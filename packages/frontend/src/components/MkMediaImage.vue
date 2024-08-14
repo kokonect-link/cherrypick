@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:forceBlurhash="hide"
 			:cover="hide || cover"
 			:alt="image.comment || image.name"
-			:title="image.comment || image.name"
+			:title="image.name"
 			:width="image.properties.width"
 			:height="image.properties.height"
 			:style="hide ? 'filter: brightness(0.7);' : null"
@@ -44,7 +44,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<template v-else-if="controls">
 		<div :class="$style.indicators">
-			<div v-if="['image/gif', 'image/apng'].includes(image.type)" :class="$style.indicator">GIF</div>
+			<div v-if="['image/gif'].includes(image.type)" :class="$style.indicator">GIF</div>
+			<div v-if="['image/apng'].includes(image.type)" :class="$style.indicator">APNG</div>
 			<div v-if="image.comment" :class="$style.indicator">ALT</div>
 			<div v-if="image.isSensitive" :class="$style.indicator" style="color: var(--warn);" :title="i18n.ts.sensitive"><i class="ti ti-eye-exclamation"></i></div>
 		</div>
@@ -220,9 +221,9 @@ onUnmounted(() => {
 	display: block;
 	position: absolute;
 	border-radius: 6px;
-	background-color: var(--fg);
+	background-color: var(--bg);
 	color: var(--accentLighten);
-	font-size: 12px;
+	font-size: 18px;
 	opacity: .5;
 	padding: 5px 8px;
 	text-align: center;

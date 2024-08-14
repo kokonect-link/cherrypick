@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<Sortable :modelValue="props.modelValue" :class="$style.files" itemKey="id" :animation="150" :delay="100" :delayOnTouchOnly="true" @update:modelValue="v => emit('update:modelValue', v)">
 		<template #item="{element}">
 			<div :class="$style.file" @click="showFileMenu(element, $event)" @contextmenu.prevent="showFileMenu(element, $event)">
-				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover"/>
+				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover" :show-alt-indicator="true" />
 				<div v-if="element.isSensitive" :class="$style.sensitive">
 					<i class="ti ti-eye-exclamation" style="margin: auto;"></i>
 				</div>

@@ -153,8 +153,9 @@ onMounted(() => {
 			[itemData.w, itemData.h] = [itemData.h, itemData.w];
 		}
 		itemData.msrc = file.thumbnailUrl ?? undefined;
-		itemData.alt = file.comment ?? file.name;
+		itemData.alt = file.comment || undefined;
 		itemData.comment = file.comment ?? file.name;
+		itemData.title = file.name;
 		itemData.thumbCropped = true;
 
 		return itemData;
@@ -179,7 +180,25 @@ onMounted(() => {
 				el.appendChild(textBox);
 
 				pswp.on('change', () => {
-					textBox.textContent = pswp.currSlide?.data.comment;
+					const altText = pswp.currSlide?.data.alt || null;
+					textBox.textContent = altText;
+					if (!altText) {
+						el.style.display = 'none';
+					}
+				});
+			},
+		});
+		lightbox?.pswp?.ui?.registerElement({
+			name: 'fileName',
+			className: 'pswp__file-name-container',
+			appendTo: 'wrapper',
+			onInit: (el, pswp) => {
+				const textBox = document.createElement('p');
+				textBox.className = 'pswp__file-name _acrylic';
+				el.appendChild(textBox);
+
+				pswp.on('change', () => {
+					textBox.textContent = pswp.currSlide?.data.title;
 				});
 			},
 		});
@@ -339,12 +358,30 @@ defineExpose({
 	align-items: center;
 
 	position: absolute;
+	bottom: 100px;
+	left: 50%;
+	transform: translateX(-50%);
+
+	width: 75%;
+	max-width: 800px;
+
+	z-index: 2;
+}
+
+.pswp__file-name-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	position: absolute;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
 
 	width: 75%;
 	max-width: 800px;
+
+	z-index: 1;
 }
 
 .pswp__alt-text {
@@ -354,6 +391,18 @@ defineExpose({
 	padding: var(--margin);
 	border-radius: var(--radius);
 	max-height: 8em;
+	overflow-y: auto;
+	text-shadow: var(--bg) 0 0 10px, var(--bg) 0 0 3px, var(--bg) 0 0 3px;
+	white-space: pre-line;
+}
+
+.pswp__file-name {
+	color: var(--fg);
+	margin: 0 auto;
+	text-align: center;
+	padding: var(--margin);
+	border-radius: var(--radius);
+	max-height: 16em;
 	overflow-y: auto;
 	text-shadow: var(--bg) 0 0 10px, var(--bg) 0 0 3px, var(--bg) 0 0 3px;
 	white-space: pre-line;

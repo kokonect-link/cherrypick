@@ -96,6 +96,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSelect>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="showNoAltTextWarning">{{ i18n.ts._altWarning.showNoAltWarning }}</MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -471,6 +472,7 @@ const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNot
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
 const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
 const forceRenoteVisibilitySelection = computed(defaultStore.makeGetterSetter('forceRenoteVisibilitySelection'));
+const showNoAltTextWarning = computed(defaultStore.makeGetterSetter('showNoAltTextWarning'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

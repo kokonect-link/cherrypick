@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<canvas v-show="hide" key="canvas" ref="canvas" :class="$style.canvas" :width="canvasWidth" :height="canvasHeight" :title="title ?? undefined" tabindex="-1"/>
 		<img v-show="!hide" key="img" ref="img" :height="imgHeight ?? undefined" :width="imgWidth ?? undefined" :class="[$style.img, { [$style.noDrag]: noDrag }]" :src="src ?? undefined" :title="title ?? undefined" :alt="alt ?? undefined" loading="eager" decoding="async" tabindex="-1"/>
+		<i v-if="alt && showAltIndicator" :class="$style.altIndicator" class="ti ti-alt"></i>
 	</TransitionGroup>
 </div>
 </template>
@@ -82,6 +83,7 @@ const props = withDefaults(defineProps<{
 	forceBlurhash?: boolean;
 	onlyAvgColor?: boolean; // 軽量化のためにBlurhashを使わずに平均色だけを描画
 	noDrag?: boolean;
+	showAltIndicator?: boolean;
 }>(), {
 	transition: null,
 	src: null,
@@ -93,6 +95,7 @@ const props = withDefaults(defineProps<{
 	forceBlurhash: false,
 	onlyAvgColor: false,
 	noDrag: false,
+	showAltIndicator: false,
 });
 
 const viewId = uuid();
@@ -268,5 +271,22 @@ onUnmounted(() => {
 	&.noDrag {
 		-webkit-user-drag: none;
 	}
+}
+
+.altIndicator {
+	display: flex;
+	gap: 4px;
+	position: absolute;
+	border-radius: 8px;
+	overflow: hidden;
+	top: 0;
+	right: 0;
+	background-color: var(--bg);
+	-webkit-backdrop-filter: var(--blur, blur(15px));
+	backdrop-filter: var(--blur, blur(15px));
+	color: var(--accent);
+	font-size: 1em;
+	padding: 6px 8px;
+	text-align: center;
 }
 </style>

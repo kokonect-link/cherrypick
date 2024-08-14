@@ -3149,3 +3149,8 @@ _dice:
 _isIndexable:
   title: "公開ノートをインデックス化"
   description: "kmy互換機能。公開ノートをインデックス化するかどうかを設定します。"
+
+_altWarning:
+  noAltWarning: "ファイルに代替テキストが設定されていません。"
+  showNoAltWarning: "画像に代替テキストが設定されていない場合に警告を表示する"
+  postAnyWay: "投稿フォームへ"

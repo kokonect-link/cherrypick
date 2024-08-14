@@ -3024,3 +3024,8 @@ _dice:
 _isIndexable:
   title: "Indexable"
   description: "This is kmyblue compatible feature. If you want to prevent your account from being indexed by search engines, please disable this option."
+
+_altWarning:
+  noAltWarning: "ファイルに代替テキストが設定されていません。"
+  showNoAltWarning: "画像に代替テキストが設定されていない場合に警告を表示する"
+  postAnyWay: "投稿フォームへ"
