@@ -33,19 +33,13 @@ jobs:
       - name: Check allowed users
         id: check-allowed-users
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ORG_ID: ${{ github.repository_owner_id }}
-          COMMENT_AUTHOR: ${{ github.event.comment.user.login }}
+          ALLOWED_USER: ${{ github.repository_owner_id }}
+          COMMENT_AUTHOR: ${{ github.event.comment.user.id }}
         run: |
-          MEMBERSHIP_STATUS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-          -H "Accept: application/vnd.github+json" \
-          -H "X-GitHub-Api-Version: 2022-11-28" \
-          "https://api.github.com/organizations/$ORG_ID/public_members/$COMMENT_AUTHOR" \
-          -o /dev/null -w '%{http_code}\n' -s)
-          if [ "$MEMBERSHIP_STATUS" -eq 204 ]; then
-            echo "is-allowed-user=true" > $GITHUB_OUTPUT
+          if ["$COMMENT_AUTHOR" = "$ALLOWED_USER"]; then
+            echo "is-allowed-user=true" >> $GITHUB_OUTPUT
           else
-            echo "is-allowed-user=false" > $GITHUB_OUTPUT
+            echo "is-allowed-user=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Get PR ref

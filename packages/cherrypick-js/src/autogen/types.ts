@@ -5407,6 +5407,7 @@ export type operations = {
             enableReceivePrerelease: boolean;
             skipVersion: boolean;
             skipCherryPickVersion?: string | null;
+            customSplashText: string[];
           };
         };
       };
@@ -10205,6 +10206,7 @@ export type operations = {
           enableReceivePrerelease?: boolean;
           skipVersion?: boolean;
           skipCherryPickVersion?: string | null;
+          customSplashText?: string[] | null;
         };
       };
     };

@@ -1179,6 +1179,8 @@ sensitiveWordsDescription2: "Using spaces will create AND expressions and surrou
 prohibitedWords: "Prohibited words"
 prohibitedWordsDescription: "Enables an error when attempting to post a note containing the set word(s). Multiple words can be set, separated by a new line."
 prohibitedWordsDescription2: "Using spaces will create AND expressions and surrounding keywords with slashes will turn them into a regular expression."
+customSplashText: "Custom splash text"
+customSplashTextDescription: "This text will be displayed on the loading page."
 hiddenTags: "Hidden hashtags"
 hiddenTagsDescription: "Select tags which will not shown on trend list.\nMultiple tags could be registered by lines."
 notesSearchNotAvailable: "Note search is unavailable."

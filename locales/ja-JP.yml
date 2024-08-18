@@ -1183,6 +1183,8 @@ sensitiveWordsDescription2: "スペースで区切るとAND指定になり、キ
 prohibitedWords: "禁止ワード"
 prohibitedWordsDescription: "設定したワードが含まれるノートを投稿しようとした際、エラーとなるようにします。改行で区切って複数設定できます。"
 prohibitedWordsDescription2: "スペースで区切るとAND指定になり、キーワードをスラッシュで囲むと正規表現になります。"
+customSplashText: "カスタムスプラッシュテキスト"
+customSplashTextDescription: "ロード画面に表示されるテキストを設定します。改行で区切って複数設定できます。"
 hiddenTags: "非表示ハッシュタグ"
 hiddenTagsDescription: "設定したタグをトレンドに表示させないようにします。改行で区切って複数設定できます。"
 notesSearchNotAvailable: "ノート検索は利用できません。"

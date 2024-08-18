@@ -765,4 +765,11 @@ export class MiMeta {
 		nullable: true,
 	})
 	public skipCherryPickVersion: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		array: true,
+		default: '{}',
+	})
+	public customSplashText: string[];
 }

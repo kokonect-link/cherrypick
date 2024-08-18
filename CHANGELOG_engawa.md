@@ -15,7 +15,23 @@
 ### Misc
 
 -->
-## x.x.x (unreleased)
+## 0.5.1(unreleased)
+
+### Release Date
+
+### General
+- スプラッシュスクリーン(画面ロード時にぐるぐるが表示される画面)にカスタムテキストを適用できるように
+
+### Client
+- 
+
+### Server
+-
+
+### Misc
+
+
+## 0.5.0
 
 ### Release Date
 
