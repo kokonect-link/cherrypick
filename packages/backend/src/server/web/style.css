@@ -61,6 +61,17 @@ html {
 	stroke-linecap: round;
 	animation: dash 1.2s ease-in-out infinite;
 }
+#splashText {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	display: inline-block;
+	text-align: center;
+	transform: translateY(40px);
+}
 
 @keyframes splashSpinner {
 	0% {
