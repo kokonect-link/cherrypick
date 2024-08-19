@@ -8,7 +8,7 @@
 [Learn more](https://misskey-hub.net/)
 
 ---
-EN [JP](./README.ja.md)
+[EN](./README.md) JP
 
 ---
 
@@ -31,10 +31,10 @@ EN [JP](./README.ja.md)
 
 ---
 ## About
-This repository is a fork of [CherryPick](htttps://github.com/kokonect-link/cherrypick.git).  
-Added some modding inspired by Firefish, Sharkey, Foundkey and more.  
-For the difference from original, see [What's Difference](./docs/WhatsDifference.md).  
-For more information, please read [docs](./docs/docs.md).
+このリポジトリは、[CherryPick](https://github.com/kokonect-link/cherrypick.git)のフォークソフトウェアです。  
+Firefish、Sharkey、Foundkeyなどの影響を受けた改造をしています。  
+フォーク元との差異については[こちら](./docs/WhatsDifference.md)をご覧ください。  
+インストール方法などの詳細は[docs](./docs/docs.md)をご覧ください。
 
 ---
 
