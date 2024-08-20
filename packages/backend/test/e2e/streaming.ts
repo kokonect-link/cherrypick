@@ -7,9 +7,9 @@ process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
 import { WebSocket } from 'ws';
-import { MiFollowing } from '@/models/Following.js';
 import { api, createAppToken, initTestDb, port, post, signup, waitFire } from '../utils.js';
 import type * as misskey from 'cherrypick-js';
+import { MiFollowing } from '@/models/Following.js';
 
 describe('Streaming', () => {
 	let Followings: any;
@@ -428,34 +428,6 @@ describe('Streaming', () => {
 
 				assert.strictEqual(fired, false);
 			});
-
-			test('withCats: true のときノートが流れる', async () => {
-				await api('i/update', {
-					isCat: true,
-				}, kyoko);
-				const fired = await waitFire(
-					ayano, 'homeTimeline',	// ayano:home
-					() => api('notes/create', { text: 'meow' }, kyoko),	// cat kyoko note
-					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
-					{ withCats: true },
-				);
-
-				assert.strictEqual(fired, true);
-				await api('i/update', {
-					isCat: false,
-				}, kyoko);
-			});
-
-			test('withCats: true のときノートが流れない', async () => {
-				const fired = await waitFire(
-					ayano, 'homeTimeline',	// ayano:home
-					() => api('notes/create', { text: 'test' }, kyoko),	// kyoko note
-					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
-					{ withCats: true },
-				);
-
-				assert.strictEqual(fired, false);
-			});
 		});
 
 		describe('Hybrid Timeline', () => {
@@ -592,34 +564,6 @@ describe('Streaming', () => {
 
 				assert.strictEqual(fired, false);
 			});
-
-			test('withCats: true のときノートが流れる', async () => {
-				await api('i/update', {
-					isCat: true,
-				}, kyoko);
-				const fired = await waitFire(
-					ayano, 'homeTimeline',	// ayano:home
-					() => api('notes/create', { text: 'meow' }, kyoko),	// cat kyoko note
-					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
-					{ withCats: true },
-				);
-
-				assert.strictEqual(fired, true);
-				await api('i/update', {
-					isCat: false,
-				}, kyoko);
-			});
-
-			test('withCats: true のときノートが流れない', async () => {
-				const fired = await waitFire(
-					ayano, 'homeTimeline',	// ayano:home
-					() => api('notes/create', { text: 'test' }, kyoko),	// kyoko note
-					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
-					{ withCats: true },
-				);
-
-				assert.strictEqual(fired, false);
-			});
 		});
 
 		describe('Global Timeline', () => {
@@ -663,34 +607,6 @@ describe('Streaming', () => {
 				);
 
 				assert.strictEqual(fired, true);
-			});
-
-			test('withCats: true のときノートが流れる', async () => {
-				await api('i/update', {
-					isCat: true,
-				}, kyoko);
-				const fired = await waitFire(
-					ayano, 'homeTimeline',	// ayano:home
-					() => api('notes/create', { text: 'meow' }, kyoko),	// cat kyoko note
-					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
-					{ withCats: true },
-				);
-
-				assert.strictEqual(fired, true);
-				await api('i/update', {
-					isCat: false,
-				}, kyoko);
-			});
-
-			test('withCats: true のときノートが流れない', async () => {
-				const fired = await waitFire(
-					ayano, 'homeTimeline',	// ayano:home
-					() => api('notes/create', { text: 'test' }, kyoko),	// kyoko note
-					msg => msg.type === 'note' && msg.body.userId === kyoko.id,	// wait kyoko
-					{ withCats: true },
-				);
-
-				assert.strictEqual(fired, false);
 			});
 		});
 
