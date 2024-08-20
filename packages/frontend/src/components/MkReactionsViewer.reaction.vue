@@ -137,7 +137,7 @@ function stealReaction(ev: MouseEvent) {
 		action: async () => {
 			await os.apiWithDialog('admin/emoji/steal', {
 				name: reactionName.value,
-				host: props.note.user.host,
+				host: reactionHost.value,
 			});
 		},
 	}, {
@@ -146,7 +146,7 @@ function stealReaction(ev: MouseEvent) {
 		action: async () => {
 			await os.apiWithDialog('admin/emoji/steal', {
 				name: reactionName.value,
-				host: props.note.user.host,
+				host: reactionHost.value,
 			});
 
 			await misskeyApi('notes/reactions/create', {
