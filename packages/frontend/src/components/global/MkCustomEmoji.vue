@@ -107,9 +107,8 @@ function onClick(ev: MouseEvent) {
 			text: i18n.ts.import,
 			icon: 'ti ti-plus',
 			action: () => {
-				os.apiWithDialog('admin/emoji/steal', {
-					name: customEmojiName.value,
-					host: props.host,
+				os.apiWithDialog('admin/emoji/copy', {
+					emojiId: props.name,
 				});
 			},
 		}] : []), ...(props.menuReaction && react ? [{

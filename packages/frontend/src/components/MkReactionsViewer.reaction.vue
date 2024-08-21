@@ -66,12 +66,6 @@ const reactionName = computed(() => {
 	return r.slice(0, r.indexOf('@'));
 });
 
-const reactionHost = computed(() => {
-	const r = props.reaction.replace(':', '');
-	const host = r.slice(r.indexOf('@') + 1);
-	return host.endsWith('.') ? host.slice(0, -1) : host;
-});
-
 const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
 
 async function toggleReaction(ev: MouseEvent) {
@@ -135,18 +129,16 @@ function stealReaction(ev: MouseEvent) {
 		text: i18n.ts.import,
 		icon: 'ti ti-plus',
 		action: async () => {
-			await os.apiWithDialog('admin/emoji/steal', {
-				name: reactionName.value,
-				host: reactionHost.value,
+			await os.apiWithDialog('admin/emoji/copy', {
+				emojiId: props.reaction,
 			});
 		},
 	}, {
 		text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
 		icon: 'ti ti-mood-plus',
 		action: async () => {
-			await os.apiWithDialog('admin/emoji/steal', {
-				name: reactionName.value,
-				host: reactionHost.value,
+			await os.apiWithDialog('admin/emoji/copy', {
+				emojiId: props.reaction,
 			});
 
 			await misskeyApi('notes/reactions/create', {
