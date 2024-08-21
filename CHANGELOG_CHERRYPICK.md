@@ -29,7 +29,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### Server
-- `Announce`를 사용하는 릴레이 서버의 노트를 가져올 수 없음 (kokonect-link/cherrypick#483)
+- Fix: `Announce`를 사용하는 릴레이 서버의 노트를 가져올 수 없음 (kokonect-link/cherrypick#483)
+- Fix: 번역 기능을 사용할 수 없을 수 있음 (kokonect-link/cherrypick#486)
+- Fix: withCats 상태인 사용자가 작성하는 노트가 streaming에서 필터링되지 않을 수 있음 (kokonect-link/cherrypick#485)
 
 ---
 
