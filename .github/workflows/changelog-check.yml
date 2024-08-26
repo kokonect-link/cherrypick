@@ -1,4 +1,4 @@
-name: Check the description in CHANGELOG.md
+name: Check the description in CHANGELOG_CHERRYPICK.md
 
 on:
   pull_request:
@@ -24,15 +24,15 @@ jobs:
           cp -r .git _base/.git
           cd _base
           git fetch --depth 1 origin ${{ github.base_ref }}
-          git checkout origin/${{ github.base_ref }} CHANGELOG.md
+          git checkout origin/${{ github.base_ref }} CHANGELOG_CHERRYPICK.md
 
-      - name: Copy to Checker directory for CHANGELOG-base.md
-        run: cp _base/CHANGELOG.md scripts/changelog-checker/CHANGELOG-base.md
-      - name: Copy to Checker directory for CHANGELOG-head.md
-        run: cp CHANGELOG.md scripts/changelog-checker/CHANGELOG-head.md
+      - name: Copy to Checker directory for CHANGELOG_CHERRYPICK-base.md
+        run: cp _base/CHANGELOG_CHERRYPICK.md scripts/changelog-checker/CHANGELOG_CHERRYPICK-base.md
+      - name: Copy to Checker directory for CHANGELOG_CHERRYPICK-head.md
+        run: cp CHANGELOG_CHERRYPICK.md scripts/changelog-checker/CHANGELOG_CHERRYPICK-head.md
       - name: diff
         continue-on-error: true
-        run: diff -u CHANGELOG-base.md CHANGELOG-head.md
+        run: diff -u CHANGELOG_CHERRYPICK-base.md CHANGELOG_CHERRYPICK-head.md
         working-directory: scripts/changelog-checker
 
       - name: Setup Checker

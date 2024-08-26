@@ -2053,7 +2053,7 @@ _soundSettings:
   driveFileTypeWarnDescription: "請選擇音效檔案"
   driveFileDurationWarn: "音效太長了"
   driveFileDurationWarnDescription: "使用長音效檔可能會影響 CherryPick 的使用體驗。仍要使用此檔案嗎？"
-  driveFileError: "無法載入語音。請更改設定"
+  driveFileError: "無法載入語音。請變更設定"
 _ago:
   future: "未來"
   justNow: "剛剛"
@@ -2404,6 +2404,7 @@ _pages:
   eyeCatchingImageSet: "設定封面影像"
   eyeCatchingImageRemove: "刪除封面影像"
   chooseBlock: "新增方塊"
+  enterSectionTitle: "輸入區段的標題"
   selectType: "選擇類型"
   contentBlocks: "內容"
   inputBlocks: "輸入"
@@ -2529,6 +2530,7 @@ _webhookSettings:
   _systemEvents:
     abuseReport: "當使用者檢舉時"
     abuseReportResolved: "當處理了使用者的檢舉時"
+    userCreated: "使用者被新增時"
   deleteConfirm: "請問是否要刪除 Webhook？"
 _abuseReport:
   _notificationRecipient:
@@ -2588,6 +2590,10 @@ _moderationLogTypes:
   createAbuseReportNotificationRecipient: "建立接收檢舉的通知對象"
   updateAbuseReportNotificationRecipient: "更新接收檢舉的通知對象"
   deleteAbuseReportNotificationRecipient: "刪除接收檢舉的通知對象"
+  deleteAccount: "刪除帳戶"
+  deletePage: "刪除頁面"
+  deleteFlash: "刪除 Play"
+  deleteGalleryPost: "刪除相簿的貼文"
 _fileViewer:
   title: "檔案詳細資訊"
   type: "檔案類型 "
@@ -2713,7 +2719,7 @@ _urlPreviewSetting:
   userAgent: "User-Agent"
   userAgentDescription: "設定獲取預覽時使用的 User-Agent 。如果留空，將使用預設的 User-Agent 。"
   summaryProxy: "產生預覽的代理端點"
-  summaryProxyDescription: "使用摘要代理程式而不是 Misskey 本身產生預覽。"
+  summaryProxyDescription: "使用摘要代理程式而不是 CherryPick 本身產生預覽。"
   summaryProxyDescription2: "以下參數會作為查詢字串連結到代理。如果代理端不支援，這些設定將被忽略。"
 _mediaControls:
   pip: "畫中畫"
@@ -2722,4 +2728,5 @@ _mediaControls:
 _contextMenu:
   title: "內容功能表"
   app: "應用程式"
+  appWithShift: "Shift 鍵應用程式"
   native: "瀏覽器的使用者介面"
