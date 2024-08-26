@@ -76,7 +76,7 @@ const otherMenuItemIndicated = computed(() => {
 	return false;
 });
 const controlPanelIndicated = ref(false);
-const releasesCherryPick = ref();
+const releasesCherryPick = ref(null);
 
 if ($i.isAdmin ?? $i.isModerator) {
 	misskeyApi('admin/abuse-user-reports', {
@@ -86,15 +86,34 @@ if ($i.isAdmin ?? $i.isModerator) {
 		if (reports.length > 0) controlPanelIndicated.value = true;
 	});
 
-	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
-		method: 'GET',
-	}).then(res => res.json())
-		.then(async res => {
-			const meta = await misskeyApi('admin/meta');
-			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
-			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
-			if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) controlPanelIndicated.value = true;
+	misskeyApi('admin/meta')
+		.then(meta => {
+			return fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases')
+				.then(res => res.json())
+				.then(cherryPickData => {
+					releasesCherryPick.value = meta.enableReceivePrerelease ? cherryPickData : cherryPickData.filter(x => !x.prerelease);
+					if ((compareVersions(version, releasesCherryPick.value[0].tag_name) < 0) && (compareVersions(meta.skipCherryPickVersion, releasesCherryPick.value[0].tag_name) < 0)) {
+						controlPanelIndicated.value = true;
+					}
+				});
+		})
+		.catch(error => {
+			console.error('Failed to fetch CherryPick releases:', error);
 		});
+}
+
+function compareVersions(v1: string, v2: string): number {
+	const v1Parts = v1.split('.').map(Number);
+	const v2Parts = v2.split('.').map(Number);
+
+	for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
+		const part1 = v1Parts[i] || 0;
+		const part2 = v2Parts[i] || 0;
+
+		if (part1 < part2) return -1;
+		if (part1 > part2) return 1;
+	}
+	return 0;
 }
 
 function openAccountMenu(ev: MouseEvent) {
@@ -104,8 +123,9 @@ function openAccountMenu(ev: MouseEvent) {
 }
 
 function more() {
-	os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {}, {
-	}, 'closed');
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {}, {
+		closed: () => dispose(),
+	});
 }
 
 function openProfile() {
@@ -187,7 +207,7 @@ function openProfile() {
 	font-weight: bold;
 	text-align: left;
 
-	&:before {
+	&::before {
 		content: "";
 		display: block;
 		width: calc(100% - 38px);
@@ -203,7 +223,7 @@ function openProfile() {
 	}
 
 	&:hover, &.active {
-		&:before {
+		&::before {
 			background: var(--accentLighten);
 		}
 	}
@@ -292,7 +312,7 @@ function openProfile() {
 	}
 
 	&:hover, &.active {
-		&:before {
+		&::before {
 			content: "";
 			display: block;
 			width: calc(100% - 24px);

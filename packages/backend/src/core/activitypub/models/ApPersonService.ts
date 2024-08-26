@@ -34,12 +34,12 @@ import { StatusError } from '@/misc/status-error.js';
 import type { UtilityService } from '@/core/UtilityService.js';
 import type { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { bindThis } from '@/decorators.js';
+import { RoleService } from '@/core/RoleService.js';
 import { MetaService } from '@/core/MetaService.js';
 import { DriveFileEntityService } from '@/core/entities/DriveFileEntityService.js';
 import type { AccountMoveService } from '@/core/AccountMoveService.js';
 import { checkHttps } from '@/misc/check-https.js';
 import { AvatarDecorationService } from '@/core/AvatarDecorationService.js';
-import { isNotNull } from '@/misc/is-not-null.js';
 import { getApId, getApType, getOneApHrefNullable, isActor, isCollection, isCollectionOrOrderedCollection, isPropertyValue } from '../type.js';
 import { extractApHashtags } from './tag.js';
 import type { OnModuleInit } from '@nestjs/common';
@@ -102,6 +102,8 @@ export class ApPersonService implements OnModuleInit {
 
 		@Inject(DI.followingsRepository)
 		private followingsRepository: FollowingsRepository,
+
+		private roleService: RoleService,
 
 		private avatarDecorationService: AvatarDecorationService,
 	) {
@@ -256,6 +258,11 @@ export class ApPersonService implements OnModuleInit {
 
 			return this.apImageService.resolveImage(user, img).catch(() => null);
 		}));
+
+		if (((avatar != null && avatar.id != null) || (banner != null && banner.id != null))
+				&& !(await this.roleService.getUserPolicies(user.id)).canUpdateBioMedia) {
+			return {};
+		}
 
 		/*
 			we don't want to return nulls on errors! if the database fields
@@ -797,7 +804,7 @@ export class ApPersonService implements OnModuleInit {
 
 			// とりあえずidを別の時間で生成して順番を維持
 			let td = 0;
-			for (const note of featuredNotes.filter(isNotNull)) {
+			for (const note of featuredNotes.filter(x => x != null)) {
 				td -= 1000;
 				transactionalEntityManager.insert(MiUserNotePining, {
 					id: this.idService.gen(Date.now() + td),

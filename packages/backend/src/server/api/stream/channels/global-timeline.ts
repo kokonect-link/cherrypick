@@ -10,6 +10,7 @@ import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { bindThis } from '@/decorators.js';
 import { RoleService } from '@/core/RoleService.js';
 import { isRenotePacked, isQuotePacked } from '@/misc/is-renote.js';
+import type { JsonObject } from '@/misc/json-value.js';
 import Channel, { type MiChannelService } from '../channel.js';
 
 class GlobalTimelineChannel extends Channel {
@@ -18,6 +19,7 @@ class GlobalTimelineChannel extends Channel {
 	public static requireCredential = false as const;
 	private withRenotes: boolean;
 	private withFiles: boolean;
+	private withCats: boolean;
 
 	constructor(
 		private metaService: MetaService,
@@ -32,12 +34,13 @@ class GlobalTimelineChannel extends Channel {
 	}
 
 	@bindThis
-	public async init(params: any) {
+	public async init(params: JsonObject) {
 		const policies = await this.roleService.getUserPolicies(this.user ? this.user.id : null);
 		if (!policies.gtlAvailable) return;
 
-		this.withRenotes = params.withRenotes ?? true;
-		this.withFiles = params.withFiles ?? false;
+		this.withRenotes = !!(params.withRenotes ?? true);
+		this.withFiles = !!(params.withFiles ?? false);
+		this.withCats = !!(params.withCats ?? false);
 
 		// Subscribe events
 		this.subscriber.on('notesStream', this.onNote);
@@ -46,6 +49,7 @@ class GlobalTimelineChannel extends Channel {
 	@bindThis
 	private async onNote(note: Packed<'Note'>) {
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
+		if (this.withCats && (note.user.isCat == null || note.user.isCat === false)) return;
 
 		if (note.visibility !== 'public') return;
 		if (note.channelId != null) return;

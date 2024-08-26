@@ -86,7 +86,7 @@ const otherMenuItemIndicated = computed(() => {
 	return false;
 });
 const controlPanelIndicated = ref(false);
-const releasesCherryPick = ref();
+const releasesCherryPick = ref(null);
 
 if ($i.isAdmin ?? $i.isModerator) {
 	misskeyApi('admin/abuse-user-reports', {
@@ -96,14 +96,19 @@ if ($i.isAdmin ?? $i.isModerator) {
 		if (reports.length > 0) controlPanelIndicated.value = true;
 	});
 
-	fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases', {
-		method: 'GET',
-	}).then(res => res.json())
-		.then(async res => {
-			const meta = await misskeyApi('admin/meta');
-			if (meta.enableReceivePrerelease) releasesCherryPick.value = res;
-			else releasesCherryPick.value = res.filter(x => x.prerelease === false);
-			if ((version < releasesCherryPick.value[0].tag_name) && (meta.skipCherryPickVersion < releasesCherryPick.value[0].tag_name)) controlPanelIndicated.value = true;
+	misskeyApi('admin/meta')
+		.then(meta => {
+			return fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases')
+				.then(res => res.json())
+				.then(cherryPickData => {
+					releasesCherryPick.value = meta.enableReceivePrerelease ? cherryPickData : cherryPickData.filter(x => !x.prerelease);
+					if ((compareVersions(version, releasesCherryPick.value[0].tag_name) < 0) && (compareVersions(meta.skipCherryPickVersion, releasesCherryPick.value[0].tag_name) < 0)) {
+						controlPanelIndicated.value = true;
+					}
+				});
+		})
+		.catch(error => {
+			console.error('Failed to fetch CherryPick releases:', error);
 		});
 }
 
@@ -119,6 +124,20 @@ watch(defaultStore.reactiveState.menuDisplay, () => {
 	calcViewState();
 });
 
+function compareVersions(v1: string, v2: string): number {
+	const v1Parts = v1.split('.').map(Number);
+	const v2Parts = v2.split('.').map(Number);
+
+	for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
+		const part1 = v1Parts[i] || 0;
+		const part2 = v2Parts[i] || 0;
+
+		if (part1 < part2) return -1;
+		if (part1 > part2) return 1;
+	}
+	return 0;
+}
+
 function openAccountMenu(ev: MouseEvent) {
 	openAccountMenu_({
 		withExtraOperation: true,
@@ -126,10 +145,11 @@ function openAccountMenu(ev: MouseEvent) {
 }
 
 function more(ev: MouseEvent) {
-	os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkLaunchPad.vue')), {
 		src: ev.currentTarget ?? ev.target,
 	}, {
-	}, 'closed');
+		closed: () => dispose(),
+	});
 }
 </script>
 
@@ -203,6 +223,15 @@ function more(ev: MouseEvent) {
 		display: block;
 		text-align: center;
 		width: 100%;
+
+		&:focus-visible {
+			outline: none;
+
+			> .instanceIcon {
+				outline: 2px solid var(--focus);
+				outline-offset: 2px;
+			}
+		}
 	}
 
 	.instanceIcon {
@@ -230,7 +259,7 @@ function more(ev: MouseEvent) {
 		font-weight: bold;
 		text-align: left;
 
-		&:before {
+		&::before {
 			content: "";
 			display: block;
 			width: calc(100% - 38px);
@@ -245,8 +274,17 @@ function more(ev: MouseEvent) {
 			background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 		}
 
+		&:focus-visible {
+			outline: none;
+
+			&::before {
+				outline: 2px solid var(--fgOnAccent);
+				outline-offset: -4px;
+			}
+		}
+
 		&:hover, &.active {
-			&:before {
+			&::before {
 				background: var(--accentLighten);
 			}
 		}
@@ -273,6 +311,14 @@ function more(ev: MouseEvent) {
 		text-align: left;
 		box-sizing: border-box;
 		overflow: clip;
+
+		&:focus-visible {
+			outline: none;
+
+			> .avatar {
+				box-shadow: 0 0 0 4px var(--focus);
+			}
+		}
 	}
 
 	.avatar {
@@ -322,10 +368,19 @@ function more(ev: MouseEvent) {
 			color: var(--navActive);
 		}
 
-		&:hover, &.active {
+		&:focus-visible {
+			outline: none;
+
+			&::before {
+				outline: 2px solid var(--focus);
+				outline-offset: -2px;
+			}
+		}
+
+		&:hover, &.active, &:focus {
 			color: var(--accent);
 
-			&:before {
+			&::before {
 				content: "";
 				display: block;
 				width: calc(100% - 34px);
@@ -392,6 +447,15 @@ function more(ev: MouseEvent) {
 		display: block;
 		text-align: center;
 		width: 100%;
+
+		&:focus-visible {
+			outline: none;
+
+			> .instanceIcon {
+				outline: 2px solid var(--focus);
+				outline-offset: 2px;
+			}
+		}
 	}
 
 	.instanceIcon {
@@ -416,7 +480,7 @@ function more(ev: MouseEvent) {
 		height: 52px;
 		text-align: center;
 
-		&:before {
+		&::before {
 			content: "";
 			display: block;
 			position: absolute;
@@ -431,8 +495,17 @@ function more(ev: MouseEvent) {
 			background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
 		}
 
+		&:focus-visible {
+			outline: none;
+
+			&::before {
+				outline: 2px solid var(--fgOnAccent);
+				outline-offset: -4px;
+			}
+		}
+
 		&:hover, &.active {
-			&:before {
+			&::before {
 				background: var(--accentLighten);
 			}
 		}
@@ -453,6 +526,14 @@ function more(ev: MouseEvent) {
 		padding: 20px 0;
 		width: 100%;
 		overflow: clip;
+
+		&:focus-visible {
+			outline: none;
+
+			> .avatar {
+				box-shadow: 0 0 0 4px var(--focus);
+			}
+		}
 	}
 
 	.avatar {
@@ -482,11 +563,20 @@ function more(ev: MouseEvent) {
 		width: 100%;
 		text-align: center;
 
-		&:hover, &.active {
+		&:focus-visible {
+			outline: none;
+
+			&::before {
+				outline: 2px solid var(--focus);
+				outline-offset: -2px;
+			}
+		}
+
+		&:hover, &.active, &:focus {
 			text-decoration: none;
 			color: var(--accent);
 
-			&:before {
+			&::before {
 				content: "";
 				display: block;
 				height: 100%;
