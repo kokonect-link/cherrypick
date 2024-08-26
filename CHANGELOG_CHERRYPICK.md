@@ -23,16 +23,16 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
-출시일: unreleased<br>
-기반 Misskey 버전: 2024.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+## 4.10.0
+출시일: 2024/8/26<br>
+기반 Misskey 버전: 2024.7.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202470](CHANGELOG.md#202470) 문서를 참고하십시오.
 
 ### Client
 - Fix: CherryPick 클라이언트 업데이트를 올바르게 확인하지 못할 수 있음
-	- 일부 버전에서 버전 확인 오류가 발생할 수 있음
-		- 예: `4.9.0 < 4.10.0` 계산 시 `4.9.0`이 더 큰 것으로 계산됨
-	- CherryPick 클라이언트 업데이트 페이지에서 버전 알림이 작동하지 않을 수 있음
+  - 일부 버전에서 버전 확인 오류가 발생할 수 있음
+    - 예: `4.9.0 < 4.10.0` 계산 시 `4.9.0`이 더 큰 것으로 계산됨
+  - CherryPick 클라이언트 업데이트 페이지에서 버전 알림이 작동하지 않을 수 있음
 
 ### Server
 - Fix: `Announce`를 사용하는 릴레이 서버의 노트를 가져올 수 없음 (kokonect-link/cherrypick#483)
