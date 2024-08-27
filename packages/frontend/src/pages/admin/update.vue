@@ -107,13 +107,17 @@ async function init() {
 			skipVersion.value = false;
 			await misskeyApi('admin/update-meta', { skipVersion: skipVersion.value });
 		}
+	} catch (error) {
+		console.error('Failed to fetch CherryPick releases:', error);
+	}
 
+	try {
 		// Misskey Releases Fetch
 		const misskeyResponse = await fetch('https://api.github.com/repos/misskey-dev/misskey/releases');
 		const misskeyData = await misskeyResponse.json();
 		releasesMisskey.value = meta.enableReceivePrerelease ? misskeyData : misskeyData.filter(x => !x.prerelease);
 	} catch (error) {
-		console.error('Failed to fetch releases:', error);
+		console.error('Failed to fetch Misskey releases:', error);
 	}
 }
 
