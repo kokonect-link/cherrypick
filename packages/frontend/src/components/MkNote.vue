@@ -1064,6 +1064,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .contentCollapsed {
 	position: relative;
+	min-height: 4.5em;
 	max-height: 9em;
 	overflow: clip;
 }
