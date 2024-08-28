@@ -462,7 +462,7 @@ definePageMetadata(() => ({
 	font-weight: bold;
 	-webkit-backdrop-filter: var(--blur, blur(10px));
 	backdrop-filter: var(--blur, blur(10px));
-	background-color: var(--X16);
+	background-color: var(--panel);
 }
 
 .content {

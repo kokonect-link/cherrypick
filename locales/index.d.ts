@@ -5524,6 +5524,10 @@ export interface Locale extends ILocale {
      */
     "createdAntennas": string;
     /**
+     * これ以上このクリップにノートを追加できません。
+     */
+    "clipNoteLimitExceeded": string;
+    /**
      * 未読の通知の数を表示する
      */
     "showUnreadNotificationsCount": string;

@@ -486,7 +486,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 			left: 0;
 			width: 100%;
 			height: 74px;
-			background: linear-gradient(0deg, var(--panel), var(--X15));
+			background: linear-gradient(0deg, var(--panel), color(from var(--panel) srgb r g b / 0));
 			z-index: 2;
 
 			> .fadeLabel {
