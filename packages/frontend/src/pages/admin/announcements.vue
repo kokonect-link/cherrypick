@@ -170,7 +170,7 @@ function more() {
 	loadingMore.value = true;
 	misskeyApi('admin/announcements/list', {
 		status: announcementsStatus.value,
-		untilId: announcements.value.reduce((acc, announcement) => announcement.id != null ? announcement : acc).id
+		untilId: announcements.value.reduce((acc, announcement) => announcement.id != null ? announcement : acc).id,
 	}).then(announcementResponse => {
 		announcements.value = announcements.value.concat(announcementResponse);
 		loadingMore.value = false;

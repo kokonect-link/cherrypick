@@ -146,7 +146,7 @@ import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
-import { host } from "@/config.js";
+import { host } from '@/config.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -194,7 +194,6 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
 	url: `https://${host}/notes/${appearNote.value.id}`,
 }));
-
 
 const collapseLabel = computed(() => {
 	return concat([
@@ -486,7 +485,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 			left: 0;
 			width: 100%;
 			height: 74px;
-			background: linear-gradient(0deg, var(--panel), var(--X15));
+			background: linear-gradient(0deg, var(--panel), color(from var(--panel) srgb r g b / 0));
 			z-index: 2;
 
 			> .fadeLabel {

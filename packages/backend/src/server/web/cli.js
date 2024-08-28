@@ -17,12 +17,12 @@ window.onload = async () => {
 			// Send request
 			fetch(endpoint.indexOf('://') > -1 ? endpoint : `/api/${endpoint}`, {
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
 				},
 				method: 'POST',
 				body: JSON.stringify(data),
 				credentials: 'omit',
-				cache: 'no-cache'
+				cache: 'no-cache',
 			}).then(async (res) => {
 				const body = res.status === 204 ? null : await res.json();
 
@@ -41,7 +41,7 @@ window.onload = async () => {
 
 	document.getElementById('submit').addEventListener('click', () => {
 		api('notes/create', {
-			text: document.getElementById('text').value
+			text: document.getElementById('text').value,
 		}).then(() => {
 			location.reload();
 		});
@@ -65,7 +65,6 @@ window.onload = async () => {
 				text.textContent += `Reply of @${note.reply.user.username}'s note: ${replyTextShrinked}<br>`;
 			}
 			text.textContent += `${note.text || ''}`;
-
 
 			el.appendChild(name);
 			el.appendChild(text);

@@ -4,10 +4,10 @@
  */
 
 import { Test, TestingModule } from '@nestjs/testing';
+import type { MiUser } from '@/models/User.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { GlobalModule } from '@/GlobalModule.js';
 import { CoreModule } from '@/core/CoreModule.js';
-import type { MiUser } from '@/models/User.js';
 import { secureRndstr } from '@/misc/secure-rndstr.js';
 import { genAidx } from '@/misc/id/aidx.js';
 import {

@@ -9,6 +9,9 @@ import * as assert from 'assert';
 import { Test } from '@nestjs/testing';
 import { jest } from '@jest/globals';
 
+import { MockResolver } from '../misc/mock-resolver.js';
+import type { IActor, IApDocument, ICollection, IObject, IPost } from '@/core/activitypub/type.js';
+import type { MiRemoteUser } from '@/models/User.js';
 import { ApImageService } from '@/core/activitypub/models/ApImageService.js';
 import { ApNoteService } from '@/core/activitypub/models/ApNoteService.js';
 import { ApPersonService } from '@/core/activitypub/models/ApPersonService.js';
@@ -19,15 +22,12 @@ import { GlobalModule } from '@/GlobalModule.js';
 import { CoreModule } from '@/core/CoreModule.js';
 import { FederatedInstanceService } from '@/core/FederatedInstanceService.js';
 import { LoggerService } from '@/core/LoggerService.js';
-import type { IActor, IApDocument, ICollection, IObject, IPost } from '@/core/activitypub/type.js';
 import { MiMeta, MiNote, UserProfilesRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { secureRndstr } from '@/misc/secure-rndstr.js';
 import { DownloadService } from '@/core/DownloadService.js';
 import { MetaService } from '@/core/MetaService.js';
-import type { MiRemoteUser } from '@/models/User.js';
 import { genAidx } from '@/misc/id/aidx.js';
-import { MockResolver } from '../misc/mock-resolver.js';
 
 const host = 'https://host1.test';
 

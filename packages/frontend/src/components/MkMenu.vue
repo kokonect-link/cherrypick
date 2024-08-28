@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			[$style.asDrawer]: asDrawer,
 			_popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur,
 			_popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur,
-			}"
+		}"
 		:style="{
 			width: (width && !asDrawer) ? `${width}px` : '',
 			maxHeight: maxHeight ? `min(${maxHeight}px, calc(100dvh - 32px))` : 'calc(100dvh - 32px)',

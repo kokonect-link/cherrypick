@@ -66,7 +66,6 @@ export class NotificationEntityService implements OnModuleInit {
 	async #packInternal <T extends MiNotification | MiGroupedNotification> (
 		src: T,
 		meId: MiUser['id'],
-		// eslint-disable-next-line @typescript-eslint/ban-types
 		options: {
 			checkValidNotifier?: boolean;
 		},
@@ -239,7 +238,6 @@ export class NotificationEntityService implements OnModuleInit {
 	public async pack(
 		src: MiNotification | MiGroupedNotification,
 		meId: MiUser['id'],
-		// eslint-disable-next-line @typescript-eslint/ban-types
 		options: {
 			checkValidNotifier?: boolean;
 		},

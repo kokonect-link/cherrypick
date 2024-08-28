@@ -14,10 +14,10 @@ import {
 	S3Client,
 } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
+import type { TestingModule } from '@nestjs/testing';
 import { GlobalModule } from '@/GlobalModule.js';
 import { DriveService } from '@/core/DriveService.js';
 import { CoreModule } from '@/core/CoreModule.js';
-import type { TestingModule } from '@nestjs/testing';
 
 describe('DriveService', () => {
 	let app: TestingModule;

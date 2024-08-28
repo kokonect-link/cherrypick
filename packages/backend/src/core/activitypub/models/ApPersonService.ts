@@ -47,7 +47,6 @@ import type { ApNoteService } from './ApNoteService.js';
 import type { ApMfmService } from '../ApMfmService.js';
 import type { ApResolverService, Resolver } from '../ApResolverService.js';
 import type { ApLoggerService } from '../ApLoggerService.js';
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { ApImageService } from './ApImageService.js';
 import type { IActor, ICollection, IObject, IOrderedCollection } from '../type.js';
 
@@ -325,8 +324,8 @@ export class ApPersonService implements OnModuleInit {
 						this.logger.error('error occurred while fetching following/followers collection', { stack: err });
 					}
 					return 'private';
-				})
-			)
+				}),
+			),
 		);
 
 		const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
@@ -583,8 +582,8 @@ export class ApPersonService implements OnModuleInit {
 						return undefined;
 					}
 					return 'private';
-				})
-			)
+				}),
+			),
 		);
 
 		const bday = person['vcard:bday']?.match(/^\d{4}-\d{2}-\d{2}/);
