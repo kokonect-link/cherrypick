@@ -5,8 +5,8 @@ on:
     branches:
       - develop
     paths:
-      - 'CHANGELOG.md'
-      # - .github/workflows/release-edit-with-push.yml
+      - 'CHANGELOG_CHERRYPICK.md'
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,7 +31,7 @@ jobs:
         if: steps.get_pr.outputs.pr_number != ''
         uses: misskey-dev/release-manager-actions/.github/actions/get-target-version@v2
         id: v
-      # CHANGELOG.mdの内容を取得
+      # CHANGELOG_CHERRYPICK.mdの内容を取得
       - name: Get changelog
         if: steps.get_pr.outputs.pr_number != ''
         uses: misskey-dev/release-manager-actions/.github/actions/get-changelog@v2
@@ -42,7 +42,7 @@ jobs:
       - name: Update PR
         if: steps.get_pr.outputs.pr_number != ''
         run: |
-          gh pr edit "$PR_NUMBER" --body "$CHANGELOG"
+          gh pr edit "$PR_NUMBER" --body "$CHANGELOG_CHERRYPICK"
         env:
           PR_NUMBER: ${{ steps.get_pr.outputs.pr_number }}
           CHANGELOG: ${{ steps.changelog.outputs.changelog }}

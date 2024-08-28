@@ -1,8 +1,8 @@
 {
 	"type": "module",
 	"name": "cherrypick-js",
-	"version": "4.10.0",
-	"basedMisskeyVersion": "2024.7.0",
+	"version": "4.11.0",
+	"basedMisskeyVersion": "2024.8.0",
 	"description": "CherryPick SDK for JavaScript",
 	"license": "MIT",
 	"main": "./built/index.js",
