@@ -146,7 +146,7 @@ import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
-import { host } from "@/config.js";
+import { host } from '@/config.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
@@ -194,7 +194,6 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
 	url: `https://${host}/notes/${appearNote.value.id}`,
 }));
-
 
 const collapseLabel = computed(() => {
 	return concat([

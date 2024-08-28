@@ -9,12 +9,12 @@ process.env.NODE_ENV = 'test';
 
 import { setTimeout } from 'node:timers/promises';
 import * as assert from 'assert';
+import { api, castAsError, initTestDb, signup, successfulApiCall, uploadFile } from '../utils.js';
+import type * as misskey from 'cherrypick-js';
 import { loadConfig } from '@/config.js';
 import { MiRepository, MiUser, UsersRepository, miRepository } from '@/models/_.js';
 import { secureRndstr } from '@/misc/secure-rndstr.js';
 import { jobQueue } from '@/boot/common.js';
-import { api, castAsError, initTestDb, signup, successfulApiCall, uploadFile } from '../utils.js';
-import type * as misskey from 'cherrypick-js';
 
 describe('Account Move', () => {
 	let jq: INestApplicationContext;

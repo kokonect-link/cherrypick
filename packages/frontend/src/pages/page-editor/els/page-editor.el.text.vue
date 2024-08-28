@@ -15,7 +15,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable vue/no-mutating-props */
 import { watch, ref, shallowRef, onMounted, onUnmounted } from 'vue';
 import XContainer from '../page-editor.container.vue';
 import { i18n } from '@/i18n.js';

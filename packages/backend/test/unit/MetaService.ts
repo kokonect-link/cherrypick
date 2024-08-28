@@ -7,12 +7,12 @@ process.env.NODE_ENV = 'test';
 
 import { jest } from '@jest/globals';
 import { Test } from '@nestjs/testing';
+import type { TestingModule } from '@nestjs/testing';
+import type { DataSource } from 'typeorm';
 import { GlobalModule } from '@/GlobalModule.js';
 import { DI } from '@/di-symbols.js';
 import { MetaService } from '@/core/MetaService.js';
 import { CoreModule } from '@/core/CoreModule.js';
-import type { TestingModule } from '@nestjs/testing';
-import type { DataSource } from 'typeorm';
 
 describe('MetaService', () => {
 	let app: TestingModule;

@@ -9,7 +9,6 @@ import * as assert from 'assert';
 import * as crypto from 'node:crypto';
 import cbor from 'cbor';
 import * as OTPAuth from 'otpauth';
-import { loadConfig } from '@/config.js';
 import { api, signup } from '../utils.js';
 import type {
 	AuthenticationResponseJSON,
@@ -20,6 +19,7 @@ import type {
 	RegistrationResponseJSON,
 } from '@simplewebauthn/types';
 import type * as misskey from 'cherrypick-js';
+import { loadConfig } from '@/config.js';
 
 describe('2要素認証', () => {
 	let alice: misskey.entities.SignupResponse;

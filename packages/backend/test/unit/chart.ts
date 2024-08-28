@@ -9,6 +9,7 @@ import * as assert from 'assert';
 import { jest } from '@jest/globals';
 import * as lolex from '@sinonjs/fake-timers';
 import { DataSource } from 'typeorm';
+import type { AppLockService } from '@/core/AppLockService.js';
 import TestChart from '@/core/chart/charts/test.js';
 import TestGroupedChart from '@/core/chart/charts/test-grouped.js';
 import TestUniqueChart from '@/core/chart/charts/test-unique.js';
@@ -18,7 +19,6 @@ import { entity as TestGroupedChartEntity } from '@/core/chart/charts/entities/t
 import { entity as TestUniqueChartEntity } from '@/core/chart/charts/entities/test-unique.js';
 import { entity as TestIntersectionChartEntity } from '@/core/chart/charts/entities/test-intersection.js';
 import { loadConfig } from '@/config.js';
-import type { AppLockService } from '@/core/AppLockService.js';
 import Logger from '@/logger.js';
 
 describe('Chart', () => {

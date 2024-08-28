@@ -548,7 +548,7 @@ export class UserEntityService implements OnModuleInit {
 					name: r.name,
 					iconUrl: r.iconUrl,
 					displayOrder: r.displayOrder,
-				}))
+				})),
 			) : undefined,
 
 			...(isDetailed ? {

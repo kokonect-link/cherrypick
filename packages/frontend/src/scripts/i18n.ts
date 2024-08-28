@@ -137,7 +137,6 @@ export class I18n<T extends ILocale> {
 			return this.tsxCache = new Proxy(this.locale, new Handler()) as unknown as Tsx<T>;
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (this.tsxCache) {
 			return this.tsxCache;
 		}

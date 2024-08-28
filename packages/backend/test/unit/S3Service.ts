@@ -14,11 +14,11 @@ import {
 	UploadPartCommand,
 } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
+import type { TestingModule } from '@nestjs/testing';
 import { GlobalModule } from '@/GlobalModule.js';
 import { CoreModule } from '@/core/CoreModule.js';
 import { S3Service } from '@/core/S3Service.js';
 import { MiMeta } from '@/models/_.js';
-import type { TestingModule } from '@nestjs/testing';
 
 describe('S3Service', () => {
 	let app: TestingModule;
