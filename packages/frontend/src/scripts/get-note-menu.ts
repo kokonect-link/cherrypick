@@ -490,10 +490,10 @@ export function getNoteMenu(props: {
 			}]
 			: []
 		),*/
-			...(appearNote.userId !== $i.id || (isRenote && props.note.userId !== $i.id) ? [
+			...(appearNote.userId !== $i.id || props.note.userId !== $i.id ? [
 				{ type: 'divider' },
 				appearNote.userId !== $i.id ? getAbuseNoteMenu(appearNote, i18n.ts.reportAbuse) : undefined,
-				isRenote && props.note.userId !== $i.id ? getAbuseNoteMenu(props.note, i18n.ts.reportAbuseRenote) : undefined,
+				props.note.userId !== $i.id ? getAbuseNoteMenu(props.note, i18n.ts.reportAbuseRenote) : undefined,
 			]
 			: []
 			),
@@ -622,15 +622,8 @@ export function getQuoteMenu(props: {
 	note: Misskey.entities.Note,
 	mock?: boolean;
 }) {
-	const isRenote = (
-		props.note.renote != null &&
-		props.note.text == null &&
-		props.note.fileIds &&
-		props.note.fileIds.length === 0 &&
-		props.note.poll == null
-	);
 	const menu: MenuItem[] = [];
-	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
+	const appearNote = getAppearNote(props.note);
 
 	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
 		menu.push({
@@ -882,15 +875,7 @@ export async function getRenoteOnly(props: {
 	renoteButton: ShallowRef<HTMLElement | undefined>;
 	mock?: boolean;
 }) {
-	const isRenote = (
-		props.note.renote != null &&
-		props.note.text == null &&
-		props.note.fileIds &&
-		props.note.fileIds.length === 0 &&
-		props.note.poll == null
-	);
-
-	const appearNote = isRenote ? props.note.renote as Misskey.entities.Note : props.note;
+	const appearNote = getAppearNote(props.note);
 
 	if (defaultStore.state.showRenoteConfirmPopup) {
 		const { canceled } = await os.confirm({

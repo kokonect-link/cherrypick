@@ -23,6 +23,16 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2024.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+
+### Client
+- Fix: 노트의 세부 옵션을 표시하는 `더 보기!` 버튼을 누를 수 없음
+
+---
+
 ## 4.11.0
 출시일: 2024/8/28<br>
 기반 Misskey 버전: 2024.8.0<br>
