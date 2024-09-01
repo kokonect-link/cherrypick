@@ -31,10 +31,6 @@ export const packedNoteSchema = {
 				format: 'date-time',
 			},
 		},
-		noteEditHistory: {
-			type: 'array',
-			optional: true, nullable: false,
-		},
 		deletedAt: {
 			type: 'string',
 			optional: true, nullable: true,

@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+editHistory: "Edit history"
 unRenoteAll: "Remove all renote from notes"
 unRenoteAllConfirm: "Remove all renote from notes"
 unRenoteAllConfirmDescription: "All renotes for this note will be deleted. Still continue?"

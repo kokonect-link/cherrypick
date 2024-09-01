@@ -90,6 +90,7 @@ import {
 	MiChatApproval,
 } from './_.js';
 import type { Provider } from '@nestjs/common';
+import { NoteHistory } from './NoteHistory.js';
 import type { DataSource } from 'typeorm';
 
 const $usersRepository: Provider = {
@@ -572,6 +573,12 @@ const $abuseReportResolversRepository: Provider = {
 	inject: [DI.db],
 };
 
+const $noteHistoryRepository: Provider = {
+	provide: DI.noteHistoryRepository,
+	useFactory: (db: DataSource) => db.getRepository(NoteHistory).extend(miRepository as MiRepository<NoteHistory>),
+	inject: [DI.db],
+};
+
 @Module({
 	imports: [],
 	providers: [
@@ -655,6 +662,7 @@ const $abuseReportResolversRepository: Provider = {
 		$bubbleGameRecordsRepository,
 		$reversiGamesRepository,
 		$abuseReportResolversRepository,
+		$noteHistoryRepository,
 	],
 	exports: [
 		$usersRepository,
@@ -737,6 +745,7 @@ const $abuseReportResolversRepository: Provider = {
 		$bubbleGameRecordsRepository,
 		$reversiGamesRepository,
 		$abuseReportResolversRepository,
+		$noteHistoryRepository,
 	],
 })
 export class RepositoryModule {

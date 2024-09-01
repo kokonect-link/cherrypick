@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+editHistory: "修正履歴"
 unRenoteAll: "全リノート解除"
 unRenoteAllConfirm: "全リノート解除"
 unRenoteAllConfirmDescription: "このノートのすべてのリノットを削除しようとしています。実行しますか？"

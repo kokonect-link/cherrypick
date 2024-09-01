@@ -112,7 +112,6 @@ function generateDummyNote(override?: Partial<MiNote>): MiNote {
 		renoteUserHost: null,
 		updatedAt: null,
 		updatedAtHistory: null,
-		noteEditHistory: [],
 		hasEvent: false,
 		disableRightClick: false,
 		deleteAt: null,

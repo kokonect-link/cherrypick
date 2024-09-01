@@ -50,7 +50,6 @@ class NoteStream extends ReadableStream<Record<string, unknown>> {
 				createdAt: idService.parse(note.id).date.toISOString(),
 				updatedAt: note.updatedAt?.toISOString(),
 				updatedAtHistory: note.updatedAtHistory?.map(x => x.toISOString()),
-				noteEditHistory: note.noteEditHistory,
 				fileIds: note.fileIds,
 				files: files,
 				replyId: note.replyId,

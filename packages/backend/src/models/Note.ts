@@ -38,13 +38,6 @@ export class MiNote {
 	})
 	public updatedAtHistory: Date[] | null;
 
-	@Column('varchar', {
-		length: 3000,
-		array: true,
-		default: '{}',
-	})
-	public noteEditHistory: string[];
-
 	@Column('timestamp with time zone', {
 		nullable: true,
 	})

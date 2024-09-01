@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 修正履歴
+     */
+    "editHistory": string;
+    /**
      * 全リノート解除
      */
     "unRenoteAll": string;

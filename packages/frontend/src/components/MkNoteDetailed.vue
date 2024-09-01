@@ -272,7 +272,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.replies }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ti ti-repeat"></i> {{ i18n.ts.renotes }}</button>
 		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ti ti-icons"></i> {{ i18n.ts.reactions }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history' }]" @click="tab = 'history'"><i class="ti ti-pencil"></i> {{ i18n.ts.edited }}</button>
+		<button v-if="appearNote.updatedAt" class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history'}]" @click="tab = 'history'"> <i class="ti ti-history"></i> {{ i18n.ts.editHistory }} </button>
 	</div>
 	<div>
 		<div v-if="tab === 'replies'">
@@ -310,32 +310,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</template>
 			</MkPagination>
 		</div>
-		<div v-else-if="tab === 'history'" :class="$style.tab_history">
-			<div style="display: grid;">
-				<div v-for="(text, index) in appearNote.noteEditHistory" :key="text" :class="$style.historyRoot">
-					<MkAvatar :class="$style.avatar" :user="appearNote.user" link preview/>
-					<div :class="$style.historyMain">
-						<div :class="$style.historyHeader">
-							<MkUserName :user="appearNote.user" :nowrap="true"/>
-							<MkTime :class="$style.updatedAt" :time="appearNote.updatedAtHistory![index]" :mode="prefer.s.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
-						</div>
-						<div>
-							<div>
-								<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
-								<Mfm v-else :text="text.trim()" :author="appearNote.user"/>
-							</div>
-							<CodeDiff
-								v-if="!appearNote.isHidden"
-								:oldString="appearNote.noteEditHistory[index - 1] || ''"
-								:newString="text"
-								:trim="true"
-								:hideHeader="true"
-								diffStyle="char"
-							/>
-						</div>
-					</div>
-				</div>
-				<MkResult v-if="appearNote.noteEditHistory == null" type="empty"/>
+		<div v-else-if="tab === 'history'">
+			<div v-if="!historiesLoaded" style="padding: 16px">
+				<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
+			</div>
+			<MkNoteHistorySub v-for="history in histories" :key="history.id" :history="history" :originalNote="appearNote" :class="$style.reply" :detail="true"/>
+			<div v-if="historiesLoaded && !history_list_end" style="padding: 16px">
+				<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
 			</div>
 		</div>
 	</div>
@@ -409,6 +390,7 @@ import { haptic, hapticConfirm } from '@/utility/haptic.js';
 import { store } from '@/store.js';
 import detectLanguage from '@/utility/detect-language.js';
 import MkInfo from '@/components/MkInfo.vue';
+import MkNoteHistorySub from '@/components/MkNoteHistorySub.vue';
 
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -468,6 +450,7 @@ const replies = ref<Misskey.entities.Note[]>([]);
 const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibility) || (appearNote.visibility === 'followers' && appearNote.userId === $i?.id));
 const viewTextSource = ref(false);
 const noNyaize = ref(false);
+const histories = ref<Misskey.entities.NoteHistory[]>([]);
 
 useGlobalEvent('noteDeleted', (noteId) => {
 	if (noteId === note.id || noteId === appearNote.id) {
@@ -898,6 +881,26 @@ if (appearNote.reply && appearNote.reply.replyId && prefer.s.autoLoadMoreConvers
 
 function showOnRemote() {
 	if (props.note.user.instance !== undefined) window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
+}
+
+const historiesLoaded = ref(false);
+const histories_untilId = ref<Misskey.entities.NoteHistory['id']>();
+const history_list_end = ref(false);
+
+function loadHistories() {
+	historiesLoaded.value = true;
+	misskeyApi('notes/history', {
+		...(histories_untilId.value ? { untilId: histories_untilId.value } : {} ),
+		noteId: appearNote.id,
+		limit: 5,
+	}).then(res => {
+		if (res.length === 0) {
+			history_list_end.value = true;
+			return;
+		}
+		histories_untilId.value = res[ res.length - 1 ].id;
+		histories.value = histories.value.concat(res);
+	});
 }
 </script>
 

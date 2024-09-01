@@ -46,7 +46,6 @@ const base: MiNote = {
 	renoteUserHost: null,
 	updatedAt: null,
 	updatedAtHistory: null,
-	noteEditHistory: [],
 	hasEvent: false,
 	disableRightClick: false,
 	deleteAt: null,
