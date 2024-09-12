@@ -5,10 +5,10 @@
 
 import { computed, watch, version as vueVersion, App, defineAsyncComponent } from 'vue';
 import { compareVersions } from 'compare-versions';
+import { version, basedMisskeyVersion, lang, updateLocale, locale } from '@@/js/config.js';
 import widgets from '@/widgets/index.js';
 import directives from '@/directives/index.js';
 import components from '@/components/index.js';
-import { version, basedMisskeyVersion, lang, updateLocale, locale } from '@@/js/config.js';
 import { applyTheme } from '@/scripts/theme.js';
 import { isDeviceDarkmode } from '@/scripts/is-device-darkmode.js';
 import { updateI18n } from '@/i18n.js';

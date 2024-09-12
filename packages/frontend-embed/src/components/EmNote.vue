@@ -123,6 +123,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, ref, shallowRef } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
+import { url } from '@@/js/config.js';
 import I18n from '@/components/I18n.vue';
 import EmNoteSub from '@/components/EmNoteSub.vue';
 import EmNoteHeader from '@/components/EmNoteHeader.vue';
@@ -137,8 +139,6 @@ import EmUserName from '@/components/EmUserName.vue';
 import EmTime from '@/components/EmTime.vue';
 import { userPage } from '@/utils.js';
 import { i18n } from '@/i18n.js';
-import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
-import { url } from '@@/js/config.js';
 
 function getAppearNote(note: Misskey.entities.Note) {
 	return Misskey.note.isPureRenote(note) ? note.renote : note;

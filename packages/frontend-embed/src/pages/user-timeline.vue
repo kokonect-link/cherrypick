@@ -48,6 +48,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script setup lang="ts">
 import { ref, computed, shallowRef, inject } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { url, instanceName } from '@@/js/config.js';
+import { defaultEmbedParams } from '@@/js/embed-page.js';
 import type { Paging } from '@/components/EmPagination.vue';
 import EmNotes from '@/components/EmNotes.vue';
 import EmAvatar from '@/components/EmAvatar.vue';
@@ -59,8 +61,6 @@ import EmTimelineContainer from '@/components/EmTimelineContainer.vue';
 import { misskeyApi } from '@/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { serverMetadata } from '@/server-metadata.js';
-import { url, instanceName } from '@@/js/config.js';
-import { defaultEmbedParams } from '@@/js/embed-page.js';
 import { DI } from '@/di.js';
 
 const props = defineProps<{

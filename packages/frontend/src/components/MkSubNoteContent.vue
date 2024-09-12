@@ -119,6 +119,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, provide, Ref, ref, shallowRef, watch } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
+import { concat } from '@@/js/array.js';
+import { host } from '@@/js/config.js';
 import * as os from '@/os.js';
 import * as sound from '@/scripts/sound.js';
 import MkMediaList from '@/components/MkMediaList.vue';
@@ -128,7 +131,6 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
@@ -141,12 +143,10 @@ import { deepClone } from '@/scripts/clone.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
-import { concat } from '@@/js/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
-import { host } from '@@/js/config.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;

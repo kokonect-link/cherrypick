@@ -62,11 +62,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { concat } from '@@/js/array.js';
+import { url } from '@@/js/config.js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import EmMediaList from '@/components/EmMediaList.vue';
 import EmPoll from '@/components/EmPoll.vue';
 import { i18n } from '@/i18n.js';
-import { url } from '@@/js/config.js';
-import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import EmA from '@/components/EmA.vue';
 import EmMfm from '@/components/EmMfm.js';
 import EmReactionsViewer from '@/components/EmReactionsViewer.vue';

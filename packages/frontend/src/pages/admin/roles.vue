@@ -247,6 +247,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue';
+import { ROLE_POLICIES } from '@@/js/const.js';
 import XHeader from './_header_.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkFolder from '@/components/MkFolder.vue';
@@ -260,7 +261,6 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { instance, fetchInstance } from '@/instance.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { ROLE_POLICIES } from '@@/js/const.js';
 import { useRouter } from '@/router/supplier.js';
 
 const router = useRouter();

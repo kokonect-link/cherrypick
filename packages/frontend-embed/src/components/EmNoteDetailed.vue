@@ -158,6 +158,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, ref } from 'vue';
 import * as mfm from 'cherrypick-mfm-js';
 import * as Misskey from 'cherrypick-js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
+import { url } from '@@/js/config.js';
 import I18n from '@/components/I18n.vue';
 import EmMediaList from '@/components/EmMediaList.vue';
 import EmNoteSub from '@/components/EmNoteSub.vue';
@@ -172,9 +174,7 @@ import EmAcct from '@/components/EmAcct.vue';
 import { userPage } from '@/utils.js';
 import { notePage } from '@/utils.js';
 import { i18n } from '@/i18n.js';
-import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { serverMetadata } from '@/server-metadata.js';
-import { url } from '@@/js/config.js';
 import EmMfm from '@/components/EmMfm.js';
 
 const props = defineProps<{

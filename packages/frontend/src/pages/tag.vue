@@ -63,7 +63,7 @@ const headerActions = computed(() => [{
 				genEmbedCode('tags', props.tag);
 			},
 		}], ev.currentTarget ?? ev.target);
-	}
+	},
 }]);
 
 const headerTabs = computed(() => []);

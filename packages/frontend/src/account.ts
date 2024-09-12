@@ -5,13 +5,13 @@
 
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { apiUrl } from '@@/js/config.js';
 import * as os from '@/os.js';
 import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { MenuButton } from '@/types/menu.js';
 import { del, get, set } from '@/scripts/idb-proxy.js';
-import { apiUrl } from '@@/js/config.js';
 import { waiting, popup, popupMenu, success, alert } from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { unisonReload, reloadChannel } from '@/scripts/unison-reload.js';

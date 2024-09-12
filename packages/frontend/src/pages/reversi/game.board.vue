@@ -149,13 +149,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref, shallowRef, triggerRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as Reversi from 'misskey-reversi';
+import { useInterval } from '@@/js/use-interval.js';
+import { url } from '@@/js/config.js';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { deepClone } from '@/scripts/clone.js';
-import { useInterval } from '@@/js/use-interval.js';
 import { signinRequired } from '@/account.js';
-import { url } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { userPage } from '@/filters/user.js';

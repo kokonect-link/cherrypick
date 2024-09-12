@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { InjectionKey } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { MediaProxy } from '@@/js/media-proxy.js';
+import type { InjectionKey } from 'vue';
 import type { ParsedEmbedParams } from '@@/js/embed-page.js';
 
 export const DI = {

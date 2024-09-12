@@ -20,7 +20,7 @@
 					type: 'misskey:embedParent:registerIframeId',
 					payload: {
 						iframeId: id,
-					}
+					},
 				}, '*');
 			}
 			if (event.data.type === 'misskey:embed:changeHeight' && event.data.iframeId === id) {

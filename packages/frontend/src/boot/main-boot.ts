@@ -4,9 +4,9 @@
  */
 
 import { createApp, defineAsyncComponent, markRaw } from 'vue';
+import { ui } from '@@/js/config.js';
 import { common } from './common.js';
 import type * as Misskey from 'cherrypick-js';
-import { ui } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { alert, confirm, popup, post, welcomeToast } from '@/os.js';
 import { useStream } from '@/stream.js';

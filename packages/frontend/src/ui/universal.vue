@@ -97,9 +97,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, provide, onMounted, computed, ref, watch, shallowRef, Ref, onBeforeUnmount } from 'vue';
+import { instanceName } from '@@/js/config.js';
+import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
+import { isLink } from '@@/js/is-link.js';
 import XCommon from './_common_/common.vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
-import { instanceName } from '@@/js/config.js';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
@@ -109,10 +111,8 @@ import { $i } from '@/account.js';
 import { PageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
 import { useScrollPositionManager } from '@/nirax.js';
 import { mainRouter } from '@/router/main.js';
-import { isLink } from '@@/js/is-link.js';
 import { globalEvents } from '@/events.js';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
