@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button class="_button" style="padding-top: 5px; color: var(--accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 		</div>
 		<div v-show="showContent">
-			<div v-if="note.files.length > 0">
+			<div v-if="note.files && note.files.length > 0">
 				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @click.stop @contextmenu.prevent/>
 				<MkMediaList v-else :mediaList="note.files" @click.stop/>
 			</div>
@@ -50,13 +50,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click.stop="collapsed = false;">
+	<button v-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || (note.files && note.files.length) > 0 || note.poll) && collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click.stop="collapsed = false;">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
 			<span v-if="note.files && note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
 		</span>
 	</button>
-	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || note.files.length > 0 || note.poll) && !collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.showLess" class="_button" @click.stop="collapsed = true;">
+	<button v-else-if="(isLong || (isMFM && defaultStore.state.collapseDefault) || (note.files && note.files.length > 0) || note.poll) && !collapsed" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.showLess" class="_button" @click.stop="collapsed = true;">
 		<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
 	</button>
 	<div v-if="showSubNoteFooterButton">
@@ -141,7 +141,7 @@ import { deepClone } from '@/scripts/clone.js';
 import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { useNoteCapture } from '@/scripts/use-note-capture.js';
-import { concat } from '@/scripts/array.js';
+import { concat } from '@@/js/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';

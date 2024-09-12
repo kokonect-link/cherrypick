@@ -18,9 +18,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import * as Misskey from 'cherrypick-js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { useInterval } from '@/scripts/use-interval.js';
+import * as Misskey from 'cherrypick-js';
+import { useInterval } from '@@/js/use-interval.js';
 import MkInstanceCardMini from '@/components/MkInstanceCardMini.vue';
 import { defaultStore } from '@/store.js';
 

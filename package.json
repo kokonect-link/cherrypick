@@ -9,7 +9,9 @@
 	},
 	"packageManager": "pnpm@9.6.0",
 	"workspaces": [
+		"packages/frontend-shared",
 		"packages/frontend",
+		"packages/frontend-embed",
 		"packages/backend",
 		"packages/sw",
 		"packages/cherrypick-js",

@@ -21,6 +21,7 @@ import { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
+import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
 
 export async function getNoteClipMenu(props: {
@@ -155,6 +156,19 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 		action: (): void => {
 			copyToClipboard(`${url}/notes/${note.id}`);
 			os.toast(i18n.ts.copiedLink, 'copied');
+		},
+	};
+}
+
+function getNoteEmbedCodeMenu(note: Misskey.entities.Note, text: string): MenuItem | undefined {
+	if (note.url != null || note.uri != null) return undefined;
+	if (['specified', 'followers'].includes(note.visibility)) return undefined;
+
+	return {
+		icon: 'ti ti-code',
+		text,
+		action: (): void => {
+			genEmbedCode('notes', note.id);
 		},
 	};
 }
@@ -451,7 +465,7 @@ export function getNoteMenu(props: {
 					action: () => {
 						window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
 					},
-				} : undefined
+				} : getNoteEmbedCodeMenu(appearNote, i18n.ts.genEmbedCode)
 				, { type: 'divider' }
 				, {
 					icon: 'ti ti-source-code',
@@ -575,7 +589,7 @@ export function getNoteMenu(props: {
 			action: () => {
 				window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
 			},
-		} : undefined]
+		} : getNoteEmbedCodeMenu(appearNote, i18n.ts.genEmbedCode)]
 			.filter(x => x !== undefined);
 	}
 

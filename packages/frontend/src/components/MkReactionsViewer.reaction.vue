@@ -21,6 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, ComputedRef, inject, onMounted, shallowRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { getUnicodeEmoji } from '@@/js/emojilist.js';
 import MkCustomEmojiDetailedDialog from './MkCustomEmojiDetailedDialog.vue';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
@@ -35,7 +36,6 @@ import { i18n } from '@/i18n.js';
 import * as sound from '@/scripts/sound.js';
 import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
-import { getUnicodeEmoji } from '@/scripts/emojilist.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 
 const props = defineProps<{

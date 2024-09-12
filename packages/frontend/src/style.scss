@@ -26,10 +26,6 @@ $code-monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, M
 	--minBottomSpacingMobile: calc(72px + max(12px, env(safe-area-inset-bottom, 0px)));
 	--minBottomSpacing: var(--minBottomSpacingMobile);
 
-	@media (max-width: 500px) {
-		--margin: var(--marginHalf);
-	}
-
 	//--ad: rgb(255 169 0 / 10%);
 	--eventFollow: #36aed2;
 	--eventRenote: #36d298;
@@ -44,6 +40,10 @@ $code-monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, M
 	--misskey: rgb(134, 179, 0);
 	--cast: rgb(181, 151, 246);
 	--ella: rgb(150, 198, 234);
+
+	@media (max-width: 500px) {
+		--margin: var(--marginHalf);
+	}
 }
 
 ::selection {
@@ -521,12 +521,12 @@ rt {
 }
 
 ._monospace {
-	font-family: $monospace-font
+	font-family: $monospace-font;
 }
 
 code[class*="language-"],
 pre[class*="language-"] {
-	font-family: $code-monospace-font
+	font-family: $code-monospace-font;
 }
 
 ._zoom {

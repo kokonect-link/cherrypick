@@ -253,7 +253,7 @@ import { mainRouter } from '@/router/main.js';
 import { useRouter } from '@/router/supplier.js';
 import { notePage } from '@/filters/note.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { concat } from '@/scripts/array.js';
+import { concat } from '@@/js/array.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import detectLanguage from '@/scripts/detect-language.js';
 
@@ -396,7 +396,7 @@ const keymap = {
 			renoteCollapsed.value = false;
 		} else if (appearNote.value.cw != null) {
 			showContent.value = !showContent.value;
-		} else if (isLong) {
+		} else if (isLong || isMFM) {
 			collapsed.value = !collapsed.value;
 		}
 	},
@@ -825,7 +825,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	// 今度はその処理自体がパフォーマンス低下の原因にならないか懸念される。また、被リアクションでも高さは変化するため、やはり多少のズレは生じる
 	// 一度レンダリングされた要素はブラウザがよしなにサイズを覚えておいてくれるような実装になるまで待った方が良さそう(なるのか？)
 	//content-visibility: auto;
-  //contain-intrinsic-size: 0 128px;
+	//contain-intrinsic-size: 0 128px;
 
 	&:focus-visible {
 		outline: none;
@@ -868,7 +868,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 			margin-bottom: 0 !important;
 			background: var(--popup);
 			border-radius: 8px;
-			box-shadow: 0px 4px 32px var(--shadow);
+			box-shadow: 0 4px 32px var(--shadow);
 		}
 
 		.footerButton {
