@@ -58,7 +58,7 @@ import MkButton from '@/components/MkButton.vue';
 import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { version } from '@/config.js';
+import { version } from '@@/js/config.js';
 
 const WINDOW_THRESHOLD = 1400;
 

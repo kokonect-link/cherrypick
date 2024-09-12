@@ -110,7 +110,7 @@ import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, 
 import tinycolor from 'tinycolor2';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
 import XCommon from '@/ui/_common_/common.vue';
-import { instanceName } from '@/config.js';
+import { instanceName } from '@@/js/config.js';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
@@ -122,6 +122,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
 import { useScrollPositionManager } from '@/nirax.js';
 import { mainRouter } from '@/router/main.js';
+import { isLink } from '@@/js/is-link.js';
 import { globalEvents } from '@/events.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
@@ -287,12 +288,6 @@ function onScroll() {
 }
 
 const onContextmenu = (ev) => {
-	const isLink = (el: HTMLElement) => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-	};
 	if (isLink(ev.target)) return;
 	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
 	if (window.getSelection()?.toString() !== '') return;

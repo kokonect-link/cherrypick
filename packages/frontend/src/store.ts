@@ -8,7 +8,7 @@ import * as Misskey from 'cherrypick-js';
 import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
-import { hemisphere } from '@/scripts/intl-const.js';
+import { hemisphere } from '@@/js/intl-const.js';
 
 interface PostFormAction {
 	title: string,

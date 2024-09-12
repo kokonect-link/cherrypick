@@ -4,7 +4,7 @@
  */
 
 import * as Misskey from 'cherrypick-js';
-import { url } from '@/config.js';
+import { url } from '@@/js/config.js';
 import { defaultStore } from '@/store.js';
 
 export const acct = (user: Misskey.Acct) => {

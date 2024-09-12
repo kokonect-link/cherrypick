@@ -43,7 +43,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { lookupUser, lookupUserByEmail, lookupFile } from '@/scripts/admin-lookup.js';
 import { PageMetadata, definePageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
 import { useRouter } from '@/router/supplier.js';
-import { version } from '@/config.js';
+import { version } from '@@/js/config.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';
 

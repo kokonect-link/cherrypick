@@ -62,7 +62,7 @@ import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { version } from '@/config.js';
+import { version } from '@@/js/config.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 
 const menu = toRef(defaultStore.state, 'menu');

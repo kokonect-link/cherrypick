@@ -128,7 +128,7 @@ import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { shouldCollapsed, shouldMfmCollapsed } from '@/scripts/collapsed.js';
+import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
@@ -146,7 +146,7 @@ import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
-import { host } from '@/config.js';
+import { host } from '@@/js/config.js';
 
 const props = withDefaults(defineProps<{
   note: Misskey.entities.Note;
