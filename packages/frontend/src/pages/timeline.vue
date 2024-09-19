@@ -78,7 +78,7 @@ import { deepMerge } from '@/scripts/merge.js';
 import { MenuItem } from '@/types/menu.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const showEl = ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
@@ -171,12 +171,12 @@ watch(withSensitive, () => {
 
 watch(friendlyEnableNotifications, (x) => {
 	defaultStore.set('friendlyEnableNotifications', x);
-	reloadAsk();
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(friendlyEnableWidgets, (x) => {
 	defaultStore.set('friendlyEnableWidgets', x);
-	reloadAsk();
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 onMounted(() => {
@@ -286,18 +286,6 @@ async function timetravel(): Promise<void> {
 	if (canceled) return;
 
 	tlComponent.value.timetravel(date);
-}
-
-async function reloadAsk() {
-	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
-		const { canceled } = await os.confirm({
-			type: 'info',
-			text: i18n.ts.reloadToApplySetting,
-		});
-		if (canceled) return;
-
-		unisonReload();
-	} else globalEvents.emit('hasRequireRefresh', true);
 }
 
 function focus(): void {

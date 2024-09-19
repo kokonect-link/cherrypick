@@ -126,9 +126,9 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { defaultStore } from '@/store.js';
 import { globalEvents } from '@/events.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const $i = signinRequired();
 
@@ -208,10 +208,10 @@ function save() {
 		claimAchievement('markedAsCat');
 		defaultStore.set('renameTheButtonInPostFormToNya', true);
 		defaultStore.set('renameTheButtonInPostFormToNyaManualSet', false);
-		reloadAsk();
+		reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 	} else if (!profile.isCat && !defaultStore.state.renameTheButtonInPostFormToNyaManualSet) {
 		defaultStore.set('renameTheButtonInPostFormToNya', false);
-		reloadAsk();
+		reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 	}
 }
 
@@ -266,16 +266,6 @@ function changeBanner(ev) {
 		$i.bannerUrl = i.bannerUrl;
 		globalEvents.emit('requestClearPageCache');
 	});
-}
-
-async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
-
-	unisonReload();
 }
 
 const headerActions = computed(() => []);

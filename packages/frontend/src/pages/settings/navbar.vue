@@ -64,10 +64,9 @@ import MkContainer from '@/components/MkContainer.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { defaultStore } from '@/store.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { globalEvents } from '@/events.js';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -78,18 +77,6 @@ const items = ref(defaultStore.state.menu.map(x => ({
 
 const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
 const bannerDisplay = computed(defaultStore.makeGetterSetter('bannerDisplay'));
-
-async function reloadAsk() {
-	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
-		const { canceled } = await os.confirm({
-			type: 'info',
-			text: i18n.ts.reloadToApplySetting,
-		});
-		if (canceled) return;
-
-		unisonReload();
-	} else globalEvents.emit('hasRequireRefresh', true);
-}
 
 async function addItem(ev: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !defaultStore.state.menu.includes(k));
@@ -125,7 +112,7 @@ function removeItem(index: number) {
 
 async function save() {
 	defaultStore.set('menu', items.value.map(x => x.type));
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 }
 
 function reset() {
@@ -136,7 +123,7 @@ function reset() {
 }
 
 watch([menuDisplay, bannerDisplay], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 const headerActions = computed(() => []);

@@ -70,26 +70,12 @@ import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
-import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
-import { globalEvents } from '@/events.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
-
-async function reloadAsk() {
-	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
-		const { canceled } = await os.confirm({
-			type: 'info',
-			text: i18n.ts.reloadToApplySetting,
-		});
-		if (canceled) return;
-
-		unisonReload();
-	} else globalEvents.emit('hasRequireRefresh', true);
-}
 
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 
@@ -112,7 +98,7 @@ watch(useBoldFont, () => {
 watch([
 	useBoldFont,
 ], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 onMounted(() => {

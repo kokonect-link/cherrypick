@@ -33,23 +33,12 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store.js';
-import * as os from '@/os.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-
-async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
-
-	unisonReload();
-}
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 function save() {
-	reloadAsk();
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 }
 
 const enableHomeTimeline = computed(defaultStore.makeGetterSetter('enableHomeTimeline'));

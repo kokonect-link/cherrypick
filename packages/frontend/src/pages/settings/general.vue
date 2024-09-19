@@ -372,7 +372,7 @@ import MkInfo from '@/components/MkInfo.vue';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -386,18 +386,6 @@ const dataSaver = ref(defaultStore.state.dataSaver);
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
-
-async function reloadAsk() {
-	if (requireRefreshBehavior.value === 'dialog') {
-		const { canceled } = await os.confirm({
-			type: 'info',
-			text: i18n.ts.reloadToApplySetting,
-		});
-		if (canceled) return;
-
-		unisonReload();
-	} else globalEvents.emit('hasRequireRefresh', true);
-}
 
 function reloadTimeline() {
 	globalEvents.emit('reloadTimeline');
@@ -524,7 +512,7 @@ watch([
 	confirmWhenRevealingSensitiveMedia,
 	contextMenu,
 ], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch([
