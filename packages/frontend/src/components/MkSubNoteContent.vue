@@ -192,7 +192,7 @@ const collapsed = ref(isLong || (isMFM && defaultStore.state.collapseDefault) ||
 
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
-	url: `https://${host}/notes/${appearNote.value.id}`,
+	url: `https://${host}/notes/${props.note.value.id}`,
 }));
 
 const collapseLabel = computed(() => {
