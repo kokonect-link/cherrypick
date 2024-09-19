@@ -20,5 +20,5 @@ import { i18n } from '@/i18n.js';
 
 const serverMetadata = inject(DI.serverMetadata)!;
 
-const notFoundImageUrl = computed(() => serverMetadata?.notFoundImageUrl ?? DEFAULT_NOT_FOUND_IMAGE_URL);
+const notFoundImageUrl = computed(() => serverMetadata.notFoundImageUrl ?? DEFAULT_NOT_FOUND_IMAGE_URL);
 </script>

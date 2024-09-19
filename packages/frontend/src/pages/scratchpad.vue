@@ -95,7 +95,7 @@ function stringifyUiProps(uiProps) {
 	return JSON.stringify(
 		{ ...uiProps, type: undefined, id: undefined },
 		(k, v) => typeof v === 'function' ? '<function>' : v,
-		2
+		2,
 	);
 }
 
