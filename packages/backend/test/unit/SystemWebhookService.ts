@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * SPDX-FileCopyrightText: syuilo and misskey-project
  * SPDX-License-Identifier: AGPL-3.0-only
@@ -313,7 +314,7 @@ describe('SystemWebhookService', () => {
 					isActive: true,
 					on: ['abuseReport'],
 				});
-				await service.enqueueSystemWebhook(webhook.id, 'abuseReport', { foo: 'bar' });
+				await service.enqueueSystemWebhook(webhook.id, 'abuseReport', { foo: 'bar' } as any);
 
 				expect(queueService.systemWebhookDeliver).toHaveBeenCalled();
 			});
@@ -323,7 +324,7 @@ describe('SystemWebhookService', () => {
 					isActive: false,
 					on: ['abuseReport'],
 				});
-				await service.enqueueSystemWebhook(webhook.id, 'abuseReport', { foo: 'bar' });
+				await service.enqueueSystemWebhook(webhook.id, 'abuseReport', { foo: 'bar' } as any);
 
 				expect(queueService.systemWebhookDeliver).not.toHaveBeenCalled();
 			});
@@ -337,8 +338,8 @@ describe('SystemWebhookService', () => {
 					isActive: true,
 					on: ['abuseReportResolved'],
 				});
-				await service.enqueueSystemWebhook(webhook1.id, 'abuseReport', { foo: 'bar' });
-				await service.enqueueSystemWebhook(webhook2.id, 'abuseReport', { foo: 'bar' });
+				await service.enqueueSystemWebhook(webhook1.id, 'abuseReport', { foo: 'bar' } as any);
+				await service.enqueueSystemWebhook(webhook2.id, 'abuseReport', { foo: 'bar' } as any);
 
 				expect(queueService.systemWebhookDeliver).not.toHaveBeenCalled();
 			});
