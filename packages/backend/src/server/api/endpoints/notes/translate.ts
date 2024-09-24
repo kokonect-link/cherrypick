@@ -14,9 +14,9 @@ import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { createTemp } from '@/misc/create-temp.js';
 import { RoleService } from '@/core/RoleService.js';
-import { ApiError } from '../../error.js';
 import { MiMeta } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['notes'],

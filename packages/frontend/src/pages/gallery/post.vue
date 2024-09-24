@@ -66,6 +66,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch, ref, defineAsyncComponent } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -80,7 +81,6 @@ import { $i } from '@/account.js';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { useRouter } from '@/router/supplier.js';
-import type { MenuItem } from '@/types/menu.js';
 
 const router = useRouter();
 

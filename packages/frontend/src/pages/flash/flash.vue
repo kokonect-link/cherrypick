@@ -66,6 +66,7 @@ import { computed, onDeactivated, onUnmounted, Ref, ref, watch, shallowRef, defi
 import * as Misskey from 'cherrypick-js';
 import { Interpreter, Parser, values } from '@syuilo/aiscript';
 import { url } from '@@/js/config.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -80,7 +81,6 @@ import { defaultStore } from '@/store.js';
 import { $i } from '@/account.js';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
-import type { MenuItem } from '@/types/menu.js';
 import { pleaseLogin } from '@/scripts/please-login.js';
 
 const props = defineProps<{

@@ -61,6 +61,7 @@ import { computed, watch, provide, shallowRef, ref, onMounted, onActivated } fro
 import { scroll } from '@@/js/scroll.js';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { BasicTimelineType } from '@/timelines.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
@@ -75,7 +76,6 @@ import { antennasCache, userListsCache, favoritedChannelsCache } from '@/cache.j
 import { globalEvents } from '@/events.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { deepMerge } from '@/scripts/merge.js';
-import type { MenuItem } from '@/types/menu.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';

@@ -34,6 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch, provide, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
@@ -45,7 +46,6 @@ import { clipsCache } from '@/cache.js';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
-import type { MenuItem } from '@/types/menu.js';
 
 const props = defineProps<{
 	clipId: string,

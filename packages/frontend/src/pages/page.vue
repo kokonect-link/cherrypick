@@ -101,6 +101,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch, ref, defineAsyncComponent } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
+import type { MenuItem } from '@/types/menu.js';
 import XPage from '@/components/page/page.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
@@ -121,7 +122,6 @@ import { instance } from '@/instance.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { useRouter } from '@/router/supplier.js';
-import type { MenuItem } from '@/types/menu.js';
 
 const router = useRouter();
 
@@ -285,9 +285,9 @@ function showMenu(ev: MouseEvent) {
 		}
 	} else if ($i && $i.id !== page.value.userId) {
 		menuItems.push({
-				icon: 'ti ti-code',
-				text: i18n.ts._pages.viewSource,
-				action: () => router.push(`/@${props.username}/pages/${props.pageName}/view-source`),
+			icon: 'ti ti-code',
+			text: i18n.ts._pages.viewSource,
+			action: () => router.push(`/@${props.username}/pages/${props.pageName}/view-source`),
 		}, {
 			icon: 'ti ti-exclamation-circle',
 			text: i18n.ts.reportAbuse,

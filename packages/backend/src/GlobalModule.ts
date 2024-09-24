@@ -9,14 +9,14 @@ import * as Redis from 'ioredis';
 import { DataSource } from 'typeorm';
 import { MeiliSearch } from 'meilisearch';
 import { Logging } from '@google-cloud/logging';
+import { MiMeta } from '@/models/Meta.js';
 import { DI } from './di-symbols.js';
 import { Config, loadConfig } from './config.js';
 import { createPostgresDataSource } from './postgres.js';
 import { RepositoryModule } from './models/RepositoryModule.js';
 import { allSettled } from './misc/promise-tracker.js';
-import type { Provider, OnApplicationShutdown } from '@nestjs/common';
-import { MiMeta } from '@/models/Meta.js';
 import { GlobalEvents } from './core/GlobalEventService.js';
+import type { Provider, OnApplicationShutdown } from '@nestjs/common';
 
 const $config: Provider = {
 	provide: DI.config,

@@ -7,6 +7,7 @@ import { defineAsyncComponent, Ref, ShallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
 import { claimAchievement } from './achievements.js';
+import type { MenuItem } from '@/types/menu.js';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -17,7 +18,6 @@ import { defaultStore, noteActions } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { getUserMenu } from '@/scripts/get-user-menu.js';
 import { clipsCache, favoritedChannelsCache } from '@/cache.js';
-import type { MenuItem } from '@/types/menu.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
@@ -401,7 +401,7 @@ export function getNoteMenu(props: {
 			});
 		}
 
-		getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink)
+		getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink);
 
 		menuItems.push({
 			icon: 'ti ti-copy',
