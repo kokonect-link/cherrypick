@@ -79,15 +79,13 @@ jobs:
           if (( "$DIFF_BYTES" <= 1 )); then
             echo '차이점이 없습니다.' >> ./output.md
           else
-            cat <<- EOF >> ./output.md
-            <details>
-            <summary>차이점은 여기에서 볼 수 있음</summary>
-
-            \`\`\`diff
-            $(cat ./api.json.diff)
-            \`\`\`
-            </details>
-            EOF
+            echo '<details>' >> ./output.md
+            echo '<summary>차이점은 여기에서 볼 수 있음</summary>' >> ./output.md
+            echo >> ./output.md
+            echo '```diff' >> ./output.md
+            cat ./api.json.diff >> ./output.md
+            echo '```' >> ./output.md
+            echo '</details>' >> .output.md
           fi
 
           echo "$FOOTER" >> ./output.md
