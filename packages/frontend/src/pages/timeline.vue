@@ -75,7 +75,7 @@ import { antennasCache, userListsCache, favoritedChannelsCache } from '@/cache.j
 import { globalEvents } from '@/events.js';
 import { deviceKind } from '@/scripts/device-kind.js';
 import { deepMerge } from '@/scripts/merge.js';
-import { MenuItem } from '@/types/menu.js';
+import type { MenuItem } from '@/types/menu.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
@@ -249,7 +249,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 		}),
 		(channels.length === 0 ? undefined : { type: 'divider' }),
 		{
-			type: 'link' as const,
+			type: 'link',
 			icon: 'ti ti-plus',
 			text: i18n.ts.createNew,
 			to: '/channels',
@@ -318,24 +318,36 @@ const headerActions = computed(() => {
 			icon: 'ti ti-dots',
 			text: i18n.ts.options,
 			handler: (ev) => {
-				os.popupMenu([{
+				const menuItems: MenuItem[] = [];
+
+				menuItems.push({
 					type: 'switch',
 					text: i18n.ts.friendlyEnableNotifications,
 					ref: friendlyEnableNotifications,
-				}, {
+				});
+
+				menuItems.push({
 					type: 'switch',
 					text: i18n.ts.friendlyEnableWidgets,
 					ref: friendlyEnableWidgets,
-				}, {
+				});
+
+				menuItems.push({
 					type: 'switch',
 					text: i18n.ts.showRenotes,
 					ref: withRenotes,
-				}, isBasicTimeline(src.value) && hasWithReplies(src.value) ? {
-					type: 'switch',
-					text: i18n.ts.showRepliesToOthersInTimeline,
-					ref: withReplies,
-					disabled: onlyFiles,
-				} : undefined, {
+				});
+
+				if (isBasicTimeline(src.value) && hasWithReplies(src.value)) {
+					menuItems.push({
+						type: 'switch',
+						text: i18n.ts.showRepliesToOthersInTimeline,
+						ref: withReplies,
+						disabled: onlyFiles,
+					});
+				}
+
+				menuItems.push({
 					type: 'switch',
 					text: i18n.ts.withSensitive,
 					ref: withSensitive,
@@ -348,7 +360,9 @@ const headerActions = computed(() => {
 					type: 'switch',
 					text: i18n.ts.showCatOnly,
 					ref: onlyCats,
-				}], ev.currentTarget ?? ev.target);
+				});
+
+				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 			},
 		},
 	];

@@ -307,6 +307,8 @@ onUnmounted(() => {
 .embedCodeGenPreviewRoot {
 	position: relative;
 	background-color: var(--bg);
+	background-size: auto auto;
+	background-image: repeating-linear-gradient(135deg, transparent, transparent 6px, var(--panel) 6px, var(--panel) 12px);
 	cursor: not-allowed;
 }
 

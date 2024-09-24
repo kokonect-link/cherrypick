@@ -49,6 +49,7 @@ import { ApLoggerService } from '@/core/activitypub/ApLoggerService.js';
 import { AccountMoveService } from '@/core/AccountMoveService.js';
 import { ReactionService } from '@/core/ReactionService.js';
 import { NotificationService } from '@/core/NotificationService.js';
+import { ReactionsBufferingService } from '@/core/ReactionsBufferingService.js';
 
 process.env.NODE_ENV = 'test';
 
@@ -169,6 +170,7 @@ describe('UserEntityService', () => {
 				ApLoggerService,
 				AccountMoveService,
 				ReactionService,
+				ReactionsBufferingService,
 				NotificationService,
 			];
 

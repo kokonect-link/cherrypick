@@ -40,8 +40,11 @@ html(class='embed')
 			var VERSION = "#{version}";
 			var CLIENT_ENTRY = "#{entry.file}";
 
-		script(type='application/json' id='misskey_meta' data-generated-at=now)
+		script(type='application/json' id='cherrypick_meta' data-generated-at=now)
 			!= metaJson
+
+		script(type='application/json' id='cherrypick_embedCtx' data-generated-at=now)
+			!= embedCtx
 
 		script
 			include ../boot.embed.js

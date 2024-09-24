@@ -36,7 +36,7 @@ async function buildSrc() {
 	console.log(`[${_package.name}] start building...`);
 
 	await build(options)
-		.then(it => {
+		.then(() => {
 			console.log(`[${_package.name}] build succeeded.`);
 		})
 		.catch((err) => {

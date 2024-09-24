@@ -174,12 +174,14 @@ import EmAcct from '@/components/EmAcct.vue';
 import { userPage } from '@/utils.js';
 import { notePage } from '@/utils.js';
 import { i18n } from '@/i18n.js';
-import { serverMetadata } from '@/server-metadata.js';
+import { DI } from '@/di.js';
 import EmMfm from '@/components/EmMfm.js';
 
 const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
+
+const serverMetadata = inject(DI.serverMetadata)!;
 
 const inChannel = inject('inChannel', null);
 
