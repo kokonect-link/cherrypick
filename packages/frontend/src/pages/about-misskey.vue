@@ -461,6 +461,7 @@ const patronsWithMisskey = [
 	'塩キャベツ',
 	'はとぽぷさん',
 	'100の人 (エスパー・イーシア)',
+	'ケモナーのケシン',
 ];
 
 let isKokonect = false;

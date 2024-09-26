@@ -22,18 +22,6 @@ import type { ReactionService } from '../ReactionService.js';
 import type { UserEntityService } from './UserEntityService.js';
 import type { DriveFileEntityService } from './DriveFileEntityService.js';
 
-function mergeReactions(src: Record<string, number>, delta: Record<string, number>) {
-	const reactions = { ...src };
-	for (const [name, count] of Object.entries(delta)) {
-		if (reactions[name] != null) {
-			reactions[name] += count;
-		} else {
-			reactions[name] = count;
-		}
-	}
-	return reactions;
-}
-
 @Injectable()
 export class NoteEntityService implements OnModuleInit {
 	private userEntityService: UserEntityService;
@@ -342,12 +330,7 @@ export class NoteEntityService implements OnModuleInit {
 			: this.meta.enableReactionsBuffering
 				? await this.reactionsBufferingService.get(note.id)
 				: { deltas: {}, pairs: [] };
-		const reactions = mergeReactions(this.reactionService.convertLegacyReactions(note.reactions), bufferedReactions.deltas ?? {});
-		for (const [name, count] of Object.entries(reactions)) {
-			if (count <= 0) {
-				delete reactions[name];
-			}
-		}
+		const reactions = this.reactionService.convertLegacyReactions(this.reactionsBufferingService.mergeReactions(note.reactions, bufferedReactions.deltas ?? {}));
 
 		const reactionAndUserPairCache = note.reactionAndUserPairCache.concat(bufferedReactions.pairs.map(x => x.join('/')));
 
@@ -470,7 +453,7 @@ export class NoteEntityService implements OnModuleInit {
 
 			for (const note of notes) {
 				if (note.renote && (note.text == null && note.fileIds.length === 0)) { // pure renote
-					const reactionsCount = Object.values(mergeReactions(note.renote.reactions, bufferedReactions?.get(note.renote.id)?.deltas ?? {})).reduce((a, b) => a + b, 0);
+					const reactionsCount = Object.values(this.reactionsBufferingService.mergeReactions(note.renote.reactions, bufferedReactions?.get(note.renote.id)?.deltas ?? {})).reduce((a, b) => a + b, 0);
 					if (reactionsCount === 0) {
 						myReactionsMap.set(note.renote.id, null);
 					} else if (reactionsCount <= note.renote.reactionAndUserPairCache.length + (bufferedReactions?.get(note.renote.id)?.pairs.length ?? 0)) {
@@ -486,7 +469,7 @@ export class NoteEntityService implements OnModuleInit {
 					}
 				} else {
 					if (note.id < oldId) {
-						const reactionsCount = Object.values(mergeReactions(note.reactions, bufferedReactions?.get(note.id)?.deltas ?? {})).reduce((a, b) => a + b, 0);
+						const reactionsCount = Object.values(this.reactionsBufferingService.mergeReactions(note.reactions, bufferedReactions?.get(note.id)?.deltas ?? {})).reduce((a, b) => a + b, 0);
 						if (reactionsCount === 0) {
 							myReactionsMap.set(note.id, null);
 						} else if (reactionsCount <= note.reactionAndUserPairCache.length + (bufferedReactions?.get(note.id)?.pairs.length ?? 0)) {

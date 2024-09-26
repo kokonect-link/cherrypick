@@ -20,12 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkTime v-if="entity.latestSentAt" :time="entity.latestSentAt" style="margin-right: 8px"/>
 		<span v-else>-</span>
 	</template>
-
-	<div class="_gaps">
-		<MkKeyValue>
-			<template #key>latestStatus</template>
-			<template #value>{{ entity.latestStatus ?? '-' }}</template>
-		</MkKeyValue>
+	<template #footer>
 		<div class="_buttons">
 			<MkButton @click="onEditClick">
 				<i class="ti ti-settings"></i> {{ i18n.ts.edit }}
@@ -34,6 +29,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-trash"></i> {{ i18n.ts.delete }}
 			</MkButton>
 		</div>
+	</template>
+
+	<div class="_gaps">
+		<MkKeyValue>
+			<template #key>latestStatus</template>
+			<template #value>{{ entity.latestStatus ?? '-' }}</template>
+		</MkKeyValue>
 	</div>
 </MkFolder>
 </template>

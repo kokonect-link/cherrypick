@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i class="ti ti-repeat" style="margin-right: 4px;"></i>
 		<I18n :src="i18n.ts.renotedBy" tag="span" :class="$style.renoteText">
 			<template #user>
-				<EmA v-user-preview="true ? undefined : note.userId" :class="$style.renoteUserName" :to="userPage(note.user)">
+				<EmA :class="$style.renoteUserName" :to="userPage(note.user)">
 					<EmUserName :user="note.user"/>
 				</EmA>
 			</template>

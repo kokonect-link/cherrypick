@@ -148,7 +148,7 @@ defineExpose({
 	width: 100%;
 	box-sizing: border-box;
 	padding: 9px 12px 9px 12px;
-	background: var(--buttonBg);
+	background: var(--folderHeaderBg);
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));
 	border-radius: 6px;
@@ -156,7 +156,7 @@ defineExpose({
 
 	&:hover {
 		text-decoration: none;
-		background: var(--buttonHoverBg);
+		background: var(--folderHeaderHoverBg);
 	}
 
 	&:focus-within {
@@ -165,7 +165,7 @@ defineExpose({
 
 	&.active {
 		color: var(--accent);
-		background: var(--buttonHoverBg);
+		background: var(--folderHeaderHoverBg);
 	}
 
 	&.opened {
@@ -246,7 +246,7 @@ defineExpose({
 	z-index: 1;
 	bottom: var(--stickyBottom, 0px);
 	left: 0;
-	padding: 9px 12px;
+	padding: 12px;
 	background: var(--acrylicBg);
 	-webkit-backdrop-filter: var(--blur, blur(15px));
 	backdrop-filter: var(--blur, blur(15px));

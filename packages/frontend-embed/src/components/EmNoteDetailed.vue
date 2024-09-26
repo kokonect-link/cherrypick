@@ -58,11 +58,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</div>
 							<div :class="$style.noteHeaderUsername"><EmAcct :user="appearNote.user"/></div>
 						</div>
-						<div :class="$style.noteHeaderInfo">
-							<a :href="url" :class="$style.noteHeaderInstanceIconLink" target="_blank" rel="noopener noreferrer">
-								<img :src="serverMetadata.iconUrl || '/favicon.ico'" alt="" :class="$style.noteHeaderInstanceIcon"/>
-							</a>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -82,6 +77,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</span>
 						<span v-if="appearNote.localOnly" style="display: inline-block; margin-right: 0.5em;" :title="i18n.ts._visibility['disableFederation']"><i class="ti ti-rocket-off"></i></span>
 					</div>
+					<a :href="url" :class="$style.noteHeaderInstanceIconLink" target="_blank" rel="noopener noreferrer">
+						<img :src="serverMetadata.iconUrl || '/favicon.ico'" alt="" :class="$style.noteHeaderInstanceIcon"/>
+					</a>
+					<EmInstanceTicker v-if="appearNote.user.instance != null" :instance="appearNote.user.instance"/>
 				</div>
 			</div>
 		</header>
@@ -164,6 +163,7 @@ import I18n from '@/components/I18n.vue';
 import EmMediaList from '@/components/EmMediaList.vue';
 import EmNoteSub from '@/components/EmNoteSub.vue';
 import EmNoteSimple from '@/components/EmNoteSimple.vue';
+import EmInstanceTicker from '@/components/EmInstanceTicker.vue';
 import EmReactionsViewer from '@/components/EmReactionsViewer.vue';
 import EmPoll from '@/components/EmPoll.vue';
 import EmA from '@/components/EmA.vue';

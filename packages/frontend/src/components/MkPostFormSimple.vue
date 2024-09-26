@@ -1347,7 +1347,16 @@ defineExpose({
 	// min-height: 75px;
 	max-height: 150px;
 	overflow: auto;
+	background-size: auto auto;
 	margin: 16px 8px;
+}
+
+html[data-color-scheme=dark] .preview {
+	background-image: repeating-linear-gradient(135deg, transparent, transparent 5px, #0004 5px, #0004 10px);
+}
+
+html[data-color-scheme=light] .preview {
+	background-image: repeating-linear-gradient(135deg, transparent, transparent 5px, #00000005 5px, #00000005 10px);
 }
 
 .withQuote {

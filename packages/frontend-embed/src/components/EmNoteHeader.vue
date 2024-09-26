@@ -5,32 +5,39 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <header :class="$style.root">
-	<EmA :class="$style.name" :to="userPage(note.user)">
-		<EmUserName :user="note.user"/>
-	</EmA>
-	<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
-	<div :class="$style.username"><EmAcct :user="note.user"/></div>
-	<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
-		<img v-for="(role, i) in note.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl!"/>
+	<div :class="$style.section">
+		<div style="display: flex;">
+			<EmA :class="$style.name" :to="userPage(note.user)">
+				<EmUserName :user="note.user"/>
+			</EmA>
+			<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
+			<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
+				<img v-for="(role, i) in note.user.badgeRoles" :key="i" :class="$style.badgeRole" :src="role.iconUrl!"/>
+			</div>
+		</div>
+		<div :class="$style.username"><EmAcct :user="note.user"/></div>
 	</div>
-	<div :class="$style.info">
-		<span v-if="note.updatedAt" style="margin-right: 0.5em;"><i v-tooltip="i18n.tsx.noteUpdatedAt({ date: (new Date(note.updatedAt)).toLocaleDateString(), time: (new Date(note.updatedAt)).toLocaleTimeString() })" class="ti ti-pencil"></i></span>
-		<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;">
-			<i v-if="note.visibility === 'home'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-home"></i>
-			<i v-else-if="note.visibility === 'followers'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-lock"></i>
-			<i v-else-if="note.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-mail"></i>
-		</span>
-		<span v-if="note.reactionAcceptance != null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
-			<i v-if="note.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
-			<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
-			<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
-			<i v-else-if="note.reactionAcceptance === 'likeOnly'" v-tooltip="i18n.ts.likeOnly" class="ti ti-heart"></i>
-		</span>
-		<span v-if="note.localOnly" style="margin-left: 0.5em;"><i class="ti ti-rocket-off"></i></span>
-		<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
-		<EmA :class="$style.time" :to="notePage(note)">
-			<EmTime :time="note.createdAt" colored/>
-		</EmA>
+	<div :class="$style.section">
+		<div :class="$style.info">
+			<span v-if="note.updatedAt" style="margin-right: 0.5em;"><i v-tooltip="i18n.tsx.noteUpdatedAt({ date: (new Date(note.updatedAt)).toLocaleDateString(), time: (new Date(note.updatedAt)).toLocaleTimeString() })" class="ti ti-pencil"></i></span>
+			<span v-if="note.visibility !== 'public'" style="margin-left: 0.5em;">
+				<i v-if="note.visibility === 'home'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-home"></i>
+				<i v-else-if="note.visibility === 'followers'" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-lock"></i>
+				<i v-else-if="note.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[note.visibility]" class="ti ti-mail"></i>
+			</span>
+			<span v-if="note.reactionAcceptance != null" style="margin-right: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>note.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
+				<i v-if="note.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
+				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
+				<i v-else-if="note.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
+				<i v-else-if="note.reactionAcceptance === 'likeOnly'" v-tooltip="i18n.ts.likeOnly" class="ti ti-heart"></i>
+			</span>
+			<span v-if="note.localOnly" style="margin-left: 0.5em;"><i class="ti ti-rocket-off"></i></span>
+			<span v-if="note.channel" style="margin-left: 0.5em;" :title="note.channel.name"><i class="ti ti-device-tv"></i></span>
+			<EmA :class="$style.time" :to="notePage(note)">
+				<EmTime :time="note.createdAt" colored/>
+			</EmA>
+		</div>
+		<div :style="$style.info"><EmInstanceTicker v-if="note.user.instance != null" :instance="note.user.instance"/></div>
 	</div>
 </header>
 </template>
@@ -44,6 +51,7 @@ import EmA from '@/components/EmA.vue';
 import EmUserName from '@/components/EmUserName.vue';
 import EmAcct from '@/components/EmAcct.vue';
 import EmTime from '@/components/EmTime.vue';
+import EmInstanceTicker from '@/components/EmInstanceTicker.vue';
 
 defineProps<{
 	note: Misskey.entities.Note;
@@ -53,8 +61,21 @@ defineProps<{
 <style lang="scss" module>
 .root {
 	display: flex;
-	align-items: baseline;
+}
+
+.section {
+	align-items: flex-start;
 	white-space: nowrap;
+	flex-direction: column;
+	overflow: hidden;
+
+	&:last-child {
+		display: flex;
+		align-items: flex-end;
+		margin-left: auto;
+		padding-left: 10px;
+		overflow: clip;
+	}
 }
 
 .name {

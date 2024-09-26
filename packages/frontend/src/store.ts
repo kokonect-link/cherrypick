@@ -6,6 +6,8 @@
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { hemisphere } from '@@/js/intl-const.js';
+import lightTheme from '@@/themes/l-cherrypick.json5';
+import darkTheme from '@@/themes/d-cherrypick.json5';
 import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
@@ -264,9 +266,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'twemoji', // twemoji / fluentEmoji / native
 	},
-	disableDrawer: {
+	menuStyle: {
 		where: 'device',
-		default: false,
+		default: 'auto' as 'auto' | 'popup' | 'drawer',
 	},
 	useBlurEffectForModal: {
 		where: 'device',
@@ -758,8 +760,6 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@@/themes/l-cherrypick.json5';
-import darkTheme from '@@/themes/d-cherrypick.json5';
 
 export class ColdDeviceStorage {
 	public static default = {
