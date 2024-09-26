@@ -2427,6 +2427,10 @@ export interface Locale extends ILocale {
      */
     "menuStyle": string;
     /**
+     * スタイル
+     */
+    "style": string;
+    /**
      * ドロワー
      */
     "drawer": string;

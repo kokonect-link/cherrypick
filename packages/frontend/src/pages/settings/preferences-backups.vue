@@ -88,7 +88,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'emojiPickerScale',
 	'emojiPickerWidth',
 	'emojiPickerHeight',
-	'emojiPickerUseDrawerForMobile',
+	'emojiPickerStyle',
 	'defaultSideView',
 	'menuDisplay',
 	'reportError',

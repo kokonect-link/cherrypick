@@ -233,6 +233,7 @@ function onMousedown(evt: MouseEvent): void {
 	}
 
 	&.danger {
+		font-weight: bold;
 		color: #ff2a2a;
 
 		&.primary {
