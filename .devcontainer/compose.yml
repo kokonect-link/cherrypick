@@ -1,6 +1,6 @@
 services:
   app:
-    image: mcr.microsoft.com/devcontainers/javascript-node:0-18
+    image: mcr.microsoft.com/devcontainers/javascript-node:20
     
     volumes:
       - ../:/workspace:cached
