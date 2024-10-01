@@ -38,6 +38,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Feat: 사용자 메뉴에서 원격 서버를 관리할 수 있음 (kokonect-link/cherrypick#502)
   - 서버 차단, 서버 사일런스, 서버 미디어 사일런스
 - Feat: 노트 동작 버튼을 개인화할 수 있음 (kokonect-link/cherrypick#501)
+- Feat: 답글 대상 노트의 반투명 옵션을 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함
 - Enhance: Webhook 추가 버튼을 헤더로 이동해 디자인 개선
 - Enhance: 노트 번역 영역에서도 이모지를 눌러 이모지 메뉴를 열 수 있음

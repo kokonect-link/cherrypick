@@ -610,6 +610,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showReplyTargetNoteInSemiTransparent: {
+		where: 'device',
+		default: true,
+	},
 	nsfwOpenBehavior: {
 		where: 'device',
 		default: 'click' as 'click' | 'doubleClick',

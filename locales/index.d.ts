@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 返信対象ノートを半透明に表示
+     */
+    "showReplyTargetNoteInSemiTransparent": string;
+    /**
      * ノートにアクションボタンを表示
      */
     "noteFooterButton": string;

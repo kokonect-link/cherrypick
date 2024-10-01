@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+showReplyTargetNoteInSemiTransparent: "답글 대상 노트를 반투명하게 표시"
 noteFooterButton: "노트 동작 버튼"
 collapseReplies: "답글로 작성된 노트 간략화하기"
 collapseRepliesDescription: "답글로 작성된 노트를 접어서 표시해요.\n리액션한 노트는 영향을 받지 않아요."

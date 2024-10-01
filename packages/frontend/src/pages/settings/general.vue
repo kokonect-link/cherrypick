@@ -96,6 +96,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="alwaysShowCw">{{ i18n.ts.alwaysShowCw }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="showReplyTargetNoteInSemiTransparent">{{ i18n.ts.showReplyTargetNoteInSemiTransparent }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<div class="_gaps_s" style="margin: 0 10px;">
@@ -483,6 +484,7 @@ const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showF
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
 const alwaysShowCw = computed(defaultStore.makeGetterSetter('alwaysShowCw'));
+const showReplyTargetNoteInSemiTransparent = computed(defaultStore.makeGetterSetter('showReplyTargetNoteInSemiTransparent'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
 const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
 const forceRenoteVisibilitySelection = computed(defaultStore.makeGetterSetter('forceRenoteVisibilitySelection'));
@@ -568,6 +570,7 @@ watch([
 	renoteQuoteButtonSeparation,
 	allMediaNoteCollapse,
 	alwaysShowCw,
+	showReplyTargetNoteInSemiTransparent,
 	showReplyButtonInNoteFooter,
 	showRenoteButtonInNoteFooter,
 	showLikeButtonInNoteFooter,
