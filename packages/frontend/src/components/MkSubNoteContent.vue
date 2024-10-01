@@ -28,7 +28,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-if="translating" mini/>
 			<div v-else-if="translation">
 				<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-				<Mfm :text="translation.text" :author="note.user" :nyaize="noNyaize ? false : 'respect'" :emojiUrls="note.emojis" @click.stop/>
+				<Mfm
+					:text="translation.text"
+					:author="note.user"
+					:nyaize="noNyaize ? false : 'respect'"
+					:emojiUrls="note.emojis"
+					:enableEmojiMenu="true"
+					:enableEmojiMenuReaction="true"
+					@click.stop
+				/>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -92,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-heart"></i>
 			</button>
 			<button ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
-				<i v-if="note.reactionAcceptance === 'likeOnly' && note.myReaction != null" class="ti ti-heart-filled" style="color: var(--eventReactionHeart);"></i>
+				<i v-if="note.reactionAcceptance === 'likeOnly' && note.myReaction != null" class="ti ti-heart-filled" style="color: var(--love);"></i>
 				<i v-else-if="note.myReaction != null" class="ti ti-mood-edit" style="color: var(--accent);"></i>
 				<i v-else-if="note.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
 				<i v-else class="ti ti-mood-plus"></i>

@@ -53,8 +53,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label>{{ i18n.ts.experimentalFeatures }}</template>
 
 				<div class="_gaps_m">
-					<MkSwitch v-model="enableCondensedLineForAcct">
-						<template #label>Enable condensed line for acct</template>
+					<MkSwitch v-model="enableCondensedLine">
+						<template #label>Enable condensed line</template>
 					</MkSwitch>
 				</div>
 			</MkFolder>
@@ -106,7 +106,7 @@ import { reloadAsk } from '@/scripts/reload-ask.js';
 const $i = signinRequired();
 
 const reportError = computed(defaultStore.makeGetterSetter('reportError'));
-const enableCondensedLineForAcct = computed(defaultStore.makeGetterSetter('enableCondensedLineForAcct'));
+const enableCondensedLine = computed(defaultStore.makeGetterSetter('enableCondensedLine'));
 const devMode = computed(defaultStore.makeGetterSetter('devMode'));
 const defaultWithReplies = computed(defaultStore.makeGetterSetter('defaultWithReplies'));
 
@@ -143,12 +143,6 @@ async function updateRepliesAll(withReplies: boolean) {
 
 	misskeyApi('following/update-all', { withReplies });
 }
-
-watch([
-	enableCondensedLineForAcct,
-], async () => {
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
-});
 
 const headerActions = computed(() => []);
 

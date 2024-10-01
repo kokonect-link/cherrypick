@@ -168,6 +168,9 @@ export class NotificationEntityService implements OnModuleInit {
 			...(notification.type === 'roleAssigned' ? {
 				role: role,
 			} : {}),
+			...(notification.type === 'followRequestAccepted' ? {
+				message: notification.message,
+			} : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,
 			} : {}),

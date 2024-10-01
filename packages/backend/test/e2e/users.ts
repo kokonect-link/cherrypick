@@ -105,6 +105,7 @@ describe('ユーザー', () => {
 			isRenoteMuted: user.isRenoteMuted ?? false,
 			notify: user.notify ?? 'none',
 			withReplies: user.withReplies ?? false,
+			followedMessage: user.isFollowing ? (user.followedMessage ?? null) : undefined,
 		});
 	};
 
@@ -114,6 +115,7 @@ describe('ユーザー', () => {
 			...userDetailedNotMe(user),
 			avatarId: user.avatarId,
 			bannerId: user.bannerId,
+			followedMessage: user.followedMessage,
 			isModerator: user.isModerator,
 			isAdmin: user.isAdmin,
 			injectFeaturedNote: user.injectFeaturedNote,
@@ -351,6 +353,7 @@ describe('ユーザー', () => {
 		// MeDetailedOnly
 		assert.strictEqual(response.avatarId, null);
 		assert.strictEqual(response.bannerId, null);
+		assert.strictEqual(response.followedMessage, null);
 		assert.strictEqual(response.isModerator, false);
 		assert.strictEqual(response.isAdmin, false);
 		assert.strictEqual(response.injectFeaturedNote, true);
@@ -415,6 +418,8 @@ describe('ユーザー', () => {
 		{ parameters: () => ({ description: 'x'.repeat(1500) }) },
 		{ parameters: () => ({ description: 'x' }) },
 		{ parameters: () => ({ description: 'My description' }) },
+		{ parameters: () => ({ followedMessage: null }) },
+		{ parameters: () => ({ followedMessage: 'Thank you' }) },
 		{ parameters: () => ({ location: null }) },
 		{ parameters: () => ({ location: 'x'.repeat(50) }) },
 		{ parameters: () => ({ location: 'x' }) },

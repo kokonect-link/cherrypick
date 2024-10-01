@@ -739,6 +739,19 @@ export class MiMeta {
 	})
 	public urlPreviewUserAgent: string | null;
 
+	@Column('varchar', {
+		length: 128,
+		default: 'all',
+	})
+	public federation: 'all' | 'specified' | 'none';
+
+	@Column('varchar', {
+		length: 1024,
+		array: true,
+		default: '{}',
+	})
+	public federationHosts: string[];
+
 	@Column('boolean', {
 		default: false,
 	})

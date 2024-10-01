@@ -104,7 +104,6 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'mediaListWithOneImageAppearance',
 	'notificationPosition',
 	'notificationStackAxis',
-	'enableCondensedLineForAcct',
 	'keepScreenOn',
 	'defaultWithReplies',
 	'disableStreamingTimeline',

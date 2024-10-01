@@ -6,19 +6,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <header :class="$style.root">
 	<div :class="$style.section">
-		<div style="display: flex;">
-			<div v-if="mock" :class="$style.name">
-				<MkUserName :user="note.user"/>
+		<component :is="defaultStore.state.enableCondensedLine ? 'MkCondensedLine' : 'div'" :minScale="0.7" style="min-width: 0;">
+			<div style="display: flex; white-space: nowrap; align-items: baseline;">
+				<div v-if="mock" :class="$style.name">
+					<MkUserName :user="note.user"/>
+				</div>
+				<MkA v-else v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
+					<MkUserName :user="note.user"/>
+				</MkA>
+				<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
+				<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
+					<img v-for="(role, i) in note.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl!"/>
+				</div>
 			</div>
-			<MkA v-else v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
-				<MkUserName :user="note.user"/>
-			</MkA>
-			<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
-			<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
-				<img v-for="(role, i) in note.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl!"/>
-			</div>
-		</div>
-		<div :class="$style.username"><MkAcct :user="note.user"/></div>
+			<div :class="$style.username"><MkAcct :user="note.user"/></div>
+		</component>
 	</div>
 	<div :class="$style.section">
 		<div :class="$style.info">
