@@ -89,6 +89,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSelect>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="alwaysShowCw">{{ i18n.ts.alwaysShowCw }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -462,6 +463,7 @@ const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('reno
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
+const alwaysShowCw = computed(defaultStore.makeGetterSetter('alwaysShowCw'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
 const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
 const forceRenoteVisibilitySelection = computed(defaultStore.makeGetterSetter('forceRenoteVisibilitySelection'));
@@ -539,6 +541,7 @@ watch([
 	infoButtonForNoteActionsEnabled,
 	renoteQuoteButtonSeparation,
 	allMediaNoteCollapse,
+	alwaysShowCw,
 ], () => {
 	reloadTimeline();
 	reloadNotification();

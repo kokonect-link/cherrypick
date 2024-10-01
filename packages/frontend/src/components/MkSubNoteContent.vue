@@ -244,6 +244,8 @@ if (!props.mock) {
 	});
 }
 
+if (defaultStore.state.alwaysShowCw) showContent.value = true;
+
 function renote() {
 	pleaseLogin(undefined, pleaseLoginContext.value);
 	showMovedDialog();

@@ -50,6 +50,8 @@ const showContent = ref(false);
 const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
 const router = useRouter();
 
+if (defaultStore.state.alwaysShowCw) showContent.value = true;
+
 onMounted(() => {
 	globalEvents.on('showEl', (showEl_receive) => {
 		showEl.value = showEl_receive;

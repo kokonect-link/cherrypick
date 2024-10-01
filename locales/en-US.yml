@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+alwaysShowCw: "Always show content set to 'Hide content'"
 forceRenoteVisibilitySelector: "Specify visibility of renote"
 cherrypickLabs: "CherryPick Labs"
 cherrypickLabsDescription: "Why not try some of the features that are still under development? Some features may not work properly."

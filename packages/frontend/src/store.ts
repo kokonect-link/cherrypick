@@ -598,6 +598,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	alwaysShowCw: {
+		where: 'device',
+		default: false,
+	},
 	nsfwOpenBehavior: {
 		where: 'device',
 		default: 'click' as 'click' | 'doubleClick',

@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 「内容を隠す」で設定した内容を常に表示する
+     */
+    "alwaysShowCw": string;
+    /**
      * リノートの公開範囲を指定
      */
     "forceRenoteVisibilitySelector": string;

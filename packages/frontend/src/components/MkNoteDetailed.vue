@@ -507,6 +507,8 @@ if (appearNote.value.reactionAcceptance === 'likeOnly') {
 	});
 }
 
+if (defaultStore.state.alwaysShowCw) showContent.value = true;
+
 function renote() {
 	pleaseLogin(undefined, pleaseLoginContext.value);
 	showMovedDialog();

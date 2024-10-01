@@ -158,6 +158,7 @@ const withSensitive = computed<boolean>({
 
 const enableWidgetsArea = ref(defaultStore.state.enableWidgetsArea);
 const friendlyUiEnableNotificationsArea = ref(defaultStore.state.friendlyUiEnableNotificationsArea);
+const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
 
 watch(src, () => {
 	queue.value = 0;
@@ -177,6 +178,12 @@ watch(enableWidgetsArea, (x) => {
 watch(friendlyUiEnableNotificationsArea, (x) => {
 	defaultStore.set('friendlyUiEnableNotificationsArea', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(alwaysShowCw, (x) => {
+	defaultStore.set('alwaysShowCw', x);
+	reloadTimeline();
+	reloadNotification();
 });
 
 onMounted(() => {
@@ -305,6 +312,14 @@ function switchTlIfNeeded() {
 	}
 }
 
+function reloadTimeline() {
+	globalEvents.emit('reloadTimeline');
+}
+
+function reloadNotification() {
+	globalEvents.emit('reloadNotification');
+}
+
 onMounted(() => {
 	switchTlIfNeeded();
 });
@@ -374,6 +389,29 @@ const headerActions = computed(() => {
 					type: 'switch',
 					text: i18n.ts.showCatOnly,
 					ref: onlyCats,
+				});
+
+				menuItems.push({
+					type: 'parent',
+					icon: 'ti ti-note',
+					text: i18n.ts.note,
+					children: async () => {
+						const noteChildMenu = [] as MenuItem[];
+
+						noteChildMenu.push({
+							type: 'switch',
+							text: i18n.ts.alwaysShowCw,
+							ref: alwaysShowCw,
+						}, {
+							type: 'switch',
+							text: i18n.ts.reactionsList,
+							ref: onlyCats,
+						});
+
+						noteChildMenu.push({ type: 'divider' });
+
+						return noteChildMenu;
+					},
 				});
 
 				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
