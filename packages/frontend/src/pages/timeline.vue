@@ -329,7 +329,7 @@ const headerActions = computed(() => {
 
 							friendlyUiChildMenu.push({
 								type: 'switch',
-								text: i18n.ts.friendlyUiEnableNotificationsArea,
+								text: i18n.ts._cherrypick.friendlyUiEnableNotificationsArea,
 								ref: friendlyUiEnableNotificationsArea,
 							});
 
@@ -340,7 +340,7 @@ const headerActions = computed(() => {
 
 				menuItems.push({
 					type: 'switch',
-					text: i18n.ts.enableWidgetsArea,
+					text: i18n.ts._cherrypick.enableWidgetsArea,
 					ref: enableWidgetsArea,
 				});
 
