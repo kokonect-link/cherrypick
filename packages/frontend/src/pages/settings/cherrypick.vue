@@ -69,13 +69,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<template #label>UI</template>
 		<div class="_gaps_m">
-			<MkSwitch v-model="enableWidgetsArea">{{ i18n.ts.enableWidgetsArea }}</MkSwitch>
+			<MkSwitch v-model="enableWidgetsArea">{{ i18n.ts._cherrypick.enableWidgetsArea }}</MkSwitch>
 
 			<div class="_gaps_m" style="margin: 0 10px;">
 				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">Friendly UI</div>
 
 				<MkSwitch v-model="friendlyUiEnableNotificationsArea">
-					{{ i18n.ts.friendlyUiEnableNotificationsArea }}
+					{{ i18n.ts._cherrypick.friendlyUiEnableNotificationsArea }}
 				</MkSwitch>
 				<MkSwitch v-model="enableLongPressOpenAccountMenu">
 					<template #label>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</template>
