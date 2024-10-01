@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop && !pageMetadata?.needWideArea" :class="$style.widgets">
+	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.enableWidgetsArea" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 

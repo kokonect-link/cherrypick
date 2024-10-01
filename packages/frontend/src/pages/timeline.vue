@@ -156,8 +156,8 @@ const withSensitive = computed<boolean>({
 	set: (x) => saveTlFilter('withSensitive', x),
 });
 
-const friendlyEnableNotifications = ref(defaultStore.state.friendlyEnableNotifications);
-const friendlyEnableWidgets = ref(defaultStore.state.friendlyEnableWidgets);
+const enableWidgetsArea = ref(defaultStore.state.enableWidgetsArea);
+const friendlyUiEnableNotificationsArea = ref(defaultStore.state.friendlyUiEnableNotificationsArea);
 
 watch(src, () => {
 	queue.value = 0;
@@ -169,13 +169,13 @@ watch(withSensitive, () => {
 	tlComponent.value?.reloadTimeline();
 });
 
-watch(friendlyEnableNotifications, (x) => {
-	defaultStore.set('friendlyEnableNotifications', x);
+watch(enableWidgetsArea, (x) => {
+	defaultStore.set('enableWidgetsArea', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
-watch(friendlyEnableWidgets, (x) => {
-	defaultStore.set('friendlyEnableWidgets', x);
+watch(friendlyUiEnableNotificationsArea, (x) => {
+	defaultStore.set('friendlyUiEnableNotificationsArea', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
@@ -320,17 +320,31 @@ const headerActions = computed(() => {
 			handler: (ev) => {
 				const menuItems: MenuItem[] = [];
 
-				menuItems.push({
-					type: 'switch',
-					text: i18n.ts.friendlyEnableNotifications,
-					ref: friendlyEnableNotifications,
-				});
+				if (isFriendly.value) {
+					menuItems.push({
+						type: 'parent',
+						text: 'Friendly UI',
+						children: async () => {
+							const friendlyUiChildMenu = [] as MenuItem[];
+
+							friendlyUiChildMenu.push({
+								type: 'switch',
+								text: i18n.ts.friendlyUiEnableNotificationsArea,
+								ref: friendlyUiEnableNotificationsArea,
+							});
+
+							return friendlyUiChildMenu;
+						},
+					});
+				}
 
 				menuItems.push({
 					type: 'switch',
-					text: i18n.ts.friendlyEnableWidgets,
-					ref: friendlyEnableWidgets,
+					text: i18n.ts.enableWidgetsArea,
+					ref: enableWidgetsArea,
 				});
+
+				menuItems.push({ type: 'divider' });
 
 				menuItems.push({
 					type: 'switch',

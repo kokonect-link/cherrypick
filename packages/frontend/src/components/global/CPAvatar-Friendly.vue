@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
-	<template v-if="showDecoration && defaultStore.state.friendlyShowAvatarDecorationsInNavBtn">
+	<template v-if="showDecoration && defaultStore.state.friendlyUiShowAvatarDecorationsInNavBtn">
 		<img
 			v-for="decoration in decorations ?? user.avatarDecorations"
 			:class="[$style.decoration, { [$style.decorationBlink]: decoration.blink }]"

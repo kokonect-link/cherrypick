@@ -18,11 +18,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop && defaultStore.state.friendlyEnableNotifications && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+	<div v-if="isDesktop && defaultStore.state.friendlyUiEnableNotificationsArea && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
 		<XNotifications disableRefreshButton/>
 	</div>
 
-	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.friendlyEnableWidgets" :class="$style.widgets">
+	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.enableWidgetsArea" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 

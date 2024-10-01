@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</main>
 
-		<div v-if="isDesktop && !pageMetadata?.needWideArea" ref="widgetsRight" class="widgets right">
+		<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.enableWidgetsArea" ref="widgetsRight" class="widgets right">
 			<XWidgets :place="showMenuOnTop ? 'right' : null" :marginTop="showMenuOnTop ? '0' : 'var(--margin)'" @mounted="attachSticky(widgetsRight)"/>
 		</div>
 	</div>

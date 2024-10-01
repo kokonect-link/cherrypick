@@ -271,22 +271,6 @@ export interface Locale extends ILocale {
      */
     "photosensitiveSeizuresWarning": string;
     /**
-     * 通知領域を有効化
-     */
-    "friendlyEnableNotifications": string;
-    /**
-     * 通知領域を無効化
-     */
-    "friendlyDisableNotifications": string;
-    /**
-     * ウィジェット領域を有効化
-     */
-    "friendlyEnableWidgets": string;
-    /**
-     * ウィジェット領域を無効化
-     */
-    "friendlyDisableWidgets": string;
-    /**
      * 文字を太くする
      */
     "useBoldFont": string;
@@ -5960,6 +5944,22 @@ export interface Locale extends ILocale {
          */
         "renameTheButtonInPostFormToNyaDescription": string;
         /**
+         * ウィジェット領域を有効化
+         */
+        "enableWidgetsArea": string;
+        /**
+         * ウィジェット領域を無効化
+         */
+        "disableWidgetsArea": string;
+        /**
+         * 通知領域を有効化
+         */
+        "friendlyUiEnableNotificationsArea": string;
+        /**
+         * 通知領域を無効化
+         */
+        "friendlyUiDisableNotificationsArea": string;
+        /**
          * 長押しでアカウントメニューを開く
          */
         "enableLongPressOpenAccountMenu": string;
@@ -5970,7 +5970,7 @@ export interface Locale extends ILocale {
         /**
          * フローティングボタンにアイコンのデコレーションを表示
          */
-        "friendlyShowAvatarDecorationsInNavBtn": string;
+        "friendlyUiShowAvatarDecorationsInNavBtn": string;
     };
     "_bannerDisplay": {
         /**

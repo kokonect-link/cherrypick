@@ -712,23 +712,21 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	enableWidgetsArea: {
+		where: 'device',
+		default: true,
+	},
+	friendlyUiEnableNotificationsArea: {
+		where: 'device',
+		default: true,
+	},
 	enableLongPressOpenAccountMenu: {
 		where: 'device',
 		default: true,
 	},
-	friendlyShowAvatarDecorationsInNavBtn: {
+	friendlyUiShowAvatarDecorationsInNavBtn: {
 		where: 'device',
 		default: false,
-	},
-
-	// - etc
-	friendlyEnableNotifications: {
-		where: 'device',
-		default: true,
-	},
-	friendlyEnableWidgets: {
-		where: 'device',
-		default: true,
 	},
 	// #endregion
 }));
