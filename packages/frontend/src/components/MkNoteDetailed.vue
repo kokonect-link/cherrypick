@@ -82,7 +82,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</span>
 						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 					</div>
-					<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance"/>
+					<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance" @click="showOnRemote"/>
 				</div>
 			</div>
 		</header>
@@ -758,6 +758,10 @@ function loadConversation() {
 	}).then(res => {
 		conversation.value = res.reverse();
 	});
+}
+
+function showOnRemote() {
+	if (props.note.user.instance !== undefined) window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
 
 onMounted(() => {
