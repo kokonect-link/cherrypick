@@ -41,6 +41,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: Webhook 추가 버튼을 헤더로 이동해 디자인 개선
 - Enhance: 노트 번역 영역에서도 이모지를 눌러 이모지 메뉴를 열 수 있음
 - Enhance: 노트 상세 페이지에서 InstanceTicker를 클릭해 리모트에서 노트를 볼 수 있음
+- Enhance: 리액션 수신 범위에 따라 리액션 버튼의 툴팁 내용이 변경됨
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업될 수 있음
 
 ---

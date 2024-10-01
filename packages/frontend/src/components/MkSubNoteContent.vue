@@ -99,7 +99,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<button v-if="note.reactionAcceptance !== 'likeOnly' && note.myReaction == null" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
-			<button ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
+			<button ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="note.reactionAcceptance === 'likeOnly' && note.myReaction != null ? i18n.ts.unlike : note.myReaction != null ? i18n.ts.editReaction : note.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
 				<i v-if="note.reactionAcceptance === 'likeOnly' && note.myReaction != null" class="ti ti-heart-filled" style="color: var(--love);"></i>
 				<i v-else-if="note.myReaction != null" class="ti ti-mood-edit" style="color: var(--accent);"></i>
 				<i v-else-if="note.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
