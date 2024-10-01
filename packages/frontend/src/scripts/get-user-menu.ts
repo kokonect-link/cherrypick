@@ -13,7 +13,7 @@ import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore, userActions } from '@/store.js';
-import { $i, iAmModerator } from '@/account.js';
+import { $i, iAmAdmin, iAmModerator } from '@/account.js';
 import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
 import { IRouter } from '@/nirax.js';
 import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
@@ -46,6 +46,41 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		os.apiWithDialog('users/groups/invite', {
 			groupId: groupId,
 			userId: user.id,
+		});
+	}
+
+	const meta = ref<Misskey.entities.AdminMetaResponse | null>(null);
+	const instance = ref<Misskey.entities.FederationInstance | null>(null);
+
+	async function toggleInstanceBlock(): Promise<void> {
+		if (!iAmAdmin) return;
+		if (!meta.value) throw new Error('No meta?');
+		if (!instance.value) throw new Error('No instance?');
+		const { instanceHost } = instance.value;
+		await misskeyApi('admin/update-meta', {
+			blockedHosts: isBlocked.value ? meta.value.blockedHosts.concat([instanceHost]) : meta.value.blockedHosts.filter(x => x !== instanceHost),
+		});
+	}
+
+	async function toggleInstanceSilenced(): Promise<void> {
+		if (!iAmAdmin) return;
+		if (!meta.value) throw new Error('No meta?');
+		if (!instance.value) throw new Error('No instance?');
+		const { instanceHost } = instance.value;
+		const silencedHosts = meta.value.silencedHosts ?? [];
+		await misskeyApi('admin/update-meta', {
+			silencedHosts: isSilenced.value ? silencedHosts.concat([instanceHost]) : silencedHosts.filter(x => x !== instanceHost),
+		});
+	}
+
+	async function toggleInstanceMediaSilenced(): Promise<void> {
+		if (!iAmAdmin) return;
+		if (!meta.value) throw new Error('No meta?');
+		if (!instance.value) throw new Error('No instance?');
+		const { instanceHost } = instance.value;
+		const mediaSilencedHosts = meta.value.mediaSilencedHosts ?? [];
+		await misskeyApi('admin/update-meta', {
+			mediaSilencedHosts: isMediaSilenced.value ? mediaSilencedHosts.concat([instanceHost]) : mediaSilencedHosts.filter(x => x !== instanceHost),
 		});
 	}
 
@@ -425,7 +460,43 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		});
 		//}
 
-		menuItems.push({ type: 'divider' }, {
+		menuItems.push({ type: 'divider' });
+
+		const isInstanceBlocked = ref(instance.value?.isBlocked ?? false);
+		const isInstanceSilenced = ref(instance.value?.isSilenced ?? false);
+		const isInstanceMediaSilenced = ref(instance.value?.isMediaSilenced ?? false);
+
+		if (iAmAdmin && (meta.value || instance.value)) {
+			menuItems.push({
+				type: 'parent',
+				icon: 'ti ti-server-cog',
+				text: i18n.ts.instances,
+				children: async () => {
+					const federationChildMenu = [] as MenuItem[];
+
+					federationChildMenu.push({
+						type: 'switch',
+						text: i18n.ts.blockThisInstance,
+						ref: isInstanceBlocked,
+						action: toggleInstanceBlock,
+					}, {
+						type: 'switch',
+						text: i18n.ts.silenceThisInstance,
+						ref: isInstanceSilenced,
+						action: toggleInstanceSilenced,
+					}, {
+						type: 'switch',
+						text: i18n.ts.mediaSilenceThisInstance,
+						ref: isInstanceMediaSilenced,
+						action: toggleInstanceMediaSilenced,
+					});
+
+					return federationChildMenu;
+				},
+			});
+		}
+
+		menuItems.push({
 			icon: user.isMuted ? 'ti ti-eye' : 'ti ti-eye-off',
 			text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 			action: toggleMute,
