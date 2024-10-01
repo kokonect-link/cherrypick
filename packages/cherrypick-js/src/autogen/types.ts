@@ -5543,6 +5543,8 @@ export type operations = {
             urlPreviewRequireContentLength: boolean;
             urlPreviewUserAgent: string | null;
             urlPreviewSummaryProxyUrl: string | null;
+            federation: string;
+            federationHosts: string[];
             doNotSendNotificationEmailsForAbuseReport: boolean;
             emailToReceiveAbuseReport: string | null;
             enableReceivePrerelease: boolean;
@@ -10236,6 +10238,9 @@ export type operations = {
           urlPreviewRequireContentLength?: boolean;
           urlPreviewUserAgent?: string | null;
           urlPreviewSummaryProxyUrl?: string | null;
+          /** @enum {string} */
+          federation?: 'all' | 'none' | 'specified';
+          federationHosts?: string[];
           doNotSendNotificationEmailsForAbuseReport?: boolean;
           emailToReceiveAbuseReport?: string | null;
           enableReceivePrerelease?: boolean;
