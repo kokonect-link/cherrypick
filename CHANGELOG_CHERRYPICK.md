@@ -30,7 +30,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 
 ### Client
 - Feat: 위젯 영역을 숨길 수 있음
-- Feat: '내용 숨기기'로 설정한 내용을 항상 보이기 (kokonect-link/cherrypick#495)
+  - 기존 Friendly UI 한정 기능이 다른 UI에서도 사용할 수 있도록 확대됨
+- Feat: '내용 숨기기'로 설정한 내용을 항상 보이게 설정할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 내용이 긴 노트의 간략화 여부를 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 답글로 작성된 노트를 간략화하여 표시할 수 있음 (kokonect-link/cherrypick#495)
   - 리액션한 노트는 옵션 활성화 유무와 상관없이 항상 표시됩니다.
