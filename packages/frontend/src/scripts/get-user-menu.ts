@@ -20,7 +20,6 @@ import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
 import { mainRouter } from '@/router/main.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
-import { globalEvents } from '@/events.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -52,13 +51,32 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 	const meta = ref<Misskey.entities.AdminMetaResponse | null>(null);
 	const instance = ref<Misskey.entities.FederationInstance | null>(null);
 
+	const isInstanceBlocked = ref(false);
+	const isInstanceSilenced = ref(false);
+	const isInstanceMediaSilenced = ref(false);
+
+	async function fetch(): Promise<void> {
+		if (iAmAdmin) {
+			meta.value = await misskeyApi('admin/meta');
+		}
+		instance.value = await misskeyApi('federation/show-instance', {
+			host: user.host ?? host,
+		});
+		isInstanceBlocked.value = instance.value?.isBlocked ?? false;
+		isInstanceSilenced.value = instance.value?.isSilenced ?? false;
+		isInstanceMediaSilenced.value = instance.value?.isMediaSilenced ?? false;
+	}
+
+	fetch();
+
 	async function toggleInstanceBlock(): Promise<void> {
 		if (!iAmAdmin) return;
 		if (!meta.value) throw new Error('No meta?');
 		if (!instance.value) throw new Error('No instance?');
-		const { instanceHost } = instance.value;
+		// eslint-disable-next-line no-shadow
+		const { host } = instance.value;
 		await misskeyApi('admin/update-meta', {
-			blockedHosts: isBlocked.value ? meta.value.blockedHosts.concat([instanceHost]) : meta.value.blockedHosts.filter(x => x !== instanceHost),
+			blockedHosts: isInstanceBlocked.value ? meta.value.blockedHosts.concat([host]) : meta.value.blockedHosts.filter(x => x !== host),
 		});
 	}
 
@@ -66,10 +84,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		if (!iAmAdmin) return;
 		if (!meta.value) throw new Error('No meta?');
 		if (!instance.value) throw new Error('No instance?');
-		const { instanceHost } = instance.value;
+		// eslint-disable-next-line no-shadow
+		const { host } = instance.value;
 		const silencedHosts = meta.value.silencedHosts ?? [];
 		await misskeyApi('admin/update-meta', {
-			silencedHosts: isSilenced.value ? silencedHosts.concat([instanceHost]) : silencedHosts.filter(x => x !== instanceHost),
+			silencedHosts: isInstanceSilenced.value ? silencedHosts.concat([host]) : silencedHosts.filter(x => x !== host),
 		});
 	}
 
@@ -77,10 +96,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		if (!iAmAdmin) return;
 		if (!meta.value) throw new Error('No meta?');
 		if (!instance.value) throw new Error('No instance?');
-		const { instanceHost } = instance.value;
+		// eslint-disable-next-line no-shadow
+		const { host } = instance.value;
 		const mediaSilencedHosts = meta.value.mediaSilencedHosts ?? [];
 		await misskeyApi('admin/update-meta', {
-			mediaSilencedHosts: isMediaSilenced.value ? mediaSilencedHosts.concat([instanceHost]) : mediaSilencedHosts.filter(x => x !== instanceHost),
+			mediaSilencedHosts: isInstanceMediaSilenced.value ? mediaSilencedHosts.concat([host]) : mediaSilencedHosts.filter(x => x !== host),
 		});
 	}
 
@@ -160,10 +180,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		});
 	}
 
-	function refreshUser() {
-		globalEvents.emit('refreshUser');
-	}
-
 	async function getConfirmed(text: string): Promise<boolean> {
 		const confirm = await os.confirm({
 			type: 'warning',
@@ -210,6 +226,18 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			userId: user.id,
 		});
 	}
+
+	watch(isInstanceBlocked, () => {
+		toggleInstanceBlock();
+	});
+
+	watch(isInstanceSilenced, () => {
+		toggleInstanceSilenced();
+	});
+
+	watch(isInstanceMediaSilenced, () => {
+		toggleInstanceMediaSilenced();
+	});
 
 	const menuItems: MenuItem[] = [];
 
@@ -462,11 +490,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 
 		menuItems.push({ type: 'divider' });
 
-		const isInstanceBlocked = ref(instance.value?.isBlocked ?? false);
-		const isInstanceSilenced = ref(instance.value?.isSilenced ?? false);
-		const isInstanceMediaSilenced = ref(instance.value?.isMediaSilenced ?? false);
-
-		if (iAmAdmin && (meta.value || instance.value)) {
+		if (iAmAdmin && user.host !== null) {
 			menuItems.push({
 				type: 'parent',
 				icon: 'ti ti-server-cog',

@@ -493,10 +493,6 @@ watch(user, () => {
 	});
 });
 
-onMounted(() => {
-	globalEvents.on('refreshUser', () => updateRemoteUser());
-});
-
 const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
