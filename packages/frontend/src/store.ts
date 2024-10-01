@@ -614,6 +614,30 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'click' as 'click' | 'doubleClick',
 	},
+	showReplyButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showRenoteButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showLikeButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showDoReactionButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showQuoteButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showMoreButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
 
 	// - Settings/Timeline
 	enableHomeTimeline: {

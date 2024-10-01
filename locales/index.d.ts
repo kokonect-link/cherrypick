@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ノートにアクションボタンを表示
+     */
+    "noteFooterButton": string;
+    /**
      * 返信のリノートのスマート省略
      */
     "collapseReplies": string;

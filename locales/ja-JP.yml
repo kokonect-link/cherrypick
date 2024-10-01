@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+noteFooterButton: "ノートにアクションボタンを表示"
 collapseReplies: "返信のリノートのスマート省略"
 collapseRepliesDescription: "返信で作成されたノートをたたんで表示します。\nリアクションしたノートは影響を受けません。"
 repliedBy: "{user}が返信を作成しました"

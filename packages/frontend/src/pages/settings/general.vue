@@ -98,6 +98,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="alwaysShowCw">{{ i18n.ts.alwaysShowCw }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 
+			<div class="_gaps_s" style="margin: 0 10px;">
+				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">{{ i18n.ts.noteFooterButton }} <span class="_beta">CherryPick</span></div>
+
+				<MkSwitch v-model="showReplyButtonInNoteFooter"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.reply }}</MkSwitch>
+				<MkSwitch v-model="showRenoteButtonInNoteFooter"><i class="ti ti-repeat"></i> {{ i18n.ts.renote }}</MkSwitch>
+				<MkSwitch v-model="showLikeButtonInNoteFooter"><i class="ti ti-heart"></i> {{ i18n.ts.like }}</MkSwitch>
+				<MkSwitch v-model="showDoReactionButtonInNoteFooter"><i class="ti ti-mood-plus"></i> {{ i18n.ts.doReaction }}</MkSwitch>
+				<MkSwitch v-model="showQuoteButtonInNoteFooter"><i class="ti ti-quote"></i> {{ i18n.ts.quote }}</MkSwitch>
+				<MkSwitch v-model="showMoreButtonInNoteFooter"><i class="ti ti-dots"></i> {{ i18n.ts.more }}</MkSwitch>
+			</div>
+
 			<MkSelect v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
 				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
@@ -475,6 +486,12 @@ const alwaysShowCw = computed(defaultStore.makeGetterSetter('alwaysShowCw'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));
 const renoteVisibilitySelection = computed(defaultStore.makeGetterSetter('renoteVisibilitySelection'));
 const forceRenoteVisibilitySelection = computed(defaultStore.makeGetterSetter('forceRenoteVisibilitySelection'));
+const showReplyButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showReplyButtonInNoteFooter'));
+const showRenoteButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showRenoteButtonInNoteFooter'));
+const showLikeButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showLikeButtonInNoteFooter'));
+const showDoReactionButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showDoReactionButtonInNoteFooter'));
+const showQuoteButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showQuoteButtonInNoteFooter'));
+const showMoreButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showMoreButtonInNoteFooter'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -551,6 +568,12 @@ watch([
 	renoteQuoteButtonSeparation,
 	allMediaNoteCollapse,
 	alwaysShowCw,
+	showReplyButtonInNoteFooter,
+	showRenoteButtonInNoteFooter,
+	showLikeButtonInNoteFooter,
+	showDoReactionButtonInNoteFooter,
+	showQuoteButtonInNoteFooter,
+	showMoreButtonInNoteFooter,
 ], () => {
 	reloadTimeline();
 	reloadNotification();

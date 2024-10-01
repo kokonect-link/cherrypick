@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+noteFooterButton: "Show action buttons in notes"
 collapseReplies: "Collapse notes written in reply"
 collapseRepliesDescription: "Collapse and displays notes written as replies.\nReacted notes are not affected."
 repliedBy: "Replied by {user}"
