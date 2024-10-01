@@ -530,6 +530,10 @@ export const defaultStore = markRaw(new Storage('base', {
 
 	// #region CherryPick
 	// - Settings/General
+	collapseReplies: {
+		where: 'account',
+		default: false,
+	},
 	newNoteReceivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',

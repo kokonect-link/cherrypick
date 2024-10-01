@@ -1,5 +1,8 @@
 ---
 _lang_: "English"
+collapseReplies: "Collapse notes written in reply"
+collapseRepliesDescription: "Collapse and displays notes written as replies.\nReacted notes are not affected."
+repliedBy: "Replied by {user}"
 collapseLongNoteContent: "Collapse long notes"
 alwaysShowCw: "Always show content set to 'Hide content'"
 forceRenoteVisibilitySelector: "Specify visibility of renote"

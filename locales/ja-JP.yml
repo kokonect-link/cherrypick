@@ -1,5 +1,8 @@
 _lang_: "日本語"
 
+collapseReplies: "返信のリノートのスマート省略"
+collapseRepliesDescription: "返信で作成されたノートをたたんで表示します。\nリアクションしたノートは影響を受けません。"
+repliedBy: "{user}が返信を作成しました"
 collapseLongNoteContent: "内容の長いノートを省略して表示"
 alwaysShowCw: "「内容を隠す」で設定した内容を常に表示する"
 forceRenoteVisibilitySelector: "リノートの公開範囲を指定"

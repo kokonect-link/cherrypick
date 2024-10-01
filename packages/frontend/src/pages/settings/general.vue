@@ -47,6 +47,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.collapseRenotes }}</template>
 					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="collapseReplies">
+					<template #label>{{ i18n.ts.collapseReplies }}</template>
+					<template #caption>{{ i18n.ts.collapseRepliesDescription }}</template>
+					<span class="_beta">CherryPick</span>
+				</MkSwitch>
 				<MkSwitch v-model="collapseLongNoteContent">{{ i18n.ts.collapseLongNoteContent }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="collapseDefault">{{ i18n.ts.collapseDefault }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
@@ -411,6 +416,7 @@ const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showC
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
 const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
+const collapseReplies = computed(defaultStore.makeGetterSetter('collapseReplies'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
 const useBlurEffectForModal = computed(defaultStore.makeGetterSetter('useBlurEffectForModal'));
 const useBlurEffect = computed(defaultStore.makeGetterSetter('useBlurEffect'));
@@ -552,6 +558,7 @@ watch([
 
 watch([
 	collapseRenotes,
+	collapseReplies,
 	enableInfiniteScroll,
 ], () => {
 	reloadTimeline();

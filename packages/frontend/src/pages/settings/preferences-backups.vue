@@ -125,6 +125,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'vibrateSystem',
 	'hideAvatarsInNote',
 	'newNoteReceivedNotificationBehavior',
+	'collapseReplies',
 	'collapseDefault',
 	'requireRefreshBehavior',
 	'bannerDisplay',

@@ -1,5 +1,8 @@
 ---
 _lang_: "한국어"
+collapseReplies: "답글로 작성된 노트 간략화하기"
+collapseRepliesDescription: "답글로 작성된 노트를 접어서 표시해요.\n리액션한 노트는 영향을 받지 않아요."
+repliedBy: "{user}님이 답글을 작성했어요"
 collapseLongNoteContent: "내용이 긴 노트 간략화하기"
 alwaysShowCw: "'내용 가리기'로 설정한 내용을 항상 보이기"
 forceRenoteVisibilitySelector: "리노트 공개 범위 지정"

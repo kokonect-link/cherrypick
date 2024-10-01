@@ -161,9 +161,11 @@ const withSensitive = computed<boolean>({
 
 const enableWidgetsArea = ref(defaultStore.state.enableWidgetsArea);
 const friendlyUiEnableNotificationsArea = ref(defaultStore.state.friendlyUiEnableNotificationsArea);
-const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
+const collapseRenotes = ref(defaultStore.state.collapseRenotes);
+const collapseReplies = ref(defaultStore.state.collapseReplies);
 const collapseLongNoteContent = ref(defaultStore.state.collapseLongNoteContent);
 const collapseDefault = ref(defaultStore.state.collapseDefault);
+const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
 
 watch(src, () => {
 	queue.value = 0;
@@ -185,10 +187,14 @@ watch(friendlyUiEnableNotificationsArea, (x) => {
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
-watch(alwaysShowCw, (x) => {
-	defaultStore.set('alwaysShowCw', x);
+watch(collapseRenotes, (x) => {
+	defaultStore.set('collapseRenotes', x);
 	reloadTimeline();
-	reloadNotification();
+});
+
+watch(collapseReplies, (x) => {
+	defaultStore.set('collapseReplies', x);
+	reloadTimeline();
 });
 
 watch(collapseLongNoteContent, (x) => {
@@ -199,6 +205,12 @@ watch(collapseLongNoteContent, (x) => {
 
 watch(collapseDefault, (x) => {
 	defaultStore.set('collapseDefault', x);
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch(alwaysShowCw, (x) => {
+	defaultStore.set('alwaysShowCw', x);
 	reloadTimeline();
 	reloadNotification();
 });
@@ -417,6 +429,14 @@ const headerActions = computed(() => {
 							text: i18n.ts.showCatOnly,
 							ref: onlyCats,
 						}, { type: 'divider' }, {
+							type: 'switch',
+							text: i18n.ts.collapseRenotes,
+							ref: collapseRenotes,
+						}, {
+							type: 'switch',
+							text: i18n.ts.collapseReplies,
+							ref: collapseReplies,
+						}, {
 							type: 'switch',
 							text: i18n.ts.collapseLongNoteContent,
 							ref: collapseLongNoteContent,

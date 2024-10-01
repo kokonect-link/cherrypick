@@ -14,6 +14,19 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 返信のリノートのスマート省略
+     */
+    "collapseReplies": string;
+    /**
+     * 返信で作成されたノートをたたんで表示します。
+     * リアクションしたノートは影響を受けません。
+     */
+    "collapseRepliesDescription": string;
+    /**
+     * {user}が返信を作成しました
+     */
+    "repliedBy": ParameterizedString<"user">;
+    /**
      * 内容の長いノートを省略して表示
      */
     "collapseLongNoteContent": string;
