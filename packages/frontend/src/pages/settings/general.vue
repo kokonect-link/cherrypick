@@ -47,6 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #label>{{ i18n.ts.collapseRenotes }}</template>
 					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
 				</MkSwitch>
+				<MkSwitch v-model="collapseLongNoteContent">{{ i18n.ts.collapseLongNoteContent }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="collapseDefault">{{ i18n.ts.collapseDefault }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showNoteActionsOnlyHover">{{ i18n.ts.showNoteActionsOnlyHover }}</MkSwitch>
 				<MkSwitch v-model="showClipButtonInNoteFooter">{{ i18n.ts.showClipButtonInNoteFooter }}</MkSwitch>
@@ -450,6 +451,7 @@ const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const showUnreadNotificationsCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationsCount'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
+const collapseLongNoteContent = computed(defaultStore.makeGetterSetter('collapseLongNoteContent'));
 const collapseDefault = computed(defaultStore.makeGetterSetter('collapseDefault'));
 const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRefreshBehavior'));
 const hideAvatarsInNote = computed(defaultStore.makeGetterSetter('hideAvatarsInNote'));
@@ -524,6 +526,7 @@ watch([
 });
 
 watch([
+	collapseLongNoteContent,
 	collapseDefault,
 	hideAvatarsInNote,
 	showNoteActionsOnlyHover,

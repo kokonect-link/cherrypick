@@ -83,8 +83,11 @@ import { reloadAsk } from '@/scripts/reload-ask.js';
 const showEl = ref(false);
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
+const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
 
+// デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
+const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
@@ -159,6 +162,8 @@ const withSensitive = computed<boolean>({
 const enableWidgetsArea = ref(defaultStore.state.enableWidgetsArea);
 const friendlyUiEnableNotificationsArea = ref(defaultStore.state.friendlyUiEnableNotificationsArea);
 const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
+const collapseLongNoteContent = ref(defaultStore.state.collapseLongNoteContent);
+const collapseDefault = ref(defaultStore.state.collapseDefault);
 
 watch(src, () => {
 	queue.value = 0;
@@ -182,6 +187,18 @@ watch(friendlyUiEnableNotificationsArea, (x) => {
 
 watch(alwaysShowCw, (x) => {
 	defaultStore.set('alwaysShowCw', x);
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch(collapseLongNoteContent, (x) => {
+	defaultStore.set('collapseLongNoteContent', x);
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch(collapseDefault, (x) => {
+	defaultStore.set('collapseDefault', x);
 	reloadTimeline();
 	reloadNotification();
 });
@@ -338,15 +355,18 @@ const headerActions = computed(() => {
 				if (isFriendly.value) {
 					menuItems.push({
 						type: 'parent',
+						icon: 'ti ti-settings',
 						text: 'Friendly UI',
 						children: async () => {
 							const friendlyUiChildMenu = [] as MenuItem[];
 
-							friendlyUiChildMenu.push({
-								type: 'switch',
-								text: i18n.ts._cherrypick.friendlyUiEnableNotificationsArea,
-								ref: friendlyUiEnableNotificationsArea,
-							});
+							if (isDesktop.value) {
+								friendlyUiChildMenu.push({
+									type: 'switch',
+									text: i18n.ts._cherrypick.friendlyUiEnableNotificationsArea,
+									ref: friendlyUiEnableNotificationsArea,
+								});
+							}
 
 							return friendlyUiChildMenu;
 						},
@@ -362,55 +382,55 @@ const headerActions = computed(() => {
 				menuItems.push({ type: 'divider' });
 
 				menuItems.push({
-					type: 'switch',
-					text: i18n.ts.showRenotes,
-					ref: withRenotes,
-				});
-
-				if (isBasicTimeline(src.value) && hasWithReplies(src.value)) {
-					menuItems.push({
-						type: 'switch',
-						text: i18n.ts.showRepliesToOthersInTimeline,
-						ref: withReplies,
-						disabled: onlyFiles,
-					});
-				}
-
-				menuItems.push({
-					type: 'switch',
-					text: i18n.ts.withSensitive,
-					ref: withSensitive,
-				}, {
-					type: 'switch',
-					text: i18n.ts.fileAttachedOnly,
-					ref: onlyFiles,
-					disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
-				}, {
-					type: 'switch',
-					text: i18n.ts.showCatOnly,
-					ref: onlyCats,
-				});
-
-				menuItems.push({
 					type: 'parent',
 					icon: 'ti ti-note',
-					text: i18n.ts.note,
+					text: i18n.ts.displayOfNote,
 					children: async () => {
-						const noteChildMenu = [] as MenuItem[];
+						const displayOfNoteChildMenu = [] as MenuItem[];
 
-						noteChildMenu.push({
+						displayOfNoteChildMenu.push({
+							type: 'switch',
+							text: i18n.ts.showRenotes,
+							ref: withRenotes,
+						});
+
+						if (isBasicTimeline(src.value) && hasWithReplies(src.value)) {
+							displayOfNoteChildMenu.push({
+								type: 'switch',
+								text: i18n.ts.showRepliesToOthersInTimeline,
+								ref: withReplies,
+								disabled: onlyFiles,
+							});
+						}
+
+						displayOfNoteChildMenu.push({
+							type: 'switch',
+							text: i18n.ts.withSensitive,
+							ref: withSensitive,
+						}, {
+							type: 'switch',
+							text: i18n.ts.fileAttachedOnly,
+							ref: onlyFiles,
+							disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
+						}, {
+							type: 'switch',
+							text: i18n.ts.showCatOnly,
+							ref: onlyCats,
+						}, { type: 'divider' }, {
+							type: 'switch',
+							text: i18n.ts.collapseLongNoteContent,
+							ref: collapseLongNoteContent,
+						}, {
+							type: 'switch',
+							text: i18n.ts.collapseDefault,
+							ref: collapseDefault,
+						}, {
 							type: 'switch',
 							text: i18n.ts.alwaysShowCw,
 							ref: alwaysShowCw,
-						}, {
-							type: 'switch',
-							text: i18n.ts.reactionsList,
-							ref: onlyCats,
 						});
 
-						noteChildMenu.push({ type: 'divider' });
-
-						return noteChildMenu;
+						return displayOfNoteChildMenu;
 					},
 				});
 

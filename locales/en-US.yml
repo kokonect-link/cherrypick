@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+collapseLongNoteContent: "Collapse long notes"
 alwaysShowCw: "Always show content set to 'Hide content'"
 forceRenoteVisibilitySelector: "Specify visibility of renote"
 cherrypickLabs: "CherryPick Labs"

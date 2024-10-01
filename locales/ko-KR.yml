@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+collapseLongNoteContent: "내용이 긴 노트 간략화하기"
 alwaysShowCw: "'내용 가리기'로 설정한 내용을 항상 보이기"
 forceRenoteVisibilitySelector: "리노트 공개 범위 지정"
 cherrypickLabs: "CherryPick 실험실"

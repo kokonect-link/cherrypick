@@ -164,6 +164,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'friendlyUiEnableNotificationsArea',
 	'enableLongPressOpenAccountMenu',
 	'friendlyUiShowAvatarDecorationsInNavBtn',
+	'collapseLongNoteContent',
 	// #endregion CherryPick
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [
