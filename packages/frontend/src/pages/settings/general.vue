@@ -188,6 +188,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableSeasonalScreenEffect">{{ i18n.ts.seasonalScreenEffect }}</MkSwitch>
 				<MkSwitch v-model="useNativeUIForVideoAudioPlayer">{{ i18n.ts.useNativeUIForVideoAudioPlayer }}</MkSwitch>
 				<MkSwitch v-model="showUnreadNotificationsCount">{{ i18n.ts.showUnreadNotificationsCount }}</MkSwitch>
+				<MkSwitch v-model="filesGridLayoutInUserPage">
+					{{ i18n.ts.filesGridLayoutInUserPage }} <span class="_beta">CherryPick</span>
+					<template #caption>{{ i18n.ts.filesGridLayoutInUserPageDescription }}</template>
+				</MkSwitch>
 			</div>
 
 			<MkSelect v-model="menuStyle">
@@ -467,6 +471,7 @@ const alwaysConfirmFollow = computed(defaultStore.makeGetterSetter('alwaysConfir
 const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSetter('confirmWhenRevealingSensitiveMedia'));
 const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const showUnreadNotificationsCount = computed(defaultStore.makeGetterSetter('showUnreadNotificationsCount'));
+const filesGridLayoutInUserPage = computed(defaultStore.makeGetterSetter('filesGridLayoutInUserPage'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 const collapseLongNoteContent = computed(defaultStore.makeGetterSetter('collapseLongNoteContent'));
@@ -540,6 +545,7 @@ watch([
 	keepScreenOn,
 	disableStreamingTimeline,
 	showUnreadNotificationsCount,
+	filesGridLayoutInUserPage,
 	showFixedPostFormInReplies,
 	showingAnimatedImages,
 	enableSeasonalScreenEffect,

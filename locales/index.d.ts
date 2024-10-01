@@ -14,6 +14,15 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * メディアタブをグリッドレイアウトに変更
+     */
+    "filesGridLayoutInUserPage": string;
+    /**
+     * この設定をオンにすると、ユーザーページのメディアタブがアルバム形式で表示されます。
+     * オフにすると、元のノートのタイムラインに変更されます。
+     */
+    "filesGridLayoutInUserPageDescription": string;
+    /**
      * 返信対象ノートを半透明に表示
      */
     "showReplyTargetNoteInSemiTransparent": string;

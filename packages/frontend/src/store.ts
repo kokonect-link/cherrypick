@@ -534,6 +534,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	filesGridLayoutInUserPage: {
+		where: 'device',
+		default: true,
+	},
 	newNoteReceivedNotificationBehavior: {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',

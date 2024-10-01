@@ -21,18 +21,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkTab>
 	</template>
 	<XReactions v-if="tab === 'reactions'" :user="user"/>
+	<XFiles v-if="tab === 'files' && defaultStore.state.filesGridLayoutInUserPage" :key="user.id" :pagination="pagination" :user="user"/>
 	<MkNotes v-else :noGap="true" :pagination="pagination" :class="$style.tl"/>
 </MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, defineAsyncComponent } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkTab from '@/components/MkTab.vue';
 import XReactions from '@/pages/user/reactions.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
+import { defaultStore } from '@/store.js';
+
+const XFiles = defineAsyncComponent(() => import('./index.timeline.files.vue'));
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
@@ -45,6 +49,13 @@ const pagination = computed(() => tab.value === 'featured' ? {
 	limit: 10,
 	params: {
 		userId: props.user.id,
+	},
+} : tab.value === 'files' && defaultStore.state.filesGridLayoutInUserPage ? {
+	endpoint: 'users/notes' as const,
+	limit: 30,
+	params: {
+		userId: props.user.id,
+		withFiles: true,
 	},
 } : {
 	endpoint: 'users/notes' as const,

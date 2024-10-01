@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+filesGridLayoutInUserPage: "Change the media tab to grid layout"
+filesGridLayoutInUserPageDescription: "When this function is turned on, the Media tab on your page is shown in album format.\nTurning it off will change to the original note timeline."
 showReplyTargetNoteInSemiTransparent: "Show reply target note in semi-transparent"
 noteFooterButton: "Show action buttons in notes"
 collapseReplies: "Collapse notes written in reply"
