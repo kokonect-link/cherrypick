@@ -21,22 +21,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkTab>
 	</template>
 	<XReactions v-if="tab === 'reactions'" :user="user"/>
-	<XFiles v-if="tab === 'files' && defaultStore.state.filesGridLayoutInUserPage" :key="user.id" :pagination="pagination" :user="user"/>
+	<XFiles v-if="tab === 'files' && defaultStore.state.filesGridLayoutInUserPage" :pagination="pagination"/>
 	<MkNotes v-else :noGap="true" :pagination="pagination" :class="$style.tl"/>
 </MkStickyContainer>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, defineAsyncComponent } from 'vue';
+import { ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkTab from '@/components/MkTab.vue';
 import XReactions from '@/pages/user/reactions.vue';
+import XFiles from '@/pages/user/index.timeline.files.vue';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
-
-const XFiles = defineAsyncComponent(() => import('./index.timeline.files.vue'));
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
