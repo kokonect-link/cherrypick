@@ -2104,9 +2104,9 @@ _aboutMisskey:
     relayServer: "릴레이 서버"
     community: "커뮤니티"
 _displayOfSensitiveMedia:
-  respect: "민감한 콘텐츠로 표시된 미디어 숨기기"
+  respect: "민감한 콘텐츠로 표시된 미디어 가리기"
   ignore: "민감한 콘텐츠로 표시된 미디어 보이기"
-  force: "미디어 항상 숨기기"
+  force: "미디어 항상 가리기"
 _mfm:
   cheatSheet: "MFM 도움말"
   intro: "MFM는 Misskey 기반 클라이언트의 다양한 곳에서 사용할 수 있는 전용 마크업 언어에요. 여기에서 MFM에서 사용할 수 있는 구문을 확인할 수 있어요."
