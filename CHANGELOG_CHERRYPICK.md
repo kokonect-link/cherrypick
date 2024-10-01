@@ -28,17 +28,21 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
-### Client
+### General
+- Change: Enable condensed line의 기본값을 꺼짐으로 설정함
+  - 디자인이 상대적으로 이상하게 보일 수 있으며, 실험실 기능이므로 이 기능이 변경하는 부분을 확실히 알고 있는 사용자만 활성화할 것을 권장합니다.
 - Feat: 위젯 영역을 숨길 수 있음
-  - 기존 Friendly UI 한정 기능이 다른 UI에서도 사용할 수 있도록 확대됨
+	- 기존 Friendly UI 한정 기능이 다른 UI에서도 사용할 수 있도록 확대됨
 - Feat: '내용 숨기기'로 설정한 내용을 항상 보이게 설정할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 내용이 긴 노트의 간략화 여부를 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 답글로 작성된 노트를 간략화하여 표시할 수 있음 (kokonect-link/cherrypick#495)
-  - 리액션한 노트는 옵션 활성화 유무와 상관없이 항상 표시됩니다.
+	- 리액션한 노트는 옵션 활성화 유무와 상관없이 항상 표시됩니다.
 - Feat: 사용자 메뉴에서 원격 서버를 관리할 수 있음 (kokonect-link/cherrypick#502)
-  - 서버 차단, 서버 사일런스, 서버 미디어 사일런스
+	- 서버 차단, 서버 사일런스, 서버 미디어 사일런스
 - Feat: 노트 동작 버튼을 개인화할 수 있음 (kokonect-link/cherrypick#501)
 - Feat: 답글 대상 노트의 반투명 옵션을 선택할 수 있음 (kokonect-link/cherrypick#495)
+
+### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함
 - Enhance: Webhook 추가 버튼을 헤더로 이동해 디자인 개선
 - Enhance: 노트 번역 영역에서도 이모지를 눌러 이모지 메뉴를 열 수 있음
