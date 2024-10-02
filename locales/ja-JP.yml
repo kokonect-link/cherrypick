@@ -1407,6 +1407,9 @@ additionalPermissionsForFlash: "Playへの追加許可"
 thisFlashRequiresTheFollowingPermissions: "このPlayは以下の権限を要求しています"
 doYouWantToAllowThisPlayToAccessYourAccount: "このPlayによるアカウントへのアクセスを許可しますか？"
 translateProfile: "プロフィールを翻訳する"
+trustedLinkUrlPatterns: "外部サイトへのリンク警告 除外リスト"
+trustedLinkUrlPatternsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。スラッシュで囲むと正規表現になります。ドメイン名だけ書くと後方一致になります。"
+open: "開く"
 
 _nsfwOpenBehavior:
   click: "タップして開く"
@@ -3131,3 +3134,8 @@ _imageCompressionMode:
   noResizeCompress: "縮小せず再圧縮する"
   resizeCompressLossy: "縮小して非可逆圧縮する"
   noResizeCompressLossy: "縮小せず非可逆圧縮する"
+
+_externalNavigationWarning:
+  title: "外部サイトに移動します"
+  description: "{host}を離れて外部サイトに移動します"
+  trustThisDomain: "このデバイスで今後このドメインを信頼する"

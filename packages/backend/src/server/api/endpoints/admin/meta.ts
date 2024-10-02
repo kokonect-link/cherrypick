@@ -583,6 +583,14 @@ export const meta = {
 				type: 'string',
 				optional: true, nullable: true,
 			},
+			trustedLinkUrlPatterns: {
+				type: 'array',
+				optional: false, nullable: false,
+				items: {
+					type: 'string',
+					optional: false, nullable: false,
+				},
+			},
 		},
 	},
 } as const;
@@ -748,6 +756,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableReceivePrerelease: instance.enableReceivePrerelease,
 				skipVersion: instance.skipVersion,
 				skipCherryPickVersion: instance.skipCherryPickVersion,
+				trustedLinkUrlPatterns: instance.trustedLinkUrlPatterns,
 			};
 		});
 	}

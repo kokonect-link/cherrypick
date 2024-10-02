@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <component
 	:is="self ? 'MkA' : 'a'" ref="el" :class="$style.root" class="_link" :[attr]="self ? props.url.substring(local.length) : props.url" :rel="rel ?? 'nofollow noopener'" :target="target"
 	:behavior="props.navigationBehavior"
-	@click.stop
+	@click.stop="(ev: MouseEvent) => warningExternalWebsite(ev, props.url)"
 	@contextmenu.stop="() => {}"
 >
 	<template v-if="!self">
@@ -33,6 +33,7 @@ import * as os from '@/os.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
 import { isEnabledUrlPreview } from '@/instance.js';
 import { MkABehavior } from '@/components/global/MkA.vue';
+import { warningExternalWebsite } from '@/scripts/warning-external-website.js';
 
 function safeURIDecode(str: string): string {
 	try {
@@ -75,7 +76,7 @@ const pathname = safeURIDecode(url.pathname);
 const query = safeURIDecode(url.search);
 const hash = safeURIDecode(url.hash);
 const attr = self ? 'to' : 'href';
-const target = self ? null : '_blank';
+const target = self ? undefined : '_blank';
 </script>
 
 <style lang="scss" module>

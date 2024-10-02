@@ -57,6 +57,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkFolder>
 
 					<MkFolder>
+						<template #icon><i class="ti ti-link"></i></template>
+						<template #label>{{ i18n.ts.trustedLinkUrlPatterns }}</template>
+
+						<div class="_gaps">
+							<MkTextarea v-model="trustedLinkUrlPatterns">
+								<template #caption>{{ i18n.ts.trustedLinkUrlPatternsDescription }}</template>
+							</MkTextarea>
+							<MkButton primary @click="save_trustedLinkUrlPatterns">{{ i18n.ts.save }}</MkButton>
+						</div>
+					</MkFolder>
+
+					<MkFolder>
 						<template #icon><i class="ti ti-eye-off"></i></template>
 						<template #label>{{ i18n.ts.hiddenTags }}</template>
 
@@ -135,6 +147,7 @@ const preservedUsernames = ref<string>('');
 const blockedHosts = ref<string>('');
 const silencedHosts = ref<string>('');
 const mediaSilencedHosts = ref<string>('');
+const trustedLinkUrlPatterns = ref<string>('');
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
@@ -147,6 +160,7 @@ async function init() {
 	blockedHosts.value = meta.blockedHosts.join('\n');
 	silencedHosts.value = meta.silencedHosts.join('\n');
 	mediaSilencedHosts.value = meta.mediaSilencedHosts.join('\n');
+	trustedLinkUrlPatterns.value = meta.trustedLinkUrlPatterns.join('\n');
 }
 
 function onChange_enableRegistration(value: boolean) {
@@ -184,6 +198,14 @@ function save_sensitiveWords() {
 function save_prohibitedWords() {
 	os.apiWithDialog('admin/update-meta', {
 		prohibitedWords: prohibitedWords.value.split('\n'),
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function save_trustedLinkUrlPatterns() {
+	os.apiWithDialog('admin/update-meta', {
+		trustedLinkUrlPatterns: trustedLinkUrlPatterns.value.split('\n'),
 	}).then(() => {
 		fetchInstance(true);
 	});

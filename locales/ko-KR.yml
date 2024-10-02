@@ -1406,6 +1406,9 @@ additionalPermissionsForFlash: "Play에 대한 추가 권한"
 thisFlashRequiresTheFollowingPermissions: "이 Play는 다음 권한을 요구해요"
 doYouWantToAllowThisPlayToAccessYourAccount: "이 Play가 계정에 접근하도록 허용할까요?"
 translateProfile: "프로필 번역하기"
+trustedLinkUrlPatterns: "외부 사이트 링크 경고 제외 목록"
+trustedLinkUrlPatternsDescription: "공백으로 구분하는 경우 AND, 줄바꿈으로 구분하는 경우 OR로 지정할 수 있어요. 슬래시로 둘러싸면 정규 표현식이 돼요. 도메인만 쓰면 후방 탐색으로 작동해요."
+open: "열기"
 _nsfwOpenBehavior:
   click: "탭하여 열기"
   doubleClick: "두 번 탭하여 열기"
@@ -3039,3 +3042,7 @@ _imageCompressionMode:
   noResizeCompress: "해상도를 축소하지 않고 압축"
   resizeCompressLossy: "해상도 축소 및 손실 압축"
   noResizeCompressLossy: "해상도를 축소하지 않고 손실 압축"
+_externalNavigationWarning:
+  title: "외부 사이트로 이동할까요?"
+  description: "{host}을(를) 떠나 외부 사이트로 이동하려고 해요"
+  trustThisDomain: "이 장치에서 앞으로 이 도메인을 신뢰할게요"

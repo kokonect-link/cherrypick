@@ -204,6 +204,11 @@ export const paramDef = {
 		enableReceivePrerelease: { type: 'boolean' },
 		skipVersion: { type: 'boolean' },
 		skipCherryPickVersion: { type: 'string', nullable: true },
+		trustedLinkUrlPatterns: {
+			type: 'array', nullable: true, items: {
+				type: 'string',
+			},
+		},
 	},
 	required: [],
 } as const;
@@ -780,6 +785,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.skipCherryPickVersion !== undefined) {
 				set.skipCherryPickVersion = ps.skipCherryPickVersion;
+			}
+
+			if (Array.isArray(ps.trustedLinkUrlPatterns)) {
+				set.trustedLinkUrlPatterns = ps.trustedLinkUrlPatterns.filter(Boolean);
 			}
 
 			const before = await this.metaService.fetch(true);

@@ -5653,6 +5653,18 @@ export interface Locale extends ILocale {
      * プロフィールを翻訳する
      */
     "translateProfile": string;
+    /**
+     * 外部サイトへのリンク警告 除外リスト
+     */
+    "trustedLinkUrlPatterns": string;
+    /**
+     * スペースで区切るとAND指定になり、改行で区切るとOR指定になります。スラッシュで囲むと正規表現になります。ドメイン名だけ書くと後方一致になります。
+     */
+    "trustedLinkUrlPatternsDescription": string;
+    /**
+     * 開く
+     */
+    "open": string;
     "_nsfwOpenBehavior": {
         /**
          * タップして開く
@@ -11763,6 +11775,20 @@ export interface Locale extends ILocale {
          * 縮小せず非可逆圧縮する
          */
         "noResizeCompressLossy": string;
+    };
+    "_externalNavigationWarning": {
+        /**
+         * 外部サイトに移動します
+         */
+        "title": string;
+        /**
+         * {host}を離れて外部サイトに移動します
+         */
+        "description": ParameterizedString<"host">;
+        /**
+         * このデバイスで今後このドメインを信頼する
+         */
+        "trustThisDomain": string;
     };
 }
 declare const locales: {

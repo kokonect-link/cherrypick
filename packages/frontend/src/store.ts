@@ -486,6 +486,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: false,
 	},
+	trustedDomains: {
+		where: 'device',
+		default: [] as string[],
+	},
 
 	sound_masterVolume: {
 		where: 'device',
