@@ -42,6 +42,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Feat: 노트 동작 버튼을 개인화할 수 있음 (kokonect-link/cherrypick#501)
 - Feat: 답글 대상 노트의 반투명 옵션을 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 사용자 페이지의 미디어 탭을 그리드 레이아웃으로 설정할 수 있음 (kokonect-link/cherrypick#494)
+- Feat: 검색 위젯 (1673beta/cherrypick#125)
 
 ### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함

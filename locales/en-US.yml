@@ -2490,6 +2490,7 @@ _widgets:
     chooseList: "Select a list"
   clicker: "Clicker"
   birthdayFollowings: "Users who celebrate their birthday today"
+  search: "Search"
 _cw:
   hide: "Hide"
   show: "Show content"
