@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="files.files.length > 0">
+<div v-if="files.files.length > 0" :class="$style.root">
 	<div v-if="files.files[0].isSensitive && !showingFiles.includes(files.files[0].id)" :key="files.id + files.files[0].id" :class="$style.img" @click="showingFiles.push(files.files[0].id)">
 		<!-- TODO: 画像以外のファイルに対応 -->
 		<ImgWithBlurhash :class="$style.sensitiveImg" :hash="files.files[0].blurhash" :src="thumbnail(files.files[0])" :title="files.files[0].name" :forceBlurhash="true"/>
@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<MkA v-else :class="$style.img" :to="notePage(files)">
+	<MkA v-else :class="[$style.img, { [$style.multipleImg]: files.files.length > 1 }]" :to="notePage(files)">
 		<!-- TODO: 画像以外のファイルに対応 -->
 		<ImgWithBlurhash
 			:hash="files.files[0].blurhash"
@@ -27,6 +27,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		/>
 	</MkA>
+	<div v-if="files.files.length > 1" :class="$style.multiple">
+		<i class="ti ti-box-multiple"></i>
+	</div>
 </div>
 </template>
 
@@ -81,6 +84,10 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" module>
+.root {
+	position: relative;
+}
+
 .img {
 	display: flex;
 	position: relative;
@@ -117,6 +124,17 @@ onUnmounted(() => {
 	cursor: pointer;
 }
 
+.multipleImg {
+	filter: brightness(0.9);
+}
+
+.multiple {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 20px;
+}
+
 @container (max-width: 785px) {
 	.img {
 		height: 192px;
@@ -128,7 +146,6 @@ onUnmounted(() => {
 		height: 160px;
 	}
 }
-
 
 @container (max-width: 530px) {
 	.img {
