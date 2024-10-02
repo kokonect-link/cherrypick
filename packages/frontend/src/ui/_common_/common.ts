@@ -145,7 +145,7 @@ export function openInstanceMenu(ev: MouseEvent) {
 		children: async () => {
 			const documentChildMenu = [] as MenuItem[];
 
-			menuItems.push({
+			documentChildMenu.push({
 				type: 'a',
 				text: i18n.ts.document,
 				icon: 'ti ti-bulb',
