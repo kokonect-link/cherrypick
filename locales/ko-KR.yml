@@ -1354,7 +1354,7 @@ overwriteContentConfirm: "현재 내용을 덮어쓰기 하게 돼요. 그래도
 seasonalScreenEffect: "계절에 따른 화면 연출"
 decorate: "장식하기"
 addMfmFunction: "장식 추가"
-enableQuickAddMfmFunction: "고급 MFM 선택기 표시하기"
+enableQuickAddMfmFunction: "고급 MFM 선택기 표시"
 bubbleGame: "버블 게임"
 sfx: "효과음"
 soundWillBePlayed: "사운드가 재생돼요"
