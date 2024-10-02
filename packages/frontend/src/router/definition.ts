@@ -192,6 +192,10 @@ const routes: RouteDef[] = [{
 		name: 'cherrypick',
 		component: page(() => import('@/pages/settings/cherrypick.vue')),
 	}, {
+		path: '/appearance',
+		name: 'appearance',
+		component: page(() => import('@/pages/settings/appearance.vue')),
+	}, {
 		path: '/',
 		component: page(() => import('@/pages/_empty_.vue')),
 	}],

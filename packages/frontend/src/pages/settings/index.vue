@@ -106,6 +106,11 @@ const menuDef = computed(() => [{
 		to: '/settings/general',
 		active: currentPage.value?.route.name === 'general',
 	}, {
+		icon: 'ti ti-brush',
+		text: i18n.ts.appearance,
+		to: '/settings/appearance',
+		active: currentPage.value?.route.name === 'appearance',
+	}, {
 		icon: 'ti ti-palette',
 		text: i18n.ts.theme,
 		to: '/settings/theme',
