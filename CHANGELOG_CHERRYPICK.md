@@ -28,9 +28,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
-### General
-- Change: Enable condensed line의 기본값을 꺼짐으로 설정함
+## NOTE
+- Change: Enable condensed line의 기본값이 꺼짐으로 변경됨
   - 디자인이 상대적으로 이상하게 보일 수 있으며, 실험실 기능이므로 이 기능이 변경하는 부분을 확실히 알고 있는 사용자만 활성화할 것을 권장합니다.
+
+### General
 - Feat: 위젯 영역을 숨길 수 있음
 	- 기존 Friendly UI 한정 기능이 다른 UI에서도 사용할 수 있도록 확대됨
 - Feat: '내용 숨기기'로 설정한 내용을 항상 보이게 설정할 수 있음 (kokonect-link/cherrypick#495)
