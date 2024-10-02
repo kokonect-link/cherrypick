@@ -5,32 +5,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-if="files.files.length > 0">
-	<div>
-		<template v-for="file in files.files" :key="files.id + file.id">
-			<div v-if="file.isSensitive && !showingFiles.includes(file.id)" :class="$style.img" @click="showingFiles.push(file.id)">
-				<!-- TODO: 画像以外のファイルに対応 -->
-				<ImgWithBlurhash :class="$style.sensitiveImg" :hash="file.blurhash" :src="thumbnail(file)" :title="file.name" :forceBlurhash="true"/>
-				<div :class="$style.sensitive">
-					<div>
-						<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
-						<div>{{ i18n.ts.clickToShow }}</div>
-					</div>
-				</div>
+	<div v-if="files.files[0].isSensitive && !showingFiles.includes(files.files[0].id)" :key="files.id + files.files[0].id" :class="$style.img" @click="showingFiles.push(files.files[0].id)">
+		<!-- TODO: 画像以外のファイルに対応 -->
+		<ImgWithBlurhash :class="$style.sensitiveImg" :hash="files.files[0].blurhash" :src="thumbnail(files.files[0])" :title="files.files[0].name" :forceBlurhash="true"/>
+		<div :class="$style.sensitive">
+			<div>
+				<div><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}</div>
+				<div>{{ i18n.ts.clickToShow }}</div>
 			</div>
-			<MkA v-else :class="$style.img" :to="notePage(files)">
-				<!-- TODO: 画像以外のファイルに対応 -->
-				<ImgWithBlurhash
-					:hash="file.blurhash"
-					:src="thumbnail(file)"
-					:title="file.name"
-					@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-					@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-					@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-					@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-				/>
-			</MkA>
-		</template>
+		</div>
 	</div>
+	<MkA v-else :class="$style.img" :to="notePage(files)">
+		<!-- TODO: 画像以外のファイルに対応 -->
+		<ImgWithBlurhash
+			:hash="files.files[0].blurhash"
+			:src="thumbnail(files.files[0])"
+			:title="files.files[0].name"
+			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		/>
+	</MkA>
 </div>
 </template>
 
