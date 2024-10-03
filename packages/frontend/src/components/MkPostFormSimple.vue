@@ -204,7 +204,7 @@ const showForm = ref(false);
 const posting = ref(false);
 const posted = ref(false);
 const text = ref(props.initialText ?? '');
-const files = ref(props.initialFiles ?? []);
+const files = ref(props.initialFiles ?? ([] as Misskey.entities.DriveFile[]));
 const poll = ref<PollEditorModelValue | null>(null);
 const event = ref<{
 	title: string;
@@ -772,6 +772,17 @@ async function post(ev?: MouseEvent) {
 			text: i18n.ts.cwNotationRequired,
 		});
 		return;
+	}
+
+	if (defaultStore.state.showNoAltTextWarning && files.value.some((f) => f.comment == null || f.comment.length === 0)) {
+		const { canceled } = await os.confirm({
+			type: 'warning',
+			text: i18n.ts._altWarning.noAltWarning,
+			caption: i18n.ts._altWarning.noAltWarningDescription,
+			okText: i18n.ts.goBack,
+			cancelText: i18n.ts.thisPostMayBeAnnoyingIgnore,
+		});
+		if (!canceled) return;
 	}
 
 	if (ev) {

@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+showNoAltWarning: "キャプション未設定案内を表示"
+showNoAltWarningDescription: "画像に代替テキストが設定されていない場合に警告を表示する"
 filesGridLayoutInUserPage: "メディアタブをグリッドレイアウトに変更"
 filesGridLayoutInUserPageDescription: "この設定をオンにすると、ユーザーページのメディアタブがアルバム形式で表示されます。\nオフにすると、元のノートのタイムラインに変更されます。"
 showReplyTargetNoteInSemiTransparent: "返信対象ノートを半透明に表示"
@@ -3140,3 +3142,7 @@ _externalNavigationWarning:
   title: "外部サイトに移動します"
   description: "{host}を離れて外部サイトに移動します"
   trustThisDomain: "このデバイスで今後このドメインを信頼する"
+
+_altWarning:
+  noAltWarning: "ファイルに代替テキストが設定されていません。"
+  noAltWarningDescription: "この設定は「設定 - アピアランス」で変更できます。"

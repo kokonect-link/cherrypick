@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+showNoAltWarning: "Show caption unset warning"
+showNoAltWarningDescription: "Display a warning when no alternate text is set in the image"
 filesGridLayoutInUserPage: "Change the media tab to grid layout"
 filesGridLayoutInUserPageDescription: "When this function is turned on, the Media tab on your page is shown in album format.\nTurning it off will change to the original note timeline."
 showReplyTargetNoteInSemiTransparent: "Show reply target note in semi-transparent"
@@ -1479,8 +1481,8 @@ _cherrypick:
   reactableRemoteReaction: "Allow remote custom emoji reactions to react if there is an emoji with the same name on this server."
   showFollowingMessageInsteadOfButton: "Do not show the follow button in the notification field if you are already following someone"
   mobileHeaderChange: "Header design change in mobile environment"
-  renameTheButtonInPostFormToNya: "Change the \"Note\" button on the note-posting form to \"Nyan!\""
-  renameTheButtonInPostFormToNyaDescription: "Outside of the note-posting form, they are still as \"Note\"."
+  renameTheButtonInPostFormToNya: "Change the \"Note\" button on the posting form to \"Nyan!\""
+  renameTheButtonInPostFormToNyaDescription: "Outside of the posting form, they are still as \"Note\"."
   enableWidgetsArea: "Enable the widgets area"
   disableWidgetsArea: "Disable the widgets area"
   friendlyUiEnableNotificationsArea: "Enable the notifications area"
@@ -3016,3 +3018,6 @@ _externalNavigationWarning:
   title: "Navigate to an external site"
   description: "Leave {host} and go to an external site"
   trustThisDomain: "Trust this domain on this device in the future"
+_altWarning:
+  noAltWarning: "No alternate text is configured in the file."
+  noAltWarningDescription: "You can change this setting in \"Settings - Appearance\"."

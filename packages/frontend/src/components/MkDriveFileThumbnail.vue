@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		{ [$style.sensitiveHighlight]: highlightWhenSensitive && file.isSensitive },
 	]"
 >
-	<ImgWithBlurhash v-if="isThumbnailAvailable" :hash="file.blurhash" :src="file.thumbnailUrl" :alt="file.name" :title="file.name" :cover="fit !== 'contain'"/>
+	<ImgWithBlurhash v-if="isThumbnailAvailable" :hash="file.blurhash" :src="file.thumbnailUrl" :alt="file.comment" :title="file.name" :cover="fit !== 'contain'" :showAltIndicator="showAltIndicator"/>
 	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
 	<i v-else-if="is === 'video'" class="ti ti-video" :class="$style.icon"></i>
 	<i v-else-if="is === 'audio' || is === 'midi'" class="ti ti-file-music" :class="$style.icon"></i>
@@ -34,6 +34,7 @@ const props = defineProps<{
 	file: Misskey.entities.DriveFile;
 	fit: 'cover' | 'contain';
 	highlightWhenSensitive?: boolean;
+	showAltIndicator?: boolean;
 }>();
 
 const is = computed(() => {

@@ -45,6 +45,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Feat: 답글 대상 노트의 반투명 옵션을 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 사용자 페이지의 미디어 탭을 그리드 레이아웃으로 설정할 수 있음 (kokonect-link/cherrypick#494)
 - Feat: 검색 위젯 (1673beta/cherrypick#125)
+- Feat: 캡션 미설정 안내 표시 (1673beta/cherrypick#142)
+  - 노트를 게시하기 전에 첨부한 파일에 캡션이 없으면 경고를 표시합니다.
+  - 이 변경으로 이미지 뷰어의 파일 이름 영역에는 더 이상 캡션이 아닌 실제 파일 이름이 표시됩니다.
 
 ### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함
@@ -55,7 +58,13 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: 설정 페이지 개선
   - 일반 설정에 있던 설정 중 디자인과 관련된 설정을 모양으로 옮겼습니다.
 - Enhance: 외부 사이트로 이동할 때 경고 표시 (MisskeyIO/misskey#558)
+- Enhance: 이미지의 확장자를 더욱 정확하게 표시함
+  - APNG 형식의 이미지가 GIF로 표시되던 것을 APNG로 표시하도록 변경
+- Enhance: 이미지 뷰어가 파일 이름과 캡션을 동시에 표시하도록 변경
+- Enhance: 노트를 작성할 때 첨부한 파일에 캡션이 존재하는 경우 파일 목록에 아이콘을 표시함
+- Enhance: 미디어 숨기기 버튼의 디자인을 개선함
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업될 수 있음
+- Fix: 이미지 자르기를 할 때 이미지 크기 전체를 표시하지 못할 수 있음
 
 ---
 

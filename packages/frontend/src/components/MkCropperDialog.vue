@@ -113,6 +113,7 @@ const onImageLoad = () => {
 	loading.value = false;
 
 	if (cropper) {
+		cropper.getCropperCanvas();
 		cropper.getCropperImage()!.$center('contain');
 		cropper.getCropperSelection()!.$center();
 	}
@@ -159,6 +160,7 @@ onMounted(() => {
 	width: var(--vw);
 	height: var(--vh);
 	position: relative;
+	object-fit: contain;
 
 	> .loading {
 		position: absolute;
@@ -183,6 +185,7 @@ onMounted(() => {
 		> ::v-deep(cropper-canvas) {
 			width: 100%;
 			height: 100%;
+			object-fit: contain;
 
 			> cropper-selection > cropper-handle[action="move"] {
 				background: transparent;

@@ -180,6 +180,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSelect>
 				<MkSwitch v-model="showFixedPostFormInReplies">{{ i18n.ts.showFixedPostFormInReplies }}<template #caption>{{ i18n.ts.showFixedPostFormInRepliesDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="allMediaNoteCollapse">{{ i18n.ts.allMediaNoteCollapse }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="showNoAltTextWarning">{{ i18n.ts.showNoAltWarning }}<template #caption>{{ i18n.ts.showNoAltWarningDescription }}</template> <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="alwaysShowCw">{{ i18n.ts.alwaysShowCw }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="showReplyTargetNoteInSemiTransparent">{{ i18n.ts.showReplyTargetNoteInSemiTransparent }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
@@ -330,6 +331,7 @@ const renoteQuoteButtonSeparation = computed(defaultStore.makeGetterSetter('reno
 const showFixedPostFormInReplies = computed(defaultStore.makeGetterSetter('showFixedPostFormInReplies'));
 const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
 const allMediaNoteCollapse = computed(defaultStore.makeGetterSetter('allMediaNoteCollapse'));
+const showNoAltTextWarning = computed(defaultStore.makeGetterSetter('showNoAltTextWarning'));
 const alwaysShowCw = computed(defaultStore.makeGetterSetter('alwaysShowCw'));
 const showReplyTargetNoteInSemiTransparent = computed(defaultStore.makeGetterSetter('showReplyTargetNoteInSemiTransparent'));
 const nsfwOpenBehavior = computed(defaultStore.makeGetterSetter('nsfwOpenBehavior'));

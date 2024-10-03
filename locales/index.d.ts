@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * キャプション未設定案内を表示
+     */
+    "showNoAltWarning": string;
+    /**
+     * 画像に代替テキストが設定されていない場合に警告を表示する
+     */
+    "showNoAltWarningDescription": string;
+    /**
      * メディアタブをグリッドレイアウトに変更
      */
     "filesGridLayoutInUserPage": string;
@@ -11793,6 +11801,16 @@ export interface Locale extends ILocale {
          * このデバイスで今後このドメインを信頼する
          */
         "trustThisDomain": string;
+    };
+    "_altWarning": {
+        /**
+         * ファイルに代替テキストが設定されていません。
+         */
+        "noAltWarning": string;
+        /**
+         * この設定は「設定 - アピアランス」で変更できます。
+         */
+        "noAltWarningDescription": string;
     };
 }
 declare const locales: {

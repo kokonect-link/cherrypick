@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+showNoAltWarning: "캡션 미설정 안내 표시"
+showNoAltWarningDescription: "이미지에 캡션이 설정되어 있지 않으면 경고를 표시해요"
 filesGridLayoutInUserPage: "미디어 탭을 그리드 레이아웃으로 변경"
 filesGridLayoutInUserPageDescription: "이 설정을 켜면 사용자 페이지의 미디어 탭이 앨범 형식으로 보여져요.\n끄면 원래의 노트 타임라인으로 변경돼요."
 showReplyTargetNoteInSemiTransparent: "답글 대상 노트를 반투명하게 표시"
@@ -3047,3 +3049,6 @@ _externalNavigationWarning:
   title: "외부 사이트로 이동할까요?"
   description: "{host}을(를) 떠나 외부 사이트로 이동하려고 해요"
   trustThisDomain: "이 장치에서 앞으로 이 도메인을 신뢰할게요"
+_altWarning:
+  noAltWarning: "파일에 캡션이 설정되어 있지 않아요."
+  noAltWarningDescription: "이 설정은 [설정 - 모양]에서 변경할 수 있어요."
