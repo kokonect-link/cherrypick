@@ -923,6 +923,12 @@ importers:
       punycode:
         specifier: 2.3.1
         version: 2.3.1
+      qrcode:
+        specifier: ^1.5.4
+        version: 1.5.4
+      qrcode-vue3:
+        specifier: ^1.7.1
+        version: 1.7.1
       rollup:
         specifier: 4.22.5
         version: 4.22.5
@@ -1065,6 +1071,9 @@ importers:
       '@types/punycode':
         specifier: 2.1.4
         version: 2.1.4
+      '@types/qrcode':
+        specifier: ^1.5.5
+        version: 1.5.5
       '@types/sanitize-html':
         specifier: 2.13.0
         version: 2.13.0
@@ -10072,6 +10081,12 @@ packages:
   pvutils@1.1.3:
     resolution: {integrity: sha512-pMpnA0qRdFp32b1sJl1wOJNxZLQ2cbQx+k6tjNtZ8CpvVhNqEPRgivZ2WOUev2YMajecdH7ctUPDvEe87nariQ==}
     engines: {node: '>=6.0.0'}
+
+  qrcode-generator@1.4.4:
+    resolution: {integrity: sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==}
+
+  qrcode-vue3@1.7.1:
+    resolution: {integrity: sha512-Xa82NslFJUqsnQbLtc1qO+xPEOeFaTRxktg3ugRd2Pk116kta1X+7GLSEPQj9gor8jWVyfmLmhYZHuANnRZoLQ==}
 
   qrcode@1.5.4:
     resolution: {integrity: sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==}
@@ -22723,6 +22738,12 @@ snapshots:
       tslib: 2.7.0
 
   pvutils@1.1.3: {}
+
+  qrcode-generator@1.4.4: {}
+
+  qrcode-vue3@1.7.1:
+    dependencies:
+      qrcode-generator: 1.4.4
 
   qrcode@1.5.4:
     dependencies:

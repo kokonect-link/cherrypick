@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * QRコードを取得
+     */
+    "getQRCode": string;
+    /**
      * カスタムスプラッシュテキスト
      */
     "customSplashText": string;

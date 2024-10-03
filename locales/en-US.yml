@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+getQRCode: "Get QR code"
 customSplashText: "Custom splash text"
 customSplashTextDescription: "This text will be displayed on the loading page."
 showNoAltWarning: "Show caption unset warning"

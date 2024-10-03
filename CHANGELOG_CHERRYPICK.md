@@ -50,6 +50,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
   - 이 변경으로 이미지 뷰어의 파일 이름 영역에는 더 이상 캡션이 아닌 실제 파일 이름이 표시됩니다.
 - Feat: 사용자 정의 스플래시 텍스트를 설정할 수 있음 (1673beta/cherrypick#153)
 - Feat: 주사위 위젯 (1673beta/cherrypick#73)
+- Feat: QR 코드를 생성하고 공유할 수 있음
+  - 노트를 QR 코드로 공유 (1673beta/cherrypick#45)
+  - 사용자를 QR 코드로 공유 (1673beta/cherrypick#46), (1673beta/cherrypick#49)
+  - 갤러리를 QR 코드로 공유 (1673beta/cherrypick#51)
+  - 페이지를 QR 코드로 공유 (1673beta/cherrypick#53)
+  - Play를 QR 코드로 공유
 
 ### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함

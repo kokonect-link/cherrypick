@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+getQRCode: "QRコードを取得"
 customSplashText: "カスタムスプラッシュテキスト"
 customSplashTextDescription: "ロード画面に表示されるテキストを設定します。改行で区切って複数設定できます。"
 showNoAltWarning: "キャプション未設定案内を表示"

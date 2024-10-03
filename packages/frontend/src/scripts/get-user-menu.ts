@@ -310,6 +310,12 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			copyToClipboard(`${url}/${canonical}`);
 			os.toast(i18n.ts.copiedLink, 'copied');
 		},
+	}, {
+		icon: 'ti ti-qrcode',
+		text: i18n.ts.getQRCode,
+		action: () => {
+			os.displayQRCode(`https://${user.host ?? host}/@${user.username}`);
+		},
 	});
 
 	if ($i) {

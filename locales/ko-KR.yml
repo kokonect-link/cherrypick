@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+getQRCode: "QR 코드 생성"
 customSplashText: "사용자 정의 스플래시 텍스트"
 customSplashTextDescription: "스플래시 화면에 표시되는 텍스트를 설정해요. 줄바꿈으로 구분해 설정할 수 있어요."
 showNoAltWarning: "캡션 미설정 안내 표시"

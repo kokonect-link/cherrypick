@@ -30,6 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<button v-if="$i && $i.id === post.user.id" v-tooltip="i18n.ts.edit" v-click-anime class="_button" @click="edit"><i class="ti ti-pencil ti-fw"></i></button>
 								<button v-tooltip="i18n.ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="ti ti-repeat ti-fw"></i></button>
 								<button v-tooltip="i18n.ts.copyLink" v-click-anime class="_button" @click="copyLink"><i class="ti ti-link ti-fw"></i></button>
+								<button v-tooltip="i18n.ts.getQRCode" v-click-anime class="_button" @click="shareQRCode"><i class="ti ti-qrcode ti-fw"></i></button>
 								<button v-if="isSupportShare()" v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="ti ti-share ti-fw"></i></button>
 								<button v-if="$i && $i.id !== post.user.id" v-click-anime class="_button" @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></button>
 							</div>
@@ -126,6 +127,10 @@ function shareWithNote() {
 	os.post({
 		initialText: `${post.value.title} ${url}/gallery/${post.value.id}`,
 	});
+}
+
+function shareQRCode() {
+	os.displayQRCode(`${url}/gallery/${post.value.id}`);
 }
 
 function like() {
@@ -283,7 +288,7 @@ definePageMetadata(() => ({
 
 				> button {
 					padding: 8px;
-					margin: 0 8px;
+					margin: 0 6px;
 
 					&:hover {
 						color: var(--fgHighlighted);
@@ -324,7 +329,6 @@ definePageMetadata(() => ({
 	margin: var(--margin);
 
 	> .post {
-
 	}
 }
 </style>

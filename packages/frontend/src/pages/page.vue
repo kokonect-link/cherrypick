@@ -64,6 +64,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div :class="$style.other">
 							<MkA v-if="page.userId === $i?.id" v-tooltip="i18n.ts._pages.editThisPage" :to="`/pages/edit/${page.id}`" class="_button" :class="$style.generalActionButton"><i class="ti ti-pencil ti-fw"></i></MkA>
 							<button v-tooltip="i18n.ts.copyLink" class="_button" :class="$style.generalActionButton" @click="copyLink"><i class="ti ti-link ti-fw"></i></button>
+							<button v-tooltip="i18n.ts.getQRCode" class="_button" :class="$style.generalActionButton" @click="shareQRCode"><i class="ti ti-qrcode ti-fw"></i></button>
 							<button v-tooltip="i18n.ts.share" class="_button" :class="$style.generalActionButton" @click="share"><i class="ti ti-share ti-fw"></i></button>
 							<button v-if="$i" v-click-anime class="_button" :class="$style.generalActionButton" @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></button>
 						</div>
@@ -189,6 +190,11 @@ function copyLink() {
 
 	copyToClipboard(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
 	os.success();
+}
+
+function shareQRCode() {
+	if (!page.value) return;
+	os.displayQRCode(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
 }
 
 function shareWithNote() {

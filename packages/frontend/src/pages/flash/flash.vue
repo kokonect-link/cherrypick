@@ -22,6 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkButton v-if="flash.isLiked" v-tooltip="i18n.ts.unlike" asLike :class="$style.button" class="button" rounded primary @click="unlike()"><i class="ti ti-heart"></i><span v-if="flash?.likedCount && flash.likedCount > 0" style="margin-left: 6px;">{{ flash.likedCount }}</span></MkButton>
 								<MkButton v-else v-tooltip="i18n.ts.like" asLike :class="$style.button" class="button" rounded @click="like()"><i class="ti ti-heart"></i><span v-if="flash?.likedCount && flash.likedCount > 0" style="margin-left: 6px;">{{ flash.likedCount }}</span></MkButton>
 								<MkButton v-tooltip="i18n.ts.copyLink" :class="$style.button" class="button" rounded @click="copyLink"><i class="ti ti-link ti-fw"></i></MkButton>
+								<MkButton v-tooltip="i18n.ts.getQRCode" :class="$style.button" class="_button" rounded @click="shareQRCode"><i class="ti ti-qrcode ti-fw"></i></MkButton>
 								<MkButton v-tooltip="i18n.ts.share" :class="$style.button" class="button" rounded @click="share"><i class="ti ti-share ti-fw"></i></MkButton>
 								<MkButton v-if="$i && $i.id !== flash.user.id" :class="$style.button" class="button" rounded @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></MkButton>
 							</div>
@@ -128,6 +129,11 @@ function copyLink() {
 
 	copyToClipboard(`${url}/play/${flash.value.id}`);
 	os.success();
+}
+
+function shareQRCode() {
+	if (!flash.value) return;
+	os.displayQRCode(`${url}/play/${flash.value.id}`);
 }
 
 function shareWithNavigator() {

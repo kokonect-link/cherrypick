@@ -405,6 +405,14 @@ export function getNoteMenu(props: {
 		getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink);
 
 		menuItems.push({
+			icon: 'ti ti-qrcode',
+			text: i18n.ts.getQRCode,
+			action: () => {
+				os.displayQRCode(`${url}/notes/${appearNote.id}`);
+			},
+		});
+
+		menuItems.push({
 			icon: 'ti ti-copy',
 			text: i18n.ts.copyContent,
 			action: copyContent,
