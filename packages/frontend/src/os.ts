@@ -267,12 +267,14 @@ export function confirm(props: {
 export function actions<T extends {
 	value: string;
 	text: string;
+	caption?: string | null;
 	primary?: boolean,
 	danger?: boolean,
 }[]>(props: {
 	type: 'error' | 'info' | 'success' | 'warning' | 'waiting' | 'question';
 	title?: string;
 	text?: string;
+	caption?: string | null;
 	actions: T;
 }): Promise<{
 	canceled: true; result: undefined;
