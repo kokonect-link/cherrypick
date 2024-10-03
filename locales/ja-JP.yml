@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+scheduledNoteDelete: "ノートの削除を予約"
 getQRCode: "QRコードを取得"
 customSplashText: "カスタムスプラッシュテキスト"
 customSplashTextDescription: "ロード画面に表示されるテキストを設定します。改行で区切って複数設定できます。"
@@ -3155,3 +3156,11 @@ _dice:
   rollDice: "サイコロを振る"
   diceCount: "サイコロの数"
   diceFaces: "サイコロの面数"
+
+_scheduledNoteDelete:
+  expiration: "期限"
+  at: "日時指定"
+  after: "経過指定"
+  deadlineDate: "期日"
+  deadlineTime: "時間"
+  duration: "期間"

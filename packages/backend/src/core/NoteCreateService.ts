@@ -147,6 +147,7 @@ type Option = {
 	uri?: string | null;
 	url?: string | null;
 	app?: MiApp | null;
+	deleteAt?: Date | null;
 };
 
 @Injectable()
@@ -445,6 +446,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			renoteUserId: data.renote ? data.renote.userId : null,
 			renoteUserHost: data.renote ? data.renote.userHost : null,
 			userHost: user.host,
+			deleteAt: data.deleteAt,
 		});
 
 		if (data.uri != null) insert.uri = data.uri;
@@ -742,6 +744,16 @@ export class NoteCreateService implements OnApplicationShutdown {
 				if (count === 1) {
 					this.channelsRepository.increment({ id: data.channel!.id }, 'usersCount', 1);
 				}
+			});
+		}
+
+		if (data.deleteAt) {
+			const delay = data.deleteAt.getTime() - Date.now();
+			this.queueService.scheduledNoteDeleteQueue.add(note.id, {
+				noteId: note.id,
+			}, {
+				delay,
+				removeOnComplete: true,
 			});
 		}
 

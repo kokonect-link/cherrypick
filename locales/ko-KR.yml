@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+scheduledNoteDelete: "노트 삭제 예약"
 getQRCode: "QR 코드 생성"
 customSplashText: "사용자 정의 스플래시 텍스트"
 customSplashTextDescription: "스플래시 화면에 표시되는 텍스트를 설정해요. 줄바꿈으로 구분해 설정할 수 있어요."
@@ -3060,3 +3061,10 @@ _dice:
   rollDice: "주사위 던지기"
   diceCount: "주사위 개수"
   diceFaces: "주사위 면의 수"
+_scheduledNoteDelete:
+  expiration: "삭제 기한"
+  at: "일시 지정"
+  after: "기간 지정"
+  deadlineDate: "기한"
+  deadlineTime: "시간"
+  duration: "기간"

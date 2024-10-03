@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+scheduledNoteDelete: "Schedule note deletion"
 getQRCode: "Get QR code"
 customSplashText: "Custom splash text"
 customSplashTextDescription: "This text will be displayed on the loading page."
@@ -3029,3 +3030,10 @@ _dice:
   rollDice: "Roll the dice"
   diceCount: "Number of dice"
   diceFaces: "Number of dice faces"
+_scheduledNoteDelete:
+  expiration: "End of note deletion"
+  at: "End at..."
+  after: "End after..."
+  deadlineDate: "End date"
+  deadlineTime: "Time"
+  duration: "Duration"

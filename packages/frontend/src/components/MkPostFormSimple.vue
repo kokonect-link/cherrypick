@@ -87,6 +87,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<input v-show="withHashtags && showForm" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
 	<MkPollEditor v-if="poll && showForm" v-model="poll" @destroyed="poll = null"/>
+	<MkScheduledNoteDelete v-if="scheduledNoteDelete" v-model="scheduledNoteDelete" @destroyed="scheduledNoteDelete = null"/>
 	<MkNotePreview v-if="showPreview && showForm" :class="$style.preview" :text="text" :files="files" :poll="poll ?? undefined" :useCw="useCw" :cw="cw" :user="postAccount ?? $i" :showProfile="showProfilePreview"/>
 	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
@@ -106,6 +107,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 				<button v-if="showAddMfmFunction" v-tooltip="i18n.ts.addMfmFunction" :class="['_button', $style.footerButton]" @click="insertMfmFunction"><i class="ti ti-palette"></i></button>
+				<button v-tooltip="i18n.ts.scheduledNoteDelete" :class="['_button', $style.footerButton]" @click="toggleScheduledNoteDelete"><i class="ti ti-clock-hour-9"></i></button>
 			</div>
 			<div :class="$style.footerRight">
 				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="$style.footerButton" @click="showPreviewMenu"><i class="ti ti-eye"></i></button>
@@ -153,6 +155,7 @@ import { vibrate } from '@/scripts/vibrate.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import * as sound from '@/scripts/sound.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
+import MkScheduledNoteDelete, { type DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
 
 const $i = signinRequired();
 
@@ -236,6 +239,7 @@ const imeText = ref('');
 const showingOptions = ref(false);
 const disableRightClick = ref(false);
 const textAreaReadOnly = ref(false);
+const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
 
 const draftKey = computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
@@ -388,6 +392,7 @@ function watchForDraft() {
 	watch(localOnly, () => saveDraft());
 	watch(quoteId, () => saveDraft());
 	watch(reactionAcceptance, () => saveDraft());
+	watch(scheduledNoteDelete, () => saveDraft());
 }
 
 function checkMissingMention() {
@@ -752,6 +757,7 @@ function saveDraft() {
 			visibleUserIds: visibility.value === 'specified' ? visibleUsers.value.map(x => x.id) : undefined,
 			quoteId: quoteId.value,
 			reactionAcceptance: reactionAcceptance.value,
+			scheduledNoteDelete: scheduledNoteDelete.value,
 		},
 	};
 
@@ -867,6 +873,7 @@ async function post(ev?: MouseEvent) {
 		reactionAcceptance: reactionAcceptance.value,
 		disableRightClick: disableRightClick.value,
 		noteId: props.updateMode ? props.initialNote?.id : undefined,
+		scheduledDelete: scheduledNoteDelete.value,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== '') {
@@ -1116,6 +1123,17 @@ function showPreviewMenu(ev: MouseEvent) {
 	}], ev.currentTarget ?? ev.target);
 }
 
+function toggleScheduledNoteDelete() {
+	if (scheduledNoteDelete.value) {
+		scheduledNoteDelete.value = null;
+	} else {
+		scheduledNoteDelete.value = {
+			deleteAt: null,
+			deleteAfter: null,
+		};
+	}
+}
+
 onMounted(() => {
 	if (props.autofocus) {
 		focus();
@@ -1193,6 +1211,12 @@ onMounted(() => {
 			quoteId.value = init.renote ? init.renote.id : null;
 			reactionAcceptance.value = init.reactionAcceptance;
 			disableRightClick.value = init.disableRightClick != null;
+			if (init.deletedAt) {
+				scheduledNoteDelete.value = {
+					deleteAt: init.deletedAt ? (new Date(init.deletedAt)).getTime() : null,
+					deleteAfter: null,
+				};
+			}
 		}
 
 		nextTick(() => watchForDraft());

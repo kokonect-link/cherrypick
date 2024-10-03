@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ノートの削除を予約
+     */
+    "scheduledNoteDelete": string;
+    /**
      * QRコードを取得
      */
     "getQRCode": string;
@@ -11841,6 +11845,32 @@ export interface Locale extends ILocale {
          * サイコロの面数
          */
         "diceFaces": string;
+    };
+    "_scheduledNoteDelete": {
+        /**
+         * 期限
+         */
+        "expiration": string;
+        /**
+         * 日時指定
+         */
+        "at": string;
+        /**
+         * 経過指定
+         */
+        "after": string;
+        /**
+         * 期日
+         */
+        "deadlineDate": string;
+        /**
+         * 時間
+         */
+        "deadlineTime": string;
+        /**
+         * 期間
+         */
+        "duration": string;
     };
 }
 declare const locales: {

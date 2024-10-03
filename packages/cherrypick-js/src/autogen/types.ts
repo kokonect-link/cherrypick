@@ -4466,6 +4466,8 @@ export type components = {
       reactionAndUserPairCache?: string[];
       clippedCount?: number;
       myReaction?: string | null;
+      /** Format: date-time */
+      deleteAt?: string | null;
     };
     NoteReaction: {
       /**
@@ -22660,6 +22662,10 @@ export type operations = {
             start?: number;
             end?: number | null;
             metadata?: Record<string, never>;
+          }) | null;
+          scheduledDelete?: ({
+            deleteAt?: number | null;
+            deleteAfter?: number | null;
           }) | null;
         };
       };

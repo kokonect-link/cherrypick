@@ -133,3 +133,7 @@ export type UserWebhookDeliverJobData = {
 export type ThinUser = {
 	id: MiUser['id'];
 };
+
+export type ScheduledNoteDeleteJobData = {
+	noteId: MiNote['id'];
+};

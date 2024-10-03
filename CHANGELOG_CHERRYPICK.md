@@ -56,6 +56,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
   - 갤러리를 QR 코드로 공유 (1673beta/cherrypick#51)
   - 페이지를 QR 코드로 공유 (1673beta/cherrypick#53)
   - Play를 QR 코드로 공유
+- Feat: 설정한 시간이 지나면 노트를 자동으로 삭제할 수 있음 (1673beta/cherrypick#70)
 
 ### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함
