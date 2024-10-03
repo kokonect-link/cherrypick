@@ -591,6 +591,13 @@ export const meta = {
 					optional: false, nullable: false,
 				},
 			},
+			customSplashText: {
+				type: 'array',
+				optional: false, nullable: false,
+				items: {
+					type: 'string',
+				},
+			},
 		},
 	},
 } as const;
@@ -757,6 +764,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				skipVersion: instance.skipVersion,
 				skipCherryPickVersion: instance.skipCherryPickVersion,
 				trustedLinkUrlPatterns: instance.trustedLinkUrlPatterns,
+				customSplashText: instance.customSplashText,
 			};
 		});
 	}

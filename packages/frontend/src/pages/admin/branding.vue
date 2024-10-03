@@ -89,6 +89,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkTextarea v-model="manifestJsonOverride">
 						<template #label>{{ i18n.ts._serverSettings.manifestJsonOverride }}</template>
 					</MkTextarea>
+
+					<MkTextarea v-model="customSplashText">
+						<template #label>{{ i18n.ts.customSplashText }}</template>
+						<template #caption>{{ i18n.ts.customSplashTextDescription }}</template>
+					</MkTextarea>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
@@ -133,6 +138,7 @@ const notFoundImageUrl = ref<string | null>(null);
 const repositoryUrl = ref<string | null>(null);
 const feedbackUrl = ref<string | null>(null);
 const manifestJsonOverride = ref<string>('{}');
+const customSplashText = ref<string>('');
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
@@ -150,6 +156,7 @@ async function init() {
 	repositoryUrl.value = meta.repositoryUrl;
 	feedbackUrl.value = meta.feedbackUrl;
 	manifestJsonOverride.value = meta.manifestJsonOverride === '' ? '{}' : JSON.stringify(JSON.parse(meta.manifestJsonOverride), null, '\t');
+	customSplashText.value = meta.customSplashText.join('\n');
 }
 
 function save() {
@@ -168,6 +175,7 @@ function save() {
 		repositoryUrl: repositoryUrl.value === '' ? null : repositoryUrl.value,
 		feedbackUrl: feedbackUrl.value === '' ? null : feedbackUrl.value,
 		manifestJsonOverride: manifestJsonOverride.value === '' ? '{}' : JSON.stringify(JSON5.parse(manifestJsonOverride.value)),
+		customSplashText: customSplashText.value.split('\n'),
 	}).then(() => {
 		fetchInstance(true);
 	});

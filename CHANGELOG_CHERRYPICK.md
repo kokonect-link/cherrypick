@@ -48,6 +48,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Feat: 캡션 미설정 안내 표시 (1673beta/cherrypick#142)
   - 노트를 게시하기 전에 첨부한 파일에 캡션이 없으면 경고를 표시합니다.
   - 이 변경으로 이미지 뷰어의 파일 이름 영역에는 더 이상 캡션이 아닌 실제 파일 이름이 표시됩니다.
+- Feat: 사용자 정의 스플래시 텍스트를 설정할 수 있음 (1673beta/cherrypick#153)
 
 ### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함

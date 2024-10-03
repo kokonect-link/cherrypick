@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+customSplashText: "カスタムスプラッシュテキスト"
+customSplashTextDescription: "ロード画面に表示されるテキストを設定します。改行で区切って複数設定できます。"
 showNoAltWarning: "キャプション未設定案内を表示"
 showNoAltWarningDescription: "画像に代替テキストが設定されていない場合に警告を表示する"
 filesGridLayoutInUserPage: "メディアタブをグリッドレイアウトに変更"

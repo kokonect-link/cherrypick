@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+customSplashText: "사용자 정의 스플래시 텍스트"
+customSplashTextDescription: "스플래시 화면에 표시되는 텍스트를 설정해요. 줄바꿈으로 구분해 설정할 수 있어요."
 showNoAltWarning: "캡션 미설정 안내 표시"
 showNoAltWarningDescription: "이미지에 캡션이 설정되어 있지 않으면 경고를 표시해요"
 filesGridLayoutInUserPage: "미디어 탭을 그리드 레이아웃으로 변경"

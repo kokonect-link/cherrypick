@@ -209,6 +209,11 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
+		customSplashText: {
+			type: 'array', nullable: true, items: {
+				type: 'string',
+			},
+		},
 	},
 	required: [],
 } as const;
@@ -789,6 +794,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (Array.isArray(ps.trustedLinkUrlPatterns)) {
 				set.trustedLinkUrlPatterns = ps.trustedLinkUrlPatterns.filter(Boolean);
+			}
+
+			if (Array.isArray(ps.customSplashText)) {
+				set.customSplashText = ps.customSplashText.filter(Boolean);
 			}
 
 			const before = await this.metaService.fetch(true);

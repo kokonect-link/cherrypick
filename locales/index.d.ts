@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * カスタムスプラッシュテキスト
+     */
+    "customSplashText": string;
+    /**
+     * ロード画面に表示されるテキストを設定します。改行で区切って複数設定できます。
+     */
+    "customSplashTextDescription": string;
+    /**
      * キャプション未設定案内を表示
      */
     "showNoAltWarning": string;

@@ -5552,6 +5552,7 @@ export type operations = {
             skipVersion: boolean;
             skipCherryPickVersion?: string | null;
             trustedLinkUrlPatterns: string[];
+            customSplashText: string[];
           };
         };
       };
@@ -10249,6 +10250,7 @@ export type operations = {
           skipVersion?: boolean;
           skipCherryPickVersion?: string | null;
           trustedLinkUrlPatterns?: string[] | null;
+          customSplashText?: string[] | null;
         };
       };
     };

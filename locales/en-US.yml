@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+customSplashText: "Custom splash text"
+customSplashTextDescription: "This text will be displayed on the loading page."
 showNoAltWarning: "Show caption unset warning"
 showNoAltWarningDescription: "Display a warning when no alternate text is set in the image"
 filesGridLayoutInUserPage: "Change the media tab to grid layout"
