@@ -234,7 +234,7 @@ export function getNoteMenu(props: {
 				text: i18n.ts.disableNoteEditConfirmWarn,
 				actions: [
 					{
-						value: 'yes' as const,
+						value: 'ok' as const,
 						text: i18n.ts.disableNoteEditOk,
 					},
 					{
@@ -243,14 +243,15 @@ export function getNoteMenu(props: {
 						danger: true,
 					},
 					{
-						value: 'no' as const,
+						value: 'cancel' as const,
 						text: i18n.ts.cancel,
 						primary: true,
 					},
 				],
 			});
+
 			if (confirm.canceled) return;
-			if (confirm.result === 'no') return;
+			if (confirm.result === 'cancel') return;
 
 			if (confirm.result === 'neverShow') {
 				miLocalStorage.setItem('neverShowNoteEditInfo', 'true');

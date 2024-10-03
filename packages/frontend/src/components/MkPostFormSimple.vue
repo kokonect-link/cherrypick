@@ -530,7 +530,7 @@ async function toggleLocalOnly() {
 			text: i18n.ts.disableFederationConfirmWarn,
 			actions: [
 				{
-					value: 'yes' as const,
+					value: 'ok' as const,
 					text: i18n.ts.disableFederationOk,
 					primary: true,
 				},
@@ -540,14 +540,14 @@ async function toggleLocalOnly() {
 					danger: true,
 				},
 				{
-					value: 'no' as const,
+					value: 'cancel' as const,
 					text: i18n.ts.cancel,
 				},
 			],
 		});
 
 		if (confirm.canceled) return;
-		if (confirm.result === 'no') return;
+		if (confirm.result === 'cancel') return;
 
 		if (confirm.result === 'neverShow') {
 			miLocalStorage.setItem('neverShowLocalOnlyInfo', 'true');
@@ -782,7 +782,7 @@ async function post(ev?: MouseEvent) {
 			caption: i18n.ts._altWarning.noAltWarningDescription,
 			actions: [
 				{
-					value: 'yes' as const,
+					value: 'ok' as const,
 					text: i18n.ts.thisPostMayBeAnnoyingIgnore,
 				},
 				{
@@ -791,7 +791,7 @@ async function post(ev?: MouseEvent) {
 					danger: true,
 				},
 				{
-					value: 'no' as const,
+					value: 'cancel' as const,
 					text: i18n.ts.goBack,
 					primary: true,
 				},
@@ -799,7 +799,7 @@ async function post(ev?: MouseEvent) {
 		});
 
 		if (confirm.canceled) return;
-		if (confirm.result === 'no') return;
+		if (confirm.result === 'cancel') return;
 
 		if (confirm.result === 'neverShow') {
 			defaultStore.set('showNoAltTextWarning', false);
