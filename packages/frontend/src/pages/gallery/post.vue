@@ -125,7 +125,7 @@ function share() {
 
 function shareWithNote() {
 	os.post({
-		initialText: `${post.value.title} ${url}/gallery/${post.value.id}`,
+		initialText: `${post.value.title}\n${url}/gallery/${post.value.id}`,
 	});
 }
 
