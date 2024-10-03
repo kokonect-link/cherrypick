@@ -553,6 +553,7 @@ async function toggleLocalOnly() {
 				},
 			],
 		});
+
 		if (confirm.canceled) return;
 		if (confirm.result === 'no') return;
 
@@ -786,14 +787,34 @@ async function post(ev?: MouseEvent) {
 	}
 
 	if (defaultStore.state.showNoAltTextWarning && files.value.some((f) => f.comment == null || f.comment.length === 0)) {
-		const { canceled } = await os.confirm({
+		const confirm = await os.actions({
 			type: 'warning',
-			text: i18n.ts._altWarning.noAltWarning,
+			title: i18n.ts._altWarning.noAltWarning,
 			caption: i18n.ts._altWarning.noAltWarningDescription,
-			okText: i18n.ts.goBack,
-			cancelText: i18n.ts.thisPostMayBeAnnoyingIgnore,
+			actions: [
+				{
+					value: 'yes' as const,
+					text: i18n.ts.thisPostMayBeAnnoyingIgnore,
+				},
+				{
+					value: 'neverShow' as const,
+					text: `${i18n.ts.thisPostMayBeAnnoyingIgnore} (${i18n.ts.neverShow})`,
+					danger: true,
+				},
+				{
+					value: 'no' as const,
+					text: i18n.ts.goBack,
+					primary: true,
+				},
+			],
 		});
-		if (!canceled) return;
+
+		if (confirm.canceled) return;
+		if (confirm.result === 'no') return;
+
+		if (confirm.result === 'neverShow') {
+			defaultStore.set('showNoAltTextWarning', false);
+		}
 	}
 
 	if (ev) {
