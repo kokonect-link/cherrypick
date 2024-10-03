@@ -61,13 +61,13 @@
 		}
 		const meta = await metaRes.json();
 		const v = meta.version;
-		const vMisskey = meta.basedMisskeyVersion;
+		const basedMisskeyVersion = meta.basedMisskeyVersion;
 		if (v == null) {
 			renderError('META_FETCH_V');
 			return;
 		}
 
-		if (vMisskey == null) {
+		if (basedMisskeyVersion == null) {
 			renderError('META_FETCH_BASEDMISSKEY_V');
 			return;
 		}
