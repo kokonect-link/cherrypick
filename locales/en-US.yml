@@ -2495,6 +2495,7 @@ _widgets:
   clicker: "Clicker"
   birthdayFollowings: "Users who celebrate their birthday today"
   search: "Search"
+  dice: "Dice"
 _cw:
   hide: "Hide"
   show: "Show content"
@@ -3023,3 +3024,7 @@ _externalNavigationWarning:
 _altWarning:
   noAltWarning: "No alternate text is configured in the file."
   noAltWarningDescription: "You can change this setting in \"Settings - Appearance\"."
+_dice:
+  rollDice: "Roll the dice"
+  diceCount: "Number of dice"
+  diceFaces: "Number of dice faces"

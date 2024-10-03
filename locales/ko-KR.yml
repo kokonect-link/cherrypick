@@ -2518,6 +2518,7 @@ _widgets:
   clicker: "클리커"
   birthdayFollowings: "오늘 생일인 사용자"
   search: "검색"
+  dice: "주사위"
 _cw:
   hide: "가리기"
   show: "더 보기"
@@ -3054,3 +3055,7 @@ _externalNavigationWarning:
 _altWarning:
   noAltWarning: "파일에 캡션이 설정되어 있지 않아요."
   noAltWarningDescription: "이 설정은 [설정 - 모양]에서 변경할 수 있어요."
+_dice:
+  rollDice: "주사위 던지기"
+  diceCount: "주사위 개수"
+  diceFaces: "주사위 면의 수"

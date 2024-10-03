@@ -9801,6 +9801,10 @@ export interface Locale extends ILocale {
          * 検索
          */
         "search": string;
+        /**
+         * サイコロ
+         */
+        "dice": string;
     };
     "_cw": {
         /**
@@ -11819,6 +11823,20 @@ export interface Locale extends ILocale {
          * この設定は「設定 - アピアランス」で変更できます。
          */
         "noAltWarningDescription": string;
+    };
+    "_dice": {
+        /**
+         * サイコロを振る
+         */
+        "rollDice": string;
+        /**
+         * サイコロの数
+         */
+        "diceCount": string;
+        /**
+         * サイコロの面数
+         */
+        "diceFaces": string;
     };
 }
 declare const locales: {

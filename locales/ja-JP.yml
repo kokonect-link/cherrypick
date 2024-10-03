@@ -2574,6 +2574,7 @@ _widgets:
   clicker: "クリッカー"
   birthdayFollowings: "今日誕生日のユーザー"
   search: "検索"
+  dice: "サイコロ"
 
 _cw:
   hide: "隠す"
@@ -3148,3 +3149,8 @@ _externalNavigationWarning:
 _altWarning:
   noAltWarning: "ファイルに代替テキストが設定されていません。"
   noAltWarningDescription: "この設定は「設定 - アピアランス」で変更できます。"
+
+_dice:
+  rollDice: "サイコロを振る"
+  diceCount: "サイコロの数"
+  diceFaces: "サイコロの面数"
