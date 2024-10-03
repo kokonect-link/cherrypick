@@ -132,7 +132,9 @@ onUnmounted(() => {
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	font-size: 20px;
+	font-size: 1.45em;
+	color: #fff;
+	opacity: .9;
 }
 
 @container (max-width: 785px) {
@@ -150,6 +152,12 @@ onUnmounted(() => {
 @container (max-width: 530px) {
 	.img {
 		height: 145px;
+	}
+
+	.multiple {
+		top: 7px;
+		right: 7px;
+		font-size: 1.3em;
 	}
 }
 </style>
