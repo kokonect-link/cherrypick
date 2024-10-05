@@ -3164,3 +3164,7 @@ _scheduledNoteDelete:
   deadlineDate: "期日"
   deadlineTime: "時間"
   duration: "期間"
+
+_getQRCode:
+  title: "QRコードをスキャンする"
+  description: "以下のQRコードをスキャンまたは共有できます。"

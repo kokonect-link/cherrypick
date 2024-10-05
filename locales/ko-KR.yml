@@ -3068,3 +3068,6 @@ _scheduledNoteDelete:
   deadlineDate: "기한"
   deadlineTime: "시간"
   duration: "기간"
+_getQRCode:
+  title: "QR 코드 스캔하기"
+  description: "아래 QR 코드를 스캔하거나 공유할 수 있어요."

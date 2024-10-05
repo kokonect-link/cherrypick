@@ -11872,6 +11872,16 @@ export interface Locale extends ILocale {
          */
         "duration": string;
     };
+    "_getQRCode": {
+        /**
+         * QRコードをスキャンする
+         */
+        "title": string;
+        /**
+         * 以下のQRコードをスキャンまたは共有できます。
+         */
+        "description": string;
+    };
 }
 declare const locales: {
     [lang: string]: Locale;

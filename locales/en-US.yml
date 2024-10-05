@@ -3037,3 +3037,6 @@ _scheduledNoteDelete:
   deadlineDate: "End date"
   deadlineTime: "Time"
   duration: "Duration"
+_getQRCode:
+  title: "Scan QR Code"
+  description: "Can scan or share the QR code below."

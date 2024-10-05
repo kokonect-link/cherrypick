@@ -1,7 +1,9 @@
 <template>
 <MkModal ref="modal" :zPriority="'middle'" @closed="$emit('closed')">
 	<div :class="$style.root">
-		<div :class="$style.title">
+		<div :class="$style.body">
+			<div :class="$style.title">{{ i18n.ts._getQRCode.title }}</div>
+			<div :class="$style.description">{{ i18n.ts._getQRCode.description }}</div>
 			<QRCodeVue3
 				:value="qrCode"
 				:qrOptions="{ errorCorrectionLevel: 'Q' }"
@@ -13,8 +15,8 @@
 			/>
 		</div>
 		<div class="_flexList" style="gap: 0.6rem">
-			<MkButton :class="$style.gotIt" primary full @click="gotIt()">{{ i18n.ts.gotIt }}</MkButton>
-			<MkButton :class="$style.copyLink" full @click="copyLink()">{{ i18n.ts.copyLink }}</MkButton>
+			<MkButton :class="$style.copyLink" rounded full @click="copyLink()">{{ i18n.ts.copyLink }}</MkButton>
+			<MkButton :class="$style.gotIt" primary rounded full @click="gotIt()">{{ i18n.ts.gotIt }}</MkButton>
 		</div>
 	</div>
 </MkModal>
@@ -58,13 +60,14 @@ const copyLink = () => {
 	border-radius: var(--radius);
 }
 
-.title {
+.body {
 	font-weight: bold;
 
 	> div {
 		> div {
 			> img {
 				max-width: 60%;
+				padding: 10px 0;
 			}
 		}
 	}
@@ -74,15 +77,25 @@ const copyLink = () => {
 	}
 }
 
+.title {
+	font-size: larger;
+	margin-bottom: 4px;
+}
+
+.description {
+	font-weight: normal;
+	margin-bottom: 12px;
+}
+
 .time {
 	font-size: 0.8rem;
 }
 
-.gotIt {
+.copyLink {
 	margin: 8px 0 0 0;
 }
 
-.copyLink {
+.gotIt {
 	margin: 8px 0 0 0;
 }
 </style>
