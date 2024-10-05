@@ -55,19 +55,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<template #label>{{ i18n.ts.bottomNavbar }}</template>
+		<template v-if="!isMobile" #description>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreBottomNavbar">{{ i18n.ts.learnMore }}</a></template>
 		<div class="_gaps_m">
-			<MkSwitch v-model="showMenuButtonInNavbar"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
-			<MkSwitch v-model="showHomeButtonInNavbar"><i class="ti ti-home"></i> {{ i18n.ts.home }}</MkSwitch>
-			<MkSwitch v-model="showExploreButtonInNavbar"><i class="ti ti-hash"></i> {{ i18n.ts.explore }}</MkSwitch>
-			<MkSwitch v-model="showSearchButtonInNavbar"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
-			<MkSwitch v-model="showNotificationButtonInNavbar"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
-			<MkSwitch v-model="showMessageButtonInNavbar"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
-			<MkSwitch v-model="showWidgetButtonInNavbar"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
-			<MkSwitch v-model="showPostButtonInNavbar"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
+			<MkSwitch v-model="showMenuButtonInNavbar" :disabled="!isMobile"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
+			<MkSwitch v-model="showHomeButtonInNavbar" :disabled="!isMobile"><i class="ti ti-home"></i> {{ i18n.ts.home }}</MkSwitch>
+			<MkSwitch v-model="showExploreButtonInNavbar" :disabled="!isMobile"><i class="ti ti-hash"></i> {{ i18n.ts.explore }}</MkSwitch>
+			<MkSwitch v-model="showSearchButtonInNavbar" :disabled="!isMobile"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
+			<MkSwitch v-model="showNotificationButtonInNavbar" :disabled="!isMobile"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
+			<MkSwitch v-model="showMessageButtonInNavbar" :disabled="!isMobile"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
+			<MkSwitch v-model="showWidgetButtonInNavbar" :disabled="!isMobile"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
+			<MkSwitch v-model="showPostButtonInNavbar" :disabled="!isMobile"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
 		</div>
 		<div class="_buttons" style="margin-top: 20px;">
-			<MkButton danger @click="resetButtomNavbar"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
-			<MkButton primary class="save" @click="reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true })"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+			<MkButton :disabled="!isMobile" danger @click="resetButtomNavbar"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+			<MkButton :disabled="!isMobile" primary class="save" @click="reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true })"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 		</div>
 	</FormSection>
 </div>
@@ -88,7 +89,14 @@ import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
+import { deviceKind } from '@/scripts/device-kind.js';
 
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
@@ -161,6 +169,13 @@ function resetButtomNavbar() {
 	defaultStore.set('showNotificationButtonInNavbar', true);
 	defaultStore.set('showMessageButtonInNavbar', isFriendly.value);
 	defaultStore.set('showWidgetButtonInNavbar', true);
+}
+
+function learnMoreBottomNavbar() {
+	os.alert({
+		type: 'info',
+		text: i18n.ts.bottomNavbarDescription,
+	});
 }
 
 watch([menuDisplay, bannerDisplay], async () => {

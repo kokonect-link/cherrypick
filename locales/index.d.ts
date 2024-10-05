@@ -26,6 +26,10 @@ export interface Locale extends ILocale {
      */
     "bottomNavbar": string;
     /**
+     * この設定は、モバイル環境でのみ使用できます。
+     */
+    "bottomNavbarDescription": string;
+    /**
      * ノートの削除を予約
      */
     "scheduledNoteDelete": string;
