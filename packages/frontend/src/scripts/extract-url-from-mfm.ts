@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as mfm from 'cherrypick-mfm-js';
+import * as mfm from 'cfm-js';
 import { unique } from '@@/js/array.js';
 
 // unique without hash
