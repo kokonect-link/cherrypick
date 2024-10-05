@@ -153,9 +153,9 @@ export function openInstanceMenu(ev: MouseEvent) {
 				target: '_blank',
 			}, {
 				type: 'link',
-				text: i18n.ts._mfm.cheatSheet,
+				text: i18n.ts._cfm.cheatSheet,
 				icon: 'ti ti-help-circle',
-				to: '/mfm-cheat-sheet',
+				to: '/cfm-cheat-sheet',
 			});
 
 			return documentChildMenu;

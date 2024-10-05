@@ -210,8 +210,8 @@ importers:
         specifier: 9.0.2
         version: 9.0.2
       cfm-js:
-        specifier: 0.24.0-cherrypick.7
-        version: 0.24.0-cherrypick.7
+        specifier: 0.24.0-cherrypick.8
+        version: 0.24.0-cherrypick.8
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -852,8 +852,8 @@ importers:
         specifier: 1.9.3
         version: 1.9.3
       cfm-js:
-        specifier: 0.24.0-cherrypick.7
-        version: 0.24.0-cherrypick.7
+        specifier: 0.24.0-cherrypick.8
+        version: 0.24.0-cherrypick.8
       chart.js:
         specifier: 4.4.4
         version: 4.4.4
@@ -1216,8 +1216,8 @@ importers:
         specifier: 0.0.1
         version: 0.0.1
       cfm-js:
-        specifier: 0.24.0-cherrypick.7
-        version: 0.24.0-cherrypick.7
+        specifier: 0.24.0-cherrypick.8
+        version: 0.24.0-cherrypick.8
       cherrypick-js:
         specifier: workspace:*
         version: link:../cherrypick-js
@@ -5829,8 +5829,8 @@ packages:
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
 
-  cfm-js@0.24.0-cherrypick.7:
-    resolution: {integrity: sha512-WFo+z9uJrx1bftoGpb9BO698BClMUUwka2p2aR+VSPFOhgPHp6b167s1s1UUQYpLU0eyAkStXjd+sptLKTCPHg==}
+  cfm-js@0.24.0-cherrypick.8:
+    resolution: {integrity: sha512-QIWgqWW2a1FSrFaZNv7ueWKXXNvjrSIYKUhbIKTkaw3iN8rpjKNXUuSAKKdrn0jPQkb4y+YL7oMolcUjTh/G/A==}
 
   chai@4.3.10:
     resolution: {integrity: sha512-0UXG04VuVbruMUYbJ6JctvH0YnC/4q3/AkT18q4NaITo91CUm0liMS9VqzT9vZhVQ/1eqPanMWjBM+Juhfb/9g==}
@@ -17428,7 +17428,7 @@ snapshots:
 
   ccount@2.0.1: {}
 
-  cfm-js@0.24.0-cherrypick.7:
+  cfm-js@0.24.0-cherrypick.8:
     dependencies:
       '@twemoji/parser': 15.0.0
 

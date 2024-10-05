@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ti ti-heart-plus"></i></span>
 				<span v-else><i class="ti ti-icons"></i></span>
 			</button>
-			<button v-tooltip="i18n.ts._mfm.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
+			<button v-tooltip="i18n.ts._cfm.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
 			<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 				<div :class="$style.submitInner">
 					<template v-if="posted"></template>
