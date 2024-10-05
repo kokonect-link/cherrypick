@@ -87,6 +87,9 @@ import { defaultStore } from '@/store.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { miLocalStorage } from '@/local-storage.js';
+
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -152,11 +155,11 @@ function reset() {
 }
 
 function resetButtomNavbar() {
-	defaultStore.set('showHomeButtonInNavbar', true);
-	defaultStore.set('showExploreButtonInNavbar', true);
+	defaultStore.set('showHomeButtonInNavbar', !isFriendly.value);
+	defaultStore.set('showExploreButtonInNavbar', isFriendly.value);
 	defaultStore.set('showSearchButtonInNavbar', false);
 	defaultStore.set('showNotificationButtonInNavbar', true);
-	defaultStore.set('showMessageButtonInNavbar', true);
+	defaultStore.set('showMessageButtonInNavbar', isFriendly.value);
 	defaultStore.set('showWidgetButtonInNavbar', true);
 }
 

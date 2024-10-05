@@ -66,6 +66,8 @@ export async function common(createVue: () => App<Element>) {
 	let isClientMigrated = false;
 	const showPushNotificationDialog = miLocalStorage.getItem('showPushNotificationDialog');
 
+	if (miLocalStorage.getItem('ui') === null) miLocalStorage.setItem('ui', 'friendly');
+
 	if (instance.swPublickey && ('PushManager' in window) && $i && $i.token && showPushNotificationDialog == null) {
 		popup(defineAsyncComponent(() => import('@/components/MkPushNotification.vue')), {}, {}, 'closed');
 	}

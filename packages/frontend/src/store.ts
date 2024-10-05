@@ -62,6 +62,8 @@ export const noteViewInterruptors: NoteViewInterruptor[] = [];
 export const notePostInterruptors: NotePostInterruptor[] = [];
 export const pageViewInterruptors: PageViewInterruptor[] = [];
 
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
 export const defaultStore = markRaw(new Storage('base', {
@@ -658,7 +660,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	// - Settings/Navigation bar
 	showMenuButtonInNavbar: {
 		where: 'device',
-		default: true,
+		default: !isFriendly.value,
 	},
 	showHomeButtonInNavbar: {
 		where: 'device',
@@ -666,7 +668,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showExploreButtonInNavbar: {
 		where: 'device',
-		default: true,
+		default: isFriendly.value,
 	},
 	showSearchButtonInNavbar: {
 		where: 'device',
@@ -678,7 +680,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showMessageButtonInNavbar: {
 		where: 'device',
-		default: true,
+		default: isFriendly.value,
 	},
 	showWidgetButtonInNavbar: {
 		where: 'device',
