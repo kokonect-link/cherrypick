@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ノートを作成
+     */
+    "postNote": string;
+    /**
+     * 下のナビゲーションバー
+     */
+    "bottomNavbar": string;
+    /**
      * ノートの削除を予約
      */
     "scheduledNoteDelete": string;

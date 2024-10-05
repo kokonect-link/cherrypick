@@ -52,6 +52,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<option value="bg">{{ i18n.ts._bannerDisplay.bg }}</option>
 		<option value="hide">{{ i18n.ts._bannerDisplay.hide }}</option>
 	</MkRadios>
+
+	<FormSection>
+		<template #label>{{ i18n.ts.bottomNavbar }}</template>
+		<div class="_gaps_m">
+			<MkSwitch v-model="showMenuButtonInNavbar"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
+			<MkSwitch v-model="showHomeButtonInNavbar"><i class="ti ti-home"></i> {{ i18n.ts.home }}</MkSwitch>
+			<MkSwitch v-model="showExploreButtonInNavbar"><i class="ti ti-hash"></i> {{ i18n.ts.explore }}</MkSwitch>
+			<MkSwitch v-model="showSearchButtonInNavbar"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
+			<MkSwitch v-model="showNotificationButtonInNavbar"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
+			<MkSwitch v-model="showMessageButtonInNavbar"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
+			<MkSwitch v-model="showWidgetButtonInNavbar"><i class="ti ti-apps"></i> {{ i18n.ts._deck._columns.widgets }}</MkSwitch>
+			<MkSwitch v-model="showPostButtonInNavbar"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
+		</div>
+		<div class="_buttons" style="margin-top: 20px;">
+			<MkButton danger @click="resetButtomNavbar"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+			<MkButton primary class="save" @click="reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true })"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+		</div>
+	</FormSection>
 </div>
 </template>
 
@@ -61,6 +79,8 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
+import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { defaultStore } from '@/store.js';
@@ -77,6 +97,15 @@ const items = ref(defaultStore.state.menu.map(x => ({
 
 const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
 const bannerDisplay = computed(defaultStore.makeGetterSetter('bannerDisplay'));
+
+const showMenuButtonInNavbar = computed(defaultStore.makeGetterSetter('showMenuButtonInNavbar'));
+const showHomeButtonInNavbar = computed(defaultStore.makeGetterSetter('showHomeButtonInNavbar'));
+const showExploreButtonInNavbar = computed(defaultStore.makeGetterSetter('showExploreButtonInNavbar'));
+const showSearchButtonInNavbar = computed(defaultStore.makeGetterSetter('showSearchButtonInNavbar'));
+const showNotificationButtonInNavbar = computed(defaultStore.makeGetterSetter('showNotificationButtonInNavbar'));
+const showMessageButtonInNavbar = computed(defaultStore.makeGetterSetter('showMessageButtonInNavbar'));
+const showWidgetButtonInNavbar = computed(defaultStore.makeGetterSetter('showWidgetButtonInNavbar'));
+const showPostButtonInNavbar = computed(defaultStore.makeGetterSetter('showPostButtonInNavbar'));
 
 async function addItem(ev: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !defaultStore.state.menu.includes(k));
@@ -120,6 +149,15 @@ function reset() {
 		id: Math.random().toString(),
 		type: x,
 	}));
+}
+
+function resetButtomNavbar() {
+	defaultStore.set('showHomeButtonInNavbar', true);
+	defaultStore.set('showExploreButtonInNavbar', true);
+	defaultStore.set('showSearchButtonInNavbar', false);
+	defaultStore.set('showNotificationButtonInNavbar', true);
+	defaultStore.set('showMessageButtonInNavbar', true);
+	defaultStore.set('showWidgetButtonInNavbar', true);
 }
 
 watch([menuDisplay, bannerDisplay], async () => {

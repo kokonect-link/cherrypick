@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+postNote: "Post note"
+bottomNavbar: "Bottom navigation bar"
 scheduledNoteDelete: "Schedule note deletion"
 getQRCode: "Get QR code"
 customSplashText: "Custom splash text"

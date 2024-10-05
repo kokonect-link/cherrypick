@@ -655,6 +655,40 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: true,
 	},
 
+	// - Settings/Navigation bar
+	showMenuButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showHomeButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showExploreButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showSearchButtonInNavbar: {
+		where: 'device',
+		default: false,
+	},
+	showNotificationButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showMessageButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showWidgetButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showPostButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+
 	// - Settings/Timeline
 	enableHomeTimeline: {
 		where: 'device',

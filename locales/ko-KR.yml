@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+postNote: "노트 작성"
+bottomNavbar: "하단 내비게이션 바"
 scheduledNoteDelete: "노트 삭제 예약"
 getQRCode: "QR 코드 생성"
 customSplashText: "사용자 정의 스플래시 텍스트"
