@@ -81,6 +81,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 
 ### Server
 - Fix: 이모지를 등록하거나 가져오려고 할 때 오류가 발생할 수 있음 (kokonect-link/cherrypick#487), (kokonect-link/cherrypick#508)
+- Fix: 사용자 이름에 `.`이 있는 경우 멘션을 할 수 없음 (kokonect-link/cherrypick#509)
 
 ---
 
