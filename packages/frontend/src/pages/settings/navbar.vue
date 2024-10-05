@@ -63,7 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="showSearchButtonInNavbar" :disabled="!isMobile"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
 			<MkSwitch v-model="showNotificationButtonInNavbar" :disabled="!isMobile"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
 			<MkSwitch v-model="showMessageButtonInNavbar" :disabled="!isMobile"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
-			<MkSwitch v-model="showWidgetButtonInNavbar" :disabled="!isMobile"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
+			<MkSwitch v-if="miLocalStorage.getItem('ui') !== 'deck'" v-model="showWidgetButtonInNavbar" :disabled="!isMobile"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
 			<MkSwitch v-if="!isFriendly" v-model="showPostButtonInNavbar" :disabled="!isMobile"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
 		</div>
 		<div class="_buttons" style="margin-top: 20px;">
