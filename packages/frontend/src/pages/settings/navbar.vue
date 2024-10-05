@@ -57,14 +57,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<template #label>{{ i18n.ts.bottomNavbar }}</template>
 		<template v-if="!isMobile" #description>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreBottomNavbar">{{ i18n.ts.learnMore }}</a></template>
 		<div class="_gaps_m">
-			<MkSwitch v-model="showMenuButtonInNavbar" :disabled="!isMobile"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
+			<MkSwitch v-if="!isFriendly" v-model="showMenuButtonInNavbar" :disabled="!isMobile"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
 			<MkSwitch v-model="showHomeButtonInNavbar" :disabled="!isMobile"><i class="ti ti-home"></i> {{ i18n.ts.home }}</MkSwitch>
 			<MkSwitch v-model="showExploreButtonInNavbar" :disabled="!isMobile"><i class="ti ti-hash"></i> {{ i18n.ts.explore }}</MkSwitch>
 			<MkSwitch v-model="showSearchButtonInNavbar" :disabled="!isMobile"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
 			<MkSwitch v-model="showNotificationButtonInNavbar" :disabled="!isMobile"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
 			<MkSwitch v-model="showMessageButtonInNavbar" :disabled="!isMobile"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
 			<MkSwitch v-model="showWidgetButtonInNavbar" :disabled="!isMobile"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
-			<MkSwitch v-model="showPostButtonInNavbar" :disabled="!isMobile"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
+			<MkSwitch v-if="!isFriendly" v-model="showPostButtonInNavbar" :disabled="!isMobile"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
 		</div>
 		<div class="_buttons" style="margin-top: 20px;">
 			<MkButton :disabled="!isMobile" danger @click="resetButtomNavbar"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
