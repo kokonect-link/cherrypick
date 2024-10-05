@@ -62,7 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSwitch v-model="showSearchButtonInNavbar"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
 			<MkSwitch v-model="showNotificationButtonInNavbar"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
 			<MkSwitch v-model="showMessageButtonInNavbar"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
-			<MkSwitch v-model="showWidgetButtonInNavbar"><i class="ti ti-apps"></i> {{ i18n.ts._deck._columns.widgets }}</MkSwitch>
+			<MkSwitch v-model="showWidgetButtonInNavbar"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
 			<MkSwitch v-model="showPostButtonInNavbar"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
 		</div>
 		<div class="_buttons" style="margin-top: 20px;">

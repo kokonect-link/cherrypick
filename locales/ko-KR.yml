@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+widgets: "위젯"
 postNote: "노트 작성"
 bottomNavbar: "하단 내비게이션 바"
 scheduledNoteDelete: "노트 삭제 예약"

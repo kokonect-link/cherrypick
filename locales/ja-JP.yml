@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+widgets: "ウィジェット"
 postNote: "ノートを作成"
 bottomNavbar: "下のナビゲーションバー"
 scheduledNoteDelete: "ノートの削除を予約"

@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ウィジェット
+     */
+    "widgets": string;
+    /**
      * ノートを作成
      */
     "postNote": string;

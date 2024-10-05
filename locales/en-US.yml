@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+widgets: "Widgets"
 postNote: "Post note"
 bottomNavbar: "Bottom navigation bar"
 scheduledNoteDelete: "Schedule note deletion"
