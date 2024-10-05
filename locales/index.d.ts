@@ -30,7 +30,7 @@ export interface Locale extends ILocale {
      */
     "customSplashTextDescription": string;
     /**
-     * キャプション未設定案内を表示
+     * キャプション未設定案内
      */
     "showNoAltWarning": string;
     /**

@@ -537,7 +537,6 @@ async function toggleLocalOnly() {
 				{
 					value: 'ok' as const,
 					text: i18n.ts.disableFederationOk,
-					primary: true,
 				},
 				{
 					value: 'neverShow' as const,
@@ -547,6 +546,7 @@ async function toggleLocalOnly() {
 				{
 					value: 'cancel' as const,
 					text: i18n.ts.cancel,
+					primary: true,
 				},
 			],
 		});
@@ -784,7 +784,8 @@ async function post(ev?: MouseEvent) {
 	if (defaultStore.state.showNoAltTextWarning && files.value.some((f) => f.comment == null || f.comment.length === 0)) {
 		const confirm = await os.actions({
 			type: 'warning',
-			title: i18n.ts._altWarning.noAltWarning,
+			title: i18n.ts.showNoAltWarning,
+			text: i18n.ts._altWarning.noAltWarning,
 			caption: i18n.ts._altWarning.noAltWarningDescription,
 			actions: [
 				{
