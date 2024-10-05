@@ -372,10 +372,10 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			case 'mention': {
-				return [h(MkMention, {
-					key: Math.random(),
-					host: (token.props.host == null && props.author && props.author.host != null ? props.author.host : token.props.host) ?? host,
-					username: token.props.username,
+				return [h(MkMention, { onClick(ev: MouseEvent): void {
+					ev.stopPropagation();
+					ev.preventDefault();
+				}, key: Math.random(), host: (token.props.host == null && props.author && props.author.host != null ? props.author.host : token.props.host) ?? host, username: token.props.username,
 				})];
 			}
 

@@ -78,6 +78,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업될 수 있음
 - Fix: 이미지 자르기를 할 때 이미지 크기 전체를 표시하지 못할 수 있음
 - Fix: 페이지에서 페이지 생성 버튼이 본문에 중복으로 표시됨
+- Fix: 노트 본문의 사용자 멘션 영역을 클릭하면 노트 상세 페이지가 표시됨
 
 ### Server
 - Fix: 이모지를 등록하거나 가져오려고 할 때 오류가 발생할 수 있음 (kokonect-link/cherrypick#487), (kokonect-link/cherrypick#508)
