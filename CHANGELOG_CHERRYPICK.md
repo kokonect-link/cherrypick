@@ -35,12 +35,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### General
 - Feat: 위젯 영역을 숨길 수 있음
 	- 기존 Friendly UI 한정 기능이 다른 UI에서도 사용할 수 있도록 확대됨
-- Feat: '내용 숨기기'로 설정한 내용을 항상 보이게 설정할 수 있음 (kokonect-link/cherrypick#495)
+- Feat: `내용 숨기기`로 설정한 내용을 항상 보이게 설정할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 내용이 긴 노트의 간략화 여부를 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 답글로 작성된 노트를 간략화하여 표시할 수 있음 (kokonect-link/cherrypick#495)
 	- 리액션한 노트는 옵션 활성화 유무와 상관없이 항상 표시됩니다.
 - Feat: 사용자 메뉴에서 원격 서버를 관리할 수 있음 (kokonect-link/cherrypick#502)
-	- 서버 차단, 서버 사일런스, 서버 미디어 사일런스
+	- `서버 차단`, `서버 사일런스`, `서버 미디어 사일런스`
 - Feat: 노트 동작 버튼을 개인화할 수 있음 (kokonect-link/cherrypick#501)
 - Feat: 답글 대상 노트의 반투명 옵션을 선택할 수 있음 (kokonect-link/cherrypick#495)
 - Feat: 사용자 페이지의 미디어 탭을 그리드 레이아웃으로 설정할 수 있음 (kokonect-link/cherrypick#494)
@@ -78,7 +78,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: 의도하지 않게 `검색`으로 검색할 수 있었던 부분을 개선함
 	- 이제 노트에서 검색 블록을 활성화 하려면 `[검색]`으로만 사용할 수 있습니다.
 - Enhance: 설정 페이지의 하단 여백 디자인을 조정함
-- Enhance: 노트 작성 시 '본문 미리보기'를 활성화한 경우, 본문에 내용이 있을 때만 표시되도록 변경함
+- Enhance: 노트 작성 시 `본문 미리보기`를 활성화한 경우, 본문에 내용이 있을 때만 표시되도록 변경함
 - Fix: 환경설정 백업 시 일부 설정이 누락되어 백업될 수 있음
 - Fix: 이미지 자르기를 할 때 이미지 크기 전체를 표시하지 못할 수 있음
 - Fix: 페이지에서 페이지 생성 버튼이 본문에 중복으로 표시됨
