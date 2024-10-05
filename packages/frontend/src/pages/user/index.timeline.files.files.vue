@@ -91,7 +91,7 @@ onUnmounted(() => {
 .img {
 	display: flex;
 	position: relative;
-	height: 256px;
+	height: 224px;
 	border-radius: 3px;
 	overflow: clip;
 }

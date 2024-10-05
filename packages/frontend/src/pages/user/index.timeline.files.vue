@@ -42,7 +42,7 @@ defineExpose({
 <style lang="scss" module>
 .stream {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(224px, 1fr));
 	grid-gap: 6px;
 }
 
