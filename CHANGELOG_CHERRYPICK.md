@@ -66,7 +66,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: 리액션 수신 범위에 따라 리액션 버튼의 툴팁 내용이 변경됨
 - Enhance: 설정 페이지 개선
   - 일반 설정에 있던 설정 중 디자인과 관련된 설정을 모양으로 옮겼습니다.
-- Enhance: 외부 사이트로 이동할 때 경고 표시 (MisskeyIO/misskey#558)
+- Enhance: 외부 사이트로 이동할 때 경고 표시 (misskey-dev/misskey#13557)
 - Enhance: 이미지의 확장자를 더욱 정확하게 표시함
   - APNG 형식의 이미지가 GIF로 표시되던 것을 APNG로 표시하도록 변경
 - Enhance: 이미지 뷰어가 파일 이름과 캡션을 동시에 표시하도록 변경
