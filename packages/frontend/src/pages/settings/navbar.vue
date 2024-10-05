@@ -54,7 +54,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</MkRadios>
 
 	<FormSection>
-		<template #label>{{ i18n.ts.bottomNavbar }}</template>
+		<template #label>{{ i18n.ts.bottomNavbar }} <span class="_beta">CherryPick</span></template>
 		<template v-if="!isMobile" #description>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreBottomNavbar">{{ i18n.ts.learnMore }}</a></template>
 		<div class="_gaps_m">
 			<MkSwitch v-if="!isFriendly" v-model="showMenuButtonInNavbar" :disabled="!isMobile"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
