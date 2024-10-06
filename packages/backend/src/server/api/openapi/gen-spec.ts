@@ -13,9 +13,7 @@ export function genOpenapiSpec(config: Config, includeSelfRef = false) {
 		openapi: '3.1.0',
 
 		info: {
-			version: config.version,
-			basedMisskeyVersion: config.basedMisskeyVersion,
-			description: config.basedMisskeyVersion,
+			version: `${config.version} (${config.basedMisskeyVersion})`,
 			title: 'CherryPick API',
 		},
 
