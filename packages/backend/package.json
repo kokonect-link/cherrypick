@@ -22,6 +22,9 @@
 		"typecheck": "tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.ts\"",
 		"lint": "pnpm typecheck && pnpm eslint",
+		"biome-lint": "pnpm typecheck && pnpm biome lint",
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write",
 		"jest": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.unit.cjs",
 		"jest:e2e": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --forceExit --config jest.config.e2e.cjs",
 		"jest-and-coverage": "cross-env NODE_ENV=test node --experimental-vm-modules --experimental-import-meta-resolve node_modules/jest/bin/jest.js --coverage --forceExit --config jest.config.unit.cjs",
@@ -192,6 +195,7 @@
 		"xev": "3.0.2"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.3",
 		"@jest/globals": "29.7.0",
 		"@nestjs/platform-express": "10.4.3",
 		"@simplewebauthn/types": "10.0.0",

@@ -8,7 +8,10 @@
 		"build": "vite build",
 		"typecheck": "vue-tsc --noEmit",
 		"eslint": "eslint --quiet \"src/**/*.{ts,vue}\"",
-		"lint": "pnpm typecheck && pnpm eslint"
+		"lint": "pnpm typecheck && pnpm eslint",
+		"biome-lint": "pnpm typecheck && pnpm biome lint",
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write"
 	},
 	"dependencies": {
 		"@discordapp/twemoji": "15.1.0",
@@ -39,6 +42,7 @@
 		"vue": "3.5.10"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.3",
 		"@misskey-dev/summaly": "5.1.0",
 		"@testing-library/vue": "8.1.0",
 		"@types/estree": "1.0.6",

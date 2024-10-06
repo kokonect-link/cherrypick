@@ -6,7 +6,10 @@
 		"build": "node build.js",
 		"typecheck": "tsc --noEmit",
 		"eslint": "eslint --quiet src/**/*.ts",
-		"lint": "pnpm typecheck && pnpm eslint"
+		"lint": "pnpm typecheck && pnpm eslint",
+		"biome-lint": "pnpm typecheck && pnpm biome lint",
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write"
 	},
 	"dependencies": {
 		"esbuild": "0.23.1",
@@ -14,6 +17,7 @@
 		"cherrypick-js": "workspace:*"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.3",
 		"@typescript-eslint/parser": "7.17.0",
 		"@typescript/lib-webworker": "npm:@types/serviceworker@0.0.67",
 		"eslint-plugin-import": "2.30.0",

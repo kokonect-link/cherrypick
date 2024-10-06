@@ -37,6 +37,7 @@
 		"watch": "pnpm dev",
 		"dev": "node scripts/dev.mjs",
 		"lint": "pnpm -r lint",
+		"biome-lint": "pnpm -r biome-lint",
 		"cy:open": "pnpm cypress open --browser --e2e --config-file=cypress.config.ts",
 		"cy:run": "pnpm cypress run",
 		"e2e": "pnpm start-server-and-test start:test http://localhost:61812 cy:run",
@@ -68,6 +69,7 @@
 		"glob": "11.0.0"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.3",
 		"@misskey-dev/eslint-plugin": "2.0.3",
 		"@types/node": "20.14.12",
 		"@typescript-eslint/eslint-plugin": "7.17.0",

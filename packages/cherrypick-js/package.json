@@ -26,6 +26,9 @@
 		"eslint": "eslint './**/*.{js,jsx,ts,tsx}'",
 		"typecheck": "tsc --noEmit",
 		"lint": "pnpm typecheck && pnpm eslint",
+		"biome-lint": "pnpm typecheck && pnpm biome lint",
+		"format": "pnpm biome format",
+		"format:write": "pnpm biome format --write",
 		"jest": "jest --coverage --detectOpenHandles",
 		"test": "pnpm jest && pnpm tsd",
 		"update-autogen-code": "pnpm --filter cherrypick-js-type-generator generate && ncp generator/built/autogen src/autogen"
@@ -36,6 +39,7 @@
 		"directory": "packages/cherrypick-js"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "1.9.3",
 		"@microsoft/api-extractor": "7.47.9",
 		"@swc/jest": "0.2.36",
 		"@types/jest": "29.5.13",
