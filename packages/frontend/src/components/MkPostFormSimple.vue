@@ -99,15 +99,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.footerLeft">
 				<button v-tooltip="i18n.ts.attachFile" class="_button" :class="$style.footerButton" @click="chooseFileFrom"><i class="ti ti-photo-plus"></i></button>
 				<button v-tooltip="i18n.ts.poll" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: poll }]" @click="togglePoll"><i class="ti ti-chart-arrows"></i></button>
-				<button v-tooltip="i18n.ts.event" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: event }]" @click="toggleEvent"><i class="ti ti-calendar"></i></button>
 				<button v-tooltip="i18n.ts.useCw" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: useCw }]" @click="useCw = !useCw"><i class="ti ti-eye-off"></i></button>
 				<button v-tooltip="i18n.ts.mention" class="_button" :class="$style.footerButton" @click="insertMention"><i class="ti ti-at"></i></button>
 				<button v-tooltip="i18n.ts.hashtags" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: withHashtags }]" @click="withHashtags = !withHashtags"><i class="ti ti-hash"></i></button>
-				<button v-tooltip="i18n.ts.disableRightClick" class="_button" :class="[$style.footerButton, { [$style.footerButtonActive]: disableRightClick }]" @click="disableRightClick = !disableRightClick"><i class="ti ti-mouse-off"></i></button>
 				<button v-if="postFormActions.length > 0" v-tooltip="i18n.ts.plugins" class="_button" :class="$style.footerButton" @click="showActions"><i class="ti ti-plug"></i></button>
 				<button v-tooltip="i18n.ts.emoji" :class="['_button', $style.footerButton]" @click="insertEmoji"><i class="ti ti-mood-happy"></i></button>
 				<button v-if="showAddMfmFunction" v-tooltip="i18n.ts.addMfmFunction" :class="['_button', $style.footerButton]" @click="insertMfmFunction"><i class="ti ti-palette"></i></button>
-				<button v-tooltip="i18n.ts.scheduledNoteDelete" :class="['_button', $style.footerButton]" @click="toggleScheduledNoteDelete"><i class="ti ti-clock-hour-9"></i></button>
+				<button v-tooltip="i18n.ts.otherSettings" :class="['_button', $style.footerButton]" @click="showOtherMenu"><i class="ti ti-dots"></i></button>
 			</div>
 			<div :class="$style.footerRight">
 				<button v-tooltip="i18n.ts.previewNoteText" class="_button" :class="$style.footerButton" @click="showPreviewMenu"><i class="ti ti-eye"></i></button>
@@ -184,6 +182,7 @@ const props = withDefaults(defineProps<{
 	initialVisibleUsers: () => [],
 	autofocus: false,
 	mock: false,
+	initialLocalOnly: undefined,
 });
 
 provide('mock', props.mock);
@@ -200,7 +199,7 @@ const emit = defineEmits<{
 const textareaEl = shallowRef<HTMLTextAreaElement | null>(null);
 const cwInputEl = shallowRef<HTMLInputElement | null>(null);
 const hashtagsInputEl = shallowRef<HTMLInputElement | null>(null);
-const visibilityButton = shallowRef<HTMLElement | null>(null);
+const visibilityButton = shallowRef<HTMLElement>();
 
 const showForm = ref(false);
 
@@ -223,8 +222,8 @@ watch(showProfilePreview, () => defaultStore.set('showProfilePreview', showProfi
 const showAddMfmFunction = ref(defaultStore.state.enableQuickAddMfmFunction);
 watch(showAddMfmFunction, () => defaultStore.set('enableQuickAddMfmFunction', showAddMfmFunction.value));
 const cw = ref<string | null>(props.initialCw ?? null);
-const localOnly = ref<boolean>(props.initialLocalOnly ?? defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly);
-const visibility = ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility) as typeof Misskey.noteVisibilities[number]);
+const localOnly = ref(props.initialLocalOnly ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly));
+const visibility = ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility));
 const visibleUsers = ref<Misskey.entities.UserDetailed[]>([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(u => pushVisibleUser(u));
@@ -560,6 +559,9 @@ async function toggleLocalOnly() {
 	}
 
 	localOnly.value = !localOnly.value;
+	if (defaultStore.state.rememberNoteVisibility) {
+		defaultStore.set('localOnly', localOnly.value);
+	}
 }
 
 async function toggleReactionAcceptance() {
@@ -1133,6 +1135,25 @@ function toggleScheduledNoteDelete() {
 			deleteAfter: null,
 		};
 	}
+}
+
+function showOtherMenu(ev: MouseEvent) {
+	os.popupMenu([{
+		type: 'button',
+		text: i18n.ts.event,
+		icon: 'ti ti-calendar',
+		action: toggleEvent,
+	}, {
+		type: 'button',
+		text: i18n.ts.scheduledNoteDelete,
+		icon: 'ti ti-clock-hour-9',
+		action: toggleScheduledNoteDelete,
+	}, { type: 'divider' }, {
+		type: 'switch',
+		text: i18n.ts.disableRightClick,
+		icon: 'ti ti-mouse-off',
+		ref: disableRightClick,
+	}], ev.currentTarget ?? ev.target);
 }
 
 onMounted(() => {
