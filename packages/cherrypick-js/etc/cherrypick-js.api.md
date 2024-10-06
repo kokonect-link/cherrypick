@@ -835,6 +835,10 @@ export type Channels = {
                 value: ReversiGameDetailed[K];
             }) => void;
             log: (payload: Record<string, unknown>) => void;
+            reacted: (payload: {
+                userId: User['id'];
+                reaction: string;
+            }) => void;
         };
         receives: {
             putStone: {
@@ -845,6 +849,7 @@ export type Channels = {
             cancel: null | Record<string, never>;
             updateSettings: ReversiUpdateSettings<ReversiUpdateKey>;
             claimTimeIsUp: null | Record<string, never>;
+            reaction: string;
         };
     };
 };
@@ -3561,7 +3566,7 @@ type UsersUpdateMemoRequest = operations['users___update-memo']['requestBody']['
 //
 // src/entities.ts:49:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.types.ts:247:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:257:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
+// src/streaming.types.ts:258:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

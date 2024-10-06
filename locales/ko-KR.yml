@@ -2989,6 +2989,7 @@ _reversi:
   allowIrregularRules: "규칙 변경 허용(완전 자유)"
   disallowIrregularRules: "규칙 변경 없음"
   showBoardLabels: "판에 행·열 번호 표시"
+  showReaction: "상대의 리액션 표시"
   useAvatarAsStone: "돌을 아이콘으로 표시"
 _offlineScreen:
   title: "오프라인 - 서버에 연결할 수 없음"

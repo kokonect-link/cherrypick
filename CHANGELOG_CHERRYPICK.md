@@ -62,6 +62,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Feat: 설정한 시간이 지나면 노트를 자동으로 삭제할 수 있음 (1673beta/cherrypick#70)
 - Feat: 모바일 환경에서 하단 내비게이션 바를 개인화할 수 있음
   - `설정` - `내비게이션 바`의 `하단 내비게이션 바`에서 설정할 수 있습니다.
+- Feat: 리버시 대전 중에 상대방에게 리액션을 보낼 수 있음 (misskey-dev/misskey#13119)
 
 ### Client
 - Enhance: CherryPick 업데이트 페이지를 제어판 목록에 추가함

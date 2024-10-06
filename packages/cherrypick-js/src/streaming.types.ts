@@ -246,6 +246,7 @@ export type Channels = {
 			changeReadyStates: (payload: { user1: boolean; user2: boolean; }) => void;
 			updateSettings: <K extends ReversiUpdateKey>(payload: { userId: User['id']; key: K; value: ReversiGameDetailed[K]; }) => void;
 			log: (payload: Record<string, unknown>) => void;
+			reacted: (payload: { userId: User['id']; reaction: string; }) => void;
 		};
 		receives: {
 			putStone: {
@@ -256,6 +257,7 @@ export type Channels = {
 			cancel: null | Record<string, never>;
 			updateSettings: ReversiUpdateSettings<ReversiUpdateKey>;
 			claimTimeIsUp: null | Record<string, never>;
+			reaction: string;
 		}
 	}
 };

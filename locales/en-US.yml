@@ -2958,6 +2958,7 @@ _reversi:
   allowIrregularRules: "Irregular rules (completely free)"
   disallowIrregularRules: "No irregular rules"
   showBoardLabels: "Display row and column numbering on the board"
+  showReaction: "Show the opponent reaction"
   useAvatarAsStone: "Turn stones into user avatars"
 _offlineScreen:
   title: "Offline - cannot connect to the server"
