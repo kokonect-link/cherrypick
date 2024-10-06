@@ -23,6 +23,7 @@ import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
+import { shouldCollapsed } from '@@/js/collapsed.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;
@@ -422,7 +423,8 @@ export function getNoteMenu(props: {
 			action: openInNewTab,
 		});
 
-		if ($i.policies.canUseTranslator && instance.translatorAvailable) {
+		const isLong = shouldCollapsed(appearNote, []);
+		if ($i.policies.canUseTranslator && instance.translatorAvailable && (!defaultStore.state.useAutoTranslate || (defaultStore.state.useAutoTranslate && isLong))) {
 			menuItems.push({
 				icon: 'ti ti-language-hiragana',
 				text: i18n.ts.translate,

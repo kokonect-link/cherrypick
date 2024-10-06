@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+useAutoTranslate: "ノートを自動翻訳"
+useAutoTranslateDescription: "サーバー管理者がこの機能を無効にしました。\n機能を使用するには、サーバー管理者にお問い合わせください。"
 widgets: "ウィジェット"
 postNote: "ノートを作成"
 bottomNavbar: "下のナビゲーションバー"

@@ -14,6 +14,15 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ノートを自動翻訳
+     */
+    "useAutoTranslate": string;
+    /**
+     * サーバー管理者がこの機能を無効にしました。
+     * 機能を使用するには、サーバー管理者にお問い合わせください。
+     */
+    "useAutoTranslateDescription": string;
+    /**
      * ウィジェット
      */
     "widgets": string;

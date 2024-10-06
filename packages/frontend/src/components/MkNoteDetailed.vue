@@ -115,7 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:enableEmojiMenuReaction="true"
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
-				<div v-if="defaultStore.state.showTranslateButtonInNote && instance.translatorAvailable && $i && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
+				<div v-if="defaultStore.state.showTranslateButtonInNote && !defaultStore.state.useAutoTranslate && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click="translate()">{{ i18n.ts.translateNote }}</button>
 					<button v-else class="_button" @click="translation = null">{{ i18n.ts.close }}</button>
 				</div>
@@ -680,6 +680,9 @@ const isForeignLanguage: boolean = appearNote.value.text != null && (() => {
 	const postLang = detectLanguage(appearNote.value.text);
 	return postLang !== '' && postLang !== targetLang;
 })();
+
+if (defaultStore.state.useAutoTranslate && !$i.policies.canUseAutoTranslate) defaultStore.set('useAutoTranslate', false);
+if ($i.policies.canUseTranslator && defaultStore.state.useAutoTranslate && appearNote.value.text && isForeignLanguage) translate();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

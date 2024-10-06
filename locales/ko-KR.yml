@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+useAutoTranslate: "노트 자동 번역"
+useAutoTranslateDescription: "서버 관리자가 이 기능을 사용할 수 없도록 설정했어요.\n기능을 사용하려면 서버 관리자에게 문의해 주세요."
 widgets: "위젯"
 postNote: "노트 작성"
 bottomNavbar: "하단 내비게이션 바"
@@ -1991,6 +1993,7 @@ _role:
     canHideAds: "광고 숨기기"
     canSearchNotes: "노트 검색 이용 가능 여부"
     canUseTranslator: "번역 기능 이용 가능 여부"
+    canUseAutoTranslate: "자동 번역 기능 이용 가능 여부"
     avatarDecorationLimit: "최대로 붙일 수 있는 아바타 장식 개수"
     canImportAntennas: "안테나 가져오기 허용"
     canImportBlocking: "차단 목록 가져오기 허용"

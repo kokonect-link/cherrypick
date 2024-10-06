@@ -51,6 +51,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableHorizontalSwipe">{{ i18n.ts.enableHorizontalSwipe }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
 				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
+				<MkSwitch v-model="useAutoTranslate" :disabled="!$i.policies.canUseTranslator || !$i.policies.canUseAutoTranslate">
+					{{ i18n.ts.useAutoTranslate }} <span class="_beta">CherryPick</span>
+					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
+				</MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }} <span class="_beta">CherryPick</span></template>
@@ -161,6 +165,7 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
+import {$i} from "@/account.js";
 
 const lang = ref(miLocalStorage.getItem('lang'));
 const dataSaver = ref(defaultStore.state.dataSaver);
@@ -186,6 +191,7 @@ const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSette
 const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRefreshBehavior'));
+const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslate'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -208,6 +214,7 @@ watch([
 
 watch([
 	enableInfiniteScroll,
+	useAutoTranslate,
 ], () => {
 	reloadTimeline();
 });
@@ -283,6 +290,13 @@ function disableAllDataSaver() {
 	const g = { ...defaultStore.state.dataSaver };
 	Object.keys(g).forEach((key) => { g[key] = false; });
 	dataSaver.value = g;
+}
+
+function learnMoreAutoTranslate() {
+	os.alert({
+		type: 'info',
+		text: i18n.ts.useAutoTranslateDescription,
+	});
 }
 
 watch(dataSaver, (to) => {

@@ -576,6 +576,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	useAutoTranslate: {
+		where: 'device',
+		default: false,
+	},
 	enableAbsoluteTime: {
 		where: 'device',
 		default: false,

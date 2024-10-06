@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+useAutoTranslate: "Automatic translation of notes"
+useAutoTranslateDescription: "The server administrator has disabled this feature.\nContact your server administrator to use the feature."
 widgets: "Widgets"
 postNote: "Post note"
 bottomNavbar: "Bottom navigation bar"
