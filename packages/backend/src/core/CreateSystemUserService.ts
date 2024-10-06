@@ -5,8 +5,6 @@
 
 import { randomUUID } from 'node:crypto';
 import { Inject, Injectable } from '@nestjs/common';
-import * as argon2 from 'argon2';
-//import bcrypt from 'bcryptjs';
 import { IsNull, DataSource } from 'typeorm';
 import { genRsaKeyPair } from '@/misc/gen-key-pair.js';
 import { MiUser } from '@/models/User.js';
@@ -17,6 +15,7 @@ import { MiUsedUsername } from '@/models/UsedUsername.js';
 import { DI } from '@/di-symbols.js';
 import generateNativeUserToken from '@/misc/generate-native-user-token.js';
 import { bindThis } from '@/decorators.js';
+import { hashPassword } from '@/misc/password.js';
 
 @Injectable()
 export class CreateSystemUserService {
@@ -34,7 +33,7 @@ export class CreateSystemUserService {
 
 		// Generate hash of password
 		//const salt = await bcrypt.genSalt(8);
-		const hash = await argon2.hash(password);
+		const hash = await hashPassword(password);
 
 		// Generate secret
 		const secret = generateNativeUserToken();
