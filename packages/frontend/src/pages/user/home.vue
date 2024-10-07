@@ -203,6 +203,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import detectLanguage from '@/scripts/detect-language.js';
+import {globalEvents} from "@/events.js";
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -324,6 +325,7 @@ const isForeignLanguage: boolean = props.user.description != null && (() => {
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
+	globalEvents.emit('showNoteContent', true);
 	translating.value = true;
 
 	vibrate(defaultStore.state.vibrateSystem ? 5 : []);

@@ -446,6 +446,7 @@ if ($i.policies.canUseTranslator && defaultStore.state.useAutoTranslate && !isLo
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
+	collapsed.value = false;
 	translating.value = true;
 
 	vibrate(defaultStore.state.vibrateSystem ? 5 : []);
