@@ -33,7 +33,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
   - 활성화하면 글자를 표시하기 위한 여유 공간이 좁을 때 디자인이 상대적으로 어색하게 보일 수 있으며, 실험실 기능이므로 이 기능이 변경하는 부분을 확실히 알고 있는 사용자만 활성화할 것을 권장합니다.
 - 비밀번호 해싱 알고리즘이 `bcrypt`에서 `argon2`로 변경됨
   - 이 변경으로 이후에 비밀번호를 변경하거나 신규로 가입한 사용자는 `argon2`를 사용하여 비밀번호 해시가 생성됩니다.
-  - 이전에 가입한 사용자는 로그인 시 자동으로 `bcypt`에서 `argon2`로 해시가 변경됩니다.
+  - 이전에 가입한 사용자는 비밀번호를 변경하지 않아도 `bcypt`를 사용할 수 있으며 여전히 기존과 동일하게 호환됩니다.
 
 ### General
 - Feat: 위젯 영역을 숨길 수 있음
@@ -102,7 +102,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 역할 권한에 의해 번역 기능을 사용할 수 없을 때도 번역 버튼이 표시됨
 
 ### Server
-- Enhance: 보안 향상을 위해 비밀번호 해싱 알고리즘이 `bcrypt`에서 `argon2`로 변경됨 (kokonect-link/cherrypick#511), (1673beta/cherrypick#88)
+- Enhance: 보안 향상을 위해 비밀번호 해싱 알고리즘이 `bcrypt`에서 `argon2`로 변경됨 (kokonect-link/cherrypick#511)
   - 이제 72 바이트를 초과하는 비밀번호를 사용할 수 있습니다.
   - 이로써 `Sharkey`, `FireFish`, `IceShrimp` 등의 클라이언트에서 `CherryPick`으로 이전할 때 암호 호환성이 보장됩니다.
 - Fix: 이모지를 등록하거나 가져오려고 할 때 오류가 발생할 수 있음 (kokonect-link/cherrypick#487), (kokonect-link/cherrypick#508)

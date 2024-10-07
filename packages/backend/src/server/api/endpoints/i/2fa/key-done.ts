@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+//import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
 import { Inject, Injectable } from '@nestjs/common';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
@@ -12,7 +14,6 @@ import type { UserProfilesRepository, UserSecurityKeysRepository } from '@/model
 import { WebAuthnService } from '@/core/WebAuthnService.js';
 import { ApiError } from '@/server/api/error.js';
 import { UserAuthService } from '@/core/UserAuthService.js';
-import { comparePassword } from '@/misc/password.js';
 
 export const meta = {
 	requireCredential: true,
@@ -85,7 +86,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				}
 			}
 
-			const passwordMatched = await comparePassword(ps.password, profile.password ?? '');
+			const passwordMatched = await argon2.verify(profile.password ?? '', ps.password);
 			if (!passwordMatched) {
 				throw new ApiError(meta.errors.incorrectPassword);
 			}
