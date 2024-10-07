@@ -6,6 +6,7 @@
 import { defineAsyncComponent, Ref, ShallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
+import { shouldCollapsed } from '@@/js/collapsed.js';
 import { claimAchievement } from './achievements.js';
 import type { MenuItem } from '@/types/menu.js';
 import { $i } from '@/account.js';
@@ -23,7 +24,6 @@ import { isSupportShare } from '@/scripts/navigator.js';
 import { getAppearNote } from '@/scripts/get-appear-note.js';
 import { genEmbedCode } from '@/scripts/get-embed-code.js';
 import { addDividersBetweenMenuSections } from '@/scripts/add-dividers-between-menu-sections.js';
-import { shouldCollapsed } from '@@/js/collapsed.js';
 
 export async function getNoteClipMenu(props: {
 	note: Misskey.entities.Note;

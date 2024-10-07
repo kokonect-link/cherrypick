@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, shallowRef, ref } from 'vue';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
-import {globalEvents} from "@/events.js";
+import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{
 	maxHeight?: number;

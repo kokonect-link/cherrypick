@@ -203,7 +203,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { editNickname } from '@/scripts/edit-nickname.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import detectLanguage from '@/scripts/detect-language.js';
-import {globalEvents} from "@/events.js";
+import { globalEvents } from '@/events.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
