@@ -1,6 +1,6 @@
 ---
 _lang_: "English"
-useAutoTranslate: "Automatic translation of notes"
+useAutoTranslate: "Automatic translation"
 useAutoTranslateDescription: "The server administrator has disabled this feature.\nContact your server administrator to use the feature."
 widgets: "Widgets"
 postNote: "Post note"
@@ -1975,6 +1975,7 @@ _role:
     canHideAds: "Can hide ads"
     canSearchNotes: "Usage of note search"
     canUseTranslator: "Translator usage"
+    canUseAutoTranslate: "Automatic translation usage"
     avatarDecorationLimit: "Maximum number of avatar decorations that can be applied"
   _condition:
     roleAssignedTo: "Assigned to manual roles"

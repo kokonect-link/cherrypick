@@ -1,6 +1,6 @@
 ---
 _lang_: "한국어"
-useAutoTranslate: "노트 자동 번역"
+useAutoTranslate: "자동 번역"
 useAutoTranslateDescription: "서버 관리자가 이 기능을 사용할 수 없도록 설정했어요.\n기능을 사용하려면 서버 관리자에게 문의해 주세요."
 widgets: "위젯"
 postNote: "노트 작성"
