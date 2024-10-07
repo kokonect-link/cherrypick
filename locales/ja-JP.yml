@@ -1,7 +1,8 @@
 _lang_: "日本語"
 
 useAutoTranslate: "自動翻訳"
-useAutoTranslateDescription: "サーバー管理者がこの機能を無効にしました。\n機能を使用するには、サーバー管理者にお問い合わせください。"
+useAutoTranslateDescription: "自動翻訳機能を有効にすると、タイムラインのすべてのノートが自動的に翻訳され、これにより翻訳サービス提供者が設定したAPI制限ポリシーにより、翻訳機能を一時的に使用できなくなる可能性があります。\n\n<b>それでも続けましょうか？</b>"
+cantUseAutoTranslateDescription: "サーバー管理者がこの機能を無効にしました。\n機能を使用するには、サーバー管理者にお問い合わせください。"
 widgets: "ウィジェット"
 postNote: "ノートを作成"
 bottomNavbar: "下のナビゲーションバー"
@@ -2015,6 +2016,7 @@ _role:
     canSearchNotes: "ノート検索の利用"
     canUseTranslator: "翻訳機能の利用"
     canUseAutoTranslate: "自動翻訳機能の利用"
+    canUseAutoTranslateDescription: "自動翻訳機能を有効にしたユーザーは、タイムラインのすべてのノートが自動的に翻訳され、これにより翻訳サービス提供者が設定したAPI制限に非常に早く到達し、翻訳機能を一時的に使用できなくなる可能性があります。\nこれは、サーバー内のすべてのユーザーがAPIを一時的に使用できなくなる可能性があることを意味します。\nまた、翻訳サービスの提供者によっては、APIの使用による料金が過度に発生する可能性があります。\n\n<b>それでも続けましょうか？</b>"
     avatarDecorationLimit: "アイコンデコレーションの最大取付個数"
     canImportAntennas: "アンテナのインポートを許可"
     canImportBlocking: "ブロックのインポートを許可"

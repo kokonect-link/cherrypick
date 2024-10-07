@@ -1,7 +1,8 @@
 ---
 _lang_: "English"
 useAutoTranslate: "Automatic translation"
-useAutoTranslateDescription: "The server administrator has disabled this feature.\nContact your server administrator to use the feature."
+useAutoTranslateDescription: "Enabling the automatic translation feature automatically translates all notes in the timeline, which could potentially result in the API restriction policy set by the translation service provider temporarily disabling the translation feature.\n\n<b>Do you still want to activate it?</b>"
+cantUseAutoTranslateDescription: "The server administrator has disabled this feature.\nContact your server administrator to use the feature."
 widgets: "Widgets"
 postNote: "Post note"
 bottomNavbar: "Bottom navigation bar"
@@ -1976,6 +1977,7 @@ _role:
     canSearchNotes: "Usage of note search"
     canUseTranslator: "Translator usage"
     canUseAutoTranslate: "Automatic translation usage"
+    canUseAutoTranslateDescription: "Users who enable the automatic translation feature will have all notes in their timeline automatically translated, which can very quickly reach the API limits set by the translation service provider, potentially temporarily disabling the translation feature.\nThis means that all users on the server may be temporarily unable to use the API.\nAdditionally, depending on the translation service provider, you may be charged excessive fees for API usage.\n\n<b>Do you still want to enable it?</b>"
     avatarDecorationLimit: "Maximum number of avatar decorations that can be applied"
   _condition:
     roleAssignedTo: "Assigned to manual roles"

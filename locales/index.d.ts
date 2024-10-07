@@ -14,14 +14,20 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
-     * ノートを自動翻訳
+     * 自動翻訳
      */
     "useAutoTranslate": string;
+    /**
+     * 自動翻訳機能を有効にすると、タイムラインのすべてのノートが自動的に翻訳され、これにより翻訳サービス提供者が設定したAPI制限ポリシーにより、翻訳機能を一時的に使用できなくなる可能性があります。
+     *
+     * <b>それでも続けましょうか？</b>
+     */
+    "useAutoTranslateDescription": string;
     /**
      * サーバー管理者がこの機能を無効にしました。
      * 機能を使用するには、サーバー管理者にお問い合わせください。
      */
-    "useAutoTranslateDescription": string;
+    "cantUseAutoTranslateDescription": string;
     /**
      * ウィジェット
      */
@@ -7781,6 +7787,18 @@ export interface Locale extends ILocale {
              * 翻訳機能の利用
              */
             "canUseTranslator": string;
+            /**
+             * 自動翻訳機能の利用
+             */
+            "canUseAutoTranslate": string;
+            /**
+             * 自動翻訳機能を有効にしたユーザーは、タイムラインのすべてのノートが自動的に翻訳され、これにより翻訳サービス提供者が設定したAPI制限に非常に早く到達し、翻訳機能を一時的に使用できなくなる可能性があります。
+             * これは、サーバー内のすべてのユーザーがAPIを一時的に使用できなくなる可能性があることを意味します。
+             * また、翻訳サービスの提供者によっては、APIの使用による料金が過度に発生する可能性があります。
+             *
+             * <b>それでも続けましょうか？</b>
+             */
+            "canUseAutoTranslateDescription": string;
             /**
              * アイコンデコレーションの最大取付個数
              */

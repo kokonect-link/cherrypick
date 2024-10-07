@@ -369,7 +369,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSwitch v-model="role.policies.canUseAutoTranslate.useDefault" :readonly="readonly">
 						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
 					</MkSwitch>
-					<MkSwitch v-model="role.policies.canUseAutoTranslate.value" :disabled="role.policies.canUseAutoTranslate.useDefault || !role.policies.canUseTranslator.value" :readonly="readonly">
+					<MkSwitch v-model="role.policies.canUseAutoTranslate.value" :disabled="role.policies.canUseAutoTranslate.useDefault || !role.policies.canUseTranslator.value" :readonly="readonly" @update:modelValue="learnMoreAutoTranslate">
 						<template #label>{{ i18n.ts.enable }}</template>
 					</MkSwitch>
 					<MkRange v-model="role.policies.canUseAutoTranslate.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
@@ -751,6 +751,7 @@ import FormSlot from '@/components/form/slot.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { deepClone } from '@/scripts/clone.js';
+import * as os from "@/os.js";
 
 const emit = defineEmits<{
 	(ev: 'update:modelValue', v: any): void;
@@ -815,6 +816,17 @@ const save = throttle(100, () => {
 
 	emit('update:modelValue', data);
 });
+
+async function learnMoreAutoTranslate() {
+	if (!role.value.policies.canUseAutoTranslate.value) return;
+
+	const confirm = await os.confirm({
+		type: 'warning',
+		title: i18n.ts.useAutoTranslate,
+		text: i18n.ts._role._options.canUseAutoTranslateDescription,
+	});
+	if (confirm.canceled) role.value.policies.canUseAutoTranslate.value = false;
+}
 
 watch(role, save, { deep: true });
 </script>
