@@ -231,6 +231,7 @@ export function alert(props: {
 	type?: 'error' | 'info' | 'success' | 'warning' | 'waiting' | 'question';
 	title?: string;
 	text?: string;
+	caption?: string | null;
 }): Promise<void> {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkDialog, props, {

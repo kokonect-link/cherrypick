@@ -178,6 +178,7 @@ function getNoteEmbedCodeMenu(note: Misskey.entities.Note, text: string): MenuIt
 
 export function getNoteMenu(props: {
 	note: Misskey.entities.Note;
+	collapsed?: Ref<boolean>;
 	translation: Ref<Misskey.entities.NotesTranslateResponse | null>;
 	translating: Ref<boolean>;
 	viewTextSource: Ref<boolean>;
@@ -358,6 +359,7 @@ export function getNoteMenu(props: {
 
 	async function translate(): Promise<void> {
 		if (props.translation.value != null) return;
+		if (props.collapsed?.value != null) props.collapsed.value = false;
 		props.translating.value = true;
 		const res = await misskeyApi('notes/translate', {
 			noteId: appearNote.id,
@@ -424,7 +426,7 @@ export function getNoteMenu(props: {
 		});
 
 		const isLong = shouldCollapsed(appearNote, []);
-		if ($i.policies.canUseTranslator && instance.translatorAvailable && (!defaultStore.state.useAutoTranslate || (defaultStore.state.useAutoTranslate && isLong))) {
+		if ($i.policies.canUseTranslator && instance.translatorAvailable && (!defaultStore.state.useAutoTranslate || (defaultStore.state.useAutoTranslate && !$i.policies.canUseAutoTranslate && (isLong || appearNote.cw != null)))) {
 			menuItems.push({
 				icon: 'ti ti-language-hiragana',
 				text: i18n.ts.translate,

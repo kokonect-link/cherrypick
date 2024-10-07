@@ -51,9 +51,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableHorizontalSwipe">{{ i18n.ts.enableHorizontalSwipe }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
 				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
-				<MkSwitch v-model="useAutoTranslate" :disabled="!$i.policies.canUseTranslator || !$i.policies.canUseAutoTranslate" @update:modelValue="learnMoreAutoTranslate">
+				<MkSwitch v-model="useAutoTranslate" @update:modelValue="learnMoreAutoTranslate">
 					{{ i18n.ts.useAutoTranslate }} <span class="_beta">CherryPick</span>
-					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
+					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreCantUseAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
 				</MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
@@ -301,6 +301,15 @@ async function learnMoreAutoTranslate() {
 		text: i18n.ts.useAutoTranslateDescription,
 	});
 	if (confirm.canceled) useAutoTranslate.value = false;
+}
+
+function learnMoreCantUseAutoTranslate() {
+	os.alert({
+		type: 'info',
+		title: i18n.ts.useAutoTranslate,
+		text: i18n.ts.cantUseAutoTranslateDescription,
+		caption: i18n.ts.cantUseAutoTranslateCaption,
+	});
 }
 
 watch(dataSaver, (to) => {

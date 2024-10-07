@@ -92,7 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenu="true"
 						:enableEmojiMenuReaction="true"
 					/>
-					<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || appearNote.cw != null || !showContent))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
+					<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 						<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 					</div>
@@ -713,7 +713,7 @@ function onContextmenu(ev: MouseEvent): void {
 		ev.preventDefault();
 		react();
 	} else {
-		const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, viewTextSource, noNyaize, isDeleted, currentClip: currentClip?.value });
+		const { menu, cleanup } = getNoteMenu({ note: note.value, collapsed, translating, translation, viewTextSource, noNyaize, isDeleted, currentClip: currentClip?.value });
 		os.contextMenu(menu, ev).then(focus).finally(cleanup);
 	}
 }
@@ -723,7 +723,7 @@ function showMenu(): void {
 		return;
 	}
 
-	const { menu, cleanup } = getNoteMenu({ note: note.value, translating, translation, viewTextSource, noNyaize, isDeleted, currentClip: currentClip?.value });
+	const { menu, cleanup } = getNoteMenu({ note: note.value, collapsed, translating, translation, viewTextSource, noNyaize, isDeleted, currentClip: currentClip?.value });
 	os.popupMenu(menu, menuButton.value).then(focus).finally(cleanup);
 }
 
@@ -741,8 +741,7 @@ const isForeignLanguage: boolean = appearNote.value.text != null && (() => {
 	return postLang !== '' && postLang !== targetLang;
 })();
 
-if (defaultStore.state.useAutoTranslate && !$i.policies.canUseAutoTranslate) defaultStore.set('useAutoTranslate', false);
-if ($i.policies.canUseTranslator && defaultStore.state.useAutoTranslate && !isLong && (appearNote.value.cw == null || showContent.value) && appearNote.value.text && isForeignLanguage) translate();
+if (defaultStore.state.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (appearNote.value.cw == null || showContent.value) && appearNote.value.text && isForeignLanguage) translate();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;
