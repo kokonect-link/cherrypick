@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+autoLoadMoreReplies: "답글을 자동으로 더 보기"
+autoLoadMoreConversation: "대화를 자동으로 더 보기"
 useAutoTranslate: "자동 번역"
 useAutoTranslateDescription: "자동 번역 기능을 활성화하면 타임라인의 모든 노트가 자동으로 번역되며, 이로 인해 번역 서비스 제공자가 설정한 API 제한 정책에 의해 번역 기능을 일시적으로 사용하지 못하게 될 가능성이 있어요.\n\n<b>그래도 활성화 하시겠어요?</b>"
 cantUseAutoTranslateDescription: "서버 관리자가 자동 번역을 사용할 수 없도록 설정했어요.\n자동 번역을 사용하려면 서버 관리자에게 문의해 주세요."

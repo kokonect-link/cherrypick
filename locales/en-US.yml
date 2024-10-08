@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+autoLoadMoreReplies: "Show more automatically replies"
+autoLoadMoreConversation: "Show more conversation automatically"
 useAutoTranslate: "Automatic translation"
 useAutoTranslateDescription: "Enabling the automatic translation feature automatically translates all notes in the timeline, which could potentially result in the API restriction policy set by the translation service provider temporarily disabling the translation feature.\n\n<b>Do you still want to activate it?</b>"
 cantUseAutoTranslateDescription: "The server administrator has disabled automatic translation.\nPlease contact your server administrator to enable automatic translation."

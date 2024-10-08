@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 返信を自動でもっと見る
+     */
+    "autoLoadMoreReplies": string;
+    /**
+     * 会話を自動でもっと見る
+     */
+    "autoLoadMoreConversation": string;
+    /**
      * 自動翻訳
      */
     "useAutoTranslate": string;

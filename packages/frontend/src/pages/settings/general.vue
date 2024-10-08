@@ -51,6 +51,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="enableHorizontalSwipe">{{ i18n.ts.enableHorizontalSwipe }}</MkSwitch>
 				<MkSwitch v-model="alwaysConfirmFollow">{{ i18n.ts.alwaysConfirmFollow }}</MkSwitch>
 				<MkSwitch v-model="confirmWhenRevealingSensitiveMedia">{{ i18n.ts.confirmWhenRevealingSensitiveMedia }}</MkSwitch>
+				<MkSwitch v-model="autoLoadMoreReplies">{{ i18n.ts.autoLoadMoreReplies }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="autoLoadMoreConversation">{{ i18n.ts.autoLoadMoreConversation }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="useAutoTranslate" @update:modelValue="learnMoreAutoTranslate">
 					{{ i18n.ts.useAutoTranslate }} <span class="_beta">CherryPick</span>
 					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreCantUseAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
@@ -191,6 +193,8 @@ const confirmWhenRevealingSensitiveMedia = computed(defaultStore.makeGetterSette
 const contextMenu = computed(defaultStore.makeGetterSetter('contextMenu'));
 const newNoteReceivedNotificationBehavior = computed(defaultStore.makeGetterSetter('newNoteReceivedNotificationBehavior'));
 const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRefreshBehavior'));
+const autoLoadMoreReplies = computed(defaultStore.makeGetterSetter('autoLoadMoreReplies'));
+const autoLoadMoreConversation = computed(defaultStore.makeGetterSetter('autoLoadMoreConversation'));
 const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslate'));
 
 watch(lang, () => {

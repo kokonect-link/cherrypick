@@ -730,15 +730,6 @@ function blur() {
 	rootEl.value?.blur();
 }
 
-function loadRepliesSimple() {
-	misskeyApi('notes/children', {
-		noteId: appearNote.value.id,
-		limit: 3,
-	}).then(res => {
-		replies.value = res;
-	});
-}
-
 const repliesLoaded = ref(false);
 
 function loadReplies() {
@@ -750,6 +741,18 @@ function loadReplies() {
 		replies.value = res;
 	});
 }
+
+function loadRepliesSimple() {
+	misskeyApi('notes/children', {
+		noteId: appearNote.value.id,
+		limit: 3,
+	}).then(res => {
+		replies.value = res;
+	});
+}
+
+if (tab.value === 'replies' && !repliesLoaded.value && !defaultStore.state.autoLoadMoreReplies) loadRepliesSimple();
+else if (tab.value === 'replies' && appearNote.value.repliesCount > 2 && !repliesLoaded.value && defaultStore.state.autoLoadMoreReplies) loadReplies();
 
 const conversationLoaded = ref(false);
 
@@ -763,13 +766,11 @@ function loadConversation() {
 	});
 }
 
+if (appearNote.value.reply && appearNote.value.reply.replyId && defaultStore.state.autoLoadMoreConversation) loadConversation();
+
 function showOnRemote() {
 	if (props.note.user.instance !== undefined) window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
-
-onMounted(() => {
-	loadRepliesSimple();
-});
 </script>
 
 <style lang="scss" module>

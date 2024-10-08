@@ -548,6 +548,14 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'topBottom' as 'all' | 'topBottom' | 'top' | 'bottom' | 'bg' | 'hide',
 	},
+	autoLoadMoreReplies: {
+		where: 'device',
+		default: false,
+	},
+	autoLoadMoreConversation: {
+		where: 'device',
+		default: false,
+	},
 	useAutoTranslate: {
 		where: 'device',
 		default: false,
