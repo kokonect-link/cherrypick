@@ -30,6 +30,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 
 ### Client
 - Enhance: 업데이트 및 마이그레이션 알림에서 CherryPick의 변경 사항만 표시함
+- Enhance: 검색과 같은 입력 블록에서 `Enter`를 입력하면 자동으로 가상 키보드를 숨김
 
 ---
 
