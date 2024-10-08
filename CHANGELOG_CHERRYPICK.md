@@ -107,6 +107,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: 보안 향상을 위해 비밀번호 해싱 알고리즘이 `bcrypt`에서 `argon2`로 변경됨 (kokonect-link/cherrypick#511)
   - 이제 72 바이트를 초과하는 비밀번호를 사용할 수 있습니다.
   - 이로써 `Sharkey`, `FireFish`, `IceShrimp` 등의 클라이언트에서 `CherryPick`으로 이전할 때 암호 호환성이 보장됩니다.
+- Enhance: `Sharkey`를 사용하는 서버의 사용자가 설정한 아바타 장식을 자동으로 불러옴
 - Fix: 이모지를 등록하거나 가져오려고 할 때 오류가 발생할 수 있음 (kokonect-link/cherrypick#487), (kokonect-link/cherrypick#508)
 - Fix: 사용자 이름에 `.`이 있는 경우 멘션을 할 수 없음 (kokonect-link/cherrypick#509)
 
