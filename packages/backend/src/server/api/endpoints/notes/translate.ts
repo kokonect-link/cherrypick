@@ -5,16 +5,17 @@
 
 import { URLSearchParams } from 'node:url';
 import fs from 'node:fs';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { translate } from '@vitalets/google-translate-api';
 import { TranslationServiceClient } from '@google-cloud/translate';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
-import { MetaService } from '@/core/MetaService.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
 import { GetterService } from '@/server/api/GetterService.js';
 import { createTemp } from '@/misc/create-temp.js';
 import { RoleService } from '@/core/RoleService.js';
+import { MiMeta } from '@/models/_.js';
+import { DI } from '@/di-symbols.js';
 import { ApiError } from '../../error.js';
 
 export const meta = {
@@ -68,9 +69,11 @@ export const paramDef = {
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
+		@Inject(DI.meta)
+		private serverSettings: MiMeta,
+
 		private noteEntityService: NoteEntityService,
 		private getterService: GetterService,
-		private metaService: MetaService,
 		private httpRequestService: HttpRequestService,
 		private roleService: RoleService,
 	) {
@@ -93,15 +96,13 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				return;
 			}
 
-			const instance = await this.metaService.fetch();
-
 			const translatorServices = [
 				'deepl',
 				'google_no_api',
 				'ctav3',
 			];
 
-			if (instance.translatorType == null || !translatorServices.includes(instance.translatorType)) {
+			if (this.serverSettings.translatorType == null || !translatorServices.includes(this.serverSettings.translatorType)) {
 				throw new ApiError(meta.errors.noTranslateService);
 			}
 
@@ -109,12 +110,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 
 			let translationResult;
-			if (instance.translatorType === 'deepl') {
-				if (instance.deeplAuthKey == null) {
+			if (this.serverSettings.translatorType === 'deepl') {
+				if (this.serverSettings.deeplAuthKey == null) {
 					throw new ApiError(meta.errors.unavailable);
 				}
-				translationResult = await this.translateDeepL((note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.deeplAuthKey, instance.deeplIsPro, instance.translatorType);
-			} else if (instance.translatorType === 'google_no_api') {
+				translationResult = await this.translateDeepL((note.cw ? note.cw + '\n' : '') + note.text, targetLang, this.serverSettings.deeplAuthKey, this.serverSettings.deeplIsPro, this.serverSettings.translatorType);
+			} else if (this.serverSettings.translatorType === 'google_no_api') {
 				let targetLang = ps.targetLang;
 				if (targetLang.includes('-')) targetLang = targetLang.split('-')[0];
 
@@ -123,14 +124,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				return {
 					sourceLang: raw.src,
 					text: text,
-					translator: translatorServices,
+					translator: this.serverSettings.translatorType, // 修正点: 配列ではなく単一の文字列
 				};
-			} else if (instance.translatorType === 'ctav3') {
-				if (instance.ctav3SaKey == null) return Promise.resolve(204);
-				else if (instance.ctav3ProjectId == null) return Promise.resolve(204);
-				else if (instance.ctav3Location == null) return Promise.resolve(204);
+			} else if (this.serverSettings.translatorType === 'ctav3') {
+				if (this.serverSettings.ctav3SaKey == null) return Promise.resolve(204);
+				else if (this.serverSettings.ctav3ProjectId == null) return Promise.resolve(204);
+				else if (this.serverSettings.ctav3Location == null) return Promise.resolve(204);
 				translationResult = await this.apiCloudTranslationAdvanced(
-					(note.cw ? note.cw + '\n' : '') + note.text, targetLang, instance.ctav3SaKey, instance.ctav3ProjectId, instance.ctav3Location, instance.ctav3Model, instance.ctav3Glossary, instance.translatorType,
+					(note.cw ? note.cw + '\n' : '') + note.text, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType,
 				);
 			} else {
 				throw new Error('Unsupported translator type');

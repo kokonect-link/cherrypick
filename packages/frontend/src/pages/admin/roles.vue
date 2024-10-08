@@ -11,6 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="_gaps">
 				<MkFolder>
 					<template #label>{{ i18n.ts._role.baseRole }}</template>
+					<template #footer>
+						<MkButton primary rounded @click="updateBaseRole">{{ i18n.ts.save }}</MkButton>
+					</template>
 					<div class="_gaps_s">
 						<MkInput v-model="baseRoleQ" type="search">
 							<template #prefix><i class="ti ti-search"></i></template>
@@ -118,10 +121,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkSwitch>
 						</MkFolder>
 
-						<MkFolder v-if="matchQuery([i18n.ts._role._options.canUseTranslator, 'canSearchNotes'])">
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canUseTranslator, 'canUseTranslator'])">
 							<template #label>{{ i18n.ts._role._options.canUseTranslator }}</template>
 							<template #suffix>{{ policies.canUseTranslator ? i18n.ts.yes : i18n.ts.no }}</template>
 							<MkSwitch v-model="policies.canUseTranslator">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canUseAutoTranslate, 'canUseAutoTranslate'])">
+							<template #label>{{ i18n.ts._role._options.canUseAutoTranslate }}</template>
+							<template #suffix>{{ policies.canUseAutoTranslate ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canUseAutoTranslate" :disabled="!policies.canUseTranslator" @update:modelValue="learnMoreAutoTranslate">
 								<template #label>{{ i18n.ts.enable }}</template>
 							</MkSwitch>
 						</MkFolder>
@@ -222,7 +233,45 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkInput>
 						</MkFolder>
 
-						<MkButton primary rounded @click="updateBaseRole">{{ i18n.ts.save }}</MkButton>
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportAntennas, 'canImportAntennas'])">
+							<template #label>{{ i18n.ts._role._options.canImportAntennas }}</template>
+							<template #suffix>{{ policies.canImportAntennas ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canImportAntennas">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportBlocking, 'canImportBlocking'])">
+							<template #label>{{ i18n.ts._role._options.canImportBlocking }}</template>
+							<template #suffix>{{ policies.canImportBlocking ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canImportBlocking">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportFollowing, 'canImportFollowing'])">
+							<template #label>{{ i18n.ts._role._options.canImportFollowing }}</template>
+							<template #suffix>{{ policies.canImportFollowing ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canImportFollowing">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportMuting, 'canImportMuting'])">
+							<template #label>{{ i18n.ts._role._options.canImportMuting }}</template>
+							<template #suffix>{{ policies.canImportMuting ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canImportMuting">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
+
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.canImportUserLists, 'canImportUserList'])">
+							<template #label>{{ i18n.ts._role._options.canImportUserLists }}</template>
+							<template #suffix>{{ policies.canImportUserLists ? i18n.ts.yes : i18n.ts.no }}</template>
+							<MkSwitch v-model="policies.canImportUserLists">
+								<template #label>{{ i18n.ts.enable }}</template>
+							</MkSwitch>
+						</MkFolder>
 					</div>
 				</MkFolder>
 				<div class="_gaps_s">
@@ -247,6 +296,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue';
+import { ROLE_POLICIES } from '@@/js/const.js';
 import XHeader from './_header_.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkFolder from '@/components/MkFolder.vue';
@@ -260,7 +310,6 @@ import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { instance, fetchInstance } from '@/instance.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { ROLE_POLICIES } from '@/const.js';
 import { useRouter } from '@/router/supplier.js';
 
 const router = useRouter();
@@ -287,6 +336,17 @@ async function updateBaseRole() {
 
 function create() {
 	router.push('/admin/roles/new');
+}
+
+async function learnMoreAutoTranslate() {
+	if (!policies.canUseAutoTranslate) return;
+
+	const confirm = await os.confirm({
+		type: 'warning',
+		title: i18n.ts.useAutoTranslate,
+		text: i18n.ts._role._options.canUseAutoTranslateDescription,
+	});
+	if (confirm.canceled) policies.canUseAutoTranslate = false;
 }
 
 const headerActions = computed(() => [{

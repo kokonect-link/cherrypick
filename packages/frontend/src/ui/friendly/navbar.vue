@@ -71,6 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { version } from '@@/js/config.js';
 import { openInstanceMenu } from '@/ui/_common_/common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
@@ -80,7 +81,6 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { mainRouter } from '@/router/main.js';
-import { version } from '@/config.js';
 
 const iconOnly = ref(false);
 
@@ -168,6 +168,7 @@ function openProfile() {
 .root {
 	--nav-width: 250px;
 	--nav-icon-only-width: 80px;
+	--nav-bg-transparent: color(from var(--navBg) srgb r g b / 0.5);
 
 	flex: 0 0 var(--nav-width);
 	width: var(--nav-width);
@@ -201,7 +202,7 @@ function openProfile() {
 		top: 0;
 		z-index: 1;
 		padding: 20px 0;
-		background: var(--X14);
+		background: var(--nav-bg-transparent);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
 	}
@@ -257,7 +258,7 @@ function openProfile() {
 		position: sticky;
 		bottom: 0;
 		padding-top: 20px;
-		background: var(--X14);
+		background: var(--nav-bg-transparent);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
 	}
@@ -466,7 +467,7 @@ function openProfile() {
 		top: 0;
 		z-index: 1;
 		padding: 20px 0;
-		background: var(--X14);
+		background: var(--nav-bg-transparent);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
 	}
@@ -496,7 +497,7 @@ function openProfile() {
 		position: sticky;
 		bottom: 0;
 		padding-top: 20px;
-		background: var(--X14);
+		background: var(--nav-bg-transparent);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
 	}

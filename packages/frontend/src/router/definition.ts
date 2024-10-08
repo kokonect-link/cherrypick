@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App, AsyncComponentLoader, defineAsyncComponent, provide } from 'vue';
-import type { RouteDef } from '@/nirax.js';
-import { IRouter, Router } from '@/nirax.js';
+import { AsyncComponentLoader, defineAsyncComponent } from 'vue';
+import type { IRouter, RouteDef } from '@/nirax.js';
+import { Router } from '@/nirax.js';
 import { $i, iAmModerator } from '@/account.js';
 import MkLoading from '@/pages/_loading_.vue';
 import MkError from '@/pages/_error_.vue';
-import { setMainRouter } from '@/router/main.js';
 
-const page = (loader: AsyncComponentLoader<any>) => defineAsyncComponent({
+export const page = (loader: AsyncComponentLoader<any>) => defineAsyncComponent({
 	loader: loader,
 	loadingComponent: MkLoading,
 	errorComponent: MkError,
@@ -193,6 +192,10 @@ const routes: RouteDef[] = [{
 		name: 'cherrypick',
 		component: page(() => import('@/pages/settings/cherrypick.vue')),
 	}, {
+		path: '/appearance',
+		name: 'appearance',
+		component: page(() => import('@/pages/settings/appearance.vue')),
+	}, {
 		path: '/',
 		component: page(() => import('@/pages/_empty_.vue')),
 	}],
@@ -252,7 +255,7 @@ const routes: RouteDef[] = [{
 		origin: 'origin',
 	},
 }, {
-	// Legacy Compatibility	
+	// Legacy Compatibility
 	path: '/authorize-follow',
 	redirect: '/lookup',
 	loginRequired: true,
@@ -477,21 +480,13 @@ const routes: RouteDef[] = [{
 		name: 'relays',
 		component: page(() => import('@/pages/admin/relays.vue')),
 	}, {
-		path: '/instance-block',
-		name: 'instance-block',
-		component: page(() => import('@/pages/admin/instance-block.vue')),
-	}, {
-		path: '/proxy-account',
-		name: 'proxy-account',
-		component: page(() => import('@/pages/admin/proxy-account.vue')),
-	}, {
 		path: '/external-services',
 		name: 'external-services',
 		component: page(() => import('@/pages/admin/external-services.vue')),
 	}, {
-		path: '/other-settings',
-		name: 'other-settings',
-		component: page(() => import('@/pages/admin/other-settings.vue')),
+		path: '/performance',
+		name: 'performance',
+		component: page(() => import('@/pages/admin/performance.vue')),
 	}, {
 		path: '/server-rules',
 		name: 'server-rules',
@@ -625,8 +620,8 @@ const routes: RouteDef[] = [{
 	path: '/timeline',
 	component: page(() => import('@/pages/timeline.vue')),
 }, {
-	path: '/mfm-cheat-sheet',
-	component: page(() => import('@/pages/mfm-cheat-sheet.vue')),
+	path: '/cfm-cheat-sheet',
+	component: page(() => import('@/pages/cfm-cheat-sheet.vue')),
 }, {
 	name: 'index',
 	path: '/',
@@ -642,32 +637,6 @@ const routes: RouteDef[] = [{
 	component: page(() => import('@/pages/not-found.vue')),
 }];
 
-function createRouterImpl(path: string): IRouter {
+export function createMainRouter(path: string): IRouter {
 	return new Router(routes, path, !!$i, page(() => import('@/pages/not-found.vue')));
-}
-
-/**
- * {@link Router}による画面遷移を可能とするために{@link mainRouter}をセットアップする。
- * また、{@link Router}のインスタンスを作成するためのファクトリも{@link provide}経由で公開する（`routerFactory`というキーで取得可能）
- */
-export function setupRouter(app: App) {
-	app.provide('routerFactory', createRouterImpl);
-
-	const mainRouter = createRouterImpl(location.pathname + location.search + location.hash);
-
-	window.addEventListener('popstate', (event) => {
-		mainRouter.replace(location.pathname + location.search + location.hash, event.state?.key);
-	});
-
-	mainRouter.addListener('push', ctx => {
-		window.history.pushState({ key: ctx.key }, '', ctx.path);
-	});
-
-	mainRouter.addListener('replace', ctx => {
-		window.history.replaceState({ key: ctx.key }, '', ctx.path);
-	});
-
-	mainRouter.init();
-
-	setMainRouter(mainRouter);
 }

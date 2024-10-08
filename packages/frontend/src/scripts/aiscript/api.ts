@@ -6,13 +6,13 @@
 import { defineAsyncComponent } from 'vue';
 import { permissions as MkPermissions } from 'cherrypick-js';
 import { utils, values } from '@syuilo/aiscript';
+import * as Misskey from 'cherrypick-js';
+import { url, lang } from '@@/js/config.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { customEmojis } from '@/custom-emojis.js';
-import { url, lang } from '@/config.js';
-import { nyaize } from '@/scripts/nyaize.js';
 
 export function aiScriptReadline(q: string): Promise<string> {
 	return new Promise(ok => {
@@ -120,7 +120,7 @@ export function createAiScriptEnv(opts) {
 		}),
 		'Mk:nyaize': values.FN_NATIVE(([text]) => {
 			utils.assertString(text);
-			return values.STR(nyaize(text.value));
+			return values.STR(Misskey.nyaize(text.value));
 		}),
 	};
 }

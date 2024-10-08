@@ -216,7 +216,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef, computed } from 'vue';
-import { version, basedMisskeyVersion } from '@/config.js';
+import { version, basedMisskeyVersion } from '@@/js/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -461,6 +461,7 @@ const patronsWithMisskey = [
 	'塩キャベツ',
 	'はとぽぷさん',
 	'100の人 (エスパー・イーシア)',
+	'ケモナーのケシン',
 ];
 
 let isKokonect = false;

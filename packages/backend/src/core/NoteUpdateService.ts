@@ -7,7 +7,7 @@ import { setImmediate } from 'node:timers/promises';
 import util from 'util';
 import { In, DataSource } from 'typeorm';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
-import * as mfm from 'cherrypick-mfm-js';
+import * as mfm from 'cfm-js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { MiNote } from '@/models/Note.js';
 import type { NotesRepository, UsersRepository } from '@/models/_.js';

@@ -4,7 +4,7 @@
  */
 
 import { detect } from 'tinyld';
-import * as mfm from 'cherrypick-mfm-js';
+import * as mfm from 'cfm-js';
 
 export default function detectLanguage(text: string): string {
 	const nodes = mfm.parse(text);

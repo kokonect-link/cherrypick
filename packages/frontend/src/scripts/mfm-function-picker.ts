@@ -4,37 +4,37 @@
  */
 
 import { Ref, nextTick } from 'vue';
+import { MFM_TAGS, HTML_TAGS } from '@@/js/const.js';
+import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { MFM_TAGS, HTML_TAGS } from '@/const.js';
-import type { MenuItem } from '@/types/menu.js';
 
 /**
  * MFMの装飾のリストを表示する
  */
 export function mfmFunctionPicker(src: HTMLElement | EventTarget | null, textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>) {
-		os.popupMenu([{
-			text: i18n.ts.addMfmFunction,
-			type: 'label',
-		}, ...getHTMLFunctionList(textArea, textRef)
-		, { type: 'divider' }
-		, ...getMFMFunctionList(textArea, textRef)], src);
+	os.popupMenu([{
+		text: i18n.ts.addMfmFunction,
+		type: 'label',
+	}, ...getHTMLFunctionList(textArea, textRef)
+	, { type: 'divider' }
+	, ...getMFMFunctionList(textArea, textRef)], src);
 }
 
 function getHTMLFunctionList(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>): MenuItem[] {
 	return HTML_TAGS.map(tag => ({
-			text: tag,
-			icon: tag === 'bold' ? 'ti ti-bold' : tag === 'strike' ? 'ti ti-strikethrough' : tag === 'italic' ? 'ti ti-italic' : tag === 'small' ? 'ti ti-text-decrease' : tag === 'center' ? 'ti ti-align-center' : tag === 'plain' ? 'ti ti-clear-formatting' : tag === 'inlinecode' ? 'ti ti-code' : tag === 'blockcode' ? 'ti ti-script' : tag === 'mathinline' ? 'ti ti-math' : tag === 'mathblock' ? 'ti ti-math-function' : 'ti ti-icons',
-			action: () => add(textArea, textRef, tag),
-		}));
+		text: tag,
+		icon: tag === 'bold' ? 'ti ti-bold' : tag === 'strike' ? 'ti ti-strikethrough' : tag === 'italic' ? 'ti ti-italic' : tag === 'small' ? 'ti ti-text-decrease' : tag === 'center' ? 'ti ti-align-center' : tag === 'plain' ? 'ti ti-clear-formatting' : tag === 'inlinecode' ? 'ti ti-code' : tag === 'blockcode' ? 'ti ti-script' : tag === 'mathinline' ? 'ti ti-math' : tag === 'mathblock' ? 'ti ti-math-function' : 'ti ti-icons',
+		action: () => add(textArea, textRef, tag),
+	}));
 }
 
 function getMFMFunctionList(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>): MenuItem[] {
 	return MFM_TAGS.map(tag => ({
-			text: tag,
-			icon: 'ti ti-icons',
-			action: () => add(textArea, textRef, tag),
-		}));
+		text: tag,
+		icon: 'ti ti-icons',
+		action: () => add(textArea, textRef, tag),
+	}));
 }
 
 function add(textArea: HTMLInputElement | HTMLTextAreaElement, textRef: Ref<string>, type: string) {

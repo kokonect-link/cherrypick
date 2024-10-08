@@ -56,6 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, toRef } from 'vue';
+import { version } from '@@/js/config.js';
 import { openInstanceMenu } from '@/ui/_common_/common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
@@ -65,7 +66,6 @@ import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { mainRouter } from '@/router/main.js';
-import { version } from '@/config.js';
 
 const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {
@@ -135,6 +135,8 @@ function openProfile() {
 
 <style lang="scss" module>
 .root {
+	--nav-bg-transparent: color(from var(--navBg) srgb r g b / 0.5);
+
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -145,7 +147,7 @@ function openProfile() {
 	top: 0;
 	z-index: 1;
 	padding: calc(env(safe-area-inset-top) + 20px) 0;
-	background: var(--X14);
+	background: var(--nav-bg-transparent);
 	-webkit-backdrop-filter: var(--blur, blur(8px));
 	backdrop-filter: var(--blur, blur(8px));
 }
@@ -192,7 +194,7 @@ function openProfile() {
 	position: sticky;
 	bottom: 0;
 	padding: 20px 0 calc(env(safe-area-inset-bottom) + 10px);
-	background: var(--X14);
+	background: var(--nav-bg-transparent);
 	-webkit-backdrop-filter: var(--blur, blur(8px));
 	backdrop-filter: var(--blur, blur(8px));
 }

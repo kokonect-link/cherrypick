@@ -52,6 +52,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<option value="bg">{{ i18n.ts._bannerDisplay.bg }}</option>
 		<option value="hide">{{ i18n.ts._bannerDisplay.hide }}</option>
 	</MkRadios>
+
+	<FormSection>
+		<template #label>{{ i18n.ts.bottomNavbar }} <span class="_beta">CherryPick</span></template>
+		<template v-if="!isMobile" #description>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreBottomNavbar">{{ i18n.ts.learnMore }}</a></template>
+		<div class="_gaps_m">
+			<MkSwitch v-if="!isFriendly" v-model="showMenuButtonInNavbar" :disabled="!isMobile"><i class="ti ti-menu-2"></i> {{ i18n.ts.menu }}</MkSwitch>
+			<MkSwitch v-model="showHomeButtonInNavbar" :disabled="!isMobile"><i class="ti ti-home"></i> {{ i18n.ts.home }}</MkSwitch>
+			<MkSwitch v-model="showExploreButtonInNavbar" :disabled="!isMobile"><i class="ti ti-hash"></i> {{ i18n.ts.explore }}</MkSwitch>
+			<MkSwitch v-model="showSearchButtonInNavbar" :disabled="!isMobile"><i class="ti ti-search"></i> {{ i18n.ts.search }}</MkSwitch>
+			<MkSwitch v-model="showNotificationButtonInNavbar" :disabled="!isMobile"><i class="ti ti-bell"></i> {{ i18n.ts.notifications }}</MkSwitch>
+			<MkSwitch v-model="showMessageButtonInNavbar" :disabled="!isMobile"><i class="ti ti-messages"></i> {{ i18n.ts.messaging }}</MkSwitch>
+			<MkSwitch v-if="miLocalStorage.getItem('ui') !== 'deck'" v-model="showWidgetButtonInNavbar" :disabled="!isMobile"><i class="ti ti-apps"></i> {{ i18n.ts.widgets }}</MkSwitch>
+			<MkSwitch v-if="!isFriendly" v-model="showPostButtonInNavbar" :disabled="!isMobile"><i class="ti ti-pencil"></i> {{ i18n.ts.postNote }}</MkSwitch>
+		</div>
+		<div class="_buttons" style="margin-top: 20px;">
+			<MkButton :disabled="!isMobile" danger @click="resetButtomNavbar"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+			<MkButton :disabled="!isMobile" primary class="save" @click="reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true })"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+		</div>
+	</FormSection>
 </div>
 </template>
 
@@ -61,13 +80,24 @@ import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
+import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { defaultStore } from '@/store.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { globalEvents } from '@/events.js';
+import { miLocalStorage } from '@/local-storage.js';
+import { deviceKind } from '@/scripts/device-kind.js';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -79,17 +109,14 @@ const items = ref(defaultStore.state.menu.map(x => ({
 const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
 const bannerDisplay = computed(defaultStore.makeGetterSetter('bannerDisplay'));
 
-async function reloadAsk() {
-	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
-		const { canceled } = await os.confirm({
-			type: 'info',
-			text: i18n.ts.reloadToApplySetting,
-		});
-		if (canceled) return;
-
-		unisonReload();
-	} else globalEvents.emit('hasRequireRefresh', true);
-}
+const showMenuButtonInNavbar = computed(defaultStore.makeGetterSetter('showMenuButtonInNavbar'));
+const showHomeButtonInNavbar = computed(defaultStore.makeGetterSetter('showHomeButtonInNavbar'));
+const showExploreButtonInNavbar = computed(defaultStore.makeGetterSetter('showExploreButtonInNavbar'));
+const showSearchButtonInNavbar = computed(defaultStore.makeGetterSetter('showSearchButtonInNavbar'));
+const showNotificationButtonInNavbar = computed(defaultStore.makeGetterSetter('showNotificationButtonInNavbar'));
+const showMessageButtonInNavbar = computed(defaultStore.makeGetterSetter('showMessageButtonInNavbar'));
+const showWidgetButtonInNavbar = computed(defaultStore.makeGetterSetter('showWidgetButtonInNavbar'));
+const showPostButtonInNavbar = computed(defaultStore.makeGetterSetter('showPostButtonInNavbar'));
 
 async function addItem(ev: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !defaultStore.state.menu.includes(k));
@@ -125,7 +152,7 @@ function removeItem(index: number) {
 
 async function save() {
 	defaultStore.set('menu', items.value.map(x => x.type));
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 }
 
 function reset() {
@@ -135,8 +162,24 @@ function reset() {
 	}));
 }
 
+function resetButtomNavbar() {
+	defaultStore.set('showHomeButtonInNavbar', !isFriendly.value);
+	defaultStore.set('showExploreButtonInNavbar', isFriendly.value);
+	defaultStore.set('showSearchButtonInNavbar', false);
+	defaultStore.set('showNotificationButtonInNavbar', true);
+	defaultStore.set('showMessageButtonInNavbar', isFriendly.value);
+	defaultStore.set('showWidgetButtonInNavbar', true);
+}
+
+function learnMoreBottomNavbar() {
+	os.alert({
+		type: 'info',
+		text: i18n.ts.bottomNavbarDescription,
+	});
+}
+
 watch([menuDisplay, bannerDisplay], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 const headerActions = computed(() => []);

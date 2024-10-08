@@ -66,7 +66,6 @@ export class NotificationEntityService implements OnModuleInit {
 	async #packInternal <T extends MiNotification | MiGroupedNotification> (
 		src: T,
 		meId: MiUser['id'],
-		// eslint-disable-next-line @typescript-eslint/ban-types
 		options: {
 			checkValidNotifier?: boolean;
 		},
@@ -169,8 +168,15 @@ export class NotificationEntityService implements OnModuleInit {
 			...(notification.type === 'roleAssigned' ? {
 				role: role,
 			} : {}),
+			...(notification.type === 'followRequestAccepted' ? {
+				message: notification.message,
+			} : {}),
 			...(notification.type === 'achievementEarned' ? {
 				achievement: notification.achievement,
+			} : {}),
+			...(notification.type === 'exportCompleted' ? {
+				exportedEntity: notification.exportedEntity,
+				fileId: notification.fileId,
 			} : {}),
 			...(notification.type === 'app' ? {
 				body: notification.customBody,
@@ -239,7 +245,6 @@ export class NotificationEntityService implements OnModuleInit {
 	public async pack(
 		src: MiNotification | MiGroupedNotification,
 		meId: MiUser['id'],
-		// eslint-disable-next-line @typescript-eslint/ban-types
 		options: {
 			checkValidNotifier?: boolean;
 		},

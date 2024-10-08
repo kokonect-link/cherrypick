@@ -9,9 +9,9 @@ import * as assert from 'assert';
 // node-fetch only supports it's own Blob yet
 // https://github.com/node-fetch/node-fetch/pull/1664
 import { Blob } from 'node-fetch';
-import { MiUser } from '@/models/_.js';
 import { api, castAsError, initTestDb, post, signup, simpleGet, uploadFile } from '../utils.js';
 import type * as misskey from 'cherrypick-js';
+import { MiUser } from '@/models/_.js';
 
 describe('Endpoints', () => {
 	let alice: misskey.entities.SignupResponse;
@@ -1121,7 +1121,7 @@ describe('Endpoints', () => {
 				userId: bob.id,
 			}, alice);
 			assert.strictEqual(res1.status, 204);
-			assert.strictEqual((res2.body as unknown as { memo: string })?.memo, memo);
+			assert.strictEqual((res2.body as unknown as { memo: string }).memo, memo);
 		});
 
 		test('自分に関するメモを更新できる', async () => {
@@ -1136,7 +1136,7 @@ describe('Endpoints', () => {
 				userId: alice.id,
 			}, alice);
 			assert.strictEqual(res1.status, 204);
-			assert.strictEqual((res2.body as unknown as { memo: string })?.memo, memo);
+			assert.strictEqual((res2.body as unknown as { memo: string }).memo, memo);
 		});
 
 		test('メモを削除できる', async () => {

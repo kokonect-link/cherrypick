@@ -30,6 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, inject, ref } from 'vue';
+import type { MenuItem } from '@/types/menu.js';
 import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { defaultStore } from '@/store.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
@@ -93,7 +94,9 @@ const errored = ref(url.value == null);
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		os.popupMenu([{
+		const menuItems: MenuItem[] = [];
+
+		menuItems.push({
 			type: 'label',
 			text: `:${props.name}:`,
 		}, ...((customEmojis.value.find(it => it.name === customEmojiName.value)?.name ?? null) ? [{
@@ -103,23 +106,34 @@ function onClick(ev: MouseEvent) {
 				copyToClipboard(`:${props.name}:`);
 				os.toast(i18n.ts.copied, 'copied');
 			},
-		}] : []), ...(props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis) ? [{
-			text: i18n.ts.import,
-			icon: 'ti ti-plus',
-			action: () => {
-				os.apiWithDialog('admin/emoji/steal', {
-					name: customEmojiName.value,
-					host: props.host,
-				});
-			},
-		}] : []), ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
-			icon: 'ti ti-mood-plus',
-			action: () => {
-				react(`:${props.name}:`);
-				sound.playMisskeySfx('reaction');
-			},
-		}] : []), {
+		}] : []),
+		);
+
+		if (props.host && $i && ($i.isAdmin ?? $i.policies.canManageCustomEmojis)) {
+			menuItems.push({
+				text: i18n.ts.import,
+				icon: 'ti ti-plus',
+				action: () => {
+					os.apiWithDialog('admin/emoji/steal', {
+						name: customEmojiName.value,
+						host: props.host,
+					});
+				},
+			});
+		}
+
+		if (props.menuReaction && react) {
+			menuItems.push({
+				text: i18n.ts.doReaction,
+				icon: 'ti ti-mood-plus',
+				action: () => {
+					react(`:${props.name}:`);
+					sound.playMisskeySfx('reaction');
+				},
+			});
+		}
+
+		menuItems.push({
 			text: i18n.ts.info,
 			icon: 'ti ti-info-circle',
 			action: async () => {
@@ -131,7 +145,9 @@ function onClick(ev: MouseEvent) {
 					closed: () => dispose(),
 				});
 			},
-		}], ev.currentTarget ?? ev.target);
+		});
+
+		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 	}
 }
 

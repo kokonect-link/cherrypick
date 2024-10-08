@@ -4,6 +4,7 @@
  */
 
 import { computed, reactive } from 'vue';
+import { ui } from '@@/js/config.js';
 import { clearCache } from './scripts/clear-cache.js';
 import { $i } from '@/account.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -11,7 +12,6 @@ import { openInstanceMenu, openToolsMenu } from '@/ui/_common_/common.js';
 import { lookup } from '@/scripts/lookup.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { ui } from '@/config.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
 
@@ -139,7 +139,7 @@ export const navbarItemDef = reactive({
 	ui: {
 		title: i18n.ts.switchUi,
 		icon: 'ti ti-devices',
-		action: (ev) => {
+		action: (ev: MouseEvent) => {
 			os.popupMenu([{
 				text: 'Friendly',
 				active: ui === 'friendly' || ui === null,
@@ -183,9 +183,9 @@ export const navbarItemDef = reactive({
 				},
 			}, {
 				type: 'link',
-				text: i18n.ts._mfm.cheatSheet,
+				text: i18n.ts._cfm.cheatSheet,
 				icon: 'ti ti-help-circle',
-				to: '/mfm-cheat-sheet',
+				to: '/cfm-cheat-sheet',
 			}], ev.currentTarget ?? ev.target);
 		},
 	},

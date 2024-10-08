@@ -30,6 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<button v-if="$i && $i.id === post.user.id" v-tooltip="i18n.ts.edit" v-click-anime class="_button" @click="edit"><i class="ti ti-pencil ti-fw"></i></button>
 								<button v-tooltip="i18n.ts.shareWithNote" v-click-anime class="_button" @click="shareWithNote"><i class="ti ti-repeat ti-fw"></i></button>
 								<button v-tooltip="i18n.ts.copyLink" v-click-anime class="_button" @click="copyLink"><i class="ti ti-link ti-fw"></i></button>
+								<button v-tooltip="i18n.ts.getQRCode" v-click-anime class="_button" @click="shareQRCode"><i class="ti ti-qrcode ti-fw"></i></button>
 								<button v-if="isSupportShare()" v-tooltip="i18n.ts.share" v-click-anime class="_button" @click="share"><i class="ti ti-share ti-fw"></i></button>
 								<button v-if="$i && $i.id !== post.user.id" v-click-anime class="_button" @mousedown="showMenu"><i class="ti ti-dots ti-fw"></i></button>
 							</div>
@@ -65,6 +66,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, watch, ref, defineAsyncComponent } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { url } from '@@/js/config.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -72,7 +75,6 @@ import MkContainer from '@/components/MkContainer.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkGalleryPostPreview from '@/components/MkGalleryPostPreview.vue';
 import MkFollowButton from '@/components/MkFollowButton.vue';
-import { url } from '@/config.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { defaultStore } from '@/store.js';
@@ -80,7 +82,6 @@ import { $i } from '@/account.js';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import { useRouter } from '@/router/supplier.js';
-import { MenuItem } from '@/types/menu';
 
 const router = useRouter();
 
@@ -124,8 +125,12 @@ function share() {
 
 function shareWithNote() {
 	os.post({
-		initialText: `${post.value.title} ${url}/gallery/${post.value.id}`,
+		initialText: `${post.value.title}\n${url}/gallery/${post.value.id}`,
 	});
+}
+
+function shareQRCode() {
+	os.displayQRCode(`${url}/gallery/${post.value.id}`);
 }
 
 function like() {
@@ -171,35 +176,35 @@ function reportAbuse() {
 function showMenu(ev: MouseEvent) {
 	if (!post.value) return;
 
-	const menu: MenuItem[] = [
-		...($i && $i.id !== post.value.userId ? [
-			{
-				icon: 'ti ti-exclamation-circle',
-				text: i18n.ts.reportAbuse,
-				action: reportAbuse,
-			},
-			...($i.isModerator || $i.isAdmin ? [
-				{
-					type: 'divider' as const,
-				},
-				{
-					icon: 'ti ti-trash',
-					text: i18n.ts.delete,
-					danger: true,
-					action: () => os.confirm({
-						type: 'warning',
-						text: i18n.ts.deleteConfirm,
-					}).then(({ canceled }) => {
-						if (canceled || !post.value) return;
+	const menuItems: MenuItem[] = [];
 
-						os.apiWithDialog('gallery/posts/delete', { postId: post.value.id });
-					}),
-				},
-			] : []),
-		] : []),
-	];
+	if ($i && $i.id !== post.value.userId) {
+		menuItems.push({
+			icon: 'ti ti-exclamation-circle',
+			text: i18n.ts.reportAbuse,
+			action: reportAbuse,
+		});
 
-	os.popupMenu(menu, ev.currentTarget ?? ev.target);
+		if ($i.isModerator || $i.isAdmin) {
+			menuItems.push({
+				type: 'divider',
+			}, {
+				icon: 'ti ti-trash',
+				text: i18n.ts.delete,
+				danger: true,
+				action: () => os.confirm({
+					type: 'warning',
+					text: i18n.ts.deleteConfirm,
+				}).then(({ canceled }) => {
+					if (canceled || !post.value) return;
+
+					os.apiWithDialog('gallery/posts/delete', { postId: post.value.id });
+				}),
+			});
+		}
+	}
+
+	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 }
 
 watch(() => props.postId, fetchPost, { immediate: true });
@@ -283,7 +288,7 @@ definePageMetadata(() => ({
 
 				> button {
 					padding: 8px;
-					margin: 0 8px;
+					margin: 0 6px;
 
 					&:hover {
 						color: var(--fgHighlighted);
@@ -324,7 +329,6 @@ definePageMetadata(() => ({
 	margin: var(--margin);
 
 	> .post {
-
 	}
 }
 </style>

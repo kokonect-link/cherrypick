@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { MenuItem } from '@/types/menu.js';
+import type { MenuItem } from '@/types/menu.js';
 
 // Add dividers between menu sections. if some menu section has menu item
-export function addDividersBetweenMenuSections(...sections:MenuItem[][]): MenuItem[] {
-	const result:MenuItem[] = [];
+export function addDividersBetweenMenuSections(...sections: MenuItem[][]): MenuItem[] {
+	const result: MenuItem[] = [];
 
 	let needDivider = false;
 	for (const section of sections) {

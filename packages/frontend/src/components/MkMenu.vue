@@ -4,20 +4,29 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div role="menu" @focusin.passive.stop="() => {}">
+<div
+	role="menu"
+	:class="{
+		[$style.root]: true,
+		[$style.center]: align === 'center',
+		[$style.big]: big,
+		[$style.asDrawer]: asDrawer,
+	}"
+	@focusin.passive.stop="() => {}"
+>
 	<div
 		ref="itemsEl"
 		v-hotkey="keymap"
 		v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
 		tabindex="0"
 		class="_shadow"
-		:class="{
-			[$style.root]: true,
-			[$style.center]: align === 'center',
-			[$style.asDrawer]: asDrawer,
-			_popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur,
-			_popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur,
-			}"
+		:class="[
+			$style.menu,
+			{
+				_popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur,
+				_popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur,
+			}
+		]"
 		:style="{
 			width: (width && !asDrawer) ? `${width}px` : '',
 			maxHeight: maxHeight ? `min(${maxHeight}px, calc(100dvh - 32px))` : 'calc(100dvh - 32px)',
@@ -27,7 +36,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<template v-for="item in (items2 ?? [])">
 			<div v-if="item.type === 'divider'" role="separator" tabindex="-1" :class="$style.divider"></div>
-			<span v-else-if="item.type === 'label' && item.text == undefined"/>
 			<span v-else-if="item.type === 'label'" role="menuitem" tabindex="-1" :class="[$style.label, $style.item]">
 				<span style="opacity: 0.7;">{{ item.text }}</span>
 			</span>
@@ -184,12 +192,12 @@ import { isTouchUsing } from '@/scripts/touch.js';
 import { type Keymap } from '@/scripts/hotkey.js';
 import { isFocusable } from '@/scripts/focus.js';
 import { getNodeOrNull } from '@/scripts/get-dom-node-or-null.js';
+import { defaultStore } from '@/store.js';
 
 const childrenCache = new WeakMap<MenuParent, MenuItem[]>();
 </script>
 
 <script lang="ts" setup>
-import { defaultStore } from '@/store.js';
 const XChild = defineAsyncComponent(() => import('./MkMenu.child.vue'));
 
 const props = defineProps<{
@@ -204,6 +212,8 @@ const emit = defineEmits<{
 	(ev: 'close', actioned?: boolean): void;
 	(ev: 'hide'): void;
 }>();
+
+const big = isTouchUsing;
 
 const isNestingMenu = inject<boolean>('isNestingMenu', false);
 
@@ -302,6 +312,8 @@ async function showRadioOptions(item: MenuRadio, ev: Event) {
 }
 
 async function showChildren(item: MenuParent, ev: Event) {
+	ev.stopPropagation();
+
 	const children: MenuItem[] = await (async () => {
 		if (childrenCache.has(item)) {
 			return childrenCache.get(item)!;
@@ -423,6 +435,58 @@ onBeforeUnmount(() => {
 
 <style lang="scss" module>
 .root {
+	&.center {
+		> .menu {
+			> .item {
+				text-align: center;
+			}
+		}
+	}
+
+	&.big:not(.asDrawer) {
+		> .menu {
+			> .item {
+				padding: 6px 20px;
+				font-size: 1em;
+				line-height: 24px;
+			}
+		}
+	}
+
+	&.asDrawer {
+		max-width: 600px;
+		margin: auto;
+
+		> .menu {
+			padding: 12px 0 max(env(safe-area-inset-bottom, 0px), 12px) 0;
+			width: 100%;
+			border-radius: 24px;
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+
+			> .item {
+				font-size: 1em;
+				padding: 12px 24px;
+
+				&::before {
+					width: calc(100% - 24px);
+					border-radius: 12px;
+				}
+
+				> .icon {
+					margin-right: 14px;
+					width: 24px;
+				}
+			}
+
+			> .divider {
+				margin: 12px 0;
+			}
+		}
+	}
+}
+
+.menu {
 	padding: 8px 0;
 	box-sizing: border-box;
 	max-width: 100vw;
@@ -432,39 +496,6 @@ onBeforeUnmount(() => {
 
 	&:focus-visible {
 		outline: none;
-	}
-
-	&.center {
-		> .item {
-			text-align: center;
-		}
-	}
-
-	&.asDrawer {
-		padding: 12px 0 max(env(safe-area-inset-bottom, 0px), 12px) 0;
-		width: 100%;
-		border-radius: 24px;
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
-
-		> .item {
-			font-size: 1em;
-			padding: 12px 24px;
-
-			&::before {
-				width: calc(100% - 24px);
-				border-radius: 12px;
-			}
-
-			> .icon {
-				margin-right: 14px;
-				width: 24px;
-			}
-		}
-
-		> .divider {
-			margin: 12px 0;
-		}
 	}
 }
 

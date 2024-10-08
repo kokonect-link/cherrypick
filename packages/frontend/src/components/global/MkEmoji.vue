@@ -10,9 +10,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, inject } from 'vue';
-import { char2fluentEmojiFilePath, char2twemojiFilePath } from '@/scripts/emoji-base.js';
+import { colorizeEmoji, getEmojiName } from '@@/js/emojilist.js';
+import { char2fluentEmojiFilePath, char2twemojiFilePath } from '@@/js/emoji-base.js';
+import type { MenuItem } from '@/types/menu.js';
 import { defaultStore } from '@/store.js';
-import { colorizeEmoji, getEmojiName } from '@/scripts/emojilist.js';
 import * as os from '@/os.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
 import * as sound from '@/scripts/sound.js';
@@ -39,7 +40,9 @@ function computeTitle(event: PointerEvent): void {
 
 function onClick(ev: MouseEvent) {
 	if (props.menu) {
-		os.popupMenu([{
+		const menuItems: MenuItem[] = [];
+
+		menuItems.push({
 			type: 'label',
 			text: props.emoji,
 		}, {
@@ -49,14 +52,20 @@ function onClick(ev: MouseEvent) {
 				copyToClipboard(props.emoji);
 				os.success();
 			},
-		}, ...(props.menuReaction && react ? [{
-			text: i18n.ts.doReaction,
-			icon: 'ti ti-plus',
-			action: () => {
-				react(props.emoji);
-				sound.playMisskeySfx('reaction');
-			},
-		}] : [])], ev.currentTarget ?? ev.target);
+		});
+
+		if (props.menuReaction && react) {
+			menuItems.push({
+				text: i18n.ts.doReaction,
+				icon: 'ti ti-plus',
+				action: () => {
+					react(props.emoji);
+					sound.playMisskeySfx('reaction');
+				},
+			});
+		}
+
+		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 	}
 }
 </script>

@@ -33,7 +33,6 @@ import { isHorizontalSwipeSwiping as isSwiping } from '@/scripts/touch.js';
 
 const rootEl = shallowRef<HTMLDivElement>();
 
-// eslint-disable-next-line no-undef
 const tabModel = defineModel<string>('tab');
 
 const props = defineProps<{

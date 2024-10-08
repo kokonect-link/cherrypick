@@ -46,8 +46,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, onUnmounted, nextTick, ref, shallowRef, watch, computed, toRefs } from 'vue';
 import { debounce } from 'throttle-debounce';
+import { useInterval } from '@@/js/use-interval.js';
 import MkButton from '@/components/MkButton.vue';
-import { useInterval } from '@/scripts/use-interval.js';
 import { i18n } from '@/i18n.js';
 import { Autocomplete, SuggestionType } from '@/scripts/autocomplete.js';
 

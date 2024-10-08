@@ -11,15 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkSpacer :contentMax="900">
 		<div class="_gaps_m">
-			<MkButton :class="$style.linkButton" full @click="onCreateWebhookClicked">
-				{{ i18n.ts._webhookSettings.createWebhook }}
-			</MkButton>
-
-			<FormSection>
-				<div class="_gaps">
-					<XItem v-for="item in webhooks" :key="item.id" :entity="item" @edit="onEditButtonClicked" @delete="onDeleteButtonClicked"/>
-				</div>
-			</FormSection>
+			<div class="_gaps">
+				<XItem v-for="item in webhooks" :key="item.id" :entity="item" @edit="onEditButtonClicked" @delete="onDeleteButtonClicked"/>
+			</div>
 		</div>
 	</MkSpacer>
 </MkStickyContainer>
@@ -29,18 +23,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, onMounted, ref } from 'vue';
 import { entities } from 'cherrypick-js';
 import XItem from './system-webhook.item.vue';
-import FormSection from '@/components/form/section.vue';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { i18n } from '@/i18n.js';
 import XHeader from '@/pages/admin/_header_.vue';
-import MkButton from '@/components/MkButton.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { showSystemWebhookEditorDialog } from '@/components/MkSystemWebhookEditor.impl.js';
 import * as os from '@/os.js';
 
 const webhooks = ref<entities.SystemWebhook[]>([]);
 
-const headerActions = computed(() => []);
+const headerActions = computed(() => [{
+	asFullButton: true,
+	icon: 'ti ti-plus',
+	text: i18n.ts._webhookSettings.createWebhook,
+	handler: onCreateWebhookClicked,
+}]);
+
 const headerTabs = computed(() => []);
 
 async function onCreateWebhookClicked() {
@@ -89,8 +87,5 @@ definePageMetadata(() => ({
 </script>
 
 <style module lang="scss">
-.linkButton {
-	text-align: left;
-	padding: 10px 18px;
-}
+
 </style>

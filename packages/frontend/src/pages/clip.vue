@@ -33,17 +33,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, watch, provide, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { url } from '@@/js/config.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkNotes from '@/components/MkNotes.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { url } from '@/config.js';
 import MkButton from '@/components/MkButton.vue';
 import { clipsCache } from '@/cache.js';
 import { isSupportShare } from '@/scripts/navigator.js';
 import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { genEmbedCode } from '@/scripts/get-embed-code.js';
 
 const props = defineProps<{
 	clipId: string,
@@ -127,21 +129,41 @@ const headerActions = computed(() => clip.value && isOwned.value ? [{
 		clipsCache.delete();
 	},
 }, ...(clip.value.isPublic ? [{
-	icon: 'ti ti-link',
-	text: i18n.ts.copyUrl,
-	handler: async (): Promise<void> => {
-		copyToClipboard(`${url}/clips/${clip.value.id}`);
-		os.success();
-	},
-}] : []), ...(clip.value.isPublic && isSupportShare() ? [{
 	icon: 'ti ti-share',
 	text: i18n.ts.share,
-	handler: async (): Promise<void> => {
-		navigator.share({
-			title: clip.value.name,
-			text: clip.value.description,
-			url: `${url}/clips/${clip.value.id}`,
+	handler: (ev: MouseEvent): void => {
+		const menuItems: MenuItem[] = [];
+
+		menuItems.push({
+			icon: 'ti ti-link',
+			text: i18n.ts.copyUrl,
+			action: () => {
+				copyToClipboard(`${url}/clips/${clip.value!.id}`);
+				os.success();
+			},
+		}, {
+			icon: 'ti ti-code',
+			text: i18n.ts.genEmbedCode,
+			action: () => {
+				genEmbedCode('clips', clip.value!.id);
+			},
 		});
+
+		if (isSupportShare()) {
+			menuItems.push({
+				icon: 'ti ti-share',
+				text: i18n.ts.share,
+				action: async () => {
+					navigator.share({
+						title: clip.value!.name,
+						text: clip.value!.description ?? '',
+						url: `${url}/clips/${clip.value!.id}`,
+					});
+				},
+			});
+		}
+
+		os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 	},
 }] : []), {
 	icon: 'ti ti-trash',

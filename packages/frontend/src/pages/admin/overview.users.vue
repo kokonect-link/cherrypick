@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { useInterval } from '@@/js/use-interval.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
-import { useInterval } from '@/scripts/use-interval.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { defaultStore } from '@/store.js';
 
@@ -47,13 +47,13 @@ useInterval(fetch, 1000 * 60, {
 .root {
 	&:global {
 		> .users {
-			.chart-move {
-				transition: transform 1s ease;
-			}
-
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 			grid-gap: 12px;
+
+			.chart-move {
+				transition: transform 1s ease;
+			}
 
 			> .user:hover {
 				text-decoration: none;

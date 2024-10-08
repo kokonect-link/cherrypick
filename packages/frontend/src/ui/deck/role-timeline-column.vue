@@ -17,11 +17,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, ref, shallowRef, watch } from 'vue';
 import XColumn from './column.vue';
 import { updateColumn, Column } from './deck-store.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { MenuItem } from '@/types/menu.js';
 import { SoundStore } from '@/store.js';
 import { soundSettingsButton } from '@/ui/deck/tl-note-notification.js';
 import * as sound from '@/scripts/sound.js';

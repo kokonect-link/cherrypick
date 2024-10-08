@@ -17,7 +17,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div v-else-if="tab === 'my'" key="my" class="_gaps">
-				<MkButton class="new" @click="create()"><i class="ti ti-plus"></i></MkButton>
 				<MkPagination v-slot="{items}" :pagination="myPagesPagination">
 					<div class="_gaps">
 						<MkPagePreview v-for="page in items" :key="page.id" :page="page"/>

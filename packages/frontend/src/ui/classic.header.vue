@@ -49,6 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { version } from '@@/js/config.js';
 import { openInstanceMenu } from './_common_/common.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -58,7 +59,6 @@ import MkButton from '@/components/MkButton.vue';
 import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { version } from '@/config.js';
 
 const WINDOW_THRESHOLD = 1400;
 

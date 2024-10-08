@@ -554,6 +554,7 @@ const extension_context_definition = {
 	'_misskey_reaction': 'misskey:_misskey_reaction',
 	'_misskey_votes': 'misskey:_misskey_votes',
 	'_misskey_summary': 'misskey:_misskey_summary',
+	'_misskey_followedMessage': 'misskey:_misskey_followedMessage',
 	'_misskey_talk': 'misskey:_misskey_talk',
 	'isCat': 'misskey:isCat',
 	// vcard

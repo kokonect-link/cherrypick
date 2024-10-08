@@ -67,15 +67,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</FormSection>
 
 	<FormSection>
-		<template #label>Friendly UI</template>
+		<template #label>UI</template>
 		<div class="_gaps_m">
-			<MkSwitch v-model="friendlyEnableNotifications">{{ i18n.ts.friendlyEnableNotifications }}</MkSwitch>
-			<MkSwitch v-model="friendlyEnableWidgets">{{ i18n.ts.friendlyEnableWidgets }}</MkSwitch>
-			<MkSwitch v-model="enableLongPressOpenAccountMenu">
-				<template #label>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</template>
-				<template #caption>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</template>
-			</MkSwitch>
-			<MkSwitch v-model="friendlyShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyShowAvatarDecorationsInNavBtn }}</MkSwitch>
+			<MkSwitch v-model="enableWidgetsArea">{{ i18n.ts._cherrypick.enableWidgetsArea }}</MkSwitch>
+
+			<div class="_gaps_s" style="margin: 0 10px;">
+				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">Friendly UI</div>
+
+				<MkSwitch v-model="friendlyUiEnableNotificationsArea">
+					{{ i18n.ts._cherrypick.friendlyUiEnableNotificationsArea }}
+				</MkSwitch>
+				<MkSwitch v-model="enableLongPressOpenAccountMenu">
+					<template #label>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</template>
+					<template #caption>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="friendlyUiShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyUiShowAvatarDecorationsInNavBtn }}</MkSwitch>
+			</div>
 		</div>
 	</FormSection>
 
@@ -95,20 +102,9 @@ import MkSelect from '@/components/MkSelect.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import FormSection from '@/components/form/section.vue';
 import { defaultStore } from '@/store.js';
-import * as os from '@/os.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-
-async function reloadAsk() {
-	const { canceled } = await os.confirm({
-		type: 'info',
-		text: i18n.ts.reloadToApplySetting,
-	});
-	if (canceled) return;
-
-	unisonReload();
-}
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const nicknameEnabled = computed(defaultStore.makeGetterSetter('nicknameEnabled'));
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));
@@ -121,10 +117,10 @@ const reactableRemoteReactionEnabled = computed(defaultStore.makeGetterSetter('r
 const showFollowingMessageInsteadOfButtonEnabled = computed(defaultStore.makeGetterSetter('showFollowingMessageInsteadOfButtonEnabled'));
 const mobileHeaderChange = computed(defaultStore.makeGetterSetter('mobileHeaderChange'));
 const renameTheButtonInPostFormToNya = computed(defaultStore.makeGetterSetter('renameTheButtonInPostFormToNya'));
-const friendlyEnableNotifications = computed(defaultStore.makeGetterSetter('friendlyEnableNotifications'));
-const friendlyEnableWidgets = computed(defaultStore.makeGetterSetter('friendlyEnableWidgets'));
+const enableWidgetsArea = computed(defaultStore.makeGetterSetter('enableWidgetsArea'));
+const friendlyUiEnableNotificationsArea = computed(defaultStore.makeGetterSetter('friendlyUiEnableNotificationsArea'));
 const enableLongPressOpenAccountMenu = computed(defaultStore.makeGetterSetter('enableLongPressOpenAccountMenu'));
-const friendlyShowAvatarDecorationsInNavBtn = computed(defaultStore.makeGetterSetter('friendlyShowAvatarDecorationsInNavBtn'));
+const friendlyUiShowAvatarDecorationsInNavBtn = computed(defaultStore.makeGetterSetter('friendlyUiShowAvatarDecorationsInNavBtn'));
 
 watch([
 	renameTheButtonInPostFormToNya,
@@ -137,10 +133,10 @@ watch([
 	reactableRemoteReactionEnabled,
 	mobileHeaderChange,
 	renameTheButtonInPostFormToNya,
-	friendlyEnableNotifications,
-	friendlyEnableWidgets,
+	enableWidgetsArea,
+	friendlyUiEnableNotificationsArea,
 ], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 const headerActions = computed(() => []);

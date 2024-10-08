@@ -48,9 +48,9 @@ export default defineComponent({
 	setup(props, { slots, expose }) {
 		const $style = useCssModule(); // カスタムレンダラなので使っても大丈夫
 
-		function getDateText(time: string) {
-			const date = new Date(time).getDate();
-			const month = new Date(time).getMonth() + 1;
+		function getDateText(dateInstance: Date) {
+			const date = dateInstance.getDate();
+			const month = dateInstance.getMonth() + 1;
 			return i18n.tsx.monthAndDay({
 				month: month.toString(),
 				day: date.toString(),
@@ -67,9 +67,16 @@ export default defineComponent({
 			})[0];
 			if (el.key == null && item.id) el.key = item.id;
 
+			const date = new Date(item.createdAt);
+			const nextDate = props.items[i + 1] ? new Date(props.items[i + 1].createdAt) : null;
+
 			if (
 				i !== props.items.length - 1 &&
-				new Date(getDateKey(item)).getDate() !== new Date(getDateKey(props.items[i + 1])).getDate()
+				nextDate != null && (
+					date.getFullYear() !== nextDate.getFullYear() ||
+					date.getMonth() !== nextDate.getMonth() ||
+					date.getDate() !== nextDate.getDate()
+				)
 			) {
 				const separator = h('div', {
 					class: $style['separator'],
@@ -83,12 +90,12 @@ export default defineComponent({
 						h('i', {
 							class: `ti ti-chevron-up ${$style['date-1-icon']}`,
 						}),
-						getDateText(getDateKey(item)),
+						getDateText(date),
 					]),
 					h('span', {
 						class: $style['date-2'],
 					}, [
-						getDateText(getDateKey(props.items[i + 1])),
+						getDateText(nextDate),
 						h('i', {
 							class: `ti ti-chevron-down ${$style['date-2-icon']}`,
 						}),

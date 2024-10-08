@@ -6,6 +6,8 @@
 // https://vitejs.dev/config/build-options.html#build-modulepreload
 import 'vite/modulepreload-polyfill';
 
+import '@tabler/icons-webfont/dist/tabler-icons.scss';
+
 import '@/style.scss';
 import '@/Temml-Latin-Modern.css';
 import { mainBoot } from '@/boot/main-boot.js';

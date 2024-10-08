@@ -9,25 +9,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<div>
 		<div :class="$style.fontSize" class="_panel">
-			<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 3" style="font-size: 9px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 4" style="font-size: 10px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 5" style="font-size: 11px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 6" style="font-size: 12px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 7" style="font-size: 13px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 8" style="font-size: 14px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 9" style="font-size: 15px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 10" style="font-size: 16px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 11" style="font-size: 17px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 12" style="font-size: 18px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 13" style="font-size: 19px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 14" style="font-size: 20px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 15" style="font-size: 21px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 16" style="font-size: 22px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 17" style="font-size: 23px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 18" style="font-size: 24px;">{{ i18n.ts._mfm.dummy }}</div>
-			<div v-else-if="fontSize === 19" style="font-size: 25px;">{{ i18n.ts._mfm.dummy }}</div>
+			<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 3" style="font-size: 9px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 4" style="font-size: 10px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 5" style="font-size: 11px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 6" style="font-size: 12px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 7" style="font-size: 13px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 8" style="font-size: 14px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 9" style="font-size: 15px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 10" style="font-size: 16px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 11" style="font-size: 17px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 12" style="font-size: 18px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 13" style="font-size: 19px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 14" style="font-size: 20px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 15" style="font-size: 21px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 16" style="font-size: 22px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 17" style="font-size: 23px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 18" style="font-size: 24px;">{{ i18n.ts._cfm.dummy }}</div>
+			<div v-else-if="fontSize === 19" style="font-size: 25px;">{{ i18n.ts._cfm.dummy }}</div>
 		</div>
 		<div :class="$style.fontSizeSlider">
 			<div :class="$style.fontSizeLeft">Aa</div>
@@ -70,26 +70,12 @@ import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
-import * as os from '@/os.js';
 import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
-import { globalEvents } from '@/events.js';
+import { reloadAsk } from '@/scripts/reload-ask.js';
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
-
-async function reloadAsk() {
-	if (defaultStore.state.requireRefreshBehavior === 'dialog') {
-		const { canceled } = await os.confirm({
-			type: 'info',
-			text: i18n.ts.reloadToApplySetting,
-		});
-		if (canceled) return;
-
-		unisonReload();
-	} else globalEvents.emit('hasRequireRefresh', true);
-}
 
 const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 
@@ -112,7 +98,7 @@ watch(useBoldFont, () => {
 watch([
 	useBoldFont,
 ], async () => {
-	await reloadAsk();
+	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 onMounted(() => {

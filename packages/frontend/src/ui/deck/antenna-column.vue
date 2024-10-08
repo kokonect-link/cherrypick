@@ -15,14 +15,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, ref, shallowRef, watch, defineAsyncComponent } from 'vue';
-import type { entities as MisskeyEntities } from 'cherrypick-js';
 import XColumn from './column.vue';
 import { updateColumn, Column } from './deck-store.js';
+import type { entities as MisskeyEntities } from 'cherrypick-js';
+import type { MenuItem } from '@/types/menu.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { MenuItem } from '@/types/menu.js';
 import { antennasCache } from '@/cache.js';
 import { SoundStore } from '@/store.js';
 import { soundSettingsButton } from '@/ui/deck/tl-note-notification.js';

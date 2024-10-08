@@ -6,7 +6,6 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { DEFAULT_POLICIES } from '@/core/RoleService.js';
 import {
 	api,
 	failedApiCall,
@@ -19,6 +18,7 @@ import {
 	userList,
 } from '../utils.js';
 import type * as misskey from 'cherrypick-js';
+import { DEFAULT_POLICIES } from '@/core/RoleService.js';
 
 const compareBy = <T extends { id: string }>(selector: (s: T) => string = (s: T): string => s.id) => (a: T, b: T): number => {
 	return selector(a).localeCompare(selector(b));
@@ -231,6 +231,17 @@ describe('アンテナ', () => {
 		assert.deepStrictEqual(response, expected);
 	});
 
+	test('を作成する時キーワードが指定されていないとエラーになる', async () => {
+		await failedApiCall({
+			endpoint: 'antennas/create',
+			parameters: { ...defaultParam, keywords: [[]], excludeKeywords: [[]] },
+			user: alice,
+		}, {
+			status: 400,
+			code: 'EMPTY_KEYWORD',
+			id: '53ee222e-1ddd-4f9a-92e5-9fb82ddb463a',
+		});
+	});
 	//#endregion
 	//#region 更新(antennas/update)
 
@@ -256,6 +267,18 @@ describe('アンテナ', () => {
 			status: 400,
 			code: 'NO_SUCH_USER_LIST',
 			id: '1c6b35c9-943e-48c2-81e4-2844989407f7',
+		});
+	});
+	test('を変更する時キーワードが指定されていないとエラーになる', async () => {
+		const antenna = await successfulApiCall({ endpoint: 'antennas/create', parameters: defaultParam, user: alice });
+		await failedApiCall({
+			endpoint: 'antennas/update',
+			parameters: { ...defaultParam, antennaId: antenna.id, keywords: [[]], excludeKeywords: [[]] },
+			user: alice,
+		}, {
+			status: 400,
+			code: 'EMPTY_KEYWORD',
+			id: '721aaff6-4e1b-4d88-8de6-877fae9f68c4',
 		});
 	});
 

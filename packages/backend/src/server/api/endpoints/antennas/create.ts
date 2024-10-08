@@ -40,6 +40,12 @@ export const meta = {
 			code: 'TOO_MANY_ANTENNAS',
 			id: 'faf47050-e8b5-438c-913c-db2b1576fde4',
 		},
+
+		emptyKeyword: {
+			message: 'Either keywords or excludeKeywords is required.',
+			code: 'EMPTY_KEYWORD',
+			id: '53ee222e-1ddd-4f9a-92e5-9fb82ddb463a',
+		},
 	},
 
 	res: {
@@ -97,7 +103,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			if (ps.keywords.flat().every(x => x === '') && ps.excludeKeywords.flat().every(x => x === '')) {
-				throw new Error('either keywords or excludeKeywords is required.');
+				throw new ApiError(meta.errors.emptyKeyword);
 			}
 
 			const currentAntennasCount = await this.antennasRepository.countBy({

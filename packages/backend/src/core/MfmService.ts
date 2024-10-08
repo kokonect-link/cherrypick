@@ -14,7 +14,7 @@ import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { bindThis } from '@/decorators.js';
 import type { DefaultTreeAdapterMap } from 'parse5';
-import type * as mfm from 'cherrypick-mfm-js';
+import type * as mfm from 'cfm-js';
 
 const treeAdapter = parse5.defaultTreeAdapter;
 type Node = DefaultTreeAdapterMap['node'];
@@ -239,7 +239,7 @@ export class MfmService {
 			return null;
 		}
 
-		const { window } = new Window();
+		const { happyDOM, window } = new Window();
 
 		const doc = window.document;
 
@@ -457,6 +457,10 @@ export class MfmService {
 
 		appendChildren(nodes, body);
 
-		return new XMLSerializer().serializeToString(body);
+		const serialized = new XMLSerializer().serializeToString(body);
+
+		happyDOM.close().catch(err => {});
+
+		return serialized;
 	}
 }

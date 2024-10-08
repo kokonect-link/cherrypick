@@ -33,11 +33,11 @@ import * as Misskey from 'cherrypick-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
 import 'photoswipe/style.css';
+import { FILE_TYPE_BROWSERSAFE } from '@@/js/const.js';
 import XBanner from '@/components/MkMediaBanner.vue';
 import XImage from '@/components/MkMediaImage.vue';
 import XVideo from '@/components/MkMediaVideo.vue';
 import * as os from '@/os.js';
-import { FILE_TYPE_BROWSERSAFE } from '@/const.js';
 import { defaultStore } from '@/store.js';
 import { focusParent } from '@/scripts/focus.js';
 
@@ -153,8 +153,9 @@ onMounted(() => {
 			[itemData.w, itemData.h] = [itemData.h, itemData.w];
 		}
 		itemData.msrc = file.thumbnailUrl ?? undefined;
-		itemData.alt = file.comment ?? file.name;
+		itemData.alt = file.comment ?? undefined;
 		itemData.comment = file.comment ?? file.name;
+		itemData.title = file.name;
 		itemData.thumbCropped = true;
 
 		return itemData;
@@ -180,6 +181,25 @@ onMounted(() => {
 
 				pswp.on('change', () => {
 					textBox.textContent = pswp.currSlide?.data.comment;
+
+					const altText = pswp.currSlide?.data.alt || null;
+					textBox.textContent = altText;
+					if (!altText) {
+						el.style.display = 'none';
+					}
+				});
+			},
+		});
+		lightbox?.pswp?.ui?.registerElement({
+			name: 'fileName',
+			className: 'pswp__file-name-container',
+			appendTo: 'wrapper',
+			onInit: (el, pswp) => {
+				const textBox = document.createElement('p');
+				textBox.className = 'pswp__file-name _acrylic';
+				el.appendChild(textBox);
+				pswp.on('change', () => {
+					textBox.textContent = pswp.currSlide?.data.title;
 				});
 			},
 		});
@@ -339,12 +359,20 @@ defineExpose({
 	align-items: center;
 
 	position: absolute;
-	bottom: 20px;
+	bottom: 100px;
 	left: 50%;
 	transform: translateX(-50%);
 
 	width: 75%;
 	max-width: 800px;
+
+	z-index: 2;
+}
+
+.pswp__file-name-container {
+	@extend .pswp__alt-text-container;
+	bottom: 20px;
+	z-index: 1;
 }
 
 .pswp__alt-text {
@@ -357,5 +385,10 @@ defineExpose({
 	overflow-y: auto;
 	text-shadow: var(--bg) 0 0 10px, var(--bg) 0 0 3px, var(--bg) 0 0 3px;
 	white-space: pre-line;
+}
+
+.pswp__file-name {
+	@extend .pswp__alt-text;
+	max-height: 16em;
 }
 </style>

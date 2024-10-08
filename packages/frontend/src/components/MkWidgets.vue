@@ -58,6 +58,7 @@ export type DefaultStoredWidget = {
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { v4 as uuid } from 'uuid';
+import { isLink } from '@@/js/is-link.js';
 import MkSelect from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
 import { widgets as widgetDefs } from '@/widgets/index.js';
@@ -104,13 +105,6 @@ const updateWidget = (id, data) => {
 
 function onContextmenu(widget: Widget, ev: MouseEvent) {
 	const element = ev.target as HTMLElement | null;
-	const isLink = (el: HTMLElement): boolean => {
-		if (el.tagName === 'A') return true;
-		if (el.parentElement) {
-			return isLink(el.parentElement);
-		}
-		return false;
-	};
 	if (element && isLink(element)) return;
 	if (element && (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(element.tagName) || element.attributes['contenteditable'])) return;
 	if (window.getSelection()?.toString() !== '') return;

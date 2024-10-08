@@ -6,19 +6,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <header :class="$style.root">
 	<div :class="$style.section">
-		<div style="display: flex;">
-			<div v-if="mock" :class="$style.name">
-				<MkUserName :user="note.user"/>
+		<component :is="defaultStore.state.enableCondensedLine ? 'MkCondensedLine' : 'div'" :minScale="0.7" style="min-width: 0;">
+			<div style="display: flex; white-space: nowrap; align-items: baseline;">
+				<div v-if="mock" :class="$style.name">
+					<MkUserName :user="note.user"/>
+				</div>
+				<MkA v-else v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
+					<MkUserName :user="note.user"/>
+				</MkA>
+				<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
+				<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
+					<img v-for="(role, i) in note.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl!"/>
+				</div>
 			</div>
-			<MkA v-else v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)">
-				<MkUserName :user="note.user"/>
-			</MkA>
-			<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
-			<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
-				<img v-for="(role, i) in note.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl!"/>
-			</div>
-		</div>
-		<div :class="$style.username"><MkAcct :user="note.user"/></div>
+			<div :class="$style.username"><MkAcct :user="note.user"/></div>
+		</component>
 	</div>
 	<div :class="$style.section">
 		<div :class="$style.info">
@@ -36,6 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
+			<span v-if="note.deletedAt" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts.scheduledNoteDelete" class="ti ti-bomb"></i></span>
 			<div v-if="mock">
 				<MkTime :time="note.createdAt" colored/>
 			</div>
@@ -69,7 +72,6 @@ const router = useRouter();
 
 function showOnRemote() {
 	if (props.note.user.instance === undefined) router.push(notePage(props.note));
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	else window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
 </script>

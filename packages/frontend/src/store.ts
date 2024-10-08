@@ -5,10 +5,12 @@
 
 import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import { hemisphere } from '@@/js/intl-const.js';
+import lightTheme from '@@/themes/l-cherrypick.json5';
+import darkTheme from '@@/themes/d-cherrypick.json5';
 import { miLocalStorage } from './local-storage.js';
 import type { SoundType } from '@/scripts/sound.js';
 import { Storage } from '@/pizzax.js';
-import { hemisphere } from '@/scripts/intl-const.js';
 
 interface PostFormAction {
 	title: string,
@@ -59,6 +61,8 @@ export const noteActions: NoteAction[] = [];
 export const noteViewInterruptors: NoteViewInterruptor[] = [];
 export const notePostInterruptors: NotePostInterruptor[] = [];
 export const pageViewInterruptors: PageViewInterruptor[] = [];
+
+const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 // TODO: それぞれいちいちwhereとかdefaultというキーを付けなきゃいけないの冗長なのでなんとかする(ただ型定義が面倒になりそう)
 //       あと、現行の定義の仕方なら「whereが何であるかに関わらずキー名の重複不可」という制約を付けられるメリットもあるからそのメリットを引き継ぐ方法も考えないといけない
@@ -264,9 +268,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'twemoji', // twemoji / fluentEmoji / native
 	},
-	disableDrawer: {
+	menuStyle: {
 		where: 'device',
-		default: false,
+		default: 'auto' as 'auto' | 'popup' | 'drawer',
 	},
 	useBlurEffectForModal: {
 		where: 'device',
@@ -320,9 +324,9 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 3,
 	},
-	emojiPickerUseDrawerForMobile: {
+	emojiPickerStyle: {
 		where: 'device',
-		default: true,
+		default: 'auto' as 'auto' | 'popup' | 'drawer',
 	},
 	recentlyUsedEmojis: {
 		where: 'device',
@@ -408,7 +412,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'vertical' as 'vertical' | 'horizontal',
 	},
-	enableCondensedLineForAcct: {
+	enableCondensedLine: {
 		where: 'device',
 		default: false,
 	},
@@ -484,6 +488,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'deviceAccount',
 		default: false,
 	},
+	trustedDomains: {
+		where: 'device',
+		default: [] as string[],
+	},
 
 	sound_masterVolume: {
 		where: 'device',
@@ -532,14 +540,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'count' as 'default' | 'count' | 'none',
 	},
-	fontSize: {
-		where: 'device',
-		default: 8,
-	},
-	collapseDefault: {
-		where: 'account',
-		default: true,
-	},
 	requireRefreshBehavior: {
 		where: 'device',
 		default: 'dialog' as 'quiet' | 'dialog',
@@ -547,6 +547,40 @@ export const defaultStore = markRaw(new Storage('base', {
 	bannerDisplay: {
 		where: 'device',
 		default: 'topBottom' as 'all' | 'topBottom' | 'top' | 'bottom' | 'bg' | 'hide',
+	},
+	autoLoadMoreReplies: {
+		where: 'device',
+		default: false,
+	},
+	autoLoadMoreConversation: {
+		where: 'device',
+		default: false,
+	},
+	useAutoTranslate: {
+		where: 'device',
+		default: false,
+	},
+
+	// - Settings/Appearance
+	collapseReplies: {
+		where: 'account',
+		default: false,
+	},
+	filesGridLayoutInUserPage: {
+		where: 'device',
+		default: true,
+	},
+	fontSize: {
+		where: 'device',
+		default: 8,
+	},
+	collapseLongNoteContent: {
+		where: 'account',
+		default: true,
+	},
+	collapseDefault: {
+		where: 'account',
+		default: true,
 	},
 	hideAvatarsInNote: {
 		where: 'device',
@@ -596,9 +630,79 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showNoAltTextWarning: {
+		where: 'device',
+		default: true,
+	},
+	alwaysShowCw: {
+		where: 'device',
+		default: false,
+	},
+	showReplyTargetNoteInSemiTransparent: {
+		where: 'device',
+		default: true,
+	},
 	nsfwOpenBehavior: {
 		where: 'device',
 		default: 'click' as 'click' | 'doubleClick',
+	},
+	showReplyButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showRenoteButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showLikeButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showDoReactionButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showQuoteButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+	showMoreButtonInNoteFooter: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Navigation bar
+	showMenuButtonInNavbar: {
+		where: 'device',
+		default: !isFriendly.value,
+	},
+	showHomeButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showExploreButtonInNavbar: {
+		where: 'device',
+		default: isFriendly.value,
+	},
+	showSearchButtonInNavbar: {
+		where: 'device',
+		default: false,
+	},
+	showNotificationButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showMessageButtonInNavbar: {
+		where: 'device',
+		default: isFriendly.value,
+	},
+	showWidgetButtonInNavbar: {
+		where: 'device',
+		default: true,
+	},
+	showPostButtonInNavbar: {
+		where: 'device',
+		default: true,
 	},
 
 	// - Settings/Timeline
@@ -710,23 +814,21 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: false,
 	},
+	enableWidgetsArea: {
+		where: 'device',
+		default: true,
+	},
+	friendlyUiEnableNotificationsArea: {
+		where: 'device',
+		default: true,
+	},
 	enableLongPressOpenAccountMenu: {
 		where: 'device',
 		default: true,
 	},
-	friendlyShowAvatarDecorationsInNavBtn: {
+	friendlyUiShowAvatarDecorationsInNavBtn: {
 		where: 'device',
 		default: false,
-	},
-
-	// - etc
-	friendlyEnableNotifications: {
-		where: 'device',
-		default: true,
-	},
-	friendlyEnableWidgets: {
-		where: 'device',
-		default: true,
 	},
 	// #endregion
 }));
@@ -758,8 +860,6 @@ interface Watcher {
 /**
  * 常にメモリにロードしておく必要がないような設定情報を保管するストレージ(非リアクティブ)
  */
-import lightTheme from '@/themes/l-cherrypick.json5';
-import darkTheme from '@/themes/d-cherrypick.json5';
 
 export class ColdDeviceStorage {
 	public static default = {
@@ -796,7 +896,7 @@ export class ColdDeviceStorage {
 	public static set<T extends keyof typeof ColdDeviceStorage.default>(key: T, value: typeof ColdDeviceStorage.default[T]): void {
 		// 呼び出し側のバグ等で undefined が来ることがある
 		// undefined を文字列として miLocalStorage に入れると参照する際の JSON.parse でコケて不具合の元になるため無視
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+
 		if (value === undefined) {
 			console.error(`attempt to store undefined value for key '${key}'`);
 			return;

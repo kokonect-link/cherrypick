@@ -35,11 +35,11 @@ import { onMounted, shallowRef, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import Cropper from 'cropperjs';
 import tinycolor from 'tinycolor2';
+import { apiUrl } from '@@/js/config.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { defaultStore } from '@/store.js';
-import { apiUrl } from '@/config.js';
 import { i18n } from '@/i18n.js';
 import { getProxiedImageUrl } from '@/scripts/media-proxy.js';
 
@@ -113,6 +113,7 @@ const onImageLoad = () => {
 	loading.value = false;
 
 	if (cropper) {
+		cropper.getCropperCanvas();
 		cropper.getCropperImage()!.$center('contain');
 		cropper.getCropperSelection()!.$center();
 	}
@@ -159,6 +160,7 @@ onMounted(() => {
 	width: var(--vw);
 	height: var(--vh);
 	position: relative;
+	object-fit: contain;
 
 	> .loading {
 		position: absolute;
@@ -183,6 +185,7 @@ onMounted(() => {
 		> ::v-deep(cropper-canvas) {
 			width: 100%;
 			height: 100%;
+			object-fit: contain;
 
 			> cropper-selection > cropper-handle[action="move"] {
 				background: transparent;

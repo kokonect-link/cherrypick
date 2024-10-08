@@ -3,17 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/**
- * BOOT LOADER
- * サーバーからレスポンスされるHTMLに埋め込まれるスクリプトで、以下の役割を持ちます。
- * - 翻訳ファイルをフェッチする。
- * - バージョンに基づいて適切なメインスクリプトを読み込む。
- * - キャッシュされたコンパイル済みテーマを適用する。
- * - クライアントの設定値に基づいて対応するHTMLクラス等を設定する。
- * テーマをこの段階で設定するのは、メインスクリプトが読み込まれる間もテーマを適用したいためです。
- * 注: webpackは介さないため、このファイルではrequireやimportは使えません。
- */
-
 'use strict';
 
 // ブロックの中に入れないと、定義した変数がブラウザのグローバルスコープに登録されてしまい邪魔なので
@@ -176,7 +165,7 @@
 
 		if (!errorsElement) {
 			document.body.innerHTML = `
-			<svg class="icon-warning" xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-alert-triangle" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+			<svg class="icon-warning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 				<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 				<path d="M12 9v2m0 4v.01"></path>
 				<path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
@@ -186,9 +175,9 @@
 				<span class="button-label-big">Reload / リロード / 새로고침</span>
 			</button>
 			<p><b>The following actions may solve the problem. / 以下を行うと解決する可能性があります。/ 아래 과정을 진행하면 해결될 수도 있어요.</b></p>
-			<p>Clear the browser cache / ブラウザのキャッシュをクリアする / 브라우저의 캐시 지우기</p>
 			<p>Update your os and browser / ブラウザおよびOSを最新バージョンに更新する / 브라우저와 OS를 최신 버전으로 업데이트 하기</p>
 			<p>Disable an adblocker / アドブロッカーを無効にする / 광고 차단기를 비활성화 하기</p>
+			<p>Clear the browser cache / ブラウザのキャッシュをクリアする / 브라우저의 캐시 지우기</p>
 			<p>&#40;Tor Browser&#41; Set dom.webaudio.enabled to true / dom.webaudio.enabledをtrueに設定する / dom.webaudio.enabled를 true로 설정하기</p>
 			<details style="color: rgb(255, 197, 230);">
 				<summary>Other options / その他のオプション / 기타 옵션</summary>
@@ -222,7 +211,7 @@
 		<summary>
 			<code>ERROR CODE: ${code}</code>
 		</summary>
-		<code>${JSON.stringify(details)}</code>`;
+		<code>${details.toString()} ${JSON.stringify(details)}</code>`;
 		errorsElement.appendChild(detailsElement);
 		addStyle(`
 		* {
@@ -334,6 +323,6 @@
 			#errorInfo {
 				width: 50%;
 			}
-		}`)
+		}`);
 	}
 })();

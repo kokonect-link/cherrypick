@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<Sortable :modelValue="props.modelValue" :class="$style.files" itemKey="id" :animation="150" :delay="100" :delayOnTouchOnly="true" @update:modelValue="v => emit('update:modelValue', v)">
 		<template #item="{element}">
 			<div :class="$style.file" @click="showFileMenu(element, $event)" @contextmenu.prevent="showFileMenu(element, $event)">
-				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover"/>
+				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover" :showAltIndicator="true"/>
 				<div v-if="element.isSensitive" :class="$style.sensitive">
 					<i class="ti ti-eye-exclamation" style="margin: auto;"></i>
 				</div>
@@ -22,6 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, inject } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import type { MenuItem } from '@/types/menu.js';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -136,7 +137,10 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent): void {
 	if (menuShowing) return;
 
 	const isImage = file.type.startsWith('image/');
-	os.popupMenu([{
+
+	const menuItems: MenuItem[] = [];
+
+	menuItems.push({
 		text: i18n.ts.renameFile,
 		icon: 'ti ti-forms',
 		action: () => { rename(file); },
@@ -148,11 +152,17 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent): void {
 		text: i18n.ts.describeFile,
 		icon: 'ti ti-text-caption',
 		action: () => { describe(file); },
-	}, ...isImage ? [{
-		text: i18n.ts.cropImage,
-		icon: 'ti ti-crop',
-		action: () : void => { crop(file); },
-	}] : [], {
+	});
+
+	if (isImage) {
+		menuItems.push({
+			text: i18n.ts.cropImage,
+			icon: 'ti ti-crop',
+			action: () : void => { crop(file); },
+		});
+	}
+
+	menuItems.push({
 		type: 'divider',
 	}, {
 		text: i18n.ts.attachCancel,
@@ -163,7 +173,9 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent): void {
 		icon: 'ti ti-trash',
 		danger: true,
 		action: () => { detachAndDeleteMedia(file); },
-	}], ev.currentTarget ?? ev.target).then(() => menuShowing = false);
+	});
+
+	os.popupMenu(menuItems, ev.currentTarget ?? ev.target).then(() => menuShowing = false);
 	menuShowing = true;
 }
 </script>

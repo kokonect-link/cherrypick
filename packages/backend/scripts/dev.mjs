@@ -13,7 +13,7 @@ async function execBuildAssets() {
 		cwd: '../../',
 		stdout: process.stdout,
 		stderr: process.stderr,
-	})
+	});
 }
 
 function execStart() {
@@ -47,7 +47,7 @@ async function killProc() {
 		],
 		{
 			stdio: [process.stdin, process.stdout, process.stderr, 'ipc'],
-			serialization: "json",
+			serialization: 'json',
 		})
 		.on('message', async (message) => {
 			if (message.type === 'exit') {
@@ -59,5 +59,5 @@ async function killProc() {
 				await execBuildAssets();
 				execStart();
 			}
-		})
+		});
 })();

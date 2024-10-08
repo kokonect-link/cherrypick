@@ -23,7 +23,7 @@ module.exports = {
 	// collectCoverageFrom: undefined,
 
 	// The directory where Jest should output its coverage files
-	coverageDirectory: "coverage",
+	coverageDirectory: 'coverage',
 
 	// An array of regexp pattern strings used to skip coverage collection
 	// coveragePathIgnorePatterns: [
@@ -31,7 +31,7 @@ module.exports = {
 	// ],
 
 	// Indicates which provider should be used to instrument code for coverage
-	coverageProvider: "v8",
+	coverageProvider: 'v8',
 
 	// A list of reporter names that Jest uses when writing coverage reports
 	// coverageReporters: [
@@ -128,7 +128,7 @@ module.exports = {
 
 	// A list of paths to directories that Jest should use to search for files in
 	roots: [
-		"<rootDir>"
+		'<rootDir>',
 	],
 
 	// Allows you to use a custom runner instead of Jest's default test runner
@@ -147,7 +147,7 @@ module.exports = {
 	// snapshotSerializers: [],
 
 	// The test environment that will be used for testing
-	testEnvironment: "node",
+	testEnvironment: 'node',
 
 	// Options that will be passed to the testEnvironment
 	// testEnvironmentOptions: {},
@@ -157,9 +157,9 @@ module.exports = {
 
 	// The glob patterns Jest uses to detect test files
 	testMatch: [
-		"**/__tests__/**/*.[jt]s?(x)",
-		"**/?(*.)+(spec|test).[tj]s?(x)",
-		"<rootDir>/test/**/*"
+		'**/__tests__/**/*.[jt]s?(x)',
+		'**/?(*.)+(spec|test).[tj]s?(x)',
+		'<rootDir>/test/**/*',
 	],
 
 	// An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
@@ -184,7 +184,7 @@ module.exports = {
 
 	// A map from regular expressions to paths to transformers
 	transform: {
-		"^.+\\.(t|j)sx?$": ["@swc/jest"],
+		'^.+\\.(t|j)sx?$': ['@swc/jest'],
 	},
 
 	// An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

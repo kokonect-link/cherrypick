@@ -6,7 +6,7 @@
 import { App } from 'vue';
 
 import CPPageHeader from './global/CPPageHeader.vue';
-import Mfm from './global/MkMisskeyFlavoredMarkdown.js';
+import Mfm from './global/MkMfm.js';
 import MkA from './global/MkA.vue';
 import MkAcct from './global/MkAcct.vue';
 import MkAvatar from './global/MkAvatar.vue';
