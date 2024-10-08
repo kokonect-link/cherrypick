@@ -536,6 +536,24 @@ export const defaultStore = markRaw(new Storage('base', {
 
 	// #region CherryPick
 	// - Settings/General
+	newNoteReceivedNotificationBehavior: {
+		where: 'device',
+		default: 'count' as 'default' | 'count' | 'none',
+	},
+	requireRefreshBehavior: {
+		where: 'device',
+		default: 'dialog' as 'quiet' | 'dialog',
+	},
+	bannerDisplay: {
+		where: 'device',
+		default: 'topBottom' as 'all' | 'topBottom' | 'top' | 'bottom' | 'bg' | 'hide',
+	},
+	useAutoTranslate: {
+		where: 'device',
+		default: false,
+	},
+
+	// - Settings/Appearance
 	collapseReplies: {
 		where: 'account',
 		default: false,
@@ -543,10 +561,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	filesGridLayoutInUserPage: {
 		where: 'device',
 		default: true,
-	},
-	newNoteReceivedNotificationBehavior: {
-		where: 'device',
-		default: 'count' as 'default' | 'count' | 'none',
 	},
 	fontSize: {
 		where: 'device',
@@ -560,14 +574,6 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'account',
 		default: true,
 	},
-	requireRefreshBehavior: {
-		where: 'device',
-		default: 'dialog' as 'quiet' | 'dialog',
-	},
-	bannerDisplay: {
-		where: 'device',
-		default: 'topBottom' as 'all' | 'topBottom' | 'top' | 'bottom' | 'bg' | 'hide',
-	},
 	hideAvatarsInNote: {
 		where: 'device',
 		default: false,
@@ -575,10 +581,6 @@ export const defaultStore = markRaw(new Storage('base', {
 	showTranslateButtonInNote: {
 		where: 'device',
 		default: true,
-	},
-	useAutoTranslate: {
-		where: 'device',
-		default: false,
 	},
 	enableAbsoluteTime: {
 		where: 'device',
