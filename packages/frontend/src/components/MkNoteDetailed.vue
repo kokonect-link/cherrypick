@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 		</div>
 	</div>
-	<template v-if="appearNote.reply && appearNote.reply.replyId"><MkNoteSub v-for="note in conversation" :key="note.id" :class="$style.replyToMore" :note="note"/></template>
+	<template v-if="appearNote.reply && appearNote.reply.replyId"><MkNoteSub v-for="note in conversation" :key="note.id" :class="[$style.replyToMore, { [$style.showReplyTargetNoteInSemiTransparent]: defaultStore.state.showReplyTargetNoteInSemiTransparent }]" :note="note"/></template>
 	<MkNoteSub v-if="appearNote.reply" :note="appearNote.reply" :class="[$style.replyTo, { [$style.showReplyTargetNoteInSemiTransparent]: defaultStore.state.showReplyTargetNoteInSemiTransparent }]"/>
 	<article :class="$style.note" :style="{ paddingTop: defaultStore.state.showSubNoteFooterButton && appearNote.reply ? '14px' : '' }" @contextmenu.stop="onContextmenu">
 		<header :class="$style.noteHeader">
@@ -812,7 +812,9 @@ function showOnRemote() {
 }
 
 .replyToMore {
-	opacity: 0.7;
+	&.showReplyTargetNoteInSemiTransparent {
+		opacity: 0.7;
+	}
 }
 
 .renote {
