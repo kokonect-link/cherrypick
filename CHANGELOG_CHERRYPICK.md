@@ -23,6 +23,17 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2024.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+
+### Client
+- Enhance: 업데이트 및 마이그레이션 알림에서 CherryPick의 변경 사항만 표시함
+
+---
+
+
 ## 4.12.0
 출시일: 2024/10/08<br>
 기반 Misskey 버전: 2024.9.0<br>
