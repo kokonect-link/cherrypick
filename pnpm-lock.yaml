@@ -957,8 +957,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       temml:
-        specifier: 0.10.20
-        version: 0.10.20
+        specifier: 0.10.29
+        version: 0.10.29
       textarea-caret:
         specifier: 3.1.0
         version: 3.1.0
@@ -1115,7 +1115,7 @@ importers:
         version: 7.17.0(eslint@9.8.0)(typescript@5.6.2)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0))
       '@vue/runtime-core':
         specifier: 3.5.10
         version: 3.5.10
@@ -1184,7 +1184,7 @@ importers:
         version: 1.0.3
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)
+        version: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0)
       vitest-fetch-mock:
         specifier: 0.2.2
         version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))
@@ -1257,6 +1257,9 @@ importers:
       shiki:
         specifier: 1.12.0
         version: 1.12.0
+      temml:
+        specifier: 0.10.29
+        version: 0.10.29
       tinycolor2:
         specifier: 1.6.0
         version: 1.6.0
@@ -1317,7 +1320,7 @@ importers:
         version: 7.17.0(eslint@9.8.0)(typescript@5.6.2)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0))
       '@vue/runtime-core':
         specifier: 3.5.10
         version: 3.5.10
@@ -11144,8 +11147,8 @@ packages:
   telejson@7.2.0:
     resolution: {integrity: sha512-1QTEcJkJEhc8OnStBx/ILRu5J2p0GjvWsBx56bmZRqnrkdBMUe+nX92jxV+p3dB4CP6PZCdJMQJwCggkNBMzkQ==}
 
-  temml@0.10.20:
-    resolution: {integrity: sha512-UqT8IbGQnb/IWEqEP6Yh2TCUeS9oKwgP3VO7E/qfKN1jQ2rVr5KCmpFor+hkeRIxIyynvPlkJwGRGRYfO8qhoA==}
+  temml@0.10.29:
+    resolution: {integrity: sha512-JOEYGXYrkXofjzqIU7TcyJXz3Jt1xyIZCCc3OIzkcYdMabdFos7XfedWshdaaSCAQKrNXzf0qejIRZ6Q+x4Hmg==}
     engines: {node: '>=18.13.0'}
 
   terser@5.33.0:
@@ -16604,7 +16607,7 @@ snapshots:
       vite: 5.4.8(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0)
       vue: 3.5.10(typescript@5.6.2)
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -16619,7 +16622,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)
+      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -24029,7 +24032,7 @@ snapshots:
     dependencies:
       memoizerific: 1.11.3
 
-  temml@0.10.20: {}
+  temml@0.10.29: {}
 
   terser@5.33.0:
     dependencies:
@@ -24572,11 +24575,11 @@ snapshots:
   vitest-fetch-mock@0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)):
     dependencies:
       cross-fetch: 3.1.5(encoding@0.1.13)
-      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)
+      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0)
     transitivePeerDependencies:
       - encoding
 
-  vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0):
+  vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0

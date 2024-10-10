@@ -6,6 +6,7 @@
 import { VNode, h, SetupContext, provide } from 'vue';
 import * as mfm from 'cfm-js';
 import * as Misskey from 'cherrypick-js';
+import temml from 'temml/dist/temml.mjs';
 import { host } from '@@/js/config.js';
 import EmUrl from '@/components/EmUrl.vue';
 import EmTime from '@/components/EmTime.vue';
@@ -224,6 +225,9 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 					case 'sparkle': {
 						return genEl(token.children, scale);
 					}
+					case 'fade': {
+						return genEl(token.children, scale);
+					}
 					case 'rotate': {
 						const degrees = safeParseFloat(token.props.args.deg) ?? 90;
 						style = `transform: rotate(${degrees}deg); transform-origin: center center;`;
@@ -413,6 +417,8 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 							normal: props.plain,
 							host: props.author.host,
 							useOriginalSize: scale >= 2.5,
+							menu: props.enableEmojiMenu,
+							menuReaction: props.enableEmojiMenuReaction,
 						})];
 					}
 				}
@@ -428,11 +434,15 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			case 'mathInline': {
-				return [h('code', token.props.formula)];
+				const ret = document.createElement('span');
+				temml.render(token.props.formula, ret, {});
+				return [h('span', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'mathBlock': {
-				return [h('code', token.props.formula)];
+				const ret = document.createElement('div');
+				temml.render(token.props.formula, ret, { displayMode: true });
+				return [h('div', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'search': {
