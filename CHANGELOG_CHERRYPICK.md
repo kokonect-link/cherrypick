@@ -33,6 +33,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: 검색과 같은 입력 블록에서 `Enter`를 입력하면 자동으로 가상 키보드를 숨김
 - Fix: 임베디드 코드에서 CherryPick의 색상 설정이 반영되지 않음
 - Fix: 임베디드 코드에 `fade`와 Temml(KaTex)가 반영되지 않음
+- Fix: 노트의 QR 코드를 생성했을 때 `링크 복사` 버튼을 누르면 잘못된 토스트 알림이 표시됨
 
 ---
 
