@@ -3026,7 +3026,7 @@ _contextMenu:
   appWithShift: "Shift 키로 애플리케이션"
   native: "브라우저의 UI"
 _embedCodeGen:
-  title: "임베디드 코드를 커스터마이즈"
+  title: "임베디드 코드 사용자화"
   header: "해더를 표시"
   autoload: "자동으로 다음 코드를 실행 (비권장)"
   maxHeight: "최대 높이"
@@ -3036,7 +3036,7 @@ _embedCodeGen:
   rounded: "외곽선을 둥글게 하기"
   border: "외곽선에 테두리를 씌우기"
   applyToPreview: "미리보기에 반영"
-  generateCode: "임베디드 코드를 만들기"
+  generateCode: "임베디드 코드 만들기"
   codeGenerated: "코드를 만들었어요!"
   codeGeneratedDescription: "만들어진 코드를 웹 사이트에 붙여서 사용해 주세요."
 _abuse:
