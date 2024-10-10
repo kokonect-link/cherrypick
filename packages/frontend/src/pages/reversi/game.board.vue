@@ -513,7 +513,7 @@ function getKey(emoji: string | Misskey.entities.EmojiSimple | UnicodeEmojiDef):
 
 // 既にでている絵文字をクリックした際の挙動
 function onReactionEmojiClick(emoji: string, ev?: MouseEvent) {
-	console.log('emoji click');
+	if (_DEV_) console.log('emoji click');
 	const el = ev && (ev.currentTarget ?? ev.target) as HTMLElement | null | undefined;
 	if (el) {
 		const rect = el.getBoundingClientRect();
@@ -535,7 +535,7 @@ function onReactionEmojiClick(emoji: string, ev?: MouseEvent) {
 const reactButton = ref<HTMLElement | null>(null);
 
 function onReactionPickerClick() {
-	reactionPicker.show(reactButton.value ?? null, reaction => {
+	reactionPicker.show(reactButton.value ?? null, null, reaction => {
 		const key = getKey(reaction);
 		sendReaction(key);
 
@@ -547,7 +547,7 @@ function onReactionPickerClick() {
 // #endregion
 
 function sendReaction(emojiKey: string) {
-	console.log('send emoji');
+	if (_DEV_) console.log('send emoji');
 	if (!canReact.value) return;
 	canReact.value = false;
 
@@ -575,11 +575,11 @@ function onReacted(payload: Parameters<Misskey.Channels['reversiGame']['events']
 
 		if (el) {
 			const rect = el.getBoundingClientRect();
-			const x = rect.right;
+			const x = (userId === blackUser.value.id) ? rect.left - (el.offsetWidth * 1.8) : rect.right;
 			const y = rect.bottom;
 			os.popup(XEmojiBalloon, {
 				reaction,
-				tail: 'left',
+				tail: (userId === blackUser.value.id) ? 'right' : 'left',
 				x,
 				y,
 			}, {}, 'end');
