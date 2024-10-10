@@ -73,8 +73,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:text="appearNote.cw"
 					:author="appearNote.user"
 					:nyaize="noNyaize ? false : 'respect'"
-					:enableEmojiMenu="true"
-					:enableEmojiMenuReaction="true"
+					:enableEmojiMenu="!!$i"
+					:enableEmojiMenuReaction="!!$i"
 				/>
 				<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
 			</p>
@@ -89,8 +89,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:author="appearNote.user"
 						:nyaize="noNyaize ? false : 'respect'"
 						:emojiUrls="appearNote.emojis"
-						:enableEmojiMenu="true"
-						:enableEmojiMenuReaction="true"
+						:enableEmojiMenu="!!$i"
+						:enableEmojiMenuReaction="!!$i"
 					/>
 					<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
@@ -105,8 +105,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 								:author="appearNote.user"
 								:nyaize="noNyaize ? false : 'respect'"
 								:emojiUrls="appearNote.emojis"
-								:enableEmojiMenu="true"
-								:enableEmojiMenuReaction="true"
+								:enableEmojiMenu="!!$i"
+								:enableEmojiMenuReaction="!!$i"
 								@click.stop
 							/>
 							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">

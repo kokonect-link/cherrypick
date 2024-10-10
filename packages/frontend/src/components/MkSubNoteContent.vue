@@ -16,8 +16,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:author="note.user"
 			:nyaize="noNyaize ? false : 'respect'"
 			:emojiUrls="note.emojis"
-			:enableEmojiMenu="true"
-			:enableEmojiMenuReaction="true"
+			:enableEmojiMenu="!!$i"
+			:enableEmojiMenuReaction="!!$i"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 		<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
@@ -33,8 +33,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:author="note.user"
 					:nyaize="noNyaize ? false : 'respect'"
 					:emojiUrls="note.emojis"
-					:enableEmojiMenu="true"
-					:enableEmojiMenuReaction="true"
+					:enableEmojiMenu="!!$i"
+					:enableEmojiMenuReaction="!!$i"
 					@click.stop
 				/>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
