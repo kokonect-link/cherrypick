@@ -382,6 +382,18 @@ export async function openAccountMenu(opts: {
 	} else {
 		if (opts.includeCurrentAccount) {
 			menuItems.push(createItem($i));
+			if (accountItemPromises.length > 0) menuItems.push({ type: 'divider' });
+		}
+
+		if (opts.withExtraOperationFriendly) {
+			menuItems.push({
+				type: 'link',
+				text: $i.name,
+				to: `/@${$i.username}`,
+				avatar: $i,
+			});
+
+			if (accountItemPromises.length > 0) menuItems.push({ type: 'divider' });
 		}
 
 		menuItems.push(...accountItemPromises);

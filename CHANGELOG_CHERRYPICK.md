@@ -29,6 +29,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### Client
+- Enhance: (Friendly) 모바일 환경에서 계정 목록을 표시할 때 내 프로필을 표시함
 - Enhance: 업데이트 및 마이그레이션 알림에서 CherryPick의 변경 사항만 표시함
 - Enhance: 검색과 같은 입력 블록에서 `Enter`를 입력하면 자동으로 가상 키보드를 숨김
 - Enhance: 환영 페이지의 타임라인에서 사용할 수 있는 일부 노트 메뉴 추가
@@ -38,6 +39,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
   - 리액션 목록
   - 텍스트 소스 보기
   - 고양이체로 표시하지 않기
+- Enhance: 노트 작성 폼의 사용자 선택 메뉴에서 현재 계정과 로그인된 추가 계정 영역을 구분함
 - Fix: 임베디드 코드에서 CherryPick의 색상 설정이 반영되지 않음
 - Fix: 임베디드 코드에 `fade`와 Temml(KaTex)가 반영되지 않음
 - Fix: 노트의 QR 코드를 생성했을 때 `링크 복사` 버튼을 누르면 잘못된 토스트 알림이 표시됨
