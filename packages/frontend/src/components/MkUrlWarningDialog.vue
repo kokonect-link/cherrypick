@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<div :class="$style.title">{{ i18n.ts._externalNavigationWarning.title }}</div>
 			</div>
-			<div><Mfm :text="i18n.tsx._externalNavigationWarning.description({ host: instanceName })"/></div>
+			<div><Mfm :text="i18n.tsx._externalNavigationWarning.description({ host: instanceName })" :plain="true"/></div>
 			<div class="_monospace" :class="$style.urlAddress">{{ url }}</div>
 			<div>
 				<MkSwitch v-model="trustThisDomain">{{ i18n.ts._externalNavigationWarning.trustThisDomain }}</MkSwitch>
