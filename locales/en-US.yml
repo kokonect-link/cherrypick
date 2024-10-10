@@ -2958,7 +2958,7 @@ _reversi:
   canPutEverywhere: "Tiles are placeable everywhere"
   timeLimitForEachTurn: "Time limit for turn"
   freeMatch: "Free Match"
-  lookingForPlayer: "Finding opponent..."
+  lookingForPlayer: "Finding opponent"
   gameCanceled: "The game has been cancelled."
   shareToTlTheGameWhenStart: "Share Game to timeline when started"
   iStartedAGame: "The game has begun! #MisskeyReversi"
