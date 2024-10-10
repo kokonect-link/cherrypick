@@ -164,28 +164,32 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 			</div>
 			<MkReactionsViewer v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactionsViewer" :note="appearNote"/>
-			<button v-if="!note.isHidden && defaultStore.state.showReplyButtonInNoteFooter" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
-				<i class="ti ti-arrow-back-up"></i>
-				<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.repliesCount) }}</p>
-			</button>
-			<button v-else-if="note.isHidden" class="_button" :class="$style.noteFooterButton" disabled>
-				<i class="ti ti-ban"></i>
-			</button>
-			<button
-				v-if="canRenote && defaultStore.state.showRenoteButtonInNoteFooter"
-				ref="renoteButton"
-				v-vibrate="defaultStore.state.vibrateSystem ? [30, 30, 60] : []"
-				v-tooltip="i18n.ts.renote"
-				class="_button"
-				:class="$style.noteFooterButton"
-				@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
-			>
-				<i class="ti ti-repeat"></i>
-				<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.renoteCount) }}</p>
-			</button>
-			<button v-else-if="!canRenote" class="_button" :class="$style.noteFooterButton" disabled>
-				<i class="ti ti-ban"></i>
-			</button>
+			<template v-if="defaultStore.state.showReplyButtonInNoteFooter">
+				<button v-if="!note.isHidden" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
+					<i class="ti ti-arrow-back-up"></i>
+					<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.repliesCount) }}</p>
+				</button>
+				<button v-else-if="note.isHidden" class="_button" :class="$style.noteFooterButton" disabled>
+					<i class="ti ti-ban"></i>
+				</button>
+			</template>
+			<template v-if="defaultStore.state.showRenoteButtonInNoteFooter">
+				<button
+					v-if="canRenote"
+					ref="renoteButton"
+					v-vibrate="defaultStore.state.vibrateSystem ? [30, 30, 60] : []"
+					v-tooltip="i18n.ts.renote"
+					class="_button"
+					:class="$style.noteFooterButton"
+					@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
+				>
+					<i class="ti ti-repeat"></i>
+					<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.renoteCount) }}</p>
+				</button>
+				<button v-else-if="!canRenote" class="_button" :class="$style.noteFooterButton" disabled>
+					<i class="ti ti-ban"></i>
+				</button>
+			</template>
 			<button v-if="appearNote.reactionAcceptance !== 'likeOnly' && appearNote.myReaction == null && defaultStore.state.showLikeButtonInNoteFooter" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @click="heartReact()">
 				<i class="ti ti-heart"></i>
 			</button>
