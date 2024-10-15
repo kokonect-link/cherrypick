@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 入力された文字数が多すぎます
+     */
+    "invalidTextLengthError": string;
+    /**
+     * 文字数が{limitValue}文字に制限されています。現在入力された文字数は{value}文字です。
+     */
+    "invalidTextLengthDescription": ParameterizedString<"limitValue" | "value">;
+    /**
      * 返信を自動でもっと見る
      */
     "autoLoadMoreReplies": string;

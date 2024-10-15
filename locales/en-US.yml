@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+invalidTextLengthError: "Too many characters entered"
+invalidTextLengthDescription: "The number of characters is limited to {limitValue} characters. The current number of characters entered is {value} characters."
 autoLoadMoreReplies: "Show more automatically replies"
 autoLoadMoreConversation: "Show more conversation automatically"
 useAutoTranslate: "Automatic translation"
