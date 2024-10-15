@@ -54,6 +54,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
   - 노트를 리노트할 수 없을 때
 - Fix: 캡션이 512자를 초과하면 초과한 내용이 잘릴 수 있음 (kokonect-link/cherrypick#518)
   - 캡션을 512자를 초과해서 작성하면 캡션 내용을 저장하기 전에 경고를 표시합니다.
+- Fix: 노트 상세 페이지의 InstanceTicker에 커서를 올릴 때 마우스 포인터가 올바르게 표시되지 않음
 
 ---
 

@@ -44,6 +44,7 @@ $height: 2ex;
 
 .root {
 	display: flex;
+	cursor: pointer;
 	align-items: center;
 	height: $height;
 	border-radius: .3rem;
