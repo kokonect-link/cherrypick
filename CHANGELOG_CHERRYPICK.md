@@ -63,6 +63,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### Server
 - Enhance: 노트 편집 제한 완화
   - 1시간에 10번 편집할 수 있던 것을 5분에 10번 편집할 수 있도록 완화함.
+- Fix: 로컬 전용 노트를 편집하면 편집한 노트가 연합될 수 있음 ([libnare/shiftkey@654821da](https://github.com/libnare/shiftkey/commit/654821da003be7471f3c6fc320bf50afcb599d4e))
 
 ---
 

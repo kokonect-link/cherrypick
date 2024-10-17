@@ -218,7 +218,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 			this.globalEventService.publishNoteStream(note.id, 'updated', { cw: note.cw, text: note.text });
 
 			//#region AP deliver
-			if (this.userEntityService.isLocalUser(user)) {
+			if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
 				await (async () => {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-expect-error
