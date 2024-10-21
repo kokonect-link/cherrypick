@@ -510,74 +510,74 @@ export class MiMeta {
 	@Column('boolean', {
 		default: false,
 	})
-	public useObjectStorageRemote: boolean;
+	public useRemoteObjectStorage: boolean;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemoteBucket: string | null;
+	public remoteObjectStorageBucket: string | null;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemotePrefix: string | null;
+	public remoteObjectStoragePrefix: string | null;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemoteBaseUrl: string | null;
+	public remoteObjectStorageBaseUrl: string | null;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemoteEndpoint: string | null;
+	public remoteObjectStorageEndpoint: string | null;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemoteRegion: string | null;
+	public remoteObjectStorageRegion: string | null;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemoteAccessKey: string | null;
+	public remoteObjectStorageAccessKey: string | null;
 
 	@Column('varchar', {
 		length: 1024,
 		nullable: true,
 	})
-	public objectStorageRemoteSecretKey: string | null;
+	public remoteObjectStorageSecretKey: string | null;
 
 	@Column('integer', {
 		nullable: true,
 	})
-	public objectStorageRemotePort: number | null;
+	public remoteObjectStoragePort: number | null;
 
 	@Column('boolean', {
 		default: true,
 	})
-	public objectStorageRemoteUseSSL: boolean;
+	public remoteObjectStorageUseSSL: boolean;
 
 	@Column('boolean', {
 		default: true,
 	})
-	public objectStorageRemoteUseProxy: boolean;
+	public remoteObjectStorageUseProxy: boolean;
 
 	@Column('boolean', {
 		default: false,
 	})
-	public objectStorageRemoteSetPublicRead: boolean;
+	public remoteObjectStorageSetPublicRead: boolean;
 
 	@Column('boolean', {
 		default: true,
 	})
-	public objectStorageRemoteS3ForcePathStyle: boolean;
+	public remoteObjectStorageS3ForcePathStyle: boolean;
 
 	@Column('boolean', {
 		default: false,
