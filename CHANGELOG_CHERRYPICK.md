@@ -59,12 +59,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: `UI에 흐림 효과 사용` 옵션이 토스트 알림에서 제대로 적용되지 않음
   - 모바일 환경에서만 적용되던 문제를 해결했습니다.
 - Fix: 모바일 환경에서 제어판의 인디케이터가 잘못된 위치에 표시될 수 있음
-- Fix: `답글을 자동으로 더 보기`를 활성화하면 3개 미만의 답글이 있는 노트에서 답글이 보이지 않음
+- Fix: `답글을 자동으로 더 보기`를 활성화하면 3개 미만의 답글이 있는 노트에서 답글이 보이지 않음 (kokonect-link/cherrypick#521)
 
 ### Server
 - Enhance: 노트 편집 제한 완화
   - 1시간에 10번 편집할 수 있던 것을 5분에 10번 편집할 수 있도록 완화함.
-- Fix: 로컬 전용 노트를 편집하면 편집한 노트가 연합될 수 있음 ([libnare/shiftkey@654821da](https://github.com/libnare/shiftkey/commit/654821da003be7471f3c6fc320bf50afcb599d4e))
+- Fix: 로컬 전용 노트를 편집하면 편집한 노트가 연합될 수 있음 (kokonect-link/cherrypick#519, [libnare/shiftkey@654821da](https://github.com/libnare/shiftkey/commit/654821da003be7471f3c6fc320bf50afcb599d4e))
 
 ---
 
