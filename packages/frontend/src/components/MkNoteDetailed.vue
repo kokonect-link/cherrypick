@@ -755,8 +755,10 @@ function loadRepliesSimple() {
 	});
 }
 
-if (tab.value === 'replies' && !repliesLoaded.value && !defaultStore.state.autoLoadMoreReplies) loadRepliesSimple();
-else if (tab.value === 'replies' && appearNote.value.repliesCount > 2 && !repliesLoaded.value && defaultStore.state.autoLoadMoreReplies) loadReplies();
+if (tab.value === 'replies' && !repliesLoaded.value) {
+	if (appearNote.value.repliesCount < 3 || !defaultStore.state.autoLoadMoreReplies) loadRepliesSimple();
+	else if (appearNote.value.repliesCount >= 3 && defaultStore.state.autoLoadMoreReplies) loadReplies();
+}
 
 const conversationLoaded = ref(false);
 
