@@ -756,8 +756,8 @@ function loadRepliesSimple() {
 }
 
 if (tab.value === 'replies' && !repliesLoaded.value) {
-	if (appearNote.value.repliesCount < 3 || !defaultStore.state.autoLoadMoreReplies) loadRepliesSimple();
-	else if (appearNote.value.repliesCount >= 3 && defaultStore.state.autoLoadMoreReplies) loadReplies();
+	if (appearNote.value.repliesCount <= 3 || !defaultStore.state.autoLoadMoreReplies) loadRepliesSimple();
+	else if (appearNote.value.repliesCount > 3 && defaultStore.state.autoLoadMoreReplies) loadReplies();
 }
 
 const conversationLoaded = ref(false);
