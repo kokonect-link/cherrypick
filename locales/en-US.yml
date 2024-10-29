@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+welcomeBackToast: "Display a welcome message when you log in after a certain period of time"
 invalidTextLengthError: "Too many characters entered"
 invalidTextLengthDescription: "The number of characters is limited to {limitValue} characters. The current number of characters entered is {value} characters."
 autoLoadMoreReplies: "Show more automatically replies"

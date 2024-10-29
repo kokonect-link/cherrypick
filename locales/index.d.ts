@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 一定時間が経過した後に接続したときに歓迎メッセージを表示
+     */
+    "welcomeBackToast": string;
+    /**
      * 入力された文字数が多すぎます
      */
     "invalidTextLengthError": string;

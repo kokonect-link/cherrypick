@@ -57,6 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ i18n.ts.useAutoTranslate }} <span class="_beta">CherryPick</span>
 					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreCantUseAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
 				</MkSwitch>
+				<MkSwitch v-model="welcomeBackToast">{{ i18n.ts.welcomeBackToast }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }} <span class="_beta">CherryPick</span></template>
@@ -196,6 +197,7 @@ const requireRefreshBehavior = computed(defaultStore.makeGetterSetter('requireRe
 const autoLoadMoreReplies = computed(defaultStore.makeGetterSetter('autoLoadMoreReplies'));
 const autoLoadMoreConversation = computed(defaultStore.makeGetterSetter('autoLoadMoreConversation'));
 const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslate'));
+const welcomeBackToast = computed(defaultStore.makeGetterSetter('welcomeBackToast'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

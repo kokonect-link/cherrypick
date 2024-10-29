@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+welcomeBackToast: "一定時間が経過した後に接続したときに歓迎メッセージを表示"
 invalidTextLengthError: "入力された文字数が多すぎます"
 invalidTextLengthDescription: "文字数が{limitValue}文字に制限されています。現在入力された文字数は{value}文字です。"
 autoLoadMoreReplies: "返信を自動でもっと見る"

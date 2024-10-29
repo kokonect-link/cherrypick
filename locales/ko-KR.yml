@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+welcomeBackToast: "일정 시간이 지난 후 접속했을 때 환영 메시지 표시"
 invalidTextLengthError: "입력된 문자수가 너무 많아요"
 invalidTextLengthDescription: "문자수가 {limitValue}자로 제한되어 있어요. 현재 입력된 문자수는 {value}자예요."
 autoLoadMoreReplies: "답글을 자동으로 더 보기"

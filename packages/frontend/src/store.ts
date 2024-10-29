@@ -560,6 +560,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	welcomeBackToast: {
+		where: 'device',
+		default: true,
+	},
 
 	// - Settings/Appearance
 	collapseReplies: {
