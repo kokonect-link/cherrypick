@@ -28,6 +28,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
+### General
+- Feat: 사용자 메뉴에서 서버를 뮤트할 수 있음 (kokonect-link/cherrypick#502)
+  - 이전 빌드에 추가된 기능은 관리자 전용이며, 이 빌드에서 추가된 기능은 일반 사용자용 기능입니다.
+
 ### Client
 - Enhance: (Friendly) 모바일 환경에서 계정 목록을 표시할 때 내 프로필을 표시함
 - Enhance: 업데이트 및 마이그레이션 알림에서 CherryPick의 변경 사항만 표시함
