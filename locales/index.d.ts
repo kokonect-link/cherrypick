@@ -2576,19 +2576,19 @@ export interface Locale extends ILocale {
      */
     "signinHistory": string;
     /**
-     * 高度なCFMを有効にする
+     * 高度なMFCを有効にする
      */
     "enableAdvancedMfm": string;
     /**
-     * 有効にすると、動きのあるCFMのようなさまざまなCFM機能が使用できます。
+     * 有効にすると、動きのあるMFCのようなさまざまなMFC機能が使用できます。
      */
     "enableAdvancedMfmDescription": string;
     /**
-     * 動きのあるCFMを有効にする
+     * 動きのあるMFCを有効にする
      */
     "enableAnimatedMfm": string;
     /**
-     * 有効にすると、CFM文法または絵文字を使用するテキストが動きます。
+     * 有効にすると、MFC文法または絵文字を使用するテキストが動きます。
      */
     "enableAnimatedMfmDescription": string;
     /**
@@ -4733,7 +4733,7 @@ export interface Locale extends ILocale {
      */
     "collapseRenotesDescription": string;
     /**
-     * 特定のCFM構文を含むノートを省略して表示
+     * 特定のMFC構文を含むノートを省略して表示
      */
     "collapseDefault": string;
     /**
@@ -5521,7 +5521,7 @@ export interface Locale extends ILocale {
      */
     "addMfmFunction": string;
     /**
-     * 高度なCFMのピッカーを表示する
+     * 高度なMFCのピッカーを表示する
      */
     "enableQuickAddMfmFunction": string;
     /**
@@ -6167,7 +6167,7 @@ export interface Locale extends ILocale {
          */
         "blurEffectsSetting": string;
         /**
-         * CFMとアニメーション画像設定
+         * MFCとアニメーション画像設定
          */
         "mfmAndAnimatedImagesSetting": string;
         /**
@@ -8335,13 +8335,13 @@ export interface Locale extends ILocale {
          */
         "force": string;
     };
-    "_cfm": {
+    "_mfc": {
         /**
-         * CFMチートシート
+         * MFCチートシート
          */
         "cheatSheet": string;
         /**
-         * CFMは、CherryPick内の様々な場所で使用できる専用のマークアップ言語です。ここでは、CFMで使用可能な構文一覧が確認できます。
+         * MFCは、CherryPick内の様々な場所で使用できる専用のマークアップ言語です。ここでは、MFCで使用可能な構文一覧が確認できます。
          */
         "intro": string;
         /**
@@ -11442,7 +11442,7 @@ export interface Locale extends ILocale {
              */
             "title": string;
             /**
-             * CFMなどでコードハイライト記法が使われている場合、タップするまで読み込まれなくなります。コードハイライトではハイライトする言語ごとにその定義ファイルを読み込む必要がありますが、それらが自動で読み込まれなくなるため、通信量の削減が見込めます。
+             * MFCなどでコードハイライト記法が使われている場合、タップするまで読み込まれなくなります。コードハイライトではハイライトする言語ごとにその定義ファイルを読み込む必要がありますが、それらが自動で読み込まれなくなるため、通信量の削減が見込めます。
              */
             "description": string;
         };

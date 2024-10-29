@@ -4,7 +4,7 @@
  */
 
 import RE2 from 're2';
-import * as mfm from 'cfm-js';
+import * as mfm from 'mfc-js';
 import { Inject, Injectable } from '@nestjs/common';
 import ms from 'ms';
 import { JSDOM } from 'jsdom';

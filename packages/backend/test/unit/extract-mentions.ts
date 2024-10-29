@@ -5,7 +5,7 @@
 
 import * as assert from 'assert';
 
-import { parse } from 'cfm-js';
+import { parse } from 'mfc-js';
 import { extractMentions } from '@/misc/extract-mentions.js';
 
 describe('Extract mentions', () => {

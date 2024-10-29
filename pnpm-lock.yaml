@@ -215,9 +215,6 @@ importers:
       cbor:
         specifier: 9.0.2
         version: 9.0.2
-      cfm-js:
-        specifier: 0.24.0-cherrypick.8
-        version: 0.24.0-cherrypick.8
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -311,6 +308,9 @@ importers:
       meilisearch:
         specifier: 0.42.0
         version: 0.42.0(encoding@0.1.13)
+      mfc-js:
+        specifier: 0.24.0-cherrypick.9
+        version: 0.24.0-cherrypick.9
       microformats-parser:
         specifier: 2.0.2
         version: 2.0.2
@@ -863,9 +863,6 @@ importers:
       canvas-confetti:
         specifier: 1.9.3
         version: 1.9.3
-      cfm-js:
-        specifier: 0.24.0-cherrypick.8
-        version: 0.24.0-cherrypick.8
       chart.js:
         specifier: 4.4.4
         version: 4.4.4
@@ -920,6 +917,9 @@ importers:
       matter-js:
         specifier: 0.19.0
         version: 0.19.0
+      mfc-js:
+        specifier: 0.24.0-cherrypick.9
+        version: 0.24.0-cherrypick.9
       misskey-bubble-game:
         specifier: workspace:*
         version: link:../misskey-bubble-game
@@ -1115,7 +1115,7 @@ importers:
         version: 7.17.0(eslint@9.8.0)(typescript@5.6.2)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))
       '@vue/runtime-core':
         specifier: 3.5.10
         version: 3.5.10
@@ -1184,7 +1184,7 @@ importers:
         version: 1.0.3
       vitest:
         specifier: 1.6.0
-        version: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0)
+        version: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)
       vitest-fetch-mock:
         specifier: 0.2.2
         version: 0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))
@@ -1230,9 +1230,6 @@ importers:
       buraha:
         specifier: 0.0.1
         version: 0.0.1
-      cfm-js:
-        specifier: 0.24.0-cherrypick.8
-        version: 0.24.0-cherrypick.8
       cherrypick-js:
         specifier: workspace:*
         version: link:../cherrypick-js
@@ -1245,6 +1242,9 @@ importers:
       json5:
         specifier: 2.2.3
         version: 2.2.3
+      mfc-js:
+        specifier: 0.24.0-cherrypick.9
+        version: 0.24.0-cherrypick.9
       punycode:
         specifier: 2.3.1
         version: 2.3.1
@@ -1320,7 +1320,7 @@ importers:
         version: 7.17.0(eslint@9.8.0)(typescript@5.6.2)
       '@vitest/coverage-v8':
         specifier: 1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))
       '@vue/runtime-core':
         specifier: 3.5.10
         version: 3.5.10
@@ -5923,9 +5923,6 @@ packages:
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
 
-  cfm-js@0.24.0-cherrypick.8:
-    resolution: {integrity: sha512-QIWgqWW2a1FSrFaZNv7ueWKXXNvjrSIYKUhbIKTkaw3iN8rpjKNXUuSAKKdrn0jPQkb4y+YL7oMolcUjTh/G/A==}
-
   chai@4.3.10:
     resolution: {integrity: sha512-0UXG04VuVbruMUYbJ6JctvH0YnC/4q3/AkT18q4NaITo91CUm0liMS9VqzT9vZhVQ/1eqPanMWjBM+Juhfb/9g==}
     engines: {node: '>=4'}
@@ -8807,6 +8804,9 @@ packages:
   methods@1.1.2:
     resolution: {integrity: sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==}
     engines: {node: '>= 0.6'}
+
+  mfc-js@0.24.0-cherrypick.9:
+    resolution: {integrity: sha512-U2WH3z25CGqJljgumkjhZxgocAIET/x/oVCmFtkatyU3iHdTVO35iXx7Dey/1alZ0b5EPNno5rGtRQhqz5vISA==}
 
   microformats-parser@2.0.2:
     resolution: {integrity: sha512-tUf9DmN4Jq/tGyp1YH2V6D/Cud+9Uc0WhjjUFirqVeHTRkkfLDacv6BQFT7h7HFsD0Z8wja5eKkRgzZU8bv0Fw==}
@@ -11825,6 +11825,9 @@ packages:
 
   vue-component-type-helpers@2.1.6:
     resolution: {integrity: sha512-ng11B8B/ZADUMMOsRbqv0arc442q7lifSubD0v8oDXIFoMg/mXwAPUunrroIDkY+mcD0dHKccdaznSVp8EoX3w==}
+
+  vue-component-type-helpers@2.1.8:
+    resolution: {integrity: sha512-ii36gDzrYAfOQIkOlo44yceDdT5269gKmNGxf07Qx6seH2U50+tQ2ol02XLhYPmxrh6YabAsOdte8WDrpaO6Tw==}
 
   vue-demi@0.14.7:
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
@@ -15629,7 +15632,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.10(typescript@5.6.2)
-      vue-component-type-helpers: 2.1.6
+      vue-component-type-helpers: 2.1.8
 
   '@swc/cli@0.3.12(@swc/core@1.6.6)(chokidar@3.5.3)':
     dependencies:
@@ -16607,7 +16610,7 @@ snapshots:
       vite: 5.4.8(@types/node@20.14.12)(sass@1.79.3)(terser@5.33.0)
       vue: 3.5.10(typescript@5.6.2)
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0))':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@bcoe/v8-coverage': 0.2.3
@@ -16622,7 +16625,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0)
+      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -17570,10 +17573,6 @@ snapshots:
       nofilter: 3.1.0
 
   ccount@2.0.1: {}
-
-  cfm-js@0.24.0-cherrypick.8:
-    dependencies:
-      '@twemoji/parser': 15.0.0
 
   chai@4.3.10:
     dependencies:
@@ -21389,6 +21388,10 @@ snapshots:
 
   methods@1.1.2: {}
 
+  mfc-js@0.24.0-cherrypick.9:
+    dependencies:
+      '@twemoji/parser': 15.0.0
+
   microformats-parser@2.0.2:
     dependencies:
       parse5: 7.1.2
@@ -24575,11 +24578,11 @@ snapshots:
   vitest-fetch-mock@0.2.2(encoding@0.1.13)(vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)):
     dependencies:
       cross-fetch: 3.1.5(encoding@0.1.13)
-      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0)
+      vitest: 1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0)
     transitivePeerDependencies:
       - encoding
 
-  vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1)(sass@1.79.3)(terser@5.33.0):
+  vitest@1.6.0(@types/node@20.14.12)(happy-dom@10.0.3)(jsdom@24.1.1(bufferutil@4.0.7)(utf-8-validate@6.0.3))(sass@1.79.3)(terser@5.33.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -24654,6 +24657,8 @@ snapshots:
   vue-component-type-helpers@2.0.19: {}
 
   vue-component-type-helpers@2.1.6: {}
+
+  vue-component-type-helpers@2.1.8: {}
 
   vue-demi@0.14.7(vue@3.5.10(typescript@5.6.2)):
     dependencies:

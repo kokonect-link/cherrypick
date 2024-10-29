@@ -4,7 +4,7 @@
  */
 
 import { VNode, h, SetupContext, provide } from 'vue';
-import * as mfm from 'cfm-js';
+import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import temml from 'temml/dist/temml.mjs';
 import { host } from '@@/js/config.js';

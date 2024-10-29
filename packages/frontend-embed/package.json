@@ -24,7 +24,7 @@
 		"@vue/compiler-sfc": "3.5.10",
 		"astring": "1.9.0",
 		"buraha": "0.0.1",
-		"cfm-js": "0.24.0-cherrypick.8",
+		"mfc-js": "0.24.0-cherrypick.9",
 		"cherrypick-js": "workspace:*",
 		"estree-walker": "3.0.3",
 		"frontend-shared": "workspace:*",

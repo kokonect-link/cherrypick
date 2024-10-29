@@ -183,9 +183,9 @@ export const navbarItemDef = reactive({
 				},
 			}, {
 				type: 'link',
-				text: i18n.ts._cfm.cheatSheet,
+				text: i18n.ts._mfc.cheatSheet,
 				icon: 'ti ti-help-circle',
-				to: '/cfm-cheat-sheet',
+				to: '/mfc-cheat-sheet',
 			}], ev.currentTarget ?? ev.target);
 		},
 	},

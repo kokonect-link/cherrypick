@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as mfm from 'cfm-js';
+import * as mfm from 'mfc-js';
 import { unique } from '@/misc/prelude/array.js';
 
 export function extractHashtags(nodes: mfm.MfmNode[]): string[] {
