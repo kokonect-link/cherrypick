@@ -73,6 +73,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 제어판에서 문의처 URL이 설정되지 않았을 때 표시되는 경고의 바로가기가 잘못 설정되어 있음
 - Fix: 캡션이 설정된 이미지 위에 마우스 커서를 올려도 캡션이 표시되지 않음 (kokonect-link/cherrypick#514)
 - Fix: 코드 편집기의 커서 위치가 올바르게 표시되지 않을 수 있음 (kokonect-link/cherrypick#520)
+- Fix: 투표 기한을 `기간 지정`으로 설정한 경우 투표가 즉시 종료될 수 있음 (kokonect-link/cherrypick#523)
 
 ### Server
 - Enhance: 노트 편집 제한 완화
