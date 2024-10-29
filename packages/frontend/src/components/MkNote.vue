@@ -519,6 +519,10 @@ if (!props.mock) {
 
 if (defaultStore.state.alwaysShowCw) showContent.value = true;
 
+watch(() => viewTextSource.value, () => {
+	collapsed.value = false;
+});
+
 function noteClick(ev: MouseEvent) {
 	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
 	else router.push(notePage(appearNote.value));

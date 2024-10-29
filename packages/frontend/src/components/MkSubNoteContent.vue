@@ -250,6 +250,10 @@ if (!props.mock) {
 
 if (defaultStore.state.alwaysShowCw) showContent.value = true;
 
+watch(() => viewTextSource.value, () => {
+	collapsed.value = false;
+});
+
 function renote() {
 	pleaseLogin(undefined, pleaseLoginContext.value);
 	showMovedDialog();
