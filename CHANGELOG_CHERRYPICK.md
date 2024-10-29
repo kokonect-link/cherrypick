@@ -71,6 +71,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: `답글을 자동으로 더 보기`를 활성화하면 3개 미만의 답글이 있는 노트에서 답글이 보이지 않음 (kokonect-link/cherrypick#521)
 - Fix: 제어판에서 문의처 URL이 설정되지 않았을 때 표시되는 경고의 바로가기가 잘못 설정되어 있음
 - Fix: 캡션이 설정된 이미지 위에 마우스 커서를 올려도 캡션이 표시되지 않음 (kokonect-link/cherrypick#514)
+- Fix: 코드 편집기의 커서 위치가 올바르게 표시되지 않을 수 있음 (kokonect-link/cherrypick#520)
 
 ### Server
 - Enhance: 노트 편집 제한 완화
