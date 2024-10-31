@@ -6,8 +6,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/>
-		<MkPageHeader v-else v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && user.isBlocked) == true"/>
+		<MkPageHeader v-else v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && user.isBlocked) == true"/>
 	</template>
 	<div>
 		<div v-if="user">
@@ -102,7 +102,7 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'home',
 	title: i18n.ts.overview,
 	icon: 'ti ti-home',
-}, {
+}, ...(!user.value.isBlocked ? [{
 	key: 'notes',
 	title: i18n.ts.notes,
 	icon: 'ti ti-pencil',
@@ -138,7 +138,7 @@ const headerTabs = computed(() => user.value ? [{
 	key: 'gallery',
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
-}, {
+}] : []), {
 	key: 'raw',
 	title: 'Raw',
 	icon: 'ti ti-code',

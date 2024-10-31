@@ -94,6 +94,10 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
+			youBlockedImageUrl: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			iconUrl: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -654,6 +658,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				serverErrorImageUrl: instance.serverErrorImageUrl,
 				notFoundImageUrl: instance.notFoundImageUrl,
 				infoImageUrl: instance.infoImageUrl,
+				youBlockedImageUrl: instance.youBlockedImageUrl,
 				iconUrl: instance.iconUrl,
 				app192IconUrl: instance.app192IconUrl,
 				app512IconUrl: instance.app512IconUrl,

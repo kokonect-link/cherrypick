@@ -5,7 +5,7 @@
 
 import { computed, reactive } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { DEFAULT_INFO_IMAGE_URL, DEFAULT_NOT_FOUND_IMAGE_URL, DEFAULT_SERVER_ERROR_IMAGE_URL } from '@@/js/const.js';
+import { DEFAULT_INFO_IMAGE_URL, DEFAULT_NOT_FOUND_IMAGE_URL, DEFAULT_SERVER_ERROR_IMAGE_URL, DEFAULT_YOU_BLOCKED_IMAGE_URL } from '@@/js/const.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { miLocalStorage } from '@/local-storage.js';
 
@@ -35,6 +35,8 @@ export const serverErrorImageUrl = computed(() => instance.serverErrorImageUrl ?
 export const infoImageUrl = computed(() => instance.infoImageUrl ?? DEFAULT_INFO_IMAGE_URL);
 
 export const notFoundImageUrl = computed(() => instance.notFoundImageUrl ?? DEFAULT_NOT_FOUND_IMAGE_URL);
+
+export const youBlockedImageUrl = computed(() => instance.youBlockedImageUrl ?? DEFAULT_YOU_BLOCKED_IMAGE_URL);
 
 export const isEnabledUrlPreview = computed(() => instance.enableUrlPreview ?? true);
 

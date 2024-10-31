@@ -5334,6 +5334,7 @@ export type components = {
       serverErrorImageUrl: string | null;
       infoImageUrl: string | null;
       notFoundImageUrl: string | null;
+      youBlockedImageUrl: string | null;
       iconUrl: string | null;
       maxNoteTextLength: number;
       ads: {
@@ -5465,6 +5466,7 @@ export type operations = {
             serverErrorImageUrl: string | null;
             infoImageUrl: string | null;
             notFoundImageUrl: string | null;
+            youBlockedImageUrl: string | null;
             iconUrl: string | null;
             app192IconUrl: string | null;
             app512IconUrl: string | null;
@@ -10152,6 +10154,7 @@ export type operations = {
           serverErrorImageUrl?: string | null;
           infoImageUrl?: string | null;
           notFoundImageUrl?: string | null;
+          youBlockedImageUrl?: string | null;
           iconUrl?: string | null;
           app192IconUrl?: string | null;
           app512IconUrl?: string | null;

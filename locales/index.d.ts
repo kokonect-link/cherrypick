@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ブロックされています
+     */
+    "youBlocked": string;
+    /**
+     * {user}さんのフォローやポストの表示はできません。
+     */
+    "youBlockedDescription": ParameterizedString<"user">;
+    /**
      * 予約投稿
      */
     "schedulePost": string;

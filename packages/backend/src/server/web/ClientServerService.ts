@@ -198,6 +198,7 @@ export class ClientServerService {
 			serverErrorImageUrl: meta.serverErrorImageUrl ?? 'https://xn--931a.moe/assets/error.jpg',
 			infoImageUrl: meta.infoImageUrl ?? 'https://xn--931a.moe/assets/info.jpg',
 			notFoundImageUrl: meta.notFoundImageUrl ?? 'https://xn--931a.moe/assets/not-found.jpg',
+			youBlockedImageUrl: meta.youBlockedImageUrl ?? 'https://xn--931a.moe/assets/error.jpg',
 			instanceUrl: this.config.url,
 			metaJson: htmlSafeJsonStringify(await this.metaEntityService.packDetailed(meta)),
 			now: Date.now(),

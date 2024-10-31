@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+youBlocked: "ブロックされています"
+youBlockedDescription: "{user}さんのフォローやポストの表示はできません。"
 schedulePost: "予約投稿"
 schedulePostList: "予約投稿一覧"
 welcomeBackToast: "一定時間が経過した後に接続したときに歓迎メッセージを表示"

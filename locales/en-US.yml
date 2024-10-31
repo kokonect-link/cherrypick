@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+youBlocked: "You’re blocked"
+youBlockedDescription: "You can’t follow or see {user}’s posts."
 schedulePost: "Posting a scheduled note"
 schedulePostList: "List of scheduled notes"
 welcomeBackToast: "Display a welcome message when you log in after a certain period of time"

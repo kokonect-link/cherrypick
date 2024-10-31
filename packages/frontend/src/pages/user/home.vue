@@ -148,11 +148,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div class="contents _gaps">
-				<div v-if="user.pinnedNotes.length > 0" class="_gaps">
+				<div v-if="user.pinnedNotes.length > 0 && !user.isBlocked" class="_gaps">
 					<MkNote v-for="note in user.pinnedNotes" :key="note.id" class="note _panel" :note="note" :pinned="true"/>
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
-				<template v-if="narrow">
+				<template v-if="narrow && !user.isBlocked">
 					<MkLazy>
 						<XFiles :key="user.id" :user="user"/>
 					</MkLazy>
@@ -160,14 +160,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<XActivity :key="user.id" :user="user"/>
 					</MkLazy>
 				</template>
-				<div v-if="!disableNotes">
+				<div v-if="!disableNotes && !user.isBlocked">
 					<MkLazy>
 						<XTimeline :user="user"/>
 					</MkLazy>
 				</div>
+				<div v-if="user.isBlocked" class="_fullinfo">
+					<img :src="youBlockedImageUrl" class="_ghost"/>
+					<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.youBlocked }}</div>
+					<div style="opacity: 0.7">{{ i18n.tsx.youBlockedDescription({ user: `@${ user.username }` }) }}</div>
+				</div>
 			</div>
 		</div>
-		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
+		<div v-if="!narrow && !user.isBlocked" class="sub _gaps" style="container-type: inline-size;">
 			<XFiles :key="user.id" :user="user"/>
 			<XActivity :key="user.id" :user="user"/>
 		</div>
@@ -207,6 +212,7 @@ import { vibrate } from '@/scripts/vibrate.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import { globalEvents } from '@/events.js';
 import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
+import { youBlockedImageUrl } from '@/instance.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);

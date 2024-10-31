@@ -52,7 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-	<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id)" :class="$style.followButton">
+	<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id) && !disableFollowButton" :class="$style.followButton">
 		<MkFollowButton v-if="mainRouter.currentRoute.value.name === 'user'" :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
 	</div>
 </div>
@@ -90,6 +90,7 @@ const props = withDefaults(defineProps<{
 	actions?: PageHeaderItem[] | null;
 	thin?: boolean;
 	displayMyAvatar?: boolean;
+	disableFollowButton?: boolean;
 }>(), {
 	tabs: () => ([] as Tab[]),
 });

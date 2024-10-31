@@ -144,6 +144,10 @@ export const packedMetaLiteSchema = {
 			type: 'string',
 			optional: false, nullable: true,
 		},
+		youBlockedImageUrl: {
+			type: 'string',
+			optional: false, nullable: true,
+		},
 		iconUrl: {
 			type: 'string',
 			optional: false, nullable: true,
