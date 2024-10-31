@@ -36,6 +36,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
 						<div class="actions">
 							<button class="menu _button" @click="menu"><i class="ti ti-dots"></i></button>
+							<button v-if="notesSearchAvailable && (user.host == null || canSearchNonLocalNotes)" v-tooltip="i18n.ts.searchThisUsersNotes" class="menu _button" @click="router.push(`/search?username=${encodeURIComponent(user.username)}${user.host != null ? '&host=' + encodeURIComponent(user.host) : ''}`);"><i class="ti ti-search"></i></button>
+							<button v-tooltip="user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes" class="menu _button" @click="toggleNotify"><i :class="user.notify === 'none' ? 'ti ti-bell-plus' : 'ti ti-bell-minus'"></i></button>
 							<MkFollowButton v-if="$i?.id != user.id" v-model:user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
 						</div>
 					</div>
@@ -204,6 +206,7 @@ import { editNickname } from '@/scripts/edit-nickname.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import { globalEvents } from '@/events.js';
+import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -344,6 +347,15 @@ function resetTimer() {
 	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
 	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+}
+
+async function toggleNotify() {
+	os.apiWithDialog('following/update', {
+		userId: props.user.id,
+		notify: props.user.notify === 'normal' ? 'none' : 'normal',
+	}).then(() => {
+		user.value.notify = user.value.notify === 'normal' ? 'none' : 'normal';
+	});
 }
 
 watch([props.user], () => {
