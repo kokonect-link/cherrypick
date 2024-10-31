@@ -79,6 +79,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### Server
 - Enhance: 노트 편집 제한 완화
   - 1시간에 10번 편집할 수 있던 것을 5분에 10번 편집할 수 있도록 완화함.
+- Enhance: 이모지를 등록할 때 시스템 사용자로 다시 업로드 하도록 변경함 (yojo-art/cherrypick#510)
+  - 이모지를 등록한 사용자가 계정을 삭제하면 이모지도 같이 삭제되기 때문에 변경되었습니다.
 - Fix: 로컬 전용 노트를 편집하면 편집한 노트가 연합될 수 있음 (kokonect-link/cherrypick#519, [libnare/shiftkey@654821da](https://github.com/libnare/shiftkey/commit/654821da003be7471f3c6fc320bf50afcb599d4e))
 
 ---
