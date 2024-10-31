@@ -34,7 +34,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### General
 - Feat: 사용자 메뉴에서 서버를 뮤트할 수 있음 (kokonect-link/cherrypick#502)
   - 이전 빌드에 추가된 기능은 관리자 전용이며, 이 빌드에서 추가된 기능은 일반 사용자용 기능입니다.
-- Feat: 새 노트 알림을 묶어서 표시 (yojo-art/cherrypick#328)
+- Feat: 새 노트 알림을 묶어서 표시할 수 있음 (yojo-art/cherrypick#328)
 - Feat: 노트 게시를 예약할 수 있음 (yojo-art/cherrypick#483, [Type4ny-Project/Type4ny@271c872c](https://github.com/Type4ny-Project/Type4ny/commit/271c872c97f215ef5d8e0be62251dd422a52e5b1))
 
 ### Client
