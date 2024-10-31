@@ -51,7 +51,7 @@ $height: 2ex;
 	overflow: clip;
 	color: #000;
 	margin-top: 5px;
-	padding: 1px 3px 1px 0;
+	padding: 1px 5px 1px 0;
 	text-shadow: /* .866 ≈ sin(60deg) */
 		1px 0 1px #fff,
 		.866px .5px 1px #fff,
