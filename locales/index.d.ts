@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 予約投稿
+     */
+    "schedulePost": string;
+    /**
+     * 予約投稿一覧
+     */
+    "schedulePostList": string;
+    /**
      * 一定時間が経過した後に接続したときに歓迎メッセージを表示
      */
     "welcomeBackToast": string;
@@ -7724,6 +7732,10 @@ export interface Locale extends ILocale {
              */
             "canEditNote": string;
             /**
+             * 予約投稿の最大数
+             */
+            "scheduleNoteMax": string;
+            /**
              * ノート内の最大メンション数
              */
             "mentionMax": string;
@@ -9386,6 +9398,14 @@ export interface Locale extends ILocale {
          * ノートを作成・削除する
          */
         "write:notes": string;
+        /**
+         * 予約投稿を見る
+         */
+        "read:notes-schedule": string;
+        /**
+         * 予約投稿を作成・削除する
+         */
+        "write:notes-schedule": string;
         /**
          * 通知を見る
          */

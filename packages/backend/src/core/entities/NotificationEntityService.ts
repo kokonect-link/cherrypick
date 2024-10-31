@@ -149,7 +149,7 @@ export class NotificationEntityService implements OnModuleInit {
 					return packedUser;
 				}
 
-				return this.userEntityService.pack(notifier, {id: meId});
+				return this.userEntityService.pack(notifier, { id: meId });
 			}))).filter(x => x != null);
 			// if all users have been deleted, don't show this notification
 			if (users.length === 0) {

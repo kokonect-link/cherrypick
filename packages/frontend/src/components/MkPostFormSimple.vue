@@ -88,6 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
 	<MkPollEditor v-if="poll && showForm" v-model="poll" @destroyed="poll = null"/>
 	<MkScheduledNoteDelete v-if="scheduledNoteDelete" v-model="scheduledNoteDelete" @destroyed="scheduledNoteDelete = null"/>
+	<MkScheduleEditor v-if="scheduleNote" v-model="scheduleNote" @destroyed="scheduleNote = null"/>
 	<MkNotePreview v-if="showPreview && showForm && textLength > 0" :class="$style.preview" :text="text" :files="files" :poll="poll ?? undefined" :useCw="useCw" :cw="cw" :user="postAccount ?? $i" :showProfile="showProfilePreview"/>
 	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
@@ -128,6 +129,7 @@ import { toASCII } from 'punycode/';
 import autosize from 'autosize';
 import { host, url } from '@@/js/config.js';
 import { erase, unique } from '@@/js/array.js';
+import type { MenuItem } from '@/types/menu.js';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
 import MkPollEditor, { type PollEditorModelValue } from '@/components/MkPollEditor.vue';
@@ -154,6 +156,8 @@ import XSigninDialog from '@/components/MkSigninDialog.vue';
 import * as sound from '@/scripts/sound.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
 import MkScheduledNoteDelete, { type DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
+import MkScheduleEditor from '@/components/MkScheduleEditor.vue';
+import { listScheduleNotePost } from '@/os.js';
 
 const $i = signinRequired();
 
@@ -171,7 +175,9 @@ const props = withDefaults(defineProps<{
 	initialFiles?: Misskey.entities.DriveFile[];
 	initialLocalOnly?: boolean;
 	initialVisibleUsers?: Misskey.entities.UserDetailed[];
-	initialNote?: Misskey.entities.Note;
+	initialNote?: Misskey.entities.Note & {
+		isSchedule?: boolean,
+	};
 	instant?: boolean;
 	fixed?: boolean;
 	autofocus?: boolean;
@@ -239,6 +245,9 @@ const showingOptions = ref(false);
 const disableRightClick = ref(false);
 const textAreaReadOnly = ref(false);
 const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
+const scheduleNote = ref<{
+	scheduledAt: number | null;
+} | null>(null);
 
 const draftKey = computed((): string => {
 	let key = props.channel ? `channel:${props.channel.id}` : '';
@@ -392,6 +401,7 @@ function watchForDraft() {
 	watch(quoteId, () => saveDraft());
 	watch(reactionAcceptance, () => saveDraft());
 	watch(scheduledNoteDelete, () => saveDraft());
+	watch(scheduleNote, () => saveDraft());
 }
 
 function checkMissingMention() {
@@ -606,6 +616,7 @@ function clear() {
 	poll.value = null;
 	event.value = null;
 	quoteId.value = null;
+	scheduleNote.value = null;
 }
 
 function onKeydown(ev: KeyboardEvent) {
@@ -760,6 +771,7 @@ function saveDraft() {
 			quoteId: quoteId.value,
 			reactionAcceptance: reactionAcceptance.value,
 			scheduledNoteDelete: scheduledNoteDelete.value,
+			scheduleNote: scheduleNote.value,
 		},
 	};
 
@@ -877,6 +889,7 @@ async function post(ev?: MouseEvent) {
 		disableRightClick: disableRightClick.value,
 		noteId: props.updateMode ? props.initialNote?.id : undefined,
 		scheduledDelete: scheduledNoteDelete.value,
+		scheduleNote: scheduleNote.value ?? undefined,
 	};
 
 	if (withHashtags.value && hashtags.value && hashtags.value.trim() !== '') {
@@ -913,7 +926,7 @@ async function post(ev?: MouseEvent) {
 	}
 
 	posting.value = true;
-	misskeyApi(props.updateMode ? 'notes/update' : 'notes/create', postData, token).then(() => {
+	misskeyApi(props.updateMode ? 'notes/update' : (postData.scheduleNote ? 'notes/schedule/create' : 'notes/create'), postData, token).then(() => {
 		if (props.freezeAfterPosted) {
 			posted.value = true;
 		} else {
@@ -939,6 +952,8 @@ async function post(ev?: MouseEvent) {
 			if (notesCount === 1) {
 				claimAchievement('notes1');
 			}
+
+			poll.value = null;
 
 			const text = postData.text ?? '';
 			const lowerCase = text.toLowerCase();
@@ -1137,13 +1152,40 @@ function toggleScheduledNoteDelete() {
 	}
 }
 
+function toggleScheduleNote() {
+	if (scheduleNote.value) scheduleNote.value = null;
+	else {
+		scheduleNote.value = {
+			scheduledAt: null,
+		};
+	}
+}
+
 function showOtherMenu(ev: MouseEvent) {
-	os.popupMenu([{
+	const menuItems: MenuItem[] = [];
+
+	menuItems.push({
 		type: 'button',
 		text: i18n.ts.event,
 		icon: 'ti ti-calendar',
 		action: toggleEvent,
-	}, {
+	});
+
+	if ($i.policies.scheduleNoteMax > 0) {
+		menuItems.push({
+			type: 'button',
+			text: i18n.ts.schedulePost,
+			icon: 'ti ti-calendar-time',
+			action: toggleScheduleNote,
+		}, {
+			type: 'button',
+			text: i18n.ts.schedulePostList,
+			icon: 'ti ti-calendar-event',
+			action: listScheduleNotePost,
+		});
+	}
+
+	menuItems.push({
 		type: 'button',
 		text: i18n.ts.scheduledNoteDelete,
 		icon: 'ti ti-clock-hour-9',
@@ -1153,7 +1195,9 @@ function showOtherMenu(ev: MouseEvent) {
 		text: i18n.ts.disableRightClick,
 		icon: 'ti ti-mouse-off',
 		ref: disableRightClick,
-	}], ev.currentTarget ?? ev.target);
+	});
+
+	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 }
 
 onMounted(() => {
@@ -1237,6 +1281,11 @@ onMounted(() => {
 				scheduledNoteDelete.value = {
 					deleteAt: init.deletedAt ? (new Date(init.deletedAt)).getTime() : null,
 					deleteAfter: null,
+				};
+			}
+			if (init.isSchedule) {
+				scheduleNote.value = {
+					scheduledAt: new Date(init.createdAt).getTime(),
 				};
 			}
 		}
