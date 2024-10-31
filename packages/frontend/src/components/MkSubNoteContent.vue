@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:enableEmojiMenuReaction="!!$i"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
+		<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage && !note.isSchedule" style="padding-top: 5px; color: var(--accent);">
 			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 			<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 		</div>
@@ -161,7 +161,10 @@ import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
 
 const props = withDefaults(defineProps<{
-  note: Misskey.entities.Note;
+  note: Misskey.entities.Note & {
+		isSchedule? : boolean,
+		scheduledNoteId?: string
+	};
   mock?: boolean;
   showSubNoteFooterButton?: boolean;
 }>(), {
