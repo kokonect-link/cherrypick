@@ -525,6 +525,13 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 					const federationChildMenu = [] as MenuItem[];
 
 					federationChildMenu.push({
+						icon: 'ti ti-server',
+						text: i18n.ts.instanceInfo,
+						action: () => {
+							if (user.host == null) return;
+							router.push(`/instance-info/${user.host}`);
+						},
+					}, {
 						type: 'switch',
 						text: i18n.ts.blockThisInstance,
 						ref: isAdminInstanceBlocked,
@@ -555,6 +562,13 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 					const federationChildMenu = [] as MenuItem[];
 
 					federationChildMenu.push({
+						icon: 'ti ti-server',
+						text: i18n.ts.instanceInfo,
+						action: () => {
+							if (user.host == null) return;
+							router.push(`/instance-info/${user.host}`);
+						},
+					}, {
 						type: 'switch',
 						text: i18n.ts.instanceMute,
 						ref: isInstanceMuted,
