@@ -1172,7 +1172,7 @@ function showOtherMenu(ev: MouseEvent) {
 	});
 
 	if ($i.policies.scheduleNoteMax > 0) {
-		menuItems.push({
+		menuItems.push({ type: 'divider' }, {
 			type: 'button',
 			text: i18n.ts.schedulePost,
 			icon: 'ti ti-calendar-time',
