@@ -47,7 +47,7 @@ $height: 2ex;
 	cursor: pointer;
 	align-items: center;
 	height: $height;
-	border-radius: .3rem;
+	border-radius: .5rem;
 	overflow: clip;
 	color: #000;
 	margin-top: 5px;
