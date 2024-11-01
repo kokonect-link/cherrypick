@@ -176,7 +176,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { deepClone } from '@/scripts/clone.js';
-import { signinRequired } from '@/account.js';
+import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { userPage } from '@/filters/user.js';
@@ -186,8 +186,6 @@ import { reactionPicker } from '@/scripts/reaction-picker.js';
 import { confetti } from '@/scripts/confetti.js';
 import { defaultStore } from '@/store.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
-
-const $i = signinRequired();
 
 const props = defineProps<{
 	game: Misskey.entities.ReversiGameDetailed;
@@ -210,14 +208,14 @@ const engine = shallowRef<Reversi.Game>(Reversi.Serializer.restoreGame({
 }));
 
 const iAmPlayer = computed(() => {
-	return game.value.user1Id === $i.id || game.value.user2Id === $i.id;
+	return game.value.user1Id === $i?.id || game.value.user2Id === $i?.id;
 });
 
 // true: 黒, false: 白
 const myColor = computed(() => {
 	if (!iAmPlayer.value) return null;
-	if (game.value.user1Id === $i.id && game.value.black === 1) return true;
-	if (game.value.user2Id === $i.id && game.value.black === 2) return true;
+	if (game.value.user1Id === $i?.id && game.value.black === 1) return true;
+	if (game.value.user2Id === $i?.id && game.value.black === 2) return true;
 	return false;
 });
 
@@ -248,7 +246,7 @@ const isMyTurn = computed(() => {
 	if (!iAmPlayer.value) return false;
 	const u = turnUser.value;
 	if (u == null) return false;
-	return u.id === $i.id;
+	return u.id === $i?.id;
 });
 
 const cellsStyle = computed(() => {
@@ -394,7 +392,7 @@ async function onStreamLog(log) {
 function onStreamEnded(x) {
 	game.value = deepClone(x.game);
 
-	if (game.value.winnerId === $i.id) {
+	if (game.value.winnerId === $i?.id) {
 		confetti({
 			duration: 1000 * 3,
 		});
@@ -568,7 +566,7 @@ function sendReaction(emojiKey: string) {
 function onReacted(payload: Parameters<Misskey.Channels['reversiGame']['events']['reacted']>['0']) {
 	const { userId, reaction } = payload;
 
-	if (showReaction.value || userId === $i.id) {
+	if (showReaction.value || userId === $i?.id) {
 		sound.playMisskeySfx('reaction');
 
 		const el = (userId === blackUser.value.id) ? blackUserEl.value : whiteUserEl.value;
@@ -586,7 +584,7 @@ function onReacted(payload: Parameters<Misskey.Channels['reversiGame']['events']
 		}
 	}
 
-	if (userId === $i.id) {
+	if (userId === $i?.id) {
 		// リアクションが可能になるまでのタイマー
 		window.setTimeout(() => {
 			if (canReactFallbackTimer != null) {

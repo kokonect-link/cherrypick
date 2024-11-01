@@ -84,6 +84,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 캡션이 설정된 이미지 위에 마우스 커서를 올려도 캡션이 표시되지 않음 (kokonect-link/cherrypick#514)
 - Fix: 코드 편집기의 커서 위치가 올바르게 표시되지 않을 수 있음 (kokonect-link/cherrypick#520)
 - Fix: 투표 기한을 `기간 지정`으로 설정한 경우 투표가 즉시 종료될 수 있음 (kokonect-link/cherrypick#523)
+- Fix: 로그인하지 않은 사용자가 리버시 전적을 볼 수 없음 (yojo-art/cherrypick#404)
 
 ### Server
 - Enhance: 노트 편집 제한 완화

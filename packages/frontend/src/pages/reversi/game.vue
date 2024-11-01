@@ -19,12 +19,10 @@ import GameBoard from './game.board.vue';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { useStream } from '@/stream.js';
-import { signinRequired } from '@/account.js';
+import { $i } from '@/account.js';
 import { useRouter } from '@/router/supplier.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-
-const $i = signinRequired();
 
 const router = useRouter();
 
@@ -74,7 +72,7 @@ async function fetchGame() {
 		connection.value.on('canceled', x => {
 			connection.value?.dispose();
 
-			if (x.userId !== $i.id) {
+			if (x.userId !== $i?.id) {
 				os.alert({
 					type: 'warning',
 					text: i18n.ts._reversi.gameCanceled,
