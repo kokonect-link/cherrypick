@@ -198,8 +198,27 @@ function get(): Misskey.entities.Note['event'] {
 	};
 }
 
-watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, organizer, organizerLink, audience, language,
-							ageRange, ticketsUrl, isFree, price, availabilityStart, availabilityEnd, keywords], () => emit('update:modelValue', get()), {
+watch([
+	title,
+	startDate,
+	startTime,
+	endDate,
+	endTime,
+	location,
+	url,
+	doorTime,
+	organizer,
+	organizerLink,
+	audience,
+	language,
+	ageRange,
+	ticketsUrl,
+	isFree,
+	price,
+	availabilityStart,
+	availabilityEnd,
+	keywords
+], () => emit('update:modelValue', get()), {
 	deep: true,
 });
 </script>
