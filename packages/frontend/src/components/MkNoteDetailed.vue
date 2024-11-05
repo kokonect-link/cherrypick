@@ -115,7 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:enableEmojiMenuReaction="!!$i"
 				/>
 				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
-				<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
+				<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--MI_THEME-accent);">
 					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click="translate()">{{ i18n.ts.translateNote }}</button>
 					<button v-else class="_button" @click="translation = null">{{ i18n.ts.close }}</button>
 				</div>
@@ -140,7 +140,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-if="viewTextSource">
 					<hr style="margin: 10px 0;">
 					<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
-					<button class="_button" style="padding-top: 5px; color: var(--accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+					<button class="_button" style="padding-top: 5px; color: var(--MI_THEME-accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 				</div>
 				<div v-if="appearNote.files && appearNote.files.length > 0">
 					<MkMediaList v-if="appearNote.disableRightClick" ref="galleryEl" :mediaList="appearNote.files" @contextmenu.prevent/>
@@ -194,8 +194,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-heart"></i>
 			</button>
 			<button v-if="defaultStore.state.showDoReactionButtonInNoteFooter" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="appearNote.reactionAcceptance === 'likeOnly' && appearNote.myReaction != null ? i18n.ts.unlike : appearNote.myReaction != null ? i18n.ts.editReaction : appearNote.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.noteFooterButton" class="_button" @click.stop="toggleReact()">
-				<i v-if="appearNote.reactionAcceptance === 'likeOnly' && appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--love);"></i>
-				<i v-else-if="appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--accent);"></i>
+				<i v-if="appearNote.reactionAcceptance === 'likeOnly' && appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--MI_THEME-love);"></i>
+				<i v-else-if="appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--MI_THEME-accent);"></i>
 				<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
 				<i v-else class="ti ti-mood-plus"></i>
 				<p v-if="(appearNote.reactionAcceptance === 'likeOnly' || defaultStore.state.showReactionsCount) && appearNote.reactionCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.reactionCount) }}</p>
@@ -802,8 +802,8 @@ function showOnRemote() {
 			margin: auto;
 			width: calc(100% - 8px);
 			height: calc(100% - 8px);
-			border: dashed 2px var(--focus);
-			border-radius: var(--radius);
+			border: dashed 2px var(--MI_THEME-focus);
+			border-radius: var(--MI-radius);
 			box-sizing: border-box;
 		}
 	}
@@ -829,7 +829,7 @@ function showOnRemote() {
 	padding: 16px 32px 8px 32px;
 	line-height: 28px;
 	white-space: pre;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 }
 
 .renoteAvatar {
@@ -839,7 +839,7 @@ function showOnRemote() {
 	height: 28px;
 	margin: 0 8px 0 0;
 	border-radius: 6px;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .renoteText {
@@ -854,7 +854,7 @@ function showOnRemote() {
 	text-decoration: none;
 
 	&:hover {
-		color: var(--renoteHover);
+		color: var(--MI_THEME-renoteHover);
 		text-decoration: none;
 	}
 }
@@ -898,7 +898,7 @@ function showOnRemote() {
 	flex-shrink: 0;
 	width: 58px;
 	height: 58px;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .noteHeaderBody {
@@ -925,7 +925,7 @@ function showOnRemote() {
   }
 
 	&:hover {
-		color: var(--nameHover);
+		color: var(--MI_THEME-nameHover);
 		text-decoration: none;
 	}
 }
@@ -936,7 +936,7 @@ function showOnRemote() {
 	padding: 4px 6px;
 	font-size: 80%;
 	line-height: 1;
-	border: solid 0.5px var(--divider);
+	border: solid 0.5px var(--MI_THEME-divider);
 	border-radius: 4px;
 }
 
@@ -973,19 +973,19 @@ function showOnRemote() {
 }
 
 .noteReplyTarget {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 	margin-right: 0.5em;
 }
 
 .rn {
 	margin-left: 4px;
 	font-style: oblique;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 }
 
 .translation {
-	border: solid 0.5px var(--divider);
-	border-radius: var(--radius);
+	border: solid 0.5px var(--MI_THEME-divider);
+	border-radius: var(--MI-radius);
 	padding: 12px;
 	margin-top: 8px;
 }
@@ -1000,7 +1000,7 @@ function showOnRemote() {
 
 .quoteNote {
 	padding: 24px;
-	border: solid 1px var(--renote);
+	border: solid 1px var(--MI_THEME-renote);
 	border-radius: 8px;
 	overflow: clip;
 }
@@ -1026,7 +1026,7 @@ function showOnRemote() {
 	}
 
 	&:hover {
-		color: var(--fgHighlighted);
+		color: var(--MI_THEME-fgHighlighted);
 	}
 }
 
@@ -1036,17 +1036,17 @@ function showOnRemote() {
 	opacity: 0.7;
 
 	&.reacted {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 }
 
 .reply:not(:first-child) {
-	border-top: solid 0.5px var(--divider);
+	border-top: solid 0.5px var(--MI_THEME-divider);
 }
 
 .tabs {
-	border-top: solid 0.5px var(--divider);
-	border-bottom: solid 0.5px var(--divider);
+	border-top: solid 0.5px var(--MI_THEME-divider);
+	border-bottom: solid 0.5px var(--MI_THEME-divider);
 	display: flex;
 }
 
@@ -1058,7 +1058,7 @@ function showOnRemote() {
 }
 
 .tabActive {
-	border-bottom: solid 2px var(--accent);
+	border-bottom: solid 2px var(--MI_THEME-accent);
 }
 
 .tab_renotes {
@@ -1081,15 +1081,15 @@ function showOnRemote() {
 
 .reactionTab {
 	padding: 0 12px;
-	border: solid 1px var(--divider);
+	border: solid 1px var(--MI_THEME-divider);
 	border-radius: 999px;
 	height: 30px;
 }
 
 .reactionTabActive {
-	background: var(--accentedBg);
-	color: var(--accent);
-	box-shadow: 0 0 0 1px var(--accent) inset;
+	background: var(--MI_THEME-accentedBg);
+	color: var(--MI_THEME-accent);
+	box-shadow: 0 0 0 1px var(--MI_THEME-accent) inset;
 }
 
 .time {
@@ -1101,7 +1101,7 @@ function showOnRemote() {
 }
 
 .danger {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 @container (max-width: 500px) {

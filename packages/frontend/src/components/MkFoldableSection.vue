@@ -95,7 +95,7 @@ function afterLeave(element: Element) {
 
 onMounted(() => {
 	function getParentBg(el?: HTMLElement | null): string {
-		if (el == null || el.tagName === 'BODY') return 'var(--bg)';
+		if (el == null || el.tagName === 'BODY') return 'var(--MI_THEME-bg)';
 		const background = el.style.background || el.style.backgroundColor;
 		if (background) {
 			return background;
@@ -134,9 +134,9 @@ onMounted(() => {
 	position: relative;
 	z-index: 10;
 	position: sticky;
-	top: var(--stickyTop, 0px);
-	-webkit-backdrop-filter: var(--blur, blur(8px));
-	backdrop-filter: var(--blur, blur(20px));
+	top: var(--MI-stickyTop, 0px);
+	-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+	backdrop-filter: var(--MI-blur, blur(20px));
 	transition: opacity 0.5s, transform 0.5s;
 
 	&.reduceAnimation {
@@ -159,7 +159,7 @@ onMounted(() => {
 	flex: 1;
 	margin: auto;
 	height: 1px;
-	background: var(--divider);
+	background: var(--MI_THEME-divider);
 }
 
 .button {

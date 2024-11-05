@@ -15,21 +15,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span v-if="item.icon" class="icon"><i :class="item.icon" class="ti-fw"></i></span>
 						<span class="text">{{ item.text }}</span>
 					</span>
-					<span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicated" class="itemIndicator _blink"><i class="_indicatorCircle"></i></span>
 				</a>
 				<button v-else-if="item.type === 'button'" class="_button item" :class="{ danger: item.danger, active: item.active }" :disabled="item.active" @click="ev => item.action(ev)">
 					<span>
 						<span v-if="item.icon" class="icon"><i :class="item.icon" class="ti-fw"></i></span>
 						<span class="text">{{ item.text }}</span>
 					</span>
-					<span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicated" class="itemIndicator _blink"><i class="_indicatorCircle"></i></span>
 				</button>
 				<MkA v-else :to="item.to" class="_button item" :class="{ danger: item.danger, active: item.active }">
 					<span>
 						<span v-if="item.icon" class="icon"><i :class="item.icon" class="ti-fw"></i></span>
 						<span class="text">{{ item.text }}</span>
 					</span>
-					<span v-if="item.indicated" class="itemIndicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="item.indicated" class="itemIndicator _blink"><i class="_indicatorCircle"></i></span>
 				</MkA>
 			</template>
 		</div>
@@ -52,7 +52,7 @@ defineProps<{
 		& + .group {
 			margin-top: 16px;
 			padding-top: 16px;
-			border-top: solid 0.5px var(--divider);
+			border-top: solid 0.5px var(--MI_THEME-divider);
 		}
 
 		> .title {
@@ -74,7 +74,7 @@ defineProps<{
 
 				&:hover {
 					text-decoration: none;
-					background: var(--panelHighlight);
+					background: var(--MI_THEME-panelHighlight);
 				}
 
 				&:focus-visible {
@@ -82,12 +82,12 @@ defineProps<{
 				}
 
 				&.active {
-					color: var(--accent);
-					background: var(--accentedBg);
+					color: var(--MI_THEME-accent);
+					background: var(--MI_THEME-accentedBg);
 				}
 
 				&.danger {
-					color: var(--error);
+					color: var(--MI_THEME-error);
 				}
 
 				> span {
@@ -112,7 +112,7 @@ defineProps<{
           position: relative;
 					top: -10px;
           left: -72.5px;
-          color: var(--navIndicator);
+          color: var(--MI_THEME-navIndicator);
           font-size: 8px;
           animation: blink 1s infinite;
         }
@@ -150,11 +150,11 @@ defineProps<{
 					&:hover {
 						text-decoration: none;
 						background: none;
-						color: var(--accent);
+						color: var(--MI_THEME-accent);
 
 						> span {
 							> .icon {
-								background: var(--accentedBg);
+								background: var(--MI_THEME-accentedBg);
 							}
 						}
 					}
@@ -171,7 +171,7 @@ defineProps<{
 							width: 60px;
 							height: 60px;
 							aspect-ratio: 1;
-							background: var(--panel);
+							background: var(--MI_THEME-panel);
 							border-radius: 100%;
 						}
 

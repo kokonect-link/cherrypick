@@ -109,7 +109,7 @@ const headerTabs = computed(() => [{
 
 <style module lang="scss">
 .notifications {
-	border-radius: var(--radius);
+	border-radius: var(--MI-radius);
 	overflow: clip;
 }
 </style>

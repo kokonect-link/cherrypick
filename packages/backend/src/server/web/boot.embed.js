@@ -156,7 +156,7 @@
 			box-sizing: border-box;
 			overflow: hidden;
 
-			border-radius: var(--radius, 12px);
+			border-radius: var(--MI-radius, 12px);
 			border: 1px solid rgba(231, 255, 251, 0.14);
 		}
 
@@ -168,7 +168,7 @@
 			width: 100%;
 			height: 100%;
 			background: #192320;
-			border-radius: var(--radius, 12px);
+			border-radius: var(--MI-radius, 12px);
 			z-index: -1;
 		}
 

@@ -643,6 +643,24 @@ export type paths = {
      */
     post: operations['admin___resolve-abuse-user-report'];
   };
+  '/admin/forward-abuse-user-report': {
+    /**
+     * admin/forward-abuse-user-report
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
+     */
+    post: operations['admin___forward-abuse-user-report'];
+  };
+  '/admin/update-abuse-user-report': {
+    /**
+     * admin/update-abuse-user-report
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
+     */
+    post: operations['admin___update-abuse-user-report'];
+  };
   '/admin/send-email': {
     /**
      * admin/send-email
@@ -4095,16 +4113,13 @@ export type components = {
       followingVisibility: 'public' | 'followers' | 'private';
       /** @enum {string} */
       followersVisibility: 'public' | 'followers' | 'private';
-      /** @default false */
-      twoFactorEnabled: boolean;
-      /** @default false */
-      usePasswordLessLogin: boolean;
-      /** @default false */
-      securityKeys: boolean;
       roles: components['schemas']['RoleLite'][];
       followedMessage?: string | null;
       memo: string | null;
       moderationNote?: string;
+      twoFactorEnabled?: boolean;
+      usePasswordLessLogin?: boolean;
+      securityKeys?: boolean;
       isFollowing?: boolean;
       isFollowed?: boolean;
       hasPendingFollowRequestFromYou?: boolean;
@@ -4295,6 +4310,12 @@ export type components = {
         }[];
       loggedInDays: number;
       policies: components['schemas']['RolePolicies'];
+      /** @default false */
+      twoFactorEnabled: boolean;
+      /** @default false */
+      usePasswordLessLogin: boolean;
+      /** @default false */
+      securityKeys: boolean;
       email?: string | null;
       emailVerified?: boolean | null;
       securityKeysList?: {
@@ -4656,7 +4677,14 @@ export type components = {
       exportedEntity: 'antenna' | 'blocking' | 'clip' | 'customEmoji' | 'favorite' | 'following' | 'muting' | 'note' | 'userList';
       /** Format: id */
       fileId: string;
-    }) | ({
+    }) | {
+      /** Format: id */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** @enum {string} */
+      type: 'login';
+    } | ({
       /** Format: id */
       id: string;
       /** Format: date-time */
@@ -5327,6 +5355,7 @@ export type components = {
       recaptchaSiteKey: string | null;
       enableTurnstile: boolean;
       turnstileSiteKey: string | null;
+      enableTestcaptcha: boolean;
       swPublickey: string | null;
       /** @default /assets/ai.png */
       mascotImageUrl: string;
@@ -5404,7 +5433,7 @@ export type components = {
       latestSentAt: string | null;
       latestStatus: number | null;
       name: string;
-      on: ('abuseReport' | 'abuseReportResolved' | 'userCreated')[];
+      on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
       url: string;
       secret: string;
     };
@@ -5459,6 +5488,7 @@ export type operations = {
             recaptchaSiteKey: string | null;
             enableTurnstile: boolean;
             turnstileSiteKey: string | null;
+            enableTestcaptcha: boolean;
             swPublickey: string | null;
             /** @default /assets/ai.png */
             mascotImageUrl: string | null;
@@ -5481,6 +5511,7 @@ export type operations = {
             blockedHosts: string[];
             sensitiveWords: string[];
             prohibitedWords: string[];
+            prohibitedWordsForNameOfUser: string[];
             bannedEmailDomains?: string[];
             preservedUsernames: string[];
             hcaptchaSecretKey: string | null;
@@ -5533,6 +5564,7 @@ export type operations = {
             truemailAuthKey: string | null;
             enableChartsForRemoteUser: boolean;
             enableChartsForFederatedInstances: boolean;
+            enableStatsForFederatedInstances: boolean;
             enableServerMachineStats: boolean;
             enableIdenticonGeneration: boolean;
             manifestJsonOverride: string;
@@ -5895,8 +5927,6 @@ export type operations = {
            * @enum {string}
            */
           targetUserOrigin?: 'combined' | 'local' | 'remote';
-          /** @default false */
-          forwarded?: boolean;
         };
       };
     };
@@ -5923,7 +5953,11 @@ export type operations = {
               assigneeId: string | null;
               reporter: components['schemas']['UserDetailedNotMe'];
               targetUser: components['schemas']['UserDetailedNotMe'];
-              assignee?: components['schemas']['UserDetailedNotMe'] | null;
+              assignee: components['schemas']['UserDetailedNotMe'] | null;
+              forwarded: boolean;
+              /** @enum {string|null} */
+              resolvedAs: 'accept' | 'reject' | null;
+              moderationNote: string;
             })[];
         };
       };
@@ -6257,6 +6291,7 @@ export type operations = {
         'application/json': {
           username: string;
           password: string;
+          setupPassword?: string | null;
         };
       };
     };
@@ -9498,8 +9533,113 @@ export type operations = {
         'application/json': {
           /** Format: misskey:id */
           reportId: string;
-          /** @default false */
-          forward?: boolean;
+          /** @enum {string|null} */
+          resolvedAs?: 'accept' | 'reject' | null;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/forward-abuse-user-report
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
+   */
+  'admin___forward-abuse-user-report': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          reportId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (without any results) */
+      204: {
+        content: never;
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/update-abuse-user-report
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:resolve-abuse-user-report*
+   */
+  'admin___update-abuse-user-report': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          reportId: string;
+          moderationNote?: string;
         };
       };
     };
@@ -10148,6 +10288,7 @@ export type operations = {
           blockedHosts?: string[] | null;
           sensitiveWords?: string[] | null;
           prohibitedWords?: string[] | null;
+          prohibitedWordsForNameOfUser?: string[] | null;
           themeColor?: string | null;
           mascotImageUrl?: string | null;
           bannerUrl?: string | null;
@@ -10181,6 +10322,7 @@ export type operations = {
           enableTurnstile?: boolean;
           turnstileSiteKey?: string | null;
           turnstileSecretKey?: string | null;
+          enableTestcaptcha?: boolean;
           /** @enum {string} */
           sensitiveMediaDetection?: 'none' | 'all' | 'local' | 'remote';
           /** @enum {string} */
@@ -10251,6 +10393,7 @@ export type operations = {
           truemailAuthKey?: string | null;
           enableChartsForRemoteUser?: boolean;
           enableChartsForFederatedInstances?: boolean;
+          enableStatsForFederatedInstances?: boolean;
           enableServerMachineStats?: boolean;
           enableIdenticonGeneration?: boolean;
           serverRules?: string[];
@@ -10958,7 +11101,7 @@ export type operations = {
         'application/json': {
           isActive: boolean;
           name: string;
-          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated')[];
+          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
           url: string;
           secret: string;
         };
@@ -11068,7 +11211,7 @@ export type operations = {
       content: {
         'application/json': {
           isActive?: boolean;
-          on?: ('abuseReport' | 'abuseReportResolved' | 'userCreated')[];
+          on?: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
         };
       };
     };
@@ -11181,7 +11324,7 @@ export type operations = {
           id: string;
           isActive: boolean;
           name: string;
-          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated')[];
+          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
           url: string;
           secret: string;
         };
@@ -11240,7 +11383,7 @@ export type operations = {
           /** Format: misskey:id */
           webhookId: string;
           /** @enum {string} */
-          type: 'abuseReport' | 'abuseReportResolved' | 'userCreated';
+          type: 'abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged';
           override?: {
             url?: string;
             secret?: string;
@@ -19406,8 +19549,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'app' | 'test' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'app' | 'test' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'app' | 'test' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'app' | 'test' | 'pollVote')[];
         };
       };
     };
@@ -19474,8 +19617,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
         };
       };
     };
@@ -25476,6 +25619,16 @@ export type operations = {
    * **Credential required**: *No*
    */
   flash___featured: {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @default 0 */
+          offset?: number;
+          /** @default 10 */
+          limit?: number;
+        };
+      };
+    };
     responses: {
       /** @description OK (with results) */
       200: {

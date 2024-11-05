@@ -126,13 +126,13 @@ async function editScheduleNote() {
 	margin: 0;
 	padding: 0;
 	font-size: 0.95em;
-	border-bottom: solid 0.5px var(--divider);
+	border-bottom: solid 0.5px var(--MI_THEME-divider);
 	-webkit-tap-highlight-color: transparent;
 }
 
 .button{
-	margin-right: var(--margin);
-	margin-bottom: var(--margin);
+	margin-right: var(--MI-margin);
+	margin-bottom: var(--MI-margin);
 }
 
 .avatar {
@@ -143,9 +143,9 @@ async function editScheduleNote() {
 	height: 34px;
 	border-radius: 8px;
 	position: sticky !important;
-	top: calc(16px + var(--stickyTop, 0px));
+	top: calc(16px + var(--MI-stickyTop, 0px));
 	left: 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .main {

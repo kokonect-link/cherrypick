@@ -29,6 +29,6 @@ defineProps<{
 }
 
 .reduceBlurEffect {
-	background: var(--panel) !important;
+	background: var(--MI_THEME-panel) !important;
 }
 </style>

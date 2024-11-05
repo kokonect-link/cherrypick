@@ -422,6 +422,6 @@ definePageMetadata(() => ({
 <style lang="scss" module>
 .subCaption {
 	font-size: 0.85em;
-	color: var(--fgTransparentWeak);
+	color: var(--MI_THEME-fgTransparentWeak);
 }
 </style>

@@ -87,12 +87,12 @@ function donateCherryPick(ev: MouseEvent) {
 .root {
 	position: fixed;
 	z-index: v-bind(zIndex);
-	bottom: var(--margin);
+	bottom: var(--MI-margin);
 	left: 0;
 	right: 0;
 	margin: auto;
 	box-sizing: border-box;
-	width: calc(100% - (var(--margin) * 2));
+	width: calc(100% - (var(--MI-margin) * 2));
 	max-width: 500px;
 	display: flex;
 }
@@ -101,7 +101,7 @@ function donateCherryPick(ev: MouseEvent) {
 	text-align: center;
 	padding-top: 25px;
 	width: 100px;
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 @media (max-width: 500px) {
 	.icon {

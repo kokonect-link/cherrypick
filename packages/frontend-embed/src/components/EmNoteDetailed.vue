@@ -228,8 +228,8 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 			margin: auto;
 			width: calc(100% - 8px);
 			height: calc(100% - 8px);
-			border: dashed 2px var(--focus);
-			border-radius: var(--radius);
+			border: dashed 2px var(--MI_THEME-focus);
+			border-radius: var(--MI-radius);
 			box-sizing: border-box;
 		}
 	}
@@ -246,7 +246,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	padding: 16px 32px 8px 32px;
 	line-height: 28px;
 	white-space: pre;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 }
 
 .renoteAvatar {
@@ -256,7 +256,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	height: 28px;
 	margin: 0 8px 0 0;
 	border-radius: 6px;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .renoteText {
@@ -271,7 +271,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	text-decoration: none;
 
 	&:hover {
-		color: var(--renoteHover);
+		color: var(--MI_THEME-renoteHover);
 		text-decoration: none;
 	}
 }
@@ -315,7 +315,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	flex-shrink: 0;
 	width: 58px;
 	height: 58px;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .noteHeaderBody {
@@ -348,7 +348,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	}
 
 	&:hover {
-		color: var(--nameHover);
+		color: var(--MI_THEME-nameHover);
 		text-decoration: none;
 	}
 }
@@ -359,7 +359,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	padding: 4px 6px;
 	font-size: 80%;
 	line-height: 1;
-	border: solid 0.5px var(--divider);
+	border: solid 0.5px var(--MI_THEME-divider);
 	border-radius: 4px;
 }
 
@@ -407,14 +407,14 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 }
 
 .noteReplyTarget {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 	margin-right: 0.5em;
 }
 
 .rn {
 	margin-left: 4px;
 	font-style: oblique;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 }
 
 .reactionOmitted {
@@ -434,7 +434,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 
 .quoteNote {
 	padding: 24px;
-	border: solid 1px var(--renote);
+	border: solid 1px var(--MI_THEME-renote);
 	border-radius: 8px;
 	overflow: clip;
 }
@@ -448,12 +448,12 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	width: 100%;
 	margin-top: 14px;
 	position: sticky;
-	bottom: calc(var(--stickyBottom, 0px) + 14px);
+	bottom: calc(var(--MI-stickyBottom, 0px) + 14px);
 }
 
 .showLessLabel {
 	display: inline-block;
-	background: var(--popup);
+	background: var(--MI_THEME-popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
@@ -474,16 +474,16 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	z-index: 2;
 	width: 100%;
 	height: 64px;
-	background: linear-gradient(0deg, var(--panel), color(from var(--panel) srgb r g b / 0));
+	background: linear-gradient(0deg, var(--MI_THEME-panel), color(from var(--MI_THEME-X15) srgb r g b / 0));
 
 	&:hover > .collapsedLabel {
-		background: var(--panelHighlight);
+		background: var(--MI_THEME-panelHighlight);
 	}
 }
 
 .collapsedLabel {
 	display: inline-block;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
@@ -506,7 +506,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	}
 
 	&:hover {
-		color: var(--fgHighlighted);
+		color: var(--MI_THEME-fgHighlighted);
 	}
 }
 
@@ -522,7 +522,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 	opacity: 0.7;
 
 	&.reacted {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 }
 

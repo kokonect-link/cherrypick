@@ -69,8 +69,8 @@ defineProps<{
 	z-index: 2;
 	width: 58px;
 	height: 58px;
-	border: solid 4px var(--panel);
-	background: var(--panel);
+	border: solid 4px var(--MI_THEME-panel);
+	background: var(--MI_THEME-panel);
 }
 
 .title {
@@ -91,7 +91,7 @@ defineProps<{
 	margin: 0;
 	line-height: 16px;
 	font-size: 0.8em;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 	opacity: 0.7;
 }
 
@@ -109,7 +109,7 @@ defineProps<{
 .description {
 	padding: 16px;
 	font-size: 0.8em;
-	border-top: solid 0.5px var(--divider);
+	border-top: solid 0.5px var(--MI_THEME-divider);
 }
 
 .mfm {
@@ -121,7 +121,7 @@ defineProps<{
 
 .status {
 	padding: 10px 16px;
-	border-top: solid 0.5px var(--divider);
+	border-top: solid 0.5px var(--MI_THEME-divider);
 }
 
 .statusItem {
@@ -132,12 +132,12 @@ defineProps<{
 .statusItemLabel {
 	margin: 0;
 	font-size: 0.7em;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 }
 
 .statusItemValue {
 	font-size: 1em;
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 .follow {

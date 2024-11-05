@@ -281,10 +281,10 @@ onUnmounted(() => {
 	overflow: hidden;
 	top: 2.5px;
 	right: 2px;
-	background-color: var(--bg);
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	color: var(--accent);
+	background-color: var(--MI_THEME-bg);
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
+	color: var(--MI_THEME-accent);
 	font-size: 1em;
 	padding: 2px 4px;
 	text-align: center;

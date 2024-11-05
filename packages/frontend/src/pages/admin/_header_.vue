@@ -136,7 +136,7 @@ function goBack() {
 }
 
 const calcBg = () => {
-	const rawBg = pageMetadata.value?.bg ?? 'var(--bg)';
+	const rawBg = pageMetadata.value?.bg ?? 'var(--MI_THEME-bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	if (isMobile.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
@@ -174,15 +174,15 @@ onUnmounted(() => {
 	--height: 60px;
 	display: flex;
 	width: 100%;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
 
 	> .buttons {
-		--margin: 8px;
+		--MI-margin: 8px;
 		display: flex;
     align-items: center;
 		height: var(--height);
-		margin: 0 var(--margin);
+		margin: 0 var(--MI-margin);
 
 		&.left {
 			margin-right: auto;
@@ -200,8 +200,8 @@ onUnmounted(() => {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			height: calc(var(--height) - (var(--margin) * 2));
-			width: calc(var(--height) - (var(--margin) * 2));
+			height: calc(var(--height) - (var(--MI-margin) * 2));
+			width: calc(var(--height) - (var(--MI-margin) * 2));
 			box-sizing: border-box;
 			position: relative;
 			border-radius: 5px;
@@ -211,7 +211,7 @@ onUnmounted(() => {
 			}
 
 			&.highlighted {
-				color: var(--accent);
+				color: var(--MI_THEME-accent);
 			}
 		}
 
@@ -317,7 +317,7 @@ onUnmounted(() => {
 			position: absolute;
 			bottom: 0;
 			height: 3px;
-			background: var(--accent);
+			background: var(--MI_THEME-accent);
 			border-radius: 999px;
 			transition: all 0.2s ease;
 			pointer-events: none;

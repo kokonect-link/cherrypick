@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	ref="rootEl"
 	v-hotkey="keymap"
 	v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
-	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover, [$style.radius]: defaultStore.state.showGapBetweenNotesInTimeline && mainRouter.currentRoute.value.name === 'my-notifications' }]"
+	:class="[$style.root, { [$style.showActionsOnlyHover]: defaultStore.state.showNoteActionsOnlyHover, [$style.radius]: defaultStore.state.showGapBetweenNotesInTimeline && mainRouter.currentRoute.value.name === 'my-notifications', [$style.skipRender]: defaultStore.state.skipNoteRender }]"
 	:tabindex="isDeleted ? '-1' : '0'"
 >
 	<div v-if="pinned" :class="$style.tip"><i class="ti ti-pin"></i> {{ i18n.ts.pinnedNote }}</div>
@@ -92,7 +92,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenu="!!$i"
 						:enableEmojiMenuReaction="!!$i"
 					/>
-					<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
+					<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--MI_THEME-accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 						<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 					</div>
@@ -118,7 +118,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="viewTextSource">
 						<hr style="margin: 10px 0;">
 						<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
-						<button class="_button" style="padding-top: 5px; color: var(--accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+						<button class="_button" style="padding-top: 5px; color: var(--MI_THEME-accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 					</div>
 				</div>
 				<div v-if="appearNote.files && appearNote.files.length > 0">
@@ -179,8 +179,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i class="ti ti-heart"></i>
 				</button>
 				<button v-if="defaultStore.state.showDoReactionButtonInNoteFooter" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="appearNote.reactionAcceptance === 'likeOnly' && appearNote.myReaction != null ? i18n.ts.unlike : appearNote.myReaction != null ? i18n.ts.editReaction : appearNote.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
-					<i v-if="appearNote.reactionAcceptance === 'likeOnly' && appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--love);"></i>
-					<i v-else-if="appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--accent);"></i>
+					<i v-if="appearNote.reactionAcceptance === 'likeOnly' && appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--MI_THEME-love);"></i>
+					<i v-else-if="appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--MI_THEME-accent);"></i>
 					<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
 					<i v-else class="ti ti-mood-plus"></i>
 					<p v-if="(appearNote.reactionAcceptance === 'likeOnly' || defaultStore.state.showReactionsCount) && appearNote.reactionCount > 0" :class="$style.footerButtonCount">{{ number(appearNote.reactionCount) }}</p>
@@ -847,15 +847,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	font-size: 1.05em;
 	overflow: clip;
 	contain: content;
-	background: var(--panel);
-
-	// これらの指定はパフォーマンス向上には有効だが、ノートの高さは一定でないため、
-	// 下の方までスクロールすると上のノートの高さがここで決め打ちされたものに変化し、表示しているノートの位置が変わってしまう
-	// ノートがマウントされたときに自身の高さを取得し contain-intrinsic-size を設定しなおせばほぼ解決できそうだが、
-	// 今度はその処理自体がパフォーマンス低下の原因にならないか懸念される。また、被リアクションでも高さは変化するため、やはり多少のズレは生じる
-	// 一度レンダリングされた要素はブラウザがよしなにサイズを覚えておいてくれるような実装になるまで待った方が良さそう(なるのか？)
-	//content-visibility: auto;
-	//contain-intrinsic-size: 0 128px;
+	background: var(--MI_THEME-panel);
 
 	&:focus-visible {
 		outline: none;
@@ -873,8 +865,8 @@ function emitUpdReaction(emoji: string, delta: number) {
 			margin: auto;
 			width: calc(100% - 8px);
 			height: calc(100% - 8px);
-			border: dashed 2px var(--focus);
-			border-radius: var(--radius);
+			border: dashed 2px var(--MI_THEME-focus);
+			border-radius: var(--MI-radius);
 			box-sizing: border-box;
 		}
 	}
@@ -896,9 +888,9 @@ function emitUpdReaction(emoji: string, delta: number) {
 			right: 12px;
 			padding: 0 4px;
 			margin-bottom: 0 !important;
-			background: var(--popup);
+			background: var(--MI_THEME-popup);
 			border-radius: 8px;
-			box-shadow: 0 4px 32px var(--shadow);
+			box-shadow: 0 4px 32px var(--MI_THEME-shadow);
 		}
 
 		.footerButton {
@@ -917,8 +909,13 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	&.radius {
-		border-radius: var(--radius);
+		border-radius: var(--MI-radius);
 	}
+}
+
+.skipRender {
+	content-visibility: auto;
+	contain-intrinsic-size: 0 150px;
 }
 
 .tip {
@@ -950,7 +947,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	padding: 24px 38px 16px;
 	line-height: 28px;
 	white-space: pre;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 
 	& + .article {
 		padding-top: 8px;
@@ -967,7 +964,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .renoteText {
@@ -982,7 +979,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	text-decoration: none;
 
 	&:hover {
-		color: var(--renoteHover);
+		color: var(--MI_THEME-renoteHover);
 		text-decoration: none;
 	}
 }
@@ -1015,7 +1012,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .collapsedRenoteTargetText {
@@ -1058,9 +1055,9 @@ function emitUpdReaction(emoji: string, delta: number) {
 	margin: 0 14px 0 0;
 	width: 58px;
 	height: 58px;
-	top: calc(22px + var(--stickyTop, 0px));
+	top: calc(22px + var(--MI-stickyTop, 0px));
 	left: 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	transition: top 0.5s;
 
 	&.avatarReplyTo {
@@ -1086,12 +1083,12 @@ function emitUpdReaction(emoji: string, delta: number) {
 	width: 100%;
 	margin-top: 14px;
 	position: sticky;
-	bottom: calc(var(--stickyBottom, 0px) + 14px);
+	bottom: calc(var(--MI-stickyBottom, 0px) + 14px);
 }
 
 .showLessLabel {
 	display: inline-block;
-	background: var(--popup);
+	background: var(--MI_THEME-popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
@@ -1113,16 +1110,16 @@ function emitUpdReaction(emoji: string, delta: number) {
 	z-index: 2;
 	width: 100%;
 	height: 64px;
-	background: linear-gradient(0deg, var(--panel), color(from var(--panel) srgb r g b / 0));
+	background: linear-gradient(0deg, var(--MI_THEME-panel), color(from var(--MI_THEME-panel) srgb r g b / 0));
 
 	&:hover > .collapsedLabel {
-		background: var(--panelHighlight);
+		background: var(--MI_THEME-panelHighlight);
 	}
 }
 
 .collapsedLabel {
 	display: inline-block;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
@@ -1134,13 +1131,13 @@ function emitUpdReaction(emoji: string, delta: number) {
 }
 
 .replyIcon {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 	margin-right: 0.5em;
 }
 
 .translation {
-	border: solid 0.5px var(--divider);
-	border-radius: var(--radius);
+	border: solid 0.5px var(--MI_THEME-divider);
+	border-radius: var(--MI-radius);
 	padding: 12px;
 	margin-top: 8px;
 }
@@ -1159,7 +1156,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .quoteNote {
 	padding: 24px;
-	border: solid 1px var(--renote);
+	border: dashed 1px var(--MI_THEME-renote);
 	border-radius: 8px;
 	overflow: clip;
 }
@@ -1183,7 +1180,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	&:hover {
-		color: var(--fgHighlighted);
+		color: var(--MI_THEME-fgHighlighted);
 	}
 }
 
@@ -1194,7 +1191,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 }
 
 .danger {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 @container (max-width: 580px) {
@@ -1268,7 +1265,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 		margin: 0 10px 0 0;
 		width: 46px;
 		height: 46px;
-		top: calc(14px + var(--stickyTop, 0px));
+		top: calc(14px + var(--MI-stickyTop, 0px));
 	}
 }
 

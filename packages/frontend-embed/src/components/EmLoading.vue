@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<{
 	--size: 48px;
 
 	&.colored {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 
 	&.inline {
@@ -103,7 +103,7 @@ const props = withDefaults(defineProps<{
 }
 
 .path {
-	stroke: var(--accent);
+	stroke: var(--MI_THEME-accent);
 	stroke-linecap: round;
 	animation: dash 1.2s ease-in-out infinite;
 }

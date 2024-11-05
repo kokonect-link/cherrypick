@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header><MkPageHeader v-if="!popup" :actions="headerActions" :tabs="headerTabs"/></template>
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
-			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid 1px var(--divider);">{{ i18n.ts._mfc.intro }}</div>
+			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid 1px var(--MI_THEME-divider);">{{ i18n.ts._mfc.intro }}</div>
 			<div :class="$style.section">
 				<div :class="$style.title">{{ i18n.ts._mfc.mention }}</div>
 				<div :class="$style.content">
@@ -445,7 +445,7 @@ definePageMetadata(() => ({
 
 <style lang="scss" module>
 .root {
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 }
 
 .section {
@@ -457,12 +457,12 @@ definePageMetadata(() => ({
 .title {
 	position: sticky;
 	z-index: 1;
-	top: var(--stickyTop, 0px);
+	top: var(--MI-stickyTop, 0px);
 	padding: 16px;
 	font-weight: bold;
-	-webkit-backdrop-filter: var(--blur, blur(10px));
-	backdrop-filter: var(--blur, blur(10px));
-	background-color: var(--panel);
+	-webkit-backdrop-filter: var(--MI-blur, blur(10px));
+	backdrop-filter: var(--MI-blur, blur(10px));
+	background-color: var(--MI_THEME-panel);
 }
 
 .content {
@@ -473,7 +473,7 @@ definePageMetadata(() => ({
 }
 
 .preview {
-	border-top: solid 0.5px var(--divider);
+	border-top: solid 0.5px var(--MI_THEME-divider);
 	padding: 16px;
 }
 

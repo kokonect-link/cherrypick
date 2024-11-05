@@ -179,7 +179,7 @@ function goBack() {
 }
 
 const calcBg = () => {
-	const rawBg = 'var(--bg)';
+	const rawBg = 'var(--MI_THEME-bg)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	if (narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
@@ -230,9 +230,9 @@ onUnmounted(() => {
 	--height: 50px;
 	display: flex;
 	width: 100%;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	border-bottom: solid 0.5px var(--divider);
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
+	border-bottom: solid 0.5px var(--MI_THEME-divider);
 	contain: strict;
 	height: var(--height);
 
@@ -270,7 +270,7 @@ onUnmounted(() => {
 }
 
 .buttons {
-	--margin: 8px;
+	--MI-margin: 8px;
 	display: flex;
 	align-items: center;
 	min-width: var(--height);
@@ -283,17 +283,17 @@ onUnmounted(() => {
 
 .buttonsLeft {
 	composes: buttons;
-	margin: 0 var(--margin) 0 0;
+	margin: 0 var(--MI-margin) 0 0;
 }
 
 .buttonsRight {
 	composes: buttons;
-	margin: 0 0 0 var(--margin);
+	margin: 0 0 0 var(--MI-margin);
 }
 
 .followButton {
 	composes: buttons;
-	margin: 0 var(--margin) 0 0;
+	margin: 0 var(--MI-margin) 0 0;
 }
 
 .goBack {
@@ -319,7 +319,7 @@ onUnmounted(() => {
 	align-items: center;
 	justify-content: center;
 	height: var(--height);
-	width: calc(var(--height) - (var(--margin)));
+	width: calc(var(--height) - (var(--MI-margin)));
 	box-sizing: border-box;
 	position: relative;
 	border-radius: 5px;
@@ -329,7 +329,7 @@ onUnmounted(() => {
 	}
 
 	&.highlighted {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 }
 
@@ -437,7 +437,7 @@ onUnmounted(() => {
 	position: absolute;
 	bottom: 0;
 	height: 3px;
-	background: var(--accent);
+	background: var(--MI_THEME-accent);
 	border-radius: 999px;
 	transition: all 0.2s ease;
 	pointer-events: none;

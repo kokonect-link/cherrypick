@@ -79,7 +79,7 @@ onMounted(() => {
 
 .balloonRoot {
 	position: absolute;
-	filter: drop-shadow(0 2px 8px var(--shadow));
+	filter: drop-shadow(0 2px 8px var(--MI_THEME-shadow));
 	user-select: none;
 	pointer-events: none;
 }

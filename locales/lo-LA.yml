@@ -457,6 +457,7 @@ _notification:
     renote: "Renote"
     quote: "ອ້າງອີງ"
     reaction: "Reaction"
+    login: "ເຂົ້າ​ສູ່​ລະ​ບົບ"
   _actions:
     reply: "ຕອບ​ກັບ"
     renote: "Renote"

@@ -113,7 +113,7 @@ onMounted(() => {
 	padding: 20px;
 	border-radius: 6px;
 	text-align: center;
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 }
 
 .fontSizeSlider {
@@ -123,10 +123,10 @@ onMounted(() => {
 
 .fontSizeLeft, .fontSizeRight {
 	position: relative;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	font-weight: normal;
 	line-height: 20px;
-	border: solid 1px var(--divider);
+	border: solid 1px var(--MI_THEME-divider);
 }
 
 .fontSizeLeft {

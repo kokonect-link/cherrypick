@@ -140,7 +140,7 @@ function noteDblClick(ev: MouseEvent) {
 	width: 58px;
 	height: 58px;
 	border-radius: 8px;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .body {
@@ -167,7 +167,7 @@ function noteDblClick(ev: MouseEvent) {
 }
 
 .reply, .more {
-	border-left: solid 0.5px var(--divider);
+	border-left: solid 0.5px var(--MI_THEME-divider);
 	margin-top: 10px;
 }
 
@@ -224,7 +224,7 @@ function noteDblClick(ev: MouseEvent) {
 .muted {
 	text-align: center;
 	padding: 8px !important;
-	border: 1px solid var(--divider);
+	border: 1px solid var(--MI_THEME-divider);
 	margin: 8px 8px 0 8px;
 	border-radius: 8px;
 }

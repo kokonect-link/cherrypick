@@ -78,7 +78,7 @@ function del(): void {
 
 <style lang="scss" scoped>
 .thvuemwp {
-	$me-balloon-color: var(--accent);
+	$me-balloon-color: var(--MI_THEME-accent);
 
 	position: relative;
 	background-color: transparent;
@@ -86,7 +86,7 @@ function del(): void {
 
 	> .avatar {
 		position: sticky;
-		top: calc(var(--stickyTop, 0px) + 16px);
+		top: calc(var(--MI-stickyTop, 0px) + 16px);
 		display: block;
 		width: 48px;
 		height: 48px;
@@ -228,14 +228,14 @@ function del(): void {
 	}
 
 	&:not(.isMe) {
-		padding-left: var(--margin);
+		padding-left: var(--MI-margin);
 
 		> .content {
 			padding-left: 16px;
 			padding-right: 32px;
 
 			> .balloon {
-				$color: var(--messageBg);
+				$color: var(--MI_THEME-messageBg);
 				background: $color;
 
 				&.noText {
@@ -252,7 +252,7 @@ function del(): void {
 
 				> .content {
 					> .text {
-						color: var(--fg);
+						color: var(--MI_THEME-fg);
 					}
 				}
 			}
@@ -265,8 +265,8 @@ function del(): void {
 
 	&.isMe {
 		flex-direction: row-reverse;
-		padding-right: var(--margin);
-		//right: var(--margin); // 削除時にposition: absoluteになったときに使う
+		padding-right: var(--MI-margin);
+		//right: var(--MI-margin); // 削除時にposition: absoluteになったときに使う
 
 		> .content {
 			padding-right: 16px;
@@ -278,7 +278,7 @@ function del(): void {
 				text-align: left;
 
 				::selection {
-					color: var(--accent);
+					color: var(--MI_THEME-accent);
 					background-color: #fff;
 				}
 
@@ -302,7 +302,7 @@ function del(): void {
 
 					> .text {
 						&, ::v-deep(*) {
-							color: var(--fgOnAccent) !important;
+							color: var(--MI_THEME-fgOnAccent) !important;
 						}
 					}
 				}

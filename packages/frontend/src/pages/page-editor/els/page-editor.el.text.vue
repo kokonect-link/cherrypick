@@ -62,7 +62,7 @@ onUnmounted(() => {
 	box-shadow: none;
 	padding: 16px;
 	background: transparent;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 	font-size: 14px;
 	box-sizing: border-box;
 }

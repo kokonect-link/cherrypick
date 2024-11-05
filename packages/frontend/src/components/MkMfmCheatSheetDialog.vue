@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@closed="$emit('closed')"
 >
 	<template #header>{{ i18n.ts._mfc.cheatSheet }}</template>
-	<XMfmCheatSheet :popup="true" style="background: var(--bg)"/>
+	<XMfmCheatSheet :popup="true" style="background: var(--MI_THEME-bg)"/>
 </MkModalWindow>
 </template>
 

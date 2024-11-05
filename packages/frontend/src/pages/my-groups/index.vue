@@ -148,16 +148,16 @@ definePageMetadata(() => ({
 }
 
 .add {
-	margin: 0 auto var(--margin) auto;
+	margin: 0 auto var(--MI-margin) auto;
 }
 
 .group {
 	display: block;
-	border: solid 1px var(--divider);
+	border: solid 1px var(--MI_THEME-divider);
 	border-radius: 6px;
 
 	&:hover {
-		border: solid 1px var(--accent);
+		border: solid 1px var(--MI_THEME-accent);
 		text-decoration: none;
 	}
 }
@@ -170,7 +170,7 @@ definePageMetadata(() => ({
 
 .name {
 	margin-bottom: 12px;
-	border-bottom: solid 1px var(--divider);
+	border-bottom: solid 1px var(--MI_THEME-divider);
 	padding: 16px 24px;
 	font-weight: bold;
 }

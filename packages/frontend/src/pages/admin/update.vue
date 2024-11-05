@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="releasesCherryPick" #value>{{ releasesCherryPick[0].tag_name }}</template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
-					<MkKeyValue style="margin: 8px 0 0; color: var(--fgTransparentWeak); font-size: 0.85em;">
+					<MkKeyValue style="margin: 8px 0 0; color: var(--MI_THEME-fgTransparentWeak); font-size: 0.85em;">
 						<template v-if="releasesCherryPick" #value><MkTime :time="releasesCherryPick[0].published_at" mode="detail"/></template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
@@ -56,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="releasesMisskey" #value>{{ releasesMisskey[0].tag_name }}</template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
-					<MkKeyValue style="margin: 8px 0 0; color: var(--fgTransparentWeak); font-size: 0.85em;">
+					<MkKeyValue style="margin: 8px 0 0; color: var(--MI_THEME-fgTransparentWeak); font-size: 0.85em;">
 						<template v-if="releasesMisskey" #value><MkTime :time="releasesMisskey[0].published_at" mode="detail"/></template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>

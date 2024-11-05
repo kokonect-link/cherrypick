@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
 	min-width: 320px;
 	max-width: 480px;
 	box-sizing: border-box;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	border-radius: 16px;
 }
 
@@ -111,7 +111,7 @@ onBeforeUnmount(() => {
 
 .icon {
 	font-size: 18px;
-	color: var(--warn);
+	color: var(--MI_THEME-warn);
 }
 
 .title {
@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
 .urlAddress {
 	padding: 10px 14px;
 	border-radius: 8px;
-	border: 1px solid var(--divider);
+	border: 1px solid var(--MI_THEME-divider);
 	overflow-x: auto;
 	white-space: nowrap;
 }
