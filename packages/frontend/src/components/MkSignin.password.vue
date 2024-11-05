@@ -6,7 +6,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div :class="$style.wrapper" data-cy-signin-page-password>
 	<div class="_gaps" :class="$style.root">
-		<div :class="$style.avatar" :style="{ backgroundImage: user ? `url('${user.avatarUrl}')` : undefined }"></div>
+		<div
+			:class="[$style.avatar, { [$style.square]: defaultStore.state.squareAvatars }]"
+			:style="{ backgroundImage: user ? `url('${url}')` : undefined }"
+			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		></div>
 		<div :class="$style.welcomeBackMessage">
 			<I18n :src="i18n.ts.welcomeBackWithName" tag="span">
 				<template #name><Mfm :text="user.name ?? user.username" :plain="true"/></template>
@@ -31,7 +38,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkCaptcha v-if="instance.enableTestcaptcha" ref="testcaptcha" v-model="testcaptchaResponse" :class="$style.captcha" provider="testcaptcha"/>
 			</div>
 
-			<MkButton type="submit" :disabled="needCaptcha && captchaFailed" large primary rounded style="margin: 0 auto;" data-cy-signin-page-password-continue>{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+			<div class="_buttonsCenter">
+				<MkButton inline rounded @click="goBack"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
+				<MkButton type="submit" :disabled="needCaptcha && captchaFailed" inline primary rounded data-cy-signin-page-password-continue>{{ i18n.ts.continue }} <i class="ti ti-arrow-right"></i></MkButton>
+			</div>
 		</form>
 	</div>
 </div>
@@ -51,12 +61,14 @@ export type PwResponse = {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, useTemplateRef, defineAsyncComponent } from 'vue';
+import { ref, computed, useTemplateRef, defineAsyncComponent, onMounted, onUnmounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
+import { defaultStore } from '@/store.js';
+import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -69,6 +81,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
 	(ev: 'passwordSubmitted', v: PwResponse): void;
+	(ev: 'back'): void;
 }>();
 
 const password = ref('');
@@ -93,6 +106,15 @@ const captchaFailed = computed((): boolean => {
 		(instance.enableTurnstile && !turnstileResponse.value) ||
 		(instance.enableTestcaptcha && !testcaptchaResponse.value)
 	);
+});
+
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+const url = computed(() => {
+	if (props.user.avatarUrl == null) return null;
+	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
+	return props.user.avatarUrl;
 });
 
 function resetPassword(): void {
@@ -122,6 +144,32 @@ function resetCaptcha() {
 	testcaptcha.value?.reset();
 }
 
+function resetTimer() {
+	playAnimation.value = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+}
+
+function goBack() {
+	emit('back');
+}
+
+onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+});
+
+onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
+});
+
 defineExpose({
 	resetCaptcha,
 });
@@ -147,6 +195,10 @@ defineExpose({
 	background-position: center;
 	background-size: cover;
 	border-radius: 100%;
+
+	&.square {
+		border-radius: 20%;
+	}
 }
 
 .welcomeBackMessage {

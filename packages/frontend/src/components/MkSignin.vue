@@ -35,6 +35,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:needCaptcha="needCaptcha"
 
 			@passwordSubmitted="onPasswordSubmitted"
+			@back="page = 'input'"
 		/>
 
 		<!-- 3. ワンタイムパスワード -->
