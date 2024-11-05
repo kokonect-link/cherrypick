@@ -23,6 +23,17 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리즈 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2024.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+
+### Server
+- Fix: 이밴트가 포함된 노트를 작성할 때 URL란에 링크를 첨부하면 리모트에서 잘못된 링크로 열릴 수 있음
+  - 리모트 서버에서 `리모트에서 보기`를 클릭하면 원본 노트의 URL이 아닌, 이벤트의 URL란에 입력한 링크로 이동될 수 있습니다.
+
+---
+
 ## 4.12.1
 출시일: 2024/11/5<br>
 기반 Misskey 버전: 2024.9.0<br>
