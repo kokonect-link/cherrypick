@@ -620,8 +620,8 @@ const routes: RouteDef[] = [{
 	path: '/timeline',
 	component: page(() => import('@/pages/timeline.vue')),
 }, {
-	path: '/cfm-cheat-sheet',
-	component: page(() => import('@/pages/cfm-cheat-sheet.vue')),
+	path: '/mfc-cheat-sheet',
+	component: page(() => import('@/pages/mfc-cheat-sheet.vue')),
 }, {
 	name: 'index',
 	path: '/',

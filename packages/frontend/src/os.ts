@@ -756,3 +756,9 @@ export async function displayQRCode(qrCode: string) {
 		});
 	}))?.();
 }
+
+export async function listScheduleNotePost() {
+	return new Promise((resolve, reject) => {
+		popup(defineAsyncComponent(() => import('@/components/MkSchedulePostListDialog.vue')), {}, {}, 'closed');
+	});
+}

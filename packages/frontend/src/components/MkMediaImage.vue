@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:forceBlurhash="hide"
 			:cover="hide || cover"
 			:alt="image.comment || image.name"
-			:title="image.name"
+			:title="image.comment || image.name"
 			:width="image.properties.width"
 			:height="image.properties.height"
 			:style="hide ? 'filter: brightness(0.7);' : null"

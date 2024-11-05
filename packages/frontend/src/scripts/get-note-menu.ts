@@ -405,20 +405,16 @@ export function getNoteMenu(props: {
 			});
 		}
 
-		getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink);
-
-		menuItems.push({
+		menuItems.push(getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink), {
+			icon: 'ti ti-copy',
+			text: i18n.ts.copyContent,
+			action: copyContent,
+		}, {
 			icon: 'ti ti-qrcode',
 			text: i18n.ts.getQRCode,
 			action: () => {
 				os.displayQRCode(`${url}/notes/${appearNote.id}`);
 			},
-		});
-
-		menuItems.push({
-			icon: 'ti ti-copy',
-			text: i18n.ts.copyContent,
-			action: copyContent,
 		}, {
 			icon: 'ti ti-external-link',
 			text: i18n.ts.openInNewTab,
@@ -625,27 +621,80 @@ export function getNoteMenu(props: {
 			});
 		}
 	} else {
-		menuItems.push({
-			icon: 'ti ti-info-circle',
-			text: i18n.ts.details,
-			action: openDetail,
-		}, {
+		menuItems.push(getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink), {
 			icon: 'ti ti-copy',
 			text: i18n.ts.copyContent,
 			action: copyContent,
-		}, getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink));
+		}, {
+			icon: 'ti ti-qrcode',
+			text: i18n.ts.getQRCode,
+			action: () => {
+				os.displayQRCode(`${url}/notes/${appearNote.id}`);
+			},
+		}, {
+			icon: 'ti ti-external-link',
+			text: i18n.ts.openInNewTab,
+			action: openInNewTab,
+		});
 
-		if (appearNote.url ?? appearNote.uri) {
-			menuItems.push({
-				icon: 'ti ti-external-link',
-				text: i18n.ts.showOnRemote,
-				action: () => {
-					window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
-				},
-			});
-		} else {
-			menuItems.push(getNoteEmbedCodeMenu(appearNote, i18n.ts.genEmbedCode));
-		}
+		menuItems.push({
+			type: 'parent',
+			icon: 'ti ti-note',
+			text: i18n.ts.note,
+			children: async () => {
+				const noteChildMenu = [] as MenuItem[];
+
+				noteChildMenu.push({
+					icon: 'ti ti-info-circle',
+					text: i18n.ts.details,
+					action: openDetail,
+				}, {
+					icon: 'ti ti-repeat',
+					text: i18n.ts.renotesList,
+					action: showRenotes,
+				}, {
+					icon: 'ti ti-icons',
+					text: i18n.ts.reactionsList,
+					action: showReactions,
+				});
+
+				if (appearNote.url ?? appearNote.uri) {
+					noteChildMenu.push({
+						icon: 'ti ti-external-link',
+						text: i18n.ts.showOnRemote,
+						action: () => {
+							window.open(appearNote.url ?? appearNote.uri, '_blank', 'noopener');
+						},
+					});
+				} else {
+					noteChildMenu.push(getNoteEmbedCodeMenu(appearNote, i18n.ts.genEmbedCode));
+				}
+
+				noteChildMenu.push({ type: 'divider' });
+
+				noteChildMenu.push({
+					icon: 'ti ti-source-code',
+					text: i18n.ts.viewTextSource,
+					action: showViewTextSource,
+				});
+
+				if (props.noNyaize.value) {
+					noteChildMenu.push({
+						icon: 'ti ti-paw-filled',
+						text: i18n.ts.revertNoNyaization,
+						action: revertNoNyaizeText,
+					});
+				} else {
+					noteChildMenu.push({
+						icon: 'ti ti-paw-off',
+						text: i18n.ts.noNyaization,
+						action: noNyaizeText,
+					});
+				}
+
+				return noteChildMenu;
+			},
+		});
 	}
 
 	if (noteActions.length > 0) {

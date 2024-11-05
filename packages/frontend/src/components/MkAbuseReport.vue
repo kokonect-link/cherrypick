@@ -99,6 +99,9 @@ function resolve() {
 				margin-left: 0.3em;
 				padding: 0 8px;
 				flex: 1;
+				overflow: hidden;
+				overflow-wrap: anywhere;
+				text-overflow: ellipsis;
 
 				> .name {
 					font-weight: bold;

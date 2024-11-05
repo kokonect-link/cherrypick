@@ -44,6 +44,7 @@ import {
 	MiNote,
 	MiNoteFavorite,
 	MiNoteReaction,
+	MiNoteSchedule,
 	MiNoteThreadMuting,
 	MiNoteUnread,
 	MiPage,
@@ -537,6 +538,12 @@ const $abuseReportResolversRepository: Provider = {
 	inject: [DI.db],
 };
 
+const $noteScheduleRepository: Provider = {
+	provide: DI.noteScheduleRepository,
+	useFactory: (db: DataSource) => db.getRepository(MiNoteSchedule).extend(miRepository as MiRepository<MiNoteSchedule>),
+	inject: [DI.db],
+};
+
 @Module({
 	imports: [],
 	providers: [
@@ -615,6 +622,7 @@ const $abuseReportResolversRepository: Provider = {
 		$abuseReportResolversRepository,
 		$bubbleGameRecordsRepository,
 		$reversiGamesRepository,
+		$noteScheduleRepository,
 	],
 	exports: [
 		$usersRepository,
@@ -692,6 +700,7 @@ const $abuseReportResolversRepository: Provider = {
 		$abuseReportResolversRepository,
 		$bubbleGameRecordsRepository,
 		$reversiGamesRepository,
+		$noteScheduleRepository,
 	],
 })
 export class RepositoryModule {

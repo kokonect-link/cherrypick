@@ -466,7 +466,7 @@ function openProfile() {
 		position: sticky;
 		top: 0;
 		z-index: 1;
-		padding: 20px 0;
+		padding: 20px 0 10px;
 		background: var(--nav-bg-transparent);
 		-webkit-backdrop-filter: var(--blur, blur(8px));
 		backdrop-filter: var(--blur, blur(8px));
@@ -489,8 +489,9 @@ function openProfile() {
 
 	.instanceIcon {
 		display: inline-block;
-		width: 30px;
+		width: 35px;
 		aspect-ratio: 1;
+		border-radius: 18px;
 	}
 
 	.bottom {

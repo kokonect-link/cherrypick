@@ -36,6 +36,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span v-if="$i && $i.id != user.id && user.isFollowed" class="followed">{{ i18n.ts.followsYou }}</span>
 						<div class="actions">
 							<button class="menu _button" @click="menu"><i class="ti ti-dots"></i></button>
+							<button v-if="notesSearchAvailable && (user.host == null || canSearchNonLocalNotes)" v-tooltip="i18n.ts.searchThisUsersNotes" class="menu _button" @click="router.push(`/search?username=${encodeURIComponent(user.username)}${user.host != null ? '&host=' + encodeURIComponent(user.host) : ''}`);"><i class="ti ti-search"></i></button>
+							<button v-tooltip="user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes" class="menu _button" @click="toggleNotify"><i :class="user.notify === 'none' ? 'ti ti-bell-plus' : 'ti ti-bell-minus'"></i></button>
 							<MkFollowButton v-if="$i?.id != user.id" v-model:user="user" :inline="true" :transparent="false" :full="true" class="koudoku"/>
 						</div>
 					</div>
@@ -146,11 +148,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div class="contents _gaps">
-				<div v-if="user.pinnedNotes.length > 0" class="_gaps">
+				<div v-if="user.pinnedNotes.length > 0 && !user.isBlocked" class="_gaps">
 					<MkNote v-for="note in user.pinnedNotes" :key="note.id" class="note _panel" :note="note" :pinned="true"/>
 				</div>
 				<MkInfo v-else-if="$i && $i.id === user.id">{{ i18n.ts.userPagePinTip }}</MkInfo>
-				<template v-if="narrow">
+				<template v-if="narrow && !user.isBlocked">
 					<MkLazy>
 						<XFiles :key="user.id" :user="user"/>
 					</MkLazy>
@@ -158,14 +160,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<XActivity :key="user.id" :user="user"/>
 					</MkLazy>
 				</template>
-				<div v-if="!disableNotes">
+				<div v-if="!disableNotes && !user.isBlocked">
 					<MkLazy>
 						<XTimeline :user="user"/>
 					</MkLazy>
 				</div>
+				<div v-if="user.isBlocked" class="_fullinfo">
+					<img :src="youBlockedImageUrl" class="_ghost"/>
+					<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.youBlocked }}</div>
+					<div style="opacity: 0.7">{{ i18n.tsx.youBlockedDescription({ user: `@${ user.username }` }) }}</div>
+				</div>
 			</div>
 		</div>
-		<div v-if="!narrow" class="sub _gaps" style="container-type: inline-size;">
+		<div v-if="!narrow && !user.isBlocked" class="sub _gaps" style="container-type: inline-size;">
 			<XFiles :key="user.id" :user="user"/>
 			<XActivity :key="user.id" :user="user"/>
 		</div>
@@ -204,6 +211,8 @@ import { editNickname } from '@/scripts/edit-nickname.js';
 import { vibrate } from '@/scripts/vibrate.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import { globalEvents } from '@/events.js';
+import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
+import { youBlockedImageUrl } from '@/instance.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -344,6 +353,15 @@ function resetTimer() {
 	playAnimation.value = true;
 	clearTimeout(playAnimationTimer);
 	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+}
+
+async function toggleNotify() {
+	os.apiWithDialog('following/update', {
+		userId: props.user.id,
+		notify: props.user.notify === 'normal' ? 'none' : 'normal',
+	}).then(() => {
+		user.value.notify = user.value.notify === 'normal' ? 'none' : 'normal';
+	});
 }
 
 watch([props.user], () => {

@@ -48,6 +48,7 @@ export type DeleteScheduleEditorModelValue = {
 const props = defineProps<{
 	modelValue: DeleteScheduleEditorModelValue;
 }>();
+
 const emit = defineEmits<{
 	(ev: 'update:modelValue', v: DeleteScheduleEditorModelValue): void;
 }>();
@@ -70,7 +71,7 @@ if (props.modelValue.deleteAt) {
 
 function get(): DeleteScheduleEditorModelValue {
 	const calcAt = () => {
-		return new Date(`${atDate.value} ${atTime.value}`).getTime();
+		return new Date(`${ atDate.value } ${ atTime.value }`).getTime();
 	};
 
 	const calcAfter = () => {
@@ -95,7 +96,13 @@ function get(): DeleteScheduleEditorModelValue {
 	};
 }
 
-watch([expiration, atDate, atTime, after, unit], () => emit('update:modelValue', get()), {
+watch([
+	expiration,
+	atDate,
+	atTime,
+	after,
+	unit,
+], () => emit('update:modelValue', get()), {
 	deep: true,
 });
 </script>

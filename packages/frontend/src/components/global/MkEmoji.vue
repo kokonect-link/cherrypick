@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<img v-if="!useOsNativeEmojis" :class="[$style.root, { [$style.large]: defaultStore.state.largeNoteReactions }]" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click.stop="onClick"/>
+<img v-if="!useOsNativeEmojis" :class="$style.root" :src="url" :alt="props.emoji" decoding="async" @pointerenter="computeTitle" @click.stop="onClick"/>
 <span v-else :alt="props.emoji" @pointerenter="computeTitle" @click.stop="onClick">{{ colorizedNativeEmoji }}</span>
 </template>
 
@@ -74,10 +74,5 @@ function onClick(ev: MouseEvent) {
 .root {
 	height: 1.1em;
 	vertical-align: -0.235em;
-
-	&.large {
-		height: 1.3em;
-		vertical-align: -0.4em;
-	}
 }
 </style>

@@ -42,6 +42,7 @@ import { AggregateRetentionProcessorService } from './processors/AggregateRetent
 import { ExportFavoritesProcessorService } from './processors/ExportFavoritesProcessorService.js';
 import { RelationshipProcessorService } from './processors/RelationshipProcessorService.js';
 import { ScheduledNoteDeleteProcessorService } from './processors/ScheduledNoteDeleteProcessorService.js';
+import { ScheduleNotePostProcessorService } from './processors/ScheduleNotePostProcessorService.js';
 
 @Module({
 	imports: [
@@ -85,6 +86,7 @@ import { ScheduledNoteDeleteProcessorService } from './processors/ScheduledNoteD
 		AggregateRetentionProcessorService,
 		QueueProcessorService,
 		ScheduledNoteDeleteProcessorService,
+		ScheduleNotePostProcessorService,
 	],
 	exports: [
 		QueueProcessorService,

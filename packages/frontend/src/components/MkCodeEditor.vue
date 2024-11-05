@@ -163,7 +163,7 @@ watch(v, newValue => {
 	color: var(--fg);
 	border: solid 1px var(--panel);
 	transition: border-color 0.1s ease-out;
-	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+	font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 	&:hover {
 		border-color: var(--inputBorderHover) !important;
 	}

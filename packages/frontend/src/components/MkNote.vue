@@ -73,8 +73,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:text="appearNote.cw"
 					:author="appearNote.user"
 					:nyaize="noNyaize ? false : 'respect'"
-					:enableEmojiMenu="true"
-					:enableEmojiMenuReaction="true"
+					:enableEmojiMenu="!!$i"
+					:enableEmojiMenuReaction="!!$i"
 				/>
 				<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
 			</p>
@@ -89,8 +89,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:author="appearNote.user"
 						:nyaize="noNyaize ? false : 'respect'"
 						:emojiUrls="appearNote.emojis"
-						:enableEmojiMenu="true"
-						:enableEmojiMenuReaction="true"
+						:enableEmojiMenu="!!$i"
+						:enableEmojiMenuReaction="!!$i"
 					/>
 					<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
@@ -105,8 +105,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 								:author="appearNote.user"
 								:nyaize="noNyaize ? false : 'respect'"
 								:emojiUrls="appearNote.emojis"
-								:enableEmojiMenu="true"
-								:enableEmojiMenuReaction="true"
+								:enableEmojiMenu="!!$i"
+								:enableEmojiMenuReaction="!!$i"
 								@click.stop
 							/>
 							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
@@ -149,28 +149,32 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</template>
 			</MkReactionsViewer>
 			<footer :class="$style.footer">
-				<button v-if="!note.isHidden && defaultStore.state.showReplyButtonInNoteFooter" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click.stop="reply()">
-					<i class="ti ti-arrow-back-up"></i>
-					<p v-if="appearNote.repliesCount > 0" :class="$style.footerButtonCount">{{ number(appearNote.repliesCount) }}</p>
-				</button>
-				<button v-else-if="note.isHidden" :class="$style.footerButton" class="_button" disabled>
-					<i class="ti ti-ban"></i>
-				</button>
-				<button
-					v-if="canRenote && defaultStore.state.showRenoteButtonInNoteFooter"
-					ref="renoteButton"
-					v-vibrate="defaultStore.state.vibrateSystem ? [30, 30, 60] : []"
-					v-tooltip="i18n.ts.renote"
-					:class="$style.footerButton"
-					class="_button"
-					@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
-				>
-					<i class="ti ti-repeat"></i>
-					<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ number(appearNote.renoteCount) }}</p>
-				</button>
-				<button v-else-if="!canRenote" :class="$style.footerButton" class="_button" disabled>
-					<i class="ti ti-ban"></i>
-				</button>
+				<template v-if="defaultStore.state.showReplyButtonInNoteFooter">
+					<button v-if="!note.isHidden" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="i18n.ts.reply" :class="$style.footerButton" class="_button" @click.stop="reply()">
+						<i class="ti ti-arrow-back-up"></i>
+						<p v-if="appearNote.repliesCount > 0" :class="$style.footerButtonCount">{{ number(appearNote.repliesCount) }}</p>
+					</button>
+					<button v-else-if="note.isHidden" :class="$style.footerButton" class="_button" disabled>
+						<i class="ti ti-ban"></i>
+					</button>
+				</template>
+				<template v-if="defaultStore.state.showRenoteButtonInNoteFooter">
+					<button
+						v-if="canRenote"
+						ref="renoteButton"
+						v-vibrate="defaultStore.state.vibrateSystem ? [30, 30, 60] : []"
+						v-tooltip="i18n.ts.renote"
+						:class="$style.footerButton"
+						class="_button"
+						@click.stop="defaultStore.state.renoteQuoteButtonSeparation && ((!defaultStore.state.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
+					>
+						<i class="ti ti-repeat"></i>
+						<p v-if="appearNote.renoteCount > 0" :class="$style.footerButtonCount">{{ number(appearNote.renoteCount) }}</p>
+					</button>
+					<button v-else-if="!canRenote" :class="$style.footerButton" class="_button" disabled>
+						<i class="ti ti-ban"></i>
+					</button>
+				</template>
 				<button v-if="appearNote.reactionAcceptance !== 'likeOnly' && appearNote.myReaction == null && defaultStore.state.showLikeButtonInNoteFooter" ref="heartReactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="i18n.ts.like" :class="$style.footerButton" class="_button" @click.stop="heartReact()">
 					<i class="ti ti-heart"></i>
 				</button>
@@ -223,7 +227,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, inject, onMounted, ref, shallowRef, Ref, watch, provide } from 'vue';
-import * as mfm from 'cfm-js';
+import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { isLink } from '@@/js/is-link.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
@@ -514,6 +518,10 @@ if (!props.mock) {
 }
 
 if (defaultStore.state.alwaysShowCw) showContent.value = true;
+
+watch(() => viewTextSource.value, () => {
+	collapsed.value = false;
+});
 
 function noteClick(ev: MouseEvent) {
 	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();

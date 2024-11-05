@@ -44,8 +44,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div>{{ number(user.followersCount) }}</div>
 				</div>
 			</div>
-			<button class="_button" :class="$style.menu" @click="showMenu"><i class="ti ti-dots"></i></button>
-			<MkFollowButton v-model:user="user" :class="$style.follow" mini/>
+			<button class="_button" :class="[$style.menu, { [$style.isBlocked]: user.isBlocked }]" @click="showMenu"><i class="ti ti-dots"></i></button>
+			<button v-tooltip="user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes" class="_button" :class="[$style.notify, { [$style.isBlocked]: user.isBlocked }]" @click="toggleNotify"><i :class="user.notify === 'none' ? 'ti ti-bell-plus' : 'ti ti-bell-minus'"></i></button>
+			<MkFollowButton v-if="!user.isBlocked" v-model:user="user" :class="$style.follow" mini/>
 		</div>
 		<div v-else>
 			<MkLoading/>
@@ -90,6 +91,15 @@ function showMenu(ev: MouseEvent) {
 	if (user.value == null) return;
 	const { menu, cleanup } = getUserMenu(user.value);
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
+}
+
+async function toggleNotify() {
+	os.apiWithDialog('following/update', {
+		userId: user.value.id,
+		notify: user.value.notify === 'normal' ? 'none' : 'normal',
+	}).then(() => {
+		user.value.notify = user.value.notify === 'normal' ? 'none' : 'normal';
+	});
 }
 
 onMounted(() => {
@@ -240,13 +250,28 @@ onMounted(() => {
 	color: var(--fgTransparentWeak);
 }
 
-.menu {
+.menu,
+.notify {
 	position: absolute;
 	top: 8px;
-	right: 44px;
+	right: 80px;
 	padding: 6px;
 	background: var(--panel);
 	border-radius: 999px;
+}
+
+.menu {
+	&.isBlocked {
+		right: 44px;
+	}
+}
+
+.notify {
+	right: 44px;
+
+	&.isBlocked {
+		right: 8px;
+	}
 }
 
 .follow {

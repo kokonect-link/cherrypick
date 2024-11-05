@@ -14,7 +14,7 @@ import { normalizeForSearch } from '@/misc/normalize-for-search.js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { bindThis } from '@/decorators.js';
 import type { DefaultTreeAdapterMap } from 'parse5';
-import type * as mfm from 'cfm-js';
+import type * as mfm from 'mfc-js';
 
 const treeAdapter = parse5.defaultTreeAdapter;
 type Node = DefaultTreeAdapterMap['node'];

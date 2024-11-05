@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { shallowRef, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
@@ -47,7 +48,16 @@ const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 const caption = ref(props.default);
 
 async function ok() {
-	emit('done', caption.value);
-	dialog.value?.close();
+	if (caption.value.length > 512) {
+		await os.alert({
+			type: 'error',
+			title: i18n.ts.invalidTextLengthError,
+			text: i18n.tsx.invalidTextLengthDescription({ limitValue: '512', value: caption.value.length }),
+		});
+		return;
+	}
+
+	await emit('done', caption.value);
+	await dialog.value?.close();
 }
 </script>

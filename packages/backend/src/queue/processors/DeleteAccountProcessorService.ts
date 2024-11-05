@@ -108,7 +108,7 @@ export class DeleteAccountProcessorService {
 				cursor = files.at(-1)?.id ?? null;
 
 				for (const file of files) {
-					await this.driveService.deleteFileSync(file, false, isRemote);
+					await this.driveService.deleteFileSync(file, undefined, isRemote);
 				}
 			}
 

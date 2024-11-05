@@ -43,7 +43,7 @@ const gotIt = () => {
 
 const copyLink = () => {
 	copyToClipboard(props.qrCode);
-	os.toast(i18n.ts.copiedContent, 'copied');
+	os.toast(i18n.ts.copiedLink, 'copied');
 };
 </script>
 

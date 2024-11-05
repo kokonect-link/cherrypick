@@ -51,9 +51,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 	const meta = ref<Misskey.entities.AdminMetaResponse | null>(null);
 	const instance = ref<Misskey.entities.FederationInstance | null>(null);
 
-	const isInstanceBlocked = ref(false);
-	const isInstanceSilenced = ref(false);
-	const isInstanceMediaSilenced = ref(false);
+	const isAdminInstanceBlocked = ref(false);
+	const isAdminInstanceSilenced = ref(false);
+	const isAdminInstanceMediaSilenced = ref(false);
+
+	const isInstanceMuted = ref(false);
 
 	async function fetch(): Promise<void> {
 		if (iAmAdmin) {
@@ -62,25 +64,27 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		instance.value = await misskeyApi('federation/show-instance', {
 			host: user.host ?? host,
 		});
-		isInstanceBlocked.value = instance.value?.isBlocked ?? false;
-		isInstanceSilenced.value = instance.value?.isSilenced ?? false;
-		isInstanceMediaSilenced.value = instance.value?.isMediaSilenced ?? false;
+		isAdminInstanceBlocked.value = instance.value?.isBlocked ?? false;
+		isAdminInstanceSilenced.value = instance.value?.isSilenced ?? false;
+		isAdminInstanceMediaSilenced.value = instance.value?.isMediaSilenced ?? false;
+
+		isInstanceMuted.value = $i?.mutedInstances?.some((mutedInstance: string) => mutedInstance === instance.value?.host) ?? false;
 	}
 
 	fetch();
 
-	async function toggleInstanceBlock(): Promise<void> {
+	async function toggleAdminInstanceBlock(): Promise<void> {
 		if (!iAmAdmin) return;
 		if (!meta.value) throw new Error('No meta?');
 		if (!instance.value) throw new Error('No instance?');
 		// eslint-disable-next-line no-shadow
 		const { host } = instance.value;
 		await misskeyApi('admin/update-meta', {
-			blockedHosts: isInstanceBlocked.value ? meta.value.blockedHosts.concat([host]) : meta.value.blockedHosts.filter(x => x !== host),
+			blockedHosts: isAdminInstanceBlocked.value ? meta.value.blockedHosts.concat([host]) : meta.value.blockedHosts.filter(x => x !== host),
 		});
 	}
 
-	async function toggleInstanceSilenced(): Promise<void> {
+	async function toggleAdminInstanceSilenced(): Promise<void> {
 		if (!iAmAdmin) return;
 		if (!meta.value) throw new Error('No meta?');
 		if (!instance.value) throw new Error('No instance?');
@@ -88,11 +92,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		const { host } = instance.value;
 		const silencedHosts = meta.value.silencedHosts ?? [];
 		await misskeyApi('admin/update-meta', {
-			silencedHosts: isInstanceSilenced.value ? silencedHosts.concat([host]) : silencedHosts.filter(x => x !== host),
+			silencedHosts: isAdminInstanceSilenced.value ? silencedHosts.concat([host]) : silencedHosts.filter(x => x !== host),
 		});
 	}
 
-	async function toggleInstanceMediaSilenced(): Promise<void> {
+	async function toggleAdminInstanceMediaSilenced(): Promise<void> {
 		if (!iAmAdmin) return;
 		if (!meta.value) throw new Error('No meta?');
 		if (!instance.value) throw new Error('No instance?');
@@ -100,7 +104,19 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		const { host } = instance.value;
 		const mediaSilencedHosts = meta.value.mediaSilencedHosts ?? [];
 		await misskeyApi('admin/update-meta', {
-			mediaSilencedHosts: isInstanceMediaSilenced.value ? mediaSilencedHosts.concat([host]) : mediaSilencedHosts.filter(x => x !== host),
+			mediaSilencedHosts: isAdminInstanceMediaSilenced.value ? mediaSilencedHosts.concat([host]) : mediaSilencedHosts.filter(x => x !== host),
+		});
+	}
+
+	async function toggleInstanceMute(): Promise<void> {
+		if (!instance.value) throw new Error('No instance?');
+		// eslint-disable-next-line no-shadow
+		const { host } = instance.value;
+		const mutedInstances = $i?.mutedInstances ?? [];
+		await misskeyApi('i/update', {
+			mutedInstances: isInstanceMuted.value
+				? [...new Set(mutedInstances.concat([host]))]
+				: mutedInstances.filter(x => x !== host),
 		});
 	}
 
@@ -227,16 +243,20 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		});
 	}
 
-	watch(isInstanceBlocked, () => {
-		toggleInstanceBlock();
+	watch(isAdminInstanceBlocked, () => {
+		toggleAdminInstanceBlock();
 	});
 
-	watch(isInstanceSilenced, () => {
-		toggleInstanceSilenced();
+	watch(isAdminInstanceSilenced, () => {
+		toggleAdminInstanceSilenced();
 	});
 
-	watch(isInstanceMediaSilenced, () => {
-		toggleInstanceMediaSilenced();
+	watch(isAdminInstanceMediaSilenced, () => {
+		toggleAdminInstanceMediaSilenced();
+	});
+
+	watch(isInstanceMuted, () => {
+		toggleInstanceMute();
 	});
 
 	const menuItems: MenuItem[] = [];
@@ -500,25 +520,59 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 			menuItems.push({
 				type: 'parent',
 				icon: 'ti ti-server-cog',
+				text: `${i18n.ts.instances} (${i18n.ts.administrator})`,
+				children: async () => {
+					const federationChildMenu = [] as MenuItem[];
+
+					federationChildMenu.push({
+						icon: 'ti ti-server',
+						text: i18n.ts.instanceInfo,
+						action: () => {
+							if (user.host == null) return;
+							router.push(`/instance-info/${user.host}`);
+						},
+					}, {
+						type: 'switch',
+						text: i18n.ts.blockThisInstance,
+						ref: isAdminInstanceBlocked,
+						action: toggleAdminInstanceBlock,
+					}, {
+						type: 'switch',
+						text: i18n.ts.silenceThisInstance,
+						ref: isAdminInstanceSilenced,
+						action: toggleAdminInstanceSilenced,
+					}, {
+						type: 'switch',
+						text: i18n.ts.mediaSilenceThisInstance,
+						ref: isAdminInstanceMediaSilenced,
+						action: toggleAdminInstanceMediaSilenced,
+					});
+
+					return federationChildMenu;
+				},
+			});
+		}
+
+		if (user.host !== null) {
+			menuItems.push({
+				type: 'parent',
+				icon: 'ti ti-server-cog',
 				text: i18n.ts.instances,
 				children: async () => {
 					const federationChildMenu = [] as MenuItem[];
 
 					federationChildMenu.push({
-						type: 'switch',
-						text: i18n.ts.blockThisInstance,
-						ref: isInstanceBlocked,
-						action: toggleInstanceBlock,
+						icon: 'ti ti-server',
+						text: i18n.ts.instanceInfo,
+						action: () => {
+							if (user.host == null) return;
+							router.push(`/instance-info/${user.host}`);
+						},
 					}, {
 						type: 'switch',
-						text: i18n.ts.silenceThisInstance,
-						ref: isInstanceSilenced,
-						action: toggleInstanceSilenced,
-					}, {
-						type: 'switch',
-						text: i18n.ts.mediaSilenceThisInstance,
-						ref: isInstanceMediaSilenced,
-						action: toggleInstanceMediaSilenced,
+						text: i18n.ts.instanceMute,
+						ref: isInstanceMuted,
+						action: toggleInstanceMute,
 					});
 
 					return federationChildMenu;

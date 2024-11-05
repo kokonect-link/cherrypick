@@ -54,6 +54,7 @@ export const paramDef = {
 		serverErrorImageUrl: { type: 'string', nullable: true },
 		infoImageUrl: { type: 'string', nullable: true },
 		notFoundImageUrl: { type: 'string', nullable: true },
+		youBlockedImageUrl: { type: 'string', nullable: true },
 		iconUrl: { type: 'string', nullable: true },
 		app192IconUrl: { type: 'string', nullable: true },
 		app512IconUrl: { type: 'string', nullable: true },
@@ -129,19 +130,19 @@ export const paramDef = {
 		objectStorageUseProxy: { type: 'boolean' },
 		objectStorageSetPublicRead: { type: 'boolean' },
 		objectStorageS3ForcePathStyle: { type: 'boolean' },
-		useObjectStorageRemote: { type: 'boolean' },
-		objectStorageRemoteBaseUrl: { type: 'string', nullable: true },
-		objectStorageRemoteBucket: { type: 'string', nullable: true },
-		objectStorageRemotePrefix: { type: 'string', nullable: true },
-		objectStorageRemoteEndpoint: { type: 'string', nullable: true },
-		objectStorageRemoteRegion: { type: 'string', nullable: true },
-		objectStorageRemotePort: { type: 'integer', nullable: true },
-		objectStorageRemoteAccessKey: { type: 'string', nullable: true },
-		objectStorageRemoteSecretKey: { type: 'string', nullable: true },
-		objectStorageRemoteUseSSL: { type: 'boolean' },
-		objectStorageRemoteUseProxy: { type: 'boolean' },
-		objectStorageRemoteSetPublicRead: { type: 'boolean' },
-		objectStorageRemoteS3ForcePathStyle: { type: 'boolean' },
+		useRemoteObjectStorage: { type: 'boolean' },
+		remoteObjectStorageBaseUrl: { type: 'string', nullable: true },
+		remoteObjectStorageBucket: { type: 'string', nullable: true },
+		remoteObjectStoragePrefix: { type: 'string', nullable: true },
+		remoteObjectStorageEndpoint: { type: 'string', nullable: true },
+		remoteObjectStorageRegion: { type: 'string', nullable: true },
+		remoteObjectStoragePort: { type: 'integer', nullable: true },
+		remoteObjectStorageAccessKey: { type: 'string', nullable: true },
+		remoteObjectStorageSecretKey: { type: 'string', nullable: true },
+		remoteObjectStorageUseSSL: { type: 'boolean' },
+		remoteObjectStorageUseProxy: { type: 'boolean' },
+		remoteObjectStorageSetPublicRead: { type: 'boolean' },
+		remoteObjectStorageS3ForcePathStyle: { type: 'boolean' },
 		enableIpLogging: { type: 'boolean' },
 		enableActiveEmailValidation: { type: 'boolean' },
 		enableVerifymailApi: { type: 'boolean' },
@@ -221,7 +222,7 @@ export const paramDef = {
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
-        private moduleRef: ModuleRef,
+		private moduleRef: ModuleRef,
 		private metaService: MetaService,
 		private moderationLogService: ModerationLogService,
 	) {
@@ -300,6 +301,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.notFoundImageUrl !== undefined) {
 				set.notFoundImageUrl = ps.notFoundImageUrl;
+			}
+
+			if (ps.youBlockedImageUrl !== undefined) {
+				set.youBlockedImageUrl = ps.youBlockedImageUrl;
 			}
 
 			if (ps.backgroundImageUrl !== undefined) {
@@ -542,56 +547,56 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				set.objectStorageS3ForcePathStyle = ps.objectStorageS3ForcePathStyle;
 			}
 
-			if (ps.useObjectStorageRemote !== undefined) {
-				set.useObjectStorageRemote = ps.useObjectStorageRemote;
+			if (ps.useRemoteObjectStorage !== undefined) {
+				set.useRemoteObjectStorage = ps.useRemoteObjectStorage;
 			}
 
-			if (ps.objectStorageRemoteBaseUrl !== undefined) {
-				set.objectStorageRemoteBaseUrl = ps.objectStorageRemoteBaseUrl;
+			if (ps.remoteObjectStorageBaseUrl !== undefined) {
+				set.remoteObjectStorageBaseUrl = ps.remoteObjectStorageBaseUrl;
 			}
 
-			if (ps.objectStorageRemoteBucket !== undefined) {
-				set.objectStorageRemoteBucket = ps.objectStorageRemoteBucket;
+			if (ps.remoteObjectStorageBucket !== undefined) {
+				set.remoteObjectStorageBucket = ps.remoteObjectStorageBucket;
 			}
 
-			if (ps.objectStorageRemotePrefix !== undefined) {
-				set.objectStorageRemotePrefix = ps.objectStorageRemotePrefix;
+			if (ps.remoteObjectStoragePrefix !== undefined) {
+				set.remoteObjectStoragePrefix = ps.remoteObjectStoragePrefix;
 			}
 
-			if (ps.objectStorageRemoteEndpoint !== undefined) {
-				set.objectStorageRemoteEndpoint = ps.objectStorageRemoteEndpoint;
+			if (ps.remoteObjectStorageEndpoint !== undefined) {
+				set.remoteObjectStorageEndpoint = ps.remoteObjectStorageEndpoint;
 			}
 
-			if (ps.objectStorageRemoteRegion !== undefined) {
-				set.objectStorageRemoteRegion = ps.objectStorageRemoteRegion;
+			if (ps.remoteObjectStorageRegion !== undefined) {
+				set.remoteObjectStorageRegion = ps.remoteObjectStorageRegion;
 			}
 
-			if (ps.objectStorageRemotePort !== undefined) {
-				set.objectStorageRemotePort = ps.objectStorageRemotePort;
+			if (ps.remoteObjectStoragePort !== undefined) {
+				set.remoteObjectStoragePort = ps.remoteObjectStoragePort;
 			}
 
-			if (ps.objectStorageRemoteAccessKey !== undefined) {
-				set.objectStorageRemoteAccessKey = ps.objectStorageRemoteAccessKey;
+			if (ps.remoteObjectStorageAccessKey !== undefined) {
+				set.remoteObjectStorageAccessKey = ps.remoteObjectStorageAccessKey;
 			}
 
-			if (ps.objectStorageRemoteSecretKey !== undefined) {
-				set.objectStorageRemoteSecretKey = ps.objectStorageRemoteSecretKey;
+			if (ps.remoteObjectStorageSecretKey !== undefined) {
+				set.remoteObjectStorageSecretKey = ps.remoteObjectStorageSecretKey;
 			}
 
-			if (ps.objectStorageRemoteUseSSL !== undefined) {
-				set.objectStorageRemoteUseSSL = ps.objectStorageRemoteUseSSL;
+			if (ps.remoteObjectStorageUseSSL !== undefined) {
+				set.remoteObjectStorageUseSSL = ps.remoteObjectStorageUseSSL;
 			}
 
-			if (ps.objectStorageRemoteUseProxy !== undefined) {
-				set.objectStorageRemoteUseProxy = ps.objectStorageRemoteUseProxy;
+			if (ps.remoteObjectStorageUseProxy !== undefined) {
+				set.remoteObjectStorageUseProxy = ps.remoteObjectStorageUseProxy;
 			}
 
-			if (ps.objectStorageRemoteSetPublicRead !== undefined) {
-				set.objectStorageRemoteSetPublicRead = ps.objectStorageRemoteSetPublicRead;
+			if (ps.remoteObjectStorageSetPublicRead !== undefined) {
+				set.remoteObjectStorageSetPublicRead = ps.remoteObjectStorageSetPublicRead;
 			}
 
-			if (ps.objectStorageRemoteS3ForcePathStyle !== undefined) {
-				set.objectStorageRemoteS3ForcePathStyle = ps.objectStorageRemoteS3ForcePathStyle;
+			if (ps.remoteObjectStorageS3ForcePathStyle !== undefined) {
+				set.remoteObjectStorageS3ForcePathStyle = ps.remoteObjectStorageS3ForcePathStyle;
 			}
 
 			if (ps.translatorType !== undefined) {

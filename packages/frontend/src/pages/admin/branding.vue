@@ -62,6 +62,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.somethingHappened }}</template>
 					</MkInput>
 
+					<MkInput v-model="youBlockedImageUrl" type="url">
+						<template #prefix><i class="ti ti-link"></i></template>
+						<template #label>{{ i18n.ts.youBlocked }}</template>
+					</MkInput>
+
 					<MkColorInput v-model="themeColor">
 						<template #label>{{ i18n.ts.themeColor }}</template>
 					</MkColorInput>
@@ -135,6 +140,7 @@ const defaultDarkTheme = ref<string | null>(null);
 const serverErrorImageUrl = ref<string | null>(null);
 const infoImageUrl = ref<string | null>(null);
 const notFoundImageUrl = ref<string | null>(null);
+const youBlockedImageUrl = ref<string | null>(null);
 const repositoryUrl = ref<string | null>(null);
 const feedbackUrl = ref<string | null>(null);
 const manifestJsonOverride = ref<string>('{}');
@@ -153,6 +159,7 @@ async function init() {
 	serverErrorImageUrl.value = meta.serverErrorImageUrl;
 	infoImageUrl.value = meta.infoImageUrl;
 	notFoundImageUrl.value = meta.notFoundImageUrl;
+	youBlockedImageUrl.value = meta.youBlockedImageUrl;
 	repositoryUrl.value = meta.repositoryUrl;
 	feedbackUrl.value = meta.feedbackUrl;
 	manifestJsonOverride.value = meta.manifestJsonOverride === '' ? '{}' : JSON.stringify(JSON.parse(meta.manifestJsonOverride), null, '\t');
@@ -171,6 +178,7 @@ function save() {
 		defaultDarkTheme: defaultDarkTheme.value === '' ? null : defaultDarkTheme.value,
 		infoImageUrl: infoImageUrl.value === '' ? null : infoImageUrl.value,
 		notFoundImageUrl: notFoundImageUrl.value === '' ? null : notFoundImageUrl.value,
+		youBlockedImageUrl: youBlockedImageUrl.value === '' ? null : youBlockedImageUrl.value,
 		serverErrorImageUrl: serverErrorImageUrl.value === '' ? null : serverErrorImageUrl.value,
 		repositoryUrl: repositoryUrl.value === '' ? null : repositoryUrl.value,
 		feedbackUrl: feedbackUrl.value === '' ? null : feedbackUrl.value,

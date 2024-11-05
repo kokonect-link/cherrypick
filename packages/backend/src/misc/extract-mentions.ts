@@ -5,7 +5,7 @@
 
 // test is located in test/extract-mentions
 
-import * as mfm from 'cfm-js';
+import * as mfm from 'mfc-js';
 
 export function extractMentions(nodes: mfm.MfmNode[]): mfm.MfmMention['props'][] {
 	// TODO: 重複を削除

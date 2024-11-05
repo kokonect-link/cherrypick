@@ -19,26 +19,41 @@ import type { DeleteObjectCommandInput, PutObjectCommandInput } from '@aws-sdk/c
 export class S3Service {
 	constructor(
 		private httpRequestService: HttpRequestService,
-	) {
-	}
+	) {}
 
 	@bindThis
-	public getS3Client(meta: MiMeta, isRemote: boolean): S3Client {
-		const useObjectStorageRemote = isRemote && meta.useObjectStorageRemote;
+	public getS3Client(meta: MiMeta, isRemote = false): S3Client {
+		const useRemoteObjectStorage = isRemote && meta.useRemoteObjectStorage;
 
-		const objectStorageEndpoint = useObjectStorageRemote ? meta.objectStorageRemoteEndpoint : meta.objectStorageEndpoint;
-		const objectStorageUseSSL = useObjectStorageRemote ? meta.objectStorageRemoteUseSSL : meta.objectStorageUseSSL;
-		const objectStorageUseProxy = useObjectStorageRemote ? meta.objectStorageRemoteUseProxy : meta.objectStorageUseProxy;
-		const objectStorageAccessKey = useObjectStorageRemote ? meta.objectStorageRemoteAccessKey : meta.objectStorageAccessKey;
-		const objectStorageSecretKey = useObjectStorageRemote ? meta.objectStorageRemoteSecretKey : meta.objectStorageSecretKey;
-		const objectStorageRegion = useObjectStorageRemote ? meta.objectStorageRemoteRegion : meta.objectStorageRegion;
-		const objectStorageS3ForcePathStyle = useObjectStorageRemote ? meta.objectStorageRemoteS3ForcePathStyle : meta.objectStorageS3ForcePathStyle;
+		const objectStorageEndpoint = useRemoteObjectStorage
+			? meta.remoteObjectStorageEndpoint
+			: meta.objectStorageEndpoint;
+
+		const objectStorageUseSSL = useRemoteObjectStorage
+			? meta.remoteObjectStorageUseSSL
+			: meta.objectStorageUseSSL;
+
+		const objectStorageAccessKey = useRemoteObjectStorage
+			? meta.remoteObjectStorageAccessKey
+			: meta.objectStorageAccessKey;
+
+		const objectStorageSecretKey = useRemoteObjectStorage
+			? meta.remoteObjectStorageSecretKey
+			: meta.objectStorageSecretKey;
+
+		const objectStorageRegion = useRemoteObjectStorage
+			? meta.remoteObjectStorageRegion
+			: meta.objectStorageRegion;
+
+		const objectStorageS3ForcePathStyle = useRemoteObjectStorage
+			? meta.remoteObjectStorageS3ForcePathStyle
+			: meta.objectStorageS3ForcePathStyle;
 
 		const u = objectStorageEndpoint
-			? `${objectStorageUseSSL ? 'https' : 'http'}://${objectStorageEndpoint}`
-			: `${objectStorageUseSSL ? 'https' : 'http'}://example.net`; // dummy url to select http(s) agent
+			? `${ objectStorageUseSSL ? 'https' : 'http' }://${ objectStorageEndpoint }`
+			: `${ objectStorageUseSSL ? 'https' : 'http' }://example.com`; // dummy url to select http(s) agent
 
-		const agent = this.httpRequestService.getAgentByUrl(new URL(u), !objectStorageUseProxy);
+		const agent = this.httpRequestService.getAgentByUrl(new URL(u), !objectStorageUseSSL);
 		const handlerOption: NodeHttpHandlerOptions = {};
 		if (objectStorageUseSSL) {
 			handlerOption.httpsAgent = agent as https.Agent;
@@ -52,7 +67,7 @@ export class S3Service {
 				accessKeyId: objectStorageAccessKey,
 				secretAccessKey: objectStorageSecretKey,
 			} : undefined,
-			region: objectStorageRegion ? objectStorageRegion : undefined, // empty string is converted to undefined
+			region: objectStorageRegion || undefined, // 空文字列もundefinedにするため ?? は使わない
 			tls: objectStorageUseSSL,
 			forcePathStyle: objectStorageEndpoint ? objectStorageS3ForcePathStyle : false, // AWS with endPoint omitted
 			requestHandler: new NodeHttpHandler(handlerOption),
@@ -60,7 +75,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public async upload(meta: MiMeta, input: PutObjectCommandInput, isRemote: boolean) {
+	public async upload(meta: MiMeta, input: PutObjectCommandInput, isRemote = false) {
 		const client = this.getS3Client(meta, isRemote);
 		return new Upload({
 			client,
@@ -72,7 +87,7 @@ export class S3Service {
 	}
 
 	@bindThis
-	public delete(meta: MiMeta, input: DeleteObjectCommandInput, isRemote: boolean) {
+	public delete(meta: MiMeta, input: DeleteObjectCommandInput, isRemote = false) {
 		const client = this.getS3Client(meta, isRemote);
 		return client.send(new DeleteObjectCommand(input));
 	}

@@ -111,6 +111,8 @@ const onKeydown = (ev: KeyboardEvent) => {
 	emit('keydown', ev);
 
 	if (ev.code === 'Enter') {
+		focused.value = false;
+		inputEl.value.blur();
 		emit('enter', ev);
 	}
 };

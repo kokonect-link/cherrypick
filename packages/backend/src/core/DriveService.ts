@@ -147,7 +147,7 @@ export class DriveService {
 	 * @param isRemote If true, file is remote file
 	 */
 	@bindThis
-	private async save(file: MiDriveFile, path: string, name: string, type: string, hash: string, size: number, isRemote: boolean): Promise<MiDriveFile> {
+	private async save(file: MiDriveFile, path: string, name: string, type: string, hash: string, size: number, isRemote = false): Promise<MiDriveFile> {
 	// thunbnail, webpublic を必要なら生成
 		const alts = await this.generateAlts(path, type, !file.uri);
 
@@ -170,16 +170,34 @@ export class DriveService {
 				ext = '';
 			}
 
-			const useObjectStorageRemote = isRemote && this.meta.useObjectStorageRemote;
-			const objectStorageBaseUrl = useObjectStorageRemote ? this.meta.objectStorageRemoteBaseUrl : this.meta.objectStorageBaseUrl;
-			const objectStorageUseSSL = useObjectStorageRemote ? this.meta.objectStorageRemoteUseSSL : this.meta.objectStorageUseSSL;
-			const objectStorageEndpoint = useObjectStorageRemote ? this.meta.objectStorageRemoteEndpoint : this.meta.objectStorageEndpoint;
-			const objectStoragePort = useObjectStorageRemote ? this.meta.objectStorageRemotePort : this.meta.objectStoragePort;
-			const objectStorageBucket = useObjectStorageRemote ? this.meta.objectStorageRemoteBucket : this.meta.objectStorageBucket;
-			const objectStoragePrefix = useObjectStorageRemote ? this.meta.objectStorageRemotePrefix : this.meta.objectStoragePrefix;
+			const useRemoteObjectStorage = isRemote && this.meta.useRemoteObjectStorage;
+
+			const objectStorageBaseUrl = useRemoteObjectStorage
+				? this.meta.remoteObjectStorageBaseUrl
+				: this.meta.objectStorageBaseUrl;
+
+			const objectStorageUseSSL = useRemoteObjectStorage
+				? this.meta.remoteObjectStorageUseSSL
+				: this.meta.objectStorageUseSSL;
+
+			const objectStorageEndpoint = useRemoteObjectStorage
+				? this.meta.remoteObjectStorageEndpoint
+				: this.meta.objectStorageEndpoint;
+
+			const objectStoragePort = useRemoteObjectStorage
+				? this.meta.remoteObjectStoragePort
+				: this.meta.objectStoragePort;
+
+			const objectStorageBucket = useRemoteObjectStorage
+				? this.meta.remoteObjectStorageBucket
+				: this.meta.objectStorageBucket;
+
+			const objectStoragePrefix = useRemoteObjectStorage
+				? this.meta.remoteObjectStoragePrefix
+				: this.meta.objectStoragePrefix;
 
 			const baseUrl = objectStorageBaseUrl
-				?? `${ objectStorageUseSSL ? 'https' : 'http' }://${ objectStorageEndpoint }${ objectStoragePort ? `:${objectStoragePort}` : '' }/${ objectStorageBucket }`;
+				?? `${ objectStorageUseSSL ? 'https' : 'http' }://${ objectStorageEndpoint }${ objectStoragePort ? `:${ objectStoragePort }` : '' }/${ objectStorageBucket }`;
 
 			// for original
 			const key = `${objectStoragePrefix}/${randomUUID()}${ext}`;
@@ -380,13 +398,19 @@ export class DriveService {
 	 * Upload to ObjectStorage
 	 */
 	@bindThis
-	private async upload(key: string, stream: fs.ReadStream | Buffer, type: string, isRemote: boolean, ext?: string | null, filename?: string) {
+	private async upload(key: string, stream: fs.ReadStream | Buffer, type: string, isRemote = false, ext?: string | null, filename?: string) {
 		if (type === 'image/apng') type = 'image/png';
 		if (!FILE_TYPE_BROWSERSAFE.includes(type)) type = 'application/octet-stream';
 
-		const useObjectStorageRemote = isRemote && this.meta.useObjectStorageRemote;
-		const objectStorageBucket = useObjectStorageRemote ? this.meta.objectStorageRemoteBucket : this.meta.objectStorageBucket;
-		const objectStorageSetPublicRead = useObjectStorageRemote ? this.meta.objectStorageRemoteSetPublicRead : this.meta.objectStorageSetPublicRead;
+		const useRemoteObjectStorage = isRemote && this.meta.useRemoteObjectStorage;
+
+		const objectStorageBucket = useRemoteObjectStorage
+			? this.meta.remoteObjectStorageBucket
+			: this.meta.objectStorageBucket;
+
+		const objectStorageSetPublicRead = useRemoteObjectStorage
+			? this.meta.remoteObjectStorageSetPublicRead
+			: this.meta.objectStorageSetPublicRead;
 
 		const params = {
 			Bucket: objectStorageBucket,
@@ -754,7 +778,7 @@ export class DriveService {
 	}
 
 	@bindThis
-	public async deleteFileSync(file: MiDriveFile, isExpired = false, isRemote: boolean, deleter?: MiUser) {
+	public async deleteFileSync(file: MiDriveFile, isExpired = false, isRemote = false, deleter?: MiUser) {
 		if (file.storedInternal) {
 			this.internalStorageService.del(file.accessKey!);
 
@@ -829,9 +853,12 @@ export class DriveService {
 	}
 
 	@bindThis
-	public async deleteObjectStorageFile(key: string, isRemote: boolean) {
-		const useObjectStorageRemote = isRemote && this.meta.useObjectStorageRemote;
-		const objectStorageBucket = useObjectStorageRemote ? this.meta.objectStorageRemoteBucket : this.meta.objectStorageBucket;
+	public async deleteObjectStorageFile(key: string, isRemote = false) {
+		const useRemoteObjectStorage = isRemote && this.meta.useRemoteObjectStorage;
+		const objectStorageBucket = useRemoteObjectStorage
+			? this.meta.remoteObjectStorageBucket
+			: this.meta.objectStorageBucket;
+
 		try {
 			const param = {
 				Bucket: objectStorageBucket,

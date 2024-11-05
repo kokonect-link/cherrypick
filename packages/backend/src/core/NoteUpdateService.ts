@@ -7,7 +7,7 @@ import { setImmediate } from 'node:timers/promises';
 import util from 'util';
 import { In, DataSource } from 'typeorm';
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
-import * as mfm from 'cfm-js';
+import * as mfm from 'mfc-js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { MiNote } from '@/models/Note.js';
 import type { NotesRepository, UsersRepository } from '@/models/_.js';
@@ -218,7 +218,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 			this.globalEventService.publishNoteStream(note.id, 'updated', { cw: note.cw, text: note.text });
 
 			//#region AP deliver
-			if (this.userEntityService.isLocalUser(user)) {
+			if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
 				await (async () => {
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-expect-error
