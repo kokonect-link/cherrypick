@@ -24,7 +24,7 @@ export const meta = {
 
 	limit: {
 		duration: ms('5min'),
-		max: 10,
+		max: 5,
 		minInterval: ms('1sec'),
 	},
 
