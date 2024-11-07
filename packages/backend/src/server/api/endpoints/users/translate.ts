@@ -119,9 +119,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (this.serverSettings.ctav3SaKey == null) return Promise.resolve(204);
 				else if (this.serverSettings.ctav3ProjectId == null) return Promise.resolve(204);
 				else if (this.serverSettings.ctav3Location == null) return Promise.resolve(204);
-				translationResult = await this.apiCloudTranslationAdvanced(
-					target.description, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType,
-				);
+				translationResult = await this.apiCloudTranslationAdvanced(target.description, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType);
 			} else {
 				throw new Error('Unsupported translator type');
 			}
