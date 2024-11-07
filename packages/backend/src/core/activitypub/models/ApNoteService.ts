@@ -425,6 +425,8 @@ export class ApNoteService {
 
 		const poll = await this.apQuestionService.extractPollFromQuestion(note, resolver).catch(() => undefined);
 
+		const event = await this.apEventService.extractEventFromNote(note, resolver).catch(() => undefined);
+
 		try {
 			return await this.noteUpdateService.update(actor, {
 				updatedAt: note.updated ? new Date(note.updated) : null,
@@ -432,9 +434,11 @@ export class ApNoteService {
 				name: note.name,
 				cw,
 				text,
+				disableRightClick: false,
 				apHashtags,
 				apEmojis,
 				poll,
+				event,
 			}, target, silent);
 		} catch (err: any) {
 			this.logger.warn(`note update failed: ${err}`);

@@ -10,12 +10,15 @@ import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import * as mfm from 'mfc-js';
 import type { IMentionedRemoteUsers } from '@/models/Note.js';
 import { MiNote } from '@/models/Note.js';
+import { MiEvent } from '@/models/Event.js';
+import type { IEvent } from '@/models/Event.js';
 import type { NotesRepository, UsersRepository } from '@/models/_.js';
 import type { MiUser, MiLocalUser, MiRemoteUser } from '@/models/User.js';
 import { RelayService } from '@/core/RelayService.js';
 import { DI } from '@/di-symbols.js';
 import ActiveUsersChart from '@/core/chart/charts/active-users.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
+import { QueueService } from '@/core/QueueService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
 import { ApDeliverManagerService } from '@/core/activitypub/ApDeliverManagerService.js';
@@ -41,10 +44,13 @@ type Option = {
 	files?: MiDriveFile[] | null;
 	name?: string | null;
 	text?: string | null;
+	disableRightClick?: boolean | null;
 	cw?: string | null;
 	apHashtags?: string[] | null;
 	apEmojis?: string[] | null;
 	poll?: IPoll | null;
+	event?: IEvent | null;
+	deleteAt?: Date | null;
 };
 
 @Injectable()
@@ -63,6 +69,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 		private userEntityService: UserEntityService,
 		private globalEventService: GlobalEventService,
+		private queueService: QueueService,
 		private relayService: RelayService,
 		private apDeliverManagerService: ApDeliverManagerService,
 		private apRendererService: ApRendererService,
@@ -131,17 +138,20 @@ export class NoteUpdateService implements OnApplicationShutdown {
 			fileIds: data.files ? data.files.map(file => file.id) : [],
 			text: data.text,
 			hasPoll: data.poll != null,
+			hasEvent: data.event != null,
 			cw: data.cw ?? null,
 			tags: tags.map(tag => normalizeForSearch(tag)),
 			emojis,
+			disableRightClick: data.disableRightClick!,
 			attachedFileTypes: data.files ? data.files.map(file => file.type) : [],
 			updatedAtHistory: [...updatedAtHistory, new Date()],
 			noteEditHistory: [...note.noteEditHistory, (note.cw ? note.cw + '\n' : '') + note.text!],
+			deleteAt: data.deleteAt,
 		});
 
 		// 投稿を更新
 		try {
-			if (note.hasPoll && values.hasPoll) {
+			if ((note.hasPoll && values.hasPoll) || (note.hasEvent && values.hasEvent)) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
@@ -163,8 +173,31 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							await transactionalEntityManager.insert(MiPoll, poll);
 						}
 					}
+
+					if (values.hasEvent) {
+						const old_event = await transactionalEntityManager.findOneBy(MiEvent, { noteId: note.id });
+						if (
+							old_event!.start !== data.event!.start ||
+							old_event!.end !== data.event!.end ||
+							old_event!.title !== data.event!.title ||
+							old_event!.metadata !== data.event!.metadata
+						) {
+							await transactionalEntityManager.delete(MiEvent, { noteId: note.id });
+							const event = new MiEvent({
+								noteId: note.id,
+								start: data.event!.start,
+								end: data.event!.end ?? undefined,
+								title: data.event!.title,
+								metadata: data.event!.metadata,
+								noteVisibility: note.visibility,
+								userId: user.id,
+								userHost: user.host,
+							});
+							await transactionalEntityManager.insert(MiEvent, event);
+						}
+					}
 				});
-			} else if (!note.hasPoll && values.hasPoll) {
+			} else if ((!note.hasPoll && values.hasPoll) || (!note.hasEvent && values.hasEvent)) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
@@ -183,14 +216,33 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 						await transactionalEntityManager.insert(MiPoll, poll);
 					}
+
+					if (values.hasEvent) {
+						const event = new MiEvent({
+							noteId: note.id,
+							start: data.event!.start,
+							end: data.event!.end ?? undefined,
+							title: data.event!.title,
+							metadata: data.event!.metadata,
+							noteVisibility: note.visibility,
+							userId: user.id,
+							userHost: user.host,
+						});
+
+						await transactionalEntityManager.insert(MiEvent, event);
+					}
 				});
-			} else if (note.hasPoll && !values.hasPoll) {
+			} else if ((note.hasPoll && !values.hasPoll) || (note.hasEvent && !values.hasEvent)) {
 				// Start transaction
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
 
 					if (!values.hasPoll) {
 						await transactionalEntityManager.delete(MiPoll, { noteId: note.id });
+					}
+
+					if (!values.hasEvent) {
+						await transactionalEntityManager.delete(MiEvent, { noteId: note.id });
 					}
 				});
 			} else {
@@ -228,6 +280,17 @@ export class NoteUpdateService implements OnApplicationShutdown {
 				})();
 			}
 			//#endregion
+		}
+
+		if (note.deleteAt) {
+			const delay = note.deleteAt.getTime() - Date.now();
+			await this.queueService.scheduledNoteDeleteQueue.remove(note.id);
+			await this.queueService.scheduledNoteDeleteQueue.add(note.id, {
+				noteId: note.id,
+			}, {
+				delay,
+				removeOnComplete: true,
+			});
 		}
 
 		// Register to search database

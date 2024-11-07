@@ -22971,9 +22971,19 @@ export type operations = {
             expiresAt?: number | null;
             expiredAfter?: number | null;
           }) | null;
+          event?: ({
+            title?: string;
+            start?: number;
+            end?: number | null;
+            metadata?: Record<string, never>;
+          }) | null;
           cw: string | null;
           /** @default false */
           disableRightClick?: boolean;
+          scheduledDelete?: ({
+            deleteAt?: number | null;
+            deleteAfter?: number | null;
+          }) | null;
         };
       };
     };
