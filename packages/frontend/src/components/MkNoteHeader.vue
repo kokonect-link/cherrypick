@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</span>
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span v-if="note.channel" style="margin-right: 0.5em;"><i v-tooltip="note.channel.name" class="ti ti-device-tv"></i></span>
-			<span v-if="note.deletedAt" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts.scheduledNoteDelete" class="ti ti-bomb"></i></span>
+			<span v-if="note.deletedAt" style="margin-right: 0.5em;"><i v-tooltip="`${i18n.ts.scheduledNoteDelete}: ${(new Date(note.deleteAt)).toLocaleString()}`" class="ti ti-bomb"></i></span>
 			<div v-if="mock">
 				<MkTime :time="note.createdAt" colored/>
 			</div>
