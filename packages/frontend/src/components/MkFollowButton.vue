@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <button
-	v-if="(!disableIfFollowing || !isFollowing) && ($i != null && $i.id != user.id) && !user.isBlocked"
+	v-if="(!disableIfFollowing || !isFollowing) && ($i != null && $i.id != user.id) && (!user.isBlocked && !user.isBlocking)"
 	class="_button"
 	:class="[$style.root, { [$style.wait]: wait, [$style.active]: isFollowing || hasPendingFollowRequestFromYou, [$style.full]: full, [$style.large]: large }]"
 	:disabled="wait"

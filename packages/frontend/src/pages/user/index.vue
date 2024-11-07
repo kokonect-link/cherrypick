@@ -6,8 +6,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && user.isBlocked) == true"/>
-		<MkPageHeader v-else v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && user.isBlocked) == true"/>
+		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
+		<MkPageHeader v-else v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
 	</template>
 	<div>
 		<div v-if="user">
