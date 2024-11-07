@@ -2771,6 +2771,7 @@ _notification:
   flushNotification: "모든 알림 지우기"
   exportOfXCompleted: "{x} 내보내기에 성공했어요"
   login: "새 기기에서 로그인을 시도했어요"
+  loginDescription: "{ip}에서 로그인 되었어요.\n승인되지 않은 기기라면, 보안을 위해 '{text}'을 통해 모든 기기에서 로그아웃을 진행해 주세요."
   _types:
     all: "전부"
     note: "사용자의 새 게시물"

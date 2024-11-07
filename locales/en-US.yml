@@ -2764,6 +2764,7 @@ _notification:
   flushNotification: "Clear notifications"
   exportOfXCompleted: "Export of {x} has been completed"
   login: "Someone logged in"
+  loginDescription: "You have been logged in from {ip}.\nIf this is an unauthorized device, please log out of all devices by '{text}' for security reasons."
   _types:
     all: "All"
     note: "New notes"
