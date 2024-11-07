@@ -37,6 +37,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:enableEmojiMenuReaction="!!$i"
 					@click.stop
 				/>
+				<div v-if="note.poll">
+					<MkPoll :noteId="note.id" :poll="note.poll" isTranslation @click.stop/>
+				</div>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -54,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkMediaList v-else :mediaList="note.files" @click.stop/>
 			</div>
 			<div v-if="note.poll">
-				<MkPoll :note="note" @click.stop/>
+				<MkPoll :noteId="note.id" :poll="note.poll" @click.stop/>
 			</div>
 		</div>
 	</div>
@@ -449,7 +452,9 @@ async function clip(): Promise<void> {
 const isForeignLanguage: boolean = note.value.text != null && (() => {
 	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
 	const postLang = detectLanguage(note.value.text);
-	return postLang !== '' && postLang !== targetLang;
+	const choicesLang = note.value.poll?.choices.map((choice) => choice.text).join(' ') ?? '';
+	const pollLang = detectLanguage(choicesLang);
+	return postLang !== '' && (postLang !== targetLang || pollLang !== targetLang);
 })();
 
 if (defaultStore.state.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (note.value.cw == null || showContent.value) && note.value.text && isForeignLanguage) translate();

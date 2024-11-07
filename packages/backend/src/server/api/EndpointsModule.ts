@@ -307,6 +307,7 @@ import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
+import * as ep___notes_polls_translate from './endpoints/notes/polls/translate.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
 import * as ep___notes_events_search from './endpoints/notes/events/search.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
@@ -728,6 +729,7 @@ const $notes_hybridTimeline: Provider = { provide: 'ep:notes/hybrid-timeline', u
 const $notes_localTimeline: Provider = { provide: 'ep:notes/local-timeline', useClass: ep___notes_localTimeline.default };
 const $notes_mentions: Provider = { provide: 'ep:notes/mentions', useClass: ep___notes_mentions.default };
 const $notes_polls_recommendation: Provider = { provide: 'ep:notes/polls/recommendation', useClass: ep___notes_polls_recommendation.default };
+const $notes_polls_translate: Provider = { provide: 'ep:notes/polls/translate', useClass: ep___notes_polls_translate.default };
 const $notes_polls_vote: Provider = { provide: 'ep:notes/polls/vote', useClass: ep___notes_polls_vote.default };
 const $notes_events_search: Provider = { provide: 'ep:notes/events/search', useClass: ep___notes_events_search.default };
 const $notes_reactions: Provider = { provide: 'ep:notes/reactions', useClass: ep___notes_reactions.default };
@@ -1154,6 +1156,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$notes_localTimeline,
 		$notes_mentions,
 		$notes_polls_recommendation,
+		$notes_polls_translate,
 		$notes_polls_vote,
 		$notes_events_search,
 		$notes_reactions,
@@ -1572,6 +1575,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$notes_localTimeline,
 		$notes_mentions,
 		$notes_polls_recommendation,
+		$notes_polls_translate,
 		$notes_polls_vote,
 		$notes_events_search,
 		$notes_reactions,

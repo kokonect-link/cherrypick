@@ -1729,6 +1729,8 @@ declare namespace entities {
         NotesMentionsResponse,
         NotesPollsRecommendationRequest,
         NotesPollsRecommendationResponse,
+        NotesPollsTranslateRequest,
+        NotesPollsTranslateResponse,
         NotesPollsVoteRequest,
         NotesEventsSearchRequest,
         NotesEventsSearchResponse,
@@ -2865,6 +2867,12 @@ type NotesPollsRecommendationRequest = operations['notes___polls___recommendatio
 
 // @public (undocumented)
 type NotesPollsRecommendationResponse = operations['notes___polls___recommendation']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type NotesPollsTranslateRequest = operations['notes___polls___translate']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type NotesPollsTranslateResponse = operations['notes___polls___translate']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesPollsVoteRequest = operations['notes___polls___vote']['requestBody']['content']['application/json'];

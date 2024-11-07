@@ -131,6 +131,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							:enableEmojiMenu="!!$i"
 							:enableEmojiMenuReaction="!!$i"
 						/>
+						<MkPoll v-if="appearNote.poll" ref="pollViewer" :noteId="appearNote.id" :poll="appearNote.poll" :class="$style.poll" isTranslation/>
 						<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 							<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 							<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -682,7 +683,9 @@ function showMenu(): void {
 const isForeignLanguage: boolean = appearNote.value.text != null && (() => {
 	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
 	const postLang = detectLanguage(appearNote.value.text);
-	return postLang !== '' && postLang !== targetLang;
+	const choicesLang = appearNote.value.poll?.choices.map((choice) => choice.text).join(' ') ?? '';
+	const pollLang = detectLanguage(choicesLang);
+	return postLang !== '' && (postLang !== targetLang || pollLang !== targetLang);
 })();
 
 if (defaultStore.state.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && (appearNote.value.cw == null || showContent.value) && appearNote.value.text && isForeignLanguage) translate();

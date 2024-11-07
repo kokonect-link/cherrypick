@@ -448,6 +448,8 @@ import type {
 	NotesMentionsResponse,
 	NotesPollsRecommendationRequest,
 	NotesPollsRecommendationResponse,
+	NotesPollsTranslateRequest,
+	NotesPollsTranslateResponse,
 	NotesPollsVoteRequest,
 	NotesEventsSearchRequest,
 	NotesEventsSearchResponse,
@@ -928,6 +930,7 @@ export type Endpoints = {
 	'notes/local-timeline': { req: NotesLocalTimelineRequest; res: NotesLocalTimelineResponse };
 	'notes/mentions': { req: NotesMentionsRequest; res: NotesMentionsResponse };
 	'notes/polls/recommendation': { req: NotesPollsRecommendationRequest; res: NotesPollsRecommendationResponse };
+	'notes/polls/translate': { req: NotesPollsTranslateRequest; res: NotesPollsTranslateResponse };
 	'notes/polls/vote': { req: NotesPollsVoteRequest; res: EmptyResponse };
 	'notes/events/search': { req: NotesEventsSearchRequest; res: NotesEventsSearchResponse };
 	'notes/reactions': { req: NotesReactionsRequest; res: NotesReactionsResponse };
