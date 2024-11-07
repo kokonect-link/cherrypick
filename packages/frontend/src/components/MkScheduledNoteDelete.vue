@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import MkInput from './MkInput.vue';
 import MkSelect from './MkSelect.vue';
 import { formatDateTimeString } from '@/scripts/format-time-string.js';
@@ -103,6 +103,10 @@ watch([
 	unit,
 ], () => emit('update:modelValue', get()), {
 	deep: true,
+});
+
+onMounted(() => {
+	emit('update:modelValue', get());
 });
 </script>
 
