@@ -119,7 +119,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, watch } from 'vue';
+import { onMounted, Ref, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
@@ -218,9 +218,13 @@ watch([
 	price,
 	availabilityStart,
 	availabilityEnd,
-	keywords
+	keywords,
 ], () => emit('update:modelValue', get()), {
 	deep: true,
+});
+
+onMounted(() => {
+	emit('update:modelValue', get());
 });
 </script>
 
