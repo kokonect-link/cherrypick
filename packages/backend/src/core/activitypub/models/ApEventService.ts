@@ -46,6 +46,7 @@ export class ApEventService {
 				metadata: {
 					'@type': 'Event',
 					name: note.name,
+					url: note.href,
 					startDate: note.startTime.toISOString(),
 					endDate: note.endTime?.toISOString(),
 					description: note.summary,
