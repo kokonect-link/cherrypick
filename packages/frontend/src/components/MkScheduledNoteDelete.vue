@@ -139,6 +139,7 @@ watch([
 
 	> section {
 		margin: 16px 0 0 0;
+
 		> div {
 			margin: 0 8px;
 			display: flex;
