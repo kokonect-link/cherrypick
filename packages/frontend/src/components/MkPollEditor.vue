@@ -5,6 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="zmdxowus">
+	<span>{{ i18n.ts.poll }}</span>
 	<p v-if="choices.length < 2" class="caution">
 		<i class="ti ti-alert-triangle"></i>{{ i18n.ts._poll.noOnlyOneChoice }}
 	</p>
@@ -148,6 +149,10 @@ watch([choices, multiple, expiration, atDate, atTime, after, unit], () => emit('
 <style lang="scss" scoped>
 .zmdxowus {
 	padding: 8px 16px;
+
+	> span {
+		opacity: 0.7;
+	}
 
 	> .caution {
 		margin: 0 0 8px 0;

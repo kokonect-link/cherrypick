@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
 	<MkPollEditor v-if="poll && showForm" v-model="poll" @destroyed="poll = null"/>
 	<MkScheduledNoteDelete v-if="scheduledNoteDelete" v-model="scheduledNoteDelete" @destroyed="scheduledNoteDelete = null"/>
-	<MkScheduleEditor v-if="scheduleNote" v-model="scheduleNote" @destroyed="scheduleNote = null"/>
+	<MkSchedulePostEditor v-if="scheduleNote" v-model="scheduleNote" @destroyed="scheduleNote = null"/>
 	<MkNotePreview v-if="showPreview && showForm && textLength > 0" :class="$style.preview" :text="text" :files="files" :poll="poll ?? undefined" :useCw="useCw" :cw="cw" :user="postAccount ?? $i" :showProfile="showProfilePreview"/>
 	<div v-if="showingOptions && showForm" style="padding: 8px 16px;">
 	</div>
@@ -156,7 +156,7 @@ import XSigninDialog from '@/components/MkSigninDialog.vue';
 import * as sound from '@/scripts/sound.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
 import MkScheduledNoteDelete, { type DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
-import MkScheduleEditor from '@/components/MkScheduleEditor.vue';
+import MkSchedulePostEditor from '@/components/MkSchedulePostEditor.vue';
 import { listScheduleNotePost } from '@/os.js';
 
 const $i = signinRequired();

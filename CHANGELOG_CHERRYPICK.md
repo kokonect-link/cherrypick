@@ -29,6 +29,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### Client
+- Enhance: 노트 작성 영역에서 각 항목이 더 잘 구분되도록 조정함
 - Fix: 노트 삭제 예약 기한을 `기간 지정`으로 설정한 경우 노트가 즉시 삭제될 수 있음
 
 ### Server
