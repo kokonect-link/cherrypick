@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<!-- totp入力 -->
 		<form class="_gaps_s" @submit.prevent="emit('totpSubmitted', token)">
-			<MkInput v-model="token" type="text" :pattern="isBackupCode ? '^[A-Z0-9]{32}$' :'^[0-9]{6}$'" autocomplete="one-time-code" required autofocus :spellcheck="false" :inputmode="isBackupCode ? undefined : 'numeric'">
+			<MkInput v-model="token" type="text" :pattern="isBackupCode ? '^[A-Z0-9]{32}$' :'^[0-9]{6}$'" autocomplete="one-time-code" required autofocus :spellcheck="false" :inputmode="isBackupCode ? undefined : 'numeric'" @enter.prevent="emit('totpSubmitted', token)">
 				<template #label>{{ i18n.ts.token }} ({{ i18n.ts['2fa'] }})</template>
 				<template #prefix><i v-if="isBackupCode" class="ti ti-key"></i><i v-else class="ti ti-123"></i></template>
 				<template #caption><button class="_textButton" type="button" @click="isBackupCode = !isBackupCode">{{ isBackupCode ? i18n.ts.useTotp : i18n.ts.useBackupCode }}</button></template>

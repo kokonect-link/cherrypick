@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<!-- username入力 -->
 		<form class="_gaps_s" @submit.prevent="emit('usernameSubmitted', username)">
-			<MkInput v-model="username" :placeholder="i18n.ts.username" type="text" pattern="^[a-zA-Z0-9_]+$" :spellcheck="false" autocomplete="username webauthn" autofocus required data-cy-signin-username>
+			<MkInput v-model="username" :placeholder="i18n.ts.username" type="text" pattern="^[a-zA-Z0-9_]+$" :spellcheck="false" autocomplete="username webauthn" autofocus required data-cy-signin-username @enter.prevent="emit('usernameSubmitted', username)">
 				<template #prefix>@</template>
 				<template #suffix>@{{ host }}</template>
 			</MkInput>

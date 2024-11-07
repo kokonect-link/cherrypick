@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<!-- ブラウザ オートコンプリート用 -->
 			<input type="hidden" name="username" autocomplete="username" :value="user.username">
 
-			<MkInput v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true" required autofocus data-cy-signin-password>
+			<MkInput v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true" required autofocus data-cy-signin-password @enter.prevent="onSubmit">
 				<template #prefix><i class="ti ti-lock"></i></template>
 				<template #caption><button class="_textButton" type="button" @click="resetPassword">{{ i18n.ts.forgotPassword }}</button></template>
 			</MkInput>
