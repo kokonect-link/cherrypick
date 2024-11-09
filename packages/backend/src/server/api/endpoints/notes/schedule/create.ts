@@ -84,6 +84,12 @@ export const meta = {
 			id: '04da457d-b083-4055-9082-955525eda5a5',
 		},
 
+		cannotCreateAlreadyExpiredEvent: {
+			message: 'Event is already expired.',
+			code: 'CANNOT_CREATE_ALREADY_EXPIRED_EVENT',
+			id: 'a80c5545-5126-421e-969b-35c3eb2c3646',
+		},
+
 		cannotCreateAlreadyExpiredSchedule: {
 			message: 'Schedule is already expired.',
 			code: 'CANNOT_CREATE_ALREADY_EXPIRED_SCHEDULE',
@@ -95,11 +101,19 @@ export const meta = {
 			code: 'NO_SUCH_CHANNEL',
 			id: 'b1653923-5453-4edc-b786-7c4f39bb0bbb',
 		},
+
 		noSuchSchedule: {
 			message: 'No such schedule.',
 			code: 'NO_SUCH_SCHEDULE',
 			id: '44dee229-8da1-4a61-856d-e3a4bbc12032',
 		},
+
+		cannotScheduleDeleteEarlierThanNow: {
+			message: 'Cannot specify delete time earlier than now.',
+			code: 'CANNOT_SCHEDULE_DELETE_EARLIER_THAN_NOW',
+			id: '9f04994a-3aa2-11ef-a495-177eea74788f',
+		},
+
 		youHaveBeenBlocked: {
 			message: 'You have been blocked by this user.',
 			code: 'YOU_HAVE_BEEN_BLOCKED',
@@ -190,6 +204,14 @@ export const paramDef = {
 			nullable: false,
 			properties: {
 				scheduledAt: { type: 'integer', nullable: false },
+			},
+		},
+		scheduledDelete: {
+			type: 'object',
+			nullable: true,
+			properties: {
+				deleteAt: { type: 'integer', nullable: true },
+				deleteAfter: { type: 'integer', nullable: true, minimum: 1 },
 			},
 		},
 	},
@@ -332,6 +354,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					ps.poll.expiresAt = scheduleNote_scheduledAt + ps.poll.expiredAfter;
 				}
 			}
+
+			if (ps.event) {
+				let scheduleNote_scheduledAt = Date.now();
+				if (typeof ps.scheduleNote.scheduledAt === 'number') {
+					scheduleNote_scheduledAt = ps.scheduleNote.scheduledAt;
+				}
+				if (typeof ps.event.end === 'number') {
+					if (ps.event.end < Date.now() || ps.event.end < scheduleNote_scheduledAt) {
+						throw new ApiError(meta.errors.cannotCreateAlreadyExpiredEvent);
+					}
+				}
+			}
+
 			if (typeof ps.scheduleNote.scheduledAt === 'number') {
 				if (ps.scheduleNote.scheduledAt < Date.now()) {
 					throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
@@ -339,6 +374,17 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			} else {
 				throw new ApiError(meta.errors.cannotCreateAlreadyExpiredSchedule);
 			}
+
+			if (ps.scheduledDelete) {
+				if (typeof ps.scheduledDelete.deleteAt === 'number') {
+					if (ps.scheduledDelete.deleteAt < Date.now()) {
+						throw new ApiError(meta.errors.cannotScheduleDeleteEarlierThanNow);
+					} else if (typeof ps.scheduledDelete.deleteAfter === 'number') {
+						ps.scheduledDelete.deleteAt = Date.now() + ps.scheduledDelete.deleteAfter;
+					}
+				}
+			}
+
 			const note:MiScheduleNoteType = {
 				createdAt: new Date(ps.scheduleNote.scheduledAt!).toISOString(),
 				files: files.map(f => f.id),
@@ -365,6 +411,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					metadata: ps.event.metadata ?? {},
 				} : undefined,
 				disableRightClick: ps.disableRightClick,
+				deleteAt: ps.scheduledDelete?.deleteAt ? new Date(ps.scheduledDelete.deleteAt) : ps.scheduledDelete?.deleteAfter ? new Date(Date.now() + ps.scheduledDelete.deleteAfter) : null,
 			};
 
 			if (ps.scheduleNote.scheduledAt) {
