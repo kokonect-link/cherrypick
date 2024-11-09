@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<template #default="{ items }">
 				<div class="_gaps">
-					<MkNoteSimple v-for="item in items" :key="item.id" :scheduled="true" :note="item.note" @editScheduleNote="listUpdate"/>
+					<MkNoteSimple v-for="item in items" :key="item.id" :scheduled="true" :note="item.note" @deleteAndEditScheduleNote="listUpdate"/>
 				</div>
 			</template>
 		</MkPagination>
