@@ -32,6 +32,8 @@ export interface IObject {
 	href?: string;
 	tag?: IObject | IObject[];
 	sensitive?: boolean;
+	disableRightClick?: boolean;
+	deleteAt?: Date;
 }
 
 /**

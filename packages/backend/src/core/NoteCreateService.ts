@@ -431,6 +431,7 @@ export class NoteCreateService implements OnApplicationShutdown {
 			localOnly: data.localOnly!,
 			reactionAcceptance: data.reactionAcceptance,
 			disableRightClick: data.disableRightClick!,
+			deleteAt: data.deleteAt,
 			visibility: data.visibility as any,
 			visibleUserIds: data.visibility === 'specified'
 				? data.visibleUsers
@@ -446,7 +447,6 @@ export class NoteCreateService implements OnApplicationShutdown {
 			renoteUserId: data.renote ? data.renote.userId : null,
 			renoteUserHost: data.renote ? data.renote.userHost : null,
 			userHost: user.host,
-			deleteAt: data.deleteAt,
 		});
 
 		if (data.uri != null) insert.uri = data.uri;

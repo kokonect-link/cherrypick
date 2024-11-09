@@ -146,7 +146,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 			attachedFileTypes: data.files ? data.files.map(file => file.type) : [],
 			updatedAtHistory: [...updatedAtHistory, new Date()],
 			noteEditHistory: [...note.noteEditHistory, (note.cw ? note.cw + '\n' : '') + note.text!],
-			deleteAt: data.deleteAt,
+			deleteAt: data.deleteAt!,
 		});
 
 		// 投稿を更新
@@ -267,7 +267,18 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		if (!silent) {
 			if (this.userEntityService.isLocalUser(user)) this.activeUsersChart.write(user);
 
-			this.globalEventService.publishNoteStream(note.id, 'updated', { cw: note.cw, text: note.text });
+			if (note.deleteAt) {
+				const delay = note.deleteAt.getTime() - Date.now();
+				await this.queueService.scheduledNoteDeleteQueue.remove(note.id);
+				await this.queueService.scheduledNoteDeleteQueue.add(note.id, {
+					noteId: note.id,
+				}, {
+					delay,
+					removeOnComplete: true,
+				});
+			}
+
+			this.globalEventService.publishNoteStream(note.id, 'updated', { cw: note.cw, text: note.text, disableRightClick: note.disableRightClick, deleteAt: note.deleteAt });
 
 			//#region AP deliver
 			if (this.userEntityService.isLocalUser(user) && !note.localOnly) {
@@ -280,17 +291,6 @@ export class NoteUpdateService implements OnApplicationShutdown {
 				})();
 			}
 			//#endregion
-		}
-
-		if (note.deleteAt) {
-			const delay = note.deleteAt.getTime() - Date.now();
-			await this.queueService.scheduledNoteDeleteQueue.remove(note.id);
-			await this.queueService.scheduledNoteDeleteQueue.add(note.id, {
-				noteId: note.id,
-			}, {
-				delay,
-				removeOnComplete: true,
-			});
 		}
 
 		// Register to search database

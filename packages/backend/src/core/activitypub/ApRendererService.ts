@@ -443,6 +443,14 @@ export class ApRendererService {
 			} as const : {};
 		}
 
+		let asDeleteAt = {};
+		if (note.deleteAt) {
+			const n = await this.notesRepository.findOneBy({ id: note.id });
+			asDeleteAt = n ? {
+				deleteAt: n.deleteAt,
+			} as const : {};
+		}
+
 		return {
 			id: `${this.config.url}/notes/${note.id}`,
 			type: 'Note',
@@ -466,6 +474,8 @@ export class ApRendererService {
 			attachment: files.map(x => this.renderDocument(x)),
 			sensitive: note.cw != null || files.some(file => file.isSensitive),
 			tag,
+			disableRightClick: note.disableRightClick,
+			...asDeleteAt,
 			...asEvent,
 			...asPoll,
 			...asTalk,

@@ -339,7 +339,7 @@ export class ApNoteService {
 				cw,
 				text,
 				localOnly: false,
-				disableRightClick: false,
+				disableRightClick: note.disableRightClick,
 				visibility,
 				visibleUsers,
 				apMentions,
@@ -349,6 +349,7 @@ export class ApNoteService {
 				event,
 				uri: note.id,
 				url: url,
+				deleteAt: note.deleteAt ? new Date(note.deleteAt) : null,
 			}, silent);
 		} catch (err: any) {
 			if (err.name !== 'duplicated') {
@@ -434,11 +435,12 @@ export class ApNoteService {
 				name: note.name,
 				cw,
 				text,
-				disableRightClick: false,
+				disableRightClick: note.disableRightClick,
 				apHashtags,
 				apEmojis,
 				poll,
 				event,
+				deleteAt: note.deleteAt,
 			}, target, silent);
 		} catch (err: any) {
 			this.logger.warn(`note update failed: ${err}`);
