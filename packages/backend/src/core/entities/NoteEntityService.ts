@@ -418,7 +418,6 @@ export class NoteEntityService implements OnModuleInit {
 			mentions: note.mentions.length > 0 ? note.mentions : undefined,
 			uri: note.uri ?? undefined,
 			url: note.url ?? undefined,
-			event: note.hasEvent ? this.populateEvent(note) : undefined,
 
 			...(opts.detail ? {
 				clippedCount: note.clippedCount,
@@ -438,6 +437,7 @@ export class NoteEntityService implements OnModuleInit {
 				}) : undefined,
 
 				poll: note.hasPoll ? this.populatePoll(note, meId) : undefined,
+				event: note.hasEvent ? this.populateEvent(note) : undefined,
 
 				...(meId && Object.keys(reactions).length > 0 ? {
 					myReaction: this.populateMyReaction({

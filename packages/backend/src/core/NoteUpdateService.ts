@@ -136,6 +136,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 		const values = new MiNote({
 			updatedAt: data.updatedAt!,
 			fileIds: data.files ? data.files.map(file => file.id) : [],
+			name: data.name,
 			text: data.text,
 			hasPoll: data.poll != null,
 			hasEvent: data.event != null,
