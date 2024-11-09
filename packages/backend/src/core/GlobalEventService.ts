@@ -28,6 +28,7 @@ import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { bindThis } from '@/decorators.js';
 import { Serialized } from '@/types.js';
+import type { EventSchema } from '@/models/Event.js';
 import type Emitter from 'strict-event-emitter-types';
 import type { EventEmitter } from 'events';
 
@@ -126,6 +127,12 @@ export interface NoteEventTypes {
 		name: string | null;
 		cw: string | null;
 		text: string | null;
+		event: {
+			start: Date;
+			end: Date | null
+			title: string;
+			metadata: EventSchema;
+		}
 		disableRightClick: boolean | null;
 		deleteAt: Date | null;
 	};
