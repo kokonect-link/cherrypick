@@ -65,6 +65,11 @@ export const paramDef = {
 	type: 'object',
 	properties: {
 		noteId: { type: 'string', format: 'misskey:id' },
+		name: {
+			type: 'string',
+			maxLength: 256,
+			nullable: false,
+		},
 		text: {
 			type: 'string',
 			minLength: 1,
@@ -195,6 +200,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 			}
 
 			const data = {
+				name: ps.name,
 				text: ps.text,
 				files: files,
 				cw: ps.cw,

@@ -278,7 +278,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 				});
 			}
 
-			this.globalEventService.publishNoteStream(note.id, 'updated', { cw: note.cw, text: note.text, disableRightClick: note.disableRightClick, deleteAt: note.deleteAt });
+			this.globalEventService.publishNoteStream(note.id, 'updated', { name: note.name, cw: note.cw, text: note.text, disableRightClick: note.disableRightClick, deleteAt: note.deleteAt });
 
 			//#region AP deliver
 			if (this.userEntityService.isLocalUser(user) && !note.localOnly) {

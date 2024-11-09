@@ -123,6 +123,7 @@ export interface NoteEventTypes {
 		deletedAt: Date;
 	};
 	updated: {
+		name: string | null;
 		cw: string | null;
 		text: string | null;
 		disableRightClick: boolean | null;
