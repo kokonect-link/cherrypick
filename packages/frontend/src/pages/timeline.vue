@@ -37,7 +37,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</transition>
 
 				<div :class="$style.tl">
+					<div v-if="!isAvailableBasicTimeline(src)" :class="$style.disabled">
+						<p :class="$style.disabledTitle">
+							<i class="ti ti-circle-minus"></i>
+							{{ i18n.ts._disabledTimeline.title }}
+						</p>
+						<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
+					</div>
 					<MkTimeline
+						v-else
 						ref="tlComponent"
 						:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
 						:src="src.split(':')[0]"
@@ -161,6 +169,15 @@ const withSensitive = computed<boolean>({
 
 const enableWidgetsArea = ref(defaultStore.state.enableWidgetsArea);
 const friendlyUiEnableNotificationsArea = ref(defaultStore.state.friendlyUiEnableNotificationsArea);
+
+const enableHomeTimeline = ref(defaultStore.state.enableHomeTimeline);
+const enableLocalTimeline = ref(defaultStore.state.enableLocalTimeline);
+const enableSocialTimeline = ref(defaultStore.state.enableSocialTimeline);
+const enableGlobalTimeline = ref(defaultStore.state.enableGlobalTimeline);
+const enableListTimeline = ref(defaultStore.state.enableListTimeline);
+const enableAntennaTimeline = ref(defaultStore.state.enableAntennaTimeline);
+const enableChannelTimeline = ref(defaultStore.state.enableChannelTimeline);
+
 const collapseRenotes = ref(defaultStore.state.collapseRenotes);
 const collapseReplies = ref(defaultStore.state.collapseReplies);
 const collapseLongNoteContent = ref(defaultStore.state.collapseLongNoteContent);
@@ -184,6 +201,41 @@ watch(enableWidgetsArea, (x) => {
 
 watch(friendlyUiEnableNotificationsArea, (x) => {
 	defaultStore.set('friendlyUiEnableNotificationsArea', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableHomeTimeline, (x) => {
+	defaultStore.set('enableHomeTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableLocalTimeline, (x) => {
+	defaultStore.set('enableLocalTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableSocialTimeline, (x) => {
+	defaultStore.set('enableSocialTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableGlobalTimeline, (x) => {
+	defaultStore.set('enableGlobalTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableListTimeline, (x) => {
+	defaultStore.set('enableListTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableAntennaTimeline, (x) => {
+	defaultStore.set('enableAntennaTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableChannelTimeline, (x) => {
+	defaultStore.set('enableChannelTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
@@ -297,7 +349,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 function saveSrc(newSrc: TimelinePageSrc): void {
 	const out = deepMerge({ src: newSrc }, defaultStore.state.tl);
 
-	if (newSrc.startsWith('userList:')) {
+	if (defaultStore.state.enableListTimeline && newSrc.startsWith('userList:')) {
 		const id = newSrc.substring('userList:'.length);
 		out.userList = defaultStore.reactiveState.pinnedUserLists.value.find(l => l.id === id) ?? null;
 	}
@@ -392,6 +444,54 @@ const headerActions = computed(() => {
 				});
 
 				menuItems.push({ type: 'divider' });
+
+				menuItems.push({
+					type: 'parent',
+					icon: 'ti ti-align-left',
+					text: i18n.ts.timeline,
+					children: async () => {
+						const displayOfTimelineChildMenu = [] as MenuItem[];
+
+						displayOfTimelineChildMenu.push({
+							type: 'switch',
+							text: i18n.ts._timelines.home,
+							icon: 'ti ti-home',
+							ref: enableHomeTimeline,
+						}, {
+							type: 'switch',
+							text: i18n.ts._timelines.local,
+							icon: 'ti ti-planet',
+							ref: enableLocalTimeline,
+						}, {
+							type: 'switch',
+							text: i18n.ts._timelines.social,
+							icon: 'ti ti-universe',
+							ref: enableSocialTimeline,
+						}, {
+							type: 'switch',
+							text: i18n.ts._timelines.global,
+							icon: 'ti ti-world',
+							ref: enableGlobalTimeline,
+						}, { type: 'divider' }, {
+							type: 'switch',
+							text: i18n.ts.lists,
+							icon: 'ti ti-list',
+							ref: enableListTimeline,
+						}, {
+							type: 'switch',
+							text: i18n.ts.antennas,
+							icon: 'ti ti-antenna',
+							ref: enableAntennaTimeline,
+						}, {
+							type: 'switch',
+							text: i18n.ts.channel,
+							icon: 'ti ti-device-tv',
+							ref: enableChannelTimeline,
+						});
+
+						return displayOfTimelineChildMenu;
+					},
+				});
 
 				menuItems.push({
 					type: 'parent',
