@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			-->
 
 		<div style="padding-bottom: 1.5em;">
-			<div :class="$style.label">{{ i18n.ts.fontSize }} <span class="_beta">CherryPick</span></div>
+			<div :class="$style.label">{{ i18n.ts.fontSize }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></div>
 			<div :class="$style.fontSize" class="_panel">
 				<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._mfc.dummy }}</div>
 				<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._mfc.dummy }}</div>
@@ -186,7 +186,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div class="_gaps_s" style="margin: 0 10px;">
-				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">{{ i18n.ts.noteFooterButton }} <span class="_beta">CherryPick</span></div>
+				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">{{ i18n.ts.noteFooterButton }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></div>
 
 				<MkSwitch v-model="showReplyButtonInNoteFooter"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.reply }}</MkSwitch>
 				<MkSwitch v-model="showRenoteButtonInNoteFooter"><i class="ti ti-repeat"></i> {{ i18n.ts.renote }}</MkSwitch>
@@ -211,7 +211,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkSelect>
 
 			<MkSelect v-model="nsfwOpenBehavior">
-				<template #label>{{ i18n.ts.nsfwOpenBehavior }} <span class="_beta">CherryPick</span></template>
+				<template #label>{{ i18n.ts.nsfwOpenBehavior }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 				<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
 				<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
 			</MkSelect>

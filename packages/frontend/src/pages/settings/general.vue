@@ -60,19 +60,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="welcomeBackToast">{{ i18n.ts.welcomeBackToast }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
-				<template #label>{{ i18n.ts.whenServerDisconnected }} <span class="_beta">CherryPick</span></template>
+				<template #label>{{ i18n.ts.whenServerDisconnected }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 				<option value="reload">{{ i18n.ts._serverDisconnectedBehavior.reload }}</option>
 				<option value="dialog">{{ i18n.ts._serverDisconnectedBehavior.dialog }}</option>
 				<option value="quiet">{{ i18n.ts._serverDisconnectedBehavior.quiet }}</option>
 				<option value="none">{{ i18n.ts._serverDisconnectedBehavior.none }}</option>
 			</MkSelect>
 			<MkSelect v-model="requireRefreshBehavior">
-				<template #label>{{ i18n.ts.requireRefresh }} <span class="_beta">CherryPick</span></template>
+				<template #label>{{ i18n.ts.requireRefresh }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 				<option value="dialog">{{ i18n.ts._requireRefreshBehavior.dialog }}</option>
 				<option value="quiet">{{ i18n.ts._requireRefreshBehavior.quiet }}</option>
 			</MkSelect>
 			<MkSelect v-model="newNoteReceivedNotificationBehavior">
-				<template #label>{{ i18n.ts.newNoteReceivedNotification }} <span class="_beta">CherryPick</span></template>
+				<template #label>{{ i18n.ts.newNoteReceivedNotification }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 				<option value="default">{{ i18n.ts._newNoteReceivedNotificationBehavior.default }}</option>
 				<option value="count">{{ i18n.ts._newNoteReceivedNotificationBehavior.count }}</option>
 				<option value="none">{{ i18n.ts._newNoteReceivedNotificationBehavior.none }}</option>
