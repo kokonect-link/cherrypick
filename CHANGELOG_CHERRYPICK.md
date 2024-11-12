@@ -4,7 +4,7 @@
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 - 
 
 ### General
@@ -28,12 +28,13 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 - Misskey 2024.10.1에 적용된 `스팸 대책`의 일부 개선 안내
   - 이 변경은 다양한 상황에서 관리자가 보다 유연하게 운영할 수 있도록 합니다.
   - 기존의 `7일 경과 시 초대제로 전환` 정책을 세분화 합니다.
     - 7일 경과 시 `초대제로 전환` 여부를 선택할 수 있음
     - 7일 경과 시 `공개 노트 허용` 여부를 선택할 수 있음
+  - 시스템에 의해 변경된 경우에는 모더레이터에게 알림이 표시되며, 변경된 설정을 다시 복원하기 위해서는 제어판에서 수동으로 설정을 복원해야 합니다.
 
 ### General
 - Feat: 투표 내용 번역
@@ -82,7 +83,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.9.0<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202490](CHANGELOG.md#202490) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 - `오브젝트 스토리지 (리모트)`의 내부 변경으로 인해 DB 마이그레이션 과정에서 이전에 설정한 값이 제거됩니다. 마이그레이션 이후 값을 다시 설정해 주십시오.
 
 ### General
@@ -155,7 +156,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202490](CHANGE
 기반 Misskey 버전: 2024.9.0<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202490](CHANGELOG.md#202490) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 - Enable condensed line의 기본값이 꺼짐으로 변경됨
   - 활성화하면 글자를 표시하기 위한 여유 공간이 좁을 때 디자인이 상대적으로 어색하게 보일 수 있으며, 실험실 기능이므로 이 기능이 변경하는 부분을 확실히 알고 있는 사용자만 활성화할 것을 권장합니다.
 - 비밀번호 해싱 알고리즘이 `bcrypt`에서 `argon2`로 변경됨
@@ -556,7 +557,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023102](CHANG
 기반 Misskey 버전: 2023.10.1<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2023101](CHANGELOG.md#2023101) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 - Misskey 2023.10.0 에서 제거된 노트 편집 기능이 계속 유지됩니다.
 
 ### General
@@ -953,7 +954,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#13131](CHANGEL
 출시일: 2023/2/10<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 변경 사항이 없습니다.
 
 ---
@@ -962,7 +963,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md)
 출시일: 2023/2/10<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 이 버전부터 Misskey v13을 대응합니다.
 
 ### Improvements
@@ -992,7 +993,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md)
 출시일: 2022/9/16<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md](CHANGELOG.md) 문서를 참고하십시오.
 
-## NOTE
+### NOTE
 이 버전부터는 기존 버전과 연결되지 않고, 새로 포크하여 작업되었습니다. 따라서 기존 버전에 있던 기능들이 다시 명시될 수 있습니다.
 
 ### Improvements
