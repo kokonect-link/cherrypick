@@ -58,6 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreCantUseAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
 				</MkSwitch>
 				<MkSwitch v-model="welcomeBackToast">{{ i18n.ts.welcomeBackToast }} <span class="_beta">CherryPick</span></MkSwitch>
+				<MkSwitch v-model="disableNyaize">{{ i18n.ts.noNyaization }} <span class="_beta">CherryPick</span></MkSwitch>
 			</div>
 			<MkSelect v-model="serverDisconnectedBehavior">
 				<template #label>{{ i18n.ts.whenServerDisconnected }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
@@ -198,6 +199,7 @@ const autoLoadMoreReplies = computed(defaultStore.makeGetterSetter('autoLoadMore
 const autoLoadMoreConversation = computed(defaultStore.makeGetterSetter('autoLoadMoreConversation'));
 const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslate'));
 const welcomeBackToast = computed(defaultStore.makeGetterSetter('welcomeBackToast'));
+const disableNyaize = computed(defaultStore.makeGetterSetter('disableNyaize'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -221,6 +223,7 @@ watch([
 watch([
 	enableInfiniteScroll,
 	useAutoTranslate,
+	disableNyaize,
 ], () => {
 	reloadTimeline();
 });

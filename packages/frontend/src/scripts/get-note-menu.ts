@@ -513,18 +513,20 @@ export function getNoteMenu(props: {
 					action: showViewTextSource,
 				});
 
-				if (props.noNyaize.value) {
-					noteChildMenu.push({
-						icon: 'ti ti-paw-filled',
-						text: i18n.ts.revertNoNyaization,
-						action: revertNoNyaizeText,
-					});
-				} else {
-					noteChildMenu.push({
-						icon: 'ti ti-paw-off',
-						text: i18n.ts.noNyaization,
-						action: noNyaizeText,
-					});
+				if (!defaultStore.state.disableNyaize) {
+					if (props.noNyaize.value) {
+						noteChildMenu.push({
+							icon: 'ti ti-paw-filled',
+							text: i18n.ts.revertNoNyaization,
+							action: revertNoNyaizeText,
+						});
+					} else {
+						noteChildMenu.push({
+							icon: 'ti ti-paw-off',
+							text: i18n.ts.noNyaization,
+							action: noNyaizeText,
+						});
+					}
 				}
 
 				if (appearNote.userId === $i.id) {

@@ -133,6 +133,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'autoLoadMoreConversation',
 	'useAutoTranslate',
 	'welcomeBackToast',
+	'disableNyaize',
 	'hideAvatarsInNote',
 	'showTranslateButtonInNote',
 	'enableAbsoluteTime',

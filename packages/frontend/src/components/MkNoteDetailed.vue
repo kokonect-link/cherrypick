@@ -96,7 +96,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					style="margin-right: 8px;"
 					:text="appearNote.cw"
 					:author="appearNote.user"
-					:nyaize="noNyaize ? false : 'respect'"
+					:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 					:enableEmojiMenu="!!$i"
 					:enableEmojiMenuReaction="!!$i"
 				/>
@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:parsedNodes="parsed"
 					:text="appearNote.text"
 					:author="appearNote.user"
-					:nyaize="noNyaize ? false : 'respect'"
+					:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 					:emojiUrls="appearNote.emojis"
 					:enableEmojiMenu="!!$i"
 					:enableEmojiMenuReaction="!!$i"
@@ -127,7 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<Mfm
 							:text="translation.text"
 							:author="appearNote.user"
-							:nyaize="noNyaize ? false : 'respect'"
+							:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 							:emojiUrls="appearNote.emojis"
 							:enableEmojiMenu="!!$i"
 							:enableEmojiMenuReaction="!!$i"

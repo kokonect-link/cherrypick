@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:parsedNodes="parsed"
 			:text="note.text"
 			:author="note.user"
-			:nyaize="noNyaize ? false : 'respect'"
+			:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="!!$i"
 			:enableEmojiMenuReaction="!!$i"
@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<Mfm
 					:text="translation.text"
 					:author="note.user"
-					:nyaize="noNyaize ? false : 'respect'"
+					:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 					:emojiUrls="note.emojis"
 					:enableEmojiMenu="!!$i"
 					:enableEmojiMenuReaction="!!$i"
