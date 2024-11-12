@@ -682,6 +682,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	selectReaction: {
+		where: 'device',
+		default: '❤️' as string,
+	},
 
 	// - Settings/Navigation bar
 	showMenuButtonInNavbar: {

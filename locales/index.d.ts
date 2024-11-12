@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * いいねボタンで使うリアクションを選択
+     */
+    "selectReaction": string;
+    /**
      * モデレーターが一定期間非アクティブになったとき、新規登録を無効化
      */
     "disableRegistrationWhenInactive": string;

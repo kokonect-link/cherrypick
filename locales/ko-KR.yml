@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+selectReaction: "'좋아요!' 버튼으로 사용할 리액션 선택"
 disableRegistrationWhenInactive: "모더레이터 부재 시 신규 회원가입 비활성화"
 disablePublicNoteWhenInactive: "모더레이터 부재 시 '공개 노트 허용' 비활성화"
 youBlocked: "앗.. 차단당했어요.."

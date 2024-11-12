@@ -194,6 +194,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showDoReactionButtonInNoteFooter"><i class="ti ti-mood-plus"></i> {{ i18n.ts.doReaction }}</MkSwitch>
 				<MkSwitch v-model="showQuoteButtonInNoteFooter"><i class="ti ti-quote"></i> {{ i18n.ts.quote }}</MkSwitch>
 				<MkSwitch v-model="showMoreButtonInNoteFooter"><i class="ti ti-dots"></i> {{ i18n.ts.more }}</MkSwitch>
+
+				<MkFolder>
+					<template #label><i class="ti ti-heart"></i> {{ i18n.ts.like }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
+					<div class="_gaps_m">
+						<FromSlot v-model="selectReaction">
+							<template #label>{{ i18n.ts.selectReaction }}</template>
+							<MkCustomEmoji v-if="selectReaction && selectReaction.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :name="selectReaction" :normal="true" :noStyle="true"/>
+							<MkEmoji v-else-if="selectReaction && !selectReaction.startsWith(':')" :emoji="selectReaction" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
+							<span v-else-if="!selectReaction">{{ i18n.ts.notSet }}</span>
+							<div class="_buttons" style="padding-top: 8px;">
+								<MkButton rounded :small="true" inline @click="chooseNewReaction"><i class="ti ti-pencil"></i> {{ i18n.ts.edit }}</MkButton>
+								<MkButton rounded :small="true" inline danger @click="resetReaction"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+							</div>
+						</FromSlot>
+					</div>
+				</MkFolder>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -255,12 +271,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
+import MkFolder from '@/components/MkFolder.vue';
 import FormSection from '@/components/form/section.vue';
+import FromSlot from '@/components/form/slot.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { defaultStore } from '@/store.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
@@ -343,6 +362,7 @@ const showLikeButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showL
 const showDoReactionButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showDoReactionButtonInNoteFooter'));
 const showQuoteButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showQuoteButtonInNoteFooter'));
 const showMoreButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showMoreButtonInNoteFooter'));
+const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 
 watch(fontSize, () => {
 	if (fontSize.value == null) {
@@ -456,6 +476,23 @@ function testNotification(): void {
 	smashTimer = window.setTimeout(() => {
 		smashCount = 0;
 	}, 300);
+}
+
+function chooseNewReaction(ev: MouseEvent) {
+	os.pickEmoji(getHTMLElement(ev), {
+		showPinned: false,
+	}).then(async (emoji) => {
+		selectReaction.value = emoji as string; // 選択された絵文字を格納
+	});
+}
+
+function resetReaction() {
+	selectReaction.value = ''; // `selectReaction` をリセット
+}
+
+function getHTMLElement(ev: MouseEvent): HTMLElement {
+	const target = ev.currentTarget ?? ev.target;
+	return target as HTMLElement; // イベント発生元の HTML 要素を取得
 }
 
 onMounted(() => {

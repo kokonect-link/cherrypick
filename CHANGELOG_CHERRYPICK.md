@@ -39,6 +39,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### General
 - Feat: 투표 내용 번역
   - 이제 투표 내용을 그대로 번역해서 볼 수 있으며, 번역된 투표 항목과 상호작용해 바로 투표할 수도 있습니다.
+- Feat: `좋아요!` 버튼의 기본 리액션을 설정할 수 있음 (team-shahu/misskey#41)
 
 ### Client
 - Enhance: 노트 작성 영역에서 각 항목이 더 잘 구분되도록 조정함

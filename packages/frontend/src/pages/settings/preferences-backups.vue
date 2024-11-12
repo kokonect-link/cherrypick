@@ -182,6 +182,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'showDoReactionButtonInNoteFooter',
 	'showQuoteButtonInNoteFooter',
 	'showMoreButtonInNoteFooter',
+	'selectReaction',
 	// #endregion CherryPick
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [

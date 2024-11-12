@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+selectReaction: "いいねボタンで使うリアクションを選択"
 disableRegistrationWhenInactive: "モデレーターが一定期間非アクティブになったとき、新規登録を無効化"
 disablePublicNoteWhenInactive: "モデレーターが一定期間非アクティブになったとき、「パブリック投稿の許可」を無効化"
 youBlocked: "ブロックされています"

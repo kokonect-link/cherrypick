@@ -396,7 +396,7 @@ function heartReact(): void {
 
 	misskeyApi('notes/reactions/create', {
 		noteId: props.note.id,
-		reaction: '❤️',
+		reaction: defaultStore.state.selectReaction,
 	});
 	if (props.note.text && props.note.text.length > 100 && (Date.now() - new Date(props.note.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');

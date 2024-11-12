@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+selectReaction: "Select reactions to use with the Like button"
 disableRegistrationWhenInactive: "Disable new user registration when moderator is inactivated"
 disablePublicNoteWhenInactive: "Disable 'Can send public notes' when moderator is inactivated"
 youBlocked: "You’re blocked"
