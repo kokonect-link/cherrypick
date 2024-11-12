@@ -12,7 +12,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="_gaps_m">
 					<MkSwitch v-model="enableRegistration" @change="onChange_enableRegistration">
 						<template #label>{{ i18n.ts.enableRegistration }}</template>
-						<template #caption>{{ i18n.ts._serverSettings.thisSettingWillAutomaticallyOffWhenModeratorsInactive }}</template>
+						<template v-if="(enableRegistration && disableRegistrationWhenInactive) || disableRegistrationWhenInactive" #caption>{{ i18n.ts._serverSettings.thisSettingWillAutomaticallyOffWhenModeratorsInactive }}</template>
+					</MkSwitch>
+
+					<MkSwitch v-model="disableRegistrationWhenInactive" :disabled="!enableRegistration" @change="onChange_disableRegistrationWhenInactive">
+						<template #label>{{ i18n.ts.disableRegistrationWhenInactive }}</template>
+					</MkSwitch>
+
+					<MkSwitch v-model="disablePublicNoteWhenInactive" @change="onChange_disablePublicNoteWhenInactive">
+						<template #label>{{ i18n.ts.disablePublicNoteWhenInactive }}</template>
 					</MkSwitch>
 
 					<MkSwitch v-model="emailRequiredForSignup" @change="onChange_emailRequiredForSignup">
@@ -152,6 +160,8 @@ import FormLink from '@/components/form/link.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
 const enableRegistration = ref<boolean>(false);
+const disableRegistrationWhenInactive = ref<boolean>(false);
+const disablePublicNoteWhenInactive = ref<boolean>(false);
 const emailRequiredForSignup = ref<boolean>(false);
 const sensitiveWords = ref<string>('');
 const prohibitedWords = ref<string>('');
@@ -166,6 +176,8 @@ const trustedLinkUrlPatterns = ref<string>('');
 async function init() {
 	const meta = await misskeyApi('admin/meta');
 	enableRegistration.value = !meta.disableRegistration;
+	disableRegistrationWhenInactive.value = meta.disableRegistrationWhenInactive;
+	disablePublicNoteWhenInactive.value = meta.disablePublicNoteWhenInactive;
 	emailRequiredForSignup.value = meta.emailRequiredForSignup;
 	sensitiveWords.value = meta.sensitiveWords.join('\n');
 	prohibitedWords.value = meta.prohibitedWords.join('\n');
@@ -181,6 +193,22 @@ async function init() {
 function onChange_enableRegistration(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		disableRegistration: !value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_disableRegistrationWhenInactive(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		disableRegistrationWhenInactive: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_disablePublicNoteWhenInactive(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		disablePublicNoteWhenInactive: value,
 	}).then(() => {
 		fetchInstance(true);
 	});

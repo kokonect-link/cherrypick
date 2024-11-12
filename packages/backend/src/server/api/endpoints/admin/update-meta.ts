@@ -222,6 +222,8 @@ export const paramDef = {
 				type: 'string',
 			},
 		},
+		disableRegistrationWhenInactive: { type: 'boolean', nullable: true },
+		disablePublicNoteWhenInactive: { type: 'boolean', nullable: true },
 	},
 	required: [],
 } as const;
@@ -821,6 +823,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (Array.isArray(ps.customSplashText)) {
 				set.customSplashText = ps.customSplashText.filter(Boolean);
+			}
+
+			if (typeof ps.disableRegistrationWhenInactive === 'boolean') {
+				set.disableRegistrationWhenInactive = ps.disableRegistrationWhenInactive;
+			}
+
+			if (typeof ps.disablePublicNoteWhenInactive === 'boolean') {
+				set.disablePublicNoteWhenInactive = ps.disablePublicNoteWhenInactive;
 			}
 
 			const before = await this.metaService.fetch(true);

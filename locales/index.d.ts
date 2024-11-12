@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * モデレーターが一定期間非アクティブになったとき、新規登録を無効化
+     */
+    "disableRegistrationWhenInactive": string;
+    /**
+     * モデレーターが一定期間非アクティブになったとき、「パブリック投稿の許可」を無効化
+     */
+    "disablePublicNoteWhenInactive": string;
+    /**
      * ブロックされています
      */
     "youBlocked": string;
@@ -11109,6 +11117,10 @@ export interface Locale extends ILocale {
              * モデレーターが一定期間非アクティブだったため、システムにより招待制へと変更されたとき
              */
             "inactiveModeratorsInvitationOnlyChanged": string;
+            /**
+             * モデレーターが一定期間非アクティブだったため、システムによりパブリック投稿へと変更されたとき
+             */
+            "inactiveModeratorsDisablePublicNoteChanged": string;
         };
         /**
          * Webhookを削除しますか？

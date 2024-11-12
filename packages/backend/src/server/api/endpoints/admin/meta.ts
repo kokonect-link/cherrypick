@@ -617,6 +617,14 @@ export const meta = {
 					type: 'string',
 				},
 			},
+			disableRegistrationWhenInactive: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			disablePublicNoteWhenInactive: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -788,6 +796,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				skipCherryPickVersion: instance.skipCherryPickVersion,
 				trustedLinkUrlPatterns: instance.trustedLinkUrlPatterns,
 				customSplashText: instance.customSplashText,
+				disableRegistrationWhenInactive: instance.disableRegistrationWhenInactive,
+				disablePublicNoteWhenInactive: instance.disablePublicNoteWhenInactive,
 			};
 		});
 	}

@@ -18,6 +18,8 @@ export const systemWebhookEventTypes = [
 	'inactiveModeratorsWarning',
 	// モデレータが一定期間不在のためシステムにより招待制へと変更された
 	'inactiveModeratorsInvitationOnlyChanged',
+	// モデレータが一定期間不在のためシステムによりパブリック投稿へと変更された
+	'inactiveModeratorsDisablePublicNoteChanged',
 ] as const;
 export type SystemWebhookEventType = typeof systemWebhookEventTypes[number];
 

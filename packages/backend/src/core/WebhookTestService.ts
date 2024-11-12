@@ -463,6 +463,10 @@ export class WebhookTestService {
 				send({});
 				break;
 			}
+			case 'inactiveModeratorsDisablePublicNoteChanged': {
+				send({});
+				break;
+			}
 		}
 	}
 }

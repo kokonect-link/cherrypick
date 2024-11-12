@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+disableRegistrationWhenInactive: "Disable new user registration when moderator is inactivated"
+disablePublicNoteWhenInactive: "Disable 'Can send public notes' when moderator is inactivated"
 youBlocked: "You’re blocked"
 youBlockedDescription: "You can’t follow or see {user}’s posts."
 schedulePost: "Posting a scheduled note"
@@ -2848,6 +2850,7 @@ _webhookSettings:
     abuseReport: "When received a new report"
     abuseReportResolved: "When resolved report"
     userCreated: "When user is created"
+    inactiveModeratorsDisablePublicNoteChanged: "If a moderator is inactive for a certain period of time and the system disabled 'Can send public notes'."
   deleteConfirm: "Are you sure you want to delete the Webhook?"
   testRemarks: "Click the button to the right of the switch to send a test Webhook with dummy data."
 _abuseReport:

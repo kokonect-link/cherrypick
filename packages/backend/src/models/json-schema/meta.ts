@@ -277,6 +277,14 @@ export const packedMetaLiteSchema = {
 			type: 'number',
 			optional: false, nullable: false,
 		},
+		disableRegistrationWhenInactive: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
+		disablePublicNoteWhenInactive: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
 

@@ -39,6 +39,7 @@ describe('CheckModeratorsActivityProcessorService', () => {
 	let systemWebhook1: MiSystemWebhook;
 	let systemWebhook2: MiSystemWebhook;
 	let systemWebhook3: MiSystemWebhook;
+	let systemWebhook4: MiSystemWebhook;
 
 	// --------------------------------------------------------------------------------------
 
@@ -146,11 +147,12 @@ describe('CheckModeratorsActivityProcessorService', () => {
 
 		systemWebhook1 = crateSystemWebhook({ on: ['inactiveModeratorsWarning'] });
 		systemWebhook2 = crateSystemWebhook({ on: ['inactiveModeratorsWarning', 'inactiveModeratorsInvitationOnlyChanged'] });
-		systemWebhook3 = crateSystemWebhook({ on: ['abuseReport'] });
+		systemWebhook3 = crateSystemWebhook({ on: ['inactiveModeratorsWarning', 'inactiveModeratorsDisablePublicNoteChanged'] });
+		systemWebhook4 = crateSystemWebhook({ on: ['abuseReport'] });
 
 		emailService.sendEmail.mockReturnValue(Promise.resolve());
 		announcementService.create.mockReturnValue(Promise.resolve({} as never));
-		systemWebhookService.fetchActiveSystemWebhooks.mockResolvedValue([systemWebhook1, systemWebhook2, systemWebhook3]);
+		systemWebhookService.fetchActiveSystemWebhooks.mockResolvedValue([systemWebhook1, systemWebhook2, systemWebhook3, systemWebhook4]);
 		systemWebhookService.enqueueSystemWebhook.mockReturnValue(Promise.resolve({} as never));
 	});
 
@@ -337,6 +339,7 @@ describe('CheckModeratorsActivityProcessorService', () => {
 			expect(systemWebhookService.enqueueSystemWebhook).toHaveBeenCalledTimes(2);
 			expect(systemWebhookService.enqueueSystemWebhook.mock.calls[0][0]).toEqual(systemWebhook1);
 			expect(systemWebhookService.enqueueSystemWebhook.mock.calls[1][0]).toEqual(systemWebhook2);
+			expect(systemWebhookService.enqueueSystemWebhook.mock.calls[1][0]).toEqual(systemWebhook3);
 		});
 	});
 
@@ -374,6 +377,43 @@ describe('CheckModeratorsActivityProcessorService', () => {
 
 			expect(systemWebhookService.enqueueSystemWebhook).toHaveBeenCalledTimes(1);
 			expect(systemWebhookService.enqueueSystemWebhook.mock.calls[0][0]).toEqual(systemWebhook2);
+		});
+	});
+
+	describe('notifyChangeToDisablePublicNote', () => {
+		test('[notification + mail] 通知はモデレータ全員に発信され、メールはメールアドレスが存在＋認証済みの場合のみ', async () => {
+			const [user1, user2, user3, user4, root] = await Promise.all([
+				createUser({}, { email: 'user1@example.com', emailVerified: true }),
+				createUser({}, { email: 'user2@example.com', emailVerified: false }),
+				createUser({}, { email: null, emailVerified: false }),
+				createUser({}, { email: 'user4@example.com', emailVerified: true }),
+				createUser({ isRoot: true }, { email: 'root@example.com', emailVerified: true }),
+			]);
+
+			mockModeratorRole([user1, user2, user3, root]);
+			await service.notifyChangeToDisablePublicNote();
+
+			expect(announcementService.create).toHaveBeenCalledTimes(4);
+			expect(announcementService.create.mock.calls[0][0].userId).toBe(user1.id);
+			expect(announcementService.create.mock.calls[1][0].userId).toBe(user2.id);
+			expect(announcementService.create.mock.calls[2][0].userId).toBe(user3.id);
+			expect(announcementService.create.mock.calls[3][0].userId).toBe(root.id);
+
+			expect(emailService.sendEmail).toHaveBeenCalledTimes(2);
+			expect(emailService.sendEmail.mock.calls[0][0]).toBe('user1@example.com');
+			expect(emailService.sendEmail.mock.calls[1][0]).toBe('root@example.com');
+		});
+
+		test('[systemWebhook] "inactiveModeratorsDisablePublicNoteChanged"が有効なSystemWebhookに対して送信される', async () => {
+			const [user1] = await Promise.all([
+				createUser({}, { email: 'user1@example.com', emailVerified: true }),
+			]);
+
+			mockModeratorRole([user1]);
+			await service.notifyChangeToDisablePublicNote();
+
+			expect(systemWebhookService.enqueueSystemWebhook).toHaveBeenCalledTimes(1);
+			expect(systemWebhookService.enqueueSystemWebhook.mock.calls[0][0]).toEqual(systemWebhook3);
 		});
 	});
 });

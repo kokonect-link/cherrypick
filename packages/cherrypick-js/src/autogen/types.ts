@@ -5412,6 +5412,8 @@ export type components = {
        */
       noteSearchableScope: 'local' | 'global';
       maxFileSize: number;
+      disableRegistrationWhenInactive: boolean;
+      disablePublicNoteWhenInactive: boolean;
     };
     MetaDetailedOnly: {
       features?: {
@@ -5443,7 +5445,7 @@ export type components = {
       latestSentAt: string | null;
       latestStatus: number | null;
       name: string;
-      on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
+      on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged' | 'inactiveModeratorsDisablePublicNoteChanged')[];
       url: string;
       secret: string;
     };
@@ -5628,6 +5630,8 @@ export type operations = {
             skipCherryPickVersion?: string | null;
             trustedLinkUrlPatterns: string[];
             customSplashText: string[];
+            disableRegistrationWhenInactive: boolean;
+            disablePublicNoteWhenInactive: boolean;
           };
         };
       };
@@ -10438,6 +10442,8 @@ export type operations = {
           skipCherryPickVersion?: string | null;
           trustedLinkUrlPatterns?: string[] | null;
           customSplashText?: string[] | null;
+          disableRegistrationWhenInactive?: boolean | null;
+          disablePublicNoteWhenInactive?: boolean | null;
         };
       };
     };
@@ -11111,7 +11117,7 @@ export type operations = {
         'application/json': {
           isActive: boolean;
           name: string;
-          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
+          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged' | 'inactiveModeratorsDisablePublicNoteChanged')[];
           url: string;
           secret: string;
         };
@@ -11221,7 +11227,7 @@ export type operations = {
       content: {
         'application/json': {
           isActive?: boolean;
-          on?: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
+          on?: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged' | 'inactiveModeratorsDisablePublicNoteChanged')[];
         };
       };
     };
@@ -11334,7 +11340,7 @@ export type operations = {
           id: string;
           isActive: boolean;
           name: string;
-          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged')[];
+          on: ('abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged' | 'inactiveModeratorsDisablePublicNoteChanged')[];
           url: string;
           secret: string;
         };
@@ -11393,7 +11399,7 @@ export type operations = {
           /** Format: misskey:id */
           webhookId: string;
           /** @enum {string} */
-          type: 'abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged';
+          type: 'abuseReport' | 'abuseReportResolved' | 'userCreated' | 'inactiveModeratorsWarning' | 'inactiveModeratorsInvitationOnlyChanged' | 'inactiveModeratorsDisablePublicNoteChanged';
           override?: {
             url?: string;
             secret?: string;

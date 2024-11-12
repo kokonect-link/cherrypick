@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+disableRegistrationWhenInactive: "모더레이터 부재 시 신규 회원가입 비활성화"
+disablePublicNoteWhenInactive: "모더레이터 부재 시 '공개 노트 허용' 비활성화"
 youBlocked: "앗.. 차단당했어요.."
 youBlockedDescription: "{user} 님을 팔로우하거나 해당 사용자의 게시물을 볼 수 없어요."
 schedulePost: "노트 게시 예약"
@@ -2857,6 +2859,7 @@ _webhookSettings:
     userCreated: "사용자가 생성되었을 때"
     inactiveModeratorsWarning: "모더레이터가 일정 기간동안 활동하지 않은 경우"
     inactiveModeratorsInvitationOnlyChanged: "모더레이터가 일정 기간 활동하지 않아 시스템에 의해 초대제로 바뀐 경우"
+    inactiveModeratorsDisablePublicNoteChanged: "모더레이터가 일정 기간 활동하지 않아 시스템에 의해 '공개 노트 허용'이 비활성화로 바뀐 경우"
   deleteConfirm: "이 Webhook을 삭제할까요?"
   testRemarks: "스위치 오른쪽에 있는 버튼을 클릭해 더미 데이터를 사용한 테스트용 Webhook을 보낼 수 있어요."
 _abuseReport:

@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+disableRegistrationWhenInactive: "モデレーターが一定期間非アクティブになったとき、新規登録を無効化"
+disablePublicNoteWhenInactive: "モデレーターが一定期間非アクティブになったとき、「パブリック投稿の許可」を無効化"
 youBlocked: "ブロックされています"
 youBlockedDescription: "{user}さんのフォローやポストの表示はできません。"
 schedulePost: "予約投稿"
@@ -2935,6 +2937,7 @@ _webhookSettings:
     userCreated: "ユーザーが作成されたとき"
     inactiveModeratorsWarning: "モデレーターが一定期間非アクティブになったとき"
     inactiveModeratorsInvitationOnlyChanged: "モデレーターが一定期間非アクティブだったため、システムにより招待制へと変更されたとき"
+    inactiveModeratorsDisablePublicNoteChanged: "モデレーターが一定期間非アクティブだったため、システムによりパブリック投稿へと変更されたとき"
   deleteConfirm: "Webhookを削除しますか？"
   testRemarks: "スイッチの右にあるボタンをクリックするとダミーのデータを使用したテスト用Webhookを送信できます。"
 

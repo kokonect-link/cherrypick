@@ -8,7 +8,7 @@ import { In } from 'typeorm';
 import type Logger from '@/logger.js';
 import { bindThis } from '@/decorators.js';
 import { MetaService } from '@/core/MetaService.js';
-import { RoleService } from '@/core/RoleService.js';
+import { DEFAULT_POLICIES, RoleService } from '@/core/RoleService.js';
 import { EmailService } from '@/core/EmailService.js';
 import { MiUser, type UserProfilesRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
@@ -38,7 +38,7 @@ export type ModeratorInactivityRemainingTime = {
 };
 
 function generateModeratorInactivityMail(remainingTime: ModeratorInactivityRemainingTime) {
-	const subject = 'Moderator Inactivity Warning / モデレーター不在の通知';
+	const subject = 'Moderator Inactivity Warning / モデレーター不在の通知 / 모더레이터 부재 안내';
 
 	const timeVariant = remainingTime.asDays === 0 ? `${remainingTime.asHours} hours` : `${remainingTime.asDays} days`;
 	const timeVariantJa = remainingTime.asDays === 0 ? `${remainingTime.asHours} 時間` : `${remainingTime.asDays} 日間`;
@@ -76,7 +76,7 @@ function generateModeratorInactivityMail(remainingTime: ModeratorInactivityRemai
 }
 
 function generateInvitationOnlyChangedMail() {
-	const subject = 'Change to Invitation-Only / 招待制に変更されました';
+	const subject = 'Change to Invitation-Only / 招待制に変更されました / 초대제로 변경되었습니다';
 
 	const message = [
 		'To Moderators,',
@@ -97,6 +97,41 @@ function generateInvitationOnlyChangedMail() {
 		'',
 		`모더레이터가 ${MODERATOR_INACTIVITY_LIMIT_DAYS}일간 활동이 확인되지 않아 초대제로 변경되었어요.`,
 		'초대제를 해제하려면 `제어판 - 모더레이션`에 접속해서 변경해야 해요.',
+		'',
+	];
+
+	const html = message.join('<br>');
+	const text = message.join('\n');
+
+	return {
+		subject,
+		html,
+		text,
+	};
+}
+
+function generateDisablePublicNoteChangedMail() {
+	const subject = 'Change to Public Note Disabled / パブリック投稿が無効になりました / 공개 노트가 비활성화 되었습니다';
+
+	const message = [
+		'To Moderators,',
+		'',
+		`Changed to public note disabled because no moderator activity was detected for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days.`,
+		'To cancel the public note disabled, you need to access the control panel.',
+		'',
+		'---------------',
+		'',
+		'To モデレーター各位',
+		'',
+		`モデレーターの活動が${MODERATOR_INACTIVITY_LIMIT_DAYS}日間検出されなかったため、パブリック投稿が無効に変更されました。`,
+		'パブリック投稿無効を解除するには、コントロールパネルにアクセスする必要があります。',
+		'',
+		'---------------',
+		'',
+		'To 모더레이터 여러분께',
+		'',
+		`모더레이터가 ${MODERATOR_INACTIVITY_LIMIT_DAYS}일간 활동이 확인되지 않아 '공개 노트 허용'이 비활성화로 변경되었어요.`,
+		'다시 허용하려면 `제어판 - 역할`에 접속해서 변경해야 해요.',
 		'',
 	];
 
@@ -132,7 +167,8 @@ export class CheckModeratorsActivityProcessorService {
 		this.logger.info('start.');
 
 		const meta = await this.metaService.fetch(false);
-		if (!meta.disableRegistration) {
+		const basePolicies = { ...DEFAULT_POLICIES, ...meta.policies };
+		if ((!meta.disableRegistration && meta.disableRegistrationWhenInactive) || (basePolicies.canPublicNote && meta.disablePublicNoteWhenInactive)) {
 			await this.processImpl();
 		} else {
 			this.logger.info('is already invitation only.');
@@ -144,16 +180,28 @@ export class CheckModeratorsActivityProcessorService {
 	@bindThis
 	private async processImpl() {
 		const evaluateResult = await this.evaluateModeratorsInactiveDays();
+		const meta = await this.metaService.fetch(false);
+		const basePolicies = { ...DEFAULT_POLICIES, ...meta.policies };
 		if (evaluateResult.isModeratorsInactive) {
-			this.logger.warn(`The moderator has been inactive for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days. We will move to invitation only.`);
+			if (!meta.disableRegistration && meta.disableRegistrationWhenInactive) {
+				this.logger.warn(`The moderator has been inactive for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days. We will move to invitation only.`);
 
-			await this.changeToInvitationOnly();
-			await this.notifyChangeToInvitationOnly();
+				await this.changeToInvitationOnly();
+				await this.notifyChangeToInvitationOnly();
+			}
+
+			if (basePolicies.canPublicNote && meta.disablePublicNoteWhenInactive) {
+				this.logger.warn(`The moderator has been inactive for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days. We will disable public note.`);
+
+				await this.changeToDisablePublicNote();
+				await this.notifyChangeToDisablePublicNote();
+			}
 		} else {
 			const remainingTime = evaluateResult.remainingTime;
 			if (remainingTime.asDays <= MODERATOR_INACTIVITY_WARNING_REMAINING_DAYS) {
 				const timeVariant = remainingTime.asDays === 0 ? `${remainingTime.asHours} hours` : `${remainingTime.asDays} days`;
-				this.logger.warn(`A moderator has been inactive for a period of time. If you are inactive for an additional ${timeVariant}, it will switch to invitation only.`);
+				if (meta.disableRegistrationWhenInactive) this.logger.warn(`A moderator has been inactive for a period of time. If you are inactive for an additional ${timeVariant}, it will switch to invitation only.`);
+				if (meta.disablePublicNoteWhenInactive) this.logger.warn(`A moderator has been inactive for a period of time. If you are inactive for an additional ${timeVariant}, it will switch to disable public note.`);
 
 				if (remainingTime.asHours % MODERATOR_INACTIVITY_WARNING_NOTIFY_INTERVAL_HOURS === 0) {
 					// ジョブの実行頻度と同等だと通知が多すぎるため期限から6時間ごとに通知する
@@ -228,6 +276,11 @@ export class CheckModeratorsActivityProcessorService {
 	}
 
 	@bindThis
+	private async changeToDisablePublicNote() {
+		await this.metaService.update({ policies: { canPublicNote: false } });
+	}
+
+	@bindThis
 	public async notifyInactiveModeratorsWarning(remainingTime: ModeratorInactivityRemainingTime) {
 		// -- モデレータへのメール送信
 
@@ -290,6 +343,44 @@ export class CheckModeratorsActivityProcessorService {
 			this.systemWebhookService.enqueueSystemWebhook(
 				systemWebhook,
 				'inactiveModeratorsInvitationOnlyChanged',
+				{},
+			);
+		}
+	}
+
+	@bindThis
+	public async notifyChangeToDisablePublicNote() {
+		// -- モデレータへのメールとお知らせ（個人向け）送信
+
+		const moderators = await this.fetchModerators();
+		const moderatorProfiles = await this.userProfilesRepository
+			.findBy({ userId: In(moderators.map(it => it.id)) })
+			.then(it => new Map(it.map(it => [it.userId, it])));
+
+		const mail = generateDisablePublicNoteChangedMail();
+		for (const moderator of moderators) {
+			this.announcementService.create({
+				title: mail.subject,
+				text: mail.text,
+				forExistingUsers: true,
+				needConfirmationToRead: true,
+				userId: moderator.id,
+			});
+
+			const profile = moderatorProfiles.get(moderator.id);
+			if (profile && profile.email && profile.emailVerified) {
+				this.emailService.sendEmail(profile.email, mail.subject, mail.html, mail.text);
+			}
+		}
+
+		// -- SystemWebhook
+
+		const systemWebhooks = await this.systemWebhookService.fetchActiveSystemWebhooks()
+			.then(it => it.filter(it => it.on.includes('inactiveModeratorsDisablePublicNoteChanged')));
+		for (const systemWebhook of systemWebhooks) {
+			this.systemWebhookService.enqueueSystemWebhook(
+				systemWebhook,
+				'inactiveModeratorsDisablePublicNoteChanged',
 				{},
 			);
 		}

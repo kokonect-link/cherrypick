@@ -813,4 +813,14 @@ export class MiMeta {
 		default: '{}',
 	})
 	public customSplashText: string[];
+
+	@Column('boolean', {
+		default: true,
+	})
+	public disableRegistrationWhenInactive: boolean;
+
+	@Column('boolean', {
+		default: false,
+	})
+	public disablePublicNoteWhenInactive: boolean;
 }
