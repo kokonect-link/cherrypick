@@ -648,7 +648,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showNoAltTextWarning: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	alwaysShowCw: {
 		where: 'device',
