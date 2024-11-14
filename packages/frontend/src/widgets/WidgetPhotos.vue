@@ -75,10 +75,10 @@ const onDriveFileCreated = (file) => {
 const playAnimation = ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
-const thumbnail = (image: any): string => {
+const thumbnail = (image: Misskey.entities.DriveFile): string => {
 	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(image.url)
-		: image.thumbnailUrl;
+		: image.thumbnailUrl ?? image.url;
 };
 
 function resetTimer() {

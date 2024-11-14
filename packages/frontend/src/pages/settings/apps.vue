@@ -55,6 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import FormPagination from '@/components/MkPagination.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -84,7 +85,7 @@ async function revoke(token) {
 	if (canceled) return;
 
 	misskeyApi('i/revoke-token', { tokenId: token.id }).then(() => {
-		list.value.reload();
+		list.value?.reload();
 	});
 }
 

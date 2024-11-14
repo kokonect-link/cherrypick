@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option v-for="widget in widgetDefs" :key="widget" :value="widget">{{ i18n.ts._widgets[widget] }}</option>
 			</MkSelect>
 			<MkButton primary data-cy-widget-add :class="$style.btn" @click="addWidget"><i class="ti ti-plus"></i> {{ i18n.ts.add }}</MkButton>
-			<MkButton :class="$style.btn" @click="$emit('exit')"><i class="ti ti-check"></i> {{ i18n.ts.close }}</MkButton>
+			<MkButton :class="$style.btn" @click="emit('exit')"><i class="ti ti-check"></i> {{ i18n.ts.close }}</MkButton>
 		</header>
 		<Sortable
 			:modelValue="props.widgets"

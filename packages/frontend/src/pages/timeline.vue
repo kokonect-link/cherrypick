@@ -47,11 +47,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkTimeline
 						v-else
 						ref="tlComponent"
-						:key="src + withRenotes + withReplies + onlyFiles + onlyCats"
+						:key="src + withRenotes + withReplies + withSensitive + onlyFiles + onlyCats"
 						:src="src.split(':')[0]"
 						:list="src.split(':')[1]"
 						:withRenotes="withRenotes"
 						:withReplies="withReplies"
+						:withSensitive="withSensitive"
 						:onlyFiles="onlyFiles"
 						:onlyCats="onlyCats"
 						:sound="true"
@@ -187,11 +188,6 @@ const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
 watch(src, () => {
 	queue.value = 0;
 	queueUpdated(queue);
-});
-
-watch(withSensitive, () => {
-	// これだけはクライアント側で完結する処理なので手動でリロード
-	tlComponent.value?.reloadTimeline();
 });
 
 watch(enableWidgetsArea, (x) => {

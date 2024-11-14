@@ -32,7 +32,7 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
-import { $i, updateAccount } from '@/account.js';
+import { $i, updateAccountPartial } from '@/account.js';
 
 const props = withDefaults(defineProps<{
 	announcement: Misskey.entities.Announcement;
@@ -57,7 +57,7 @@ async function gotIt(): Promise<void> {
 
 	await misskeyApi('i/read-announcement', { announcementId: props.announcement.id });
 	if ($i) {
-		updateAccount({
+		updateAccountPartial({
 			unreadAnnouncements: $i.unreadAnnouncements.filter((a: { id: string; }) => a.id !== props.announcement.id),
 		});
 	}
