@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="files.files.length > 0" :class="$style.root">
+<div v-if="files.files.length > 0" :class="[$style.root, $style.visible]">
 	<div v-if="files.files[0].isSensitive && !showingFiles.includes(files.files[0].id)" :key="files.id + files.files[0].id" :class="$style.img" @click="showingFiles.push(files.files[0].id)">
 		<!-- TODO: 画像以外のファイルに対応 -->
 		<ImgWithBlurhash :class="$style.sensitiveImg" :hash="files.files[0].blurhash" :src="thumbnail(files.files[0])" :title="files.files[0].name" :forceBlurhash="true"/>
@@ -124,6 +124,24 @@ onUnmounted(() => {
 	cursor: pointer;
 }
 
+.visible {
+	position: relative;
+	-webkit-tap-highlight-color: transparent;
+	//box-shadow: 0 0 0 1px var(--MI_THEME-divider) inset;
+	background: var(--MI_THEME-bg);
+	background-size: 16px 16px;
+}
+
+html[data-color-scheme=dark] .visible {
+	--c: rgb(255 255 255 / 2%);
+	background-image: linear-gradient(45deg, var(--c) 16.67%, var(--MI_THEME-bg) 16.67%, var(--MI_THEME-bg) 50%, var(--c) 50%, var(--c) 66.67%, var(--MI_THEME-bg) 66.67%, var(--MI_THEME-bg) 100%);
+}
+
+html[data-color-scheme=light] .visible {
+	--c: rgb(0 0 0 / 2%);
+	background-image: linear-gradient(45deg, var(--c) 16.67%, var(--MI_THEME-bg) 16.67%, var(--MI_THEME-bg) 50%, var(--c) 50%, var(--c) 66.67%, var(--MI_THEME-bg) 66.67%, var(--MI_THEME-bg) 100%);
+}
+
 .multipleImg {
 	filter: brightness(0.9);
 }
@@ -135,6 +153,7 @@ onUnmounted(() => {
 	font-size: 1.45em;
 	color: #fff;
 	opacity: .9;
+	filter: drop-shadow(0 0 1.5px #b3b3b3);
 }
 
 @container (max-width: 785px) {
