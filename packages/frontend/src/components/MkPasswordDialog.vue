@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<form @submit.prevent="done">
 			<div class="_gaps">
-				<MkInput ref="passwordInput" v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" required :withPasswordToggle="true">
+				<MkInput ref="passwordInput" v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" required :withPasswordToggle="true" @enter.prevent="done">
 					<template #prefix><i class="ti ti-password"></i></template>
 				</MkInput>
 
