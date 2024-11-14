@@ -5,8 +5,8 @@
  */
 
 html {
-	background-color: var(--bg);
-	color: var(--fg);
+	background-color: var(--MI_THEME-bg);
+	color: var(--MI_THEME-fg);
 }
 
 #splash {
@@ -17,7 +17,7 @@ html {
 	width: 100vw;
 	height: 100vh;
 	cursor: wait;
-	background-color: var(--bg);
+	background-color: var(--MI_THEME-bg);
 	opacity: 1;
 	transition: opacity 0.5s ease;
 }
@@ -57,7 +57,7 @@ html {
 	width: 28px;
 	height: 28px;
 	transform: translateY(80px);
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 #splashSpinner > .spinner {
@@ -69,7 +69,7 @@ html {
 	animation: splashSpinner 2s linear infinite;
 }
 #splashSpinner > .spinner > .path {
-	stroke: var(--accent);
+	stroke: var(--MI_THEME-accent);
 	stroke-linecap: round;
 	animation: dash 1.2s ease-in-out infinite;
 }

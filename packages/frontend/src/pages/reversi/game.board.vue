@@ -669,7 +669,7 @@ $gap: 4px;
 .boardInner {
 	padding: 32px;
 
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	box-shadow: 0 0 2px 1px #ce8a5c, inset 0 0 1px 1px #693410;
 	border-radius: 8px;
 }
@@ -739,34 +739,34 @@ $gap: 4px;
 	transition: border 0.25s ease, opacity 0.25s ease;
 
 	&.boardCell_empty {
-		border: solid 2px var(--divider);
+		border: solid 2px var(--MI_THEME-divider);
 	}
 
 	&.boardCell_empty.boardCell_can {
-		border-color: var(--accent);
+		border-color: var(--MI_THEME-accent);
 		opacity: 0.5;
 	}
 
 	&.boardCell_empty.boardCell_myTurn {
-		border-color: var(--divider);
+		border-color: var(--MI_THEME-divider);
 		opacity: 1;
 
 		&.boardCell_can {
-			border-color: var(--accent);
+			border-color: var(--MI_THEME-accent);
 			cursor: pointer;
 
 			&:hover {
-				background: var(--accent);
+				background: var(--MI_THEME-accent);
 			}
 		}
 	}
 
 	&.boardCell_prev {
-		box-shadow: 0 0 0 4px var(--accent);
+		box-shadow: 0 0 0 4px var(--MI_THEME-accent);
 	}
 
 	&.boardCell_isEnded {
-		border-color: var(--divider);
+		border-color: var(--MI_THEME-divider);
 	}
 
 	&.boardCell_none {
@@ -800,8 +800,8 @@ $gap: 4px;
 	display: flex;
 	flex-wrap: wrap;
 	padding: 12px;
-	background: var(--bg);
-	border-radius: calc(var(--radius) / 2);
+	background: var(--MI_THEME-bg);
+	border-radius: calc(var(--MI-radius) / 2);
 }
 
 .emojisItem {
@@ -814,12 +814,12 @@ $gap: 4px;
 		font-size: 16px;
 
 		&:active {
-			background: var(--accentedBg);
+			background: var(--MI_THEME-accentedBg);
 		}
 	}
 
 	&:not(:disabled):focus-visible {
-		outline: solid 2px var(--focus);
+		outline: solid 2px var(--MI_THEME-focus);
 		z-index: 1;
 	}
 
@@ -828,7 +828,7 @@ $gap: 4px;
 	}
 
 	&:not(:disabled):active {
-		background: var(--accent);
+		background: var(--MI_THEME-accent);
 		box-shadow: inset 0 0.15em 0.3em rgba(27, 31, 35, 0.15);
 	}
 

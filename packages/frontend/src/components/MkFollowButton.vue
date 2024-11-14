@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <button
-	v-if="(!disableIfFollowing || !isFollowing) && ($i != null && $i.id != user.id) && !user.isBlocked"
+	v-if="(!disableIfFollowing || !isFollowing) && ($i != null && $i.id != user.id) && (!user.isBlocked && !user.isBlocking)"
 	class="_button"
 	:class="[$style.root, { [$style.wait]: wait, [$style.active]: isFollowing || hasPendingFollowRequestFromYou, [$style.full]: full, [$style.large]: large }]"
 	:disabled="wait"
@@ -191,8 +191,8 @@ onBeforeUnmount(() => {
 	position: relative;
 	display: inline-block;
 	font-weight: bold;
-	color: var(--fgOnWhite);
-	border: solid 1px var(--accent);
+	color: var(--MI_THEME-fgOnWhite);
+	border: solid 1px var(--MI_THEME-accent);
 	padding: 0;
 	height: 31px;
 	font-size: 16px;
@@ -227,17 +227,17 @@ onBeforeUnmount(() => {
 	}
 
 	&.active {
-		color: var(--fgOnAccent);
-		background: var(--accent);
+		color: var(--MI_THEME-fgOnAccent);
+		background: var(--MI_THEME-accent);
 
 		&:hover {
-			background: var(--accentLighten);
-			border-color: var(--accentLighten);
+			background: var(--MI_THEME-accentLighten);
+			border-color: var(--MI_THEME-accentLighten);
 		}
 
 		&:active {
-			background: var(--accentDarken);
-			border-color: var(--accentDarken);
+			background: var(--MI_THEME-accentDarken);
+			border-color: var(--MI_THEME-accentDarken);
 		}
 	}
 

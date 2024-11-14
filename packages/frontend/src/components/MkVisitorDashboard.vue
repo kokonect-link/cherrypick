@@ -107,8 +107,8 @@ function showMenu(ev: MouseEvent) {
 
 .panel {
 	position: relative;
-	background: var(--panel);
-	border-radius: var(--radius);
+	background: var(--MI_THEME-panel);
+	border-radius: var(--MI-radius);
 	box-shadow: 0 12px 32px rgb(0 0 0 / 25%);
 }
 
@@ -121,6 +121,7 @@ function showMenu(ev: MouseEvent) {
 	margin-top: -47px;
 	vertical-align: bottom;
 	filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+	border-radius: 18px;
 }
 
 .mainMenu {
@@ -179,14 +180,14 @@ function showMenu(ev: MouseEvent) {
 }
 
 .statsItemLabel {
-	color: var(--fgTransparentWeak);
+	color: var(--MI_THEME-fgTransparentWeak);
 	font-size: 0.9em;
 }
 
 .statsItemCount {
 	font-weight: bold;
 	font-size: 1.2em;
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 .tl {
@@ -195,7 +196,7 @@ function showMenu(ev: MouseEvent) {
 
 .tlHeader {
 	padding: 12px 16px;
-	border-bottom: solid 1px var(--divider);
+	border-bottom: solid 1px var(--MI_THEME-divider);
 }
 
 .tlBody {

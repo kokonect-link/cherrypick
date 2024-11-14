@@ -304,13 +304,10 @@ export function getNoteMenu(props: {
 	function togglePin(pin: boolean): void {
 		os.apiWithDialog(pin ? 'i/pin' : 'i/unpin', {
 			noteId: appearNote.id,
-		}, undefined, null, res => {
-			if (res.id === '72dab508-c64d-498f-8740-a8eec1ba385a') {
-				os.alert({
-					type: 'error',
-					text: i18n.ts.pinLimitExceeded,
-				});
-			}
+		}, undefined, {
+			'72dab508-c64d-498f-8740-a8eec1ba385a': {
+				text: i18n.ts.pinLimitExceeded,
+			},
 		});
 	}
 
@@ -516,18 +513,20 @@ export function getNoteMenu(props: {
 					action: showViewTextSource,
 				});
 
-				if (props.noNyaize.value) {
-					noteChildMenu.push({
-						icon: 'ti ti-paw-filled',
-						text: i18n.ts.revertNoNyaization,
-						action: revertNoNyaizeText,
-					});
-				} else {
-					noteChildMenu.push({
-						icon: 'ti ti-paw-off',
-						text: i18n.ts.noNyaization,
-						action: noNyaizeText,
-					});
+				if (!defaultStore.state.disableNyaize) {
+					if (props.noNyaize.value) {
+						noteChildMenu.push({
+							icon: 'ti ti-paw-filled',
+							text: i18n.ts.revertNoNyaization,
+							action: revertNoNyaizeText,
+						});
+					} else {
+						noteChildMenu.push({
+							icon: 'ti ti-paw-off',
+							text: i18n.ts.noNyaization,
+							action: noNyaizeText,
+						});
+					}
 				}
 
 				if (appearNote.userId === $i.id) {

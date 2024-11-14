@@ -55,7 +55,7 @@
 		codeBoolean: ':lighten<10<infoWarnFg',
 		dateLabelFg: ':alpha<0.7<@fg',
 		inputBorder: ':alpha<0.1<@renote',
-		panelBorder: 'solid 1px var(--divider)',
+		panelBorder: 'solid 1px var(--MI_THEME-divider)',
 		switchOffBg: ':alpha<0.1<@renote',
 		switchOffFg: ':alpha<0.8<@fg',
 		accentDarken: ':darken<10<@accent',

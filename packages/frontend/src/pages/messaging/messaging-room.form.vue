@@ -271,18 +271,18 @@ defineExpose({
 	border-radius: 0;
 	box-shadow: none;
 	box-sizing: border-box;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 }
 
 .footer {
 	position: sticky;
 	bottom: 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .file {
 	padding: 8px;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 	background: transparent;
 	cursor: pointer;
 }
@@ -348,25 +348,25 @@ defineExpose({
 	transition: color 0.1s ease;
 
 	&:hover {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 
 	&:active {
-		color: var(--accentDarken);
+		color: var(--MI_THEME-accentDarken);
 		transition: color 0s ease;
 	}
 }
 
 .send {
 	margin-left: auto;
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 
 	&:hover {
-		color: var(--accentLighten);
+		color: var(--MI_THEME-accentLighten);
 	}
 
 	&:active {
-		color: var(--accentDarken);
+		color: var(--MI_THEME-accentDarken);
 		transition: color 0s ease;
 	}
 }

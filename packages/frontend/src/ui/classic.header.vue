@@ -17,17 +17,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-if="item === '-'" class="divider"></div>
 				<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="navbarItemDef[item].title" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 					<i class="ti-fw" :class="navbarItemDef[item].icon"></i>
-					<span v-if="navbarItemDef[item].indicated" class="indicator"><i class="_indicatorCircle"></i></span>
+					<span v-if="navbarItemDef[item].indicated" class="indicator _blink"><i class="_indicatorCircle"></i></span>
 				</component>
 			</template>
 			<div class="divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-click-anime v-tooltip="i18n.ts.controlPanel" class="item" activeClass="active" to="/admin" :behavior="settingsWindowed ? 'window' : null">
 				<i class="ti ti-dashboard ti-fw"></i>
-				<span v-if="controlPanelIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="controlPanelIndicated" class="indicator _blink"><i class="_indicatorCircle"></i></span>
 			</MkA>
 			<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" @click="more">
 				<i class="ti ti-dots ti-fw"></i>
-				<span v-if="otherNavItemIndicated" class="indicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="otherNavItemIndicated" class="indicator _blink"><i class="_indicatorCircle"></i></span>
 			</button>
 		</div>
 		<div class="right">
@@ -148,7 +148,7 @@ onMounted(() => {
 	z-index: 1000;
 	width: 100%;
 	height: $height;
-	background-color: var(--bg);
+	background-color: var(--MI_THEME-bg);
 
 	> .body {
 		max-width: 1380px;
@@ -184,18 +184,17 @@ onMounted(() => {
 					position: absolute;
 					top: 0;
 					left: 0;
-					color: var(--navIndicator);
+					color: var(--MI_THEME-navIndicator);
 					font-size: 8px;
-					animation: global-blink 1s infinite;
 				}
 
 				&:hover {
 					text-decoration: none;
-					color: var(--navHoverFg);
+					color: var(--MI_THEME-navHoverFg);
 				}
 
 				&.active {
-					color: var(--navActive);
+					color: var(--MI_THEME-navActive);
 				}
 			}
 
@@ -203,7 +202,7 @@ onMounted(() => {
 				display: inline-block;
 				height: 16px;
 				margin: 0 10px;
-				border-right: solid 0.5px var(--divider);
+				border-right: solid 0.5px var(--MI_THEME-divider);
 			}
 
 			> .instance {

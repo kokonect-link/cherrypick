@@ -53,7 +53,7 @@
 		dateLabelFg: '@fg',
 		deckDivider: ':darken<3<@bg',
 		inputBorder: 'rgba(0, 0, 0, 0.1)',
-		panelBorder: '" solid 1px var(--divider)',
+		panelBorder: '" solid 1px var(--MI_THEME-divider)',
 		swutchOffBg: 'rgba(0, 0, 0, 0.1)',
 		swutchOffFg: '@panel',
 		accentDarken: ':darken<10<@accent',

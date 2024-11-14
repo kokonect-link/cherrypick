@@ -7,7 +7,7 @@ export type {
 	SwitchCaseResponseType,
 } from './api.types.js';
 
-const MK_API_ERROR = Symbol();
+const CP_API_ERROR = Symbol();
 
 export type APIError = {
 	id: string;
@@ -19,7 +19,7 @@ export type APIError = {
 };
 
 export function isAPIError(reason: Record<PropertyKey, unknown>): reason is APIError {
-	return reason[MK_API_ERROR] === true;
+	return reason[CP_API_ERROR] === true;
 }
 
 export type FetchLike = (input: string, init?: {
@@ -118,7 +118,7 @@ export class APIClient {
 					resolve(body);
 				} else {
 					reject({
-						[MK_API_ERROR]: true,
+						[CP_API_ERROR]: true,
 						...body.error,
 					});
 				}

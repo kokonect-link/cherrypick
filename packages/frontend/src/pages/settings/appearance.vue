@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			-->
 
 		<div style="padding-bottom: 1.5em;">
-			<div :class="$style.label">{{ i18n.ts.fontSize }} <span class="_beta">CherryPick</span></div>
+			<div :class="$style.label">{{ i18n.ts.fontSize }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></div>
 			<div :class="$style.fontSize" class="_panel">
 				<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._mfc.dummy }}</div>
 				<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._mfc.dummy }}</div>
@@ -83,7 +83,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="useBlurEffect">{{ i18n.ts.useBlurEffect }}<template #caption>{{ i18n.ts.useBlurEffectDescription }}</template></MkSwitch>
 				<MkSwitch v-model="useBlurEffectForModal">{{ i18n.ts.useBlurEffectForModal }}</MkSwitch>
 				<MkSwitch v-if="useBlurEffect && useBlurEffectForModal" v-model="removeModalBgColorForBlur">{{ i18n.ts.removeModalBgColorForBlur }} <span class="_beta">CherryPick</span></MkSwitch>
-				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption><i class="ti ti-alert-triangle" style="color: var(--warn);"></i> {{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
+				<MkSwitch v-model="disableShowingAnimatedImages">{{ i18n.ts.disableShowingAnimatedImages }}<template #caption><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts.disableShowingAnimatedImagesDescription }}</template></MkSwitch>
 				<MkSelect v-if="!disableShowingAnimatedImages" v-model="showingAnimatedImages" style="margin-left: 44px;">
 					<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
 					<option value="interaction">{{ i18n.ts._showingAnimatedImages.interaction }}</option>
@@ -186,7 +186,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 
 			<div class="_gaps_s" style="margin: 0 10px;">
-				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">{{ i18n.ts.noteFooterButton }} <span class="_beta">CherryPick</span></div>
+				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">{{ i18n.ts.noteFooterButton }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></div>
 
 				<MkSwitch v-model="showReplyButtonInNoteFooter"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.reply }}</MkSwitch>
 				<MkSwitch v-model="showRenoteButtonInNoteFooter"><i class="ti ti-repeat"></i> {{ i18n.ts.renote }}</MkSwitch>
@@ -194,6 +194,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="showDoReactionButtonInNoteFooter"><i class="ti ti-mood-plus"></i> {{ i18n.ts.doReaction }}</MkSwitch>
 				<MkSwitch v-model="showQuoteButtonInNoteFooter"><i class="ti ti-quote"></i> {{ i18n.ts.quote }}</MkSwitch>
 				<MkSwitch v-model="showMoreButtonInNoteFooter"><i class="ti ti-dots"></i> {{ i18n.ts.more }}</MkSwitch>
+
+				<MkFolder>
+					<template #label><i class="ti ti-heart"></i> {{ i18n.ts.like }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
+					<div class="_gaps_m">
+						<FromSlot v-model="selectReaction">
+							<template #label>{{ i18n.ts.selectReaction }}</template>
+							<MkCustomEmoji v-if="selectReaction && selectReaction.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :name="selectReaction" :normal="true" :noStyle="true"/>
+							<MkEmoji v-else-if="selectReaction && !selectReaction.startsWith(':')" :emoji="selectReaction" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
+							<span v-else-if="!selectReaction">{{ i18n.ts.notSet }}</span>
+							<div class="_buttons" style="padding-top: 8px;">
+								<MkButton rounded :small="true" inline @click="chooseNewReaction"><i class="ti ti-pencil"></i> {{ i18n.ts.edit }}</MkButton>
+								<MkButton rounded :small="true" inline danger @click="resetReaction"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+							</div>
+						</FromSlot>
+					</div>
+				</MkFolder>
 			</div>
 
 			<MkSelect v-model="instanceTicker">
@@ -211,7 +227,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkSelect>
 
 			<MkSelect v-model="nsfwOpenBehavior">
-				<template #label>{{ i18n.ts.nsfwOpenBehavior }} <span class="_beta">CherryPick</span></template>
+				<template #label>{{ i18n.ts.nsfwOpenBehavior }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 				<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
 				<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
 			</MkSelect>
@@ -255,12 +271,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
+import MkFolder from '@/components/MkFolder.vue';
 import FormSection from '@/components/form/section.vue';
+import FromSlot from '@/components/form/slot.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { defaultStore } from '@/store.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
@@ -343,6 +362,7 @@ const showLikeButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showL
 const showDoReactionButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showDoReactionButtonInNoteFooter'));
 const showQuoteButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showQuoteButtonInNoteFooter'));
 const showMoreButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showMoreButtonInNoteFooter'));
+const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
 
 watch(fontSize, () => {
 	if (fontSize.value == null) {
@@ -458,6 +478,23 @@ function testNotification(): void {
 	}, 300);
 }
 
+function chooseNewReaction(ev: MouseEvent) {
+	os.pickEmoji(getHTMLElement(ev), {
+		showPinned: false,
+	}).then(async (emoji) => {
+		selectReaction.value = emoji as string; // 選択された絵文字を格納
+	});
+}
+
+function resetReaction() {
+	selectReaction.value = ''; // `selectReaction` をリセット
+}
+
+function getHTMLElement(ev: MouseEvent): HTMLElement {
+	const target = ev.currentTarget ?? ev.target;
+	return target as HTMLElement; // イベント発生元の HTML 要素を取得
+}
+
 onMounted(() => {
 	if (fontSizeBefore.value == null) {
 		fontSizeBefore.value = fontSize.value as string;
@@ -495,11 +532,11 @@ definePageMetadata(() => ({
 .fontSizeSlider {
 	display: flex;
 	margin-top: -8px;
-	border-top: solid .5px var(--divider);
+	border-top: solid .5px var(--MI_THEME-divider);
 
 	> .fontSizeLeft, .fontSizeRight {
 		position: relative;
-		background: var(--panel);
+		background: var(--MI_THEME-panel);
 		font-weight: normal;
 		line-height: 20px;
 	}

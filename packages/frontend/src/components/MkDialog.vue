@@ -186,7 +186,7 @@ function onInputKeydown(evt: KeyboardEvent) {
 	max-width: 480px;
 	box-sizing: border-box;
 	text-align: center;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	border-radius: 16px;
 }
 
@@ -208,15 +208,15 @@ function onInputKeydown(evt: KeyboardEvent) {
 }
 
 .type_success {
-	color: var(--success);
+	color: var(--MI_THEME-success);
 }
 
 .type_error {
-	color: var(--error);
+	color: var(--MI_THEME-error);
 }
 
 .type_warning {
-	color: var(--warn);
+	color: var(--MI_THEME-warn);
 }
 
 .title {
@@ -235,7 +235,7 @@ function onInputKeydown(evt: KeyboardEvent) {
 
 .caption {
   margin: 4px 0 0 0;
-  color: var(--fgTransparentWeak);
+  color: var(--MI_THEME-fgTransparentWeak);
 }
 
 .buttons {

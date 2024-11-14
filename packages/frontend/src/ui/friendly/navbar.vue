@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}"
 				>
 					<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
-					<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator">
+					<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator" class="_blink">
 						<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
 						<i v-else class="_indicatorCircle"></i>
 					</span>
@@ -40,11 +40,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.divider"></div>
 			<MkA v-if="$i.isAdmin || $i.isModerator" v-tooltip.noDelay.right="i18n.ts.controlPanel" :class="$style.item" :activeClass="$style.active" to="/admin">
 				<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
-				<span v-if="controlPanelIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="controlPanelIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 			</MkA>
 			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.item" @click="more">
 				<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
-				<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator"><i class="_indicatorCircle"></i></span>
+				<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 			</button>
 			<MkA v-tooltip.noDelay.right="i18n.ts.settings" :class="$style.item" :activeClass="$style.active" to="/settings">
 				<i :class="$style.itemIcon" class="ti ti-settings ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
@@ -168,7 +168,7 @@ function openProfile() {
 .root {
 	--nav-width: 250px;
 	--nav-icon-only-width: 80px;
-	--nav-bg-transparent: color(from var(--navBg) srgb r g b / 0.5);
+	--nav-bg-transparent: color(from var(--MI_THEME-navBg) srgb r g b / 0.5);
 
 	flex: 0 0 var(--nav-width);
 	width: var(--nav-width);
@@ -186,7 +186,7 @@ function openProfile() {
 	overflow: auto;
 	overflow-x: clip;
 	overscroll-behavior: contain;
-	background: var(--navBg);
+	background: var(--MI_THEME-navBg);
 	contain: strict;
 	display: flex;
 	flex-direction: column;
@@ -203,8 +203,8 @@ function openProfile() {
 		z-index: 1;
 		padding: 20px 0;
 		background: var(--nav-bg-transparent);
-		-webkit-backdrop-filter: var(--blur, blur(8px));
-		backdrop-filter: var(--blur, blur(8px));
+		-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+		backdrop-filter: var(--MI-blur, blur(8px));
 	}
 
 	.banner {
@@ -240,7 +240,7 @@ function openProfile() {
 			outline: none;
 
 			> .instanceIcon {
-				outline: 2px solid var(--focus);
+				outline: 2px solid var(--MI_THEME-focus);
 				outline-offset: 2px;
 			}
 		}
@@ -259,8 +259,8 @@ function openProfile() {
 		bottom: 0;
 		padding-top: 20px;
 		background: var(--nav-bg-transparent);
-		-webkit-backdrop-filter: var(--blur, blur(8px));
-		backdrop-filter: var(--blur, blur(8px));
+		-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+		backdrop-filter: var(--MI-blur, blur(8px));
 	}
 
 	.post {
@@ -269,7 +269,7 @@ function openProfile() {
 		z-index: 2;
 		width: 100%;
 		height: 40px;
-		color: var(--fgOnAccent);
+		color: var(--MI_THEME-fgOnAccent);
 		font-weight: bold;
 		text-align: left;
 
@@ -285,21 +285,21 @@ function openProfile() {
 			right: 0;
 			bottom: 0;
 			border-radius: 999px;
-			background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
+			background: linear-gradient(90deg, var(--MI_THEME-buttonGradateA), var(--MI_THEME-buttonGradateB));
 		}
 
 		&:focus-visible {
 			outline: none;
 
 			&::before {
-				outline: 2px solid var(--fgOnAccent);
+				outline: 2px solid var(--MI_THEME-fgOnAccent);
 				outline-offset: -4px;
 			}
 		}
 
 		&:hover, &.active {
 			&::before {
-				background: var(--accentLighten);
+				background: var(--MI_THEME-accentLighten);
 			}
 		}
 	}
@@ -333,7 +333,7 @@ function openProfile() {
 			outline: none;
 
 			> .avatar {
-				box-shadow: 0 0 0 4px var(--focus);
+				box-shadow: 0 0 0 4px var(--MI_THEME-focus);
 			}
 		}
 	}
@@ -371,7 +371,7 @@ function openProfile() {
 
 	.divider {
 		margin: 16px 16px;
-		border-top: solid 0.5px var(--divider);
+		border-top: solid 0.5px var(--MI_THEME-divider);
 	}
 
 	.item {
@@ -385,29 +385,29 @@ function openProfile() {
 		width: 100%;
 		text-align: left;
 		box-sizing: border-box;
-		color: var(--navFg);
+		color: var(--MI_THEME-navFg);
 		margin-bottom: 0.5rem;
 
 		&:hover {
 			text-decoration: none;
-			color: var(--navHoverFg);
+			color: var(--MI_THEME-navHoverFg);
 		}
 
 		&.active {
-			color: var(--navActive);
+			color: var(--MI_THEME-navActive);
 		}
 
 		&:focus-visible {
 			outline: none;
 
 			&::before {
-				outline: 2px solid var(--focus);
+				outline: 2px solid var(--MI_THEME-focus);
 				outline-offset: -2px;
 			}
 		}
 
 		&:hover, &.active, &:focus {
-			color: var(--accent);
+			color: var(--MI_THEME-accent);
 
 			&::before {
 				content: "";
@@ -421,7 +421,7 @@ function openProfile() {
 				right: 0;
 				bottom: 0;
 				border-radius: 15px;
-				background: var(--accentedBg);
+				background: var(--MI_THEME-accentedBg);
 			}
 		}
 	}
@@ -437,9 +437,9 @@ function openProfile() {
 		position: absolute;
 		top: 0;
 		left: 20px;
-		color: var(--navIndicator);
+		color: var(--MI_THEME-navIndicator);
 		font-size: 8px;
-		animation: global-blink 1s infinite;
+		// animation: global-blink 1s infinite;
 
 		&:has(.itemIndicateValueIcon) {
 			animation: none;
@@ -468,8 +468,8 @@ function openProfile() {
 		z-index: 1;
 		padding: 20px 0 10px;
 		background: var(--nav-bg-transparent);
-		-webkit-backdrop-filter: var(--blur, blur(8px));
-		backdrop-filter: var(--blur, blur(8px));
+		-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+		backdrop-filter: var(--MI-blur, blur(8px));
 	}
 
 	.instance {
@@ -481,7 +481,7 @@ function openProfile() {
 			outline: none;
 
 			> .instanceIcon {
-				outline: 2px solid var(--focus);
+				outline: 2px solid var(--MI_THEME-focus);
 				outline-offset: 2px;
 			}
 		}
@@ -499,8 +499,8 @@ function openProfile() {
 		bottom: 0;
 		padding-top: 20px;
 		background: var(--nav-bg-transparent);
-		-webkit-backdrop-filter: var(--blur, blur(8px));
-		backdrop-filter: var(--blur, blur(8px));
+		-webkit-backdrop-filter: var(--MI-blur, blur(8px));
+		backdrop-filter: var(--MI-blur, blur(8px));
 	}
 
 	.post {
@@ -522,28 +522,28 @@ function openProfile() {
 			width: 52px;
 			aspect-ratio: 1/1;
 			border-radius: 100%;
-			background: linear-gradient(90deg, var(--buttonGradateA), var(--buttonGradateB));
+			background: linear-gradient(90deg, var(--MI_THEME-buttonGradateA), var(--MI_THEME-buttonGradateB));
 		}
 
 		&:focus-visible {
 			outline: none;
 
 			&::before {
-				outline: 2px solid var(--fgOnAccent);
+				outline: 2px solid var(--MI_THEME-fgOnAccent);
 				outline-offset: -4px;
 			}
 		}
 
 		&:hover, &.active {
 			&::before {
-				background: var(--accentLighten);
+				background: var(--MI_THEME-accentLighten);
 			}
 		}
 	}
 
 	.postIcon {
 		position: relative;
-		color: var(--fgOnAccent);
+		color: var(--MI_THEME-fgOnAccent);
 	}
 
 	.postText {
@@ -560,7 +560,7 @@ function openProfile() {
 			outline: none;
 
 			> .avatar {
-				box-shadow: 0 0 0 4px var(--focus);
+				box-shadow: 0 0 0 4px var(--MI_THEME-focus);
 			}
 		}
 	}
@@ -582,7 +582,7 @@ function openProfile() {
 	.divider {
 		margin: 8px auto;
 		width: calc(100% - 32px);
-		border-top: solid 0.5px var(--divider);
+		border-top: solid 0.5px var(--MI_THEME-divider);
 	}
 
 	.item {
@@ -596,14 +596,14 @@ function openProfile() {
 			outline: none;
 
 			&::before {
-				outline: 2px solid var(--focus);
+				outline: 2px solid var(--MI_THEME-focus);
 				outline-offset: -2px;
 			}
 		}
 
 		&:hover, &.active, &:focus {
 			text-decoration: none;
-			color: var(--accent);
+			color: var(--MI_THEME-accent);
 
 			&::before {
 				content: "";
@@ -617,7 +617,7 @@ function openProfile() {
 				right: 0;
 				bottom: 0;
 				border-radius: 15px;
-				background: var(--accentedBg);
+				background: var(--MI_THEME-accentedBg);
 			}
 
 			> .icon,
@@ -641,9 +641,9 @@ function openProfile() {
 		position: absolute;
 		top: 6px;
 		left: 24px;
-		color: var(--navIndicator);
+		color: var(--MI_THEME-navIndicator);
 		font-size: 8px;
-		animation: global-blink 1s infinite;
+		// animation: global-blink 1s infinite;
 
 		&:has(.itemIndicateValueIcon) {
 			animation: none;

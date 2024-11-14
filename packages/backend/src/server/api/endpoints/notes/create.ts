@@ -95,6 +95,12 @@ export const meta = {
 			id: '04da457d-b083-4055-9082-955525eda5a5',
 		},
 
+		cannotCreateAlreadyExpiredEvent: {
+			message: 'Event is already expired.',
+			code: 'CANNOT_CREATE_ALREADY_EXPIRED_EVENT',
+			id: 'a80c5545-5126-421e-969b-35c3eb2c3646',
+		},
+
 		noSuchChannel: {
 			message: 'No such channel.',
 			code: 'NO_SUCH_CHANNEL',
@@ -373,6 +379,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					}
 				} else if (typeof ps.poll.expiredAfter === 'number') {
 					ps.poll.expiresAt = Date.now() + ps.poll.expiredAfter;
+				}
+			}
+
+			if (ps.event) {
+				if (typeof ps.event.end === 'number') {
+					if (ps.event.end < Date.now()) {
+						throw new ApiError(meta.errors.cannotCreateAlreadyExpiredEvent);
+					}
 				}
 			}
 

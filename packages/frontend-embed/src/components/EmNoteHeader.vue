@@ -96,7 +96,7 @@ defineProps<{
 	}
 
 	&:hover {
-		color: var(--nameHover);
+		color: var(--MI_THEME-nameHover);
 		text-decoration: none;
 	}
 }
@@ -107,7 +107,7 @@ defineProps<{
 	margin: 0 .5em 0 0;
 	padding: 1px 6px;
 	font-size: 80%;
-	border: solid 0.5px var(--divider);
+	border: solid 0.5px var(--MI_THEME-divider);
 	border-radius: 3px;
 }
 
@@ -152,7 +152,7 @@ defineProps<{
 }
 
 .danger {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 @container (max-width: 500px) {

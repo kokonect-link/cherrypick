@@ -23,7 +23,7 @@
 		panelHeaderBg: ':lighten<3<@panel',
 		panelHeaderFg: '@fg',
 		panelHeaderDivider: 'rgba(0, 0, 0, 0)',
-		panelBorder: '" solid 1px var(--divider)',
+		panelBorder: '" solid 1px var(--MI_THEME-divider)',
 		acrylicPanel: ':alpha<0.5<@panel',
 		popup: ':lighten<3<@panel',
 		shadow: 'rgba(0, 0, 0, 0.1)',

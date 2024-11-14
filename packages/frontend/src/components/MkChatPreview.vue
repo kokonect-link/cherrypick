@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:to="message.groupId ? `/my/messaging/group/${ message.groupId }` : `/my/messaging/@${Misskey.acct.toString(isMe(message) ? message.recipient : message.user)}`"
 >
 	<div>
-		<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i?.id) : message.isRead))" :class="$style.indicator"><i class="_indicatorCircle"></i></span>
+		<span v-if="!(isMe(message) || (message.groupId ? message.reads.includes($i?.id) : message.isRead))" :class="$style.indicator" class="_blink"><i class="_indicatorCircle"></i></span>
 		<MkAvatar :class="$style.avatar" :user="message.groupId ? message.user : isMe(message) ? message.recipient : message.user" indicator link preview/>
 		<header v-if="message.groupId">
 			<span :class="$style.name">{{ message.group.name }}</span>
@@ -52,7 +52,7 @@ function isMe(message): boolean {
 .message {
   display: block;
   text-decoration: none !important;
-  margin-bottom: var(--margin);
+  margin-bottom: var(--MI-margin);
 
   * {
     pointer-events: none;
@@ -89,7 +89,7 @@ function isMe(message): boolean {
   }
 
   &.isRead {
-    background: var(--chatReadBg);
+    background: var(--MI_THEME-chatReadBg);
   }
 }
 
@@ -97,7 +97,7 @@ function isMe(message): boolean {
   position: relative;
   top: 25px;
   left: -12px;
-  color: var(--indicator);
+  color: var(--MI_THEME-indicator);
   font-size: 9px;
 	float: left;
 }

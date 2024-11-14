@@ -398,7 +398,7 @@ definePageMetadata(computed(() => !fetching.value ? user.value ? {
 	bottom: 100%;
 	padding: 0 8px 0 8px;
 	font-size: 0.9em;
-	color: var(--fgTransparentWeak);
+	color: var(--MI_THEME-fgTransparentWeak);
 }
 
 .user + .user:before {
@@ -413,7 +413,7 @@ definePageMetadata(computed(() => !fetching.value ? user.value ? {
 .form {
 	max-height: 12em;
 	overflow-y: scroll;
-	// border-top: solid 0.5px var(--divider);
+	// border-top: solid 0.5px var(--MI_THEME-divider);
 	// border-bottom-left-radius: 0;
 	// border-bottom-right-radius: 0;
   border-radius: 15px;

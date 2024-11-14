@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div>
 			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
 				<div v-if="group" class="_gaps_s">
-					<div style="margin-top: var(--margin);">{{ i18n.ts.members }}</div>
+					<div style="margin-top: var(--MI-margin);">{{ i18n.ts.members }}</div>
 					<div :class="$style.content">
 						<div :class="$style.users">
 							<div v-for="user in users" :key="user.id" :class="$style.user" class="_panel">
@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkA>
 									<MkAcct :user="user" :class="$style.acct"/>
 								</div>
-								<div v-if="user.id === group.ownerId" v-tooltip="i18n.ts._group.leader" style="color: var(--badge);"><i class="ti ti-crown"></i></div>
+								<div v-if="user.id === group.ownerId" v-tooltip="i18n.ts._group.leader" style="color: var(--MI_THEME-badge);"><i class="ti ti-crown"></i></div>
 								<div v-else-if="group && $i.id === group.ownerId">
 									<button v-tooltip="i18n.ts._group.banish" class="_button" @click="removeUser(user)"><i class="ti ti-x"></i></button>
 								</div>
@@ -171,7 +171,7 @@ definePageMetadata(computed(() => group.value ? {
 .content {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--margin);
+	gap: var(--MI-margin);
 }
 
 .users {
@@ -205,7 +205,7 @@ definePageMetadata(computed(() => group.value ? {
 	text-decoration: none;
 
 	&:hover {
-		color: var(--renoteHover);
+		color: var(--MI_THEME-renoteHover);
 		text-decoration: none;
 	}
 }

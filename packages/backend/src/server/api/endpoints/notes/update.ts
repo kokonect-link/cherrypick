@@ -24,7 +24,7 @@ export const meta = {
 
 	limit: {
 		duration: ms('5min'),
-		max: 10,
+		max: 5,
 		minInterval: ms('1sec'),
 	},
 
@@ -34,15 +34,29 @@ export const meta = {
 			code: 'NO_SUCH_NOTE',
 			id: 'a6584e14-6e01-4ad3-b566-851e7bf0d474',
 		},
+
 		noSuchFile: {
 			message: 'Some files are not found.',
 			code: 'NO_SUCH_FILE',
 			id: 'b6992544-63e7-67f0-fa7f-32444b1b5306',
 		},
+
 		cannotCreateAlreadyExpiredPoll: {
 			message: 'Poll is already expired.',
 			code: 'CANNOT_CREATE_ALREADY_EXPIRED_POLL',
 			id: '04da457d-b083-4055-9082-955525eda5a5',
+		},
+
+		cannotCreateAlreadyExpiredEvent: {
+			message: 'Event is already expired.',
+			code: 'CANNOT_CREATE_ALREADY_EXPIRED_EVENT',
+			id: 'a80c5545-5126-421e-969b-35c3eb2c3646',
+		},
+
+		cannotScheduleDeleteEarlierThanNow: {
+			message: 'Cannot specify delete time earlier than now.',
+			code: 'CANNOT_SCHEDULE_DELETE_EARLIER_THAN_NOW',
+			id: '9f04994a-3aa2-11ef-a495-177eea74788f',
 		},
 	},
 } as const;
@@ -88,8 +102,26 @@ export const paramDef = {
 			},
 			required: ['choices'],
 		},
+		event: {
+			type: 'object',
+			nullable: true,
+			properties: {
+				title: { type: 'string', minLength: 1, maxLength: 128, nullable: false },
+				start: { type: 'integer', nullable: false },
+				end: { type: 'integer', nullable: true },
+				metadata: { type: 'object' },
+			},
+		},
 		cw: { type: 'string', nullable: true, maxLength: 100 },
 		disableRightClick: { type: 'boolean', default: false },
+		scheduledDelete: {
+			type: 'object',
+			nullable: true,
+			properties: {
+				deleteAt: { type: 'integer', nullable: true },
+				deleteAfter: { type: 'integer', nullable: true, minimum: 1 },
+			},
+		},
 	},
 	required: ['noteId', 'text', 'cw'],
 } as const;
@@ -144,6 +176,24 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 				}
 			}
 
+			if (ps.event) {
+				if (typeof ps.event.end === 'number') {
+					if (ps.event.end < Date.now()) {
+						throw new ApiError(meta.errors.cannotCreateAlreadyExpiredEvent);
+					}
+				}
+			}
+
+			if (ps.scheduledDelete) {
+				if (typeof ps.scheduledDelete.deleteAt === 'number') {
+					if (ps.scheduledDelete.deleteAt < Date.now()) {
+						throw new ApiError(meta.errors.cannotScheduleDeleteEarlierThanNow);
+					} else if (typeof ps.scheduledDelete.deleteAfter === 'number') {
+						ps.scheduledDelete.deleteAt = Date.now() + ps.scheduledDelete.deleteAfter;
+					}
+				}
+			}
+
 			const data = {
 				text: ps.text,
 				files: files,
@@ -153,6 +203,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> {
 					multiple: ps.poll.multiple ?? false,
 					expiresAt: ps.poll.expiresAt ? new Date(ps.poll.expiresAt) : null,
 				} : undefined,
+				event: ps.event ? {
+					start: new Date(ps.event.start!),
+					end: ps.event.end ? new Date(ps.event.end) : null,
+					title: ps.event.title!,
+					metadata: ps.event.metadata ?? {},
+				} : undefined,
+				disableRightClick: ps.disableRightClick,
+				deleteAt: ps.scheduledDelete?.deleteAt ? new Date(ps.scheduledDelete.deleteAt) : ps.scheduledDelete?.deleteAfter ? new Date(Date.now() + ps.scheduledDelete.deleteAfter) : null,
 			};
 
 			const updatedNote = await this.noteUpdateService.update(me, data, note, false);

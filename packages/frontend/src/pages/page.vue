@@ -363,24 +363,24 @@ definePageMetadata(() => ({
 
 	&:hover,
 	&:focus-visible {
-		background-color: var(--accentedBg);
-		color: var(--accent);
+		background-color: var(--MI_THEME-accentedBg);
+		color: var(--MI_THEME-accent);
 		text-decoration: none;
 		outline: none;
 	}
 }
 
 .pageMain {
-	border-radius: var(--radius);
+	border-radius: var(--MI-radius);
 	padding: 2rem;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	box-sizing: border-box;
 }
 
 .pageBanner {
 	width: calc(100% + 4rem);
 	margin: -2rem -2rem 1.5rem;
-	border-radius: var(--radius) var(--radius) 0 0;
+	border-radius: var(--MI-radius) var(--MI-radius) 0 0;
 	overflow: hidden;
 	position: relative;
 
@@ -405,7 +405,7 @@ definePageMetadata(() => ({
 		}
 
 		.pageBannerBgFallback2 {
-			background-color: var(--accentedBg);
+			background-color: var(--MI_THEME-accentedBg);
 		}
 
 		&::after {
@@ -415,7 +415,7 @@ definePageMetadata(() => ({
 			bottom: 0;
 			width: 100%;
 			height: 100px;
-			background: linear-gradient(0deg, var(--panel), transparent);
+			background: linear-gradient(0deg, var(--MI_THEME-panel), transparent);
 		}
 	}
 
@@ -439,7 +439,7 @@ definePageMetadata(() => ({
 		h1 {
 			font-size: 2rem;
 			font-weight: 700;
-			color: var(--fg);
+			color: var(--MI_THEME-fg);
 			margin: 0;
 		}
 
@@ -464,7 +464,7 @@ definePageMetadata(() => ({
 			flex-shrink: 0;
 			display: flex;
 			align-items: center;
-			gap: var(--marginHalf);
+			gap: var(--MI-marginHalf);
 			margin-left: auto;
 		}
 	}
@@ -478,14 +478,14 @@ definePageMetadata(() => ({
 	display: flex;
 	align-items: center;
 
-	border-top: 1px solid var(--divider);
+	border-top: 1px solid var(--MI_THEME-divider);
 	padding-top: 1.5rem;
 	margin-bottom: 1.5rem;
 
 	> .other {
 		margin-left: auto;
 		display: flex;
-		gap: var(--marginHalf);
+		gap: var(--MI-marginHalf);
 	}
 }
 
@@ -493,7 +493,7 @@ definePageMetadata(() => ({
 	display: flex;
 	align-items: center;
 
-	border-top: 1px solid var(--divider);
+	border-top: 1px solid var(--MI_THEME-divider);
 	padding-top: 1.5rem;
 	margin-bottom: 1.5rem;
 
@@ -532,14 +532,14 @@ definePageMetadata(() => ({
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
-	gap: var(--marginHalf);
+	gap: var(--MI-marginHalf);
 }
 
 .relatedPagesRoot {
-	padding: var(--margin);
+	padding: var(--MI-margin);
 }
 
 .relatedPagesItem > article {
-	background-color: var(--panelHighlight) !important;
+	background-color: var(--MI_THEME-panelHighlight) !important;
 }
 </style>

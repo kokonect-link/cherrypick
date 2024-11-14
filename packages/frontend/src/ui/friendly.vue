@@ -33,18 +33,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<button v-if="(!isDesktop || pageMetadata?.needWideArea) && !isMobile" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
 	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: bg }">
-		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button> -->
-		<button v-if="defaultStore.state.showHomeButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="isRoot ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome"><i class="_indicatorCircle"></i></span></button>
+		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button> -->
+		<button v-if="defaultStore.state.showHomeButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="isRoot ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome" class="_blink"><i class="_indicatorCircle"></i></span></button>
 		<button v-if="defaultStore.state.showExploreButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
 		<button v-if="defaultStore.state.showSearchButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'search' ? top() : mainRouter.push('/search')"><i :class="$style.navButtonIcon" class="ti ti-search"></i></button>
 		<button v-if="defaultStore.state.showNotificationButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')">
 			<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
-			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator">
+			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator" class="_blink">
 				<span v-if="defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
 				<i v-else class="_indicatorCircle"></i>
 			</span>
 		</button>
-		<button v-if="defaultStore.state.showMessageButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator"><i class="_indicatorCircle"></i></span></button>
+		<button v-if="defaultStore.state.showMessageButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
 		<button v-if="defaultStore.state.showWidgetButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
 		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
 	</div>
@@ -227,8 +227,8 @@ defaultStore.loaded.then(() => {
 });
 
 const calcBg = () => {
-	const rawBg = 'var(--panel)';
-	const rawPostBg = 'var(--accent)';
+	const rawBg = 'var(--MI_THEME-panel)';
+	const rawPostBg = 'var(--MI_THEME-accent)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
 	if (defaultStore.state.useBlurEffect) {
@@ -344,12 +344,12 @@ provide<Ref<number>>(CURRENT_STICKY_BOTTOM, navFooterHeight);
 watch(navFooter, () => {
 	if (navFooter.value) {
 		navFooterHeight.value = navFooter.value.offsetHeight;
-		document.body.style.setProperty('--stickyBottom', `${navFooterHeight.value}px`);
-		document.body.style.setProperty('--minBottomSpacing', 'var(--minBottomSpacingMobile)');
+		document.body.style.setProperty('--MI-stickyBottom', `${navFooterHeight.value}px`);
+		document.body.style.setProperty('--MI-minBottomSpacing', 'var(--MI-minBottomSpacingMobile)');
 	} else {
 		navFooterHeight.value = 0;
-		document.body.style.setProperty('--stickyBottom', '0px');
-		document.body.style.setProperty('--minBottomSpacing', '0px');
+		document.body.style.setProperty('--MI-stickyBottom', '0px');
+		document.body.style.setProperty('--MI-minBottomSpacing', '0px');
 	}
 }, {
 	immediate: true,
@@ -438,7 +438,7 @@ $float-button-size: 65px;
 }
 
 .sidebar {
-	border-right: solid 0.5px var(--divider);
+	border-right: solid 0.5px var(--MI_THEME-divider);
 }
 
 .contents {
@@ -448,7 +448,7 @@ $float-button-size: 65px;
 	overflow: auto;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 }
 
 .widgets {
@@ -456,9 +456,9 @@ $float-button-size: 65px;
 	height: 100%;
 	box-sizing: border-box;
 	overflow: auto;
-	padding: var(--margin) var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px));
-	border-left: solid 0.5px var(--divider);
-	background: var(--bg);
+	padding: var(--MI-margin) var(--MI-margin) calc(var(--MI-margin) + env(safe-area-inset-bottom, 0px));
+	border-left: solid 0.5px var(--MI_THEME-divider);
+	background: var(--MI_THEME-bg);
 
 	@media (max-width: $widgets-hide-threshold) {
 		display: none;
@@ -479,8 +479,8 @@ $float-button-size: 65px;
   height: $float-button-size;
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
   border-radius: 28px;
-  -webkit-backdrop-filter: var(--blur, blur(15px));
-  backdrop-filter: var(--blur, blur(15px));
+  -webkit-backdrop-filter: var(--MI-blur, blur(15px));
+  backdrop-filter: var(--MI-blur, blur(15px));
   transition: opacity 0.5s, transform 0.5s;
 
   &.reduceBlurEffect {
@@ -543,7 +543,7 @@ $float-button-size: 65px;
 	border-radius: 100%;
 	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 	font-size: 22px;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
   transition: opacity 0.5s, transform 0.5s;
 
   &.reduceAnimation {
@@ -566,11 +566,11 @@ $float-button-size: 65px;
 	z-index: 1001;
 	width: 330px;
 	height: 100dvh;
-	padding: var(--margin) var(--margin) calc(var(--margin) + env(safe-area-inset-bottom, 0px)) !important;
+	padding: var(--MI-margin) var(--MI-margin) calc(var(--MI-margin) + env(safe-area-inset-bottom, 0px)) !important;
 	box-sizing: border-box;
 	overflow: auto;
 	overscroll-behavior: contain;
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 }
 
 .widgetsCloseButton {
@@ -592,9 +592,9 @@ $float-button-size: 65px;
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
-	-webkit-backdrop-filter: var(--blur, blur(15px));
-	backdrop-filter: var(--blur, blur(15px));
-	border-top: solid 0.5px var(--divider);
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
+	border-top: solid 0.5px var(--MI_THEME-divider);
 	padding: 0 10px;
   transition: opacity 0.5s, transform 0.5s;
 
@@ -617,7 +617,7 @@ $float-button-size: 65px;
 	flex: 1;
 	margin: auto;
 	height: 50px;
-	color: var(--fg);
+	color: var(--MI_THEME-fg);
 	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
 
 	@media (max-width: 300px) {
@@ -629,11 +629,11 @@ $float-button-size: 65px;
 	}
 
 	&:active {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 
 	&.active {
-		color: var(--accent);
+		color: var(--MI_THEME-accent);
 	}
 
 	&:first-child {
@@ -666,7 +666,7 @@ $float-button-size: 65px;
 	position: absolute;
 	top: 7px;
 	right: 20px;
-	color: var(--indicator);
+	color: var(--MI_THEME-indicator);
 	font-size: 8px;
 	animation: global-blink 1s infinite;
 
@@ -696,7 +696,7 @@ $float-button-size: 65px;
 	contain: strict;
 	overflow: auto;
 	overscroll-behavior: contain;
-	background: var(--navBg);
+	background: var(--MI_THEME-navBg);
 }
 
 .statusbars {
@@ -706,6 +706,6 @@ $float-button-size: 65px;
 }
 
 .spacer {
-	height: calc(var(--minBottomSpacing));
+	height: calc(var(--MI-minBottomSpacing));
 }
 </style>

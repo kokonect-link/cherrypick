@@ -12,6 +12,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="_gaps_m">
 					<MkSwitch v-model="enableRegistration" @change="onChange_enableRegistration">
 						<template #label>{{ i18n.ts.enableRegistration }}</template>
+						<template v-if="(enableRegistration && disableRegistrationWhenInactive) || disableRegistrationWhenInactive" #caption>{{ i18n.ts._serverSettings.thisSettingWillAutomaticallyOffWhenModeratorsInactive }}</template>
+					</MkSwitch>
+
+					<MkSwitch v-model="disableRegistrationWhenInactive" :disabled="!enableRegistration" @change="onChange_disableRegistrationWhenInactive">
+						<template #label>{{ i18n.ts.disableRegistrationWhenInactive }}</template>
+					</MkSwitch>
+
+					<MkSwitch v-model="disablePublicNoteWhenInactive" @change="onChange_disablePublicNoteWhenInactive">
+						<template #label>{{ i18n.ts.disablePublicNoteWhenInactive }}</template>
 					</MkSwitch>
 
 					<MkSwitch v-model="emailRequiredForSignup" @change="onChange_emailRequiredForSignup">
@@ -53,6 +62,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<template #caption>{{ i18n.ts.prohibitedWordsDescription }}<br>{{ i18n.ts.prohibitedWordsDescription2 }}</template>
 							</MkTextarea>
 							<MkButton primary @click="save_prohibitedWords">{{ i18n.ts.save }}</MkButton>
+						</div>
+					</MkFolder>
+
+					<MkFolder>
+						<template #icon><i class="ti ti-user-x"></i></template>
+						<template #label>{{ i18n.ts.prohibitedWordsForNameOfUser }}</template>
+
+						<div class="_gaps">
+							<MkTextarea v-model="prohibitedWordsForNameOfUser">
+								<template #caption>{{ i18n.ts.prohibitedWordsForNameOfUserDescription }}<br>{{ i18n.ts.prohibitedWordsDescription2 }}</template>
+							</MkTextarea>
+							<MkButton primary @click="save_prohibitedWordsForNameOfUser">{{ i18n.ts.save }}</MkButton>
 						</div>
 					</MkFolder>
 
@@ -139,9 +160,12 @@ import FormLink from '@/components/form/link.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
 const enableRegistration = ref<boolean>(false);
+const disableRegistrationWhenInactive = ref<boolean>(false);
+const disablePublicNoteWhenInactive = ref<boolean>(false);
 const emailRequiredForSignup = ref<boolean>(false);
 const sensitiveWords = ref<string>('');
 const prohibitedWords = ref<string>('');
+const prohibitedWordsForNameOfUser = ref<string>('');
 const hiddenTags = ref<string>('');
 const preservedUsernames = ref<string>('');
 const blockedHosts = ref<string>('');
@@ -152,13 +176,16 @@ const trustedLinkUrlPatterns = ref<string>('');
 async function init() {
 	const meta = await misskeyApi('admin/meta');
 	enableRegistration.value = !meta.disableRegistration;
+	disableRegistrationWhenInactive.value = meta.disableRegistrationWhenInactive;
+	disablePublicNoteWhenInactive.value = meta.disablePublicNoteWhenInactive;
 	emailRequiredForSignup.value = meta.emailRequiredForSignup;
 	sensitiveWords.value = meta.sensitiveWords.join('\n');
 	prohibitedWords.value = meta.prohibitedWords.join('\n');
+	prohibitedWordsForNameOfUser.value = meta.prohibitedWordsForNameOfUser.join('\n');
 	hiddenTags.value = meta.hiddenTags.join('\n');
 	preservedUsernames.value = meta.preservedUsernames.join('\n');
 	blockedHosts.value = meta.blockedHosts.join('\n');
-	silencedHosts.value = meta.silencedHosts.join('\n');
+	silencedHosts.value = meta.silencedHosts?.join('\n') ?? '';
 	mediaSilencedHosts.value = meta.mediaSilencedHosts.join('\n');
 	trustedLinkUrlPatterns.value = meta.trustedLinkUrlPatterns.join('\n');
 }
@@ -166,6 +193,22 @@ async function init() {
 function onChange_enableRegistration(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		disableRegistration: !value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_disableRegistrationWhenInactive(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		disableRegistrationWhenInactive: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_disablePublicNoteWhenInactive(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		disablePublicNoteWhenInactive: value,
 	}).then(() => {
 		fetchInstance(true);
 	});
@@ -198,6 +241,14 @@ function save_sensitiveWords() {
 function save_prohibitedWords() {
 	os.apiWithDialog('admin/update-meta', {
 		prohibitedWords: prohibitedWords.value.split('\n'),
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function save_prohibitedWordsForNameOfUser() {
+	os.apiWithDialog('admin/update-meta', {
+		prohibitedWordsForNameOfUser: prohibitedWordsForNameOfUser.value.split('\n'),
 	}).then(() => {
 		fetchInstance(true);
 	});

@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@close="cancel()"
 >
 	<template #header>{{ i18n.ts.schedulePostList }}</template>
-	<MkSpacer :marginMin="14" :marginMax="16">
+	<MkSpacer :marginMin="20" :marginMax="28">
 		<MkPagination ref="paginationEl" :pagination="pagination">
 			<template #empty>
 				<div class="_fullinfo">
@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<template #default="{ items }">
 				<div class="_gaps">
-					<MkNoteSimple v-for="item in items" :key="item.id" :scheduled="true" :note="item.note" @editScheduleNote="listUpdate"/>
+					<MkNoteSimple v-for="item in items" :key="item.id" :scheduled="true" :note="item.note" @deleteAndEditScheduleNote="listUpdate"/>
 				</div>
 			</template>
 		</MkPagination>

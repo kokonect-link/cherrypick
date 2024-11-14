@@ -1,0 +1,101 @@
+services:
+  nginx:
+    image: nginx:1.27
+    volumes:
+      - type: bind
+        source: ./certificates/rootCA.crt
+        target: /etc/nginx/certificates/rootCA.crt
+        read_only: true
+    healthcheck:
+      test: service nginx status
+      interval: 5s
+      retries: 20
+
+  cherrypick:
+    image: node:20
+    env_file:
+      - ./.config/docker.env
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - type: bind
+        source: ../../../built
+        target: /cherrypick/built
+        read_only: true
+      - type: bind
+        source: ../assets
+        target: /cherrypick/packages/backend/assets
+        read_only: true
+      - type: bind
+        source: ../built
+        target: /cherrypick/packages/backend/built
+        read_only: true
+      - type: bind
+        source: ../migration
+        target: /cherrypick/packages/backend/migration
+        read_only: true
+      - type: bind
+        source: ../ormconfig.js
+        target: /cherrypick/packages/backend/ormconfig.js
+        read_only: true
+      - type: bind
+        source: ../package.json
+        target: /cherrypick/packages/backend/package.json
+        read_only: true
+      - type: bind
+        source: ../../cherrypick-js/built
+        target: /cherrypick/packages/cherrypick-js/built
+        read_only: true
+      - type: bind
+        source: ../../cherrypick-js/package.json
+        target: /cherrypick/packages/cherrypick-js/package.json
+        read_only: true
+      - type: bind
+        source: ../../misskey-reversi/built
+        target: /cherrypick/packages/misskey-reversi/built
+        read_only: true
+      - type: bind
+        source: ../../misskey-reversi/package.json
+        target: /cherrypick/packages/misskey-reversi/package.json
+        read_only: true
+      - type: bind
+        source: ../../../healthcheck.sh
+        target: /cherrypick/healthcheck.sh
+        read_only: true
+      - type: bind
+        source: ../../../package.json
+        target: /cherrypick/package.json
+        read_only: true
+      - type: bind
+        source: ../../../pnpm-lock.yaml
+        target: /cherrypick/pnpm-lock.yaml
+        read_only: true
+      - type: bind
+        source: ../../../pnpm-workspace.yaml
+        target: /cherrypick/pnpm-workspace.yaml
+        read_only: true
+      - type: bind
+        source: ./certificates/rootCA.crt
+        target: /usr/local/share/ca-certificates/rootCA.crt
+        read_only: true
+    working_dir: /cherrypick
+    command: >
+      bash -c "
+        corepack enable && corepack prepare
+        pnpm -F backend migrate
+        pnpm -F backend start
+      "
+    healthcheck:
+      test: bash /cherrypick/healthcheck.sh
+      interval: 5s
+      retries: 20
+
+  db:
+    image: postgres:15-alpine
+    env_file:
+      - ./.config/docker.env
+    volumes:
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB
+      interval: 5s
+      retries: 20

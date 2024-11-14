@@ -5,7 +5,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="zmdxowut">
-	<MkInput v-model="title" small type="text" class="input">
+	<span>{{ i18n.ts.event }}</span>
+	<MkInput v-model="title" small type="text" class="input" style="margin: 16px 0 0 0;">
 		<template #label>*{{ i18n.ts.title }}</template>
 	</MkInput>
 	<section>
@@ -118,7 +119,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, watch } from 'vue';
+import { onMounted, Ref, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
@@ -198,9 +199,32 @@ function get(): Misskey.entities.Note['event'] {
 	};
 }
 
-watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, organizer, organizerLink, audience, language,
-							ageRange, ticketsUrl, isFree, price, availabilityStart, availabilityEnd, keywords], () => emit('update:modelValue', get()), {
+watch([
+	title,
+	startDate,
+	startTime,
+	endDate,
+	endTime,
+	location,
+	url,
+	doorTime,
+	organizer,
+	organizerLink,
+	audience,
+	language,
+	ageRange,
+	ticketsUrl,
+	isFree,
+	price,
+	availabilityStart,
+	availabilityEnd,
+	keywords,
+], () => emit('update:modelValue', get()), {
 	deep: true,
+});
+
+onMounted(() => {
+	emit('update:modelValue', get());
 });
 </script>
 
@@ -208,10 +232,14 @@ watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, o
 .zmdxowut {
 	padding: 8px 16px;
 
-	>section {
+	> span {
+		opacity: 0.7;
+	}
+
+	> section {
 		margin: 16px 0 0 0;
 
-		>div {
+		> div {
 			margin: 0 8px;
 			display: flex;
 			flex-direction: row;
@@ -221,18 +249,18 @@ watch([title, startDate, startTime, endDate, endTime, location, url, doorTime, o
 			&:last-child {
 				flex: 1 0 auto;
 
-				>div {
+				> div {
 					flex-grow: 1;
 				}
 
-				>section {
+				> section {
 					// MAGIC: Prevent div above from growing unless wrapped to its own line
 					flex-grow: 9999;
 					align-items: end;
 					display: flex;
 					gap: 4px;
 
-					>.input {
+					> .input {
 						flex: 1 1 auto;
 					}
 				}

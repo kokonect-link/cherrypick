@@ -94,14 +94,14 @@ onMounted(() => {
 
 .tab {
 	padding: 0 12px;
-	border: solid 1px var(--divider);
+	border: solid 1px var(--MI_THEME-divider);
 	border-radius: 999px;
   height: 30px;
 }
 
 .tabActive {
-	background: var(--accentedBg);
-  color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent) inset;
+	background: var(--MI_THEME-accentedBg);
+  color: var(--MI_THEME-accent);
+  box-shadow: 0 0 0 1px var(--MI_THEME-accent) inset;
 }
 </style>

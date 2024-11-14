@@ -179,14 +179,8 @@ const isDeleted = ref(false);
 	font-size: 1.05em;
 	overflow: clip;
 	contain: content;
-
-	// これらの指定はパフォーマンス向上には有効だが、ノートの高さは一定でないため、
-	// 下の方までスクロールすると上のノートの高さがここで決め打ちされたものに変化し、表示しているノートの位置が変わってしまう
-	// ノートがマウントされたときに自身の高さを取得し contain-intrinsic-size を設定しなおせばほぼ解決できそうだが、
-	// 今度はその処理自体がパフォーマンス低下の原因にならないか懸念される。また、被リアクションでも高さは変化するため、やはり多少のズレは生じる
-	// 一度レンダリングされた要素はブラウザがよしなにサイズを覚えておいてくれるような実装になるまで待った方が良さそう(なるのか？)
-	//content-visibility: auto;
-  //contain-intrinsic-size: 0 128px;
+	content-visibility: auto;
+  contain-intrinsic-size: 0 150px;
 
 	&:focus-visible {
 		outline: none;
@@ -204,8 +198,8 @@ const isDeleted = ref(false);
 			margin: auto;
 			width: calc(100% - 8px);
 			height: calc(100% - 8px);
-			border: dashed 2px var(--focus);
-			border-radius: var(--radius);
+			border: dashed 2px var(--MI_THEME-focus);
+			border-radius: var(--MI-radius);
 			box-sizing: border-box;
 		}
 	}
@@ -227,9 +221,9 @@ const isDeleted = ref(false);
 			right: 12px;
 			padding: 0 4px;
 			margin-bottom: 0 !important;
-			background: var(--popup);
+			background: var(--MI_THEME-popup);
 			border-radius: 8px;
-			box-shadow: 0 4px 32px var(--shadow);
+			box-shadow: 0 4px 32px var(--MI_THEME-shadow);
 		}
 
 		.footerButton {
@@ -274,7 +268,7 @@ const isDeleted = ref(false);
 	padding: 24px 38px 16px;
 	line-height: 28px;
 	white-space: pre;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 
 	& + .article {
 		padding-top: 8px;
@@ -291,7 +285,7 @@ const isDeleted = ref(false);
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .renoteText {
@@ -306,7 +300,7 @@ const isDeleted = ref(false);
 	text-decoration: none;
 
 	&:hover {
-		color: var(--renoteHover);
+		color: var(--MI_THEME-renoteHover);
 		text-decoration: none;
 	}
 }
@@ -339,7 +333,7 @@ const isDeleted = ref(false);
 	width: 28px;
 	height: 28px;
 	margin: 0 8px 0 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .collapsedRenoteTargetText {
@@ -379,9 +373,9 @@ const isDeleted = ref(false);
 	width: 58px;
 	height: 58px;
 	position: sticky !important;
-	top: calc(22px + var(--stickyTop, 0px));
+	top: calc(22px + var(--MI-stickyTop, 0px));
 	left: 0;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	transition: top 0.5s;
 }
 
@@ -402,12 +396,12 @@ const isDeleted = ref(false);
 	width: 100%;
 	margin-top: 14px;
 	position: sticky;
-	bottom: calc(var(--stickyBottom, 0px) + 14px);
+	bottom: calc(var(--MI-stickyBottom, 0px) + 14px);
 }
 
 .showLessLabel {
 	display: inline-block;
-	background: var(--popup);
+	background: var(--MI_THEME-popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
@@ -429,16 +423,16 @@ const isDeleted = ref(false);
 	z-index: 2;
 	width: 100%;
 	height: 64px;
-	background: linear-gradient(0deg, var(--panel), color(from var(--panel) srgb r g b / 0));
+	background: linear-gradient(0deg, var(--MI_THEME-panel), color(from var(--MI_THEME-panel) srgb r g b / 0));
 
 	&:hover > .collapsedLabel {
-		background: var(--panelHighlight);
+		background: var(--MI_THEME-panelHighlight);
 	}
 }
 
 .collapsedLabel {
 	display: inline-block;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;
@@ -450,13 +444,13 @@ const isDeleted = ref(false);
 }
 
 .replyIcon {
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 	margin-right: 0.5em;
 }
 
 .translation {
-	border: solid 0.5px var(--divider);
-	border-radius: var(--radius);
+	border: solid 0.5px var(--MI_THEME-divider);
+	border-radius: var(--MI-radius);
 	padding: 12px;
 	margin-top: 8px;
 }
@@ -475,7 +469,7 @@ const isDeleted = ref(false);
 
 .quoteNote {
 	padding: 24px;
-	border: solid 1px var(--renote);
+	border: solid 1px var(--MI_THEME-renote);
 	border-radius: 8px;
 	overflow: clip;
 }
@@ -499,7 +493,7 @@ const isDeleted = ref(false);
 	}
 
 	&:hover {
-		color: var(--fgHighlighted);
+		color: var(--MI_THEME-fgHighlighted);
 	}
 }
 
@@ -576,7 +570,7 @@ const isDeleted = ref(false);
 		margin: 0 10px 0 0;
 		width: 46px;
 		height: 46px;
-		top: calc(14px + var(--stickyTop, 0px));
+		top: calc(14px + var(--MI-stickyTop, 0px));
 	}
 }
 

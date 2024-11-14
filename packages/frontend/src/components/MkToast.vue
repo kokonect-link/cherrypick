@@ -73,7 +73,7 @@ onMounted(() => {
 	pointer-events: none;
 
 	&.reduceBlurEffect {
-		background: var(--panel);
+		background: var(--MI_THEME-panel);
 	}
 
 	@media (max-width: 500px) {

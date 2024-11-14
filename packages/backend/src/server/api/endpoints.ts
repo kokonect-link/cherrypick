@@ -81,6 +81,8 @@ import * as ep___admin_relays_list from './endpoints/admin/relays/list.js';
 import * as ep___admin_relays_remove from './endpoints/admin/relays/remove.js';
 import * as ep___admin_resetPassword from './endpoints/admin/reset-password.js';
 import * as ep___admin_resolveAbuseUserReport from './endpoints/admin/resolve-abuse-user-report.js';
+import * as ep___admin_forwardAbuseUserReport from './endpoints/admin/forward-abuse-user-report.js';
+import * as ep___admin_updateAbuseUserReport from './endpoints/admin/update-abuse-user-report.js';
 import * as ep___admin_sendEmail from './endpoints/admin/send-email.js';
 import * as ep___admin_serverInfo from './endpoints/admin/server-info.js';
 import * as ep___admin_showModerationLogs from './endpoints/admin/show-moderation-logs.js';
@@ -310,6 +312,7 @@ import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
 import * as ep___notes_mentions from './endpoints/notes/mentions.js';
 import * as ep___notes_polls_recommendation from './endpoints/notes/polls/recommendation.js';
+import * as ep___notes_polls_translate from './endpoints/notes/polls/translate.js';
 import * as ep___notes_polls_vote from './endpoints/notes/polls/vote.js';
 import * as ep___notes_events_search from './endpoints/notes/events/search.js';
 import * as ep___notes_reactions from './endpoints/notes/reactions.js';
@@ -498,6 +501,8 @@ const eps = [
 	['admin/relays/remove', ep___admin_relays_remove],
 	['admin/reset-password', ep___admin_resetPassword],
 	['admin/resolve-abuse-user-report', ep___admin_resolveAbuseUserReport],
+	['admin/forward-abuse-user-report', ep___admin_forwardAbuseUserReport],
+	['admin/update-abuse-user-report', ep___admin_updateAbuseUserReport],
 	['admin/send-email', ep___admin_sendEmail],
 	['admin/server-info', ep___admin_serverInfo],
 	['admin/show-moderation-logs', ep___admin_showModerationLogs],
@@ -727,6 +732,7 @@ const eps = [
 	['notes/local-timeline', ep___notes_localTimeline],
 	['notes/mentions', ep___notes_mentions],
 	['notes/polls/recommendation', ep___notes_polls_recommendation],
+	['notes/polls/translate', ep___notes_polls_translate],
 	['notes/polls/vote', ep___notes_polls_vote],
 	['notes/events/search', ep___notes_events_search],
 	['notes/reactions', ep___notes_reactions],

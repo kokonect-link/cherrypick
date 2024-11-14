@@ -222,7 +222,7 @@ definePageMetadata(() => ({
 }
 
 .disabledServerMachineStats {
-  color: var(--fgTransparentWeak);
+  color: var(--MI_THEME-fgTransparentWeak);
   margin: 10px;
   font-size: 0.9em;
   text-align: center;

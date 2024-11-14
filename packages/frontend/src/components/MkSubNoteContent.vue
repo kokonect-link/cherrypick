@@ -14,13 +14,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:parsedNodes="parsed"
 			:text="note.text"
 			:author="note.user"
-			:nyaize="noNyaize ? false : 'respect'"
+			:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="!!$i"
 			:enableEmojiMenuReaction="!!$i"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage && !note.isSchedule" style="padding-top: 5px; color: var(--accent);">
+		<div v-if="defaultStore.state.showTranslateButtonInNote && (!defaultStore.state.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (defaultStore.state.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage && !note.isSchedule" style="padding-top: 5px; color: var(--MI_THEME-accent);">
 			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 			<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 		</div>
@@ -31,12 +31,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<Mfm
 					:text="translation.text"
 					:author="note.user"
-					:nyaize="noNyaize ? false : 'respect'"
+					:nyaize="defaultStore.state.disableNyaize || noNyaize ? false : 'respect'"
 					:emojiUrls="note.emojis"
 					:enableEmojiMenu="!!$i"
 					:enableEmojiMenuReaction="!!$i"
 					@click.stop
 				/>
+				<div v-if="note.poll">
+					<MkPoll :noteId="note.id" :poll="note.poll" isTranslation @click.stop/>
+				</div>
 				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 					<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -46,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="viewTextSource">
 			<hr style="margin: 10px 0;">
 			<pre style="margin: initial;"><small>{{ note.text }}</small></pre>
-			<button class="_button" style="padding-top: 5px; color: var(--accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+			<button class="_button" style="padding-top: 5px; color: var(--MI_THEME-accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 		</div>
 		<div v-show="showContent">
 			<div v-if="note.files && note.files.length > 0">
@@ -54,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkMediaList v-else :mediaList="note.files" @click.stop/>
 			</div>
 			<div v-if="note.poll">
-				<MkPoll :note="note" @click.stop/>
+				<MkPoll :noteId="note.id" :poll="note.poll" @click.stop/>
 			</div>
 		</div>
 	</div>
@@ -104,8 +107,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-heart"></i>
 			</button>
 			<button v-if="defaultStore.state.showDoReactionButtonInNoteFooter" ref="reactButton" v-vibrate="defaultStore.state.vibrateSystem ? [30, 50, 50] : []" v-tooltip="note.reactionAcceptance === 'likeOnly' && note.myReaction != null ? i18n.ts.unlike : note.myReaction != null ? i18n.ts.editReaction : note.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.footerButton" class="_button" @click.stop="toggleReact()">
-				<i v-if="note.reactionAcceptance === 'likeOnly' && note.myReaction != null" class="ti ti-heart-filled" style="color: var(--love);"></i>
-				<i v-else-if="note.myReaction != null" class="ti ti-mood-edit" style="color: var(--accent);"></i>
+				<i v-if="note.reactionAcceptance === 'likeOnly' && note.myReaction != null" class="ti ti-heart-filled" style="color: var(--MI_THEME-love);"></i>
+				<i v-else-if="note.myReaction != null" class="ti ti-mood-edit" style="color: var(--MI_THEME-accent);"></i>
 				<i v-else-if="note.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
 				<i v-else class="ti ti-mood-plus"></i>
 				<p v-if="(note.reactionAcceptance === 'likeOnly' || defaultStore.state.showReactionsCount) && note.reactionCount > 0" :class="$style.footerButtonCount">{{ number(note.reactionCount) }}</p>
@@ -393,7 +396,7 @@ function heartReact(): void {
 
 	misskeyApi('notes/reactions/create', {
 		noteId: props.note.id,
-		reaction: '❤️',
+		reaction: defaultStore.state.selectReaction,
 	});
 	if (props.note.text && props.note.text.length > 100 && (Date.now() - new Date(props.note.createdAt).getTime() < 1000 * 3)) {
 		claimAchievement('reactWithoutRead');
@@ -449,7 +452,9 @@ async function clip(): Promise<void> {
 const isForeignLanguage: boolean = note.value.text != null && (() => {
 	const targetLang = (miLocalStorage.getItem('lang') ?? navigator.language).slice(0, 2);
 	const postLang = detectLanguage(note.value.text);
-	return postLang !== '' && postLang !== targetLang;
+	const choicesLang = note.value.poll?.choices.map((choice) => choice.text).join(' ') ?? '';
+	const pollLang = detectLanguage(choicesLang);
+	return postLang !== '' && (postLang !== targetLang || pollLang !== targetLang);
 })();
 
 if (defaultStore.state.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (note.value.cw == null || showContent.value) && note.value.text && isForeignLanguage) translate();
@@ -509,12 +514,12 @@ function emitUpdReaction(emoji: string, delta: number) {
 			left: 0;
 			width: 100%;
 			height: 74px;
-			background: linear-gradient(0deg, var(--panel), color(from var(--panel) srgb r g b / 0));
+			background: linear-gradient(0deg, var(--MI_THEME-panel), color(from var(--MI_THEME-panel) srgb r g b / 0));
 			z-index: 2;
 
 			> .fadeLabel {
 				display: inline-block;
-				background: var(--panel);
+				background: var(--MI_THEME-panel);
 				padding: 6px 10px;
 				font-size: 0.8em;
 				border-radius: 999px;
@@ -523,7 +528,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 			&:hover {
 				> .fadeLabel {
-					background: var(--panelHighlight);
+					background: var(--MI_THEME-panelHighlight);
 				}
 			}
 		}
@@ -541,18 +546,18 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .reply {
 	margin-right: 6px;
-	color: var(--accent);
+	color: var(--MI_THEME-accent);
 }
 
 .rp {
 	margin-left: 4px;
 	font-style: oblique;
-	color: var(--renote);
+	color: var(--MI_THEME-renote);
 }
 
 .translation {
-	border: solid 0.5px var(--divider);
-	border-radius: var(--radius);
+	border: solid 0.5px var(--MI_THEME-divider);
+	border-radius: var(--MI-radius);
 	padding: 12px;
 	margin-top: 8px;
 }
@@ -571,7 +576,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	}
 
 	&:hover {
-		color: var(--fgHighlighted);
+		color: var(--MI_THEME-fgHighlighted);
 	}
 }
 
@@ -592,13 +597,13 @@ function emitUpdReaction(emoji: string, delta: number) {
 	height: 32px;
 	margin: 2px;
 	padding: 0 6px;
-	border: dashed 1px var(--divider);
+	border: dashed 1px var(--MI_THEME-divider);
 	border-radius: 4px;
 	background: transparent;
 	opacity: .8;
 
 	&:hover {
-		background: var(--X5);
+		background: var(--MI_THEME-X5);
 	}
 }
 
@@ -606,12 +611,12 @@ function emitUpdReaction(emoji: string, delta: number) {
 	width: 100%;
 	margin-top: 14px;
 	position: sticky;
-	bottom: calc(var(--stickyBottom, 0px) + 14px);
+	bottom: calc(var(--MI-stickyBottom, 0px) + 14px);
 }
 
 .showLessLabel {
 	display: inline-block;
-	background: var(--popup);
+	background: var(--MI_THEME-popup);
 	padding: 6px 10px;
 	font-size: 0.8em;
 	border-radius: 999px;

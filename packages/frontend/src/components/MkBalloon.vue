@@ -29,7 +29,7 @@ withDefaults(defineProps<{
 <style module lang="scss">
 .root {
 	--balloon-radius: 16px;
-	--balloon-bg: var(--panel);
+	--balloon-bg: var(--MI_THEME-panel);
 
 	position: relative;
 	display: inline-block;

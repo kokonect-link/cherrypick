@@ -62,7 +62,7 @@ if (defaultStore.state.alwaysShowCw) showContent.value = true;
 	height: 40px !important;
 	border-radius: 8px !important;
 	pointer-events: none !important;
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 }
 
 .main {

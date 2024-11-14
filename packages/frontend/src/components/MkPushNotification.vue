@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkModal ref="modal" :zPriority="'middle'">
 	<div :class="$style.root">
-		<i class="ti ti-notification" style="display: block; margin: auto; font-size: 3em; color: var(--accent);"></i>
+		<i class="ti ti-notification" style="display: block; margin: auto; font-size: 3em; color: var(--MI_THEME-accent);"></i>
 		<div :class="$style.title">{{ i18n.ts.pushNotification }}</div>
 		<small style="opacity: 0.7;">{{ i18n.tsx._initialAccountSetting.pushNotificationDescription({ name: instance.name ?? host }) }}</small>
 		<MkPushNotificationAllowButton primary showOnlyToRegister style="margin: 8px auto 14px;"/>
@@ -42,8 +42,8 @@ const close = async () => {
 	max-width: 480px;
 	box-sizing: border-box;
 	text-align: center;
-	background: var(--panel);
-	border-radius: var(--radius);
+	background: var(--MI_THEME-panel);
+	border-radius: var(--MI-radius);
 }
 
 .title {

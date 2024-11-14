@@ -80,6 +80,10 @@ export const defaultStore = markRaw(new Storage('base', {
 			global: false,
 		},
 	},
+	abusesTutorial: {
+		where: 'account',
+		default: false,
+	},
 	keepCw: {
 		where: 'account',
 		default: true,
@@ -234,7 +238,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	animatedMfm: {
 		where: 'device',
-		default: true,
+		default: !window.matchMedia('(prefers-reduced-motion)').matches,
 	},
 	advancedMfm: {
 		where: 'device',
@@ -484,6 +488,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: 'app' as 'app' | 'appWithShift' | 'native',
 	},
+	skipNoteRender: {
+		where: 'device',
+		default: true,
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
@@ -564,6 +572,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	disableNyaize: {
+		where: 'device',
+		default: false,
+	},
 
 	// - Settings/Appearance
 	collapseReplies: {
@@ -636,7 +648,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	showNoAltTextWarning: {
 		where: 'device',
-		default: true,
+		default: false,
 	},
 	alwaysShowCw: {
 		where: 'device',
@@ -673,6 +685,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	showMoreButtonInNoteFooter: {
 		where: 'device',
 		default: true,
+	},
+	selectReaction: {
+		where: 'device',
+		default: '❤️' as string,
 	},
 
 	// - Settings/Navigation bar

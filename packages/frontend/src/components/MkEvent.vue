@@ -92,8 +92,8 @@ const props = defineProps<{
 
 <style lang="scss" module>
 .container {
-	background: var(--bg);
-	border-radius: var(--radius);
+	background: var(--MI_THEME-bg);
+	border-radius: var(--MI-radius);
 	padding: 1rem;
 	margin-bottom: 10px;
 }
@@ -103,7 +103,7 @@ const props = defineProps<{
 	line-height: 1.25;
 	font-weight: bold;
 	padding-bottom: 1rem;
-	border-bottom: .5px solid var(--divider);
+	border-bottom: .5px solid var(--MI_THEME-divider);
 }
 
 .details {

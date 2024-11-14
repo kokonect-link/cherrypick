@@ -11,6 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="tab === 'all'" key="all">
 				<XNotifications :class="$style.notifications" :excludeTypes="excludeTypes"/>
 			</div>
+			<div v-else-if="tab === 'newNote'" key="newNote">
+				<XNotifications :class="$style.notifications" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
+			</div>
 			<div v-else-if="tab === 'mentions'" key="mention">
 				<MkNotes :pagination="mentionsPagination" :notification="true"/>
 			</div>
@@ -37,6 +40,7 @@ import NotificationPageHeader from '@/components/global/NotificationPageHeader.v
 const tab = ref('all');
 const includeTypes = ref<string[] | null>(null);
 const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value.includes(t)) : undefined);
+const newNoteExcludeTypes = computed(() => notificationTypes.filter(t => !['note'].includes(t)));
 
 const props = defineProps<{
 	disableRefreshButton?: boolean;
@@ -97,6 +101,10 @@ const headerTabs = computed(() => [{
 	title: i18n.ts.all,
 	icon: 'ti ti-point',
 }, {
+	key: 'newNote',
+	title: i18n.ts.newNotes,
+	icon: 'ti ti-pencil',
+}, {
 	key: 'mentions',
 	title: i18n.ts.mentions,
 	icon: 'ti ti-at',
@@ -109,7 +117,7 @@ const headerTabs = computed(() => [{
 
 <style module lang="scss">
 .notifications {
-	border-radius: var(--radius);
+	border-radius: var(--MI-radius);
 	overflow: clip;
 }
 </style>

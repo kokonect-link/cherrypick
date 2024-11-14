@@ -13,6 +13,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkButton link to="/admin/abuse-report-notification-recipient" primary>{{ i18n.ts.notificationSetting }}</MkButton>
 				</div>
 
+				<MkInfo v-if="!defaultStore.reactiveState.abusesTutorial.value" closable @close="closeTutorial()">
+					{{ i18n.ts._abuseUserReport.resolveTutorial }}
+				</MkInfo>
+
 				<div :class="$style.inputs" class="_gaps">
 					<MkSelect v-model="state" :class="$style.state">
 						<template #label>{{ i18n.ts.state }}</template>
@@ -45,8 +49,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				-->
 
-				<MkPagination v-slot="{items}" ref="reports" :pagination="pagination" style="margin-top: var(--margin);">
-					<XAbuseReport v-for="report in items" :key="report.id" :report="report" @resolved="resolved"/>
+				<MkPagination v-slot="{items}" ref="reports" :pagination="pagination">
+					<div class="_gaps">
+						<XAbuseReport v-for="report in items" :key="report.id" :report="report" @resolved="resolved"/>
+					</div>
 				</MkPagination>
 			</div>
 		</div>
@@ -93,6 +99,8 @@ import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import MkButton from '@/components/MkButton.vue';
+import MkInfo from '@/components/MkInfo.vue';
+import { defaultStore } from '@/store.js';
 
 const reports = shallowRef<InstanceType<typeof MkPagination>>();
 const resolverPagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
@@ -152,6 +160,10 @@ const resolverPagination = {
 
 function resolved(reportId) {
 	reports.value?.removeItem(reportId);
+}
+
+function closeTutorial() {
+	defaultStore.set('abusesTutorial', false);
 }
 
 function edit(id: string) {
@@ -263,11 +275,11 @@ definePageMetadata(() => ({
 }
 
 .margin {
-	margin: 0 auto var(--margin) auto;
+	margin: 0 auto var(--MI-margin) auto;
 }
 
 .resolverList {
-	background: var(--panel);
+	background: var(--MI_THEME-panel);
 	border-radius: 6px;
 	margin-bottom: 13px;
 }

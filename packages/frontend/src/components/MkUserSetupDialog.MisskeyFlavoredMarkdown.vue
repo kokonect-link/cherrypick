@@ -73,6 +73,6 @@ const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAni
 	padding: 20px;
 	border-radius: 6px;
 	text-align: center;
-	background: var(--bg);
+	background: var(--MI_THEME-bg);
 }
 </style>
