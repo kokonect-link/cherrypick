@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkInput>
 				<div :class="$style.imageSelect">
 					<p>{{ i18n.ts.image }}</p>
-					<MkButton @click="ev => changeImage(ev, avatarDecoration)">{{ i18n.ts.selectFile }}</MkButton>
+					<MkButton @click="changeImage">{{ i18n.ts.selectFile }}</MkButton>
 				</div>
 				<MkInput v-model="url">
 					<template #label>{{ i18n.ts.imageUrl }}</template>
@@ -174,10 +174,10 @@ async function del() {
 	});
 }
 
-async function changeImage(ev, avatarDecoration) {
+async function changeImage(ev) {
 	const file = await selectFile(ev.currentTarget ?? ev.target, null);
 	if (file != null) {
-		avatarDecoration.url = file.url;
+		url.value = file.url;
 	}
 }
 </script>
