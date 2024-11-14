@@ -11,7 +11,7 @@ import { I18n } from '@@/js/i18n.js';
 import type { Locale } from '../../../../locales/index.js';
 
 class SwLang {
-	public cacheName = `mk-cache-${_VERSION_}`;
+	public cacheName = `cp-cache-${_VERSION_}`;
 
 	public lang: Promise<string> = get('lang').then(async prelang => {
 		if (!prelang) return 'en-US';
