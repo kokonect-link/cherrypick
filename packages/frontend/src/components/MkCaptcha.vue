@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-else>
 			<div style="font-size: 13px; margin-bottom: 4px;">Type "ai-chan-kawaii" to pass captcha</div>
-			<input v-model="testcaptchaInput" data-cy-testcaptcha-input/>
+			<input v-model="testcaptchaInput" data-cy-testcaptcha-input @enter="testcaptchaSubmit"/>
 			<button type="button" data-cy-testcaptcha-submit @click="testcaptchaSubmit">Submit</button>
 		</div>
 	</div>
