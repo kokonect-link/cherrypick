@@ -209,6 +209,10 @@ defineProps<{
 							padding-right: 0;
 							width: 100%;
 							font-size: 0.8em;
+							display: inline-block;
+							width: 7ch;
+							word-wrap: break-word;
+							overflow-wrap: break-word;
 						}
 					}
 
