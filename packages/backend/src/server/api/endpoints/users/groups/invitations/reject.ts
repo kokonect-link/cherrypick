@@ -7,6 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { UserGroupInvitationsRepository } from '@/models/_.js';
 import { Endpoint } from '@/server/api/endpoint-base.js';
 import { DI } from '@/di-symbols.js';
+import { NotificationService } from '@/core/NotificationService.js';
 import { ApiError } from '../../../../error.js';
 
 export const meta = {
@@ -38,6 +39,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	constructor(
 		@Inject(DI.userGroupInvitationsRepository)
 		private userGroupInvitationsRepository: UserGroupInvitationsRepository,
+
+		private notificationService: NotificationService,
 	) {
 		super(meta, paramDef, async (ps, me) => {
 			// Fetch the invitation
@@ -45,15 +48,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				id: ps.invitationId,
 			});
 
-			if (invitation == null) {
+			if (invitation == null || invitation.userId !== me.id) {
 				throw new ApiError(meta.errors.noSuchInvitation);
 			}
 
-			if (invitation.userId !== me.id) {
-				throw new ApiError(meta.errors.noSuchInvitation);
-			}
-
-			await this.userGroupInvitationsRepository.delete(invitation.id);
+			await this.notificationService.deleteUserGroupInvitation(me.id, invitation.id);
+			return await this.userGroupInvitationsRepository.delete(invitation.id);
 		});
 	}
 }
