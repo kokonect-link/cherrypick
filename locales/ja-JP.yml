@@ -30,7 +30,7 @@ filesGridLayoutInUserPage: "メディアタブをグリッドレイアウトに�
 filesGridLayoutInUserPageDescription: "この設定をオンにすると、ユーザーページのメディアタブがアルバム形式で表示されます。\nオフにすると、元のノートのタイムラインに変更されます。"
 showReplyTargetNoteInSemiTransparent: "返信対象ノートを半透明に表示"
 noteFooterButton: "ノートにアクションボタンを表示"
-collapseReplies: "返信のリノートのスマート省略"
+collapseReplies: "返信のスマート省略"
 collapseRepliesDescription: "返信で作成されたノートをたたんで表示します。\nリアクションしたノートは影響を受けません。"
 repliedBy: "{user}が返信を作成しました"
 collapseLongNoteContent: "内容の長いノートを省略して表示"

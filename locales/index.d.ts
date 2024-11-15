@@ -138,7 +138,7 @@ export interface Locale extends ILocale {
      */
     "noteFooterButton": string;
     /**
-     * 返信のリノートのスマート省略
+     * 返信のスマート省略
      */
     "collapseReplies": string;
     /**
