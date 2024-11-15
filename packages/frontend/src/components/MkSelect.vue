@@ -132,10 +132,6 @@ watch(modelValue, () => {
 }, { immediate: true });
 
 function show() {
-	if (inputEl.value && inputEl.value.hasAttribute('disabled')) {
-		return;
-	}
-
 	if (opening.value) return;
 	focus();
 
