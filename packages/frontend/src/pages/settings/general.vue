@@ -119,6 +119,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 			</MkFolder>
+
+			<MkFolder>
+				<template #label>{{ i18n.ts._externalNavigationWarning.externalNavigationWarning }}</template>
+
+				<div class="_gaps_m">
+					<div class="_gaps_m">
+						<MkSwitch v-model="externalNavigationWarning">
+							{{ i18n.ts._externalNavigationWarning.enableExternalNavigationWarning }}
+						</MkSwitch>
+						<MkTextarea v-model="trustedDomains">
+							<template #label>{{ i18n.ts._externalNavigationWarning.trustedDomainList }}</template>
+							<template #caption><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._externalNavigationWarning.trustedDomainListDescription }}<br>{{ i18n.ts._externalNavigationWarning.trustedDomainListDescription2 }}</template>
+						</MkTextarea>
+						<div class="_buttons">
+							<MkButton primary :disabled="!trustedDomainsChanged" @click="trustedDomainsSave()"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+							<MkButton :disabled="!defaultStore.reactiveState.trustedDomains.value.length" danger @click="removeTrustedDomains"><i class="ti ti-trash"></i> {{ i18n.ts._externalNavigationWarning.deleteTrustedDomainList }}</MkButton>
+						</div>
+					</div>
+				</div>
+			</MkFolder>
 		</div>
 	</FormSection>
 
@@ -161,6 +181,7 @@ import FormSection from '@/components/form/section.vue';
 import FormLink from '@/components/form/link.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkInfo from '@/components/MkInfo.vue';
+import MkTextarea from '@/components/MkTextarea.vue';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -173,6 +194,7 @@ import { $i } from '@/account.js';
 
 const lang = ref(miLocalStorage.getItem('lang'));
 const dataSaver = ref(defaultStore.state.dataSaver);
+const trustedDomains = ref(defaultStore.state.trustedDomains.join('\n'));
 
 function reloadTimeline() {
 	globalEvents.emit('reloadTimeline');
@@ -200,6 +222,7 @@ const autoLoadMoreConversation = computed(defaultStore.makeGetterSetter('autoLoa
 const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslate'));
 const welcomeBackToast = computed(defaultStore.makeGetterSetter('welcomeBackToast'));
 const disableNyaize = computed(defaultStore.makeGetterSetter('disableNyaize'));
+const externalNavigationWarning = computed(defaultStore.makeGetterSetter('externalNavigationWarning'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -321,10 +344,45 @@ function learnMoreCantUseAutoTranslate() {
 	});
 }
 
+function removeTrustedDomains() {
+	async function main() {
+		await defaultStore.set('trustedDomains', []);
+
+		// Refresh filtered list to signal to the user how they've been saved
+		trustedDomains.value = '';
+	}
+
+	os.promiseDialog(main());
+}
+
+const trustedDomainsChanged = ref(false);
+
+async function trustedDomainsSave() {
+	async function main() {
+		let domains = trustedDomains.value
+			.trim().split('\n')
+			.map(el => el.trim())
+			.filter(el => el);
+
+		await defaultStore.set('trustedDomains', domains);
+
+		trustedDomainsChanged.value = false;
+
+		// Refresh filtered list to signal to the user how they've been saved
+		trustedDomains.value = domains.join('\n');
+	}
+
+	await os.promiseDialog(main());
+}
+
 watch(dataSaver, (to) => {
 	defaultStore.set('dataSaver', to);
 }, {
 	deep: true,
+});
+
+watch(trustedDomains, () => {
+	trustedDomainsChanged.value = true;
 });
 
 const headerActions = computed(() => []);

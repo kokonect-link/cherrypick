@@ -3107,6 +3107,12 @@ _externalNavigationWarning:
   title: "외부 사이트로 이동할까요?"
   description: "{host}을(를) 떠나 외부 사이트로 이동하려고 해요"
   trustThisDomain: "이 장치에서 앞으로 이 도메인을 신뢰할게요"
+  externalNavigationWarning: "외부 사이트 이동 경고"
+  enableExternalNavigationWarning: "외부 사이트 이동 시 경고 표시"
+  trustedDomainList: "신뢰하는 도메인 목록"
+  trustedDomainListDescription: "`http://`와 `https://`를 생략하고 입력해 주세요."
+  trustedDomainListDescription2: "한 줄에 하나씩 입력해 주세요"
+  deleteTrustedDomainList: "신뢰하는 도메인 목록 재설정"
 _altWarning:
   noAltWarning: "파일에 캡션이 설정되어 있지 않아요."
   noAltWarningDescription: "이 설정은 [설정 - 모양]에서 변경할 수 있어요."

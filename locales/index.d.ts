@@ -12146,6 +12146,30 @@ export interface Locale extends ILocale {
          * このデバイスで今後このドメインを信頼する
          */
         "trustThisDomain": string;
+        /**
+         * 外部サイトに移動する際の警告
+         */
+        "externalNavigationWarning": string;
+        /**
+         * 外部サイトに移動する際の警告を表示
+         */
+        "enableExternalNavigationWarning": string;
+        /**
+         * 信頼するドメインリスト
+         */
+        "trustedDomainList": string;
+        /**
+         * `http://`と`https://`を省略して入力してください。
+         */
+        "trustedDomainListDescription": string;
+        /**
+         * 改行で区切って設定します
+         */
+        "trustedDomainListDescription2": string;
+        /**
+         * 信頼するドメインリストのリセット
+         */
+        "deleteTrustedDomainList": string;
     };
     "_altWarning": {
         /**

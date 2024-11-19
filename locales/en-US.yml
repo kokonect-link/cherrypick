@@ -3126,6 +3126,12 @@ _externalNavigationWarning:
   title: "Navigate to an external site"
   description: "Leave {host} and go to an external site"
   trustThisDomain: "Trust this domain on this device in the future"
+  externalNavigationWarning: "Navigate to an external site warning"
+  enableExternalNavigationWarning: "Display warning when navigate to an external site"
+  trustedDomainList: "Trusted domain list"
+  trustedDomainListDescription: "Please input omitting `http://` and `https://`."
+  trustedDomainListDescription2: "Separate with newlines"
+  deleteTrustedDomainList: "Reset trusted domain list"
 _altWarning:
   noAltWarning: "No alternate text is configured in the file."
   noAltWarningDescription: "You can change this setting in \"Settings - Appearance\"."

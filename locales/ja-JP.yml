@@ -3230,6 +3230,12 @@ _externalNavigationWarning:
   title: "外部サイトに移動します"
   description: "{host}を離れて外部サイトに移動します"
   trustThisDomain: "このデバイスで今後このドメインを信頼する"
+  externalNavigationWarning: "外部サイトに移動する際の警告"
+  enableExternalNavigationWarning: "外部サイトに移動する際の警告を表示"
+  trustedDomainList: "信頼するドメインリスト"
+  trustedDomainListDescription: "`http://`と`https://`を省略して入力してください。"
+  trustedDomainListDescription2: "改行で区切って設定します"
+  deleteTrustedDomainList: "信頼するドメインリストのリセット"
 
 _altWarning:
   noAltWarning: "ファイルに代替テキストが設定されていません。"
