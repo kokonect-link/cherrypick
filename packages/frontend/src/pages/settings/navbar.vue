@@ -178,7 +178,7 @@ function learnMoreBottomNavbar() {
 	});
 }
 
-watch([menuDisplay, bannerDisplay], async () => {
+watch([bannerDisplay], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
