@@ -210,7 +210,7 @@ const collapsed = ref((isLong && defaultStore.state.collapseLongNoteContent) || 
 
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
-	url: `https://${host}/notes/${props.note.value.id}`,
+	url: `https://${host}/notes/${props.note.id}`,
 }));
 
 const collapseLabel = computed(() => {
