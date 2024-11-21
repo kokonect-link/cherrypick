@@ -718,6 +718,7 @@ masterVolume: "마스터 볼륨"
 notUseSound: "모든 사운드 음소거"
 useSoundOnlyWhenActive: "CherryPick이 활성화된 경우에만 사운드 출력"
 details: "자세히"
+renoteDetails: "리노트 자세히 보기"
 chooseEmoji: "이모지 선택"
 unableToProcess: "작업을 완료할 수 없었어요.."
 recentUsed: "최근 사용"
@@ -1443,6 +1444,7 @@ thisContentsAreMarkedAsSigninRequiredByAuthor: "게시자가 이 글을 보려�
 lockdown: "잠금"
 pleaseSelectAccount: "계정을 선택해 주세요."
 availableRoles: "사용 가능한 역할"
+acknowledgeNotesAndEnable: "이 기능을 활성화 하기 전에 주의 사항을 확인했어요."
 showUnreadNotificationsCount: "읽지 않은 알림 수 표시"
 showCatOnly: "고양이만 보기"
 additionalPermissionsForFlash: "Play에 대한 추가 권한"
@@ -1709,6 +1711,8 @@ _serverSettings:
   reactionsBufferingDescription: "활성화하면 노트에 리액션할 때의 성능이 대폭 향상되어 DB의 부하를 줄일 수 있지만, Redis의 메모리 사용량이 많아져요."
   inquiryUrl: "문의처 URL"
   inquiryUrlDescription: "서버 운영자에게 보내는 문의 양식의 URL이나 운영자의 연락처 등이 적힌 웹 페이지의 URL을 설정할 수 있어요."
+  openRegistration: "공개 회원 가입 활성화"
+  openRegistrationWarning: "누구나 회원 가입을 할 수 있도록 설정하는 것은 리스크가 따르게 돼요. 관리자 또는 모더레이터가 서버를 항상 감시할 수 있고, 문제가 발생했을 때 바로 대응할 수 있는 상태에서만 활성화 하는 것을 권장해요."
   thisSettingWillAutomaticallyOffWhenModeratorsInactive: "일정 기간동안 모더레이터가 활동이 없으면 스팸 방지를 위해 이 설정은 자동으로 비활성화 돼요."
 _accountMigration:
   moveFrom: "다른 계정에서 이 계정으로 이사"
@@ -3106,6 +3110,9 @@ _selfXssPrevention:
   description1: "여기에 무언가를 붙여 넣으면, 악의적인 사용자에게 계정을 탈취당하거나 개인정보를 도용당할 수 있어요."
   description2: "붙여 넣으려는 항목이 무엇인지 정확히 이해하지 못하는 경우, %c지금 바로 작업을 중단하고 이 창을 닫아주세요."
   description3: "자세한 내용은 여기를 확인해 주세요. {link}"
+_followRequest:
+  recieved: "받은 신청"
+  sent: "보낸 신청"
 _abuse:
   _resolver:
     1hour: "1시간"

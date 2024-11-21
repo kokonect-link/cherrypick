@@ -568,7 +568,7 @@ export class ClientServerService {
 			}
 		});
 
-		//#region SSR (for crawlers)
+		//#region SSR
 		// User
 		fastify.get<{ Params: { user: string; sub?: string; } }>('/@:user/:sub?', async (request, reply) => {
 			const { username, host } = Acct.parse(request.params.user);
@@ -593,11 +593,17 @@ export class ClientServerService {
 					reply.header('X-Robots-Tag', 'noimageai');
 					reply.header('X-Robots-Tag', 'noai');
 				}
+
+				const _user = await this.userEntityService.pack(user);
+
 				return await reply.view('user', {
 					user, profile, me,
 					avatarUrl: user.avatarUrl ?? this.userEntityService.getIdenticonUrl(user),
 					sub: request.params.sub,
 					...await this.generateCommonPugData(this.meta),
+					clientCtx: htmlSafeJsonStringify({
+						user: _user,
+					}),
 				});
 			} else {
 				// リモートユーザーなので
@@ -650,6 +656,9 @@ export class ClientServerService {
 					// TODO: Let locale changeable by instance setting
 					summary: getNoteSummary(_note),
 					...await this.generateCommonPugData(this.meta),
+					clientCtx: htmlSafeJsonStringify({
+						note: _note,
+					}),
 				});
 			} else {
 				return await renderBase(reply);
@@ -738,6 +747,9 @@ export class ClientServerService {
 					profile,
 					avatarUrl: _clip.user.avatarUrl,
 					...await this.generateCommonPugData(this.meta),
+					clientCtx: htmlSafeJsonStringify({
+						clip: _clip,
+					}),
 				});
 			} else {
 				return await renderBase(reply);
