@@ -56,6 +56,7 @@ class BubbleTimelineChannel extends Channel {
 		if (this.withFiles && (note.fileIds == null || note.fileIds.length === 0)) return;
 		if (this.withCats && (note.user.isCat == null || note.user.isCat === false)) return;
 		if (!this.withBots && note.user.isBot) return;
+		if (this.instance.bubbleInstances == null) return;
 
 		if (!(note.user.host != null && this.instance.bubbleInstances.includes(note.user.host) && note.visibility === 'public' )) return;
 
