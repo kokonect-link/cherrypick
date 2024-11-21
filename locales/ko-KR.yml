@@ -2,7 +2,7 @@
 _lang_: "한국어"
 bubbleTimeline: "버블 타임라인"
 bubbleTimelineDescription: "이 옵션을 활성화하고 모더레이션으로 이동해 버블 타임라인에 표시할 서버를 구성해 주세요."
-bubbleInstancesDescription: "버블 타임라인에 표시할 인스턴스의 호스트 이름을 줄바꿈으로 구분하여 설정해요."
+bubbleInstancesDescription: "버블 타임라인에 표시할 서버의 호스트 이름을 줄바꿈으로 구분하여 설정해요."
 selectReaction: "'좋아요!' 버튼으로 사용할 리액션 선택"
 disableRegistrationWhenInactive: "모더레이터 부재 시 신규 회원가입 비활성화"
 disablePublicNoteWhenInactive: "모더레이터 부재 시 '공개 노트 허용' 비활성화"
