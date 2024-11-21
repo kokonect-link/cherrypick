@@ -1,5 +1,8 @@
 ---
 _lang_: "English"
+bubbleTimeline: "Bubble Timeline"
+bubbleTimelineDescription: "After enabling this option navigate to the Moderation section to configure which servers should be shown."
+bubbleInstancesDescription: "Set the host names of servers to be displayed in the bubble timeline, separated by line breaks."
 selectReaction: "Select reactions to use with the Like button"
 disableRegistrationWhenInactive: "Disable new user registration when moderator is inactivated"
 disablePublicNoteWhenInactive: "Disable 'Can send public notes' when moderator is inactivated"
@@ -1667,6 +1670,7 @@ _timelineDescription:
   local: "In the Local timeline, you can see notes from all users on this server."
   social: "The Social timeline displays notes from both the Home and Local timelines."
   global: "In the Global timeline, you can see notes from all connected servers."
+  bubble: "In the Bubble timeline, you can see notes from servers set up by the administrator."
 _serverRules:
   description: "A set of rules to be displayed before registration. Setting a summary of the Terms of Service is recommended."
 _event:
@@ -2020,6 +2024,7 @@ _role:
   _options:
     gtlAvailable: "Can view the global timeline"
     ltlAvailable: "Can view the local timeline"
+    btlAvailable: "Can view the bubble timeline"
     canPublicNote: "Can send public notes"
     canEditNote: "Note editing"
     scheduleNoteMax: "Maximum number of scheduled notes"
@@ -2695,6 +2700,7 @@ _timelines:
   local: "Local"
   social: "Social"
   global: "Global"
+  bubble: "Bubble"
 _play:
   new: "Create Play"
   edit: "Edit Play"

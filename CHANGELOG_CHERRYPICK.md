@@ -28,6 +28,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
+### General
+- Feat: 버블 타임라인 (kokonect-link/cherrypick#512, [TransFem-org/Sharkey#154](https://activitypub.software/TransFem-org/Sharkey/-/issues/154), [TransFem-org/Sharkey@2f99c7e9](https://activitypub.software/TransFem-org/Sharkey/-/commit/2f99c7e9dc2e5e3ca06c9672a6ab4887eb094310))
+  - 관리자가 설정한 서버의 게시글만 볼 수 있는 타임라인으로, 글로벌 타임라인의 무분별한 내용을 포함하는 게시글을 제한하는 목적으로 사용할 수 있습니다.
+
 ### Client
 - Enhance: 미디어 그리드 레이아옷 조정
   - 여러 장의 이미지가 있을 때 표시되는 아이콘을 보다 명확하게 볼 수 있도록 개선됨

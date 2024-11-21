@@ -111,6 +111,8 @@ async function setType() {
 			value: 'social' as const, text: i18n.ts._timelines.social,
 		}, {
 			value: 'global' as const, text: i18n.ts._timelines.global,
+		}, {
+			value: 'bubble' as const, text: i18n.ts._timelines.bubble,
 		}],
 	});
 	if (canceled) {

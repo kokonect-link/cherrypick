@@ -14,6 +14,18 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * バブルタイムライン
+     */
+    "bubbleTimeline": string;
+    /**
+     * このオプションを有効にし、モデレーションに移動して、表示するサーバを設定します。
+     */
+    "bubbleTimelineDescription": string;
+    /**
+     * バブルタイムラインに表示するサーバのホスト名を改行で区切って設定します。
+     */
+    "bubbleInstancesDescription": string;
+    /**
      * いいねボタンで使うリアクションを選択
      */
     "selectReaction": string;
@@ -6639,6 +6651,10 @@ export interface Locale extends ILocale {
          * グローバルタイムラインでは、接続している他のすべてのサーバーからの投稿を見られます。
          */
         "global": string;
+        /**
+         * バブルタイムラインでは、管理者が設定したサーバーの投稿を見ることができます。
+         */
+        "bubble": string;
     };
     "_serverRules": {
         /**
@@ -7898,6 +7914,10 @@ export interface Locale extends ILocale {
              * ローカルタイムラインの閲覧
              */
             "ltlAvailable": string;
+            /**
+             * バブルタイムラインの閲覧
+             */
+            "btlAvailable": string;
             /**
              * パブリック投稿の許可
              */
@@ -10503,6 +10523,10 @@ export interface Locale extends ILocale {
          * グローバル
          */
         "global": string;
+        /**
+         * バブル
+         */
+        "bubble": string;
     };
     "_play": {
         /**

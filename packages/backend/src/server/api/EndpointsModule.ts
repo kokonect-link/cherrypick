@@ -303,6 +303,7 @@ import * as ep___notes_update from './endpoints/notes/update.js';
 import * as ep___notes_favorites_create from './endpoints/notes/favorites/create.js';
 import * as ep___notes_favorites_delete from './endpoints/notes/favorites/delete.js';
 import * as ep___notes_featured from './endpoints/notes/featured.js';
+import * as ep___notes_bubbleTimeline from './endpoints/notes/bubble-timeline.js';
 import * as ep___notes_globalTimeline from './endpoints/notes/global-timeline.js';
 import * as ep___notes_hybridTimeline from './endpoints/notes/hybrid-timeline.js';
 import * as ep___notes_localTimeline from './endpoints/notes/local-timeline.js';
@@ -726,6 +727,7 @@ const $notes_update: Provider = { provide: 'ep:notes/update', useClass: ep___not
 const $notes_favorites_create: Provider = { provide: 'ep:notes/favorites/create', useClass: ep___notes_favorites_create.default };
 const $notes_favorites_delete: Provider = { provide: 'ep:notes/favorites/delete', useClass: ep___notes_favorites_delete.default };
 const $notes_featured: Provider = { provide: 'ep:notes/featured', useClass: ep___notes_featured.default };
+const $notes_bubbleTimeline: Provider = { provide: 'ep:notes/bubble-timeline', useClass: ep___notes_bubbleTimeline.default };
 const $notes_globalTimeline: Provider = { provide: 'ep:notes/global-timeline', useClass: ep___notes_globalTimeline.default };
 const $notes_hybridTimeline: Provider = { provide: 'ep:notes/hybrid-timeline', useClass: ep___notes_hybridTimeline.default };
 const $notes_localTimeline: Provider = { provide: 'ep:notes/local-timeline', useClass: ep___notes_localTimeline.default };
@@ -1154,6 +1156,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$notes_favorites_create,
 		$notes_favorites_delete,
 		$notes_featured,
+		$notes_bubbleTimeline,
 		$notes_globalTimeline,
 		$notes_hybridTimeline,
 		$notes_localTimeline,
@@ -1573,6 +1576,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$notes_favorites_create,
 		$notes_favorites_delete,
 		$notes_featured,
+		$notes_bubbleTimeline,
 		$notes_globalTimeline,
 		$notes_hybridTimeline,
 		$notes_localTimeline,

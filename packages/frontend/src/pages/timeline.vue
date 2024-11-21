@@ -175,6 +175,7 @@ const enableHomeTimeline = ref(defaultStore.state.enableHomeTimeline);
 const enableLocalTimeline = ref(defaultStore.state.enableLocalTimeline);
 const enableSocialTimeline = ref(defaultStore.state.enableSocialTimeline);
 const enableGlobalTimeline = ref(defaultStore.state.enableGlobalTimeline);
+const enableBubbleTimeline = ref(defaultStore.state.enableBubbleTimeline);
 const enableListTimeline = ref(defaultStore.state.enableListTimeline);
 const enableAntennaTimeline = ref(defaultStore.state.enableAntennaTimeline);
 const enableChannelTimeline = ref(defaultStore.state.enableChannelTimeline);
@@ -217,6 +218,11 @@ watch(enableSocialTimeline, (x) => {
 
 watch(enableGlobalTimeline, (x) => {
 	defaultStore.set('enableGlobalTimeline', x);
+	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(enableBubbleTimeline, (x) => {
+	defaultStore.set('enableBubbleTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
@@ -468,6 +474,11 @@ const headerActions = computed(() => {
 							text: i18n.ts._timelines.global,
 							icon: 'ti ti-world',
 							ref: enableGlobalTimeline,
+						}, {
+							type: 'switch',
+							text: i18n.ts._timelines.bubble,
+							icon: 'ti ti-droplet',
+							ref: enableBubbleTimeline,
 						}, { type: 'divider' }, {
 							type: 'switch',
 							text: i18n.ts.lists,

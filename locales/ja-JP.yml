@@ -1,5 +1,8 @@
 _lang_: "日本語"
 
+bubbleTimeline: "バブルタイムライン"
+bubbleTimelineDescription: "このオプションを有効にし、モデレーションに移動して、表示するサーバを設定します。"
+bubbleInstancesDescription: "バブルタイムラインに表示するサーバのホスト名を改行で区切って設定します。"
 selectReaction: "いいねボタンで使うリアクションを選択"
 disableRegistrationWhenInactive: "モデレーターが一定期間非アクティブになったとき、新規登録を無効化"
 disablePublicNoteWhenInactive: "モデレーターが一定期間非アクティブになったとき、「パブリック投稿の許可」を無効化"
@@ -1684,6 +1687,7 @@ _timelineDescription:
   local: "ローカルタイムラインでは、このサーバーにいるユーザー全員の投稿を見られます。"
   social: "ソーシャルタイムラインには、ホームタイムラインとローカルタイムラインの投稿が両方表示されます。"
   global: "グローバルタイムラインでは、接続している他のすべてのサーバーからの投稿を見られます。"
+  bubble: "バブルタイムラインでは、管理者が設定したサーバーの投稿を見ることができます。"
 
 _serverRules:
   description: "新規登録前に表示する、サーバーの簡潔なルールを設定します。内容は利用規約の要約とすることを推奨します。"
@@ -2045,6 +2049,7 @@ _role:
   _options:
     gtlAvailable: "グローバルタイムラインの閲覧"
     ltlAvailable: "ローカルタイムラインの閲覧"
+    btlAvailable: "バブルタイムラインの閲覧"
     canPublicNote: "パブリック投稿の許可"
     canEditNote: "ノートの編集"
     scheduleNoteMax: "予約投稿の最大数"
@@ -2764,6 +2769,7 @@ _timelines:
   local: "ローカル"
   social: "ソーシャル"
   global: "グローバル"
+  bubble: "バブル"
 
 _play:
   new: "Playの作成"

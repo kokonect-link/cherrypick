@@ -1726,6 +1726,8 @@ declare namespace entities {
         NotesFavoritesDeleteRequest,
         NotesFeaturedRequest,
         NotesFeaturedResponse,
+        NotesBubbleTimelineRequest,
+        NotesBubbleTimelineResponse,
         NotesGlobalTimelineRequest,
         NotesGlobalTimelineResponse,
         NotesHybridTimelineRequest,
@@ -2805,6 +2807,12 @@ type NoteFavorite = components['schemas']['NoteFavorite'];
 
 // @public (undocumented)
 type NoteReaction = components['schemas']['NoteReaction'];
+
+// @public (undocumented)
+type NotesBubbleTimelineRequest = operations['notes___bubble-timeline']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type NotesBubbleTimelineResponse = operations['notes___bubble-timeline']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type NotesChildrenRequest = operations['notes___children']['requestBody']['content']['application/json'];

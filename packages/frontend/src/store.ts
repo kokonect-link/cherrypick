@@ -748,6 +748,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	enableBubbleTimeline: {
+		where: 'device',
+		default: true,
+	},
 	enableListTimeline: {
 		where: 'device',
 		default: true,
