@@ -54,7 +54,7 @@ class HttpRequestServiceAgent extends http.Agent {
 				}
 			});
 		return socket;
-	};
+	}
 
 	@bindThis
 	private isPrivateIp(ip: string): boolean {
@@ -93,7 +93,7 @@ class HttpsRequestServiceAgent extends https.Agent {
 				}
 			});
 		return socket;
-	};
+	}
 
 	@bindThis
 	private isPrivateIp(ip: string): boolean {
