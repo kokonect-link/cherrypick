@@ -32,7 +32,7 @@ export function basicTimelineIconClass(timeline: BasicTimelineType): string {
 		case 'global':
 			return 'ti ti-world';
 		case 'bubble':
-			return 'ti ti-bubble';
+			return 'ti ti-droplet';
 	}
 }
 
