@@ -60,7 +60,7 @@ function generateModeratorInactivityMail(remainingTime: ModeratorInactivityRemai
 		'',
 		'To 모더레이터 여러분께',
 		'',
-		`モデレーターが一定期間活動していないようです。あと${timeVariantJa}活動していない状態が続くと招待制に切り替わります。모더레이터가 일정 기간 동안 활동이 없는 것으로 추정돼요. 앞으로 ${timeVariantKo} 비활성 상태가 지속되면 자동으로 초대제로 전환돼요.`,
+		`모더레이터가 일정 기간 동안 활동이 없는 것으로 추정돼요. 앞으로 ${timeVariantKo} 비활성 상태가 지속되면 자동으로 초대제로 전환돼요.`,
 		'초대제로 전환을 원하지 않는 경우, CherryPick에 로그인하여 마지막 활성 날짜를 업데이트해 주세요.',
 		'',
 	];
