@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-else>
 			<div style="font-size: 13px; margin-bottom: 4px;">Type "ai-chan-kawaii" to pass captcha</div>
-			<input v-model="testcaptchaInput" data-cy-testcaptcha-input/>
+			<input v-model="testcaptchaInput" data-cy-testcaptcha-input @enter="testcaptchaSubmit"/>
 			<button type="button" data-cy-testcaptcha-submit @click="testcaptchaSubmit">Submit</button>
 		</div>
 	</div>
@@ -117,8 +117,8 @@ async function requestRender() {
 			sitekey: props.sitekey,
 			theme: defaultStore.state.darkMode ? 'dark' : 'light',
 			callback: callback,
-			'expired-callback': callback,
-			'error-callback': callback,
+			'expired-callback': () => callback(undefined),
+			'error-callback': () => callback(undefined),
 		});
 	} else if (props.provider === 'mcaptcha' && props.instanceUrl && props.sitekey) {
 		const { default: Widget } = await import('@mcaptcha/vanilla-glue');

@@ -6,9 +6,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div :class="[$style.root, { [$style.iconOnly]: iconOnly }]">
 	<div :class="$style.body">
-		<div v-if="['all', 'bg'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
+		<div v-if="['all', 'bg'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 		<div :class="$style.top">
-			<div v-if="['all', 'topBottom', 'top'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
+			<div v-if="['all', 'topBottom', 'top'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="instance.name ?? i18n.ts.instance" class="_button" :class="$style.instance" @click="openInstanceMenu">
 				<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon"/>
 			</button>
@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkA>
 		</div>
 		<div :class="$style.bottom">
-			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>defaultStore.state.bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
+			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
 			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="os.post">
 				<i class="ti ti-fw" :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 			</button>
@@ -66,6 +66,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
+	<button v-if="!forceIconOnly" class="_button" :class="$style.toggleButton" @click="toggleIconOnly">
+		<!--
+		<svg viewBox="0 0 16 48" :class="$style.toggleButtonShape">
+			<g transform="matrix(0.333333,0,0,0.222222,0.000895785,13.3333)">
+				<path d="M23.935,-24C37.223,-24 47.995,-7.842 47.995,12.09C47.995,34.077 47.995,62.07 47.995,84.034C47.995,93.573 45.469,102.721 40.972,109.466C36.475,116.211 30.377,120 24.018,120L23.997,120C10.743,120 -0.003,136.118 -0.003,156C-0.003,156 -0.003,156 -0.003,156L-0.003,-60L-0.003,-59.901C-0.003,-50.379 2.519,-41.248 7.007,-34.515C11.496,-27.782 17.584,-24 23.931,-24C23.932,-24 23.934,-24 23.935,-24Z" style="fill:var(--MI_THEME-navBg);"/>
+			</g>
+		</svg>
+		-->
+		<svg viewBox="0 0 16 64" :class="$style.toggleButtonShape">
+			<g transform="matrix(0.333333,0,0,0.222222,0.000895785,21.3333)">
+				<path d="M47.488,7.995C47.79,10.11 47.943,12.266 47.943,14.429C47.997,26.989 47.997,84 47.997,84C47.997,84 44.018,118.246 23.997,133.5C-0.374,152.07 -0.003,192 -0.003,192L-0.003,-96C-0.003,-96 0.151,-56.216 23.997,-37.5C40.861,-24.265 46.043,-1.243 47.488,7.995Z" style="fill:var(--MI_THEME-navBg);"/>
+			</g>
+		</svg>
+		<i :class="'ti ' + `ti-chevron-${ iconOnly ? 'right' : 'left' }`" style="font-size: 12px; margin-left: -8px;"></i>
+	</button>
 </div>
 </template>
 
@@ -94,6 +109,7 @@ const otherMenuItemIndicated = computed(() => {
 });
 const controlPanelIndicated = ref(false);
 const releasesCherryPick = ref(null);
+const bannerDisplay = ref('');
 
 if ($i.isAdmin ?? $i.isModerator) {
 	misskeyApi('admin/abuse-user-reports', {
@@ -119,9 +135,11 @@ if ($i.isAdmin ?? $i.isModerator) {
 		});
 }
 
-const calcViewState = () => {
-	iconOnly.value = (window.innerWidth <= 1279) || (defaultStore.state.menuDisplay === 'sideIcon');
-};
+const forceIconOnly = window.innerWidth <= 1279;
+
+function calcViewState() {
+	iconOnly.value = forceIconOnly || (defaultStore.state.menuDisplay === 'sideIcon');
+}
 
 calcViewState();
 
@@ -130,6 +148,18 @@ window.addEventListener('resize', calcViewState);
 watch(defaultStore.reactiveState.menuDisplay, () => {
 	calcViewState();
 });
+
+watch(defaultStore.reactiveState.bannerDisplay, () => {
+	toggleBannerDisplay();
+});
+
+function toggleIconOnly() {
+	defaultStore.set('menuDisplay', iconOnly.value ? 'sideFull' : 'sideIcon');
+}
+
+function toggleBannerDisplay() {
+	bannerDisplay.value = defaultStore.state.bannerDisplay;
+}
 
 function compareVersions(v1: string, v2: string): number {
 	const v1Parts = v1.split('.').map(Number);
@@ -190,6 +220,38 @@ function openProfile() {
 	contain: strict;
 	display: flex;
 	flex-direction: column;
+	direction: rtl; // スクロールバーを左に表示したいため
+}
+
+.top {
+	direction: ltr;
+}
+
+.middle {
+	direction: ltr;
+}
+
+.bottom {
+	direction: ltr;
+}
+
+.toggleButton {
+	position: fixed;
+	bottom: 20px;
+	left: var(--nav-width);
+	z-index: 1001;
+	width: 16px;
+	height: 64px;
+	box-sizing: border-box;
+}
+
+.toggleButtonShape {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	width: 16px;
+	height: 64px;
 }
 
 .root:not(.iconOnly) {
@@ -452,6 +514,10 @@ function openProfile() {
 		position: relative;
 		font-size: 0.9em;
 	}
+
+	.toggleButton {
+		left: var(--nav-width);
+	}
 }
 
 .root.iconOnly {
@@ -651,6 +717,10 @@ function openProfile() {
 			left: auto;
 			right: 4px;
 		}
+	}
+
+	.toggleButton {
+		left: var(--nav-icon-only-width);
 	}
 }
 </style>

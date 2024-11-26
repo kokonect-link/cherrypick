@@ -224,6 +224,8 @@ export const paramDef = {
 		},
 		disableRegistrationWhenInactive: { type: 'boolean', nullable: true },
 		disablePublicNoteWhenInactive: { type: 'boolean', nullable: true },
+		moderatorInactivityLimitDays: { type: 'integer', nullable: false },
+		bubbleInstances: { type: 'array', items: { type: 'string' } },
 	},
 	required: [],
 } as const;
@@ -831,6 +833,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (typeof ps.disablePublicNoteWhenInactive === 'boolean') {
 				set.disablePublicNoteWhenInactive = ps.disablePublicNoteWhenInactive;
+			}
+
+			if (ps.moderatorInactivityLimitDays !== undefined) {
+				set.moderatorInactivityLimitDays = ps.moderatorInactivityLimitDays;
+			}
+
+			if (ps.bubbleInstances !== undefined) {
+				set.bubbleInstances = ps.bubbleInstances;
 			}
 
 			const before = await this.metaService.fetch(true);

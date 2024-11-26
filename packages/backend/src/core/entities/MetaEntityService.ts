@@ -89,6 +89,7 @@ export class MetaEntityService {
 			disableRegistration: instance.disableRegistration,
 			disableRegistrationWhenInactive: instance.disableRegistrationWhenInactive,
 			disablePublicNoteWhenInactive: instance.disablePublicNoteWhenInactive,
+			moderatorInactivityLimitDays: instance.moderatorInactivityLimitDays,
 			emailRequiredForSignup: instance.emailRequiredForSignup,
 			enableHcaptcha: instance.enableHcaptcha,
 			hcaptchaSiteKey: instance.hcaptchaSiteKey,

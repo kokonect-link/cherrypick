@@ -17,7 +17,7 @@ import { AnnouncementService } from '@/core/AnnouncementService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 
 // モデレーターが不在と判断する日付の閾値
-const MODERATOR_INACTIVITY_LIMIT_DAYS = 7;
+// const MODERATOR_INACTIVITY_LIMIT_DAYS = 7;
 // 警告通知やログ出力を行う残日数の閾値
 const MODERATOR_INACTIVITY_WARNING_REMAINING_DAYS = 2;
 // 期限から6時間ごとに通知を行う
@@ -60,7 +60,7 @@ function generateModeratorInactivityMail(remainingTime: ModeratorInactivityRemai
 		'',
 		'To 모더레이터 여러분께',
 		'',
-		`モデレーターが一定期間活動していないようです。あと${timeVariantJa}活動していない状態が続くと招待制に切り替わります。모더레이터가 일정 기간 동안 활동이 없는 것으로 추정돼요. 앞으로 ${timeVariantKo} 비활성 상태가 지속되면 자동으로 초대제로 전환돼요.`,
+		`모더레이터가 일정 기간 동안 활동이 없는 것으로 추정돼요. 앞으로 ${timeVariantKo} 비활성 상태가 지속되면 자동으로 초대제로 전환돼요.`,
 		'초대제로 전환을 원하지 않는 경우, CherryPick에 로그인하여 마지막 활성 날짜를 업데이트해 주세요.',
 		'',
 	];
@@ -75,27 +75,27 @@ function generateModeratorInactivityMail(remainingTime: ModeratorInactivityRemai
 	};
 }
 
-function generateInvitationOnlyChangedMail() {
+function generateInvitationOnlyChangedMail(moderatorInactivityLimitDays: number) {
 	const subject = 'Change to Invitation-Only / 招待制に変更されました / 초대제로 변경되었습니다';
 
 	const message = [
 		'To Moderators,',
 		'',
-		`Changed to invitation only because no moderator activity was detected for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days.`,
+		`Changed to invitation only because no moderator activity was detected for ${moderatorInactivityLimitDays} days.`,
 		'To cancel the invitation only, you need to access the control panel.',
 		'',
 		'---------------',
 		'',
 		'To モデレーター各位',
 		'',
-		`モデレーターの活動が${MODERATOR_INACTIVITY_LIMIT_DAYS}日間検出されなかったため、招待制に変更されました。`,
+		`モデレーターの活動が${moderatorInactivityLimitDays}日間検出されなかったため、招待制に変更されました。`,
 		'招待制を解除するには、コントロールパネルにアクセスする必要があります。',
 		'',
 		'---------------',
 		'',
 		'To 모더레이터 여러분께',
 		'',
-		`모더레이터가 ${MODERATOR_INACTIVITY_LIMIT_DAYS}일간 활동이 확인되지 않아 초대제로 변경되었어요.`,
+		`모더레이터가 ${moderatorInactivityLimitDays}일간 활동이 확인되지 않아 초대제로 변경되었어요.`,
 		'초대제를 해제하려면 `제어판 - 모더레이션`에 접속해서 변경해야 해요.',
 		'',
 	];
@@ -110,27 +110,27 @@ function generateInvitationOnlyChangedMail() {
 	};
 }
 
-function generateDisablePublicNoteChangedMail() {
+function generateDisablePublicNoteChangedMail(moderatorInactivityLimitDays: number) {
 	const subject = 'Change to Public Note Disabled / パブリック投稿が無効になりました / 공개 노트가 비활성화 되었습니다';
 
 	const message = [
 		'To Moderators,',
 		'',
-		`Changed to public note disabled because no moderator activity was detected for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days.`,
+		`Changed to public note disabled because no moderator activity was detected for ${moderatorInactivityLimitDays} days.`,
 		'To cancel the public note disabled, you need to access the control panel.',
 		'',
 		'---------------',
 		'',
 		'To モデレーター各位',
 		'',
-		`モデレーターの活動が${MODERATOR_INACTIVITY_LIMIT_DAYS}日間検出されなかったため、パブリック投稿が無効に変更されました。`,
+		`モデレーターの活動が${moderatorInactivityLimitDays}日間検出されなかったため、パブリック投稿が無効に変更されました。`,
 		'パブリック投稿無効を解除するには、コントロールパネルにアクセスする必要があります。',
 		'',
 		'---------------',
 		'',
 		'To 모더레이터 여러분께',
 		'',
-		`모더레이터가 ${MODERATOR_INACTIVITY_LIMIT_DAYS}일간 활동이 확인되지 않아 '공개 노트 허용'이 비활성화로 변경되었어요.`,
+		`모더레이터가 ${moderatorInactivityLimitDays}일간 활동이 확인되지 않아 '공개 노트 허용'이 비활성화로 변경되었어요.`,
 		'다시 허용하려면 `제어판 - 역할`에 접속해서 변경해야 해요.',
 		'',
 	];
@@ -148,6 +148,7 @@ function generateDisablePublicNoteChangedMail() {
 @Injectable()
 export class CheckModeratorsActivityProcessorService {
 	private logger: Logger;
+	private moderatorInactivityLimitDays = 7;
 
 	constructor(
 		@Inject(DI.userProfilesRepository)
@@ -167,6 +168,7 @@ export class CheckModeratorsActivityProcessorService {
 		this.logger.info('start.');
 
 		const meta = await this.metaService.fetch(false);
+		this.moderatorInactivityLimitDays = meta.moderatorInactivityLimitDays;
 		const basePolicies = { ...DEFAULT_POLICIES, ...meta.policies };
 		if ((!meta.disableRegistration && meta.disableRegistrationWhenInactive) || (basePolicies.canPublicNote && meta.disablePublicNoteWhenInactive)) {
 			await this.processImpl();
@@ -184,14 +186,14 @@ export class CheckModeratorsActivityProcessorService {
 		const basePolicies = { ...DEFAULT_POLICIES, ...meta.policies };
 		if (evaluateResult.isModeratorsInactive) {
 			if (!meta.disableRegistration && meta.disableRegistrationWhenInactive) {
-				this.logger.warn(`The moderator has been inactive for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days. We will move to invitation only.`);
+				this.logger.warn(`The moderator has been inactive for ${this.moderatorInactivityLimitDays} days. We will move to invitation only.`);
 
 				await this.changeToInvitationOnly();
 				await this.notifyChangeToInvitationOnly();
 			}
 
 			if (basePolicies.canPublicNote && meta.disablePublicNoteWhenInactive) {
-				this.logger.warn(`The moderator has been inactive for ${MODERATOR_INACTIVITY_LIMIT_DAYS} days. We will disable public note.`);
+				this.logger.warn(`The moderator has been inactive for ${this.moderatorInactivityLimitDays} days. We will disable public note.`);
 
 				await this.changeToDisablePublicNote();
 				await this.notifyChangeToDisablePublicNote();
@@ -215,14 +217,14 @@ export class CheckModeratorsActivityProcessorService {
 	/**
 	 * モデレーターが不在であるかどうかを確認する。trueの場合はモデレーターが不在である。
 	 * isModerator, isAdministrator, isRootのいずれかがtrueのユーザを対象に、
-	 * {@link MiUser.lastActiveDate}の値が実行日時の{@link MODERATOR_INACTIVITY_LIMIT_DAYS}日前よりも古いユーザがいるかどうかを確認する。
+	 * {@link MiUser.lastActiveDate}の値が実行日時の{@link this.moderatorInactivityLimitDays}日前よりも古いユーザがいるかどうかを確認する。
 	 * {@link MiUser.lastActiveDate}がnullの場合は、そのユーザは確認の対象外とする。
 	 *
 	 * -----
 	 *
 	 * ### サンプルパターン
 	 * - 実行日時: 2022-01-30 12:00:00
-	 * - 判定基準: 2022-01-23 12:00:00（実行日時の{@link MODERATOR_INACTIVITY_LIMIT_DAYS}日前）
+	 * - 判定基準: 2022-01-23 12:00:00（実行日時の{@link this.moderatorInactivityLimitDays}日前）
 	 *
 	 * #### パターン①
 	 * - モデレータA: lastActiveDate = 2022-01-20 00:00:00 ※アウト
@@ -244,7 +246,7 @@ export class CheckModeratorsActivityProcessorService {
 	public async evaluateModeratorsInactiveDays(): Promise<ModeratorInactivityEvaluationResult> {
 		const today = new Date();
 		const inactivePeriod = new Date(today);
-		inactivePeriod.setDate(today.getDate() - MODERATOR_INACTIVITY_LIMIT_DAYS);
+		inactivePeriod.setDate(today.getDate() - this.moderatorInactivityLimitDays);
 
 		const moderators = await this.fetchModerators()
 			.then(it => it.filter(it => it.lastActiveDate != null));
@@ -319,7 +321,7 @@ export class CheckModeratorsActivityProcessorService {
 			.findBy({ userId: In(moderators.map(it => it.id)) })
 			.then(it => new Map(it.map(it => [it.userId, it])));
 
-		const mail = generateInvitationOnlyChangedMail();
+		const mail = generateInvitationOnlyChangedMail(this.moderatorInactivityLimitDays);
 		for (const moderator of moderators) {
 			this.announcementService.create({
 				title: mail.subject,
@@ -357,7 +359,7 @@ export class CheckModeratorsActivityProcessorService {
 			.findBy({ userId: In(moderators.map(it => it.id)) })
 			.then(it => new Map(it.map(it => [it.userId, it])));
 
-		const mail = generateDisablePublicNoteChangedMail();
+		const mail = generateDisablePublicNoteChangedMail(this.moderatorInactivityLimitDays);
 		for (const moderator of moderators) {
 			this.announcementService.create({
 				title: mail.subject,

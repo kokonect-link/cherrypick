@@ -1,5 +1,8 @@
 _lang_: "日本語"
 
+bubbleTimeline: "バブルタイムライン"
+bubbleTimelineDescription: "このオプションを有効にし、モデレーションに移動して、表示するサーバを設定します。"
+bubbleInstancesDescription: "バブルタイムラインに表示するサーバのホスト名を改行で区切って設定します。"
 selectReaction: "いいねボタンで使うリアクションを選択"
 disableRegistrationWhenInactive: "モデレーターが一定期間非アクティブになったとき、新規登録を無効化"
 disablePublicNoteWhenInactive: "モデレーターが一定期間非アクティブになったとき、「パブリック投稿の許可」を無効化"
@@ -30,7 +33,7 @@ filesGridLayoutInUserPage: "メディアタブをグリッドレイアウトに�
 filesGridLayoutInUserPageDescription: "この設定をオンにすると、ユーザーページのメディアタブがアルバム形式で表示されます。\nオフにすると、元のノートのタイムラインに変更されます。"
 showReplyTargetNoteInSemiTransparent: "返信対象ノートを半透明に表示"
 noteFooterButton: "ノートにアクションボタンを表示"
-collapseReplies: "返信のリノートのスマート省略"
+collapseReplies: "返信のスマート省略"
 collapseRepliesDescription: "返信で作成されたノートをたたんで表示します。\nリアクションしたノートは影響を受けません。"
 repliedBy: "{user}が返信を作成しました"
 collapseLongNoteContent: "内容の長いノートを省略して表示"
@@ -495,7 +498,6 @@ enableLocalTimeline: "ローカルタイムラインを有効にする"
 enableGlobalTimeline: "グローバルタイムラインを有効にする"
 disablingTimelinesInfo: "これらのタイムラインを無効化しても、利便性のため管理者およびモデレーターは引き続き利用することができます。"
 registration: "登録"
-enableRegistration: "誰でも新規登録できるようにする"
 invite: "招待"
 driveCapacityPerLocalAccount: "ローカルユーザーひとりあたりのドライブ容量"
 driveCapacityPerRemoteAccount: "リモートユーザーひとりあたりのドライブ容量"
@@ -719,6 +721,7 @@ masterVolume: "マスター音量"
 notUseSound: "サウンドを出力しない"
 useSoundOnlyWhenActive: "CherryPickがアクティブな時のみサウンドを出力する"
 details: "詳細"
+renoteDetails: "リノートの詳細"
 chooseEmoji: "絵文字を選択"
 unableToProcess: "操作を完了できません"
 recentUsed: "最近使用"
@@ -773,7 +776,7 @@ poll: "アンケート"
 useCw: "内容を隠す"
 enablePlayer: "プレイヤーを開く"
 disablePlayer: "プレイヤーを閉じる"
-expandTweet: "ポストを展開する"
+expandPost: "ポストを展開する"
 themeEditor: "テーマエディター"
 description: "説明"
 describeFile: "キャプションを付ける"
@@ -1084,6 +1087,9 @@ oneHour: "1時間"
 oneDay: "1日"
 oneWeek: "1週間"
 oneMonth: "1ヶ月"
+threeMonths: "3ヶ月"
+oneYear: "1年"
+threeDays: "3日"
 reflectMayTakeTime: "反映されるまで時間がかかる場合があります。"
 failedToFetchAccountInformation: "アカウント情報の取得に失敗しました"
 rateLimitExceeded: "レート制限を超えました"
@@ -1437,6 +1443,11 @@ prohibitedWordsForNameOfUser: "禁止ワード（ユーザーの名前）"
 prohibitedWordsForNameOfUserDescription: "このリストに含まれる文字列がユーザーの名前に含まれる場合、ユーザーの名前の変更を拒否します。モデレーター権限を持つユーザーはこの制限の影響を受けません。"
 yourNameContainsProhibitedWords: "変更しようとした名前に禁止された文字列が含まれています"
 yourNameContainsProhibitedWordsDescription: "名前に禁止されている文字列が含まれています。この名前を使用したい場合は、サーバー管理者にお問い合わせください。"
+thisContentsAreMarkedAsSigninRequiredByAuthor: "投稿者により、表示にはログインが必要と設定されています"
+lockdown: "ロックダウン"
+pleaseSelectAccount: "アカウントを選択してください"
+availableRoles: "利用可能なロール"
+acknowledgeNotesAndEnable: "注意事項を理解した上でオンにします。"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -1466,6 +1477,19 @@ _showingAnimatedImages:
 
 _messaging:
   direct: "ダイレクトメッセージ"
+
+_accountSettings:
+  requireSigninToViewContents: "コンテンツの表示にログインを必須にする"
+  requireSigninToViewContentsDescription1: "あなたが作成した全てのノートなどのコンテンツを表示するのにログインを必須にします。クローラーに情報が収集されるのを防ぐ効果が期待できます。"
+  requireSigninToViewContentsDescription2: "URLプレビュー(OGP)、Webページへの埋め込み、ノートの引用に対応していないサーバーからの表示も不可になります。"
+  requireSigninToViewContentsDescription3: "リモートサーバーに連合されたコンテンツでは、これらの制限が適用されない場合があります。"
+  makeNotesFollowersOnlyBefore: "過去のノートをフォロワーのみ表示可能にする"
+  makeNotesFollowersOnlyBeforeDescription: "この機能が有効になっている間、設定された日時より過去、または設定された時間を経過しているノートがフォロワーのみ表示可能になります。無効に戻すと、ノートの公開状態も元に戻ります。"
+  makeNotesHiddenBefore: "過去のノートを非公開化する"
+  makeNotesHiddenBeforeDescription: "この機能が有効になっている間、設定された日時より過去、または設定された時間を経過しているノートが自分のみ表示可能(非公開化)になります。無効に戻すと、ノートの公開状態も元に戻ります。"
+  mayNotEffectForFederatedNotes: "リモートサーバーに連合されたノートには効果が及ばない場合があります。"
+  notesHavePassedSpecifiedPeriod: "指定した時間を経過しているノート"
+  notesOlderThanSpecifiedDateAndTime: "指定した日時より前のノート"
 
 _abuseUserReport:
   forward: "転送"
@@ -1663,6 +1687,7 @@ _timelineDescription:
   local: "ローカルタイムラインでは、このサーバーにいるユーザー全員の投稿を見られます。"
   social: "ソーシャルタイムラインには、ホームタイムラインとローカルタイムラインの投稿が両方表示されます。"
   global: "グローバルタイムラインでは、接続している他のすべてのサーバーからの投稿を見られます。"
+  bubble: "バブルタイムラインでは、管理者が設定したサーバーの投稿を見ることができます。"
 
 _serverRules:
   description: "新規登録前に表示する、サーバーの簡潔なルールを設定します。内容は利用規約の要約とすることを推奨します。"
@@ -1709,6 +1734,8 @@ _serverSettings:
   reactionsBufferingDescription: "有効にすると、リアクション作成時のパフォーマンスが大幅に向上し、データベースへの負荷を軽減することが可能です。ただし、Redisのメモリ使用量は増加します。"
   inquiryUrl: "問い合わせ先URL"
   inquiryUrlDescription: "サーバー運営者へのお問い合わせフォームのURLや、運営者の連絡先等が記載されたWebページのURLを指定します。"
+  openRegistration: "アカウントの作成をオープンにする"
+  openRegistrationWarning: "登録を開放することはリスクが伴います。サーバーを常に監視し、トラブルが発生した際にすぐに対応できる体制がある場合のみオンにすることを推奨します。"
   thisSettingWillAutomaticallyOffWhenModeratorsInactive: "一定期間モデレーターのアクティビティが検出されなかった場合、スパム防止のためこの設定は自動でオフになります。"
 
 _accountMigration:
@@ -2022,6 +2049,7 @@ _role:
   _options:
     gtlAvailable: "グローバルタイムラインの閲覧"
     ltlAvailable: "ローカルタイムラインの閲覧"
+    btlAvailable: "バブルタイムラインの閲覧"
     canPublicNote: "パブリック投稿の許可"
     canEditNote: "ノートの編集"
     scheduleNoteMax: "予約投稿の最大数"
@@ -2567,8 +2595,11 @@ _auth:
   permissionAsk: "このアプリは次の権限を要求しています"
   pleaseGoBack: "アプリケーションに戻ってやっていってください"
   callback: "アプリケーションに戻っています"
+  accepted: "アクセスを許可しました"
   denied: "アクセスを拒否しました"
+  scopeUser: "以下のユーザーとして操作しています"
   pleaseLogin: "アプリケーションにアクセス許可を与えるには、ログインが必要です。"
+  byClickingYouWillBeRedirectedToThisUrl: "アクセスを許可すると、自動で以下のURLに遷移します"
 
 _antennaSources:
   all: "全てのノート"
@@ -2738,6 +2769,7 @@ _timelines:
   local: "ローカル"
   social: "ソーシャル"
   global: "グローバル"
+  bubble: "バブル"
 
 _play:
   new: "Playの作成"
@@ -2821,7 +2853,7 @@ _notification:
   youGotReply: "{name}からのリプライ"
   youGotQuote: "{name}による引用"
   youGotReact: "{name}が反応しました"
-  youRenoted: "{name}がRenoteしました"
+  youRenoted: "{name}がリノートしました"
   youWereFollowed: "フォローされました"
   youReceivedFollowRequest: "フォローリクエストが来ました"
   yourFollowRequestAccepted: "フォローリクエストが承認されました"
@@ -2852,7 +2884,7 @@ _notification:
     follow: "フォロー"
     mention: "メンション"
     reply: "リプライ"
-    renote: "Renote"
+    renote: "リノート"
     quote: "引用"
     reaction: "リアクション"
     pollEnded: "アンケートが終了"
@@ -2869,7 +2901,7 @@ _notification:
   _actions:
     followBack: "フォローバック"
     reply: "返信"
-    renote: "Renote"
+    renote: "リノート"
 
 _deck:
   alwaysShowMainColumn: "常にメインカラムを表示"
@@ -3170,6 +3202,17 @@ _embedCodeGen:
   codeGenerated: "コードが生成されました"
   codeGeneratedDescription: "生成されたコードをウェブサイトに貼り付けてご利用ください。"
 
+_selfXssPrevention:
+  warning: "警告"
+  title: "「この画面に何か貼り付けろ」はすべて詐欺です。"
+  description1: "ここに何かを貼り付けると、悪意のあるユーザーにアカウントを乗っ取られたり、個人情報を盗まれたりする可能性があります。"
+  description2: "貼り付けようとしているものが何なのかを正確に理解していない場合は、%c今すぐ作業を中止してこのウィンドウを閉じてください。"
+  description3: "詳しくはこちらをご確認ください。 {link}"
+
+_followRequest:
+  recieved: "受け取った申請"
+  sent: "送った申請"
+
 _abuse:
   _resolver:
     1hour: "一時間"
@@ -3200,6 +3243,12 @@ _externalNavigationWarning:
   title: "外部サイトに移動します"
   description: "{host}を離れて外部サイトに移動します"
   trustThisDomain: "このデバイスで今後このドメインを信頼する"
+  externalNavigationWarning: "外部サイトに移動する際の警告"
+  enableExternalNavigationWarning: "外部サイトに移動する際の警告を表示"
+  trustedDomainList: "信頼するドメインリスト"
+  trustedDomainListDescription: "`http://`と`https://`を省略して入力してください。"
+  trustedDomainListDescription2: "改行で区切って設定します"
+  deleteTrustedDomainList: "信頼するドメインリストのリセット"
 
 _altWarning:
   noAltWarning: "ファイルに代替テキストが設定されていません。"

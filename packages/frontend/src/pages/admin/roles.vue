@@ -43,6 +43,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkSwitch>
 						</MkFolder>
 
+						<MkFolder v-if="matchQuery([i18n.ts._role._options.btlAvailable, 'btlAvailable'])">
+							<template #label>{{ i18n.ts._role._options.btlAvailable }}</template>
+							<template #suffix>{{ policies.btlAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+							<div class="_gaps_s">
+								<MkInfo :warn="true">{{ i18n.ts.bubbleTimelineDescription }}</MkInfo>
+								<MkSwitch v-model="policies.btlAvailable">
+									<template #label>{{ i18n.ts.enable }}</template>
+								</MkSwitch>
+							</div>
+						</MkFolder>
+
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.canPublicNote, 'canPublicNote'])">
 							<template #label>{{ i18n.ts._role._options.canPublicNote }}</template>
 							<template #suffix>{{ policies.canPublicNote ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -311,6 +322,7 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkRange from '@/components/MkRange.vue';
 import MkRolePreview from '@/components/MkRolePreview.vue';
+import MkInfo from '@/components/MkInfo.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { i18n } from '@/i18n.js';

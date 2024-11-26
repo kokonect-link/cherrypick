@@ -20,8 +20,39 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 
 -->
 
-# 릴리즈 노트
+# 릴리스 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
+
+## 4.14.0
+출시일: 2024/11/26<br>
+기반 Misskey 버전: 2024.11.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024110](CHANGELOG.md#2024110) 문서를 참고하십시오.
+
+### General
+- Feat: 버블 타임라인 (kokonect-link/cherrypick#512, [TransFem-org/Sharkey#154](https://activitypub.software/TransFem-org/Sharkey/-/issues/154), [TransFem-org/Sharkey@2f99c7e9](https://activitypub.software/TransFem-org/Sharkey/-/commit/2f99c7e9dc2e5e3ca06c9672a6ab4887eb094310))
+  - 관리자가 설정한 서버의 게시글만 볼 수 있는 타임라인으로, 글로벌 타임라인의 무분별한 내용을 포함하는 게시글을 제한하는 목적으로 사용할 수 있습니다.
+- Enhance: 모더레이터 부재 감지 기간을 사용자화할 수 있음
+  - 기간은 최소 `1`일부터 최대 `30`일까지 설정할 수 있습니다.
+    - `0`일로 설정하면 최소 기간인 `1`일로 설정되며, `30`일을 초과하는 값을 입력하면 최대 기간인 `30`일로 설정됩니다.
+  - 여기서 설정된 기간은 `초대제로 전환` 옵션과 `공개 노트 허용` 옵션 모두에 적용됩니다.
+
+### Client
+- Enhance: 미디어 그리드 레이아옷 조정
+  - 여러 장의 이미지가 있을 때 표시되는 아이콘을 보다 명확하게 볼 수 있도록 개선됨
+  - 배경과 같은 이미지를 구분하기 쉽도록 배경색 및 구분선 추가
+- Enhance: 외부 사이트 이동 경고 표시 개선 (kokonect-link/cherrypick#533)
+  - 신뢰할 수 있는 도메인 목록을 편집할 수 있음
+  - 경고를 표시하지 않도록 설정할 수 있음
+- Enhance: Bluesky 게시물 임베디드 미리보기 지원 (misskey-dev/misskey#14933)
+- Fix: 아바타 장식에서 가이드라인이 표시되지 않음
+- Fix: 설정 페이지에서 글자수가 긴 일부 항목의 디자인이 잘못 표시될 수 있음
+- Fix: 서브 노트의 동작 버튼이 정상적으로 작동하지 않을 수 있음 (kokonect-link/cherrypick#536)
+
+### Server
+- Fix: 그룹 초대 알림을 수락하거나 거절하면 알림 목록을 볼 수 없음
+- Fix: 모더레이터 부재 경고의 한국어 경고 내용에 일본어가 포함됨
+
+---
 
 ## 4.13.0
 출시일: 2024/11/14<br>

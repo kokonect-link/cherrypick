@@ -26,19 +26,32 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkButton>
 	</div>
 </template>
-<template v-else-if="tweetId && tweetExpanded">
-	<div ref="twitter">
+<template v-else-if="tweetId && postExpanded">
+	<iframe
+		allow="fullscreen;web-share"
+		sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
+		scrolling="no"
+		:style="{ position: 'relative', width: '100%', height: `${postHeight}px`, border: 0 }"
+		:src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${defaultStore.state.darkMode ? 'dark' : 'light'}&amp;id=${tweetId}`"
+	></iframe>
+	<div :class="$style.action">
+		<MkButton :small="true" inline @click.stop="postExpanded = false">
+			<i class="ti ti-x"></i> {{ i18n.ts.close }}
+		</MkButton>
+	</div>
+</template>
+<template v-else-if="bskyDid && bskyPostRecordKey && postExpanded">
+	<div>
 		<iframe
-			ref="tweet"
 			allow="fullscreen;web-share"
 			sandbox="allow-popups allow-popups-to-escape-sandbox allow-scripts allow-same-origin"
 			scrolling="no"
-			:style="{ position: 'relative', width: '100%', height: `${tweetHeight}px`, border: 0 }"
-			:src="`https://platform.twitter.com/embed/index.html?embedId=${embedId}&amp;hideCard=false&amp;hideThread=false&amp;lang=en&amp;theme=${defaultStore.state.darkMode ? 'dark' : 'light'}&amp;id=${tweetId}`"
+			:style="{ position: 'relative', width: '100%', height: `${postHeight}px`, border: 0 }"
+			:src="`https://embed.bsky.app/embed/${bskyDid}/app.bsky.feed.post/${bskyPostRecordKey}?id=${embedId}`"
 		></iframe>
 	</div>
 	<div :class="$style.action">
-		<MkButton :small="true" inline @click.stop="tweetExpanded = false">
+		<MkButton :small="true" inline @click.stop="postExpanded = false">
 			<i class="ti ti-x"></i> {{ i18n.ts.close }}
 		</MkButton>
 	</div>
@@ -66,8 +79,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</component>
 	<template v-if="showActions">
 		<div v-if="tweetId" :class="$style.action">
-			<MkButton :small="true" inline @click.stop="tweetExpanded = true">
-				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandTweet }}
+			<MkButton :small="true" inline @click.stop="postExpanded = true">
+				<i class="ti ti-brand-x"></i> {{ i18n.ts.expandPost }}
+			</MkButton>
+		</div>
+		<div v-if="bskyPostRecordKey" :class="$style.action">
+			<MkButton :small="true" inline @click.stop="openBskyEmbed">
+				<i class="ti ti-brand-bluesky"></i> {{ i18n.ts.expandPost }}
 			</MkButton>
 		</div>
 		<div v-if="!playerEnabled && player.url" :class="$style.action">
@@ -127,10 +145,17 @@ const player = ref({
 	height: null,
 } as SummalyResult['player']);
 const playerEnabled = ref(false);
-const tweetId = ref<string | null>(null);
-const tweetExpanded = ref(props.detail);
 const embedId = `embed${Math.random().toString().replace(/\D/, '')}`;
-const tweetHeight = ref(150);
+
+const postExpanded = ref(props.detail);
+const postHeight = ref(150);
+
+const tweetId = ref<string | null>(null);
+
+const bskyHandleOrDid = ref<string | null>(null);
+const bskyDid = ref<string | null>(null);
+const bskyPostRecordKey = ref<string | null>(null);
+
 const unknownUrl = ref(false);
 
 onDeactivated(() => {
@@ -143,6 +168,17 @@ if (!['http:', 'https:'].includes(requestUrl.protocol)) throw new Error('invalid
 if (requestUrl.hostname === 'twitter.com' || requestUrl.hostname === 'mobile.twitter.com' || requestUrl.hostname === 'x.com' || requestUrl.hostname === 'mobile.x.com') {
 	const m = requestUrl.pathname.match(/^\/.+\/status(?:es)?\/(\d+)/);
 	if (m) tweetId.value = m[1];
+}
+
+if (requestUrl.hostname === 'bsky.app') {
+	const bskyPostPageUrl = requestUrl.pathname.slice(1).split('/');
+	if (bskyPostPageUrl[0] === 'profile' && bskyPostPageUrl[1] && bskyPostPageUrl[2] === 'post' && bskyPostPageUrl[3]) {
+		bskyHandleOrDid.value = bskyPostPageUrl[1];
+		bskyPostRecordKey.value = bskyPostPageUrl[3];
+		if (postExpanded.value) {
+			openBskyEmbed();
+		}
+	}
 }
 
 if (requestUrl.hostname === 'music.youtube.com' && requestUrl.pathname.match('^/(?:watch|channel)')) {
@@ -181,27 +217,52 @@ window.fetch(`/url?url=${encodeURIComponent(requestUrl.href)}&lang=${versatileLa
 		sensitive.value = info.sensitive ?? false;
 	});
 
-function adjustTweetHeight(message: any) {
-	if (message.origin !== 'https://platform.twitter.com') return;
-	const embed = message.data?.['twttr.embed'];
-	if (embed?.method !== 'twttr.private.resize') return;
-	if (embed?.id !== embedId) return;
-	const height = embed?.params[0]?.height;
-	if (height) tweetHeight.value = height;
+async function openBskyEmbed() {
+	if (bskyHandleOrDid.value == null || bskyPostRecordKey.value == null) return;
+	if (bskyDid.value == null) {
+		if (bskyHandleOrDid.value.startsWith('did:')) {
+			bskyDid.value = bskyHandleOrDid.value;
+		} else {
+			// handleで来ている場合はdidに変換
+			const bskyApiRes = await window.fetch(`https://public.api.bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=${bskyHandleOrDid.value}`);
+			if (bskyApiRes.ok) {
+				const bskyApiData = await bskyApiRes.json() as { did: string };
+				bskyDid.value = bskyApiData.did;
+			}
+		}
+	}
+	postExpanded.value = true;
 }
 
 function openPlayer(): void {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkYouTubePlayer.vue')), {
 		url: requestUrl.href,
 	}, {
-		// TODO
+		closed: () => {
+			dispose();
+		},
 	});
 }
 
-(window as any).addEventListener('message', adjustTweetHeight);
+function adjustSocialsEmbedHeight(message: MessageEvent) {
+	if (message.origin === 'https://platform.twitter.com') {
+		const embed = message.data?.['twttr.embed'];
+		if (embed?.method === 'twttr.private.resize' && embed?.id === embedId) {
+			const height = embed?.params[0]?.height;
+			if (height) postHeight.value = height;
+		}
+	} else if (message.origin === 'https://embed.bsky.app') {
+		if (message.data?.id === embedId) {
+			const height = message.data?.height;
+			if (height) postHeight.value = height;
+		}
+	}
+}
+
+window.addEventListener('message', adjustSocialsEmbedHeight);
 
 onUnmounted(() => {
-	(window as any).removeEventListener('message', adjustTweetHeight);
+	window.removeEventListener('message', adjustSocialsEmbedHeight);
 });
 </script>
 
