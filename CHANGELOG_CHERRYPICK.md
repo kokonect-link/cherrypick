@@ -31,6 +31,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 ### General
 - Feat: 버블 타임라인 (kokonect-link/cherrypick#512, [TransFem-org/Sharkey#154](https://activitypub.software/TransFem-org/Sharkey/-/issues/154), [TransFem-org/Sharkey@2f99c7e9](https://activitypub.software/TransFem-org/Sharkey/-/commit/2f99c7e9dc2e5e3ca06c9672a6ab4887eb094310))
   - 관리자가 설정한 서버의 게시글만 볼 수 있는 타임라인으로, 글로벌 타임라인의 무분별한 내용을 포함하는 게시글을 제한하는 목적으로 사용할 수 있습니다.
+- Enhance: 모더레이터 부재 감지 기간을 사용자화할 수 있음
+  - 기간은 최소 `1`일부터 최대 `30`일까지 설정할 수 있습니다.
+    - `0`일로 설정하면 최소 기간인 `1`일로 설정되며, `30`일을 초과하는 값을 입력하면 최대 기간인 `30`일로 설정됩니다.
+  - 여기서 설정된 기간은 `초대제로 전환` 옵션과 `공개 노트 허용` 옵션 모두에 적용됩니다.
 
 ### Client
 - Enhance: 미디어 그리드 레이아옷 조정

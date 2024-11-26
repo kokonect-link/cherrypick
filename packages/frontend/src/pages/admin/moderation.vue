@@ -26,6 +26,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.disablePublicNoteWhenInactive }}</template>
 					</MkSwitch>
 
+					<MkInput v-if="disableRegistrationWhenInactive || disablePublicNoteWhenInactive" v-model="moderatorInactivityLimitDays" type="number" :min="1" :max="30">
+						<template #label>{{ i18n.ts.expirationDate + `(${i18n.ts._time.day})` }}</template>
+					</MkInput>
+
+					<MkButton v-if="meta.moderatorInactivityLimitDays !== moderatorInactivityLimitDays" primary rounded @click="onChange_moderatorInactivityLimitDays"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+
 					<MkSwitch v-model="emailRequiredForSignup" @change="onChange_emailRequiredForSignup">
 						<template #label>{{ i18n.ts.emailRequiredForSignup }}</template>
 					</MkSwitch>
@@ -174,9 +180,12 @@ import MkButton from '@/components/MkButton.vue';
 import FormLink from '@/components/form/link.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
+const meta = await misskeyApi('admin/meta');
+
 const enableRegistration = ref<boolean>(false);
 const disableRegistrationWhenInactive = ref<boolean>(false);
 const disablePublicNoteWhenInactive = ref<boolean>(false);
+const moderatorInactivityLimitDays = ref<number>(7);
 const emailRequiredForSignup = ref<boolean>(false);
 const sensitiveWords = ref<string>('');
 const prohibitedWords = ref<string>('');
@@ -191,10 +200,10 @@ const bubbleTimelineEnabled = ref<boolean>(false);
 const bubbleTimeline = ref<string>('');
 
 async function init() {
-	const meta = await misskeyApi('admin/meta');
 	enableRegistration.value = !meta.disableRegistration;
 	disableRegistrationWhenInactive.value = meta.disableRegistrationWhenInactive;
 	disablePublicNoteWhenInactive.value = meta.disablePublicNoteWhenInactive;
+	moderatorInactivityLimitDays.value = meta.moderatorInactivityLimitDays;
 	emailRequiredForSignup.value = meta.emailRequiredForSignup;
 	sensitiveWords.value = meta.sensitiveWords.join('\n');
 	prohibitedWords.value = meta.prohibitedWords.join('\n');
@@ -238,6 +247,17 @@ function onChange_disableRegistrationWhenInactive(value: boolean) {
 function onChange_disablePublicNoteWhenInactive(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		disablePublicNoteWhenInactive: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+async function onChange_moderatorInactivityLimitDays() {
+	if (moderatorInactivityLimitDays.value === 0) moderatorInactivityLimitDays.value = 1;
+	else if (moderatorInactivityLimitDays.value > 30) moderatorInactivityLimitDays.value = 30;
+
+	await os.apiWithDialog('admin/update-meta', {
+		moderatorInactivityLimitDays: moderatorInactivityLimitDays.value,
 	}).then(() => {
 		fetchInstance(true);
 	});

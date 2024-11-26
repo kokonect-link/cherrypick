@@ -625,6 +625,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			moderatorInactivityLimitDays: {
+				type: 'number',
+				optional: false, nullable: false,
+			},
 			bubbleInstances: {
 				type: 'array',
 				optional: false, nullable: false,
@@ -805,6 +809,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				customSplashText: instance.customSplashText,
 				disableRegistrationWhenInactive: instance.disableRegistrationWhenInactive,
 				disablePublicNoteWhenInactive: instance.disablePublicNoteWhenInactive,
+				moderatorInactivityLimitDays: instance.moderatorInactivityLimitDays,
 				bubbleInstances: instance.bubbleInstances,
 			};
 		});
