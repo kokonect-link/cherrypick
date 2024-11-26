@@ -109,7 +109,7 @@ function onClick(ev: MouseEvent) {
 		}] : []),
 		);
 
-		if (props.host && $i && ($i.isAdmin ?? $i.policies.canManageCustomEmojis)) {
+		if (props.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis)) {
 			menuItems.push({
 				text: i18n.ts.import,
 				icon: 'ti ti-plus',
