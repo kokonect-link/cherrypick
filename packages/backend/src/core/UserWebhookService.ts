@@ -10,8 +10,8 @@ import { MiWebhook, WebhookEventTypes } from '@/models/Webhook.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import { GlobalEvents } from '@/core/GlobalEventService.js';
-import type { OnApplicationShutdown } from '@nestjs/common';
 import type { Packed } from '@/misc/json-schema.js';
+import type { OnApplicationShutdown } from '@nestjs/common';
 
 export type UserWebhookPayload<T extends WebhookEventTypes> =
 	T extends 'note' | 'reply' | 'renote' |'mention' ? {

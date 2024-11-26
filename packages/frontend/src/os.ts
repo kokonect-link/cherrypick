@@ -11,6 +11,7 @@ import * as Misskey from 'cherrypick-js';
 import type { ComponentProps as CP } from 'vue-component-type-helpers';
 import type { Form, GetFormResultType } from '@/scripts/form.js';
 import type { MenuItem } from '@/types/menu.js';
+import type { PostFormProps } from '@/types/post-form.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
@@ -30,7 +31,6 @@ import { pleaseLogin } from '@/scripts/please-login.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import { getHTMLElementOrNull } from '@/scripts/get-dom-node-or-null.js';
 import { focusParent } from '@/scripts/focus.js';
-import type { PostFormProps } from '@/types/post-form.js';
 
 export const openingWindowsCount = ref(0);
 
