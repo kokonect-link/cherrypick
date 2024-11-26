@@ -43,6 +43,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Enhance: 외부 사이트 이동 경고 표시 개선 (kokonect-link/cherrypick#533)
   - 신뢰할 수 있는 도메인 목록을 편집할 수 있음
   - 경고를 표시하지 않도록 설정할 수 있음
+- Enhance: Bluesky 게시물 임베디드 미리보기 지원 (misskey-dev/misskey#14933)
 - Fix: 아바타 장식에서 가이드라인이 표시되지 않음
 - Fix: 설정 페이지에서 글자수가 긴 일부 항목의 디자인이 잘못 표시될 수 있음
 - Fix: 서브 노트의 동작 버튼이 정상적으로 작동하지 않을 수 있음 (kokonect-link/cherrypick#536)
