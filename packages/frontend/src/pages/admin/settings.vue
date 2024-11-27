@@ -259,9 +259,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<div class="_gaps_m">
 						<MkInput v-model="emailToReceiveAbuseReportForm.state.emailToReceiveAbuseReport" type="email">
-							<span v-if="emailToReceiveAbuseReportForm.modifiedStates.emailToReceiveAbuseReport" class="_modified">{{ i18n.ts.modified }}</span>
 							<template #prefix><i class="ti ti-mail"></i></template>
-							<template #label>{{ i18n.ts.emailToReceiveAbuseReport }}</template>
+							<template #label>{{ i18n.ts.emailToReceiveAbuseReport }} <span v-if="emailToReceiveAbuseReportForm.modifiedStates.emailToReceiveAbuseReport" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>{{ i18n.ts.emailToReceiveAbuseReportCaption }}</template>
 						</MkInput>
 					</div>
