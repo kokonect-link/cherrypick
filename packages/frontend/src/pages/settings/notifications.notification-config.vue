@@ -28,7 +28,7 @@ const notificationConfigTypes = [
 	'mutualFollow',
 	'followingOrFollower',
 	'list',
-	'never'
+	'never',
 ] as const;
 
 export type NotificationConfig = {

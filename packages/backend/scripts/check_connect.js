@@ -48,7 +48,7 @@ const promises = Array
 	]))
 	.map(connectToRedis)
 	.concat([
-		connectToPostgres()
+		connectToPostgres(),
 	]);
 
-await Promise.allSettled(promises);
+await Promise.all(promises);
