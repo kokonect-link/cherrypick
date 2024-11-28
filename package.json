@@ -1,11 +1,11 @@
 {
 	"name": "cherrypick",
-	"version": "4.14.0-alpha.3",
+	"version": "1.0.1-4.14.0-alpha.3",
 	"basedMisskeyVersion": "2024.11.0-beta.4",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/kokonect-link/cherrypick.git"
+		"url": "https://github.com/MSNIC/thiskey.git"
 	},
 	"packageManager": "pnpm@9.6.0",
 	"workspaces": [
