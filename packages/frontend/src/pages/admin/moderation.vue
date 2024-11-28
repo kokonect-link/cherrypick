@@ -10,9 +10,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
 			<FormSuspense :p="init">
 				<div class="_gaps_m">
-					<MkSwitch v-model="enableRegistration" @change="onChange_enableRegistration">
-						<template #label>{{ i18n.ts.enableRegistration }}</template>
-						<template v-if="(enableRegistration && disableRegistrationWhenInactive) || disableRegistrationWhenInactive" #caption>{{ i18n.ts._serverSettings.thisSettingWillAutomaticallyOffWhenModeratorsInactive }}</template>
+					<MkSwitch :modelValue="enableRegistration" @update:modelValue="onChange_enableRegistration">
+						<template #label>{{ i18n.ts._serverSettings.openRegistration }}</template>
+						<template #caption>
+							<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._serverSettings.openRegistrationWarning }}</div>
+							<div v-if="(enableRegistration && disableRegistrationWhenInactive) || disableRegistrationWhenInactive" style="margin-top: 8px;">{{ i18n.ts._serverSettings.thisSettingWillAutomaticallyOffWhenModeratorsInactive }}</div>
+						</template>
 					</MkSwitch>
 
 					<MkSwitch v-model="disableRegistrationWhenInactive" :disabled="!enableRegistration" @change="onChange_disableRegistrationWhenInactive">
@@ -22,6 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSwitch v-model="disablePublicNoteWhenInactive" @change="onChange_disablePublicNoteWhenInactive">
 						<template #label>{{ i18n.ts.disablePublicNoteWhenInactive }}</template>
 					</MkSwitch>
+
+					<MkInput v-if="disableRegistrationWhenInactive || disablePublicNoteWhenInactive" v-model="moderatorInactivityLimitDays" type="number" :min="1" :max="30">
+						<template #label>{{ i18n.ts.expirationDate + `(${i18n.ts._time.day})` }}</template>
+					</MkInput>
+
+					<MkButton v-if="meta.moderatorInactivityLimitDays !== moderatorInactivityLimitDays" primary rounded @click="onChange_moderatorInactivityLimitDays"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 
 					<MkSwitch v-model="emailRequiredForSignup" @change="onChange_emailRequiredForSignup">
 						<template #label>{{ i18n.ts.emailRequiredForSignup }}</template>
@@ -136,6 +145,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkButton primary @click="save_blockedHosts">{{ i18n.ts.save }}</MkButton>
 						</div>
 					</MkFolder>
+
+					<MkFolder>
+						<template #icon><i class="ti ti-droplet"></i></template>
+						<template #label>{{ i18n.ts.bubbleTimeline }}</template>
+
+						<div class="_gaps">
+							<MkTextarea v-if="bubbleTimelineEnabled" v-model="bubbleTimeline">
+								<template #caption>{{ i18n.ts.bubbleInstancesDescription }}</template>
+							</MkTextarea>
+							<MkButton primary @click="save_bubbleTimeline">{{ i18n.ts.save }}</MkButton>
+						</div>
+					</MkFolder>
 				</div>
 			</FormSuspense>
 		</MkSpacer>
@@ -159,9 +180,12 @@ import MkButton from '@/components/MkButton.vue';
 import FormLink from '@/components/form/link.vue';
 import MkFolder from '@/components/MkFolder.vue';
 
+const meta = await misskeyApi('admin/meta');
+
 const enableRegistration = ref<boolean>(false);
 const disableRegistrationWhenInactive = ref<boolean>(false);
 const disablePublicNoteWhenInactive = ref<boolean>(false);
+const moderatorInactivityLimitDays = ref<number>(7);
 const emailRequiredForSignup = ref<boolean>(false);
 const sensitiveWords = ref<string>('');
 const prohibitedWords = ref<string>('');
@@ -172,12 +196,14 @@ const blockedHosts = ref<string>('');
 const silencedHosts = ref<string>('');
 const mediaSilencedHosts = ref<string>('');
 const trustedLinkUrlPatterns = ref<string>('');
+const bubbleTimelineEnabled = ref<boolean>(false);
+const bubbleTimeline = ref<string>('');
 
 async function init() {
-	const meta = await misskeyApi('admin/meta');
 	enableRegistration.value = !meta.disableRegistration;
 	disableRegistrationWhenInactive.value = meta.disableRegistrationWhenInactive;
 	disablePublicNoteWhenInactive.value = meta.disablePublicNoteWhenInactive;
+	moderatorInactivityLimitDays.value = meta.moderatorInactivityLimitDays;
 	emailRequiredForSignup.value = meta.emailRequiredForSignup;
 	sensitiveWords.value = meta.sensitiveWords.join('\n');
 	prohibitedWords.value = meta.prohibitedWords.join('\n');
@@ -188,9 +214,21 @@ async function init() {
 	silencedHosts.value = meta.silencedHosts?.join('\n') ?? '';
 	mediaSilencedHosts.value = meta.mediaSilencedHosts.join('\n');
 	trustedLinkUrlPatterns.value = meta.trustedLinkUrlPatterns.join('\n');
+	bubbleTimelineEnabled.value = meta.policies.btlAvailable;
+	bubbleTimeline.value = meta.bubbleInstances.join('\n');
 }
 
-function onChange_enableRegistration(value: boolean) {
+async function onChange_enableRegistration(value: boolean) {
+	if (value) {
+		const { canceled } = await os.confirm({
+			type: 'warning',
+			text: i18n.ts.acknowledgeNotesAndEnable,
+		});
+		if (canceled) return;
+	}
+
+	enableRegistration.value = value;
+
 	os.apiWithDialog('admin/update-meta', {
 		disableRegistration: !value,
 	}).then(() => {
@@ -209,6 +247,17 @@ function onChange_disableRegistrationWhenInactive(value: boolean) {
 function onChange_disablePublicNoteWhenInactive(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		disablePublicNoteWhenInactive: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+async function onChange_moderatorInactivityLimitDays() {
+	if (moderatorInactivityLimitDays.value === 0) moderatorInactivityLimitDays.value = 1;
+	else if (moderatorInactivityLimitDays.value > 30) moderatorInactivityLimitDays.value = 30;
+
+	await os.apiWithDialog('admin/update-meta', {
+		moderatorInactivityLimitDays: moderatorInactivityLimitDays.value,
 	}).then(() => {
 		fetchInstance(true);
 	});
@@ -289,6 +338,14 @@ function save_silencedHosts() {
 function save_mediaSilencedHosts() {
 	os.apiWithDialog('admin/update-meta', {
 		mediaSilencedHosts: mediaSilencedHosts.value.split('\n') || [],
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function save_bubbleTimeline() {
+	os.apiWithDialog('admin/update-meta', {
+		bubbleInstances: bubbleTimeline.value.split('\n') || [],
 	}).then(() => {
 		fetchInstance(true);
 	});

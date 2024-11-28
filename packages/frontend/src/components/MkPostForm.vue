@@ -67,10 +67,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
-	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown">
+	<input v-show="useCw" ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown" @keyup="onKeyup" @compositionend="onCompositionEnd">
 	<div :class="[$style.textOuter, { [$style.withCw]: useCw }]">
 		<div v-if="channel" :class="$style.colorBar" :style="{ background: channel.color }"></div>
-		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :readonly="textAreaReadOnly" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
+		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :readonly="textAreaReadOnly" :placeholder="placeholder" data-cy-post-form-text @keydown="onKeydown" @keyup="onKeyup" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
 	</div>
 	<input v-show="withHashtags" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
@@ -113,6 +113,7 @@ import { toASCII } from 'punycode/';
 import { host, url } from '@@/js/config.js';
 import { erase, unique } from '@@/js/array.js';
 import type { MenuItem } from '@/types/menu.js';
+import type { PostFormProps } from '@/types/post-form.js';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
@@ -146,27 +147,11 @@ const $i = signinRequired();
 
 const modal = inject('modal');
 
-const props = withDefaults(defineProps<{
-	reply?: Misskey.entities.Note;
-	renote?: Misskey.entities.Note;
-	channel?: Misskey.entities.Channel; // TODO
-	mention?: Misskey.entities.User;
-	specified?: Misskey.entities.UserDetailed;
-	initialText?: string;
-	initialCw?: string;
-	initialVisibility?: (typeof Misskey.noteVisibilities)[number];
-	initialFiles?: Misskey.entities.DriveFile[];
-	initialLocalOnly?: boolean;
-	initialVisibleUsers?: Misskey.entities.UserDetailed[];
-	initialNote?: Misskey.entities.Note & {
-		isSchedule?: boolean,
-	};
-	instant?: boolean;
+const props = withDefaults(defineProps<PostFormProps & {
 	fixed?: boolean;
 	autofocus?: boolean;
 	freezeAfterPosted?: boolean;
 	mock?: boolean;
-	updateMode?: boolean;
 }>(), {
 	initialVisibleUsers: () => [],
 	autofocus: true,
@@ -225,6 +210,7 @@ const imeText = ref('');
 const showingOptions = ref(false);
 const disableRightClick = ref(false);
 const textAreaReadOnly = ref(false);
+const justEndedComposition = ref(false);
 const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
 const scheduleNote = ref<{
 	scheduledAt: number | null;
@@ -641,7 +627,13 @@ function onKeydown(ev: KeyboardEvent) {
 		if ((ev.ctrlKey || ev.metaKey) && ev.altKey) localOnly.value = !localOnly.value;
 	}
 
-	if (ev.key === 'Escape') emit('esc');
+	// justEndedComposition.value is for Safari, which keyDown occurs after compositionend.
+	// ev.isComposing is for another browsers.
+	if (ev.key === 'Escape' && !justEndedComposition.value && !ev.isComposing) emit('esc');
+}
+
+function onKeyup(ev: KeyboardEvent) {
+	justEndedComposition.value = false;
 }
 
 function onCompositionUpdate(ev: CompositionEvent) {
@@ -650,6 +642,7 @@ function onCompositionUpdate(ev: CompositionEvent) {
 
 function onCompositionEnd(ev: CompositionEvent) {
 	imeText.value = '';
+	justEndedComposition.value = true;
 }
 
 async function onPaste(ev: ClipboardEvent) {
@@ -1066,8 +1059,8 @@ function showActions(ev: MouseEvent) {
 			action.handler({
 				text: text.value,
 				cw: cw.value,
-			}, (key, value: any) => {
-				if (typeof key !== 'string') return;
+			}, (key, value) => {
+				if (typeof key !== 'string' || typeof value !== 'string') return;
 				if (key === 'text') { text.value = value; }
 				if (key === 'cw') { useCw.value = value !== null; cw.value = value; }
 			});
@@ -1338,7 +1331,7 @@ defineExpose({
 	&:focus-visible {
 		outline: none;
 
-		.submitInner {
+		> .submitInner {
 			outline: 2px solid var(--MI_THEME-fgOnAccent);
 			outline-offset: -4px;
 		}
@@ -1353,13 +1346,13 @@ defineExpose({
 	}
 
 	&:not(:disabled):hover {
-		> .inner {
+		> .submitInner {
 			background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
 		}
 	}
 
 	&:not(:disabled):active {
-		> .inner {
+		> .submitInner {
 			background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
 		}
 	}

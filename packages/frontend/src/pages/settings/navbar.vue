@@ -178,10 +178,6 @@ function learnMoreBottomNavbar() {
 	});
 }
 
-watch([menuDisplay, bannerDisplay], async () => {
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
-});
-
 const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);

@@ -285,6 +285,10 @@ export const packedMetaLiteSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		moderatorInactivityLimitDays: {
+			type: 'number',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
 

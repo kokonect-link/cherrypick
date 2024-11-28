@@ -210,7 +210,7 @@ const collapsed = ref((isLong && defaultStore.state.collapseLongNoteContent) || 
 
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
-	url: `https://${host}/notes/${props.note.value.id}`,
+	url: `https://${host}/notes/${props.note.id}`,
 }));
 
 const collapseLabel = computed(() => {
@@ -261,7 +261,7 @@ watch(() => viewTextSource.value, () => {
 });
 
 function renote() {
-	pleaseLogin(undefined, pleaseLoginContext.value);
+	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 
 	const { menu } = getRenoteMenu({ note: note.value, renoteButton, mock: props.mock });
@@ -269,14 +269,14 @@ function renote() {
 }
 
 async function renoteOnly() {
-	pleaseLogin(undefined, pleaseLoginContext.value);
+	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 
 	await getRenoteOnly({ note: note.value, renoteButton, mock: props.mock });
 }
 
 function quote(): void {
-	pleaseLogin(undefined, pleaseLoginContext.value);
+	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	if (props.mock) {
 		return;
 	}
@@ -302,7 +302,7 @@ function quote(): void {
 }
 
 function reply(): void {
-	pleaseLogin(undefined, pleaseLoginContext.value);
+	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	if (props.mock) {
 		return;
 	}
@@ -315,7 +315,7 @@ function reply(): void {
 }
 
 function react(): void {
-	pleaseLogin(undefined, pleaseLoginContext.value);
+	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 	if (props.note.reactionAcceptance === 'likeOnly') {
 		sound.playMisskeySfx('reaction');
@@ -385,7 +385,7 @@ async function toggleReaction(reaction) {
 }
 
 function heartReact(): void {
-	pleaseLogin(undefined, pleaseLoginContext.value);
+	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 
 	sound.playMisskeySfx('reaction');

@@ -37,11 +37,41 @@ SPDX-License-Identifier: AGPL-3.0-only
 </div>
 </template>
 
-<script lang="ts" setup>
-import { } from 'vue';
+<script lang="ts">
+export type SuperMenuDef = {
+	title?: string;
+	items: ({
+		type: 'a';
+		href: string;
+		target?: string;
+		icon?: string;
+		text: string;
+		danger?: boolean;
+		active?: boolean;
+		indicated?: boolean;
+	} | {
+		type: 'button';
+		icon?: string;
+		text: string;
+		danger?: boolean;
+		active?: boolean;
+		action: (ev: MouseEvent) => void;
+		indicated?: boolean;
+	} | {
+		type: 'link';
+		to: string;
+		icon?: string;
+		text: string;
+		danger?: boolean;
+		active?: boolean;
+		indicated?: boolean;
+	})[];
+};
+</script>
 
+<script lang="ts" setup>
 defineProps<{
-	def: any[];
+	def: SuperMenuDef[];
 	grid?: boolean;
 }>();
 </script>
@@ -160,7 +190,7 @@ defineProps<{
 					}
 
 					> span {
-						display: initial;
+						display: contents;
 
 						> .icon {
 							display: grid;

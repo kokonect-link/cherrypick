@@ -203,7 +203,18 @@ function fetchAccount(token: string, id?: string, forceShowDialog?: boolean): Pr
 	});
 }
 
-export function updateAccount(accountData: Partial<Account>) {
+export function updateAccount(accountData: Account) {
+	if (!$i) return;
+	for (const key of Object.keys($i)) {
+		delete $i[key];
+	}
+	for (const [key, value] of Object.entries(accountData)) {
+		$i[key] = value;
+	}
+	miLocalStorage.setItem('account', JSON.stringify($i));
+}
+
+export function updateAccountPartial(accountData: Partial<Account>) {
 	if (!$i) return;
 	for (const [key, value] of Object.entries(accountData)) {
 		$i[key] = value;
@@ -262,26 +273,6 @@ export async function openAccountMenu(opts: {
 	onChoose?: (account: Misskey.entities.UserDetailed) => void;
 }, ev: MouseEvent) {
 	if (!$i) return;
-
-	function showSigninDialog() {
-		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {}, {
-			done: (res: Misskey.entities.SigninFlowResponse & { finished: true }) => {
-				addAccount(res.id, res.i);
-				success();
-			},
-			closed: () => dispose(),
-		});
-	}
-
-	function createAccount() {
-		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSignupDialog.vue')), {}, {
-			done: (res: Misskey.entities.SignupResponse) => {
-				addAccount(res.id, res.token);
-				switchAccountWithToken(res.token);
-			},
-			closed: () => dispose(),
-		});
-	}
 
 	async function switchAccount(account: Misskey.entities.UserDetailed) {
 		const storedAccounts = await getAccounts();
@@ -351,10 +342,22 @@ export async function openAccountMenu(opts: {
 			text: i18n.ts.addAccount,
 			children: [{
 				text: i18n.ts.existingAccount,
-				action: () => { showSigninDialog(); },
+				action: () => {
+					getAccountWithSigninDialog().then(res => {
+						if (res != null) {
+							success();
+						}
+					});
+				},
 			}, {
 				text: i18n.ts.createAccount,
-				action: () => { createAccount(); },
+				action: () => {
+					getAccountWithSignupDialog().then(res => {
+						if (res != null) {
+							switchAccountWithToken(res.token);
+						}
+					});
+				},
 			}],
 		}, {
 			type: 'link',
@@ -401,6 +404,40 @@ export async function openAccountMenu(opts: {
 
 	popupMenu(menuItems, ev.currentTarget ?? ev.target, {
 		align: 'left',
+	});
+}
+
+export function getAccountWithSigninDialog(): Promise<{ id: string, token: string } | null> {
+	return new Promise((resolve) => {
+		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {}, {
+			done: async (res: Misskey.entities.SigninFlowResponse & { finished: true }) => {
+				await addAccount(res.id, res.i);
+				resolve({ id: res.id, token: res.i });
+			},
+			cancelled: () => {
+				resolve(null);
+			},
+			closed: () => {
+				dispose();
+			},
+		});
+	});
+}
+
+export function getAccountWithSignupDialog(): Promise<{ id: string, token: string } | null> {
+	return new Promise((resolve) => {
+		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSignupDialog.vue')), {}, {
+			done: async (res: Misskey.entities.SignupResponse) => {
+				await addAccount(res.id, res.token);
+				resolve({ id: res.id, token: res.token });
+			},
+			cancelled: () => {
+				resolve(null);
+			},
+			closed: () => {
+				dispose();
+			},
+		});
 	});
 }
 

@@ -8,13 +8,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import type { IActivity } from '@/core/activitypub/type.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
-import type { MiWebhook, webhookEventTypes } from '@/models/Webhook.js';
+import type { MiWebhook, WebhookEventTypes } from '@/models/Webhook.js';
 import type { MiSystemWebhook, SystemWebhookEventType } from '@/models/SystemWebhook.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js';
 import { bindThis } from '@/decorators.js';
 import type { Antenna } from '@/server/api/endpoints/i/import-antennas.js';
 import { ApRequestCreator } from '@/core/activitypub/ApRequestService.js';
+import { type SystemWebhookPayload } from '@/core/SystemWebhookService.js';
+import { type UserWebhookPayload } from './UserWebhookService.js';
 import type {
 	DbJobData,
 	DeliverJobData,
@@ -31,8 +33,8 @@ import type {
 	ObjectStorageQueue,
 	RelationshipQueue,
 	SystemQueue,
-	UserWebhookDeliverQueue,
 	SystemWebhookDeliverQueue,
+	UserWebhookDeliverQueue,
 	ScheduledNoteDeleteQueue,
 	ScheduleNotePostQueue,
 } from './QueueModule.js';
@@ -478,10 +480,10 @@ export class QueueService {
 	 * @see UserWebhookDeliverProcessorService
 	 */
 	@bindThis
-	public userWebhookDeliver(
+	public userWebhookDeliver<T extends WebhookEventTypes>(
 		webhook: MiWebhook,
-		type: typeof webhookEventTypes[number],
-		content: unknown,
+		type: T,
+		content: UserWebhookPayload<T>,
 		opts?: { attempts?: number },
 	) {
 		const data: UserWebhookDeliverJobData = {
@@ -510,10 +512,10 @@ export class QueueService {
 	 * @see SystemWebhookDeliverProcessorService
 	 */
 	@bindThis
-	public systemWebhookDeliver(
+	public systemWebhookDeliver<T extends SystemWebhookEventType>(
 		webhook: MiSystemWebhook,
-		type: SystemWebhookEventType,
-		content: unknown,
+		type: T,
+		content: SystemWebhookPayload<T>,
 		opts?: { attempts?: number },
 	) {
 		const data: SystemWebhookDeliverJobData = {

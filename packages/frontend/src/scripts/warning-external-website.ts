@@ -24,7 +24,7 @@ export async function warningExternalWebsite(ev: MouseEvent, url: string) {
 	});
 	const isTrustedByUser = defaultStore.reactiveState.trustedDomains.value.includes(domain);
 
-	if (!self && !isTrustedByInstance && !isTrustedByUser) {
+	if (!self && !isTrustedByInstance && !isTrustedByUser && defaultStore.state.externalNavigationWarning) {
 		ev.preventDefault();
 		ev.stopPropagation();
 
