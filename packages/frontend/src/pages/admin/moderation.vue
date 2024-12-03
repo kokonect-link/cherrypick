@@ -151,7 +151,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.bubbleTimeline }}</template>
 
 						<div class="_gaps">
-							<MkTextarea v-if="bubbleTimelineEnabled" v-model="bubbleTimeline">
+							<MkTextarea v-model="bubbleTimeline">
 								<template #caption>{{ i18n.ts.bubbleInstancesDescription }}</template>
 							</MkTextarea>
 							<MkButton primary @click="save_bubbleTimeline">{{ i18n.ts.save }}</MkButton>
@@ -196,7 +196,6 @@ const blockedHosts = ref<string>('');
 const silencedHosts = ref<string>('');
 const mediaSilencedHosts = ref<string>('');
 const trustedLinkUrlPatterns = ref<string>('');
-const bubbleTimelineEnabled = ref<boolean>(false);
 const bubbleTimeline = ref<string>('');
 
 async function init() {
@@ -214,7 +213,6 @@ async function init() {
 	silencedHosts.value = meta.silencedHosts?.join('\n') ?? '';
 	mediaSilencedHosts.value = meta.mediaSilencedHosts.join('\n');
 	trustedLinkUrlPatterns.value = meta.trustedLinkUrlPatterns.join('\n');
-	bubbleTimelineEnabled.value = meta.policies.btlAvailable;
 	bubbleTimeline.value = meta.bubbleInstances.join('\n');
 }
 
