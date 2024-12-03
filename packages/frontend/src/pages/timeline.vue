@@ -188,7 +188,7 @@ const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
 
 watch(src, () => {
 	queue.value = 0;
-	queueUpdated(queue);
+	queueUpdated(queue.value);
 });
 
 watch(enableWidgetsArea, (x) => {
