@@ -2823,12 +2823,19 @@ _notification:
     achievementEarned: "도전 과제 획득"
     exportCompleted: "내보내기를 완료함"
     login: "로그인"
+    scheduleNote: "게시가 예약된 노트의 게시가 실패함"
     test: "알림 테스트"
     app: "연동된 앱을 통한 알림"
   _actions:
     followBack: "팔로우"
     reply: "답글"
     renote: "리노트"
+  _scheduleNote:
+    unknown: "알 수 없는 오류가 발생했어요"
+    renoteTargetNotFound: "인용할 대상이 없어요"
+    channelTargetNotFound: "해당 채널이 존재하지 않아요"
+    replyTargetNotFound: "답장할 대상이 없어요"
+    invalidFilesCount: "첨부 파일이 없어요"
 _deck:
   alwaysShowMainColumn: "메인 칼럼 항상 표시"
   columnAlign: "칼럼 정렬"

@@ -9,6 +9,7 @@ import { bindThis } from '@/decorators.js';
 import { NoteCreateService } from '@/core/NoteCreateService.js';
 import type { ChannelsRepository, DriveFilesRepository, MiDriveFile, NoteScheduleRepository, NotesRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
+import { NotificationService } from '@/core/NotificationService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { ScheduleNotePostJobData } from '../types.js';
@@ -32,6 +33,7 @@ export class ScheduleNotePostProcessorService {
 
 			private noteCreateService: NoteCreateService,
 			private queueLoggerService: QueueLoggerService,
+			private notificationService: NotificationService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('schedule-note-post');
 	}
@@ -72,6 +74,25 @@ export class ScheduleNotePostProcessorService {
 					//キューに積んだときは有った物が消滅してたら予約投稿をキャンセルする
 					this.logger.warn('cancel schedule note');
 					await this.noteScheduleRepository.remove(data);
+
+					if (data.userId && me) {	//ユーザーが特定できる場合に失敗を通知
+						let errorType = 'unknown';
+						if (note.renote && !renote) {
+							errorType = 'renoteTargetNotFound';
+						}
+						if (note.reply && !reply) {
+							errorType = 'replyTargetNotFound';
+						}
+						if (note.channel && !channel) {
+							errorType = 'channelTargetNotFound';
+						}
+						if (note.files.length !== files.length) {
+							errorType = 'invalidFilesCount';
+						}
+						this.notificationService.createNotification(data.userId, 'scheduleNote', {
+							errorType,
+						});
+					}
 					return;
 				}
 				await this.noteCreateService.create(me, {

@@ -2895,6 +2895,7 @@ _notification:
     achievementEarned: "実績の獲得"
     exportCompleted: "エクスポートが完了した"
     login: "ログイン"
+    scheduleNote: "予約投稿に失敗"
     test: "通知のテスト"
     app: "連携アプリからの通知"
 
@@ -2902,6 +2903,13 @@ _notification:
     followBack: "フォローバック"
     reply: "返信"
     renote: "リノート"
+
+  _scheduleNote:
+    unknown: "原因は不明です"
+    renoteTargetNotFound: "引用元がありません"
+    channelTargetNotFound: "対象のチャンネルがありません"
+    replyTargetNotFound: "返信先がありません"
+    invalidFilesCount: "添付ファイルがありません"
 
 _deck:
   alwaysShowMainColumn: "常にメインカラムを表示"

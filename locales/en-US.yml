@@ -2820,12 +2820,19 @@ _notification:
     achievementEarned: "Achievement unlocked"
     exportCompleted: "The export has been completed"
     login: "Sign In"
+    scheduleNote: "Scheduled note posting failed"
     test: "Notification test"
     app: "Notifications from linked apps"
   _actions:
     followBack: "followed you back"
     reply: "Reply"
     renote: "Renote"
+  _scheduleNote:
+    unknown: "The cause is unknown"
+    renoteTargetNotFound: "Renote target note not found"
+    channelTargetNotFound: "Channel not found"
+    replyTargetNotFound: "Reply target note not found"
+    invalidFilesCount: "No attachments"
 _deck:
   alwaysShowMainColumn: "Always show main column"
   columnAlign: "Align columns"

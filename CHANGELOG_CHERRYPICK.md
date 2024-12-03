@@ -47,6 +47,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024110](CHANG
   - 기간은 최소 `1`일부터 최대 `30`일까지 설정할 수 있습니다.
     - `0`일로 설정하면 최소 기간인 `1`일로 설정되며, `30`일을 초과하는 값을 입력하면 최대 기간인 `30`일로 설정됩니다.
   - 여기서 설정된 기간은 `초대제로 전환` 옵션과 `공개 노트 허용` 옵션 모두에 적용됩니다.
+- Enhance: 예약된 노트 게시에 실패할 경우 사용자에게 알림 ([penginn-net/kokonect@a0e47980](https://github.com/penginn-net/kokonect/commit/a0e47980470b49e79e84ff3b7ccaf2b4502928c8))
 
 ### Client
 - Enhance: 미디어 그리드 레이아옷 조정
