@@ -76,7 +76,7 @@ const otherNavItemIndicated = computed<boolean>(() => {
 const controlPanelIndicated = ref(false);
 const releasesCherryPick = ref(null);
 
-if ($i.isAdmin ?? $i.isModerator) {
+if ($i && ($i.isAdmin ?? $i.isModerator)) {
 	misskeyApi('admin/abuse-user-reports', {
 		state: 'unresolved',
 		limit: 1,
