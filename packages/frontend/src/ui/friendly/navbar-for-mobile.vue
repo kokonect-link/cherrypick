@@ -77,7 +77,7 @@ const otherMenuItemIndicated = computed(() => {
 });
 const controlPanelIndicated = ref(false);
 const releasesCherryPick = ref(null);
-const bannerDisplay = ref('');
+const bannerDisplay = ref(defaultStore.state.bannerDisplay);
 
 if ($i && ($i.isAdmin ?? $i.isModerator)) {
 	misskeyApi('admin/abuse-user-reports', {

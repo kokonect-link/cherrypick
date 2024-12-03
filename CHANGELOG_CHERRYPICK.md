@@ -59,6 +59,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024110](CHANG
 - Fix: 아바타 장식에서 가이드라인이 표시되지 않음
 - Fix: 설정 페이지에서 글자수가 긴 일부 항목의 디자인이 잘못 표시될 수 있음
 - Fix: 서브 노트의 동작 버튼이 정상적으로 작동하지 않을 수 있음 (kokonect-link/cherrypick#536)
+- Fix: 네비게이션 바에 배너 이미지가 표시되지 않을 수 있음 (kokonect-link/cherrypick#545)
 
 ### Server
 - Fix: 그룹 초대 알림을 수락하거나 거절하면 알림 목록을 볼 수 없음
