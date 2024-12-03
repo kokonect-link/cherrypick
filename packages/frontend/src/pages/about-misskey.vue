@@ -474,6 +474,7 @@ const patronsWithMisskey = [
 	'こまつぶり',
 	'まゆつな空高',
 	'asata',
+	'ruru',
 ];
 
 let isKokonect = false;
