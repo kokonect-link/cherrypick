@@ -37,7 +37,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</transition>
 
 				<div :class="$style.tl">
-					<div v-if="!isAvailableBasicTimeline(src)" :class="$style.disabled">
+					<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="$style.disabled">
 						<p :class="$style.disabledTitle">
 							<i class="ti ti-circle-minus"></i>
 							{{ i18n.ts._disabledTimeline.title }}
