@@ -83,6 +83,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				'deepl',
 				'google_no_api',
 				'ctav3',
+				'Libretranslate',
 			];
 
 			if (this.serverSettings.translatorType == null || !translatorServices.includes(this.serverSettings.translatorType)) {
