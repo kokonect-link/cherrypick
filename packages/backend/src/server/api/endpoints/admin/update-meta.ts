@@ -107,6 +107,8 @@ export const paramDef = {
 		ctav3Location: { type: 'string', nullable: true },
 		ctav3Model: { type: 'string', nullable: true },
 		ctav3Glossary: { type: 'string', nullable: true },
+		libreTranslateEndPoint: { type: 'string', nullable: true },
+		libreTranslateApiKey: { type: 'string', nullable: true },
 		enableEmail: { type: 'boolean' },
 		email: { type: 'string', nullable: true },
 		smtpSecure: { type: 'boolean' },
@@ -655,6 +657,14 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.ctav3Glossary !== undefined) {
 				set.ctav3Glossary = ps.ctav3Glossary;
+			}
+
+			if (ps.libreTranslateEndPoint !== undefined) {
+				set.libreTranslateEndPoint = ps.libreTranslateEndPoint;
+			}
+
+			if (ps.libreTranslateApiKey !== undefined) {
+				set.libreTranslateApiKey = ps.libreTranslateApiKey;
 			}
 
 			if (ps.enableIpLogging !== undefined) {
