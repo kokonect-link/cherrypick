@@ -474,7 +474,7 @@ export const meta = {
 			},
 			libreTranslateApiKey: {
 				type: 'string',
-				optional: false, nullable: false,
+				optional: false, nullable: true,
 			},
 			defaultDarkTheme: {
 				type: 'string',
