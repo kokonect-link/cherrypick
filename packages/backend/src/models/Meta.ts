@@ -393,6 +393,18 @@ export class MiMeta {
 		length: 1024,
 		nullable: true,
 	})
+	public libreTranslateEndPoint: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public libreTranslateApiKey: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
 	public ctav3Model: string | null;
 
 	@Column('varchar', {
