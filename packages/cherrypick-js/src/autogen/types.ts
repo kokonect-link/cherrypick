@@ -5623,7 +5623,7 @@ export type operations = {
             deeplAuthKey: string | null;
             deeplIsPro: boolean;
             libreTranslateEndPoint: string | null;
-            libreTranslateApiKey: boolean;
+            libreTranslateApiKey: string;
             defaultDarkTheme: string | null;
             defaultLightTheme: string | null;
             description: string | null;

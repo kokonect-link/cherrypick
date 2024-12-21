@@ -473,7 +473,7 @@ export const meta = {
 				optional: false, nullable: true,
 			},
 			libreTranslateApiKey: {
-				type: 'boolean',
+				type: 'string',
 				optional: false, nullable: false,
 			},
 			defaultDarkTheme: {
