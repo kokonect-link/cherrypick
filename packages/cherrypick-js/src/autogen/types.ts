@@ -5622,6 +5622,8 @@ export type operations = {
             backgroundImageUrl: string | null;
             deeplAuthKey: string | null;
             deeplIsPro: boolean;
+            libreTranslateEndPoint: string | null;
+            libreTranslateApiKey: boolean;
             defaultDarkTheme: string | null;
             defaultLightTheme: string | null;
             description: string | null;
@@ -10401,6 +10403,8 @@ export type operations = {
           ctav3Location?: string | null;
           ctav3Model?: string | null;
           ctav3Glossary?: string | null;
+          libreTranslateEndPoint?: string | null;
+          libreTranslateApiKey?: string | null;
           enableEmail?: boolean;
           email?: string | null;
           smtpSecure?: boolean;
