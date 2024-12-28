@@ -3170,3 +3170,17 @@ _scheduledNoteDelete:
 _getQRCode:
   title: "Scan QR Code"
   description: "Can scan or share the QR code below."
+
+_searchSite:
+  title: "Search Engine"
+  description: "Change search engine that used in search MFM."
+  google: "Google"
+  bing: "Bing"
+  yahoo: "Yahoo"
+  baidu: "Baidu"
+  naver: "NAVER"
+  duckduckgo: "DuckDuckGo"
+  other: "Other"
+  otherDescription: "Use Other search engine"
+  query: "Query"
+  queryDescription: "Input query scheme for search engine. For example, If https://www.ecosia.org/search?q=test, input 'q'."

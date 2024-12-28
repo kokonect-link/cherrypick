@@ -28,7 +28,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSection>
 		<div class="_gaps_s">
 			<MkSwitch v-model="showFixedPostForm">{{ i18n.ts.showFixedPostForm }}</MkSwitch>
-			<MkSwitch v-model="showFixedPostFormInChannel">{{ i18n.ts.showFixedPostFormInChannel }}</MkSwitch>
 			<MkFolder>
 				<template #label>{{ i18n.ts.pinnedList }}</template>
 				<!-- 複数ピン止め管理できるようにしたいけどめんどいので一旦ひとつのみ -->
@@ -152,6 +151,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="S">{{ i18n.ts._hemisphere.S }}</option>
 				<template #caption>{{ i18n.ts._hemisphere.caption }}</template>
 			</MkRadios>
+			<MkSelect v-model="searchEngine">
+				<template #label>{{ i18n.ts._searchSite.title }}</template>
+				<template #caption>{{ i18n.ts._searchSite.description }}</template>
+				<option value="google">{{ i18n.ts._searchSite.google }}</option>
+				<option value="bing">{{ i18n.ts._searchSite.bing }}</option>
+				<option value="yahoo">{{ i18n.ts._searchSite.yahoo }}</option>
+				<option value="baidu">{{ i18n.ts._searchSite.baidu }}</option>
+				<option value="naver">{{ i18n.ts._searchSite.naver }}</option>
+				<option value="duckduckgo">{{ i18n.ts._searchSite.duckduckgo }}</option>
+				<option value="other">{{ i18n.ts._searchSite.other }}</option>
+			</MkSelect>
+			<MkInput v-if="defaultStore.state.searchEngine == 'other'" v-model="searchEngineUrl">
+				<template #label>{{ i18n.ts._searchSite.otherSearchEngine }}</template>
+				<template #caption>{{ i18n.ts._searchSite.otherDescription }}</template>
+			</MkInput>
+			<MkInput v-if="defaultStore.state.searchEngine == 'other'" v-model="searchEngineUrlQuery">
+				<template #label>{{ i18n.ts._searchSite.query }}</template>
+				<template #caption>{{ i18n.ts._searchSite.queryDescription }}</template>
+			</MkInput>
 			<MkFolder>
 				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
 				<div class="_buttons">
@@ -191,6 +209,7 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { $i } from '@/account.js';
+import MkInput from '@/components/MkInput.vue';
 
 const lang = ref(miLocalStorage.getItem('lang'));
 const dataSaver = ref(defaultStore.state.dataSaver);
@@ -223,6 +242,9 @@ const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslat
 const welcomeBackToast = computed(defaultStore.makeGetterSetter('welcomeBackToast'));
 const disableNyaize = computed(defaultStore.makeGetterSetter('disableNyaize'));
 const externalNavigationWarning = computed(defaultStore.makeGetterSetter('externalNavigationWarning'));
+const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
+const searchEngineUrl = computed(defaultStore.makeGetterSetter('searchEngineUrl'));
+const searchEngineUrlQuery = computed(defaultStore.makeGetterSetter('searchEngineUrlQuery'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

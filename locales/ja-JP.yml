@@ -3297,3 +3297,18 @@ _scheduledNoteDelete:
 _getQRCode:
   title: "QRコードをスキャンする"
   description: "以下のQRコードをスキャンまたは共有できます。"
+
+_searchSite:
+  title: "検索エンジン"
+  description: "MFMの検索構文で検索できるサイトを変更します。"
+  google: "Google"
+  bing: "Bing"
+  yahoo: "Yahoo"
+  baidu: "Baidu"
+  naver: "NAVER"
+  duckduckgo: "DuckDuckGo"
+  other: "その他"
+  otherSearchEngine: "その他の検索エンジン"
+  otherDescription: "その他の検索エンジンを使用します。"
+  query: "検索クエリ"
+  queryDescription: "検索エンジンが使用するクエリを入力します。(例: https://www.ecosia.org/search?q=test の場合qを入れる)"
