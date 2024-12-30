@@ -227,33 +227,29 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		const translations = [];
 		const target = targetLang.split('-')[0];
 		for (const text of texts) {
-			const detectLangRes = await this.httpRequestService.send(endpoint + '/detect', {
-				method: 'POST',
-				body: JSON.stringify({
-					q: text,
-					...(apiKey ? { api_key: apiKey } : {}),
-				}),
-				headers: { 'Content-Type': 'application/json' },
-			});
-
-			const detectedLang = (await detectLangRes.json() as any);
 			const res = await this.httpRequestService.send(endpoint + '/translate', {
 				method: 'POST',
 				body: JSON.stringify({
 					q: text,
-					source: detectedLang[0].language,
+					source: 'auto',
+					format: 'text',
 					target: target,
-					...(apiKey ? { api_key: apiKey } : {}),
+					...(apiKey ? { api_key: apiKey } : { }),
 				}),
 				headers: { 'Content-Type': 'application/json' },
 			});
+
 			const json = (await res.json()) as {
 				translatedText: string,
+				detectedLanguage: {
+					confidence: number,
+					language: string,
+				}
 				error: string,
 			};
 			translations.push({
 				translatedText: json.translatedText || '',
-				sourceLang: detectedLang[0].language || '',
+				sourceLang: json.detectedLanguage.language || '',
 			});
 		}
 

@@ -67,7 +67,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<template v-else-if="provider === 'Libretranslate'">
 						<div class="_gaps_m">
-							<MkInput v-model="libreTranslateEndPoint">libreTranslateApiKey
+							<MkInput v-model="libreTranslateEndPoint">
 								<template #prefix><i class="ti ti-server"></i></template>
 								<template #label>Api Endpoint</template>
 							</MkInput>

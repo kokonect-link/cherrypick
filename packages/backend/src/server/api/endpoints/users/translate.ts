@@ -217,21 +217,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 	}
 
 	private async translateLibretranslate(text: string, targetLang: string, endpoint: string, apiKey:string | null ) {
-		const detectLangRes = await this.httpRequestService.send(endpoint + '/detect', {
-			method: 'POST',
-			body: JSON.stringify({
-				q: text,
-				...(apiKey ? { api_key: apiKey } : { }),
-			}),
-			headers: { 'Content-Type': 'application/json' },
-		});
-
-		const detectedLang = ( await detectLangRes.json() as any);
 		const res = await this.httpRequestService.send(endpoint + '/translate', {
 			method: 'POST',
 			body: JSON.stringify({
 				q: text,
-				source: detectedLang[0].language,
+				source: 'auto',
+				format: 'text',
 				target: targetLang.split('-')[0],
 				...(apiKey ? { api_key: apiKey } : { }),
 			}),
@@ -240,11 +231,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 		const json = (await res.json()) as {
 			translatedText: string,
+			detectedLanguage: {
+				confidence: number,
+				language: string,
+			}
 			error: string,
 		};
 
 		return {
-			sourceLang: detectedLang[0].language,
+			sourceLang: json.detectedLanguage.language,
 			text: json.translatedText,
 			translator: 'Libretranslate',
 		};
