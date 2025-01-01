@@ -18,8 +18,8 @@ import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UtilityService } from '@/core/UtilityService.js';
 import { bindThis } from '@/decorators.js';
-import { ApiError } from '../../error.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['federation'],

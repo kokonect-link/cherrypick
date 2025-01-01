@@ -201,6 +201,7 @@ import FormLink from '@/components/form/link.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
+import MkInput from '@/components/MkInput.vue';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -210,7 +211,6 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { $i } from '@/account.js';
-import MkInput from '@/components/MkInput.vue';
 
 const lang = ref(miLocalStorage.getItem('lang'));
 const dataSaver = ref(defaultStore.state.dataSaver);

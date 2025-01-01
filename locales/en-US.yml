@@ -3170,7 +3170,6 @@ _scheduledNoteDelete:
 _getQRCode:
   title: "Scan QR Code"
   description: "Can scan or share the QR code below."
-
 _searchSite:
   title: "Search Engine"
   description: "Change search engine that used in search MFM."

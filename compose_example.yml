@@ -94,7 +94,7 @@ services:
 
 #  translator:
 #    restart: always
-#    image:  libretranslate/libretranslate:latest
+#    image: libretranslate/libretranslate:latest
 #    healthcheck:
 #    test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
 
