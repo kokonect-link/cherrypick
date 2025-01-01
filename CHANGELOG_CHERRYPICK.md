@@ -43,6 +43,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 네비게이션 바에 배너 이미지가 표시되지 않을 수 있음 (kokonect-link/cherrypick#545)
 - Fix: 고정된 리스트 타임라인을 사용할 수 없음 (kokonect-link/cherrypick#546)
 - Fix: 버블 타임라인이 비활성화 상태면 버블 타임라인의 호스트 목록을 수정할 수 없음 (kokonect-link/cherrypick#544)
+- Fix: 특정 환경에서 리액션을 변경할 수 없을 수 있음 (kokonect-link/cherrypick#549)
 
 ---
 
