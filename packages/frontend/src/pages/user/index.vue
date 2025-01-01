@@ -34,20 +34,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { $i } from '@/account.js';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import { acct as getAcct } from '@/filters/user.js';
-import { i18n } from '@/i18n.js';
+import { defineAsyncComponent, computed, watch, ref } from 'vue';
+import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
-import { mainRouter } from '@/router/main.js';
-import { deviceKind } from '@/scripts/device-kind.js';
-import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { $i } from '@/account.js';
+import { acct as getAcct } from '@/filters/user.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { assertServerContext, serverContext } from '@/server-context.js';
+import { i18n } from '@/i18n.js';
+import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { mainRouter } from '@/router/main.js';
 import { defaultStore } from '@/store.js';
-import * as Misskey from 'cherrypick-js';
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { deviceKind } from '@/scripts/device-kind.js';
+import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
+import { serverContext, assertServerContext } from '@/server-context.js';
 
 const MOBILE_THRESHOLD = 500;
 
