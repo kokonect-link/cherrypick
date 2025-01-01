@@ -46,6 +46,10 @@ const search = () => {
 			sp.append('query', query.value);
 			url = `https://search.naver.com/search.naver?${sp.toString()}`;
 			break;
+		case 'daum':
+			sp.append('q', query.value);
+			url = `https://search.daum.net/search?${sp.toString()}`;
+			break;
 		case 'duckduckgo':
 			sp.append('q', query.value);
 			url = `https://duckduckgo.com/?${sp.toString()}`;

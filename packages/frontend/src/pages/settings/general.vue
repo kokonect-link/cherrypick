@@ -155,13 +155,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkSelect v-model="searchEngine">
 				<template #label>{{ i18n.ts._searchSite.title }}</template>
 				<template #caption>{{ i18n.ts._searchSite.description }}</template>
-				<option value="google">{{ i18n.ts._searchSite.google }}</option>
-				<option value="bing">{{ i18n.ts._searchSite.bing }}</option>
-				<option value="yahoo">{{ i18n.ts._searchSite.yahoo }}</option>
-				<option value="baidu">{{ i18n.ts._searchSite.baidu }}</option>
-				<option value="naver">{{ i18n.ts._searchSite.naver }}</option>
-				<option value="duckduckgo">{{ i18n.ts._searchSite.duckduckgo }}</option>
-				<option value="other">{{ i18n.ts._searchSite.other }}</option>
+				<option value="google">Google</option>
+				<option value="bing">Bing</option>
+				<option value="yahoo">Yahoo</option>
+				<option value="baidu">Baidu</option>
+				<option value="naver">NAVER</option>
+				<option value="daum">Daum</option>
+				<option value="duckduckgo">DuckDuckGo</option>
+				<option value="other">{{ i18n.ts.other }}</option>
 			</MkSelect>
 			<MkInput v-if="defaultStore.state.searchEngine == 'other'" v-model="searchEngineUrl">
 				<template #label>{{ i18n.ts._searchSite.otherSearchEngine }}</template>

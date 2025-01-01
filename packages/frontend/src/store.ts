@@ -584,7 +584,7 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 	searchEngine: {
 		where: 'device',
-		default: 'google' as 'google' | 'bing' | 'yahoo' | 'baidu'| 'naver' | 'duckduckgo' | 'other',
+		default: 'google' as 'google' | 'bing' | 'yahoo' | 'baidu' | 'naver' | 'daum' | 'duckduckgo' | 'other',
 	},
 	searchEngineUrl: {
 		where: 'device',

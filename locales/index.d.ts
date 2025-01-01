@@ -12368,37 +12368,9 @@ export interface Locale extends ILocale {
          */
         "title": string;
         /**
-         * MFMの検索構文で検索できるサイトを変更します。
+         * MFCの検索構文で検索できるサイトを変更します。
          */
         "description": string;
-        /**
-         * Google
-         */
-        "google": string;
-        /**
-         * Bing
-         */
-        "bing": string;
-        /**
-         * Yahoo
-         */
-        "yahoo": string;
-        /**
-         * Baidu
-         */
-        "baidu": string;
-        /**
-         * NAVER
-         */
-        "naver": string;
-        /**
-         * DuckDuckGo
-         */
-        "duckduckgo": string;
-        /**
-         * その他
-         */
-        "other": string;
         /**
          * その他の検索エンジン
          */
@@ -12412,7 +12384,7 @@ export interface Locale extends ILocale {
          */
         "query": string;
         /**
-         * 検索エンジンが使用するクエリを入力します。(例: https://www.ecosia.org/search?q=test の場合qを入れる)
+         * 検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)
          */
         "queryDescription": string;
     };
