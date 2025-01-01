@@ -468,6 +468,14 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			libreTranslateEndPoint: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			libreTranslateApiKey: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			defaultDarkTheme: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -763,6 +771,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				remoteObjectStorageS3ForcePathStyle: instance.remoteObjectStorageS3ForcePathStyle,
 				deeplAuthKey: instance.deeplAuthKey,
 				deeplIsPro: instance.deeplIsPro,
+				libreTranslateEndPoint: instance.libreTranslateEndPoint,
+				libreTranslateApiKey: instance.libreTranslateApiKey,
 				ctav3SaKey: instance.ctav3SaKey,
 				ctav3ProjectId: instance.ctav3ProjectId,
 				ctav3Location: instance.ctav3Location,

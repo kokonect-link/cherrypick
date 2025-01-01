@@ -92,6 +92,12 @@ services:
 #    volumes:
 #      - ./meili_data:/meili_data
 
+#  translator:
+#    restart: always
+#    image:  libretranslate/libretranslate:latest
+#    healthcheck:
+#    test: ['CMD-SHELL', './venv/bin/python scripts/healthcheck.py']
+
 networks:
   internal_network:
     internal: true
