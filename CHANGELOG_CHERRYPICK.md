@@ -29,6 +29,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### General
+- Feat: 번역 서비스 추가 지원 (kokonect-link/cherrypick#551)
+  - [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate) 지원 추가
+    - 외부 서비스를 이용하는 번역 서비스는 요금제에 따른 API 제한이 적용되므로, 자체 호스팅으로 구동할 수 있는 번역 API를 사용할 수 있음
+- Feat: 검색 엔진 사용자화 (kokonect-link/cherrypick#554)
+  - MFC 구문 중 `[검색]`, `[search]`, `[検索]`를 사용했을 때, 사용할 검색 엔진을 지정할 수 있음
 - Enhance: 예약된 노트 게시에 실패할 경우 사용자에게 알림 ([penginn-net/kokonect@a0e47980](https://github.com/penginn-net/kokonect/commit/a0e47980470b49e79e84ff3b7ccaf2b4502928c8))
 
 ### Client
