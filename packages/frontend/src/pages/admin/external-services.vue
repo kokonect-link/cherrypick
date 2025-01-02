@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<option value="deepl">DeepL</option>
 						<option value="google_no_api">Google Translate(without API)</option>
 						<option value="ctav3">Cloud Translation - Advanced(v3)</option>
-						<option value="Libretranslate">Libretranslate</option>
+						<option value="libretranslate">LibreTranslate</option>
 					</MkRadios>
 
 					<template v-if="provider === 'deepl'">
@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkInput>
 					</template>
 
-					<template v-else-if="provider === 'Libretranslate'">
+					<template v-else-if="provider === 'libretranslate'">
 						<div class="_gaps_m">
 							<MkInput v-model="libreTranslateEndPoint">
 								<template #prefix><i class="ti ti-server"></i></template>
