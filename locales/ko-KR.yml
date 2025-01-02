@@ -2823,12 +2823,19 @@ _notification:
     achievementEarned: "도전 과제 획득"
     exportCompleted: "내보내기를 완료함"
     login: "로그인"
+    scheduleNote: "게시가 예약된 노트의 게시가 실패함"
     test: "알림 테스트"
     app: "연동된 앱을 통한 알림"
   _actions:
     followBack: "팔로우"
     reply: "답글"
     renote: "리노트"
+  _scheduleNote:
+    unknown: "알 수 없는 오류가 발생했어요"
+    renoteTargetNotFound: "인용할 대상이 없어요"
+    channelTargetNotFound: "해당 채널이 존재하지 않아요"
+    replyTargetNotFound: "답장할 대상이 없어요"
+    invalidFilesCount: "첨부 파일이 없어요"
 _deck:
   alwaysShowMainColumn: "메인 칼럼 항상 표시"
   columnAlign: "칼럼 정렬"
@@ -3170,3 +3177,10 @@ _scheduledNoteDelete:
 _getQRCode:
   title: "QR 코드 스캔하기"
   description: "아래 QR 코드를 스캔하거나 공유할 수 있어요."
+_searchSite:
+  title: "검색 엔진"
+  description: "MFC의 검색 구문을 사용했을 때 사용되는 검색 엔진을 변경해요."
+  otherSearchEngine: "사용자 지정 검색 엔진"
+  otherDescription: "검색 엔진을 직접 지정할 수 있어요."
+  query: "검색 쿼리"
+  queryDescription: "검색 엔진이 사용할 쿼리를 입력해 주세요. (예: https://www.google.com/search?q=test 의 경우 q를 입력)"

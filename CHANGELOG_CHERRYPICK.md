@@ -23,6 +23,30 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리스 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.14.1
+출시일: 2025/1/2<br>
+기반 Misskey 버전: 2024.11.1-alpha.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024111](CHANGELOG.md#2024111) 문서를 참고하십시오.
+
+### General
+- Feat: 번역 서비스 추가 지원 (kokonect-link/cherrypick#551)
+  - [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate) 지원 추가
+    - 외부 서비스를 이용하는 번역 서비스는 요금제에 따른 API 제한이 적용되므로, 자체 호스팅으로 구동할 수 있는 번역 API를 사용할 수 있음
+- Feat: 검색 엔진 사용자화 (kokonect-link/cherrypick#554)
+  - MFC 구문 중 `[검색]`, `[search]`, `[検索]`를 사용했을 때, 사용할 검색 엔진을 지정할 수 있음
+- Enhance: 예약된 노트 게시에 실패할 경우 사용자에게 알림 ([penginn-net/kokonect@a0e47980](https://github.com/penginn-net/kokonect/commit/a0e47980470b49e79e84ff3b7ccaf2b4502928c8))
+
+### Client
+- Fix: 노트 상세 페이지에서 사용자 이름이 중복으로 표시될 수 있음
+- Fix: 커스텀 이모지 관리 역할이 있는 사용자가 원격 서버의 이모지를 가져올 수 없음
+- Fix: 신고 알림을 받을 이메일 주소 설정을 저장할 수 없음 (kokonect-link/cherrypick#540)
+- Fix: 네비게이션 바에 배너 이미지가 표시되지 않을 수 있음 (kokonect-link/cherrypick#545)
+- Fix: 고정된 리스트 타임라인을 사용할 수 없음 (kokonect-link/cherrypick#546)
+- Fix: 버블 타임라인이 비활성화 상태면 버블 타임라인의 호스트 목록을 수정할 수 없음 (kokonect-link/cherrypick#544)
+- Fix: 특정 환경에서 리액션을 변경할 수 없을 수 있음 (kokonect-link/cherrypick#549)
+
+---
+
 ## 4.14.0
 출시일: 2024/11/26<br>
 기반 Misskey 버전: 2024.11.0<br>

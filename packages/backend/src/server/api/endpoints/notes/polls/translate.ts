@@ -83,6 +83,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				'deepl',
 				'google_no_api',
 				'ctav3',
+				'Libretranslate',
 			];
 
 			if (this.serverSettings.translatorType == null || !translatorServices.includes(this.serverSettings.translatorType)) {
@@ -119,6 +120,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				else if (this.serverSettings.ctav3ProjectId == null) return Promise.resolve(204);
 				else if (this.serverSettings.ctav3Location == null) return Promise.resolve(204);
 				translationResult = await this.apiCloudTranslationAdvanced(poll.choices, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType);
+			} else if (this.serverSettings.translatorType === 'Libretranslate') {
+				const endPoint = this.serverSettings.libreTranslateEndPoint;
+				if (endPoint === null) throw new Error('libreTranslateEndPoint is null');
+				translationResult = await this.translateLibretranslate(poll.choices, targetLang, endPoint, this.serverSettings.libreTranslateApiKey);
 			} else {
 				throw new Error('Unsupported translator type');
 			}
@@ -215,6 +220,43 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			sourceLang: detectedLanguage !== null ? detectedLanguage : detectedLanguageCode,
 			text: translatedText,
 			translator: provider,
+		};
+	}
+
+	private async translateLibretranslate(texts: string[], targetLang: string, endpoint: string, apiKey:string | null ) {
+		const translations = [];
+		const target = targetLang.split('-')[0];
+		for (const text of texts) {
+			const res = await this.httpRequestService.send(endpoint + '/translate', {
+				method: 'POST',
+				body: JSON.stringify({
+					q: text,
+					source: 'auto',
+					format: 'text',
+					target: target,
+					...(apiKey ? { api_key: apiKey } : { }),
+				}),
+				headers: { 'Content-Type': 'application/json' },
+			});
+
+			const json = (await res.json()) as {
+				translatedText: string,
+				detectedLanguage: {
+					confidence: number,
+					language: string,
+				}
+				error: string,
+			};
+			translations.push({
+				translatedText: json.translatedText || '',
+				sourceLang: json.detectedLanguage.language || '',
+			});
+		}
+
+		return {
+			sourceLang: translations[0]?.sourceLang || '',
+			text: translations.map(choice => choice.translatedText),
+			translator: 'Libretranslate',
 		};
 	}
 }

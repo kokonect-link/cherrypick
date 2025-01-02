@@ -253,11 +253,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkFolder>
 					<template #icon><i class="ti ti-exclamation-circle"></i></template>
 					<template #label>{{ i18n.ts.abuseReports }}</template>
+					<template v-if="emailToReceiveAbuseReportForm.modified.value" #footer>
+						<MkFormFooter :form="emailToReceiveAbuseReportForm"/>
+					</template>
 
 					<div class="_gaps_m">
 						<MkInput v-model="emailToReceiveAbuseReportForm.state.emailToReceiveAbuseReport" type="email">
 							<template #prefix><i class="ti ti-mail"></i></template>
-							<template #label>{{ i18n.ts.emailToReceiveAbuseReport }}</template>
+							<template #label>{{ i18n.ts.emailToReceiveAbuseReport }} <span v-if="emailToReceiveAbuseReportForm.modifiedStates.emailToReceiveAbuseReport" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>{{ i18n.ts.emailToReceiveAbuseReportCaption }}</template>
 						</MkInput>
 					</div>

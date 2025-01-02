@@ -87,9 +87,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance" @click="showOnRemote"/>
 				</div>
 				<div :class="$style.noteHeaderUsernameAndBadgeRoles">
+					<!--
 					<div :class="$style.noteHeaderUsername">
 						<MkAcct :user="appearNote.user"/>
 					</div>
+					-->
 					<div v-if="appearNote.user.badgeRoles" :class="$style.noteHeaderBadgeRoles">
 						<img v-for="(role, i) in appearNote.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.noteHeaderBadgeRole" :src="role.iconUrl!"/>
 					</div>

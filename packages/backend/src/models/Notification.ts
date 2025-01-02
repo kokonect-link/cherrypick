@@ -99,6 +99,11 @@ export type MiNotification = {
 	createdAt: string;
 	userIp: string;
 } | {
+	type: 'scheduleNote';
+	id: string;
+	createdAt: string;
+	errorType: string;
+} | {
 	type: 'app';
 	id: string;
 	createdAt: string;
