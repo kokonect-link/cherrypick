@@ -23,6 +23,18 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 # 릴리스 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2024.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
+
+### Client
+- Fix: 노트 상세 페이지에서 역할 아이콘에 문제가 발생할 수 있음
+  - 중복으로 표시될 수 있음
+  - 아이콘이 제대로 표시되지 않을 수 있음
+
+---
+
 ## 4.14.1
 출시일: 2025/1/2<br>
 기반 Misskey 버전: 2024.11.1-alpha.0<br>
