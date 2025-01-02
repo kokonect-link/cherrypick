@@ -153,7 +153,7 @@ html[data-color-scheme=light] .visible {
 	font-size: 1.45em;
 	color: #fff;
 	opacity: .9;
-	filter: drop-shadow(0 0 1.5px #b3b3b3);
+	filter: drop-shadow(0 0 1.5px #606060);
 }
 
 @container (max-width: 785px) {
