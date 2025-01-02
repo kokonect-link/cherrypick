@@ -29,6 +29,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### Client
+- Enhance: 노트 상세 페이지에서 공개 범위를 자세히 표시하도록 개선됨
 - Fix: 노트 상세 페이지에서 역할 아이콘에 문제가 발생할 수 있음
   - 중복으로 표시될 수 있음
   - 아이콘이 제대로 표시되지 않을 수 있음
