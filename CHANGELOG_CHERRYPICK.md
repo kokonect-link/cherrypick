@@ -33,6 +33,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024111](CHANG
 - Fix: 노트 상세 페이지에서 역할 아이콘에 문제가 발생할 수 있음
   - 중복으로 표시될 수 있음
   - 아이콘이 제대로 표시되지 않을 수 있음
+- Fix: 노트 헤더의 사용자 이름을 클릭하면 페이지가 중복으로 이동됨
 
 ### Server
 - Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
