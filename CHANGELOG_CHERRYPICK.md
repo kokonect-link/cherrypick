@@ -33,7 +33,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 노트 헤더의 사용자 이름을 클릭하면 페이지가 중복으로 이동됨
 
 ### Server
-- Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
+- Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032 (review)](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
 	- forward가 `true`가 되면 `false`로 변경할 수 없음
 
 ---
