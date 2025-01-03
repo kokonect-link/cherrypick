@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<template v-if="(version && version.length > 0) && (releasesCherryPick && releasesCherryPick.length > 0)">
 					<FormInfo v-if="compareVersions(version, releasesCherryPick[0].tag_name) > 0">{{ i18n.ts.youAreRunningBetaClient }}</FormInfo>
-					<FormInfo v-else-if="compareVersions(version, releasesCherryPick[0].tag_name) === 0">{{ i18n.ts.youAreRunningUpToDateClient }}</FormInfo>
+					<FormInfo v-else-if="compareVersions(version, releasesCherryPick[0].tag_name) === 0" check>{{ i18n.ts.youAreRunningUpToDateClient }}</FormInfo>
 					<FormInfo v-else warn>{{ i18n.ts.newVersionOfClientAvailable }}</FormInfo>
 				</template>
 				<FormInfo v-else>{{ i18n.ts.loading }}</FormInfo>
@@ -122,16 +122,49 @@ async function init() {
 }
 
 function compareVersions(v1: string, v2: string): number {
-	const v1Parts = v1.split('.').map(Number);
-	const v2Parts = v2.split('.').map(Number);
+	const parseVersion = (version: string) => {
+		const [main, pre] = version.split('-');
+		const parts = main.split('.').map(num => parseInt(num, 10));
+		return { parts, pre: pre || null };
+	};
 
-	for (let i = 0; i < Math.max(v1Parts.length, v2Parts.length); i++) {
-		const part1 = v1Parts[i] || 0;
-		const part2 = v2Parts[i] || 0;
+	const compareArrays = (a: number[], b: number[]) => {
+		const maxLength = Math.max(a.length, b.length);
+		for (let i = 0; i < maxLength; i++) {
+			const part1 = a[i] || 0;
+			const part2 = b[i] || 0;
+			if (part1 > part2) return 1;
+			if (part1 < part2) return -1;
+		}
+		return 0;
+	};
 
-		if (part1 < part2) return -1;
-		if (part1 > part2) return 1;
+	const v1Parsed = parseVersion(v1);
+	const v2Parsed = parseVersion(v2);
+
+	const mainComparison = compareArrays(v1Parsed.parts, v2Parsed.parts);
+	if (mainComparison !== 0) {
+		return mainComparison;
 	}
+
+	if (v1Parsed.pre && !v2Parsed.pre) return -1;
+	if (!v1Parsed.pre && v2Parsed.pre) return 1;
+
+	if (v1Parsed.pre && v2Parsed.pre) {
+		const preOrder = ['alpha', 'beta', 'rc'];
+		const [pre1] = v1Parsed.pre.split('.');
+		const [pre2] = v2Parsed.pre.split('.');
+
+		const index1 = preOrder.indexOf(pre1);
+		const index2 = preOrder.indexOf(pre2);
+
+		if (index1 !== index2) {
+			return index1 - index2;
+		}
+
+		return v1Parsed.pre.localeCompare(v2Parsed.pre);
+	}
+
 	return 0;
 }
 
