@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * アカウント整理
+     */
+    "truncateAccount": string;
+    /**
+     * ダイレクトメッセージと固定されたノートに関連付けられているファイルを除くすべてのノートとファイルが削除されます。それでも続行しますか？
+     */
+    "truncateAccountConfirm": string;
+    /**
      * バブルタイムライン
      */
     "bubbleTimeline": string;
@@ -12387,6 +12395,32 @@ export interface Locale extends ILocale {
          * 検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)
          */
         "queryDescription": string;
+    };
+    "_accountTruncate": {
+        /**
+         * アカウントの整理
+         */
+        "accountDelete": string;
+        /**
+         * アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。
+         */
+        "mayTakeTime": string;
+        /**
+         * アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。
+         */
+        "sendEmail": string;
+        /**
+         * アカウント整理をリクエスト
+         */
+        "requestAccountTruncate": string;
+        /**
+         * 整理処理が開始されました。
+         */
+        "started": string;
+        /**
+         * 整理が進行中
+         */
+        "inProgress": string;
     };
 }
 declare const locales: {

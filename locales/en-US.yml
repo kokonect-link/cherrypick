@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+truncateAccount: "Truncate account"
+truncateAccountConfirm: "All notes and files will be deleted except those associated with direct messages and pinned notes. Still continue?"
 bubbleTimeline: "Bubble Timeline"
 bubbleTimelineDescription: "After enabling this option navigate to the Moderation section to configure which servers should be shown."
 bubbleInstancesDescription: "Set the host names of servers to be displayed in the bubble timeline, separated by line breaks."
@@ -3177,3 +3179,10 @@ _searchSite:
   otherDescription: "Use other search engine"
   query: "Query"
   queryDescription: "Input query scheme for search engine. For example, if https://www.google.com/search?q=test, input 'q'."
+_accountTruncate:
+  accountTruncate: "Truncate account"
+  mayTakeTime: "As account truncation is a resource-heavy process, it may take some time to complete depending on how much content you have created and how many files you have uploaded."
+  sendEmail: "Once account truncation has been completed, an email will be sent to the email address registered to this account."
+  requestAccountDelete: "Request account truncation"
+  started: "Truncation has been started."
+  inProgress: "Truncation is currently in progress"

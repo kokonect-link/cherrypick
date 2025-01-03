@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+truncateAccount: "계정 정리"
+truncateAccountConfirm: "다이렉트 메시지 및 고정된 노트와 관련된 파일을 제외한 모든 노트와 파일이 삭제돼요. 그래도 계속할까요?"
 bubbleTimeline: "버블 타임라인"
 bubbleTimelineDescription: "이 옵션을 활성화하고 모더레이션으로 이동해 버블 타임라인에 표시할 서버를 구성해 주세요."
 bubbleInstancesDescription: "버블 타임라인에 표시할 서버의 호스트 이름을 줄바꿈으로 구분하여 설정해요."
@@ -2112,7 +2114,7 @@ _signup:
 _accountDelete:
   accountDelete: "계정 삭제"
   mayTakeTime: "계정 삭제는 서버에 부하를 가하기 때문에, 작성한 콘텐츠나 업로드한 파일의 수가 많으면 완료까지 시간이 걸릴 수 있어요."
-  sendEmail: "계정 삭제가 완료되면 등록된 메일 주소로 알림을 보내드려요."
+  sendEmail: "계정 삭제가 완료되면 등록된 메일 주소로 알림을 보내드릴게요."
   requestAccountDelete: "계정 삭제 요청"
   started: "삭제 작업이 시작되었어요."
   inProgress: "삭제 진행 중"
@@ -3184,3 +3186,10 @@ _searchSite:
   otherDescription: "검색 엔진을 직접 지정할 수 있어요."
   query: "검색 쿼리"
   queryDescription: "검색 엔진이 사용할 쿼리를 입력해 주세요. (예: https://www.google.com/search?q=test 의 경우 q를 입력)"
+_accountTruncate:
+  accountTruncate: "계정 정리"
+  mayTakeTime: "계정 정리는 서버에 부하를 가하기 때문에, 작성한 콘텐츠나 업로드한 파일의 수가 많으면 완료까지 시간이 걸릴 수 있어요."
+  sendEmail: "계정 삭제가 완료되면 등록된 메일 주소로 알림을 보내드릴게요."
+  requestAccountTruncate: "계정 정리 요청"
+  started: "정리 작업이 시작되었어요."
+  inProgress: "정리 진행 중"

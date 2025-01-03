@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+truncateAccount: "アカウント整理"
+truncateAccountConfirm: "ダイレクトメッセージと固定されたノートに関連付けられているファイルを除くすべてのノートとファイルが削除されます。それでも続行しますか？"
 bubbleTimeline: "バブルタイムライン"
 bubbleTimelineDescription: "このオプションを有効にし、モデレーションに移動して、表示するサーバを設定します。"
 bubbleInstancesDescription: "バブルタイムラインに表示するサーバのホスト名を改行で区切って設定します。"
@@ -3305,3 +3307,11 @@ _searchSite:
   otherDescription: "その他の検索エンジンを使用します。"
   query: "検索クエリ"
   queryDescription: "検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)"
+
+_accountTruncate:
+  accountDelete: "アカウントの整理"
+  mayTakeTime: "アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。"
+  sendEmail: "アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。"
+  requestAccountTruncate: "アカウント整理をリクエスト"
+  started: "整理処理が開始されました。"
+  inProgress: "整理が進行中"

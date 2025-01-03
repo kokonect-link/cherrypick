@@ -28,6 +28,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 기반 Misskey 버전: 2024.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
+### General
+- Feat: 계정 정리 기능 ([yodangang-express/cherrypick@dc51c907](https://github.com/yodangang-express/cherrypick/commit/dc51c907236570d6f072409832d312c937239514))
+  - `다이렉트 메시지` 및 `고정된 노트`와 관련된 파일을 제외한 모든 노트와 파일을 자동으로 삭제할 수 있음
+
 ### Client
 - Enhance: 사용자 페이지에서 `이름`, `자기소개`, `팔로우 메시지`, `추가 정보`에 포함된 외부 이모지를 가져올 수 있음
 - Fix: 노트 헤더의 사용자 이름을 클릭하면 페이지가 중복으로 이동됨
