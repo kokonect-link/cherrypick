@@ -28,8 +28,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		/>
 	</MkA>
 	<div v-if="files.files.length > 1" :class="$style.multiple">
-		<span style="font-size: initial; text-align: center; margin-right: 0.25em;">{{ files.files.length }}</span>
-		<i class="ti ti-box-multiple"></i>
+		<span style="text-align: center; margin-right: 0.25em;">{{ files.files.length }}</span>
+		<i class="ti ti-box-multiple-filled"></i>
 	</div>
 </div>
 </template>
@@ -154,7 +154,7 @@ html[data-color-scheme=light] .visible {
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	font-size: 1.45em;
+	font-size: 1.25em;
 	color: #fff;
 	opacity: .9;
 	filter: drop-shadow(0 0 1.5px #6060608a);
@@ -180,7 +180,7 @@ html[data-color-scheme=light] .visible {
 	.multiple {
 		top: 7px;
 		right: 7px;
-		font-size: 1.3em;
+		font-size: 1.1em;
 	}
 }
 </style>
