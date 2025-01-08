@@ -95,7 +95,7 @@ export async function masterMain() {
 	}
 
 	bootLogger.info(
-		`mode: [disableClustering: ${envOption.disableClustering}, onlyServer: ${envOption.onlyServer}, onlyQueue: ${envOption.onlyQueue}]`
+		`mode: [disableClustering: ${envOption.disableClustering}, onlyServer: ${envOption.onlyServer}, onlyQueue: ${envOption.onlyQueue}]`,
 	);
 
 	if (!envOption.disableClustering) {

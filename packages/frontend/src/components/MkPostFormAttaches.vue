@@ -22,9 +22,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</template>
 	</Sortable>
-	<p :class="[$style.remain, {
-		[$style.exceeded]: props.modelValue.length > 16,
-	}]">{{ 16 - props.modelValue.length }}/16</p>
+	<p
+		:class="[$style.remain, {
+			[$style.exceeded]: props.modelValue.length > 16,
+		}]"
+	>
+		{{ 16 - props.modelValue.length }}/16
+	</p>
 </div>
 </template>
 
