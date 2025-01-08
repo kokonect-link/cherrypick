@@ -3189,7 +3189,7 @@ _searchSite:
 _accountTruncate:
   accountTruncate: "계정 정리"
   mayTakeTime: "계정 정리는 서버에 부하를 가하기 때문에, 작성한 콘텐츠나 업로드한 파일의 수가 많으면 완료까지 시간이 걸릴 수 있어요."
-  sendEmail: "계정 삭제가 완료되면 등록된 메일 주소로 알림을 보내드릴게요."
+  sendEmail: "계정 정리가 완료되면 등록된 메일 주소로 알림을 보내드릴게요."
   requestAccountTruncate: "계정 정리 요청"
   started: "정리 작업이 시작되었어요."
   inProgress: "정리 진행 중"
