@@ -262,6 +262,7 @@ import * as ep___i_registry_scopesWithDomain from './endpoints/i/registry/scopes
 import * as ep___i_registry_set from './endpoints/i/registry/set.js';
 import * as ep___i_revokeToken from './endpoints/i/revoke-token.js';
 import * as ep___i_signinHistory from './endpoints/i/signin-history.js';
+import * as ep___i_truncateAccount from './endpoints/i/truncate-account.js';
 import * as ep___i_unpin from './endpoints/i/unpin.js';
 import * as ep___i_updateEmail from './endpoints/i/update-email.js';
 import * as ep___i_update from './endpoints/i/update.js';
@@ -686,6 +687,7 @@ const $i_registry_scopesWithDomain: Provider = { provide: 'ep:i/registry/scopes-
 const $i_registry_set: Provider = { provide: 'ep:i/registry/set', useClass: ep___i_registry_set.default };
 const $i_revokeToken: Provider = { provide: 'ep:i/revoke-token', useClass: ep___i_revokeToken.default };
 const $i_signinHistory: Provider = { provide: 'ep:i/signin-history', useClass: ep___i_signinHistory.default };
+const $i_truncateAccount: Provider = { provide: 'ep:i/truncate-account', useClass: ep___i_truncateAccount.default };
 const $i_unpin: Provider = { provide: 'ep:i/unpin', useClass: ep___i_unpin.default };
 const $i_updateEmail: Provider = { provide: 'ep:i/update-email', useClass: ep___i_updateEmail.default };
 const $i_update: Provider = { provide: 'ep:i/update', useClass: ep___i_update.default };
@@ -1115,6 +1117,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$i_registry_set,
 		$i_revokeToken,
 		$i_signinHistory,
+		$i_truncateAccount,
 		$i_unpin,
 		$i_updateEmail,
 		$i_update,
@@ -1536,6 +1539,7 @@ const $reversi_verify: Provider = { provide: 'ep:reversi/verify', useClass: ep__
 		$i_registry_set,
 		$i_revokeToken,
 		$i_signinHistory,
+		$i_truncateAccount,
 		$i_unpin,
 		$i_updateEmail,
 		$i_update,

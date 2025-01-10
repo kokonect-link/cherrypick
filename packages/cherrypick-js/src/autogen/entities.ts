@@ -380,6 +380,7 @@ export type IRegistrySetRequest = operations['i___registry___set']['requestBody'
 export type IRevokeTokenRequest = operations['i___revoke-token']['requestBody']['content']['application/json'];
 export type ISigninHistoryRequest = operations['i___signin-history']['requestBody']['content']['application/json'];
 export type ISigninHistoryResponse = operations['i___signin-history']['responses']['200']['content']['application/json'];
+export type ITruncateAccountRequest = operations['i___truncate-account']['requestBody']['content']['application/json'];
 export type IUnpinRequest = operations['i___unpin']['requestBody']['content']['application/json'];
 export type IUnpinResponse = operations['i___unpin']['responses']['200']['content']['application/json'];
 export type IUpdateEmailRequest = operations['i___update-email']['requestBody']['content']['application/json'];

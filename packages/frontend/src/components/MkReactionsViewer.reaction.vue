@@ -97,7 +97,7 @@ async function toggleReaction(ev: MouseEvent) {
 			if (oldReaction !== props.reaction) {
 				misskeyApi('notes/reactions/create', {
 					noteId: props.note.id,
-					reaction: `:${reactionName.value}:`,
+					reaction: props.reaction,
 				});
 			}
 		});

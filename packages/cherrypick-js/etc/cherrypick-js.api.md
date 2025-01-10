@@ -6,8 +6,8 @@
 
 import type { AuthenticationResponseJSON } from '@simplewebauthn/types';
 import { EventEmitter } from 'eventemitter3';
+import { Options } from 'reconnecting-websocket';
 import type { PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/types';
-import _ReconnectingWebsocket from 'reconnecting-websocket';
 
 // Warning: (ae-forgotten-export) The symbol "components" needs to be exported by the entry point index.d.ts
 //
@@ -1662,6 +1662,7 @@ declare namespace entities {
         IRevokeTokenRequest,
         ISigninHistoryRequest,
         ISigninHistoryResponse,
+        ITruncateAccountRequest,
         IUnpinRequest,
         IUnpinResponse,
         IUpdateEmailRequest,
@@ -2506,6 +2507,9 @@ export interface IStream extends EventEmitter<StreamEvents> {
 }
 
 // @public (undocumented)
+type ITruncateAccountRequest = operations['i___truncate-account']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type IUnpinRequest = operations['i___unpin']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -3337,7 +3341,7 @@ export class Stream extends EventEmitter<StreamEvents> implements IStream {
     constructor(origin: string, user: {
         token: string;
     } | null, options?: {
-        WebSocket?: _ReconnectingWebsocket.Options['WebSocket'];
+        WebSocket?: Options['WebSocket'];
     });
     // (undocumented)
     close(): void;

@@ -34,7 +34,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</MkA>
 	<div v-if="note.files.length > 1" :class="$style.multiple">
-		<i class="ti ti-box-multiple"></i>
+		<span style="text-align: center; margin-right: 0.25em;">{{ note.files.length }}</span>
+		<i class="ti ti-box-multiple-filled"></i>
 	</div>
 </div>
 </template>
@@ -207,13 +208,37 @@ html[data-color-scheme=light] .visible {
 }
 
 .multiple {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	font-size: 1.45em;
+	font-size: 1.25em;
 	color: #fff;
 	opacity: .9;
-	filter: drop-shadow(0 0 1.5px #b3b3b3);
+	filter: drop-shadow(0 0 1.5px #6060608a);
+}
+
+.indicators {
+	display: inline-flex;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	pointer-events: none;
+	opacity: .5;
+	gap: 6px;
+}
+
+.indicator {
+	/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
+	background-color: black;
+	border-radius: 6px;
+	color: var(--MI_THEME-accentLighten);
+	display: inline-block;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 2px 5px;
 }
 
 .indicators {
@@ -257,7 +282,7 @@ html[data-color-scheme=light] .visible {
 	.multiple {
 		top: 7px;
 		right: 7px;
-		font-size: 1.3em;
+		font-size: 1.1em;
 	}
 }
 </style>

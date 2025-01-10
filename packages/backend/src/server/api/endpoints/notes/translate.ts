@@ -100,6 +100,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				'deepl',
 				'google_no_api',
 				'ctav3',
+				'Libretranslate',
 			];
 
 			if (this.serverSettings.translatorType == null || !translatorServices.includes(this.serverSettings.translatorType)) {
@@ -131,6 +132,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				else if (this.serverSettings.ctav3ProjectId == null) return Promise.resolve(204);
 				else if (this.serverSettings.ctav3Location == null) return Promise.resolve(204);
 				translationResult = await this.apiCloudTranslationAdvanced((note.cw ? note.cw + '\n' : '') + note.text, targetLang, this.serverSettings.ctav3SaKey, this.serverSettings.ctav3ProjectId, this.serverSettings.ctav3Location, this.serverSettings.ctav3Model, this.serverSettings.ctav3Glossary, this.serverSettings.translatorType);
+			} else if (this.serverSettings.translatorType === 'Libretranslate') {
+				const endPoint = this.serverSettings.libreTranslateEndPoint;
+				if (endPoint === null) throw new Error('libreTranslateEndPoint is null');
+				translationResult = await this.translateLibretranslate((note.cw ? note.cw + '\n' : '') + note.text, targetLang, endPoint, this.serverSettings.libreTranslateApiKey);
 			} else {
 				throw new Error('Unsupported translator type');
 			}
@@ -219,6 +224,34 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			sourceLang: detectedLanguage !== null ? detectedLanguage : detectedLanguageCode,
 			text: translatedText,
 			translator: provider,
+		};
+	}
+	private async translateLibretranslate(text: string, targetLang: string, endpoint: string, apiKey:string | null ) {
+		const res = await this.httpRequestService.send(endpoint + '/translate', {
+			method: 'POST',
+			body: JSON.stringify({
+				q: text,
+				source: 'auto',
+				format: 'text',
+				target: targetLang.split('-')[0],
+				...(apiKey ? { api_key: apiKey } : { }),
+			}),
+			headers: { 'Content-Type': 'application/json' },
+		});
+
+		const json = (await res.json()) as {
+			translatedText: string,
+			detectedLanguage: {
+				confidence: number,
+				language: string,
+			}
+			error: string,
+		};
+
+		return {
+			sourceLang: json.detectedLanguage.language,
+			text: json.translatedText,
+			translator: 'Libretranslate',
 		};
 	}
 }

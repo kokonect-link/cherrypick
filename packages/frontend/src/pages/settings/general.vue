@@ -152,6 +152,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="S">{{ i18n.ts._hemisphere.S }}</option>
 				<template #caption>{{ i18n.ts._hemisphere.caption }}</template>
 			</MkRadios>
+			<MkSelect v-model="searchEngine">
+				<template #label>{{ i18n.ts._searchSite.title }}</template>
+				<template #caption>{{ i18n.ts._searchSite.description }}</template>
+				<option value="google">Google</option>
+				<option value="bing">Bing</option>
+				<option value="yahoo">Yahoo</option>
+				<option value="baidu">Baidu</option>
+				<option value="naver">NAVER</option>
+				<option value="daum">Daum</option>
+				<option value="duckduckgo">DuckDuckGo</option>
+				<option value="other">{{ i18n.ts.other }}</option>
+			</MkSelect>
+			<MkInput v-if="defaultStore.state.searchEngine == 'other'" v-model="searchEngineUrl">
+				<template #label>{{ i18n.ts._searchSite.otherSearchEngine }}</template>
+				<template #caption>{{ i18n.ts._searchSite.otherDescription }}</template>
+			</MkInput>
+			<MkInput v-if="defaultStore.state.searchEngine == 'other'" v-model="searchEngineUrlQuery">
+				<template #label>{{ i18n.ts._searchSite.query }}</template>
+				<template #caption>{{ i18n.ts._searchSite.queryDescription }}</template>
+			</MkInput>
 			<MkFolder>
 				<template #label>{{ i18n.ts.additionalEmojiDictionary }}</template>
 				<div class="_buttons">
@@ -182,6 +202,7 @@ import FormLink from '@/components/form/link.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
+import MkInput from '@/components/MkInput.vue';
 import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
@@ -223,6 +244,9 @@ const useAutoTranslate = computed(defaultStore.makeGetterSetter('useAutoTranslat
 const welcomeBackToast = computed(defaultStore.makeGetterSetter('welcomeBackToast'));
 const disableNyaize = computed(defaultStore.makeGetterSetter('disableNyaize'));
 const externalNavigationWarning = computed(defaultStore.makeGetterSetter('externalNavigationWarning'));
+const searchEngine = computed(defaultStore.makeGetterSetter('searchEngine'));
+const searchEngineUrl = computed(defaultStore.makeGetterSetter('searchEngineUrl'));
+const searchEngineUrlQuery = computed(defaultStore.makeGetterSetter('searchEngineUrlQuery'));
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);

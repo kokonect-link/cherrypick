@@ -32,6 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<option value="deepl">DeepL</option>
 						<option value="google_no_api">Google Translate(without API)</option>
 						<option value="ctav3">Cloud Translation - Advanced(v3)</option>
+						<option value="libretranslate">LibreTranslate</option>
 					</MkRadios>
 
 					<template v-if="provider === 'deepl'">
@@ -64,6 +65,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkInput>
 					</template>
 
+					<template v-else-if="provider === 'libretranslate'">
+						<div class="_gaps_m">
+							<MkInput v-model="libreTranslateEndPoint">
+								<template #prefix><i class="ti ti-server"></i></template>
+								<template #label>Api Endpoint</template>
+							</MkInput>
+							<MkInput v-model="libreTranslateApiKey">
+								<template #prefix><i class="ti ti-key"></i></template>
+								<template #label>ApiKey</template>
+							</MkInput>
+						</div>
+					</template>
 					<MkButton primary rounded @click="save_deepl"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
 				</div>
 			</MkFolder>
@@ -95,6 +108,8 @@ const ctav3ProjectId = ref<string>('');
 const ctav3Location = ref<string>('');
 const ctav3Model = ref<string>('');
 const ctav3Glossary = ref<string>('');
+const libreTranslateEndPoint = ref<string>('');
+const libreTranslateApiKey = ref<string>('');
 
 async function init() {
 	const meta = await misskeyApi('admin/meta');
@@ -106,6 +121,8 @@ async function init() {
 	ctav3Location.value = meta.ctav3Location;
 	ctav3Model.value = meta.ctav3Model;
 	ctav3Glossary.value = meta.ctav3Glossary;
+	libreTranslateEndPoint.value = meta.libreTranslateEndPoint;
+	libreTranslateApiKey.value = meta.libreTranslateApiKey;
 }
 
 function save_deepl() {
@@ -118,6 +135,8 @@ function save_deepl() {
 		ctav3Location: ctav3Location.value,
 		ctav3Model: ctav3Model.value,
 		ctav3Glossary: ctav3Glossary.value,
+		libreTranslateEndPoint: libreTranslateEndPoint.value,
+		libreTranslateApiKey: libreTranslateApiKey.value,
 	}).then(() => {
 		fetchInstance(true);
 	});

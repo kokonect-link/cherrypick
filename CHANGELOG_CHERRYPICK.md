@@ -29,6 +29,47 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGELOG.md#2024xx) 문서를 참고하십시오.
 
 ### General
+- Feat: 계정 정리 기능 ([yodangang-express/cherrypick@dc51c907](https://github.com/yodangang-express/cherrypick/commit/dc51c907236570d6f072409832d312c937239514))
+  - `다이렉트 메시지` 및 `고정된 노트`와 관련된 파일을 제외한 모든 노트와 파일을 자동으로 삭제할 수 있음
+
+### Client
+- Enhance: 사용자 페이지에서 `이름`, `자기소개`, `팔로우 메시지`, `추가 정보`에 포함된 외부 이모지를 가져올 수 있음
+- Enhance: 노트에 여러 장의 이미지가 있을 때 미디어 탭에서 이미지 수를 숫자로 표시함
+- Fix: 노트 헤더의 사용자 이름을 클릭하면 페이지가 중복으로 이동됨
+- Fix: CherryPick 클라이언트 업데이트 알림이 잘못 반환될 수 있음
+  - 출시 전 빌드 태그가 고려되지 않음(`alpha`, `beta`, `rc`)
+    - 예: `4.14.2 < 4.14.3-alpha.0` 계산 시 `4.14.2`가 더 큰 것으로 계산됨
+
+### Server
+- Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032 (review)](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
+	- forward가 `true`가 되면 `false`로 변경할 수 없음
+
+---
+
+## 4.14.2
+출시일: 2025/1/3<br>
+기반 Misskey 버전: 2024.11.1-alpha.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024111](CHANGELOG.md#2024111) 문서를 참고하십시오.
+
+### Client
+- Enhance: 노트 상세 페이지에서 공개 범위를 자세히 표시하도록 개선됨
+- Fix: 노트 상세 페이지에서 역할 아이콘에 문제가 발생할 수 있음
+  - 중복으로 표시될 수 있음
+  - 아이콘이 제대로 표시되지 않을 수 있음
+
+---
+
+## 4.14.1
+출시일: 2025/1/2<br>
+기반 Misskey 버전: 2024.11.1-alpha.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024111](CHANGELOG.md#2024111) 문서를 참고하십시오.
+
+### General
+- Feat: 번역 서비스 추가 지원 (kokonect-link/cherrypick#551)
+  - [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate) 지원 추가
+    - 외부 서비스를 이용하는 번역 서비스는 요금제에 따른 API 제한이 적용되므로, 자체 호스팅으로 구동할 수 있는 번역 API를 사용할 수 있음
+- Feat: 검색 엔진 사용자화 (kokonect-link/cherrypick#554)
+  - MFC 구문 중 `[검색]`, `[search]`, `[検索]`를 사용했을 때, 사용할 검색 엔진을 지정할 수 있음
 - Enhance: 예약된 노트 게시에 실패할 경우 사용자에게 알림 ([penginn-net/kokonect@a0e47980](https://github.com/penginn-net/kokonect/commit/a0e47980470b49e79e84ff3b7ccaf2b4502928c8))
 
 ### Client
@@ -38,6 +79,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 네비게이션 바에 배너 이미지가 표시되지 않을 수 있음 (kokonect-link/cherrypick#545)
 - Fix: 고정된 리스트 타임라인을 사용할 수 없음 (kokonect-link/cherrypick#546)
 - Fix: 버블 타임라인이 비활성화 상태면 버블 타임라인의 호스트 목록을 수정할 수 없음 (kokonect-link/cherrypick#544)
+- Fix: 특정 환경에서 리액션을 변경할 수 없을 수 있음 (kokonect-link/cherrypick#549)
 
 ---
 

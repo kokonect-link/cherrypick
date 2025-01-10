@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * アカウント整理
+     */
+    "truncateAccount": string;
+    /**
+     * ダイレクトメッセージと固定されたノートに関連付けられているファイルを除くすべてのノートとファイルが削除されます。それでも続行しますか？
+     */
+    "truncateAccountConfirm": string;
+    /**
      * バブルタイムライン
      */
     "bubbleTimeline": string;
@@ -3306,9 +3314,17 @@ export interface Locale extends ILocale {
      */
     "wordMute": string;
     /**
+     * 指定した語句を含むノートを最小化します。最小化されたノートをクリックすることで表示することができます。
+     */
+    "wordMuteDescription": string;
+    /**
      * ハードワードミュート
      */
     "hardWordMute": string;
+    /**
+     * 指定した語句を含むノートを隠します。ワードミュートとは異なり、ノートは完全に表示されなくなります。
+     */
+    "hardWordMuteDescription": string;
     /**
      * 正規表現エラー
      */
@@ -12115,6 +12131,65 @@ export interface Locale extends ILocale {
          */
         "sent": string;
     };
+    "_remoteLookupErrors": {
+        "_federationNotAllowed": {
+            /**
+             * このサーバーとは通信できません
+             */
+            "title": string;
+            /**
+             * このサーバーとの通信が無効化されているか、このサーバーをブロックしている・ブロックされている可能性があります。
+             * サーバー管理者にお問い合わせください。
+             */
+            "description": string;
+        };
+        "_uriInvalid": {
+            /**
+             * URIが不正です
+             */
+            "title": string;
+            /**
+             * 入力されたURIに問題があります。URIに使用できない文字を入力していないか確認してください。
+             */
+            "description": string;
+        };
+        "_requestFailed": {
+            /**
+             * リクエストに失敗しました
+             */
+            "title": string;
+            /**
+             * このサーバーとの通信に失敗しました。相手サーバーがダウンしている可能性があります。また、不正なURIや存在しないURIを入力していないか確認してください。
+             */
+            "description": string;
+        };
+        "_responseInvalid": {
+            /**
+             * レスポンスが不正です
+             */
+            "title": string;
+            /**
+             * このサーバーと通信することはできましたが、得られたデータが不正なものでした。
+             */
+            "description": string;
+        };
+        "_responseInvalidIdHostNotMatch": {
+            /**
+             * 入力されたURIのドメインと最終的に得られたURIのドメインとが異なります。第三者のサーバーを介してリモートのコンテンツを照会している場合は、発信元のサーバーで取得できるURIを使用して照会し直してください。
+             */
+            "description": string;
+        };
+        "_noSuchObject": {
+            /**
+             * 見つかりません
+             */
+            "title": string;
+            /**
+             * 要求されたリソースは見つかりませんでした。URIをもう一度お確かめください。
+             */
+            "description": string;
+        };
+    };
     "_abuse": {
         "_resolver": {
             /**
@@ -12302,6 +12377,58 @@ export interface Locale extends ILocale {
          * 以下のQRコードをスキャンまたは共有できます。
          */
         "description": string;
+    };
+    "_searchSite": {
+        /**
+         * 検索エンジン
+         */
+        "title": string;
+        /**
+         * MFCの検索構文で検索できるサイトを変更します。
+         */
+        "description": string;
+        /**
+         * その他の検索エンジン
+         */
+        "otherSearchEngine": string;
+        /**
+         * その他の検索エンジンを使用します。
+         */
+        "otherDescription": string;
+        /**
+         * 検索クエリ
+         */
+        "query": string;
+        /**
+         * 検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)
+         */
+        "queryDescription": string;
+    };
+    "_accountTruncate": {
+        /**
+         * アカウントの整理
+         */
+        "accountDelete": string;
+        /**
+         * アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。
+         */
+        "mayTakeTime": string;
+        /**
+         * アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。
+         */
+        "sendEmail": string;
+        /**
+         * アカウント整理をリクエスト
+         */
+        "requestAccountTruncate": string;
+        /**
+         * 整理処理が開始されました。
+         */
+        "started": string;
+        /**
+         * 整理が進行中
+         */
+        "inProgress": string;
     };
 }
 declare const locales: {

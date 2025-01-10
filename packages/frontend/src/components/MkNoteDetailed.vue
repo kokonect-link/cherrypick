@@ -86,16 +86,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<MkInstanceTicker v-if="showTicker" :instance="appearNote.user.instance" @click="showOnRemote"/>
 				</div>
+				<!--
 				<div :class="$style.noteHeaderUsernameAndBadgeRoles">
-					<!--
 					<div :class="$style.noteHeaderUsername">
 						<MkAcct :user="appearNote.user"/>
 					</div>
-					-->
 					<div v-if="appearNote.user.badgeRoles" :class="$style.noteHeaderBadgeRoles">
 						<img v-for="(role, i) in appearNote.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.noteHeaderBadgeRole" :src="role.iconUrl!"/>
 					</div>
 				</div>
+				-->
 			</div>
 		</header>
 		<div :class="$style.noteContent">
@@ -174,6 +174,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkA :to="notePage(appearNote)">
 					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail" colored/>
 				</MkA>
+				<span style="margin-left: 0.5em;">
+					<span style="border: 1px solid var(--MI_THEME-divider); margin-right: 0.5em;"/>
+					<i v-if="appearNote.visibility === 'public'" class="ti ti-world"></i>
+					<i v-else-if="appearNote.visibility === 'home'" class="ti ti-home"></i>
+					<i v-else-if="appearNote.visibility === 'followers'" class="ti ti-lock"></i>
+					<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
+					<span style="margin-left: 0.3em;">{{ i18n.ts._visibility[appearNote.visibility] }}</span>
+				</span>
 			</div>
 			<MkReactionsViewer v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactionsViewer" :note="appearNote"/>
 			<template v-if="defaultStore.state.showReplyButtonInNoteFooter">
@@ -926,6 +934,7 @@ function showOnRemote() {
 }
 
 .noteHeaderName {
+	display: flex;
 	font-weight: bold;
 	line-height: 1.3;
 	margin: 0 .5em 0 0;
@@ -985,6 +994,7 @@ function showOnRemote() {
 .noteHeaderBadgeRole {
 	height: 1.3em;
 	vertical-align: -20%;
+	border-radius: 0.4em;
 
 	& + .noteHeaderBadgeRole {
 		margin-left: 0.2em;
@@ -1222,6 +1232,7 @@ function showOnRemote() {
 .badgeRole {
 	height: 1.3em;
 	vertical-align: -20%;
+	border-radius: 0.4em;
 
 	& + .badgeRole {
 		margin-left: 0.2em;

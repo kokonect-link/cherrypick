@@ -557,7 +557,7 @@ function openProfile() {
 
 	.instanceIcon {
 		display: inline-block;
-		width: 35px;
+		width: 45px;
 		aspect-ratio: 1;
 		border-radius: 18px;
 	}
