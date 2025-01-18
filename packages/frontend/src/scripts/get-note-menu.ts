@@ -292,11 +292,6 @@ export function getNoteMenu(props: {
 		os.toast(i18n.ts.copiedContent, 'copied');
 	}
 
-	function copyLink(): void {
-		copyToClipboard(`${url}/notes/${appearNote.id}`);
-		os.toast(i18n.ts.copiedLink, 'copied');
-	}
-
 	function openInNewTab(): void {
 		window.open(`${url}/notes/${appearNote.id}`, '_blank', 'noopener');
 	}
@@ -495,6 +490,13 @@ export function getNoteMenu(props: {
 
 				if (appearNote.url ?? appearNote.uri) {
 					noteChildMenu.push({
+						icon: 'ti ti-link',
+						text: i18n.ts.copyRemoteLink,
+						action: () => {
+							copyToClipboard(appearNote.url ?? appearNote.uri);
+							os.success();
+						},
+					}, {
 						icon: 'ti ti-external-link',
 						text: i18n.ts.showOnRemote,
 						action: () => {
@@ -659,6 +661,13 @@ export function getNoteMenu(props: {
 
 				if (appearNote.url ?? appearNote.uri) {
 					noteChildMenu.push({
+						icon: 'ti ti-link',
+						text: i18n.ts.copyRemoteLink,
+						action: () => {
+							copyToClipboard(appearNote.url ?? appearNote.uri);
+							os.success();
+						},
+					}, {
 						icon: 'ti ti-external-link',
 						text: i18n.ts.showOnRemote,
 						action: () => {

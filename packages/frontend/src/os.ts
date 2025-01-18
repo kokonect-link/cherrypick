@@ -34,11 +34,12 @@ import { focusParent } from '@/scripts/focus.js';
 
 export const openingWindowsCount = ref(0);
 
+export type ApiWithDialogCustomErrors = Record<string, { title?: string; text: string; }>;
 export const apiWithDialog = (<E extends keyof Misskey.Endpoints, P extends Misskey.Endpoints[E]['req'] = Misskey.Endpoints[E]['req']>(
 	endpoint: E,
 	data: P,
 	token?: string | null | undefined,
-	customErrors?: Record<string, { title?: string; text: string; }>,
+	customErrors?: ApiWithDialogCustomErrors,
 ) => {
 	const promise = misskeyApi(endpoint, data, token);
 	promiseDialog(promise, null, async (err) => {

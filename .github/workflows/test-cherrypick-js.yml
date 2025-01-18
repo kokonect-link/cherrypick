@@ -16,6 +16,7 @@ on:
       - .github/workflows/test-cherrypick-js.yml
 jobs:
   test:
+    name: Unit tests (cherrypick.js)
 
     runs-on: ubuntu-latest
 
