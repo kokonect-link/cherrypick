@@ -70,6 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { version, instanceName, basedMisskeyVersion } from '@@/js/config.js';
+import { compareVersions } from 'compare-versions';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import FormInfo from '@/components/MkInfo.vue';
@@ -119,53 +120,6 @@ async function init() {
 	} catch (error) {
 		console.error('Failed to fetch Misskey releases:', error);
 	}
-}
-
-function compareVersions(v1: string, v2: string): number {
-	const parseVersion = (version: string) => {
-		const [main, pre] = version.split('-');
-		const parts = main.split('.').map(num => parseInt(num, 10));
-		return { parts, pre: pre || null };
-	};
-
-	const compareArrays = (a: number[], b: number[]) => {
-		const maxLength = Math.max(a.length, b.length);
-		for (let i = 0; i < maxLength; i++) {
-			const part1 = a[i] || 0;
-			const part2 = b[i] || 0;
-			if (part1 > part2) return 1;
-			if (part1 < part2) return -1;
-		}
-		return 0;
-	};
-
-	const v1Parsed = parseVersion(v1);
-	const v2Parsed = parseVersion(v2);
-
-	const mainComparison = compareArrays(v1Parsed.parts, v2Parsed.parts);
-	if (mainComparison !== 0) {
-		return mainComparison;
-	}
-
-	if (v1Parsed.pre && !v2Parsed.pre) return -1;
-	if (!v1Parsed.pre && v2Parsed.pre) return 1;
-
-	if (v1Parsed.pre && v2Parsed.pre) {
-		const preOrder = ['alpha', 'beta', 'rc'];
-		const [pre1] = v1Parsed.pre.split('.');
-		const [pre2] = v2Parsed.pre.split('.');
-
-		const index1 = preOrder.indexOf(pre1);
-		const index2 = preOrder.indexOf(pre2);
-
-		if (index1 !== index2) {
-			return index1 - index2;
-		}
-
-		return v1Parsed.pre.localeCompare(v2Parsed.pre);
-	}
-
-	return 0;
 }
 
 function save() {
