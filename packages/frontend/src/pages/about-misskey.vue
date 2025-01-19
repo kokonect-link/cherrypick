@@ -186,7 +186,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 				<FormSection>
 					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
-					<p style="font-weight: bold">CherryPick</p>
+					<p style="font-weight: bold;">
+						<span style="color: var(--CP-cherry);">Cherry</span>
+						<span style="color: var(--CP-pick);">Pick</span>
+					</p>
 					<div :class="$style.patronsWithIcon">
 						<div v-for="patron in patronsWithIconWithCherryPick" :class="$style.patronWithIcon">
 							<img :src="patron.icon" :class="$style.patronIcon">
@@ -196,7 +199,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); grid-gap: 12px;">
 						<div v-for="patron in patronsWithCherryPick" :key="patron">{{ patron }}</div>
 					</div>
-					<p style="font-weight: bold; padding-top: 20px"><b>Misskey</b></p>
+					<p style="font-weight: bold; padding-top: 20px; color: var(--CP-misskey);"><b>Misskey</b></p>
 					<div :class="$style.patronsWithIcon">
 						<div v-for="patron in patronsWithIconWithMisskey" :class="$style.patronWithIcon">
 							<img :src="patron.icon" :class="$style.patronIcon">
