@@ -39,6 +39,12 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: CherryPick 클라이언트 업데이트 알림이 잘못 반환될 수 있음
   - 출시 전 빌드 태그가 고려되지 않음(`alpha`, `beta`, `rc`)
     - 예: `4.14.2 < 4.14.3-alpha.0` 계산 시 `4.14.2`가 더 큰 것으로 계산됨
+- Fix: 파일을 포함한 노트에서 일부 기능이 제대로 작동하지 않을 수 있음 (kokonect-link/cherrypick#552)
+  - 사용자 페이지에서 다음 기능이 제대로 작동하지 않을 수 있는 문제가 수정됨
+    - `민감한 미디어 표시` 설정이 반영되지 않음
+    - `민감한 콘텐츠로 표시된 미디어를 열 때` 설정이 반영되지 않음
+    - `데이터 절약 모드` 설정이 반영되지 않음
+  - 미디어 왼쪽 상단에 `ALT`/`GIF`/`APNG`/`NSFW` 표시
 
 ### Server
 - Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032 (review)](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
