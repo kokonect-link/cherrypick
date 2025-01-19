@@ -43,6 +43,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
+import bytes from '@/filters/bytes.js';
 import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 import { notePage } from '@/filters/note.js';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
@@ -50,8 +52,6 @@ import MkA from '@/components/global/MkA.vue';
 import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
-import * as os from '@/os.js';
-import bytes from '@/filters/bytes.js';
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
