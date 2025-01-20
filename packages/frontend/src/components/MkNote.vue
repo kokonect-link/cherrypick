@@ -126,7 +126,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkMediaList v-if="appearNote.disableRightClick" ref="galleryEl" :mediaList="appearNote.files" @click.stop @contextmenu.prevent/>
 					<MkMediaList v-else ref="galleryEl" :mediaList="appearNote.files" @click.stop/>
 				</div>
-				<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :class="$style.poll" @click.stop/>
+				<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis" :class="$style.poll" @click.stop/>
 				<div v-if="isEnabledUrlPreview">
 					<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
 				</div>
