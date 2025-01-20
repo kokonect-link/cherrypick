@@ -135,7 +135,7 @@ import { deviceKind } from '@/scripts/device-kind.js';
 import MkPagingButtons from '@/components/MkPagingButtons.vue';
 import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
 import { SortOrder } from '@/components/MkSortOrderEditor.define.js';
-import { useLoading } from "@/components/hook/useLoading.js";
+import { useLoading } from '@/components/hook/useLoading.js';
 
 type GridItem = {
 	checked: boolean;

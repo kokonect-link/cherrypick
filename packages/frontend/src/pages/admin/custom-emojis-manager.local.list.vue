@@ -202,7 +202,7 @@ import { selectFile } from '@/scripts/select-file.js';
 import { copyGridDataToClipboard, removeDataFromGrid } from '@/components/grid/grid-utils.js';
 import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
 import { SortOrder } from '@/components/MkSortOrderEditor.define.js';
-import { useLoading } from "@/components/hook/useLoading.js";
+import { useLoading } from '@/components/hook/useLoading.js';
 
 type GridItem = {
 	checked: boolean;
