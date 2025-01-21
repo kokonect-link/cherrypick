@@ -109,7 +109,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								:enableEmojiMenuReaction="!!$i"
 								@click.stop
 							/>
-							<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :class="$style.poll" isTranslation @click.stop/>
+							<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis" :class="$style.poll" isTranslation @click.stop/>
 							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 								<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 								<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>

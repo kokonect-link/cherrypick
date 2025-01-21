@@ -44,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkTime :time="note.createdAt" :mode="defaultStore.state.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 			</MkA>
 		</div>
-		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :instance="note.user.instance" @click.stop="showOnRemote"/></div>
+		<div :style="$style.info"><MkInstanceTicker v-if="showTicker" :host="note.user.host" :instance="note.user.instance" @click.stop="showOnRemote"/></div>
 	</div>
 </header>
 </template>
