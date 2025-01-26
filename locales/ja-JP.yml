@@ -1467,6 +1467,7 @@ translateProfile: "プロフィールを翻訳する"
 trustedLinkUrlPatterns: "外部サイトへのリンク警告 除外リスト"
 trustedLinkUrlPatternsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。スラッシュで囲むと正規表現になります。ドメイン名だけ書くと後方一致になります。"
 open: "開く"
+keyboardShortcuts: "キーボードショートカット"
 
 _nsfwOpenBehavior:
   click: "タップして開く"
@@ -3400,3 +3401,13 @@ _accountTruncate:
   requestAccountTruncate: "アカウント整理をリクエスト"
   started: "整理処理が開始されました。"
   inProgress: "整理が進行中"
+
+_keyboardShortCut:
+  keyboardShortCut: "キーボードショートカット"
+  description: "Web上で使えるキーボードショートカットの一覧です。"
+  list: "ショートカット一覧"
+  general: "一般"
+  postForm: "投稿フォーム"
+  openPostForm: "投稿フォームを開く"
+  toggleDarkMode: "ダークモードを切り替える"
+  redirectToSearch: "検索ページに移動"
