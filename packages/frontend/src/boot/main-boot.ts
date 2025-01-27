@@ -437,7 +437,8 @@ export async function mainBoot() {
 		's': () => {
 			mainRouter.push('/search');
 		},
-		'h': () => {
+		// 環境によるかもしれないが?では反応しないため、shift+/にする必要がある
+		'shift+/': () => {
 			os.popup(defineAsyncComponent(() => import('@/components/MkKeyboardShortcut.vue')), {}, {});
 		},
 	} as const satisfies Keymap;
