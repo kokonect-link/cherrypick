@@ -3214,11 +3214,18 @@ _accountTruncate:
   started: "Truncation has been started."
   inProgress: "Truncation is currently in progress"
 _keyboardShortCut:
-  keyboardShortCut: "Keyboard shortcuts"
+  title: "Keyboard shortcuts"
   description: "List of keyboard shortcuts available in Web client."
   list: "List of keyboard shortcuts"
-  general: "General"
-  postForm: "Postform"
-  openPostForm: "Open Post Form"
-  toggleDarkMode: "Toggle Dark mode"
-  redirectToSearch: "Redirect to search page"
+  _category:
+    general: "General"
+    postForm: "Post form"
+  _general:
+    openPostForm: "Open Post Form"
+    toggleDarkMode: "Toggle Dark Mode"
+    redirectToSearch: "Redirect to search page"
+  _postForm:
+    toggleVisibility: "Toggle Visibility"
+    toggleLocalOnly: "Toggle Local Only"
+    featureWarn: "This feature is available when enable settings in \"Settings - CherryPick\"."
+    sendPost: "Post note"

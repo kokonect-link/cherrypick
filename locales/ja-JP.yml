@@ -3403,11 +3403,18 @@ _accountTruncate:
   inProgress: "整理が進行中"
 
 _keyboardShortCut:
-  keyboardShortCut: "キーボードショートカット"
+  title: "キーボードショートカット"
   description: "Web上で使えるキーボードショートカットの一覧です。"
   list: "ショートカット一覧"
-  general: "一般"
-  postForm: "投稿フォーム"
-  openPostForm: "投稿フォームを開く"
-  toggleDarkMode: "ダークモードを切り替える"
-  redirectToSearch: "検索ページに移動"
+  _category:
+    general: "一般"
+    postForm: "投稿フォーム"
+  _general:
+    openPostForm: "投稿フォームを開く"
+    toggleDarkMode: "ダークモードを切り替える"
+    redirectToSearch: "検索ページに移動"
+  _postForm:
+    toggleVisibility: "公開範囲を切り替える"
+    toggleLocalOnly: "連合なしを切り替える"
+    featureWarn: "この機能は設定>CherryPickから該当の機能を有効にすることで利用できます。"
+    sendPost: "投稿する"

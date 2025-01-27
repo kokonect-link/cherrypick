@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@close="cancel()"
 	@closed="emit('closed')"
 >
-	<template #header>{{ i18n.ts.keyboardShortcuts }}</template>
+	<template #header>{{ i18n.ts._keyboardShortCut.title }}</template>
 	<XKeyBoardShortcut :popup="true" style="background: var(--MI_THEME-bg)"/>
 </MkModalWindow>
 </template>
