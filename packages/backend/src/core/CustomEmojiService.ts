@@ -105,15 +105,6 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		localOnly: boolean;
 		roleIdsThatCanBeUsedThisEmojiAsReaction: MiRole['id'][];
 	}, moderator?: MiUser): Promise<MiEmoji> {
-		// システムユーザーとして再アップロード
-		if (!data.driveFile.user?.isRoot) {
-			data.driveFile = await this.driveService.uploadFromUrl({
-				url: data.driveFile.url,
-				user: null,
-				force: true,
-			});
-		}
-
 		const emoji = await this.emojisRepository.insertOne({
 			id: this.idService.gen(),
 			updatedAt: new Date(),
