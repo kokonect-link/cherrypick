@@ -14,7 +14,8 @@ import type {
 	BlockingsRepository,
 	DriveFilesRepository,
 	ChannelsRepository,
-	NoteScheduleRepository, MiChannel,
+	NoteScheduleRepository,
+	MiChannel,
 } from '@/models/_.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiNote } from '@/models/Note.js';
