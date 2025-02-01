@@ -110,7 +110,6 @@ export async function masterMain() {
 			await jobQueue();
 		} else {
 			await server();
-			await jobQueue();
 		}
 
 		await spawnWorkers(config.clusterLimit);
