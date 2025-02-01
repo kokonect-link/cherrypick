@@ -25109,6 +25109,8 @@ export type operations = {
           replyId?: string | null;
           /** Format: misskey:id */
           renoteId?: string | null;
+          /** Format: misskey:id */
+          channelId?: string | null;
           text?: string | null;
           fileIds?: string[];
           mediaIds?: string[];
