@@ -109,7 +109,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 	}, moderator?: MiUser): Promise<MiEmoji> {
 		// システムユーザーとして再アップロード
 		const driveFile = await this.driveFilesRepository.findOneBy({ url: data.originalUrl });
-		if (driveFile?.user !== null && !driveFile?.user.isRoot) {
+		if (driveFile?.user && !driveFile.user.isRoot) {
 			const copyDriveFile = await this.driveService.uploadFromUrl({
 				url: data.originalUrl,
 				user: null,
@@ -368,8 +368,8 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		// クエリに使うホスト
 		let host = src === '.' ? null	// .はローカルホスト (ここがマッチするのはリアクションのみ)
 			: src === undefined ? noteUserHost	// ノートなどでホスト省略表記の場合はローカルホスト (ここがリアクションにマッチすることはない)
-			: this.utilityService.isSelfHost(src) ? null	// 自ホスト指定
-			: (src || noteUserHost);	// 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
+				: this.utilityService.isSelfHost(src) ? null	// 自ホスト指定
+					: (src || noteUserHost);	// 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
 
 		host = this.utilityService.toPunyNullable(host);
 
