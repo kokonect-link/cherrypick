@@ -28,7 +28,8 @@ describe('CustomEmojiService', () => {
 		app = await Test
 			.createTestingModule({
 				imports: [
-					GlobalModule, CoreModule,
+					GlobalModule,
+					CoreModule,
 				],
 				providers: [
 					CustomEmojiService,
