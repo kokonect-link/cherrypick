@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+keyboardShortcuts: "Keyboard shortcuts"
 truncateAccount: "Truncate account"
 truncateAccountConfirm: "All notes and files will be deleted except those associated with direct messages and pinned notes. Still continue?"
 bubbleTimeline: "Bubble Timeline"
@@ -1467,7 +1468,6 @@ translateProfile: "Translate profile"
 trustedLinkUrlPatterns: "Link to external site warning exclusion list"
 trustedLinkUrlPatternsDescription: "Separate with spaces for an AND condition or with line breaks for an OR condition. Using surrounding keywords with slashes will turn them into a regular expression. If you write only the domain name, it will be a backward match."
 open: "Open"
-keyboardShortcuts: "Keyboard shortcuts"
 _nsfwOpenBehavior:
   click: "Click to open"
   doubleClick: "Double click to open"

@@ -8,6 +8,7 @@ import { ui } from '@@/js/config.js';
 import { common } from './common.js';
 import type * as Misskey from 'cherrypick-js';
 import type { Component } from 'vue';
+import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { alert, confirm, popup, post, welcomeToast } from '@/os.js';
 import { useStream } from '@/stream.js';
@@ -26,7 +27,6 @@ import { type Keymap, makeHotkey } from '@/scripts/hotkey.js';
 import { addCustomEmoji, removeCustomEmojis, updateCustomEmojis } from '@/custom-emojis.js';
 import { userName } from '@/filters/user.js';
 import { vibrate } from '@/scripts/vibrate.js';
-import * as os from '@/os.js';
 
 export async function mainBoot() {
 	const { isClientUpdated, isClientMigrated } = await common(() => {

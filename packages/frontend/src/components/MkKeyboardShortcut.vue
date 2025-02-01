@@ -33,5 +33,4 @@ function cancel() {
 	emit('done');
 	dialog.value?.close();
 }
-
 </script>

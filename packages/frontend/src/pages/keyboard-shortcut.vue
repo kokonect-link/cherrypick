@@ -80,7 +80,6 @@ definePageMetadata(() => ({
 	title: i18n.ts._keyboardShortCut.title,
 	icon: 'ti ti-keyboard',
 }));
-
 </script>
 
 <style lang="scss" module>
@@ -134,5 +133,4 @@ definePageMetadata(() => ({
 	border-radius: var(--MI-radius);
 	overflow: clip;
 }
-
 </style>

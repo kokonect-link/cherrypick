@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+keyboardShortcuts: "키보드 단축키"
 truncateAccount: "계정 정리"
 truncateAccountConfirm: "다이렉트 메시지 및 고정된 노트와 관련된 파일을 제외한 모든 노트와 파일이 삭제돼요. 그래도 계속할까요?"
 bubbleTimeline: "버블 타임라인"
@@ -1573,7 +1574,7 @@ _cherrypick:
   reactableRemoteReaction: "서버에 원격 서버의 이모지와 이름이 같은 이모지가 있으면 원격 서버의 이모지에도 리액션할 수 있음"
   showFollowingMessageInsteadOfButton: "이미 팔로우한 경우 알림 필드에 팔로우 버튼을 표시하지 않음"
   mobileHeaderChange: "모바일 환경에서 헤더 디자인을 변경"
-  renameTheButtonInPostFormToNya: "노트 작성 화면의 '노트' 버튼을 '냥!'으로 변경"
+  renameTheButtonInPostFormToNya: "글 작성란의 '노트' 버튼을 '냥!'으로 변경"
   renameTheButtonInPostFormToNyaDescription: "냐앙냥냥냥냐냥?"
   enableWidgetsArea: "위젯 영역 활성화"
   disableWidgetsArea: "위젯 영역 비활성화"
@@ -3292,3 +3293,19 @@ _accountTruncate:
   requestAccountTruncate: "계정 정리 요청"
   started: "정리 작업이 시작되었어요."
   inProgress: "정리 진행 중"
+_keyboardShortCut:
+  title: "키보드 단축키"
+  description: "클라이언트에서 사용할 수 있는 키보드 단축키 목록이에요."
+  list: "단축키 목록"
+  _category:
+    general: "일반"
+    postForm: "글 입력란"
+  _general:
+    openPostForm: "글 입력란 열기"
+    toggleDarkMode: "다크 모드 전환"
+    redirectToSearch: "검색 페이지로 이동"
+  _postForm:
+    toggleVisibility: "공개 범위 전환"
+    toggleLocalOnly: "연합 비활성화 토글"
+    featureWarn: "이 기능은 [설정 - CherryPick]에서 변경할 수 있어요."
+    sendPost: "게시하기"

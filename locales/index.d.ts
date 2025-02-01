@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * キーボードショートカット
+     */
+    "keyboardShortcuts": string;
+    /**
      * アカウント整理
      */
     "truncateAccount": string;
@@ -5898,10 +5902,6 @@ export interface Locale extends ILocale {
      * 開く
      */
     "open": string;
-    /**
-     * キーボードショートカット
-     */
-    "keyboardShortcuts": string;
     "_nsfwOpenBehavior": {
         /**
          * タップして開く
@@ -12728,7 +12728,7 @@ export interface Locale extends ILocale {
          */
         "title": string;
         /**
-         * Web上で使えるキーボードショートカットの一覧です。
+         * クライアント上で使えるキーボードショートカットの一覧です。
          */
         "description": string;
         /**
@@ -12769,7 +12769,7 @@ export interface Locale extends ILocale {
              */
             "toggleLocalOnly": string;
             /**
-             * この機能は設定>CherryPickから該当の機能を有効にすることで利用できます。
+             * この機能は「設定 - CherryPick」から該当の機能を有効にすることで利用できます。
              */
             "featureWarn": string;
             /**

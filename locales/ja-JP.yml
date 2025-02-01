@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+keyboardShortcuts: "キーボードショートカット"
 truncateAccount: "アカウント整理"
 truncateAccountConfirm: "ダイレクトメッセージと固定されたノートに関連付けられているファイルを除くすべてのノートとファイルが削除されます。それでも続行しますか？"
 bubbleTimeline: "バブルタイムライン"
@@ -1467,7 +1468,6 @@ translateProfile: "プロフィールを翻訳する"
 trustedLinkUrlPatterns: "外部サイトへのリンク警告 除外リスト"
 trustedLinkUrlPatternsDescription: "スペースで区切るとAND指定になり、改行で区切るとOR指定になります。スラッシュで囲むと正規表現になります。ドメイン名だけ書くと後方一致になります。"
 open: "開く"
-keyboardShortcuts: "キーボードショートカット"
 
 _nsfwOpenBehavior:
   click: "タップして開く"
@@ -3404,7 +3404,7 @@ _accountTruncate:
 
 _keyboardShortCut:
   title: "キーボードショートカット"
-  description: "Web上で使えるキーボードショートカットの一覧です。"
+  description: "クライアント上で使えるキーボードショートカットの一覧です。"
   list: "ショートカット一覧"
   _category:
     general: "一般"
@@ -3416,5 +3416,5 @@ _keyboardShortCut:
   _postForm:
     toggleVisibility: "公開範囲を切り替える"
     toggleLocalOnly: "連合なしを切り替える"
-    featureWarn: "この機能は設定>CherryPickから該当の機能を有効にすることで利用できます。"
+    featureWarn: "この機能は「設定 - CherryPick」から該当の機能を有効にすることで利用できます。"
     sendPost: "投稿する"
