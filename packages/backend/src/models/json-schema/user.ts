@@ -199,6 +199,14 @@ export const packedUserLiteSchema = {
 				},
 			},
 		},
+		setFederationAvatarShape: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
+		isSquareAvatars: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 	},
 } as const;
 

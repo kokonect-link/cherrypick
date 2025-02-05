@@ -278,6 +278,16 @@ export class MiUser {
 	})
 	public token: string | null;
 
+	@Column('boolean', {
+		default: true,
+	})
+	public setFederationAvatarShape: boolean;
+
+	@Column('boolean', {
+		default: true,
+	})
+	public isSquareAvatars: boolean;
+
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;
 

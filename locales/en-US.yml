@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+setFederationAvatarShape: "Federation of avatar shape settings"
+setFederationAvatarShapeDescription: "If you turn this setting on, you can federation the shape(circle, square) of your profile icon to local and remote users, and users on the corresponding server will see the profile icon shape you specified if they are using the feature. If you turn it off, all users will see the profile icon shape you specified."
 keyboardShortcuts: "Keyboard shortcuts"
 truncateAccount: "Truncate account"
 truncateAccountConfirm: "All notes and files will be deleted except those associated with direct messages and pinned notes. Still continue?"
@@ -2073,6 +2075,7 @@ _role:
     canImportFollowing: "Allow importing following"
     canImportMuting: "Allow importing muting"
     canImportUserLists: "Allow importing lists"
+    canSetFederationAvatarShape: "Allow federation of avatar shape settings"
   _condition:
     roleAssignedTo: "Assigned to manual roles"
     isLocal: "Local user"

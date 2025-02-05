@@ -4134,6 +4134,8 @@ export type components = {
           iconUrl: string | null;
           displayOrder: number;
         })[];
+      setFederationAvatarShape: boolean;
+      isSquareAvatars: boolean;
     };
     UserDetailedNotMeOnly: {
       /** Format: url */
@@ -5356,6 +5358,7 @@ export type components = {
       canImportUserLists: boolean;
       canEditNote: boolean;
       scheduleNoteMax: number;
+      canSetFederationAvatarShape: boolean;
     };
     ReversiGameLite: {
       /** Format: id */
@@ -10719,6 +10722,8 @@ export type operations = {
                 expiresAt: string | null;
                 roleId: string;
               })[];
+            setFederationAvatarShape: boolean;
+            isSquareAvatars: boolean;
           };
         };
       };
@@ -22237,6 +22242,8 @@ export type operations = {
           };
           emailNotificationTypes?: string[];
           alsoKnownAs?: string[];
+          setFederationAvatarShape?: boolean;
+          isSquareAvatars?: boolean;
         };
       };
     };

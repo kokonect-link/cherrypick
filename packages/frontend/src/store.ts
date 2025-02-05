@@ -355,7 +355,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 	squareAvatars: {
-		where: 'device',
+		where: 'account',
 		default: true,
 	},
 	showAvatarDecorations: {
@@ -711,6 +711,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	selectReaction: {
 		where: 'device',
 		default: '❤️' as string,
+	},
+	setFederationAvatarShape: {
+		where: 'account',
+		default: true,
 	},
 
 	// - Settings/Navigation bar

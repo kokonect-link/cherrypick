@@ -27,6 +27,7 @@ import { type Keymap, makeHotkey } from '@/scripts/hotkey.js';
 import { addCustomEmoji, removeCustomEmojis, updateCustomEmojis } from '@/custom-emojis.js';
 import { userName } from '@/filters/user.js';
 import { vibrate } from '@/scripts/vibrate.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
 
 export async function mainBoot() {
 	const { isClientUpdated, isClientMigrated } = await common(() => {
@@ -423,6 +424,20 @@ export async function mainBoot() {
 		main.on('myTokenRegenerated', () => {
 			signout();
 		});
+
+		// 프로필 아이콘 모양 설정 연합
+		if ($i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
+			await misskeyApi('i/update', {
+				setFederationAvatarShape: true,
+				isSquareAvatars: defaultStore.state.squareAvatars,
+			});
+		} else if (!$i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
+			await defaultStore.set('setFederationAvatarShape', false);
+			await misskeyApi('i/update', {
+				setFederationAvatarShape: false,
+				isSquareAvatars: defaultStore.state.squareAvatars,
+			});
+		}
 	}
 
 	// shortcut
