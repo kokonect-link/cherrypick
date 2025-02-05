@@ -228,6 +228,8 @@ export const paramDef = {
 			uniqueItems: true,
 			items: { type: 'string' },
 		},
+		setFederationAvatarShape: { type: 'boolean' },
+		isSquareAvatars: { type: 'boolean' },
 	},
 } as const;
 
@@ -461,6 +463,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 				updates.alsoKnownAs = newAlsoKnownAs.size > 0 ? Array.from(newAlsoKnownAs) : null;
 			}
+
+			if (typeof ps.setFederationAvatarShape === 'boolean') updates.setFederationAvatarShape = ps.setFederationAvatarShape;
+			if (typeof ps.isSquareAvatars === 'boolean') updates.isSquareAvatars = ps.isSquareAvatars;
 
 			//#region emojis/tags
 

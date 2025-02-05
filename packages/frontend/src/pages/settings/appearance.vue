@@ -92,6 +92,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSelect>
 				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
+				<MkSwitch v-model="setFederationAvatarShape" :disabled="!$i?.policies.canSetFederationAvatarShape" @update:modelValue="cantUseSetFederationAvatarShape">
+					{{ i18n.ts.setFederationAvatarShape }} <span class="_beta" style="vertical-align: middle;">CherryPick</span>
+					<template #caption>{{ $i?.policies.canSetFederationAvatarShape ? i18n.ts.setFederationAvatarShapeDescription : i18n.ts.cannotBeUsedFunc }}</template>
+				</MkSwitch>
 				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
@@ -289,20 +293,14 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
+import { $i } from '@/account.js';
 
 // const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
-
-function reloadTimeline() {
-	globalEvents.emit('reloadTimeline');
-}
-
-function reloadNotification() {
-	globalEvents.emit('reloadNotification');
-}
 
 const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNoteActionsOnlyHover'));
 const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
@@ -364,6 +362,7 @@ const showDoReactionButtonInNoteFooter = computed(defaultStore.makeGetterSetter(
 const showQuoteButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showQuoteButtonInNoteFooter'));
 const showMoreButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showMoreButtonInNoteFooter'));
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
+const setFederationAvatarShape = computed(defaultStore.makeGetterSetter('setFederationAvatarShape'));
 
 watch(fontSize, () => {
 	if (fontSize.value == null) {
@@ -390,6 +389,16 @@ watch(useSystemFont, () => {
 });
 
 watch([
+	squareAvatars,
+	setFederationAvatarShape,
+], () => {
+	misskeyApi('i/update', {
+		setFederationAvatarShape: setFederationAvatarShape.value,
+		isSquareAvatars: defaultStore.state.squareAvatars,
+	});
+});
+
+watch([
 	useBlurEffect,
 	useBlurEffectForModal,
 	removeModalBgColorForBlur,
@@ -397,6 +406,7 @@ watch([
 	useBoldFont,
 	useSystemFont,
 	squareAvatars,
+	setFederationAvatarShape,
 	showGapBetweenNotesInTimeline,
 	showUnreadNotificationsCount,
 	filesGridLayoutInUserPage,
@@ -494,6 +504,18 @@ function resetReaction() {
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
 	return target as HTMLElement; // イベント発生元の HTML 要素を取得
+}
+
+function reloadTimeline() {
+	globalEvents.emit('reloadTimeline');
+}
+
+function reloadNotification() {
+	globalEvents.emit('reloadNotification');
+}
+
+async function cantUseSetFederationAvatarShape() {
+	if ($i && !$i.policies.canSetFederationAvatarShape) setFederationAvatarShape.value = $i.policies.canSetFederationAvatarShape;
 }
 
 onMounted(() => {

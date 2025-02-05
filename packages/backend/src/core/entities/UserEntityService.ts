@@ -553,6 +553,8 @@ export class UserEntityService implements OnModuleInit {
 					displayOrder: r.displayOrder,
 				})),
 			) : undefined,
+			setFederationAvatarShape: user.setFederationAvatarShape,
+			isSquareAvatars: user.isSquareAvatars,
 
 			...(isDetailed ? {
 				url: profile!.url,

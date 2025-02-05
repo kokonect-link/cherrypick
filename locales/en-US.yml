@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+setFederationAvatarShape: "Federation of avatar shape settings"
+setFederationAvatarShapeDescription: "You can federation the shape of the avatar shape settings(circle, square) for your local and remote users."
 keyboardShortcuts: "Keyboard shortcuts"
 truncateAccount: "Truncate account"
 truncateAccountConfirm: "All notes and files will be deleted except those associated with direct messages and pinned notes. Still continue?"
@@ -2073,6 +2075,7 @@ _role:
     canImportFollowing: "Allow importing following"
     canImportMuting: "Allow importing muting"
     canImportUserLists: "Allow importing lists"
+    canSetFederationAvatarShape: "Allow federation of avatar shape settings"
   _condition:
     roleAssignedTo: "Assigned to manual roles"
     isLocal: "Local user"

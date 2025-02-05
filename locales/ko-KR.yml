@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+setFederationAvatarShape: "프로필 아이콘 모양 설정 연합"
+setFederationAvatarShapeDescription: "내 프로필 아이콘의 모양(원형, 사각형)을 로컬 사용자 및 원격 사용자에게 연합시킬 수 있어요."
 keyboardShortcuts: "키보드 단축키"
 truncateAccount: "계정 정리"
 truncateAccountConfirm: "다이렉트 메시지 및 고정된 노트와 관련된 파일을 제외한 모든 노트와 파일이 삭제돼요. 그래도 계속할까요?"
@@ -2073,6 +2075,7 @@ _role:
     canImportFollowing: "팔로우 가져오기 허용"
     canImportMuting: "뮤트 목록 가져오기 허용"
     canImportUserLists: "리스트 목록 가져오기 허용"
+    canSetFederationAvatarShape: "프로필 아이콘 모양 설정 연합 허용"
   _condition:
     roleAssignedTo: "수동 역할에 이미 할당됨"
     isLocal: "로컬 사용자"

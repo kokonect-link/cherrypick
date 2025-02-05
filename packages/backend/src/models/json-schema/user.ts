@@ -667,6 +667,14 @@ export const packedMeDetailedOnlySchema = {
 			nullable: false, optional: false,
 			default: false,
 		},
+		setFederationAvatarShape: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
+		isSquareAvatars: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 		//#region secrets
 		email: {
 			type: 'string',

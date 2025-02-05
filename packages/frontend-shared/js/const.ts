@@ -112,6 +112,7 @@ export const ROLE_POLICIES = [
 	'canImportFollowing',
 	'canImportMuting',
 	'canImportUserLists',
+	'canSetFederationAvatarShape',
 ] as const;
 
 // なんか動かない

@@ -188,6 +188,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'showQuoteButtonInNoteFooter',
 	'showMoreButtonInNoteFooter',
 	'selectReaction',
+	'setFederationAvatarShape',
 	// #endregion CherryPick
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [

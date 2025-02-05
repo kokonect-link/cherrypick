@@ -4383,6 +4383,8 @@ export type components = {
       usePasswordLessLogin: boolean;
       /** @default false */
       securityKeys: boolean;
+      setFederationAvatarShape: boolean;
+      isSquareAvatars: boolean;
       email?: string | null;
       emailVerified?: boolean | null;
       securityKeysList?: {
@@ -5356,6 +5358,7 @@ export type components = {
       canImportUserLists: boolean;
       canEditNote: boolean;
       scheduleNoteMax: number;
+      canSetFederationAvatarShape: boolean;
     };
     ReversiGameLite: {
       /** Format: id */
@@ -10719,6 +10722,8 @@ export type operations = {
                 expiresAt: string | null;
                 roleId: string;
               })[];
+            setFederationAvatarShape: boolean;
+            isSquareAvatars: boolean;
           };
         };
       };
@@ -22237,6 +22242,8 @@ export type operations = {
           };
           emailNotificationTypes?: string[];
           alsoKnownAs?: string[];
+          setFederationAvatarShape?: boolean;
+          isSquareAvatars?: boolean;
         };
       };
     };
