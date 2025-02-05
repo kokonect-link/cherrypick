@@ -51,6 +51,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
 - Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032 (review)](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
 	- forward가 `true`가 되면 `false`로 변경할 수 없음
 - Fix: 채널에서 `노트 게시 예약`을 사용하면 채널 타임라인이 아닌 일반 타임라인에 게시됨 (kokonect-link/cherrypick#559)
+- Fix: 움직이는 이미지를 사용한 사용자의 아바타 장식이 원격 서버에서 정지된 이미지로 보일 수 있음
 
 ---
 
