@@ -6,6 +6,9 @@ on:
 
   workflow_dispatch:
 
+env:
+  COREPACK_DEFAULT_TO_LATEST: 0
+
 jobs:
   publish-cherrypick-js:
     name: Publish cherrypick-js

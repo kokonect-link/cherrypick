@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:alt="file.comment"
 		:title="file.name"
 		:cover="fit !== 'contain'"
-		:forceBlurHash="forceBlurhash"
+		:forceBlurhash="forceBlurhash"
 		:showAltIndicator="showAltIndicator"
 	/>
 	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
