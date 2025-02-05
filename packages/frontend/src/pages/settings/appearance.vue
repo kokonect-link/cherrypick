@@ -515,7 +515,7 @@ function reloadNotification() {
 }
 
 async function cantUseSetFederationAvatarShape() {
-	if ($i && !$i.policies.canSetFederationAvatarShape) setFederationAvatarShape.value = $i.policies.canSetFederationAvatarShape;
+	if ($i && !$i.policies.canSetFederationAvatarShape && setFederationAvatarShape.value) setFederationAvatarShape.value = false;
 }
 
 onMounted(() => {
