@@ -172,6 +172,14 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent | Keyboar
 			text: i18n.ts.cropImage,
 			icon: 'ti ti-crop',
 			action: () : void => { crop(file); },
+		}, {
+			text: i18n.ts.preview,
+			icon: 'ti ti-photo-search',
+			action: () => {
+				os.popup(defineAsyncComponent(() => import('@/components/MkImgPreviewDialog.vue')), {
+					file: file,
+				});
+			},
 		});
 	}
 

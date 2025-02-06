@@ -41,6 +41,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
   - 기본 `robots.txt`에 정의된 내용을 사용자화 할 수 있습니다.
 
 ### Client
+- Feat: 노트 게시 전에 첨부된 이미지를 미리 볼 수 있음 (misskey-dev/misskey#15341)
 - Enhance: 사용자 페이지에서 `이름`, `자기소개`, `팔로우 메시지`, `추가 정보`에 포함된 외부 이모지를 가져올 수 있음
 - Enhance: 노트에 여러 장의 이미지가 있을 때 미디어 탭에서 이미지 수를 숫자로 표시함
 - Enhance: 키보드 단축키 목록을 볼 수 있음 (kokonect-link/cherrypick#562)
