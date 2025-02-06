@@ -279,7 +279,7 @@ export class MiUser {
 	public token: string | null;
 
 	@Column('boolean', {
-		default: true,
+		default: false,
 	})
 	public setFederationAvatarShape: boolean;
 
