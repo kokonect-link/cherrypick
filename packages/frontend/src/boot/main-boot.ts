@@ -426,7 +426,12 @@ export async function mainBoot() {
 		});
 
 		// 프로필 아이콘 모양 설정 연합
-		if (!$i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
+		if ($i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
+			await misskeyApi('i/update', {
+				setFederationAvatarShape: true,
+				isSquareAvatars: defaultStore.state.squareAvatars,
+			});
+		} else if (!$i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
 			await defaultStore.set('setFederationAvatarShape', false);
 			await misskeyApi('i/update', {
 				setFederationAvatarShape: false,

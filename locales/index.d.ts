@@ -18,7 +18,7 @@ export interface Locale extends ILocale {
      */
     "setFederationAvatarShape": string;
     /**
-     * 自分のアイコンの形(円形、四角形)をローカルユーザおよびリモートユーザに連合させることができます。
+     * この設定をオンにすると、自分のアイコンの形(円形、四角形)をローカルユーザ及び遠隔ユーザに連合させることができ、対応するサーバのユーザは、機能を使用している場合は、そのユーザが指定したアイコンの形に見えるようになります。 オフにすると、すべてのユーザーが私が設定したアイコンの形に見えます。
      */
     "setFederationAvatarShapeDescription": string;
     /**
