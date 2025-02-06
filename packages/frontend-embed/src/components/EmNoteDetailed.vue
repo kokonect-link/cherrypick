@@ -55,6 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 									<EmUserName :nowrap="true" :user="appearNote.user"/>
 								</EmA>
 								<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
+								<span v-if="appearNote.user.isProxy"><i class="ti ti-ghost"></i></span>
 							</div>
 							<div :class="$style.noteHeaderUsername"><EmAcct :user="appearNote.user"/></div>
 						</div>
