@@ -972,6 +972,7 @@ async function post(ev?: MouseEvent) {
 			if (replyTargetNote.value) os.toast(i18n.ts.replied, 'reply');
 			else if (renoteTargetNote.value) os.toast(i18n.ts.quoted, 'quote');
 			else if (props.updateMode) os.toast(i18n.ts.noteEdited, 'edited');
+			else if (scheduleNote.value) os.toast(i18n.ts.createSchedulePost, 'scheduled');
 			else os.toast(i18n.ts.posted, 'posted');
 
 			deleteDraft();

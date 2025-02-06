@@ -23,6 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						icon === 'quote' ? 'ti-quote' :
 						icon === 'edited' ? 'ti ti-pencil' :
 						icon === 'drafted' ? 'ti ti-pencil-minus' :
+						icon === 'scheduled' ? 'ti ti-calendar-time' :
 						icon === 'copied' ? 'ti-copy' :
 						'ti-check'"
 					class="ti"

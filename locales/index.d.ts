@@ -311,6 +311,10 @@ export interface Locale extends ILocale {
      */
     "noteDrafted": string;
     /**
+     * ノートの投稿を予約しました。
+     */
+    "createSchedulePost": string;
+    /**
      * モーダル背景色を削除
      */
     "removeModalBgColorForBlur": string;
