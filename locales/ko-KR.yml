@@ -1,6 +1,6 @@
 ---
 _lang_: "한국어"
-overrideRobotsTxt: "robots.txt 사용자화"
+overrideRobotsTxt: "robots.txt 덮어쓰기"
 overrideRobotsTxtDescription: "robots.txt의 내용을 덮어쓸 수 있어요. 최대 2048자로 작성해야 해요."
 setFederationAvatarShape: "프로필 아이콘 모양 설정 연합"
 setFederationAvatarShapeDescription: "이 설정을 켜면 내 프로필 아이콘의 모양(원형, 사각형)을 로컬 사용자 및 원격 사용자에게 연합시킬 수 있고, 대응하는 서버의 사용자는 기능을 사용하고 있다면 해당 사용자가 지정한 프로필 아이콘 모양으로 보이게 돼요. 끄면 모든 사용자가 내가 설정한 프로필 아이콘 모양으로 보여요."
