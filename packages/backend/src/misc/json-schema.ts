@@ -65,6 +65,7 @@ import {
 } from '@/models/json-schema/meta.js';
 import { packedSystemWebhookSchema } from '@/models/json-schema/system-webhook.js';
 import { packedAbuseReportNotificationRecipientSchema } from '@/models/json-schema/abuse-report-notification-recipient.js';
+import { packedNoteDraftSchema } from '@/models/json-schema/note-draft.js';
 
 export const refs = {
 	UserLite: packedUserLiteSchema,
@@ -82,6 +83,7 @@ export const refs = {
 	App: packedAppSchema,
 	MessagingMessage: packedMessagingMessageSchema,
 	Note: packedNoteSchema,
+	NoteDraft: packedNoteDraftSchema,
 	NoteReaction: packedNoteReactionSchema,
 	NoteFavorite: packedNoteFavoriteSchema,
 	Notification: packedNotificationSchema,

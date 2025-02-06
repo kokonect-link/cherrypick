@@ -307,6 +307,10 @@ export interface Locale extends ILocale {
      */
     "noteEdited": string;
     /**
+     * ノートの保存しました。
+     */
+    "noteDrafted": string;
+    /**
      * モーダル背景色を削除
      */
     "removeModalBgColorForBlur": string;
@@ -641,6 +645,10 @@ export interface Locale extends ILocale {
      * 保存
      */
     "save": string;
+    /**
+     * 保存しない
+     */
+    "dontSave": string;
     /**
      * ユーザー
      */
@@ -5883,6 +5891,10 @@ export interface Locale extends ILocale {
      */
     "federationDisabled": string;
     /**
+     * 下書き
+     */
+    "draft": string;
+    /**
      * 未読の通知の数を表示する
      */
     "showUnreadNotificationsCount": string;
@@ -8118,6 +8130,10 @@ export interface Locale extends ILocale {
              * リストのインポートを許可
              */
             "canImportUserLists": string;
+            /**
+             * サーバーサイドのノートの下書きの作成可能数
+             */
+            "noteDraftLimit": string;
             /**
              * アイコンの形設定の連合を許可
              */
@@ -12489,6 +12505,44 @@ export interface Locale extends ILocale {
                 "text": string;
             };
         };
+    };
+    "_drafts": {
+        /**
+         * 下書きを選択
+         */
+        "select": string;
+        /**
+         * サーバーに下書きを保存しますか？
+         */
+        "saveConfirm": string;
+        /**
+         * ここで「保存しない」を選択しても、下書きは端末内に保存されます。
+         */
+        "saveConfirmDescription": string;
+        /**
+         * 下書きを削除
+         */
+        "delete": string;
+        /**
+         * 下書きを削除しますか？
+         */
+        "deleteAreYouSure": string;
+        /**
+         * 下書きはありません。
+         */
+        "noDrafts": string;
+        /**
+         * {user}への返信
+         */
+        "replyTo": ParameterizedString<"user">;
+        /**
+         * {user}のノートへの引用
+         */
+        "quoteOf": ParameterizedString<"user">;
+        /**
+         * {channel}への投稿
+         */
+        "postTo": ParameterizedString<"channel">;
     };
     "_abuse": {
         "_resolver": {

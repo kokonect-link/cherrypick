@@ -39,6 +39,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2024xx](CHANGE
     - 이 역할이 꺼져있으면 프로필 아이콘 모양 설정이 연합되지 않으며, 모든 사용자의 프로필 아이콘 모양이 `프로필 아이콘을 사각형으로 표시` 설정에 따라 표시됩니다.
 - Feat: robots.txt 사용자화 (bettaku/engawa#226)
   - 기본 `robots.txt`에 정의된 내용을 사용자화 할 수 있습니다.
+- Feat: 노트의 초안을 저장할 수 있음 (kokonect-link/cherrypick#513, misskey-dev/misskey#15298)
+  - 작성 중인 노트를 서버 또는 기기에 저장할 수 있습니다.
+  - 서버에 저장된 초안은 모든 기기에서 동기화 됩니다.
 
 ### Client
 - Feat: 노트 게시 전에 첨부된 이미지를 미리 볼 수 있음 (misskey-dev/misskey#15341)
