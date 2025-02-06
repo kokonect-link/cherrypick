@@ -720,6 +720,8 @@ export class ApPersonService implements OnModuleInit {
 			movedToUri: person.movedTo ?? null,
 			alsoKnownAs: person.alsoKnownAs ?? null,
 			isExplorable: person.discoverable,
+			setFederationAvatarShape: person.setFederationAvatarShape,
+			isSquareAvatars: person.isSquareAvatars,
 			...(await this.resolveAvatarAndBanner(exist, person.icon, person.image).catch(() => ({}))),
 		} as Partial<MiRemoteUser> & Pick<MiRemoteUser, 'isBot' | 'isCat' | 'isLocked' | 'movedToUri' | 'alsoKnownAs' | 'isExplorable' | 'setFederationAvatarShape' | 'isSquareAvatars'>;
 
