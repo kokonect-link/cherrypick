@@ -543,8 +543,8 @@ export class ApRendererService {
 			publicKey: this.renderKey(user, keypair, '#main-key'),
 			isCat: user.isCat,
 			attachment: attachment.length ? attachment : undefined,
-			setFederationAvatarShape: user.setFederationAvatarShape ? user.setFederationAvatarShape : undefined,
-			isSquareAvatars: user.isSquareAvatars ? user.isSquareAvatars : undefined,
+			setFederationAvatarShape: user.setFederationAvatarShape ?? undefined,
+			isSquareAvatars: user.isSquareAvatars ?? undefined,
 		};
 
 		if (user.movedToUri) {
