@@ -199,6 +199,14 @@ export const packedUserLiteSchema = {
 				},
 			},
 		},
+		setFederationAvatarShape: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
+		isSquareAvatars: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 	},
 } as const;
 
@@ -666,14 +674,6 @@ export const packedMeDetailedOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: false,
 			default: false,
-		},
-		setFederationAvatarShape: {
-			type: 'boolean',
-			nullable: false, optional: false,
-		},
-		isSquareAvatars: {
-			type: 'boolean',
-			nullable: false, optional: false,
 		},
 		//#region secrets
 		email: {

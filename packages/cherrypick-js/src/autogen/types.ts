@@ -4134,6 +4134,8 @@ export type components = {
           iconUrl: string | null;
           displayOrder: number;
         })[];
+      setFederationAvatarShape: boolean;
+      isSquareAvatars: boolean;
     };
     UserDetailedNotMeOnly: {
       /** Format: url */
@@ -4383,8 +4385,6 @@ export type components = {
       usePasswordLessLogin: boolean;
       /** @default false */
       securityKeys: boolean;
-      setFederationAvatarShape: boolean;
-      isSquareAvatars: boolean;
       email?: string | null;
       emailVerified?: boolean | null;
       securityKeysList?: {
