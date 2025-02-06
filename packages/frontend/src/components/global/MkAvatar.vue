@@ -128,7 +128,7 @@ const props = withDefaults(defineProps<{
 	noteClick: false,
 });
 
-const squareAvatars = ref((!defaultStore.state.setFederationAvatarShape && defaultStore.state.squareAvatars) || (defaultStore.state.setFederationAvatarShape && props.user.setFederationAvatarShape && props.user.isSquareAvatars));
+const squareAvatars = ref((!defaultStore.state.setFederationAvatarShape && defaultStore.state.squareAvatars) || (defaultStore.state.setFederationAvatarShape && !props.user.setFederationAvatarShape && defaultStore.state.squareAvatars) || (defaultStore.state.setFederationAvatarShape && props.user.setFederationAvatarShape && props.user.isSquareAvatars));
 
 const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;
