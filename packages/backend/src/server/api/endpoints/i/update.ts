@@ -228,8 +228,8 @@ export const paramDef = {
 			uniqueItems: true,
 			items: { type: 'string' },
 		},
-		setFederationAvatarShape: { type: 'boolean' },
-		isSquareAvatars: { type: 'boolean' },
+		setFederationAvatarShape: { type: 'boolean', nullable: true },
+		isSquareAvatars: { type: 'boolean', nullable: true },
 	},
 } as const;
 

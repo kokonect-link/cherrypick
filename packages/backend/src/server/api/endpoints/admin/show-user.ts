@@ -179,11 +179,11 @@ export const meta = {
 			},
 			setFederationAvatarShape: {
 				type: 'boolean',
-				optional: false, nullable: false,
+				optional: true, nullable: true,
 			},
 			isSquareAvatars: {
 				type: 'boolean',
-				optional: false, nullable: false,
+				optional: true, nullable: true,
 			},
 		},
 	},

@@ -4134,8 +4134,8 @@ export type components = {
           iconUrl: string | null;
           displayOrder: number;
         })[];
-      setFederationAvatarShape: boolean;
-      isSquareAvatars: boolean;
+      setFederationAvatarShape?: boolean;
+      isSquareAvatars?: boolean;
     };
     UserDetailedNotMeOnly: {
       /** Format: url */
@@ -10724,8 +10724,8 @@ export type operations = {
                 expiresAt: string | null;
                 roleId: string;
               })[];
-            setFederationAvatarShape: boolean;
-            isSquareAvatars: boolean;
+            setFederationAvatarShape?: boolean | null;
+            isSquareAvatars?: boolean | null;
           };
         };
       };
@@ -22245,8 +22245,8 @@ export type operations = {
           };
           emailNotificationTypes?: string[];
           alsoKnownAs?: string[];
-          setFederationAvatarShape?: boolean;
-          isSquareAvatars?: boolean;
+          setFederationAvatarShape?: boolean | null;
+          isSquareAvatars?: boolean | null;
         };
       };
     };

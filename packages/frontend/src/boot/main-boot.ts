@@ -425,7 +425,7 @@ export async function mainBoot() {
 			signout();
 		});
 
-		// 프로필 아이콘 모양 설정 연합
+		// 프로필 아이콘 모양 설정 연합 초기화
 		if ($i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
 			await misskeyApi('i/update', {
 				setFederationAvatarShape: true,

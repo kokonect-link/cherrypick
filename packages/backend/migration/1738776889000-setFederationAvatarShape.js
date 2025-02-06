@@ -7,8 +7,8 @@ export class setFederationAvatarShape1738776889000 {
     name = 'setFederationAvatarShape1738776889000'
 
     async up(queryRunner) {
-				await queryRunner.query(`ALTER TABLE "user" ADD "setFederationAvatarShape" boolean NOT NULL DEFAULT false`);
-				await queryRunner.query(`ALTER TABLE "user" ADD "isSquareAvatars" boolean NOT NULL DEFAULT false`);
+				await queryRunner.query(`ALTER TABLE "user" ADD "setFederationAvatarShape" boolean DEFAULT null`, undefined);
+				await queryRunner.query(`ALTER TABLE "user" ADD "isSquareAvatars" boolean DEFAULT null`, undefined);
     }
 
     async down(queryRunner) {
