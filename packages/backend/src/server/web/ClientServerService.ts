@@ -479,7 +479,15 @@ export class ClientServerService {
 		});
 
 		fastify.get('/robots.txt', async (request, reply) => {
-			return await reply.sendFile('/robots.txt', staticAssets);
+			// return await reply.sendFile('/robots.txt', staticAssets);
+			if (this.meta.customRobotsTxt) {
+				let content = '';
+				content += this.meta.customRobotsTxt;
+				reply.header('Content-Type', 'text/plain');
+				return await reply.send(content);
+			} else {
+				return await reply.sendFile('/robots.txt', staticAssets);
+			}
 		});
 
 		// OpenSearch XML

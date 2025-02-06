@@ -5515,6 +5515,7 @@ export type components = {
       disableRegistrationWhenInactive: boolean;
       disablePublicNoteWhenInactive: boolean;
       moderatorInactivityLimitDays: number;
+      customRobotsTxt: string | null;
     };
     MetaDetailedOnly: {
       features?: {
@@ -9222,6 +9223,7 @@ export type operations = {
             disablePublicNoteWhenInactive: boolean;
             moderatorInactivityLimitDays: number;
             bubbleInstances: string[];
+            customRobotsTxt: string | null;
           };
         };
       };
@@ -11603,6 +11605,7 @@ export type operations = {
           disablePublicNoteWhenInactive?: boolean | null;
           moderatorInactivityLimitDays?: number;
           bubbleInstances?: string[];
+          customRobotsTxt?: string | null;
         };
       };
     };

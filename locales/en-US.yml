@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+overrideRobotsTxt: "Override robots.txt"
+overrideRobotsTxtDescription: "Override the default robots.txt. Maximum 2048 characters."
 setFederationAvatarShape: "Federation of avatar shape settings"
 setFederationAvatarShapeDescription: "If you turn this setting on, you can federation the shape(circle, square) of your profile icon to local and remote users, and users on the corresponding server will see the profile icon shape you specified if they are using the feature. If you turn it off, all users will see the profile icon shape you specified."
 keyboardShortcuts: "Keyboard shortcuts"

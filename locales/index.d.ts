@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * robots.txtの上書き
+     */
+    "overrideRobotsTxt": string;
+    /**
+     * robots.txtの内容を上書きします。最大2048文字です。
+     */
+    "overrideRobotsTxtDescription": string;
+    /**
      * アイコンの形設定の連合
      */
     "setFederationAvatarShape": string;
