@@ -284,7 +284,7 @@ export class MiUser {
 	public setFederationAvatarShape: boolean;
 
 	@Column('boolean', {
-		default: true,
+		default: false,
 	})
 	public isSquareAvatars: boolean;
 
