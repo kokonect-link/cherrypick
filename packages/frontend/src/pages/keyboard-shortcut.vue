@@ -66,7 +66,7 @@ import { computed } from 'vue';
 import { i18n } from '@/i18n';
 import { definePageMetadata } from '@/scripts/page-metadata';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { defaultStore } from '@/store';
+import { defaultStore } from '@/store.js';
 
 defineProps<{
 	popup?: boolean;
