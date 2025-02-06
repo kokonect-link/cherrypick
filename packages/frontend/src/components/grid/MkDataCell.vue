@@ -39,10 +39,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 					{{ cell.value }}
 				</div>
 				<div v-else-if="cellType === 'boolean'">
-					<div :class="[$style.bool, {
-						[$style.boolTrue]: cell.value === true,
-						'ti ti-check': cell.value === true,
-					}]"></div>
+					<div
+						:class="[$style.bool, {
+							[$style.boolTrue]: cell.value === true,
+							'ti ti-check': cell.value === true,
+						}]"
+					></div>
 				</div>
 				<div v-else-if="cellType === 'image'">
 					<img

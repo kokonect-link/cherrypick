@@ -95,17 +95,17 @@ export class MiNoteDraft {
 	 * followers ... フォロワーのみ
 	 * specified ... visibleUserIds で指定したユーザーのみ
 	 */
-	@Column('enum', {enum: noteVisibilities})
+	@Column('enum', { enum: noteVisibilities })
 	public visibility: typeof noteVisibilities[number];
 
-	@Index('IDX_NOTE_DRAFT_FILE_IDS', {synchronize: false})
+	@Index('IDX_NOTE_DRAFT_FILE_IDS', { synchronize: false })
 	@Column({
 		...id(),
 		array: true, default: '{}',
 	})
 	public fileIds: MiDriveFile['id'][];
 
-	@Index('IDX_NOTE_DRAFT_VISIBLE_USER_IDS', {synchronize: false})
+	@Index('IDX_NOTE_DRAFT_VISIBLE_USER_IDS', { synchronize: false })
 	@Column({
 		...id(),
 		array: true, default: '{}',

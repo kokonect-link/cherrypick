@@ -368,8 +368,8 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		// クエリに使うホスト
 		let host = src === '.' ? null	// .はローカルホスト (ここがマッチするのはリアクションのみ)
 			: src === undefined ? noteUserHost	// ノートなどでホスト省略表記の場合はローカルホスト (ここがリアクションにマッチすることはない)
-				: this.utilityService.isSelfHost(src) ? null	// 自ホスト指定
-					: (src || noteUserHost);	// 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
+			: this.utilityService.isSelfHost(src) ? null	// 自ホスト指定
+			: (src || noteUserHost);	// 指定されたホスト || ノートなどの所有者のホスト (こっちがリアクションにマッチすることはない)
 
 		host = this.utilityService.toPunyNullable(host);
 

@@ -35,9 +35,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onActivated, onMounted, onUnmounted, provide, watch, ref, computed } from 'vue';
 import { version } from '@@/js/config.js';
 import { compareVersions } from 'compare-versions';
+import type { SuperMenuDef } from '@/components/MkSuperMenu.vue';
 import { i18n } from '@/i18n.js';
 import MkSuperMenu from '@/components/MkSuperMenu.vue';
-import type { SuperMenuDef } from '@/components/MkSuperMenu.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { instance } from '@/instance.js';
 import { lookup } from '@/scripts/lookup.js';
