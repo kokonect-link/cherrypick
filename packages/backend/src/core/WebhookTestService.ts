@@ -204,6 +204,8 @@ function toPackedUserLite(user: MiUser, override?: Packed<'UserLite'>): Packed<'
 		emojis: user.emojis,
 		onlineStatus: 'active',
 		badgeRoles: [],
+		setFederationAvatarShape: user.setFederationAvatarShape,
+		isSquareAvatars: user.isSquareAvatars,
 		...override,
 	};
 }

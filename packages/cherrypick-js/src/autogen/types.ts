@@ -4171,8 +4171,8 @@ export type components = {
           iconUrl: string | null;
           displayOrder: number;
         })[];
-      setFederationAvatarShape?: boolean;
-      isSquareAvatars?: boolean;
+      setFederationAvatarShape?: boolean | null;
+      isSquareAvatars?: boolean | null;
     };
     UserDetailedNotMeOnly: {
       /** Format: url */

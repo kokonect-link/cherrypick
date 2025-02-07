@@ -205,11 +205,11 @@ export const packedUserLiteSchema = {
 		},
 		setFederationAvatarShape: {
 			type: 'boolean',
-			nullable: false, optional: true,
+			nullable: true, optional: true,
 		},
 		isSquareAvatars: {
 			type: 'boolean',
-			nullable: false, optional: true,
+			nullable: true, optional: true,
 		},
 	},
 } as const;
