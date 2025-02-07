@@ -411,6 +411,7 @@ watch([
 	showUnreadNotificationsCount,
 	filesGridLayoutInUserPage,
 	showFixedPostFormInReplies,
+	disableShowingAnimatedImages,
 	showingAnimatedImages,
 	enableSeasonalScreenEffect,
 ], async () => {

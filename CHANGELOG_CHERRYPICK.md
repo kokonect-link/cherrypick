@@ -69,6 +69,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
   - 미디어 왼쪽 상단에 `ALT`/`GIF`/`APNG`/`NSFW` 표시
 - Fix: 움직이는 이미지를 아바타 장식으로 붙이지 못할 수 있음
 - Fix: 노트 게시를 예약할 때 잘못된 내용의 토스트 알림이 표시될 수 있음
+- Fix: `움직이는 이미지를 자동으로 재생하지 않음` 설정을 변경해도 페이지를 자동으로 새로 고치지 않음
 
 ### Server
 - Fix: 신고 즉시 해결 기능에서 발생할 수 있는 일부 문제 해결 ([misskey-dev/misskey#11032 (review)](https://github.com/misskey-dev/misskey/pull/11032#pullrequestreview-2425669540))
