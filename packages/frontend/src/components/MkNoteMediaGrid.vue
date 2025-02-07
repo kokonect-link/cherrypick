@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			!showingFiles.has(file.id)
 		)"
 		:class="[$style.filePreview, { [$style.square]: square }]"
-		@click="showingFiles.add(file.id)"
+		@click="onClick($event, file)"
+		@dblclick="onDblClick(file)"
 	>
 		<MkDriveFileThumbnail
 			:file="file"
@@ -39,6 +40,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:large="true"
 			:class="$style.file"
 		/>
+		<div :class="$style.indicators">
+			<div v-if="['image/gif'].includes(file.type)" :class="$style.indicator">GIF</div>
+			<div v-if="['image/apng'].includes(file.type)" :class="$style.indicator">APNG</div>
+			<div v-if="file.comment" :class="$style.indicator">ALT</div>
+			<div v-if="file.isSensitive" :class="$style.indicator" style="color: var(--MI_THEME-warn);" :title="i18n.ts.sensitive"><i class="ti ti-eye-exclamation"></i></div>
+		</div>
 	</MkA>
 </template>
 </template>
@@ -46,12 +53,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import * as os from '@/os.js';
 import { notePage } from '@/filters/note.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import bytes from '@/filters/bytes.js';
 
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
+import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 defineProps<{
 	note: Misskey.entities.Note;
@@ -59,6 +68,27 @@ defineProps<{
 }>();
 
 const showingFiles = ref<Set<string>>(new Set());
+
+async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
+	if (!showingFiles.value.has(image.id)) {
+		ev.stopPropagation();
+		if (image.isSensitive && defaultStore.state.confirmWhenRevealingSensitiveMedia) {
+			const { canceled } = await os.confirm({
+				type: 'question',
+				text: i18n.ts.sensitiveMediaRevealConfirm,
+			});
+			if (canceled) return;
+			showingFiles.value.add(image.id);
+		}
+	}
+
+	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {});
+	if (defaultStore.state.nsfwOpenBehavior === 'click') showingFiles.value.add(image.id);
+}
+
+async function onDblClick(image: Misskey.entities.DriveFile) {
+	if (!showingFiles.value.has(image.id) && defaultStore.state.nsfwOpenBehavior === 'doubleClick') showingFiles.value.add(image.id);
+}
 </script>
 
 <style lang="scss" module>
@@ -105,5 +135,26 @@ const showingFiles = ref<Set<string>>(new Set());
 	background: rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(5px);
 	cursor: pointer;
+}
+
+.indicators {
+	display: inline-flex;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	pointer-events: none;
+	opacity: .5;
+	gap: 6px;
+}
+
+.indicator {
+	/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
+	background-color: black;
+	border-radius: 6px;
+	color: var(--MI_THEME-accentLighten);
+	display: inline-block;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 2px 5px;
 }
 </style>

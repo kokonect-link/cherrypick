@@ -14,12 +14,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<ImgWithBlurhash
 		v-if="isThumbnailAvailable"
 		:hash="file.blurhash"
-		:src="file.thumbnailUrl"
+		:src="url"
 		:alt="file.comment"
 		:title="file.name"
 		:cover="fit !== 'contain'"
 		:forceBlurhash="forceBlurhash"
 		:showAltIndicator="showAltIndicator"
+		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
 	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
 	<i v-else-if="is === 'video'" class="ti ti-video" :class="$style.icon"></i>
@@ -35,9 +39,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import { defaultStore } from '@/store.js';
+import { getStaticImageUrl } from '@/scripts/media-proxy.js';
 
 const props = defineProps<{
 	file: Misskey.entities.DriveFile;
@@ -74,6 +80,38 @@ const isThumbnailAvailable = computed(() => {
 	return props.file.thumbnailUrl
 		? (is.value === 'image' || is.value === 'video')
 		: false;
+});
+
+const playAnimation = ref(true);
+if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+const url = computed(() => (defaultStore.state.loadRawImages)
+	? props.file.url
+	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
+		? getStaticImageUrl(props.file.url)
+		: props.file.thumbnailUrl,
+);
+
+function resetTimer() {
+	playAnimation.value = true;
+	clearTimeout(playAnimationTimer);
+	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+}
+
+onMounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.addEventListener('mousemove', resetTimer);
+		window.addEventListener('touchstart', resetTimer);
+		window.addEventListener('touchend', resetTimer);
+	}
+});
+
+onUnmounted(() => {
+	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+		window.removeEventListener('mousemove', resetTimer);
+		window.removeEventListener('touchstart', resetTimer);
+		window.removeEventListener('touchend', resetTimer);
+	}
 });
 </script>
 

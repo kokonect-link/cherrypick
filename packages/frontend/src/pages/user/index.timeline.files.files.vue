@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-if="note.files.length > 0" :class="[$style.root, $style.visible]">
-	<div v-if="!showingFiles.includes(note.files[0].id)" :key="note.id + note.files[0].id" :class="$style.img" @click="onClick($event,note.files[0])" @dblclick="onDblClick(note.files[0])">
+	<div v-if="!showingFiles.includes(note.files[0].id)" :key="note.id + note.files[0].id" :class="$style.img" @click="onClick($event, note.files[0])" @dblclick="onDblClick(note.files[0])">
 		<!-- TODO: 画像以外のファイルに対応 -->
 		<ImgWithBlurhash :class="$style.sensitiveImg" :hash="note.files[0].blurhash" :src="thumbnail(note.files[0])" :title="note.files[0].name" :forceBlurhash="true"/>
 		<div :class="$style.sensitive">
@@ -30,6 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.indicators">
 			<div v-if="['image/gif'].includes(note.files[0].type)" :class="$style.indicator">GIF</div>
 			<div v-if="['image/apng'].includes(note.files[0].type)" :class="$style.indicator">APNG</div>
+			<div v-if="note.files[0].comment" :class="$style.indicator">ALT</div>
 			<div v-if="note.files[0].isSensitive" :class="$style.indicator" style="color: var(--MI_THEME-warn);" :title="i18n.ts.sensitive"><i class="ti ti-eye-exclamation"></i></div>
 		</div>
 	</MkA>
@@ -70,7 +71,7 @@ function thumbnail(image: Misskey.entities.DriveFile): string | null {
 		: image.thumbnailUrl;
 }
 
-async function onClick(ev: MouseEvent, image:Misskey.entities.DriveFile) {
+async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
 	if (!showingFiles.value.includes(image.id)) {
 		ev.stopPropagation();
 		if (image.isSensitive && defaultStore.state.confirmWhenRevealingSensitiveMedia) {
@@ -87,7 +88,7 @@ async function onClick(ev: MouseEvent, image:Misskey.entities.DriveFile) {
 	if (defaultStore.state.nsfwOpenBehavior === 'click') showingFiles.value.push(image.id);
 }
 
-async function onDblClick(image:Misskey.entities.DriveFile) {
+async function onDblClick(image: Misskey.entities.DriveFile) {
 	if (!showingFiles.value.includes(image.id) && defaultStore.state.nsfwOpenBehavior === 'doubleClick') showingFiles.value.push(image.id);
 }
 
@@ -218,27 +219,6 @@ html[data-color-scheme=light] .visible {
 	color: #fff;
 	opacity: .9;
 	filter: drop-shadow(0 0 1.5px #6060608a);
-}
-
-.indicators {
-	display: inline-flex;
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	pointer-events: none;
-	opacity: .5;
-	gap: 6px;
-}
-
-.indicator {
-	/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
-	background-color: black;
-	border-radius: 6px;
-	color: var(--MI_THEME-accentLighten);
-	display: inline-block;
-	font-weight: bold;
-	font-size: 0.8em;
-	padding: 2px 5px;
 }
 
 .indicators {
