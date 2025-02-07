@@ -82,6 +82,10 @@ export interface Locale extends ILocale {
      */
     "schedulePostList": string;
     /**
+     * {n}個の投稿が予約されたノートがあります。
+     */
+    "thereIsSchedulePost": ParameterizedString<"n">;
+    /**
      * 一定時間が経過した後に接続したときに歓迎メッセージを表示
      */
     "welcomeBackToast": string;
