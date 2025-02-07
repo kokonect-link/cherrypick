@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div class="fade"></div>
 						<div class="title">
 							<div class="name">
-								<MkUserName :user="user" :nowrap="true" @click="editNickname(props.user)"/>
+								<MkUserName :user="user" :nowrap="true" :enableEmojiMenu="!!$i" @click="editNickname(props.user)"/>
 							</div>
 							<div class="bottom">
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
@@ -44,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<MkAvatar class="avatar" :user="user" indicator/>
 					<div class="title">
-						<MkUserName :user="user" :nowrap="false" class="name" @click="editNickname(props.user)"/>
+						<MkUserName :user="user" :nowrap="false" :enableEmojiMenu="!!$i" class="name" @click="editNickname(props.user)"/>
 						<div class="bottom">
 							<span class="username"><MkAcct :user="user" :detail="true"/></span>
 							<span v-if="user.isAdmin" :title="i18n.ts.isAdmin" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
