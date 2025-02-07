@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<MkUserName :nowrap="true" :user="appearNote.user"/>
 						</MkA>
 						<span v-if="appearNote.user.isLocked" :class="$style.userBadge"><i class="ti ti-lock"></i></span>
-						<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
+						<span v-if="appearNote.user.isBot" :class="$style.userBadge"><i class="ti ti-robot"></i></span>
 						<span v-if="appearNote.user.isProxy" :class="$style.userBadge"><i class="ti ti-ghost"></i></span>
 						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
 							<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>

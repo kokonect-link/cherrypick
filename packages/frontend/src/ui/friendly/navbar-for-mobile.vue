@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</button>
 		<div :class="$style.profile">
 			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.account" @click="openProfile">
-				<MkAvatar :user="$i" :class="$style.avatar"/><MkUserName :class="$style.acct" class="_nowrap" :user="$i"/>
+				<MkAvatar :user="$i" :class="$style.avatar"/><MkUserName :class="$style.acct" class="_nowrap" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
 			</button>
 			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.drawer" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 		</div>

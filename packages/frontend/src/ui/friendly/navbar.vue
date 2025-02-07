@@ -60,7 +60,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkAvatar :user="$i" :class="$style.avatar"/>
 				</button>
 				<button v-else-if="$i != null" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openProfile">
-					<MkAvatar :user="$i" :class="$style.avatar"/><MkUserName class="_nowrap" :class="$style.acct" :user="$i"/>
+					<MkAvatar :user="$i" :class="$style.avatar"/><MkUserName class="_nowrap" :class="$style.acct" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
 				</button>
 				<button v-if="!iconOnly" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="[$style.drawer]" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 			</div>
