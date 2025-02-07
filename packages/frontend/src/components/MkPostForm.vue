@@ -141,7 +141,6 @@ import * as sound from '@/scripts/sound.js';
 import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
 import MkScheduledNoteDelete, { type DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
 import MkSchedulePostEditor from '@/components/MkSchedulePostEditor.vue';
-import { listScheduleNotePost } from '@/os.js';
 
 const $i = signinRequired();
 
@@ -1316,7 +1315,7 @@ function showOtherMenu(ev: MouseEvent) {
 			type: 'button',
 			text: i18n.ts.schedulePostList,
 			icon: 'ti ti-calendar-event',
-			action: listScheduleNotePost,
+			action: os.listScheduleNotePost,
 		});
 	}
 
