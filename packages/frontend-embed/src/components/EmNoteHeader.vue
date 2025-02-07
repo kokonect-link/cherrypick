@@ -10,8 +10,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<EmA :class="$style.name" :to="userPage(note.user)">
 				<EmUserName :user="note.user"/>
 			</EmA>
+			<div v-if="note.user.isLocked" :class="$style.userBadge"><i class="ti ti-lock"></i></div>
 			<div v-if="note.user.isBot" :class="$style.isBot">bot</div>
-			<div v-if="note.user.isProxy"><i class="ti ti-ghost"></i></div>
+			<div v-if="note.user.isProxy" :class="$style.userBadge"><i class="ti ti-ghost"></i></div>
 			<div v-if="note.user.badgeRoles" :class="$style.badgeRoles">
 				<img v-for="(role, i) in note.user.badgeRoles" :key="i" :class="$style.badgeRole" :src="role.iconUrl!"/>
 			</div>
@@ -100,6 +101,10 @@ defineProps<{
 		color: var(--MI_THEME-nameHover);
 		text-decoration: none;
 	}
+}
+
+.userBadge {
+	margin: 0 .5em 0 0;
 }
 
 .isBot {

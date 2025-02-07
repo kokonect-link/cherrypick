@@ -54,8 +54,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<EmA :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
 									<EmUserName :nowrap="true" :user="appearNote.user"/>
 								</EmA>
+								<span v-if="appearNote.user.isLocked" :class="$style.userBadge"><i class="ti ti-lock"></i></span>
 								<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
-								<span v-if="appearNote.user.isProxy"><i class="ti ti-ghost"></i></span>
+								<span v-if="appearNote.user.isProxy" :class="$style.userBadge"><i class="ti ti-ghost"></i></span>
 							</div>
 							<div :class="$style.noteHeaderUsername"><EmAcct :user="appearNote.user"/></div>
 						</div>
@@ -352,6 +353,10 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 		color: var(--MI_THEME-nameHover);
 		text-decoration: none;
 	}
+}
+
+.userBadge {
+	margin: 0 .5em;
 }
 
 .isBot {

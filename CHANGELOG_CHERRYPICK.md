@@ -43,6 +43,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
   - 작성 중인 노트를 서버 또는 기기에 저장할 수 있습니다.
   - 서버에 저장된 초안은 모든 기기에서 동기화 됩니다.
 - Enhance: 프록시 계정을 확인할 수 있는 배지 추가 (misskey-dev/misskey#14855)
+- Enhance: `팔로우를 수동으로 승인`으로 설정한 사용자를 쉽게 확인할 수 있도록 노트 헤더에 배지 추가
 
 ### Client
 - Feat: 노트 게시 전에 첨부된 이미지를 미리 볼 수 있음 (misskey-dev/misskey#15341)

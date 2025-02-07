@@ -4147,6 +4147,7 @@ export type components = {
           /** Format: url */
           url: string;
         }[];
+      isLocked: boolean;
       isBot?: boolean;
       isCat?: boolean;
       isProxy?: boolean;
@@ -4191,7 +4192,6 @@ export type components = {
       /** Format: url */
       bannerUrl: string | null;
       bannerBlurhash: string | null;
-      isLocked: boolean;
       isSilenced: boolean;
       /** @example false */
       isSuspended: boolean;

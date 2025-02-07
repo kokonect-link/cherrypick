@@ -58,8 +58,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
 							<MkUserName :nowrap="true" :user="appearNote.user"/>
 						</MkA>
+						<span v-if="appearNote.user.isLocked" :class="$style.userBadge"><i class="ti ti-lock"></i></span>
 						<span v-if="appearNote.user.isBot" :class="$style.isBot">bot</span>
-						<span v-if="appearNote.user.isProxy"><i class="ti ti-ghost"></i></span>
+						<span v-if="appearNote.user.isProxy" :class="$style.userBadge"><i class="ti ti-ghost"></i></span>
 						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
 							<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
 						</span>
@@ -952,6 +953,10 @@ function showOnRemote() {
 		color: var(--MI_THEME-nameHover);
 		text-decoration: none;
 	}
+}
+
+.userBadge {
+	margin: 0 .5em;
 }
 
 .isBot {
