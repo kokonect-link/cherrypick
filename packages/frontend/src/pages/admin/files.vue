@@ -105,7 +105,7 @@ definePageMetadata(() => ({
 	margin: 0 auto;
 	border: none;
 	background: none;
-	color: var(--MI_THEME-fg);
+	color: inherit;
 	font-size: 0.8em;
 	pointer-events: auto;
 }

@@ -133,7 +133,7 @@ defineExpose<WidgetComponentExpose>({
 	margin: 0 auto;
 	border: none;
 	background: none;
-	color: var(--MI_THEME-fg);
+	color: inherit;
 	pointer-events: auto;
 }
 
