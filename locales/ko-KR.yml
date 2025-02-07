@@ -3201,7 +3201,8 @@ _selfXssPrevention:
   title: "“이 화면에 뭔가를 붙여 넣으세요\"라고 되어있는 것은 모두 사기에요."
   description1: "여기에 무언가를 붙여 넣으면, 악의적인 사용자에게 계정을 탈취당하거나 개인정보를 도용당할 수 있어요."
   description2: "붙여 넣으려는 항목이 무엇인지 정확히 이해하지 못하는 경우, %c지금 바로 작업을 중단하고 이 창을 닫아주세요."
-  description3: "자세한 내용은 여기를 확인해 주세요. {link}"
+  description3: "붙여 넣으려는 항목이 무엇인지 정확히 이해하고 있다면, 저희와 같이 CherryPick을 개발하는 건 어때요? {link}"
+  description4: "자세한 내용은 여기를 확인해 주세요. {link}"
 _followRequest:
   recieved: "받은 신청"
   sent: "보낸 신청"

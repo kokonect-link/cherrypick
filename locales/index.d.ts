@@ -12398,9 +12398,13 @@ export interface Locale extends ILocale {
          */
         "description2": string;
         /**
-         * 詳しくはこちらをご確認ください。 {link}
+         * 貼り付けようとする項目が何なのか正確に理解しているのであれば、私たちと一緒にCherryPickを開発するのはいかがでしょうか？ {link}
          */
         "description3": ParameterizedString<"link">;
+        /**
+         * 詳しくはこちらをご確認ください。 {link}
+         */
+        "description4": ParameterizedString<"link">;
     };
     "_followRequest": {
         /**
