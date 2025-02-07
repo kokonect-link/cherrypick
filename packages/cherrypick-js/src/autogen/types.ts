@@ -10821,8 +10821,8 @@ export type operations = {
                 expiresAt: string | null;
                 roleId: string;
               })[];
-            setFederationAvatarShape?: boolean | null;
-            isSquareAvatars?: boolean | null;
+            setFederationAvatarShape: boolean | null;
+            isSquareAvatars: boolean | null;
           };
         };
       };
