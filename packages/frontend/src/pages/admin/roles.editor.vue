@@ -75,8 +75,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSlot>
 		<template #label><i class="ti ti-license"></i> {{ i18n.ts._role.policies }}</template>
 		<div class="_gaps_s">
-			<MkInput v-model="q" type="search">
+			<MkInput ref="queryEl" v-model="q" type="search">
 				<template #prefix><i class="ti ti-search"></i></template>
+				<template v-if="q != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="q = ''; queryEl?.focus();"><i class="ti ti-x"></i></button></template>
 			</MkInput>
 
 			<MkFolder v-if="matchQuery([i18n.ts._role._options.rateLimitFactor, 'rateLimitFactor'])">
@@ -842,6 +843,8 @@ const props = defineProps<{
 
 const role = ref(deepClone(props.modelValue));
 
+const queryEl = ref(null);
+
 // fill missing policy
 for (const ROLE_POLICY of ROLE_POLICIES) {
 	if (role.value.policies[ROLE_POLICY] == null) {
@@ -922,5 +925,16 @@ watch(role, save, { deep: true });
 
 .priorityIndicator {
 	margin-left: 8px;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

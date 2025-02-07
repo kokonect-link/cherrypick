@@ -15,8 +15,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkButton primary rounded @click="updateBaseRole">{{ i18n.ts.save }}</MkButton>
 					</template>
 					<div class="_gaps_s">
-						<MkInput v-model="baseRoleQ" type="search">
+						<MkInput ref="baseRoleQEl" v-model="baseRoleQ" type="search">
 							<template #prefix><i class="ti ti-search"></i></template>
+							<template v-if="baseRoleQ != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="baseRoleQ = ''; baseRoleQEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 
 						<MkFolder v-if="matchQuery([i18n.ts._role._options.rateLimitFactor, 'rateLimitFactor'])">
@@ -348,6 +349,7 @@ import { useRouter } from '@/router/supplier.js';
 
 const router = useRouter();
 const baseRoleQ = ref('');
+const baseRoleQEl = ref(null);
 
 const roles = await misskeyApi('admin/roles/list');
 
@@ -409,5 +411,14 @@ definePageMetadata(() => ({
 </script>
 
 <style lang="scss" module>
-
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	pointer-events: auto;
+}
 </style>

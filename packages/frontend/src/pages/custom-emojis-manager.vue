@@ -10,9 +10,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkSpacer :contentMax="900">
 			<div class="ogwlenmc">
 				<div v-if="tab === 'local'" class="local">
-					<MkInput v-model="query" :debounce="true" type="search" autocapitalize="off">
+					<MkInput ref="queryEl" v-model="query" :debounce="true" type="search" autocapitalize="off">
 						<template #prefix><i class="ti ti-search"></i></template>
 						<template #label>{{ i18n.ts.search }}</template>
+						<template v-if="query != null && query !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="query = null; queryEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 					<MkSwitch v-model="selectMode" style="margin: 8px 0;">
 						<template #label>Select mode</template>
@@ -44,9 +45,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<div v-else-if="tab === 'remote'" class="remote">
 					<FormSplit>
-						<MkInput v-model="queryRemote" :debounce="true" type="search" autocapitalize="off">
+						<MkInput ref="queryRemoteEl" v-model="queryRemote" :debounce="true" type="search" autocapitalize="off">
 							<template #prefix><i class="ti ti-search"></i></template>
 							<template #label>{{ i18n.ts.search }}</template>
+							<template v-if="queryRemote != null && queryRemote !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="queryRemote = null; queryRemoteEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 						<MkInput v-model="host" :debounce="true">
 							<template #label>{{ i18n.ts.host }}</template>
@@ -113,6 +115,9 @@ const remotePagination = {
 		host: (host.value && host.value !== '') ? host.value : null,
 	})),
 };
+
+const queryEl = ref(null);
+const queryRemoteEl = ref(null);
 
 const selectAll = () => {
 	if (selectedEmojis.value.length > 0) {
@@ -455,5 +460,18 @@ definePageMetadata(() => ({
 			}
 		}
 	}
+}
+</style>
+
+<style lang="scss" module>
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

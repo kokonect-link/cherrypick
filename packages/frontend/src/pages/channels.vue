@@ -12,8 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
 			<div v-if="tab === 'search'" key="search" :class="$style.searchRoot">
 				<div class="_gaps">
-					<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">
+					<MkInput ref="searchQueryEl" v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter="search">
 						<template #prefix><i class="ti ti-search"></i></template>
+						<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 					<MkRadios v-model="searchType" @update:modelValue="search()">
 						<option value="nameAndDescription">{{ i18n.ts._channel.nameAndDescription }}</option>
@@ -88,6 +89,8 @@ const tab = ref('featured');
 const searchQuery = ref('');
 const searchType = ref('nameAndDescription');
 const channelPagination = ref();
+
+const searchQueryEl = ref(null);
 
 onMounted(() => {
 	searchQuery.value = props.query ?? '';
@@ -191,5 +194,16 @@ definePageMetadata(() => ({
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 	gap: var(--MI-margin);
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

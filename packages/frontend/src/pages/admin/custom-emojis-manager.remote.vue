@@ -17,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div class="_gaps">
 					<div :class="[[spMode ? $style.searchAreaSp : $style.searchArea]]">
 						<MkInput
+							ref="queryNameEl"
 							v-model="queryName"
 							type="search"
 							autocapitalize="off"
@@ -24,8 +25,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 							@enter="onSearchRequest"
 						>
 							<template #label>name</template>
+							<template v-if="queryName != null && queryName !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="queryName = null; queryNameEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 						<MkInput
+							ref="queryHostEl"
 							v-model="queryHost"
 							type="search"
 							autocapitalize="off"
@@ -33,8 +36,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 							@enter="onSearchRequest"
 						>
 							<template #label>host</template>
+							<template v-if="queryHost != null && queryHost !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="queryHost = null; queryHostEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 						<MkInput
+							ref="queryLicenseEl"
 							v-model="queryLicense"
 							type="search"
 							autocapitalize="off"
@@ -42,9 +47,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 							@enter="onSearchRequest"
 						>
 							<template #label>license</template>
+							<template v-if="queryLicense != null && queryLicense !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="queryLicense = null; queryLicenseEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 
 						<MkInput
+							ref="queryUriEl"
 							v-model="queryUri"
 							type="search"
 							autocapitalize="off"
@@ -52,8 +59,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 							@enter="onSearchRequest"
 						>
 							<template #label>uri</template>
+							<template v-if="queryUri != null && queryUri !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="queryUri = null; queryUriEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 						<MkInput
+							ref="queryPublicUrlEl"
 							v-model="queryPublicUrl"
 							type="search"
 							autocapitalize="off"
@@ -61,6 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							@enter="onSearchRequest"
 						>
 							<template #label>publicUrl</template>
+							<template v-if="queryPublicUrl != null && queryPublicUrl !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="queryPublicUrl = null; queryPublicUrlEl?.focus();"><i class="ti ti-x"></i></button></template>
 						</MkInput>
 					</div>
 
@@ -273,6 +283,12 @@ const gridItems = ref<GridItem[]>([]);
 const spMode = computed(() => ['smartphone', 'tablet'].includes(deviceKind));
 const checkedItemsCount = computed(() => gridItems.value.filter(it => it.checked).length);
 
+const queryNameEl = ref(null);
+const queryHostEl = ref(null);
+const queryLicenseEl = ref(null);
+const queryUriEl = ref(null);
+const queryPublicUrlEl = ref(null);
+
 function onSortOrderUpdate(_sortOrders: SortOrder<GridSortOrderKey>[]) {
 	sortOrders.value = _sortOrders;
 }
@@ -397,7 +413,7 @@ onMounted(async () => {
 });
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .row1 {
 	grid-row: 1 / 2;
 }
@@ -499,5 +515,16 @@ onMounted(async () => {
 		justify-content: flex-end;
 		align-items: center;
 	}
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

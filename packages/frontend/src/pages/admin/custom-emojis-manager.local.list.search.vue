@@ -19,40 +19,50 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="_gaps">
 				<div class="_gaps_s">
 					<MkInput
+						ref="modelNameEl"
 						v-model="model.name"
 						type="search"
 						autocapitalize="off"
 					>
 						<template #label>name</template>
+						<template v-if="model.name != null && model.name !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="model.name = null; modelNameEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 					<MkInput
+						ref="modelCategoryEl"
 						v-model="model.category"
 						type="search"
 						autocapitalize="off"
 					>
 						<template #label>category</template>
+						<template v-if="model.category != null && model.category !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="model.category = null; modelCategoryEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 					<MkInput
+						ref="modelAliasesEl"
 						v-model="model.aliases"
 						type="search"
 						autocapitalize="off"
 					>
 						<template #label>aliases</template>
+						<template v-if="model.aliases != null && model.aliases !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="model.aliases = null; modelAliasesEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 
 					<MkInput
+						ref="modelTypeEl"
 						v-model="model.type"
 						type="search"
 						autocapitalize="off"
 					>
 						<template #label>type</template>
+						<template v-if="model.type != null && model.type !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="model.type = null; modelTypeEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 					<MkInput
+						ref="modelLicenseEl"
 						v-model="model.license"
 						type="search"
 						autocapitalize="off"
 					>
 						<template #label>license</template>
+						<template v-if="model.license != null && model.license !== ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="model.license = null; modelLicenseEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 					<MkSelect
 						v-model="model.sensitive"
@@ -149,6 +159,12 @@ const emit = defineEmits<{
 const model = ref<EmojiSearchQuery>(props.query);
 const queryRolesText = computed(() => model.value.roles.map(it => it.name).join(','));
 
+const modelNameEl = ref(null);
+const modelCategoryEl = ref(null);
+const modelAliasesEl = ref(null);
+const modelTypeEl = ref(null);
+const modelLicenseEl = ref(null);
+
 watch(model, () => {
 	emit('queryUpdated', model.value);
 }, { deep: true });
@@ -191,7 +207,7 @@ async function onQueryRolesEditClicked() {
 }
 </script>
 
-<style module>
+<style lang="scss" module>
 .root {
 	position: relative;
 }
@@ -204,5 +220,16 @@ async function onQueryRolesEditClicked() {
 	display: flex;
 	gap: 8px;
 	z-index: 1;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>
