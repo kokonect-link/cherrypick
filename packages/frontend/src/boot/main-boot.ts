@@ -432,7 +432,6 @@ export async function mainBoot() {
 				isSquareAvatars: defaultStore.state.squareAvatars,
 			});
 		} else if (!$i.policies.canSetFederationAvatarShape && defaultStore.state.setFederationAvatarShape) {
-			await defaultStore.set('setFederationAvatarShape', false);
 			await misskeyApi('i/update', {
 				setFederationAvatarShape: false,
 				isSquareAvatars: defaultStore.state.squareAvatars,
