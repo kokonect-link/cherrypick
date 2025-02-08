@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="autoLoadMoreConversation">{{ i18n.ts.autoLoadMoreConversation }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="useAutoTranslate" @update:modelValue="learnMoreAutoTranslate">
 					{{ i18n.ts.useAutoTranslate }} <span class="_beta">CherryPick</span>
-					<template v-if="!$i.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreCantUseAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
+					<template v-if="!$i?.policies.canUseAutoTranslate" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreCantUseAutoTranslate">{{ i18n.ts.learnMore }}</a></template>
 				</MkSwitch>
 				<MkSwitch v-model="welcomeBackToast">{{ i18n.ts.welcomeBackToast }} <span class="_beta">CherryPick</span></MkSwitch>
 				<MkSwitch v-model="disableNyaize">{{ i18n.ts.noNyaization }} <span class="_beta">CherryPick</span></MkSwitch>
@@ -363,8 +363,8 @@ function learnMoreCantUseAutoTranslate() {
 	os.alert({
 		type: 'info',
 		title: i18n.ts.useAutoTranslate,
-		text: i18n.ts.cantUseAutoTranslateDescription,
-		caption: i18n.ts.cantUseAutoTranslateCaption,
+		text: i18n.tsx.cantUseThisFunctionDescription({ name: i18n.ts.useAutoTranslate }),
+		caption: i18n.tsx.cantUseThisFunctionCaption({ name: i18n.ts.useAutoTranslate }),
 	});
 }
 

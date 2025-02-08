@@ -124,14 +124,14 @@ export interface Locale extends ILocale {
      */
     "useAutoTranslateDescription": string;
     /**
-     * サーバー管理者が自動翻訳を使用できないように設定しました。
-     * 自動翻訳を使用するには、サーバー管理者にお問い合わせください。
+     * サーバー管理者が{name}を使用できないように設定しました。
+     * {name}を使用するには、サーバー管理者にお問い合わせください。
      */
-    "cantUseAutoTranslateDescription": string;
+    "cantUseThisFunctionDescription": ParameterizedString<"name" | "name">;
     /**
-     * 有効にすると、再利用できるときに自動翻訳を適用します。
+     * 有効にすると、再利用できるときに{name}を適用します。
      */
-    "cantUseAutoTranslateCaption": string;
+    "cantUseThisFunctionCaption": ParameterizedString<"name">;
     /**
      * ウィジェット
      */
