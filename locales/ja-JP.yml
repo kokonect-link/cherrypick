@@ -1379,6 +1379,8 @@ repositoryUrlDescription: "ソースコードが公開されているリポジ�
 repositoryUrlOrTarballRequired: "リポジトリを公開していない場合、代わりにtarballを提供する必要があります。詳細は.config/example.ymlを参照してください。"
 feedback: "フィードバック"
 feedbackUrl: "フィードバックURL"
+support: "お問い合わせ"
+supportThisInstance: "{name}を支援"
 impressum: "運営者情報"
 impressumUrl: "運営者情報URL"
 impressumDescription: "ドイツなどの一部の国と地域では表示が義務付けられています(Impressum)。"

@@ -38,11 +38,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { host } from '@@/js/config.js';
 import MkButton from '@/components/MkButton.vue';
-import MkLink from '@/components/MkLink.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
+import { donateCherryPick } from '@/scripts/donateCherryPick.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -58,28 +58,6 @@ function close() {
 function neverShow() {
 	miLocalStorage.setItem('neverShowDonationInfo', 'true');
 	close();
-}
-
-function donateCherryPick(ev: MouseEvent) {
-	os.popupMenu([{
-		text: 'Patreon',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://www.patreon.com/noridev', '_blank');
-		},
-	}, {
-		text: 'Paypal',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://www.paypal.me/noridev', '_blank');
-		},
-	}, {
-		text: 'Toss (Korea)',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://toss.me/noridev', '_blank');
-		},
-	}], ev.currentTarget ?? ev.target);
 }
 </script>
 

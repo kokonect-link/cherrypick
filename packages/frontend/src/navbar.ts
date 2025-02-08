@@ -14,6 +14,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { donateCherryPick } from '@/scripts/donateCherryPick.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -219,6 +220,12 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-user',
 		show: computed(() => $i != null),
 		to: `/@${$i?.username}`,
+	},
+	support: {
+		// title: i18n.tsx.supportThisInstance({ name: instance.name ?? host }),
+		title: i18n.tsx.supportThisInstance({ name: 'CherryPick' }),
+		icon: 'ti ti-pig-money',
+		action: (ev) => donateCherryPick(ev),
 	},
 	cacheClear: {
 		title: i18n.ts.clearCache,

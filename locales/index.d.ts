@@ -5547,6 +5547,14 @@ export interface Locale extends ILocale {
      */
     "feedbackUrl": string;
     /**
+     * お問い合わせ
+     */
+    "support": string;
+    /**
+     * {name}を支援
+     */
+    "supportThisInstance": ParameterizedString<"name">;
+    /**
      * 運営者情報
      */
     "impressum": string;

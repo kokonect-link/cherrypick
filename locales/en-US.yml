@@ -1379,6 +1379,8 @@ repositoryUrlDescription: "If you are using CherryPick as is (without any change
 repositoryUrlOrTarballRequired: "If you have not published a repository, you must provide a tarball instead. See .config/example.yml for more information."
 feedback: "Feedback"
 feedbackUrl: "Feedback URL"
+support: "Helpdesk"
+supportThisInstance: "Support {name}"
 impressum: "Impressum"
 impressumUrl: "Impressum URL"
 impressumDescription: "In some countries, like germany, the inclusion of operator contact information (an Impressum) is legally required for commercial websites."

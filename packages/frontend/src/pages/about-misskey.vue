@@ -232,6 +232,7 @@ import * as os from '@/os.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
+import { donateCherryPick } from '@/scripts/donateCherryPick.js';
 
 const patronsWithIconWithCherryPick = [{
 	name: 'Etone Sabasappugawa',
@@ -553,28 +554,6 @@ function iLoveCherryPick() {
 function getTreasure() {
 	thereIsTreasure.value = false;
 	claimAchievement('foundTreasure');
-}
-
-function donateCherryPick(ev: MouseEvent) {
-	os.popupMenu([{
-		text: 'Patreon',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://www.patreon.com/noridev', '_blank');
-		},
-	}, {
-		text: 'Paypal',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://www.paypal.me/noridev', '_blank');
-		},
-	}, {
-		text: 'Toss (Korea)',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://toss.me/noridev', '_blank');
-		},
-	}], ev.currentTarget ?? ev.target);
 }
 
 onMounted(() => {

@@ -1379,6 +1379,8 @@ repositoryUrlDescription: "소스 코드를 공개한 저장소가 있는 경우
 repositoryUrlOrTarballRequired: "저장소를 공개하지 않는 경우, 대신 tarball을 제공해야 해요. 자세한 내용은 .config/example.yml을 참조해 주세요."
 feedback: "피드백"
 feedbackUrl: "피드백 URL"
+support: "문의하기"
+supportThisInstance: "{name} 지원하기"
 impressum: "운영자 정보"
 impressumUrl: "운영자 정보 URL"
 impressumDescription: "독일 등의 일부 나라와 지역에서는 꼭 표시해야 해요(Impressum)."
