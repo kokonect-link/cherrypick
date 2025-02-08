@@ -146,7 +146,7 @@ import FormSuspense from '@/components/form/suspense.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkLink from '@/components/MkLink.vue';
-import { donateCherryPick } from '@/scripts/donateCherryPick.js';
+import { donateCherryPick } from '@/scripts/donate-cherrypick.js';
 
 const initStats = () => misskeyApi('stats', {});
 </script>

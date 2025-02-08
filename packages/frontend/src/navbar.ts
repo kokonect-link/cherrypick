@@ -14,7 +14,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
-import { donateCherryPick } from '@/scripts/donateCherryPick.js';
+import { donateCherryPick } from '@/scripts/donate-cherrypick.js';
 
 export const navbarItemDef = reactive({
 	notifications: {

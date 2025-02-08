@@ -232,7 +232,7 @@ import * as os from '@/os.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
 import { $i } from '@/account.js';
-import { donateCherryPick } from '@/scripts/donateCherryPick.js';
+import { donateCherryPick } from '@/scripts/donate-cherrypick.js';
 
 const patronsWithIconWithCherryPick = [{
 	name: 'Etone Sabasappugawa',
