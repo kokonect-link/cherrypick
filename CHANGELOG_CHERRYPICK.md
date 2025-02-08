@@ -23,10 +23,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 # 릴리스 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
-## 4.x.x
-출시일: unreleased<br>
-기반 Misskey 버전: 2025.x.x<br>
-Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGELOG.md#2025xx) 문서를 참고하십시오.
+## 4.15.0
+출시일: 2025/2/8<br>
+기반 Misskey 버전: 2025.2.0<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202520](CHANGELOG.md#202520) 문서를 참고하십시오.
 
 ### General
 - Feat: 계정 정리 기능 ([yodangang-express/cherrypick@dc51c907](https://github.com/yodangang-express/cherrypick/commit/dc51c907236570d6f072409832d312c937239514))
