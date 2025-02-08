@@ -9370,6 +9370,10 @@ export interface Locale extends ILocale {
          */
         "noteMy": string;
         /**
+         * 予約投稿
+         */
+        "noteSchedulePost": string;
+        /**
          * ノートを編集
          */
         "noteEdited": string;

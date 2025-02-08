@@ -58,6 +58,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: 검색 입력 블록에 입력한 내용을 `x` 버튼을 클릭해 지울 수 있음
 - Enhance: 게시 예약된 노트가 있을 때 알림
 - Enhance: 사진 위젯의 미디어 왼쪽 상단에 미디어 정보(`ALT`/`GIF`/`APNG`/`NSFW`) 표시
+- Enhance: 노트 게시 예약 시 사운드를 재생함
 - Fix: 노트 헤더의 사용자 이름을 클릭하면 페이지가 중복으로 이동됨
 - Fix: CherryPick 클라이언트 업데이트 알림이 잘못 반환될 수 있음
   - 출시 전 빌드 태그가 고려되지 않음(`alpha`, `beta`, `rc`)

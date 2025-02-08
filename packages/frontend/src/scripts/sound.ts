@@ -74,6 +74,7 @@ export const soundsTypes = [
 export const operationTypes = [
 	'noteMy',
 	'note',
+	'noteSchedulePost',
 	'noteEdited',
 	'chat',
 	'chatBg',

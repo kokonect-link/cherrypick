@@ -2451,6 +2451,7 @@ _theme:
 _sfx:
   note: "ノート"
   noteMy: "ノート(自分)"
+  noteSchedulePost: "予約投稿"
   noteEdited: "ノートを編集"
   notification: "通知"
   chat: "チャット"

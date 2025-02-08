@@ -2404,6 +2404,7 @@ _theme:
 _sfx:
   note: "새 노트"
   noteMy: "내 노트"
+  noteSchedulePost: "노트 게시 예약"
   noteEdited: "노트 편집"
   notification: "알림"
   chat: "대화"

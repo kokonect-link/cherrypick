@@ -2404,6 +2404,7 @@ _theme:
 _sfx:
   note: "New note"
   noteMy: "Own note"
+  noteSchedulePost: "Scheduled note"
   noteEdited: "Note Edited"
   notification: "Notifications"
   chat: "Chat"
