@@ -22,7 +22,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</template>
 	</Sortable>
-	<p :class="$style.remain">{{ 16 - props.modelValue.length }}/16</p>
+	<p
+		:class="[$style.remain, {
+			[$style.exceeded]: props.modelValue.length > 16,
+		}]"
+	>
+		{{ 16 - props.modelValue.length }}/16
+	</p>
 </div>
 </template>
 
@@ -166,6 +172,14 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent | Keyboar
 			text: i18n.ts.cropImage,
 			icon: 'ti ti-crop',
 			action: () : void => { crop(file); },
+		}, {
+			text: i18n.ts.preview,
+			icon: 'ti ti-photo-search',
+			action: () => {
+				os.popup(defineAsyncComponent(() => import('@/components/MkImgPreviewDialog.vue')), {
+					file: file,
+				});
+			},
 		});
 	}
 
@@ -239,5 +253,9 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent | Keyboar
 	margin: 0;
 	padding: 0;
 	font-size: 90%;
+
+	&.exceeded {
+		color: var(--MI_THEME-error);
+	}
 }
 </style>

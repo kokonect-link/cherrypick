@@ -280,7 +280,7 @@ defineExpose({
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	box-sizing: border-box;
-	pointer-events: none;
+	// pointer-events: none;
 
 	&:empty {
 		display: none;
@@ -296,6 +296,7 @@ defineExpose({
 	right: 0;
 	padding-left: 6px;
 }
+
 .save {
 	margin: 8px 0 0 0;
 }

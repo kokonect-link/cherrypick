@@ -14,6 +14,7 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { defaultStore } from '@/store.js';
 import { unisonReload } from '@/scripts/unison-reload.js';
+import { donateCherryPick } from '@/scripts/donate-cherrypick.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -185,6 +186,11 @@ export const navbarItemDef = reactive({
 				text: i18n.ts._mfc.cheatSheet,
 				icon: 'ti ti-help-circle',
 				to: '/mfc-cheat-sheet',
+			}, {
+				type: 'link',
+				text: i18n.ts._keyboardShortCut.list,
+				icon: 'ti ti-keyboard',
+				to: '/keyboard-shortcuts',
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
@@ -214,6 +220,12 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-user',
 		show: computed(() => $i != null),
 		to: `/@${$i?.username}`,
+	},
+	support: {
+		// title: i18n.tsx.supportThisInstance({ name: instance.name ?? host }),
+		title: i18n.tsx.supportThisInstance({ name: 'CherryPick' }),
+		icon: 'ti ti-pig-money',
+		action: (ev) => donateCherryPick(ev),
 	},
 	cacheClear: {
 		title: i18n.ts.clearCache,

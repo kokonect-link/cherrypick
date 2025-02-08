@@ -131,6 +131,12 @@ function generateDummyNote(override?: Partial<MiNote>): MiNote {
 		replyUserHost: null,
 		renoteUserId: null,
 		renoteUserHost: null,
+		updatedAt: null,
+		updatedAtHistory: null,
+		noteEditHistory: [],
+		hasEvent: false,
+		disableRightClick: false,
+		deleteAt: null,
 		...override,
 	};
 }
@@ -193,11 +199,14 @@ function toPackedUserLite(user: MiUser, override?: Packed<'UserLite'>): Packed<'
 			offsetX: it.offsetX,
 			offsetY: it.offsetY,
 		})),
+		isLocked: user.isLocked,
 		isBot: user.isBot,
 		isCat: user.isCat,
 		emojis: user.emojis,
 		onlineStatus: 'active',
 		badgeRoles: [],
+		setFederationAvatarShape: user.setFederationAvatarShape,
+		isSquareAvatars: user.isSquareAvatars,
 		...override,
 	};
 }
@@ -214,7 +223,6 @@ function toPackedUserDetailedNotMe(user: MiUser, override?: Packed<'UserDetailed
 		lastFetchedAt: user.lastFetchedAt?.toISOString() ?? null,
 		bannerUrl: user.bannerUrl,
 		bannerBlurhash: user.bannerBlurhash,
-		isLocked: user.isLocked,
 		isSilenced: false,
 		isSuspended: user.isSuspended,
 		description: null,

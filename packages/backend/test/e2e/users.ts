@@ -38,8 +38,10 @@ describe('ユーザー', () => {
 			avatarUrl: user.avatarUrl,
 			avatarBlurhash: user.avatarBlurhash,
 			avatarDecorations: user.avatarDecorations,
+			isLocked: user.isLocked,
 			isBot: user.isBot,
 			isCat: user.isCat,
+			isProxy: user.isProxy,
 			instance: user.instance,
 			emojis: user.emojis,
 			onlineStatus: user.onlineStatus,
@@ -64,7 +66,6 @@ describe('ユーザー', () => {
 			lastFetchedAt: user.lastFetchedAt,
 			bannerUrl: user.bannerUrl,
 			bannerBlurhash: user.bannerBlurhash,
-			isLocked: user.isLocked,
 			isSilenced: user.isSilenced,
 			isSuspended: user.isSuspended,
 			description: user.description,
@@ -309,8 +310,10 @@ describe('ユーザー', () => {
 		response.avatarUrl && assert.match(response.avatarUrl, /^[-a-zA-Z0-9@:%._\+~#&?=\/]+$/);
 		assert.strictEqual(response.avatarBlurhash, null);
 		assert.deepStrictEqual(response.avatarDecorations, []);
+		assert.strictEqual(response.isLocked, false);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.isCat, false);
+		assert.strictEqual(response.isProxy, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.strictEqual(response.onlineStatus, 'unknown');
@@ -325,7 +328,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.lastFetchedAt, null);
 		assert.strictEqual(response.bannerUrl, null);
 		assert.strictEqual(response.bannerBlurhash, null);
-		assert.strictEqual(response.isLocked, false);
 		assert.strictEqual(response.isSilenced, false);
 		assert.strictEqual(response.isSuspended, false);
 		assert.strictEqual(response.description, null);

@@ -75,8 +75,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<FormSlot>
 		<template #label><i class="ti ti-license"></i> {{ i18n.ts._role.policies }}</template>
 		<div class="_gaps_s">
-			<MkInput v-model="q" type="search">
+			<MkInput ref="queryEl" v-model="q" type="search">
 				<template #prefix><i class="ti ti-search"></i></template>
+				<template v-if="q != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="q = ''; queryEl?.focus();"><i class="ti ti-x"></i></button></template>
 			</MkInput>
 
 			<MkFolder v-if="matchQuery([i18n.ts._role._options.rateLimitFactor, 'rateLimitFactor'])">
@@ -661,7 +662,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkSwitch v-model="role.policies.avatarDecorationLimit.useDefault" :readonly="readonly">
 						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
 					</MkSwitch>
-					<MkInput v-model="role.policies.avatarDecorationLimit.value" type="number" :min="0">
+					<MkInput v-model="role.policies.avatarDecorationLimit.value" type="number" :min="0" :max="16" @update:modelValue="updateAvatarDecorationLimit">
 						<template #label>{{ i18n.ts._role._options.avatarDecorationLimit }}</template>
 					</MkInput>
 					<MkRange v-model="role.policies.avatarDecorationLimit.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
@@ -769,6 +770,45 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkRange>
 				</div>
 			</MkFolder>
+
+			<MkFolder v-if="matchQuery([i18n.ts._role._options.noteDraftLimit, 'noteDraftLimit'])">
+				<template #label>{{ i18n.ts._role._options.noteDraftLimit }}</template>
+				<template #suffix>
+					<span v-if="role.policies.noteDraftLimit.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
+					<span v-else>{{ role.policies.noteDraftLimit.value }}</span>
+					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.noteDraftLimit)"></i></span>
+				</template>
+				<div class="_gaps">
+					<MkSwitch v-model="role.policies.noteDraftLimit.useDefault" :readonly="readonly">
+						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
+					</MkSwitch>
+					<MkInput v-model="role.policies.noteDraftLimit.value" :disabled="role.policies.noteDraftLimit.useDefault" type="number" :readonly="readonly">
+					</MkInput>
+					<MkRange v-model="role.policies.noteDraftLimit.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
+						<template #label>{{ i18n.ts._role.priority }}</template>
+					</MkRange>
+				</div>
+			</MkFolder>
+
+			<MkFolder v-if="matchQuery([i18n.ts._role._options.canSetFederationAvatarShape, 'canSetFederationAvatarShape'])">
+				<template #label>{{ i18n.ts._role._options.canSetFederationAvatarShape }}</template>
+				<template #suffix>
+					<span v-if="role.policies.canSetFederationAvatarShape.useDefault" :class="$style.useDefaultLabel">{{ i18n.ts._role.useBaseValue }}</span>
+					<span v-else>{{ role.policies.canSetFederationAvatarShape.value ? i18n.ts.yes : i18n.ts.no }}</span>
+					<span :class="$style.priorityIndicator"><i :class="getPriorityIcon(role.policies.canSetFederationAvatarShape)"></i></span>
+				</template>
+				<div class="_gaps">
+					<MkSwitch v-model="role.policies.canSetFederationAvatarShape.useDefault" :readonly="readonly">
+						<template #label>{{ i18n.ts._role.useBaseValue }}</template>
+					</MkSwitch>
+					<MkSwitch v-model="role.policies.canSetFederationAvatarShape.value" :disabled="role.policies.canSetFederationAvatarShape.useDefault" :readonly="readonly">
+						<template #label>{{ i18n.ts.enable }}</template>
+					</MkSwitch>
+					<MkRange v-model="role.policies.canSetFederationAvatarShape.priority" :min="0" :max="2" :step="1" easing :textConverter="(v) => v === 0 ? i18n.ts._role._priority.low : v === 1 ? i18n.ts._role._priority.middle : v === 2 ? i18n.ts._role._priority.high : ''">
+						<template #label>{{ i18n.ts._role.priority }}</template>
+					</MkRange>
+				</div>
+			</MkFolder>
 		</div>
 	</FormSlot>
 </div>
@@ -803,6 +843,8 @@ const props = defineProps<{
 
 const role = ref(deepClone(props.modelValue));
 
+const queryEl = ref(null);
+
 // fill missing policy
 for (const ROLE_POLICY of ROLE_POLICIES) {
 	if (role.value.policies[ROLE_POLICY] == null) {
@@ -812,6 +854,12 @@ for (const ROLE_POLICY of ROLE_POLICIES) {
 			value: instance.policies[ROLE_POLICY],
 		};
 	}
+}
+
+function updateAvatarDecorationLimit(value: string | number) {
+	const numValue = Number(value);
+	const limited = Math.min(16, Math.max(0, numValue));
+	role.value.policies.avatarDecorationLimit.value = limited;
 }
 
 const rolePermission = computed({
@@ -877,5 +925,16 @@ watch(role, save, { deep: true });
 
 .priorityIndicator {
 	margin-left: 8px;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

@@ -108,7 +108,6 @@ import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { defaultStore } from '@/store.js';
 
 const animation = ref(defaultStore.state.animation);
-const squareAvatars = ref(defaultStore.state.squareAvatars);
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;
@@ -128,6 +127,8 @@ const props = withDefaults(defineProps<{
 	forceShowDecoration: false,
 	noteClick: false,
 });
+
+const squareAvatars = ref((!defaultStore.state.setFederationAvatarShape && defaultStore.state.squareAvatars) || (defaultStore.state.setFederationAvatarShape && !props.user.setFederationAvatarShape && defaultStore.state.squareAvatars) || (defaultStore.state.setFederationAvatarShape && props.user.setFederationAvatarShape && props.user.isSquareAvatars));
 
 const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;

@@ -21,8 +21,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<form @submit.prevent="done">
 			<div class="_gaps">
-				<MkInput ref="passwordInput" v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" required :withPasswordToggle="true" @enter.prevent="done">
+				<MkInput ref="passwordInput" v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" required :withPasswordToggle="true" @enter.prevent="done" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
 					<template #prefix><i class="ti ti-password"></i></template>
+					<template v-if="isCapsLock" #suffix><div :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div></template>
 				</MkInput>
 
 				<MkInput v-if="$i.twoFactorEnabled" v-model="token" type="text" :pattern="isBackupCode ? '^[A-Z0-9]{32}$' :'^[0-9]{6}$'" autocomplete="one-time-code" required :spellcheck="false" :inputmode="isBackupCode ? undefined : 'numeric'" @enter.prevent="done">
@@ -39,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef, ref } from 'vue';
+import { onMounted, shallowRef, ref, onUnmounted } from 'vue';
 import MkInput from '@/components/MkInput.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
@@ -60,6 +61,8 @@ const password = ref('');
 const isBackupCode = ref(false);
 const token = ref<string | null>(null);
 
+const isCapsLock = ref(false);
+
 function onClose() {
 	emit('cancelled');
 	if (dialog.value) dialog.value.close();
@@ -70,7 +73,28 @@ function done() {
 	if (dialog.value) dialog.value.close();
 }
 
+function checkCapsLock(ev: KeyboardEvent) {
+	isCapsLock.value = ev.getModifierState('CapsLock');
+}
+
 onMounted(() => {
 	if (passwordInput.value) passwordInput.value.focus();
+
+	window.addEventListener('keydown', checkCapsLock);
+	window.addEventListener('keyup', checkCapsLock);
+});
+
+onUnmounted(() => {
+	window.removeEventListener('keydown', checkCapsLock);
+	window.removeEventListener('keyup', checkCapsLock);
 });
 </script>
+
+<style lang="scss" module>
+.isCapslock {
+	display: inline-block;
+	padding: 2px;
+	border-radius: 6px;
+	background: var(--MI_THEME-X5);
+}
+</style>

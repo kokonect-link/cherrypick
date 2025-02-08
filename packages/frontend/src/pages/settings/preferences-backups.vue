@@ -111,6 +111,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'sound_masterVolume',
 	'sound_note',
 	'sound_noteMy',
+	'sound_noteSchedulePost',
 	'sound_noteEdited',
 	'sound_notification',
 	'sound_chat',
@@ -123,6 +124,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'vibrateChat',
 	'vibrateChatBg',
 	'vibrateSystem',
+	'forceCollapseAllRenotes',
 	'collapseReplies',
 	'collapseDefault',
 	'filesGridLayoutInUserPage',
@@ -188,6 +190,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'showQuoteButtonInNoteFooter',
 	'showMoreButtonInNoteFooter',
 	'selectReaction',
+	'setFederationAvatarShape',
 	// #endregion CherryPick
 ];
 const coldDeviceStorageSaveKeys: (keyof typeof ColdDeviceStorage.default)[] = [

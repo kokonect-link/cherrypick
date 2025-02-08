@@ -6,8 +6,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div>
-		<MkInput v-model="host" :debounce="true" class="">
+		<MkInput ref="hostEl" v-model="host" :debounce="true" class="">
 			<template #prefix><i class="ti ti-search"></i></template>
+			<template v-if="host != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="host = ''; hostEl?.focus();"><i class="ti ti-x"></i></button></template>
 			<template #label>{{ i18n.ts.host }}</template>
 		</MkInput>
 		<FormSplit style="margin-top: var(--MI-margin);">
@@ -82,6 +83,8 @@ const pagination = {
 	})),
 } as Paging;
 
+const hostEl = ref(null);
+
 function getStatus(instance) {
 	if (instance.isSuspended) return 'Suspended';
 	if (instance.isBlocked) return 'Blocked';
@@ -100,5 +103,16 @@ function getStatus(instance) {
 
 .item:hover {
 	text-decoration: none;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

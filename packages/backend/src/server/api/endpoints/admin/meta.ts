@@ -644,6 +644,10 @@ export const meta = {
 					type: 'string',
 				},
 			},
+			customRobotsTxt: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 		},
 	},
 } as const;
@@ -821,6 +825,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				disablePublicNoteWhenInactive: instance.disablePublicNoteWhenInactive,
 				moderatorInactivityLimitDays: instance.moderatorInactivityLimitDays,
 				bubbleInstances: instance.bubbleInstances,
+				customRobotsTxt: instance.customRobotsTxt,
 			};
 		});
 	}

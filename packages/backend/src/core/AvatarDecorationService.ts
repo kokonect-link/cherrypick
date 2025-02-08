@@ -146,7 +146,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 			return;
 		}
 
-		const instanceHost = instance.host;
+		const instanceHost = instance!.host;
 		const decorationApiUrl = `https://${instanceHost}/api/get-avatar-decorations`;
 		const allRes = await this.httpRequestService.send(decorationApiUrl, {
 			method: 'POST',
@@ -180,7 +180,7 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 			const decorationData = {
 				name: name,
 				description: description,
-				url: this.getProxiedUrl(avatarDecoration.url, 'static'),
+				url: this.getProxiedUrl(avatarDecoration.url, 'avatar'),
 				remoteId: avatarDecorationId,
 				host: userHost,
 			};

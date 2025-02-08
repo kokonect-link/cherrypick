@@ -6,8 +6,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
+		<MkInput ref="searchQueryEl" v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
 			<template #prefix><i class="ti ti-search"></i></template>
+			<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
 		</MkInput>
 		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
 			<option value="combined">{{ i18n.ts.all }}</option>
@@ -63,6 +64,8 @@ const eventPagination = ref();
 const startDate = ref<any>(null);
 const endDate = ref<any>(null);
 
+const searchQueryEl = ref(null);
+
 async function search(): Promise<void> {
 	const query = searchQuery.value.toString().trim();
 
@@ -85,3 +88,16 @@ async function search(): Promise<void> {
 	key.value++;
 }
 </script>
+
+<style lang="scss" module>
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	pointer-events: auto;
+}
+</style>

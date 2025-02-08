@@ -92,6 +92,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkSelect>
 				<MkSwitch v-model="highlightSensitiveMedia">{{ i18n.ts.highlightSensitiveMedia }}</MkSwitch>
 				<MkSwitch v-model="squareAvatars">{{ i18n.ts.squareAvatars }}</MkSwitch>
+				<MkSwitch v-model="setFederationAvatarShape" @update:modelValue="cantUseSetFederationAvatarShape">
+					{{ i18n.ts.setFederationAvatarShape }} <span class="_beta" style="vertical-align: middle;">CherryPick</span>
+					<template #caption>{{ $i?.policies.canSetFederationAvatarShape ? i18n.ts.setFederationAvatarShapeDescription : i18n.ts.cannotBeUsedFunc }}<span v-if="!$i?.policies.canSetFederationAvatarShape" style="margin-left: 3px;"><a class="_link" @click="learnMoreCantUseSetFederationAvatarShape">{{ i18n.ts.learnMore }}</a></span></template>
+				</MkSwitch>
 				<MkSwitch v-model="showAvatarDecorations">{{ i18n.ts.showAvatarDecorations }}</MkSwitch>
 				<MkSwitch v-model="useSystemFont">{{ i18n.ts.useSystemFont }}</MkSwitch>
 				<MkSwitch v-model="forceShowAds">{{ i18n.ts.forceShowAds }}</MkSwitch>
@@ -128,7 +132,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="collapseRenotes">
+				<MkSwitch v-model="forceCollapseAllRenotes">
+					<template #label>{{ i18n.ts.forceCollapseAllRenotes }}</template>
+					<template #caption>{{ i18n.ts.forceCollapseAllRenotesDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="collapseRenotes" :disabled="forceCollapseAllRenotes">
 					<template #label>{{ i18n.ts.collapseRenotes }}</template>
 					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
 				</MkSwitch>
@@ -212,7 +220,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkFolder>
 			</div>
 
-			<MkSelect v-model="instanceTicker">
+			<MkSelect v-if="instance.federation !== 'none'" v-model="instanceTicker">
 				<template #label>{{ i18n.ts.instanceTicker }}</template>
 				<option value="always">{{ i18n.ts._instanceTicker.always }}</option>
 				<option value="remote">{{ i18n.ts._instanceTicker.remote }}</option>
@@ -281,6 +289,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import FormSection from '@/components/form/section.vue';
 import FromSlot from '@/components/form/slot.vue';
 import MkInfo from '@/components/MkInfo.vue';
+import { instance } from '@/instance.js';
 import { defaultStore } from '@/store.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
 import { i18n } from '@/i18n.js';
@@ -288,6 +297,8 @@ import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/scripts/achievements.js';
+import { misskeyApi } from '@/scripts/misskey-api.js';
+import { $i } from '@/account.js';
 
 // const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
@@ -295,18 +306,11 @@ const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
 
-function reloadTimeline() {
-	globalEvents.emit('reloadTimeline');
-}
-
-function reloadNotification() {
-	globalEvents.emit('reloadNotification');
-}
-
 const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNoteActionsOnlyHover'));
 const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
 const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
+const forceCollapseAllRenotes = computed(defaultStore.makeGetterSetter('forceCollapseAllRenotes'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
 const collapseReplies = computed(defaultStore.makeGetterSetter('collapseReplies'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
@@ -363,6 +367,7 @@ const showDoReactionButtonInNoteFooter = computed(defaultStore.makeGetterSetter(
 const showQuoteButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showQuoteButtonInNoteFooter'));
 const showMoreButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showMoreButtonInNoteFooter'));
 const selectReaction = computed(defaultStore.makeGetterSetter('selectReaction'));
+const setFederationAvatarShape = computed(defaultStore.makeGetterSetter('setFederationAvatarShape'));
 
 watch(fontSize, () => {
 	if (fontSize.value == null) {
@@ -389,6 +394,16 @@ watch(useSystemFont, () => {
 });
 
 watch([
+	squareAvatars,
+	setFederationAvatarShape,
+], () => {
+	misskeyApi('i/update', {
+		setFederationAvatarShape: $i?.policies.canSetFederationAvatarShape ? setFederationAvatarShape.value : false,
+		isSquareAvatars: defaultStore.state.squareAvatars,
+	});
+});
+
+watch([
 	useBlurEffect,
 	useBlurEffectForModal,
 	removeModalBgColorForBlur,
@@ -396,10 +411,12 @@ watch([
 	useBoldFont,
 	useSystemFont,
 	squareAvatars,
+	setFederationAvatarShape,
 	showGapBetweenNotesInTimeline,
 	showUnreadNotificationsCount,
 	filesGridLayoutInUserPage,
 	showFixedPostFormInReplies,
+	disableShowingAnimatedImages,
 	showingAnimatedImages,
 	enableSeasonalScreenEffect,
 ], async () => {
@@ -439,6 +456,7 @@ watch([
 });
 
 watch([
+	forceCollapseAllRenotes,
 	collapseRenotes,
 	collapseReplies,
 ], () => {
@@ -493,6 +511,27 @@ function resetReaction() {
 function getHTMLElement(ev: MouseEvent): HTMLElement {
 	const target = ev.currentTarget ?? ev.target;
 	return target as HTMLElement; // イベント発生元の HTML 要素を取得
+}
+
+function reloadTimeline() {
+	globalEvents.emit('reloadTimeline');
+}
+
+function reloadNotification() {
+	globalEvents.emit('reloadNotification');
+}
+
+async function cantUseSetFederationAvatarShape() {
+	if ($i && !$i.policies.canSetFederationAvatarShape && setFederationAvatarShape.value) setFederationAvatarShape.value = false;
+}
+
+function learnMoreCantUseSetFederationAvatarShape() {
+	os.alert({
+		type: 'info',
+		title: i18n.ts.setFederationAvatarShape,
+		text: i18n.tsx.cantUseThisFunctionDescription({ name: i18n.ts.setFederationAvatarShape }),
+		caption: i18n.tsx.cantUseThisFunctionCaption({ name: i18n.ts.setFederationAvatarShape }),
+	});
 }
 
 onMounted(() => {

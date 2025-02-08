@@ -40,11 +40,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<!-- TODO
 				<div class="inputs" style="display: flex; padding-top: 1.2em;">
-					<MkInput v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
+					<MkInput ref="searchUsernameEl" v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
 						<span>{{ i18n.ts.username }}</span>
+						<template v-if="searchUsername != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchUsername = ''; searchUsernameEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
-					<MkInput v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
+					<MkInput ref="searchHostEl" v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
 						<span>{{ i18n.ts.host }}</span>
+						<template v-if="searchHost != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchHost = ''; searchHostEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 				</div>
 				-->
@@ -157,6 +159,11 @@ const resolverPagination = {
 	endpoint: 'admin/abuse-report-resolver/list' as const,
 	limit: 10,
 };
+
+/*
+const searchUsernameEl = ref(null);
+const searchHostEl = ref(null);
+ */
 
 function resolved(reportId) {
 	reports.value?.removeItem(reportId);
@@ -282,5 +289,16 @@ definePageMetadata(() => ({
 	background: var(--MI_THEME-panel);
 	border-radius: 6px;
 	margin-bottom: 13px;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

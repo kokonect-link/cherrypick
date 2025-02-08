@@ -77,6 +77,7 @@ const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'
 const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
 	note: defaultStore.reactiveState.sound_note,
 	noteMy: defaultStore.reactiveState.sound_noteMy,
+	noteSchedulePost: defaultStore.reactiveState.sound_noteSchedulePost,
 	noteEdited: defaultStore.reactiveState.sound_noteEdited,
 	notification: defaultStore.reactiveState.sound_notification,
 	chat: defaultStore.reactiveState.sound_chat,

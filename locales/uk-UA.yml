@@ -1592,9 +1592,6 @@ _pages:
   newPage: "Створити сторінку"
   editPage: "Редагувати сторінку"
   readPage: "Перегляд вихідного коду"
-  created: "Сторінка успішно створена."
-  updated: "Сторінка успішно оновлена."
-  deleted: "Сторінку видалено"
   pageSetting: "Налаштування сторінки"
   nameAlreadyExists: "Вказана адреса сторінки вже існує."
   invalidNameTitle: "Вказана адреса сторінки неприпустима."
@@ -1705,3 +1702,6 @@ _moderationLogTypes:
   resetPassword: "Скинути пароль"
 _reversi:
   total: "Всього"
+_remoteLookupErrors:
+  _noSuchObject:
+    title: "Не знайдено"

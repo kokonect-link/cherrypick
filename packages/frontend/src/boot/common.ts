@@ -110,6 +110,11 @@ export async function common(createVue: () => App<Element>) {
 	// タッチデバイスでCSSの:hoverを機能させる
 	document.addEventListener('touchend', () => {}, { passive: true });
 
+	// URLに#pswpを含む場合は取り除く
+	if (location.hash === '#pswp') {
+		history.replaceState(null, '', location.href.replace('#pswp', ''));
+	}
+
 	// 一斉リロード
 	reloadChannel.addEventListener('message', path => {
 		if (path !== null) location.href = path;
@@ -304,7 +309,11 @@ export async function common(createVue: () => App<Element>) {
 		'font-size: 16px;',
 		'font-size: 20px; font-weight: 700; color: #f00;',
 	);
-	console.log(i18n.tsx._selfXssPrevention.description3({ link: 'https://misskey-hub.net/docs/for-users/resources/self-xss/' }));
+	console.log(
+		`%c${i18n.tsx._selfXssPrevention.description3({ link: 'https://github.com/kokonect-link/cherrypick' })}`,
+		'font-size: 14px;',
+	);
+	console.log(i18n.tsx._selfXssPrevention.description4({ link: 'https://misskey-hub.net/docs/for-users/resources/self-xss/' }));
 	//#endregion
 
 	return {

@@ -202,6 +202,8 @@ export interface IActor extends IObject {
 	};
 	'vcard:bday'?: string;
 	'vcard:Address'?: string;
+	setFederationAvatarShape?: boolean,
+	isSquareAvatars?: boolean,
 }
 
 export const isCollection = (object: IObject): object is ICollection =>
@@ -249,6 +251,11 @@ export interface IApEmoji extends IObject {
 	type: 'Emoji';
 	name: string;
 	updated: string;
+	// Misskey拡張。後方互換性のためにoptional。
+	// 将来の拡張性を考慮してobjectにしている
+	_misskey_license?: {
+		freeText: string | null;
+	};
 }
 
 export const isEmoji = (object: IObject): object is IApEmoji =>

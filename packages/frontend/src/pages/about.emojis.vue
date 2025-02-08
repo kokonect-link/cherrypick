@@ -8,8 +8,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkButton v-if="$i && ($i.isModerator || $i.policies.canManageCustomEmojis)" primary link to="/custom-emojis-manager">{{ i18n.ts.manageCustomEmojis }}</MkButton>
 
 	<div class="query">
-		<MkInput v-model="q" class="" :placeholder="i18n.ts.search" autocapitalize="off">
+		<MkInput ref="queryEl" v-model="q" class="" :placeholder="i18n.ts.search" autocapitalize="off">
 			<template #prefix><i class="ti ti-search"></i></template>
+			<template v-if="q != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="q = ''; queryEl?.focus();"><i class="ti ti-x"></i></button></template>
 		</MkInput>
 
 		<!-- たくさんあると邪魔
@@ -50,6 +51,8 @@ const customEmojiTags = getCustomEmojiTags();
 const q = ref('');
 const searchEmojis = ref<Misskey.entities.EmojiSimple[]>(null);
 const selectedTags = ref(new Set());
+
+const queryEl = ref(null);
 
 function search() {
 	if ((q.value === '' || q.value == null) && selectedTags.value.size === 0) {
@@ -94,5 +97,16 @@ watch(selectedTags, () => {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
 	grid-gap: 12px;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

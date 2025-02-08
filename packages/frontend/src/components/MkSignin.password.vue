@@ -25,8 +25,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<!-- ブラウザ オートコンプリート用 -->
 			<input type="hidden" name="username" autocomplete="username" :value="user.username">
 
-			<MkInput v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true" required autofocus data-cy-signin-password @enter.prevent="onSubmit">
+			<MkInput v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true" required autofocus data-cy-signin-password @enter.prevent="onSubmit" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
 				<template #prefix><i class="ti ti-lock"></i></template>
+				<template v-if="isCapsLock" #suffix><div :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div></template>
 				<template #caption><button class="_textButton" type="button" @click="resetPassword">{{ i18n.ts.forgotPassword }}</button></template>
 			</MkInput>
 
@@ -108,6 +109,8 @@ const captchaFailed = computed((): boolean => {
 	);
 });
 
+const isCapsLock = ref(false);
+
 const playAnimation = ref(true);
 if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
@@ -154,12 +157,19 @@ function goBack() {
 	emit('back');
 }
 
+function checkCapsLock(ev: KeyboardEvent) {
+	isCapsLock.value = ev.getModifierState('CapsLock');
+}
+
 onMounted(() => {
 	if (defaultStore.state.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
 	}
+
+	window.addEventListener('keydown', checkCapsLock);
+	window.addEventListener('keyup', checkCapsLock);
 });
 
 onUnmounted(() => {
@@ -168,6 +178,9 @@ onUnmounted(() => {
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);
 	}
+
+	window.removeEventListener('keydown', checkCapsLock);
+	window.removeEventListener('keyup', checkCapsLock);
 });
 
 defineExpose({
@@ -236,5 +249,12 @@ defineExpose({
 	margin: 0;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+.isCapslock {
+	display: inline-block;
+	padding: 2px;
+	border-radius: 6px;
+	background: var(--MI_THEME-X5);
 }
 </style>

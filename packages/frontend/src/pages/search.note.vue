@@ -6,22 +6,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div class="_gaps">
-		<MkInput v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
+		<MkInput ref="searchQueryEl" v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
 			<template #prefix><i class="ti ti-search"></i></template>
+			<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
 		</MkInput>
 		<MkFoldableSection :expanded="true">
 			<template #header>{{ i18n.ts.options }}</template>
 
 			<div class="_gaps_m">
-				<MkRadios v-model="hostSelect">
-					<template #label>{{ i18n.ts.host }}</template>
-					<option value="all" default>{{ i18n.ts.all }}</option>
-					<option value="local">{{ i18n.ts.local }}</option>
-					<option v-if="noteSearchableScope === 'global'" value="specified">{{ i18n.ts.specifyHost }}</option>
-				</MkRadios>
-				<MkInput v-if="noteSearchableScope === 'global'" v-model="hostInput" :disabled="hostSelect !== 'specified'" :large="true" type="search">
-					<template #prefix><i class="ti ti-server"></i></template>
-				</MkInput>
+				<template v-if="instance.federation !== 'none'">
+					<MkRadios v-model="hostSelect">
+						<template #label>{{ i18n.ts.host }}</template>
+						<option value="all" default>{{ i18n.ts.all }}</option>
+						<option value="local">{{ i18n.ts.local }}</option>
+						<option v-if="noteSearchableScope === 'global'" value="specified">{{ i18n.ts.specifyHost }}</option>
+					</MkRadios>
+					<MkInput v-if="noteSearchableScope === 'global'" ref="hostInputEl" v-model="hostInput" :disabled="hostSelect !== 'specified'" :large="true" type="search">
+						<template #prefix><i class="ti ti-server"></i></template>
+						<template v-if="hostInput != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="hostInput = ''; hostInputEl?.focus();"><i class="ti ti-x"></i></button></template>
+					</MkInput>
+				</template>
 
 				<MkFolder :defaultOpen="true">
 					<template #label>{{ i18n.ts.specifyUser }}</template>
@@ -97,12 +101,15 @@ const setHostSelectWithInput = (after:string|undefined|null, before:string|undef
 	else hostSelect.value = 'specified';
 };
 
+const searchQueryEl = ref(null);
+const hostInputEl = ref(null);
+
 setHostSelectWithInput(hostInput.value, undefined);
 
 watch(hostInput, setHostSelectWithInput);
 
 const searchHost = computed(() => {
-	if (hostSelect.value === 'local') return '.';
+	if (hostSelect.value === 'local' || instance.federation === 'none') return '.';
 	if (hostSelect.value === 'specified') return hostInput.value;
 	return null;
 });
@@ -205,21 +212,25 @@ async function search() {
 	key.value++;
 }
 </script>
+
 <style lang="scss" module>
 .userItem {
 	display: flex;
 	justify-content: center;
 }
+
 .addMeButton {
   border: 2px dashed var(--MI_THEME-fgTransparent);
 	padding: 12px;
 	margin-right: 16px;
 }
+
 .addUserButton {
   border: 2px dashed var(--MI_THEME-fgTransparent);
 	padding: 12px;
 	flex-grow: 1;
 }
+
 .addUserButtonInner {
 	display: flex;
 	flex-direction: column;
@@ -227,9 +238,11 @@ async function search() {
 	justify-content: space-between;
 	min-height: 38px;
 }
+
 .userCard {
 	flex-grow: 1;
 }
+
 .remove {
 	width: 32px;
 	height: 32px;
@@ -242,5 +255,16 @@ async function search() {
 	&:disabled {
 		opacity: 0;
 	}
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	pointer-events: auto;
 }
 </style>

@@ -157,6 +157,8 @@ export const defaultStore = markRaw(new Storage('base', {
 			'explore',
 			'search',
 			'announcements',
+			'-',
+			'support',
 		],
 	},
 	visibility: {
@@ -355,7 +357,7 @@ export const defaultStore = markRaw(new Storage('base', {
 		default: false,
 	},
 	squareAvatars: {
-		where: 'device',
+		where: 'account',
 		default: true,
 	},
 	showAvatarDecorations: {
@@ -494,6 +496,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: true,
 	},
+	showSoftWordMutedWord: {
+		where: 'device',
+		default: false,
+	},
 	showUnreadNotificationsCount: {
 		where: 'deviceAccount',
 		default: false,
@@ -526,6 +532,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	sound_noteMy: {
 		where: 'device',
 		default: { type: 'syuilo/n-cea-4va', volume: 1 } as SoundStore,
+	},
+	sound_noteSchedulePost: {
+		where: 'device',
+		default: { type: 'syuilo/n-cea', volume: 1 } as SoundStore,
 	},
 	sound_noteEdited: {
 		where: 'device',
@@ -596,6 +606,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 
 	// - Settings/Appearance
+	forceCollapseAllRenotes: {
+		where: 'account',
+		default: false,
+	},
 	collapseReplies: {
 		where: 'account',
 		default: false,
@@ -707,6 +721,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	selectReaction: {
 		where: 'device',
 		default: '❤️' as string,
+	},
+	setFederationAvatarShape: {
+		where: 'account',
+		default: true,
 	},
 
 	// - Settings/Navigation bar
