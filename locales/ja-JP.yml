@@ -1,5 +1,7 @@
 _lang_: "日本語"
 
+forceCollapseAllRenotes: "すべてのリノートの省略"
+forceCollapseAllRenotesDescription: "私または相手がリノートしたすべてのノートをたたんで表示します。"
 overrideRobotsTxt: "robots.txtの上書き"
 overrideRobotsTxtDescription: "robots.txtの内容を上書きします。最大2048文字です。"
 setFederationAvatarShape: "アイコンの形設定の連合"

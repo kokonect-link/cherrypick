@@ -124,6 +124,7 @@ const defaultStoreSaveKeys: (keyof typeof defaultStore['state'])[] = [
 	'vibrateChat',
 	'vibrateChatBg',
 	'vibrateSystem',
+	'forceCollapseAllRenotes',
 	'collapseReplies',
 	'collapseDefault',
 	'filesGridLayoutInUserPage',

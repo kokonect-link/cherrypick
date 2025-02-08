@@ -132,7 +132,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div class="_gaps_m">
 			<div class="_gaps_s">
-				<MkSwitch v-model="collapseRenotes">
+				<MkSwitch v-model="forceCollapseAllRenotes">
+					<template #label>{{ i18n.ts.forceCollapseAllRenotes }}</template>
+					<template #caption>{{ i18n.ts.forceCollapseAllRenotesDescription }}</template>
+				</MkSwitch>
+				<MkSwitch v-model="collapseRenotes" :disabled="forceCollapseAllRenotes">
 					<template #label>{{ i18n.ts.collapseRenotes }}</template>
 					<template #caption>{{ i18n.ts.collapseRenotesDescription }}</template>
 				</MkSwitch>
@@ -306,6 +310,7 @@ const showNoteActionsOnlyHover = computed(defaultStore.makeGetterSetter('showNot
 const showClipButtonInNoteFooter = computed(defaultStore.makeGetterSetter('showClipButtonInNoteFooter'));
 const reactionsDisplaySize = computed(defaultStore.makeGetterSetter('reactionsDisplaySize'));
 const limitWidthOfReaction = computed(defaultStore.makeGetterSetter('limitWidthOfReaction'));
+const forceCollapseAllRenotes = computed(defaultStore.makeGetterSetter('forceCollapseAllRenotes'));
 const collapseRenotes = computed(defaultStore.makeGetterSetter('collapseRenotes'));
 const collapseReplies = computed(defaultStore.makeGetterSetter('collapseReplies'));
 const reduceAnimation = computed(defaultStore.makeGetterSetter('animation', v => !v, v => !v));
@@ -451,6 +456,7 @@ watch([
 });
 
 watch([
+	forceCollapseAllRenotes,
 	collapseRenotes,
 	collapseReplies,
 ], () => {

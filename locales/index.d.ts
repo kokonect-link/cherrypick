@@ -14,6 +14,14 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * すべてのリノートの省略
+     */
+    "forceCollapseAllRenotes": string;
+    /**
+     * 私または相手がリノートしたすべてのノートをたたんで表示します。
+     */
+    "forceCollapseAllRenotesDescription": string;
+    /**
      * robots.txtの上書き
      */
     "overrideRobotsTxt": string;

@@ -1,5 +1,7 @@
 ---
 _lang_: "English"
+forceCollapseAllRenotes: "Collapse all renotes"
+forceCollapseAllRenotesDescription: "Collapse and display all notes that you or other have renoted."
 overrideRobotsTxt: "Override robots.txt"
 overrideRobotsTxtDescription: "Override the default robots.txt. Maximum 2048 characters."
 setFederationAvatarShape: "Federation of avatar shape settings"

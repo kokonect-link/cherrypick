@@ -606,6 +606,10 @@ export const defaultStore = markRaw(new Storage('base', {
 	},
 
 	// - Settings/Appearance
+	forceCollapseAllRenotes: {
+		where: 'account',
+		default: false,
+	},
 	collapseReplies: {
 		where: 'account',
 		default: false,

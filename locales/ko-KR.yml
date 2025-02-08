@@ -1,5 +1,7 @@
 ---
 _lang_: "한국어"
+forceCollapseAllRenotes: "모든 리노트 간략화하기"
+forceCollapseAllRenotesDescription: "나 또는 상대방이 리노트한 모든 노트를 접어서 표시해요."
 overrideRobotsTxt: "robots.txt 덮어쓰기"
 overrideRobotsTxtDescription: "robots.txt의 내용을 덮어쓸 수 있어요. 최대 2048자로 작성해야 해요."
 setFederationAvatarShape: "프로필 아이콘 모양 설정 연합"
