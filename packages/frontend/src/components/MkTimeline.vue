@@ -20,6 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, watch, onMounted, onUnmounted, provide, ref, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { BasicTimelineType } from '@/timelines.js';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
@@ -27,7 +28,6 @@ import * as sound from '@/scripts/sound.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
 import { defaultStore } from '@/store.js';
-import { Paging } from '@/components/MkPagination.vue';
 import { vibrate } from '@/scripts/vibrate.js';
 import { globalEvents } from '@/events.js';
 

@@ -131,12 +131,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, Ref, ref, shallowRef, watch } from 'vue';
+import { computed, inject, provide, ref, shallowRef, watch } from 'vue';
+import type { Ref } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { concat } from '@@/js/array.js';
 import { host } from '@@/js/config.js';
+import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import * as os from '@/os.js';
 import * as sound from '@/scripts/sound.js';
 import MkMediaList from '@/components/MkMediaList.vue';
@@ -151,7 +153,7 @@ import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
 import { notePage } from '@/filters/note.js';
 import { useTooltip } from '@/scripts/use-tooltip.js';
-import { type OpenOnRemoteOptions, pleaseLogin } from '@/scripts/please-login.js';
+import { pleaseLogin } from '@/scripts/please-login.js';
 import { showMovedDialog } from '@/scripts/show-moved-dialog.js';
 import { getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly, getQuoteMenu } from '@/scripts/get-note-menu.js';
 import { deepClone } from '@/scripts/clone.js';
@@ -603,7 +605,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 	opacity: .8;
 
 	&:hover {
-		background: var(--MI_THEME-X5);
+		background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
 	}
 }
 

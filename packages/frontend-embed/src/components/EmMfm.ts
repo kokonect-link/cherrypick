@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { VNode, h, SetupContext, provide } from 'vue';
+import { h, provide } from 'vue';
+import type { VNode, SetupContext } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import temml from 'temml/dist/temml.mjs';

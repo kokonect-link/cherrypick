@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkUserSetupDialog_FontSize from './MkUserSetupDialog.FontSize.vue';
 export const Default = {
 	render(args) {

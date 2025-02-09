@@ -4,7 +4,7 @@
  */
 
 import { expect, userEvent, waitFor, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import { galleryPost } from '../../.storybook/fakes.js';
 import MkGalleryPostPreview from './MkGalleryPostPreview.vue';
 export const Default = {

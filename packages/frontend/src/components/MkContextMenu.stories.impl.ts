@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable import/no-default-export */
+import type { StoryObj } from '@storybook/vue3';
 import { userEvent, within } from '@storybook/test';
 import MkContextMenu from './MkContextMenu.vue';
 import * as os from '@/os.js';

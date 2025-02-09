@@ -95,9 +95,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, shallowRef, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
+import type MkModalWindow from '@/components/MkModalWindow.vue';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
-import MkPagination, { type Paging } from '@/components/MkPagination.vue';
-import MkModalWindow from '@/components/MkModalWindow.vue';
+import MkPagination from '@/components/MkPagination.vue';
 import { getNoteSummary } from '@/scripts/get-note-summary.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';

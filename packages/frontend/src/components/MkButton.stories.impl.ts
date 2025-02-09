@@ -4,7 +4,7 @@
  */
 
 import { action } from '@storybook/addon-actions';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkButton from './MkButton.vue';
 export const Default = {
 	render(args) {

@@ -5,8 +5,9 @@
 
 // NIRAX --- A lightweight router
 
-import { Component, onMounted, shallowRef, ShallowRef } from 'vue';
+import { onMounted, shallowRef } from 'vue';
 import { EventEmitter } from 'eventemitter3';
+import type { Component, ShallowRef } from 'vue';
 
 function safeURIDecode(str: string): string {
 	try {

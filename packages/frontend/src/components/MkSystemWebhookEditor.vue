@@ -102,7 +102,7 @@ import { computed, onMounted, ref, shallowRef, toRefs } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
-import {
+import type {
 	MkSystemWebhookEditorProps,
 	MkSystemWebhookResult,
 	SystemWebhookEventType,

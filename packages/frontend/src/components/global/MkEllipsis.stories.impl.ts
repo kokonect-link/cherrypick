@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { StoryObj } from '@storybook/vue3';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import type { StoryObj } from '@storybook/vue3';
 import isChromatic from 'chromatic/isChromatic';
 import MkEllipsis from './MkEllipsis.vue';
 export const Default = {

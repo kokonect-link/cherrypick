@@ -4,7 +4,7 @@
  */
 
 import { expect, userEvent, waitFor, within } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkAd from './MkAd.vue';
 import { i18n } from '@/i18n.js';
 

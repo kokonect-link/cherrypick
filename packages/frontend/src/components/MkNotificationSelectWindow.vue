@@ -30,11 +30,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, shallowRef } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { notificationTypes } from '@@/js/const.js';
 import MkSwitch from './MkSwitch.vue';
 import MkInfo from './MkInfo.vue';
 import MkButton from './MkButton.vue';
+import type { Ref } from 'vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import { i18n } from '@/i18n.js';
 

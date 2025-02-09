@@ -5,7 +5,7 @@
 
 import { action } from '@storybook/addon-actions';
 import { expect, waitFor } from '@storybook/test';
-import { StoryObj } from '@storybook/vue3';
+import type { StoryObj } from '@storybook/vue3';
 import MkError from './MkError.vue';
 export const Default = {
 	render(args) {
