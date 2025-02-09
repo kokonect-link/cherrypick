@@ -3242,6 +3242,18 @@ _captcha:
     _unknown:
       title: "CAPTCHA 오류"
       text: "알 수 없는 오류가 발생했어요."
+_bootErrors:
+  title: "뭔가 문제가 있는 것 같아요!"
+  serverError: "少し待ってからリロードしてもまだ問題が解決されない場合、以下のError IDを添えてサーバー管理者に連絡してください。"
+  solution: "아래 과정을 진행하면 해결될 수도 있어요."
+  solution1: "브라우저와 OS를 최신 버전으로 업데이트 하기"
+  solution2: "광고 차단기를 비활성화 하기"
+  solution3: "브라우저의 캐시 지우기"
+  solution4: "(Tor Browser) dom.webaudio.enabled를 true로 설정하기"
+  otherOption: "기타 옵션"
+  otherOption1: "클라이언트 설정 및 캐시 삭제"
+  otherOption2: "임시 클라이언트 실행"
+  otherOption3: "복구 도구 실행"
 _drafts:
   select: "초안 선택"
   saveConfirm: "서버에 초안을 저장할까요?"

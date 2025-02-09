@@ -19,9 +19,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </MkModalWindow>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
-import * as Misskey from 'cherrypick-js';
+import { defineProps, ref } from 'vue';
 import MkModalWindow from './MkModalWindow.vue';
+import type * as Misskey from 'cherrypick-js';
 
 defineProps<{
 	file: Misskey.entities.DriveFile;
