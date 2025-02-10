@@ -116,6 +116,7 @@ async function fetch() {
 			params: {
 				userId: user.value.id,
 			},
+			offsetMode: true,
 			reversed: true,
 			pageEl: rootEl.value,
 		};
@@ -132,6 +133,7 @@ async function fetch() {
 			params: {
 				groupId: group.value.id,
 			},
+			offsetMode: true,
 			reversed: true,
 			pageEl: rootEl.value,
 		};
@@ -150,7 +152,7 @@ async function fetch() {
 	document.addEventListener('visibilitychange', onVisibilitychange);
 
 	nextTick(() => {
-		thisScrollToBottom();
+		// thisScrollToBottom();
 		window.setTimeout(() => {
 			fetching.value = false;
 		}, 300);
@@ -301,6 +303,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	connection.value?.dispose();
 	document.removeEventListener('visibilitychange', onVisibilitychange);
+	if (scrollRemove.value) scrollRemove.value();
 });
 
 definePageMetadata(computed(() => !fetching.value ? user.value ? {
