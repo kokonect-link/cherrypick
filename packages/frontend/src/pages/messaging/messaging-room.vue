@@ -21,8 +21,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 							v-slot="{ item: message }"
 							:class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
 							:items="messages"
-							direction="up"
-							reversed
+							:direction="'up'"
+							:reversed="true"
 						>
 							<XMessage :key="message.id" :message="message" :isGroup="group != null"/>
 						</MkDateSeparatedList>
@@ -111,7 +111,7 @@ async function fetch() {
 		group.value = null;
 
 		pagination.value = {
-			endpoint: 'messaging/messages',
+			endpoint: 'messaging/messages' as const,
 			limit: 20,
 			params: {
 				userId: user.value.id,
@@ -127,7 +127,7 @@ async function fetch() {
 		group.value = await misskeyApi('users/groups/show', { groupId: props.groupId });
 
 		pagination.value = {
-			endpoint: 'messaging/messages',
+			endpoint: 'messaging/messages' as const,
 			limit: 20,
 			params: {
 				groupId: group.value.id,
@@ -301,7 +301,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	connection.value?.dispose();
 	document.removeEventListener('visibilitychange', onVisibilitychange);
-	if (scrollRemove.value) scrollRemove();
 });
 
 definePageMetadata(computed(() => !fetching.value ? user.value ? {
