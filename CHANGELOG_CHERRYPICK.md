@@ -11,7 +11,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - 
 
 ### Client
-- 
+- Fix: 더 보기 버튼이 작동하지 않는 문제 수정
+- Fix: 개행으로 메시지가 전송되는 버그 수정
 
 ### Server
 - 
