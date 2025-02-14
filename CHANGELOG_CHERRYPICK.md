@@ -30,7 +30,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 
 ### Client
 - Enhance: 여러 노트를 표시하는 요소에서 `타임라인의 노트 사이를 띄워서 표시` 설정 적용
-- Fix: `대화`에서 발생하는 일부 문제를 해결함 (kokonect-link/cherrypick#568)
+- Fix: `대화`에서 발생하는 일부 문제를 해결함 (kokonect-link/cherrypick#563, kokonect-link/cherrypick#568)
   - `더 보기`를 눌러 이전 대화를 볼 수 없음
   - 개행만으로 메시지를 보낼 수 있음
     - 이 변경으로 더 이상 첫 줄에 개행을 입력할 수 없게 됩니다.
