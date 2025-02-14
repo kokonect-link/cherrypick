@@ -184,6 +184,7 @@ const enableListTimeline = ref(defaultStore.state.enableListTimeline);
 const enableAntennaTimeline = ref(defaultStore.state.enableAntennaTimeline);
 const enableChannelTimeline = ref(defaultStore.state.enableChannelTimeline);
 
+const forceCollapseAllRenotes = ref(defaultStore.state.forceCollapseAllRenotes);
 const collapseRenotes = ref(defaultStore.state.collapseRenotes);
 const collapseReplies = ref(defaultStore.state.collapseReplies);
 const collapseLongNoteContent = ref(defaultStore.state.collapseLongNoteContent);
@@ -243,6 +244,11 @@ watch(enableAntennaTimeline, (x) => {
 watch(enableChannelTimeline, (x) => {
 	defaultStore.set('enableChannelTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+});
+
+watch(forceCollapseAllRenotes, (x) => {
+	defaultStore.set('forceCollapseAllRenotes', x);
+	reloadTimeline();
 });
 
 watch(collapseRenotes, (x) => {
@@ -540,6 +546,10 @@ const headerActions = computed(() => {
 							text: i18n.ts.showCatOnly,
 							ref: onlyCats,
 						}, { type: 'divider' }, {
+							type: 'switch',
+							text: i18n.ts.forceCollapseAllRenotes,
+							ref: forceCollapseAllRenotes,
+						}, {
 							type: 'switch',
 							text: i18n.ts.collapseRenotes,
 							ref: collapseRenotes,
