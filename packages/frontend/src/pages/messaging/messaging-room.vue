@@ -21,8 +21,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 							v-slot="{ item: message }"
 							:class="{ [$style.messages]: true, 'deny-move-transition': pFetching }"
 							:items="messages"
-							direction="up"
-							reversed
+							:direction="'up'"
+							:reversed="true"
 						>
 							<XMessage :key="message.id" :message="message" :isGroup="group != null"/>
 						</MkDateSeparatedList>
@@ -111,12 +111,13 @@ async function fetch() {
 		group.value = null;
 
 		pagination.value = {
-			endpoint: 'messaging/messages',
+			endpoint: 'messaging/messages' as const,
 			limit: 20,
 			params: {
 				userId: user.value.id,
 			},
 			reversed: true,
+			isMessaging: true,
 			pageEl: rootEl.value,
 		};
 		connection.value = useStream().useChannel('messaging', {
@@ -127,12 +128,13 @@ async function fetch() {
 		group.value = await misskeyApi('users/groups/show', { groupId: props.groupId });
 
 		pagination.value = {
-			endpoint: 'messaging/messages',
+			endpoint: 'messaging/messages' as const,
 			limit: 20,
 			params: {
 				groupId: group.value.id,
 			},
 			reversed: true,
+			isMessaging: true,
 			pageEl: rootEl.value,
 		};
 		connection.value = useStream().useChannel('messaging', {
@@ -301,7 +303,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	connection.value?.dispose();
 	document.removeEventListener('visibilitychange', onVisibilitychange);
-	if (scrollRemove.value) scrollRemove();
+	if (scrollRemove.value) scrollRemove.value();
 });
 
 definePageMetadata(computed(() => !fetching.value ? user.value ? {
@@ -364,7 +366,7 @@ definePageMetadata(computed(() => !fetching.value ? user.value ? {
 }
 
 .footerSpacer {
-  padding: 20px;
+	padding: 20px;
 }
 
 .footer {
@@ -417,22 +419,22 @@ definePageMetadata(computed(() => !fetching.value ? user.value ? {
 	// border-top: solid 0.5px var(--MI_THEME-divider);
 	// border-bottom-left-radius: 0;
 	// border-bottom-right-radius: 0;
-  border-radius: 15px;
+	border-radius: 15px;
 }
 
 @container (max-width: 500px) {
-  .footerSpacer {
-    padding: initial;
-  }
-
-	.footer {
-    &.friendly {
-      margin-bottom: calc(50px + env(safe-area-inset-bottom));
-    }
+	.footerSpacer {
+		padding: initial;
 	}
 
-  .form {
-    border-radius: 0;
-  }
+	.footer {
+		&.friendly {
+			margin-bottom: calc(50px + env(safe-area-inset-bottom));
+		}
+	}
+
+	.form {
+		border-radius: 0;
+	}
 }
 </style>
