@@ -204,6 +204,8 @@ async function run() {
 	if (aiscript.value) aiscript.value.abort();
 	if (!flash.value) return;
 
+	components.value = [];
+
 	aiscript.value = new Interpreter({
 		...createAiScriptEnv({
 			storageKey: 'flash:' + flash.value.id,

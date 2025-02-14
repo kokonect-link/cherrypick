@@ -11020,6 +11020,14 @@ export interface Locale extends ILocale {
          * 承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。
          */
         "loginDescription": ParameterizedString<"ip" | "text">;
+        /**
+         * アクセストークンが作成されました
+         */
+        "createToken": string;
+        /**
+         * 心当たりがない場合は「{text}」を通じてアクセストークンを削除してください。
+         */
+        "createTokenDescription": ParameterizedString<"text">;
         "_types": {
             /**
              * すべて

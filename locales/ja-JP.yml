@@ -2901,6 +2901,8 @@ _notification:
   exportOfXCompleted: "{x}のエクスポートが完了しました"
   login: "ログインがありました"
   loginDescription: "{ip}でログインされました。\n承認されていない機器であれば、セキュリティのために「{text}」を通じてすべての機器でログアウトを行ってください。"
+  createToken: "アクセストークンが作成されました"
+  createTokenDescription: "心当たりがない場合は「{text}」を通じてアクセストークンを削除してください。"
 
   _types:
     all: "すべて"
