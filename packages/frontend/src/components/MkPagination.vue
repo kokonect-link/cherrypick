@@ -313,7 +313,7 @@ const fetchMoreAhead = async (): Promise<void> => {
 		} : props.pagination.isMessaging ? {
 			untilId: Array.from(items.value.keys()).at(-1),
 		} : {
-			untilId: Array.from(items.value.keys()).at(-1),
+			sinceId: Array.from(items.value.keys()).at(-1),
 		}),
 	}).then(res => {
 		if (res.length === 0) {
