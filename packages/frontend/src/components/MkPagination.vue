@@ -76,6 +76,8 @@ export type Paging<E extends keyof Misskey.Endpoints = keyof Misskey.Endpoints> 
 
 	offsetMode?: boolean;
 
+	isMessaging?: boolean;
+
 	pageEl?: HTMLElement;
 };
 
@@ -246,7 +248,7 @@ const fetchMore = async (): Promise<void> => {
 		...(props.pagination.offsetMode ? {
 			offset: items.value.size,
 		} : {
-			untilId: Array.from(items.value.keys()).pop(),
+			untilId: Array.from(items.value.keys()).at(-1),
 		}),
 	}).then(res => {
 		for (let i = 0; i < res.length; i++) {
@@ -308,8 +310,10 @@ const fetchMoreAhead = async (): Promise<void> => {
 		limit: SECOND_FETCH_LIMIT,
 		...(props.pagination.offsetMode ? {
 			offset: items.value.size,
+		} : props.pagination.isMessaging ? {
+			untilId: Array.from(items.value.keys()).at(-1),
 		} : {
-			untilId: Array.from(items.value.keys()).pop(),
+			untilId: Array.from(items.value.keys()).at(-1),
 		}),
 	}).then(res => {
 		if (res.length === 0) {
