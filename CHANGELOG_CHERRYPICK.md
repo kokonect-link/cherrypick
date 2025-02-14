@@ -879,7 +879,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#202391](CHANGE
 - Fix: 누락된 안테나 소스 추가
 - Fix: OffscreenCanvas undefined (MisskeyIO/misskey#165)
 - Fix: 대화 삭제가 올바르게 작동하지 않음
-- Fix: 유저 메뉴에서 '대화 시작하기'를 클릭하면 잘못된 페이지가 호출됨화
+- Fix: 유저 메뉴에서 '대화 시작하기'를 클릭하면 잘못된 페이지가 호출됨
 - Fix: 대화 페이지의 스크롤이 의도하지 않은 방향으로 작동할 수 있음
 
 ### Server
