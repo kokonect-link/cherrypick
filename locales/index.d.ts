@@ -5915,6 +5915,14 @@ export interface Locale extends ILocale {
      */
     "federationDisabled": string;
     /**
+     * リアクションする際に確認する
+     */
+    "confirmOnReact": string;
+    /**
+     * " {emoji} " をリアクションしますか？
+     */
+    "reactAreYouSure": ParameterizedString<"emoji">;
+    /**
      * 下書き
      */
     "draft": string;

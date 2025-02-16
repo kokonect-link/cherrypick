@@ -121,7 +121,7 @@ type EventType = {
 	inactiveModeratorsWarning: boolean;
 	inactiveModeratorsInvitationOnlyChanged: boolean;
 	inactiveModeratorsDisablePublicNoteChanged: boolean;
-}
+};
 
 const emit = defineEmits<{
 	(ev: 'submitted', result: MkSystemWebhookResult): void;

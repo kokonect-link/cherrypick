@@ -340,12 +340,17 @@ function react(): void {
 		}
 	} else {
 		blur();
-		reactionPicker.show(reactButton.value ?? null, note.value, reaction => {
-			if (props.mock) {
-				emit('reaction', reaction);
-				return;
+		reactionPicker.show(reactButton.value ?? null, note.value, async (reaction) => {
+			if (defaultStore.state.confirmOnReact) {
+				const confirm = await os.confirm({
+					type: 'question',
+					text: i18n.tsx.reactAreYouSure({ emoji: reaction.replace('@.', '') }),
+				});
+
+				if (confirm.canceled) return;
 			}
-			toggleReaction(reaction);
+
+			await toggleReaction(reaction);
 		}, () => {
 			focus();
 		});
