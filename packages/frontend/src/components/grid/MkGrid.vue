@@ -1287,7 +1287,7 @@ onMounted(() => {
 });
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .grid {
 	font-size: 90%;
 	overflow-x: scroll;
@@ -1301,7 +1301,7 @@ onMounted(() => {
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $borderSetting: solid 0.5px var(--MI_THEME-divider);
 
 // 配下コンポーネントを含めて一括してコントロールするため、scopedもmoduleも使用できない

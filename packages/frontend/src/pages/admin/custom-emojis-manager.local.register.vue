@@ -435,7 +435,7 @@ onMounted(async () => {
 });
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .violationRow {
 	background-color: var(--MI_THEME-infoWarnBg);
 }

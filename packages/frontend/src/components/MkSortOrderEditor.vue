@@ -79,7 +79,7 @@ function emitOrder(sortOrders: SortOrder<T>[]) {
 
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .sortOrderArea {
 	display: flex;
 	flex-direction: row;

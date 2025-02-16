@@ -59,7 +59,7 @@ defineProps<{
 
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .row {
 	display: flex;
 	flex-direction: row;

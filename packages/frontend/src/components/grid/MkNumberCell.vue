@@ -28,7 +28,7 @@ defineProps<{
 
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 $cellHeight: 28px;
 $cellWidth: 34px;
 
