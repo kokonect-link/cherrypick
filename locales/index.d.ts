@@ -5923,6 +5923,10 @@ export interface Locale extends ILocale {
      */
     "reactAreYouSure": ParameterizedString<"emoji">;
     /**
+     * 文字数
+     */
+    "textCount": string;
+    /**
      * 下書き
      */
     "draft": string;

@@ -40,12 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span v-if="!localOnly"><i class="ti ti-rocket"></i></span>
 					<span v-else><i class="ti ti-rocket-off"></i></span>
 				</button>
-				<button v-click-anime v-tooltip="i18n.ts.reactionAcceptance" class="_button" :class="[$style.headerRightItem, { [$style.danger]: reactionAcceptance === 'likeOnly' }]" @click="toggleReactionAcceptance">
-					<span v-if="reactionAcceptance === 'likeOnly'"><i class="ti ti-heart"></i></span>
-					<span v-else-if="reactionAcceptance === 'likeOnlyForRemote'"><i class="ti ti-heart-plus"></i></span>
-					<span v-else><i class="ti ti-icons"></i></span>
-				</button>
-				<button v-tooltip="i18n.ts._mfc.cheatSheet" class="_button" :class="$style.headerRightItem" @click="openMfmCheatSheet"><i class="ti ti-help-circle"></i></button>
+				<button ref="otherSettingsButton" v-tooltip="i18n.ts.other" class="_button" :class="$style.headerRightItem" @click="showOtherSettings"><i class="ti ti-dots"></i></button>
 				<button v-click-anime class="_button" :class="$style.submit" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 					<div :class="$style.submitInner">
 						<template v-if="posted"></template>
@@ -196,6 +191,7 @@ const textareaEl = shallowRef<HTMLTextAreaElement | null>(null);
 const cwInputEl = shallowRef<HTMLInputElement | null>(null);
 const hashtagsInputEl = shallowRef<HTMLInputElement | null>(null);
 const visibilityButton = shallowRef<HTMLElement>();
+const otherSettingsButton = shallowRef<HTMLElement>();
 
 const showForm = ref(false);
 
@@ -597,6 +593,59 @@ async function toggleReactionAcceptance() {
 	if (select.canceled) return;
 	reactionAcceptance.value = select.result;
 }
+
+//#region その他の設定メニューpopup
+function showOtherSettings() {
+	let reactionAcceptanceIcon = 'ti ti-icons';
+
+	if (reactionAcceptance.value === 'likeOnly') {
+		reactionAcceptanceIcon = 'ti ti-heart _love';
+	} else if (reactionAcceptance.value === 'likeOnlyForRemote') {
+		reactionAcceptanceIcon = 'ti ti-heart-plus';
+	}
+
+	const menuDef = [{
+		icon: reactionAcceptanceIcon,
+		text: i18n.ts.reactionAcceptance,
+		action: () => {
+			toggleReactionAcceptance();
+		},
+	}, { type: 'divider' }, {
+		icon: 'ti ti-help-circle',
+		text: i18n.ts._mfc.cheatSheet,
+		action: () => {
+			openMfmCheatSheet();
+		},
+	}, { type: 'divider' }, {
+		icon: 'ti ti-trash',
+		text: i18n.ts.reset,
+		danger: true,
+		action: async () => {
+			if (props.mock) return;
+			const { canceled } = await os.confirm({
+				type: 'question',
+				text: i18n.ts.resetAreYouSure,
+			});
+			if (canceled) return;
+			clear();
+		},
+	}] satisfies MenuItem[];
+
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkPostFormOtherMenu.vue')), {
+		items: menuDef,
+		textLength: textLength.value,
+		src: otherSettingsButton.value,
+	}, {
+		changeReactionAcceptance: (value: Misskey.entities.Note['reactionAcceptance']) => {
+			reactionAcceptance.value = value;
+		},
+		reset: () => {
+			clear();
+		},
+		closed: () => dispose(),
+	});
+}
+//#endregion
 
 function pushVisibleUser(user: Misskey.entities.UserDetailed) {
 	if (!visibleUsers.value.some(u => u.username === user.username && u.host === user.host)) {

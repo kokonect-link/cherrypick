@@ -31,6 +31,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 ### Client
 - Enhance: (Friendly) 태블릿 환경에서도 특정 페이지에서 아래로 스크롤하면 헤더가 숨겨짐
 - Enhance: 여러 노트를 표시하는 요소에서 `타임라인의 노트 사이를 띄워서 표시` 설정 적용
+- Enhance: 게시 양식 설정 메뉴 개선 (misskey-dev/misskey#14804)
+	- 입력한 내용을 초기화할 수 있음
+	- 입력한 글자 수를 표시함
 - Fix: `대화`에서 발생하는 일부 문제를 해결함 (kokonect-link/cherrypick#563, kokonect-link/cherrypick#568)
   - `더 보기`를 눌러 이전 대화를 볼 수 없음
   - 개행만으로 메시지를 보낼 수 있음
