@@ -552,6 +552,7 @@ const headerActions = computed(() => {
 						}, {
 							type: 'switch',
 							text: i18n.ts.collapseRenotes,
+							disabled: forceCollapseAllRenotes.value,
 							ref: collapseRenotes,
 						}, {
 							type: 'switch',

@@ -135,6 +135,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkSwitch v-model="forceCollapseAllRenotes">
 					<template #label>{{ i18n.ts.forceCollapseAllRenotes }}</template>
 					<template #caption>{{ i18n.ts.forceCollapseAllRenotesDescription }}</template>
+					<span class="_beta">CherryPick</span>
 				</MkSwitch>
 				<MkSwitch v-model="collapseRenotes" :disabled="forceCollapseAllRenotes">
 					<template #label>{{ i18n.ts.collapseRenotes }}</template>
