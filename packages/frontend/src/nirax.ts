@@ -242,8 +242,6 @@ export class Router extends EventEmitter<RouterEvent> implements IRouter {
 			hash,
 		};
 
-		if (_DEV_) console.log('Routing: ', path, queryString);
-
 		function check(routes: RouteDef[], _parts: string[]): Resolved | null {
 			forEachRouteLoop:
 			for (const route of routes) {
