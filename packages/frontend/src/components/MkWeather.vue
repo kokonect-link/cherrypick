@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			{{ location }}
 			<i v-if="props.useCurrentLocation" style="font-size: 0.7em; margin-left: 2px;" :class="supportsGeolocation ? 'ti ti-location-filled' : 'ti ti-location-off'"></i>
 		</div>
-		<div style="display: flex;">
+		<div style="display: flex; justify-content: center; align-items: center;">
 			<div :class="$style.current">
 				<i :class="getWeatherIcon(Number(weatherData.hourly.weatherCode[0]))"></i>
 				<div>{{ Math.round(Number(weatherData.hourly.temperature2m[0])) }}</div>
