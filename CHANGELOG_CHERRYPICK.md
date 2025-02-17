@@ -39,6 +39,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: 게시 양식 설정 메뉴 개선 (misskey-dev/misskey#14804)
 	- 입력한 내용을 초기화할 수 있음
 	- 입력한 글자 수를 표시함
+- Enhance: 사용자 페이지의 `팔로우`/`팔로잉` 페이지 헤더에 `팔로우`/`팔로잉` 카운트를 표시함
 - Fix: `대화`에서 발생하는 일부 문제를 해결함 (kokonect-link/cherrypick#563, kokonect-link/cherrypick#568)
   - `더 보기`를 눌러 이전 대화를 볼 수 없음
   - 개행만으로 메시지를 보낼 수 있음
