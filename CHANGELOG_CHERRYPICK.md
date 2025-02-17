@@ -28,6 +28,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 기반 Misskey 버전: 2025.x.x<br>
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGELOG.md#2025xx) 문서를 참고하십시오.
 
+### General
+- Feat: 리모트 서버의 아바타 장식을 가져올 수 있음 (bettaku/engawa#252)
+
 ### Client
 - Enhance: (Friendly) 태블릿 환경에서도 특정 페이지에서 아래로 스크롤하면 헤더가 숨겨짐
 - Enhance: 여러 노트를 표시하는 요소에서 `타임라인의 노트 사이를 띄워서 표시` 설정 적용
