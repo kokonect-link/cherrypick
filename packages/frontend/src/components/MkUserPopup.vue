@@ -25,6 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.title">
 				<MkA :class="$style.name" :to="userPage(user)"><MkUserName :user="user" :nowrap="false"/></MkA>
 				<div :class="$style.username"><MkAcct :user="user"/></div>
+				<div v-if="user.isAdmin || user.isLocked || user.isBot || user.isProxy" style="margin-top: 4px;">
+					<span v-if="user.isAdmin" v-tooltip="i18n.ts.administrator" :title="i18n.ts.isAdmin" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
+					<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ti ti-lock"></i></span>
+					<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
+					<span v-if="user.isProxy" v-tooltip="i18n.ts.proxyAccount" :title="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
+				</div>
 			</div>
 			<div :class="$style.description">
 				<Mfm v-if="user.description" :class="$style.mfm" :text="user.description" :author="user"/>
