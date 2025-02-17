@@ -41,7 +41,7 @@ const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
 }>();
 
-const tab = ref<string | null>(null);
+const tab = ref<string | null>('all');
 
 const pagination = computed(() => tab.value === 'featured' ? {
 	endpoint: 'users/featured-notes' as const,
