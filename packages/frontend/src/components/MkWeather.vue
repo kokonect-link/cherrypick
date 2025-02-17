@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="location" style="display: flex; align-items: center;">
 			<i style="margin-right: 4px;" class="ti ti-map-pin"></i>
 			{{ location }}
-			<i v-if="props.useCurrentLocation" style="font-size: 0.7em; margin-left: 2px;" :class="supportsGeolocation ? 'ti ti-location-filled' : 'ti ti-location-off'"></i>
+			<i v-if="props.useCurrentLocation" style="font-size: 0.7em; margin-left: 2px;" :class="locationLoading ? 'ti ti-location-search' : (supportsGeolocation ? 'ti ti-location-filled' : 'ti ti-location-off')"></i>
 		</div>
 		<div style="display: flex; justify-content: center; align-items: center;">
 			<div :class="$style.current">
@@ -23,13 +23,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div>・{{ i18n.ts._weather.precipitation }}: <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.hourly.precipitation[0])) }}</span><span :class="$style.detailsUnit">mm/h</span></div>
 			</div>
 		</div>
-		<div :class="$style.daily">
-			<div v-for="(day, i) in weatherData.daily.time.slice(0, 3)" :key="i" :class="$style.day">
-				<div>{{ formatDate(day) }}</div>
-				<i :class="getWeatherIcon(Number(weatherData.daily.weatherCode[i]))"></i>
-				<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMax[i])) }}</span> / <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMin[i])) }}</span>{{ temperatureUnit }}</div>
-				<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationSum[i])) }}</span><span :class="$style.detailsUnit">mm</span></div>
-				<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationProbabilityMean[i])) }}</span><span :class="$style.detailsUnit">%</span></div>
+		<div style="border-top: solid 1px var(--MI_THEME-divider); padding-top: 12px;">
+			<div :class="$style.daily">
+				<div v-for="(day, i) in weatherData.daily.time.slice(0, 3)" :key="i" :class="$style.day">
+					<div style="font-size: 0.8em;">{{ formatDate(day) }}</div>
+					<i style="margin: 4px 0;" :class="getWeatherIcon(Number(weatherData.daily.weatherCode[i]))"></i>
+					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMax[i])) }}</span> / <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMin[i])) }}</span><span :class="$style.detailsUnit">{{ temperatureUnit }}</span></div>
+					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationSum[i])) }}</span><span :class="$style.detailsUnit">mm</span></div>
+					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationProbabilityMean[i])) }}</span><span :class="$style.detailsUnit">%</span></div>
+				</div>
 			</div>
 		</div>
 		<div v-if="props.showSurfacePressure" :class="$style.pressureChart">
@@ -56,12 +58,14 @@ const props = withDefaults(defineProps<{
 	longtitude?: number;
 	setTempUnitFahrenheit?: boolean;
 	showSurfacePressure?: boolean;
+	show12Hours?: boolean;
 	useCurrentLocation?: boolean;
 }>(), {
 	latitude: 37.566,
 	longtitude: 126.9784,
 	setTempUnitFahrenheit: false,
 	showSurfacePressure: false,
+	show12Hours: false,
 	useCurrentLocation: true,
 });
 
@@ -76,6 +80,8 @@ const pressureChartEl = ref<HTMLCanvasElement | null>(null);
 let pressureChart: Chart | null = null;
 
 const supportsGeolocation = ref<boolean>(false);
+const locationLoading = ref(true);
+
 const temperatureUnit = ref('°C');
 
 interface WeatherData {
@@ -196,8 +202,9 @@ function createPressureChart() {
 	const hours = weatherData.value.hourly.time
 		.slice(startIndex, endIndex)
 		.map(time => new Date(time).toLocaleTimeString(locale, {
-			hour: '2-digit',
+			hour: 'numeric',
 			minute: '2-digit',
+			hour12: props.show12Hours,
 		}));
 
 	const pressures = Array.from(
@@ -258,14 +265,18 @@ function createPressureChart() {
 }
 
 const getLocation = () => {
-	if (!props.useCurrentLocation && !navigator.geolocation) return;
+	if (!props.useCurrentLocation && !navigator.geolocation) {
+		locationLoading.value = false;
+		return;
+	}
 
 	navigator.geolocation.getCurrentPosition(() => {
 		supportsGeolocation.value = true;
+		locationLoading.value = false;
 	}, () => {
 		supportsGeolocation.value = false;
-	},
-	);
+		locationLoading.value = false;
+	});
 };
 
 onMounted(async () => {
@@ -354,8 +365,7 @@ watch([() => weatherData.value, () => props.showSurfacePressure],
 	display: flex;
 	justify-content: space-between;
 	text-align: center;
-	border-top: solid 1px var(--MI_THEME-divider);
-	padding-top: 12px;
+	margin: 0 24px;
 }
 
 .day {

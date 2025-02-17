@@ -12,6 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:longtitude="widgetProps.longtitude"
 			:setTempUnitFahrenheit="widgetProps.setTempUnitFahrenheit"
 			:showSurfacePressure="widgetProps.showSurfacePressure"
+			:show12Hours="widgetProps.show12Hours"
 			:useCurrentLocation="widgetProps.useCurrentLocation"
 		/>
 	</div>
@@ -46,6 +47,10 @@ const widgetPropsDef = {
 		default: false,
 	},
 	showSurfacePressure: {
+		type: 'boolean' as const,
+		default: false,
+	},
+	show12Hours: {
 		type: 'boolean' as const,
 		default: false,
 	},
@@ -87,6 +92,7 @@ onMounted(() => {
 watch(() => [widgetProps.latitude, widgetProps.longtitude], { immediate: true });
 watch(() => widgetProps.setTempUnitFahrenheit, { immediate: true });
 watch(() => widgetProps.showSurfacePressure, { immediate: true });
+watch(() => widgetProps.show12Hours, { immediate: true });
 watch(() => widgetProps.useCurrentLocation, { immediate: true });
 
 defineExpose<WidgetComponentExpose>({
