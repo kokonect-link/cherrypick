@@ -4,11 +4,11 @@
  */
 
 import { h, provide } from 'vue';
-import type { VNode, SetupContext } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import temml from 'temml/dist/temml.mjs';
 import { host } from '@@/js/config.js';
+import type { VNode, SetupContext } from 'vue';
 import EmUrl from '@/components/EmUrl.vue';
 import EmTime from '@/components/EmTime.vue';
 import EmLink from '@/components/EmLink.vue';

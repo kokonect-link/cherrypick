@@ -385,21 +385,21 @@ export type ModerationLogPayloads = {
 
 export type Serialized<T> = {
 	[K in keyof T]:
-		T[K] extends Date
-			? string
-			: T[K] extends (Date | null)
-				? (string | null)
-				: T[K] extends Record<string, any>
-					? Serialized<T[K]>
-					: T[K] extends (Record<string, any> | null)
+	T[K] extends Date
+		? string
+		: T[K] extends (Date | null)
+			? (string | null)
+			: T[K] extends Record<string, any>
+				? Serialized<T[K]>
+				: T[K] extends (Record<string, any> | null)
 					? (Serialized<T[K]> | null)
-						: T[K] extends (Record<string, any> | undefined)
+					: T[K] extends (Record<string, any> | undefined)
 						? (Serialized<T[K]> | undefined)
-							: T[K];
+						: T[K];
 };
 
 export type FilterUnionByProperty<
-  Union,
-  Property extends string | number | symbol,
-  Condition
+	Union,
+	Property extends string | number | symbol,
+	Condition,
 > = Union extends Record<Property, Condition> ? Union : never;

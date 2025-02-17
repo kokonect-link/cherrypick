@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<{
 	withReplies?: boolean;
 	withSensitive?: boolean;
 	onlyFiles?: boolean;
-  onlyCats?: boolean;
+	onlyCats?: boolean;
 }>(), {
 	withRenotes: true,
 	withReplies: false,

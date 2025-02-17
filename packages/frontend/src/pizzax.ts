@@ -6,8 +6,8 @@
 // PIZZAX --- A lightweight store
 
 import { onUnmounted, ref, watch } from 'vue';
-import type { Ref } from 'vue';
 import { BroadcastChannel } from 'broadcast-channel';
+import type { Ref } from 'vue';
 import { $i } from '@/account.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import { get, set } from '@/scripts/idb-proxy.js';
@@ -247,9 +247,9 @@ export class Storage<T extends StateDef> {
 		getter?: (v: T[K]['default']) => R,
 		setter?: (v: R) => T[K]['default'],
 	): {
-		get: () => R;
-		set: (value: R) => void;
-	} {
+			get: () => R;
+			set: (value: R) => void;
+		} {
 		const valueRef = ref(this.state[key]);
 
 		const stop = watch(this.reactiveState[key], val => {

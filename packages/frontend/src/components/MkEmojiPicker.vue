@@ -142,7 +142,7 @@ import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.j
 
 const props = withDefaults(defineProps<{
 	showPinned?: boolean;
-  pinnedEmojis?: string[];
+	pinnedEmojis?: string[];
 	maxHeight?: number;
 	asDrawer?: boolean;
 	asWindow?: boolean;

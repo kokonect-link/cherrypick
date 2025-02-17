@@ -132,12 +132,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, inject, provide, ref, shallowRef, watch } from 'vue';
-import type { Ref } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { concat } from '@@/js/array.js';
 import { host } from '@@/js/config.js';
+import type { Ref } from 'vue';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import * as os from '@/os.js';
 import * as sound from '@/scripts/sound.js';
@@ -166,12 +166,12 @@ import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
 
 const props = withDefaults(defineProps<{
-  note: Misskey.entities.Note & {
-		isSchedule? : boolean,
+	note: Misskey.entities.Note & {
+		isSchedule?: boolean,
 		scheduledNoteId?: string
 	};
-  mock?: boolean;
-  showSubNoteFooterButton?: boolean;
+	mock?: boolean;
+	showSubNoteFooterButton?: boolean;
 }>(), {
 	mock: false,
 });
@@ -179,8 +179,8 @@ const props = withDefaults(defineProps<{
 provide('mock', props.mock);
 
 const emit = defineEmits<{
-  (ev: 'reaction', emoji: string): void;
-  (ev: 'removeReaction', emoji: string): void;
+	(ev: 'reaction', emoji: string): void;
+	(ev: 'removeReaction', emoji: string): void;
 }>();
 
 const note = ref(deepClone(props.note));

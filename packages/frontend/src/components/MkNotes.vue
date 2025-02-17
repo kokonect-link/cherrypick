@@ -47,7 +47,7 @@ const props = defineProps<{
 	noGap?: boolean;
 	getDate?: (any) => string; // custom function to separate notes on something that isn't createdAt
 	disableAutoLoad?: boolean;
-  notification?: boolean;
+	notification?: boolean;
 }>();
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();

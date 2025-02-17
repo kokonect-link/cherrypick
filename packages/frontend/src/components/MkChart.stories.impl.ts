@@ -3,13 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable import/no-default-export */
-import type { StoryObj } from '@storybook/vue3';
 import { http } from 'msw';
 import { commonHandlers } from '../../.storybook/mocks.js';
 import { getChartResolver } from '../../.storybook/charts.js';
 import MkChart from './MkChart.vue';
+import type { StoryObj } from '@storybook/vue3';
 
 const Base = {
 	render(args) {

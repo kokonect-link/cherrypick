@@ -78,6 +78,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as Misskey from 'cherrypick-js';
 import { onMounted, ref, useCssModule } from 'vue';
+import type { RequestLogItem } from '@/pages/admin/custom-emojis-manager.impl.js';
+import type { GridCellValidationEvent, GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
+import type { DroppedFile } from '@/scripts/file-drop.js';
+import type { GridSetting } from '@/components/grid/grid.js';
+import type { GridRow } from '@/components/grid/row.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import {
 	emptyStrToEmptyArray,
@@ -98,12 +103,6 @@ import { uploadFile } from '@/scripts/upload.js';
 import { extractDroppedItems, flattenDroppedFiles } from '@/scripts/file-drop.js';
 import XRegisterLogs from '@/pages/admin/custom-emojis-manager.logs.vue';
 import { copyGridDataToClipboard } from '@/components/grid/grid-utils.js';
-
-import type { RequestLogItem } from '@/pages/admin/custom-emojis-manager.impl.js';
-import type { GridCellValidationEvent, GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
-import type { DroppedFile } from '@/scripts/file-drop.js';
-import type { GridSetting } from '@/components/grid/grid.js';
-import type { GridRow } from '@/components/grid/row.js';
 
 const MAXIMUM_EMOJI_REGISTER_COUNT = 100;
 

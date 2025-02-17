@@ -64,7 +64,7 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 
 const props = defineProps<{
-  emoji: Misskey.entities.EmojiDetailed,
+	emoji: Misskey.entities.EmojiDetailed,
 }>();
 
 const emit = defineEmits<{

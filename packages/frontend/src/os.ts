@@ -641,7 +641,7 @@ export async function selectRole(params: {
 }): Promise<
 	{ canceled: true; result: undefined; } |
 	{ canceled: false; result: Misskey.entities.Role[] }
-> {
+	> {
 	return new Promise((resolve) => {
 		popup(defineAsyncComponent(() => import('@/components/MkRoleSelectDialog.vue')), params, {
 			done: roles => {

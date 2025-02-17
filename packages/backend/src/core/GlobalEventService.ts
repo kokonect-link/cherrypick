@@ -239,7 +239,7 @@ export interface ReversiGameEventTypes {
 type Events<T extends object> = { [K in keyof T]: { type: K; body: T[K]; } };
 type EventUnionFromDictionary<
 	T extends object,
-	U = Events<T>
+	U = Events<T>,
 > = U[keyof U];
 
 type SerializedAll<T> = {
