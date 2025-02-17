@@ -37,6 +37,7 @@ export default function(app: App) {
 	app.component('WidgetBirthdayFollowings', defineAsyncComponent(() => import('./WidgetBirthdayFollowings.vue')));
 	app.component('WidgetSearch', defineAsyncComponent(() => import('./WidgetSearch.vue')));
 	app.component('WidgetDice', defineAsyncComponent(() => import('./WidgetDice.vue')));
+	app.component('WidgetWeather', defineAsyncComponent(() => import('./WidgetWeather.vue')));
 }
 
 // 連合関連のウィジェット（連合無効時に隠す）
@@ -74,6 +75,7 @@ export const widgets = [
 	'birthdayFollowings',
 	'search',
 	'dice',
+	'weather',
 
 	...federationWidgets,
 ];

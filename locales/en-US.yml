@@ -2622,6 +2622,7 @@ _widgets:
   birthdayFollowings: "Today's Birthdays"
   search: "Search"
   dice: "Dice"
+  weather: "Weather"
 _cw:
   hide: "Hide"
   show: "Show content"
@@ -3333,3 +3334,7 @@ _keyboardShortCut:
     toggleLocalOnly: "Toggle Local Only"
     featureWarn: "This feature is available when enable settings in \"Settings - CherryPick\"."
     sendPost: "Post note"
+_weather:
+  humidity: "Humidity"
+  pressure: "Pressure"
+  precipitation: "Precipitation"

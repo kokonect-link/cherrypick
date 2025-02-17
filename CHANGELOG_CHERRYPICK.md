@@ -32,6 +32,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Feat: 리모트 서버의 아바타 장식을 가져올 수 있음 (bettaku/engawa#252)
 
 ### Client
+- Feat: 날씨 위젯 (bettaku/engawa#245, [bettaku/engawa@712371ad](https://github.com/bettaku/engawa/commit/712371adb4601ce1162d9319fb6cf257b65ac505), [bettaku/engawa@5217869e](https://github.com/bettaku/engawa/commit/5217869ef8bb8762fb776f709ba94d67bda64706))
+  - 현재 위치를 기반으로 날씨 정보를 조회하거나, 직접 위도와 경도를 입력해 조회할 수 있습니다.
 - Enhance: (Friendly) 태블릿 환경에서도 특정 페이지에서 아래로 스크롤하면 헤더가 숨겨짐
 - Enhance: 여러 노트를 표시하는 요소에서 `타임라인의 노트 사이를 띄워서 표시` 설정 적용
 - Enhance: 게시 양식 설정 메뉴 개선 (misskey-dev/misskey#14804)

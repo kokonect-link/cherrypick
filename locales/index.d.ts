@@ -10227,6 +10227,10 @@ export interface Locale extends ILocale {
          * サイコロ
          */
         "dice": string;
+        /**
+         * 天気
+         */
+        "weather": string;
     };
     "_cw": {
         /**
@@ -12937,6 +12941,20 @@ export interface Locale extends ILocale {
              */
             "sendPost": string;
         };
+    };
+    "_weather": {
+        /**
+         * 湿度
+         */
+        "humidity": string;
+        /**
+         * 気圧
+         */
+        "pressure": string;
+        /**
+         * 降水量
+         */
+        "precipitation": string;
     };
 }
 declare const locales: {

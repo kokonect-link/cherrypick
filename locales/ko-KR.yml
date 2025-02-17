@@ -2622,6 +2622,7 @@ _widgets:
   birthdayFollowings: "오늘 생일인 사용자"
   search: "검색"
   dice: "주사위"
+  weather: "날씨"
 _cw:
   hide: "가리기"
   show: "더 보기"
@@ -3346,3 +3347,7 @@ _keyboardShortCut:
     toggleLocalOnly: "연합 비활성화 토글"
     featureWarn: "이 기능은 [설정 - CherryPick]에서 변경할 수 있어요."
     sendPost: "게시하기"
+_weather:
+  humidity: "습도"
+  pressure: "기압"
+  precipitation: "강수량"

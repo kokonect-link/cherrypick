@@ -2681,6 +2681,7 @@ _widgets:
   birthdayFollowings: "今日誕生日のユーザー"
   search: "検索"
   dice: "サイコロ"
+  weather: "天気"
 
 _cw:
   hide: "隠す"
@@ -3461,3 +3462,8 @@ _keyboardShortCut:
     toggleLocalOnly: "連合なしを切り替える"
     featureWarn: "この機能は「設定 - CherryPick」から該当の機能を有効にすることで利用できます。"
     sendPost: "投稿する"
+
+_weather:
+  humidity: "湿度"
+  pressure: "気圧"
+  precipitation: "降水量"
