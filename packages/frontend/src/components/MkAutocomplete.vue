@@ -205,8 +205,10 @@ function exec() {
 			users.value = JSON.parse(cache);
 			fetching.value = false;
 		} else {
+			const [username, host] = props.q.toString().split('@');
 			misskeyApi('users/search-by-username-and-host', {
-				username: props.q,
+				username: username,
+				host: host,
 				limit: 10,
 				detail: false,
 			}).then(searchedUsers => {
