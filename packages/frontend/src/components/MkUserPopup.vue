@@ -37,18 +37,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-else style="opacity: 0.7;">{{ i18n.ts.noAccountDescription }}</div>
 			</div>
 			<div :class="$style.status">
-				<div :class="$style.statusItem">
+				<MkA :to="userPage(user)" :class="$style.statusItem">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.notes }}</div>
-					<div>{{ number(user.notesCount) }}</div>
-				</div>
-				<div v-if="isFollowingVisibleForMe(user)" :class="$style.statusItem">
+					<b>{{ number(user.notesCount) }}</b>
+				</MkA>
+				<MkA v-if="isFollowingVisibleForMe(user)" :class="$style.statusItem" :to="userPage(user, 'following')">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.following }}</div>
-					<div>{{ number(user.followingCount) }}</div>
-				</div>
-				<div v-if="isFollowersVisibleForMe(user)" :class="$style.statusItem">
+					<b>{{ number(user.followingCount) }}</b>
+				</MkA>
+				<MkA v-if="isFollowersVisibleForMe(user)" :class="$style.statusItem" :to="userPage(user, 'followers')">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.followers }}</div>
-					<div>{{ number(user.followersCount) }}</div>
-				</div>
+					<b>{{ number(user.followersCount) }}</b>
+				</MkA>
 			</div>
 			<button class="_button" :class="[$style.menu, { [$style.isBlocked]: user.isBlocked || user.isBlocking }]" @click="showMenu"><i class="ti ti-dots"></i></button>
 			<button v-tooltip="user.notify === 'none' ? i18n.ts.notifyNotes : i18n.ts.unnotifyNotes" class="_button" :class="[$style.notify, { [$style.isBlocked]: user.isBlocked || user.isBlocking }]" @click="toggleNotify"><i :class="user.notify === 'none' ? 'ti ti-bell-plus' : 'ti ti-bell-minus'"></i></button>
@@ -249,6 +249,10 @@ onMounted(() => {
 	width: 33%;
 	text-align: center;
 	flex: 1;
+
+	&:hover {
+		text-decoration: none;
+	}
 }
 
 .statusItemLabel {
