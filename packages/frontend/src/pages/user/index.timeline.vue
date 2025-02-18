@@ -22,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<XReactions v-if="tab === 'reactions'" :user="user"/>
 	<XFiles v-if="tab === 'files' && defaultStore.state.filesGridLayoutInUserPage" :pagination="pagination"/>
-	<MkNotes v-else :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" :class="$style.tl"/>
+	<MkNotes v-else :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" :class="$style.tl" :forceShowReplyTargetNote="true"/>
 </MkStickyContainer>
 </template>
 

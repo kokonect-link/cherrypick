@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:ad="true"
 				:class="$style.notes"
 			>
-				<MkNote :key="note._featuredId_ || note._prId_ || note.id" :class="$style.note" :note="note" :withHardMute="true" :notification="notification"/>
+				<MkNote :key="note._featuredId_ || note._prId_ || note.id" :class="$style.note" :note="note" :withHardMute="true" :notification="notification" :forceShowReplyTargetNote="forceShowReplyTargetNote"/>
 			</MkDateSeparatedList>
 		</div>
 	</template>
@@ -48,6 +48,7 @@ const props = defineProps<{
 	getDate?: (any) => string; // custom function to separate notes on something that isn't createdAt
 	disableAutoLoad?: boolean;
 	notification?: boolean;
+	forceShowReplyTargetNote?: boolean;
 }>();
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
