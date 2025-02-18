@@ -691,6 +691,10 @@ export const defaultStore = markRaw(new Storage('base', {
 		where: 'device',
 		default: false,
 	},
+	showReplyTargetNote: {
+		where: 'device',
+		default: true,
+	},
 	showReplyTargetNoteInSemiTransparent: {
 		where: 'device',
 		default: true,

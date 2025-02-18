@@ -182,6 +182,10 @@ export interface Locale extends ILocale {
      */
     "filesGridLayoutInUserPageDescription": string;
     /**
+     * 返信対象ノートを表示
+     */
+    "showReplyTargetNote": string;
+    /**
      * 返信対象ノートを半透明に表示
      */
     "showReplyTargetNoteInSemiTransparent": string;

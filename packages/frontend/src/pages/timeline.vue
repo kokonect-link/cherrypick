@@ -190,6 +190,7 @@ const collapseReplies = ref(defaultStore.state.collapseReplies);
 const collapseLongNoteContent = ref(defaultStore.state.collapseLongNoteContent);
 const collapseDefault = ref(defaultStore.state.collapseDefault);
 const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
+const showReplyTargetNote = ref(defaultStore.state.showReplyTargetNote);
 
 watch(src, () => {
 	queue.value = 0;
@@ -275,6 +276,12 @@ watch(collapseDefault, (x) => {
 
 watch(alwaysShowCw, (x) => {
 	defaultStore.set('alwaysShowCw', x);
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch(showReplyTargetNote, (x) => {
+	defaultStore.set('showReplyTargetNote', x);
 	reloadTimeline();
 	reloadNotification();
 });
@@ -570,6 +577,10 @@ const headerActions = computed(() => {
 							type: 'switch',
 							text: i18n.ts.alwaysShowCw,
 							ref: alwaysShowCw,
+						}, {
+							type: 'switch',
+							text: i18n.ts.showReplyTargetNote,
+							ref: showReplyTargetNote,
 						});
 
 						return displayOfNoteChildMenu;
