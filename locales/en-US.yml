@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+replyTo: "Replying to {user}"
 forceCollapseAllRenotes: "Collapse all renotes"
 forceCollapseAllRenotesDescription: "Collapse and display all notes that you or other have renoted."
 overrideRobotsTxt: "Override robots.txt"

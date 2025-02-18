@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+replyTo: "{user}さんに返信"
 forceCollapseAllRenotes: "すべてのリノートの省略"
 forceCollapseAllRenotesDescription: "私または相手がリノートしたすべてのノートをたたんで表示します。"
 overrideRobotsTxt: "robots.txtの上書き"

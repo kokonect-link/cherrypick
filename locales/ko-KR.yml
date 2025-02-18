@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+replyTo: "{user}님에게 보내는 답글"
 forceCollapseAllRenotes: "모든 리노트 간략화하기"
 forceCollapseAllRenotesDescription: "나 또는 상대방이 리노트한 모든 노트를 접어서 표시해요."
 overrideRobotsTxt: "robots.txt 덮어쓰기"

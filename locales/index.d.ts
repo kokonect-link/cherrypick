@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * {user}さんに返信
+     */
+    "replyTo": ParameterizedString<"user">;
+    /**
      * すべてのリノートの省略
      */
     "forceCollapseAllRenotes": string;
