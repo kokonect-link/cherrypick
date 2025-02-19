@@ -1475,6 +1475,8 @@ federationSpecified: "This server is operated in a whitelist federation. Interac
 federationDisabled: "Federation is disabled on this server. You cannot interact with users on other servers."
 textCount: "Text count"
 draft: "Draft"
+draftNoteList: "List of draft notes"
+saveAsDraft: "Save as Draft"
 showUnreadNotificationsCount: "Show the number of unread notifications"
 showCatOnly: "Show only cats"
 additionalPermissionsForFlash: "Allow to add permission to Play"
@@ -3247,8 +3249,6 @@ _captcha:
       text: "An unexpected error occurred."
 _drafts:
   select: "Select Draft"
-  saveConfirm: "Do you want to save the draft to the server?"
-  saveConfirmDescription: "If you select \"Don't Save\" here, the draft will be saved in the terminal."
   delete: "Delete Draft"
   deleteAreYouSure: "Do you delete the draft?"
   noDrafts: "There is no draft."

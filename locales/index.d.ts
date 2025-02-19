@@ -5939,6 +5939,14 @@ export interface Locale extends ILocale {
      */
     "draft": string;
     /**
+     * 下書き一覧
+     */
+    "draftNoteList": string;
+    /**
+     * 下書きで保存
+     */
+    "saveAsDraft": string;
+    /**
      * 未読の通知の数を表示する
      */
     "showUnreadNotificationsCount": string;
@@ -12621,14 +12629,6 @@ export interface Locale extends ILocale {
          * 下書きを選択
          */
         "select": string;
-        /**
-         * サーバーに下書きを保存しますか？
-         */
-        "saveConfirm": string;
-        /**
-         * ここで「保存しない」を選択しても、下書きは端末内に保存されます。
-         */
-        "saveConfirmDescription": string;
         /**
          * 下書きを削除
          */

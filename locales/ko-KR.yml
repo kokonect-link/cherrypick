@@ -1475,6 +1475,8 @@ federationSpecified: "이 서버는 화이트 리스트 제도로 운영되고 �
 federationDisabled: "이 서버는 다른 서버와 연합하지 않도록 설정되었어요. 따라서 리모트 서버의 사용자와 통신할 수 없어요."
 textCount: "문자 수"
 draft: "초안"
+draftNoteList: "초안으로 저장된 노트 목록"
+saveAsDraft: "초안으로 저장"
 showUnreadNotificationsCount: "읽지 않은 알림 수 표시"
 showCatOnly: "고양이만 보기"
 additionalPermissionsForFlash: "Play에 대한 추가 권한"
@@ -3260,8 +3262,6 @@ _bootErrors:
   otherOption3: "복구 도구 실행"
 _drafts:
   select: "초안 선택"
-  saveConfirm: "서버에 초안을 저장할까요?"
-  saveConfirmDescription: "여기서 '저장하지 않음'을 선택해도 초안은 이 기기에 로컬로 저장돼요."
   delete: "초안 삭제"
   deleteAreYouSure: "초안을 삭제할까요?"
   noDrafts: "초안이 없어요."

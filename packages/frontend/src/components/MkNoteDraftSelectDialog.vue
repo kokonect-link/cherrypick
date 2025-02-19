@@ -95,10 +95,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref, shallowRef, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import type MkModalWindow from '@/components/MkModalWindow.vue';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkPagination from '@/components/MkPagination.vue';
+import MkModalWindow from '@/components/MkModalWindow.vue';
 import { getNoteSummary } from '@/scripts/get-note-summary.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
@@ -234,10 +234,10 @@ async function deleteDraft(draft: Misskey.entities.NoteDraft) {
 
 .draftContent {
 	display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
 	line-clamp: 2;
-  overflow: hidden;
+	overflow: hidden;
 	font-size: 0.9em;
 }
 </style>

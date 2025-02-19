@@ -1477,6 +1477,8 @@ confirmOnReact: "リアクションする際に確認する"
 reactAreYouSure: "\" {emoji} \" をリアクションしますか？"
 textCount: "文字数"
 draft: "下書き"
+draftNoteList: "下書き一覧"
+saveAsDraft: "下書きで保存"
 showUnreadNotificationsCount: "未読の通知の数を表示する"
 showCatOnly: "キャット付きのみ"
 additionalPermissionsForFlash: "Playへの追加許可"
@@ -3365,8 +3367,6 @@ _bootErrors:
 
 _drafts:
   select: "下書きを選択"
-  saveConfirm: "サーバーに下書きを保存しますか？"
-  saveConfirmDescription: "ここで「保存しない」を選択しても、下書きは端末内に保存されます。"
   delete: "下書きを削除"
   deleteAreYouSure: "下書きを削除しますか？"
   noDrafts: "下書きはありません。"
