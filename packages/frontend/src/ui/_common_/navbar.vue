@@ -276,8 +276,6 @@ function more(ev: MouseEvent) {
 	.instanceIcon {
 		display: inline-block;
 		width: 38px;
-		max-width: 38px;
-		max-height: 38px;
 		aspect-ratio: 1;
 	}
 
@@ -505,8 +503,6 @@ function more(ev: MouseEvent) {
 	.instanceIcon {
 		display: inline-block;
 		width: 30px;
-		max-width: 30px;
-		max-height: 30px;
 		aspect-ratio: 1;
 	}
 

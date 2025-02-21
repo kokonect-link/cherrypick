@@ -287,8 +287,6 @@ function openProfile() {
 	.instanceIcon {
 		display: inline-block;
 		width: 50px;
-		max-width: 50px;
-		max-height: 50px;
 		aspect-ratio: 1;
 		margin-right: 150px;
 		border-radius: 18px;
@@ -534,8 +532,6 @@ function openProfile() {
 	.instanceIcon {
 		display: inline-block;
 		width: 45px;
-		max-width: 45px;
-		max-height: 45px;
 		aspect-ratio: 1;
 		border-radius: 18px;
 	}
