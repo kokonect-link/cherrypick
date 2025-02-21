@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</button>
 			<button ref="otherSettingsButton" v-tooltip="i18n.ts.other" class="_button" :class="$style.headerRightItem" @click="showOtherSettings"><i class="ti ti-dots"></i></button>
 			<div :class="$style.submit">
-				<button v-click-anime class="_button" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
+				<button v-click-anime class="_button" :class="$style.submitButton" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 					<div :class="$style.submitInner">
 						<template v-if="posted"></template>
 						<template v-else-if="posting"><MkEllipsis/></template>
@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : saveAsDraft ? 'ti ti-pencil-minus' : replyTargetNote ? 'ti ti-arrow-back-up' : renoteTargetNote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 					</div>
 				</button>
-				<button v-click-anime class="_button" style="margin-left: 2px;" @click="showPostMenu">
+				<button v-click-anime class="_button" style="margin-left: 2px;" :class="$style.submitButton" @click="showPostMenu">
 					<div :class="$style.submitInnerMenu">
 						<i class="ti ti-caret-down-filled"></i>
 					</div>
@@ -1569,7 +1569,9 @@ defineExpose({
 .submit {
 	margin: 12px 12px 12px 6px;
 	vertical-align: bottom;
+}
 
+.submitButton {
 	&:focus-visible {
 		outline: none;
 
@@ -1588,14 +1590,16 @@ defineExpose({
 	}
 
 	&:not(:disabled):hover {
-		> .submitInner {
-			background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+		> .submitInner, .submitInnerMenu {
+			// background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+			background: light-dark(var(--MI_THEME-buttonGradateB), var(--MI_THEME-buttonGradateA))
 		}
 	}
 
 	&:not(:disabled):active {
-		> .submitInner {
-			background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+		> .submitInner, .submitInnerMenu {
+			// background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+			background: light-dark(var(--MI_THEME-buttonGradateB), var(--MI_THEME-buttonGradateA))
 		}
 	}
 }

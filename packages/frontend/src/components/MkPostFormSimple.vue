@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</button>
 				<button ref="otherSettingsButton" v-tooltip="i18n.ts.other" class="_button" :class="$style.headerRightItem" @click="showOtherSettings"><i class="ti ti-dots"></i></button>
 				<div :class="$style.submit">
-					<button v-click-anime class="_button" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
+					<button v-click-anime class="_button" :class="$style.submitButton" :disabled="!canPost" data-cy-open-post-form-submit @click="post">
 						<div :class="$style.submitInner">
 							<template v-if="posted"></template>
 							<template v-else-if="posting"><MkEllipsis/></template>
@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : saveAsDraft ? 'ti ti-pencil-minus' : replyTargetNote ? 'ti ti-arrow-back-up' : renoteTargetNote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 						</div>
 					</button>
-					<button v-click-anime class="_button" style="margin-left: 2px;" @click="showPostMenu">
+					<button v-click-anime class="_button" style="margin-left: 2px;" :class="$style.submitButton" @click="showPostMenu">
 						<div :class="$style.submitInnerMenu">
 							<i class="ti ti-caret-down-filled"></i>
 						</div>
@@ -80,14 +80,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="targetChannel" :class="$style.colorBar" :style="{ background: targetChannel.color }"></div>
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :readonly="textAreaReadOnly" :placeholder="placeholder" data-cy-post-form-text @click="formClick" @keydown="onKeydown" @keyup="onKeyup" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
-		<button v-if="!showForm" v-click-anime class="_button" :class="$style.submit" style="position: absolute; bottom: 0; right: 12px;" :disabled="!canPost && $i" data-cy-open-post-form-submit @click="$i ? post : signin()">
-			<div :class="$style.submitInner">
-				<template v-if="posted"></template>
-				<template v-else-if="posting"><MkEllipsis/></template>
-				<template v-else>{{ submitText }}</template>
-				<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : replyTargetNote ? 'ti ti-arrow-back-up' : renote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
-			</div>
-		</button>
+		<div v-if="!showForm" style="position: absolute; bottom: 0; right: 12px;" :class="$style.submit">
+			<button v-click-anime class="_button" :class="$style.submitButton" :disabled="!canPost && $i" data-cy-open-post-form-submit @click="$i ? post : signin()">
+				<div :class="$style.submitInner">
+					<template v-if="posted"></template>
+					<template v-else-if="posting"><MkEllipsis/></template>
+					<template v-else>{{ submitText }}</template>
+					<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : saveAsDraft ? 'ti ti-pencil-minus' : replyTargetNote ? 'ti ti-arrow-back-up' : renoteTargetNote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+				</div>
+			</button>
+			<button v-click-anime class="_button" style="margin-left: 2px;" :class="$style.submitButton" @click="showPostMenu">
+				<div :class="$style.submitInnerMenu">
+					<i class="ti ti-caret-down-filled"></i>
+				</div>
+			</button>
+		</div>
 	</div>
 	<input v-show="withHashtags && showForm" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName" @replaceFile="replaceFile"/>
@@ -1615,7 +1622,9 @@ defineExpose({
 .submit {
 	margin: 12px 12px 12px 6px;
 	vertical-align: bottom;
+}
 
+.submitButton {
 	&:focus-visible {
 		outline: none;
 
@@ -1634,14 +1643,16 @@ defineExpose({
 	}
 
 	&:not(:disabled):hover {
-		> .submitInner {
-			background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+		> .submitInner, .submitInnerMenu {
+			// background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+			background: light-dark(var(--MI_THEME-buttonGradateB), var(--MI_THEME-buttonGradateA))
 		}
 	}
 
 	&:not(:disabled):active {
-		> .submitInner {
-			background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+		> .submitInner, .submitInnerMenu {
+			// background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+			background: light-dark(var(--MI_THEME-buttonGradateB), var(--MI_THEME-buttonGradateA))
 		}
 	}
 }
