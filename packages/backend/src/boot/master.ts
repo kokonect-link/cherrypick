@@ -33,16 +33,23 @@ function greet() {
 	if (!envOption.quiet) {
 		//#region CherryPick logo
 		const v = `v${meta.version}`;
-		console.log(chalk.hex('#ffa9c3').bold('  _________ .__                                ') + chalk.hex('#95e3e8').bold('__________.__        __    '));
-		console.log(chalk.hex('#ffa9c3').bold(' \\_   ___ \\|  |__   __________________ ___.__.') + chalk.hex('#95e3e8').bold('\\______   \\__| ____ |  | __'));
-		console.log(chalk.hex('#ffa9c3').bold(' /    \\  \\/|  |  \\_/ __ \\_  __ \\_  __ <   |  |') + chalk.hex('#95e3e8').bold(' |     ___/  |/ ___\\|  |/ /'));
-		console.log(chalk.hex('#ffa9c3').bold(' \\     \\___|   Y  \\  ___/|  | \\/|  | \\/\\___  |') + chalk.hex('#95e3e8').bold(' |    |   |  \\  \\___|    < '));
-		console.log(chalk.hex('#ffa9c3').bold('  \\______  /___|  /\\___  >__|   |__|   / ____|') + chalk.hex('#95e3e8').bold(' |____|   |__|\\___  >__|_ \\'));
-		console.log(chalk.hex('#ffa9c3').bold('         \\/     \\/     \\/              \\/     ') + chalk.hex('#95e3e8').bold('                  \\/     \\/'));
+		console.log(chalk.hex('#ffa9c3').bold('   _____ _                         ') + chalk.hex('#95e3e8').bold(' _____ _      _'));
+		console.log(chalk.hex('#ffa9c3').bold('  / ____| |                        ') + chalk.hex('#95e3e8').bold('|  __ (_)    | |'));
+		console.log(chalk.hex('#ffa9c3').bold(' | |    | |__   ___ _ __ _ __ _   _') + chalk.hex('#95e3e8').bold('| |__) |  ___| | __'));
+		console.log(chalk.hex('#ffa9c3').bold(' | |    | \'_ \\ / _ \\ \'__| \'__| | | ') + chalk.hex('#95e3e8').bold('|  ___/ |/ __| |/ /'));
+		console.log(chalk.hex('#ffa9c3').bold(' | |____| | | |  __/ |  | |  | |_| ') + chalk.hex('#95e3e8').bold('| |   | | (__|   <'));
+		console.log(chalk.hex('#ffa9c3').bold('  \\_____|_| |_|\\___|_|  |_|   \\__, ') + chalk.hex('#95e3e8').bold('|_|   |_|\\___|_|\\_\\'));
+		console.log(chalk.hex('#ffa9c3').bold('                               __/ |'));
+		console.log(chalk.hex('#ffa9c3').bold('                              |___/'));
 		//#endregion
 
 		console.log(chalk.hex('#ffa9c3').bold(' Cherry') + chalk.hex('#95e3e8').bold('Pick') + (' is an open-source decentralized microblogging platform based from') + (chalk.hex('#9ec23f').bold(' Misskey') + ('.')));
-		console.log(chalk.hex('#ffbb00')(' If you like ') + chalk.hex('#ffa9c3').bold('Cherry') + chalk.hex('#95e3e8').bold('Pick') + chalk.hex('#ffbb00')(', please donate to support development. https://www.patreon.com/noridev & https://www.paypal.me/noridev & https://toss.me/noridev'));
+		console.log(chalk.hex('#ffbb00')(' If you like ') + chalk.hex('#ffa9c3').bold('Cherry') + chalk.hex('#95e3e8').bold('Pick') + chalk.hex('#ffbb00')(', please donate to support development.'));
+		console.log(chalk.hex('#ffbb00')(' ・Patreon: https://www.patreon.com/noridev'));
+		console.log(chalk.hex('#ffbb00')(' ・Paypal: https://www.paypal.me/noridev'));
+		console.log(chalk.hex('#ffbb00')(' ・GitHub Sponsers: https://github.com/sponsors/noridev'));
+		console.log(chalk.hex('#ffbb00')(' ・Kakao Pay: https://qr.kakaopay.com/Ej9SHx6pQ'));
+		console.log(chalk.hex('#ffbb00')(' ・pixivFANBOX: https://noridev.fanbox.cc/plans'));
 		// console.log(chalk.hex('#ffa9c3').bold(' KOKO') + chalk.hex('#95e3e8').bold('NECT') + chalk.hex('#ffa9c3')(' with') + chalk.hex('#95e3e8').bold(' NoriDev.'));
 
 		console.log('');

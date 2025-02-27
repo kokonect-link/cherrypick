@@ -9,116 +9,111 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-jp.min.css");
 
 * {
-    font-family: "Pretendard JP", "JetBrains Mono", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
+	font-family: "Pretendard JP", "JetBrains Mono", BIZ UDGothic, Roboto, HelveticaNeue, Arial, sans-serif;
 }
 
 #cherrypick_app,
 #splash {
-    display: none !important;
+	display: none !important;
 }
 
 body,
 html {
-    background-color: rgb(28, 28, 37);
-    color: #dfddcc;
-    justify-content: center;
-    margin: auto;
-    padding: 10px;
-    text-align: center;
+	background-color: rgb(28, 28, 37);
+	color: #dfddcc;
+	justify-content: center;
+	margin: auto;
+	padding: 10px;
+	text-align: center;
 }
 
 button {
-    border-radius: 999px;
-    padding: 0px 12px 0px 12px;
-    border: none;
-    cursor: pointer;
-    margin-top: 12px;
+	border-radius: 999px;
+	padding: 0px 12px 0px 12px;
+	border: none;
+	cursor: pointer;
+	margin-top: 12px;
 
-    &:not(:first-child) {
-        margin-bottom: 12px;
-    }
+	&:not(:first-child) {
+		margin-bottom: 12px;
+	}
 }
 
 .button-big {
-    background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
-    line-height: 50px;
+	background: linear-gradient(90deg, rgb(255, 207, 230), rgb(185, 216, 255));
+	line-height: 50px;
 }
 
 .button-big:hover {
-    background: rgb(255, 222, 241);
+	background: rgb(255, 222, 241);
 }
 
 .button-small {
-    background: rgb(35, 35, 47);
-    line-height: 40px;
+	background: rgb(35, 35, 47);
+	line-height: 40px;
 }
 
 .button-small:hover {
-    background: rgba(255, 255, 255, 0.1);
+	background: rgba(255, 255, 255, 0.1);
 }
 
 .button-label-big {
-    color: rgb(28, 28, 37);
-    font-weight: bold;
-    font-size: 20px;
-    padding: 12px;
+	color: rgb(28, 28, 37);
+	font-weight: bold;
+	font-size: 1.2em;
+	padding: 12px;
 }
 
 .button-label-small {
-    color: rgb(185, 216, 255);
-    font-size: 16px;
-    padding: 12px;
+	color: rgb(185, 216, 255);
+	font-size: 16px;
+	padding: 12px;
 }
 
 a {
-    color: rgb(134, 179, 0);
-    text-decoration: none;
+	color: rgb(134, 179, 0);
+	text-decoration: none;
 }
 
 p,
 li {
-    font-size: 16px;
-}
-
-.dont-worry,
-#msg {
-    font-size: 18px;
+	font-size: 16px;
 }
 
 .icon-warning {
-    color: #dec340;
-    height: 4rem;
-    padding-top: 2rem;
+	color: #dec340;
+	height: 4rem;
+	padding-top: 2rem;
 }
 
 h1 {
-    font-size: 32px;
+	font-size: 1.5em;
+	margin: 1em;
 }
 
 code {
-    display: block;
-    font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    background: rgb(35, 35, 47);
-    padding: 0.5rem 1rem;
-    max-width: 40rem;
-    border-radius: 10px;
-    justify-content: center;
-    margin: auto;
-    white-space: pre-wrap;
-    word-break: break-word;
+	display: block;
+	font-family: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	background: rgb(35, 35, 47);
+	padding: 0.5rem 1rem;
+	max-width: 40rem;
+	border-radius: 10px;
+	justify-content: center;
+	margin: auto;
+	white-space: pre-wrap;
+	word-break: break-word;
 }
 
-summary {
-    cursor: pointer;
+#errorInfo summary {
+	cursor: pointer;
 }
 
-summary > * {
-    display: inline;
-    white-space: pre-wrap;
+#errorInfo summary>* {
+	display: inline;
 }
 
 @media screen and (max-width: 500px) {
-    details {
-        width: 50%;
-    }
+	#errorInfo {
+		width: 50%;
+	}
 }

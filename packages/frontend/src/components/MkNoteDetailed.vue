@@ -377,7 +377,7 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note;
-	initialTab: string;
+	initialTab?: string;
 }>(), {
 	initialTab: 'replies',
 });

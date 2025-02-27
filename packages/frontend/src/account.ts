@@ -8,6 +8,7 @@ import * as Misskey from 'cherrypick-js';
 import { apiUrl } from '@@/js/config.js';
 import type { MenuItem, MenuButton } from '@/types/menu.js';
 import * as os from '@/os.js';
+import { defaultMemoryStorage } from '@/memory-storage';
 import { showSuspendedDialog } from '@/scripts/show-suspended-dialog.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -40,6 +41,8 @@ export function incNotesCount() {
 
 export async function signout() {
 	if (!$i) return;
+
+	defaultMemoryStorage.clear();
 
 	waiting();
 	document.cookie.split(';').forEach((cookie) => {

@@ -44,6 +44,7 @@ import { openingWindowsCount } from '@/os.js';
 import { claimAchievement } from '@/scripts/achievements.js';
 import { useRouterFactory } from '@/router/supplier.js';
 import { mainRouter } from '@/router/main.js';
+import { analytics } from '@/analytics.js';
 import * as os from '@/os.js';
 
 const props = defineProps<{
@@ -98,6 +99,14 @@ windowRouter.addListener('push', ctx => {
 windowRouter.addListener('replace', ctx => {
 	history.value.pop();
 	history.value.push({ path: ctx.path, key: ctx.key });
+});
+
+windowRouter.addListener('change', ctx => {
+	console.log('windowRouter: change', ctx.path);
+	analytics.page({
+		path: ctx.path,
+		title: ctx.path,
+	});
 });
 
 windowRouter.init();
@@ -162,6 +171,11 @@ function popout() {
 useScrollPositionManager(() => getScrollContainer(contents.value), windowRouter);
 
 onMounted(() => {
+	analytics.page({
+		path: props.initialPath,
+		title: props.initialPath,
+	});
+
 	openingWindowsCount.value++;
 	if (openingWindowsCount.value >= 3) {
 		claimAchievement('open3windows');
