@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: noridev and cherrypick-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 export class AddDeleteAt1720161864577 {
     name = 'AddDeleteAt1720161864577'
 

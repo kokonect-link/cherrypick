@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: noridev and cherrypick-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { Inject, Injectable } from '@nestjs/common';
 import { Brackets } from 'typeorm';
 import type { NotesRepository, MiMeta } from '@/models/_.js';

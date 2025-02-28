@@ -1944,7 +1944,7 @@ _notification:
   youWereFollowed: "đã theo dõi bạn"
   youReceivedFollowRequest: "Bạn vừa có một yêu cầu theo dõi"
   yourFollowRequestAccepted: "Yêu cầu theo dõi của bạn đã được chấp nhận"
-  youWereInvitedToGroup: "Bạn đã được mời tham gia nhóm"
+  youWereInvitedToGroup: "{userName} Bạn đã được mời tham gia nhóm"
   pollEnded: "Cuộc bình chọn đã kết thúc"
   unreadAntennaNote: "Ăng ten {name}"
   emptyPushNotificationMessage: "Đã cập nhật thông báo đẩy"
@@ -2019,3 +2019,7 @@ _reversi:
 _remoteLookupErrors:
   _noSuchObject:
     title: "Không tìm thấy"
+_search:
+  searchScopeAll: "Tất cả"
+  searchScopeLocal: "Máy chủ này"
+  searchScopeUser: "Người dùng chỉ định"

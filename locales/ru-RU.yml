@@ -2118,7 +2118,7 @@ _notification:
   youWereFollowed: "У вас новый подписчик."
   youReceivedFollowRequest: "У вас новый запрос на подписку."
   yourFollowRequestAccepted: "Ваш запрос на подписку одобрен."
-  youWereInvitedToGroup: "Вы приглашены в группу."
+  youWereInvitedToGroup: "{userName} Вы приглашены в группу."
   pollEnded: "Подведены окончательные итоги опроса"
   unreadAntennaNote: "Антенна {name}"
   emptyPushNotificationMessage: "Обновлены push-уведомления"
@@ -2236,3 +2236,7 @@ _reversi:
 _remoteLookupErrors:
   _noSuchObject:
     title: "Не найдено"
+_search:
+  searchScopeAll: "Все"
+  searchScopeLocal: "Местная"
+  searchScopeUser: "Указанный пользователь"

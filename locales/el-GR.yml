@@ -399,3 +399,5 @@ _moderationLogTypes:
   suspend: "Αποβολή"
 _reversi:
   total: "Σύνολο"
+_search:
+  searchScopeLocal: "Τοπικό"

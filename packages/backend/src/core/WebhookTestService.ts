@@ -89,6 +89,8 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		uri: null,
 		followersUri: null,
 		token: null,
+		setFederationAvatarShape: null,
+		isSquareAvatars: null,
 		...override,
 	};
 }

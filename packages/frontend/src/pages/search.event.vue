@@ -47,6 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -57,10 +58,12 @@ import { i18n } from '@/i18n.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
 const key = ref(0);
+const eventPagination = ref<Paging<'notes/events/search'>>();
+
 const searchQuery = ref('');
 const searchOrigin = ref('combined');
+
 const eventSort = ref('startDate');
-const eventPagination = ref();
 const startDate = ref<any>(null);
 const endDate = ref<any>(null);
 

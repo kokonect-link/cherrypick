@@ -168,7 +168,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>Special thanks</template>
+					<template #label>Special thanks (Misskey)</template>
 					<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));grid-gap:24px;align-items:center;">
 						<div>
 							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img style="width: 100%;" src="https://assets.misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
@@ -181,6 +181,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 						<div>
 							<a style="display: inline-block;" class="pepabo" title="GMO Pepabo" href="https://pepabo.com/" target="_blank"><img style="width: 100%;" src="https://assets.misskey-hub.net/sponsors/gmo_pepabo.svg" alt="GMO Pepabo"></a>
+						</div>
+						<div>
+							<a style="display: inline-block;" class="purpledotdigital" title="Purple Dot Digital" href="https://purpledotdigital.com/" target="_blank"><img style="width: 100%;" src="https://assets.misskey-hub.net/sponsors/purple-dot-digital.jpg" alt="Purple Dot Digital"></a>
 						</div>
 					</div>
 				</FormSection>
@@ -246,9 +249,6 @@ const patronsWithIconWithCherryPick = [{
 }, {
 	name: 'breadguy',
 	icon: 'https://s3.kokonect.link/cherrypick/patreons/04cd46fba69c4953949cd1cc15d8c691.jpg',
-}, {
-	name: 'Evgeni Ku',
-	icon: 'https://s3.kokonect.link/cherrypick/patreons/f8c53a4244844192be76e7cbbb57bb48.jpeg',
 }];
 
 const patronsWithIconWithMisskey = [{

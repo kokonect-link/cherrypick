@@ -1372,7 +1372,7 @@ _notification:
   youWereFollowed: "আপনাকে অনুসরণ করছে"
   youReceivedFollowRequest: "অনুসরণ করার জন্য অনুরোধ পাওয়া গেছে"
   yourFollowRequestAccepted: "আপনার অনুসরণ করার অনুরোধ গৃহীত হয়েছে"
-  youWereInvitedToGroup: "আপনি একটি গ্রুপে আমন্ত্রিত হয়েছেন"
+  youWereInvitedToGroup: "{userName} আপনি একটি গ্রুপে আমন্ত্রিত হয়েছেন"
   pollEnded: "পোলের ফলাফল দেখা যাবে"
   emptyPushNotificationMessage: "আপডেট করা পুশ বিজ্ঞপ্তি"
   _types:
@@ -1430,3 +1430,6 @@ _reversi:
 _remoteLookupErrors:
   _noSuchObject:
     title: "পাওয়া যায়নি"
+_search:
+  searchScopeAll: "সবগুলো"
+  searchScopeLocal: "স্থানীয়"

@@ -210,6 +210,15 @@ export type paths = {
      */
     post: operations['admin___announcements___update'];
   };
+  '/admin/avatar-decorations/copy': {
+    /**
+     * admin/avatar-decorations/copy
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+     */
+    post: operations['admin___avatar-decorations___copy'];
+  };
   '/admin/avatar-decorations/create': {
     /**
      * admin/avatar-decorations/create
@@ -236,6 +245,15 @@ export type paths = {
      * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
      */
     post: operations['admin___avatar-decorations___list'];
+  };
+  '/admin/avatar-decorations/list-remote': {
+    /**
+     * admin/avatar-decorations/list-remote
+     * @description No description provided.
+     *
+     * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
+     */
+    post: operations['admin___avatar-decorations___list-remote'];
   };
   '/admin/avatar-decorations/update': {
     /**
@@ -4856,6 +4874,13 @@ export type components = {
       /** Format: date-time */
       createdAt: string;
       /** @enum {string} */
+      type: 'createToken';
+    } | {
+      /** Format: id */
+      id: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** @enum {string} */
       type: 'scheduleNote';
       errorType: string;
     } | ({
@@ -5561,6 +5586,7 @@ export type components = {
       enableTurnstile: boolean;
       turnstileSiteKey: string | null;
       enableTestcaptcha: boolean;
+      googleAnalyticsMeasurementId: string | null;
       swPublickey: string | null;
       /** @default /assets/ai.png */
       mascotImageUrl: string;
@@ -6979,6 +7005,63 @@ export type operations = {
     };
   };
   /**
+   * admin/avatar-decorations/copy
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *write:admin:avatar-decorations*
+   */
+  'admin___avatar-decorations___copy': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** Format: misskey:id */
+          decorationId: string;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': {
+            /** Format: id */
+            id: string;
+          };
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
    * admin/avatar-decorations/create
    * @description No description provided.
    *
@@ -7104,6 +7187,80 @@ export type operations = {
    * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
    */
   'admin___avatar-decorations___list': {
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @default 10 */
+          limit?: number;
+          /** Format: misskey:id */
+          sinceId?: string;
+          /** Format: misskey:id */
+          untilId?: string;
+          /** Format: misskey:id */
+          userId?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description OK (with results) */
+      200: {
+        content: {
+          'application/json': ({
+              /**
+               * Format: id
+               * @example xxxxxxxxxx
+               */
+              id: string;
+              /** Format: date-time */
+              createdAt: string;
+              /** Format: date-time */
+              updatedAt: string | null;
+              name: string;
+              description: string;
+              url: string;
+              roleIdsThatCanBeUsedThisDecoration: string[];
+            })[];
+        };
+      };
+      /** @description Client error */
+      400: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Authentication error */
+      401: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Forbidden error */
+      403: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description I'm Ai */
+      418: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  /**
+   * admin/avatar-decorations/list-remote
+   * @description No description provided.
+   *
+   * **Credential required**: *Yes* / **Permission**: *read:admin:avatar-decorations*
+   */
+  'admin___avatar-decorations___list-remote': {
     requestBody: {
       content: {
         'application/json': {
@@ -9185,6 +9342,7 @@ export type operations = {
             enableTurnstile: boolean;
             turnstileSiteKey: string | null;
             enableTestcaptcha: boolean;
+            googleAnalyticsMeasurementId: string | null;
             swPublickey: string | null;
             /** @default /assets/ai.png */
             mascotImageUrl: string | null;
@@ -9307,7 +9465,8 @@ export type operations = {
             urlPreviewRequireContentLength: boolean;
             urlPreviewUserAgent: string | null;
             urlPreviewSummaryProxyUrl: string | null;
-            federation: string;
+            /** @enum {string} */
+            federation: 'all' | 'specified' | 'none';
             federationHosts: string[];
             doNotSendNotificationEmailsForAbuseReport: boolean;
             emailToReceiveAbuseReport: string | null;
@@ -11591,6 +11750,7 @@ export type operations = {
           turnstileSiteKey?: string | null;
           turnstileSecretKey?: string | null;
           enableTestcaptcha?: boolean;
+          googleAnalyticsMeasurementId?: string | null;
           /** @enum {string} */
           sensitiveMediaDetection?: 'none' | 'all' | 'local' | 'remote';
           /** @enum {string} */
@@ -20997,8 +21157,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduleNote' | 'app' | 'test' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduleNote' | 'app' | 'test' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduleNote' | 'app' | 'test' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduleNote' | 'app' | 'test' | 'pollVote')[];
         };
       };
     };
@@ -21065,8 +21225,8 @@ export type operations = {
           untilId?: string;
           /** @default true */
           markAsRead?: boolean;
-          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduleNote' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
-          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'scheduleNote' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
+          includeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduleNote' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
+          excludeTypes?: ('note' | 'follow' | 'mention' | 'reply' | 'renote' | 'quote' | 'reaction' | 'pollEnded' | 'receiveFollowRequest' | 'followRequestAccepted' | 'groupInvited' | 'roleAssigned' | 'achievementEarned' | 'exportCompleted' | 'login' | 'createToken' | 'scheduleNote' | 'app' | 'test' | 'reaction:grouped' | 'renote:grouped' | 'note:grouped' | 'pollVote')[];
         };
       };
     };

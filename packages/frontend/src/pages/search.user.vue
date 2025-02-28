@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkFoldableSection v-if="userPagination">
 		<template #header>{{ i18n.ts.searchResult }}</template>
-		<MkUserList :key="key" :pagination="userPagination"/>
+		<MkUserList :key="`searchUsers:${key}`" :pagination="userPagination"/>
 	</MkFoldableSection>
 </div>
 </template>
@@ -41,8 +41,8 @@ import { misskeyApi } from '@/scripts/misskey-api.js';
 import { useRouter } from '@/router/supplier.js';
 
 const props = withDefaults(defineProps<{
-  query?: string,
-  origin?: Endpoints['users/search']['req']['origin'],
+	query?: string,
+	origin?: Endpoints['users/search']['req']['origin'],
 }>(), {
 	query: '',
 	origin: 'combined',
@@ -50,16 +50,18 @@ const props = withDefaults(defineProps<{
 
 const router = useRouter();
 
-const key = ref('');
+const key = ref(0);
+const userPagination = ref<Paging<'users/search'>>();
+
 const searchQuery = ref(toRef(props, 'query').value);
 const searchOrigin = ref(toRef(props, 'origin').value);
-const userPagination = ref<Paging>();
 
 const searchQueryEl = ref(null);
 
 async function search() {
 	const query = searchQuery.value.toString().trim();
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (query == null || query === '') return;
 
 	//#region AP lookup
@@ -79,6 +81,7 @@ async function search() {
 
 			if (res.type === 'User') {
 				router.push(`/@${res.object.username}@${res.object.host}`);
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			} else if (res.type === 'Note') {
 				router.push(`/notes/${res.object.id}`);
 			}
@@ -121,7 +124,7 @@ async function search() {
 		},
 	};
 
-	key.value = query;
+	key.value++;
 }
 </script>
 

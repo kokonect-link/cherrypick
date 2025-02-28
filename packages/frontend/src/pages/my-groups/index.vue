@@ -160,6 +160,10 @@ definePageMetadata(() => ({
 		border: solid 1px var(--MI_THEME-accent);
 		text-decoration: none;
 	}
+
+	&:not(:last-child) {
+		margin-bottom: 8px;
+	}
 }
 
 .groupTop {
