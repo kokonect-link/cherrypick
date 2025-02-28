@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: noridev and cherrypick-project
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { compareVersions } from 'compare-versions';
 import { version } from '@@/js/config.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
