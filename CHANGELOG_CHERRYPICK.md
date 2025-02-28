@@ -23,6 +23,16 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 # 릴리스 노트
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
+## 4.x.x
+출시일: unreleased<br>
+기반 Misskey 버전: 2025.x.x<br>
+Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGELOG.md#2025xx) 문서를 참고하십시오.
+
+### Client
+- Fix: 회원 가입 양식의 비밀번호 입력란에 `Caps Lock` 표시가 보이지 않음
+
+---
+
 ## 4.15.1
 출시일: 2025/2/28<br>
 기반 Misskey 버전: 2025.2.1<br>
