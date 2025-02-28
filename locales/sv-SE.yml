@@ -708,3 +708,5 @@ _reversi:
   white: "Vit"
 _selfXssPrevention:
   warning: "VARNING"
+_search:
+  searchScopeAll: "Allt"

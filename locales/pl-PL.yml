@@ -1663,3 +1663,6 @@ _reversi:
 _remoteLookupErrors:
   _noSuchObject:
     title: "Nie znaleziono"
+_search:
+  searchScopeAll: "Wszystkie"
+  searchScopeLocal: "Lokalne"

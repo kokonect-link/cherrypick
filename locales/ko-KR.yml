@@ -3258,6 +3258,14 @@ _bootErrors:
   otherOption1: "클라이언트 설정 및 캐시 삭제"
   otherOption2: "임시 클라이언트 실행"
   otherOption3: "복구 도구 실행"
+_search:
+  searchScopeAll: "전체"
+  searchScopeLocal: "로컬"
+  searchScopeServer: "서버 지정"
+  searchScopeUser: "사용자 지정"
+  pleaseEnterServerHost: "서버 호스트를 입력해 주세요"
+  pleaseSelectUser: "사용자를 선택해 주세요"
+  serverHostPlaceholder: "예: cherrypick.example.com"
 _drafts:
   select: "초안 선택"
   delete: "초안 삭제"

@@ -1602,3 +1602,7 @@ _offlineScreen:
 _remoteLookupErrors:
   _noSuchObject:
     title: "غير موجود"
+_search:
+  searchScopeAll: "الكل"
+  searchScopeLocal: "المحلي"
+  searchScopeUser: "مستخدم محدد"

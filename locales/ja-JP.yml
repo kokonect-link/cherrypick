@@ -3363,6 +3363,15 @@ _bootErrors:
   otherOption2: "簡易クライアントを起動"
   otherOption3: "修復ツールを起動"
 
+_search:
+  searchScopeAll: "全て"
+  searchScopeLocal: "ローカル"
+  searchScopeServer: "サーバー指定"
+  searchScopeUser: "ユーザー指定"
+  pleaseEnterServerHost: "サーバーのホストを入力してください"
+  pleaseSelectUser: "ユーザーを選択してください"
+  serverHostPlaceholder: "例: cherrypick.example.com"
+
 _drafts:
   select: "下書きを選択"
   delete: "下書きを削除"

@@ -2697,3 +2697,7 @@ _mediaControls:
 _remoteLookupErrors:
   _noSuchObject:
     title: "Tidak dapat ditemukan"
+_search:
+  searchScopeAll: "Semua"
+  searchScopeLocal: "Lokal"
+  searchScopeUser: "Pengguna spesifik"
