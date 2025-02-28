@@ -82,7 +82,7 @@ describe('ap-request', () => {
 			],
 			FetchAllowSoftFailMask.Any,
 		), 'validation should fail no matter what if the response URL is inconsistent with the object ID');
-		
+
 		// fix issues like threads
 		// https://github.com/misskey-dev/misskey/issues/15039
 		const withOrWithoutWWW = [
@@ -132,7 +132,7 @@ describe('ap-request', () => {
 			'https://alice.example.com/@alice',
 			{ id: 'https://alice.example.com/users/alice' } as IObject,
 			[
-				'https://alice.example.com/users/alice'
+				'https://alice.example.com/users/alice',
 			],
 			FetchAllowSoftFailMask.Strict,
 		), 'throws if the response ID did not exactly match the expected ID');

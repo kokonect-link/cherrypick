@@ -133,8 +133,8 @@ export class ServerService implements OnApplicationShutdown {
 				reply.header('content-type', 'text/plain; charset=utf-8');
 				reply.header('link', `<${encodeURI(location)}>; rel="canonical"`);
 				done(null, [
-					"Refusing to relay remote ActivityPub object lookup.",
-					"",
+					'Refusing to relay remote ActivityPub object lookup.',
+					'',
 					`Please remove 'application/activity+json' and 'application/ld+json' from the Accept header or fetch using the authoritative URL at ${location}.`,
 				].join('\n'));
 			});
