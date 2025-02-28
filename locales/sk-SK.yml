@@ -1471,7 +1471,7 @@ _notification:
   youWereFollowed: "Máte nového sledujúceho"
   youReceivedFollowRequest: "Dostali ste žiadosť o sledovanie"
   yourFollowRequestAccepted: "Vaša žiadosť o sledovanie bola prijatá"
-  youWereInvitedToGroup: "Pozvať do skupiny"
+  youWereInvitedToGroup: "{userName} Pozvať do skupiny"
   pollEnded: "Výsledky hlasovania sú k dispozícii."
   unreadAntennaNote: "Anténa {name}"
   emptyPushNotificationMessage: "Push notifikácie aktualizované"

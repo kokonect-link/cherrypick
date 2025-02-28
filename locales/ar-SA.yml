@@ -1529,7 +1529,7 @@ _notification:
   youWereFollowed: "يتابعك"
   youReceivedFollowRequest: "تلقيتَ طلب متابعة"
   yourFollowRequestAccepted: "قُبل طلب المتابعة"
-  youWereInvitedToGroup: "دُعيت إلى فريقٍ"
+  youWereInvitedToGroup: "دُعيت إلى فريقٍ {userName}ٍ"
   pollEnded: "انتهى الاستطلاع"
   unreadAntennaNote: "هوائي {name}"
   _types:

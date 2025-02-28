@@ -2513,7 +2513,7 @@ _notification:
   youWereFollowed: "您有新的追隨者"
   youReceivedFollowRequest: "您有新的追隨請求"
   yourFollowRequestAccepted: "您的追隨請求已通過"
-  youWereInvitedToGroup: "您有新的群組邀請"
+  youWereInvitedToGroup: "{userName} 您有新的群組邀請"
   pollEnded: "問卷調查已產生結果"
   newNote: "新的貼文"
   unreadAntennaNote: "天線 {name}"

@@ -2512,7 +2512,7 @@ _notification:
   youWereFollowed: "Follower aggiuntivo"
   youReceivedFollowRequest: "Hai ricevuto una richiesta di follow"
   yourFollowRequestAccepted: "La tua richiesta di follow è stata accettata"
-  youWereInvitedToGroup: "Invitat@ al gruppo"
+  youWereInvitedToGroup: "{userName} Invitat@ al gruppo"
   pollEnded: "Risultati del sondaggio."
   newNote: "Nuove Note"
   unreadAntennaNote: "Antenna {name}"

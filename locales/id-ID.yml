@@ -2427,7 +2427,7 @@ _notification:
   youWereFollowed: "Mengikuti kamu"
   youReceivedFollowRequest: "Kamu menerima permintaan mengikuti"
   yourFollowRequestAccepted: "Permintaan mengikuti kamu telah diterima"
-  youWereInvitedToGroup: "Telah diundang ke grup"
+  youWereInvitedToGroup: "{userName} Telah diundang ke grup"
   pollEnded: "Hasil Kuesioner telah keluar"
   newNote: "Catatan baru"
   unreadAntennaNote: "Antena {name}"

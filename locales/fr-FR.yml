@@ -2259,7 +2259,7 @@ _notification:
   youWereFollowed: "s'est abonné·e à vous"
   youReceivedFollowRequest: "Vous avez reçu une demande d’abonnement"
   yourFollowRequestAccepted: "Votre demande d’abonnement a été accepté"
-  youWereInvitedToGroup: "Invité·e au groupe"
+  youWereInvitedToGroup: "{userName} Invité·e au groupe"
   pollEnded: "Les résultats du sondage sont disponibles"
   unreadAntennaNote: "Antenne {name}"
   roleAssigned: "Rôle attribué"
