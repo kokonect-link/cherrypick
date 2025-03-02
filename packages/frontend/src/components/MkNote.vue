@@ -248,6 +248,7 @@ import { isLink } from '@@/js/is-link.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { host } from '@@/js/config.js';
 import { concat } from '@@/js/array.js';
+import { toUnicode } from 'punycode.js';
 import type { Ref } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
 import type { Keymap } from '@/scripts/hotkey.js';
@@ -478,9 +479,9 @@ const keymap = {
 } as const satisfies Keymap;
 
 const replyTo = computed(() => {
-	const username = appearNote.value.reply.user.username;
+	const username = appearNote.value.reply.user.host === host ? `@${appearNote.value.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}` : `@${appearNote.value.reply.user.username}`;
 	const text = i18n.tsx.replyTo({ user: username });
-	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
+	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">${username}</span>`;
 
 	return text.replace(username, user);
 });

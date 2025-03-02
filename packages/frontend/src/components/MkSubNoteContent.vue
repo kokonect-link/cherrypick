@@ -141,6 +141,7 @@ import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { concat } from '@@/js/array.js';
 import { host } from '@@/js/config.js';
+import { toUnicode } from 'punycode.js';
 import type { Ref } from 'vue';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import * as os from '@/os.js';
@@ -227,7 +228,7 @@ const collapseLabel = computed(() => {
 });
 
 const replyTo = computed(() => {
-	const username = props.note.reply.user.username;
+	const username = props.note.reply.user.host === host ? `@${props.note.reply.user.username}@${toUnicode(props.note.reply.user.host)}` : `@${props.note.reply.user.username}`;
 	const text = i18n.tsx.replyTo({ user: username });
 	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
 

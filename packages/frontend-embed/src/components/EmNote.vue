@@ -127,7 +127,8 @@ import { computed, inject, ref, shallowRef } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
-import { url } from '@@/js/config.js';
+import { host, url } from '@@/js/config.js';
+import { toUnicode } from 'punycode.js';
 import I18n from '@/components/I18n.vue';
 import EmNoteSub from '@/components/EmNoteSub.vue';
 import EmNoteHeader from '@/components/EmNoteHeader.vue';
@@ -175,7 +176,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 const isDeleted = ref(false);
 
 const replyTo = computed(() => {
-	const username = appearNote.value.reply.user.username;
+	const username = appearNote.value.reply.user.host === host ? `@${appearNote.value.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}` : `@${appearNote.value.reply.user.username}`;
 	const text = i18n.tsx.replyTo({ user: username });
 	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
 
