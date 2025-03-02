@@ -176,7 +176,7 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 const isDeleted = ref(false);
 
 const replyTo = computed(() => {
-	const username = appearNote.value.reply.user.host === host ? `@${appearNote.value.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}` : `@${appearNote.value.reply.user.username}`;
+	const username = appearNote.value.reply.user.host === host ? `@${appearNote.value.reply.user.username}` : `@${appearNote.value.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}`;
 	const text = i18n.tsx.replyTo({ user: username });
 	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
 
