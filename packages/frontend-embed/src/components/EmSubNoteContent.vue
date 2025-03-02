@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { concat } from '@@/js/array.js';
-import { host, url } from '@@/js/config.js';
+import { url } from '@@/js/config.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { toUnicode } from 'punycode.js';
 import EmMediaList from '@/components/EmMediaList.vue';
@@ -92,7 +92,7 @@ const collapseLabel = computed(() => {
 });
 
 const replyTo = computed(() => {
-	const username = props.note.reply.user.host === host ? `@${props.note.reply.user.username}` : `@${props.note.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}`;
+	const username = props.note.reply.user.host == null ? `@${props.note.reply.user.username}` : `@${props.note.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}`;
 	const text = i18n.tsx.replyTo({ user: username });
 	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
 
