@@ -8,11 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div>
 		<span v-if="note.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
 		<span v-if="note.deletedAt" style="opacity: 0.5">({{ i18n.ts.deletedNote }})</span>
-		<MkA v-if="note.replyId && defaultStore.state.showReplyTargetNote" :class="$style.reply" :to="`/notes/${note.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
-		<div v-else-if="note.replyId" style="margin-bottom: 4px;">
-			<MkA :class="$style.reply" :to="`/notes/${note.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
-			<MkA v-user-preview="note.reply.userId" :class="$style.replyToText" :to="userPage(note.reply.user)" @click.stop><span v-html="replyTo"></span></MkA>
-		</div>
+		<MkA v-if="note.replyId" :class="$style.reply" :to="`/notes/${note.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
 		<Mfm
 			v-if="note.text"
 			:parsedNodes="parsed"
@@ -140,7 +136,6 @@ import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { concat } from '@@/js/array.js';
 import { host } from '@@/js/config.js';
-import { toUnicode } from 'punycode.js';
 import type { Ref } from 'vue';
 import type { OpenOnRemoteOptions } from '@/scripts/please-login.js';
 import * as os from '@/os.js';
@@ -168,7 +163,6 @@ import { vibrate } from '@/scripts/vibrate.js';
 import { misskeyApi } from '@/scripts/misskey-api.js';
 import detectLanguage from '@/scripts/detect-language.js';
 import number from '@/filters/number.js';
-import { userPage } from '@/filters/user.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note & {
@@ -224,14 +218,6 @@ const collapseLabel = computed(() => {
 	return concat([
 		props.note.files && props.note.files.length !== 0 ? [i18n.tsx._cw.files({ count: props.note.files.length })] : [],
 	] as string[][]).join(' / ');
-});
-
-const replyTo = computed(() => {
-	const username = props.note.reply.user.host == null ? `@${props.note.reply.user.username}` : `@${props.note.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}`;
-	const text = i18n.tsx.replyTo({ user: username });
-	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
-
-	return text.replace(username, user);
 });
 
 const disableRightClickHandler = (event: Event) => {
@@ -573,16 +559,6 @@ function emitUpdReaction(emoji: string, delta: number) {
 .reply {
 	margin-right: 6px;
 	color: var(--MI_THEME-accent);
-
-	&:hover {
-		text-decoration: none;
-	}
-}
-
-.replyToText {
-	&:hover {
-		text-decoration: none;
-	}
 }
 
 .rp {
