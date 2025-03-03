@@ -104,7 +104,7 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const schedulePostList = (await misskeyApi('notes/schedule/list')).length;
+const schedulePostList = $i ? (await misskeyApi('notes/schedule/list')).length : 0;
 
 if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
 
