@@ -157,8 +157,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<button class="_button" style="padding-top: 5px; color: var(--MI_THEME-accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 				</div>
 				<div v-if="appearNote.files && appearNote.files.length > 0">
-					<MkMediaList v-if="appearNote.disableRightClick" ref="galleryEl" :mediaList="appearNote.files" @contextmenu.prevent/>
-					<MkMediaList v-else ref="galleryEl" :mediaList="appearNote.files"/>
+					<MkMediaList ref="galleryEl" :mediaList="appearNote.files" :disableRightClick="appearNote.disableRightClick" @contextmenu="disableRightClickHandler"/>
 				</div>
 				<MkPoll v-if="appearNote.poll" ref="pollViewer" :noteId="appearNote.id" :poll="appearNote.poll" :class="$style.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis"/>
 				<div v-if="isEnabledUrlPreview">
@@ -436,6 +435,10 @@ const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
 	url: `https://${host}/notes/${appearNote.value.id}`,
 }));
+
+const disableRightClickHandler = (event: Event) => {
+	if (appearNote.value.disableRightClick) event.preventDefault();
+};
 
 const keymap = {
 	'r': () => reply(),

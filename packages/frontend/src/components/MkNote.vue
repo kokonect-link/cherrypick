@@ -127,8 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 				<div v-if="appearNote.files && appearNote.files.length > 0">
-					<MkMediaList v-if="appearNote.disableRightClick" ref="galleryEl" :mediaList="appearNote.files" @click.stop @contextmenu.prevent/>
-					<MkMediaList v-else ref="galleryEl" :mediaList="appearNote.files" @click.stop/>
+					<MkMediaList ref="galleryEl" :mediaList="appearNote.files" :disableRightClick="appearNote.disableRightClick" @click.stop @contextmenu="disableRightClickHandler"/>
 				</div>
 				<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis" :class="$style.poll" @click.stop/>
 				<div v-if="isEnabledUrlPreview">
@@ -395,6 +394,10 @@ const collapseLabel = computed(() => {
 		appearNote.value.files && appearNote.value.files.length !== 0 ? [i18n.tsx._cw.files({ count: appearNote.value.files.length })] : [],
 	] as string[][]).join(' / ');
 });
+
+const disableRightClickHandler = (event: Event) => {
+	if (appearNote.value.disableRightClick) event.preventDefault();
+};
 
 /* Overload FunctionにLintが対応していないのでコメントアウト
 function checkMute(noteToCheck: Misskey.entities.Note, mutedWords: Array<string | string[]> | undefined | null, checkOnly: true): boolean;

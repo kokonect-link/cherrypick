@@ -44,6 +44,7 @@ import { focusParent } from '@/scripts/focus.js';
 const props = defineProps<{
 	mediaList: Misskey.entities.DriveFile[];
 	raw?: boolean;
+	disableRightClick?: boolean;
 }>();
 
 const gallery = shallowRef<HTMLDivElement>();
@@ -212,6 +213,8 @@ onMounted(() => {
 			preventScroll: true,
 		});
 		history.pushState(null, '', '#pswp');
+
+		if (props.disableRightClick) document.addEventListener('contextmenu', preventRightClick);
 	});
 
 	lightbox.on('destroy', () => {
@@ -220,6 +223,8 @@ onMounted(() => {
 		if (window.location.hash === '#pswp') {
 			history.back();
 		}
+
+		if (props.disableRightClick) document.removeEventListener('contextmenu', preventRightClick);
 	});
 
 	window.addEventListener('popstate', popstateHandler);
@@ -245,6 +250,10 @@ const openGallery = () => {
 		lightbox?.loadAndOpen(0);
 	}
 };
+
+function preventRightClick(event: MouseEvent) {
+	event.preventDefault();
+}
 
 defineExpose({
 	openGallery,

@@ -57,8 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-show="showContent">
 			<div v-if="note.files && note.files.length > 0">
-				<MkMediaList v-if="note.disableRightClick" :mediaList="note.files" @click.stop @contextmenu.prevent/>
-				<MkMediaList v-else :mediaList="note.files" @click.stop/>
+				<MkMediaList :mediaList="note.files" :disableRightClick="note.disableRightClick" @click.stop @contextmenu="disableRightClickHandler"/>
 			</div>
 			<div v-if="note.poll">
 				<MkPoll :noteId="note.id" :poll="note.poll" :author="note.user" :emojiUrls="note.emojis" @click.stop/>
@@ -234,6 +233,10 @@ const replyTo = computed(() => {
 
 	return text.replace(username, user);
 });
+
+const disableRightClickHandler = (event: Event) => {
+	if (props.note.disableRightClick) event.preventDefault();
+};
 
 if (props.mock) {
 	watch(() => props.note, (to) => {

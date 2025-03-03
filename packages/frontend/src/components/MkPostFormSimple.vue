@@ -1405,6 +1405,7 @@ function showPostMenu(ev: MouseEvent) {
 		text: i18n.ts.disableRightClick,
 		icon: 'ti ti-mouse-off',
 		ref: disableRightClick,
+		disabled: files.value.length < 1,
 	});
 
 	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
