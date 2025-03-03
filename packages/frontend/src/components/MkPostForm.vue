@@ -228,6 +228,7 @@ const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
 const scheduleNote = ref<{
 	scheduledAt: number | null;
 } | null>(null);
+const isUploading = ref(false);
 
 const serverDraftId = ref<string | null>(null);
 
@@ -297,7 +298,7 @@ const cwTextLength = computed((): number => {
 const maxCwTextLength = 100;
 
 const canPost = computed((): boolean => {
-	return !props.mock && !posting.value && !posted.value &&
+	return !props.mock && !posting.value && !posted.value && !isUploading.value &&
 		(
 			1 <= textLength.value ||
 			1 <= files.value.length ||
@@ -518,8 +519,12 @@ function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities
 function upload(file: File, name?: string): void {
 	if (props.mock) return;
 
+	isUploading.value = true;
+
 	uploadFile(file, defaultStore.state.uploadFolder, name).then(res => {
 		files.value.push(res);
+	}).finally(() => {
+		isUploading.value = false;
 	});
 }
 
