@@ -592,7 +592,7 @@ function react(): void {
 			reaction: '❤️',
 		});
 		const el = reactButton.value;
-		if (el) {
+		if (el && defaultStore.state.animation) {
 			const rect = el.getBoundingClientRect();
 			const x = rect.left + (el.offsetWidth / 2);
 			const y = rect.top + (el.offsetHeight / 2);
@@ -670,11 +670,13 @@ function heartReact(): void {
 	}
 
 	const el = heartReactButton.value;
-	if (el) {
+	if (el && defaultStore.state.animation) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + (el.offsetWidth / 2);
 		const y = rect.top + (el.offsetHeight / 2);
-		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+			end: () => dispose(),
+		});
 	}
 }
 

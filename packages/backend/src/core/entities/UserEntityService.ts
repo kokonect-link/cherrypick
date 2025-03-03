@@ -423,7 +423,11 @@ export class UserEntityService implements OnModuleInit {
 
 	@bindThis
 	public getIdenticonUrl(user: MiUser): string {
-		return `${this.config.url}/identicon/${user.username.toLowerCase()}@${user.host ?? this.config.host}`;
+		if ((user.host == null || user.host === this.config.host) && user.username.includes('.') && this.meta.iconUrl) { // ローカルのシステムアカウントの場合
+			return this.meta.iconUrl;
+		} else {
+			return `${this.config.url}/identicon/${user.username.toLowerCase()}@${user.host ?? this.config.host}`;
+		}
 	}
 
 	@bindThis

@@ -513,11 +513,13 @@ function getKey(emoji: string | Misskey.entities.EmojiSimple | UnicodeEmojiDef):
 function onReactionEmojiClick(emoji: string, ev?: MouseEvent) {
 	if (_DEV_) console.log('emoji click');
 	const el = ev && (ev.currentTarget ?? ev.target) as HTMLElement | null | undefined;
-	if (el) {
+	if (el && defaultStore.state.animation) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + (el.offsetWidth / 2);
 		const y = rect.top + (el.offsetHeight / 2);
-		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+			end: () => dispose(),
+		});
 	}
 
 	const key = getKey(emoji);
@@ -570,17 +572,18 @@ function onReacted(payload: Parameters<Misskey.Channels['reversiGame']['events']
 		sound.playMisskeySfx('reaction');
 
 		const el = (userId === blackUser.value.id) ? blackUserEl.value : whiteUserEl.value;
-
-		if (el) {
+		if (el && defaultStore.state.animation) {
 			const rect = el.getBoundingClientRect();
 			const x = (userId === blackUser.value.id) ? rect.left - (el.offsetWidth * 1.8) : rect.right;
 			const y = rect.bottom;
-			os.popup(XEmojiBalloon, {
+			const { dispose } = os.popup(XEmojiBalloon, {
 				reaction,
 				tail: (userId === blackUser.value.id) ? 'right' : 'left',
 				x,
 				y,
-			}, {}, 'end');
+			}, {
+				end: () => dispose(),
+			});
 		}
 	}
 

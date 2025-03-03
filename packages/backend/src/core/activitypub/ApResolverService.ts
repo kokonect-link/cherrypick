@@ -6,7 +6,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IsNull, Not } from 'typeorm';
 import type { MiLocalUser, MiRemoteUser } from '@/models/User.js';
-import { InstanceActorService } from '@/core/InstanceActorService.js';
 import type { NotesRepository, PollsRepository, NoteReactionsRepository, UsersRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import { HttpRequestService } from '@/core/HttpRequestService.js';
@@ -15,6 +14,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { bindThis } from '@/decorators.js';
 import { LoggerService } from '@/core/LoggerService.js';
 import type Logger from '@/logger.js';
+import { SystemAccountService } from '@/core/SystemAccountService.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { isCollectionOrOrderedCollection } from './type.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -37,7 +37,7 @@ export class Resolver {
 		private noteReactionsRepository: NoteReactionsRepository,
 		private followRequestsRepository: FollowRequestsRepository,
 		private utilityService: UtilityService,
-		private instanceActorService: InstanceActorService,
+		private systemAccountService: SystemAccountService,
 		private apRequestService: ApRequestService,
 		private httpRequestService: HttpRequestService,
 		private apRendererService: ApRendererService,
@@ -105,7 +105,7 @@ export class Resolver {
 		}
 
 		if (this.config.signToActivityPubGet && !this.user) {
-			this.user = await this.instanceActorService.getInstanceActor();
+			this.user = await this.systemAccountService.fetch('actor');
 		}
 
 		const object = (this.user
@@ -202,7 +202,7 @@ export class ApResolverService {
 		private followRequestsRepository: FollowRequestsRepository,
 
 		private utilityService: UtilityService,
-		private instanceActorService: InstanceActorService,
+		private systemAccountService: SystemAccountService,
 		private apRequestService: ApRequestService,
 		private httpRequestService: HttpRequestService,
 		private apRendererService: ApRendererService,
@@ -222,7 +222,7 @@ export class ApResolverService {
 			this.noteReactionsRepository,
 			this.followRequestsRepository,
 			this.utilityService,
-			this.instanceActorService,
+			this.systemAccountService,
 			this.apRequestService,
 			this.httpRequestService,
 			this.apRendererService,
