@@ -92,6 +92,14 @@ const buttonsRight = computed(() => {
 });
 const reloadCount = ref(0);
 
+function getSearchMarker(path: string) {
+	const hash = path.split('#')[1];
+	if (hash == null) return null;
+	return hash;
+}
+
+const searchMarkerId = ref<string | null>(getSearchMarker(props.initialPath));
+
 windowRouter.addListener('push', ctx => {
 	history.value.push({ path: ctx.path, key: ctx.key });
 });
@@ -102,7 +110,8 @@ windowRouter.addListener('replace', ctx => {
 });
 
 windowRouter.addListener('change', ctx => {
-	console.log('windowRouter: change', ctx.path);
+	if (_DEV_) console.log('windowRouter: change', ctx.path);
+	searchMarkerId.value = getSearchMarker(ctx.path);
 	analytics.page({
 		path: ctx.path,
 		title: ctx.path,
@@ -112,6 +121,7 @@ windowRouter.addListener('change', ctx => {
 windowRouter.init();
 
 provide('router', windowRouter);
+provide('inAppSearchMarkerId', searchMarkerId);
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
 	pageMetadata.value = info;

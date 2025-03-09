@@ -4,51 +4,47 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<FormSection first>
-		<template #label>{{ i18n.ts.sounds }}</template>
-		<div class="_gaps_s">
+<SearchMarker path="/settings/sounds" :label="i18n.ts.sounds" :keywords="['sounds']" icon="ti ti-music">
+	<div class="_gaps_m">
+		<SearchMarker :keywords="['mute']">
 			<MkSwitch v-model="notUseSound">
-				<template #label>{{ i18n.ts.notUseSound }}</template>
+				<template #label><SearchLabel>{{ i18n.ts.notUseSound }}</SearchLabel></template>
 			</MkSwitch>
+		</SearchMarker>
+
+		<SearchMarker :keywords="['active', 'mute']">
 			<MkSwitch v-model="useSoundOnlyWhenActive">
-				<template #label>{{ i18n.ts.useSoundOnlyWhenActive }}</template>
+				<template #label><SearchLabel>{{ i18n.ts.useSoundOnlyWhenActive }}</SearchLabel></template>
 			</MkSwitch>
+		</SearchMarker>
+
+		<SearchMarker :keywords="['volume', 'master']">
 			<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-				<template #label>{{ i18n.ts.masterVolume }}</template>
+				<template #label><SearchLabel>{{ i18n.ts.masterVolume }}</SearchLabel></template>
 			</MkRange>
-		</div>
+		</SearchMarker>
 
-		<div class="_gaps_s">
-			<MkFolder v-for="type in operationTypes" :key="type">
-				<template #label>{{ i18n.ts._sfx[type] }}</template>
-				<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
-				<Suspense>
-					<template #default>
-						<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
-					</template>
-					<template #fallback>
-						<MkLoading/>
-					</template>
-				</Suspense>
-			</MkFolder>
-		</div>
-	</FormSection>
+		<FormSection>
+			<template #label>{{ i18n.ts.sounds }}</template>
+			<div class="_gaps_s">
+				<MkFolder v-for="type in operationTypes" :key="type">
+					<template #label>{{ i18n.ts._sfx[type] }}</template>
+					<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
+					<Suspense>
+						<template #default>
+							<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
+						</template>
+						<template #fallback>
+							<MkLoading/>
+						</template>
+					</Suspense>
+				</MkFolder>
+			</div>
+		</FormSection>
 
-	<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
-
-	<FormSection>
-		<template #label>{{ i18n.ts.vibrations }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
-		<div class="_gaps_s">
-			<MkSwitch v-model="vibrate" :disabled="ua" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template v-if="ua" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMorePlayVibrations">{{ i18n.ts.learnMore }}</a></template></MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateNote">{{ i18n.ts._vibrations.note }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateNotification">{{ i18n.ts._vibrations.notification }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateChat">{{ i18n.ts._vibrations.chat }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateChatBg">{{ i18n.ts._vibrations.chatBg }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateSystem" style="margin-top: 10px;">{{ i18n.ts._vibrations.system }}</MkSwitch>
-		</div>
-	</FormSection>
-</div>
+		<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+	</div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>

@@ -25,6 +25,10 @@ import MkSpacer from './global/MkSpacer.vue';
 import MkFooterSpacer from './global/MkFooterSpacer.vue';
 import MkStickyContainer from './global/MkStickyContainer.vue';
 import MkLazy from './global/MkLazy.vue';
+import SearchMarker from './global/SearchMarker.vue';
+import SearchLabel from './global/SearchLabel.vue';
+import SearchKeyword from './global/SearchKeyword.vue';
+
 import type { App } from 'vue';
 
 export default function(app: App) {
@@ -56,6 +60,9 @@ export const components = {
 	MkFooterSpacer: MkFooterSpacer,
 	MkStickyContainer: MkStickyContainer,
 	MkLazy: MkLazy,
+	SearchMarker: SearchMarker,
+	SearchLabel: SearchLabel,
+	SearchKeyword: SearchKeyword,
 };
 
 declare module '@vue/runtime-core' {
@@ -82,5 +89,8 @@ declare module '@vue/runtime-core' {
 		MkFooterSpacer: typeof MkFooterSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
 		MkLazy: typeof MkLazy;
+		SearchMarker: typeof SearchMarker;
+		SearchLabel: typeof SearchLabel;
+		SearchKeyword: typeof SearchKeyword;
 	}
 }

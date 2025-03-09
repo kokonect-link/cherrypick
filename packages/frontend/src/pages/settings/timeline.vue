@@ -4,28 +4,68 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<FormSection first>
-		<template #label>{{ i18n.ts.timeline }}</template>
-		<div class="_gaps_m">
-			<MkSwitch v-model="enableHomeTimeline"><i class="ti ti-home"></i> {{ i18n.ts._timelines.home }}</MkSwitch>
-			<MkSwitch v-model="enableLocalTimeline"><i class="ti ti-planet"></i> {{ i18n.ts._timelines.local }}</MkSwitch>
-			<MkSwitch v-model="enableSocialTimeline"><i class="ti ti-universe"></i> {{ i18n.ts._timelines.social }}</MkSwitch>
-			<MkSwitch v-model="enableGlobalTimeline"><i class="ti ti-world"></i> {{ i18n.ts._timelines.global }}</MkSwitch>
-			<MkSwitch v-model="enableBubbleTimeline"><i class="ti ti-droplet"></i> {{ i18n.ts._timelines.bubble }}</MkSwitch>
-		</div>
-	</FormSection>
+<SearchMarker path="/settings/timeline" :label="i18n.ts.timeline" :keywords="['timeline']" icon="ti ti-align-left">
+	<div class="_gaps_m">
+		<FormSection first>
+			<template #label>{{ i18n.ts.timeline }}</template>
+			<div class="_gaps_m">
+				<SearchMarker :keywords="['enable', 'home']">
+					<MkSwitch v-model="enableHomeTimeline">
+						<template #label><i class="ti ti-home"></i> <SearchLabel>{{ i18n.ts._timelines.home }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
 
-	<FormSection>
-		<div class="_gaps_m">
-			<MkSwitch v-model="enableListTimeline"><i class="ti ti-list"></i> {{ i18n.ts.lists }}</MkSwitch>
-			<MkSwitch v-model="enableAntennaTimeline"><i class="ti ti-antenna"></i> {{ i18n.ts.antennas }}</MkSwitch>
-			<MkSwitch v-model="enableChannelTimeline"><i class="ti ti-device-tv"></i> {{ i18n.ts.channel }}</MkSwitch>
-		</div>
-	</FormSection>
+				<SearchMarker :keywords="['enable', 'local']">
+					<MkSwitch v-model="enableLocalTimeline">
+						<template #label><i class="ti ti-planet"></i> <SearchLabel>{{ i18n.ts._timelines.local }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
 
-	<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-</div>
+				<SearchMarker :keywords="['enable', 'social']">
+					<MkSwitch v-model="enableSocialTimeline">
+						<template #label><i class="ti ti-universe"></i> <SearchLabel>{{ i18n.ts._timelines.social }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+
+				<SearchMarker :keywords="['enable', 'global']">
+					<MkSwitch v-model="enableGlobalTimeline">
+						<template #label><i class="ti ti-world"></i> <SearchLabel>{{ i18n.ts._timelines.global }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+
+				<SearchMarker :keywords="['enable', 'bubble']">
+					<MkSwitch v-model="enableBubbleTimeline">
+						<template #label><i class="ti ti-droplet"></i> <SearchLabel>{{ i18n.ts._timelines.bubble }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+			</div>
+		</FormSection>
+
+		<FormSection>
+			<div class="_gaps_m">
+				<SearchMarker :keywords="['enable', 'list']">
+					<MkSwitch v-model="enableListTimeline">
+						<template #label><i class="ti ti-list"></i> <SearchLabel>{{ i18n.ts.lists }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+
+				<SearchMarker :keywords="['enable', 'antenna']">
+					<MkSwitch v-model="enableAntennaTimeline">
+						<template #label><i class="ti ti-antenna"></i> <SearchLabel>{{ i18n.ts.antennas }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+
+				<SearchMarker :keywords="['enable', 'channel']">
+					<MkSwitch v-model="enableChannelTimeline">
+						<template #label><i class="ti ti-device-tv"></i> <SearchLabel>{{ i18n.ts.channel }}</SearchLabel></template>
+					</MkSwitch>
+				</SearchMarker>
+			</div>
+		</FormSection>
+
+		<MkButton primary class="save" @click="save"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+	</div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>

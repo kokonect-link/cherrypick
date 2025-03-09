@@ -710,7 +710,7 @@ export class ApPersonService implements OnModuleInit {
 					isCollectionOrOrderedCollection(person.outbox)
 						? person.outbox.totalItems
 						: undefined,
-			featured: person.featured,
+			featured: person.featured ? getApId(person.featured) : undefined,
 			emojis: emojiNames,
 			name: truncate(person.name, nameLength),
 			tags,

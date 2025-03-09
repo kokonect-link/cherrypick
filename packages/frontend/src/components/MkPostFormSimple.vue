@@ -188,7 +188,6 @@ const props = withDefaults(defineProps<PostFormProps & {
 	autofocus: false,
 	mock: false,
 	initialLocalOnly: undefined,
-	deleteInitialNoteAfterPost: false,
 });
 
 provide('mock', props.mock);
@@ -1054,13 +1053,6 @@ async function post(ev?: MouseEvent) {
 			clear();
 		}
 		nextTick(() => {
-			// 削除して編集の対象ノートを削除
-			if (props.initialNote && props.deleteInitialNoteAfterPost) {
-				misskeyApi('notes/delete', {
-					noteId: props.initialNote.id,
-				});
-			}
-
 			deleteDraft();
 			emit('posted');
 
@@ -1120,11 +1112,6 @@ async function post(ev?: MouseEvent) {
 			}
 			if (m === 0 && s === 0) {
 				claimAchievement('postedAt0min0sec');
-			}
-			if (props.initialNote && props.deleteInitialNoteAfterPost) {
-				if (date.getTime() - new Date(props.initialNote.createdAt).getTime() < 1000 * 60 && props.initialNote.userId === $i.id) {
-					claimAchievement('noteDeletedWithin1min');
-				}
 			}
 			if (serverDraftId.value != null) {
 				misskeyApi('notes/drafts/delete', { draftId: serverDraftId.value });

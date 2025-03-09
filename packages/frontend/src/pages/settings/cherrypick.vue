@@ -4,95 +4,156 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<FormSection first>
-		<template #label>{{ i18n.ts._cherrypick.function }}</template>
-		<template #description>{{ i18n.ts._cherrypick.functionDescription }}</template>
-		<div class="_gaps_m">
-			<MkSwitch v-model="nicknameEnabled">
-				{{ i18n.ts._cherrypick.nickname }}
-				<template #caption>{{ i18n.ts._cherrypick.nicknameDescription }}</template>
-			</MkSwitch>
+<SearchMarker path="/settings/cherrypick" label="CherryPick" :keywords="['cherrypick']" icon="ti ti-bulb-filled">
+	<div class="_gaps_m">
+		<FormSection first>
+			<template #label>{{ i18n.ts._cherrypick.function }}</template>
+			<template #description>{{ i18n.ts._cherrypick.functionDescription }}</template>
+			<div class="_gaps_m">
+				<SearchMarker :keywords="['nickname', 'enable']">
+					<MkSwitch v-model="nicknameEnabled">
+						<template #label><SearchLabel>{{ i18n.ts._cherrypick.nickname }}</SearchLabel></template>
+						<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.nicknameDescription }}</SearchKeyword></template>
+					</MkSwitch>
+				</SearchMarker>
 
-			<div class="_gaps_s">
-				<MkSwitch v-model="useEnterToSend">
-					<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
-					<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="postFormVisibilityHotkey">
-					<template #label>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</template>
-					<template #caption>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="showRenoteConfirmPopup">
-					<template #label>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</template>
-					<template #caption>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="expandOnNoteClick">
-					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClick }}</template>
-					<template #caption>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</template>
-				</MkSwitch>
-				<MkSelect v-if="expandOnNoteClick" v-model="expandOnNoteClickBehavior" style="margin-left: 44px;">
-					<template #label>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</template>
-					<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
-					<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
-				</MkSelect>
+				<div class="_gaps_s">
+					<SearchMarker :keywords="['nickname', 'enable']">
+						<MkSwitch v-model="useEnterToSend">
+							<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
+							<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
+						</MkSwitch>
+					</SearchMarker>
+
+					<SearchMarker :keywords="['post', 'postform', 'visibility', 'hotkey']">
+						<MkSwitch v-model="postFormVisibilityHotkey">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</SearchLabel></template>
+							<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</SearchKeyword></template>
+						</MkSwitch>
+					</SearchMarker>
+
+					<SearchMarker :keywords="['show', 'renote', 'note', 'confirm', 'popup']">
+						<MkSwitch v-model="showRenoteConfirmPopup">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</SearchLabel></template>
+							<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</SearchKeyword></template>
+						</MkSwitch>
+					</SearchMarker>
+
+					<SearchMarker :keywords="['expand', 'note', 'click']">
+						<MkSwitch v-model="expandOnNoteClick">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.expandOnNoteClick }}</SearchLabel></template>
+							<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</SearchKeyword></template>
+						</MkSwitch>
+
+						<MkDisableSection :disabled="!expandOnNoteClick">
+							<SearchMarker :keywords="['behavior']">
+								<MkSelect v-model="expandOnNoteClickBehavior" style="margin-left: 44px;">
+									<template #label><SearchLabel>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</SearchLabel></template>
+									<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
+									<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
+								</MkSelect>
+							</SearchMarker>
+						</MkDisableSection>
+					</SearchMarker>
+				</div>
+
+				<SearchMarker :keywords="['display', 'header', 'navbar', 'scroll']">
+					<div>
+						<MkRadios v-model="displayHeaderNavBarWhenScroll">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.displayHeaderNavBarWhenScroll }}</SearchLabel></template>
+							<option value="all">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.all }}</option>
+							<option value="hideHeaderOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
+							<option value="hideHeaderFloatBtn">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
+							<option value="hideFloatBtnOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
+							<option value="hideFloatBtnNavBar">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
+							<option value="hide">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hide }}</option>
+						</MkRadios>
+					</div>
+				</SearchMarker>
 			</div>
+		</FormSection>
 
-			<div>
-				<MkRadios v-model="displayHeaderNavBarWhenScroll">
-					<template #label>{{ i18n.ts._cherrypick.displayHeaderNavBarWhenScroll }}</template>
-					<option value="all">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.all }}</option>
-					<option value="hideHeaderOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderOnly }}</option>
-					<option value="hideHeaderFloatBtn">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideHeaderFloatBtn }}</option>
-					<option value="hideFloatBtnOnly">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnOnly }}</option>
-					<option value="hideFloatBtnNavBar">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hideFloatBtnNavBar }}</option>
-					<option value="hide">{{ i18n.ts._cherrypick._displayHeaderNavBarWhenScroll.hide }}</option>
-				</MkRadios>
-			</div>
-		</div>
-	</FormSection>
+		<SearchMarker :keywords="['patch', 'behavior']">
+			<FormSection>
+				<template #label><SearchLabel>{{ i18n.ts._cherrypick.patch }}</SearchLabel></template>
+				<template #description><SearchKeyword>{{ i18n.ts._cherrypick.patchDescription }}</SearchKeyword></template>
+				<div class="_gaps_m">
+					<SearchMarker :keywords="['reactable', 'remote', 'reaction', 'react', 'enable']">
+						<MkSwitch v-model="reactableRemoteReactionEnabled">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.reactableRemoteReaction }}</SearchLabel></template>
+						</MkSwitch>
+					</SearchMarker>
 
-	<FormSection>
-		<template #label>{{ i18n.ts._cherrypick.patch }}</template>
-		<template #description>{{ i18n.ts._cherrypick.patchDescription }}</template>
-		<div class="_gaps_m">
-			<MkSwitch v-model="reactableRemoteReactionEnabled">{{ i18n.ts._cherrypick.reactableRemoteReaction }}</MkSwitch>
-			<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</MkSwitch>
-			<MkSwitch v-model="mobileHeaderChange">{{ i18n.ts._cherrypick.mobileHeaderChange }}</MkSwitch>
-			<MkSwitch v-model="renameTheButtonInPostFormToNya">
-				{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}
-				<template #caption>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</template>
-			</MkSwitch>
-		</div>
-	</FormSection>
+					<SearchMarker :keywords="['show', 'follow', 'message', 'enable']">
+						<MkSwitch v-model="showFollowingMessageInsteadOfButtonEnabled">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.showFollowingMessageInsteadOfButton }}</SearchLabel></template>
+						</MkSwitch>
+					</SearchMarker>
 
-	<FormSection>
-		<template #label>UI</template>
-		<div class="_gaps_m">
-			<MkSwitch v-model="enableWidgetsArea">{{ i18n.ts._cherrypick.enableWidgetsArea }}</MkSwitch>
+					<SearchMarker :keywords="['mobile', 'header', 'change']">
+						<MkSwitch v-model="mobileHeaderChange">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.mobileHeaderChange }}</SearchLabel></template>
+						</MkSwitch>
+					</SearchMarker>
 
-			<div class="_gaps_s" style="margin: 0 10px;">
-				<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">Friendly UI</div>
+					<SearchMarker :keywords="['rename', 'post', 'postform', 'nya']">
+						<MkSwitch v-model="renameTheButtonInPostFormToNya">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}</SearchLabel></template>
+							<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</SearchKeyword></template>
+						</MkSwitch>
+					</SearchMarker>
+				</div>
+			</FormSection>
+		</SearchMarker>
 
-				<MkSwitch v-model="friendlyUiEnableNotificationsArea">
-					{{ i18n.ts._cherrypick.friendlyUiEnableNotificationsArea }}
-				</MkSwitch>
-				<MkSwitch v-model="enableLongPressOpenAccountMenu">
-					<template #label>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</template>
-					<template #caption>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</template>
-				</MkSwitch>
-				<MkSwitch v-model="friendlyUiShowAvatarDecorationsInNavBtn">{{ i18n.ts._cherrypick.friendlyUiShowAvatarDecorationsInNavBtn }}</MkSwitch>
-			</div>
-		</div>
-	</FormSection>
+		<SearchMarker :keywords="['ui', 'show', 'display']">
+			<FormSection>
+				<template #label>UI</template>
+				<div class="_gaps_m">
+					<SearchMarker :keywords="['enable', 'widget']">
+						<MkSwitch v-model="enableWidgetsArea">
+							<template #label><SearchLabel>{{ i18n.ts._cherrypick.enableWidgetsArea }}</SearchLabel></template>
+						</MkSwitch>
+					</SearchMarker>
 
-	<FormSection>
-		<template #label><i class="ti ti-flask"/> {{ i18n.ts.cherrypickLabs }}</template>
-		<template #description>{{ i18n.ts.cherrypickLabsDescription }}</template>
-		<div class="_gaps_m">
-		</div>
-	</FormSection>
-</div>
+					<SearchMarker :keywords="['friendly']">
+						<div class="_gaps_s" style="margin: 0 10px;">
+							<div style="font-weight: bold; padding: 0.5em 0 0 0; margin: 0 0 8px 0;">Friendly UI</div>
+
+							<SearchMarker :keywords="['enable', 'notification']">
+								<MkSwitch v-model="friendlyUiEnableNotificationsArea">
+									<template #label><SearchLabel>{{ i18n.ts._cherrypick.friendlyUiEnableNotificationsArea }}</SearchLabel></template>
+								</MkSwitch>
+							</SearchMarker>
+
+							<SearchMarker :keywords="['enable', 'long', 'press', 'open', 'account', 'menu']">
+								<MkSwitch v-model="enableLongPressOpenAccountMenu">
+									<template #label><SearchLabel>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</SearchLabel></template>
+									<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</SearchKeyword></template>
+								</MkSwitch>
+							</SearchMarker>
+
+							<SearchMarker :keywords="['show', 'avatar', 'decoration', 'navbtn']">
+								<MkSwitch v-model="friendlyUiShowAvatarDecorationsInNavBtn">
+									<template #label><SearchLabel>{{ i18n.ts._cherrypick.friendlyUiShowAvatarDecorationsInNavBtn }}</SearchLabel></template>
+								</MkSwitch>
+							</SearchMarker>
+						</div>
+					</SearchMarker>
+				</div>
+			</FormSection>
+		</SearchMarker>
+
+		<SearchMarker :keywords="['behavior', 'lab']">
+			<FormSection>
+				<template #label><i class="ti ti-flask"/> {{ i18n.ts.cherrypickLabs }}</template>
+				<template #description>{{ i18n.ts.cherrypickLabsDescription }}</template>
+				<div class="_gaps_m">
+				</div>
+			</FormSection>
+		</SearchMarker>
+	</div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>
@@ -105,6 +166,7 @@ import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { definePageMetadata } from '@/scripts/page-metadata.js';
 import { reloadAsk } from '@/scripts/reload-ask.js';
+import MkDisableSection from '@/components/MkDisableSection.vue';
 
 const nicknameEnabled = computed(defaultStore.makeGetterSetter('nicknameEnabled'));
 const useEnterToSend = computed(defaultStore.makeGetterSetter('useEnterToSend'));

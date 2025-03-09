@@ -90,9 +90,9 @@ const routes: RouteDef[] = [{
 		name: 'security',
 		component: page(() => import('@/pages/settings/security.vue')),
 	}, {
-		path: '/general',
-		name: 'general',
-		component: page(() => import('@/pages/settings/general.vue')),
+		path: '/preferences',
+		name: 'preferences',
+		component: page(() => import('@/pages/settings/preferences.vue')),
 	}, {
 		path: '/theme/install',
 		name: 'theme',
@@ -105,6 +105,10 @@ const routes: RouteDef[] = [{
 		path: '/theme',
 		name: 'theme',
 		component: page(() => import('@/pages/settings/theme.vue')),
+	}, {
+		path: '/appearance',
+		name: 'appearance',
+		component: page(() => import('@/pages/settings/appearance.vue')),
 	}, {
 		path: '/navbar',
 		name: 'navbar',
@@ -121,6 +125,10 @@ const routes: RouteDef[] = [{
 		path: '/sounds-and-vibrations',
 		name: 'sounds-and-vibrations',
 		component: page(() => import('@/pages/settings/sounds-and-vibrations.vue')),
+	}, {
+		path: '/accessibility',
+		name: 'accessibility',
+		component: page(() => import('@/pages/settings/accessibility.vue')),
 	}, {
 		path: '/plugin/install',
 		name: 'plugin',
@@ -166,12 +174,8 @@ const routes: RouteDef[] = [{
 		name: 'preferences-backups',
 		component: page(() => import('@/pages/settings/preferences-backups.vue')),
 	}, {
-		path: '/migration',
-		name: 'migration',
-		component: page(() => import('@/pages/settings/migration.vue')),
-	}, {
 		path: '/custom-css',
-		name: 'general',
+		name: 'preferences',
 		component: page(() => import('@/pages/settings/custom-css.vue')),
 	}, {
 		path: '/accounts',

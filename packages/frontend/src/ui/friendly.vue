@@ -451,6 +451,8 @@ $float-button-size: 65px;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
 	background: var(--MI_THEME-bg);
+	scroll-padding-top: 60px; // TODO: ちゃんと計算する
+	scroll-padding-bottom: 60px; // TODO: ちゃんと計算する
 }
 
 .widgets {
