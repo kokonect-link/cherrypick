@@ -387,7 +387,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
 
@@ -437,7 +437,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._mfc.cheatSheet,
 	icon: 'ti ti-help-circle',
 }));

@@ -93,7 +93,7 @@ import MkInput from './MkInput.vue';
 import type { Captcha } from '@/components/MkCaptcha.vue';
 import MkCaptcha from '@/components/MkCaptcha.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { login } from '@/account.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';

@@ -50,28 +50,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormLink>
 
 				<SearchMarker :keywords="['keep', 'original', 'raw', 'upload']">
-					<MkSwitch v-model="keepOriginalUploading">
-						<template #label><SearchLabel>{{ i18n.ts.keepOriginalUploading }}</SearchLabel></template>
-						<template #caption><SearchKeyword>{{ i18n.ts.keepOriginalUploadingDescription }}</SearchKeyword></template>
-					</MkSwitch>
+					<MkPreferenceContainer k="keepOriginalUploading">
+						<MkSwitch v-model="keepOriginalUploading">
+							<template #label><SearchLabel>{{ i18n.ts.keepOriginalUploading }}</SearchLabel></template>
+							<template #caption><SearchKeyword>{{ i18n.ts.keepOriginalUploadingDescription }}</SearchKeyword></template>
+						</MkSwitch>
+					</MkPreferenceContainer>
 				</SearchMarker>
 
 				<SearchMarker :keywords="['keep', 'original', 'filename']">
-					<MkSwitch v-model="keepOriginalFilename">
-						<template #label><SearchLabel>{{ i18n.ts.keepOriginalFilename }}</SearchLabel></template>
-						<template #caption><SearchKeyword>{{ i18n.ts.keepOriginalFilenameDescription }}</SearchKeyword></template>
-					</MkSwitch>
+					<MkPreferenceContainer k="keepOriginalFilename">
+						<MkSwitch v-model="keepOriginalFilename">
+							<template #label><SearchLabel>{{ i18n.ts.keepOriginalFilename }}</SearchLabel></template>
+							<template #caption><SearchKeyword>{{ i18n.ts.keepOriginalFilenameDescription }}</SearchKeyword></template>
+						</MkSwitch>
+					</MkPreferenceContainer>
 				</SearchMarker>
 
 				<SearchMarker :keywords="['compression', 'compress', 'original', 'lossy', 'resize']">
-					<MkSelect v-model="imageCompressionMode">
-						<template #label>{{ i18n.ts._imageCompressionMode.title }}</template>
-						<option value="resizeCompress">{{ i18n.ts._imageCompressionMode.resizeCompress }}</option>
-						<option value="noResizeCompress">{{ i18n.ts._imageCompressionMode.noResizeCompress }}</option>
-						<option value="resizeCompressLossy">{{ i18n.ts._imageCompressionMode.resizeCompressLossy }}</option>
-						<option value="noResizeCompressLossy">{{ i18n.ts._imageCompressionMode.noResizeCompressLossy }}</option>
-						<template #caption>{{ i18n.ts._imageCompressionMode.description }}</template>
-					</MkSelect>
+					<MkPreferenceContainer k="imageCompressionMode">
+						<MkSelect v-model="imageCompressionMode">
+							<template #label>{{ i18n.ts._imageCompressionMode.title }}</template>
+							<option value="resizeCompress">{{ i18n.ts._imageCompressionMode.resizeCompress }}</option>
+							<option value="noResizeCompress">{{ i18n.ts._imageCompressionMode.noResizeCompress }}</option>
+							<option value="resizeCompressLossy">{{ i18n.ts._imageCompressionMode.resizeCompressLossy }}</option>
+							<option value="noResizeCompressLossy">{{ i18n.ts._imageCompressionMode.noResizeCompressLossy }}</option>
+							<template #caption>{{ i18n.ts._imageCompressionMode.description }}</template>
+						</MkSelect>
+					</MkPreferenceContainer>
 				</SearchMarker>
 
 				<SearchMarker :keywords="['always', 'default', 'mark', 'nsfw', 'sensitive', 'media', 'file']">
@@ -102,13 +108,14 @@ import FormSection from '@/components/form/section.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import bytes from '@/filters/bytes.js';
-import { defaultStore } from '@/store.js';
 import MkChart from '@/components/MkChart.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { signinRequired } from '@/account.js';
+import { prefer } from '@/preferences.js';
+import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 import MkSelect from '@/components/MkSelect.vue';
 
 const $i = signinRequired();
@@ -132,9 +139,9 @@ const meterStyle = computed(() => {
 	};
 });
 
-const keepOriginalUploading = computed(defaultStore.makeGetterSetter('keepOriginalUploading'));
-const keepOriginalFilename = computed(defaultStore.makeGetterSetter('keepOriginalFilename'));
-const imageCompressionMode = computed(defaultStore.makeGetterSetter('imageCompressionMode'));
+const keepOriginalUploading = prefer.model('keepOriginalUploading');
+const keepOriginalFilename = prefer.model('keepOriginalFilename');
+const imageCompressionMode = prefer.model('imageCompressionMode');
 
 misskeyApi('drive').then(info => {
 	capacity.value = info.capacity;
@@ -142,9 +149,9 @@ misskeyApi('drive').then(info => {
 	fetching.value = false;
 });
 
-if (defaultStore.state.uploadFolder) {
+if (prefer.s.uploadFolder) {
 	misskeyApi('drive/folders/show', {
-		folderId: defaultStore.state.uploadFolder,
+		folderId: prefer.s.uploadFolder,
 	}).then(response => {
 		uploadFolder.value = response;
 	});
@@ -152,11 +159,11 @@ if (defaultStore.state.uploadFolder) {
 
 function chooseUploadFolder() {
 	os.selectDriveFolder(false).then(async folder => {
-		defaultStore.set('uploadFolder', folder[0] ? folder[0].id : null);
+		prefer.commit('uploadFolder', folder[0] ? folder[0].id : null);
 		os.success();
-		if (defaultStore.state.uploadFolder) {
+		if (prefer.s.uploadFolder) {
 			uploadFolder.value = await misskeyApi('drive/folders/show', {
-				folderId: defaultStore.state.uploadFolder,
+				folderId: prefer.s.uploadFolder,
 			});
 		} else {
 			uploadFolder.value = null;
@@ -182,7 +189,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.drive,
 	icon: 'ti ti-cloud',
 }));

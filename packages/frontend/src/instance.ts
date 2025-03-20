@@ -6,7 +6,7 @@
 import { computed, reactive } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { DEFAULT_INFO_IMAGE_URL, DEFAULT_NOT_FOUND_IMAGE_URL, DEFAULT_SERVER_ERROR_IMAGE_URL, DEFAULT_YOU_BLOCKED_IMAGE_URL } from '@@/js/const.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { miLocalStorage } from '@/local-storage.js';
 
 // TODO: 他のタブと永続化されたstateを同期

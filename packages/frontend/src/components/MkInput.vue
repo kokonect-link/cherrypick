@@ -48,10 +48,10 @@ import { onMounted, onUnmounted, nextTick, ref, shallowRef, watch, computed, toR
 import { debounce } from 'throttle-debounce';
 import { useInterval } from '@@/js/use-interval.js';
 import type { InputHTMLAttributes } from 'vue';
-import type { SuggestionType } from '@/scripts/autocomplete.js';
+import type { SuggestionType } from '@/utility/autocomplete.js';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
-import { Autocomplete } from '@/scripts/autocomplete.js';
+import { Autocomplete } from '@/utility/autocomplete.js';
 
 const props = defineProps<{
 	modelValue: string | number | null;

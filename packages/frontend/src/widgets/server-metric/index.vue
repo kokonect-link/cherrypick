@@ -35,9 +35,9 @@ import XCpu from './cpu.vue';
 import XMemory from './mem.vue';
 import XDisk from './disk.vue';
 import type { WidgetComponentProps, WidgetComponentEmits, WidgetComponentExpose } from '../widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import MkContainer from '@/components/MkContainer.vue';
-import { misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApiGet } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 

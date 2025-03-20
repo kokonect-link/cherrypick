@@ -7,13 +7,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <button
 	ref="buttonEl"
 	v-ripple="canToggle"
-	v-vibrate="defaultStore.state.vibrateSystem ? [10, 30, 40] : []"
+	v-vibrate="prefer.s['vibrate.on.system'] ? [10, 30, 40] : []"
 	class="_button"
-	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: defaultStore.state.reactionsDisplaySize === 'small', [$style.large]: defaultStore.state.reactionsDisplaySize === 'large' }]"
+	:class="[$style.root, { [$style.reacted]: note.myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: prefer.s.reactionsDisplaySize === 'small', [$style.large]: prefer.s.reactionsDisplaySize === 'large' }]"
 	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
 	@contextmenu.prevent.stop="menu"
 >
-	<MkReactionIcon :class="defaultStore.state.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
+	<MkReactionIcon :class="prefer.s.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
 	<span :class="$style.count">{{ count }}</span>
 </button>
 </template>
@@ -27,17 +27,17 @@ import type { ComputedRef } from 'vue';
 import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import * as os from '@/os.js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
-import { useTooltip } from '@/scripts/use-tooltip.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
+import { useTooltip } from '@/utility/use-tooltip.js';
 import { $i } from '@/account.js';
 import MkReactionEffect from '@/components/MkReactionEffect.vue';
-import { claimAchievement } from '@/scripts/achievements.js';
-import { defaultStore } from '@/store.js';
+import { claimAchievement } from '@/utility/achievements.js';
 import { i18n } from '@/i18n.js';
-import * as sound from '@/scripts/sound.js';
-import { checkReactionPermissions } from '@/scripts/check-reaction-permissions.js';
+import * as sound from '@/utility/sound.js';
+import { checkReactionPermissions } from '@/utility/check-reaction-permissions.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { prefer } from '@/preferences.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 
 const props = defineProps<{
 	reaction: string;
@@ -67,7 +67,7 @@ const reactionName = computed(() => {
 	return r.slice(0, r.indexOf('@'));
 });
 
-const alternative: ComputedRef<string | null> = computed(() => defaultStore.state.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
+const alternative: ComputedRef<string | null> = computed(() => prefer.s.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
 
 async function toggleReaction(ev: MouseEvent) {
 	if (!canToggle.value) {
@@ -103,7 +103,7 @@ async function toggleReaction(ev: MouseEvent) {
 			}
 		});
 	} else {
-		if (defaultStore.state.confirmOnReact) {
+		if (prefer.s.confirmOnReact) {
 			const confirm = await os.confirm({
 				type: 'question',
 				text: i18n.tsx.reactAreYouSure({ emoji: props.reaction.replace('@.', '') }),
@@ -190,7 +190,7 @@ async function menu(ev) {
 }
 
 function anime() {
-	if (document.hidden || !defaultStore.state.animation || buttonEl.value == null) return;
+	if (document.hidden || !prefer.s.animation || buttonEl.value == null) return;
 
 	const rect = buttonEl.value.getBoundingClientRect();
 	const x = rect.left + 16;

@@ -11,7 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</template>
 	<MkSpacer :contentMax="700">
 		<div>
-			<transition :name="defaultStore.state.animation ? 'zoom' : ''" mode="out-in">
+			<transition :name="prefer.s.animation ? 'zoom' : ''" mode="out-in">
 				<div v-if="group" class="_gaps_s">
 					<div style="margin-top: var(--MI-margin);">{{ i18n.ts.members }}</div>
 					<div :class="$style.content">
@@ -43,11 +43,11 @@ import { computed, ref, watch } from 'vue';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { mainRouter } from '@/router/main.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { userPage } from '@/filters/user.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 const props = defineProps<{
 	groupId: string;
@@ -160,7 +160,7 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(computed(() => group.value ? {
+definePage(computed(() => group.value ? {
 	title: group.value.name,
 	icon: 'ti ti-briefcase',
 } : null));

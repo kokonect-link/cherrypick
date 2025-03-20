@@ -5456,6 +5456,7 @@ export type components = {
     RolePolicies: {
       gtlAvailable: boolean;
       ltlAvailable: boolean;
+      btlAvailable: boolean;
       canPublicNote: boolean;
       mentionLimit: number;
       canInvite: boolean;

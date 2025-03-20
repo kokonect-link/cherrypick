@@ -56,10 +56,10 @@ import * as os from '@/os.js';
 import MkUrlPreview from '@/components/MkUrlPreview.vue';
 import MkAvatar from '@/components/global/MkAvatar.vue';
 import MkTime from '@/components/global/MkTime.vue';
-import { extractUrlFromMfm } from '@/scripts/extract-url-from-mfm.js';
+import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 const props = defineProps<{
 	message: Misskey.entities.MessagingMessage;

@@ -25,10 +25,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, shallowRef } from 'vue';
 import { getScrollContainer } from '@@/js/scroll.js';
+import { isHorizontalSwipeSwiping } from '@/utility/touch.js';
 import { i18n } from '@/i18n.js';
-import { isHorizontalSwipeSwiping } from '@/scripts/touch.js';
-import { vibrate } from '@/scripts/vibrate.js';
-import { defaultStore } from '@/store.js';
+import { vibrate } from '@/utility/vibrate.js';
+import { prefer } from '@/preferences.js';
 
 const SCROLL_STOP = 10;
 const MAX_PULL_DISTANCE = Infinity;
@@ -161,7 +161,7 @@ function moving(event: TouchEvent | PointerEvent) {
 
 	if (!isPullEnd.value) isVibrate = false;
 	else if (isPullEnd.value && !isVibrate) {
-		vibrate(defaultStore.state.vibrateSystem ? 10 : []);
+		vibrate(prefer.s['vibrate.on.system'] ? 10 : []);
 		isVibrate = true;
 	}
 }

@@ -7,12 +7,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div :class="$style.wrapper" data-cy-signin-page-password>
 	<div class="_gaps" :class="$style.root">
 		<div
-			:class="[$style.avatar, { [$style.square]: defaultStore.state.squareAvatars }]"
+			:class="[$style.avatar, { [$style.square]: prefer.s.squareAvatars }]"
 			:style="{ backgroundImage: user ? `url('${url}')` : undefined }"
-			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		></div>
 		<div :class="$style.welcomeBackMessage">
 			<I18n :src="i18n.ts.welcomeBackWithName" tag="span">
@@ -68,8 +68,8 @@ import * as Misskey from 'cherrypick-js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { defaultStore } from '@/store.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { prefer } from '@/preferences.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -112,11 +112,11 @@ const captchaFailed = computed((): boolean => {
 const isCapsLock = ref(false);
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (props.user.avatarUrl == null) return null;
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
 	return props.user.avatarUrl;
 });
 
@@ -162,7 +162,7 @@ function checkCapsLock(ev: KeyboardEvent) {
 }
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -173,7 +173,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);

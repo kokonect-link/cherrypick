@@ -178,9 +178,9 @@ import MkAnimBg from '@/components/MkAnimBg.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import MkPushNotificationAllowButton from '@/components/MkPushNotificationAllowButton.vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import * as os from '@/os.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { unisonReload } from '@/utility/unison-reload.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void;
@@ -188,10 +188,11 @@ const emit = defineEmits<{
 
 const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
 
-const page = ref(defaultStore.state.accountSetupWizard);
+// eslint-disable-next-line vue/no-setup-props-reactivity-loss
+const page = ref(store.s.accountSetupWizard);
 
 watch(page, () => {
-	defaultStore.set('accountSetupWizard', page.value);
+	store.set('accountSetupWizard', page.value);
 });
 
 async function close(skip: boolean) {
@@ -205,12 +206,12 @@ async function close(skip: boolean) {
 	}
 
 	dialog.value?.close();
-	defaultStore.set('accountSetupWizard', -1);
+	store.set('accountSetupWizard', -1);
 	unisonReload();
 }
 
 function setupComplete() {
-	defaultStore.set('accountSetupWizard', -1);
+	store.set('accountSetupWizard', -1);
 	dialog.value?.close();
 }
 
@@ -235,7 +236,7 @@ async function later(later: boolean) {
 	}
 
 	dialog.value?.close();
-	defaultStore.set('accountSetupWizard', 0);
+	store.set('accountSetupWizard', 0);
 }
 </script>
 

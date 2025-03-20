@@ -116,7 +116,7 @@ import * as Reversi from 'misskey-reversi';
 import type { MenuItem } from '@/types/menu.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { deepClone } from '@/scripts/clone.js';
+import { deepClone } from '@/utility/clone.js';
 import MkButton from '@/components/MkButton.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkSwitch from '@/components/MkSwitch.vue';

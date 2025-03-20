@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="azykntjl">
 	<div class="body">
 		<div class="left">
-			<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button instance" @click="openInstanceMenu">
+			<button v-click-anime v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="item _button instance" @click="openInstanceMenu">
 				<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
 			</button>
 			<MkA v-click-anime v-tooltip="i18n.ts.timeline" class="item index" activeClass="active" to="/" exact>
@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkA>
 			<template v-for="item in menu">
 				<div v-if="item === '-'" class="divider"></div>
-				<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip="navbarItemDef[item].title" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+				<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-click-anime v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip="navbarItemDef[item].title" class="item _button" :class="item" activeClass="active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 					<i class="ti-fw" :class="navbarItemDef[item].icon"></i>
 					<span v-if="navbarItemDef[item].indicated" class="indicator _blink"><i class="_indicatorCircle"></i></span>
 				</component>
@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-dashboard ti-fw"></i>
 				<span v-if="controlPanelIndicated" class="indicator _blink"><i class="_indicatorCircle"></i></span>
 			</MkA>
-			<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button" @click="more">
+			<button v-click-anime v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="item _button" @click="more">
 				<i class="ti ti-dots ti-fw"></i>
 				<span v-if="otherNavItemIndicated" class="indicator _blink"><i class="_indicatorCircle"></i></span>
 			</button>
@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkA v-click-anime v-tooltip="i18n.ts.settings" class="item" activeClass="active" to="/settings" :behavior="settingsWindowed ? 'window' : null">
 				<i class="ti ti-settings ti-fw"></i>
 			</MkA>
-			<button v-click-anime v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="item _button account" @click="openAccountMenu">
+			<button v-click-anime v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="item _button account" @click="openAccountMenu">
 				<MkAvatar :user="$i" class="avatar"/><MkAcct class="acct" :user="$i"/>
 			</button>
 			<div class="post" @click="os.post()">
@@ -51,20 +51,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { openInstanceMenu } from './_common_/common.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { navbarItemDef } from '@/navbar.js';
 import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 import MkButton from '@/components/MkButton.vue';
-import { defaultStore } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { fetchCherrypickReleases } from '@/scripts/fetch-cherrypick-releases.js';
+import { prefer } from '@/preferences.js';
+import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
 
 const WINDOW_THRESHOLD = 1400;
 
 const settingsWindowed = ref(window.innerWidth > WINDOW_THRESHOLD);
-const menu = ref(defaultStore.state.menu);
-// const menuDisplay = computed(defaultStore.makeGetterSetter('menuDisplay'));
+const menu = ref(prefer.s.menu);
+// const menuDisplay = computed(store.makeGetterSetter('menuDisplay'));
 const otherNavItemIndicated = computed<boolean>(() => {
 	for (const def in navbarItemDef) {
 		if (menu.value.includes(def)) continue;

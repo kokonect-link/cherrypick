@@ -27,7 +27,7 @@ import { computed } from 'vue';
 import FormSection from '@/components/form/section.vue';
 import { i18n } from '@/i18n.js';
 import { signinRequired } from '@/account.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 
 const $i = signinRequired();
@@ -36,7 +36,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.roles,
 	icon: 'ti ti-badges',
 }));

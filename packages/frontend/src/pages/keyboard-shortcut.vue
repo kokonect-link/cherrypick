@@ -34,21 +34,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #header>{{ i18n.ts._keyboardShortCut._category.postForm }}</template>
 				<div :class="$style.section">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleVisibility }}</div>
-					<div v-if="!defaultStore.state.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
+					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
 					<div :class="$style.content">
 						<kbd>Ctrl</kbd>+<kbd>Shift</kbd>
 					</div>
 				</div>
 				<div :class="$style.section">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleLocalOnly }}</div>
-					<div v-if="!defaultStore.state.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
+					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
 					<div :class="$style.content">
 						<kbd>Ctrl</kbd> + <kbd>Alt</kbd>
 					</div>
 				</div>
 				<div :class="$style.section">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.sendPost }}</div>
-					<div v-if="defaultStore.state.useEnterToSend" :class="$style.content">
+					<div v-if="prefer.s.useEnterToSend" :class="$style.content">
 						<kbd>Enter</kbd>
 					</div>
 					<div v-else :class="$style.content">
@@ -64,9 +64,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { definePage } from '@/page.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 defineProps<{
 	popup?: boolean;
@@ -76,7 +76,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._keyboardShortCut.title,
 	icon: 'ti ti-keyboard',
 }));

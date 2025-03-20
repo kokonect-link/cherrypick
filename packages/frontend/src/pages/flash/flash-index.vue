@@ -45,7 +45,7 @@ import MkPagination from '@/components/MkPagination.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { $i } from '@/account.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { useRouter } from '@/router/supplier.js';
 
 const router = useRouter();
@@ -96,7 +96,7 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-flare',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: 'Play',
 	icon: 'ti ti-player-play',
 }));

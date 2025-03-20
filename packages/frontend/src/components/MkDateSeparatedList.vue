@@ -12,7 +12,7 @@ import { isDebuggerEnabled, stackTraceInstances } from '@/debug.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 export default defineComponent({
 	props: {
@@ -157,7 +157,7 @@ export default defineComponent({
 			[$style['direction-up']]: props.direction === 'up',
 		};
 
-		return () => defaultStore.state.animation ? h(TransitionGroup, {
+		return () => prefer.s.animation ? h(TransitionGroup, {
 			class: classes,
 			name: 'list',
 			tag: 'div',

@@ -38,17 +38,17 @@ import { computed, onMounted, ref, shallowRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
 import insertTextAtCursor from 'insert-text-at-cursor';
-import { formatTimeString } from '@/scripts/format-time-string.js';
-import { selectFile } from '@/scripts/select-file.js';
+import { formatTimeString } from '@/utility/format-time-string.js';
+import { selectFile } from '@/utility/select-file.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
-import { Autocomplete } from '@/scripts/autocomplete.js';
-import { uploadFile } from '@/scripts/upload.js';
+import { Autocomplete } from '@/utility/autocomplete.js';
+import { uploadFile } from '@/utility/upload.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { emojiPicker } from '@/scripts/emoji-picker.js';
+import { emojiPicker } from '@/utility/emoji-picker.js';
 import MkLoading from '@/components/global/MkLoading.vue';
 
 const props = defineProps<{
@@ -71,6 +71,8 @@ const canSend = computed(() => text.value.trim() !== '' || file.value != null);
 
 watch([text.value, file.value], saveDraft);
 
+const pastedFileName = 'yyyy-MM-dd HH-mm-ss [{{number}}]';
+
 async function onPaste(ev: ClipboardEvent) {
 	if (!ev.clipboardData) return;
 
@@ -83,7 +85,7 @@ async function onPaste(ev: ClipboardEvent) {
 			if (!pastedFile) return;
 			const lio = pastedFile.name.lastIndexOf('.');
 			const ext = lio >= 0 ? pastedFile.name.slice(lio) : '';
-			const formatted = formatTimeString(new Date(pastedFile.lastModified), defaultStore.state.pastedFileName).replace(/{{number}}/g, '1') + ext;
+			const formatted = `${formatTimeString(new Date(pastedFile.lastModified), pastedFileName).replace(/{{number}}/g, '1')}${ext}`;
 			if (formatted) upload(pastedFile, formatted);
 		}
 	} else {
@@ -168,7 +170,7 @@ function onChangeFile() {
 }
 
 function upload(fileToUpload: File, name?: string) {
-	uploadFile(fileToUpload, defaultStore.state.uploadFolder, name).then(res => {
+	uploadFile(fileToUpload, prefer.s.uploadFolder, name).then(res => {
 		file.value = res;
 	});
 }

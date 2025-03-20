@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		v-if="paginationQuery"
 		ref="tlComponent"
 		:pagination="paginationQuery"
-		:noGap="!defaultStore.state.showGapBetweenNotesInTimeline"
+		:noGap="!prefer.s.showGapBetweenNotesInTimeline"
 		@queue="emit('queue', $event)"
 		@status="prComponent?.setDisabled($event)"
 	/>
@@ -24,11 +24,11 @@ import type { Paging } from '@/components/MkPagination.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
-import * as sound from '@/scripts/sound.js';
+import * as sound from '@/utility/sound.js';
 import { $i } from '@/account.js';
 import { instance } from '@/instance.js';
-import { defaultStore } from '@/store.js';
-import { vibrate } from '@/scripts/vibrate.js';
+import { prefer } from '@/preferences.js';
+import { vibrate } from '@/utility/vibrate.js';
 import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{
@@ -92,7 +92,7 @@ function prepend(note) {
 
 	if (props.sound) {
 		sound.playMisskeySfx($i && (note.userId === $i.id) ? 'noteMy' : 'note');
-		vibrate($i && (note.userId === $i.id) ? [] : defaultStore.state.vibrateNote ? [30, 20] : []);
+		vibrate($i && (note.userId === $i.id) ? [] : prefer.s['vibrate.on.note'] ? [30, 20] : []);
 	}
 }
 
@@ -268,7 +268,7 @@ function updatePaginationQuery() {
 }
 
 function refreshEndpointAndChannel() {
-	if (!defaultStore.state.disableStreamingTimeline) {
+	if (!prefer.s.disableStreamingTimeline) {
 		disconnectChannel();
 		connectChannel();
 	}

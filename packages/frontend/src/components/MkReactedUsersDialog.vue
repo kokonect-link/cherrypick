@@ -46,7 +46,7 @@ import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{

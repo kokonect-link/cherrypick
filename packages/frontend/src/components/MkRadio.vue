@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div
 	v-adaptive-border
-	v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
+	v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
 	:class="[$style.root, { [$style.disabled]: disabled, [$style.checked]: checked }]"
 	:aria-checked="checked"
 	:aria-disabled="disabled"
@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup generic="T extends unknown">
 import { computed } from 'vue';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
 	modelValue: T;

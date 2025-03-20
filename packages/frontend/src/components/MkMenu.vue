@@ -15,13 +15,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@focusin.passive.stop="() => {}"
 >
 	<div
-		v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
+		v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
 		class="_shadow"
 		:class="[
 			$style.menu,
 			{
-				_popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur,
-				_popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur,
+				_popup: !prefer.s.useBlurEffect || !prefer.s.useBlurEffectForModal || !prefer.s.removeModalBgColorForBlur,
+				_popupAcrylic: prefer.s.useBlurEffect && prefer.s.useBlurEffectForModal && prefer.s.removeModalBgColorForBlur,
 			}
 		]"
 		:style="{
@@ -190,15 +190,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts">
 import { computed, defineAsyncComponent, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, unref, watch } from 'vue';
-import type { Keymap } from '@/scripts/hotkey.js';
 import type { MenuItem, InnerMenuItem, MenuPending, MenuAction, MenuSwitch, MenuRadio, MenuRadioOption, MenuParent } from '@/types/menu.js';
+import type { Keymap } from '@/utility/hotkey.js';
 import MkSwitchButton from '@/components/MkSwitch.button.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { isTouchUsing } from '@/scripts/touch.js';
-import { isFocusable } from '@/scripts/focus.js';
-import { getNodeOrNull } from '@/scripts/get-dom-node-or-null.js';
-import { defaultStore } from '@/store.js';
+import { isTouchUsing } from '@/utility/touch.js';
+import { isFocusable } from '@/utility/focus.js';
+import { getNodeOrNull } from '@/utility/get-dom-node-or-null.js';
+import { prefer } from '@/preferences.js';
 
 const childrenCache = new WeakMap<MenuParent, MenuItem[]>();
 </script>

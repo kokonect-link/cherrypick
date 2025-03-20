@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
 	q: string;
@@ -24,7 +24,7 @@ const query = ref(props.q);
 const search = () => {
 	const sp = new URLSearchParams();
 	let url = '';
-	switch (defaultStore.state.searchEngine) {
+	switch (prefer.s.searchEngine) {
 		case 'google':
 			sp.append('q', query.value);
 			url = `https://www.google.com/search?${sp.toString()}`;
@@ -55,8 +55,8 @@ const search = () => {
 			url = `https://duckduckgo.com/?${sp.toString()}`;
 			break;
 		case 'other':
-			sp.append(defaultStore.state.searchEngineUrlQuery, query.value);
-			url = `${defaultStore.state.searchEngineUrl}${sp.toString()}`;
+			sp.append(prefer.s.searchEngineUrlQuery, query.value);
+			url = `${prefer.s.searchEngineUrl}${sp.toString()}`;
 			break;
 	}
 

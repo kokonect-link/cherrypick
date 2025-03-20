@@ -10,8 +10,7 @@ import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { defaultStore } from '@/store.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { prefer } from '@/preferences.js';
 
 function toolsMenuItems(): MenuItem[] {
 	return [{
@@ -44,7 +43,7 @@ function toolsMenuItems(): MenuItem[] {
 		text: i18n.ts.replayUserSetupDialog,
 		icon: 'ti ti-list-numbers',
 		action: () => {
-			defaultStore.set('accountSetupWizard', 0);
+			prefer.commit('accountSetupWizard', 0);
 			os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
 		},
 	} : undefined];

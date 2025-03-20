@@ -53,7 +53,7 @@ import MkButton from '@/components/MkButton.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
@@ -133,7 +133,7 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail-opened',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.groups,
 	icon: 'ti ti-users',
 }));

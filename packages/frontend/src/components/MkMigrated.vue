@@ -40,18 +40,20 @@ import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import { i18n } from '@/i18n.js';
-import { confetti } from '@/scripts/confetti.js';
+import { confetti } from '@/utility/confetti.js';
 import * as os from '@/os.js';
-import { clearCache } from '@/scripts/clear-cache.js';
+import { clearCache } from '@/utility/clear-cache.js';
 import { miLocalStorage } from '@/local-storage.js';
 
 const showChangelog = ref(false);
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
-const whatIsNewMisskey = () => {
-	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
-};
+/**
+ * const whatIsNewMisskey = () => {
+ * 	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
+ * };
+ */
 
 const whatIsNewCherryPick = () => {
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');

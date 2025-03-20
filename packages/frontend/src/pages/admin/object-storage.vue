@@ -169,14 +169,14 @@ import XHeader from './_header_.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
+import MkFormFooter from '@/components/MkFormFooter.vue';
 import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import MkFormFooter from '@/components/MkFormFooter.vue';
-import { useForm } from '@/scripts/use-form.js';
+import { definePage } from '@/page.js';
+import { useForm } from '@/utility/use-form.js';
 
 const meta = await misskeyApi('admin/meta');
 
@@ -244,7 +244,7 @@ const remoteObjectStorageForm = useForm({
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.objectStorage,
 	icon: 'ti ti-cloud',
 }));

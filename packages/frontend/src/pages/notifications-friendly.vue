@@ -33,7 +33,7 @@ import MkNotes from '@/components/MkNotes.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import { globalEvents } from '@/events.js';
 import NotificationPageHeader from '@/components/global/NotificationPageHeader.vue';
 

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkModal ref="modal" v-slot="{ type, maxHeight }" :preferType="preferedModalType" :anchor="anchor" :transparentBg="true" :src="src" @click="modal?.close()" @closed="emit('closed')" @esc="modal?.close()">
-	<div class="szkkfdyq _shadow" :class="{ asDrawer: type === 'drawer', _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }" :style="{ maxHeight: maxHeight ? maxHeight + 'px' : '' }">
+	<div class="szkkfdyq _shadow" :class="{ asDrawer: type === 'drawer', _popup: !prefer.s.useBlurEffect || !prefer.s.useBlurEffectForModal || !prefer.s.removeModalBgColorForBlur, _popupAcrylic: prefer.s.useBlurEffect && prefer.s.useBlurEffectForModal && prefer.s.removeModalBgColorForBlur }" :style="{ maxHeight: maxHeight ? maxHeight + 'px' : '' }">
 		<div class="main">
 			<template v-for="item in items" :key="item.text">
 				<button v-if="item.action" v-click-anime class="_button item" @click="$event => { item.action($event); close(); }">
@@ -30,8 +30,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { shallowRef } from 'vue';
 import MkModal from '@/components/MkModal.vue';
 import { navbarItemDef } from '@/navbar.js';
-import { defaultStore } from '@/store.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { deviceKind } from '@/utility/device-kind.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	src?: HTMLElement;
@@ -50,7 +50,7 @@ const preferedModalType = (deviceKind === 'desktop' && props.src != null) ? 'pop
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
-const menu = defaultStore.state.menu;
+const menu = prefer.s.menu;
 
 const items = Object.keys(navbarItemDef).filter(k => !menu.includes(k)).map(k => navbarItemDef[k]).filter(def => def.show == null ? true : def.show).map(def => ({
 	type: def.to ? 'link' : 'button',

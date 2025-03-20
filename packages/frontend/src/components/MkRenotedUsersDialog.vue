@@ -40,7 +40,7 @@ import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void,

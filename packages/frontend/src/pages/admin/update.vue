@@ -72,11 +72,11 @@ import { computed, ref } from 'vue';
 import { version, instanceName, basedMisskeyVersion } from '@@/js/config.js';
 import { compareVersions } from 'compare-versions';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import XHeader from '@/pages/admin/_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -150,9 +150,11 @@ const whatIsNewLatestCherryPick = () => {
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${releasesCherryPick.value[0].tag_name.replace(/\./g, '')}`, '_blank');
 };
 
-const whatIsNewMisskey = () => {
-	window.open(`https://misskey-hub.net/docs/releases.html#_${basedMisskeyVersion.replace(/\./g, '-')}`, '_blank');
-};
+/**
+ * const whatIsNewMisskey = () => {
+ * 	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
+ * };
+ */
 
 const whatIsNewLatestMisskey = () => {
 	window.open(`https://github.com/misskey-dev/misskey/blob/develop/CHANGELOG.md#${releasesMisskey.value[0].tag_name.replace(/\./g, '')}`, '_blank');
@@ -167,7 +169,7 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.cherrypickUpdate,
 	icon: 'ti ti-refresh',
 }));

@@ -9,55 +9,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<div>
 		<div :class="$style.fontSize" class="_panel">
-			<div v-if="fontSize === 1" style="font-size: 7px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 2" style="font-size: 8px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 3" style="font-size: 9px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 4" style="font-size: 10px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 5" style="font-size: 11px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 6" style="font-size: 12px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 7" style="font-size: 13px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 8" style="font-size: 14px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 9" style="font-size: 15px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 10" style="font-size: 16px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 11" style="font-size: 17px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 12" style="font-size: 18px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 13" style="font-size: 19px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 14" style="font-size: 20px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 15" style="font-size: 21px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 16" style="font-size: 22px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 17" style="font-size: 23px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 18" style="font-size: 24px;">{{ i18n.ts._mfc.dummy }}</div>
-			<div v-else-if="fontSize === 19" style="font-size: 25px;">{{ i18n.ts._mfc.dummy }}</div>
+			<div v-for="size in 19" v-show="fontSize === size" :key="size" :style="{ fontSize: `${size + 6}px` }">{{ i18n.ts._mfc.dummy }}</div>
 		</div>
 		<div :class="$style.fontSizeSlider">
 			<div :class="$style.fontSizeLeft">Aa</div>
 			<MkRange
-				v-model="fontSize" style="position: initial !important; width: 100%; margin: 0 -10px;" :min="1" :max="19" :step="1" easing :textConverter="(v) =>
-					v === 1 ? '7px' :
-					v === 2 ? '8px' :
-					v === 3 ? '9px' :
-					v === 4 ? '10px' :
-					v === 5 ? '11px' :
-					v === 6 ? '12px' :
-					v === 7 ? '13px' :
-					v === 8 ? '14px' :
-					v === 9 ? '15px' :
-					v === 10 ? '16px' :
-					v === 11 ? '17px' :
-					v === 12 ? '18px' :
-					v === 13 ? '19px' :
-					v === 14 ? '20px' :
-					v === 15 ? '21px' :
-					v === 16 ? '22px' :
-					v === 17 ? '23px' :
-					v === 18 ? '24px' :
-					v === 19 ? '25px' : ''"
-			>
-			</MkRange>
+				v-model="fontSize"
+				style="position: initial !important; width: 100%; margin: 0 -10px;"
+				easing
+				:min="1"
+				:max="19"
+				:step="1"
+				:textConverter="(v) => `${v + 6}px`"
+			/>
 			<div :class="$style.fontSizeRight">Aa</div>
 		</div>
-		<MkInfo v-if="fontSize != fontSizeBefore" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
-		<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">{{ i18n.ts.useBoldFont }}</MkSwitch>
+		<MkInfo v-if="String(fontSize) != String(fontSizeBefore)" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
+
+		<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">
+			<template #label>{{ i18n.ts.useBoldFont }}</template>
+		</MkSwitch>
+
+		<MkSwitch v-model="useSystemFont" style="margin-top: .75em;">
+			<template #label>{{ i18n.ts.useSystemFont }}</template>
+		</MkSwitch>
 	</div>
 
 	<MkInfo>{{ i18n.ts._initialAccountSetting.youCanEditMoreSettingsInSettingsPageLater }}</MkInfo>
@@ -65,25 +40,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
-import { defaultStore } from '@/store.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { reloadAsk } from '@/scripts/reload-ask.js';
+import { reloadAsk } from '@/utility/reload-ask.js';
+import { prefer } from '@/preferences.js';
 
+const fontSize = prefer.model('fontSize');
+const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
-
-const fontSize = computed(defaultStore.makeGetterSetter('fontSize'));
 
 watch(fontSize, () => {
 	if (fontSize.value == null) {
 		miLocalStorage.removeItem('fontSize');
 	} else {
-		miLocalStorage.setItem('fontSize', fontSize.value as string);
+		miLocalStorage.setItem('fontSize', String(fontSize.value));
 	}
 });
 
@@ -95,15 +70,24 @@ watch(useBoldFont, () => {
 	}
 });
 
+watch(useSystemFont, () => {
+	if (useSystemFont.value) {
+		miLocalStorage.setItem('useSystemFont', 't');
+	} else {
+		miLocalStorage.removeItem('useSystemFont');
+	}
+});
+
 watch([
 	useBoldFont,
+	useSystemFont,
 ], async () => {
 	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 onMounted(() => {
 	if (fontSizeBefore.value == null) {
-		fontSizeBefore.value = fontSize.value as string;
+		fontSizeBefore.value = String(fontSize.value);
 	}
 });
 </script>

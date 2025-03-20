@@ -67,16 +67,14 @@ import MkPagination from '@/components/MkPagination.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
 import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
-import * as sound from '@/scripts/sound.js';
+import * as sound from '@/utility/sound.js';
 import { i18n } from '@/i18n.js';
 import { $i } from '@/account.js';
-import { defaultStore } from '@/store.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { vibrate } from '@/scripts/vibrate.js';
-import { miLocalStorage } from '@/local-storage.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
+import { prefer } from '@/preferences.js';
+import { definePage } from '@/page.js';
+import { vibrate } from '@/utility/vibrate.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { isFriendly } from '@/utility/is-friendly.js';
 
 const props = defineProps<{
 	userAcct?: string;
@@ -93,7 +91,7 @@ const group = ref<Misskey.entities.UserGroup | null>(null);
 const typers = ref<Misskey.entities.User[]>([]);
 const connection = ref<Misskey.ChannelConnection<Misskey.Channels['messaging']> | null>(null);
 const showIndicator = ref(false);
-const animation = defaultStore.reactiveState;
+const animation = ref(prefer.s.animation);
 
 const pagination = ref<Paging | null>(null);
 
@@ -212,7 +210,7 @@ function onDrop(ev: DragEvent): void {
 
 function onMessage(message) {
 	sound.playMisskeySfx('chat');
-	vibrate(defaultStore.state.vibrateChat ? [30, 30, 30] : []);
+	vibrate(prefer.s['vibrate.on.chat'] ? [30, 30, 30] : []);
 
 	const _isBottom = isBottomVisible(rootEl.value, 64);
 
@@ -306,7 +304,7 @@ onBeforeUnmount(() => {
 	if (scrollRemove.value) scrollRemove.value();
 });
 
-definePageMetadata(computed(() => !fetching.value ? user.value ? {
+definePage(computed(() => !fetching.value ? user.value ? {
 	title: '',
 	icon: null,
 	userName: user,

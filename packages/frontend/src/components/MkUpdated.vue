@@ -40,9 +40,9 @@ import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSparkle from '@/components/MkSparkle.vue';
 import { i18n } from '@/i18n.js';
-import { confetti } from '@/scripts/confetti.js';
+import { confetti } from '@/utility/confetti.js';
+import { clearCache } from '@/utility/clear-cache.js';
 import * as os from '@/os.js';
-import { clearCache } from '@/scripts/clear-cache.js';
 
 const showChangelog = ref(false);
 

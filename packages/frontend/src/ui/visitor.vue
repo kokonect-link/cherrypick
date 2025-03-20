@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkA to="/channels" class="link" activeClass="active"><i class="ti ti-device-tv icon"></i> {{ i18n.ts.channel }}</MkA>
 			</div>
 			<div v-else-if="narrow === true" class="narrow">
-				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="menu _button" @click="showMenu = true">
+				<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="menu _button" @click="showMenu = true">
 					<i class="ti ti-menu-2 icon"></i>
 				</button>
 			</div>
@@ -59,8 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkA to="/play" class="link" activeClass="active"><i class="ti ti-player-play icon"></i>Play</MkA>
 			<MkA to="/gallery" class="link" activeClass="active"><i class="ti ti-icons icon"></i>{{ i18n.ts.gallery }}</MkA>
 			<div class="action">
-				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
-				<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" @click="signin()">{{ i18n.ts.login }}</button>
+				<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_buttonPrimary" @click="signup()">{{ i18n.ts.signup }}</button>
+				<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" @click="signin()">{{ i18n.ts.login }}</button>
 			</div>
 		</div>
 	</Transition>
@@ -70,19 +70,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, provide, ref, computed } from 'vue';
-import * as Misskey from 'cherrypick-js';
 import { instanceName } from '@@/js/config.js';
 import XCommon from './_common_/common.vue';
-import type { PageMetadata } from '@/scripts/page-metadata.js';
+import type { PageMetadata } from '@/page.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import XSigninDialog from '@/components/MkSigninDialog.vue';
 import XSignupDialog from '@/components/MkSignupDialog.vue';
-import { ColdDeviceStorage, defaultStore } from '@/store.js';
-import { provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
+import { provideMetadataReceiver, provideReactiveMetadata } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import MkVisitorDashboard from '@/components/MkVisitorDashboard.vue';
 import { mainRouter } from '@/router/main.js';
+import { DI } from '@/di.js';
 
 const isRoot = computed(() => mainRouter.currentRoute.value.name === 'index');
 
@@ -90,7 +89,7 @@ const DESKTOP_THRESHOLD = 1100;
 
 const pageMetadata = ref<null | PageMetadata>(null);
 
-provide('router', mainRouter);
+provide(DI.router, mainRouter);
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
 	pageMetadata.value = info;
@@ -117,10 +116,6 @@ const narrow = ref(window.innerWidth < 1280);
 
 const keymap = computed(() => {
 	return {
-		'd': () => {
-			if (ColdDeviceStorage.get('syncDeviceDarkMode')) return;
-			defaultStore.set('darkMode', !defaultStore.state.darkMode);
-		},
 		's': () => {
 			mainRouter.push('/search');
 		},

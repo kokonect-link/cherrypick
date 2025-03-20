@@ -21,7 +21,6 @@ export type Keys = (
 	'drafts' |
 	'hashtags' |
 	'wallpaper' |
-	'theme' |
 	'colorScheme' |
 	'useSystemFont' |
 	'fontSize' |
@@ -30,13 +29,18 @@ export type Keys = (
 	'ui_temp' |
 	'locale' |
 	'localeVersion' |
+	'theme' |
+	'themeId' |
 	'customCss' |
 	'message_drafts' |
 	'scratchpad' |
 	'debug' |
+	'preferences' |
+	'latestPreferencesUpdate' |
+	'hidePreferencesRestoreSuggestion' |
 	`miux:${string}` |
 	`ui:folder:${string}` |
-	`themes:${string}` |
+	`themes:${string}` | // DEPRECATED
 	`aiscript:${string}` |
 	`aiscriptSecure:${string}` |
 	'lastEmojisFetchedAt' | // DEPRECATED, stored in indexeddb (13.9.0~)

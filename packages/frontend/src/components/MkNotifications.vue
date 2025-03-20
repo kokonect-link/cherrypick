@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 
 		<template #default="{ items: notifications }">
-			<MkDateSeparatedList v-slot="{ item: notification }" :class="$style.list" :items="notifications" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline || mainRouter.currentRoute.value.name !== 'my-notifications'">
+			<MkDateSeparatedList v-slot="{ item: notification }" :class="$style.list" :items="notifications" :noGap="!prefer.s.showGapBetweenNotesInTimeline || mainRouter.currentRoute.value.name !== 'my-notifications'">
 				<MkNote v-if="['reply', 'quote', 'mention'].includes(notification.type)" :key="notification.id + ':note'" :note="notification.note" :withHardMute="true" :notification="true"/>
 				<XNotification v-else :key="notification.id" :notification="notification" :withTime="true" :full="true" class="_panel"/>
 			</MkDateSeparatedList>
@@ -34,9 +34,9 @@ import MkNote from '@/components/MkNote.vue';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import { infoImageUrl } from '@/instance.js';
-import { defaultStore } from '@/store.js';
-import { mainRouter } from '@/router/main.js';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
+import { prefer } from '@/preferences.js';
+import { mainRouter } from '@/router/main.js';
 import { globalEvents } from '@/events.js';
 
 const props = defineProps<{
@@ -46,13 +46,7 @@ const props = defineProps<{
 
 const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
 
-const pagination = computed(() => props.notUseGrouped ? {
-	endpoint: 'i/notifications' as const,
-	limit: 20,
-	params: computed(() => ({
-		excludeTypes: props.excludeTypes ?? undefined,
-	})),
-} : defaultStore.reactiveState.useGroupedNotifications.value ? {
+const pagination = computed(() => prefer.r.useGroupedNotifications.value && !props.notUseGrouped ? {
 	endpoint: 'i/notifications-grouped' as const,
 	limit: 20,
 	params: computed(() => ({

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkModal ref="modal" v-slot="{ type }" :zPriority="'high'" :src="src" @click="modal?.close()" @closed="emit('closed')" @esc="modal?.close()">
-	<div :class="{ [$style.root]: true, [$style.asDrawer]: type === 'drawer', _popup: !defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur, _popupAcrylic: defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }">
+	<div :class="{ [$style.root]: true, [$style.asDrawer]: type === 'drawer', _popup: !prefer.s.useBlurEffect || !prefer.s.useBlurEffectForModal || !prefer.s.removeModalBgColorForBlur, _popupAcrylic: prefer.s.useBlurEffect && prefer.s.useBlurEffectForModal && prefer.s.removeModalBgColorForBlur }">
 		<div :class="[$style.label, $style.item]">
 			{{ i18n.ts.visibility }}
 		</div>
@@ -54,7 +54,7 @@ import MkModal from '@/components/MkModal.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkDivider from '@/components/MkDivider.vue';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const modal = shallowRef<InstanceType<typeof MkModal>>();
 
@@ -72,7 +72,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const rememberNoteVisibility = computed(defaultStore.makeGetterSetter('rememberNoteVisibility'));
+const rememberNoteVisibility = prefer.model('rememberNoteVisibility');
 
 const v = ref(props.currentVisibility);
 

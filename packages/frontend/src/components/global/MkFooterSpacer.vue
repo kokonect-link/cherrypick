@@ -4,11 +4,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="[$style.spacer, defaultStore.reactiveState.darkMode.value && !disableBackground ? $style.dark : !disableBackground ? $style.light : '']"></div>
+<div :class="[$style.spacer, store.r.darkMode.value && !disableBackground ? $style.dark : !disableBackground ? $style.light : '']"></div>
 </template>
 
 <script lang="ts" setup>
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
 const props = defineProps<{
 	disableBackground?: boolean;

@@ -23,7 +23,7 @@ import type { Ref } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 
 export type ApQueueDomain = 'deliver' | 'inbox';
@@ -71,7 +71,7 @@ const headerTabs = computed(() => [{
 	title: 'Inbox',
 }] as Tab[]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.jobQueue,
 	icon: 'ti ti-clock-play',
 }));

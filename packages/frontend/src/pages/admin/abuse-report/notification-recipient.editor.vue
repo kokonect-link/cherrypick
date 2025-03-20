@@ -78,7 +78,7 @@ import MkButton from '@/components/MkButton.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import { i18n } from '@/i18n.js';
 import MkInput from '@/components/MkInput.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import MkSelect from '@/components/MkSelect.vue';
 import { showSystemWebhookEditorDialog } from '@/components/MkSystemWebhookEditor.impl.js';
 import MkSwitch from '@/components/MkSwitch.vue';

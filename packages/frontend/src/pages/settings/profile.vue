@@ -161,24 +161,25 @@ import MkSelect from '@/components/MkSelect.vue';
 import FormSplit from '@/components/form/split.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import FormSlot from '@/components/form/slot.vue';
-import { selectFile } from '@/scripts/select-file.js';
+import { selectFile } from '@/utility/select-file.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { signinRequired } from '@/account.js';
-import { langmap } from '@/scripts/langmap.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { claimAchievement } from '@/scripts/achievements.js';
-import { defaultStore } from '@/store.js';
+import { langmap } from '@/utility/langmap.js';
+import { definePage } from '@/page.js';
+import { claimAchievement } from '@/utility/achievements.js';
+import { store } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import MkInfo from '@/components/MkInfo.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { reloadAsk } from '@/scripts/reload-ask.js';
+import { reloadAsk } from '@/utility/reload-ask.js';
+import { prefer } from '@/preferences.js';
 
 const $i = signinRequired();
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
-const reactionAcceptance = computed(defaultStore.makeGetterSetter('reactionAcceptance'));
+const reactionAcceptance = computed(store.makeGetterSetter('reactionAcceptance'));
 
 function assertVaildLang(lang: string | null): lang is keyof typeof langmap {
 	return lang != null && lang in langmap;
@@ -258,15 +259,15 @@ function save() {
 	if (profile.name === 'noridev' || profile.name === 'NoriDev' || profile.name === '노리' || profile.name === '노리데브') {
 		claimAchievement('setNameToNoriDev');
 	}
-	if (profile.isCat && defaultStore.state.renameTheButtonInPostFormToNya) {
+	if (profile.isCat && prefer.s.renameTheButtonInPostFormToNya) {
 		claimAchievement('markedAsCat');
-	} else if (profile.isCat && !defaultStore.state.renameTheButtonInPostFormToNya) {
+	} else if (profile.isCat && !prefer.s.renameTheButtonInPostFormToNya) {
 		claimAchievement('markedAsCat');
-		defaultStore.set('renameTheButtonInPostFormToNya', true);
-		defaultStore.set('renameTheButtonInPostFormToNyaManualSet', false);
+		prefer.commit('renameTheButtonInPostFormToNya', true);
+		prefer.commit('renameTheButtonInPostFormToNyaManualSet', false);
 		reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
-	} else if (!profile.isCat && !defaultStore.state.renameTheButtonInPostFormToNyaManualSet) {
-		defaultStore.set('renameTheButtonInPostFormToNya', false);
+	} else if (!profile.isCat && !prefer.s.renameTheButtonInPostFormToNyaManualSet) {
+		prefer.commit('renameTheButtonInPostFormToNya', false);
 		reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 	}
 }
@@ -328,7 +329,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.profile,
 	icon: 'ti ti-user',
 }));

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl">
-	<div ref="headerEl" :class="[$style.header, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && (mainRouter.currentRoute.value.name !== 'index' || !isFriendly), [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' && isFriendly }]">
+	<div ref="headerEl" :class="[$style.header, {[$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && (mainRouter.currentRoute.value.name !== 'index' || !isFriendly), [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' && isFriendly }]">
 		<slot name="header"></slot>
 	</div>
 	<div
@@ -25,13 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, provide, inject, ref, watch, useTemplateRef } from 'vue';
 import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@@/js/const.js';
 import type { Ref } from 'vue';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import { mainRouter } from '@/router/main.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { globalEvents } from '@/events.js';
-import { miLocalStorage } from '@/local-storage.js';
+import { isFriendly } from '@/utility/is-friendly.js';
 
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
 

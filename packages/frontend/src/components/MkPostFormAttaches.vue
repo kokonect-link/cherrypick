@@ -36,12 +36,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { defineAsyncComponent, inject } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { MenuItem } from '@/types/menu.js';
-import { defaultStore } from '@/store.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
+import { prefer } from '@/preferences.js';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -198,7 +198,7 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent | Keyboar
 		action: () => { detachAndDeleteMedia(file); },
 	});
 
-	if (defaultStore.state.devMode) {
+	if (prefer.s.devMode) {
 		menuItems.push({ type: 'divider' }, {
 			icon: 'ti ti-id',
 			text: i18n.ts.copyFileId,

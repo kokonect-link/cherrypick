@@ -59,13 +59,13 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkRadios from '@/components/MkRadios.vue';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
-const animatedMfm = computed(defaultStore.makeGetterSetter('animatedMfm'));
-const advancedMfm = computed(defaultStore.makeGetterSetter('advancedMfm'));
-const disableShowingAnimatedImages = computed(defaultStore.makeGetterSetter('disableShowingAnimatedImages'));
-const emojiStyle = computed(defaultStore.makeGetterSetter('emojiStyle'));
-const showingAnimatedImages = computed(defaultStore.makeGetterSetter('showingAnimatedImages'));
+const animatedMfm = prefer.model('animatedMfm');
+const advancedMfm = prefer.model('advancedMfm');
+const disableShowingAnimatedImages = prefer.model('disableShowingAnimatedImages');
+const emojiStyle = prefer.model('emojiStyle');
+const showingAnimatedImages = prefer.model('showingAnimatedImages');
 </script>
 
 <style lang="scss" module>

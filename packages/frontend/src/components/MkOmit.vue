@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div ref="content" :class="[$style.content, { [$style.omitted]: omitted }]">
 	<slot></slot>
-	<button v-if="omitted" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
+	<button v-if="omitted" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.fade" class="_button" @click="() => { ignoreOmit = true; omitted = false; }">
 		<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 	</button>
 </div>
@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, onUnmounted, shallowRef, ref } from 'vue';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{

@@ -34,7 +34,7 @@ import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 
 const props = defineProps<{
 	qrCode: string;

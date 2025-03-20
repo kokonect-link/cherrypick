@@ -11,10 +11,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:hash="user.avatarBlurhash"
 		:cover="true"
 		:onlyAvgColor="true"
-		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
 	<template v-if="showDecoration">
 		<img
@@ -40,9 +40,9 @@ import * as Misskey from 'cherrypick-js';
 import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurhash.js';
 import MkA from '@/components/global/MkA.vue';
 import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;
@@ -63,18 +63,18 @@ const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;
 }>();
 
-const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
+const showDecoration = props.forceShowDecoration || prefer.s.showAvatarDecorations;
 
 const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
 	: {});
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (props.user.avatarUrl == null) return null;
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
 	return props.user.avatarUrl;
 });
 
@@ -84,7 +84,7 @@ function onClick(ev: MouseEvent): void {
 }
 
 function getDecorationUrl(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(decoration.url);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(decoration.url);
 	return decoration.url;
 }
 
@@ -130,7 +130,7 @@ watch(() => props.user.avatarBlurhash, () => {
 });
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -138,7 +138,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);

@@ -48,10 +48,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue';
 import { fetchWeatherApi } from 'openmeteo';
 import { Chart, registerables } from 'chart.js';
-import { chartVLine } from '@/scripts/chart-vline.js';
+import { chartVLine } from '@/utility/chart-vline.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	latitude?: number;
@@ -211,12 +211,12 @@ function createPressureChart() {
 		weatherData.value.hourly.surfacePressure.slice(startIndex, endIndex),
 	);
 
-	const vLineColor = defaultStore.state.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+	const vLineColor = store.s.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
 	if (pressureChart) pressureChart.destroy();
 
 	Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--MI_THEME-fg');
-	Chart.defaults.borderColor = defaultStore.state.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+	Chart.defaults.borderColor = store.s.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
 	pressureChart = new Chart(pressureChartEl.value, {
 		type: 'line',

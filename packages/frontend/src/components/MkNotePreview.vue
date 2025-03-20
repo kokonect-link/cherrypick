@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.root">
-	<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote && showProfile" :class="$style.avatar" :user="user"/>
+	<MkAvatar v-if="!prefer.s.hideAvatarsInNote && showProfile" :class="$style.avatar" :user="user"/>
 	<div :class="$style.main">
 		<div v-if="showProfile" :class="$style.header">
 			<MkUserName :user="user" :nowrap="true"/>
@@ -28,7 +28,7 @@ import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const showContent = ref(false);
 
@@ -42,7 +42,7 @@ const props = defineProps<{
 	showProfile?: boolean;
 }>();
 
-if (defaultStore.state.alwaysShowCw) showContent.value = true;
+if (prefer.s.alwaysShowCw) showContent.value = true;
 </script>
 
 <style lang="scss" module>

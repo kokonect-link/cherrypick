@@ -10,6 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
 		<template #header>
 			<div v-if="!showEl2">
+				<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
 				<XAnnouncements v-if="$i"/>
 				<XStatusBars :class="$style.statusbars"/>
 			</div>
@@ -18,42 +19,42 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
 	</MkStickyContainer>
 
-	<div v-if="isDesktop && defaultStore.state.friendlyUiEnableNotificationsArea && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+	<div v-if="isDesktop && prefer.s.friendlyUiEnableNotificationsArea && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
 		<XNotifications disableRefreshButton/>
 	</div>
 
-	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.enableWidgetsArea" :class="$style.widgets">
+	<div v-if="isDesktop && !pageMetadata?.needWideArea && prefer.s.enableWidgetsArea" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
 
-	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
 
-	<button v-if="(!isDesktop && !pageMetadata?.needWideArea) && !isMobile" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
+	<button v-if="(!isDesktop && !pageMetadata?.needWideArea) && !isMobile" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
-	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: bg }">
-		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button> -->
-		<button v-if="defaultStore.state.showHomeButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="isRoot ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome" class="_blink"><i class="_indicatorCircle"></i></span></button>
-		<button v-if="defaultStore.state.showExploreButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
-		<button v-if="defaultStore.state.showSearchButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'search' ? top() : mainRouter.push('/search')"><i :class="$style.navButtonIcon" class="ti ti-search"></i></button>
-		<button v-if="defaultStore.state.showNotificationButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')">
+	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" :style="{ background: bg }">
+		<!-- <button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button> -->
+		<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="isRoot ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome" class="_blink"><i class="_indicatorCircle"></i></span></button>
+		<button v-if="store.s.showExploreButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
+		<button v-if="store.s.showSearchButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'search' ? top() : mainRouter.push('/search')"><i :class="$style.navButtonIcon" class="ti ti-search"></i></button>
+		<button v-if="store.s.showNotificationButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')">
 			<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator" class="_blink">
-				<span v-if="defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
+				<span v-if="prefer.s.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
 				<i v-else class="_indicatorCircle"></i>
 			</span>
 		</button>
-		<button v-if="defaultStore.state.showMessageButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
-		<button v-if="defaultStore.state.showWidgetButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
-		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
+		<button v-if="store.s.showMessageButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
+		<button v-if="store.s.showWidgetButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
+		<!-- <button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
 	</div>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_menuDrawerBg_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="drawerMenuShowing"
@@ -65,10 +66,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_menuDrawer_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_menuDrawer_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_menuDrawer_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_menuDrawer_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_menuDrawer_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_menuDrawer_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_menuDrawer_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_menuDrawer_leaveTo : ''"
 	>
 		<div v-if="drawerMenuShowing" :class="$style.menuDrawer">
 			<XDrawerMenu/>
@@ -76,10 +77,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="widgetsShowing"
@@ -91,10 +92,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_widgetsDrawer_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
 	>
 		<div v-if="widgetsShowing" :class="$style.widgetsDrawer">
 			<button class="_button" :class="$style.widgetsCloseButton" @click="widgetsShowing = false"><i class="ti ti-x"></i></button>
@@ -114,18 +115,21 @@ import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
 import { isLink } from '@@/js/is-link.js';
 import type { Ref } from 'vue';
 import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
-import type { PageMetadata } from '@/scripts/page-metadata.js';
+import type { PageMetadata } from '@/page.js';
 import XCommon from '@/ui/_common_/common.vue';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os.js';
-import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { provideMetadataReceiver, provideReactiveMetadata } from '@/page.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { useScrollPositionManager } from '@/nirax.js';
 import { mainRouter } from '@/router/main.js';
+import { store } from '@/store.js';
+import { prefer } from '@/preferences.js';
+import { shouldSuggestRestoreBackup } from '@/preferences/utility.js';
+import { DI } from '@/di.js';
 import { globalEvents } from '@/events.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
@@ -134,6 +138,7 @@ const XNotifications = defineAsyncComponent(() => import('@/pages/notifications-
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
+const XPreferenceRestore = defineAsyncComponent(() => import('@/ui/_common_/PreferenceRestore.vue'));
 
 miLocalStorage.setItem('ui', 'friendly');
 
@@ -177,7 +182,7 @@ const widgetsShowing = ref(false);
 const navFooter = shallowRef<HTMLElement>();
 const contents = shallowRef<InstanceType<typeof MkStickyContainer>>();
 
-provide('router', mainRouter);
+provide(DI.router, mainRouter);
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
 	pageMetadata.value = info;
@@ -216,24 +221,22 @@ if (window.innerWidth > 1024) {
 	}
 }
 
-defaultStore.loaded.then(() => {
-	if (defaultStore.state.widgets.length === 0) {
-		defaultStore.set('widgets', [{
-			name: 'calendar',
-			id: 'a', place: 'right', data: {},
-		}, {
-			name: 'trends',
-			id: 'b', place: 'right', data: {},
-		}]);
-	}
-});
+if (prefer.s.widgets.length === 0) {
+	prefer.commit('widgets', [{
+		name: 'calendar',
+		id: 'a', place: 'right', data: {},
+	}, {
+		name: 'trends',
+		id: 'b', place: 'right', data: {},
+	}]);
+}
 
 const calcBg = () => {
 	const rawBg = 'var(--MI_THEME-panel)';
 	const rawPostBg = 'var(--MI_THEME-accent)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
-	if (defaultStore.state.useBlurEffect) {
+	if (prefer.s.useBlurEffect) {
 		tinyBg.setAlpha(0.7);
 		tinyPostBg.setAlpha(0.7);
 	} else {
@@ -319,7 +322,7 @@ function queueUpdated(q: number): void {
 }
 
 function openAccountMenu(ev: TouchEvent) {
-	if (defaultStore.state.enableLongPressOpenAccountMenu) {
+	if (prefer.s.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
 		setTimeout(() => {
 			if (longTouchNavHome.value === true) {

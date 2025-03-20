@@ -36,8 +36,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { nextTick, onMounted, shallowRef } from 'vue';
-import { vibrate } from '@/scripts/vibrate.js';
-import { defaultStore } from '@/store.js';
+import { vibrate } from '@/utility/vibrate.js';
+import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
 	type?: 'button' | 'submit' | 'reset';
@@ -106,7 +106,7 @@ function onMousedown(evt: MouseEvent): void {
 
 	const scale = calcCircleScale(target.clientWidth, target.clientHeight, circleCenterX, circleCenterY);
 
-	vibrate(defaultStore.state.vibrateSystem ? 10 : []);
+	vibrate(prefer.s['vibrate.on.system'] ? 10 : []);
 
 	window.setTimeout(() => {
 		ripple.style.transform = 'scale(' + (scale / 2) + ')';

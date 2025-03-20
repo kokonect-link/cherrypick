@@ -9,20 +9,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="['all', 'bg'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 		<div :class="$style.top">
 			<div v-if="['all', 'topBottom', 'top'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="instance.name ?? i18n.ts.instance" class="_button" :class="$style.instance" @click="openInstanceMenu">
-				<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon"/>
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.right="instance.name ?? i18n.ts.instance" class="_button" :class="$style.instance" @click="openInstanceMenu">
+				<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon" style="viewTransitionName: navbar-serverIcon;"/>
 			</button>
 		</div>
 		<div :class="$style.middle">
 			<MkA v-tooltip.noDelay.right="i18n.ts.timeline" :class="$style.item" :activeClass="$style.active" to="/" exact>
-				<i :class="$style.itemIcon" class="ti ti-home ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.timeline }}</span>
+				<i :class="$style.itemIcon" class="ti ti-home ti-fw" style="viewTransitionName: navbar-homeIcon;"></i><span :class="$style.itemText">{{ i18n.ts.timeline }}</span>
 			</MkA>
 			<template v-for="item in menu">
 				<div v-if="item === '-'" :class="$style.divider"></div>
 				<component
 					:is="navbarItemDef[item].to ? 'MkA' : 'button'"
 					v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)"
-					v-vibrate="defaultStore.state.vibrateSystem ? 5 : []"
+					v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
 					v-tooltip.noDelay.right="navbarItemDef[item].title"
 					class="_button"
 					:class="[$style.item, { [$style.active]: navbarItemDef[item].active }]"
@@ -30,39 +30,39 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:to="navbarItemDef[item].to"
 					v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}"
 				>
-					<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
+					<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]" :style="{ viewTransitionName: 'navbar-item-' + item }"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
 					<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator" class="_blink">
-						<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
+						<span v-if="navbarItemDef[item].indicateValue && prefer.s.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
 						<i v-else class="_indicatorCircle"></i>
 					</span>
 				</component>
 			</template>
 			<div :class="$style.divider"></div>
 			<MkA v-if="$i != null && ($i.isAdmin || $i.isModerator)" v-tooltip.noDelay.right="i18n.ts.controlPanel" :class="$style.item" :activeClass="$style.active" to="/admin">
-				<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
+				<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw" style="viewTransitionName: navbar-controlPanel;"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
 				<span v-if="controlPanelIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 			</MkA>
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.item" @click="more">
-				<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="$style.item" @click="more">
+				<i :class="$style.itemIcon" class="ti ti-dots ti-fw" style="viewTransitionName: navbar-more;"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 				<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 			</button>
 			<MkA v-tooltip.noDelay.right="i18n.ts.settings" :class="$style.item" :activeClass="$style.active" to="/settings">
-				<i :class="$style.itemIcon" class="ti ti-settings ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
+				<i :class="$style.itemIcon" class="ti ti-settings ti-fw" style="viewTransitionName: navbar-settings;"></i><span :class="$style.itemText">{{ i18n.ts.settings }}</span>
 			</MkA>
 		</div>
 		<div :class="$style.bottom">
 			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="() => { os.post(); }">
-				<i class="ti ti-fw" :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.right="prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="() => { os.post(); }">
+				<i class="ti ti-fw" :class="[$style.postIcon, prefer.s.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 			</button>
 			<div :class="$style.profile">
-				<button v-if="iconOnly" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
-					<MkAvatar :user="$i" :class="$style.avatar"/>
+				<button v-if="iconOnly" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
+					<MkAvatar :user="$i" :class="$style.avatar" style="viewTransitionName: navbar-avatar;"/>
 				</button>
-				<button v-else-if="$i != null" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openProfile">
-					<MkAvatar :user="$i" :class="$style.avatar"/><MkUserName class="_nowrap" :class="$style.acct" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
+				<button v-else-if="$i != null" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openProfile">
+					<MkAvatar :user="$i" :class="$style.avatar" style="viewTransitionName: navbar-avatar;"/><MkUserName class="_nowrap" :class="$style.acct" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
 				</button>
-				<button v-if="!iconOnly" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="[$style.drawer]" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
+				<button v-if="!iconOnly" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.drawer]" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 			</div>
 		</div>
 	</div>
@@ -104,22 +104,23 @@ import { openInstanceMenu } from '@/ui/_common_/common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { getHTMLElementOrNull } from '@/scripts/get-dom-node-or-null.js';
+import { getHTMLElementOrNull } from '@/utility/get-dom-node-or-null.js';
 import { useRouter } from '@/router/supplier.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { fetchCherrypickReleases } from '@/scripts/fetch-cherrypick-releases.js';
+import { prefer } from '@/preferences.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
 
 const router = useRouter();
 
 const forceIconOnly = ref(window.innerWidth <= 1279);
 const iconOnly = computed(() => {
-	return forceIconOnly.value || (defaultStore.reactiveState.menuDisplay.value === 'sideIcon');
+	return forceIconOnly.value || (store.r.menuDisplay.value === 'sideIcon');
 });
 
-const menu = computed(() => defaultStore.state.menu);
+const menu = computed(() => prefer.s.menu);
 const otherMenuItemIndicated = computed(() => {
 	for (const def in navbarItemDef) {
 		if (menu.value.includes(def)) continue;
@@ -128,7 +129,7 @@ const otherMenuItemIndicated = computed(() => {
 	return false;
 });
 const controlPanelIndicated = ref(false);
-const bannerDisplay = ref(defaultStore.state.bannerDisplay);
+const bannerDisplay = ref(prefer.s.bannerDisplay);
 
 if ($i && ($i.isAdmin ?? $i.isModerator)) {
 	misskeyApi('admin/abuse-user-reports', {
@@ -149,20 +150,26 @@ function calcViewState() {
 
 window.addEventListener('resize', calcViewState);
 
-watch(defaultStore.reactiveState.menuDisplay, () => {
+watch(store.r.menuDisplay, () => {
 	calcViewState();
 });
 
-watch(defaultStore.reactiveState.bannerDisplay, () => {
+watch(prefer.r.bannerDisplay, () => {
 	toggleBannerDisplay();
 });
 
 function toggleIconOnly() {
-	defaultStore.set('menuDisplay', iconOnly.value ? 'sideFull' : 'sideIcon');
+	if (document.startViewTransition && prefer.s.animation) {
+		document.startViewTransition(() => {
+			store.set('menuDisplay', iconOnly.value ? 'sideFull' : 'sideIcon');
+		});
+	} else {
+		store.set('menuDisplay', iconOnly.value ? 'sideFull' : 'sideIcon');
+	}
 }
 
 function toggleBannerDisplay() {
-	bannerDisplay.value = defaultStore.state.bannerDisplay;
+	bannerDisplay.value = prefer.s.bannerDisplay;
 }
 
 function openAccountMenu(ev: MouseEvent) {

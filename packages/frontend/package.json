@@ -87,7 +87,8 @@
 		"vite": "6.2.1",
 		"vue": "3.5.13",
 		"vue-prism-editor": "2.0.0-alpha.2",
-		"vuedraggable": "next"
+		"vuedraggable": "next",
+		"wanakana": "5.3.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",

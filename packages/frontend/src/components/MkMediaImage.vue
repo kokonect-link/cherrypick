@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :data-is-hidden="hide ? 'true' : 'false'" :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && defaultStore.state.highlightSensitiveMedia) && $style.sensitive]" @click="onClick($event)" @dblclick="onDblClick">
+<div :data-is-hidden="hide ? 'true' : 'false'" :class="[hide ? $style.hidden : $style.visible, (image.isSensitive && prefer.s.highlightSensitiveMedia) && $style.sensitive]" @click="onClick($event)" @dblclick="onDblClick">
 	<component
 		:is="(disableImageLink || hide) ? 'div' : 'a'"
 		v-bind="(disableImageLink || hide) ? {
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<ImgWithBlurhash
 			:hash="image.blurhash"
-			:src="(defaultStore.state.dataSaver.media && hide) ? null : url"
+			:src="(prefer.s.dataSaver.media && hide) ? null : url"
 			:forceBlurhash="hide"
 			:cover="hide || cover"
 			:alt="image.comment || image.name"
@@ -27,17 +27,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:width="image.properties.width"
 			:height="image.properties.height"
 			:style="hide ? 'filter: brightness(0.7);' : null"
-			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		/>
 	</component>
 	<template v-if="hide">
 		<div :class="$style.hiddenText">
 			<div :class="$style.hiddenTextWrapper">
-				<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.dataSaver.media ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
-				<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.dataSaver.media && image.size ? bytes(image.size) : i18n.ts.image }}</b>
+				<b v-if="image.isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ prefer.s.dataSaver.media ? ` (${i18n.ts.image}${image.size ? ' ' + bytes(image.size) : ''})` : '' }}</b>
+				<b v-else style="display: block;"><i class="ti ti-photo"></i> {{ prefer.s.dataSaver.media && image.size ? bytes(image.size) : i18n.ts.image }}</b>
 				<span v-if="controls" style="display: block;">{{ clickToShowMessage }}</span>
 			</div>
 		</div>
@@ -59,14 +59,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, watch, ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { MenuItem } from '@/types/menu.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import bytes from '@/filters/bytes.js';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
-import { defaultStore } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
 import { $i, iAmModerator } from '@/account.js';
+import { prefer } from '@/preferences.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 const props = withDefaults(defineProps<{
@@ -84,19 +84,19 @@ const props = withDefaults(defineProps<{
 const hide = ref(true);
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
-const url = computed(() => (props.raw || defaultStore.state.loadRawImages)
+const url = computed(() => (props.raw || prefer.s.loadRawImages)
 	? props.image.url
-	: (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
+	: (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.media) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(props.image.url)
 		: props.image.thumbnailUrl,
 );
 
-const clickToShowMessage = computed(() => defaultStore.state.nsfwOpenBehavior === 'click'
+const clickToShowMessage = computed(() => prefer.s.nsfwOpenBehavior === 'click'
 	? i18n.ts.clickToShow
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	: defaultStore.state.nsfwOpenBehavior === 'doubleClick'
+	: prefer.s.nsfwOpenBehavior === 'doubleClick'
 		? i18n.ts.doubleClickToShow
 		: '',
 );
@@ -108,7 +108,7 @@ async function onClick(ev: MouseEvent) {
 
 	if (hide.value) {
 		ev.stopPropagation();
-		if (props.image.isSensitive && defaultStore.state.confirmWhenRevealingSensitiveMedia) {
+		if (props.image.isSensitive && prefer.s.confirmWhenRevealingSensitiveMedia) {
 			const { canceled } = await os.confirm({
 				type: 'question',
 				text: i18n.ts.sensitiveMediaRevealConfirm,
@@ -117,13 +117,13 @@ async function onClick(ev: MouseEvent) {
 		}
 	}
 
-	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
-	if (defaultStore.state.nsfwOpenBehavior === 'click') hide.value = false;
+	if (prefer.s.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	if (prefer.s.nsfwOpenBehavior === 'click') hide.value = false;
 }
 
 function onDblClick() {
 	if (!props.controls) return;
-	if (hide.value && defaultStore.state.nsfwOpenBehavior === 'doubleClick') hide.value = false;
+	if (hide.value && prefer.s.nsfwOpenBehavior === 'doubleClick') hide.value = false;
 }
 
 function resetTimer() {
@@ -134,7 +134,7 @@ function resetTimer() {
 
 // Plugin:register_note_view_interruptor を使って書き換えられる可能性があるためwatchする
 watch(() => props.image, () => {
-	hide.value = (defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) ? true : (props.image.isSensitive && defaultStore.state.nsfw !== 'ignore');
+	hide.value = (prefer.s.nsfw === 'force' || prefer.s.dataSaver.media) ? true : (props.image.isSensitive && prefer.s.nsfw !== 'ignore');
 }, {
 	deep: true,
 	immediate: true,
@@ -195,7 +195,7 @@ function showMenu(ev: MouseEvent) {
 		menuItems.push({ type: 'divider' }, ...details);
 	}
 
-	if (defaultStore.state.devMode) {
+	if (prefer.s.devMode) {
 		menuItems.push({ type: 'divider' }, {
 			icon: 'ti ti-id',
 			text: i18n.ts.copyFileId,
@@ -209,7 +209,7 @@ function showMenu(ev: MouseEvent) {
 }
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -217,7 +217,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);

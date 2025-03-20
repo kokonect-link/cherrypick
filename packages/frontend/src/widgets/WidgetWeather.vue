@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, watch } from 'vue';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import MkContainer from '@/components/MkContainer.vue';
 import MkWeather from '@/components/MkWeather.vue';
 

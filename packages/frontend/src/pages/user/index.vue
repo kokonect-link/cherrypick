@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkStickyContainer>
 	<template #header>
-		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
+		<CPPageHeader v-if="isMobile && prefer.s.mobileHeaderChange" v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
 		<MkPageHeader v-else v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
 	</template>
 	<div>
@@ -40,13 +40,13 @@ import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { $i } from '@/account.js';
 import { acct as getAcct } from '@/filters/user.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
-import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { getUserMenu } from '@/utility/get-user-menu.js';
 import { mainRouter } from '@/router/main.js';
-import { defaultStore } from '@/store.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { prefer } from '@/preferences.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { serverContext, assertServerContext } from '@/server-context.js';
 
@@ -171,7 +171,7 @@ function menu(ev) {
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.user,
 	icon: 'ti ti-user',
 	...user.value ? {

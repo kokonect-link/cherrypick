@@ -37,9 +37,9 @@ import * as Misskey from 'cherrypick-js';
 import MkButton from '@/components/MkButton.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { postMessageToParentWindow } from '@/scripts/post-message.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { definePage } from '@/page.js';
+import { postMessageToParentWindow } from '@/utility/post-message.js';
 import { i18n } from '@/i18n.js';
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -192,14 +192,14 @@ function goToMisskey(): void {
 
 function onPosted(): void {
 	state.value = 'posted';
-	postMessageToParentWindow('misskey:shareForm:shareCompleted');
+	postMessageToParentWindow('cherrypick:shareForm:shareCompleted');
 }
 
 const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.share,
 	icon: 'ti ti-share',
 }));

@@ -34,10 +34,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
-import { isTouchUsing } from '@/scripts/touch.js';
+import { isTouchUsing } from '@/utility/touch.js';
 import * as os from '@/os.js';
-import { vibrate } from '@/scripts/vibrate.js';
-import { defaultStore } from '@/store.js';
+import { vibrate } from '@/utility/vibrate.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	modelValue: number;
@@ -139,7 +139,7 @@ function onMouseenter() {
 }
 
 function onMousedown(ev: MouseEvent | TouchEvent) {
-	vibrate(defaultStore.state.vibrateSystem ? 10 : []);
+	vibrate(prefer.s['vibrate.on.system'] ? 10 : []);
 
 	ev.preventDefault();
 

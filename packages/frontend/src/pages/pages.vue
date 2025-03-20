@@ -43,7 +43,7 @@ import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { useRouter } from '@/router/supplier.js';
 import { $i } from '@/account.js';
 
@@ -94,7 +94,7 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-flare',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.pages,
 	icon: 'ti ti-note',
 }));

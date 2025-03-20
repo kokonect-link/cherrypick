@@ -7,6 +7,7 @@ import { EventEmitter } from 'eventemitter3';
 import * as Misskey from 'cherrypick-js';
 
 export const globalEvents = new EventEmitter<{
+	themeChanging: () => void;
 	themeChanged: () => void;
 	clientNotification: (notification: Misskey.entities.Notification) => void;
 	requestClearPageCache: () => void;

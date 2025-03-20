@@ -38,10 +38,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, watch, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { instanceName } from '@@/js/config.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import MkUserList from '@/components/MkUserList.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import { serverErrorImageUrl, infoImageUrl } from '@/instance.js';
@@ -93,7 +92,7 @@ const headerTabs = computed(() => [{
 	title: i18n.ts.timeline,
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: role.value ? role.value.name : (error.value ?? i18n.ts.role),
 	icon: 'ti ti-badge',
 }));

@@ -4,12 +4,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]" :style="{ background: bg }">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ background: bg }">
 	<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
 	<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-		<MkAvatar v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.avatar" :user="$i"/>
+		<MkAvatar v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.avatar" :user="$i"/>
 	</div>
 	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 	<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 	<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 		<template v-for="action in actions">
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
@@ -62,19 +62,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, ref, inject, watch, nextTick, shallowRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
-import type { PageMetadata } from '@/scripts/page-metadata.js';
 import type { PageHeaderItem } from '@/types/page-header.js';
+import type { PageMetadata } from '@/page.js';
 import { globalEvents } from '@/events.js';
-import { injectReactiveMetadata } from '@/scripts/page-metadata.js';
+import { injectReactiveMetadata } from '@/page.js';
 import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { miLocalStorage } from '@/local-storage.js';
 import { mainRouter } from '@/router/main.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
+import { isFriendly } from '@/utility/is-friendly.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
 
 type Tab = {
@@ -220,11 +219,11 @@ onMounted(() => {
 	}
 
 	calcBg();
-	globalEvents.on('themeChanged', calcBg);
+	globalEvents.on('themeChanging', calcBg);
 });
 
 onUnmounted(() => {
-	globalEvents.off('themeChanged', calcBg);
+	globalEvents.off('themeChanging', calcBg);
 	if (ro) ro.disconnect();
 });
 </script>

@@ -29,10 +29,10 @@ import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import MkContainer from '@/components/MkContainer.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
 

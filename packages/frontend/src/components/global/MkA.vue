@@ -4,10 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<a v-if="noteClick" ref="el" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-if="noteClick" ref="el" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
-<a v-else ref="el" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-else ref="el" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
 </template>
@@ -20,10 +20,10 @@ export type MkABehavior = 'window' | 'browser' | null;
 import { computed, inject, shallowRef } from 'vue';
 import { url } from '@@/js/config.js';
 import * as os from '@/os.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import { useRouter } from '@/router/supplier.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	to: string;
