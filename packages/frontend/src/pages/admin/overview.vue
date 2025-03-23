@@ -76,7 +76,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, shallowRef, ref, computed } from 'vue';
+import { markRaw, onMounted, onUnmounted, onBeforeUnmount, nextTick, shallowRef, ref, computed, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
@@ -98,7 +98,7 @@ import { definePage } from '@/page.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 
-const rootEl = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
 const serverInfo = ref<Misskey.entities.ServerInfoResponse | null>(null);
 const topSubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const topPubInstancesForPie = ref<InstanceForPie[] | null>(null);

@@ -65,7 +65,6 @@ function toggleSensitive(file: Misskey.entities.DriveFile) {
 
 function copyUrl(file: Misskey.entities.DriveFile) {
 	copyToClipboard(file.url);
-	os.success();
 }
 
 /*
@@ -150,11 +149,10 @@ export function getDriveFileMenu(file: Misskey.entities.DriveFile, folder?: Miss
 
 	if (prefer.s.devMode) {
 		menuItems.push({ type: 'divider' }, {
-			icon: 'ti ti-id',
+			icon: 'ti ti-hash',
 			text: i18n.ts.copyFileId,
 			action: () => {
 				copyToClipboard(file.id);
-				os.toast(i18n.ts.copied, 'copied');
 			},
 		});
 	}

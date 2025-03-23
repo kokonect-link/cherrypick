@@ -95,6 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:emojiUrls="appearNote.emojis"
 						:enableEmojiMenu="!!$i"
 						:enableEmojiMenuReaction="!!$i"
+						class="_selectable"
 					/>
 					<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--MI_THEME-accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
@@ -111,6 +112,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								:emojiUrls="appearNote.emojis"
 								:enableEmojiMenu="!!$i"
 								:enableEmojiMenuReaction="!!$i"
+								class="_selectable"
 								@click.stop
 							/>
 							<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis" :class="$style.poll" isTranslation @click.stop/>
@@ -240,12 +242,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, shallowRef, watch, provide } from 'vue';
+import { computed, inject, onMounted, ref, useTemplateRef, watch, provide } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { isLink } from '@@/js/is-link.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { host } from '@@/js/config.js';
+import { concat } from '@@/js/array.js';
+import { toUnicode } from 'punycode.js';
 import type { Ref } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
 import type { OpenOnRemoteOptions } from '@/utility/please-login.js';
@@ -271,12 +275,12 @@ import * as sound from '@/utility/sound.js';
 import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
 import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { getAbuseNoteMenu, getCopyNoteLinkMenu, getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly, getQuoteMenu } from '@/utility/get-note-menu.js';
-import { useNoteCapture } from '@/utility/use-note-capture.js';
+import { useNoteCapture } from '@/use/use-note-capture.js';
 import { deepClone } from '@/utility/clone.js';
-import { useTooltip } from '@/utility/use-tooltip.js';
+import { useTooltip } from '@/use/use-tooltip.js';
 import { claimAchievement } from '@/utility/achievements.js';
 import { getNoteSummary } from '@/utility/get-note-summary.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
@@ -286,13 +290,12 @@ import { focusPrev, focusNext } from '@/utility/focus.js';
 import { getAppearNote } from '@/utility/get-appear-note.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
+import { DI } from '@/di.js';
 import { globalEvents } from '@/events.js';
-import { mainRouter } from '@/router/main.js';
-import { useRouter } from '@/router/supplier.js';
+import { mainRouter } from '@/router.js';
+import { useRouter } from '@/router.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { vibrate } from '@/utility/vibrate.js';
-import { concat } from '@@/js/array.js';
-import { toUnicode } from 'punycode.js';
 import { store } from '@/store.js';
 import detectLanguage from '@/utility/detect-language.js';
 
@@ -309,7 +312,7 @@ const props = withDefaults(defineProps<{
 	mock: false,
 });
 
-provide('mock', props.mock);
+provide(DI.mock, props.mock);
 
 const emit = defineEmits<{
 	(ev: 'reaction', emoji: string): void;
@@ -345,16 +348,16 @@ if (noteViewInterruptors.length > 0) {
 
 const isRenote = Misskey.note.isPureRenote(note.value);
 
-const rootEl = shallowRef<HTMLElement>();
-const menuButton = shallowRef<HTMLElement>();
-const renoteButton = shallowRef<HTMLElement>();
-const renoteTime = shallowRef<HTMLElement>();
-const reactButton = shallowRef<HTMLElement>();
-const heartReactButton = shallowRef<HTMLElement>();
-const quoteButton = shallowRef<HTMLElement>();
-const clipButton = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
+const menuButton = useTemplateRef('menuButton');
+const renoteButton = useTemplateRef('renoteButton');
+const renoteTime = useTemplateRef('renoteTime');
+const reactButton = useTemplateRef('reactButton');
+const heartReactButton = useTemplateRef('heartReactButton');
+const quoteButton = useTemplateRef('quoteButton');
+const clipButton = useTemplateRef('clipButton');
 const appearNote = computed(() => getAppearNote(note.value));
-const galleryEl = shallowRef<InstanceType<typeof MkMediaList>>();
+const galleryEl = useTemplateRef('galleryEl');
 const isMyRenote = $i && ($i.id === note.value.userId);
 const showContent = ref(false);
 const parsed = computed(() => appearNote.value.text ? mfm.parse(appearNote.value.text) : null);

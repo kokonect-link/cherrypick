@@ -71,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, shallowRef, toRefs } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, toRefs } from 'vue';
 import { entities } from 'cherrypick-js';
 import type { MkSystemWebhookResult } from '@/components/MkSystemWebhookEditor.impl.js';
 import MkButton from '@/components/MkButton.vue';
@@ -100,7 +100,7 @@ const props = defineProps<{
 
 const { mode, id } = toRefs(props);
 
-const dialogEl = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialogEl = useTemplateRef('dialogEl');
 
 const loading = ref<number>(0);
 

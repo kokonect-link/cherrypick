@@ -58,7 +58,7 @@ import MkAvatar from '@/components/global/MkAvatar.vue';
 import MkTime from '@/components/global/MkTime.vue';
 import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 
 const props = defineProps<{

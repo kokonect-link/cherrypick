@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, shallowRef } from 'vue';
+import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
@@ -47,9 +47,9 @@ const props = defineProps<{
 	disableRightClick?: boolean;
 }>();
 
-const gallery = shallowRef<HTMLDivElement>();
+const gallery = useTemplateRef('gallery');
 const pswpZIndex = os.claimZIndex('middle');
-document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
+window.document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
 const count = computed(() => props.mediaList.filter(media => previewable(media)).length);
 let lightbox: PhotoSwipeLightbox | null = null;
 
@@ -176,7 +176,7 @@ onMounted(() => {
 			className: 'pswp__alt-text-container',
 			appendTo: 'wrapper',
 			onInit: (el, pswp) => {
-				const textBox = document.createElement('p');
+				const textBox = window.document.createElement('p');
 				textBox.className = 'pswp__alt-text _acrylic';
 				el.appendChild(textBox);
 
@@ -207,12 +207,12 @@ onMounted(() => {
 	});
 
 	lightbox.on('afterInit', () => {
-		activeEl = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		activeEl = window.document.activeElement instanceof HTMLElement ? window.document.activeElement : null;
 		focusParent(activeEl, true, true);
 		lightbox?.pswp?.element?.focus({
 			preventScroll: true,
 		});
-		history.pushState(null, '', '#pswp');
+		window.history.pushState(null, '', '#pswp');
 
 		if (props.disableRightClick) document.addEventListener('contextmenu', preventRightClick);
 	});
@@ -221,7 +221,7 @@ onMounted(() => {
 		focusParent(activeEl, true, false);
 		activeEl = null;
 		if (window.location.hash === '#pswp') {
-			history.back();
+			window.history.back();
 		}
 
 		if (props.disableRightClick) document.removeEventListener('contextmenu', preventRightClick);

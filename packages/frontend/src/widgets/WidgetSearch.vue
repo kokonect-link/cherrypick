@@ -24,7 +24,7 @@ import MkContainer from '@/components/MkContainer.vue';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import * as os from '@/os.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 
 const name = 'search';
 

@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { defineAsyncComponent, ref } from 'vue';
 import { url as local } from '@@/js/config.js';
 import type { MkABehavior } from '@/components/global/MkA.vue';
-import { useTooltip } from '@/utility/use-tooltip.js';
+import { useTooltip } from '@/use/use-tooltip.js';
 import * as os from '@/os.js';
 import { isEnabledUrlPreview } from '@/instance.js';
 import { warningExternalWebsite } from '@/utility/warning-external-website.js';

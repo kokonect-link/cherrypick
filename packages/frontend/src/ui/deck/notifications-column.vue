@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, shallowRef } from 'vue';
+import { defineAsyncComponent, useTemplateRef } from 'vue';
 import XColumn from './column.vue';
 import type { Column } from '@/deck.js';
 import { updateColumn } from '@/deck.js';
@@ -25,7 +25,7 @@ const props = defineProps<{
 	isStacked: boolean;
 }>();
 
-const notificationsComponent = shallowRef<InstanceType<typeof XNotifications>>();
+const notificationsComponent = useTemplateRef('notificationsComponent');
 
 function func() {
 	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkNotificationSelectWindow.vue')), {

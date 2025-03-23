@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, shallowRef, ref, computed } from 'vue';
+import { nextTick, useTemplateRef, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModal from '@/components/MkModal.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -56,7 +56,7 @@ import MkDivider from '@/components/MkDivider.vue';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
+const modal = useTemplateRef('modal');
 
 const props = withDefaults(defineProps<{
 	currentVisibility: typeof Misskey.noteVisibilities[number];

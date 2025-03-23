@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
 		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
-	<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
+	<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly().value" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 		<MkAvatar v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.avatar" :user="$i"/>
 	</div>
 	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
@@ -59,15 +59,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, watch, nextTick, shallowRef, computed } from 'vue';
+import { onMounted, onUnmounted, ref, inject, watch, nextTick, useTemplateRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import type { PageHeaderItem } from '@/types/page-header.js';
 import type { PageMetadata } from '@/page.js';
 import { globalEvents } from '@/events.js';
-import { injectReactiveMetadata } from '@/page.js';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { mainRouter } from '@/router/main.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { $i } from '@/i.js';
+import { DI } from '@/di.js';
+import { mainRouter } from '@/router.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
@@ -101,15 +102,17 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const injectedPageMetadata = injectReactiveMetadata();
+const viewId = inject(DI.viewId);
+const viewTransitionName = computed(() => `${viewId}---pageHeader`);
+const injectedPageMetadata = inject(DI.pageMetadata);
 const pageMetadata = computed(() => props.overridePageMetadata ?? injectedPageMetadata.value);
 
 const hideTitle = computed(() => false);
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-const el = shallowRef<HTMLElement | undefined>(undefined);
+const el = useTemplateRef('el');
 const tabRefs: Record<string, HTMLElement | null> = {};
-const tabHighlightEl = shallowRef<HTMLElement | null>(null);
+const tabHighlightEl = useTemplateRef('tabHighlightEl');
 const bg = ref<string | undefined>(undefined);
 const narrow = ref(false);
 const hasTabs = computed(() => props.tabs.length > 0);
@@ -147,7 +150,7 @@ const top = (ev: MouseEvent) => {
 			text: i18n.ts.reload,
 			icon: 'ti ti-refresh',
 			action: () => {
-				location.reload();
+				window.location.reload();
 			},
 		}], ev.currentTarget ?? ev.target);
 	}
@@ -178,12 +181,12 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 }
 
 function goBack() {
-	history.back();
+	window.history.back();
 }
 
 const calcBg = () => {
 	const rawBg = 'var(--MI_THEME-bg)';
-	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	if (narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
@@ -208,10 +211,10 @@ onMounted(() => {
 		immediate: true,
 	});
 
-	if (el.value?.parentElement) {
+	if (el.value && el.value.parentElement) {
 		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el.value?.parentElement && document.body.contains(el.value as HTMLElement)) {
+			if (el.value && el.value.parentElement && window.document.body.contains(el.value as HTMLElement)) {
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
@@ -238,6 +241,7 @@ onUnmounted(() => {
 	border-bottom: solid 0.5px var(--MI_THEME-divider);
 	contain: strict;
 	height: var(--height);
+	view-transition-name: v-bind(viewTransitionName);
 
 	&.thin {
 		--height: 42px;

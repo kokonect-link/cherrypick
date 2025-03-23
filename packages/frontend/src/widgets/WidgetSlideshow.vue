@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
 import { useWidgetPropsManager } from './widget.js';
@@ -54,8 +54,8 @@ const { widgetProps, configure, save } = useWidgetPropsManager(name,
 
 const images = ref<Misskey.entities.DriveFile[]>([]);
 const fetching = ref(true);
-const slideA = shallowRef<HTMLElement>();
-const slideB = shallowRef<HTMLElement>();
+const slideA = useTemplateRef('slideA');
+const slideB = useTemplateRef('slideB');
 
 const change = () => {
 	if (images.value.length === 0) return;

@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkPagination ref="pagingEl" :pagination="paging">
 			<template #empty>
 				<div class="_fullinfo">
-					<img :src="infoImageUrl" class="_ghost"/>
+					<img :src="infoImageUrl" draggable="false"/>
 					<div>{{ i18n.ts._drafts.noDrafts }}</div>
 				</div>
 			</template>
@@ -93,7 +93,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, useTemplateRef } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -119,7 +119,7 @@ const paging = {
 const pagingComponent = useTemplateRef('pagingEl');
 
 const selected = ref<Misskey.entities.NoteDraft | null>(null);
-const dialogEl = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialogEl = useTemplateRef('dialogEl');
 
 let lockId: string | null = null;
 let lockTimer: number | null = null;

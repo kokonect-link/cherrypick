@@ -8,10 +8,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef } from 'vue';
+import { onMounted, useTemplateRef } from 'vue';
 import { Chart } from 'chart.js';
 import { store } from '@/store.js';
-import { useChartTooltip } from '@/utility/use-chart-tooltip.js';
+import { useChartTooltip } from '@/use/use-chart-tooltip.js';
 import { chartVLine } from '@/utility/chart-vline.js';
 import { alpha } from '@/utility/color.js';
 import { initChart } from '@/utility/init-chart.js';
@@ -22,7 +22,7 @@ const props = defineProps<{
 	type: string;
 }>();
 
-const chartEl = shallowRef<HTMLCanvasElement>(null);
+const chartEl = useTemplateRef('chartEl');
 
 const { handler: externalTooltipHandler } = useChartTooltip();
 

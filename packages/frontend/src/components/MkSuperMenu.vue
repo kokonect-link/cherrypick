@@ -111,7 +111,7 @@ import { getScrollContainer } from '@@/js/scroll.js';
 import type { SearchIndexItem } from '@/utility/autogen/settings-search-index.js';
 import MkInput from '@/components/MkInput.vue';
 import { i18n } from '@/i18n.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import { initIntlString, compareStringIncludes } from '@/utility/intl-string.js';
 
 const props = defineProps<{

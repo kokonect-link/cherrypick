@@ -21,10 +21,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:max="19"
 				:step="1"
 				:textConverter="(v) => `${v + 6}px`"
+				isFontSizeSlider
 			/>
 			<div :class="$style.fontSizeRight">Aa</div>
 		</div>
-		<MkInfo v-if="String(fontSize) != String(fontSizeBefore)" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
+		<MkInfo v-if="String(fontSize) != String(fontSizeBefore)" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }} <a class="_link" @click="reload">{{ i18n.ts.reload }}</a></MkInfo>
 
 		<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">
 			<template #label>{{ i18n.ts.useBoldFont }}</template>
@@ -46,12 +47,12 @@ import MkSwitch from '@/components/MkSwitch.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkRange from '@/components/MkRange.vue';
 import { miLocalStorage } from '@/local-storage.js';
-import { reloadAsk } from '@/utility/reload-ask.js';
 import { prefer } from '@/preferences.js';
+import { unisonReload } from '@/utility/unison-reload.js';
 
 const fontSize = prefer.model('fontSize');
-const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
+const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
 const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
 
 watch(fontSize, () => {
@@ -78,12 +79,9 @@ watch(useSystemFont, () => {
 	}
 });
 
-watch([
-	useBoldFont,
-	useSystemFont,
-], async () => {
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
-});
+function reload() {
+	unisonReload();
+}
 
 onMounted(() => {
 	if (fontSizeBefore.value == null) {
@@ -94,7 +92,7 @@ onMounted(() => {
 
 <style lang="scss" module>
 .fontSize {
-	padding: 20px;
+	padding: 20px 20px 28px;
 	border-radius: 6px;
 	text-align: center;
 	background: var(--MI_THEME-bg);
@@ -102,30 +100,26 @@ onMounted(() => {
 
 .fontSizeSlider {
 	display: flex;
-	margin-top: 8px;
+	margin-top: -8px;
+	border-top: solid .5px var(--MI_THEME-divider);
 }
 
 .fontSizeLeft, .fontSizeRight {
 	position: relative;
-	background: var(--MI_THEME-panel);
+	background: var(--MI_THEME-bg);
 	font-weight: normal;
 	line-height: 20px;
-	border: solid 1px var(--MI_THEME-divider);
 }
 
 .fontSizeLeft {
 	padding: 7px 6px 7px 18px;
-	border-top-left-radius: 6px;
 	border-bottom-left-radius: 6px;
-	border-right-style: none;
 	font-size: 12px;
 }
 
 .fontSizeRight {
 	padding: 7px 18px 7px 6px;
-	border-top-right-radius: 6px;
 	border-bottom-right-radius: 6px;
-	border-left-style: none;
 	font-size: 18px;
 }
 </style>

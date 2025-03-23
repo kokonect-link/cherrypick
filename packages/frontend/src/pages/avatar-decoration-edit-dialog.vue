@@ -83,10 +83,10 @@ import { i18n } from '@/i18n.js';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { signinRequired } from '@/account.js';
+import { ensureSignin } from '@/i.js';
 import { selectFile } from '@/utility/select-file.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const props = defineProps<{
 	avatarDecoration?: any,

@@ -50,9 +50,9 @@ import MkButton from '@/components/MkButton.vue';
 import MkWindow from '@/components/MkWindow.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { signinRequired } from '@/account.js';
+import { ensureSignin } from '@/i.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const props = defineProps<{
 	decoration: {

@@ -57,8 +57,9 @@ import * as Misskey from 'cherrypick-js';
 import { i18n } from '@/i18n.js';
 import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
+import { DI } from '@/di.js';
 import { prefer } from '@/preferences.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{
@@ -68,7 +69,7 @@ const props = defineProps<{
 	scheduled?: boolean;
 }>();
 
-const mock = inject<boolean>('mock', false);
+const mock = inject(DI.mock, false);
 
 const showTicker = (prefer.s.instanceTicker === 'always') || (prefer.s.instanceTicker === 'remote' && props.note.user.instance);
 const router = useRouter();

@@ -74,7 +74,6 @@ export function genEmbedCode(entity: EmbeddableEntity, id: string, params?: Embe
 	// PCじゃない場合はコードカスタマイズ画面を出さずにそのままコピー
 	if (window.innerWidth < MOBILE_THRESHOLD) {
 		copyToClipboard(getEmbedCode(`/embed/${entity}/${id}`, _params));
-		os.success();
 	} else {
 		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkEmbedCodeGenDialog.vue')), {
 			entity,

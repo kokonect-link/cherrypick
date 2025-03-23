@@ -172,6 +172,7 @@ export interface Schema extends OfSchema {
 	readonly maximum?: number;
 	readonly minimum?: number;
 	readonly pattern?: string;
+	readonly additionalProperties?: Schema | boolean;
 }
 
 type RequiredPropertyNames<s extends Obj> = {
@@ -219,11 +220,18 @@ type ObjectSchemaTypeDef<p extends Schema> =
 		p['anyOf'] extends ReadonlyArray<Schema> ? p['anyOf'][number]['required'] extends ReadonlyArray<keyof p['properties']> ?
 			UnionObjType<p['properties'], NonNullable<p['anyOf'][number]['required']>> & ObjType<p['properties'], NonNullable<p['required']>>
 			: never
-		: ObjType<p['properties'], NonNullable<p['required']>>
-		:
-		p['anyOf'] extends ReadonlyArray<Schema> ? never : // see CONTRIBUTING.md
-		p['allOf'] extends ReadonlyArray<Schema> ? UnionToIntersection<UnionSchemaType<p['allOf']>> :
-		any;
+			: ObjType<p['properties'], NonNullable<p['required']>>
+	:
+	p['anyOf'] extends ReadonlyArray<Schema> ? never : // see CONTRIBUTING.md
+	p['allOf'] extends ReadonlyArray<Schema> ? UnionToIntersection<UnionSchemaType<p['allOf']>> :
+	p['additionalProperties'] extends true ? Record<string, any> :
+	p['additionalProperties'] extends Schema ?
+		p['additionalProperties'] extends infer AdditionalProperties ?
+			AdditionalProperties extends Schema ?
+				Record<string, SchemaType<AdditionalProperties>> :
+				never :
+			never :
+	any;
 
 type ObjectSchemaType<p extends Schema> = NullOrUndefined<p, ObjectSchemaTypeDef<p>>;
 

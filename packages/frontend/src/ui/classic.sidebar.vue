@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="divider"></div>
 	<div class="about">
 		<button v-click-anime v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="item _button" @click="openInstanceMenu">
-			<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" class="_ghost"/>
+			<img :src="instance.iconUrl ?? instance.faviconUrl ?? '/favicon.ico'" draggable="false"/>
 		</button>
 	</div>
 	<!--<CherryPickLogo class="cherrypick"/>-->
@@ -50,21 +50,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref, shallowRef } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, useTemplateRef } from 'vue';
 import { openInstanceMenu } from './_common_/common.js';
 // import { host } from '@@/js/config.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { navbarItemDef } from '@/navbar.js';
-import { openAccountMenu as openAccountMenu_, $i } from '@/account.js';
 import MkButton from '@/components/MkButton.vue';
 // import { StickySidebar } from '@/utility/sticky-sidebar.js';
-// import { mainRouter } from '@/router/main.js';
+// import { mainRouter } from '@/router.js';
 // import CherryPickLogo from '@assets/client/cherrypick.svg';
 import { store } from '@/store.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { $i } from '@/i.js';
 import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
 
 const WINDOW_THRESHOLD = 1400;
@@ -78,9 +79,9 @@ const otherNavItemIndicated = computed<boolean>(() => {
 	}
 	return false;
 });
-const el = shallowRef<HTMLElement>();
-// const accounts = ref([]);
-// const connection = ref(null);
+const el = useTemplateRef('el');
+// let accounts = $ref([]);
+// let connection = $ref(null);
 const iconOnly = ref(false);
 const settingsWindowed = ref(false);
 const controlPanelIndicated = ref(false);

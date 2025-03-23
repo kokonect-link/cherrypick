@@ -5,26 +5,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ background: bg }">
-	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly }]">
+	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly().value, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly().value }]">
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
 			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 		</div>
-		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
+		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly().value" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 			<MkAvatar v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.avatar" :user="$i"/>
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
-		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
+		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly().value" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
 			<div v-if="!narrow && canBack" style="width: 50px; margin-right: 8px;"/>
 			<div v-if="actions.length >= 3" style="width: 42px;"/>
 			<div style="width: 34px;"/>
 		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly && mainRouter.currentRoute.value.name === 'my-notifications'">
+		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly().value && mainRouter.currentRoute.value.name === 'my-notifications'">
 			<div style="width: 50px; margin-right: 8px;"/>
 		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
+		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
 			<div style="width: 84px;"/>
 		</div>
-		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly && mainRouter.currentRoute.value.name !== 'index'">
+		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name !== 'index'">
 			<div style="width: 34px;"/>
 		</div>
 		<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id)">
@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</div>
 			</div>
-			<XTabs v-if="(!narrow || hideTitle) && !isFriendly" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
+			<XTabs v-if="(!narrow || hideTitle) && !isFriendly().value" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 		</template>
 		<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
@@ -59,8 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkFollowButton :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
-	<div v-if="((narrow && !hideTitle) || isFriendly) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly, [$style.thin]: thin_, [$style.lowerFriendly]: isFriendly}]">
-		<div v-if="!thin_ && isFriendly" :class="$style.buttonsLeft" style="min-width: 0; width: 0; margin-right: auto;">
+	<div v-if="((narrow && !hideTitle) || isFriendly().value) && hasTabs" :class="[$style.lower, { [$style.slim]: narrow && !isFriendly().value, [$style.thin]: thin_, [$style.lowerFriendly]: isFriendly().value}]">
+		<div v-if="!thin_ && isFriendly().value" :class="$style.buttonsLeft" style="min-width: 0; width: 0; margin-right: auto;">
 		</div>
 		<XTabs :class="$style.tabs" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
 	</div>
@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, inject, shallowRef, computed } from 'vue';
+import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
 import tinycolor from 'tinycolor2';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import XTabs from './MkPageHeader.tabs.vue';
@@ -76,9 +76,10 @@ import type { Tab } from './MkPageHeader.tabs.vue';
 import type { PageHeaderItem } from '@/types/page-header.js';
 import type { PageMetadata } from '@/page.js';
 import { globalEvents } from '@/events.js';
-import { injectReactiveMetadata } from '@/page.js';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { mainRouter } from '@/router/main.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { $i } from '@/i.js';
+import { DI } from '@/di.js';
+import { mainRouter } from '@/router.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
@@ -104,13 +105,15 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const injectedPageMetadata = injectReactiveMetadata();
+const viewId = inject(DI.viewId);
+const viewTransitionName = computed(() => `${viewId}---pageHeader`);
+const injectedPageMetadata = inject(DI.pageMetadata);
 const pageMetadata = computed(() => props.overridePageMetadata ?? injectedPageMetadata.value);
 
 const hideTitle = computed(() => inject('shouldOmitHeaderTitle', false) || props.hideTitle);
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
-const el = shallowRef<HTMLElement | undefined>(undefined);
+const el = useTemplateRef('el');
 const bg = ref<string | undefined>(undefined);
 const narrow = ref(false);
 const hasTabs = computed(() => props.tabs.length > 0);
@@ -132,7 +135,7 @@ const top = (ev: MouseEvent) => {
 			text: i18n.ts.reload,
 			icon: 'ti ti-refresh',
 			action: () => {
-				location.reload();
+				window.location.reload();
 			},
 		}], ev.currentTarget ?? ev.target);
 	}
@@ -149,12 +152,12 @@ function onTabClick(): void {
 }
 
 function goBack() {
-	history.back();
+	window.history.back();
 }
 
 const calcBg = () => {
 	const rawBg = 'var(--MI_THEME-bg)';
-	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	if (narrow.value) tinyBg.setAlpha(1);
 	else tinyBg.setAlpha(0.85);
 	bg.value = tinyBg.toRgbString();
@@ -166,7 +169,7 @@ onMounted(() => {
 	if (el.value && el.value.parentElement) {
 		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el.value && el.value.parentElement && document.body.contains(el.value as HTMLElement)) {
+			if (el.value && el.value.parentElement && window.document.body.contains(el.value as HTMLElement)) {
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
@@ -189,6 +192,7 @@ onUnmounted(() => {
 	backdrop-filter: var(--MI-blur, blur(15px));
 	border-bottom: solid 0.5px var(--MI_THEME-divider);
 	width: 100%;
+	view-transition-name: v-bind(viewTransitionName);
 
 	&.reduceBlurEffect {
 		-webkit-backdrop-filter: none;

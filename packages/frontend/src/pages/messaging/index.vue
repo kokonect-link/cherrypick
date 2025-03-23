@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="800">
 		<div>
 			<div v-if="tab === 'direct'">
@@ -20,24 +19,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, onActivated, onMounted, onUnmounted, ref, shallowRef } from 'vue';
+import { computed, markRaw, onActivated, onMounted, onUnmounted, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { globalEvents } from '@/events.js';
 import MkChatPreview from '@/components/MkChatPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = useTemplateRef('pagingComponent');
 
 const router = useRouter();
 

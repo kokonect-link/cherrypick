@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="ekmkgxbj">
 		<MkLoading v-if="fetching"/>
 		<div v-else-if="(!items || items.length === 0) && widgetProps.showHeader" class="_fullinfo">
-			<img :src="infoImageUrl" class="_ghost"/>
+			<img :src="infoImageUrl" draggable="false"/>
 			<div>{{ i18n.ts.nothing }}</div>
 		</div>
 		<div v-else :class="$style.feed">
@@ -77,7 +77,7 @@ const fetchEndpoint = computed(() => {
 const intervalClear = ref<(() => void) | undefined>();
 
 const tick = () => {
-	if (document.visibilityState === 'hidden' && rawItems.value.length !== 0) return;
+	if (window.document.visibilityState === 'hidden' && rawItems.value.length !== 0) return;
 
 	window.fetch(fetchEndpoint.value, {})
 		.then(res => res.json())

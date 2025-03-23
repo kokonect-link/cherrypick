@@ -52,7 +52,7 @@ function resetRequireRefresh() {
 }
 
 function reload() {
-	location.reload();
+	window.location.reload();
 }
 
 useStream().on('_connected_', resetDisconnected);

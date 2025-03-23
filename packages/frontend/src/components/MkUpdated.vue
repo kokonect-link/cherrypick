@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { version, basedMisskeyVersion } from '@@/js/config.js';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -46,12 +46,14 @@ import * as os from '@/os.js';
 
 const showChangelog = ref(false);
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
+const modal = useTemplateRef('modal');
 
-const whatIsNewMisskey = () => {
-	// modal.value?.close();
-	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
-};
+/**
+ * const whatIsNewMisskey = () => {
+ * 	// modal.value?.close();
+ * 	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
+ * };
+ */
 
 const whatIsNewCherryPick = () => {
 	// modal.value?.close();

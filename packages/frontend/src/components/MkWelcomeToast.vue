@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, ref } from 'vue';
 import * as os from '@/os.js';
 import { prefer } from '@/preferences.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import CPAvatar from '@/components/global/ToastAvatar.vue';
 
 defineProps<{

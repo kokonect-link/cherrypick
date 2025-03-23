@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkSpacer>
 	</div>
 	<div v-if="!(narrow && currentPage?.route.name == null)" class="main">
-		<RouterView nested/>
+		<NestedRouterView/>
 	</div>
 </div>
 </template>
@@ -44,7 +44,7 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { lookupUser, lookupUserByEmail, lookupFile } from '@/utility/admin-lookup.js';
 import { definePage, provideMetadataReceiver, provideReactiveMetadata } from '@/page.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
 
 const isEmpty = (x: string | null) => x == null || x === '';

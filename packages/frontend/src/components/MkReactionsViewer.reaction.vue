@@ -13,13 +13,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
 	@contextmenu.prevent.stop="menu"
 >
-	<MkReactionIcon :class="prefer.s.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
+	<MkReactionIcon style="pointer-events: none;" :class="prefer.s.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="note.reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
 	<span :class="$style.count">{{ count }}</span>
 </button>
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, shallowRef, watch } from 'vue';
+import { computed, inject, onMounted, useTemplateRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getUnicodeEmoji } from '@@/js/emojilist.js';
 import MkCustomEmojiDetailedDialog from './MkCustomEmojiDetailedDialog.vue';
@@ -28,8 +28,8 @@ import XDetails from '@/components/MkReactionsViewer.details.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import * as os from '@/os.js';
 import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
-import { useTooltip } from '@/utility/use-tooltip.js';
-import { $i } from '@/account.js';
+import { useTooltip } from '@/use/use-tooltip.js';
+import { $i } from '@/i.js';
 import MkReactionEffect from '@/components/MkReactionEffect.vue';
 import { claimAchievement } from '@/utility/achievements.js';
 import { i18n } from '@/i18n.js';
@@ -37,6 +37,7 @@ import * as sound from '@/utility/sound.js';
 import { checkReactionPermissions } from '@/utility/check-reaction-permissions.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import { prefer } from '@/preferences.js';
+import { DI } from '@/di.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 
 const props = defineProps<{
@@ -46,13 +47,13 @@ const props = defineProps<{
 	note: Misskey.entities.Note;
 }>();
 
-const mock = inject<boolean>('mock', false);
+const mock = inject(DI.mock, false);
 
 const emit = defineEmits<{
 	(ev: 'reactionToggled', emoji: string, newCount: number): void;
 }>();
 
-const buttonEl = shallowRef<HTMLElement>();
+const buttonEl = useTemplateRef('buttonEl');
 
 const emojiName = computed(() => props.reaction.replace(/:/g, '').replace(/@\./, ''));
 const emoji = computed(() => customEmojisMap.get(emojiName.value) ?? getUnicodeEmoji(props.reaction));
@@ -184,13 +185,12 @@ async function menu(ev) {
 		icon: 'ti ti-copy',
 		action: () => {
 			copyToClipboard(`:${reactionName.value}:`);
-			os.toast(i18n.ts.copied, 'copied');
 		},
 	} : undefined], ev.currentTarget ?? ev.target);
 }
 
 function anime() {
-	if (document.hidden || !prefer.s.animation || buttonEl.value == null) return;
+	if (window.document.hidden || !prefer.s.animation || buttonEl.value == null) return;
 
 	const rect = buttonEl.value.getBoundingClientRect();
 	const x = rect.left + 16;

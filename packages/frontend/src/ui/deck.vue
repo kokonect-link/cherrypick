@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 			<div :class="$style.sideMenu">
 				<div :class="$style.sideMenuTop">
-					<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="`${i18n.ts._deck.profile}: ${store.s['deck.profile']}`" :class="$style.sideMenuButton" class="_button" @click="changeProfile"><i class="ti ti-caret-down"></i></button>
+					<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="`${i18n.ts._deck.profile}: ${prefer.s['deck.profile']}`" :class="$style.sideMenuButton" class="_button" @click="switchProfileMenu"><i class="ti ti-caret-down"></i></button>
 					<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="i18n.ts._deck.deleteProfile" :class="$style.sideMenuButton" class="_button" @click="deleteProfile"><i class="ti ti-trash"></i></button>
 				</div>
 				<div :class="$style.sideMenuMiddle">
@@ -96,18 +96,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, watch, shallowRef } from 'vue';
+import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { v4 as uuid } from 'uuid';
 import XCommon from './_common_/common.vue';
-import type { MenuItem } from '@/types/menu.js';
 import XSidebar from '@/ui/_common_/navbar.vue';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
-import { unisonReload } from '@/utility/unison-reload.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { prefer } from '@/preferences.js';
 import XMainColumn from '@/ui/deck/main-column.vue';
@@ -120,9 +118,8 @@ import XWidgetsColumn from '@/ui/deck/widgets-column.vue';
 import XMentionsColumn from '@/ui/deck/mentions-column.vue';
 import XDirectColumn from '@/ui/deck/direct-column.vue';
 import XRoleTimelineColumn from '@/ui/deck/role-timeline-column.vue';
-import { mainRouter } from '@/router/main.js';
-import { store } from '@/store.js';
-import { columnTypes, forceSaveDeck, getProfiles, loadDeck, addColumn as addColumnToStore, deleteProfile as deleteProfile_ } from '@/deck.js';
+import { mainRouter } from '@/router.js';
+import { columns, layout, columnTypes, switchProfileMenu, addColumn as addColumnToStore, deleteProfile as deleteProfile_ } from '@/deck.js';
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
 
@@ -141,7 +138,7 @@ const columnComponents = {
 
 mainRouter.navHook = (path, flag): boolean => {
 	if (flag === 'forcePage') return false;
-	const noMainColumn = !store.s['deck.columns'].some(x => x.type === 'main');
+	const noMainColumn = !columns.value.some(x => x.type === 'main');
 	if (prefer.s['deck.navWindow'] || noMainColumn) {
 		os.pageWindow(path);
 		return true;
@@ -164,8 +161,6 @@ watch(route, () => {
 });
 */
 
-const columns = store.r['deck.columns'];
-const layout = store.r['deck.layout'];
 const menuIndicated = computed(() => {
 	if ($i == null) return false;
 	for (const def in navbarItemDef) {
@@ -178,7 +173,7 @@ function showSettings() {
 	os.pageWindow('/settings/deck');
 }
 
-const columnsEl = shallowRef<HTMLElement>();
+const columnsEl = useTemplateRef('columnsEl');
 
 const addColumn = async (ev) => {
 	const { canceled, result: column } = await os.select({
@@ -211,67 +206,21 @@ function onWheel(ev: WheelEvent) {
 	}
 }
 
-document.documentElement.style.overflowY = 'hidden';
-document.documentElement.style.scrollBehavior = 'auto';
-
-loadDeck();
-
-function changeProfile(ev: MouseEvent) {
-	let items: MenuItem[] = [{
-		text: store.s['deck.profile'],
-		active: true,
-		action: () => {},
-	}];
-	getProfiles().then(profiles => {
-		items.push(...(profiles.filter(k => k !== store.s['deck.profile']).map(k => ({
-			text: k,
-			action: () => {
-				store.set('deck.profile', k);
-				unisonReload();
-			},
-		}))), { type: 'divider' as const }, {
-			text: i18n.ts._deck.newProfile,
-			icon: 'ti ti-plus',
-			action: async () => {
-				const { canceled, result: name } = await os.inputText({
-					title: i18n.ts._deck.profile,
-					minLength: 1,
-				});
-
-				if (canceled || name == null) return;
-
-				os.promiseDialog((async () => {
-					await store.set('deck.profile', name);
-					await forceSaveDeck();
-				})(), () => {
-					unisonReload();
-				});
-			},
-		});
-	}).then(() => {
-		os.popupMenu(items, ev.currentTarget ?? ev.target);
-	});
-}
+window.document.documentElement.style.overflowY = 'hidden';
+window.document.documentElement.style.scrollBehavior = 'auto';
 
 async function deleteProfile() {
+	if (prefer.s['deck.profile'] == null) return;
+
 	const { canceled } = await os.confirm({
 		type: 'warning',
-		text: i18n.tsx.deleteAreYouSure({ x: store.s['deck.profile'] }),
+		text: i18n.tsx.deleteAreYouSure({ x: prefer.s['deck.profile'] }),
 	});
 	if (canceled) return;
 
-	os.promiseDialog((async () => {
-		if (store.s['deck.profile'] === 'default') {
-			await store.set('deck.columns', []);
-			await store.set('deck.layout', []);
-			await forceSaveDeck();
-		} else {
-			await deleteProfile_(store.s['deck.profile']);
-		}
-		await store.set('deck.profile', 'default');
-	})(), () => {
-		unisonReload();
-	});
+	await deleteProfile_(prefer.s['deck.profile']);
+
+	os.success();
 }
 </script>
 

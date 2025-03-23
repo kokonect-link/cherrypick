@@ -63,7 +63,6 @@ const selectedThemeCode = computed(() => {
 
 function copyThemeCode() {
 	copyToClipboard(selectedThemeCode.value);
-	os.success();
 }
 
 function uninstall() {

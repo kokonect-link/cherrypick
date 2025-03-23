@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click.stop="onClick">
+<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
 		:class="$style.inner"
 		:src="url"
@@ -29,6 +29,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				opacity: getDecorationOpacity(decoration),
 			}"
 			alt=""
+			draggable="false"
+			style="-webkit-user-drag: none;"
 		>
 	</template>
 </component>
@@ -38,8 +40,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, watch, ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurhash.js';
-import MkA from '@/components/global/MkA.vue';
-import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
+import MkA from './MkA.vue';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
 import { prefer } from '@/preferences.js';
@@ -63,6 +65,7 @@ const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;
 }>();
 
+const squareAvatars = ref((!prefer.s.setFederationAvatarShape && prefer.s.squareAvatars) || (prefer.s.setFederationAvatarShape && !props.user.setFederationAvatarShape && prefer.s.squareAvatars) || (prefer.s.setFederationAvatarShape && props.user.setFederationAvatarShape && props.user.isSquareAvatars));
 const showDecoration = props.forceShowDecoration || prefer.s.showAvatarDecorations;
 
 const bound = computed(() => props.link
@@ -168,6 +171,14 @@ onUnmounted(() => {
 	object-fit: cover;
 	width: 100%;
 	height: 100%;
+}
+
+.square {
+	border-radius: 20%;
+
+	> .inner {
+		border-radius: 20%;
+	}
 }
 
 .decoration {

@@ -54,12 +54,11 @@ import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import { claimAchievement } from '@/utility/achievements.js';
 import { pleaseLogin } from '@/utility/please-login.js';
-import { $i } from '@/account.js';
-import { store } from '@/store.js';
+import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 import { userName } from '@/filters/user.js';
 import { vibrate } from '@/utility/vibrate.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 
 const router = useRouter();
 
@@ -142,11 +141,11 @@ async function onClick() {
 			} else {
 				await misskeyApi('following/create', {
 					userId: props.user.id,
-					withReplies: store.s.defaultWithReplies,
+					withReplies: prefer.s.defaultFollowWithReplies,
 				});
 				emit('update:user', {
 					...props.user,
-					withReplies: store.s.defaultWithReplies,
+					withReplies: prefer.s.defaultFollowWithReplies,
 				});
 				vibrate(prefer.s['vibrate.on.system'] ? [30, 40, 100] : []);
 				hasPendingFollowRequestFromYou.value = true;

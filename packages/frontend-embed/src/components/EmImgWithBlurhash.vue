@@ -5,8 +5,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="root" :class="['chromatic-ignore', $style.root, { [$style.cover]: cover }]" :title="title ?? ''">
-	<canvas v-show="hide" key="canvas" ref="canvas" :class="$style.canvas" :width="canvasWidth" :height="canvasHeight" :title="title ?? undefined" tabindex="-1"/>
-	<img v-show="!hide" key="img" ref="img" :height="imgHeight ?? undefined" :width="imgWidth ?? undefined" :class="[$style.img, { [$style.noDrag]: noDrag }]" :src="src ?? undefined" :title="title ?? undefined" :alt="alt ?? undefined" loading="eager" decoding="async" tabindex="-1"/>
+	<canvas
+		v-show="hide"
+		key="canvas"
+		ref="canvas"
+		:class="$style.canvas"
+		:width="canvasWidth"
+		:height="canvasHeight"
+		:title="title ?? undefined"
+		draggable="false"
+		tabindex="-1"
+		style="-webkit-user-drag: none;"
+	/>
+	<img
+		v-show="!hide"
+		key="img"
+		ref="img"
+		:height="imgHeight ?? undefined"
+		:width="imgWidth ?? undefined"
+		:class="$style.img"
+		:src="src ?? undefined"
+		:title="title ?? undefined"
+		:alt="alt ?? undefined"
+		loading="eager"
+		decoding="async"
+		draggable="false"
+		tabindex="-1"
+		style="-webkit-user-drag: none;"
+	/>
 </div>
 </template>
 
@@ -33,13 +59,11 @@ const canvasPromise = new Promise<WorkerMultiDispatch | HTMLCanvasElement>(resol
 				Math.min(navigator.hardwareConcurrency - 1, 4),
 			);
 			resolve(workers);
-			if (_DEV_) console.log('WebGL2 in worker is supported!');
 		} else {
 			const canvas = document.createElement('canvas');
 			canvas.width = 64;
 			canvas.height = 64;
 			resolve(canvas);
-			if (_DEV_) console.log('WebGL2 in worker is not supported...');
 		}
 		testWorker.terminate();
 	});
@@ -61,7 +85,6 @@ const props = withDefaults(defineProps<{
 	cover?: boolean;
 	forceBlurhash?: boolean;
 	onlyAvgColor?: boolean; // 軽量化のためにBlurhashを使わずに平均色だけを描画
-	noDrag?: boolean;
 }>(), {
 	src: null,
 	alt: '',
@@ -71,7 +94,6 @@ const props = withDefaults(defineProps<{
 	cover: true,
 	forceBlurhash: false,
 	onlyAvgColor: false,
-	noDrag: false,
 });
 
 const viewId = uuid();
@@ -238,9 +260,5 @@ onUnmounted(() => {
 
 .img {
 	object-fit: contain;
-
-	&.noDrag {
-		-webkit-user-drag: none;
-	}
 }
 </style>

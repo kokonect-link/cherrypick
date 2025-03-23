@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="800">
 		<Transition
 			:enterActiveClass="prefer.s.animation ? $style.fadeEnterActive : ''"
@@ -95,7 +94,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-else/>
 		</Transition>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -116,12 +115,12 @@ import MkPagePreview from '@/components/MkPagePreview.vue';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { deepClone } from '@/utility/clone.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { isSupportShare } from '@/utility/navigator.js';
 import { instance } from '@/instance.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 
@@ -191,7 +190,6 @@ function copyLink() {
 	if (!page.value) return;
 
 	copyToClipboard(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
-	os.success();
 }
 
 function shareQRCode() {

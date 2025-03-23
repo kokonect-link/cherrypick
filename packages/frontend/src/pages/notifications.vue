@@ -4,25 +4,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :notification="notification">
 	<MkSpacer :contentMax="800">
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'all'" key="all">
-				<XNotifications :class="$style.notifications" :excludeTypes="excludeTypes"/>
+			<div v-if="tab === 'all'">
+				<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="excludeTypes"/>
 			</div>
-			<div v-else-if="tab === 'newNote'" key="newNote">
-				<XNotifications :class="$style.notifications" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
+			<div v-else-if="tab === 'newNote'">
+				<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
 			</div>
-			<div v-else-if="tab === 'mentions'" key="mention">
-				<MkNotes :pagination="mentionsPagination" :notification="true"/>
+			<div v-else-if="tab === 'mentions'">
+				<MkNotes :pagination="mentionsPagination" :notification="notification" :noGap="notification"/>
 			</div>
-			<div v-else-if="tab === 'directNotes'" key="directNotes">
-				<MkNotes :pagination="directNotesPagination" :notification="true"/>
+			<div v-else-if="tab === 'directNotes'">
+				<MkNotes :pagination="directNotesPagination" :notification="true" :noGap="notification"/>
 			</div>
 		</MkHorizontalSwipe>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -44,6 +43,7 @@ const newNoteExcludeTypes = computed(() => notificationTypes.filter(t => !['note
 
 const props = defineProps<{
 	disableRefreshButton?: boolean;
+	notification?: boolean;
 }>();
 
 const mentionsPagination = {
@@ -114,15 +114,19 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail',
 }]);
 
-definePage(() => ({
+definePage(computed(() => !props.notification ? {
 	title: i18n.ts.notifications,
 	icon: 'ti ti-bell',
-}));
+} : null));
 </script>
 
 <style lang="scss" module>
 .notifications {
 	border-radius: var(--MI-radius);
 	overflow: clip;
+
+	&.noRadius {
+		border-radius: 0;
+	}
 }
 </style>

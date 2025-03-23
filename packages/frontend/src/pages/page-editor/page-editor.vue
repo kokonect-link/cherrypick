@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="700">
 		<div class="jqqmcavi">
 			<MkButton v-if="pageId" class="button" inline link :to="`/@${ author.username }/pages/${ currentName }`"><i class="ti ti-external-link"></i> {{ i18n.ts._pages.viewPage }}</MkButton>
@@ -57,7 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -75,8 +74,8 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import { selectFile } from '@/utility/select-file.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
-import { $i } from '@/account.js';
-import { mainRouter } from '@/router/main.js';
+import { $i } from '@/i.js';
+import { mainRouter } from '@/router.js';
 import { getPageBlockList } from '@/pages/page-editor/common.js';
 
 const props = defineProps<{

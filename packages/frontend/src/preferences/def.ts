@@ -9,6 +9,8 @@ import type { Theme } from '@/theme.js';
 import type { SoundType } from '@/utility/sound.js';
 import type { Plugin } from '@/plugin.js';
 import type { DeviceKind } from '@/utility/device-kind.js';
+import type { DeckProfile } from '@/deck.js';
+import type { PreferencesDefinition } from './manager.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
 
 /** サウンド設定 */
@@ -27,7 +29,15 @@ export type SoundStore = {
 	volume: number;
 };
 
+// NOTE: デフォルト値は他の設定の状態に依存してはならない(依存していた場合、ユーザーがその設定項目単体で「初期値にリセット」した場合不具合の原因になる)
+
 export const PREF_DEF = {
+	// TODO: 持つのはホストやユーザーID、ユーザー名など最低限にしといて、その他のプロフィール情報はpreferences外で管理した方が綺麗そう
+	// 現状だと、updateCurrentAccount/updateCurrentAccountPartialが呼ばれるたびに「設定」へのcommitが行われて不自然(明らかに設定の更新とは捉えにくい)だし
+	accounts: {
+		default: [] as [host: string, user: Misskey.entities.User][],
+	},
+
 	pinnedUserLists: {
 		accountDependent: true,
 		default: [] as Misskey.entities.UserList[],
@@ -38,12 +48,50 @@ export const PREF_DEF = {
 	},
 	widgets: {
 		accountDependent: true,
-		default: [] as {
+		default: [{
+			name: 'calendar',
+			id: 'a', place: 'right', data: {},
+		}, {
+			name: 'notifications',
+			id: 'b', place: 'right', data: {},
+		}, {
+			name: 'trends',
+			id: 'c', place: 'right', data: {},
+		}] as {
 			name: string;
 			id: string;
 			place: string | null;
 			data: Record<string, any>;
 		}[],
+	},
+	'deck.profile': {
+		accountDependent: true,
+		default: null as string | null,
+	},
+	'deck.profiles': {
+		accountDependent: true,
+		default: [] as DeckProfile[],
+	},
+
+	emojiPalettes: {
+		serverDependent: true,
+		default: [{
+			id: 'a',
+			name: '',
+			emojis: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
+		}] as {
+			id: string;
+			name: string;
+			emojis: string[];
+		}[],
+	},
+	emojiPaletteForReaction: {
+		serverDependent: true,
+		default: null as string | null,
+	},
+	emojiPaletteForMain: {
+		serverDependent: true,
+		default: null as string | null,
 	},
 
 	overridedDeviceKind: {
@@ -281,6 +329,12 @@ export const PREF_DEF = {
 	confirmOnReact: {
 		default: false,
 	},
+	defaultFollowWithReplies: {
+		default: true,
+	},
+	makeEveryTextElementsSelectable: {
+		default: DEFAULT_DEVICE_KIND === 'desktop',
+	},
 	plugins: {
 		default: [] as Plugin[],
 	},
@@ -292,6 +346,9 @@ export const PREF_DEF = {
 	},
 	trustedDomains: {
 		default: [] as string[],
+	},
+	showPreview: {
+		default: false,
 	},
 	'sound.masterVolume': {
 		default: 0.3,
@@ -434,14 +491,8 @@ export const PREF_DEF = {
 	newNoteReceivedNotificationBehavior: {
 		default: 'count' as 'default' | 'count' | 'none',
 	},
-	searchEngine: {
-		default: 'google' as 'google' | 'bing' | 'yahoo' | 'baidu' | 'naver' | 'daum' | 'duckduckgo' | 'other',
-	},
-	searchEngineUrl: {
-		default: 'https://www.ecosia.org/search?',
-	},
-	searchEngineUrlQuery: {
-		default: 'q',
+	showProfilePreview: {
+		default: true,
 	},
 
 	// - Settings/Appearance
@@ -576,7 +627,8 @@ export const PREF_DEF = {
 	friendlyUiShowAvatarDecorationsInNavBtn: {
 		default: false,
 	},
-} satisfies Record<string, {
-	default: any;
-	accountDependent?: boolean;
-}>;
+
+	'experimental.stackingRouterView': {
+		default: false,
+	},
+} satisfies PreferencesDefinition;

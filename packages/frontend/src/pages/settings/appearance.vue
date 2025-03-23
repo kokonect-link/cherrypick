@@ -6,9 +6,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <SearchMarker path="/settings/appearance" :label="i18n.ts.appearance" :keywords="['appearance']" icon="ti ti-device-desktop">
 	<div class="_gaps_m">
-		<FormSection first>
-			<template #label>{{ i18n.ts.appearance }}</template>
+		<MkFeatureBanner icon="/client-assets/desktop_computer_3d.png" color="#eaff00">
+			<SearchKeyword>{{ i18n.ts._settings.appearanceBanner }}</SearchKeyword>
+		</MkFeatureBanner>
 
+		<FormSection first>
 			<div class="_gaps_m">
 				<SearchMarker :keywords="['font', 'size']">
 					<!--
@@ -46,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							/>
 							<div :class="$style.fontSizeRight">Aa</div>
 						</div>
-						<MkInfo v-if="String(fontSize) != String(fontSizeBefore)" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }}</MkInfo>
+						<MkInfo v-if="String(fontSize) != String(fontSizeBefore)" style="margin-top: 10px;">{{ i18n.ts.reloadToApplySetting2 }} <a class="_link" @click="reload">{{ i18n.ts.reload }}</a></MkInfo>
 
 						<SearchMarker :keywords="['bold']">
 							<MkSwitch v-model="useBoldFont" style="margin-top: .75em;">
@@ -360,7 +362,9 @@ import { globalEvents } from '@/events.js';
 import { claimAchievement } from '@/utility/achievements.js';
 import { instance } from '@/instance.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
+import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
+import { unisonReload } from '@/utility/unison-reload.js';
 
 // const fontSize = ref(miLocalStorage.getItem('fontSize'));
 const fontSize = prefer.model('fontSize');
@@ -510,6 +514,10 @@ function learnMoreCantUseSetFederationAvatarShape() {
 		text: i18n.tsx.cantUseThisFunctionDescription({ name: i18n.ts.setFederationAvatarShape }),
 		caption: i18n.tsx.cantUseThisFunctionCaption({ name: i18n.ts.setFederationAvatarShape }),
 	});
+}
+
+function reload() {
+	unisonReload();
 }
 
 onMounted(() => {

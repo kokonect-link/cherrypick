@@ -194,11 +194,11 @@ import { notePage } from '@/filters/note.js';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
-import { signinRequired } from '@/account.js';
+import { ensureSignin } from '@/i.js';
 import { infoImageUrl } from '@/instance.js';
 import { prefer } from '@/preferences.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const props = withDefaults(defineProps<{
 	notification: Misskey.entities.Notification;

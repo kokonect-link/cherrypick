@@ -9,6 +9,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
 	src="/client-assets/dummy.png"
 	:title="alt"
+	draggable="false"
+	style="-webkit-user-drag: none;"
 />
 <span v-else-if="errored">:{{ customEmojiName }}:</span>
 <img
@@ -18,6 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:alt="alt"
 	:title="alt"
 	decoding="async"
+	draggable="false"
 	@error="errored = true"
 	@load="errored = false"
 	@click.stop="onClick"
@@ -39,7 +42,7 @@ import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import * as sound from '@/utility/sound.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
@@ -104,7 +107,6 @@ function onClick(ev: MouseEvent) {
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
-				os.toast(i18n.ts.copied, 'copied');
 			},
 		}] : []),
 		);
@@ -199,6 +201,7 @@ onUnmounted(() => {
 .root {
 	height: 2em;
 	vertical-align: middle;
+	-webkit-user-drag: none;
 	transition: transform 0.2s ease;
 
 	&:hover {

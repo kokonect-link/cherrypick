@@ -34,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, shallowRef, watch } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import autosize from 'autosize';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -56,8 +56,8 @@ const props = defineProps<{
 	group?: Misskey.entities.UserGroup | null;
 }>();
 
-const textEl = shallowRef<HTMLTextAreaElement | null>(null);
-const fileEl = shallowRef<HTMLInputElement | null>(null);
+const textEl = useTemplateRef('textEl');
+const fileEl = useTemplateRef('fileEl');
 
 const text = ref<string>('');
 const file = ref<Misskey.entities.DriveFile | null>(null);

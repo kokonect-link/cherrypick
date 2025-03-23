@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import * as Misskey from 'cherrypick-js';
-import { shallowRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import MkLink from '@/components/MkLink.vue';
 import { i18n } from '@/i18n.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
@@ -73,7 +73,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const dialogEl = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialogEl = useTemplateRef('dialogEl');
 
 function cancel() {
 	emit('cancel');

@@ -6,12 +6,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
-		:class="[$style.inner, $style.noDrag, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"
+		:class="[$style.inner, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"
 		:src="url"
 		:hash="user.avatarBlurhash"
 		:cover="true"
 		:onlyAvgColor="true"
-		:noDrag="true"
 		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
@@ -30,6 +29,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				opacity: getDecorationOpacity(decoration),
 			}"
 			alt=""
+			draggable="false"
+			style="-webkit-user-drag: none;"
 		>
 	</template>
 </component>
@@ -173,10 +174,6 @@ onUnmounted(() => {
 
 	&.reduceBlurEffect {
 		opacity: 1;
-	}
-
-	&.noDrag {
-		-webkit-user-drag: none;
 	}
 }
 

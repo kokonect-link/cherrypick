@@ -94,9 +94,9 @@ import type { Captcha } from '@/components/MkCaptcha.vue';
 import MkCaptcha from '@/components/MkCaptcha.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
-import { login } from '@/account.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
+import { login } from '@/accounts.js';
 
 const props = withDefaults(defineProps<{
 	autoSet?: boolean;
@@ -286,7 +286,7 @@ async function onSubmit(): Promise<void> {
 		'testcaptcha-response': testcaptchaResponse.value,
 	};
 
-	const res = await fetch(`${config.apiUrl}/signup`, {
+	const res = await window.fetch(`${config.apiUrl}/signup`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

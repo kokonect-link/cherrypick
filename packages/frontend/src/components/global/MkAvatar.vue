@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<component :is="link ? MkA : 'span'" v-if="noteClick" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click.stop="onClick">
+<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
 		:class="$style.inner"
 		:src="url"
@@ -46,51 +46,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				opacity: getDecorationOpacity(decoration),
 			}"
 			alt=""
-		>
-	</template>
-</component>
-<component :is="link ? MkA : 'span'" v-else v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
-	<MkImgWithBlurhash
-		:class="$style.inner"
-		:src="url"
-		:hash="user.avatarBlurhash"
-		:cover="true"
-		:onlyAvgColor="true"
-		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-	/>
-	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
-	<div v-if="user.isCat" :class="[$style.ears]">
-		<div :class="$style.earLeft">
-			<div v-if="false" :class="$style.layer">
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-			</div>
-		</div>
-		<div :class="$style.earRight">
-			<div v-if="false" :class="$style.layer">
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
-			</div>
-		</div>
-	</div>
-	<template v-if="showDecoration">
-		<img
-			v-for="decoration in decorations ?? user.avatarDecorations"
-			:class="[$style.decoration]"
-			:src="getDecorationUrl(decoration)"
-			:style="{
-				rotate: getDecorationAngle(decoration),
-				scale: getDecorationScale(decoration),
-				translate: getDecorationOffset(decoration),
-				transform: getDecorationTransform(decoration),
-				opacity: getDecorationOpacity(decoration),
-			}"
-			alt=""
+			draggable="false"
+			style="-webkit-user-drag: none;"
 		>
 	</template>
 </component>
@@ -149,6 +106,7 @@ const url = computed(() => {
 });
 
 function onClick(ev: MouseEvent): void {
+	if (props.noteClick) ev.stopPropagation();
 	if (props.link) return;
 	emit('click', ev);
 }

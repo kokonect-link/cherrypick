@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :marginMin="20" :marginMax="28">
 		<div v-if="note" class="_gaps">
 			<div v-if="reactions && reactions.length === 0" class="_fullinfo">
-				<img :src="infoImageUrl" class="_ghost"/>
+				<img :src="infoImageUrl" draggable="false"/>
 				<div>{{ i18n.ts.nothing }}</div>
 			</div>
 			<template v-else>
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef, watch } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
@@ -57,7 +57,7 @@ const props = defineProps<{
 	noteId: Misskey.entities.Note['id'];
 }>();
 
-const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
 const note = ref<Misskey.entities.Note>();
 const tab = ref<string>();

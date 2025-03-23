@@ -10,7 +10,7 @@ import { shouldCollapsed } from '@@/js/collapsed.js';
 import { claimAchievement } from './achievements.js';
 import type { Ref, ShallowRef } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import * as os from '@/os.js';
@@ -160,8 +160,7 @@ export function getCopyNoteLinkMenu(note: Misskey.entities.Note, text: string): 
 		icon: 'ti ti-link',
 		text,
 		action: (): void => {
-			copyToClipboard(`${url}/notes/${note.id}`);
-			os.toast(i18n.ts.copiedLink, 'copied');
+			copyToClipboard(`${url}/notes/${note.id}`, 'link');
 		},
 	};
 }
@@ -291,8 +290,7 @@ export function getNoteMenu(props: {
 	}
 
 	function copyContent(): void {
-		copyToClipboard(appearNote.text);
-		os.toast(i18n.ts.copiedContent, 'copied');
+		copyToClipboard(appearNote.text, 'content');
 	}
 
 	function openInNewTab(): void {
@@ -400,7 +398,7 @@ export function getNoteMenu(props: {
 			});
 		}
 
-		menuItems.push(getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink), {
+		menuItems.push(getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink, 'link'), {
 			icon: 'ti ti-copy',
 			text: i18n.ts.copyContent,
 			action: copyContent,
@@ -496,8 +494,7 @@ export function getNoteMenu(props: {
 						icon: 'ti ti-link',
 						text: i18n.ts.copyRemoteLink,
 						action: () => {
-							copyToClipboard(appearNote.url ?? appearNote.uri);
-							os.success();
+							copyToClipboard(appearNote.url ?? appearNote.uri, 'link');
 						},
 					}, {
 						icon: 'ti ti-external-link',
@@ -625,7 +622,7 @@ export function getNoteMenu(props: {
 			});
 		}
 	} else {
-		menuItems.push(getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink), {
+		menuItems.push(getCopyNoteLinkMenu(appearNote, i18n.ts.copyLink, 'link'), {
 			icon: 'ti ti-copy',
 			text: i18n.ts.copyContent,
 			action: copyContent,
@@ -667,8 +664,7 @@ export function getNoteMenu(props: {
 						icon: 'ti ti-link',
 						text: i18n.ts.copyRemoteLink,
 						action: () => {
-							copyToClipboard(appearNote.url ?? appearNote.uri);
-							os.success();
+							copyToClipboard(appearNote.url ?? appearNote.uri, 'link');
 						},
 					}, {
 						icon: 'ti ti-external-link',
@@ -723,11 +719,10 @@ export function getNoteMenu(props: {
 
 	if (prefer.s.devMode) {
 		menuItems.push({ type: 'divider' }, {
-			icon: 'ti ti-id',
+			icon: 'ti ti-hash',
 			text: i18n.ts.copyNoteId,
 			action: () => {
 				copyToClipboard(appearNote.id);
-				os.toast(i18n.ts.copied, 'copied');
 			},
 		});
 	}

@@ -10,16 +10,15 @@ import darkTheme from '@@/themes/d-cherrypick.json5';
 import { hemisphere } from '@@/js/intl-const.js';
 import type { DeviceKind } from '@/utility/device-kind.js';
 import type { Plugin } from '@/plugin.js';
-import type { Column } from '@/deck.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { Storage } from '@/pizzax.js';
+import { Pizzax } from '@/lib/pizzax.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 
 /**
  * 「状態」を管理するストア(not「設定」)
  */
-export const store = markRaw(new Storage('base', {
+export const store = markRaw(new Pizzax('base', {
 	accountSetupWizard: {
 		where: 'account',
 		default: 0,
@@ -41,14 +40,6 @@ export const store = markRaw(new Storage('base', {
 		where: 'account',
 		default: null,
 	},
-	reactions: {
-		where: 'account',
-		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
-	},
-	pinnedEmojis: {
-		where: 'account',
-		default: [],
-	},
 	reactionAcceptance: {
 		where: 'account',
 		default: null as 'likeOnly' | 'likeOnlyForRemote' | 'nonSensitiveOnly' | 'nonSensitiveOnlyForLocalLikeOnlyForRemote' | null,
@@ -64,18 +55,6 @@ export const store = markRaw(new Storage('base', {
 	localOnly: {
 		where: 'deviceAccount',
 		default: false,
-	},
-	showPreview: {
-		where: 'device',
-		default: false,
-	},
-	showPreviewInReplies: {
-		where: 'device',
-		default: false,
-	},
-	showProfilePreview: {
-		where: 'device',
-		default: true,
 	},
 	tl: {
 		where: 'deviceAccount',
@@ -119,25 +98,13 @@ export const store = markRaw(new Storage('base', {
 		where: 'device',
 		default: {} as Record<string, Record<string, string[]>>,
 	},
-	defaultWithReplies: {
-		where: 'account',
-		default: true,
-	},
 	pluginTokens: {
 		where: 'deviceAccount',
 		default: {} as Record<string, string>, // plugin id, token
 	},
-	'deck.profile': {
-		where: 'deviceAccount',
-		default: 'default',
-	},
-	'deck.columns': {
-		where: 'deviceAccount',
-		default: [] as Column[],
-	},
-	'deck.layout': {
-		where: 'deviceAccount',
-		default: [] as Column['id'][][],
+	accountTokens: {
+		where: 'device',
+		default: {} as Record<string, string>, // host/userId, token
 	},
 
 	enablePreferencesAutoCloudBackup: {
@@ -150,6 +117,18 @@ export const store = markRaw(new Storage('base', {
 	},
 
 	//#region TODO: そのうち消す (preferに移行済み)
+	defaultWithReplies: {
+		where: 'account',
+		default: true,
+	},
+	reactions: {
+		where: 'account',
+		default: ['👍', '❤️', '😆', '🤔', '😮', '🎉', '💢', '😥', '😇', '🍮'],
+	},
+	pinnedEmojis: {
+		where: 'account',
+		default: [],
+	},
 	widgets: {
 		where: 'account',
 		default: [] as {
@@ -201,7 +180,18 @@ export const store = markRaw(new Storage('base', {
 	},
 	menu: {
 		where: 'deviceAccount',
-		default: [],
+		default: [
+			'notifications',
+			'clips',
+			'drive',
+			'followRequests',
+			'-',
+			'explore',
+			'announcements',
+			'search',
+			'-',
+			'ui',
+		],
 	},
 	statusbars: {
 		where: 'deviceAccount',
@@ -463,6 +453,10 @@ export const store = markRaw(new Storage('base', {
 		where: 'device',
 		default: [] as string[],
 	},
+	showPreview: {
+		where: 'device',
+		default: false,
+	},
 
 	sound_masterVolume: {
 		where: 'device',
@@ -645,6 +639,10 @@ export const store = markRaw(new Storage('base', {
 	searchEngineUrlQuery: {
 		where: 'device',
 		default: 'q',
+	},
+	showProfilePreview: {
+		where: 'device',
+		default: true,
 	},
 
 	// - Settings/Appearance

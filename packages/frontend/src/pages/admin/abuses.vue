@@ -90,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef, ref } from 'vue';
+import { computed, useTemplateRef, ref } from 'vue';
 import XHeader from './_header_.vue';
 import * as os from '@/os.js';
 import MkSelect from '@/components/MkSelect.vue';
@@ -104,9 +104,9 @@ import MkButton from '@/components/MkButton.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import { store } from '@/store.js';
 
-const reports = shallowRef<InstanceType<typeof MkPagination>>();
-const resolverPagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
-const folderComponent = shallowRef<InstanceType<typeof MkFolder>>();
+const reports = useTemplateRef('reports');
+const resolverPagingComponent = useTemplateRef('resolverPagingComponent');
+const folderComponent = useTemplateRef('folderComponent');
 
 const state = ref('unresolved');
 const reporterOrigin = ref('combined');

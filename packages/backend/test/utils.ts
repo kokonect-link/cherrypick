@@ -45,10 +45,6 @@ export const host = new URL(config.url).host;
 export const WEBHOOK_HOST = 'http://localhost:15080';
 export const WEBHOOK_PORT = 15080;
 
-export const cookie = (me: UserToken): string => {
-	return `token=${me.token};`;
-};
-
 export type ApiRequest<E extends keyof misskey.Endpoints, P extends misskey.Endpoints[E]['req'] = misskey.Endpoints[E]['req']> = {
 	endpoint: E,
 	parameters: P,

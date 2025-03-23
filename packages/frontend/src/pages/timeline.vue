@@ -4,14 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header>
-		<CPPageHeader v-if="isMobile && prefer.s.mobileHeaderChange" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-	</template>
+<PageWithHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" displayMyAvatar>
 	<MkSpacer :contentMax="800">
 		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
-			<div :key="src" ref="rootEl">
+			<div ref="rootEl">
 				<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
 					{{ i18n.ts._timelineDescription[src] }}
 				</MkInfo>
@@ -26,7 +22,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				>
 					<div
 						v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
-						:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !prefer.s.animation }]"
+						:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
 					>
 						<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
 							<i class="ti ti-arrow-up"></i>
@@ -63,11 +59,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</MkHorizontalSwipe>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, provide, shallowRef, ref, onMounted, onActivated } from 'vue';
+import { computed, watch, provide, useTemplateRef, ref, onMounted, onActivated } from 'vue';
 import { scroll } from '@@/js/scroll.js';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { MenuItem } from '@/types/menu.js';
@@ -80,7 +76,7 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { definePage } from '@/page.js';
 import { antennasCache, userListsCache, favoritedChannelsCache } from '@/cache.js';
 import { deviceKind } from '@/utility/device-kind.js';
@@ -88,6 +84,7 @@ import { deepMerge } from '@/utility/merge.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { prefer } from '@/preferences.js';
+import { useRouter } from '@/router.js';
 import { globalEvents } from '@/events.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { isFriendly } from '@/utility/is-friendly.js';
@@ -108,8 +105,13 @@ const schedulePostList = (await misskeyApi('notes/schedule/list')).length;
 
 if (!isFriendly().value) provide('shouldOmitHeaderTitle', true);
 
-const tlComponent = shallowRef<InstanceType<typeof MkTimeline>>();
-const rootEl = shallowRef<HTMLElement>();
+const tlComponent = useTemplateRef('tlComponent');
+const rootEl = useTemplateRef('rootEl');
+
+const router = useRouter();
+router.useListener('same', () => {
+	top();
+});
 
 type TimelinePageSrc = BasicTimelineType | `list:${string}`;
 
@@ -298,7 +300,7 @@ function queueUpdated(q: number): void {
 }
 
 function top(): void {
-	if (rootEl.value) scroll(rootEl.value, { top: 0 });
+	if (rootEl.value) scroll(rootEl.value, { top: 0, behavior: 'smooth' });
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {

@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted, onUnmounted, provide, ref, shallowRef } from 'vue';
+import { computed, watch, onMounted, onUnmounted, provide, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { BasicTimelineType } from '@/timelines.js';
 import type { Paging } from '@/components/MkPagination.vue';
@@ -25,7 +25,7 @@ import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
 import * as sound from '@/utility/sound.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { instance } from '@/instance.js';
 import { prefer } from '@/preferences.js';
 import { vibrate } from '@/utility/vibrate.js';
@@ -72,8 +72,8 @@ type TimelineQueryType = {
 	roleId?: string
 };
 
-const prComponent = shallowRef<InstanceType<typeof MkPullToRefresh>>();
-const tlComponent = shallowRef<InstanceType<typeof MkNotes>>();
+const prComponent = useTemplateRef('prComponent');
+const tlComponent = useTemplateRef('tlComponent');
 
 let tlNotesCount = 0;
 

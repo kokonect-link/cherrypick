@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #label><SearchLabel>{{ i18n.ts.bottomNavbar }}</SearchLabel> <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 				<template v-if="!isMobile" #description>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMoreBottomNavbar">{{ i18n.ts.learnMore }}</a></template>
 				<div class="_gaps_m">
-					<MkDisableSection :disabled="isFriendly">
+					<MkDisableSection :disabled="isFriendly().value">
 						<MkSwitch v-model="showMenuButtonInNavbar" :disabled="!isMobile">
 							<template #label><i class="ti ti-menu-2"></i> <SearchLabel>{{ i18n.ts.menu }}</SearchLabel></template>
 						</MkSwitch>
@@ -97,7 +97,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSwitch>
 					</MkDisableSection>
 
-					<MkDisableSection :disabled="isFriendly">
+					<MkDisableSection :disabled="isFriendly().value">
 						<MkSwitch v-model="showPostButtonInNavbar" :disabled="!isMobile">
 							<template #label><i class="ti ti-pencil"></i> <SearchLabel>{{ i18n.ts.postNote }}</SearchLabel></template>
 						</MkSwitch>

@@ -19,7 +19,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:title="file.name"
 		:cover="fit !== 'contain'"
 		:forceBlurhash="forceBlurhash"
-		:showAltIndicator="showAltIndicator"
 		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
@@ -51,7 +50,6 @@ const props = defineProps<{
 	highlightWhenSensitive?: boolean;
 	forceBlurhash?: boolean;
 	large?: boolean;
-	showAltIndicator?: boolean;
 }>();
 
 const is = computed(() => {

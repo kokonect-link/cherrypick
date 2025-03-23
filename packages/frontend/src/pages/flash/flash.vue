@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="700">
 		<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
 			<div v-if="flash" :key="flash.id">
@@ -59,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkLoading v-else/>
 		</Transition>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -81,7 +80,7 @@ import { aiScriptReadline, createAiScriptEnv } from '@/aiscript/api.js';
 import MkFolder from '@/components/MkFolder.vue';
 import MkCode from '@/components/MkCode.vue';
 import { prefer } from '@/preferences.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { isSupportShare } from '@/utility/navigator.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { pleaseLogin } from '@/utility/please-login.js';
@@ -129,8 +128,7 @@ function share(ev: MouseEvent) {
 function copyLink() {
 	if (!flash.value) return;
 
-	copyToClipboard(`${url}/play/${flash.value.id}`);
-	os.success();
+	copyToClipboard(`${url}/play/${flash.value.id}`, 'link');
 }
 
 function shareQRCode() {

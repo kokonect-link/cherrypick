@@ -7,22 +7,22 @@ import { toUnicode } from 'punycode.js';
 import { defineAsyncComponent, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { host, url } from '@@/js/config.js';
-import type { IRouter } from '@/nirax.js';
+import type { Router } from '@/router.js';
 import type { MenuItem } from '@/types/menu.js';
 import { i18n } from '@/i18n.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
-import { $i, iAmAdmin, iAmModerator } from '@/account.js';
+import { $i, iAmAdmin, iAmModerator } from '@/i.js';
 import { notesSearchAvailable, canSearchNonLocalNotes } from '@/utility/check-permissions.js';
 import { antennasCache, rolesCache, userListsCache } from '@/cache.js';
-import { mainRouter } from '@/router/main.js';
+import { mainRouter } from '@/router.js';
 import { genEmbedCode } from '@/utility/get-embed-code.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import { editNickname } from '@/utility/edit-nickname.js';
 
-export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter = mainRouter) {
+export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
 
 	const cleanups = [] as (() => void)[];
@@ -267,7 +267,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		text: i18n.ts.copyUsername,
 		action: () => {
 			copyToClipboard(`@${user.username}@${user.host ?? host}`);
-			os.toast(i18n.ts.copied, 'copied');
 		},
 	});
 
@@ -296,7 +295,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		text: i18n.ts.copyRSS,
 		action: () => {
 			copyToClipboard(`${user.host ?? host}/@${user.username}.atom`);
-			os.toast(i18n.ts.copied, 'copied');
 		},
 	});
 
@@ -328,8 +326,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 		text: i18n.ts.copyProfileUrl,
 		action: () => {
 			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
-			copyToClipboard(`${url}/${canonical}`);
-			os.toast(i18n.ts.copiedLink, 'copied');
+			copyToClipboard(`${url}/${canonical}`, 'link');
 		},
 	}, {
 		icon: 'ti ti-qrcode',
@@ -620,11 +617,10 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: IRouter
 
 	if (prefer.s.devMode) {
 		menuItems.push({ type: 'divider' }, {
-			icon: 'ti ti-id',
+			icon: 'ti ti-hash',
 			text: i18n.ts.copyUserId,
 			action: () => {
 				copyToClipboard(user.id);
-				os.toast(i18n.ts.copied, 'copied');
 			},
 		});
 	}

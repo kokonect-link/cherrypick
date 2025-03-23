@@ -4,11 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header>
-		<MkPageHeader v-if="group && $i.id === group.ownerId" :actions="headerActions" :tabs="headerTabs"/>
-		<MkPageHeader v-else :tabs="headerTabs"/>
-	</template>
+<PageWithHeader :actions="group && $i.id === group.ownerId ? headerActions : null" :tabs="headerTabs">
 	<MkSpacer :contentMax="700">
 		<div>
 			<transition :name="prefer.s.animation ? 'zoom' : ''" mode="out-in">
@@ -35,14 +31,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</transition>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import * as os from '@/os.js';
-import { $i } from '@/account.js';
-import { mainRouter } from '@/router/main.js';
+import { $i } from '@/i.js';
+import { mainRouter } from '@/router.js';
 import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';

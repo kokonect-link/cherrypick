@@ -7,13 +7,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 <MkPagination ref="pagingComponent" :pagination="pagination" :disableAutoLoad="disableAutoLoad">
 	<template #empty>
 		<div class="_fullinfo">
-			<img :src="infoImageUrl" class="_ghost"/>
+			<img :src="infoImageUrl" draggable="false"/>
 			<div>{{ i18n.ts.noNotes }}</div>
 		</div>
 	</template>
 
 	<template #default="{ items: notes }">
-		<div :class="[$style.root, { [$style.noGap]: noGap }]">
+		<div :class="[$style.root, { [$style.noGap]: noGap, [$style.notification]: notification }]">
 			<MkDateSeparatedList
 				ref="notes"
 				v-slot="{ item: note }"
@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef, onMounted } from 'vue';
+import { useTemplateRef, onMounted } from 'vue';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkNote from '@/components/MkNote.vue';
 import MkDateSeparatedList from '@/components/MkDateSeparatedList.vue';
@@ -51,7 +51,7 @@ const props = defineProps<{
 	forceShowReplyTargetNote?: boolean;
 }>();
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = useTemplateRef('pagingComponent');
 
 onMounted(() => {
 	globalEvents.on('reloadNotification', () => reloadNote());
@@ -75,6 +75,12 @@ defineExpose({
 	&.noGap {
 		> .notes {
 			background: var(--MI_THEME-panel);
+		}
+	}
+
+	&.notification {
+		> .notes {
+			background: inherit;
 		}
 	}
 

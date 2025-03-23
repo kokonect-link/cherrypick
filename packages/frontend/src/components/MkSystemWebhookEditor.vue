@@ -98,7 +98,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, shallowRef, toRefs } from 'vue';
+import { computed, onMounted, ref, useTemplateRef, toRefs } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type {
 	MkSystemWebhookEditorProps,
@@ -129,7 +129,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const dialogEl = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialogEl = useTemplateRef('dialogEl');
 
 const props = defineProps<MkSystemWebhookEditorProps>();
 

@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader/></template>
+<PageWithHeader>
 	<div
 		ref="rootEl"
 		:class="$style.root"
@@ -32,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkSpacer>
 		<footer>
 			<div :class="$style.footerSpacer">
-				<div :class="[$style.footer, { [$style.friendly]: isFriendly }]">
+				<div :class="[$style.footer, { [$style.friendly]: isFriendly().value }]">
 					<div v-if="typers.length > 0" :class="$style.typers">
 						<I18n :src="i18n.ts.typingUsers" textTag="span">
 							<template #users>
@@ -53,11 +52,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</footer>
 	</div>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, nextTick, onBeforeUnmount, watch, shallowRef, ref } from 'vue';
+import { computed, onMounted, nextTick, onBeforeUnmount, watch, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { isBottomVisible, onScrollBottom, scrollToBottom } from '@@/js/scroll.js';
 import XMessage from './messaging-room.message.vue';
@@ -69,7 +68,7 @@ import * as os from '@/os.js';
 import { useStream } from '@/stream.js';
 import * as sound from '@/utility/sound.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 import { definePage } from '@/page.js';
 import { vibrate } from '@/utility/vibrate.js';
@@ -81,9 +80,9 @@ const props = defineProps<{
 	groupId?: string;
 }>();
 
-const rootEl = shallowRef<HTMLDivElement>();
-const formEl = shallowRef<InstanceType<typeof XForm>>();
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const rootEl = useTemplateRef('rootEl');
+const formEl = useTemplateRef('formEl');
+const pagingComponent = useTemplateRef('pagingComponent');
 
 const fetching = ref(true);
 const user = ref<Misskey.entities.UserDetailed | null>(null);
@@ -147,7 +146,7 @@ async function fetch() {
 		typers.value = _typers.filter(u => u.id !== $i?.id);
 	});
 
-	document.addEventListener('visibilitychange', onVisibilitychange);
+	window.document.addEventListener('visibilitychange', onVisibilitychange);
 
 	nextTick(() => {
 		thisScrollToBottom();
@@ -215,7 +214,7 @@ function onMessage(message) {
 	const _isBottom = isBottomVisible(rootEl.value, 64);
 
 	pagingComponent.value.prepend(message);
-	if (message.userId !== $i?.id && !document.hidden) {
+	if (message.userId !== $i?.id && !window.document.hidden) {
 		connection.value?.send('read', {
 			id: message.id,
 		});
@@ -284,7 +283,7 @@ function notifyNewMessage() {
 }
 
 function onVisibilitychange() {
-	if (document.hidden) return;
+	if (window.document.hidden) return;
 	for (const message of pagingComponent.value.items) {
 		if (message.userId !== $i?.id && !message.isRead) {
 			connection.value?.send('read', {
@@ -300,7 +299,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
 	connection.value?.dispose();
-	document.removeEventListener('visibilitychange', onVisibilitychange);
+	window.document.removeEventListener('visibilitychange', onVisibilitychange);
 	if (scrollRemove.value) scrollRemove.value();
 });
 

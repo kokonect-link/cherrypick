@@ -6,35 +6,38 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <SearchMarker path="/settings/sounds-and-vibrations" :label="i18n.ts.soundsAndVibrations" :keywords="['sounds']" icon="ti ti-music">
 	<div class="_gaps_m">
-		<FormSection first>
+		<MkFeatureBanner icon="/client-assets/speaker_high_volume_3d.png" color="#ff006f">
+			<SearchKeyword>{{ i18n.ts._settings.soundsBanner }}</SearchKeyword>
+		</MkFeatureBanner>
+
+		<div class="_gaps_s">
+			<SearchMarker :keywords="['mute']">
+				<MkPreferenceContainer k="sound.notUseSound">
+					<MkSwitch v-model="notUseSound">
+						<template #label><SearchLabel>{{ i18n.ts.notUseSound }}</SearchLabel></template>
+					</MkSwitch>
+				</MkPreferenceContainer>
+			</SearchMarker>
+
+			<SearchMarker :keywords="['active', 'mute']">
+				<MkPreferenceContainer k="sound.useSoundOnlyWhenActive">
+					<MkSwitch v-model="useSoundOnlyWhenActive">
+						<template #label><SearchLabel>{{ i18n.ts.useSoundOnlyWhenActive }}</SearchLabel></template>
+					</MkSwitch>
+				</MkPreferenceContainer>
+			</SearchMarker>
+
+			<SearchMarker :keywords="['volume', 'master']">
+				<MkPreferenceContainer k="sound.masterVolume">
+					<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+						<template #label><SearchLabel>{{ i18n.ts.masterVolume }}</SearchLabel></template>
+					</MkRange>
+				</MkPreferenceContainer>
+			</SearchMarker>
+		</div>
+
+		<FormSection>
 			<template #label>{{ i18n.ts.sounds }}</template>
-
-			<div class="_gaps_s">
-				<SearchMarker :keywords="['mute']">
-					<MkPreferenceContainer k="sound.notUseSound">
-						<MkSwitch v-model="notUseSound">
-							<template #label><SearchLabel>{{ i18n.ts.notUseSound }}</SearchLabel></template>
-						</MkSwitch>
-					</MkPreferenceContainer>
-				</SearchMarker>
-
-				<SearchMarker :keywords="['active', 'mute']">
-					<MkPreferenceContainer k="sound.useSoundOnlyWhenActive">
-						<MkSwitch v-model="useSoundOnlyWhenActive">
-							<template #label><SearchLabel>{{ i18n.ts.useSoundOnlyWhenActive }}</SearchLabel></template>
-						</MkSwitch>
-					</MkPreferenceContainer>
-				</SearchMarker>
-
-				<SearchMarker :keywords="['volume', 'master']">
-					<MkPreferenceContainer k="sound.masterVolume">
-						<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-							<template #label><SearchLabel>{{ i18n.ts.masterVolume }}</SearchLabel></template>
-						</MkRange>
-					</MkPreferenceContainer>
-				</SearchMarker>
-			</div>
-
 			<div class="_gaps_s">
 				<MkFolder v-for="type in operationTypes" :key="type">
 					<template #label>{{ i18n.ts._sfx[type] }}</template>
@@ -118,6 +121,7 @@ import { definePage } from '@/page.js';
 import { operationTypes } from '@/utility/sound.js';
 import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 import { PREF_DEF } from '@/preferences/def.js';
+import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import * as os from '@/os.js';
 

@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-if="!popup" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs" :popup="popup">
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
 			<div :class="$style.intro">{{ i18n.ts._keyboardShortCut.description }}</div>
@@ -58,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFoldableSection>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>

@@ -57,7 +57,7 @@ import { popups } from '@/os.js';
 import { pendingApiRequestsCount } from '@/utility/misskey-api.js';
 import { uploads } from '@/utility/upload.js';
 import * as sound from '@/utility/sound.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
@@ -72,7 +72,7 @@ const dev = _DEV_;
 const notifications = ref<Misskey.entities.Notification[]>([]);
 
 function onNotification(notification: Misskey.entities.Notification, isClient = false) {
-	if (document.visibilityState === 'visible') {
+	if (window.document.visibilityState === 'visible') {
 		if (!isClient && notification.type !== 'test') {
 			// サーバーサイドのテスト通知の際は自動で既読をつけない（テストできないので）
 			useStream().send('readNotification');

@@ -31,11 +31,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef, watch } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { prefer } from '@/preferences.js';
 import { getBgColor } from '@/utility/get-bg-color.js';
-import { mainRouter } from '@/router/main.js';
+import { mainRouter } from '@/router.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { globalEvents } from '@/events.js';
 
@@ -58,7 +58,7 @@ const props = withDefaults(defineProps<{
 	persistKey: null,
 });
 
-const rootEl = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
 const parentBg = ref<string | null>(null);
 // eslint-disable-next-line vue/no-setup-props-reactivity-loss
 const showBody = ref((props.persistKey && miLocalStorage.getItem(`${miLocalStoragePrefix}${props.persistKey}`)) ? (miLocalStorage.getItem(`${miLocalStoragePrefix}${props.persistKey}`) === 't') : props.expanded);

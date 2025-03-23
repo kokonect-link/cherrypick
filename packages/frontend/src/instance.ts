@@ -12,7 +12,7 @@ import { miLocalStorage } from '@/local-storage.js';
 // TODO: 他のタブと永続化されたstateを同期
 
 //#region loader
-const providedMetaEl = document.getElementById('cherrypick_meta');
+const providedMetaEl = window.document.getElementById('cherrypick_meta');
 
 let cachedMeta = miLocalStorage.getItem('instance') ? JSON.parse(miLocalStorage.getItem('instance')!) : null;
 let cachedAt = miLocalStorage.getItem('instanceCachedAt') ? parseInt(miLocalStorage.getItem('instanceCachedAt')!) : 0;

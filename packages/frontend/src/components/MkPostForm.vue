@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed } from 'vue';
+import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed, useTemplateRef } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -118,12 +118,13 @@ import { toASCII } from 'punycode.js';
 import { host, url } from '@@/js/config.js';
 import { erase, unique } from '@@/js/array.js';
 import type { ShallowRef } from 'vue';
-import type { MenuItem } from '@/types/menu.js';
 import type { PostFormProps } from '@/types/post-form.js';
+import type { MenuItem } from '@/types/menu.js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import type { DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
+import XTextCounter from '@/components/MkPostForm.TextCounter.vue';
 import MkPollEditor from '@/components/MkPollEditor.vue';
 import MkEventEditor from '@/components/MkEventEditor.vue';
 import MkScheduledNoteDelete from '@/components/MkScheduledNoteDelete.vue';
@@ -139,7 +140,8 @@ import { store } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { signinRequired, notesCount, incNotesCount, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account.js';
+import { ensureSignin, notesCount, incNotesCount } from '@/i.js';
+import { getAccounts, openAccountMenu as openAccountMenu_ } from '@/accounts.js';
 import { uploadFile } from '@/utility/upload.js';
 import { deepClone } from '@/utility/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
@@ -149,10 +151,11 @@ import { emojiPicker } from '@/utility/emoji-picker.js';
 import { mfmFunctionPicker } from '@/utility/mfm-function-picker.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
+import { DI } from '@/di.js';
 import { vibrate } from '@/utility/vibrate.js';
 import * as sound from '@/utility/sound.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const modal = inject('modal');
 
@@ -168,7 +171,7 @@ const props = withDefaults(defineProps<PostFormProps & {
 	initialLocalOnly: undefined,
 });
 
-provide('mock', props.mock);
+provide(DI.mock, props.mock);
 
 const emit = defineEmits<{
 	(ev: 'posted'): void;
@@ -179,11 +182,11 @@ const emit = defineEmits<{
 	(ev: 'fileChangeSensitive', fileId: string, to: boolean): void;
 }>();
 
-const textareaEl = shallowRef<HTMLTextAreaElement | null>(null);
-const cwInputEl = shallowRef<HTMLInputElement | null>(null);
-const hashtagsInputEl = shallowRef<HTMLInputElement | null>(null);
-const visibilityButton = shallowRef<HTMLElement>();
-const otherSettingsButton = shallowRef<HTMLElement>();
+const textareaEl = useTemplateRef('textareaEl');
+const cwInputEl = useTemplateRef('cwInputEl');
+const hashtagsInputEl = useTemplateRef('hashtagsInputEl');
+const visibilityButton = useTemplateRef('visibilityButton');
+const otherSettingsButton = useTemplateRef('otherSettingsButton');
 
 const posting = ref(false);
 const posted = ref(false);
@@ -197,10 +200,10 @@ const event = ref<{
 	metadata: Record<string, string>;
 } | null>(null);
 const useCw = ref<boolean>(!!props.initialCw);
-const showPreview = ref(store.s.showPreview);
-const showProfilePreview = ref(store.s.showProfilePreview);
-watch(showPreview, () => store.set('showPreview', showPreview.value));
-watch(showProfilePreview, () => store.set('showProfilePreview', showProfilePreview.value));
+const showPreview = ref(prefer.s.showPreview);
+const showProfilePreview = ref(prefer.s.showProfilePreview);
+watch(showPreview, () => prefer.commit('showPreview', showPreview.value));
+watch(showProfilePreview, () => prefer.commit('showProfilePreview', showProfilePreview.value));
 const showAddMfmFunction = ref(prefer.s.enableQuickAddMfmFunction);
 watch(showAddMfmFunction, () => prefer.commit('enableQuickAddMfmFunction', showAddMfmFunction.value));
 const cw = ref<string | null>(props.initialCw ?? null);
@@ -632,7 +635,13 @@ function showOtherSettings() {
 		reactionAcceptanceIcon = 'ti ti-heart-plus';
 	}
 
-	const menuDef = [{
+	const menuItems = [{
+		type: 'component',
+		component: XTextCounter,
+		props: {
+			textLength: textLength,
+		},
+	}, { type: 'divider' }, {
 		icon: reactionAcceptanceIcon,
 		text: i18n.ts.reactionAcceptance,
 		action: () => {
@@ -659,13 +668,7 @@ function showOtherSettings() {
 		},
 	}] satisfies MenuItem[];
 
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkPostFormOtherMenu.vue')), {
-		items: menuDef,
-		textLength: textLength.value,
-		src: otherSettingsButton.value,
-	}, {
-		closed: () => dispose(),
-	});
+	os.popupMenu(menuItems, otherSettingsButton.value);
 }
 //#endregion
 
@@ -1055,7 +1058,7 @@ async function post(ev?: MouseEvent) {
 
 	if (postAccount.value) {
 		const storedAccounts = await getAccounts();
-		token = storedAccounts.find(x => x.id === postAccount.value?.id)?.token;
+		token = storedAccounts.find(x => x.user.id === postAccount.value?.id)?.token;
 	}
 
 	posting.value = true;

@@ -19,8 +19,8 @@ import GameBoard from './game.board.vue';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { definePage } from '@/page.js';
 import { useStream } from '@/stream.js';
-import { $i } from '@/account.js';
-import { useRouter } from '@/router/supplier.js';
+import { $i } from '@/i.js';
+import { useRouter } from '@/router.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 

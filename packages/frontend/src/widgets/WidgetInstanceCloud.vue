@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <MkContainer :naked="widgetProps.transparent" :showHeader="false" class="mkw-instance-cloud">
 	<div class="">
-		<MkTagCloud v-if="activeInstances">
+		<MkTagCloud v-if="activeInstances" ref="cloud">
 			<li v-for="instance in activeInstances" :key="instance.id">
 				<a @click.prevent="onInstanceClick(instance)">
 					<img style="width: 32px;" :src="getInstanceIcon(instance)">
@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
+import { shallowRef, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
 import { useWidgetPropsManager } from './widget.js';
@@ -50,7 +50,7 @@ const { widgetProps, configure } = useWidgetPropsManager(name,
 	emit,
 );
 
-const cloud = shallowRef<InstanceType<typeof MkTagCloud> | null>();
+const cloud = useTemplateRef('cloud');
 const activeInstances = shallowRef<Misskey.entities.FederationInstance[] | null>(null);
 
 function onInstanceClick(i) {

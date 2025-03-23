@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import QRCodeVue3 from 'qrcode-vue3';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -40,15 +40,14 @@ const props = defineProps<{
 	qrCode: string;
 }>();
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
+const modal = useTemplateRef('modal');
 
 const gotIt = () => {
 	modal.value?.close();
 };
 
 const copyLink = () => {
-	copyToClipboard(props.qrCode);
-	os.toast(i18n.ts.copiedLink, 'copied');
+	copyToClipboard(props.qrCode, 'link');
 };
 </script>
 

@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:emojiUrls="note.emojis"
 			:enableEmojiMenu="!!$i"
 			:enableEmojiMenuReaction="!!$i"
+			class="_selectable"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
 		<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage && !note.isSchedule" style="padding-top: 5px; color: var(--MI_THEME-accent);">
@@ -35,6 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					:emojiUrls="note.emojis"
 					:enableEmojiMenu="!!$i"
 					:enableEmojiMenuReaction="!!$i"
+					class="_selectable"
 					@click.stop
 				/>
 				<div v-if="note.poll">
@@ -130,7 +132,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, provide, ref, shallowRef, watch } from 'vue';
+import { computed, inject, provide, ref, useTemplateRef, watch } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
@@ -146,22 +148,23 @@ import MkUsersTooltip from '@/components/MkUsersTooltip.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { instance } from '@/instance.js';
 import { notePage } from '@/filters/note.js';
-import { useTooltip } from '@/utility/use-tooltip.js';
+import { useTooltip } from '@/use/use-tooltip.js';
 import { pleaseLogin } from '@/utility/please-login.js';
 import { showMovedDialog } from '@/utility/show-moved-dialog.js';
 import { getNoteClipMenu, getNoteMenu, getRenoteMenu, getRenoteOnly, getQuoteMenu } from '@/utility/get-note-menu.js';
 import { deepClone } from '@/utility/clone.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
 import { claimAchievement } from '@/utility/achievements.js';
-import { useNoteCapture } from '@/utility/use-note-capture.js';
+import { useNoteCapture } from '@/use/use-note-capture.js';
 import { vibrate } from '@/utility/vibrate.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { store } from '@/store.js';
+import { DI } from '@/di.js';
 import detectLanguage from '@/utility/detect-language.js';
 import number from '@/filters/number.js';
 
@@ -176,7 +179,7 @@ const props = withDefaults(defineProps<{
 	mock: false,
 });
 
-provide('mock', props.mock);
+provide(DI.mock, props.mock);
 
 const emit = defineEmits<{
 	(ev: 'reaction', emoji: string): void;
@@ -185,13 +188,13 @@ const emit = defineEmits<{
 
 const note = ref(deepClone(props.note));
 
-const rootEl = shallowRef<HTMLElement>();
-const menuButton = shallowRef<HTMLElement>();
-const renoteButton = shallowRef<HTMLElement>();
-const reactButton = shallowRef<HTMLElement>();
-const heartReactButton = shallowRef<HTMLElement>();
-const quoteButton = shallowRef<HTMLElement>();
-const clipButton = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
+const menuButton = useTemplateRef('menuButton');
+const renoteButton = useTemplateRef('renoteButton');
+const reactButton = useTemplateRef('reactButton');
+const heartReactButton = useTemplateRef('heartReactButton');
+const quoteButton = useTemplateRef('quoteButton');
+const clipButton = useTemplateRef('clipButton');
 const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || (props.note.visibility === 'followers' && props.note.userId === $i.id));
 const isDeleted = ref(false);
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);

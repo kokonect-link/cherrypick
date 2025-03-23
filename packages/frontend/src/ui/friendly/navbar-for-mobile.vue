@@ -59,13 +59,14 @@ import { computed, defineAsyncComponent, ref, toRef, watch } from 'vue';
 import { openInstanceMenu } from '@/ui/_common_/common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { $i } from '@/i.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
-import { mainRouter } from '@/router/main.js';
+import { mainRouter } from '@/router.js';
 
 const menu = toRef(prefer.s, 'menu');
 const otherMenuItemIndicated = computed(() => {

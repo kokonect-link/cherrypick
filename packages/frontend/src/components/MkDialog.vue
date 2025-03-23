@@ -25,8 +25,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i v-else-if="type === 'question'" :class="$style.iconInner" class="ti ti-help-circle"></i>
 			<MkLoading v-else-if="type === 'waiting'" :class="$style.iconInner" :em="true"/>
 		</div>
-		<header v-if="title" :class="$style.title"><Mfm :text="title"/></header>
-		<div v-if="text" :class="$style.text"><Mfm :text="text"/></div>
+		<header v-if="title" :class="$style.title" class="_selectable"><Mfm :text="title"/></header>
+		<div v-if="text" :class="$style.text" class="_selectable"><Mfm :text="text"/></div>
 		<div v-if="caption" :class="$style.caption"><small><Mfm :text="caption"/></small></div>
 		<MkInput v-if="input" ref="inputValueEl" v-model="inputValue" autofocus :type="input.type || 'text'" :placeholder="input.placeholder || undefined" :autocomplete="input.autocomplete" @keydown="onInputKeydown">
 			<template v-if="input.type === 'password'" #prefix><i class="ti ti-lock"></i></template>
@@ -58,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, computed } from 'vue';
+import { ref, useTemplateRef, computed } from 'vue';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -120,7 +120,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
+const modal = useTemplateRef('modal');
 
 const inputValue = ref<string | number | null>(props.input?.default ?? null);
 const selectedValue = ref(props.select?.default ?? null);

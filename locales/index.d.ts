@@ -3426,6 +3426,10 @@ export interface Locale extends ILocale {
      */
     "copy": string;
     /**
+     * クリップボードにコピーされました
+     */
+    "copiedToClipboard": string;
+    /**
      * メトリクス
      */
     "metrics": string;
@@ -5983,9 +5987,49 @@ export interface Locale extends ILocale {
      */
     "restore": string;
     /**
+     * デバイス間で同期
+     */
+    "syncBetweenDevices": string;
+    /**
+     * サーバーに設定値が存在します
+     */
+    "preferenceSyncConflictTitle": string;
+    /**
+     * 同期が有効にされた設定項目は設定値をサーバーに保存しますが、この設定項目のサーバーに保存された設定値が見つかりました。どちらの設定値で上書きしますか？
+     */
+    "preferenceSyncConflictText": string;
+    /**
+     * サーバーの設定値
+     */
+    "preferenceSyncConflictChoiceServer": string;
+    /**
+     * デバイスの設定値
+     */
+    "preferenceSyncConflictChoiceDevice": string;
+    /**
+     * 同期の有効化をキャンセル
+     */
+    "preferenceSyncConflictChoiceCancel": string;
+    /**
+     * ペースト
+     */
+    "paste": string;
+    /**
+     * 絵文字パレット
+     */
+    "emojiPalette": string;
+    /**
+     * 投稿フォーム
+     */
+    "postForm": string;
+    /**
      * 文字数
      */
     "textCount": string;
+    /**
+     * 情報
+     */
+    "information": string;
     /**
      * 下書き
      */
@@ -6089,6 +6133,106 @@ export interface Locale extends ILocale {
          * ダイレクトメッセージ
          */
         "direct": string;
+    };
+    "_emojiPalette": {
+        /**
+         * パレット
+         */
+        "palettes": string;
+        /**
+         * パレットのデバイス間同期を有効にする
+         */
+        "enableSyncBetweenDevicesForPalettes": string;
+        /**
+         * メインで使用するパレット
+         */
+        "paletteForMain": string;
+        /**
+         * リアクションで使用するパレット
+         */
+        "paletteForReaction": string;
+    };
+    "_settings": {
+        /**
+         * ドライブの管理と設定、使用量の確認、ファイルをアップロードする際の設定を行えます。
+         */
+        "driveBanner": string;
+        /**
+         * プラグインを利用するとクライアントの機能を拡張することができます。プラグインのインストール、個別の設定と管理が行えます。
+         */
+        "pluginBanner": string;
+        /**
+         * サーバーからの受信する通知の種類と範囲や、プッシュ通知の設定が行えます。
+         */
+        "notificationsBanner": string;
+        /**
+         * API
+         */
+        "api": string;
+        /**
+         * Webhook
+         */
+        "webhook": string;
+        /**
+         * サービス連携
+         */
+        "serviceConnection": string;
+        /**
+         * 外部のアプリ・サービスと連携するためのアクセストークンやWebhookの管理と設定が行えます。
+         */
+        "serviceConnectionBanner": string;
+        /**
+         * アカウントのデータ
+         */
+        "accountData": string;
+        /**
+         * アカウントデータのアーカイブをエクスポート/インポートして管理できます。
+         */
+        "accountDataBanner": string;
+        /**
+         * 非表示にするコンテンツの設定や、特定のユーザーからのアクションを制限する設定と管理を行えます。
+         */
+        "muteAndBlockBanner": string;
+        /**
+         * クライアントの視覚や動作に関するパーソナライズを行い、より最適に使用できるように設定できます。
+         */
+        "accessibilityBanner": string;
+        /**
+         * コンテンツの公開範囲、見つけやすさ、フォローの承認制などアカウントのプライバシーに関する設定を行えます。
+         */
+        "privacyBanner": string;
+        /**
+         * パスワード、ログイン方法、認証アプリ、パスキーなどアカウントのセキュリティに関する設定を行えます。
+         */
+        "securityBanner": string;
+        /**
+         * 好みに応じた、クライアントの全体的な動作の設定が行えます。
+         */
+        "preferencesBanner": string;
+        /**
+         * 好みに応じた、クライアントの見た目・表示方法に関する設定が行えます。
+         */
+        "appearanceBanner": string;
+        /**
+         * クライアントで再生するサウンドの設定が行えます。
+         */
+        "soundsBanner": string;
+        /**
+         * タイムラインとノート
+         */
+        "timelineAndNote": string;
+        /**
+         * 全てのテキスト要素を選択可能にする
+         */
+        "makeEveryTextElementsSelectable": string;
+        /**
+         * 有効にすると、一部のシチュエーションでのユーザビリティが低下する場合があります。
+         */
+        "makeEveryTextElementsSelectable_description": string;
+        /**
+         * CherryPickの独自機能、パッチ、UIに関する設定を行えます。
+         */
+        "cherrypickBanner": string;
     };
     "_preferencesProfile": {
         /**
@@ -11234,6 +11378,10 @@ export interface Locale extends ILocale {
              */
             "login": string;
             /**
+             * アクセストークンの作成
+             */
+            "createToken": string;
+            /**
              * 予約投稿に失敗
              */
             "scheduleNote": string;
@@ -11364,6 +11512,10 @@ export interface Locale extends ILocale {
          * 幅を自動調整
          */
         "flexible": string;
+        /**
+         * プロファイル情報のデバイス間同期を有効にする
+         */
+        "enableSyncBetweenDevicesForProfiles": string;
         "_columns": {
             /**
              * メイン
@@ -11821,20 +11973,12 @@ export interface Locale extends ILocale {
              * このプラグインをインストールしますか？
              */
             "title": string;
-            /**
-             * プラグイン情報
-             */
-            "metaTitle": string;
         };
         "_theme": {
             /**
              * このテーマをインストールしますか？
              */
             "title": string;
-            /**
-             * テーマ情報
-             */
-            "metaTitle": string;
         };
         "_meta": {
             /**

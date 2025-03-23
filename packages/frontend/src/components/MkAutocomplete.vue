@@ -49,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts">
-import { markRaw, ref, shallowRef, computed, onUpdated, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
+import { markRaw, ref, useTemplateRef, computed, onUpdated, onMounted, onBeforeUnmount, nextTick, watch } from 'vue';
 import sanitizeHtml from 'sanitize-html';
 import { emojilist, getEmojiName } from '@@/js/emojilist.js';
 import { char2twemojiFilePath, char2fluentEmojiFilePath } from '@@/js/emoji-base.js';
@@ -145,7 +145,7 @@ const emit = defineEmits<{
 }>();
 
 const suggests = ref<Element>();
-const rootEl = shallowRef<HTMLDivElement>();
+const rootEl = useTemplateRef('rootEl');
 
 const fetching = ref(true);
 const users = ref<any[]>([]);
@@ -373,7 +373,7 @@ onMounted(() => {
 
 	props.textarea.addEventListener('keydown', onKeydown);
 
-	document.body.addEventListener('mousedown', onMousedown);
+	window.document.body.addEventListener('mousedown', onMousedown);
 
 	nextTick(() => {
 		exec();
@@ -389,7 +389,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
 	props.textarea.removeEventListener('keydown', onKeydown);
 
-	document.body.removeEventListener('mousedown', onMousedown);
+	window.document.body.removeEventListener('mousedown', onMousedown);
 });
 </script>
 

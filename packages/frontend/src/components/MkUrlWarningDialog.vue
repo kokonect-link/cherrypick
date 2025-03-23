@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, shallowRef, computed } from 'vue';
+import { onBeforeUnmount, onMounted, ref, computed, useTemplateRef } from 'vue';
 import { instanceName } from '@@/js/config.js';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -47,7 +47,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
+const modal = useTemplateRef('modal');
 const trustThisDomain = ref(false);
 
 const domain = computed(() => new URL(props.url).hostname);
@@ -83,11 +83,11 @@ function onKeydown(evt: KeyboardEvent) {
 }
 
 onMounted(() => {
-	document.addEventListener('keydown', onKeydown);
+	window.document.addEventListener('keydown', onKeydown);
 });
 
 onBeforeUnmount(() => {
-	document.removeEventListener('keydown', onKeydown);
+	window.document.removeEventListener('keydown', onKeydown);
 });
 </script>
 

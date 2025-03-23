@@ -8,11 +8,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, shallowRef } from 'vue';
+import { onMounted, useTemplateRef } from 'vue';
 import { Chart } from 'chart.js';
 import tinycolor from 'tinycolor2';
 import { store } from '@/store.js';
-import { useChartTooltip } from '@/utility/use-chart-tooltip.js';
+import { useChartTooltip } from '@/use/use-chart-tooltip.js';
 import { chartVLine } from '@/utility/chart-vline.js';
 import { alpha } from '@/utility/color.js';
 import { initChart } from '@/utility/init-chart.js';
@@ -20,7 +20,7 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 
 initChart();
 
-const chartEl = shallowRef<HTMLCanvasElement | null>(null);
+const chartEl = useTemplateRef('chartEl');
 
 const { handler: externalTooltipHandler } = useChartTooltip();
 
@@ -44,7 +44,7 @@ onMounted(async () => {
 
 	const vLineColor = store.s.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
-	const accent = tinycolor(getComputedStyle(document.documentElement).getPropertyValue('--MI_THEME-accent'));
+	const accent = tinycolor(getComputedStyle(window.document.documentElement).getPropertyValue('--MI_THEME-accent'));
 	const color = accent.toHex();
 
 	if (chartEl.value == null) return;

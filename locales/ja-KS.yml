@@ -1325,6 +1325,10 @@ federationSpecified: "このサーバーはホワイトリスト連合で運用�
 federationDisabled: "このサーバーは連合が無効化されてるで。他のサーバーのユーザーとやり取りすることはできひんで。"
 confirmOnReact: "ツッコむときに確認とる"
 reactAreYouSure: "\" {emoji} \" でツッコむ？"
+postForm: "投稿フォーム"
+information: "情報"
+_settings:
+  webhook: "Webhook"
 _accountSettings:
   requireSigninToViewContents: "ログインしてもらってからコンテンツ見てもらう"
   requireSigninToViewContentsDescription1: "あなたが作成した全部のノートとかのコンテンツを見れるようにするのにログインがいるようにするで。クローラーにいろいろ収集されるんを防げるかもしれん。"
@@ -2696,10 +2700,8 @@ _externalResourceInstaller:
   checkVendorBeforeInstall: "配ってるとこが信頼できるか確認した上でインストールしてな。"
   _plugin:
     title: "このプラグイン、インストールする？"
-    metaTitle: "プラグイン情報"
   _theme:
     title: "このテーマインストールする？"
-    metaTitle: "テーマ情報"
   _meta:
     base: ""
   _vendorInfo:

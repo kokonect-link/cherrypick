@@ -148,7 +148,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef, watch } from 'vue';
+import { ref, useTemplateRef, watch } from 'vue';
 import { host } from '@@/js/config.js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -170,7 +170,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
 // eslint-disable-next-line vue/no-setup-props-reactivity-loss
 const page = ref(props.initialPage ?? 0);

@@ -34,7 +34,7 @@ import MkTab from '@/components/MkTab.vue';
 import XReactions from '@/pages/user/reactions.vue';
 import XFiles from '@/pages/user/index.timeline.files.vue';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 
 const props = defineProps<{

@@ -195,7 +195,7 @@
 			<p>${messages.solution2}</p>
 			<p>${messages.solution3}</p>
 			<p>${messages.solution4}</p>
-			<details style="color: #86b300;">
+			<details style="color: rgb(255, 188, 220);">
 				<summary>${messages.otherOption}</summary>
 				<a href="/flush">
 					<button class="button-small">

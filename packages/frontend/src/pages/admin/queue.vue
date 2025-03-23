@@ -4,15 +4,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="800">
 		<XQueue v-if="tab === 'deliver'" domain="deliver"/>
 		<XQueue v-else-if="tab === 'inbox'" domain="inbox"/>
 		<br>
 		<MkButton @click="promoteAllQueues"><i class="ti ti-reload"></i> {{ i18n.ts.retryAllQueuesNow }}</MkButton>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -54,14 +53,7 @@ function promoteAllQueues() {
 	});
 }
 
-const headerActions = computed(() => [{
-	asFullButton: true,
-	icon: 'ti ti-external-link',
-	text: i18n.ts.dashboard,
-	handler: () => {
-		window.open(config.url + '/queue', '_blank', 'noopener');
-	},
-}]);
+const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'deliver',

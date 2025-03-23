@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				@keydown.space.enter="showFileMenu(element, $event)"
 				@contextmenu.prevent="showFileMenu(element, $event)"
 			>
-				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover" :showAltIndicator="true"/>
+				<MkDriveFileThumbnail :data-id="element.id" :class="$style.thumbnail" :file="element" fit="cover"/>
 				<div v-if="element.isSensitive" :class="$style.sensitive">
 					<i class="ti ti-eye-exclamation" style="margin: auto;"></i>
 				</div>
@@ -42,6 +42,7 @@ import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
+import { DI } from '@/di.js';
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
@@ -50,7 +51,7 @@ const props = defineProps<{
 	detachMediaFn?: (id: string) => void;
 }>();
 
-const mock = inject<boolean>('mock', false);
+const mock = inject(DI.mock, false);
 
 const emit = defineEmits<{
 	(ev: 'update:modelValue', value: Misskey.entities.DriveFile[]): void;
@@ -200,7 +201,7 @@ function showFileMenu(file: Misskey.entities.DriveFile, ev: MouseEvent | Keyboar
 
 	if (prefer.s.devMode) {
 		menuItems.push({ type: 'divider' }, {
-			icon: 'ti ti-id',
+			icon: 'ti ti-hash',
 			text: i18n.ts.copyFileId,
 			action: () => {
 				copyToClipboard(file.id);

@@ -62,7 +62,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef, ref, watchEffect } from 'vue';
+import { computed, useTemplateRef, ref, watchEffect } from 'vue';
 import XHeader from './_header_.vue';
 import { defaultMemoryStorage } from '@/memory-storage';
 import MkButton from '@/components/MkButton.vue';
@@ -84,7 +84,7 @@ type SearchQuery = {
 	hostname?: string;
 };
 
-const paginationComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const paginationComponent = useTemplateRef('paginationComponent');
 const storedQuery = JSON.parse(defaultMemoryStorage.getItem('admin-users-query') ?? '{}') as SearchQuery;
 
 const sort = ref(storedQuery.sort ?? '+createdAt');

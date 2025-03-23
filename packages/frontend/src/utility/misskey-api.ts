@@ -6,7 +6,7 @@
 import * as Misskey from 'cherrypick-js';
 import { ref } from 'vue';
 import { apiUrl } from '@@/js/config.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 export const pendingApiRequestsCount = ref(0);
 
 export type Endpoint = keyof Misskey.Endpoints;

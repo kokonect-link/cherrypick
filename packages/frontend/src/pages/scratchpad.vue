@@ -4,9 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader/></template>
-
+<PageWithHeader>
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
 			<div class="_gaps_s">
@@ -53,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -68,7 +66,7 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkCodeEditor from '@/components/MkCodeEditor.vue';
 import { aiScriptReadline, createAiScriptEnv } from '@/aiscript/api.js';
 import * as os from '@/os.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { registerAsUiLib } from '@/aiscript/ui.js';
