@@ -290,7 +290,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 							<SearchMarker :keywords="['show', 'reply', 'target', 'note', 'transparent', 'display']">
 								<MkPreferenceContainer k="showReplyTargetNoteInSemiTransparent">
-									<MkSwitch v-model="showReplyTargetNoteInSemiTransparent" :disabled="!showReplyTargetNote">
+									<MkSwitch v-model="showReplyTargetNoteInSemiTransparent">
 										<template #label><SearchLabel>{{ i18n.ts.showReplyTargetNoteInSemiTransparent }}</SearchLabel> <span class="_beta">CherryPick</span></template>
 									</MkSwitch>
 								</MkPreferenceContainer>
