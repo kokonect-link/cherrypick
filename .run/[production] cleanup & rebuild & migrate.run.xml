@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="[production] cleanup &amp; rebuild &amp; migrate" type="js.build_tools.npm">
+  <configuration default="false" name="[production] cleanup &amp; rebuild &amp; migrate" type="js.build_tools.npm" folderName="production">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>

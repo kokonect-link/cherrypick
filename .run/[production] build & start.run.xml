@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="[dev] build &amp; start" type="js.build_tools.npm" folderName="dev">
+  <configuration default="false" name="[production] build &amp; start" type="js.build_tools.npm" folderName="production">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
@@ -7,7 +7,7 @@
     </scripts>
     <node-interpreter value="project" />
     <envs>
-      <env name="NODE_ENV" value="development" />
+      <env name="NODE_ENV" value="production" />
       <env name="CHERRYPICK_WEBFINGER_USE_HTTP" value="true" />
     </envs>
     <method v="2">
@@ -19,7 +19,7 @@
         </scripts>
         <node-interpreter value="project" />
         <envs>
-          <env name="NODE_ENV" value="development" />
+          <env name="NODE_ENV" value="production" />
         </envs>
       </option>
     </method>
