@@ -30,7 +30,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 
 ### NOTE
 - Misskey에서의 설정 기능 개편에 대응하는 과정에서 기존에 존재했던 일부 설정이 누락되거나, 기능이 정상적으로 작동하지 않거나, 토글이 작동하지 않는 등의 문제가 발생할 수 있습니다.
-
 	이러한 문제를 발견하셨다면, [문제 보고](https://github.com/kokonect-link/cherrypick/issues/new?template=01_bug-report.yml)를 통해 버그를 리포트하실 수 있습니다.
 
 ### Client
