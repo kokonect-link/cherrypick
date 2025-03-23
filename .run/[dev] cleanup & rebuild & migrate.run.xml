@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="cleanup &amp; rebuild" type="js.build_tools.npm">
+  <configuration default="false" name="[dev] cleanup &amp; rebuild &amp; migrate" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
-      <script value="build" />
+      <script value="start" />
     </scripts>
     <node-interpreter value="project" />
     <envs>
@@ -27,6 +27,26 @@
         <envs>
           <env name="NODE_ENV" value="development" />
         </envs>
+      </option>
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="build" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs>
+          <env name="NODE_ENV" value="development" />
+        </envs>
+      </option>
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="migrate" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
       </option>
     </method>
   </configuration>
