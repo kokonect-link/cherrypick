@@ -373,12 +373,12 @@ export const searchIndexes: SearchIndexItem[] = [
 						id: 'wo0s0CaI1',
 						children: [
 							{
-								id: 'tfLmzYk9N',
+								id: '9uxocbLO0',
 								label: i18n.ts.useBoldFont,
 								keywords: ['bold'],
 							},
 							{
-								id: 'dI0hKRjJ6',
+								id: '66RdGc5w1',
 								label: i18n.ts.useSystemFont,
 								keywords: ['system', 'native'],
 							},

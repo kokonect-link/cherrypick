@@ -106,21 +106,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 					<div class="_gaps_s">
 						<SearchMarker :keywords="['font', 'size']">
-							<!--
-							<MkRadios v-model="fontSize">
-								<template #label><SearchLabel>{{ i18n.ts.fontSize }}</SearchLabel></template>
-								<option value="1"><span style="font-size: 12px;">Aa</span></option>
-								<option value="2"><span style="font-size: 13px;">Aa</span></option>
-								<option :value="null"><span style="font-size: 14px;">Aa</span></option>
-								<option value="3"><span style="font-size: 15px;">Aa</span></option>
-								<option value="4"><span style="font-size: 16px;">Aa</span></option>
-								<option value="5"><span style="font-size: 17px;">Aa</span></option>
-								<option value="6"><span style="font-size: 18px;">Aa</span></option>
-								<option value="7"><span style="font-size: 19px;">Aa</span></option>
-								<option value="8"><span style="font-size: 20px;">Aa</span></option>
-							</MkRadios>
-							-->
-
 							<div style="width: 100%">
 								<div :class="$style.label"><SearchLabel>{{ i18n.ts.fontSize }}</SearchLabel> <span class="_beta" style="vertical-align: middle;">CherryPick</span></div>
 								<div :class="$style.fontSize" class="_panel">
@@ -156,6 +141,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkSwitch>
 								</SearchMarker>
 							</div>
+
+							<!--
+							<MkRadios v-model="fontSize">
+								<template #label><SearchLabel>{{ i18n.ts.fontSize }}</SearchLabel></template>
+								<option value="1"><span style="font-size: 12px;">Aa</span></option>
+								<option value="2"><span style="font-size: 13px;">Aa</span></option>
+								<option :value="null"><span style="font-size: 14px;">Aa</span></option>
+								<option value="3"><span style="font-size: 15px;">Aa</span></option>
+								<option value="4"><span style="font-size: 16px;">Aa</span></option>
+								<option value="5"><span style="font-size: 17px;">Aa</span></option>
+								<option value="6"><span style="font-size: 18px;">Aa</span></option>
+								<option value="7"><span style="font-size: 19px;">Aa</span></option>
+								<option value="8"><span style="font-size: 20px;">Aa</span></option>
+							</MkRadios>
+							-->
 						</SearchMarker>
 
 						<hr>
