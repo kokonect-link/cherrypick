@@ -495,7 +495,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 											<template #label><i class="ti ti-heart"></i> <SearchLabel>{{ i18n.ts.like }}</SearchLabel></template>
 											<div class="_gaps_m">
 												<MkPreferenceContainer k="selectReaction">
-													<FromSlot v-model="selectReaction">
+													<FormSlot v-model="selectReaction">
 														<template #label>{{ i18n.ts.selectReaction }}</template>
 														<MkCustomEmoji v-if="selectReaction && selectReaction.startsWith(':')" style="max-height: 3em; font-size: 1.1em;" :useOriginalSize="false" :name="selectReaction" :normal="true" :noStyle="true"/>
 														<MkEmoji v-else-if="selectReaction && !selectReaction.startsWith(':')" :emoji="selectReaction" style="max-height: 3em; font-size: 1.1em;" :normal="true" :noStyle="true"/>
@@ -504,7 +504,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 															<MkButton rounded :small="true" inline @click="chooseNewReaction"><i class="ti ti-pencil"></i> {{ i18n.ts.edit }}</MkButton>
 															<MkButton rounded :small="true" inline danger @click="resetReaction"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
 														</div>
-													</FromSlot>
+													</FormSlot>
 												</MkPreferenceContainer>
 											</div>
 										</MkFolder>
@@ -1044,6 +1044,7 @@ import MkRange from '@/components/MkRange.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormLink from '@/components/form/link.vue';
+import FormSlot from '@/components/form/slot.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkInput from '@/components/MkInput.vue';

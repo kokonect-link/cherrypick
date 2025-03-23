@@ -124,7 +124,7 @@ export const paramDef = {
 		},
 	},
 	required: ['noteId', 'text', 'cw'],
-} as const;	
+} as const;
 
 @Injectable()
 export default class extends Endpoint<typeof meta, typeof paramDef> {

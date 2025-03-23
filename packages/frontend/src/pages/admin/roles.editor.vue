@@ -830,7 +830,7 @@ import FormSlot from '@/components/form/slot.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import { deepClone } from '@/utility/clone.js';
-import * as os from "@/os.js";
+import * as os from '@/os.js';
 
 const emit = defineEmits<{
 	(ev: 'update:modelValue', v: any): void;

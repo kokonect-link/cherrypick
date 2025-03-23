@@ -23,8 +23,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<SearchMarker :keywords="['nickname', 'enable']">
 						<MkPreferenceContainer k="useEnterToSend">
 							<MkSwitch v-model="useEnterToSend">
-								<template #label>{{ i18n.ts._cherrypick.useEnterToSend }}</template>
-								<template #caption>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</template>
+								<template #label><SearchLabel>{{ i18n.ts._cherrypick.useEnterToSend }}</SearchLabel></template>
+								<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</SearchKeyword></template>
 							</MkSwitch>
 						</MkPreferenceContainer>
 					</SearchMarker>
