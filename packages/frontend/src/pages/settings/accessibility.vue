@@ -26,20 +26,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #caption><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts.disableShowingAnimatedImagesDescription }}</template>
 					</MkSwitch>
 				</MkPreferenceContainer>
-			</SearchMarker>
 
-			<MkDisableSection :disabled="disableShowingAnimatedImages">
-				<SearchMarker :keywords="['disable', 'animation', 'image', 'photo', 'picture', 'media', 'thumbnail', 'gif']">
+				<MkDisableSection :disabled="disableShowingAnimatedImages">
 					<MkPreferenceContainer k="disableShowingAnimatedImages">
 						<MkSelect v-model="showingAnimatedImages" style="margin-left: 44px;">
 							<option value="always">{{ i18n.ts._showingAnimatedImages.always }}</option>
 							<option value="interaction">{{ i18n.ts._showingAnimatedImages.interaction }}</option>
 							<option value="inactive">{{ i18n.ts._showingAnimatedImages.inactive }}</option>
-							<template #caption>{{ i18n.ts.showingAnimatedImagesDescription }}</template>
+							<template #caption><SearchKeyword>{{ i18n.ts.showingAnimatedImagesDescription }}</SearchKeyword></template>
 						</MkSelect>
 					</MkPreferenceContainer>
-				</SearchMarker>
-			</MkDisableSection>
+				</MkDisableSection>
+			</SearchMarker>
 
 			<MkDisableSection :disabled="!prefer.s.advancedMfm">
 				<SearchMarker :keywords="['mfm', 'mfc', 'enable', 'show', 'animated']">

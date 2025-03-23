@@ -86,7 +86,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<SearchMarker :keywords="['account', 'truncate', 'delete']">
 				<MkFolder>
 					<template #icon><i class="ti ti-recycle"></i></template>
-					<template #label>{{ i18n.ts.truncateAccount }}</template>
+					<template #label><SearchLabel>{{ i18n.ts.truncateAccount }}</SearchLabel></template>
 
 					<div class="_gaps_m">
 						<FormInfo warn>{{ i18n.ts._accountTruncate.mayTakeTime }}</FormInfo>

@@ -255,49 +255,47 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 						<hr>
 
-						<SearchMarker :keywords="['note', 'display']">
-							<div class="_gaps_s">
-								<SearchMarker :keywords="['hide', 'avatar', 'note', 'display']">
-									<MkPreferenceContainer k="hideAvatarsInNote">
-										<MkSwitch v-model="hideAvatarsInNote">
-											<template #label><SearchLabel>{{ i18n.ts.hideAvatarsInNote }}</SearchLabel> <span class="_beta">CherryPick</span></template>
-										</MkSwitch>
-									</MkPreferenceContainer>
-								</SearchMarker>
+						<div class="_gaps_s">
+							<SearchMarker :keywords="['hide', 'avatar', 'note', 'display']">
+								<MkPreferenceContainer k="hideAvatarsInNote">
+									<MkSwitch v-model="hideAvatarsInNote">
+										<template #label><SearchLabel>{{ i18n.ts.hideAvatarsInNote }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									</MkSwitch>
+								</MkPreferenceContainer>
+							</SearchMarker>
 
-								<SearchMarker :keywords="['enable', 'absolute', 'time', 'note', 'display']">
-									<MkPreferenceContainer k="enableAbsoluteTime">
-										<MkSwitch v-model="enableAbsoluteTime">
-											<template #label><SearchLabel>{{ i18n.ts.enableAbsoluteTime }}</SearchLabel> <span class="_beta">CherryPick</span></template>
-										</MkSwitch>
-									</MkPreferenceContainer>
-								</SearchMarker>
+							<SearchMarker :keywords="['enable', 'absolute', 'time', 'note', 'display']">
+								<MkPreferenceContainer k="enableAbsoluteTime">
+									<MkSwitch v-model="enableAbsoluteTime">
+										<template #label><SearchLabel>{{ i18n.ts.enableAbsoluteTime }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									</MkSwitch>
+								</MkPreferenceContainer>
+							</SearchMarker>
 
-								<SearchMarker :keywords="['enable', 'mark', 'date', 'note', 'display']">
-									<MkPreferenceContainer k="enableMarkByDate">
-										<MkSwitch v-model="enableMarkByDate" :disabled="prefer.s.enableAbsoluteTime">
-											<template #label><SearchLabel>{{ i18n.ts.enableMarkByDate }}</SearchLabel> <span class="_beta">CherryPick</span></template>
-										</MkSwitch>
-									</MkPreferenceContainer>
-								</SearchMarker>
+							<SearchMarker :keywords="['enable', 'mark', 'date', 'note', 'display']">
+								<MkPreferenceContainer k="enableMarkByDate">
+									<MkSwitch v-model="enableMarkByDate" :disabled="prefer.s.enableAbsoluteTime">
+										<template #label><SearchLabel>{{ i18n.ts.enableMarkByDate }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									</MkSwitch>
+								</MkPreferenceContainer>
+							</SearchMarker>
 
-								<SearchMarker :keywords="['show', 'reply', 'target', 'note', 'display']">
-									<MkPreferenceContainer k="showReplyTargetNote">
-										<MkSwitch v-model="showReplyTargetNote">
-											<template #label><SearchLabel>{{ i18n.ts.showReplyTargetNote }}</SearchLabel> <span class="_beta">CherryPick</span></template>
-										</MkSwitch>
-									</MkPreferenceContainer>
-								</SearchMarker>
+							<SearchMarker :keywords="['show', 'reply', 'target', 'note', 'display']">
+								<MkPreferenceContainer k="showReplyTargetNote">
+									<MkSwitch v-model="showReplyTargetNote">
+										<template #label><SearchLabel>{{ i18n.ts.showReplyTargetNote }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									</MkSwitch>
+								</MkPreferenceContainer>
+							</SearchMarker>
 
-								<SearchMarker :keywords="['show', 'reply', 'target', 'note', 'transparent', 'display']">
-									<MkPreferenceContainer k="showReplyTargetNoteInSemiTransparent">
-										<MkSwitch v-model="showReplyTargetNoteInSemiTransparent" :disabled="!showReplyTargetNote">
-											<template #label><SearchLabel>{{ i18n.ts.showReplyTargetNoteInSemiTransparent }}</SearchLabel> <span class="_beta">CherryPick</span></template>
-										</MkSwitch>
-									</MkPreferenceContainer>
-								</SearchMarker>
-							</div>
-						</SearchMarker>
+							<SearchMarker :keywords="['show', 'reply', 'target', 'note', 'transparent', 'display']">
+								<MkPreferenceContainer k="showReplyTargetNoteInSemiTransparent">
+									<MkSwitch v-model="showReplyTargetNoteInSemiTransparent" :disabled="!showReplyTargetNote">
+										<template #label><SearchLabel>{{ i18n.ts.showReplyTargetNoteInSemiTransparent }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									</MkSwitch>
+								</MkPreferenceContainer>
+							</SearchMarker>
+						</div>
 					</div>
 				</MkFolder>
 			</SearchMarker>
@@ -647,7 +645,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<SearchMarker :keywords="['attachment', 'image', 'photo', 'picture', 'media', 'thumbnail', 'nsfw', 'sensitive', 'display', 'show', 'hide', 'visibility', 'open', 'click', 'double']">
 								<MkPreferenceContainer k="nsfwOpenBehavior">
 									<MkSelect v-model="nsfwOpenBehavior">
-										<template #label>{{ i18n.ts.nsfwOpenBehavior }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
+										<template #label><SearchLabel>{{ i18n.ts.nsfwOpenBehavior }}</SearchLabel> <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 										<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
 										<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
 									</MkSelect>
