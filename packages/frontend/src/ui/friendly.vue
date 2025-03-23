@@ -115,7 +115,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { defineAsyncComponent, provide, onMounted, computed, ref, watch, useTemplateRef, onUnmounted } from 'vue';
 import tinycolor from 'tinycolor2';
 import { instanceName } from '@@/js/config.js';
-import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
 import { isLink } from '@@/js/is-link.js';
 import XCommon from './_common_/common.vue';
 import type { Ref } from 'vue';
@@ -308,16 +307,13 @@ function openMessage(ev: MouseEvent) {
 }
 
 const navFooterHeight = ref(0);
-provide<Ref<number>>(CURRENT_STICKY_BOTTOM, navFooterHeight);
 
 watch(navFooter, () => {
 	if (navFooter.value) {
 		navFooterHeight.value = navFooter.value.offsetHeight;
-		window.document.body.style.setProperty('--MI-stickyBottom', `${navFooterHeight.value}px`);
 		window.document.body.style.setProperty('--MI-minBottomSpacing', 'var(--MI-minBottomSpacingMobile)');
 	} else {
 		navFooterHeight.value = 0;
-		window.document.body.style.setProperty('--MI-stickyBottom', '0px');
 		window.document.body.style.setProperty('--MI-minBottomSpacing', '0px');
 	}
 }, {

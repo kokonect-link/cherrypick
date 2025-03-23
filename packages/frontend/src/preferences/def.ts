@@ -141,6 +141,7 @@ export const PREF_DEF = {
 			'followRequests',
 			'explore',
 			'search',
+			'channels',
 			'announcements',
 			'-',
 			'support',

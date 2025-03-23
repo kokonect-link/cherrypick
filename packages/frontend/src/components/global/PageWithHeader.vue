@@ -4,14 +4,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer ref="container" class="_pageScrollable">
-	<template #header>
-		<NotificationPageHeader v-if="notification" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :title="i18n.ts.notifications" :icon="'ti ti-bell'"/>
-		<CPPageHeader v-else-if="isMobile && prefer.s.mobileHeaderChange && !popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
-		<MkPageHeader v-else-if="!popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
-	</template>
-	<slot></slot>
-</MkStickyContainer>
+<div :class="[$style.root, reversed ? '_pageScrollableReversed' : '_pageScrollable']">
+	<MkStickyContainer ref="container">
+		<template #header>
+			<NotificationPageHeader v-if="notification" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :title="i18n.ts.notifications" :icon="'ti ti-bell'"/>
+			<CPPageHeader v-else-if="isMobile && prefer.s.mobileHeaderChange && !popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
+			<MkPageHeader v-else-if="!popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
+		</template>
+		<div :class="$style.body">
+			<slot></slot>
+		</div>
+		<template #footer><slot name="footer"></slot></template>
+	</MkStickyContainer>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -42,6 +47,7 @@ const props = withDefaults(defineProps<{
 	thin?: boolean;
 	hideTitle?: boolean;
 	displayMyAvatar?: boolean;
+	reversed?: boolean;
 	user?: Misskey.entities.UserDetailed | null;
 	popup?: boolean;
 	notification?: boolean;
@@ -95,5 +101,11 @@ function onScroll() {
 </script>
 
 <style lang="scss" module>
+.root {
 
+}
+
+.body {
+	min-height: calc(100cqh - (var(--MI-stickyTop, 0px) + var(--MI-stickyBottom, 0px)));
+}
 </style>
