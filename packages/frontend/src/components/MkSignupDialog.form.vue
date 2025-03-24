@@ -45,20 +45,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span v-else-if="emailState === 'error'" style="color: var(--MI_THEME-error)"><i class="ti ti-alert-triangle ti-fw"></i> {{ i18n.ts.error }}</span>
 				</template>
 			</MkInput>
-			<MkInput v-model="password" type="password" autocomplete="new-password" required data-cy-signup-password @update:modelValue="onChangePassword" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
+			<MkInput v-model="password" :type="showPassword ? 'text' : 'password'" autocomplete="new-password" required data-cy-signup-password @update:modelValue="onChangePassword" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
 				<template #label>{{ i18n.ts.password }}</template>
 				<template #prefix><i class="ti ti-lock"></i></template>
-				<template v-if="isCapsLock" #suffix><div :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div></template>
+				<template #suffix>
+					<div v-if="isCapsLock" :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div>
+					<button v-if="password" type="button" :class="$style.passwordToggleBtn" @click="togglePassword"><i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
+				</template>
 				<template #caption>
 					<span v-if="passwordStrength == 'low'" style="color: var(--MI_THEME-error)"><i class="ti ti-alert-triangle ti-fw"></i> {{ i18n.ts.weakPassword }}</span>
 					<span v-if="passwordStrength == 'medium'" style="color: var(--MI_THEME-warn)"><i class="ti ti-check ti-fw"></i> {{ i18n.ts.normalPassword }}</span>
 					<span v-if="passwordStrength == 'high'" style="color: var(--MI_THEME-success)"><i class="ti ti-check ti-fw"></i> {{ i18n.ts.strongPassword }}</span>
 				</template>
 			</MkInput>
-			<MkInput v-model="retypedPassword" type="password" autocomplete="new-password" required data-cy-signup-password-retype @update:modelValue="onChangePasswordRetype" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
+			<MkInput v-model="retypedPassword" :type="showPassword2 ? 'text' : 'password'" autocomplete="new-password" required data-cy-signup-password-retype @update:modelValue="onChangePasswordRetype" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
 				<template #label>{{ i18n.ts.password }} ({{ i18n.ts.retype }})</template>
 				<template #prefix><i class="ti ti-lock"></i></template>
-				<template v-if="isCapsLock" #suffix><div :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div></template>
+				<template #suffix>
+					<div v-if="isCapsLock" :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div>
+					<button v-if="retypedPassword" type="button" :class="$style.passwordToggleBtn" @click="togglePassword2"><i :class="showPassword2 ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
+				</template>
 				<template #caption>
 					<span v-if="passwordRetypeState == 'match'" style="color: var(--MI_THEME-success)"><i class="ti ti-check ti-fw"></i> {{ i18n.ts.passwordMatched }}</span>
 					<span v-if="passwordRetypeState == 'not-match'" style="color: var(--MI_THEME-error)"><i class="ti ti-alert-triangle ti-fw"></i> {{ i18n.ts.passwordNotMatched }}</span>
@@ -149,6 +155,8 @@ const shouldDisableSubmitting = computed((): boolean => {
 });
 
 const isCapsLock = ref(false);
+const showPassword = ref(false);
+const showPassword2 = ref(false);
 
 function getPasswordStrength(source: string): number {
 	let strength = 0;
@@ -340,6 +348,14 @@ function checkCapsLock(ev: KeyboardEvent) {
 	isCapsLock.value = ev.getModifierState('CapsLock');
 }
 
+function togglePassword() {
+	showPassword.value = !showPassword.value;
+}
+
+function togglePassword2() {
+	showPassword2.value = !showPassword2.value;
+}
+
 onMounted(() => {
 	window.addEventListener('keydown', checkCapsLock);
 	window.addEventListener('keyup', checkCapsLock);
@@ -368,6 +384,20 @@ onUnmounted(() => {
 	display: inline-block;
 	padding: 2px;
 	border-radius: 6px;
+	margin-right: 4px;
 	background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
+}
+
+.passwordToggleBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	cursor: pointer;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>

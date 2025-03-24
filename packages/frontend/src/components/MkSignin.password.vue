@@ -25,9 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<!-- ブラウザ オートコンプリート用 -->
 			<input type="hidden" name="username" autocomplete="username" :value="user.username">
 
-			<MkInput v-model="password" :placeholder="i18n.ts.password" type="password" autocomplete="current-password webauthn" :withPasswordToggle="true" required autofocus data-cy-signin-password @enter.prevent="onSubmit" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
+			<MkInput v-model="password" :placeholder="i18n.ts.password" :type="showPassword ? 'text' : 'password'" autocomplete="current-password webauthn" :withPasswordToggle="true" required autofocus data-cy-signin-password @enter.prevent="onSubmit" @keydown="checkCapsLock" @focus="checkCapsLock" @click="checkCapsLock">
 				<template #prefix><i class="ti ti-lock"></i></template>
-				<template v-if="isCapsLock" #suffix><div :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div></template>
+				<template #suffix>
+					<div v-if="isCapsLock" :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div>
+					<button v-if="password" type="button" :class="$style.passwordToggleBtn" @click="togglePassword"><i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
+				</template>
 				<template #caption><button class="_textButton" type="button" @click="resetPassword">{{ i18n.ts.forgotPassword }}</button></template>
 			</MkInput>
 
@@ -110,6 +113,7 @@ const captchaFailed = computed((): boolean => {
 });
 
 const isCapsLock = ref(false);
+const showPassword = ref(false);
 
 const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
@@ -159,6 +163,10 @@ function goBack() {
 
 function checkCapsLock(ev: KeyboardEvent) {
 	isCapsLock.value = ev.getModifierState('CapsLock');
+}
+
+function togglePassword() {
+	showPassword.value = !showPassword.value;
 }
 
 onMounted(() => {
@@ -255,6 +263,20 @@ defineExpose({
 	display: inline-block;
 	padding: 2px;
 	border-radius: 6px;
+	margin-right: 4px;
 	background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
+}
+
+.passwordToggleBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: var(--MI_THEME-fg);
+	font-size: 0.8em;
+	cursor: pointer;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>
