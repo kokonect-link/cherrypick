@@ -27,10 +27,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.daily">
 				<div v-for="(day, i) in weatherData.daily.time.slice(0, 3)" :key="i" :class="$style.day">
 					<div style="font-size: 0.8em;">{{ formatDate(day) }}</div>
-					<i style="margin: 4px 0;" :class="getWeatherIcon(Number(weatherData.daily.weatherCode[i]))"></i>
-					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMax[i])) }}</span> / <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMin[i])) }}</span><span :class="$style.detailsUnit">{{ temperatureUnit }}</span></div>
-					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationSum[i])) }}</span><span :class="$style.detailsUnit">mm</span></div>
-					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationProbabilityMean[i])) }}</span><span :class="$style.detailsUnit">%</span></div>
+					<i style="margin: 4px 0; font-size: 1.55em;" :class="getWeatherIcon(Number(weatherData.daily.weatherCode[i]))"></i>
+					<div style="font-size: 0.85em;"><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMax[i])) }}</span> / <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMin[i])) }}</span><span :class="$style.detailsUnit">{{ temperatureUnit }}</span></div>
+					<div style="font-size: 0.85em;"><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationSum[i])) }}</span><span :class="$style.detailsUnit">mm</span></div>
+					<div style="font-size: 0.85em;"><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationProbabilityMean[i])) }}</span><span :class="$style.detailsUnit">%</span></div>
 				</div>
 			</div>
 		</div>
