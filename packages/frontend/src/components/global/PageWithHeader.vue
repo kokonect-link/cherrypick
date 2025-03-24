@@ -4,8 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="[$style.root, reversed ? '_pageScrollableReversed' : '_pageScrollable']">
-	<MkStickyContainer ref="container">
+<div ref="container" :class="[$style.root, reversed ? '_pageScrollableReversed' : '_pageScrollable']">
+	<MkStickyContainer>
 		<template #header>
 			<NotificationPageHeader v-if="notification" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :title="i18n.ts.notifications" :icon="'ti ti-bell'"/>
 			<CPPageHeader v-else-if="isMobile && prefer.s.mobileHeaderChange && !popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
@@ -32,7 +32,7 @@ import NotificationPageHeader from '@/components/global/NotificationPageHeader.v
 
 const MOBILE_THRESHOLD = 500;
 
-const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+const isMobile = ref(['smartphone', 'tablet'].includes(<string>deviceKind) || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
@@ -60,15 +60,15 @@ const tab = defineModel<string>('tab');
 const container = useTemplateRef('container');
 
 onMounted(() => {
-	container.value.rootEl.addEventListener('scroll', onScroll);
+	container.value.addEventListener('scroll', onScroll);
 });
 
 onBeforeUnmount(() => {
-	container.value.rootEl.removeEventListener('scroll', onScroll);
+	container.value.removeEventListener('scroll', onScroll);
 });
 
 function onScroll() {
-	const currentScrollPosition = container.value.rootEl.scrollTop;
+	const currentScrollPosition = container.value.scrollTop;
 	if (currentScrollPosition < 0) {
 		return;
 	}
