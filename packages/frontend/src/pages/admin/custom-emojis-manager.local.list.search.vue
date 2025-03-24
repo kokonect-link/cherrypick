@@ -230,6 +230,8 @@ async function onQueryRolesEditClicked() {
 	background: none;
 	color: inherit;
 	font-size: 0.8em;
+	cursor: pointer;
 	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>
