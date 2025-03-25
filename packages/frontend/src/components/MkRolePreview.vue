@@ -51,6 +51,10 @@ const props = withDefaults(defineProps<{
 .root {
 	display: flex;
 	align-items: center;
+
+	&:last-child {
+		margin-top: 8px;
+	}
 }
 
 .icon {
