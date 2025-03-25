@@ -67,6 +67,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div style="container-type: inline-size;">
 			<MkEvent v-if="appearNote.event" :note="appearNote"/>
+			<div v-if="appearNote.replyId" style="margin-bottom: 4px;">
+				<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
+				<MkA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></MkA>
+			</div>
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm
 					v-if="appearNote.cw != ''"
@@ -82,10 +86,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div :class="$style.text">
 					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
 					<MkA v-if="appearNote.replyId && (forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
-					<div v-else-if="appearNote.replyId" style="margin-bottom: 4px;">
-						<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
-						<MkA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></MkA>
-					</div>
 					<Mfm
 						v-if="appearNote.text"
 						:parsedNodes="parsed"
