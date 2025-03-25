@@ -134,7 +134,6 @@ export interface IPost extends IObject {
 	_misskey_quote?: string;
 	_misskey_content?: string;
 	quoteUrl?: string;
-	_misskey_talk?: boolean;
 }
 
 export interface IQuestion extends IObject {
@@ -347,7 +346,6 @@ export interface IMove extends IActivity {
 export const isCreate = (object: IObject): object is ICreate => getApType(object) === 'Create';
 export const isDelete = (object: IObject): object is IDelete => getApType(object) === 'Delete';
 export const isUpdate = (object: IObject): object is IUpdate => getApType(object) === 'Update';
-export const isRead = (object: IObject): object is IRead => getApType(object) === 'Read';
 export const isUndo = (object: IObject): object is IUndo => getApType(object) === 'Undo';
 export const isFollow = (object: IObject): object is IFollow => getApType(object) === 'Follow';
 export const isAccept = (object: IObject): object is IAccept => getApType(object) === 'Accept';

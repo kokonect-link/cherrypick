@@ -136,7 +136,6 @@ export const PREF_DEF = {
 	menu: {
 		default: [
 			'notifications',
-			'messaging',
 			'favorites',
 			'explore',
 			'followRequests',

@@ -435,14 +435,6 @@ import type {
 	InviteLimitResponse,
 	InviteListRequest,
 	InviteListResponse,
-	MessagingHistoryRequest,
-	MessagingHistoryResponse,
-	MessagingMessagesRequest,
-	MessagingMessagesResponse,
-	MessagingMessagesCreateRequest,
-	MessagingMessagesCreateResponse,
-	MessagingMessagesDeleteRequest,
-	MessagingMessagesReadRequest,
 	MetaRequest,
 	MetaResponse,
 	MiauthGenTokenRequest,
@@ -916,7 +908,6 @@ export type Endpoints = {
 	'i/page-likes': { req: IPageLikesRequest; res: IPageLikesResponse };
 	'i/pages': { req: IPagesRequest; res: IPagesResponse };
 	'i/pin': { req: IPinRequest; res: IPinResponse };
-	'i/read-all-messaging-messages': { req: EmptyRequest; res: EmptyResponse };
 	'i/read-all-unread-notes': { req: EmptyRequest; res: EmptyResponse };
 	'i/read-announcement': { req: IReadAnnouncementRequest; res: EmptyResponse };
 	'i/regenerate-token': { req: IRegenerateTokenRequest; res: EmptyResponse };
@@ -945,11 +936,6 @@ export type Endpoints = {
 	'invite/delete': { req: InviteDeleteRequest; res: EmptyResponse };
 	'invite/limit': { req: EmptyRequest; res: InviteLimitResponse };
 	'invite/list': { req: InviteListRequest; res: InviteListResponse };
-	'messaging/history': { req: MessagingHistoryRequest; res: MessagingHistoryResponse };
-	'messaging/messages': { req: MessagingMessagesRequest; res: MessagingMessagesResponse };
-	'messaging/messages/create': { req: MessagingMessagesCreateRequest; res: MessagingMessagesCreateResponse };
-	'messaging/messages/delete': { req: MessagingMessagesDeleteRequest; res: EmptyResponse };
-	'messaging/messages/read': { req: MessagingMessagesReadRequest; res: EmptyResponse };
 	'meta': { req: MetaRequest; res: MetaResponse };
 	'miauth/gen-token': { req: MiauthGenTokenRequest; res: MiauthGenTokenResponse };
 	'mute/create': { req: MuteCreateRequest; res: EmptyResponse };

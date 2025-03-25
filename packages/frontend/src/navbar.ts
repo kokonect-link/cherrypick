@@ -32,13 +32,6 @@ export const navbarItemDef = reactive({
 		}),
 		to: '/my/notifications',
 	},
-	messaging: {
-		title: i18n.ts.messaging,
-		icon: 'ti ti-messages',
-		show: computed(() => $i != null),
-		indicated: computed(() => $i != null && $i.hasUnreadMessagingMessage),
-		to: '/my/messaging',
-	},
 	drive: {
 		title: i18n.ts.drive,
 		icon: 'ti ti-cloud',

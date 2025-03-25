@@ -14,7 +14,6 @@ import type { MiAntenna } from '@/models/Antenna.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
 import type { MiDriveFolder } from '@/models/DriveFolder.js';
 import type { MiUserList } from '@/models/UserList.js';
-import type { MiMessagingMessage } from '@/models/MessagingMessage.js';
 import type { MiUserGroup } from '@/models/UserGroup.js';
 import type { MiAbuseUserReport } from '@/models/AbuseUserReport.js';
 import type { MiSignin } from '@/models/Signin.js';
@@ -78,9 +77,6 @@ export interface MainEventTypes {
 	readAllUnreadMentions: undefined;
 	unreadSpecifiedNote: MiNote['id'];
 	readAllUnreadSpecifiedNotes: undefined;
-	readAllMessagingMessages: undefined;
-	messagingMessage: Packed<'MessagingMessage'>;
-	unreadMessagingMessage: Packed<'MessagingMessage'>;
 	readAllAntennas: undefined;
 	unreadAntenna: MiAntenna;
 	readAllAnnouncements: undefined;
@@ -159,28 +155,6 @@ export interface UserListEventTypes {
 
 export interface AntennaEventTypes {
 	note: MiNote;
-}
-
-export interface MessagingEventTypes {
-	read: MiMessagingMessage['id'][];
-	typing: MiUser['id'];
-	message: Packed<'MessagingMessage'>;
-	deleted: MiMessagingMessage['id'];
-}
-
-export interface GroupMessagingEventTypes {
-	read: {
-		ids: MiMessagingMessage['id'][];
-		userId: MiUser['id'];
-	};
-	typing: MiUser['id'];
-	message: Packed<'MessagingMessage'>;
-	deleted: MiMessagingMessage['id'];
-}
-
-export interface MessagingIndexEventTypes {
-	read: MiMessagingMessage['id'][];
-	message: Packed<'MessagingMessage'>;
 }
 
 export interface RoleTimelineEventTypes {
@@ -320,18 +294,6 @@ export type GlobalEvents = {
 		name: `userListStream:${MiUserList['id']}`;
 		payload: EventTypesToEventPayload<UserListEventTypes>;
 	};
-	messaging: {
-		name: `messagingStream:${MiUser['id']}-${MiUser['id']}`;
-		payload: EventUnionFromDictionary<SerializedAll<MessagingEventTypes>>;
-	};
-	groupMessaging: {
-		name: `messagingStream:${MiUserGroup['id']}`;
-		payload: EventUnionFromDictionary<SerializedAll<GroupMessagingEventTypes>>;
-	};
-	messagingIndex: {
-		name: `messagingIndexStream:${MiUser['id']}`;
-		payload: EventUnionFromDictionary<SerializedAll<MessagingIndexEventTypes>>;
-	};
 	roleTimeline: {
 		name: `roleTimelineStream:${MiRole['id']}`;
 		payload: EventTypesToEventPayload<RoleTimelineEventTypes>;
@@ -429,21 +391,6 @@ export class GlobalEventService {
 	@bindThis
 	public publishAntennaStream<K extends keyof AntennaEventTypes>(antennaId: MiAntenna['id'], type: K, value?: AntennaEventTypes[K]): void {
 		this.publish(`antennaStream:${antennaId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
-	public publishMessagingStream<K extends keyof MessagingEventTypes>(userId: MiUser['id'], otherpartyId: MiUser['id'], type: K, value?: MessagingEventTypes[K]): void {
-		this.publish(`messagingStream:${userId}-${otherpartyId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
-	public publishGroupMessagingStream<K extends keyof GroupMessagingEventTypes>(groupId: MiUserGroup['id'], type: K, value?: GroupMessagingEventTypes[K]): void {
-		this.publish(`messagingStream:${groupId}`, type, typeof value === 'undefined' ? null : value);
-	}
-
-	@bindThis
-	public publishMessagingIndexStream<K extends keyof MessagingIndexEventTypes>(userId: MiUser['id'], type: K, value?: MessagingIndexEventTypes[K]): void {
-		this.publish(`messagingIndexStream:${userId}`, type, typeof value === 'undefined' ? null : value);
 	}
 
 	@bindThis

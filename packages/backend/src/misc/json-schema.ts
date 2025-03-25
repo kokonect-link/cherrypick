@@ -15,7 +15,6 @@ import {
 import { packedNoteSchema } from '@/models/json-schema/note.js';
 import { packedUserListSchema } from '@/models/json-schema/user-list.js';
 import { packedAppSchema } from '@/models/json-schema/app.js';
-import { packedMessagingMessageSchema } from '@/models/json-schema/messaging-message.js';
 import { packedNotificationSchema } from '@/models/json-schema/notification.js';
 import { packedDriveFileSchema } from '@/models/json-schema/drive-file.js';
 import { packedDriveFolderSchema } from '@/models/json-schema/drive-folder.js';
@@ -81,7 +80,6 @@ export const refs = {
 	Ad: packedAdSchema,
 	Announcement: packedAnnouncementSchema,
 	App: packedAppSchema,
-	MessagingMessage: packedMessagingMessageSchema,
 	Note: packedNoteSchema,
 	NoteDraft: packedNoteDraftSchema,
 	NoteReaction: packedNoteReactionSchema,

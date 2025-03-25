@@ -75,7 +75,6 @@ globalThis.addEventListener('push', ev => {
 		switch (data.type) {
 			// case 'driveFileCreated':
 			case 'notification':
-			case 'unreadMessagingMessage':
 			case 'unreadAntennaNote':
 				// 1日以上経過している場合は無視
 				if (Date.now() - data.dateTime > 1000 * 60 * 60 * 24) break;
@@ -84,22 +83,6 @@ globalThis.addEventListener('push', ev => {
 			case 'readAllNotifications':
 				await globalThis.registration.getNotifications()
 					.then(notifications => notifications.forEach(n => n.tag !== 'read_notification' && n.close()));
-				break;
-			case 'readAllMessagingMessages':
-				for (const n of await globalThis.registration.getNotifications()) {
-					if (n.data?.type === 'unreadMessagingMessage') n.close();
-				}
-				break;
-			case 'readAllMessagingMessagesOfARoom':
-				for (const n of await globalThis.registration.getNotifications()) {
-					if (n.data?.type === 'unreadMessagingMessage'
-						&& ('userId' in data.body
-							? data.body.userId === n.data.body.userId
-							: data.body.groupId === n.data.body.groupId)
-					) {
-						n.close();
-					}
-				}
 				break;
 		}
 
@@ -177,9 +160,6 @@ globalThis.addEventListener('notificationclick', (ev: ServiceWorkerGlobalScopeEv
 								break;
 						}
 				}
-				break;
-			case 'unreadMessagingMessage':
-				client = await swos.openChat(data.body, loginId);
 				break;
 			case 'unreadAntennaNote':
 				client = await swos.openAntenna(data.body.antenna.id, loginId);

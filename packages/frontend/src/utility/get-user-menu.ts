@@ -347,13 +347,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 
 		if (meId !== user.id) {
-			menuItems.push({
-				type: 'link',
-				icon: 'ti ti-messages',
-				text: i18n.ts.startMessaging,
-				to: `/my/messaging/@${user.host === null ? user.username : user.username + '@' + user.host}`,
-			});
-
 			if (user.host === null) {
 				menuItems.push({
 					icon: 'ti ti-users',

@@ -37,8 +37,8 @@ export const permissions = [
 	'write:favorites',
 	'read:following',
 	'write:following',
-	'read:messaging',
-	'write:messaging',
+	'read:messaging', // deprecated
+	'write:messaging', // deprecated
 	'read:mutes',
 	'write:mutes',
 	'write:notes',

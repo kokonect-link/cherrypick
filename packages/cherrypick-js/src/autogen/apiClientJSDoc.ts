@@ -2947,17 +2947,6 @@ declare module '../api.js' {
      * 
      * **Credential required**: *Yes* / **Permission**: *write:account*
      */
-    request<E extends 'i/read-all-messaging-messages', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:account*
-     */
     request<E extends 'i/read-all-unread-notes', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
@@ -3263,61 +3252,6 @@ declare module '../api.js' {
      * **Credential required**: *Yes* / **Permission**: *read:invite-codes*
      */
     request<E extends 'invite/list', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *read:messaging*
-     */
-    request<E extends 'messaging/history', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *read:messaging*
-     */
-    request<E extends 'messaging/messages', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:messaging*
-     */
-    request<E extends 'messaging/messages/create', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:messaging*
-     */
-    request<E extends 'messaging/messages/delete', P extends Endpoints[E]['req']>(
-      endpoint: E,
-      params: P,
-      credential?: string | null,
-    ): Promise<SwitchCaseResponseType<E, P>>;
-
-    /**
-     * No description provided.
-     * 
-     * **Credential required**: *Yes* / **Permission**: *write:messaging*
-     */
-    request<E extends 'messaging/messages/read', P extends Endpoints[E]['req']>(
       endpoint: E,
       params: P,
       credential?: string | null,

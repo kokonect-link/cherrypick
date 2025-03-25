@@ -666,9 +666,6 @@ export type Channels = {
             notificationFlushed: () => void;
             unreadSpecifiedNote: (payload: Note['id']) => void;
             readAllUnreadSpecifiedNotes: () => void;
-            readAllMessagingMessages: () => void;
-            messagingMessage: (payload: MessagingMessage) => void;
-            unreadMessagingMessage: (payload: MessagingMessage) => void;
             readAllAntennas: () => void;
             unreadAntenna: (payload: Antenna) => void;
             readAllAnnouncements: () => void;
@@ -731,23 +728,6 @@ export type Channels = {
             note: (payload: Note) => void;
         };
         receives: null;
-    };
-    messaging: {
-        params: {
-            otherparty?: User['id'] | null;
-            group?: UserGroup['id'] | null;
-        };
-        events: {
-            message: (payload: MessagingMessage) => void;
-            deleted: (payload: MessagingMessage['id']) => void;
-            read: (payload: MessagingMessage['id'][]) => void;
-            typers: (payload: User[]) => void;
-        };
-        receives: {
-            read: {
-                id: MessagingMessage['id'];
-            };
-        };
     };
     userList: {
         params: {
@@ -1748,14 +1728,6 @@ declare namespace entities {
         InviteLimitResponse,
         InviteListRequest,
         InviteListResponse,
-        MessagingHistoryRequest,
-        MessagingHistoryResponse,
-        MessagingMessagesRequest,
-        MessagingMessagesResponse,
-        MessagingMessagesCreateRequest,
-        MessagingMessagesCreateResponse,
-        MessagingMessagesDeleteRequest,
-        MessagingMessagesReadRequest,
         MetaRequest,
         MetaResponse,
         MiauthGenTokenRequest,
@@ -1976,7 +1948,6 @@ declare namespace entities {
         Ad,
         Announcement,
         App,
-        MessagingMessage,
         Note,
         NoteDraft,
         NoteReaction,
@@ -2617,33 +2588,6 @@ type MeDetailed = components['schemas']['MeDetailed'];
 
 // @public (undocumented)
 type MeDetailedOnly = components['schemas']['MeDetailedOnly'];
-
-// @public (undocumented)
-type MessagingHistoryRequest = operations['messaging___history']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingHistoryResponse = operations['messaging___history']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingMessage = components['schemas']['MessagingMessage'];
-
-// @public (undocumented)
-type MessagingMessagesCreateRequest = operations['messaging___messages___create']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingMessagesCreateResponse = operations['messaging___messages___create']['responses']['200']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingMessagesDeleteRequest = operations['messaging___messages___delete']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingMessagesReadRequest = operations['messaging___messages___read']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingMessagesRequest = operations['messaging___messages']['requestBody']['content']['application/json'];
-
-// @public (undocumented)
-type MessagingMessagesResponse = operations['messaging___messages']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type MetaDetailed = components['schemas']['MetaDetailed'];
@@ -3754,8 +3698,8 @@ type V2AdminEmojiListResponse = operations['v2___admin___emoji___list']['respons
 //
 // src/entities.ts:50:2 - (ae-forgotten-export) The symbol "ModerationLogPayloads" needs to be exported by the entry point index.d.ts
 // src/streaming.ts:57:3 - (ae-forgotten-export) The symbol "ReconnectingWebSocket" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:247:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
-// src/streaming.types.ts:258:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
+// src/streaming.types.ts:226:4 - (ae-forgotten-export) The symbol "ReversiUpdateKey" needs to be exported by the entry point index.d.ts
+// src/streaming.types.ts:237:4 - (ae-forgotten-export) The symbol "ReversiUpdateSettings" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

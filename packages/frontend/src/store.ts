@@ -182,7 +182,6 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'deviceAccount',
 		default: [
 			'notifications',
-			'messaging',
 			'favorites',
 			'explore',
 			'followRequests',

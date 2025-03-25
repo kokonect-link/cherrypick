@@ -37,7 +37,6 @@ import {
 	MiGalleryPost,
 	MiHashtag,
 	MiInstance,
-	MiMessagingMessage,
 	MiMeta,
 	MiModerationLog,
 	MiMuting,
@@ -372,12 +371,6 @@ const $signinsRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $messagingMessagesRepository: Provider = {
-	provide: DI.messagingMessagesRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiMessagingMessage).extend(miRepository as MiRepository<MiMessagingMessage>),
-	inject: [DI.db],
-};
-
 const $pagesRepository: Provider = {
 	provide: DI.pagesRepository,
 	useFactory: (db: DataSource) => db.getRepository(MiPage).extend(miRepository as MiRepository<MiPage>),
@@ -608,7 +601,6 @@ const $noteScheduleRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
-		$messagingMessagesRepository,
 		$pagesRepository,
 		$pageLikesRepository,
 		$galleryPostsRepository,
@@ -688,7 +680,6 @@ const $noteScheduleRepository: Provider = {
 		$authSessionsRepository,
 		$accessTokensRepository,
 		$signinsRepository,
-		$messagingMessagesRepository,
 		$pagesRepository,
 		$pageLikesRepository,
 		$galleryPostsRepository,

@@ -619,16 +619,6 @@ export async function mainBoot() {
 			updateCurrentAccountPartial({ hasUnreadSpecifiedNotes: false });
 		});
 
-		main.on('readAllMessagingMessages', () => {
-			updateCurrentAccountPartial({ hasUnreadMessagingMessage: false });
-		});
-
-		main.on('unreadMessagingMessage', () => {
-			updateCurrentAccountPartial({ hasUnreadMessagingMessage: true });
-			sound.playMisskeySfx('chatBg');
-			vibrate(prefer.s['vibrate.on.chatBg'] ? [50, 40] : []);
-		});
-
 		main.on('readAllAntennas', () => {
 			updateCurrentAccountPartial({ hasUnreadAntenna: false });
 		});

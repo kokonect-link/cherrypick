@@ -15,7 +15,6 @@ import {
 	AnnouncementCreated,
 	EmojiAdded, EmojiDeleted,
 	EmojiUpdated,
-	MessagingMessage,
 	PageEvent,
 	QueueStats,
 	QueueStatsLog,
@@ -53,9 +52,6 @@ export type Channels = {
 			notificationFlushed: () => void;
 			unreadSpecifiedNote: (payload: Note['id']) => void;
 			readAllUnreadSpecifiedNotes: () => void;
-			readAllMessagingMessages: () => void;
-			messagingMessage: (payload: MessagingMessage) => void;
-			unreadMessagingMessage: (payload: MessagingMessage) => void;
 			readAllAntennas: () => void;
 			unreadAntenna: (payload: Antenna) => void;
 			readAllAnnouncements: () => void;
@@ -119,23 +115,6 @@ export type Channels = {
 			note: (payload: Note) => void;
 		};
 		receives: null;
-	};
-	messaging: {
-		params: {
-			otherparty?: User['id'] | null;
-			group?: UserGroup['id'] | null;
-		};
-		events: {
-			message: (payload: MessagingMessage) => void;
-			deleted: (payload: MessagingMessage['id']) => void;
-			read: (payload: MessagingMessage['id'][]) => void;
-			typers: (payload: User[]) => void;
-		};
-		receives: {
-			read: {
-				id: MessagingMessage['id'];
-			};
-		};
 	};
 	userList: {
 		params: {
