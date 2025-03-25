@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 	<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
-	<div v-if="!thin_ && canBack && (actions && actions.length > 1 && ['index', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
+	<div v-if="!thin_ && canBack && (actions && actions.length > 1 && ['index', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
 	<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id)">
 		<div style="width: 50px;"/>
 	</div>
@@ -75,7 +75,7 @@ import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
-const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
+const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
 
 type Tab = {
 	key: string;

@@ -701,7 +701,7 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: true,
 	},
-	showMessageButtonInNavbar: {
+	showChatButtonInNavbar: {
 		where: 'device',
 		default: isFriendly().value,
 	},

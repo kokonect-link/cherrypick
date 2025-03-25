@@ -27,10 +27,17 @@ import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import MkPolkadots from '@/components/MkPolkadots.vue';
+import { globalEvents } from '@/events.js';
 
 const tab = ref('home');
 
-const headerActions = computed(() => []);
+const headerActions = computed(() => [{
+	icon: 'ti ti-plus',
+	text: i18n.ts.startChat,
+	handler: (ev) => {
+		globalEvents.emit('createChat', ev);
+	},
+}]);
 
 const headerTabs = computed(() => [{
 	key: 'home',

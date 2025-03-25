@@ -42,14 +42,17 @@ export const ROUTE_DEF = [{
 	component: page(() => import('@/pages/clip.vue')),
 }, {
 	path: '/chat',
+	name: 'chat',
 	component: page(() => import('@/pages/chat/home.vue')),
 	loginRequired: true,
 }, {
 	path: '/chat/user/:userId',
+	name: 'chat-room',
 	component: page(() => import('@/pages/chat/room.vue')),
 	loginRequired: true,
 }, {
 	path: '/chat/room/:roomId',
+	name: 'chat-room',
 	component: page(() => import('@/pages/chat/room.vue')),
 	loginRequired: true,
 }, {

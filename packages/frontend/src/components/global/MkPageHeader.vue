@@ -86,7 +86,7 @@ import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
-const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
+const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
 
 const props = withDefaults(defineProps<{
 	overridePageMetadata?: PageMetadata;

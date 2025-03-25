@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<i v-else class="_indicatorCircle"></i>
 				</span>
 			</button>
-			<button v-if="store.s.showMessageButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.push('/my/messaging')">
+			<button v-if="store.s.showChatButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: ['chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.push('/chat')">
 				<i :class="$style.navButtonIcon" class="ti ti-messages"></i>
 				<span v-if="$i != null && $i.hasUnreadChatMessages" :class="$style.navButtonIndicator" class="_blink">
 					<i class="_indicatorCircle"></i>
@@ -49,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 
 	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
-	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="createChat"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
 
 	<Transition
 		:enterActiveClass="prefer.s.animation ? $style.transition_menuDrawerBg_enterActive : ''"
@@ -158,14 +158,14 @@ const enableNavButton = [
 	'index',
 	'explore',
 	'my-notifications',
-	'messaging',
+	'chat',
 ];
 
 const enablePostButton = [
 	'index',
 	'explore',
 	'my-notifications',
-	'messaging',
+	'chat',
 	'user',
 ];
 
@@ -298,8 +298,8 @@ function closeAccountMenu() {
 	longTouchNavHome.value = false;
 }
 
-function openMessage(ev: MouseEvent) {
-	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('openMessage', ev);
+function createChat(ev: MouseEvent) {
+	if (mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('createChat', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
 }
 

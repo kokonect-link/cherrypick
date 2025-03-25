@@ -94,7 +94,7 @@ import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 
-const canBack = ref(['index', 'explore', 'my-notifications', 'messaging'].includes(<string>mainRouter.currentRoute.value.name));
+const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
 
 const props = withDefaults(defineProps<{
 	overridePageMetadata?: PageMetadata;

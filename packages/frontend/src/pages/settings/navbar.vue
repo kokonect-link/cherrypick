@@ -95,8 +95,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label><i class="ti ti-bell"></i> <SearchLabel>{{ i18n.ts.notifications }}</SearchLabel></template>
 					</MkSwitch>
 
-					<MkSwitch v-model="showMessageButtonInNavbar" :disabled="!isMobile">
-						<template #label><i class="ti ti-messages"></i> <SearchLabel>{{ i18n.ts.messaging }}</SearchLabel></template>
+					<MkSwitch v-model="showChatButtonInNavbar" :disabled="!isMobile">
+						<template #label><i class="ti ti-messages"></i> <SearchLabel>{{ i18n.ts.chat }}</SearchLabel></template>
 					</MkSwitch>
 
 					<MkDisableSection :disabled="miLocalStorage.getItem('ui') === 'deck'">
@@ -166,7 +166,7 @@ const showHomeButtonInNavbar = computed(store.makeGetterSetter('showHomeButtonIn
 const showExploreButtonInNavbar = computed(store.makeGetterSetter('showExploreButtonInNavbar'));
 const showSearchButtonInNavbar = computed(store.makeGetterSetter('showSearchButtonInNavbar'));
 const showNotificationButtonInNavbar = computed(store.makeGetterSetter('showNotificationButtonInNavbar'));
-const showMessageButtonInNavbar = computed(store.makeGetterSetter('showMessageButtonInNavbar'));
+const showChatButtonInNavbar = computed(store.makeGetterSetter('showChatButtonInNavbar'));
 const showWidgetButtonInNavbar = computed(store.makeGetterSetter('showWidgetButtonInNavbar'));
 const showPostButtonInNavbar = computed(store.makeGetterSetter('showPostButtonInNavbar'));
 
@@ -220,7 +220,7 @@ function resetButtomNavbar() {
 	store.set('showExploreButtonInNavbar', isFriendly().value);
 	store.set('showSearchButtonInNavbar', false);
 	store.set('showNotificationButtonInNavbar', true);
-	store.set('showMessageButtonInNavbar', isFriendly().value);
+	store.set('showChatButtonInNavbar', isFriendly().value);
 	store.set('showWidgetButtonInNavbar', true);
 	store.set('showPostButtonInNavbar', !isFriendly().value);
 }

@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i v-else class="_indicatorCircle"></i>
 			</span>
 		</button>
-		<button v-if="store.s.showMessageButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i != null && $i.hasUnreadChatMessages" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
+		<button v-if="store.s.showChatButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="mainRouter.currentRoute.value.name === 'chat' ? top() : mainRouter.push('/chat')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i != null && $i.hasUnreadChatMessages" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
 		<button v-if="store.s.showPostButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button>
 	</div>
 

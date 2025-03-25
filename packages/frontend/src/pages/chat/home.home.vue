@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div class="_gaps">
-	<MkButton primary gradate rounded :class="$style.start" @click="start"><i class="ti ti-plus"></i> {{ i18n.ts.startChat }}</MkButton>
+	<!-- <MkButton v-if="!isMobile" primary gradate rounded :class="$style.start" @click="start"><i class="ti ti-plus"></i> {{ i18n.ts.startChat }}</MkButton> -->
 
 	<MkAd :prefer="['horizontal', 'horizontal-big']"/>
 
@@ -78,6 +78,15 @@ import * as os from '@/os.js';
 import { updateCurrentAccountPartial } from '@/accounts.js';
 import MkInput from '@/components/MkInput.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
+import { deviceKind } from '@/utility/device-kind.js';
+import { globalEvents } from '@/events.js';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 const $i = ensureSignin();
 
@@ -195,6 +204,10 @@ onActivated(() => {
 
 onMounted(() => {
 	fetchHistory();
+
+	globalEvents.on('createChat', (ev) => {
+		start(ev);
+	});
 });
 </script>
 
