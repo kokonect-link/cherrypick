@@ -16,8 +16,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<rect x="65.498" width="137.7" height="40.892" :fill="themeVariables.acrylicBg" stroke-width=".265"/>
 		<path transform="scale(.26458)" d="m439.77 247.19c-43.673 0-78.832 35.157-78.832 78.83v249.98h407.06v-328.81z" :fill="themeVariables.panel"/>
 	</g>
-	<circle cx="32.749" cy="83.054" r="21.132" :fill="themeVariables.accentedBg" stroke-dasharray="0.319256, 0.319256" stroke-width=".15963" style="paint-order:stroke fill markers"/>
-	<circle cx="136.67" cy="106.76" r="23.876" :fill="themeVariables.fg" fill-opacity="0.5" stroke-dasharray="0.352425, 0.352425" stroke-width=".17621" style="paint-order:stroke fill markers"/>
+	<g>
+		<rect x="12.817" y="63.222" width="39.464" height="39.464" rx="15" ry="15" :fill="themeVariables.accentedBg"/>
+		<circle cx="32.749" cy="83.054" r="18" fill="transparent" stroke-dasharray="0.319256, 0.319256" stroke-width=".15963" style="paint-order:stroke fill markers"/>
+	</g>
+	<g>
+		<rect x="112.794" y="82.884" width="47.752" height="47.752" rx="10" ry="10" :fill="themeVariables.fg" fill-opacity="0.5"/>
+		<circle cx="136.67" cy="106.76" r="23.876" fill="transparent" fill-opacity="0.5" stroke-dasharray="0.352425, 0.352425" stroke-width=".17621" style="paint-order:stroke fill markers"/>
+	</g>
 	<g :fill="themeVariables.fg" fill-rule="evenodd" stroke-width=".26458">
 		<rect x="171.27" y="87.815" width="48.576" height="6.8747" ry="3.4373"/>
 		<rect x="171.27" y="105.09" width="48.576" height="6.875" ry="3.4375"/>
@@ -36,7 +42,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<path d="m10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6"/>
 		<path d="m9 17v1a3 3 0 0 0 6 0v-1"/>
 	</g>
-	<image x="20.948" y="18.388" width="23.602" height="23.602" image-rendering="optimizeSpeed" preserveAspectRatio="xMidYMid meet" v-bind="{ 'xlink:href': instance.iconUrl || '/favicon.ico' }"/>
+	<image x="16.948" y="18.388" width="31.602" height="31.602" image-rendering="optimizeSpeed" preserveAspectRatio="xMidYMid meet" v-bind="{ 'xlink:href': instance.iconUrl || '/favicon.ico' }" clip-path="url(#instance-icon)"/>
+	<defs>
+		<clipPath id="instance-icon"><rect x="16.948" y="18.388" width="31.602" height="31.602" rx="11" ry="11"/></clipPath>
+	</defs>
 </svg>
 </template>
 
