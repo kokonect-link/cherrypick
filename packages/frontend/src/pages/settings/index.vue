@@ -265,7 +265,6 @@ definePage(() => INFO.value);
 				width: 34%;
 				padding-right: 32px;
 				box-sizing: border-box;
-				margin-bottom: 64px;
 			}
 
 			> .main {
