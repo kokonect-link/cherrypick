@@ -399,14 +399,6 @@ function openProfile() {
 		backdrop-filter: var(--MI-blur, blur(8px));
 	}
 
-	.widget {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 52px;
-		text-align: center;
-	}
-
 	.post {
 		position: relative;
 		display: block;
@@ -649,6 +641,14 @@ function openProfile() {
 		background: var(--nav-bg-transparent);
 		-webkit-backdrop-filter: var(--MI-blur, blur(8px));
 		backdrop-filter: var(--MI-blur, blur(8px));
+	}
+
+	.widget {
+		display: block;
+		position: relative;
+		width: 100%;
+		height: 52px;
+		text-align: center;
 	}
 
 	.post {
