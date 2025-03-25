@@ -262,6 +262,16 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 
 	const menuItems: MenuItem[] = [];
 
+	if (iAmModerator) {
+		menuItems.push({
+			icon: 'ti ti-user-exclamation',
+			text: i18n.ts.moderation,
+			action: () => {
+				router.push(`/admin/user/${user.id}`);
+			},
+		}, { type: 'divider' });
+	}
+
 	menuItems.push({
 		icon: 'ti ti-at',
 		text: i18n.ts.copyUsername,
@@ -270,25 +280,20 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		},
 	});
 
-	if (notesSearchAvailable && (user.host == null || canSearchNonLocalNotes)) {
-		menuItems.push({
-			icon: 'ti ti-search',
-			text: i18n.ts.searchThisUsersNotes,
-			action: () => {
-				router.push(`/search?username=${encodeURIComponent(user.username)}${user.host != null ? '&host=' + encodeURIComponent(user.host) : ''}`);
-			},
-		});
-	}
-
-	if (iAmModerator) {
-		menuItems.push({
-			icon: 'ti ti-user-exclamation',
-			text: i18n.ts.moderation,
-			action: () => {
-				router.push(`/admin/user/${user.id}`);
-			},
-		});
-	}
+	menuItems.push({
+		icon: 'ti ti-share',
+		text: i18n.ts.copyProfileUrl,
+		action: () => {
+			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
+			copyToClipboard(`${url}/${canonical}`, 'link');
+		},
+	}, {
+		icon: 'ti ti-qrcode',
+		text: i18n.ts.getQRCode,
+		action: () => {
+			os.displayQRCode(`https://${user.host ?? host}/@${user.username}`);
+		},
+	});
 
 	menuItems.push({
 		icon: 'ti ti-rss',
@@ -321,43 +326,21 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 	}
 
-	menuItems.push({
-		icon: 'ti ti-share',
-		text: i18n.ts.copyProfileUrl,
-		action: () => {
-			const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${toUnicode(user.host)}`;
-			copyToClipboard(`${url}/${canonical}`, 'link');
-		},
-	}, {
-		icon: 'ti ti-qrcode',
-		text: i18n.ts.getQRCode,
-		action: () => {
-			os.displayQRCode(`https://${user.host ?? host}/@${user.username}`);
-		},
-	});
-
-	if ($i) {
+	if (notesSearchAvailable && (user.host == null || canSearchNonLocalNotes)) {
 		menuItems.push({
-			icon: 'ti ti-mail',
-			text: i18n.ts.sendMessage,
+			icon: 'ti ti-search',
+			text: i18n.ts.searchThisUsersNotes,
 			action: () => {
-				const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${user.host}`;
-				os.post({ specified: user, initialText: `${canonical} ` });
+				router.push(`/search?username=${encodeURIComponent(user.username)}${user.host != null ? '&host=' + encodeURIComponent(user.host) : ''}`);
 			},
 		});
+	}
 
-		if (meId !== user.id) {
-			if (user.host === null) {
-				menuItems.push({
-					icon: 'ti ti-users',
-					text: i18n.ts.inviteToGroup,
-					action: inviteGroup,
-				});
-			}
-		}
+	if ($i) {
+		menuItems.push({ type: 'divider' });
 
 		if (prefer.s.nicknameEnabled) {
-			menuItems.push({ type: 'divider' }, {
+			menuItems.push({
 				icon: 'ti ti-edit',
 				text: i18n.ts.editNickName,
 				action: () => {
@@ -505,7 +488,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 		//}
 
-		menuItems.push({ type: 'divider' });
+		if (user.host !== null) menuItems.push({ type: 'divider' });
 
 		if (iAmAdmin && user.host !== null) {
 			menuItems.push({
@@ -571,7 +554,31 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			});
 		}
 
-		menuItems.push({
+		menuItems.push({ type: 'divider' }, {
+			icon: 'ti ti-mail',
+			text: i18n.ts.sendMessage,
+			action: () => {
+				const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${user.host}`;
+				os.post({ specified: user, initialText: `${canonical} ` });
+			},
+		}, {
+			type: 'link',
+			icon: 'ti ti-messages',
+			text: i18n.ts._chat.chatWithThisUser,
+			to: `/chat/user/${user.id}`,
+		});
+
+		if (meId !== user.id) {
+			if (user.host === null) {
+				menuItems.push({
+					icon: 'ti ti-users',
+					text: i18n.ts.inviteToGroup,
+					action: inviteGroup,
+				});
+			}
+		}
+
+		menuItems.push({ type: 'divider' }, {
 			icon: user.isMuted ? 'ti ti-eye' : 'ti ti-eye-off',
 			text: user.isMuted ? i18n.ts.unmute : i18n.ts.mute,
 			action: toggleMute,

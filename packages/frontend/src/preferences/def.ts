@@ -136,6 +136,7 @@ export const PREF_DEF = {
 	menu: {
 		default: [
 			'notifications',
+			'chat',
 			'favorites',
 			'explore',
 			'followRequests',
@@ -336,6 +337,9 @@ export const PREF_DEF = {
 	makeEveryTextElementsSelectable: {
 		default: DEFAULT_DEVICE_KIND === 'desktop',
 	},
+	showNavbarSubButtons: {
+		default: true,
+	},
 	plugins: {
 		default: [] as Plugin[],
 	},
@@ -351,6 +355,7 @@ export const PREF_DEF = {
 	showPreview: {
 		default: false,
 	},
+
 	'sound.masterVolume': {
 		default: 0.3,
 	},
@@ -375,15 +380,13 @@ export const PREF_DEF = {
 	'sound.on.notification': {
 		default: { type: 'syuilo/n-ea', volume: 1 } as SoundStore,
 	},
-	'sound.on.chat': {
-		default: { type: 'syuilo/pope1', volume: 1 } as SoundStore,
-	},
-	'sound.on.chatBg': {
-		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
-	},
 	'sound.on.reaction': {
 		default: { type: 'syuilo/bubble2', volume: 1 } as SoundStore,
 	},
+	'sound.on.chatMessage': {
+		default: { type: 'syuilo/waon', volume: 1 } as SoundStore,
+	},
+
 	'deck.alwaysShowMainColumn': {
 		default: true,
 	},
@@ -396,6 +399,14 @@ export const PREF_DEF = {
 	'deck.columnAlign': {
 		default: 'left' as 'left' | 'right' | 'center',
 	},
+
+	'chat.showSenderName': {
+		default: false,
+	},
+	'chat.sendOnEnter': {
+		default: true,
+	},
+
 	'game.dropAndFusion': {
 		default: {
 			bgmVolume: 0.25,
@@ -566,12 +577,6 @@ export const PREF_DEF = {
 	'vibrate.on.notification': {
 		default: true,
 	},
-	'vibrate.on.chat': {
-		default: true,
-	},
-	'vibrate.on.chatBg': {
-		default: true,
-	},
 	'vibrate.on.system': {
 		default: true,
 	},
@@ -628,6 +633,7 @@ export const PREF_DEF = {
 	friendlyUiShowAvatarDecorationsInNavBtn: {
 		default: false,
 	},
+	//#endregion
 
 	'experimental.stackingRouterView': {
 		default: false,

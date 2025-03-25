@@ -31,7 +31,7 @@ export type Keys = (
 	'theme' |
 	'themeId' |
 	'customCss' |
-	'message_drafts' |
+	'chatMessageDrafts' |
 	'scratchpad' |
 	'debug' |
 	'preferences' |

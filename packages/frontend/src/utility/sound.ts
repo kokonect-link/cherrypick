@@ -77,10 +77,9 @@ export const operationTypes = [
 	'note',
 	'noteSchedulePost',
 	'noteEdited',
-	'chat',
-	'chatBg',
 	'notification',
 	'reaction',
+	'chatMessage',
 ] as const;
 
 /** サウンドの種類 */

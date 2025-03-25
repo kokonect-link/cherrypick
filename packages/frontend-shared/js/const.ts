@@ -67,6 +67,7 @@ export const notificationTypes = [
 	'followRequestAccepted',
 	'groupInvited',
 	'roleAssigned',
+	'chatRoomInvitationReceived',
 	'achievementEarned',
 	'exportCompleted',
 	'login',
@@ -113,6 +114,7 @@ export const ROLE_POLICIES = [
 	'canImportFollowing',
 	'canImportMuting',
 	'canImportUserLists',
+	'canChat',
 	'noteDraftLimit',
 	'canSetFederationAvatarShape',
 ] as const;

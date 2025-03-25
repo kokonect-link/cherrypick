@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.root">
-	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
+	<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
 	<div :class="$style.contents" @contextmenu.stop="onContextmenu">
 		<div v-if="!showEl2">
@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</button>
 			<button v-if="store.s.showMessageButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="mainRouter.push('/my/messaging')">
 				<i :class="$style.navButtonIcon" class="ti ti-messages"></i>
-				<span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator" class="_blink">
+				<span v-if="$i != null && $i.hasUnreadChatMessages" :class="$style.navButtonIndicator" class="_blink">
 					<i class="_indicatorCircle"></i>
 				</span>
 			</button>
@@ -43,8 +43,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="isDesktop && !pageMetadata?.needWideArea && prefer.s.enableWidgetsArea" :class="$style.widgets">
 		<XWidgets/>
 	</div>
-
-	<button v-if="!isDesktop && !pageMetadata?.needWideArea && !isMobile" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
 	<Transition
 		:enterActiveClass="prefer.s.animation ? $style.transition_menuDrawerBg_enterActive : ''"
@@ -302,7 +300,7 @@ $widgets-hide-threshold: 1090px;
 .transition_widgetsDrawer_enterFrom,
 .transition_widgetsDrawer_leaveTo {
 	opacity: 0;
-	transform: translateX(240px);
+	transform: translateX(-240px);
 }
 
 .root {
@@ -441,29 +439,6 @@ $widgets-hide-threshold: 1090px;
 	}
 }
 
-.widgetButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: 32px;
-	right: 32px;
-	width: 64px;
-	height: 64px;
-	border-radius: 100%;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-	font-size: 22px;
-	background: var(--MI_THEME-panel);
-	transition: opacity 0.5s, transform 0.5s;
-
-	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
-	}
-
-	&.showEl {
-		transform: translateX(100px);
-	}
-}
-
 .widgetsDrawerBg {
 	z-index: 1001;
 }
@@ -471,7 +446,7 @@ $widgets-hide-threshold: 1090px;
 .widgetsDrawer {
 	position: fixed;
 	top: 0;
-	right: 0;
+	left: 0;
 	z-index: 1001;
 	width: 310px;
 	height: 100dvh;

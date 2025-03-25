@@ -80,18 +80,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSwitch>
 					</MkPreferenceContainer>
 
-					<MkPreferenceContainer k="vibrate.on.chat">
-						<MkSwitch v-model="vibrateChat">
-							<template #label><SearchLabel>{{ i18n.ts._vibrations.chat }}</SearchLabel></template>
-						</MkSwitch>
-					</MkPreferenceContainer>
-
-					<MkPreferenceContainer k="vibrate.on.chatBg">
-						<MkSwitch v-model="vibrateChatBg">
-							<template #label><SearchLabel>{{ i18n.ts._vibrations.chatBg }}</SearchLabel></template>
-						</MkSwitch>
-					</MkPreferenceContainer>
-
 					<MkPreferenceContainer k="vibrate.on.system">
 						<MkSwitch v-model="vibrateSystem" style="margin-top: 10px;">
 							<template #label><SearchLabel>{{ i18n.ts._vibrations.system }}</SearchLabel></template>
@@ -137,16 +125,13 @@ const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
 	noteSchedulePost: prefer.r['sound.on.noteSchedulePost'],
 	noteEdited: prefer.r['sound.on.noteEdited'],
 	notification: prefer.r['sound.on.notification'],
-	chat: prefer.r['sound.on.chat'],
-	chatBg: prefer.r['sound.on.chatBg'],
 	reaction: prefer.r['sound.on.reaction'],
+	chatMessage: prefer.r['sound.on.chatMessage'],
 });
 
 const vibrate = prefer.model('vibrate');
 const vibrateNote = prefer.model('vibrate.on.note');
 const vibrateNotification = prefer.model('vibrate.on.notification');
-const vibrateChat = prefer.model('vibrate.on.chat');
-const vibrateChatBg = prefer.model('vibrate.on.chatBg');
 const vibrateSystem = prefer.model('vibrate.on.system');
 
 function getSoundTypeName(f: SoundType): string {

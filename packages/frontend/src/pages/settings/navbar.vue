@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<SearchMarker path="/settings/navbar" :label="i18n.ts.navbar" :keywords="['navbar']" icon="ti ti-list">
+<SearchMarker path="/settings/navbar" :label="i18n.ts.navbar" icon="ti ti-list" :keywords="['navbar', 'menu', 'sidebar']">
 	<div class="_gaps_m">
 		<FormSlot>
 			<template #label>{{ i18n.ts.navbar }}</template>
@@ -44,6 +44,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option value="top">{{ i18n.ts._menuDisplay.top }}</option>
 				<!-- <MkRadio v-model="menuDisplay" value="hide" disabled>{{ i18n.ts._menuDisplay.hide }}</MkRadio>--> <!-- TODO: サイドバーを完全に隠せるようにすると、別途ハンバーガーボタンのようなものをUIに表示する必要があり面倒 -->
 			</MkRadios>
+		</SearchMarker>
+
+		<SearchMarker :keywords="['navbar', 'sidebar', 'toggle', 'button', 'sub']">
+			<MkPreferenceContainer k="showNavbarSubButtons">
+				<MkSwitch v-model="showNavbarSubButtons">
+					<template #label><SearchLabel>{{ i18n.ts._settings.showNavbarSubButtons }}</SearchLabel></template>
+				</MkSwitch>
+			</MkPreferenceContainer>
 		</SearchMarker>
 
 		<SearchMarker :keywords="['banner', 'display']">
@@ -120,6 +128,8 @@ import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
 import MkContainer from '@/components/MkContainer.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
+import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
+import MkDisableSection from '@/components/MkDisableSection.vue';
 import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
@@ -132,8 +142,6 @@ import { PREF_DEF } from '@/preferences/def.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { isFriendly } from '@/utility/is-friendly.js';
-import MkDisableSection from '@/components/MkDisableSection.vue';
-import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 
 const MOBILE_THRESHOLD = 500;
 
@@ -150,6 +158,7 @@ const items = ref(prefer.s.menu.map(x => ({
 })));
 
 const menuDisplay = computed(store.makeGetterSetter('menuDisplay'));
+const showNavbarSubButtons = prefer.model('showNavbarSubButtons');
 const bannerDisplay = prefer.model('bannerDisplay');
 
 const showMenuButtonInNavbar = computed(store.makeGetterSetter('showMenuButtonInNavbar'));
