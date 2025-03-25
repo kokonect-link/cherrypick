@@ -401,7 +401,7 @@ export const PREF_DEF = {
 	},
 
 	'chat.showSenderName': {
-		default: false,
+		default: true,
 	},
 	'chat.sendOnEnter': {
 		default: true,
