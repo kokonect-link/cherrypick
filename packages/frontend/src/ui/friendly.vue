@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']"/>
 			<RouterView v-else/>
 		</div>
-		<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]">
+		<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]">
 			<!-- <button v-if="store.s.showMenuButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button> -->
 			<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i></button>
 			<button v-if="store.s.showExploreButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
@@ -49,9 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 
 	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
-
 	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
-
 	<button v-if="!isDesktop && !pageMetadata?.needWideArea && !isMobile" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
 
 	<Transition
@@ -256,11 +254,11 @@ onMounted(() => {
 	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
 
 	calcBg();
-	globalEvents.on('themeChanged', calcBg);
+	globalEvents.on('themeChanging', calcBg);
 });
 
 onUnmounted(() => {
-	globalEvents.off('themeChanged', calcBg);
+	globalEvents.off('themeChanging', calcBg);
 });
 
 const onContextmenu = (ev) => {
@@ -422,13 +420,13 @@ $float-button-size: 65px;
 	position: fixed;
 	z-index: 1000;
 	bottom: 0;
+	padding: 0 10px;
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
 	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 	backdrop-filter: var(--MI-blur, blur(15px));
 	border-top: solid 0.5px var(--MI_THEME-divider);
-	padding: 0 10px;
 	transition: opacity 0.5s, transform 0.5s;
 
 	&.reduceBlurEffect {
