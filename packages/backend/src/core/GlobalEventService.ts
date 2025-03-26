@@ -321,7 +321,7 @@ export type GlobalEvents = {
 		name: 'notesStream';
 		payload: Serialized<Packed<'Note'>>;
 	};
-	chat: {
+	chatUser: {
 		name: `chatUserStream:${MiUser['id']}-${MiUser['id']}`;
 		payload: EventTypesToEventPayload<ChatEventTypes>;
 	};
