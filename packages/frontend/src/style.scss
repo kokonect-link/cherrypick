@@ -166,6 +166,11 @@ html {
 	&.useSystemFont {
 		font-family: $system-font;
 	}
+
+	&:not(.forceSelectableAll) {
+		user-select: none;
+		-webkit-user-select: none;
+	}
 }
 
 html._themeChanging_ {
@@ -193,10 +198,6 @@ a {
 		outline-offset: 2px;
 	}
 
-	&:hover {
-		text-decoration: underline;
-	}
-
 	&[target="_blank"] {
 		-webkit-touch-callout: default;
 	}
@@ -205,6 +206,8 @@ a {
 textarea, input {
 	tap-highlight-color: transparent;
 	-webkit-tap-highlight-color: transparent;
+	user-select: text;
+	-webkit-user-select: text;
 }
 
 optgroup, option {
@@ -213,8 +216,9 @@ optgroup, option {
 }
 
 hr {
-	margin: var(--MI-margin) 0 var(--MI-margin) 0;
+	margin: 0;
 	border: none;
+	border-radius: 999px;
 	height: 1px;
 	background: var(--MI_THEME-divider);
 }
@@ -247,6 +251,29 @@ rt {
 	text-align: center;
 }
 
+._pageContainer {
+	container-type: size;
+	contain: strict;
+	overflow: auto;
+	overscroll-behavior: contain;
+}
+
+._pageScrollable {
+	height: 100%;
+	overflow: clip;
+	overflow-y: scroll;
+	overscroll-behavior: contain;
+}
+
+._pageScrollableReversed {
+	height: 100%;
+	overflow: clip;
+	overflow-y: scroll;
+	overscroll-behavior: contain;
+	display: flex;
+	flex-direction: column-reverse;
+}
+
 ._indicatorCircle {
 	display: inline-block;
 	width: 1em;
@@ -268,6 +295,16 @@ rt {
 	padding: 0.3em 0.5em;
 }
 
+._selectable {
+	user-select: text;
+	-webkit-user-select: text;
+}
+
+._selectableAtomic {
+	user-select: all;
+	-webkit-user-select: all;
+}
+
 ._noSelect {
 	user-select: none;
 	-webkit-user-select: none;
@@ -279,11 +316,6 @@ rt {
 	word-wrap: normal !important; // https://codeday.me/jp/qa/20190424/690106.html
 	overflow: hidden;
 	text-overflow: ellipsis;
-}
-
-._ghost {
-	@extend ._noSelect;
-	pointer-events: none;
 }
 
 ._modalBg {
@@ -384,13 +416,13 @@ rt {
 ._gaps_m {
 	display: flex;
 	flex-direction: column;
-	gap: 1.5em;
+	gap: 21px;
 }
 
 ._gaps_s {
 	display: flex;
 	flex-direction: column;
-	gap: 0.75em;
+	gap: 10px;
 }
 
 ._gaps {
@@ -514,6 +546,10 @@ rt {
 
 ._link {
 	color: var(--MI_THEME-link);
+}
+
+._love {
+	color: var(--MI_THEME-love);
 }
 
 ._caption {

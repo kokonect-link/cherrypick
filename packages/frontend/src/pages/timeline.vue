@@ -4,40 +4,37 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header>
-		<CPPageHeader v-if="isMobile && defaultStore.state.mobileHeaderChange" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-		<MkPageHeader v-else v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :displayMyAvatar="true"/>
-	</template>
+<PageWithHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" displayMyAvatar>
 	<MkSpacer :contentMax="800">
 		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
-			<div :key="src" ref="rootEl">
-				<MkInfo v-if="isBasicTimeline(src) && !defaultStore.reactiveState.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
+			<div ref="rootEl">
+				<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
 					{{ i18n.ts._timelineDescription[src] }}
 				</MkInfo>
-				<MkPostForm v-if="defaultStore.reactiveState.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--MI-margin);" :autofocus="false"/>
+				<MkInfo v-if="schedulePostList > 0" style="margin-bottom: var(--MI-margin);"><button type="button" :class="$style.checkSchedulePostList" @click="os.listScheduleNotePost">{{ i18n.tsx.thereIsSchedulePost({ n: schedulePostList }) }}</button></MkInfo>
+				<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--MI-margin);" :autofocus="false"/>
 
 				<transition
-					:enterActiveClass="defaultStore.state.animation ? $style.transition_new_enterActive : ''"
-					:leaveActiveClass="defaultStore.state.animation ? $style.transition_new_leaveActive : ''"
-					:enterFromClass="defaultStore.state.animation ? $style.transition_new_enterFrom : ''"
-					:leaveToClass="defaultStore.state.animation ? $style.transition_new_leaveTo : ''"
+					:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
+					:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
+					:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
+					:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
 				>
 					<div
-						v-if="queue > 0 && ['default', 'count'].includes(defaultStore.state.newNoteReceivedNotificationBehavior)"
-						:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly, [$style.reduceAnimation]: !defaultStore.state.animation }]"
+						v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
+						:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
 					>
 						<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
 							<i class="ti ti-arrow-up"></i>
-							<I18n :src="defaultStore.state.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : defaultStore.state.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
-								<template v-if="defaultStore.state.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
+							<I18n :src="prefer.s.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : prefer.s.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
+								<template v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
 							</I18n>
 						</button>
 					</div>
 				</transition>
 
 				<div :class="$style.tl">
-					<div v-if="!isAvailableBasicTimeline(src)" :class="$style.disabled">
+					<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="$style.disabled">
 						<p :class="$style.disabledTitle">
 							<i class="ti ti-circle-minus"></i>
 							{{ i18n.ts._disabledTimeline.title }}
@@ -62,68 +59,77 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</MkHorizontalSwipe>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, provide, shallowRef, ref, onMounted, onActivated } from 'vue';
+import { computed, watch, provide, useTemplateRef, ref, onMounted, onActivated } from 'vue';
 import { scroll } from '@@/js/scroll.js';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
-import type { BasicTimelineType } from '@/timelines.js';
 import type { MenuItem } from '@/types/menu.js';
+import type { BasicTimelineType } from '@/timelines.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { defaultStore } from '@/store.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { $i } from '@/i.js';
+import { definePage } from '@/page.js';
 import { antennasCache, userListsCache, favoritedChannelsCache } from '@/cache.js';
-import { globalEvents } from '@/events.js';
-import { deviceKind } from '@/scripts/device-kind.js';
-import { deepMerge } from '@/scripts/merge.js';
+import { deviceKind } from '@/utility/device-kind.js';
+import { deepMerge } from '@/utility/merge.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
-import { reloadAsk } from '@/scripts/reload-ask.js';
+import { prefer } from '@/preferences.js';
+import { useRouter } from '@/router.js';
+import { globalEvents } from '@/events.js';
+import { reloadAsk } from '@/utility/reload-ask.js';
+import { isFriendly } from '@/utility/is-friendly.js';
 
 const showEl = ref(false);
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
 
 // デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
-const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+const isMobile = ref(['smartphone', 'tablet'].includes(<string>deviceKind) || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-if (!isFriendly.value) provide('shouldOmitHeaderTitle', true);
+const schedulePostList = $i ? (await misskeyApi('notes/schedule/list')).length : 0;
 
-const tlComponent = shallowRef<InstanceType<typeof MkTimeline>>();
-const rootEl = shallowRef<HTMLElement>();
+if (!isFriendly().value) provide('shouldOmitHeaderTitle', true);
+
+const tlComponent = useTemplateRef('tlComponent');
+const rootEl = useTemplateRef('rootEl');
+
+const router = useRouter();
+router.useListener('same', () => {
+	top();
+});
 
 type TimelinePageSrc = BasicTimelineType | `list:${string}`;
 
 const queue = ref(0);
 const srcWhenNotSignin = ref<'local' | 'global'>(isAvailableBasicTimeline('local') ? 'local' : 'global');
 const src = computed<TimelinePageSrc>({
-	get: () => ($i ? defaultStore.reactiveState.tl.value.src : srcWhenNotSignin.value),
+	get: () => ($i ? store.r.tl.value.src : srcWhenNotSignin.value),
 	set: (x) => saveSrc(x),
 });
 const withRenotes = computed<boolean>({
-	get: () => defaultStore.reactiveState.tl.value.filter.withRenotes,
+	get: () => store.r.tl.value.filter.withRenotes,
 	set: (x) => saveTlFilter('withRenotes', x),
 });
 
 // computed内での無限ループを防ぐためのフラグ
 const localSocialTLFilterSwitchStore = ref<'withReplies' | 'onlyFiles' | false>(
-	defaultStore.reactiveState.tl.value.filter.withReplies ? 'withReplies' :
-	defaultStore.reactiveState.tl.value.filter.onlyFiles ? 'onlyFiles' :
+	store.r.tl.value.filter.withReplies ? 'withReplies' :
+	store.r.tl.value.filter.onlyFiles ? 'onlyFiles' :
 	false,
 );
 
@@ -133,7 +139,7 @@ const withReplies = computed<boolean>({
 		if (['local', 'social'].includes(src.value) && localSocialTLFilterSwitchStore.value === 'onlyFiles') {
 			return false;
 		} else {
-			return defaultStore.reactiveState.tl.value.filter.withReplies;
+			return store.r.tl.value.filter.withReplies;
 		}
 	},
 	set: (x) => saveTlFilter('withReplies', x),
@@ -143,13 +149,13 @@ const onlyFiles = computed<boolean>({
 		if (['local', 'social'].includes(src.value) && localSocialTLFilterSwitchStore.value === 'withReplies') {
 			return false;
 		} else {
-			return defaultStore.reactiveState.tl.value.filter.onlyFiles;
+			return store.r.tl.value.filter.onlyFiles;
 		}
 	},
 	set: (x) => saveTlFilter('onlyFiles', x),
 });
 const onlyCats = computed({
-	get: () => defaultStore.reactiveState.tl.value.filter.onlyCats,
+	get: () => store.r.tl.value.filter.onlyCats,
 	set: (x: boolean) => saveTlFilter('onlyCats', x),
 });
 
@@ -164,107 +170,120 @@ watch([withReplies, onlyFiles], ([withRepliesTo, onlyFilesTo]) => {
 });
 
 const withSensitive = computed<boolean>({
-	get: () => defaultStore.reactiveState.tl.value.filter.withSensitive,
+	get: () => store.r.tl.value.filter.withSensitive,
 	set: (x) => saveTlFilter('withSensitive', x),
 });
 
-const enableWidgetsArea = ref(defaultStore.state.enableWidgetsArea);
-const friendlyUiEnableNotificationsArea = ref(defaultStore.state.friendlyUiEnableNotificationsArea);
+const enableWidgetsArea = ref(prefer.s.enableWidgetsArea);
+const friendlyUiEnableNotificationsArea = ref(prefer.s.friendlyUiEnableNotificationsArea);
 
-const enableHomeTimeline = ref(defaultStore.state.enableHomeTimeline);
-const enableLocalTimeline = ref(defaultStore.state.enableLocalTimeline);
-const enableSocialTimeline = ref(defaultStore.state.enableSocialTimeline);
-const enableGlobalTimeline = ref(defaultStore.state.enableGlobalTimeline);
-const enableBubbleTimeline = ref(defaultStore.state.enableBubbleTimeline);
-const enableListTimeline = ref(defaultStore.state.enableListTimeline);
-const enableAntennaTimeline = ref(defaultStore.state.enableAntennaTimeline);
-const enableChannelTimeline = ref(defaultStore.state.enableChannelTimeline);
+const enableHomeTimeline = ref(prefer.s.enableHomeTimeline);
+const enableLocalTimeline = ref(prefer.s.enableLocalTimeline);
+const enableSocialTimeline = ref(prefer.s.enableSocialTimeline);
+const enableGlobalTimeline = ref(prefer.s.enableGlobalTimeline);
+const enableBubbleTimeline = ref(prefer.s.enableBubbleTimeline);
+const enableListTimeline = ref(prefer.s.enableListTimeline);
+const enableAntennaTimeline = ref(prefer.s.enableAntennaTimeline);
+const enableChannelTimeline = ref(prefer.s.enableChannelTimeline);
 
-const collapseRenotes = ref(defaultStore.state.collapseRenotes);
-const collapseReplies = ref(defaultStore.state.collapseReplies);
-const collapseLongNoteContent = ref(defaultStore.state.collapseLongNoteContent);
-const collapseDefault = ref(defaultStore.state.collapseDefault);
-const alwaysShowCw = ref(defaultStore.state.alwaysShowCw);
+const forceCollapseAllRenotes = ref(prefer.s.forceCollapseAllRenotes);
+const collapseRenotes = ref(prefer.s.collapseRenotes);
+const collapseReplies = ref(prefer.s.collapseReplies);
+const collapseLongNoteContent = ref(prefer.s.collapseLongNoteContent);
+const collapseDefault = ref(prefer.s.collapseDefault);
+const alwaysShowCw = ref(prefer.s.alwaysShowCw);
+const showReplyTargetNote = ref(prefer.s.showReplyTargetNote);
 
 watch(src, () => {
 	queue.value = 0;
-	queueUpdated(queue);
+	queueUpdated(queue.value);
 });
 
 watch(enableWidgetsArea, (x) => {
-	defaultStore.set('enableWidgetsArea', x);
+	prefer.commit('enableWidgetsArea', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(friendlyUiEnableNotificationsArea, (x) => {
-	defaultStore.set('friendlyUiEnableNotificationsArea', x);
+	prefer.commit('friendlyUiEnableNotificationsArea', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableHomeTimeline, (x) => {
-	defaultStore.set('enableHomeTimeline', x);
+	prefer.commit('enableHomeTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableLocalTimeline, (x) => {
-	defaultStore.set('enableLocalTimeline', x);
+	prefer.commit('enableLocalTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableSocialTimeline, (x) => {
-	defaultStore.set('enableSocialTimeline', x);
+	prefer.commit('enableSocialTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableGlobalTimeline, (x) => {
-	defaultStore.set('enableGlobalTimeline', x);
+	prefer.commit('enableGlobalTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableBubbleTimeline, (x) => {
-	defaultStore.set('enableBubbleTimeline', x);
+	prefer.commit('enableBubbleTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableListTimeline, (x) => {
-	defaultStore.set('enableListTimeline', x);
+	prefer.commit('enableListTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableAntennaTimeline, (x) => {
-	defaultStore.set('enableAntennaTimeline', x);
+	prefer.commit('enableAntennaTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
 watch(enableChannelTimeline, (x) => {
-	defaultStore.set('enableChannelTimeline', x);
+	prefer.commit('enableChannelTimeline', x);
 	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 });
 
+watch(forceCollapseAllRenotes, (x) => {
+	prefer.commit('forceCollapseAllRenotes', x);
+	reloadTimeline();
+});
+
 watch(collapseRenotes, (x) => {
-	defaultStore.set('collapseRenotes', x);
+	prefer.commit('collapseRenotes', x);
 	reloadTimeline();
 });
 
 watch(collapseReplies, (x) => {
-	defaultStore.set('collapseReplies', x);
+	prefer.commit('collapseReplies', x);
 	reloadTimeline();
 });
 
 watch(collapseLongNoteContent, (x) => {
-	defaultStore.set('collapseLongNoteContent', x);
+	prefer.commit('collapseLongNoteContent', x);
 	reloadTimeline();
 	reloadNotification();
 });
 
 watch(collapseDefault, (x) => {
-	defaultStore.set('collapseDefault', x);
+	prefer.commit('collapseDefault', x);
 	reloadTimeline();
 	reloadNotification();
 });
 
 watch(alwaysShowCw, (x) => {
-	defaultStore.set('alwaysShowCw', x);
+	prefer.commit('alwaysShowCw', x);
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch(showReplyTargetNote, (x) => {
+	prefer.commit('showReplyTargetNote', x);
 	reloadTimeline();
 	reloadNotification();
 });
@@ -281,7 +300,7 @@ function queueUpdated(q: number): void {
 }
 
 function top(): void {
-	if (rootEl.value) scroll(rootEl.value, { top: 0 });
+	if (rootEl.value) scroll(rootEl.value, { top: 0, behavior: 'smooth' });
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {
@@ -349,23 +368,23 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 }
 
 function saveSrc(newSrc: TimelinePageSrc): void {
-	const out = deepMerge({ src: newSrc }, defaultStore.state.tl);
+	const out = deepMerge({ src: newSrc }, store.s.tl);
 
-	if (defaultStore.state.enableListTimeline && newSrc.startsWith('userList:')) {
+	if (prefer.s.enableListTimeline && newSrc.startsWith('userList:')) {
 		const id = newSrc.substring('userList:'.length);
-		out.userList = defaultStore.reactiveState.pinnedUserLists.value.find(l => l.id === id) ?? null;
+		out.userList = prefer.r.pinnedUserLists.value.find(l => l.id === id) ?? null;
 	}
 
-	defaultStore.set('tl', out);
+	store.set('tl', out);
 	if (['local', 'global'].includes(newSrc)) {
 		srcWhenNotSignin.value = newSrc as 'local' | 'global';
 	}
 }
 
-function saveTlFilter(key: keyof typeof defaultStore.state.tl.filter, newValue: boolean) {
+function saveTlFilter(key: keyof typeof store.s.tl.filter, newValue: boolean) {
 	if (key !== 'withReplies' || $i) {
-		const out = deepMerge({ filter: { [key]: newValue } }, defaultStore.state.tl);
-		defaultStore.set('tl', out);
+		const out = deepMerge({ filter: { [key]: newValue } }, store.s.tl);
+		store.set('tl', out);
 	}
 }
 
@@ -384,9 +403,9 @@ function focus(): void {
 
 function closeTutorial(): void {
 	if (!isBasicTimeline(src.value)) return;
-	const before = defaultStore.state.timelineTutorials;
+	const before = store.s.timelineTutorials;
 	before[src.value] = true;
-	defaultStore.set('timelineTutorials', before);
+	store.set('timelineTutorials', before);
 }
 
 function switchTlIfNeeded() {
@@ -418,7 +437,7 @@ const headerActions = computed(() => {
 			handler: (ev) => {
 				const menuItems: MenuItem[] = [];
 
-				if (isFriendly.value) {
+				if (isFriendly().value) {
 					menuItems.push({
 						type: 'parent',
 						icon: 'ti ti-settings',
@@ -537,7 +556,12 @@ const headerActions = computed(() => {
 							ref: onlyCats,
 						}, { type: 'divider' }, {
 							type: 'switch',
+							text: i18n.ts.forceCollapseAllRenotes,
+							ref: forceCollapseAllRenotes,
+						}, {
+							type: 'switch',
 							text: i18n.ts.collapseRenotes,
+							disabled: forceCollapseAllRenotes.value,
 							ref: collapseRenotes,
 						}, {
 							type: 'switch',
@@ -555,6 +579,10 @@ const headerActions = computed(() => {
 							type: 'switch',
 							text: i18n.ts.alwaysShowCw,
 							ref: alwaysShowCw,
+						}, {
+							type: 'switch',
+							text: i18n.ts.showReplyTargetNote,
+							ref: showReplyTargetNote,
 						});
 
 						return displayOfNoteChildMenu;
@@ -577,7 +605,7 @@ const headerActions = computed(() => {
 	return tmp;
 });
 
-const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserLists.value.map(l => ({
+const headerTabs = computed(() => [...(prefer.r.pinnedUserLists.value.map(l => ({
 	key: 'list:' + l.id,
 	title: l.name,
 	icon: 'ti ti-star',
@@ -587,17 +615,17 @@ const headerTabs = computed(() => [...(defaultStore.reactiveState.pinnedUserList
 	title: i18n.ts._timelines[tl],
 	icon: basicTimelineIconClass(tl),
 	iconOnly: true,
-})), ...(defaultStore.state.enableListTimeline ? [{
+})), ...(prefer.s.enableListTimeline ? [{
 	icon: 'ti ti-list',
 	title: i18n.ts.lists,
 	iconOnly: true,
 	onClick: chooseList,
-}] : []), ...(defaultStore.state.enableAntennaTimeline ? [{
+}] : []), ...(prefer.s.enableAntennaTimeline ? [{
 	icon: 'ti ti-antenna',
 	title: i18n.ts.antennas,
 	iconOnly: true,
 	onClick: chooseAntenna,
-}] : []), ...(defaultStore.state.enableChannelTimeline ? [{
+}] : []), ...(prefer.s.enableChannelTimeline ? [{
 	icon: 'ti ti-device-tv',
 	title: i18n.ts.channel,
 	iconOnly: true,
@@ -611,7 +639,7 @@ const headerTabsWhenNotLogin = computed(() => [...availableBasicTimelines().map(
 	iconOnly: true,
 }))] as Tab[]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.timeline,
 	icon: isBasicTimeline(src.value) ? basicTimelineIconClass(src.value) : 'ti ti-home',
 }));
@@ -667,5 +695,15 @@ definePageMetadata(() => ({
 	background: var(--MI_THEME-bg);
 	border-radius: var(--MI-radius);
 	overflow: clip;
+}
+
+.checkSchedulePostList {
+	background: none;
+	border: none;
+	color: inherit;
+
+	&:hover {
+		text-decoration: underline;
+	}
 }
 </style>

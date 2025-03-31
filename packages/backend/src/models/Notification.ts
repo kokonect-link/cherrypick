@@ -83,6 +83,12 @@ export type MiNotification = {
 	createdAt: string;
 	roleId: MiRole['id'];
 } | {
+	type: 'chatRoomInvitationReceived';
+	id: string;
+	createdAt: string;
+	notifierId: MiUser['id'];
+	invitationId: string;
+} | {
 	type: 'achievementEarned';
 	id: string;
 	createdAt: string;
@@ -98,6 +104,15 @@ export type MiNotification = {
 	id: string;
 	createdAt: string;
 	userIp: string;
+} | {
+	type: 'createToken';
+	id: string;
+	createdAt: string;
+} | {
+	type: 'scheduleNote';
+	id: string;
+	createdAt: string;
+	errorType: string;
 } | {
 	type: 'app';
 	id: string;

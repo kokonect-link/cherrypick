@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="rootEl" :class="$style.root" role="group" :aria-expanded="opened">
 	<MkStickyContainer>
 		<template #header>
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.header, { [$style.opened]: opened, [$style.inactive]: inactive || isArchived }]" class="_button" role="button" data-cy-folder-header @click="toggle">
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.header, { [$style.opened]: opened, [$style.inactive]: inactive || isArchived }]" class="_button" role="button" data-cy-folder-header @click="toggle">
 				<div :class="$style.headerIcon"><slot name="icon"></slot></div>
 				<div :class="$style.headerText">
 					<div :class="$style.headerTextMain">
@@ -28,10 +28,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div v-if="openedAtLeastOnce" :class="[$style.body, { [$style.bgSame]: bgSame }]" :style="{ maxHeight: maxHeight ? `${maxHeight}px` : undefined, overflow: maxHeight ? `auto` : undefined }" :aria-hidden="!opened">
 			<Transition
-				:enterActiveClass="defaultStore.state.animation ? $style.transition_toggle_enterActive : ''"
-				:leaveActiveClass="defaultStore.state.animation ? $style.transition_toggle_leaveActive : ''"
-				:enterFromClass="defaultStore.state.animation ? $style.transition_toggle_enterFrom : ''"
-				:leaveToClass="defaultStore.state.animation ? $style.transition_toggle_leaveTo : ''"
+				:enterActiveClass="prefer.s.animation ? $style.transition_toggle_enterActive : ''"
+				:leaveActiveClass="prefer.s.animation ? $style.transition_toggle_leaveActive : ''"
+				:enterFromClass="prefer.s.animation ? $style.transition_toggle_enterFrom : ''"
+				:leaveToClass="prefer.s.animation ? $style.transition_toggle_leaveTo : ''"
 				@enter="enter"
 				@afterEnter="afterEnter"
 				@leave="leave"
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			>
 				<KeepAlive>
 					<div v-show="opened">
-						<MkSpacer v-if="withSpacer" :marginMin="14" :marginMax="22">
+						<MkSpacer v-if="withSpacer" :marginMin="spacerMin" :marginMax="spacerMax">
 							<slot></slot>
 						</MkSpacer>
 						<div v-else>
@@ -57,25 +57,29 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, shallowRef } from 'vue';
-import { defaultStore } from '@/store.js';
-import { getBgColor } from '@/scripts/get-bg-color.js';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import { prefer } from '@/preferences.js';
+import { getBgColor } from '@/utility/get-bg-color.js';
 
 const props = withDefaults(defineProps<{
 	defaultOpen?: boolean;
 	maxHeight?: number | null;
 	withSpacer?: boolean;
-  inactive?: boolean;
-	isArchived? :boolean;
+	spacerMin?: number;
+	spacerMax?: number;
+	inactive?: boolean;
+	isArchived?: boolean;
 }>(), {
 	defaultOpen: false,
 	maxHeight: null,
 	withSpacer: true,
+	spacerMin: 14,
+	spacerMax: 22,
 	inactive: false,
 	isArchived: false,
 });
 
-const rootEl = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
 const bgSame = ref(false);
 const opened = ref(props.defaultOpen);
 const openedAtLeastOnce = ref(props.defaultOpen);
@@ -117,7 +121,7 @@ function toggle() {
 }
 
 onMounted(() => {
-	const computedStyle = getComputedStyle(document.documentElement);
+	const computedStyle = getComputedStyle(window.document.documentElement);
 	const parentBg = getBgColor(rootEl.value?.parentElement) ?? 'transparent';
 	const myBg = computedStyle.getPropertyValue('--MI_THEME-panel');
 	bgSame.value = parentBg === myBg;

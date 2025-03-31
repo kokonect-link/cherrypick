@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div>
+<div class="_selectable">
 	<div :class="$style.label" @click="focus"><slot name="label"></slot></div>
 	<div :class="[$style.input, { [$style.inline]: inline, [$style.disabled]: disabled, [$style.focused]: focused }]">
 		<div ref="prefixEl" :class="$style.prefix"><slot name="prefix"></slot></div>
@@ -44,12 +44,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, nextTick, ref, shallowRef, watch, computed, toRefs, InputHTMLAttributes } from 'vue';
+import { onMounted, onUnmounted, nextTick, ref, useTemplateRef, watch, computed, toRefs } from 'vue';
 import { debounce } from 'throttle-debounce';
 import { useInterval } from '@@/js/use-interval.js';
+import type { InputHTMLAttributes } from 'vue';
+import type { SuggestionType } from '@/utility/autocomplete.js';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
-import { Autocomplete, SuggestionType } from '@/scripts/autocomplete.js';
+import { Autocomplete } from '@/utility/autocomplete.js';
 
 const props = defineProps<{
 	modelValue: string | number | null;
@@ -90,9 +92,9 @@ const focused = ref(false);
 const changed = ref(false);
 const invalid = ref(false);
 const filled = computed(() => v.value !== '' && v.value != null);
-const inputEl = shallowRef<HTMLInputElement>();
-const prefixEl = shallowRef<HTMLElement>();
-const suffixEl = shallowRef<HTMLElement>();
+const inputEl = useTemplateRef('inputEl');
+const prefixEl = useTemplateRef('prefixEl');
+const suffixEl = useTemplateRef('suffixEl');
 const height =
 	props.small ? 33 :
 	props.large ? 39 :
@@ -280,7 +282,7 @@ defineExpose({
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	box-sizing: border-box;
-	pointer-events: none;
+	// pointer-events: none;
 
 	&:empty {
 		display: none;
@@ -296,6 +298,7 @@ defineExpose({
 	right: 0;
 	padding-left: 6px;
 }
+
 .save {
 	margin: 8px 0 0 0;
 }

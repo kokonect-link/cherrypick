@@ -17,7 +17,7 @@ import * as Misskey from 'cherrypick-js';
 import { host as localHost } from '@@/js/config.js';
 import MkMention from './MkMention.vue';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 
 const user = ref<Misskey.entities.UserLite>();
 

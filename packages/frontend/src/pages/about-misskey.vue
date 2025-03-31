@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<div style="overflow: clip;">
 		<MkSpacer :contentMax="600" :marginMin="20">
 			<div class="_gaps_m znqjceqz">
@@ -168,7 +167,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 				</FormSection>
 				<FormSection>
-					<template #label>Special thanks</template>
+					<template #label>Special thanks (Misskey)</template>
 					<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));grid-gap:24px;align-items:center;">
 						<div>
 							<a style="display: inline-block;" class="masknetwork" title="Mask Network" href="https://mask.io/" target="_blank"><img style="width: 100%;" src="https://assets.misskey-hub.net/sponsors/masknetwork.png" alt="Mask Network"></a>
@@ -182,11 +181,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<div>
 							<a style="display: inline-block;" class="pepabo" title="GMO Pepabo" href="https://pepabo.com/" target="_blank"><img style="width: 100%;" src="https://assets.misskey-hub.net/sponsors/gmo_pepabo.svg" alt="GMO Pepabo"></a>
 						</div>
+						<div>
+							<a style="display: inline-block;" class="purpledotdigital" title="Purple Dot Digital" href="https://purpledotdigital.com/" target="_blank"><img style="width: 100%;" src="https://assets.misskey-hub.net/sponsors/purple-dot-digital.jpg" alt="Purple Dot Digital"></a>
+						</div>
 					</div>
 				</FormSection>
 				<FormSection>
 					<template #label><Mfm text="$[jelly ❤]"/> {{ i18n.ts._aboutMisskey.patrons }}</template>
-					<p style="font-weight: bold">CherryPick</p>
+					<p style="font-weight: bold;">
+						<span style="color: var(--CP-cherry);">Cherry</span>
+						<span style="color: var(--CP-pick);">Pick</span>
+					</p>
 					<div :class="$style.patronsWithIcon">
 						<div v-for="patron in patronsWithIconWithCherryPick" :class="$style.patronWithIcon">
 							<img :src="patron.icon" :class="$style.patronIcon">
@@ -196,7 +201,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div style="margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); grid-gap: 12px;">
 						<div v-for="patron in patronsWithCherryPick" :key="patron">{{ patron }}</div>
 					</div>
-					<p style="font-weight: bold; padding-top: 20px"><b>Misskey</b></p>
+					<p style="font-weight: bold; padding-top: 20px; color: var(--CP-misskey);"><b>Misskey</b></p>
 					<div :class="$style.patronsWithIcon">
 						<div v-for="patron in patronsWithIconWithMisskey" :class="$style.patronWithIcon">
 							<img :src="patron.icon" :class="$style.patronIcon">
@@ -211,26 +216,39 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</MkSpacer>
 	</div>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, shallowRef, computed } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, computed } from 'vue';
 import { version, basedMisskeyVersion } from '@@/js/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { physics } from '@/scripts/physics.js';
+import { physics } from '@/utility/physics.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { defaultStore } from '@/store.js';
 import * as os from '@/os.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { claimAchievement, claimedAchievements } from '@/scripts/achievements.js';
-import { $i } from '@/account.js';
+import { definePage } from '@/page.js';
+import { claimAchievement, claimedAchievements } from '@/utility/achievements.js';
+import { $i } from '@/i.js';
+import { prefer } from '@/preferences.js';
+import { donateCherryPick } from '@/utility/donate-cherrypick.js';
 
-const patronsWithIconWithCherryPick = [];
+const patronsWithIconWithCherryPick = [{
+	name: 'Etone Sabasappugawa',
+	icon: 'https://s3.kokonect.link/cherrypick/patreons/b3bd97949b664c81857cc7286552c65e.png',
+}, {
+	name: 'okin',
+	icon: 'https://s3.kokonect.link/cherrypick/patreons/c185756cf04d483b9c7687d98ce1103c.png',
+}, {
+	name: 'Kitty',
+	icon: 'https://s3.kokonect.link/cherrypick/patreons/5f8e4bac9cf34984bc59875f6d8d5c1d.gif',
+}, {
+	name: 'breadguy',
+	icon: 'https://s3.kokonect.link/cherrypick/patreons/04cd46fba69c4953949cd1cc15d8c691.jpg',
+}];
 
 const patronsWithIconWithMisskey = [{
 	name: 'カイヤン',
@@ -361,6 +379,9 @@ const patronsWithIconWithMisskey = [{
 }, {
 	name: '秋瀬カヲル',
 	icon: 'https://assets.misskey-hub.net/patrons/0f22aeb866484f4fa51db6721e3f9847.jpg',
+}, {
+	name: '新井　治',
+	icon: 'https://assets.misskey-hub.net/patrons/d160876f20394674a17963a0e609600a.jpg',
 }];
 
 const patronsWithCherryPick = [
@@ -474,6 +495,7 @@ const patronsWithMisskey = [
 	'こまつぶり',
 	'まゆつな空高',
 	'asata',
+	'ruru',
 ];
 
 let isKokonect = false;
@@ -488,7 +510,7 @@ const easterEggEmojis = ref<{
 	emoji: string
 }[]>([]);
 const easterEggEngine = ref<{ stop: () => void } | null>(null);
-const containerEl = shallowRef<HTMLElement>();
+const containerEl = useTemplateRef('containerEl');
 
 const whatIsNewCherryPick = () => {
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
@@ -499,7 +521,7 @@ const whatIsNewMisskey = () => {
 };
 
 function iconLoaded() {
-	const emojis = defaultStore.state.reactions;
+	const emojis = prefer.s.emojiPalettes[0].emojis;
 	const containerWidth = containerEl.value.offsetWidth;
 	for (let i = 0; i < 32; i++) {
 		easterEggEmojis.value.push({
@@ -533,28 +555,6 @@ function getTreasure() {
 	claimAchievement('foundTreasure');
 }
 
-function donateCherryPick(ev: MouseEvent) {
-	os.popupMenu([{
-		text: 'Patreon',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://www.patreon.com/noridev', '_blank');
-		},
-	}, {
-		text: 'Paypal',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://www.paypal.me/noridev', '_blank');
-		},
-	}, {
-		text: 'Toss (Korea)',
-		icon: 'ti ti-pig-money',
-		action: () => {
-			window.open('https://toss.me/noridev', '_blank');
-		},
-	}], ev.currentTarget ?? ev.target);
-}
-
 onMounted(() => {
 	if (window.location.host === 'localhost:3000') isKokonect = true;
 	else if (window.location.host === '127.0.0.1:3000') isKokonect = true;
@@ -574,7 +574,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.aboutMisskey,
 	icon: null,
 }));

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: noridev and cherrypick-project
+SPDX-License-Identifier: AGPL-3.0-only
+-->
+
 <template>
 <div :class="$style.root">
 	<div>
@@ -24,11 +29,12 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from 'vue';
+import { ref } from 'vue';
 import { DiceRoll } from '@dice-roller/rpg-dice-roller';
+import type { Ref } from 'vue';
 import MkInput from '@/components/MkInput.vue';
 import MkButton from '@/components/MkButton.vue';
-import { i18n } from '@/i18n';
+import { i18n } from '@/i18n.js';
 
 const props = withDefaults(defineProps<{
 	showMinTotal?: boolean;

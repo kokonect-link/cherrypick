@@ -15,7 +15,7 @@ describe('ユーザー', () => {
 	// エンティティとしてのユーザーを主眼においたテストを記述する
 	// (Userを返すエンドポイントとUserエンティティを書き換えるエンドポイントをテストする)
 
-	const stripUndefined = <T extends { [key: string]: any }, >(orig: T): Partial<T> => {
+	const stripUndefined = <T extends { [key: string]: any } >(orig: T): Partial<T> => {
 		return Object.entries({ ...orig })
 			.filter(([, value]) => value !== undefined)
 			.reduce((obj: Partial<T>, [key, value]) => {
@@ -38,8 +38,10 @@ describe('ユーザー', () => {
 			avatarUrl: user.avatarUrl,
 			avatarBlurhash: user.avatarBlurhash,
 			avatarDecorations: user.avatarDecorations,
+			isLocked: user.isLocked,
 			isBot: user.isBot,
 			isCat: user.isCat,
+			isProxy: user.isProxy,
 			instance: user.instance,
 			emojis: user.emojis,
 			onlineStatus: user.onlineStatus,
@@ -64,7 +66,6 @@ describe('ユーザー', () => {
 			lastFetchedAt: user.lastFetchedAt,
 			bannerUrl: user.bannerUrl,
 			bannerBlurhash: user.bannerBlurhash,
-			isLocked: user.isLocked,
 			isSilenced: user.isSilenced,
 			isSuspended: user.isSuspended,
 			description: user.description,
@@ -83,6 +84,7 @@ describe('ユーザー', () => {
 			publicReactions: user.publicReactions,
 			followingVisibility: user.followingVisibility,
 			followersVisibility: user.followersVisibility,
+			chatScope: user.chatScope,
 			roles: user.roles,
 			memo: user.memo,
 		});
@@ -129,10 +131,10 @@ describe('ユーザー', () => {
 			hideOnlineStatus: user.hideOnlineStatus,
 			hasUnreadSpecifiedNotes: user.hasUnreadSpecifiedNotes,
 			hasUnreadMentions: user.hasUnreadMentions,
-			hasUnreadMessagingMessage: user.hasUnreadMessagingMessage,
 			hasUnreadAnnouncement: user.hasUnreadAnnouncement,
 			hasUnreadAntenna: user.hasUnreadAntenna,
 			hasUnreadChannel: user.hasUnreadChannel,
+			hasUnreadChatMessages: user.hasUnreadChatMessages,
 			hasUnreadNotification: user.hasUnreadNotification,
 			unreadNotificationsCount: user.unreadNotificationsCount,
 			hasPendingReceivedFollowRequest: user.hasPendingReceivedFollowRequest,
@@ -309,8 +311,10 @@ describe('ユーザー', () => {
 		response.avatarUrl && assert.match(response.avatarUrl, /^[-a-zA-Z0-9@:%._\+~#&?=\/]+$/);
 		assert.strictEqual(response.avatarBlurhash, null);
 		assert.deepStrictEqual(response.avatarDecorations, []);
+		assert.strictEqual(response.isLocked, false);
 		assert.strictEqual(response.isBot, false);
 		assert.strictEqual(response.isCat, false);
+		assert.strictEqual(response.isProxy, false);
 		assert.strictEqual(response.instance, undefined);
 		assert.deepStrictEqual(response.emojis, {});
 		assert.strictEqual(response.onlineStatus, 'unknown');
@@ -325,7 +329,6 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.lastFetchedAt, null);
 		assert.strictEqual(response.bannerUrl, null);
 		assert.strictEqual(response.bannerBlurhash, null);
-		assert.strictEqual(response.isLocked, false);
 		assert.strictEqual(response.isSilenced, false);
 		assert.strictEqual(response.isSuspended, false);
 		assert.strictEqual(response.description, null);
@@ -344,6 +347,7 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.publicReactions, true);
 		assert.strictEqual(response.followingVisibility, 'public');
 		assert.strictEqual(response.followersVisibility, 'public');
+		assert.strictEqual(response.chatScope, 'mutual');
 		assert.deepStrictEqual(response.roles, []);
 		assert.strictEqual(response.memo, null);
 
@@ -367,10 +371,10 @@ describe('ユーザー', () => {
 		assert.strictEqual(response.hideOnlineStatus, false);
 		assert.strictEqual(response.hasUnreadSpecifiedNotes, false);
 		assert.strictEqual(response.hasUnreadMentions, false);
-		assert.strictEqual(response.hasUnreadMessagingMessage, false);
 		assert.strictEqual(response.hasUnreadAnnouncement, false);
 		assert.strictEqual(response.hasUnreadAntenna, false);
 		assert.strictEqual(response.hasUnreadChannel, false);
+		assert.strictEqual(response.hasUnreadChatMessages, false);
 		assert.strictEqual(response.hasUnreadNotification, false);
 		assert.strictEqual(response.unreadNotificationsCount, 0);
 		assert.strictEqual(response.hasPendingReceivedFollowRequest, false);

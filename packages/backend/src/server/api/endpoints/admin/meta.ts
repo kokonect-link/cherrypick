@@ -9,6 +9,7 @@ import { MetaService } from '@/core/MetaService.js';
 import type { Config } from '@/config.js';
 import { DI } from '@/di-symbols.js';
 import { DEFAULT_POLICIES } from '@/core/RoleService.js';
+import { SystemAccountService } from '@/core/SystemAccountService.js';
 
 export const meta = {
 	tags: ['meta'],
@@ -72,6 +73,10 @@ export const meta = {
 			enableTestcaptcha: {
 				type: 'boolean',
 				optional: false, nullable: false,
+			},
+			googleAnalyticsMeasurementId: {
+				type: 'string',
+				optional: false, nullable: true,
 			},
 			swPublickey: {
 				type: 'string',
@@ -241,7 +246,7 @@ export const meta = {
 			},
 			proxyAccountId: {
 				type: 'string',
-				optional: false, nullable: true,
+				optional: false, nullable: false,
 				format: 'id',
 			},
 			email: {
@@ -468,6 +473,14 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			libreTranslateEndPoint: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			libreTranslateApiKey: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			defaultDarkTheme: {
 				type: 'string',
 				optional: false, nullable: true,
@@ -572,6 +585,7 @@ export const meta = {
 			},
 			federation: {
 				type: 'string',
+				enum: ['all', 'specified', 'none'],
 				optional: false, nullable: false,
 			},
 			federationHosts: {
@@ -636,6 +650,10 @@ export const meta = {
 					type: 'string',
 				},
 			},
+			customRobotsTxt: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 		},
 	},
 } as const;
@@ -654,9 +672,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		private config: Config,
 
 		private metaService: MetaService,
+		private systemAccountService: SystemAccountService,
 	) {
 		super(meta, paramDef, async () => {
 			const instance = await this.metaService.fetch(true);
+
+			const proxy = await this.systemAccountService.fetch('proxy');
 
 			return {
 				maintainerName: instance.maintainerName,
@@ -686,6 +707,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableTurnstile: instance.enableTurnstile,
 				turnstileSiteKey: instance.turnstileSiteKey,
 				enableTestcaptcha: instance.enableTestcaptcha,
+				googleAnalyticsMeasurementId: instance.googleAnalyticsMeasurementId,
 				swPublickey: instance.swPublicKey,
 				themeColor: instance.themeColor,
 				mascotImageUrl: instance.mascotImageUrl,
@@ -727,7 +749,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				sensitiveMediaDetectionSensitivity: instance.sensitiveMediaDetectionSensitivity,
 				setSensitiveFlagAutomatically: instance.setSensitiveFlagAutomatically,
 				enableSensitiveMediaDetectionForVideos: instance.enableSensitiveMediaDetectionForVideos,
-				proxyAccountId: instance.proxyAccountId,
+				proxyAccountId: proxy.id,
 				email: instance.email,
 				smtpSecure: instance.smtpSecure,
 				smtpHost: instance.smtpHost,
@@ -768,6 +790,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				ctav3Location: instance.ctav3Location,
 				ctav3Model: instance.ctav3Model,
 				ctav3Glossary: instance.ctav3Glossary,
+				libreTranslateEndPoint: instance.libreTranslateEndPoint,
+				libreTranslateApiKey: instance.libreTranslateApiKey,
 				enableIpLogging: instance.enableIpLogging,
 				enableActiveEmailValidation: instance.enableActiveEmailValidation,
 				enableVerifymailApi: instance.enableVerifymailApi,
@@ -811,6 +835,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				disablePublicNoteWhenInactive: instance.disablePublicNoteWhenInactive,
 				moderatorInactivityLimitDays: instance.moderatorInactivityLimitDays,
 				bubbleInstances: instance.bubbleInstances,
+				customRobotsTxt: instance.customRobotsTxt,
 			};
 		});
 	}

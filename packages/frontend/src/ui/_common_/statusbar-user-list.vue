@@ -35,8 +35,8 @@ import { ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
 import MarqueeText from '@/components/MkMarquee.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { getNoteSummary } from '@/scripts/get-note-summary.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { getNoteSummary } from '@/utility/get-note-summary.js';
 import { notePage } from '@/filters/note.js';
 
 const props = defineProps<{

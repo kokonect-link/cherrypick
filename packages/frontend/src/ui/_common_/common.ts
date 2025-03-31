@@ -9,9 +9,8 @@ import type { MenuItem } from '@/types/menu.js';
 import * as os from '@/os.js';
 import { instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
-import { defaultStore } from '@/store.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { $i } from '@/i.js';
+import { prefer } from '@/preferences.js';
 
 function toolsMenuItems(): MenuItem[] {
 	return [{
@@ -44,7 +43,7 @@ function toolsMenuItems(): MenuItem[] {
 		text: i18n.ts.replayUserSetupDialog,
 		icon: 'ti ti-list-numbers',
 		action: () => {
-			defaultStore.set('accountSetupWizard', 0);
+			prefer.commit('accountSetupWizard', 0);
 			os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
 		},
 	} : undefined];
@@ -66,12 +65,18 @@ export function openInstanceMenu(ev: MouseEvent) {
 		text: i18n.ts.customEmojis,
 		icon: 'ti ti-icons',
 		to: '/about#emojis',
-	}, {
-		type: 'link',
-		text: i18n.ts.federation,
-		icon: 'ti ti-world',
-		to: '/about#federation',
-	}, {
+	});
+
+	if (instance.federation !== 'none') {
+		menuItems.push({
+			type: 'link',
+			text: i18n.ts.federation,
+			icon: 'ti ti-world',
+			to: '/about#federation',
+		});
+	}
+
+	menuItems.push({
 		type: 'link',
 		text: i18n.ts.charts,
 		icon: 'ti ti-chart-line',

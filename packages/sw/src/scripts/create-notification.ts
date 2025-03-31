@@ -163,8 +163,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 
 					const tag = `reaction:${data.body.note.id}`;
 					return [i18n.tsx._notification.youGotReact({ name: getUserName(data.body.user) }), {
-						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-						body: (reaction1.startsWith(':') ? `:${ reaction }:` : `${ reaction }` + '\n' + data.body.note.text) ?? '',
+						body: (reaction1.startsWith(':') ? `:${ reaction }:` : `${ reaction }` + '\n' + data.body.note.text),
 						icon: data.body.user.avatarUrl ?? undefined,
 						tag,
 						badge,
@@ -180,7 +179,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 
 				case 'receiveFollowRequest':
 					return [i18n.ts._notification.youReceivedFollowRequest, {
-						body: getUserName(data.body.user),
+						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
 						icon: data.body.user.avatarUrl ?? undefined,
 						badge: iconUrl('user-plus'),
 						data,
@@ -198,7 +197,7 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 
 				case 'followRequestAccepted':
 					return [i18n.ts._notification.yourFollowRequestAccepted, {
-						body: getUserName(data.body.user),
+						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
 						icon: data.body.user.avatarUrl ?? undefined,
 						badge: iconUrl('circle-check'),
 						data,
@@ -262,6 +261,12 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						data,
 					}];
 
+				case 'scheduleNote':
+					return [i18n.ts._notification._types.scheduleNote, {
+						body: data.body.errorType,
+						data,
+					}];
+
 				case 'app':
 					return [data.body.header ?? data.body.body, {
 						body: data.body.header ? data.body.body : '',
@@ -279,25 +284,6 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 				default:
 					return null;
 			}
-		case 'unreadMessagingMessage':
-			if (data.body.groupId === null) {
-				return [getUserName(data.body.user ?? { name: null, username: '' }), {
-					body: data.body.text ?? '',
-					icon: data.body.user?.avatarUrl ?? undefined,
-					badge: iconUrl('messages'),
-					tag: `messaging:user:${data.body.userId}`,
-					data,
-					renotify: true,
-				}];
-			}
-			return [data.body.group?.name ?? '', {
-				body: `${getUserName(data.body.user ?? { name: null, username: '' })}: ${data.body.text ?? ''}`,
-				icon: data.body.user?.avatarUrl ?? undefined,
-				badge: iconUrl('messages'),
-				tag: `messaging:group:${data.body.groupId}`,
-				data,
-				renotify: true,
-			}];
 		case 'unreadAntennaNote':
 			return [i18n.tsx._notification.unreadAntennaNote({ name: data.body.antenna.name }), {
 				body: `${getUserName(data.body.note.user)}: ${data.body.note.text ?? ''}`,

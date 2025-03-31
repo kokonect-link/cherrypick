@@ -4,11 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
+<PageWithHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
 	<MkSpacer :contentMax="1400">
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'explore'" key="explore">
+			<div v-if="tab === 'explore'">
 				<MkFoldableSection class="_margin">
 					<template #header><i class="ti ti-clock"></i>{{ i18n.ts.recentPosts }}</template>
 					<MkPagination v-slot="{items}" :pagination="recentPostsPagination" :disableAutoLoad="true">
@@ -26,14 +25,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkPagination>
 				</MkFoldableSection>
 			</div>
-			<div v-else-if="tab === 'liked'" key="liked">
+			<div v-else-if="tab === 'liked'">
 				<MkPagination v-slot="{items}" :pagination="likedPostsPagination">
 					<div :class="$style.items">
 						<MkGalleryPostPreview v-for="like in items" :key="like.id" :post="like.post" class="post"/>
 					</div>
 				</MkPagination>
 			</div>
-			<div v-else-if="tab === 'my'" key="my">
+			<div v-else-if="tab === 'my'">
 				<MkPagination v-slot="{items}" :pagination="myPostsPagination">
 					<div :class="$style.items">
 						<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
@@ -42,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</MkHorizontalSwipe>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -51,10 +50,10 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkGalleryPostPreview from '@/components/MkGalleryPostPreview.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { $i } from '@/account.js';
+import { definePage } from '@/page.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 
 const router = useRouter();
 
@@ -125,7 +124,7 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-icons',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
 }));

@@ -46,7 +46,7 @@ jobs:
           STABLE_BRANCH: ${{ vars.STABLE_BRANCH }}
 
   merge:
-    uses: misskey-dev/release-manager-actions/.github/workflows/merge.yml@v2
+    uses: kokonect-link/release-manager-actions/.github/workflows/merge.yml@v2
     needs: get-pr
     if: ${{ needs.get-pr.outputs.pr_number != '' && inputs.merge == true }}
     with:
@@ -74,7 +74,7 @@ jobs:
       RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
   create-prerelease:
-    uses: misskey-dev/release-manager-actions/.github/workflows/create-prerelease.yml@v2
+    uses: kokonect-link/release-manager-actions/.github/workflows/create-prerelease.yml@v2
     needs: get-pr
     if: ${{ needs.get-pr.outputs.pr_number != '' && inputs.merge != true  }}
     with:
@@ -92,7 +92,7 @@ jobs:
       RELEASE_APP_PRIVATE_KEY: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
 
   create-target:
-    uses: misskey-dev/release-manager-actions/.github/workflows/create-target.yml@v2
+    uses: kokonect-link/release-manager-actions/.github/workflows/create-target.yml@v2
     needs: get-pr
     if: ${{ needs.get-pr.outputs.pr_number == '' }}
     with:

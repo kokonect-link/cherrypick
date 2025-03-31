@@ -238,28 +238,47 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<MkFolder>
 					<template #icon><i class="ti ti-ghost"></i></template>
 					<template #label>{{ i18n.ts.proxyAccount }}</template>
+					<template v-if="proxyAccountForm.modified.value" #footer>
+						<MkFormFooter :form="proxyAccountForm"/>
+					</template>
 
 					<div class="_gaps">
 						<MkInfo>{{ i18n.ts.proxyAccountDescription }}</MkInfo>
-						<MkKeyValue>
-							<template #key>{{ i18n.ts.proxyAccount }}</template>
-							<template #value>{{ proxyAccount ? `@${proxyAccount.username}` : i18n.ts.none }}</template>
-						</MkKeyValue>
 
-						<MkButton primary @click="chooseProxyAccount">{{ i18n.ts.selectAccount }}</MkButton>
+						<MkTextarea v-model="proxyAccountForm.state.description" :max="500" tall mfmAutocomplete :mfmPreview="true">
+							<template #label>{{ i18n.ts._profile.description }}</template>
+							<template #caption>{{ i18n.ts._profile.youCanIncludeHashtags }}</template>
+						</MkTextarea>
 					</div>
 				</MkFolder>
 
 				<MkFolder>
 					<template #icon><i class="ti ti-exclamation-circle"></i></template>
 					<template #label>{{ i18n.ts.abuseReports }}</template>
+					<template v-if="emailToReceiveAbuseReportForm.modified.value" #footer>
+						<MkFormFooter :form="emailToReceiveAbuseReportForm"/>
+					</template>
 
 					<div class="_gaps_m">
 						<MkInput v-model="emailToReceiveAbuseReportForm.state.emailToReceiveAbuseReport" type="email">
 							<template #prefix><i class="ti ti-mail"></i></template>
-							<template #label>{{ i18n.ts.emailToReceiveAbuseReport }}</template>
+							<template #label>{{ i18n.ts.emailToReceiveAbuseReport }} <span v-if="emailToReceiveAbuseReportForm.modifiedStates.emailToReceiveAbuseReport" class="_modified">{{ i18n.ts.modified }}</span></template>
 							<template #caption>{{ i18n.ts.emailToReceiveAbuseReportCaption }}</template>
 						</MkInput>
+					</div>
+				</MkFolder>
+
+				<MkFolder>
+					<template #icon><i class="ti ti-adjustments"></i></template>
+					<template #label>{{ i18n.ts.otherSettings }}</template>
+					<template v-if="otherSettingsForm.modified.value" #footer>
+						<MkFormFooter :form="otherSettingsForm"/>
+					</template>
+					<div class="_gaps_m">
+						<MkTextarea v-model="otherSettingsForm.state.customRobotsTxt">
+							<template #label>{{ i18n.ts.overrideRobotsTxt }}<span v-if="otherSettingsForm.modifiedStates.customRobotsTxt" class="_modified">{{ i18n.ts.modified }}</span></template>
+							<template #caption>{{ i18n.ts.overrideRobotsTxtDescription }}</template>
+						</MkTextarea>
 					</div>
 				</MkFolder>
 			</div>
@@ -269,7 +288,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import XHeader from './_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -277,20 +296,20 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchInstance, instance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
-import { useForm } from '@/scripts/use-form.js';
+import { useForm } from '@/use/use-form.js';
 import MkFormFooter from '@/components/MkFormFooter.vue';
 import MkRadios from '@/components/MkRadios.vue';
 
 const meta = await misskeyApi('admin/meta');
 
-const proxyAccount = ref(meta.proxyAccountId ? await misskeyApi('users/show', { userId: meta.proxyAccountId }) : null);
+const proxyAccount = await misskeyApi('users/show', { userId: meta.proxyAccountId });
 
 const infoForm = useForm({
 	name: meta.name ?? '',
@@ -400,20 +419,27 @@ const emailToReceiveAbuseReportForm = useForm({
 	fetchInstance(true);
 });
 
-function chooseProxyAccount() {
-	os.selectUser({ localOnly: true }).then(user => {
-		proxyAccount.value = user;
-		os.apiWithDialog('admin/update-meta', {
-			proxyAccountId: user.id,
-		}).then(() => {
-			fetchInstance(true);
-		});
+const otherSettingsForm = useForm({
+	customRobotsTxt: meta.customRobotsTxt,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-meta', {
+		customRobotsTxt: state.customRobotsTxt,
 	});
-}
+	fetchInstance(true);
+});
+
+const proxyAccountForm = useForm({
+	description: proxyAccount.description,
+}, async (state) => {
+	await os.apiWithDialog('admin/update-proxy-account', {
+		description: state.description,
+	});
+	fetchInstance(true);
+});
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.general,
 	icon: 'ti ti-settings',
 }));

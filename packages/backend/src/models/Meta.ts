@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne } from 'typeorm';
 import { id } from './util/id.js';
 import { MiUser } from './User.js';
 
@@ -14,6 +14,18 @@ export class MiMeta {
 		length: 32,
 	})
 	public id: string;
+
+	@Column({
+		...id(),
+		nullable: true,
+	})
+	public rootUserId: MiUser['id'] | null;
+
+	@ManyToOne(type => MiUser, {
+		onDelete: 'SET NULL',
+		nullable: true,
+	})
+	public rootUser: MiUser | null;
 
 	@Column('varchar', {
 		length: 1024, nullable: true,
@@ -177,18 +189,6 @@ export class MiMeta {
 		default: true,
 	})
 	public cacheRemoteSensitiveFiles: boolean;
-
-	@Column({
-		...id(),
-		nullable: true,
-	})
-	public proxyAccountId: MiUser['id'] | null;
-
-	@ManyToOne(type => MiUser, {
-		onDelete: 'SET NULL',
-	})
-	@JoinColumn()
-	public proxyAccount: MiUser | null;
 
 	@Column('boolean', {
 		default: false,
@@ -400,6 +400,18 @@ export class MiMeta {
 		nullable: true,
 	})
 	public ctav3Glossary: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public libreTranslateEndPoint: string | null;
+
+	@Column('varchar', {
+		length: 1024,
+		nullable: true,
+	})
+	public libreTranslateApiKey: string | null;
 
 	@Column('varchar', {
 		length: 1024,
@@ -781,6 +793,12 @@ export class MiMeta {
 	})
 	public federationHosts: string[];
 
+	@Column('varchar', {
+		length: 64,
+		nullable: true,
+	})
+	public googleAnalyticsMeasurementId: string | null;
+
 	@Column('boolean', {
 		default: false,
 	})
@@ -825,7 +843,7 @@ export class MiMeta {
 	public disablePublicNoteWhenInactive: boolean;
 
 	@Column('integer', {
-		nullable: false,
+		default: 7,
 	})
 	public moderatorInactivityLimitDays: number;
 
@@ -835,4 +853,9 @@ export class MiMeta {
 		default: '{}',
 	})
 	public bubbleInstances: string[];
+
+	@Column('varchar', {
+		length: 2048, nullable: true,
+	})
+	public customRobotsTxt: string | null;
 }

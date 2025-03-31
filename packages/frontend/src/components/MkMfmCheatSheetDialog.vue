@@ -17,17 +17,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import XMfmCheatSheet from '@/pages/mfc-cheat-sheet.vue';
 import { i18n } from '@/i18n.js';
 
 const emit = defineEmits<{
-  (ev: 'done'): void;
-  (ev: 'closed'): void;
+	(ev: 'done'): void;
+	(ev: 'closed'): void;
 }>();
 
-const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
 function cancel() {
 	emit('done');

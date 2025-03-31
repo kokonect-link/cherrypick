@@ -21,8 +21,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</MkTab>
 	</template>
 	<XReactions v-if="tab === 'reactions'" :user="user"/>
-	<XFiles v-if="tab === 'files' && defaultStore.state.filesGridLayoutInUserPage" :pagination="pagination"/>
-	<MkNotes v-else :noGap="true" :pagination="pagination" :class="$style.tl"/>
+	<XFiles v-if="tab === 'files' && prefer.s.filesGridLayoutInUserPage" :pagination="pagination"/>
+	<MkNotes v-else :noGap="!prefer.s.showGapBetweenNotesInTimeline" :pagination="pagination" :class="$style.tl" :forceShowReplyTargetNote="true"/>
 </MkStickyContainer>
 </template>
 
@@ -34,14 +34,14 @@ import MkTab from '@/components/MkTab.vue';
 import XReactions from '@/pages/user/reactions.vue';
 import XFiles from '@/pages/user/index.timeline.files.vue';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
-import { defaultStore } from '@/store.js';
+import { $i } from '@/i.js';
+import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
 }>();
 
-const tab = ref<string | null>(null);
+const tab = ref<string | null>('all');
 
 const pagination = computed(() => tab.value === 'featured' ? {
 	endpoint: 'users/featured-notes' as const,
@@ -49,7 +49,7 @@ const pagination = computed(() => tab.value === 'featured' ? {
 	params: {
 		userId: props.user.id,
 	},
-} : tab.value === 'files' && defaultStore.state.filesGridLayoutInUserPage ? {
+} : tab.value === 'files' && prefer.s.filesGridLayoutInUserPage ? {
 	endpoint: 'users/notes' as const,
 	limit: 30,
 	params: {

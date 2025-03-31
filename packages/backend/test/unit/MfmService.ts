@@ -24,13 +24,13 @@ describe('MfmService', () => {
 	describe('toHtml', () => {
 		test('br', () => {
 			const input = 'foo\nbar\nbaz';
-			const output = '<p><span>foo<br>bar<br>baz</span></p>';
+			const output = '<p><span>foo<br />bar<br />baz</span></p>';
 			assert.equal(mfmService.toHtml(mfm.parse(input)), output);
 		});
 
 		test('br alt', () => {
 			const input = 'foo\r\nbar\rbaz';
-			const output = '<p><span>foo<br>bar<br>baz</span></p>';
+			const output = '<p><span>foo<br />bar<br />baz</span></p>';
 			assert.equal(mfmService.toHtml(mfm.parse(input)), output);
 		});
 
@@ -106,6 +106,24 @@ describe('MfmService', () => {
 
 		test('link without both', () => {
 			assert.deepStrictEqual(mfmService.fromHtml('<p>a <a></a> d</p>'), 'a  d');
+		});
+
+		test('ruby', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a <ruby>CherryPick<rp>(</rp><rt>チェリーピック</rt><rp>)</rp></ruby> b</p>'), 'a $[ruby CherryPick チェリーピック] b');
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a <ruby>CherryPick<rp>(</rp><rt>チェリーピック</rt><rp>)</rp>CherryPick<rp>(</rp><rt>チェリーピック</rt><rp>)</rp></ruby> b</p>'), 'a $[ruby CherryPick チェリーピック]$[ruby CherryPick チェリーピック] b');
+		});
+
+		test('ruby with spaces', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a <ruby>Cherry Pick<rp>(</rp><rt>チェリーピック</rt><rp>)</rp> b</ruby> c</p>'), 'a Cherry Pick(チェリーピック) b c');
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a <ruby>CherryPick<rp>(</rp><rt>チェリー ピック</rt><rp>)</rp> b</ruby> c</p>'), 'a CherryPick(チェリー ピック) b c');
+			assert.deepStrictEqual(
+				mfmService.fromHtml('<p>a <ruby>CherryPick<rp>(</rp><rt>チェリーピック</rt><rp>)</rp>CherryPick<rp>(</rp><rt>ミス キー</rt><rp>)</rp>CherryPick<rp>(</rp><rt>チェリーピック</rt><rp>)</rp></ruby> b</p>'),
+				'a CherryPick(チェリーピック)CherryPick(ミス キー)CherryPick(チェリーピック) b',
+			);
+		});
+
+		test('ruby with other inline tags', () => {
+			assert.deepStrictEqual(mfmService.fromHtml('<p>a <ruby><strong>CherryPick</strong><rp>(</rp><rt>チェリーピック</rt><rp>)</rp> b</ruby> c</p>'), 'a **CherryPick**(チェリーピック) b c');
 		});
 
 		test('mention', () => {

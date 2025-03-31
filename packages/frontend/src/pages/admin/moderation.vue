@@ -151,7 +151,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #label>{{ i18n.ts.bubbleTimeline }}</template>
 
 						<div class="_gaps">
-							<MkTextarea v-if="bubbleTimelineEnabled" v-model="bubbleTimeline">
+							<MkTextarea v-model="bubbleTimeline">
 								<template #caption>{{ i18n.ts.bubbleInstancesDescription }}</template>
 							</MkTextarea>
 							<MkButton primary @click="save_bubbleTimeline">{{ i18n.ts.save }}</MkButton>
@@ -172,10 +172,10 @@ import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import FormSuspense from '@/components/form/suspense.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 import FormLink from '@/components/form/link.vue';
 import MkFolder from '@/components/MkFolder.vue';
@@ -196,7 +196,6 @@ const blockedHosts = ref<string>('');
 const silencedHosts = ref<string>('');
 const mediaSilencedHosts = ref<string>('');
 const trustedLinkUrlPatterns = ref<string>('');
-const bubbleTimelineEnabled = ref<boolean>(false);
 const bubbleTimeline = ref<string>('');
 
 async function init() {
@@ -214,7 +213,6 @@ async function init() {
 	silencedHosts.value = meta.silencedHosts?.join('\n') ?? '';
 	mediaSilencedHosts.value = meta.mediaSilencedHosts.join('\n');
 	trustedLinkUrlPatterns.value = meta.trustedLinkUrlPatterns.join('\n');
-	bubbleTimelineEnabled.value = meta.policies.btlAvailable;
 	bubbleTimeline.value = meta.bubbleInstances.join('\n');
 }
 
@@ -353,7 +351,7 @@ function save_bubbleTimeline() {
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.moderation,
 	icon: 'ti ti-shield',
 }));

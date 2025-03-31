@@ -4,11 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
+<PageWithHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
 	<MkSpacer :contentMax="700">
 		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'featured'" key="featured">
+			<div v-if="tab === 'featured'">
 				<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
 					<div class="_gaps_s">
 						<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
@@ -16,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkPagination>
 			</div>
 
-			<div v-else-if="tab === 'my'" key="my">
+			<div v-else-if="tab === 'my'">
 				<div class="_gaps">
 					<MkPagination v-slot="{items}" :pagination="myFlashsPagination">
 						<div class="_gaps_s">
@@ -26,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 
-			<div v-else-if="tab === 'liked'" key="liked">
+			<div v-else-if="tab === 'liked'">
 				<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
 					<div class="_gaps_s">
 						<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
@@ -35,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</MkHorizontalSwipe>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -43,10 +42,10 @@ import { computed, ref } from 'vue';
 import MkFlashPreview from '@/components/MkFlashPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { useRouter } from '@/router/supplier.js';
+import { definePage } from '@/page.js';
+import { useRouter } from '@/router.js';
 
 const router = useRouter();
 
@@ -96,7 +95,7 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-flare',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: 'Play',
 	icon: 'ti ti-player-play',
 }));

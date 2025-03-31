@@ -23,8 +23,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option :value="'email'">{{ i18n.ts._abuseReport._notificationRecipient._recipientType.mail }}</option>
 					<option :value="'webhook'">{{ i18n.ts._abuseReport._notificationRecipient._recipientType.webhook }}</option>
 				</MkSelect>
-				<MkInput v-model="filterText" type="search" style="flex: 1">
+				<MkInput ref="filterTextEl" v-model="filterText" type="search" style="flex: 1">
 					<template #label>{{ i18n.ts._abuseReport._notificationRecipient.keywords }}</template>
+					<template v-if="filterText != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="filterText = ''; filterTextEl?.focus();"><i class="ti ti-x"></i></button></template>
 				</MkInput>
 			</div>
 
@@ -49,7 +50,7 @@ import { entities } from 'cherrypick-js';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import XRecipient from './notification-recipient.item.vue';
 import XHeader from '@/pages/admin/_header_.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -87,6 +88,8 @@ const filteredRecipients = computed(() => {
 });
 const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
+
+const filterTextEl = ref(null);
 
 async function onAddButtonClicked() {
 	await showEditor('create');
@@ -147,7 +150,7 @@ onMounted(async () => {
 });
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .root {
 	display: flex;
 	flex-direction: column;
@@ -173,5 +176,18 @@ onMounted(async () => {
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: stretch;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	cursor: pointer;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>

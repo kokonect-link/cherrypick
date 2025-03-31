@@ -192,6 +192,7 @@ export const paramDef = {
 		autoSensitive: { type: 'boolean' },
 		followingVisibility: { type: 'string', enum: ['public', 'followers', 'private'] },
 		followersVisibility: { type: 'string', enum: ['public', 'followers', 'private'] },
+		chatScope: { type: 'string', enum: ['everyone', 'followers', 'following', 'mutual', 'none'] },
 		pinnedPageId: { type: 'string', format: 'misskey:id', nullable: true },
 		mutedWords: muteWords,
 		hardMutedWords: muteWords,
@@ -214,6 +215,7 @@ export const paramDef = {
 				followRequestAccepted: notificationRecieveConfig,
 				groupInvited: notificationRecieveConfig,
 				roleAssigned: notificationRecieveConfig,
+				chatRoomInvitationReceived: notificationRecieveConfig,
 				achievementEarned: notificationRecieveConfig,
 				app: notificationRecieveConfig,
 				test: notificationRecieveConfig,
@@ -228,6 +230,8 @@ export const paramDef = {
 			uniqueItems: true,
 			items: { type: 'string' },
 		},
+		setFederationAvatarShape: { type: 'boolean', nullable: true },
+		isSquareAvatars: { type: 'boolean', nullable: true },
 	},
 } as const;
 
@@ -291,6 +295,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.birthday !== undefined) profileUpdates.birthday = ps.birthday;
 			if (ps.followingVisibility !== undefined) profileUpdates.followingVisibility = ps.followingVisibility;
 			if (ps.followersVisibility !== undefined) profileUpdates.followersVisibility = ps.followersVisibility;
+			if (ps.chatScope !== undefined) updates.chatScope = ps.chatScope;
 
 			function checkMuteWordCount(mutedWords: (string[] | string)[], limit: number) {
 				// TODO: ちゃんと数える
@@ -462,6 +467,9 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				updates.alsoKnownAs = newAlsoKnownAs.size > 0 ? Array.from(newAlsoKnownAs) : null;
 			}
 
+			if (typeof ps.setFederationAvatarShape === 'boolean') updates.setFederationAvatarShape = ps.setFederationAvatarShape;
+			if (typeof ps.isSquareAvatars === 'boolean') updates.isSquareAvatars = ps.isSquareAvatars;
+
 			//#region emojis/tags
 
 			let emojis = [] as string[];
@@ -558,7 +566,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const html = await this.httpRequestService.getHtml(url);
 
 			const { window } = new JSDOM(html);
-			const doc = window.document;
+			const doc: Document = window.document;
 
 			const myLink = `${this.config.url}/@${user.username}`;
 

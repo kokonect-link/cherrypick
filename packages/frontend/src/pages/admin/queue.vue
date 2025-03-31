@@ -4,25 +4,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
 	<MkSpacer :contentMax="800">
 		<XQueue v-if="tab === 'deliver'" domain="deliver"/>
 		<XQueue v-else-if="tab === 'inbox'" domain="inbox"/>
 		<br>
 		<MkButton @click="promoteAllQueues"><i class="ti ti-reload"></i> {{ i18n.ts.retryAllQueuesNow }}</MkButton>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type Ref } from 'vue';
+import { ref, computed } from 'vue';
 import * as config from '@@/js/config.js';
 import XQueue from './queue.chart.vue';
+import type { Ref } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 
 export type ApQueueDomain = 'deliver' | 'inbox';
@@ -53,14 +53,7 @@ function promoteAllQueues() {
 	});
 }
 
-const headerActions = computed(() => [{
-	asFullButton: true,
-	icon: 'ti ti-external-link',
-	text: i18n.ts.dashboard,
-	handler: () => {
-		window.open(config.url + '/queue', '_blank', 'noopener');
-	},
-}]);
+const headerActions = computed(() => []);
 
 const headerTabs = computed(() => [{
 	key: 'deliver',
@@ -70,7 +63,7 @@ const headerTabs = computed(() => [{
 	title: 'Inbox',
 }] as Tab[]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.jobQueue,
 	icon: 'ti ti-clock-play',
 }));

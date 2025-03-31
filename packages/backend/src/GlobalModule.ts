@@ -35,7 +35,11 @@ const $db: Provider = {
 const $meilisearch: Provider = {
 	provide: DI.meilisearch,
 	useFactory: (config: Config) => {
-		if (config.meilisearch) {
+		if (config.fulltextSearch?.provider === 'meilisearch') {
+			if (!config.meilisearch) {
+				throw new Error('MeiliSearch is enabled but no configuration is provided');
+			}
+
 			return new MeiliSearch({
 				host: `${config.meilisearch.ssl ? 'https' : 'http'}://${config.meilisearch.host}:${config.meilisearch.port}`,
 				apiKey: config.meilisearch.apiKey,
@@ -145,7 +149,7 @@ const $meta: Provider = {
 						for (const key in body.after) {
 							(meta as any)[key] = (body.after as any)[key];
 						}
-						meta.proxyAccount = null; // joinなカラムは通常取ってこないので
+						meta.rootUser = null; // joinなカラムは通常取ってこないので
 						break;
 					}
 					default:

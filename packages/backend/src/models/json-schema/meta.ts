@@ -123,6 +123,10 @@ export const packedMetaLiteSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		googleAnalyticsMeasurementId: {
+			type: 'string',
+			optional: false, nullable: true,
+		},
 		swPublickey: {
 			type: 'string',
 			optional: false, nullable: true,
@@ -277,6 +281,11 @@ export const packedMetaLiteSchema = {
 			type: 'number',
 			optional: false, nullable: false,
 		},
+		federation: {
+			type: 'string',
+			enum: ['all', 'specified', 'none'],
+			optional: false, nullable: false,
+		},
 		disableRegistrationWhenInactive: {
 			type: 'boolean',
 			optional: false, nullable: false,
@@ -288,6 +297,10 @@ export const packedMetaLiteSchema = {
 		moderatorInactivityLimitDays: {
 			type: 'number',
 			optional: false, nullable: false,
+		},
+		customRobotsTxt: {
+			type: 'string',
+			optional: false, nullable: true,
 		},
 	},
 } as const;

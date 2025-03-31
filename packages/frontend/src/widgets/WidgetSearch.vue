@@ -5,8 +5,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkContainer :showHeader="widgetProps.showHeader" :class="$style.skwSearch">
-	<MkInput v-model="searchQuery" :large="true" type="search" @keydown="onInputKeydown">
+	<MkInput ref="searchQueryEl" v-model="searchQuery" :large="true" type="search" @keydown="onInputKeydown">
 		<template #suffix>
+			<button v-if="searchQuery != ''" type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button>
 			<button :class="$style.searchBtn" @click="search"><i class="ti ti-zoom"></i></button>
 		</template>
 	</MkInput>
@@ -15,16 +16,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
-import { useWidgetPropsManager, WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import { useWidgetPropsManager } from './widget.js';
+import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import MkInput from '@/components/MkInput.vue';
 import MkContainer from '@/components/MkContainer.vue';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import * as os from '@/os.js';
-import { useRouter } from '@/router/supplier.js';
-import { GetFormResultType } from '@/scripts/form.js';
+import { useRouter } from '@/router.js';
 
 const name = 'search';
+
+const searchQueryEl = ref(null);
 
 const widgetPropsDef = {
 	showHeader: {
@@ -124,12 +128,19 @@ defineExpose<WidgetComponentExpose>({
 	border-radius: var(--MI-radius-sm) !important;
 }
 
-.searchBtn {
+.searchBtn, .deleteBtn {
 	position: relative;
 	z-index: 2;
 	margin: 0 auto;
 	border: none;
 	background: none;
+	color: inherit;
+	cursor: pointer;
 	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.deleteBtn {
+	font-size: 0.8em;
 }
 </style>

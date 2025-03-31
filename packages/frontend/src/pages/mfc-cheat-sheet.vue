@@ -4,8 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-if="!popup" :actions="headerActions" :tabs="headerTabs"/></template>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs" :popup="popup">
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
 			<div style="margin-bottom: 30px; padding-bottom: 16px; border-bottom: solid 1px var(--MI_THEME-divider);">{{ i18n.ts._mfc.intro }}</div>
@@ -381,18 +380,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</MkSpacer>
-</MkStickyContainer>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import MkTextarea from '@/components/MkTextarea.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { customEmojis } from '@/custom-emojis.js';
 
 defineProps<{
-  popup?: boolean;
+	popup?: boolean;
 }>();
 
 const preview_mention = ref('@example');
@@ -437,7 +436,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._mfc.cheatSheet,
 	icon: 'ti ti-help-circle',
 }));

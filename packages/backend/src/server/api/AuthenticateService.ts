@@ -11,7 +11,7 @@ import type { MiAccessToken } from '@/models/AccessToken.js';
 import { MemoryKVCache } from '@/misc/cache.js';
 import type { MiApp } from '@/models/App.js';
 import { CacheService } from '@/core/CacheService.js';
-import isNativeToken from '@/misc/is-native-token.js';
+import { isNativeUserToken } from '@/misc/token.js';
 import { bindThis } from '@/decorators.js';
 import type { FlashToken } from '@/misc/flash-token.js';
 
@@ -47,7 +47,7 @@ export class AuthenticateService implements OnApplicationShutdown {
 			return [null, null, null];
 		}
 
-		if (isNativeToken(token)) {
+		if (isNativeUserToken(token)) {
 			const user = await this.cacheService.localUserByNativeTokenCache.fetch(token,
 				() => this.usersRepository.findOneBy({ token }) as Promise<MiLocalUser | null>);
 

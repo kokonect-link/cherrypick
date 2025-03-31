@@ -30,14 +30,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="horizontal">horizontal</option>
 					<option value="horizontal-big">horizontal-big</option>
 				</MkRadios>
+
 				<!--
-			<div style="margin: 32px 0;">
-				{{ i18n.ts.priority }}
-				<MkRadio v-model="ad.priority" value="high">{{ i18n.ts.high }}</MkRadio>
-				<MkRadio v-model="ad.priority" value="middle">{{ i18n.ts.middle }}</MkRadio>
-				<MkRadio v-model="ad.priority" value="low">{{ i18n.ts.low }}</MkRadio>
-			</div>
-			-->
+				<div style="margin: 32px 0;">
+					{{ i18n.ts.priority }}
+					<MkRadio v-model="ad.priority" value="high">{{ i18n.ts.high }}</MkRadio>
+					<MkRadio v-model="ad.priority" value="middle">{{ i18n.ts.middle }}</MkRadio>
+					<MkRadio v-model="ad.priority" value="low">{{ i18n.ts.low }}</MkRadio>
+				</div>
+				-->
+
 				<FormSplit>
 					<MkInput v-model="ad.ratio" type="number">
 						<template #label>{{ i18n.ts.ratio }}</template>
@@ -94,9 +96,9 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 
 const ads = ref<Misskey.entities.Ad[]>([]);
 
@@ -253,7 +255,7 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.ads,
 	icon: 'ti ti-ad',
 }));

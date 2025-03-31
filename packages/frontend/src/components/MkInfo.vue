@@ -4,8 +4,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div :class="[$style.root, { [$style.warn]: warn }]">
+<div :class="[$style.root, { [$style.warn]: warn }]" class="_selectable">
 	<i v-if="warn" class="ti ti-alert-triangle" :class="$style.i"></i>
+	<i v-else-if="check" class="ti ti-circle-check" :class="$style.i"></i>
 	<i v-else class="ti ti-info-circle" :class="$style.i"></i>
 	<div style="overflow: auto;"><slot></slot></div>
 	<button v-if="closable" :class="$style.button" class="_button" @click="close()"><i class="ti ti-x"></i></button>
@@ -17,6 +18,7 @@ import { } from 'vue';
 
 const props = defineProps<{
 	warn?: boolean;
+	check?: boolean;
 	closable?: boolean;
 }>();
 

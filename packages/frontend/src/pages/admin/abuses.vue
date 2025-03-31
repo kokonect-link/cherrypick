@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkButton link to="/admin/abuse-report-notification-recipient" primary>{{ i18n.ts.notificationSetting }}</MkButton>
 				</div>
 
-				<MkInfo v-if="!defaultStore.reactiveState.abusesTutorial.value" closable @close="closeTutorial()">
+				<MkInfo v-if="!store.r.abusesTutorial.value" closable @close="closeTutorial()">
 					{{ i18n.ts._abuseUserReport.resolveTutorial }}
 				</MkInfo>
 
@@ -40,11 +40,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<!-- TODO
 				<div class="inputs" style="display: flex; padding-top: 1.2em;">
-					<MkInput v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
+					<MkInput ref="searchUsernameEl" v-model="searchUsername" style="margin: 0; flex: 1;" type="text" :spellcheck="false">
 						<span>{{ i18n.ts.username }}</span>
+						<template v-if="searchUsername != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchUsername = ''; searchUsernameEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
-					<MkInput v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
+					<MkInput ref="searchHostEl" v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
 						<span>{{ i18n.ts.host }}</span>
+						<template v-if="searchHost != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchHost = ''; searchHostEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 				</div>
 				-->
@@ -88,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef, ref } from 'vue';
+import { computed, useTemplateRef, ref } from 'vue';
 import XHeader from './_header_.vue';
 import * as os from '@/os.js';
 import MkSelect from '@/components/MkSelect.vue';
@@ -97,14 +99,14 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkAbuseReportResolver from '@/components/MkAbuseReportResolver.vue';
 import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
-const reports = shallowRef<InstanceType<typeof MkPagination>>();
-const resolverPagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
-const folderComponent = shallowRef<InstanceType<typeof MkFolder>>();
+const reports = useTemplateRef('reports');
+const resolverPagingComponent = useTemplateRef('resolverPagingComponent');
+const folderComponent = useTemplateRef('folderComponent');
 
 const state = ref('unresolved');
 const reporterOrigin = ref('combined');
@@ -158,12 +160,17 @@ const resolverPagination = {
 	limit: 10,
 };
 
+/*
+const searchUsernameEl = ref(null);
+const searchHostEl = ref(null);
+ */
+
 function resolved(reportId) {
 	reports.value?.removeItem(reportId);
 }
 
 function closeTutorial() {
-	defaultStore.set('abusesTutorial', false);
+	store.set('abusesTutorial', false);
 }
 
 function edit(id: string) {
@@ -224,13 +231,13 @@ const headerTabs = computed(() => [{
 	title: i18n.ts._abuse.resolver,
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.abuseReports,
 	icon: 'ti ti-exclamation-circle',
 }));
 </script>
 
-<style module lang="scss">
+<style lang="scss" module>
 .root {
 	display: flex;
 	flex-direction: column;
@@ -282,5 +289,18 @@ definePageMetadata(() => ({
 	background: var(--MI_THEME-panel);
 	border-radius: 6px;
 	margin-bottom: 13px;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	cursor: pointer;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>

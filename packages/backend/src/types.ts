@@ -16,9 +16,12 @@
  * followRequestAccepted - 自分の送ったフォローリクエストが承認された
  * groupInvited - グループに招待された
  * roleAssigned - ロールが付与された
+ * chatRoomInvitationReceived - チャットルームに招待された
  * achievementEarned - 実績を獲得
  * exportCompleted - エクスポートが完了
  * login - ログイン
+ * createToken - トークン作成
+ * scheduleNote - 予約掲示ができなかった
  * app - アプリ通知
  * test - テスト通知（サーバー側）
  */
@@ -35,9 +38,12 @@ export const notificationTypes = [
 	'followRequestAccepted',
 	'groupInvited',
 	'roleAssigned',
+	'chatRoomInvitationReceived',
 	'achievementEarned',
 	'exportCompleted',
 	'login',
+	'createToken',
+	'scheduleNote',
 	'app',
 	'test',
 ] as const;
@@ -52,6 +58,8 @@ export const groupedNotificationTypes = [
 export const obsoleteNotificationTypes = ['pollVote'/*, 'groupInvited'*/] as const;
 
 export const noteVisibilities = ['public', 'home', 'followers', 'specified'] as const;
+
+export const noteReactionAcceptances = ['likeOnly', 'likeOnlyForRemote', 'nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', null] as const;
 
 export const mutedNoteReasons = ['word', 'manual', 'spam', 'other'] as const;
 
@@ -123,6 +131,8 @@ export const moderationLogTypes = [
 	'deletePage',
 	'deleteFlash',
 	'deleteGalleryPost',
+	'deleteChatRoom',
+	'updateProxyAccountDescription',
 ] as const;
 
 export type ModerationLogPayloads = {
@@ -375,25 +385,33 @@ export type ModerationLogPayloads = {
 		postUserUsername: string;
 		post: any;
 	};
+	deleteChatRoom: {
+		roomId: string;
+		room: any;
+	};
+	updateProxyAccountDescription: {
+		before: string | null;
+		after: string | null;
+	};
 };
 
 export type Serialized<T> = {
 	[K in keyof T]:
-		T[K] extends Date
-			? string
-			: T[K] extends (Date | null)
-				? (string | null)
-				: T[K] extends Record<string, any>
-					? Serialized<T[K]>
-					: T[K] extends (Record<string, any> | null)
+	T[K] extends Date
+		? string
+		: T[K] extends (Date | null)
+			? (string | null)
+			: T[K] extends Record<string, any>
+				? Serialized<T[K]>
+				: T[K] extends (Record<string, any> | null)
 					? (Serialized<T[K]> | null)
-						: T[K] extends (Record<string, any> | undefined)
+					: T[K] extends (Record<string, any> | undefined)
 						? (Serialized<T[K]> | undefined)
-							: T[K];
+						: T[K];
 };
 
 export type FilterUnionByProperty<
-  Union,
-  Property extends string | number | symbol,
-  Condition
+	Union,
+	Property extends string | number | symbol,
+	Condition,
 > = Union extends Record<Property, Condition> ? Union : never;

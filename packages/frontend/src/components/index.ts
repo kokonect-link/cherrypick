@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { App } from 'vue';
-
 import CPPageHeader from './global/CPPageHeader.vue';
 import Mfm from './global/MkMfm.js';
 import MkA from './global/MkA.vue';
@@ -19,14 +17,22 @@ import MkTime from './global/MkTime.vue';
 import MkUrl from './global/MkUrl.vue';
 import I18n from './global/I18n.vue';
 import RouterView from './global/RouterView.vue';
+import NestedRouterView from './global/NestedRouterView.vue';
+import StackingRouterView from './global/StackingRouterView.vue';
 import MkLoading from './global/MkLoading.vue';
 import MkError from './global/MkError.vue';
 import MkAd from './global/MkAd.vue';
 import MkPageHeader from './global/MkPageHeader.vue';
 import MkSpacer from './global/MkSpacer.vue';
-import MkFooterSpacer from './global/MkFooterSpacer.vue';
 import MkStickyContainer from './global/MkStickyContainer.vue';
 import MkLazy from './global/MkLazy.vue';
+import PageWithHeader from './global/PageWithHeader.vue';
+import PageWithAnimBg from './global/PageWithAnimBg.vue';
+import SearchMarker from './global/SearchMarker.vue';
+import SearchLabel from './global/SearchLabel.vue';
+import SearchKeyword from './global/SearchKeyword.vue';
+
+import type { App } from 'vue';
 
 export default function(app: App) {
 	for (const [key, value] of Object.entries(components)) {
@@ -37,6 +43,8 @@ export default function(app: App) {
 export const components = {
 	I18n: I18n,
 	RouterView: RouterView,
+	NestedRouterView: NestedRouterView,
+	StackingRouterView: StackingRouterView,
 	CPPageHeader: CPPageHeader,
 	Mfm: Mfm,
 	MkA: MkA,
@@ -54,15 +62,21 @@ export const components = {
 	MkAd: MkAd,
 	MkPageHeader: MkPageHeader,
 	MkSpacer: MkSpacer,
-	MkFooterSpacer: MkFooterSpacer,
 	MkStickyContainer: MkStickyContainer,
 	MkLazy: MkLazy,
+	PageWithHeader: PageWithHeader,
+	PageWithAnimBg: PageWithAnimBg,
+	SearchMarker: SearchMarker,
+	SearchLabel: SearchLabel,
+	SearchKeyword: SearchKeyword,
 };
 
 declare module '@vue/runtime-core' {
 	export interface GlobalComponents {
 		I18n: typeof I18n;
 		RouterView: typeof RouterView;
+		NestedRouterView: typeof NestedRouterView;
+		StackingRouterView: typeof StackingRouterView;
 		CPPageHeader: typeof CPPageHeader;
 		Mfm: typeof Mfm;
 		MkA: typeof MkA;
@@ -80,8 +94,12 @@ declare module '@vue/runtime-core' {
 		MkAd: typeof MkAd;
 		MkPageHeader: typeof MkPageHeader;
 		MkSpacer: typeof MkSpacer;
-		MkFooterSpacer: typeof MkFooterSpacer;
 		MkStickyContainer: typeof MkStickyContainer;
 		MkLazy: typeof MkLazy;
+		PageWithHeader: typeof PageWithHeader;
+		PageWithAnimBg: typeof PageWithAnimBg;
+		SearchMarker: typeof SearchMarker;
+		SearchLabel: typeof SearchLabel;
+		SearchKeyword: typeof SearchKeyword;
 	}
 }

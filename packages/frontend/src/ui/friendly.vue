@@ -5,55 +5,57 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.root">
-	<XSidebar v-if="!isMobile" :class="$style.sidebar"/>
+	<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
-	<MkStickyContainer ref="contents" :class="$style.contents" style="container-type: inline-size;" @contextmenu.stop="onContextmenu">
-		<template #header>
-			<div v-if="!showEl2">
-				<XAnnouncements v-if="$i"/>
-				<XStatusBars :class="$style.statusbars"/>
-			</div>
-		</template>
-		<RouterView/>
-		<div v-if="!(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.spacer"></div>
-	</MkStickyContainer>
-
-	<div v-if="isDesktop && defaultStore.state.friendlyUiEnableNotificationsArea && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
-		<XNotifications disableRefreshButton/>
+	<div :class="$style.contents" @contextmenu.stop="onContextmenu">
+		<div v-if="!showEl2">
+			<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+			<XAnnouncements v-if="$i"/>
+			<XStatusBars :class="$style.statusbars"/>
+		</div>
+		<div :class="$style.content">
+			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']"/>
+			<RouterView v-else/>
+		</div>
+		<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]">
+			<!-- <button v-if="store.s.showMenuButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button> -->
+			<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i></button>
+			<button v-if="store.s.showExploreButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
+			<button v-if="store.s.showSearchButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]" class="_button" @click="mainRouter.push('/search')"><i :class="$style.navButtonIcon" class="ti ti-search"></i></button>
+			<button v-if="store.s.showNotificationButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.push('/my/notifications')">
+				<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
+				<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator" class="_blink">
+					<span v-if="prefer.s.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
+					<i v-else class="_indicatorCircle"></i>
+				</span>
+			</button>
+			<button v-if="store.s.showChatButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.navButton, { [$style.active]: ['chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.push('/chat')">
+				<i :class="$style.navButtonIcon" class="ti ti-messages"></i>
+				<span v-if="$i != null && $i.hasUnreadChatMessages" :class="$style.navButtonIndicator" class="_blink">
+					<i class="_indicatorCircle"></i>
+				</span>
+			</button>
+			<button v-if="store.s.showWidgetButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
+			<!-- <button v-if="store.s.showPostButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
+		</div>
 	</div>
 
-	<div v-if="isDesktop && !pageMetadata?.needWideArea && defaultStore.state.enableWidgetsArea" :class="$style.widgets">
+	<div v-if="isDesktop && prefer.s.friendlyUiEnableNotificationsArea && mainRouter.currentRoute.value.name !== 'my-notifications'" :class="$style.notificationWidgets">
+		<XNotifications disableRefreshButton notification/>
+	</div>
+
+	<div v-if="isDesktop && !pageMetadata?.needWideArea && prefer.s.enableWidgetsArea" :class="$style.widgets">
 		<XWidgets/>
 	</div>
 
-	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
-
-	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="openMessage"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
-
-	<button v-if="(!isDesktop || pageMetadata?.needWideArea) && !isMobile" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.widgetButton, { [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="widgetsShowing = true"><i class="ti ti-apps"></i></button>
-
-	<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect, [$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) }]" :style="{ background: bg }">
-		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" <button :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button> -->
-		<button v-if="defaultStore.state.showHomeButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: isRoot }]" class="_button" @click="isRoot ? top() : mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu"><i :class="$style.navButtonIcon" class="ti ti-home"></i><span v-if="queue > 0" :class="$style.navButtonIndicatorHome" class="_blink"><i class="_indicatorCircle"></i></span></button>
-		<button v-if="defaultStore.state.showExploreButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'explore' ? top() : mainRouter.push('/explore')"><i :class="$style.navButtonIcon" class="ti ti-hash"></i></button>
-		<button v-if="defaultStore.state.showSearchButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'search' ? top() : mainRouter.push('/search')"><i :class="$style.navButtonIcon" class="ti ti-search"></i></button>
-		<button v-if="defaultStore.state.showNotificationButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]" class="_button" @click="mainRouter.currentRoute.value.name === 'my-notifications' ? top() : mainRouter.push('/my/notifications')">
-			<i :class="$style.navButtonIcon" class="ti ti-bell"></i>
-			<span v-if="$i?.hasUnreadNotification" :class="$style.navButtonIndicator" class="_blink">
-				<span v-if="defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ $i.unreadNotificationsCount > 99 ? '99+' : $i.unreadNotificationsCount }}</span>
-				<i v-else class="_indicatorCircle"></i>
-			</span>
-		</button>
-		<button v-if="defaultStore.state.showMessageButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="[$style.navButton, { [$style.active]: ['messaging', 'messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name) }]" class="_button" @click="mainRouter.currentRoute.value.name === 'messaging' ? top() : mainRouter.push('/my/messaging')"><i :class="$style.navButtonIcon" class="ti ti-messages"></i><span v-if="$i?.hasUnreadMessagingMessage" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
-		<button v-if="defaultStore.state.showWidgetButtonInNavbar" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.navButton" class="_button" @click="widgetsShowing = true"><i :class="$style.navButtonIcon" class="ti ti-apps"></i></button>
-		<!-- <button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.postButton" class="_button" @click="os.post()"><i :class="$style.navButtonIcon" class="ti ti-pencil"></i></button> -->
-	</div>
+	<button v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" class="_button" @click="drawerMenuShowing = true"><CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/></button>
+	<button v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]" :style="{ background: PostBg }" class="_button" @click="createChat"><span :class="[$style.floatPostButtonBg, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"></span><i v-if="mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))" class="ti ti-plus"></i><i v-else-if="enablePostButton.includes(<string>mainRouter.currentRoute.value.name)" class="ti ti-pencil"></i></button>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_menuDrawerBg_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_menuDrawerBg_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_menuDrawerBg_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_menuDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="drawerMenuShowing"
@@ -65,10 +67,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_menuDrawer_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_menuDrawer_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_menuDrawer_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_menuDrawer_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_menuDrawer_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_menuDrawer_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_menuDrawer_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_menuDrawer_leaveTo : ''"
 	>
 		<div v-if="drawerMenuShowing" :class="$style.menuDrawer">
 			<XDrawerMenu/>
@@ -76,10 +78,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_widgetsDrawerBg_leaveTo : ''"
 	>
 		<div
 			v-if="widgetsShowing"
@@ -91,10 +93,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</Transition>
 
 	<Transition
-		:enterActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterActive : ''"
-		:leaveActiveClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
-		:enterFromClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
-		:leaveToClass="defaultStore.state.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
+		:enterActiveClass="prefer.s.animation ? $style.transition_widgetsDrawer_enterActive : ''"
+		:leaveActiveClass="prefer.s.animation ? $style.transition_widgetsDrawer_leaveActive : ''"
+		:enterFromClass="prefer.s.animation ? $style.transition_widgetsDrawer_enterFrom : ''"
+		:leaveToClass="prefer.s.animation ? $style.transition_widgetsDrawer_leaveTo : ''"
 	>
 		<div v-if="widgetsShowing" :class="$style.widgetsDrawer">
 			<button class="_button" :class="$style.widgetsCloseButton" @click="widgetsShowing = false"><i class="ti ti-x"></i></button>
@@ -107,31 +109,36 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, onBeforeUnmount, ref, watch, shallowRef, Ref, onUnmounted, computed } from 'vue';
+import { defineAsyncComponent, provide, onMounted, computed, ref, watch, useTemplateRef, onUnmounted } from 'vue';
 import tinycolor from 'tinycolor2';
 import { instanceName } from '@@/js/config.js';
-import { CURRENT_STICKY_BOTTOM } from '@@/js/const.js';
 import { isLink } from '@@/js/is-link.js';
-import type MkStickyContainer from '@/components/global/MkStickyContainer.vue';
-import XCommon from '@/ui/_common_/common.vue';
+import XCommon from './_common_/common.vue';
+import type { Ref } from 'vue';
+import type { PageMetadata } from '@/page.js';
 import XDrawerMenu from '@/ui/friendly/navbar-for-mobile.vue';
 import * as os from '@/os.js';
-import { defaultStore } from '@/store.js';
+import { navbarItemDef } from '@/navbar.js';
 import { i18n } from '@/i18n.js';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { PageMetadata, provideMetadataReceiver, provideReactiveMetadata } from '@/scripts/page-metadata.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { $i } from '@/i.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { provideMetadataReceiver, provideReactiveMetadata } from '@/page.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { useScrollPositionManager } from '@/nirax.js';
-import { mainRouter } from '@/router/main.js';
+import { mainRouter } from '@/router.js';
+import { prefer } from '@/preferences.js';
+import { shouldSuggestRestoreBackup } from '@/preferences/utility.js';
+import { DI } from '@/di.js';
 import { globalEvents } from '@/events.js';
+import { store } from '@/store.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
 const XWidgets = defineAsyncComponent(() => import('./universal.widgets.vue'));
-const XNotifications = defineAsyncComponent(() => import('@/pages/notifications-friendly.vue'));
+const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
 const XSidebar = defineAsyncComponent(() => import('@/ui/friendly/navbar.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
+const XPreferenceRestore = defineAsyncComponent(() => import('@/ui/_common_/PreferenceRestore.vue'));
 
 miLocalStorage.setItem('ui', 'friendly');
 
@@ -151,20 +158,19 @@ const enableNavButton = [
 	'index',
 	'explore',
 	'my-notifications',
-	'messaging',
+	'chat',
 ];
 
 const enablePostButton = [
 	'index',
 	'explore',
 	'my-notifications',
-	'messaging',
+	'chat',
 	'user',
 ];
 
 const showEl = ref(false);
 const showEl2 = ref(false);
-const lastScrollPosition = ref(0);
 const queue = ref(0);
 const longTouchNavHome = ref(false);
 const bg = ref<string | undefined>(undefined);
@@ -172,18 +178,17 @@ const PostBg = ref<string | undefined>(undefined);
 
 const pageMetadata = ref<null | PageMetadata>(null);
 const widgetsShowing = ref(false);
-const navFooter = shallowRef<HTMLElement>();
-const contents = shallowRef<InstanceType<typeof MkStickyContainer>>();
+const navFooter = useTemplateRef('navFooter');
 
-provide('router', mainRouter);
+provide(DI.router, mainRouter);
 provideMetadataReceiver((metadataGetter) => {
 	const info = metadataGetter();
 	pageMetadata.value = info;
 	if (pageMetadata.value) {
 		if (isRoot.value && pageMetadata.value.title === instanceName) {
-			document.title = pageMetadata.value.title;
+			window.document.title = pageMetadata.value.title;
 		} else {
-			document.title = `${pageMetadata.value.title} | ${instanceName}`;
+			window.document.title = `${pageMetadata.value.title} | ${instanceName}`;
 		}
 	}
 });
@@ -210,28 +215,16 @@ if (window.innerWidth > 1024) {
 	if (tempUI) {
 		miLocalStorage.setItem('ui', tempUI);
 		miLocalStorage.removeItem('ui_temp');
-		location.reload();
+		window.location.reload();
 	}
 }
-
-defaultStore.loaded.then(() => {
-	if (defaultStore.state.widgets.length === 0) {
-		defaultStore.set('widgets', [{
-			name: 'calendar',
-			id: 'a', place: 'right', data: {},
-		}, {
-			name: 'trends',
-			id: 'b', place: 'right', data: {},
-		}]);
-	}
-});
 
 const calcBg = () => {
 	const rawBg = 'var(--MI_THEME-panel)';
 	const rawPostBg = 'var(--MI_THEME-accent)';
-	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
-	if (defaultStore.state.useBlurEffect) {
+	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
+	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
+	if (prefer.s.useBlurEffect) {
 		tinyBg.setAlpha(0.7);
 		tinyPostBg.setAlpha(0.7);
 	} else {
@@ -249,50 +242,29 @@ onMounted(() => {
 		}, { passive: true });
 	}
 
-	contents.value.rootEl.addEventListener('scroll', onScroll);
+	globalEvents.on('showEl', (showEl_receive) => {
+		showEl.value = showEl_receive;
+	});
+
+	globalEvents.on('showEl2', (showEl2_receive) => {
+		showEl2.value = showEl2_receive;
+	});
 
 	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
 
 	calcBg();
-	globalEvents.on('themeChanged', calcBg);
-});
-
-onBeforeUnmount(() => {
-	contents.value.rootEl.removeEventListener('scroll', onScroll);
+	globalEvents.on('themeChanging', calcBg);
 });
 
 onUnmounted(() => {
-	globalEvents.off('themeChanged', calcBg);
+	globalEvents.off('themeChanging', calcBg);
 });
-
-function onScroll() {
-	const currentScrollPosition = contents.value.rootEl.scrollTop;
-	if (currentScrollPosition < 0) {
-		return;
-	}
-
-	// Stop executing this function if the difference between
-	// current scroll position and last scroll position is less than some offset
-	if (Math.abs(currentScrollPosition - lastScrollPosition.value) < 60) {
-		return;
-	}
-
-	showEl.value = currentScrollPosition < lastScrollPosition.value;
-	lastScrollPosition.value = currentScrollPosition;
-	showEl.value = !showEl.value;
-	globalEvents.emit('showEl', showEl.value);
-
-	if (isMobile.value) {
-		if (showEl2.value === true) showEl2.value = showEl.value;
-		else setTimeout(() => showEl2.value = showEl.value, 50);
-	}
-}
 
 const onContextmenu = (ev) => {
 	if (isLink(ev.target)) return;
 	if (['INPUT', 'TEXTAREA', 'IMG', 'VIDEO', 'CANVAS'].includes(ev.target.tagName) || ev.target.attributes['contenteditable']) return;
 	if (window.getSelection()?.toString() !== '') return;
-	const path = mainRouter.getCurrentPath();
+	const path = mainRouter.getCurrentFullPath();
 	os.contextMenu([{
 		type: 'label',
 		text: path,
@@ -305,19 +277,12 @@ const onContextmenu = (ev) => {
 	}], ev);
 };
 
-function top() {
-	contents.value.rootEl.scrollTo({
-		top: 0,
-		behavior: 'smooth',
-	});
-}
-
 function queueUpdated(q: number): void {
 	queue.value = q;
 }
 
 function openAccountMenu(ev: TouchEvent) {
-	if (defaultStore.state.enableLongPressOpenAccountMenu) {
+	if (prefer.s.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
 		setTimeout(() => {
 			if (longTouchNavHome.value === true) {
@@ -333,29 +298,24 @@ function closeAccountMenu() {
 	longTouchNavHome.value = false;
 }
 
-function openMessage(ev: MouseEvent) {
-	if (mainRouter.currentRoute.value.name === 'messaging' && !(['messaging-room', 'messaging-room-group'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('openMessage', ev);
+function createChat(ev: MouseEvent) {
+	if (mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('createChat', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
 }
 
 const navFooterHeight = ref(0);
-provide<Ref<number>>(CURRENT_STICKY_BOTTOM, navFooterHeight);
 
 watch(navFooter, () => {
 	if (navFooter.value) {
 		navFooterHeight.value = navFooter.value.offsetHeight;
-		document.body.style.setProperty('--MI-stickyBottom', `${navFooterHeight.value}px`);
-		document.body.style.setProperty('--MI-minBottomSpacing', 'var(--MI-minBottomSpacingMobile)');
+		window.document.body.style.setProperty('--MI-minBottomSpacing', 'var(--MI-minBottomSpacingMobile)');
 	} else {
 		navFooterHeight.value = 0;
-		document.body.style.setProperty('--MI-stickyBottom', '0px');
-		document.body.style.setProperty('--MI-minBottomSpacing', '0px');
+		window.document.body.style.setProperty('--MI-minBottomSpacing', '0px');
 	}
 }, {
 	immediate: true,
 });
-
-useScrollPositionManager(() => contents.value.rootEl, mainRouter);
 </script>
 
 <style>
@@ -426,7 +386,7 @@ $float-button-size: 65px;
 .transition_widgetsDrawer_enterFrom,
 .transition_widgetsDrawer_leaveTo {
 	opacity: 0;
-	transform: translateX(240px);
+	transform: translateX(-240px);
 }
 
 .root {
@@ -442,32 +402,151 @@ $float-button-size: 65px;
 }
 
 .contents {
+	display: flex;
+	flex-direction: column;
 	flex: 1;
 	height: 100%;
 	min-width: 0;
-	overflow: auto;
-	overflow-y: scroll;
-	overscroll-behavior: contain;
 	background: var(--MI_THEME-bg);
 }
 
-.widgets {
-	width: 350px;
-	height: 100%;
-	box-sizing: border-box;
-	overflow: auto;
-	padding: var(--MI-margin) var(--MI-margin) calc(var(--MI-margin) + env(safe-area-inset-bottom, 0px));
-	border-left: solid 0.5px var(--MI_THEME-divider);
-	background: var(--MI_THEME-bg);
+.content {
+	flex: 1;
+	min-height: 0;
+}
 
-	@media (max-width: $widgets-hide-threshold) {
-		display: none;
+.nav {
+	position: fixed;
+	z-index: 1000;
+	bottom: 0;
+	padding: 0 10px;
+	display: flex;
+	width: 100%;
+	box-sizing: border-box;
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
+	border-top: solid 0.5px var(--MI_THEME-divider);
+	transition: opacity 0.5s, transform 0.5s;
+
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s;
+	}
+
+	&.showEl {
+		transform: translateY(50.55px);
 	}
 }
 
-.notificationWidgets {
-	composes: widgets;
-	padding: initial;
+.navButton {
+	position: relative;
+	flex: 1;
+	margin: auto;
+	height: 50px;
+	color: var(--MI_THEME-fg);
+	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
+
+	@media (max-width: 300px) {
+		height: 60px;
+
+		&:not(:last-child) {
+			margin-right: 8px;
+		}
+	}
+
+	&:active {
+		color: var(--MI_THEME-accent);
+	}
+
+	&.active {
+		color: var(--MI_THEME-accent);
+	}
+
+	&:first-child {
+		margin-left: 0;
+	}
+
+	&:last-child {
+		margin-right: 0;
+	}
+
+	> * {
+		font-size: 18px;
+	}
+
+	&:disabled {
+		cursor: default;
+
+		> * {
+			opacity: 0.5;
+		}
+	}
+}
+
+.postButton {
+	composes: navButton;
+	background: linear-gradient(90deg, var(--MI_THEME-buttonGradateA), var(--MI_THEME-buttonGradateB));
+	color: var(--MI_THEME-fgOnAccent);
+
+	&:hover {
+		background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+	}
+
+	&:active {
+		background: linear-gradient(90deg, hsl(from var(--MI_THEME-accent) h s calc(l + 5)), hsl(from var(--MI_THEME-accent) h s calc(l + 5)));
+	}
+}
+
+.navButtonIcon {
+	font-size: 18px;
+	vertical-align: middle;
+}
+
+.navButtonIndicator {
+	position: absolute;
+	top: 7px;
+	right: 20px;
+	color: var(--MI_THEME-indicator);
+	font-size: 8px;
+	animation: global-blink 1s infinite;
+
+	&:has(.itemIndicateValueIcon) {
+		animation: none;
+		font-size: 6px;
+	}
+}
+
+.navButtonIndicatorHome {
+	composes: navButtonIndicator;
+	animation: none;
+}
+
+.menuDrawerBg {
+	z-index: 1001;
+}
+
+.menuDrawer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1001;
+	height: 100dvh;
+	width: 240px;
+	box-sizing: border-box;
+	contain: strict;
+	overflow: auto;
+	overscroll-behavior: contain;
+	background: var(--MI_THEME-navBg);
+}
+
+.statusbars {
+	position: sticky;
+	top: 0;
+	left: 0;
 }
 
 .floatButton {
@@ -532,27 +611,18 @@ $float-button-size: 65px;
 	border-radius: 28px;
 }
 
-.widgetButton {
-	display: block;
-	position: fixed;
-	z-index: 1000;
-	bottom: 32px;
-	right: 32px;
-	width: 64px;
-	height: 64px;
-	border-radius: 100%;
-	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-	font-size: 22px;
-	background: var(--MI_THEME-panel);
-  transition: opacity 0.5s, transform 0.5s;
+.widgets {
+	width: 350px;
+	height: 100%;
+	box-sizing: border-box;
+	overflow: auto;
+	padding: var(--MI-margin) var(--MI-margin) calc(var(--MI-margin) + env(safe-area-inset-bottom, 0px));
+	border-left: solid 0.5px var(--MI_THEME-divider);
+	background: var(--MI_THEME-bg);
 
-  &.reduceAnimation {
-    transition: opacity 0s, transform 0s;
-  }
-
-  &.showEl {
-    transform: translateX(100px);
-  }
+	@media (max-width: $widgets-hide-threshold) {
+		display: none;
+	}
 }
 
 .widgetsDrawerBg {
@@ -562,9 +632,9 @@ $float-button-size: 65px;
 .widgetsDrawer {
 	position: fixed;
 	top: 0;
-	right: 0;
+	left: 0;
 	z-index: 1001;
-	width: 330px;
+	width: 310px;
 	height: 100dvh;
 	padding: var(--MI-margin) var(--MI-margin) calc(var(--MI-margin) + env(safe-area-inset-bottom, 0px)) !important;
 	box-sizing: border-box;
@@ -579,133 +649,14 @@ $float-button-size: 65px;
 	margin: 0 auto;
 }
 
+.notificationWidgets {
+	composes: widgets;
+	padding: initial;
+}
+
 @media (min-width: 370px) {
 	.widgetsCloseButton {
 		display: none;
 	}
-}
-
-.nav {
-	position: fixed;
-	z-index: 1000;
-	bottom: 0;
-	display: flex;
-	width: 100%;
-	box-sizing: border-box;
-	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
-	backdrop-filter: var(--MI-blur, blur(15px));
-	border-top: solid 0.5px var(--MI_THEME-divider);
-	padding: 0 10px;
-  transition: opacity 0.5s, transform 0.5s;
-
-	&.reduceBlurEffect {
-		-webkit-backdrop-filter: none;
-		backdrop-filter: none;
-	}
-
-  &.reduceAnimation {
-    transition: opacity 0s, transform 0s;
-  }
-
-  &.showEl {
-    transform: translateY(50.55px);
-  }
-}
-
-.navButton {
-	position: relative;
-	flex: 1;
-	margin: auto;
-	height: 50px;
-	color: var(--MI_THEME-fg);
-	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
-
-	@media (max-width: 300px) {
-		height: 60px;
-
-		&:not(:last-child) {
-			margin-right: 8px;
-		}
-	}
-
-	&:active {
-		color: var(--MI_THEME-accent);
-	}
-
-	&.active {
-		color: var(--MI_THEME-accent);
-	}
-
-	&:first-child {
-		margin-left: 0;
-	}
-
-	&:last-child {
-		margin-right: 0;
-	}
-
-	> * {
-		font-size: 18px;
-	}
-
-	&:disabled {
-		cursor: default;
-
-		> * {
-			opacity: 0.5;
-		}
-	}
-}
-
-.navButtonIcon {
-	font-size: 18px;
-	vertical-align: middle;
-}
-
-.navButtonIndicator {
-	position: absolute;
-	top: 7px;
-	right: 20px;
-	color: var(--MI_THEME-indicator);
-	font-size: 8px;
-	animation: global-blink 1s infinite;
-
-  &:has(.itemIndicateValueIcon) {
-    animation: none;
-    font-size: 6px;
-  }
-}
-
-.navButtonIndicatorHome {
-	composes: navButtonIndicator;
-	animation: none;
-}
-
-.menuDrawerBg {
-	z-index: 1001;
-}
-
-.menuDrawer {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 1001;
-	height: 100dvh;
-	width: 240px;
-	box-sizing: border-box;
-	contain: strict;
-	overflow: auto;
-	overscroll-behavior: contain;
-	background: var(--MI_THEME-navBg);
-}
-
-.statusbars {
-	position: sticky;
-	top: 0;
-	left: 0;
-}
-
-.spacer {
-	height: calc(var(--MI-minBottomSpacing));
 }
 </style>

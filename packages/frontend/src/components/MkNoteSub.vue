@@ -5,10 +5,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-if="!muted" :class="[$style.root, { [$style.children]: depth > 1 }]">
-	<div v-if="!defaultStore.state.hideAvatarsInNote && !hideLine" :class="$style.line"></div>
+	<div v-if="!prefer.s.hideAvatarsInNote && !hideLine" :class="$style.line"></div>
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
-		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
+		<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview/>
 		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkCwButton v-model="showContent" style="width: 100%" :text="note.text" :files="note.files" :poll="note.poll" @click.stop/>
 				</p>
 				<div v-show="note.cw == null || showContent">
-					<MkSubNoteContent :class="[$style.text, { [$style.showSubNoteFooterButton]: defaultStore.state.showSubNoteFooterButton }]" :note="note" :showSubNoteFooterButton="defaultStore.state.showSubNoteFooterButton"/>
+					<MkSubNoteContent :class="[$style.text, { [$style.showSubNoteFooterButton]: prefer.s.showSubNoteFooterButton }]" :note="note" :showSubNoteFooterButton="prefer.s.showSubNoteFooterButton"/>
 				</div>
 			</div>
 		</div>
@@ -49,13 +49,13 @@ import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import { notePage } from '@/filters/note.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { userPage } from '@/filters/user.js';
-import { checkWordMute } from '@/scripts/check-word-mute.js';
-import { defaultStore } from '@/store.js';
-import { useRouter } from '@/router/supplier.js';
+import { checkWordMute } from '@/utility/check-word-mute.js';
+import { prefer } from '@/preferences.js';
+import { useRouter } from '@/router.js';
 
 const hideLine = ref(false);
 
@@ -71,7 +71,7 @@ const props = withDefaults(defineProps<{
 
 const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
-const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const expandOnNoteClick = prefer.s.expandOnNoteClick;
 const router = useRouter();
 
 const showContent = ref(false);
@@ -87,15 +87,15 @@ if (props.detail) {
 	});
 }
 
-if (defaultStore.state.alwaysShowCw) showContent.value = true;
+if (prefer.s.alwaysShowCw) showContent.value = true;
 
 function noteClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 
 function noteDblClick(ev: MouseEvent) {
-	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 </script>

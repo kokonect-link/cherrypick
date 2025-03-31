@@ -6,8 +6,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div class="_gaps">
 	<div>
-		<MkInput v-model="host" :debounce="true" class="">
+		<MkInput ref="hostEl" v-model="host" :debounce="true" class="">
 			<template #prefix><i class="ti ti-search"></i></template>
+			<template v-if="host != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="host = ''; hostEl?.focus();"><i class="ti ti-x"></i></button></template>
 			<template #label>{{ i18n.ts.host }}</template>
 		</MkInput>
 		<FormSplit style="margin-top: var(--MI-margin);">
@@ -52,9 +53,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+import type { Paging } from '@/components/MkPagination.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import MkPagination, { Paging } from '@/components/MkPagination.vue';
+import MkPagination from '@/components/MkPagination.vue';
 import MkInstanceCardMini from '@/components/MkInstanceCardMini.vue';
 import FormSplit from '@/components/form/split.vue';
 import { i18n } from '@/i18n.js';
@@ -82,6 +84,8 @@ const pagination = {
 	})),
 } as Paging;
 
+const hostEl = ref(null);
+
 function getStatus(instance) {
 	if (instance.isSuspended) return 'Suspended';
 	if (instance.isBlocked) return 'Blocked';
@@ -100,5 +104,18 @@ function getStatus(instance) {
 
 .item:hover {
 	text-decoration: none;
+}
+
+.deleteBtn {
+	position: relative;
+	z-index: 2;
+	margin: 0 auto;
+	border: none;
+	background: none;
+	color: inherit;
+	font-size: 0.8em;
+	cursor: pointer;
+	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>

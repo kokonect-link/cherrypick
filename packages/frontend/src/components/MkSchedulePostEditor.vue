@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and other misskey contributors
+SPDX-FileCopyrightText: syuilo and misskey-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -20,20 +20,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue';
 import MkInput from '@/components/MkInput.vue';
-import { formatDateTimeString } from '@/scripts/format-time-string.js';
-import { addTime } from '@/scripts/time.js';
+import { formatDateTimeString } from '@/utility/format-time-string.js';
+import { addTime } from '@/utility/time.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-  modelValue: {
+	modelValue: {
 		scheduledAt: number | null;
-  };
+	};
 }>();
 
 const emit = defineEmits<{
-  (ev: 'update:modelValue', v: {
+	(ev: 'update:modelValue', v: {
 		scheduledAt: number | null;
-  }): void;
+	}): void;
 }>();
 
 const atDate = ref(formatDateTimeString(addTime(new Date(), 1, 'day'), 'yyyy-MM-dd'));

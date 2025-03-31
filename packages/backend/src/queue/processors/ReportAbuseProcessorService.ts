@@ -13,10 +13,10 @@ import { RoleService } from '@/core/RoleService.js';
 import { MetaService } from '@/core/MetaService.js';
 import { EmailService } from '@/core/EmailService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
-import { InstanceActorService } from '@/core/InstanceActorService.js';
 import type { AbuseReportResolversRepository, AbuseUserReportsRepository, UsersRepository } from '@/models/_.js';
 import { DI } from '@/di-symbols.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
+import { SystemAccountService } from '@/core/SystemAccountService.js';
 import { QueueService } from '@/core/QueueService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type { DbAbuseReportJobData } from '../types.js';
@@ -38,7 +38,7 @@ export class ReportAbuseProcessorService {
 
 		private queueLoggerService: QueueLoggerService,
 		private globalEventService: GlobalEventService,
-		private instanceActorService: InstanceActorService,
+		private systemAccountService: SystemAccountService,
 		private apRendererService: ApRendererService,
 		private roleService: RoleService,
 		private metaService: MetaService,
@@ -67,7 +67,7 @@ export class ReportAbuseProcessorService {
 			id: job.data.reporterId,
 		});
 
-		const actor = await this.instanceActorService.getInstanceActor();
+		const actor = await this.systemAccountService.fetch('actor');
 
 		const targetUserAcct = targetUser.host ? `${targetUser.username.toLowerCase()}@${targetUser.host}` : targetUser.username.toLowerCase();
 		const reporterAcct = reporter.host ? `${reporter.username.toLowerCase()}@${reporter.host}` : reporter.username.toLowerCase();

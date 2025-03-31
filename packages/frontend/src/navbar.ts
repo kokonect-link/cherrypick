@@ -5,15 +5,15 @@
 
 import { computed, reactive } from 'vue';
 import { ui } from '@@/js/config.js';
-import { clearCache } from './scripts/clear-cache.js';
-import { $i } from '@/account.js';
+import { clearCache } from './utility/clear-cache.js';
+import { $i } from '@/i.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { openInstanceMenu, openToolsMenu } from '@/ui/_common_/common.js';
-import { lookup } from '@/scripts/lookup.js';
+import { lookup } from '@/utility/lookup.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
+import { unisonReload } from '@/utility/unison-reload.js';
+import { donateCherryPick } from '@/utility/donate-cherrypick.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -31,13 +31,6 @@ export const navbarItemDef = reactive({
 			}
 		}),
 		to: '/my/notifications',
-	},
-	messaging: {
-		title: i18n.ts.messaging,
-		icon: 'ti ti-messages',
-		show: computed(() => $i != null),
-		indicated: computed(() => $i != null && $i.hasUnreadMessagingMessage),
-		to: '/my/messaging',
 	},
 	drive: {
 		title: i18n.ts.drive,
@@ -124,6 +117,12 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-device-tv',
 		to: '/channels',
 	},
+	chat: {
+		title: i18n.ts.chat,
+		icon: 'ti ti-messages',
+		to: '/chat',
+		indicated: computed(() => $i != null && $i.hasUnreadChatMessages),
+	},
 	achievements: {
 		title: i18n.ts.achievements,
 		icon: 'ti ti-medal',
@@ -143,7 +142,7 @@ export const navbarItemDef = reactive({
 				text: 'Friendly',
 				active: ui === 'friendly' || ui === null,
 				action: () => {
-					localStorage.setItem('ui', 'friendly');
+					miLocalStorage.setItem('ui', 'friendly');
 					unisonReload();
 				},
 			}, {
@@ -185,6 +184,11 @@ export const navbarItemDef = reactive({
 				text: i18n.ts._mfc.cheatSheet,
 				icon: 'ti ti-help-circle',
 				to: '/mfc-cheat-sheet',
+			}, {
+				type: 'link',
+				text: i18n.ts._keyboardShortCut.list,
+				icon: 'ti ti-keyboard',
+				to: '/keyboard-shortcuts',
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
@@ -206,7 +210,7 @@ export const navbarItemDef = reactive({
 		title: i18n.ts.reload,
 		icon: 'ti ti-refresh',
 		action: (ev) => {
-			location.reload();
+			window.location.reload();
 		},
 	},
 	profile: {
@@ -214,6 +218,12 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-user',
 		show: computed(() => $i != null),
 		to: `/@${$i?.username}`,
+	},
+	support: {
+		// title: i18n.tsx.supportThisInstance({ name: instance.name ?? host }),
+		title: i18n.tsx.supportThisInstance({ name: 'CherryPick' }),
+		icon: 'ti ti-pig-money',
+		action: (ev) => donateCherryPick(ev),
 	},
 	cacheClear: {
 		title: i18n.ts.clearCache,

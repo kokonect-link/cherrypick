@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type Keys =
+export type Keys = (
 	'v' |
 	'basedMisskeyVersion' |
 	'lastVersion' |
@@ -11,7 +11,6 @@ export type Keys =
 	'instance' |
 	'instanceCachedAt' |
 	'account' |
-	'accounts' |
 	'latestDonationInfoShownAt' |
 	'neverShowDonationInfo' |
 	'neverShowLocalOnlyInfo' |
@@ -21,7 +20,6 @@ export type Keys =
 	'drafts' |
 	'hashtags' |
 	'wallpaper' |
-	'theme' |
 	'colorScheme' |
 	'useSystemFont' |
 	'fontSize' |
@@ -30,13 +28,18 @@ export type Keys =
 	'ui_temp' |
 	'locale' |
 	'localeVersion' |
+	'theme' |
+	'themeId' |
 	'customCss' |
-	'message_drafts' |
+	'chatMessageDrafts' |
 	'scratchpad' |
 	'debug' |
+	'preferences' |
+	'latestPreferencesUpdate' |
+	'hidePreferencesRestoreSuggestion' |
 	`miux:${string}` |
 	`ui:folder:${string}` |
-	`themes:${string}` |
+	`themes:${string}` | // DEPRECATED
 	`aiscript:${string}` |
 	`aiscriptSecure:${string}` |
 	'lastEmojisFetchedAt' | // DEPRECATED, stored in indexeddb (13.9.0~)
@@ -45,6 +48,7 @@ export type Keys =
 	`idbfallback::${string}` |
 	'neverShowNoteEditInfo' |
 	'showPushNotificationDialog'
+);
 
 // セッション毎に廃棄されるLocalStorage代替（セーフモードなどで使用できそう）
 //const safeSessionStorage = new Map<Keys, string>();
