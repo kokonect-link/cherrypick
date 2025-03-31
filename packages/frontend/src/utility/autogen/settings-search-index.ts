@@ -1079,26 +1079,21 @@ export const searchIndexes: SearchIndexItem[] = [
 			},
 			{
 				id: 'goQdtf3dD',
-				label: i18n.ts.keepOriginalUploading,
-				keywords: ['keep', 'original', 'raw', 'upload', i18n.ts.keepOriginalUploadingDescription],
-			},
-			{
-				id: '83xRo0XJl',
 				label: i18n.ts.keepOriginalFilename,
 				keywords: ['keep', 'original', 'filename', i18n.ts.keepOriginalFilenameDescription],
 			},
 			{
-				id: 'wf77yRQQq',
+				id: '83xRo0XJl',
 				label: i18n.ts._imageCompressionMode.title,
 				keywords: ['compression', 'compress', 'original', 'lossy', 'resize', i18n.ts._imageCompressionMode.description],
 			},
 			{
-				id: 'chBxilwRQ',
+				id: 't6vNAKPZf',
 				label: i18n.ts.alwaysMarkSensitive,
 				keywords: ['always', 'default', 'mark', 'nsfw', 'sensitive', 'media', 'file'],
 			},
 			{
-				id: 'CBMQC4ipG',
+				id: '3UQ6CsWXI',
 				label: i18n.ts.enableAutoSensitive,
 				keywords: ['auto', 'nsfw', 'sensitive', 'media', 'file', i18n.ts.enableAutoSensitiveDescription],
 			},

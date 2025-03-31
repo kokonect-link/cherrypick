@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ background: bg }">
+<div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]">
 	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly().value, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly().value }]">
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
 			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
@@ -69,8 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
-import tinycolor from 'tinycolor2';
-import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
+import { scrollToTop } from '@@/js/scroll.js';
 import XTabs from './MkPageHeader.tabs.vue';
 import type { Tab } from './MkPageHeader.tabs.vue';
 import type { PageHeaderItem } from '@/types/page-header.js';
@@ -114,7 +113,6 @@ const hideTitle = computed(() => inject('shouldOmitHeaderTitle', false) || props
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
 const el = useTemplateRef('el');
-const bg = ref<string | undefined>(undefined);
 const narrow = ref(false);
 const hasTabs = computed(() => props.tabs.length > 0);
 const hasActions = computed(() => props.actions && props.actions.length > 0);
@@ -155,14 +153,6 @@ function goBack() {
 	window.history.back();
 }
 
-const calcBg = () => {
-	const rawBg = 'var(--MI_THEME-bg)';
-	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
-	if (narrow.value) tinyBg.setAlpha(1);
-	else tinyBg.setAlpha(0.85);
-	bg.value = tinyBg.toRgbString();
-};
-
 let ro: ResizeObserver | null;
 
 onMounted(() => {
@@ -175,19 +165,16 @@ onMounted(() => {
 		});
 		ro.observe(el.value.parentElement as HTMLElement);
 	}
-
-	calcBg();
-	globalEvents.on('themeChanging', calcBg);
 });
 
 onUnmounted(() => {
-	globalEvents.off('themeChanging', calcBg);
 	if (ro) ro.disconnect();
 });
 </script>
 
 <style lang="scss" module>
 .root {
+	background: color(from var(--MI_THEME-bg) srgb r g b / 0.75);
 	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 	backdrop-filter: var(--MI-blur, blur(15px));
 	border-bottom: solid 0.5px var(--MI_THEME-divider);
@@ -195,6 +182,7 @@ onUnmounted(() => {
 	view-transition-name: v-bind(viewTransitionName);
 
 	&.reduceBlurEffect {
+		background: color(from var(--MI_THEME-bg) srgb r g b / 1);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
 	}

@@ -6019,6 +6019,10 @@ export interface Locale extends ILocale {
      */
     "migrateOldSettings_description": string;
     /**
+     * 圧縮
+     */
+    "compress": string;
+    /**
      * 下書き
      */
     "draft": string;
@@ -6218,6 +6222,14 @@ export interface Locale extends ILocale {
          * ルームを削除
          */
         "deleteRoom": string;
+        /**
+         * このサーバー、またはこのアカウントでチャットは有効化されていません。
+         */
+        "chatNotAvailableForThisAccountOrServer": string;
+        /**
+         * 相手のアカウントでチャット機能が使えない状態になっています。
+         */
+        "chatNotAvailableInOtherAccount": string;
         /**
          * このユーザーとのチャットを開始できません
          */

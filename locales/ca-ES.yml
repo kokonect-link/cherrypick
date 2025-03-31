@@ -2547,6 +2547,7 @@ _notification:
   newNote: "Nota nova"
   unreadAntennaNote: "Antena {name}"
   roleAssigned: "Rol assignat "
+  chatRoomInvitationReceived: "T'han invitat a una sala de xat"
   emptyPushNotificationMessage: "Les notificacions han sigut actualitzades"
   achievementEarned: "Aconseguiment desblocat"
   testNotification: "Notificació de prova"
@@ -2575,6 +2576,7 @@ _notification:
     receiveFollowRequest: "Rebuda una petició de seguiment"
     followRequestAccepted: "Petició de seguiment acceptada"
     roleAssigned: "Rol donat"
+    chatRoomInvitationReceived: "Invitat a la sala de xat"
     achievementEarned: "Assoliment desbloquejat"
     exportCompleted: "Exportació completada"
     login: "Iniciar sessió"
@@ -2714,6 +2716,7 @@ _moderationLogTypes:
   deletePage: "Esborrar la pàgina"
   deleteFlash: "Esborrar el guió"
   deleteGalleryPost: "Esborrar la publicació de la galeria"
+  deleteChatRoom: "Esborra la sala de xat"
   updateProxyAccountDescription: "Actualitzar descripció del compte proxy"
 _fileViewer:
   title: "Detall del fitxer"
