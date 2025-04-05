@@ -1584,6 +1584,7 @@ defineExpose({
 }
 
 .submit {
+	display: flex;
 	margin: 12px 12px 12px 6px;
 	vertical-align: bottom;
 }
