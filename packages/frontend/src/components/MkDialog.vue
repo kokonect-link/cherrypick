@@ -240,7 +240,7 @@ function onInputKeydown(evt: KeyboardEvent) {
 
 .caption {
   margin: 4px 0 0 0;
-  color: var(--MI_THEME-fgTransparentWeak);
+	color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
 }
 
 .buttons {

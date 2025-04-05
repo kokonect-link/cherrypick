@@ -4,6 +4,7 @@
  */
 
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { throttle } from 'throttle-debounce';
 import type { Ref } from 'vue';
 import { deviceKind } from '@/utility/device-kind.js';
 import { globalEvents } from '@/events.js';
@@ -20,9 +21,12 @@ export function detectScrolling(rootEl: Ref<HTMLElement | null>) {
 	const showEl = ref(false);
 	const showEl2 = ref(false);
 	const lastScrollPosition = ref(0);
+	const isScrolling = ref(false);
 
-	function onScroll() {
+	const onScroll = throttle(100, () => {
 		const currentScrollPosition = rootEl.value ? rootEl.value.scrollTop : window.scrollY;
+		isScrolling.value = true;
+
 		if (_DEV_) console.log('currentScrollPosition:', currentScrollPosition);
 		if (currentScrollPosition < 0) return;
 
@@ -41,14 +45,18 @@ export function detectScrolling(rootEl: Ref<HTMLElement | null>) {
 			} else {
 				window.setTimeout(() => {
 					showEl2.value = showEl.value;
-				}, 50);
+				}, 100);
 			}
 
 			nextTick(() => {
 				globalEvents.emit('showEl2', showEl2.value);
 			});
 		}
-	}
+
+		window.setTimeout(() => {
+			isScrolling.value = false;
+		}, 100);
+	});
 
 	onMounted(() => {
 		if (rootEl.value) {

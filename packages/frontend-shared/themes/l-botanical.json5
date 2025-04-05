@@ -15,7 +15,6 @@
 		divider: '#cfcfcf',
 		panel: '#ebe7e5',
 		panelHeaderBg: '@panel',
-		panelHeaderDivider: '@divider',
 		header: ':alpha<0.7<@panel',
 		navBg: '#ebe7e5',
 		renote: '#229e92',
@@ -24,6 +23,7 @@
 		hashtag: '#4cb8d4',
 		link: '@accent',
 		buttonGradateB: ':hue<-70<@accent',
-		success: '#86b300',
+		success: '@accent',
+		error: '#da5635',
 	},
 }

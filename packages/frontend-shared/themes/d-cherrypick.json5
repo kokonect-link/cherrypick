@@ -17,7 +17,6 @@
 		panelHeaderBg: 'rgb(45, 45, 66)',
 		header: '@bg',
 		navBg: '@panel',
-		navHoverFg: '@pick',
 		link: '@accent',
 		hashtag: '#4cb8d4',
 		mention: '#da6d35',

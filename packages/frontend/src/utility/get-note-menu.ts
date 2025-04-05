@@ -504,7 +504,7 @@ export function getNoteMenu(props: {
 						},
 					});
 				} else {
-					noteChildMenu.push(getNoteEmbedCodeMenu(appearNote, i18n.ts.genEmbedCode));
+					noteChildMenu.push(getNoteEmbedCodeMenu(appearNote, i18n.ts.embed));
 				}
 
 				noteChildMenu.push({ type: 'divider' });
@@ -674,7 +674,7 @@ export function getNoteMenu(props: {
 						},
 					});
 				} else {
-					noteChildMenu.push(getNoteEmbedCodeMenu(appearNote, i18n.ts.genEmbedCode));
+					noteChildMenu.push(getNoteEmbedCodeMenu(appearNote, i18n.ts.embed));
 				}
 
 				noteChildMenu.push({ type: 'divider' });

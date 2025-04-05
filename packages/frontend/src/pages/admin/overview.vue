@@ -222,7 +222,7 @@ definePage(() => ({
 }
 
 .disabledServerMachineStats {
-  color: var(--MI_THEME-fgTransparentWeak);
+	color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
   margin: 10px;
   font-size: 0.9em;
   text-align: center;

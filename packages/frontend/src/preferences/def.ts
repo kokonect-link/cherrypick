@@ -387,6 +387,9 @@ export const PREF_DEF = {
 	'deck.navbarPosition': {
 		default: 'left' as 'left' | 'top' | 'bottom',
 	},
+	'deck.wallpaper': {
+		default: null as string | null,
+	},
 
 	'chat.showSenderName': {
 		default: true,

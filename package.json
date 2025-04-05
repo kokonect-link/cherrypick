@@ -1,7 +1,7 @@
 {
 	"name": "cherrypick",
 	"version": "4.16.0-beta.4",
-	"basedMisskeyVersion": "2025.3.2-beta.20",
+	"basedMisskeyVersion": "2025.4.0-rc.1",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
@@ -25,7 +25,6 @@
 		"build": "pnpm build-pre && pnpm -r build && pnpm build-assets",
 		"build-storybook": "pnpm --filter frontend build-storybook",
 		"build-cherrypick-js-with-types": "pnpm build-pre && pnpm --filter backend... --filter=!cherrypick-js build && pnpm --filter backend generate-api-json --no-build && ncp packages/backend/built/api.json packages/cherrypick-js/generator/api.json && pnpm --filter cherrypick-js update-autogen-code && pnpm --filter cherrypick-js build && pnpm --filter cherrypick-js api",
-		"build-frontend-search-index": "pnpm --filter frontend build-search-index",
 		"start": "pnpm check:connect && cd packages/backend && node ./built/boot/entry.js",
 		"start:docker": "pnpm check:connect && cd packages/backend && exec node ./built/boot/entry.js",
 		"start:test": "ncp ./.github/cherrypick/test.yml ./.config/test.yml && cd packages/backend && cross-env NODE_ENV=test node ./built/boot/entry.js",
@@ -91,7 +90,8 @@
 			"@aiscript-dev/aiscript-languageserver": "-"
 		},
 		"patchedDependencies": {
-			"re2": "scripts/dependency-patches/re2.patch"
+			"re2": "scripts/dependency-patches/re2.patch",
+			"vite": "scripts/dependency-patches/vite.patch"
 		}
 	}
 }

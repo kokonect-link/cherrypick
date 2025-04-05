@@ -14,7 +14,6 @@
 		panel: 'rgb(246, 249, 255)',
 		header: '@bg',
 		navBg: '#eff4ff',
-		navHoverFg: '@pick',
 		renote: '@accent',
 		buttonGradateA: '@cherry',
 		buttonGradateB: '@pick',

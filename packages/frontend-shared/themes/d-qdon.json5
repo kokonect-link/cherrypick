@@ -24,7 +24,6 @@
 		panel: '$mstdnUI',
 		panelHighlight: '$mstdnBg',
 		popup: '$mstdnUI',
-		navHoverFg: '$qdonL2',
 		link: '$qdonL1',
 		hashtag: '#87ceeb',
 		mention: '$mstdnHyperLink',

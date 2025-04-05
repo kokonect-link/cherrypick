@@ -79,7 +79,7 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const pageMetadata = inject(DI.pageMetadata);
+const pageMetadata = inject(DI.pageMetadata, ref(null));
 
 const el = useTemplateRef('el');
 const tabHighlightEl = useTemplateRef('tabHighlightEl');

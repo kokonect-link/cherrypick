@@ -2242,6 +2242,10 @@ export interface Locale extends ILocale {
      */
     "withFileAntenna": string;
     /**
+     * センシティブなチャンネルのノートを非表示
+     */
+    "hideNotesInSensitiveChannel": string;
+    /**
      * ブラウザへのプッシュ通知を有効にする
      */
     "enableServiceworker": string;
@@ -6035,6 +6039,10 @@ export interface Locale extends ILocale {
      */
     "top": string;
     /**
+     * 埋め込み
+     */
+    "embed": string;
+    /**
      * 下書き
      */
     "draft": string;
@@ -6416,6 +6424,10 @@ export interface Locale extends ILocale {
          * オフのとき
          */
         "ifOff": string;
+        /**
+         * デバイス間でインストールしたテーマを同期
+         */
+        "enableSyncThemesBetweenDevices": string;
         "_chat": {
             /**
              * 送信者の名前を表示
@@ -8445,6 +8457,14 @@ export interface Locale extends ILocale {
          */
         "descriptionOfDisplayOrder": string;
         /**
+         * アサイン状態を移行先アカウントにも引き継ぐ
+         */
+        "preserveAssignmentOnMoveAccount": string;
+        /**
+         * オンにすると、このロールが付与されたアカウントが移行された際に、移行先アカウントにもこのロールが引き継がれるようになります。
+         */
+        "preserveAssignmentOnMoveAccount_description": string;
+        /**
          * モデレーターのメンバー編集を許可
          */
         "canEditMembersByModerator": string;
@@ -9720,23 +9740,19 @@ export interface Locale extends ILocale {
              */
             "header": string;
             /**
-             * サイドバーの背景
+             * ナビゲーションバーの背景
              */
             "navBg": string;
             /**
-             * サイドバーの文字
+             * ナビゲーションバーの文字
              */
             "navFg": string;
             /**
-             * サイドバー文字(ホバー)
-             */
-            "navHoverFg": string;
-            /**
-             * サイドバー文字(アクティブ)
+             * ナビゲーションバー文字(アクティブ)
              */
             "navActive": string;
             /**
-             * サイドバーのインジケーター
+             * ナビゲーションバーのインジケーター
              */
             "navIndicator": string;
             /**
@@ -9756,7 +9772,7 @@ export interface Locale extends ILocale {
              */
             "mentionMe": string;
             /**
-             * Renote
+             * リノート
              */
             "renote": string;
             /**
@@ -9820,10 +9836,6 @@ export interface Locale extends ILocale {
              */
             "driveFolderBg": string;
             /**
-             * 壁紙のオーバーレイ
-             */
-            "wallpaperOverlay": string;
-            /**
              * バッジ
              */
             "badge": string;
@@ -9831,14 +9843,6 @@ export interface Locale extends ILocale {
              * チャットの背景
              */
             "messageBg": string;
-            /**
-             * アクセント (暗め)
-             */
-            "accentDarken": string;
-            /**
-             * アクセント (明るめ)
-             */
-            "accentLighten": string;
             /**
              * 強調された文字
              */

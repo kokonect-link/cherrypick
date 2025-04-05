@@ -413,6 +413,11 @@ export const packedRoleSchema = {
 					optional: false, nullable: false,
 					example: false,
 				},
+				preserveAssignmentOnMoveAccount: {
+					type: 'boolean',
+					optional: false, nullable: false,
+					example: false,
+				},
 				canEditMembersByModerator: {
 					type: 'boolean',
 					optional: false, nullable: false,

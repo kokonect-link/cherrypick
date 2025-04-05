@@ -12,8 +12,8 @@ on:
       # This is a waste of chromatic build quota, so we don't run storybook CI on pull requests targets master.
       - master
       # Neither Dependabot nor Renovate will change the actual behavior for components.
-      - dependabot/**
-      - renovate/**
+      - 'dependabot/**'
+      - 'renovate/**'
 
 jobs:
   build:
@@ -45,7 +45,7 @@ jobs:
     - name: Setup pnpm
       uses: pnpm/action-setup@v4.1.0
     - name: Use Node.js 20.x
-      uses: actions/setup-node@v4.2.0
+      uses: actions/setup-node@v4.3.0
       with:
         node-version-file: '.node-version'
         cache: 'pnpm'

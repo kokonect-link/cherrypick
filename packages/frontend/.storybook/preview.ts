@@ -83,7 +83,7 @@ queueMicrotask(() => {
 			widgets(app);
 			cherrypickOS = os;
 			if (isChromatic()) {
-				prefer.set('animation', false);
+				prefer.commit('animation', false);
 			}
 		});
 	});

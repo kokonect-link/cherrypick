@@ -766,7 +766,7 @@ definePage(() => ({
   margin-right: 0.75em;
   flex-shrink: 0;
   text-align: center;
-  color: var(--MI_THEME-fgTransparentWeak);
+	color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
 
   &:empty {
     display: none;

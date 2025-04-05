@@ -12,15 +12,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<XAnnouncements v-if="$i"/>
 		<XStatusBars/>
-
 		<div :class="$style.columnsWrapper">
-			<div ref="columnsEl" :class="[$style.columns, { [$style.center]: prefer.r['deck.columnAlign'].value === 'center', [$style.snapScroll]: snapScroll }]" @contextmenu.self.prevent="onContextmenu" @wheel.self="onWheel">
+		  <!-- passive: https://bugs.webkit.org/show_bug.cgi?id=281300 -->
+			<div ref="columnsEl" :class="[$style.columns, { [$style.center]: prefer.r['deck.columnAlign'].value === 'center', [$style.snapScroll]: snapScroll }]" @contextmenu.self.prevent="onContextmenu" @wheel.passive.self="onWheel">
 				<!-- sectionを利用しているのは、deck.vue側でcolumnに対してfirst-of-typeを効かせるため -->
 				<section
 					v-for="ids in layout"
 					:class="$style.section"
 					:style="columns.filter(c => ids.includes(c.id)).some(c => c.flexible) ? { flex: 1, minWidth: '350px' } : { width: Math.max(...columns.filter(c => ids.includes(c.id)).map(c => c.width)) + 'px' }"
-					@wheel.self="onWheel"
+					@wheel.passive.self="onWheel"
 				>
 					<component
 						:is="columnComponents[columns.find(c => c.id === id)!.type] ?? XTlColumn"
@@ -116,13 +116,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, useTemplateRef, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue';
 import { v4 as uuid } from 'uuid';
 import XCommon from './_common_/common.vue';
 import XSidebar from '@/ui/_common_/navbar.vue';
 import XNavbarH from '@/ui/_common_/navbar-h.vue';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
-import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { $i } from '@/i.js';
@@ -141,7 +140,6 @@ import XDirectColumn from '@/ui/deck/direct-column.vue';
 import XRoleTimelineColumn from '@/ui/deck/role-timeline-column.vue';
 import { mainRouter } from '@/router.js';
 import { columns, layout, columnTypes, switchProfileMenu, addColumn as addColumnToStore, deleteProfile as deleteProfile_ } from '@/deck.js';
-import { miLocalStorage } from '@/local-storage.js';
 
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
@@ -174,8 +172,9 @@ window.addEventListener('resize', () => {
 	isMobile.value = window.innerWidth <= 500;
 });
 
-const snapScroll = deviceKind === 'smartphone' || deviceKind === 'tablet';
-const withWallpaper = miLocalStorage.getItem('wallpaper') != null;
+// ポインターイベント非対応用に初期値はUAから出す
+const snapScroll = ref(deviceKind === 'smartphone' || deviceKind === 'tablet');
+const withWallpaper = prefer.s['deck.wallpaper'] != null;
 const drawerMenuShowing = ref(false);
 const gap = prefer.r['deck.columnGap'];
 
@@ -225,14 +224,20 @@ const onContextmenu = (ev) => {
 	}], ev);
 };
 
+// タッチでスクロールしてるときはスナップスクロールを有効にする
+function pointerEvent(ev: PointerEvent) {
+	snapScroll.value = ev.pointerType === 'touch';
+}
+
+window.document.addEventListener('pointerdown', pointerEvent, { passive: true });
+
 function onWheel(ev: WheelEvent) {
+  // WheelEvent はマウスからしか発火しないのでスナップスクロールは無効化する
+  snapScroll.value = false;
 	if (ev.deltaX === 0 && columnsEl.value != null) {
 		columnsEl.value.scrollLeft += ev.deltaY;
 	}
 }
-
-window.document.documentElement.style.overflowY = 'hidden';
-window.document.documentElement.style.scrollBehavior = 'auto';
 
 async function deleteProfile() {
 	if (prefer.s['deck.profile'] == null) return;
@@ -246,6 +251,13 @@ async function deleteProfile() {
 	await deleteProfile_(prefer.s['deck.profile']);
 
 	os.success();
+}
+
+window.document.documentElement.style.overflowY = 'hidden';
+window.document.documentElement.style.scrollBehavior = 'auto';
+
+if (prefer.s['deck.wallpaper'] != null) {
+	window.document.documentElement.style.backgroundImage = `url(${prefer.s['deck.wallpaper']})`;
 }
 </script>
 
