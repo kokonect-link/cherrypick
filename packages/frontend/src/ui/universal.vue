@@ -13,10 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XAnnouncements v-if="$i"/>
 			<XStatusBars :class="$style.statusbars"/>
 		</div>
-		<div :class="$style.content">
-			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']"/>
-			<RouterView v-else/>
-		</div>
+		<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
+		<RouterView v-else :class="$style.content"/>
 		<div v-if="isMobile" ref="navFooter" :class="[$style.nav, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]">
 			<button v-if="store.s.showMenuButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="drawerMenuShowing = true"><i :class="$style.navButtonIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.navButtonIndicator" class="_blink"><i class="_indicatorCircle"></i></span></button>
 			<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.navButton" class="_button" @click="mainRouter.push('/')"><i :class="$style.navButtonIcon" class="ti ti-home"></i></button>
@@ -106,7 +104,6 @@ import { defineAsyncComponent, provide, onMounted, computed, ref, watch, useTemp
 import { instanceName } from '@@/js/config.js';
 import { isLink } from '@@/js/is-link.js';
 import XCommon from './_common_/common.vue';
-import type { Ref } from 'vue';
 import type { PageMetadata } from '@/page.js';
 import XDrawerMenu from '@/ui/_common_/navbar-for-mobile.vue';
 import * as os from '@/os.js';
@@ -192,13 +189,8 @@ onMounted(() => {
 		}, { passive: true });
 	}
 
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
-
-	globalEvents.on('showEl2', (showEl2_receive) => {
-		showEl2.value = showEl2_receive;
-	});
+	globalEvents.on('showEl', (value) => showEl.value = value);
+	globalEvents.on('showEl2', (value) => showEl2.value = value);
 });
 
 const onContextmenu = (ev) => {
@@ -232,32 +224,6 @@ watch(navFooter, () => {
 	immediate: true,
 });
 </script>
-
-<style>
-html,
-body {
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	overscroll-behavior: none;
-}
-
-body {
-	/* NOTE: htmlにも overflow: clip を設定したいところだが、設定すると何故か少なくともChromeでhtmlがmain thread scroll repaint扱いになりパフォーマンスが(多分)落ちる */
-	overflow: clip;
-}
-
-#cherrypick_app {
-	width: 100%;
-	height: 100%;
-	overflow: clip;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-</style>
 
 <style lang="scss" module>
 $ui-font-size: 1em; // TODO: どこかに集約したい

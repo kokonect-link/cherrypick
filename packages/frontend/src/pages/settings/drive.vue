@@ -65,7 +65,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<SearchMarker :keywords="['compression', 'compress', 'original', 'lossy', 'resize']">
 					<MkPreferenceContainer k="imageCompressionMode">
 						<MkSelect v-model="imageCompressionMode">
-							<template #label><SearchLabel>{{ i18n.ts._imageCompressionMode.title }}</SearchLabel></template>
+							<template #label><SearchLabel>{{ i18n.ts._imageCompressionMode.title }}</SearchLabel> <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
 							<option value="resizeCompress">{{ i18n.ts._imageCompressionMode.resizeCompress }}</option>
 							<option value="noResizeCompress">{{ i18n.ts._imageCompressionMode.noResizeCompress }}</option>
 							<option value="resizeCompressLossy">{{ i18n.ts._imageCompressionMode.resizeCompressLossy }}</option>

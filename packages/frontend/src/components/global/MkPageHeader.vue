@@ -104,8 +104,7 @@ const emit = defineEmits<{
 	(ev: 'update:tab', key: string);
 }>();
 
-const viewId = inject(DI.viewId);
-const viewTransitionName = computed(() => `${viewId}---pageHeader`);
+//const viewId = inject(DI.viewId);
 const injectedPageMetadata = inject(DI.pageMetadata);
 const pageMetadata = computed(() => props.overridePageMetadata ?? injectedPageMetadata.value);
 
@@ -179,7 +178,6 @@ onUnmounted(() => {
 	backdrop-filter: var(--MI-blur, blur(15px));
 	border-bottom: solid 0.5px var(--MI_THEME-divider);
 	width: 100%;
-	view-transition-name: v-bind(viewTransitionName);
 
 	&.reduceBlurEffect {
 		background: color(from var(--MI_THEME-bg) srgb r g b / 1);

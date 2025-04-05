@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<MkInfo v-if="!$i.policies.canChat">{{ i18n.ts._chat.chatNotAvailableForThisAccountOrServer }}</MkInfo>
 
-	<MkAd :prefer="['horizontal', 'horizontal-big']"/>
+	<MkAd :preferForms="['horizontal', 'horizontal-big']"/>
 
 	<MkInput
 		v-model="searchQuery"
@@ -209,9 +209,7 @@ onActivated(() => {
 onMounted(() => {
 	fetchHistory();
 
-	globalEvents.on('createChat', (ev) => {
-		start(ev);
-	});
+	globalEvents.on('createChat', (ev) => start(ev));
 });
 </script>
 

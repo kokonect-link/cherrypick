@@ -129,7 +129,7 @@ const bus = new GridEventEmitter();
  *
  * @see {@link onResize}
  */
-const resizeObserver = new ResizeObserver((entries) => setTimeout(() => onResize(entries)));
+const resizeObserver = new ResizeObserver((entries) => window.setTimeout(() => onResize(entries)));
 
 const rootEl = ref<InstanceType<typeof HTMLTableElement>>();
 /**

@@ -12,11 +12,11 @@ export const globalEvents = new EventEmitter<{
 	clientNotification: (notification: Misskey.entities.Notification) => void;
 
 	// CherryPick
-	showEl: () => void;
-	showEl2: () => void;
-	queueUpdated: () => void;
-	createChat: () => void;
-	showNoteContent: () => void;
+	showEl: (value: boolean) => void;
+	showEl2: (value: boolean) => void;
+	queueUpdated: (q: number) => void;
+	createChat: (ev: MouseEvent) => void;
+	showNoteContent: (value: boolean) => void;
 	reloadTimeline: () => void;
 	reloadNotification: () => void;
 }>();

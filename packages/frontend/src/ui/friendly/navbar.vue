@@ -435,7 +435,7 @@ function openProfile() {
 
 		&:hover, &.active {
 			&::before {
-				background: var(--MI_THEME-accentLighten);
+				background: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 			}
 		}
 	}
@@ -684,7 +684,7 @@ function openProfile() {
 
 		&:hover, &.active {
 			&::before {
-				background: var(--MI_THEME-accentLighten);
+				background: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 			}
 		}
 	}

@@ -285,13 +285,13 @@ onMounted(async () => {
 	await Promise.all([fetchWeather(), fetchLocation()]);
 	createPressureChart();
 
-	const interval = setInterval(async () => {
+	const interval = window.setInterval(async () => {
 		await fetchWeather();
 		createPressureChart();
 	}, 1000 * 60 * 60);
 
 	onUnmounted(() => {
-		clearInterval(interval);
+		window.clearInterval(interval);
 	});
 });
 

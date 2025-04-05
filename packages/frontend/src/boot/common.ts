@@ -30,7 +30,7 @@ import { prefer } from '@/preferences.js';
 import { $i } from '@/i.js';
 import { popup } from '@/os.js';
 
-export async function common(createVue: () => App<Element>) {
+export async function common(createVue: () => Promise<App<Element>>) {
 	console.info(`CherryPick v${version}`);
 
 	if (_DEV_) {
@@ -276,7 +276,7 @@ export async function common(createVue: () => App<Element>) {
 		});
 	});
 
-	const app = createVue();
+	const app = await createVue();
 
 	if (_DEV_) {
 		app.config.performance = true;

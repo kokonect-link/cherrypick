@@ -41,8 +41,8 @@ onMounted(() => {
 	calcOmit();
 	omitObserver.observe(content.value as HTMLElement);
 
-	globalEvents.on('showNoteContent', (showNoteContent_receive) => {
-		if (showNoteContent_receive) {
+	globalEvents.on('showNoteContent', (value) => {
+		if (value) {
 			ignoreOmit.value = true;
 			omitted.value = false;
 		}

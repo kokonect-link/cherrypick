@@ -46,7 +46,7 @@ const isMe = $i && (
 
 const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const avatarUrl = computed(() => (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
 	? getStaticImageUrl(`/avatar/@${props.username}@${props.host}`)
 	: `/avatar/@${props.username}@${props.host}`,
@@ -54,8 +54,8 @@ const avatarUrl = computed(() => (prefer.s.disableShowingAnimatedImages || prefe
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 onMounted(() => {

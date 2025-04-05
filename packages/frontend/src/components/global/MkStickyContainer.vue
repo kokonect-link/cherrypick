@@ -29,11 +29,12 @@ import { mainRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { globalEvents } from '@/events.js';
 import { isFriendly } from '@/utility/is-friendly.js';
+import { detectScrolling } from '@/utility/detect-scrolling.js';
 
 const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
 
-const isMobile = ref(['smartphone', 'tablet'].includes(<string>deviceKind) || window.innerWidth <= MOBILE_THRESHOLD);
+const isMobile = ref(['smartphone', 'tablet'].includes(String(deviceKind)) || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
@@ -74,6 +75,8 @@ const observer = new ResizeObserver(() => {
 	}, 100);
 });
 
+detectScrolling(rootEl);
+
 onMounted(() => {
 	calc();
 
@@ -87,9 +90,7 @@ onMounted(() => {
 		observer.observe(footerEl.value);
 	}
 
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
+	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 
 onUnmounted(() => {

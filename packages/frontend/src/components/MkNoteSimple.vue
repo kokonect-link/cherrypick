@@ -70,9 +70,7 @@ const isDeleted = ref(false);
 if (prefer.s.alwaysShowCw) showContent.value = true;
 
 onMounted(() => {
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
+	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 
 function noteClick(ev: MouseEvent) {

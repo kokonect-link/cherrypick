@@ -157,7 +157,7 @@ import * as sound from '@/utility/sound.js';
 
 const $i = ensureSignin();
 
-const modal = inject('modal');
+const modal = inject(DI.inModal, false);
 
 const props = withDefaults(defineProps<PostFormProps & {
 	fixed?: boolean;
@@ -1755,7 +1755,7 @@ html[data-color-scheme=light] .preview {
 	padding: 0 30px;
 	margin: 0;
 	width: 100%;
-	font-size: 16px;
+	font-size: 110%;
 	border: none;
 	border-radius: 0;
 	background: transparent;

@@ -43,9 +43,6 @@ $code-monospace-font: "JetBrains Mono", "Pretendard JP", Pretendard, Consolas, M
 }
 
 html {
-	background-color: var(--MI_THEME-bg);
-	color: var(--MI_THEME-fg);
-	accent-color: var(--MI_THEME-accent);
 	overflow: auto;
 	overflow-wrap: break-word;
 	font-family: $default-font;
@@ -56,6 +53,11 @@ html {
 	text-size-adjust: 100%;
 	tab-size: 2;
 	-webkit-text-size-adjust: 100%;
+	touch-action: manipulation;
+	scroll-behavior: smooth;
+	background-color: var(--MI_THEME-bg);
+	color: var(--MI_THEME-fg);
+	accent-color: var(--MI_THEME-accent);
 
 	&, * {
 		scrollbar-color: var(--MI_THEME-scrollbarHandle) transparent;
@@ -179,11 +181,19 @@ html._themeChanging_ {
 	}
 }
 
-html, body {
-	touch-action: manipulation;
+html,
+body,
+#cherrypick_app {
 	margin: 0;
 	padding: 0;
-	scroll-behavior: smooth;
+	width: 100%;
+	height: 100%;
+	overscroll-behavior: none;
+}
+
+body {
+	/* NOTE: htmlにも overflow: clip を設定したいところだが、設定すると何故か少なくともChromeで html が main thread scrolling になりパフォーマンスが(多分)落ちる */
+	overflow: clip;
 }
 
 a {
@@ -263,6 +273,14 @@ rt {
 	overflow: clip;
 	overflow-y: scroll;
 	overscroll-behavior: contain;
+
+	/*
+	理屈は知らないけど、ここでbackgroundを設定しておかないと
+	スクロールコンテナーが少なくともChromeにおいて
+	main thread scrolling になってしまい、パフォーマンスが(多分)落ちる。
+	backgroundが透明だと裏側を描画しないといけなくなるとかそういう理由かもしれない
+	*/
+	background: var(--MI_THEME-bg);
 }
 
 ._pageScrollableReversed {
@@ -465,15 +483,15 @@ rt {
 }
 
 ._popupAcrylic {
-	background: var(--MI_THEME-acrylicPanel);
-	border-radius: var(--MI-radius);
-	contain: content;
+	background: color(from var(--MI_THEME-panel) srgb r g b / 0.5);
 	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 	backdrop-filter: var(--MI-blur, blur(15px));
+	border-radius: var(--MI-radius);
+	contain: content;
 }
 
 ._acrylic {
-	background: var(--MI_THEME-acrylicPanel);
+	background: color(from var(--MI_THEME-panel) srgb r g b / 0.5);
 	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 	backdrop-filter: var(--MI-blur, blur(15px));
 }

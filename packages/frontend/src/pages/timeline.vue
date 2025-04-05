@@ -4,74 +4,70 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" displayMyAvatar>
-	<MkSpacer :contentMax="800">
-		<MkHorizontalSwipe v-model:tab="src" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
-			<div ref="rootEl">
-				<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
-					{{ i18n.ts._timelineDescription[src] }}
-				</MkInfo>
-				<MkInfo v-if="schedulePostList > 0" style="margin-bottom: var(--MI-margin);"><button type="button" :class="$style.checkSchedulePostList" @click="os.listScheduleNotePost">{{ i18n.tsx.thereIsSchedulePost({ n: schedulePostList }) }}</button></MkInfo>
-				<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="post-form _panel" fixed style="margin-bottom: var(--MI-margin);" :autofocus="false"/>
+<div ref="rootEl" class="_pageScrollable">
+	<MkStickyContainer>
+		<template #header><MkPageHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
+		<MkSpacer :contentMax="800">
+			<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
+				{{ i18n.ts._timelineDescription[src] }}
+			</MkInfo>
+			<MkInfo v-if="schedulePostList > 0" style="margin-bottom: var(--MI-margin);"><button type="button" :class="$style.checkSchedulePostList" @click="os.listScheduleNotePost">{{ i18n.tsx.thereIsSchedulePost({ n: schedulePostList }) }}</button></MkInfo>
+			<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="_panel" fixed style="margin-bottom: var(--MI-margin);"/>
 
-				<transition
-					:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
-					:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
-					:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
-					:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
+			<transition
+				:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
+				:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
+				:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
+				:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
+			>
+				<div
+					v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
+					:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
 				>
-					<div
-						v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
-						:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
-					>
-						<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
-							<i class="ti ti-arrow-up"></i>
-							<I18n :src="prefer.s.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : prefer.s.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
-								<template v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
-							</I18n>
-						</button>
-					</div>
-				</transition>
-
-				<div :class="$style.tl">
-					<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="$style.disabled">
-						<p :class="$style.disabledTitle">
-							<i class="ti ti-circle-minus"></i>
-							{{ i18n.ts._disabledTimeline.title }}
-						</p>
-						<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
-					</div>
-					<MkTimeline
-						v-else
-						ref="tlComponent"
-						:key="src + withRenotes + withReplies + withSensitive + onlyFiles + onlyCats"
-						:src="src.split(':')[0]"
-						:list="src.split(':')[1]"
-						:withRenotes="withRenotes"
-						:withReplies="withReplies"
-						:withSensitive="withSensitive"
-						:onlyFiles="onlyFiles"
-						:onlyCats="onlyCats"
-						:sound="true"
-						@queue="queueUpdated"
-					/>
+					<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
+						<i class="ti ti-arrow-up"></i>
+						<I18n :src="prefer.s.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : prefer.s.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
+							<template v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
+						</I18n>
+					</button>
 				</div>
+			</transition>
+
+			<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="[$style.disabled, $style.tl]">
+				<p :class="$style.disabledTitle">
+					<i class="ti ti-circle-minus"></i>
+					{{ i18n.ts._disabledTimeline.title }}
+				</p>
+				<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
 			</div>
-		</MkHorizontalSwipe>
-	</MkSpacer>
-</PageWithHeader>
+			<MkTimeline
+				v-else
+				ref="tlComponent"
+				:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
+				:class="$style.tl"
+				:src="src.split(':')[0]"
+				:list="src.split(':')[1]"
+				:withRenotes="withRenotes"
+				:withReplies="withReplies"
+				:withSensitive="withSensitive"
+				:onlyFiles="onlyFiles"
+				:sound="true"
+				@queue="queueUpdated"
+			/>
+		</MkSpacer>
+	</MkStickyContainer>
+</div>
 </template>
 
 <script lang="ts" setup>
 import { computed, watch, provide, useTemplateRef, ref, onMounted, onActivated } from 'vue';
-import { scroll } from '@@/js/scroll.js';
+import { scrollInContainer } from '@@/js/scroll.js';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { MenuItem } from '@/types/menu.js';
 import type { BasicTimelineType } from '@/timelines.js';
 import MkTimeline from '@/components/MkTimeline.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { store } from '@/store.js';
@@ -88,6 +84,7 @@ import { useRouter } from '@/router.js';
 import { globalEvents } from '@/events.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { isFriendly } from '@/utility/is-friendly.js';
+import { detectScrolling } from '@/utility/detect-scrolling.js';
 
 const showEl = ref(false);
 
@@ -96,7 +93,7 @@ const MOBILE_THRESHOLD = 500;
 
 // デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
-const isMobile = ref(['smartphone', 'tablet'].includes(<string>deviceKind) || window.innerWidth <= MOBILE_THRESHOLD);
+const isMobile = ref(['smartphone', 'tablet'].includes(String(deviceKind)) || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
@@ -194,6 +191,8 @@ const collapseDefault = ref(prefer.s.collapseDefault);
 const alwaysShowCw = ref(prefer.s.alwaysShowCw);
 const showReplyTargetNote = ref(prefer.s.showReplyTargetNote);
 
+detectScrolling(rootEl);
+
 watch(src, () => {
 	queue.value = 0;
 	queueUpdated(queue.value);
@@ -289,9 +288,7 @@ watch(showReplyTargetNote, (x) => {
 });
 
 onMounted(() => {
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
+	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 
 function queueUpdated(q: number): void {
@@ -300,7 +297,7 @@ function queueUpdated(q: number): void {
 }
 
 function top(): void {
-	if (rootEl.value) scroll(rootEl.value, { top: 0, behavior: 'smooth' });
+	if (rootEl.value) scrollInContainer(rootEl.value, { top: 0, behavior: 'instant' });
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {

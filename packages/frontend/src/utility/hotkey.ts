@@ -137,7 +137,7 @@ let lastHotKeyStoreTimer: number | null = null;
 
 const storePattern = (ev: KeyboardEvent, callback: CallbackFunction) => {
 	if (lastHotKeyStoreTimer != null) {
-		clearTimeout(lastHotKeyStoreTimer);
+		window.clearTimeout(lastHotKeyStoreTimer);
 	}
 
 	latestHotkey = {

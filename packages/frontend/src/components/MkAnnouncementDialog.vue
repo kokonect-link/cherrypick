@@ -84,9 +84,9 @@ function onBgClick(): void {
 
 onMounted(() => {
 	if (sec.value > 0 ) {
-		const waitTimer = setInterval(() => {
+		const waitTimer = window.setInterval(() => {
 			if (sec.value === 0) {
-				clearInterval(waitTimer);
+				window.clearInterval(waitTimer);
 				gotItDisabled.value = false;
 				secVisible.value = false;
 			} else {

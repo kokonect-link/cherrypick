@@ -6,20 +6,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :notification="notification">
 	<MkSpacer :contentMax="800">
-		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'all'">
-				<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="excludeTypes"/>
-			</div>
-			<div v-else-if="tab === 'newNote'">
-				<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
-			</div>
-			<div v-else-if="tab === 'mentions'">
-				<MkNotes :pagination="mentionsPagination" :notification="notification" :noGap="notification"/>
-			</div>
-			<div v-else-if="tab === 'directNotes'">
-				<MkNotes :pagination="directNotesPagination" :notification="true" :noGap="notification"/>
-			</div>
-		</MkHorizontalSwipe>
+		<div v-if="tab === 'all'">
+			<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="excludeTypes"/>
+		</div>
+		<div v-else-if="tab === 'newNote'">
+			<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
+		</div>
+		<div v-else-if="tab === 'mentions'">
+			<MkNotes :pagination="mentionsPagination" :notification="notification"/>
+		</div>
+		<div v-else-if="tab === 'directNotes'">
+			<MkNotes :pagination="directNotesPagination" :notification="true"/>
+		</div>
 	</MkSpacer>
 </PageWithHeader>
 </template>
@@ -29,7 +27,6 @@ import { computed, ref } from 'vue';
 import { notificationTypes } from '@@/js/const.js';
 import XNotifications from '@/components/MkNotifications.vue';
 import MkNotes from '@/components/MkNotes.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';

@@ -87,7 +87,7 @@ const textCountPercentage = computed(() => {
 		}
 
 		&.blur::after {
-			background-color: var(--MI_THEME-acrylicPanel);
+			background-color: color(from var(--MI_THEME-panel) srgb r g b / 0.5);
 			-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 			backdrop-filter: var(--MI-blur, blur(15px));
 		}

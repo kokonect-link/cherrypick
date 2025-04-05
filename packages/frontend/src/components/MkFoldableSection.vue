@@ -98,9 +98,7 @@ function afterLeave(el: Element) {
 onMounted(() => {
 	parentBg.value = getBgColor(rootEl.value?.parentElement);
 
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
+	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 </script>
 

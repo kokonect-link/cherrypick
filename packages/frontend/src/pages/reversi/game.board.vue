@@ -259,7 +259,7 @@ const cellsStyle = computed(() => {
 
 const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const blackUserUrl = computed(() => {
 	if (blackUser.value.avatarUrl == null) return null;
 	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(blackUser.value.avatarUrl);
@@ -467,7 +467,7 @@ function autoplay() {
 		const tick = () => {
 			const log = logs[i];
 			const time = log.time - previousLog.time;
-			setTimeout(() => {
+			window.setTimeout(() => {
 				i++;
 				logPos.value++;
 				previousLog = log;
@@ -493,8 +493,8 @@ function share() {
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 const _reactionEmojis = ref(store.r.reactions);
