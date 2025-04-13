@@ -76,7 +76,7 @@ services:
         read_only: true
       - type: bind
         source: ../../../scripts/dependency-patches
-        target: /misskey/scripts/dependency-patches
+        target: /cherrypick/scripts/dependency-patches
         read_only: true
       - type: bind
         source: ./certificates/rootCA.crt
