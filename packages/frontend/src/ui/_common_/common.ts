@@ -161,6 +161,11 @@ export function openInstanceMenu(ev: MouseEvent) {
 				text: i18n.ts._mfc.cheatSheet,
 				icon: 'ti ti-help-circle',
 				to: '/mfc-cheat-sheet',
+			}, {
+				type: 'link',
+				text: i18n.ts._keyboardShortCut.list,
+				icon: 'ti ti-keyboard',
+				to: '/keyboard-shortcuts',
 			});
 
 			return documentChildMenu;
