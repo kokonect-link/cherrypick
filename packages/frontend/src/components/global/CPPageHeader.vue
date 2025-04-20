@@ -11,11 +11,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly().value" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
 		<MkAvatar v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.avatar" :user="$i"/>
 	</div>
-	<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
-	<div v-else-if="!thin_ && canBack && (actions && actions.length > 0)" :class="$style.buttonsLeft"/>
-	<div v-if="!thin_ && canBack && (actions && actions.length > 1 && ['index', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name))" :class="$style.buttonsLeft"/>
+	<div v-else-if="!thin_ && canBack" :class="$style.buttonsLeft">
+		<div v-if="narrow && !hideTitle" :class="$style.button"/>
+		<div v-else-if="actions && actions.length > 0" :class="$style.button"/>
+		<div v-if="actions && actions.length > 1 && ['index', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.button"/>
+		<div v-if="actions && actions.length > 2" :class="$style.button"/>
+	</div>
 	<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id)">
-		<div style="width: 50px;"/>
+		<div :class="$style.button"/>
 	</div>
 
 	<template v-if="pageMetadata">
@@ -200,10 +203,10 @@ onMounted(() => {
 		immediate: true,
 	});
 
-	if (el.value && el.value.parentElement) {
+	if (el.value?.parentElement) {
 		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el.value && el.value.parentElement && window.document.body.contains(el.value as HTMLElement)) {
+			if (el.value?.parentElement && window.document.body.contains(el.value as HTMLElement)) {
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});
