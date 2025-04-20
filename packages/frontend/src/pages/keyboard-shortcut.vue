@@ -28,6 +28,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<kbd>S</kbd>
 					</div>
 				</div>
+				<div :class="$style.section">
+					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.viewKeyboardShortCutList }}</div>
+					<div :class="$style.content">
+						<kbd>Shift</kbd> + <kbd>/</kbd> or <kbd>?</kbd>
+					</div>
+				</div>
 			</MkFoldableSection>
 			<MkFoldableSection>
 				<template #header>{{ i18n.ts._keyboardShortCut._category.postForm }}</template>
@@ -35,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleVisibility }}</div>
 					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
 					<div :class="$style.content">
-						<kbd>Ctrl</kbd>+<kbd>Shift</kbd>
+						<kbd>Ctrl</kbd> + <kbd>Shift</kbd>
 					</div>
 				</div>
 				<div :class="$style.section">
@@ -127,6 +133,7 @@ definePage(() => ({
 .caution {
 	font-size: 0.8em;
 	padding: 16px;
+	margin-top: 8px;
 	background: var(--MI_THEME-infoWarnBg);
 	color: var(--MI_THEME-infoWarnFg);
 	border-radius: var(--MI-radius);
