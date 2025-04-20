@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
-import { scrollToTop } from '@@/js/scroll.js';
+import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import XTabs from './MkPageHeader.tabs.vue';
 import type { Tab } from './MkPageHeader.tabs.vue';
 import type { PageHeaderItem } from '@/types/page-header.js';
@@ -155,10 +155,10 @@ function goBack() {
 let ro: ResizeObserver | null;
 
 onMounted(() => {
-	if (el.value && el.value.parentElement) {
+	if (el.value?.parentElement) {
 		narrow.value = el.value.parentElement.offsetWidth < 500;
 		ro = new ResizeObserver((entries, observer) => {
-			if (el.value && el.value.parentElement && window.document.body.contains(el.value as HTMLElement)) {
+			if (el.value?.parentElement && window.document.body.contains(el.value as HTMLElement)) {
 				narrow.value = el.value.parentElement.offsetWidth < 500;
 			}
 		});

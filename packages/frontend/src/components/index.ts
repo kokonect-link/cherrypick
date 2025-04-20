@@ -31,6 +31,7 @@ import PageWithAnimBg from './global/PageWithAnimBg.vue';
 import SearchMarker from './global/SearchMarker.vue';
 import SearchLabel from './global/SearchLabel.vue';
 import SearchKeyword from './global/SearchKeyword.vue';
+import SearchIcon from './global/SearchIcon.vue';
 
 import type { App } from 'vue';
 
@@ -69,6 +70,7 @@ export const components = {
 	SearchMarker: SearchMarker,
 	SearchLabel: SearchLabel,
 	SearchKeyword: SearchKeyword,
+	SearchIcon: SearchIcon,
 };
 
 declare module '@vue/runtime-core' {
@@ -101,5 +103,6 @@ declare module '@vue/runtime-core' {
 		SearchMarker: typeof SearchMarker;
 		SearchLabel: typeof SearchLabel;
 		SearchKeyword: typeof SearchKeyword;
+		SearchIcon: typeof SearchIcon;
 	}
 }

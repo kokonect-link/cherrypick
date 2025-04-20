@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkA :class="$style.item" :activeClass="$style.active" to="/" exact>
 			<i :class="$style.itemIcon" class="ti ti-home ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.timeline }}</span>
 		</MkA>
-		<template v-for="item in menu">
+		<template v-for="item in prefer.r.menu.value">
 			<div v-if="item === '-'" :class="$style.divider"></div>
 			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 				<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
@@ -54,7 +54,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, toRef, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { openInstanceMenu } from './common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
@@ -66,10 +66,9 @@ import { $i } from '@/i.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
 
-const menu = toRef(prefer.s, 'menu');
 const otherMenuItemIndicated = computed(() => {
 	for (const def in navbarItemDef) {
-		if (menu.value.includes(def)) continue;
+		if (prefer.r.menu.value.includes(def)) continue;
 		if (navbarItemDef[def].indicated) return true;
 	}
 	return false;

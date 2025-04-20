@@ -114,7 +114,7 @@ export const ROLE_POLICIES = [
 	'canImportFollowing',
 	'canImportMuting',
 	'canImportUserLists',
-	'canChat',
+	'chatAvailability',
 	'noteDraftLimit',
 	'canSetFederationAvatarShape',
 ] as const;

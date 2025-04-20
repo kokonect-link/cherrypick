@@ -117,5 +117,5 @@ export class MiAntenna {
 	@Column('boolean', {
 		default: false,
 	})
-	public hideNotesInSensitiveChannel: boolean;
+	public excludeNotesInSensitiveChannel: boolean;
 }

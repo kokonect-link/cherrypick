@@ -486,7 +486,7 @@ onBeforeUnmount(() => {
 		}
 	}
 
-	&:not(.widthSpecified) {
+	&:not(.asDrawer):not(.widthSpecified) {
 		> .menu {
 			max-width: 400px;
 		}

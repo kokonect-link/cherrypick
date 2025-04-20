@@ -202,7 +202,6 @@ function removeItem(index: number) {
 
 async function save() {
 	prefer.commit('menu', items.value.map(x => x.type));
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
 }
 
 function reset() {

@@ -121,7 +121,8 @@ export const navbarItemDef = reactive({
 		title: i18n.ts.chat,
 		icon: 'ti ti-messages',
 		to: '/chat',
-		indicated: computed(() => $i != null && $i.hasUnreadChatMessages),
+		show: computed(() => $i != null && $i.policies.chatAvailability !== 'unavailable'),
+		indicated: computed(() => $i?.hasUnreadChatMessages),
 	},
 	achievements: {
 		title: i18n.ts.achievements,
@@ -167,11 +168,11 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-help-circle',
 		action: (ev) => {
 			os.popupMenu([{
-				text: i18n.ts.help,
-				icon: 'ti ti-help-circle',
-				action: () => {
-					window.open('https://misskey-hub.net/help.html', '_blank');
-				},
+				type: 'a',
+				text: i18n.ts.document,
+				icon: 'ti ti-bulb',
+				href: 'https://misskey-hub.net/docs/for-users/',
+				target: '_blank',
 			}, {
 				type: 'link',
 				text: i18n.ts._mfc.cheatSheet,

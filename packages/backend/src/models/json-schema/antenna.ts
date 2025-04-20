@@ -105,7 +105,7 @@ export const packedAntennaSchema = {
 			optional: false, nullable: false,
 			default: false,
 		},
-		hideNotesInSensitiveChannel: {
+		excludeNotesInSensitiveChannel: {
 			type: 'boolean',
 			optional: false, nullable: false,
 			default: false,
