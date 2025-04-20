@@ -8,50 +8,52 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkSpacer :contentMax="800">
 		<div :class="$style.root">
 			<div :class="$style.intro">{{ i18n.ts._keyboardShortCut.description }}</div>
+
 			<MkFoldableSection>
 				<template #header>{{ i18n.ts._keyboardShortCut._category.general }}</template>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.openPostForm }}</div>
 					<div :class="$style.content">
 						<kbd>N</kbd>, <kbd>P</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.toggleDarkMode }}</div>
 					<div :class="$style.content">
 						<kbd>D</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.redirectToSearch }}</div>
 					<div :class="$style.content">
 						<kbd>S</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.viewKeyboardShortCutList }}</div>
 					<div :class="$style.content">
 						<kbd>Shift</kbd> + <kbd>/</kbd> or <kbd>?</kbd>
 					</div>
 				</div>
 			</MkFoldableSection>
+
 			<MkFoldableSection>
 				<template #header>{{ i18n.ts._keyboardShortCut._category.postForm }}</template>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleVisibility }}</div>
 					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
 					<div :class="$style.content">
 						<kbd>Ctrl</kbd> + <kbd>Shift</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleLocalOnly }}</div>
 					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
 					<div :class="$style.content">
 						<kbd>Ctrl</kbd> + <kbd>Alt</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.sendPost }}</div>
 					<div v-if="prefer.s.useEnterToSend" :class="$style.content">
 						<kbd>Enter</kbd>
@@ -70,8 +72,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed } from 'vue';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
-import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { prefer } from '@/preferences.js';
+import MkFoldableSection from '@/components/MkFoldableSection.vue';
 
 defineProps<{
 	popup?: boolean;
@@ -133,7 +135,6 @@ definePage(() => ({
 .caution {
 	font-size: 0.8em;
 	padding: 16px;
-	margin-top: 8px;
 	background: var(--MI_THEME-infoWarnBg);
 	color: var(--MI_THEME-infoWarnFg);
 	border-radius: var(--MI-radius);
