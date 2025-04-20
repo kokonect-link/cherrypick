@@ -509,6 +509,10 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: true,
 	},
+	showGapBodyOfTheNote: {
+		where: 'device',
+		default: false,
+	},
 	showReplyButtonInNoteFooter: {
 		where: 'device',
 		default: true,

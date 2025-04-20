@@ -56,14 +56,96 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<Mfm :text="getNoteSummary(appearNote)" :plain="true" :nowrap="true" :author="appearNote.user" :nyaize="'respect'" :class="[$style.collapsedRenoteTargetText, { [$style.showReplyTargetNoteInSemiTransparent]: prefer.s.showReplyTargetNoteInSemiTransparent }]" @click="renoteCollapsed ? renoteCollapsed = false : replyCollapsed ? replyCollapsed = false : ''"/>
 	</div>
 	<article v-else :class="$style.article" :style="{ cursor: expandOnNoteClick ? 'pointer' : '', paddingTop: prefer.s.showSubNoteFooterButton && appearNote.reply && (!renoteCollapsed && !replyCollapsed && ((!notification && (forceShowReplyTargetNote || prefer.s.showReplyTargetNote)) || (notification && prefer.s.showReplyInNotification))) ? '14px' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick" @contextmenu.stop="onContextmenu">
-		<div style="display: flex; padding-bottom: 10px;">
+		<div :style="prefer.s.showGapBodyOfTheNote ? null : 'padding-bottom: 10px;'" style="display: flex;">
 			<div v-if="appearNote.channel" :class="$style.colorBar" :style="{ background: appearNote.channel.color }"></div>
 			<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="[$style.avatar, prefer.s.useStickyIcons ? $style.useSticky : null, { [$style.avatarReplyTo]: appearNote.reply, [$style.showEl]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: !appearNote.reply && (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="appearNote.user" :link="!mock" :preview="!mock" noteClick/>
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
+				<div v-if="prefer.s.showGapBodyOfTheNote" :style="prefer.s.showGapBodyOfTheNote ? 'margin-top: 4px;' : null" style="container-type: inline-size;">
+					<MkEvent v-if="appearNote.event" :note="appearNote"/>
+					<div v-if="appearNote.replyId && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
+						<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
+						<MkA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></MkA>
+					</div>
+					<p v-if="appearNote.cw != null" :class="$style.cw">
+						<Mfm
+							v-if="appearNote.cw != ''"
+							:text="appearNote.cw"
+							:author="appearNote.user"
+							:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
+							:enableEmojiMenu="!!$i"
+							:enableEmojiMenuReaction="!!$i"
+						/>
+						<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;" @click.stop/>
+					</p>
+					<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
+						<div :class="$style.text">
+							<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
+							<MkA v-if="appearNote.replyId && (forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
+							<Mfm
+								v-if="appearNote.text"
+								:parsedNodes="parsed"
+								:text="appearNote.text"
+								:author="appearNote.user"
+								:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
+								:emojiUrls="appearNote.emojis"
+								:enableEmojiMenu="!!$i"
+								:enableEmojiMenuReaction="!!$i"
+								class="_selectable"
+							/>
+							<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding-top: 5px; color: var(--MI_THEME-accent);">
+								<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
+								<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
+							</div>
+							<div v-if="translating || translation" :class="$style.translation">
+								<MkLoading v-if="translating" mini/>
+								<div v-else-if="translation">
+									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+									<Mfm
+										:text="translation.text"
+										:author="appearNote.user"
+										:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
+										:emojiUrls="appearNote.emojis"
+										:enableEmojiMenu="!!$i"
+										:enableEmojiMenuReaction="!!$i"
+										class="_selectable"
+										@click.stop
+									/>
+									<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis" :class="$style.poll" isTranslation @click.stop/>
+									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+										<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+									</div>
+								</div>
+							</div>
+							<div v-if="viewTextSource">
+								<hr style="margin: 10px 0;">
+								<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
+								<button class="_button" style="padding-top: 5px; color: var(--MI_THEME-accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+							</div>
+						</div>
+						<div v-if="appearNote.files && appearNote.files.length > 0">
+							<MkMediaList ref="galleryEl" :mediaList="appearNote.files" :disableRightClick="appearNote.disableRightClick" @click.stop @contextmenu="disableRightClickHandler"/>
+						</div>
+						<MkPoll v-if="appearNote.poll" :noteId="appearNote.id" :poll="appearNote.poll" :author="appearNote.user" :emojiUrls="appearNote.emojis" :class="$style.poll" @click.stop/>
+						<div v-if="isEnabledUrlPreview">
+							<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="false" :class="$style.urlPreview"/>
+						</div>
+						<button v-if="((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (appearNote.files && appearNote.files.length > 0 && prefer.s.allMediaNoteCollapse)) && collapsed" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.collapsed" class="_button" @click.stop="collapsed = false">
+							<span :class="$style.collapsedLabel">
+								{{ i18n.ts.showMore }}
+								<span v-if="appearNote.files && appearNote.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
+							</span>
+						</button>
+						<button v-else-if="((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (appearNote.files && appearNote.files.length > 0 && prefer.s.allMediaNoteCollapse)) && !collapsed" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.showLess" class="_button" @click.stop="collapsed = true">
+							<span :class="$style.showLessLabel">{{ i18n.ts.showLess }}</span>
+						</button>
+					</div>
+					<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
+				</div>
 			</div>
 		</div>
-		<div style="container-type: inline-size;">
+		<div v-if="!prefer.s.showGapBodyOfTheNote" style="container-type: inline-size;">
 			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<div v-if="appearNote.replyId && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
 				<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>

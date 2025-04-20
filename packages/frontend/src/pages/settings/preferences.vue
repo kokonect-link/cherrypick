@@ -416,6 +416,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkPreferenceContainer>
 								</SearchMarker>
 
+								<SearchMarker :keywords="['note', 'gap', 'body']">
+									<MkPreferenceContainer k="showGapBodyOfTheNote">
+										<MkSwitch v-model="showGapBodyOfTheNote">
+											<template #label><SearchLabel>{{ i18n.ts.showGapBodyOfTheNote }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+										</MkSwitch>
+									</MkPreferenceContainer>
+								</SearchMarker>
+
 								<div class="_gaps_s" style="margin: 1em 0;">
 									<div style="font-weight: bold; margin: 0 0 8px 0;">{{ i18n.ts.noteFooterButton }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></div>
 
@@ -1326,6 +1334,7 @@ const allMediaNoteCollapse = prefer.model('allMediaNoteCollapse');
 const showSubNoteFooterButton = prefer.model('showSubNoteFooterButton');
 const infoButtonForNoteActionsEnabled = prefer.model('infoButtonForNoteActionsEnabled');
 const showTranslateButtonInNote = prefer.model('showTranslateButtonInNote');
+const showGapBodyOfTheNote = prefer.model('showGapBodyOfTheNote');
 const showReplyButtonInNoteFooter = prefer.model('showReplyButtonInNoteFooter');
 const showRenoteButtonInNoteFooter = prefer.model('showRenoteButtonInNoteFooter');
 const showLikeButtonInNoteFooter = prefer.model('showLikeButtonInNoteFooter');
@@ -1459,6 +1468,7 @@ watch([
 	showClipButtonInNoteFooter,
 	showReplyInNotification,
 	showTranslateButtonInNote,
+	showGapBodyOfTheNote,
 	showSubNoteFooterButton,
 	infoButtonForNoteActionsEnabled,
 	renoteQuoteButtonSeparation,

@@ -152,6 +152,7 @@ export function migrateOldSettings() {
 		prefer.commit('showSubNoteFooterButton', store.s.showSubNoteFooterButton);
 		prefer.commit('infoButtonForNoteActionsEnabled', store.s.infoButtonForNoteActionsEnabled);
 		prefer.commit('showTranslateButtonInNote', store.s.showTranslateButtonInNote);
+		prefer.commit('showGapBodyOfTheNote', store.s.showGapBodyOfTheNote);
 		prefer.commit('showReplyButtonInNoteFooter', store.s.showReplyButtonInNoteFooter);
 		prefer.commit('showRenoteButtonInNoteFooter', store.s.showRenoteButtonInNoteFooter);
 		prefer.commit('showLikeButtonInNoteFooter', store.s.showLikeButtonInNoteFooter);

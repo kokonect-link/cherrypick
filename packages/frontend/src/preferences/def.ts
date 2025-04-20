@@ -431,6 +431,9 @@ export const PREF_DEF = {
 	showTranslateButtonInNote: {
 		default: true,
 	},
+	showGapBodyOfTheNote: {
+		default: false,
+	},
 	showReplyButtonInNoteFooter: {
 		default: true,
 	},

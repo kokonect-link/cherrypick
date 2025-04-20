@@ -5,13 +5,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-show="!isDeleted" :class="[$style.root, { [$style.isSchedule]: note.isSchedule }]" :tabindex="!isDeleted ? '-1' : undefined" :style="{ cursor: expandOnNoteClick && enableNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
-	<div style="display: flex; padding-bottom: 10px;">
+	<div :style="prefer.s.showGapBodyOfTheNote ? null : 'padding-bottom: 10px;'" style="display: flex;">
 		<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview noteClick/>
 		<div :class="$style.main">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
+			<div v-if="prefer.s.showGapBodyOfTheNote" :style="prefer.s.showGapBodyOfTheNote ? 'margin-top: 4px;' : null">
+				<MkEvent v-if="note.event" :note="note"/>
+				<p v-if="note.cw != null" :class="$style.cw">
+					<Mfm v-if="note.cw != ''" :text="note.cw" :author="note.user" :nyaize="'respect'" style="margin-right: 8px;"/>
+					<MkCwButton v-model="showContent" :text="note.text" :renote="note.renote" :files="note.files" :poll="note.poll" @click.stop/>
+				</p>
+				<div v-show="note.cw == null || showContent">
+					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="false"/>
+					<div v-if="note.isSchedule" style="margin-top: 10px;">
+						<MkButton :class="$style.button" inline rounded @click.stop.prevent="deleteAndEditScheduleNote()"><i class="ti ti-eraser"></i> {{ i18n.ts.deleteAndEdit }}</MkButton>
+						<MkButton :class="$style.button" inline rounded danger @click.stop.prevent="deleteScheduleNote()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div>
+	<div v-if="!prefer.s.showGapBodyOfTheNote">
 		<MkEvent v-if="note.event" :note="note"/>
 		<p v-if="note.cw != null" :class="$style.cw">
 			<Mfm v-if="note.cw != ''" :text="note.cw" :author="note.user" :nyaize="'respect'" style="margin-right: 8px;"/>

@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * ノートの本文を離して表示
+     */
+    "showGapBodyOfTheNote": string;
+    /**
      * {user}さんに返信
      */
     "replyTo": ParameterizedString<"user">;
