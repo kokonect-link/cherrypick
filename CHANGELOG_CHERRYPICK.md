@@ -44,6 +44,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: `제어판 - 파일`의 미디어 왼쪽 상단에 미디어 정보(`ALT`/`GIF`/`APNG`/`NSFW`) 표시
 - Enhance: 비밀번호 입력 시 입력한 비밀번호를 보이도록 할 수 있음
 - Enhance: 스크롤 감지를 통해 작동하는 기능의 성능이 개선됨
+- Fix: (Friendly) 모바일 환경에서 새 노트가 있을 때 인디케이터가 표시되지 않음
 - Fix: 회원 가입 양식의 비밀번호 입력란에 `Caps Lock` 표시가 보이지 않음
 - Fix: 타임라인에서 답글 대상 노트를 숨겼을 때 다른 서버에 있는 사용자의 호스트 이름이 보이지 않음
 - Fix: 이미지 뷰어에서 `우클릭 방지`가 적용되지 않음 (kokonect-link/cherrypick#573)
