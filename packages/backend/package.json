@@ -85,7 +85,7 @@
 		"@google-cloud/logging": "^10.5.0",
 		"@google-cloud/translate": "^7.2.1",
 		"@misskey-dev/sharp-read-bmp": "1.2.0",
-		"@misskey-dev/summaly": "5.2.0",
+		"@misskey-dev/summaly": "5.2.1",
 		"@napi-rs/canvas": "0.1.68",
 		"@nestjs/common": "11.0.12",
 		"@nestjs/core": "11.0.12",
