@@ -9,11 +9,13 @@ packages:
   - packages/misskey-reversi
   - packages/misskey-bubble-game
 onlyBuiltDependencies:
+  - '@biomejs/biome'
   - '@nestjs/core'
   - '@parcel/watcher'
   - '@sentry/profiling-node'
   - '@swc/core'
   - '@tensorflow/tfjs-node'
+  - argon2
   - bufferutil
   - canvas
   - core-js
@@ -22,6 +24,7 @@ onlyBuiltDependencies:
   - msgpackr-extract
   - msw
   - nice-napi
+  - protobufjs
   - re2
   - sharp
   - utf-8-validate
