@@ -113,10 +113,10 @@ onMounted(() => {
 
 <style lang="scss" module>
 .root {
-	position: fixed;
+	// position: fixed;
 	z-index: 1000;
 	bottom: 0;
-	padding: 0 10px;
+	padding: 0 10px calc(env(safe-area-inset-bottom));
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
@@ -171,7 +171,7 @@ onMounted(() => {
 .itemInner {
 	position: relative;
 	color: var(--MI_THEME-fg);
-	padding: 15px 0 calc(env(safe-area-inset-bottom) + 30px);
+	padding: 15px 0;
 
 	&:active {
 		color: var(--MI_THEME-accent);
