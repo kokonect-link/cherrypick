@@ -4,81 +4,77 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div>
-	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
-		<MkSpacer :contentMax="1000">
-			<div ref="rootEl" :class="$style.root">
-				<MkFoldableSection class="item">
-					<template #header>Stats</template>
-					<XStats/>
-				</MkFoldableSection>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 1000px;">
+		<div ref="rootEl" :class="$style.root">
+			<MkFoldableSection class="item">
+				<template #header>Stats</template>
+				<XStats/>
+			</MkFoldableSection>
 
-				<MkFoldableSection v-if="meta" class="item">
-					<template #header>Server Metric</template>
-					<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
-					<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
-				</MkFoldableSection>
+			<MkFoldableSection v-if="meta" class="item">
+				<template #header>Server Metric</template>
+				<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
+				<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Active users</template>
-					<XActiveUsers/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Active users</template>
+				<XActiveUsers/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Heatmap</template>
-					<XHeatmap/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Heatmap</template>
+				<XHeatmap/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Retention rate</template>
-					<XRetention/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Retention rate</template>
+				<XRetention/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Moderators</template>
-					<XModerators/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Moderators</template>
+				<XModerators/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Federation</template>
-					<XFederation/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Federation</template>
+				<XFederation/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Instances</template>
-					<XInstances/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Instances</template>
+				<XInstances/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Ap requests</template>
-					<XApRequests/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Ap requests</template>
+				<XApRequests/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>New users</template>
-					<XUsers/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>New users</template>
+				<XUsers/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Deliver queue</template>
-					<XQueue domain="deliver"/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Deliver queue</template>
+				<XQueue domain="deliver"/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Inbox queue</template>
-					<XQueue domain="inbox"/>
-				</MkFoldableSection>
-			</div>
-		</MkSpacer>
-	</MkStickyContainer>
-</div>
+			<MkFoldableSection class="item">
+				<template #header>Inbox queue</template>
+				<XQueue domain="inbox"/>
+			</MkFoldableSection>
+		</div>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { markRaw, onMounted, onUnmounted, onBeforeUnmount, nextTick, shallowRef, ref, computed, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
 import XQueue from './overview.queue.vue';

@@ -222,12 +222,9 @@ function openProfile() {
 }
 
 .body {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 1001;
+	position: relative;
 	width: var(--nav-icon-only-width);
-	height: 100dvh;
+	height: 100%;
 	box-sizing: border-box;
 	overflow: auto;
 	overflow-x: clip;

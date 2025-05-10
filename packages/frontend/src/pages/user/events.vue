@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="800" style="padding-top: 0">
+<div class="_spacer" style="--MI_SPACER-w: 800px; padding-top: 0;">
 	<MkStickyContainer>
 		<template #header>
 			<MkTab v-model="include" :class="$style.tab">
@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</template>
 		<MkNotes :noGap="!prefer.s.showGapBetweenNotesInTimeline" :pagination="pagination" :class="$style.tl" :getDate="include === 'upcoming' ? note => note.event.start : undefined "/>
 	</MkStickyContainer>
-</MkSpacer>
+</div>
 </template>
 
 <script lang="ts" setup>

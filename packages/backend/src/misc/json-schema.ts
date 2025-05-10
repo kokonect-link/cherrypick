@@ -68,6 +68,7 @@ import { packedChatMessageSchema, packedChatMessageLiteSchema, packedChatMessage
 import { packedChatRoomSchema } from '@/models/json-schema/chat-room.js';
 import { packedChatRoomInvitationSchema } from '@/models/json-schema/chat-room-invitation.js';
 import { packedChatRoomMembershipSchema } from '@/models/json-schema/chat-room-membership.js';
+import { packedAchievementNameSchema, packedAchievementSchema } from '@/models/json-schema/achievement.js';
 import { packedNoteDraftSchema } from '@/models/json-schema/note-draft.js';
 
 export const refs = {
@@ -81,6 +82,8 @@ export const refs = {
 
 	UserList: packedUserListSchema,
 	UserGroup: packedUserGroupSchema,
+	Achievement: packedAchievementSchema,
+	AchievementName: packedAchievementNameSchema,
 	Ad: packedAdSchema,
 	Announcement: packedAnnouncementSchema,
 	App: packedAppSchema,

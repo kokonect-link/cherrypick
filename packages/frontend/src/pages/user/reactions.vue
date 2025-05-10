@@ -4,16 +4,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkPagination v-slot="{items}" ref="list" :pagination="pagination">
-	<div v-for="item in items" :key="item.id" :to="`/clips/${item.id}`" class="_panel _margin">
-		<div :class="$style.header">
-			<MkAvatar :class="$style.avatar" :user="user"/>
-			<MkReactionIcon :class="$style.reaction" :reaction="item.type" :noStyle="true"/>
-			<MkTime :time="item.createdAt" :class="$style.createdAt"/>
+<div class="_spacer" style="--MI_SPACER-w: 700px;">
+	<MkPagination v-slot="{items}" ref="list" :pagination="pagination">
+		<div v-for="item in items" :key="item.id" :to="`/clips/${item.id}`" class="_panel _margin">
+			<div :class="$style.header">
+				<MkAvatar :class="$style.avatar" :user="user"/>
+				<MkReactionIcon :class="$style.reaction" :reaction="item.type" :noStyle="true"/>
+				<MkTime :time="item.createdAt" :class="$style.createdAt"/>
+			</div>
+			<MkNote :key="item.id" :note="item.note"/>
 		</div>
-		<MkNote :key="item.id" :note="item.note"/>
-	</div>
-</MkPagination>
+	</MkPagination>
+</div>
 </template>
 
 <script lang="ts" setup>

@@ -12,8 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	appear @afterLeave="emit('closed')"
 >
 	<div v-if="showing" :class="[$style.root, { _popup: !prefer.s.useBlurEffect || !prefer.s.useBlurEffectForModal || !prefer.s.removeModalBgColorForBlur, _popupAcrylic: prefer.s.useBlurEffect && prefer.s.useBlurEffectForModal && prefer.s.removeModalBgColorForBlur }]" class="_shadow" :style="{ zIndex, top: top + 'px', left: left + 'px' }" @mouseover="() => { emit('mouseover'); }" @mouseleave="() => { emit('mouseleave'); }">
-		<div v-if="user != null">
-			<div :class="$style.banner" :style="user.bannerUrl ? `background-image: url(${prefer.s.disableShowingAnimatedImages ? getStaticImageUrl(user.bannerUrl) : user.bannerUrl})` : ''">
+		<MkError v-if="error" @retry="fetchUser()"/>
+		<div v-else-if="user != null">
+			<div :class="$style.banner" :style="user.bannerUrl ? { backgroundImage: `url(${prefer.s.disableShowingAnimatedImages ? getStaticImageUrl(user.bannerUrl) : user.bannerUrl})` } : ''">
 				<span v-if="$i && $i.id != user.id && user.isFollowed" :class="$style.followed">{{ i18n.ts.followsYou }}</span>
 			</div>
 			<svg v-if="(!prefer.s.setFederationAvatarShape && !prefer.s.squareAvatars) || (prefer.s.setFederationAvatarShape && !user.setFederationAvatarShape && !prefer.s.squareAvatars) || (prefer.s.setFederationAvatarShape && user.setFederationAvatarShape && !user.isSquareAvatars)" viewBox="0 0 128 128" :class="$style.avatarBack">
@@ -92,6 +93,7 @@ const zIndex = os.claimZIndex('middle');
 const user = ref<Misskey.entities.UserDetailed | null>(null);
 const top = ref(0);
 const left = ref(0);
+const error = ref(false);
 
 function showMenu(ev: MouseEvent) {
 	if (user.value == null) return;
@@ -99,28 +101,38 @@ function showMenu(ev: MouseEvent) {
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }
 
-async function toggleNotify() {
-	os.apiWithDialog('following/update', {
-		userId: user.value.id,
-		notify: user.value.notify === 'normal' ? 'none' : 'normal',
-	}).then(() => {
-		user.value.notify = user.value.notify === 'normal' ? 'none' : 'normal';
-	});
-}
-
-onMounted(() => {
+async function fetchUser() {
 	if (typeof props.q === 'object') {
 		user.value = props.q;
+		error.value = false;
 	} else {
-		const query = props.q.startsWith('@') ?
+		const query: Omit<Misskey.entities.UsersShowRequest, 'userIds'> = props.q.startsWith('@') ?
 			Misskey.acct.parse(props.q.substring(1)) :
 			{ userId: props.q };
 
 		misskeyApi('users/show', query).then(res => {
 			if (!props.showing) return;
 			user.value = res;
+			error.value = false;
+		}, () => {
+			error.value = true;
 		});
 	}
+}
+
+async function toggleNotify() {
+	if (!user.value) return;
+
+	os.apiWithDialog('following/update', {
+		userId: user.value.id,
+		notify: user.value.notify === 'normal' ? 'none' : 'normal',
+	}).then(() => {
+		if (user.value) user.value.notify = user.value.notify === 'normal' ? 'none' : 'normal';
+	});
+}
+
+onMounted(() => {
+	fetchUser();
 
 	const rect = props.source.getBoundingClientRect();
 	const x = ((rect.left + (props.source.offsetWidth / 2)) - (300 / 2)) + window.scrollX;

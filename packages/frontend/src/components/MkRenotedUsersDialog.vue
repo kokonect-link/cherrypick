@@ -12,13 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.renotesList }}</template>
-
-	<MkSpacer :marginMin="20" :marginMax="28">
+	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
 		<div v-if="renotes" class="_gaps">
-			<div v-if="renotes.length === 0" class="_fullinfo">
-				<img :src="infoImageUrl" draggable="false"/>
-				<div>{{ i18n.ts.nothing }}</div>
-			</div>
+			<MkResult v-if="renotes.length === 0" type="empty"/>
 			<template v-else>
 				<MkA v-for="user in users" :key="user.id" :to="userPage(user)" @click="dialog?.close()">
 					<MkUserCardMini :user="user" :withChart="false"/>
@@ -28,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-else>
 			<MkLoading/>
 		</div>
-	</MkSpacer>
+	</div>
 </MkModalWindow>
 </template>
 
@@ -39,7 +35,6 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import { infoImageUrl } from '@/instance.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 
 const emit = defineEmits<{

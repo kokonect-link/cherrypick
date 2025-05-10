@@ -4,58 +4,56 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader :actions="headerActions" :tabs="headerTabs">
-	<MkSpacer :contentMax="700">
-		<div>
-			<div class="_gaps_m">
-				<MkInput v-model="name">
-					<template #label>{{ i18n.ts.name }}</template>
-				</MkInput>
-				<MkSelect v-model="src">
-					<template #label>{{ i18n.ts.antennaSource }}</template>
-					<option value="all">{{ i18n.ts._antennaSources.all }}</option>
-					<!--<option value="home">{{ i18n.ts._antennaSources.homeTimeline }}</option>-->
-					<option value="users">{{ i18n.ts._antennaSources.users }}</option>
-					<option value="list">{{ i18n.ts._antennaSources.userList }}</option>
-					<option value="group">{{ i18n.ts._antennaSources.userGroup }}</option>
-					<option value="users_blacklist">{{ i18n.ts._antennaSources.userBlacklist }}</option>
-				</MkSelect>
-				<MkSelect v-if="src === 'list'" v-model="userListId">
-					<template #label>{{ i18n.ts.userList }}</template>
-					<option v-for="list in userLists" :key="list.id" :value="list.id">{{ list.name }}</option>
-				</MkSelect>
-				<MkSelect v-else-if="src === 'group'" v-model="userGroupId">
-					<template #label>{{ i18n.ts.group }}</template>
-					<option v-for="group in userGroups" :key="group.id" :value="group.id">{{ group.name }}</option>
-				</MkSelect>
-				<MkTextarea v-else-if="src === 'users' || src === 'users_blacklist'" v-model="users">
-					<template #label>{{ i18n.ts.users }}</template>
-					<template #caption>{{ i18n.ts.antennaUsersDescription }} <button class="_textButton" @click="addUser">{{ i18n.ts.addUser }}</button></template>
-				</MkTextarea>
-				<MkSwitch v-model="excludeBots">{{ i18n.ts.antennaExcludeBots }}</MkSwitch>
-				<MkSwitch v-model="withReplies">{{ i18n.ts.withReplies }}</MkSwitch>
-				<MkTextarea v-model="keywords">
-					<template #label>{{ i18n.ts.antennaKeywords }}</template>
-					<template #caption>{{ i18n.ts.antennaKeywordsDescription }}</template>
-				</MkTextarea>
-				<MkTextarea v-model="excludeKeywords">
-					<template #label>{{ i18n.ts.antennaExcludeKeywords }}</template>
-					<template #caption>{{ i18n.ts.antennaKeywordsDescription }}</template>
-				</MkTextarea>
-				<MkSwitch v-model="localOnly">{{ i18n.ts.localOnly }}</MkSwitch>
-				<MkSwitch v-model="caseSensitive">{{ i18n.ts.caseSensitive }}</MkSwitch>
-				<MkSwitch v-model="withFile">{{ i18n.ts.withFileAntenna }}</MkSwitch>
-				<MkSwitch v-model="excludeNotesInSensitiveChannel">{{ i18n.ts.excludeNotesInSensitiveChannel }}</MkSwitch>
-			</div>
-			<div :class="$style.actions">
-				<div class="_buttons">
-					<MkButton inline primary @click="saveAntenna()"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
-					<MkButton v-if="initialAntenna.id != null" inline danger @click="deleteAntenna()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
-				</div>
+<div class="_spacer" style="--MI_SPACER-w: 700px;">
+	<div>
+		<div class="_gaps_m">
+			<MkInput v-model="name">
+				<template #label>{{ i18n.ts.name }}</template>
+			</MkInput>
+			<MkSelect v-model="src">
+				<template #label>{{ i18n.ts.antennaSource }}</template>
+				<option value="all">{{ i18n.ts._antennaSources.all }}</option>
+				<!--<option value="home">{{ i18n.ts._antennaSources.homeTimeline }}</option>-->
+				<option value="users">{{ i18n.ts._antennaSources.users }}</option>
+				<option value="list">{{ i18n.ts._antennaSources.userList }}</option>
+				<option value="group">{{ i18n.ts._antennaSources.userGroup }}</option>
+				<option value="users_blacklist">{{ i18n.ts._antennaSources.userBlacklist }}</option>
+			</MkSelect>
+			<MkSelect v-if="src === 'list'" v-model="userListId">
+				<template #label>{{ i18n.ts.userList }}</template>
+				<option v-for="list in userLists" :key="list.id" :value="list.id">{{ list.name }}</option>
+			</MkSelect>
+			<MkSelect v-else-if="src === 'group'" v-model="userGroupId">
+				<template #label>{{ i18n.ts.group }}</template>
+				<option v-for="group in userGroups" :key="group.id" :value="group.id">{{ group.name }}</option>
+			</MkSelect>
+			<MkTextarea v-else-if="src === 'users' || src === 'users_blacklist'" v-model="users">
+				<template #label>{{ i18n.ts.users }}</template>
+				<template #caption>{{ i18n.ts.antennaUsersDescription }} <button class="_textButton" @click="addUser">{{ i18n.ts.addUser }}</button></template>
+			</MkTextarea>
+			<MkSwitch v-model="excludeBots">{{ i18n.ts.antennaExcludeBots }}</MkSwitch>
+			<MkSwitch v-model="withReplies">{{ i18n.ts.withReplies }}</MkSwitch>
+			<MkTextarea v-model="keywords">
+				<template #label>{{ i18n.ts.antennaKeywords }}</template>
+				<template #caption>{{ i18n.ts.antennaKeywordsDescription }}</template>
+			</MkTextarea>
+			<MkTextarea v-model="excludeKeywords">
+				<template #label>{{ i18n.ts.antennaExcludeKeywords }}</template>
+				<template #caption>{{ i18n.ts.antennaKeywordsDescription }}</template>
+			</MkTextarea>
+			<MkSwitch v-model="localOnly">{{ i18n.ts.localOnly }}</MkSwitch>
+			<MkSwitch v-model="caseSensitive">{{ i18n.ts.caseSensitive }}</MkSwitch>
+			<MkSwitch v-model="withFile">{{ i18n.ts.withFileAntenna }}</MkSwitch>
+			<MkSwitch v-model="excludeNotesInSensitiveChannel">{{ i18n.ts.excludeNotesInSensitiveChannel }}</MkSwitch>
+		</div>
+		<div :class="$style.actions">
+			<div class="_buttons">
+				<MkButton inline primary @click="saveAntenna()"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+				<MkButton v-if="initialAntenna.id != null" inline danger @click="deleteAntenna()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
 			</div>
 		</div>
-	</MkSpacer>
-</PageWithHeader>
+	</div>
+</div>
 </template>
 
 <script lang="ts" setup>

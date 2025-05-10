@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
-	<MkSpacer :contentMax="900">
+	<div class="_spacer" style="--MI_SPACER-w: 900px;">
 		<div class="_gaps">
 			<div v-if="tab === 'local'" :class="$style.decorations">
 				<div
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</div>
-	</MkSpacer>
+	</div>
 </PageWithHeader>
 </template>
 

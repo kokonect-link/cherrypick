@@ -10,6 +10,7 @@ import {
 	set as iset,
 	del as idel,
 	keys as ikeys,
+	clear as iclear,
 } from 'idb-keyval';
 import { miLocalStorage } from '@/local-storage.js';
 
@@ -59,4 +60,8 @@ export async function exist(key: string) {
 		return keys.includes(key);
 	}
 	return window.localStorage.getItem(fallbackName(key)) !== null;
+}
+
+export async function clear() {
+	if (idbAvailable) return iclear();
 }

@@ -7,12 +7,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div ref="rootEl" :class="[$style.root, reversed ? '_pageScrollableReversed' : '_pageScrollable']">
 	<MkStickyContainer>
 		<template #header>
-			<NotificationPageHeader v-if="notification" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :title="i18n.ts.notifications" :icon="'ti ti-bell'"/>
-			<CPPageHeader v-else-if="isMobile && prefer.s.mobileHeaderChange && !popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
-			<MkPageHeader v-else-if="!popup" v-model:tab="tab" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
+			<NotificationPageHeader v-if="notification" v-model:tab="tab" v-bind="pageHeaderProps" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :title="i18n.ts.notifications" :icon="'ti ti-bell'"/>
+			<CPPageHeader v-else-if="isMobile && prefer.s.mobileHeaderChange && !popup" v-model:tab="tab" v-bind="pageHeaderProps" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
+			<MkPageHeader v-else-if="!popup" v-model:tab="tab" v-bind="pageHeaderProps" :actions="actions" :tabs="tabs" :displayMyAvatar="displayMyAvatar" :disableFollowButton="(user && (user.isBlocked || user.isBlocking)) == true"/>
 		</template>
 		<div :class="$style.body">
-			<slot></slot>
+			<MkSwiper v-if="prefer.s.enableHorizontalSwipe && swipable && (props.tabs?.length ?? 1) > 1" v-model:tab="tab" :class="$style.swiper" :tabs="props.tabs">
+				<slot></slot>
+			</MkSwiper>
+			<slot v-else></slot>
 		</div>
 		<template #footer><slot name="footer"></slot></template>
 	</MkStickyContainer>
@@ -20,11 +23,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, useTemplateRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { scrollInContainer } from '@@/js/scroll.js';
-import type { PageHeaderItem } from '@/types/page-header.js';
-import type { Tab } from './MkPageHeader.tabs.vue';
+import type { PageHeaderProps } from './MkPageHeader.vue';
+import { useScrollPositionKeeper } from '@/use/use-scroll-position-keeper.js';
+import MkSwiper from '@/components/MkSwiper.vue';
+import { useRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { i18n } from '@/i18n.js';
@@ -38,29 +43,41 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const props = withDefaults(defineProps<{
-	tabs?: Tab[];
-	actions?: PageHeaderItem[] | null;
-	thin?: boolean;
-	hideTitle?: boolean;
-	displayMyAvatar?: boolean;
+const props = withDefaults(defineProps<PageHeaderProps & {
 	reversed?: boolean;
+	swipable?: boolean;
 	user?: Misskey.entities.UserDetailed | null;
 	popup?: boolean;
 	notification?: boolean;
 }>(), {
-	tabs: () => ([] as Tab[]),
+	reversed: false,
+	swipable: true,
+});
+
+const pageHeaderProps = computed(() => {
+	const { reversed, ...rest } = props;
+	return rest;
 });
 
 const tab = defineModel<string>('tab');
 const rootEl = useTemplateRef('rootEl');
 
+useScrollPositionKeeper(rootEl);
+
 detectScrolling(rootEl);
 
+const router = useRouter();
+
+router.useListener('same', () => {
+	scrollToTop();
+});
+
+function scrollToTop() {
+	if (rootEl.value) scrollInContainer(rootEl.value, { top: 0, behavior: 'smooth' });
+}
+
 defineExpose({
-	scrollToTop: () => {
-		if (rootEl.value) scrollInContainer(rootEl.value, { top: 0, behavior: 'smooth' });
-	},
+	scrollToTop,
 });
 </script>
 
@@ -69,7 +86,7 @@ defineExpose({
 
 }
 
-.body {
+.body, .swiper {
 	min-height: calc(100cqh - (var(--MI-stickyTop, 0px) + var(--MI-stickyBottom, 0px)));
 }
 </style>

@@ -56,7 +56,7 @@ await fs.readFile(
 			'../../locales/ko-KR.yml',
 			'assets/**',
 			'public/**',
-			'../../pnpm-lock.yaml',
+			'package.json',
 		]).length
 	) {
 		return;

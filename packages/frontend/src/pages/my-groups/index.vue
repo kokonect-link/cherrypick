@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
-	<MkSpacer :contentMax="700">
+	<div class="_spacer" style="--MI_SPACER-w: 700px;">
 		<div v-if="tab === 'owned'">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination">
 				<MkA v-for="group in items" :key="group.id" :class="$style.group" class="_panel" :to="`/my/groups/${ group.id }`">
@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 			</MkPagination>
 		</div>
-	</MkSpacer>
+	</div>
 </PageWithHeader>
 </template>
 

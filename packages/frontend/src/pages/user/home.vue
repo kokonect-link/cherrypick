@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="narrow ? 800 : 1100">
+<div class="_spacer" :style="{ '--MI_SPACER-w': narrow ? '800px' : '1100px' }">
 	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
 		<div class="main _gaps">
 			<!-- TODO -->
@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="user.followedMessage != null" class="followedMessage">
 						<MkFukidashi class="fukidashi" :tail="narrow ? 'none' : 'left'" negativeMargin>
 							<div class="messageHeader">{{ i18n.ts.messageToFollower }}</div>
-							<div><MkSparkle><Mfm :plain="true" :text="user.followedMessage" :author="user" :enableEmojiMenu="!!$i"/></MkSparkle></div>
+							<div><MkSparkle><Mfm :plain="true" :text="user.followedMessage" :author="user" :enableEmojiMenu="!!$i" class="_selectable"/></MkSparkle></div>
 						</MkFukidashi>
 					</div>
 					<div v-if="user.roles.length > 0" class="roles">
@@ -90,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="description">
 						<MkOmit>
-							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :enableEmojiMenu="!!$i"/>
+							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :enableEmojiMenu="!!$i" class="_selectable"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
 							<div v-if="user.description && isForeignLanguage">
 								<MkButton v-if="!(translating || translation)" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
@@ -100,7 +100,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkLoading v-if="translating" mini/>
 								<div v-else-if="translation">
 									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false" :enableEmojiMenu="!!$i"/>
+									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false" :enableEmojiMenu="!!$i" class="_selectable"/>
 									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 										<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
@@ -126,10 +126,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="user.fields.length > 0" class="fields">
 						<dl v-for="(field, i) in user.fields" :key="i" class="field">
 							<dt class="name">
-								<Mfm :text="field.name" :author="user" :plain="true" :colored="false" :enableEmojiMenu="!!$i"/>
+								<Mfm :text="field.name" :author="user" :plain="true" :colored="false" :enableEmojiMenu="!!$i" class="_selectable"/>
 							</dt>
 							<dd class="value">
-								<Mfm :text="field.value" :author="user" :colored="false" :enableEmojiMenu="!!$i"/>
+								<Mfm :text="field.value" :author="user" :colored="false" :enableEmojiMenu="!!$i" class="_selectable"/>
 								<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ti ti-circle-check" :class="$style.verifiedLink"></i>
 							</dd>
 						</dl>
@@ -169,11 +169,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<XTimeline :user="user"/>
 					</MkLazy>
 				</div>
-				<div v-if="user.isBlocked" class="_fullinfo">
-					<img :src="youBlockedImageUrl" draggable="false"/>
-					<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.youBlocked }}</div>
-					<div style="opacity: 0.7">{{ i18n.tsx.youBlockedDescription({ user: `@${ user.username }` }) }}</div>
-				</div>
+				<MkResult v-if="user.isBlocked" type="blocked" :user="user"/>
 			</div>
 		</div>
 		<div v-if="!narrow && !user.isBlocked" class="sub _gaps" style="container-type: inline-size;">
@@ -181,7 +177,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XActivity :key="user.id" :user="user"/>
 		</div>
 	</div>
-</MkSpacer>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -217,7 +213,6 @@ import { vibrate } from '@/utility/vibrate.js';
 import detectLanguage from '@/utility/detect-language.js';
 import { globalEvents } from '@/events.js';
 import { notesSearchAvailable, canSearchNonLocalNotes } from '@/utility/check-permissions.js';
-import { youBlockedImageUrl } from '@/instance.js';
 import { store } from '@/store.js';
 
 function calcAge(birthdate: string): number {

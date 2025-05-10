@@ -1430,6 +1430,10 @@ export interface Locale extends ILocale {
      */
     "software": string;
     /**
+     * ソフトウェア名
+     */
+    "softwareName": string;
+    /**
      * バージョン
      */
     "version": string;
@@ -4563,6 +4567,10 @@ export interface Locale extends ILocale {
      */
     "logoutConfirm": string;
     /**
+     * ログアウトするとクライアントの設定情報がブラウザから消去されます。再ログイン時に設定情報を復元できるようにするためには、設定の自動バックアップを有効にしてください。
+     */
+    "logoutWillClearClientData": string;
+    /**
      * 最終利用日時
      */
     "lastActiveDate": string;
@@ -6059,6 +6067,21 @@ export interface Locale extends ILocale {
      */
     "goToDeck": string;
     /**
+     * 連合ジョブ
+     */
+    "federationJobs": string;
+    /**
+     * ドライブでは、過去にアップロードしたファイルの一覧が表示されます。<br>
+     * ノートに添付する際に再利用したり、あとで投稿するファイルを予めアップロードしておくこともできます。<br>
+     * <b>ファイルを削除すると、今までそのファイルを使用した全ての場所(ノート、ページ、アバター、バナー等)からも見えなくなるので注意してください。</b><br>
+     * フォルダを作って整理することもできます。
+     */
+    "driveAboutTip": string;
+    /**
+     * スクロールして閉じる
+     */
+    "scrollToClose": string;
+    /**
      * 下書き
      */
     "draft": string;
@@ -6448,6 +6471,14 @@ export interface Locale extends ILocale {
          * デバイス間でインストールしたテーマを同期
          */
         "enableSyncThemesBetweenDevices": string;
+        /**
+         * ひっぱって更新
+         */
+        "enablePullToRefresh": string;
+        /**
+         * マウスでは、ホイールを押し込みながらドラッグします。
+         */
+        "enablePullToRefresh_description": string;
         "_chat": {
             /**
              * 送信者の名前を表示
@@ -6472,6 +6503,10 @@ export interface Locale extends ILocale {
          * 例: 「メインPC」、「スマホ」など
          */
         "profileNameDescription2": string;
+        /**
+         * プロファイルの管理
+         */
+        "manageProfiles": string;
     };
     "_preferencesBackup": {
         /**
@@ -6614,6 +6649,10 @@ export interface Locale extends ILocale {
              * サーバー応答なしのため停止中
              */
             "autoSuspendedForNotResponding": string;
+            /**
+             * 配信停止中のソフトウェアであるため停止中
+             */
+            "softwareSuspended": string;
         };
     };
     "_bubbleGame": {
@@ -7430,6 +7469,14 @@ export interface Locale extends ILocale {
          * 一定期間モデレーターのアクティビティが検出されなかった場合、スパム防止のためこの設定は自動でオフになります。
          */
         "thisSettingWillAutomaticallyOffWhenModeratorsInactive": string;
+        /**
+         * 配信停止中のソフトウェア
+         */
+        "deliverSuspendedSoftware": string;
+        /**
+         * 脆弱性などの理由で、サーバーのソフトウェアの名前及びバージョンの範囲を指定して配信を停止できます。このバージョン情報はサーバーが提供したものであり、信頼性は保証されません。バージョン指定には semver の範囲指定が使用できますが、>= 2024.3.1 と指定すると 2024.3.1-custom.0 のようなカスタムバージョンが含まれないため、>= 2024.3.1-0 のように prerelease の指定を行うことを推奨します。
+         */
+        "deliverSuspendedSoftwareDescription": string;
     };
     "_accountMigration": {
         /**
@@ -8567,6 +8614,10 @@ export interface Locale extends ILocale {
              * ドライブ容量
              */
             "driveCapacity": string;
+            /**
+             * アップロード可能な最大ファイルサイズ
+             */
+            "maxFileSize": string;
             /**
              * ファイルにNSFWを常に付与
              */
@@ -10713,6 +10764,10 @@ export interface Locale extends ILocale {
          */
         "birthdayFollowings": string;
         /**
+         * チャット
+         */
+        "chat": string;
+        /**
          * 検索
          */
         "search": string;
@@ -11802,6 +11857,10 @@ export interface Locale extends ILocale {
              * ロールタイムライン
              */
             "roleTimeline": string;
+            /**
+             * チャット
+             */
+            "chat": string;
         };
     };
     "_dialog": {

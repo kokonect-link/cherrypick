@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
 		<FormSuspense :p="init">
 			<div class="_gaps_m">
 				<div class="_panel" style="padding: 16px;">
@@ -63,8 +62,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</FormSection>
 			</div>
 		</FormSuspense>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -78,7 +77,6 @@ import FormSection from '@/components/form/section.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
-import XHeader from '@/pages/admin/_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { fetchInstance } from '@/instance.js';
 import FormSuspense from '@/components/form/suspense.vue';

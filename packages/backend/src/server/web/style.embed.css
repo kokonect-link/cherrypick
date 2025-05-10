@@ -53,8 +53,8 @@ html.embed.noborder #splash {
 	margin: auto;
 	width: 64px;
 	height: 64px;
-	pointer-events: none;
 	border-radius: 22px;
+	pointer-events: none;
 }
 
 #splashSpinner {

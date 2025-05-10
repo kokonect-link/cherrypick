@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.additionalPermissionsForFlash }}</template>
-	<MkSpacer :marginMin="20" :marginMax="28">
+	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
 		<p>{{ i18n.ts.thisFlashRequiresTheFollowingPermissions }}</p>
 		<ul>
 			<li v-for="permission in props.permissions" :key="permission">
@@ -24,13 +24,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkButton inline :class="$style.cancel" @click="cancel">{{ i18n.ts.cancel }}</MkButton>
 			<MkButton primary inline @click="accept">{{ i18n.ts.accept }}</MkButton>
 		</div>
-	</MkSpacer>
+	</div>
 </MkModalWindow>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { useTemplateRef } from 'vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
-import MkSpacer from '@/components/global/MkSpacer.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 
@@ -44,7 +43,7 @@ const emit = defineEmits<{
 	(ev: 'cancel'): void,
 }>();
 
-const dialog = ref<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
 const cancel = () => {
 	emit('cancel');

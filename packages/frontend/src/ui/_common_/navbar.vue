@@ -212,12 +212,9 @@ function menuEdit() {
 }
 
 .body {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 1001;
+	position: relative;
 	width: var(--nav-icon-only-width);
-	height: 100dvh;
+	height: 100%;
 	box-sizing: border-box;
 	overflow: auto;
 	overflow-x: clip;
@@ -375,6 +372,7 @@ function menuEdit() {
 		display: inline-block;
 		width: 38px;
 		aspect-ratio: 1;
+		border-radius: 8px;
 	}
 
 	.bottom {
@@ -602,6 +600,7 @@ function menuEdit() {
 		display: inline-block;
 		width: 30px;
 		aspect-ratio: 1;
+		border-radius: 8px;
 	}
 
 	.bottom {

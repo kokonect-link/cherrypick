@@ -4,36 +4,34 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin">
-	<MkSpacer :contentMax="700">
-		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'featured'">
-				<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
+<PageWithHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true">
+	<div class="_spacer" style="--MI_SPACER-w: 700px;">
+		<div v-if="tab === 'featured'">
+			<MkPagination v-slot="{items}" :pagination="featuredFlashsPagination">
+				<div class="_gaps_s">
+					<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
+				</div>
+			</MkPagination>
+		</div>
+
+		<div v-else-if="tab === 'my'">
+			<div class="_gaps">
+				<MkPagination v-slot="{items}" :pagination="myFlashsPagination">
 					<div class="_gaps_s">
 						<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
 					</div>
 				</MkPagination>
 			</div>
+		</div>
 
-			<div v-else-if="tab === 'my'">
-				<div class="_gaps">
-					<MkPagination v-slot="{items}" :pagination="myFlashsPagination">
-						<div class="_gaps_s">
-							<MkFlashPreview v-for="flash in items" :key="flash.id" :flash="flash"/>
-						</div>
-					</MkPagination>
+		<div v-else-if="tab === 'liked'">
+			<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
+				<div class="_gaps_s">
+					<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
 				</div>
-			</div>
-
-			<div v-else-if="tab === 'liked'">
-				<MkPagination v-slot="{items}" :pagination="likedFlashsPagination">
-					<div class="_gaps_s">
-						<MkFlashPreview v-for="like in items" :key="like.flash.id" :flash="like.flash"/>
-					</div>
-				</MkPagination>
-			</div>
-		</MkHorizontalSwipe>
-	</MkSpacer>
+			</MkPagination>
+		</div>
+	</div>
 </PageWithHeader>
 </template>
 
@@ -41,11 +39,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 import MkFlashPreview from '@/components/MkFlashPreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { useRouter } from '@/router.js';
+import { $i } from '@/i.js';
 
 const router = useRouter();
 

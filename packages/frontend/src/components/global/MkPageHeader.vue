@@ -67,13 +67,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 </div>
 </template>
 
+<script lang="ts">
+import type { PageHeaderItem } from '@/types/page-header.js';
+import type { PageMetadata } from '@/page.js';
+import type { Tab } from './MkPageHeader.tabs.vue';
+
+export type PageHeaderProps = {
+	overridePageMetadata?: PageMetadata;
+	tabs?: Tab[];
+	tab?: string;
+	actions?: PageHeaderItem[] | null;
+	thin?: boolean;
+	hideTitle?: boolean;
+	displayMyAvatar?: boolean;
+	disableFollowButton?: boolean;
+};
+</script>
+
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import XTabs from './MkPageHeader.tabs.vue';
-import type { Tab } from './MkPageHeader.tabs.vue';
-import type { PageHeaderItem } from '@/types/page-header.js';
-import type { PageMetadata } from '@/page.js';
 import { globalEvents } from '@/events.js';
 import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
 import { $i } from '@/i.js';
@@ -87,16 +101,7 @@ import MkFollowButton from '@/components/MkFollowButton.vue';
 
 const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
 
-const props = withDefaults(defineProps<{
-	overridePageMetadata?: PageMetadata;
-	tabs?: Tab[];
-	tab?: string;
-	actions?: PageHeaderItem[] | null;
-	thin?: boolean;
-	hideTitle?: boolean;
-	displayMyAvatar?: boolean;
-	disableFollowButton?: boolean;
-}>(), {
+const props = withDefaults(defineProps<PageHeaderProps>(), {
 	tabs: () => ([] as Tab[]),
 });
 
@@ -173,16 +178,23 @@ onUnmounted(() => {
 
 <style lang="scss" module>
 .root {
-	background: color(from var(--MI_THEME-bg) srgb r g b / 0.75);
+	background: color(from var(--MI_THEME-pageHeaderBg) srgb r g b / 0.75);
 	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 	backdrop-filter: var(--MI-blur, blur(15px));
-	border-bottom: solid 0.5px var(--MI_THEME-divider);
+	border-bottom: solid 0.5px transparent;
 	width: 100%;
+	color: var(--MI_THEME-pageHeaderFg);
 
 	&.reduceBlurEffect {
 		background: color(from var(--MI_THEME-bg) srgb r g b / 1);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
+	}
+}
+
+@container style(--MI_THEME-pageHeaderBg: var(--MI_THEME-bg)) {
+	.root {
+		border-bottom: solid 0.5px var(--MI_THEME-divider);
 	}
 }
 

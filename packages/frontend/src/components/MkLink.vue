@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <component
-	:is="self ? 'MkA' : 'a'" ref="el" style="word-break: break-all;" class="_link" :[attr]="self ? url.substring(local.length) : url" :rel="rel ?? 'nofollow noopener'" :target="target"
+	:is="self ? 'MkA' : 'a'" ref="el" style="word-break: break-all;" class="_link" :[attr]="maybeRelativeUrl" :rel="rel ?? 'nofollow noopener'" :target="target"
 	:behavior="props.navigationBehavior"
 	:title="url"
 	@click.stop="(ev: MouseEvent) => warningExternalWebsite(ev, props.url)"
@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { defineAsyncComponent, ref } from 'vue';
 import { url as local } from '@@/js/config.js';
+import { maybeMakeRelative } from '@@/js/url.js';
 import type { MkABehavior } from '@/components/global/MkA.vue';
 import { useTooltip } from '@/use/use-tooltip.js';
 import * as os from '@/os.js';
@@ -31,7 +32,8 @@ const props = withDefaults(defineProps<{
 }>(), {
 });
 
-const self = props.url.startsWith(local);
+const maybeRelativeUrl = maybeMakeRelative(props.url, local);
+const self = maybeRelativeUrl !== props.url;
 const attr = self ? 'to' : 'href';
 const target = self ? undefined : '_blank';
 

@@ -19,12 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.drafts" class="_gaps">
 		<!-- TODO: 下書きの保存可能数の残り表示 -->
 		<MkPagination ref="pagingEl" :pagination="paging">
-			<template #empty>
-				<div class="_fullinfo">
-					<img :src="infoImageUrl" draggable="false"/>
-					<div>{{ i18n.ts._drafts.noDrafts }}</div>
-				</div>
-			</template>
+			<template #empty><MkResult type="empty" :text="i18n.ts._drafts.noDrafts"/></template>
 
 			<template #default="{ items }">
 				<button
@@ -102,7 +97,6 @@ import MkModalWindow from '@/components/MkModalWindow.vue';
 import { getNoteSummary } from '@/utility/get-note-summary.js';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { infoImageUrl } from '@/instance.js';
 import { prefer } from '@/preferences.js';
 
 const emit = defineEmits<{

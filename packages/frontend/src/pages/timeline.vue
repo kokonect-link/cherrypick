@@ -4,67 +4,65 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl" class="_pageScrollable">
-	<MkStickyContainer>
-		<template #header>
-			<CPPageHeader v-if="isMobile && prefer.s.mobileHeaderChange" v-model:tab="src" :displayMyAvatar="true" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/>
-			<MkPageHeader v-else v-model:tab="src" :displayMyAvatar="true" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/>
-		</template>
-		<MkSpacer :contentMax="800">
-			<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
-				{{ i18n.ts._timelineDescription[src] }}
-			</MkInfo>
-			<MkInfo v-if="schedulePostList > 0" style="margin-bottom: var(--MI-margin);"><button type="button" :class="$style.checkSchedulePostList" @click="os.listScheduleNotePost">{{ i18n.tsx.thereIsSchedulePost({ n: schedulePostList }) }}</button></MkInfo>
-			<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="_panel" fixed style="margin-bottom: var(--MI-margin);"/>
+<PageWithHeader ref="pageComponent" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true" :displayMyAvatar="true">
+	<div class="_spacer" style="--MI_SPACER-w: 800px;">
+		<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
+			{{ i18n.ts._timelineDescription[src] }}
+		</MkInfo>
+		<MkInfo v-if="schedulePostList > 0" style="margin-bottom: var(--MI-margin);">
+			<button type="button" :class="$style.checkSchedulePostList" @click="os.listScheduleNotePost">
+				{{ i18n.tsx.thereIsSchedulePost({ n: schedulePostList }) }}
+			</button>
+		</MkInfo>
+		<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="_panel" fixed style="margin-bottom: var(--MI-margin);"/>
 
-			<transition
-				:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
-				:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
-				:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
-				:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
+		<transition
+			:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
+			:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
+			:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
+			:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
+		>
+			<div
+				v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
+				:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
 			>
-				<div
-					v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
-					:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
-				>
-					<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
-						<i class="ti ti-arrow-up"></i>
-						<I18n :src="prefer.s.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : prefer.s.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
-							<template v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
-						</I18n>
-					</button>
-				</div>
-			</transition>
-
-			<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="[$style.disabled, $style.tl]">
-				<p :class="$style.disabledTitle">
-					<i class="ti ti-circle-minus"></i>
-					{{ i18n.ts._disabledTimeline.title }}
-				</p>
-				<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
+				<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
+					<i class="ti ti-arrow-up"></i>
+					<I18n :src="prefer.s.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : prefer.s.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
+						<template v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
+					</I18n>
+				</button>
 			</div>
-			<MkTimeline
-				v-else
-				ref="tlComponent"
-				:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
-				:class="$style.tl"
-				:src="src.split(':')[0]"
-				:list="src.split(':')[1]"
-				:withRenotes="withRenotes"
-				:withReplies="withReplies"
-				:withSensitive="withSensitive"
-				:onlyFiles="onlyFiles"
-				:sound="true"
-				@queue="queueUpdated"
-			/>
-		</MkSpacer>
-	</MkStickyContainer>
-</div>
+		</transition>
+
+		<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="[$style.disabled, $style.tl]">
+			<p :class="$style.disabledTitle">
+				<i class="ti ti-circle-minus"></i>
+				{{ i18n.ts._disabledTimeline.title }}
+			</p>
+			<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
+		</div>
+
+		<MkTimeline
+			v-else
+			ref="tlComponent"
+			:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
+			:class="$style.tl"
+			:src="src.split(':')[0]"
+			:list="src.split(':')[1]"
+			:withRenotes="withRenotes"
+			:withReplies="withReplies"
+			:withSensitive="withSensitive"
+			:onlyFiles="onlyFiles"
+			:sound="true"
+			@queue="queueUpdated"
+		/>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { computed, watch, provide, useTemplateRef, ref, onMounted, onActivated } from 'vue';
-import { scrollInContainer } from '@@/js/scroll.js';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { MenuItem } from '@/types/menu.js';
 import type { BasicTimelineType } from '@/timelines.js';
@@ -83,11 +81,9 @@ import { deepMerge } from '@/utility/merge.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { prefer } from '@/preferences.js';
-import { useRouter } from '@/router.js';
 import { globalEvents } from '@/events.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { isFriendly } from '@/utility/is-friendly.js';
-import { detectScrolling } from '@/utility/detect-scrolling.js';
 
 const showEl = ref(false);
 
@@ -106,12 +102,7 @@ const schedulePostList = $i ? (await misskeyApi('notes/schedule/list')).length :
 if (!isFriendly().value) provide('shouldOmitHeaderTitle', true);
 
 const tlComponent = useTemplateRef('tlComponent');
-const rootEl = useTemplateRef('rootEl');
-
-const router = useRouter();
-router.useListener('same', () => {
-	top();
-});
+const pageComponent = useTemplateRef('pageComponent');
 
 type TimelinePageSrc = BasicTimelineType | `list:${string}`;
 
@@ -193,8 +184,6 @@ const collapseLongNoteContent = ref(prefer.s.collapseLongNoteContent);
 const collapseDefault = ref(prefer.s.collapseDefault);
 const alwaysShowCw = ref(prefer.s.alwaysShowCw);
 const showReplyTargetNote = ref(prefer.s.showReplyTargetNote);
-
-detectScrolling(rootEl);
 
 watch(src, () => {
 	queue.value = 0;
@@ -300,7 +289,7 @@ function queueUpdated(q: number): void {
 }
 
 function top(): void {
-	if (rootEl.value) scrollInContainer(rootEl.value, { top: 0, behavior: 'instant' });
+	if (pageComponent.value) pageComponent.value.scrollToTop();
 }
 
 async function chooseList(ev: MouseEvent): Promise<void> {

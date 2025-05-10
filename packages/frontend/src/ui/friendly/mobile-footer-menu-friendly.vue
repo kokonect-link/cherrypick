@@ -113,16 +113,17 @@ onMounted(() => {
 
 <style lang="scss" module>
 .root {
-	// position: fixed;
-	z-index: 1000;
+	position: fixed;
+	z-index: 1;
 	bottom: 0;
-	padding: 0 10px calc(env(safe-area-inset-bottom));
+	padding: 0 10px env(safe-area-inset-bottom, 0px);
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
 	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
 	backdrop-filter: var(--MI-blur, blur(15px));
 	border-top: solid 0.5px var(--MI_THEME-divider);
+	color: var(--MI_THEME-navFg);
 	transition: opacity 0.5s, transform 0.5s;
 
 	&.reduceBlurEffect {
@@ -214,6 +215,7 @@ onMounted(() => {
 	color: var(--MI_THEME-indicator);
 	font-size: 8px;
 	animation: global-blink 1s infinite;
+	pointer-events: none;
 
 	&:has(.itemIndicateValueIcon) {
 		animation: none;

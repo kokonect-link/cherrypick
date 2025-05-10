@@ -186,7 +186,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<span style="margin-left: 0.3em;">{{ i18n.ts._visibility[appearNote.visibility] }}</span>
 				</span>
 			</div>
-			<MkReactionsViewer v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactionsViewer" :note="appearNote"/>
+			<MkReactionsViewer v-if="appearNote.reactionAcceptance !== 'likeOnly'" ref="reactionsViewer" style="margin-top: 6px;" :note="appearNote"/>
 			<template v-if="prefer.s.showReplyButtonInNoteFooter">
 				<button v-if="!note.isHidden" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
 					<i class="ti ti-arrow-back-up"></i>
@@ -301,10 +301,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 					</div>
 				</div>
-				<div v-if="appearNote.noteEditHistory == null" class="_fullinfo">
-					<img :src="infoImageUrl" draggable="false"/>
-					<div>{{ i18n.ts.nothing }}</div>
-				</div>
+				<MkResult v-if="appearNote.noteEditHistory == null" type="empty"/>
 			</div>
 		</div>
 	</div>
@@ -365,7 +362,7 @@ import MkPagination from '@/components/MkPagination.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkPostForm from '@/components/MkPostFormSimple.vue';
-import { isEnabledUrlPreview, infoImageUrl, instance } from '@/instance.js';
+import { isEnabledUrlPreview, instance } from '@/instance.js';
 import { getAppearNote } from '@/utility/get-appear-note.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
@@ -1070,7 +1067,7 @@ function showOnRemote() {
 }
 
 .quoteNote {
-	padding: 24px;
+	padding: 24px !important;
 	border: solid 1px var(--MI_THEME-renote);
 	border-radius: 8px;
 	overflow: clip;

@@ -246,7 +246,6 @@ if (!mock) {
 .root {
 	display: inline-flex;
 	height: 38px;
-	margin: 2px;
 	padding: 0 12px;
 	font-size: 1.35em;
 	border-radius: 999px;

@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <PageWithHeader :actions="group && $i.id === group.ownerId ? headerActions : null" :tabs="headerTabs">
-	<MkSpacer :contentMax="700">
+	<div class="_spacer" style="--MI_SPACER-w: 700px;">
 		<div>
 			<transition :name="prefer.s.animation ? 'zoom' : ''" mode="out-in">
 				<div v-if="group" class="_gaps_s">
@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</transition>
 		</div>
-	</MkSpacer>
+	</div>
 </PageWithHeader>
 </template>
 

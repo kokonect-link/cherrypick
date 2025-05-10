@@ -229,7 +229,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
 		<div>
-			<MkReactionsViewer v-if="appearNote.reactionAcceptance !== 'likeOnly'" :note="appearNote" :maxNumber="16" @click.stop @contextmenu.prevent.stop @mockUpdateMyReaction="emitUpdReaction">
+			<MkReactionsViewer v-if="appearNote.reactionAcceptance !== 'likeOnly'" style="margin-top: 6px;" :note="appearNote" :maxNumber="16" @click.stop @contextmenu.prevent.stop @mockUpdateMyReaction="emitUpdReaction">
 				<template #more>
 					<MkA :to="`/notes/${appearNote.id}/reactions`" :class="[$style.reactionOmitted]">{{ i18n.ts.more }}</MkA>
 				</template>
@@ -1317,7 +1317,7 @@ function emitUpdReaction(emoji: string, delta: number) {
 }
 
 .quoteNote {
-	padding: 24px;
+	padding: 24px !important;
 	border: dashed 1px var(--MI_THEME-renote);
 	border-radius: 8px;
 	overflow: clip;

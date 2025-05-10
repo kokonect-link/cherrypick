@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><XHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="900">
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 900px;">
 		<div v-if="tab === 'list'">
 			<div :class="$style.root" class="_gaps">
 				<div :class="$style.subMenus" class="_gaps">
@@ -58,6 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkPagination>
 			</div>
 		</div>
+
 		<div v-else>
 			<div class="_gaps">
 				<MkFolder ref="folderComponent">
@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkAbuseReportResolver>
 				</MkFolder>
 				<MkPagination v-slot="{items}" ref="resolverPagingComponent" :pagination="resolverPagination">
-					<MkSpacer v-for="resolver in items" :key="resolver.id" :marginMin="14" :marginMax="22" :class="$style.resolverList">
+					<div v-for="resolver in items" :key="resolver.id" :class="$style.resolverList" class="_spacer" style="--MI_SPACER-w: 900px; --MI_SPACER-min: 14px; --MI_SPACER-max: 22px;">
 						<MkAbuseReportResolver v-model="editingResolver" :data="(resolver as any)" :editable="editableResolver === resolver.id">
 							<template #button>
 								<div v-if="editableResolver !== resolver.id">
@@ -81,17 +81,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</div>
 							</template>
 						</MkAbuseReportResolver>
-					</MkSpacer>
+					</div>
 				</MkPagination>
 			</div>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { computed, useTemplateRef, ref } from 'vue';
-import XHeader from './_header_.vue';
 import * as os from '@/os.js';
 import MkSelect from '@/components/MkSelect.vue';
 import MkPagination from '@/components/MkPagination.vue';
