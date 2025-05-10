@@ -95,7 +95,6 @@ export type PageHeaderProps = {
 };
 </script>
 
-
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref, inject, useTemplateRef, computed } from 'vue';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
