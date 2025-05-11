@@ -89,6 +89,9 @@ $height: 2ex;
   overflow-wrap: anywhere;
   max-width: 300px;
   text-overflow: ellipsis;
+	padding: 1px;
+	-webkit-text-stroke: 3px #fff;
+	paint-order: stroke fill;
 
   &::-webkit-scrollbar {
     display: none;
