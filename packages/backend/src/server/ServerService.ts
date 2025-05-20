@@ -305,7 +305,7 @@ export class ServerService implements OnApplicationShutdown {
 
 	@bindThis
 	public async dispose(): Promise<void> {
-		this.streamingApiServerService.detach();
+		await this.streamingApiServerService.detach();
 		await this.#fastify.close();
 	}
 

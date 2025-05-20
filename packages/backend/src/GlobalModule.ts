@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import process from 'node:process';
 import { Global, Inject, Module } from '@nestjs/common';
 import * as Redis from 'ioredis';
 import { DataSource } from 'typeorm';
@@ -216,9 +215,5 @@ export class GlobalModule implements OnApplicationShutdown {
 
 	async onApplicationShutdown(signal: string): Promise<void> {
 		await this.dispose();
-		process.emitWarning('CherryPick is shutting down', {
-			code: 'CHERRYPICK_SHUTDOWN',
-			detail: `Application received ${signal} signal`,
-		});
 	}
 }
