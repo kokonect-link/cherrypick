@@ -843,7 +843,7 @@ export const store = markRaw(new Pizzax('base', {
 	// - Settings/Accessibility
 	showingAnimatedImages: {
 		where: 'device',
-		default: /mobile|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
+		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
 	},
 
 	// - Settings/Drive
