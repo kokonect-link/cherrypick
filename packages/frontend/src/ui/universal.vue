@@ -11,11 +11,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
 		<div :class="[$style.contents, !isMobile && prefer.r.showTitlebar.value ? $style.withSidebarAndTitlebar : null]" @contextmenu.stop="onContextmenu">
-			<div v-if="!showEl2">
-				<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
-				<XAnnouncements v-if="$i"/>
-				<XStatusBars :class="$style.statusbars"/>
-			</div>
+			<Transition name="slide-fade" @beforeEnter="beforeEnter" @beforeLeave="beforeLeave" @enter="enter" @leave="leave">
+				<div v-if="!showEl2">
+					<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+					<XAnnouncements v-if="$i"/>
+					<XStatusBars :class="$style.statusbars"/>
+				</div>
+			</Transition>
+
 			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
 			<RouterView v-else :class="$style.content"/>
 			<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
@@ -50,7 +53,7 @@ import { mainRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { shouldSuggestRestoreBackup } from '@/preferences/utility.js';
 import { DI } from '@/di.js';
-import { globalEvents } from '@/events.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
 const XWidgets = defineAsyncComponent(() => import('./_common_/widgets.vue'));
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
@@ -68,8 +71,7 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const showEl = ref(false);
-const showEl2 = ref(false);
+const { showEl2 } = scrollToVisibility();
 
 const pageMetadata = ref<null | PageMetadata>(null);
 const widgetsShowing = ref(false);
@@ -109,9 +111,6 @@ onMounted(() => {
 			if (window.innerWidth >= DESKTOP_THRESHOLD) isDesktop.value = true;
 		}, { passive: true });
 	}
-
-	globalEvents.on('showEl', (value) => showEl.value = value);
-	globalEvents.on('showEl2', (value) => showEl2.value = value);
 });
 
 const onContextmenu = (ev) => {
@@ -130,6 +129,39 @@ const onContextmenu = (ev) => {
 		},
 	}], ev);
 };
+
+function beforeEnter(el: Element) {
+	(el as HTMLElement).style.height = '0';
+}
+
+function beforeLeave(el: Element) {
+	const h = (el as HTMLElement).scrollHeight;
+	(el as HTMLElement).style.height = `${h}px`;
+	(el as HTMLElement).style.opacity = '1';
+}
+
+function enter(el: Element) {
+	if (!(el instanceof HTMLElement)) return;
+	const h = el.scrollHeight;
+	const dur = prefer.s.animation ? '0.5s' : '0s';
+	el.style.transition = `height ${dur}, opacity ${dur}`;
+	requestAnimationFrame(() => {
+		el.style.height = `${h}px`;
+		el.style.opacity = '1';
+	});
+}
+
+function leave(el: Element) {
+	if (!(el instanceof HTMLElement)) return;
+	const h = el.scrollHeight;
+	const dur = prefer.s.animation ? '0.5s' : '0s';
+	el.style.height = `${h}px`;
+	el.style.transition = `height ${dur}, opacity ${dur}`;
+	requestAnimationFrame(() => {
+		el.style.height = '0';
+		el.style.opacity = '0';
+	});
+}
 </script>
 
 <style lang="scss" module>

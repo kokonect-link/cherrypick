@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]">
+<div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl }]">
 	<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]">
 			<i :class="$style.itemIcon" class="ti ti-home"></i>
@@ -54,15 +54,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, useTemplateRef, watch } from 'vue';
+import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import { $i } from '@/i.js';
 import { mainRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { store } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 const queue = ref(0);
 const longTouchNavHome = ref(false);
 
@@ -106,8 +107,11 @@ watch(rootEl, () => {
 });
 
 onMounted(() => {
-	globalEvents.on('showEl', (value) => showEl.value = value);
 	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
+});
+
+onUnmounted(() => {
+	globalEvents.off('queueUpdated', (q) => queueUpdated(q));
 });
 </script>
 
@@ -124,19 +128,24 @@ onMounted(() => {
 	backdrop-filter: var(--MI-blur, blur(15px));
 	border-top: solid 0.5px var(--MI_THEME-divider);
 	color: var(--MI_THEME-navFg);
-	transition: opacity 0.5s, transform 0.5s;
+	transition: opacity 0.5s, transform 0.5s, background-color 0.5s;
 
 	&.reduceBlurEffect {
+		background-color: color(from var(--MI_THEME-bg) srgb r g b / 1);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
 	}
 
 	&.reduceAnimation {
-		transition: opacity 0s, transform 0s;
+		transition: opacity 0s, transform 0s, background-color 0s;
 	}
 
 	&.showEl {
 		transform: translateY(50.55px);
+	}
+
+	&.scrollToTransparent {
+		background-color: transparent;
 	}
 }
 

@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]">
+<div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl }]">
 	<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
 		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
@@ -98,8 +98,10 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
 
+const { showEl } = scrollToVisibility();
 const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
 
 const props = withDefaults(defineProps<PageHeaderProps>(), {
@@ -237,6 +239,7 @@ onUnmounted(() => {
 	contain: strict;
 	height: var(--height);
 	color: var(--MI_THEME-pageHeaderFg);
+	transition: background-color 0.5s;
 
 	&.thin {
 		--height: 42px;
@@ -266,9 +269,17 @@ onUnmounted(() => {
 	}
 
 	&.reduceBlurEffect {
-		background: color(from var(--MI_THEME-bg) srgb r g b / 1);
+		background-color: color(from var(--MI_THEME-bg) srgb r g b / 1);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
+	}
+
+	&.reduceAnimation {
+		transition: background-color 0s;
+	}
+
+	&.scrollToTransparent {
+		background-color: transparent;
 	}
 }
 

@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		appear @afterLeave="emit('closed')"
 	>
 		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ zIndex }">
-			<CPAvatar :class="$style.avatar" :user="$i"/>
+			<CPAvatar :class="$style.avatar" :user="$i" forceOpacity/>
 			<Mfm style="display: inherit; margin: 10px;" :text="message" :plain="true"></Mfm>
 		</div>
 	</Transition>

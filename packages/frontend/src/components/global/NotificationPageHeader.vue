@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]">
+<div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl }]">
 	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly().value, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly().value }]">
 		<!--
 		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
@@ -107,7 +107,9 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
+const { showEl } = scrollToVisibility();
 const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
 
 const props = withDefaults(defineProps<PageHeaderProps>(), {
@@ -193,11 +195,20 @@ onUnmounted(() => {
 	border-bottom: solid 0.5px transparent;
 	width: 100%;
 	color: var(--MI_THEME-pageHeaderFg);
+	transition: background-color 0.5s;
 
 	&.reduceBlurEffect {
-		background: color(from var(--MI_THEME-bg) srgb r g b / 1);
+		background-color: color(from var(--MI_THEME-bg) srgb r g b / 1);
 		-webkit-backdrop-filter: none;
 		backdrop-filter: none;
+	}
+
+	&.reduceAnimation {
+		transition: background-color 0s;
+	}
+
+	&.scrollToTransparent {
+		background-color: transparent;
 	}
 }
 

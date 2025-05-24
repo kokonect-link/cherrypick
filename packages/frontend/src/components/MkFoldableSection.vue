@@ -37,7 +37,7 @@ import { prefer } from '@/preferences.js';
 import { getBgColor } from '@/utility/get-bg-color.js';
 import { mainRouter } from '@/router.js';
 import { deviceKind } from '@/utility/device-kind.js';
-import { globalEvents } from '@/events.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
 const MOBILE_THRESHOLD = 500;
 
@@ -46,7 +46,7 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const miLocalStoragePrefix = 'ui:folder:' as const;
 
@@ -97,8 +97,6 @@ function afterLeave(el: Element) {
 
 onMounted(() => {
 	parentBg.value = getBgColor(rootEl.value?.parentElement);
-
-	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 </script>
 

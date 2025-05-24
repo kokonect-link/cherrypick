@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
-		:class="[$style.inner, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]"
+		:class="[$style.inner, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl && !forceOpacity }]"
 		:src="url"
 		:hash="user.avatarBlurhash"
 		:cover="true"
@@ -45,6 +45,9 @@ import MkA from './MkA.vue';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
 import { prefer } from '@/preferences.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+
+const { showEl } = scrollToVisibility();
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;
@@ -53,12 +56,14 @@ const props = withDefaults(defineProps<{
 	preview?: boolean;
 	decorations?: (Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'> & { blink?: boolean; })[];
 	forceShowDecoration?: boolean;
+	forceOpacity?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
 	decorations: undefined,
 	forceShowDecoration: false,
+	forceOpacity: false,
 });
 
 const emit = defineEmits<{
@@ -171,9 +176,18 @@ onUnmounted(() => {
 	width: 100%;
 	height: 100%;
 	opacity: .7;
+	transition: opacity 0.5s;
 
 	&.reduceBlurEffect {
 		opacity: 1;
+	}
+
+	&.reduceAnimation {
+		transition: opacity 0s;
+	}
+
+	&.scrollToTransparent {
+		opacity: .7;
 	}
 }
 

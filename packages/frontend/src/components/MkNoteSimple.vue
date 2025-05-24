@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
@@ -51,13 +51,13 @@ import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import MkButton from '@/components/MkButton.vue';
-import { globalEvents } from '@/events.js';
 import { mainRouter } from '@/router.js';
 import { useRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { notePage } from '@/filters/note.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note & {
@@ -73,7 +73,7 @@ const emit = defineEmits<{
 	(ev: 'deleteAndEditScheduleNote'): void;
 }>();
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const showContent = ref(false);
 const expandOnNoteClick = prefer.s.expandOnNoteClick;
@@ -82,10 +82,6 @@ const router = useRouter();
 const isDeleted = ref(false);
 
 if (prefer.s.alwaysShowCw) showContent.value = true;
-
-onMounted(() => {
-	globalEvents.on('showEl', (value) => showEl.value = value);
-});
 
 function noteClick(ev: MouseEvent) {
 	if (props.note.isSchedule) return;

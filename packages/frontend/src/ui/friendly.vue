@@ -11,11 +11,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
 		<div :class="[$style.contents, !isMobile && prefer.r.showTitlebar.value ? $style.withSidebarAndTitlebar : null]" @contextmenu.stop="onContextmenu">
-			<div v-if="!showEl2">
-				<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
-				<XAnnouncements v-if="$i"/>
-				<XStatusBars :class="$style.statusbars"/>
-			</div>
+			<Transition name="slide-fade" @beforeEnter="beforeEnter" @beforeLeave="beforeLeave" @enter="enter" @leave="leave">
+				<div v-if="!showEl2">
+					<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+					<XAnnouncements v-if="$i"/>
+					<XStatusBars :class="$style.statusbars"/>
+				</div>
+			</Transition>
+
 			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
 			<RouterView v-else :class="$style.content"/>
 			<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
@@ -58,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, provide, onMounted, computed, ref, onUnmounted } from 'vue';
+import { defineAsyncComponent, provide, onMounted, computed, ref, onUnmounted, watch } from 'vue';
 import tinycolor from 'tinycolor2';
 import { instanceName } from '@@/js/config.js';
 import { isLink } from '@@/js/is-link.js';
@@ -79,6 +82,7 @@ import { prefer } from '@/preferences.js';
 import { shouldSuggestRestoreBackup } from '@/preferences/utility.js';
 import { DI } from '@/di.js';
 import { globalEvents } from '@/events.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
 
 const XWidgets = defineAsyncComponent(() => import('./_common_/widgets.vue'));
@@ -115,8 +119,7 @@ const enablePostButton = [
 	'user',
 ];
 
-const showEl = ref(false);
-const showEl2 = ref(false);
+const { showEl, showEl2 } = scrollToVisibility();
 const queue = ref(0);
 const bg = ref<string | undefined>(undefined);
 const PostBg = ref<string | undefined>(undefined);
@@ -158,7 +161,7 @@ const calcBg = () => {
 	const rawPostBg = 'var(--MI_THEME-accent)';
 	const tinyBg = tinycolor(rawBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawBg.slice(4, -1)) : rawBg);
 	const tinyPostBg = tinycolor(rawPostBg.startsWith('var(') ? getComputedStyle(window.document.documentElement).getPropertyValue(rawPostBg.slice(4, -1)) : rawPostBg);
-	if (prefer.s.useBlurEffect) {
+	if (prefer.s.useBlurEffect || showEl.value) {
 		tinyBg.setAlpha(0.7);
 		tinyPostBg.setAlpha(0.7);
 	} else {
@@ -169,6 +172,10 @@ const calcBg = () => {
 	PostBg.value = tinyPostBg.toRgbString();
 };
 
+watch(showEl, () => {
+	calcBg();
+});
+
 onMounted(() => {
 	if (!isDesktop.value) {
 		window.addEventListener('resize', () => {
@@ -176,8 +183,6 @@ onMounted(() => {
 		}, { passive: true });
 	}
 
-	globalEvents.on('showEl', (value) => showEl.value = value);
-	globalEvents.on('showEl2', (value) => showEl2.value = value);
 	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
 
 	calcBg();
@@ -185,6 +190,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+	globalEvents.off('queueUpdated', (q) => queueUpdated(q));
 	globalEvents.off('themeChanging', calcBg);
 });
 
@@ -212,6 +218,39 @@ function queueUpdated(q: number): void {
 function createChat(ev: MouseEvent) {
 	if (mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('createChat', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
+}
+
+function beforeEnter(el: Element) {
+	(el as HTMLElement).style.height = '0';
+}
+
+function beforeLeave(el: Element) {
+	const h = (el as HTMLElement).scrollHeight;
+	(el as HTMLElement).style.height = `${h}px`;
+	(el as HTMLElement).style.opacity = '1';
+}
+
+function enter(el: Element) {
+	if (!(el instanceof HTMLElement)) return;
+	const h = el.scrollHeight;
+	const dur = prefer.s.animation ? '0.5s' : '0s';
+	el.style.transition = `height ${dur}, opacity ${dur}`;
+	requestAnimationFrame(() => {
+		el.style.height = `${h}px`;
+		el.style.opacity = '1';
+	});
+}
+
+function leave(el: Element) {
+	if (!(el instanceof HTMLElement)) return;
+	const h = el.scrollHeight;
+	const dur = prefer.s.animation ? '0.5s' : '0s';
+	el.style.height = `${h}px`;
+	el.style.transition = `height ${dur}, opacity ${dur}`;
+	requestAnimationFrame(() => {
+		el.style.height = '0';
+		el.style.opacity = '0';
+	});
 }
 </script>
 
@@ -275,7 +314,7 @@ $float-button-size: 65px;
   border-radius: 28px;
   -webkit-backdrop-filter: var(--MI-blur, blur(15px));
   backdrop-filter: var(--MI-blur, blur(15px));
-  transition: opacity 0.5s, transform 0.5s;
+  transition: opacity 0.5s, transform 0.5s, background-color 0.5s;
 
   &.reduceBlurEffect {
     -webkit-backdrop-filter: none;
@@ -283,7 +322,7 @@ $float-button-size: 65px;
   }
 
   &.reduceAnimation {
-    transition: opacity 0s, transform 0s;
+    transition: opacity 0s, transform 0s, background-color 0s;
   }
 }
 

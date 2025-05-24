@@ -63,16 +63,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { computed, ref, useTemplateRef, watch } from 'vue';
 import { $i } from '@/i.js';
 import * as os from '@/os.js';
 import { mainRouter } from '@/router.js';
 import { navbarItemDef } from '@/navbar.js';
 import { prefer } from '@/preferences.js';
 import { store } from '@/store.js';
-import { globalEvents } from '@/events.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const drawerMenuShowing = defineModel<boolean>('drawerMenuShowing');
 const widgetsShowing = defineModel<boolean>('widgetsShowing');
@@ -99,10 +99,6 @@ watch(rootEl, () => {
 	}
 }, {
 	immediate: true,
-});
-
-onMounted(() => {
-	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 </script>
 

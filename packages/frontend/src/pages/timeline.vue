@@ -84,8 +84,9 @@ import { prefer } from '@/preferences.js';
 import { globalEvents } from '@/events.js';
 import { reloadAsk } from '@/utility/reload-ask.js';
 import { isFriendly } from '@/utility/is-friendly.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
@@ -277,10 +278,6 @@ watch(showReplyTargetNote, (x) => {
 	prefer.commit('showReplyTargetNote', x);
 	reloadTimeline();
 	reloadNotification();
-});
-
-onMounted(() => {
-	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 
 function queueUpdated(q: number): void {

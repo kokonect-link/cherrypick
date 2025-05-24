@@ -27,9 +27,9 @@ import { DI } from '@/di.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { mainRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
-import { globalEvents } from '@/events.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import { detectScrolling } from '@/utility/detect-scrolling.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
 const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
@@ -39,7 +39,7 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const rootEl = useTemplateRef('rootEl');
 const headerEl = useTemplateRef('headerEl');
@@ -89,8 +89,6 @@ onMounted(() => {
 	if (footerEl.value != null) {
 		observer.observe(footerEl.value);
 	}
-
-	globalEvents.on('showEl', (value) => showEl.value = value);
 });
 
 onUnmounted(() => {
