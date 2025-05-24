@@ -68,8 +68,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 
 ### Server
 - Fix: `노트 게시 예약`을 사용해 노트를 게시할 때 `연합에 보내지 않음` 설정이 반영되지 않을 수 있음 (kokonect-link/cherrypick#601)
-- Revert: Graceful Shutdown (MisskeyIO/misskey#156)
-- Revert: Enhance: 종료 시 DB 연결이 끊어지면 확실하게 종료 (MisskeyIO/misskey#159)
 
 ---
 
