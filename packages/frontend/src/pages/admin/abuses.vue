@@ -4,16 +4,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><XHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="900">
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 900px;">
 		<div v-if="tab === 'list'">
 			<div :class="$style.root" class="_gaps">
 				<div :class="$style.subMenus" class="_gaps">
 					<MkButton link to="/admin/abuse-report-notification-recipient" primary>{{ i18n.ts.notificationSetting }}</MkButton>
 				</div>
 
-				<MkInfo v-if="!defaultStore.reactiveState.abusesTutorial.value" closable @close="closeTutorial()">
+				<MkInfo v-if="!store.r.abusesTutorial.value" closable @close="closeTutorial()">
 					{{ i18n.ts._abuseUserReport.resolveTutorial }}
 				</MkInfo>
 
@@ -58,6 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkPagination>
 			</div>
 		</div>
+
 		<div v-else>
 			<div class="_gaps">
 				<MkFolder ref="folderComponent">
@@ -69,7 +69,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkAbuseReportResolver>
 				</MkFolder>
 				<MkPagination v-slot="{items}" ref="resolverPagingComponent" :pagination="resolverPagination">
-					<MkSpacer v-for="resolver in items" :key="resolver.id" :marginMin="14" :marginMax="22" :class="$style.resolverList">
+					<div v-for="resolver in items" :key="resolver.id" :class="$style.resolverList" class="_spacer" style="--MI_SPACER-w: 900px; --MI_SPACER-min: 14px; --MI_SPACER-max: 22px;">
 						<MkAbuseReportResolver v-model="editingResolver" :data="(resolver as any)" :editable="editableResolver === resolver.id">
 							<template #button>
 								<div v-if="editableResolver !== resolver.id">
@@ -81,17 +81,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 								</div>
 							</template>
 						</MkAbuseReportResolver>
-					</MkSpacer>
+					</div>
 				</MkPagination>
 			</div>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, shallowRef, ref } from 'vue';
-import XHeader from './_header_.vue';
+import { computed, useTemplateRef, ref } from 'vue';
 import * as os from '@/os.js';
 import MkSelect from '@/components/MkSelect.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -99,14 +98,14 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkAbuseReportResolver from '@/components/MkAbuseReportResolver.vue';
 import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInfo from '@/components/MkInfo.vue';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
-const reports = shallowRef<InstanceType<typeof MkPagination>>();
-const resolverPagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
-const folderComponent = shallowRef<InstanceType<typeof MkFolder>>();
+const reports = useTemplateRef('reports');
+const resolverPagingComponent = useTemplateRef('resolverPagingComponent');
+const folderComponent = useTemplateRef('folderComponent');
 
 const state = ref('unresolved');
 const reporterOrigin = ref('combined');
@@ -170,7 +169,7 @@ function resolved(reportId) {
 }
 
 function closeTutorial() {
-	defaultStore.set('abusesTutorial', false);
+	store.set('abusesTutorial', false);
 }
 
 function edit(id: string) {
@@ -231,7 +230,7 @@ const headerTabs = computed(() => [{
 	title: i18n.ts._abuse.resolver,
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.abuseReports,
 	icon: 'ti ti-exclamation-circle',
 }));
@@ -299,6 +298,8 @@ definePageMetadata(() => ({
 	background: none;
 	color: inherit;
 	font-size: 0.8em;
+	cursor: pointer;
 	pointer-events: auto;
+	-webkit-tap-highlight-color: transparent;
 }
 </style>

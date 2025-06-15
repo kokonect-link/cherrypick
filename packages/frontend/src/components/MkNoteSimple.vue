@@ -5,13 +5,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div v-show="!isDeleted" :class="[$style.root, { [$style.isSchedule]: note.isSchedule }]" :tabindex="!isDeleted ? '-1' : undefined" :style="{ cursor: expandOnNoteClick && enableNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
-	<div style="display: flex; padding-bottom: 10px;">
-		<MkAvatar v-if="!defaultStore.state.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview noteClick/>
+	<div :style="prefer.s.showGapBodyOfTheNote ? null : 'padding-bottom: 10px;'" style="display: flex;">
+		<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="[$style.avatar, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name === 'index', [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && mainRouter.currentRoute.value.name !== 'index' }]" :user="note.user" link preview noteClick/>
 		<div :class="$style.main">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
+			<div v-if="prefer.s.showGapBodyOfTheNote" :style="prefer.s.showGapBodyOfTheNote ? 'margin-top: 4px;' : null">
+				<MkEvent v-if="note.event" :note="note"/>
+				<p v-if="note.cw != null" :class="$style.cw">
+					<Mfm v-if="note.cw != ''" :text="note.cw" :author="note.user" :nyaize="'respect'" style="margin-right: 8px;"/>
+					<MkCwButton v-model="showContent" :text="note.text" :renote="note.renote" :files="note.files" :poll="note.poll" @click.stop/>
+				</p>
+				<div v-show="note.cw == null || showContent">
+					<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="false"/>
+					<div v-if="note.isSchedule" style="margin-top: 10px;">
+						<MkButton :class="$style.button" inline rounded @click.stop.prevent="deleteAndEditScheduleNote()"><i class="ti ti-eraser"></i> {{ i18n.ts.deleteAndEdit }}</MkButton>
+						<MkButton :class="$style.button" inline rounded danger @click.stop.prevent="deleteScheduleNote()"><i class="ti ti-trash"></i> {{ i18n.ts.delete }}</MkButton>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div>
+	<div v-if="!prefer.s.showGapBodyOfTheNote">
 		<MkEvent v-if="note.event" :note="note"/>
 		<p v-if="note.cw != null" :class="$style.cw">
 			<Mfm v-if="note.cw != ''" :text="note.cw" :author="note.user" :nyaize="'respect'" style="margin-right: 8px;"/>
@@ -29,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import MkNoteHeader from '@/components/MkNoteHeader.vue';
@@ -37,13 +51,13 @@ import MkSubNoteContent from '@/components/MkSubNoteContent.vue';
 import MkCwButton from '@/components/MkCwButton.vue';
 import MkEvent from '@/components/MkEvent.vue';
 import MkButton from '@/components/MkButton.vue';
-import { globalEvents } from '@/events.js';
-import { mainRouter } from '@/router/main.js';
-import { useRouter } from '@/router/supplier.js';
-import { defaultStore } from '@/store.js';
+import { mainRouter } from '@/router.js';
+import { useRouter } from '@/router.js';
+import { prefer } from '@/preferences.js';
 import { notePage } from '@/filters/note.js';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
 const props = withDefaults(defineProps<{
 	note: Misskey.entities.Note & {
@@ -59,31 +73,25 @@ const emit = defineEmits<{
 	(ev: 'deleteAndEditScheduleNote'): void;
 }>();
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const showContent = ref(false);
-const expandOnNoteClick = defaultStore.state.expandOnNoteClick;
+const expandOnNoteClick = prefer.s.expandOnNoteClick;
 const router = useRouter();
 
 const isDeleted = ref(false);
 
-if (defaultStore.state.alwaysShowCw) showContent.value = true;
-
-onMounted(() => {
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
-});
+if (prefer.s.alwaysShowCw) showContent.value = true;
 
 function noteClick(ev: MouseEvent) {
 	if (props.note.isSchedule) return;
-	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 
 function noteDblClick(ev: MouseEvent) {
 	if (props.note.isSchedule) return;
-	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || defaultStore.state.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
+	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
 	else router.push(notePage(props.note));
 }
 

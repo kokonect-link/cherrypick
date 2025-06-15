@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 import { instance } from '@/instance.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 export const basicTimelineTypes = [
 	'home',
@@ -39,15 +39,15 @@ export function basicTimelineIconClass(timeline: BasicTimelineType): string {
 export function isAvailableBasicTimeline(timeline: BasicTimelineType | undefined | null): boolean {
 	switch (timeline) {
 		case 'home':
-			return $i != null && defaultStore.state.enableHomeTimeline;
+			return $i != null && prefer.s.enableHomeTimeline;
 		case 'local':
-			return ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable && defaultStore.state.enableLocalTimeline);
+			return ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable && prefer.s.enableLocalTimeline);
 		case 'social':
-			return $i != null && $i.policies.ltlAvailable && defaultStore.state.enableSocialTimeline;
+			return $i != null && $i.policies.ltlAvailable && prefer.s.enableSocialTimeline;
 		case 'global':
-			return ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable && defaultStore.state.enableGlobalTimeline);
+			return ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable && prefer.s.enableGlobalTimeline);
 		case 'bubble':
-			return ($i == null && instance.policies.btlAvailable) || ($i != null && $i.policies.btlAvailable && defaultStore.state.enableBubbleTimeline);
+			return ($i == null && instance.policies.btlAvailable) || ($i != null && $i.policies.btlAvailable && prefer.s.enableBubbleTimeline);
 		default:
 			return false;
 	}

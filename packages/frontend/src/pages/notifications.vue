@@ -4,25 +4,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="800">
-		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'all'" key="all">
-				<XNotifications :class="$style.notifications" :excludeTypes="excludeTypes"/>
-			</div>
-			<div v-else-if="tab === 'newNote'" key="newNote">
-				<XNotifications :class="$style.notifications" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
-			</div>
-			<div v-else-if="tab === 'mentions'" key="mention">
-				<MkNotes :pagination="mentionsPagination" :notification="true"/>
-			</div>
-			<div v-else-if="tab === 'directNotes'" key="directNotes">
-				<MkNotes :pagination="directNotesPagination" :notification="true"/>
-			</div>
-		</MkHorizontalSwipe>
-	</MkSpacer>
-</MkStickyContainer>
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :swipable="true" :notification="notification">
+	<div class="_spacer" style="--MI_SPACER-w: 800px;">
+		<div v-if="tab === 'all'">
+			<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="excludeTypes"/>
+		</div>
+		<div v-else-if="tab === 'newNote'">
+			<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
+		</div>
+		<div v-else-if="tab === 'mentions'">
+			<MkNotes :pagination="mentionsPagination" :notification="notification"/>
+		</div>
+		<div v-else-if="tab === 'directNotes'">
+			<MkNotes :pagination="directNotesPagination" :notification="true"/>
+		</div>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -30,11 +27,10 @@ import { computed, ref } from 'vue';
 import { notificationTypes } from '@@/js/const.js';
 import XNotifications from '@/components/MkNotifications.vue';
 import MkNotes from '@/components/MkNotes.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { deviceKind } from '@/scripts/device-kind.js';
+import { definePage } from '@/page.js';
+import { deviceKind } from '@/utility/device-kind.js';
 import { globalEvents } from '@/events.js';
 
 const tab = ref('all');
@@ -44,6 +40,7 @@ const newNoteExcludeTypes = computed(() => notificationTypes.filter(t => !['note
 
 const props = defineProps<{
 	disableRefreshButton?: boolean;
+	notification?: boolean;
 }>();
 
 const mentionsPagination = {
@@ -114,15 +111,19 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail',
 }]);
 
-definePageMetadata(() => ({
+definePage(computed(() => !props.notification ? {
 	title: i18n.ts.notifications,
 	icon: 'ti ti-bell',
-}));
+} : null));
 </script>
 
 <style lang="scss" module>
 .notifications {
 	border-radius: var(--MI-radius);
 	overflow: clip;
+
+	&.noRadius {
+		border-radius: 0;
+	}
 }
 </style>

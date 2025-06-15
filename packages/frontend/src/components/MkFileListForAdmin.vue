@@ -13,7 +13,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:to="`/admin/file/${file.id}`"
 			class="file _button"
 		>
-			<div v-if="file.isSensitive" class="sensitive-label">{{ i18n.ts.sensitive }}</div>
+			<!-- <div v-if="file.isSensitive" class="sensitive-label">{{ i18n.ts.sensitive }}</div> -->
+			<div class="indicators">
+				<div v-if="['image/gif'].includes(file.type)" class="indicator">GIF</div>
+				<div v-if="['image/apng'].includes(file.type)" class="indicator">APNG</div>
+				<div v-if="file.comment" class="indicator">ALT</div>
+				<div v-if="file.isSensitive" class="indicator" style="color: var(--MI_THEME-warn);" :title="i18n.ts.sensitive"><i class="ti ti-eye-exclamation"></i></div>
+			</div>
 			<MkDriveFileThumbnail class="thumbnail" :file="file" fit="contain" :highlightWhenSensitive="true"/>
 			<div v-if="viewMode === 'list'" class="body">
 				<div>
@@ -111,6 +117,29 @@ const props = defineProps<{
 				border-radius: 4px;
 				font-size: 85%;
 				animation: sensitive-blink 1s infinite;
+			}
+
+			> .indicators {
+				position: absolute;
+				z-index: 10;
+				top: 4px;
+				left: 4px;
+				display: inline-flex;
+				margin: 3px 0 0 3px;
+				pointer-events: none;
+				opacity: .5;
+				gap: 6px;
+
+				> .indicator {
+					/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
+					background-color: black;
+					border-radius: 6px;
+					color: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
+					display: inline-block;
+					font-weight: bold;
+					font-size: 0.8em;
+					padding: 2px 5px;
+				}
 			}
 		}
 	}

@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
 		<FormSuspense :p="init">
 			<div class="_gaps_m">
 				<div class="_panel" style="padding: 16px;">
@@ -43,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="releasesCherryPick" #value>{{ releasesCherryPick[0].tag_name }}</template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
-					<MkKeyValue style="margin: 8px 0 0; color: var(--MI_THEME-fgTransparentWeak); font-size: 0.85em;">
+					<MkKeyValue style="margin: 8px 0 0; color: color(from var(--MI_THEME-fg) srgb r g b / 0.75); font-size: 0.85em;">
 						<template v-if="releasesCherryPick" #value><MkTime :time="releasesCherryPick[0].published_at" mode="detail"/></template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
@@ -56,15 +55,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="releasesMisskey" #value>{{ releasesMisskey[0].tag_name }}</template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
-					<MkKeyValue style="margin: 8px 0 0; color: var(--MI_THEME-fgTransparentWeak); font-size: 0.85em;">
+					<MkKeyValue style="margin: 8px 0 0; color: color(from var(--MI_THEME-fg) srgb r g b / 0.75); font-size: 0.85em;">
 						<template v-if="releasesMisskey" #value><MkTime :time="releasesMisskey[0].published_at" mode="detail"/></template>
 						<template v-else #value><MkEllipsis/></template>
 					</MkKeyValue>
 				</FormSection>
 			</div>
 		</FormSuspense>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -72,13 +71,12 @@ import { computed, ref } from 'vue';
 import { version, instanceName, basedMisskeyVersion } from '@@/js/config.js';
 import { compareVersions } from 'compare-versions';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import FormInfo from '@/components/MkInfo.vue';
 import FormSection from '@/components/form/section.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
-import XHeader from '@/pages/admin/_header_.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { fetchInstance } from '@/instance.js';
 import FormSuspense from '@/components/form/suspense.vue';
@@ -150,9 +148,11 @@ const whatIsNewLatestCherryPick = () => {
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${releasesCherryPick.value[0].tag_name.replace(/\./g, '')}`, '_blank');
 };
 
-const whatIsNewMisskey = () => {
-	window.open(`https://misskey-hub.net/docs/releases.html#_${basedMisskeyVersion.replace(/\./g, '-')}`, '_blank');
-};
+/**
+ * const whatIsNewMisskey = () => {
+ * 	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
+ * };
+ */
 
 const whatIsNewLatestMisskey = () => {
 	window.open(`https://github.com/misskey-dev/misskey/blob/develop/CHANGELOG.md#${releasesMisskey.value[0].tag_name.replace(/\./g, '')}`, '_blank');
@@ -167,7 +167,7 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.cherrypickUpdate,
 	icon: 'ti ti-refresh',
 }));

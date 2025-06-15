@@ -18,7 +18,6 @@
 		hashtag: '@accent',
 		mention: '@accent',
 		navActive: '#ffffff',
-		navHoverFg: '#dcddde',
 		fgHighlighted: '#ffffff',
 		scrollbarHandle: '#20202C',
 		cwBg: '#2a2b4b',

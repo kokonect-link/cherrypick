@@ -56,6 +56,13 @@ export const meta = {
 			code: 'NO_FREE_SPACE',
 			id: 'd08dbc37-a6a9-463a-8c47-96c32ab5f064',
 		},
+
+		maxFileSizeExceeded: {
+			message: 'Cannot upload the file because it exceeds the maximum file size.',
+			code: 'MAX_FILE_SIZE_EXCEEDED',
+			id: 'b9d8c348-33f0-4673-b9a9-5d4da058977a',
+			httpStatusCode: 413,
+		},
 	},
 } as const;
 
@@ -115,6 +122,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				if (err instanceof IdentifiableError) {
 					if (err.id === '282f77bf-5816-4f72-9264-aa14d8261a21') throw new ApiError(meta.errors.inappropriate);
 					if (err.id === 'c6244ed2-a39a-4e1c-bf93-f0fbd7764fa6') throw new ApiError(meta.errors.noFreeSpace);
+					if (err.id === 'f9e4e5f3-4df4-40b5-b400-f236945f7073') throw new ApiError(meta.errors.maxFileSizeExceeded);
 				}
 				throw new ApiError();
 			} finally {

@@ -4,36 +4,33 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
-	<MkSpacer :contentMax="700">
-		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'featured'" key="featured">
-				<MkPagination v-slot="{items}" :pagination="featuredPagesPagination">
-					<div class="_gaps">
-						<MkPagePreview v-for="page in items" :key="page.id" :page="page"/>
-					</div>
-				</MkPagination>
-			</div>
+<PageWithHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true">
+	<div class="_spacer" style="--MI_SPACER-w: 700px;">
+		<div v-if="tab === 'featured'">
+			<MkPagination v-slot="{items}" :pagination="featuredPagesPagination">
+				<div class="_gaps">
+					<MkPagePreview v-for="page in items" :key="page.id" :page="page"/>
+				</div>
+			</MkPagination>
+		</div>
 
-			<div v-else-if="tab === 'my'" key="my" class="_gaps">
-				<MkPagination v-slot="{items}" :pagination="myPagesPagination">
-					<div class="_gaps">
-						<MkPagePreview v-for="page in items" :key="page.id" :page="page"/>
-					</div>
-				</MkPagination>
-			</div>
+		<div v-else-if="tab === 'my'" class="_gaps">
+			<MkPagination v-slot="{items}" :pagination="myPagesPagination">
+				<div class="_gaps">
+					<MkPagePreview v-for="page in items" :key="page.id" :page="page"/>
+				</div>
+			</MkPagination>
+		</div>
 
-			<div v-else-if="tab === 'liked'" key="liked">
-				<MkPagination v-slot="{items}" :pagination="likedPagesPagination">
-					<div class="_gaps">
-						<MkPagePreview v-for="like in items" :key="like.page.id" :page="like.page"/>
-					</div>
-				</MkPagination>
-			</div>
-		</MkHorizontalSwipe>
-	</MkSpacer>
-</MkStickyContainer>
+		<div v-else-if="tab === 'liked'">
+			<MkPagination v-slot="{items}" :pagination="likedPagesPagination">
+				<div class="_gaps">
+					<MkPagePreview v-for="like in items" :key="like.page.id" :page="like.page"/>
+				</div>
+			</MkPagination>
+		</div>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -41,11 +38,10 @@ import { computed, ref } from 'vue';
 import MkPagePreview from '@/components/MkPagePreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { useRouter } from '@/router/supplier.js';
-import { $i } from '@/account.js';
+import { definePage } from '@/page.js';
+import { useRouter } from '@/router.js';
+import { $i } from '@/i.js';
 
 const router = useRouter();
 
@@ -94,7 +90,7 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-flare',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.pages,
 	icon: 'ti ti-note',
 }));

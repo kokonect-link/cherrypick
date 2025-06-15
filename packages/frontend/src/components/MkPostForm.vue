@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div
-	:class="[$style.root, { [$style.modal]: modal, _popup: modal && (!defaultStore.state.useBlurEffect || !defaultStore.state.useBlurEffectForModal || !defaultStore.state.removeModalBgColorForBlur), _popupAcrylic: modal && defaultStore.state.useBlurEffect && defaultStore.state.useBlurEffectForModal && defaultStore.state.removeModalBgColorForBlur }]"
+	:class="[$style.root, { [$style.modal]: modal, _popup: modal && (!prefer.s.useBlurEffect || !prefer.s.useBlurEffectForModal || !prefer.s.removeModalBgColorForBlur), _popupAcrylic: modal && prefer.s.useBlurEffect && prefer.s.useBlurEffectForModal && prefer.s.removeModalBgColorForBlur }]"
 	@dragover.stop="onDragover"
 	@dragenter="onDragenter"
 	@dragleave="onDragleave"
@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="posted"></template>
 						<template v-else-if="posting"><MkEllipsis/></template>
 						<template v-else>{{ submitText }}</template>
-						<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : saveAsDraft ? 'ti ti-pencil-minus' : replyTargetNote ? 'ti ti-arrow-back-up' : renoteTargetNote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : defaultStore.state.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+						<i style="margin-left: 6px;" :class="posted ? 'ti ti-check' : saveAsDraft ? 'ti ti-pencil-minus' : replyTargetNote ? 'ti ti-arrow-back-up' : renoteTargetNote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : prefer.s.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
 					</div>
 				</button>
 				<button v-click-anime class="_button" style="margin-left: 2px;" :class="$style.submitButton" @click="showPostMenu">
@@ -110,7 +110,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed } from 'vue';
+import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed, useTemplateRef } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import insertTextAtCursor from 'insert-text-at-cursor';
@@ -118,41 +118,46 @@ import { toASCII } from 'punycode.js';
 import { host, url } from '@@/js/config.js';
 import { erase, unique } from '@@/js/array.js';
 import type { ShallowRef } from 'vue';
-import type { MenuItem } from '@/types/menu.js';
 import type { PostFormProps } from '@/types/post-form.js';
+import type { MenuItem } from '@/types/menu.js';
 import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import type { DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
-import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
+import XTextCounter from '@/components/MkPostForm.TextCounter.vue';
 import MkPollEditor from '@/components/MkPollEditor.vue';
 import MkEventEditor from '@/components/MkEventEditor.vue';
 import MkScheduledNoteDelete from '@/components/MkScheduledNoteDelete.vue';
 import MkSchedulePostEditor from '@/components/MkSchedulePostEditor.vue';
-import { extractMentions } from '@/scripts/extract-mentions.js';
-import { formatTimeString } from '@/scripts/format-time-string.js';
-import { Autocomplete } from '@/scripts/autocomplete.js';
+import MkNoteSimple from '@/components/MkNoteSimple.vue';
+import { extractMentions } from '@/utility/extract-mentions.js';
+import { formatTimeString } from '@/utility/format-time-string.js';
+import { Autocomplete } from '@/utility/autocomplete.js';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { selectFiles } from '@/scripts/select-file.js';
-import { defaultStore, notePostInterruptors, postFormActions } from '@/store.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { selectFiles } from '@/utility/select-file.js';
+import { store } from '@/store.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { signinRequired, notesCount, incNotesCount, getAccounts, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { uploadFile } from '@/scripts/upload.js';
-import { deepClone } from '@/scripts/clone.js';
+import { ensureSignin, notesCount, incNotesCount } from '@/i.js';
+import { getAccounts, openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { uploadFile } from '@/utility/upload.js';
+import { deepClone } from '@/utility/clone.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { miLocalStorage } from '@/local-storage.js';
-import { claimAchievement } from '@/scripts/achievements.js';
-import { emojiPicker } from '@/scripts/emoji-picker.js';
-import { vibrate } from '@/scripts/vibrate.js';
-import * as sound from '@/scripts/sound.js';
-import { mfmFunctionPicker } from '@/scripts/mfm-function-picker.js';
+import { claimAchievement } from '@/utility/achievements.js';
+import { emojiPicker } from '@/utility/emoji-picker.js';
+import { mfmFunctionPicker } from '@/utility/mfm-function-picker.js';
+import { prefer } from '@/preferences.js';
+import { getPluginHandlers } from '@/plugin.js';
+import { DI } from '@/di.js';
+import { vibrate } from '@/utility/vibrate.js';
+import * as sound from '@/utility/sound.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
-const modal = inject('modal');
+const modal = inject(DI.inModal, false);
 
 const props = withDefaults(defineProps<PostFormProps & {
 	fixed?: boolean;
@@ -166,7 +171,7 @@ const props = withDefaults(defineProps<PostFormProps & {
 	initialLocalOnly: undefined,
 });
 
-provide('mock', props.mock);
+provide(DI.mock, props.mock);
 
 const emit = defineEmits<{
 	(ev: 'posted'): void;
@@ -177,11 +182,11 @@ const emit = defineEmits<{
 	(ev: 'fileChangeSensitive', fileId: string, to: boolean): void;
 }>();
 
-const textareaEl = shallowRef<HTMLTextAreaElement | null>(null);
-const cwInputEl = shallowRef<HTMLInputElement | null>(null);
-const hashtagsInputEl = shallowRef<HTMLInputElement | null>(null);
-const visibilityButton = shallowRef<HTMLElement>();
-const otherSettingsButton = shallowRef<HTMLElement>();
+const textareaEl = useTemplateRef('textareaEl');
+const cwInputEl = useTemplateRef('cwInputEl');
+const hashtagsInputEl = useTemplateRef('hashtagsInputEl');
+const visibilityButton = useTemplateRef('visibilityButton');
+const otherSettingsButton = useTemplateRef('otherSettingsButton');
 
 const posting = ref(false);
 const posted = ref(false);
@@ -195,20 +200,20 @@ const event = ref<{
 	metadata: Record<string, string>;
 } | null>(null);
 const useCw = ref<boolean>(!!props.initialCw);
-const showPreview = ref(defaultStore.state.showPreview);
-const showProfilePreview = ref(defaultStore.state.showProfilePreview);
-watch(showPreview, () => defaultStore.set('showPreview', showPreview.value));
-watch(showProfilePreview, () => defaultStore.set('showProfilePreview', showProfilePreview.value));
-const showAddMfmFunction = ref(defaultStore.state.enableQuickAddMfmFunction);
-watch(showAddMfmFunction, () => defaultStore.set('enableQuickAddMfmFunction', showAddMfmFunction.value));
+const showPreview = ref(prefer.s.showPreview);
+const showProfilePreview = ref(prefer.s.showProfilePreview);
+watch(showPreview, () => prefer.commit('showPreview', showPreview.value));
+watch(showProfilePreview, () => prefer.commit('showProfilePreview', showProfilePreview.value));
+const showAddMfmFunction = ref(prefer.s.enableQuickAddMfmFunction);
+watch(showAddMfmFunction, () => prefer.commit('enableQuickAddMfmFunction', showAddMfmFunction.value));
 const cw = ref<string | null>(props.initialCw ?? null);
-const localOnly = ref(props.initialLocalOnly ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.localOnly : defaultStore.state.defaultNoteLocalOnly));
-const visibility = ref(props.initialVisibility ?? (defaultStore.state.rememberNoteVisibility ? defaultStore.state.visibility : defaultStore.state.defaultNoteVisibility));
+const localOnly = ref(props.initialLocalOnly ?? (prefer.s.rememberNoteVisibility ? store.s.localOnly : prefer.s.defaultNoteLocalOnly));
+const visibility = ref(props.initialVisibility ?? (prefer.s.rememberNoteVisibility ? store.s.visibility : prefer.s.defaultNoteVisibility));
 const visibleUsers = ref<Misskey.entities.UserDetailed[]>([]);
 if (props.initialVisibleUsers) {
 	props.initialVisibleUsers.forEach(u => pushVisibleUser(u));
 }
-const reactionAcceptance = ref(defaultStore.state.reactionAcceptance);
+const reactionAcceptance = ref(store.s.reactionAcceptance);
 const autocomplete = ref(null);
 const draghover = ref(false);
 const quoteId = ref<string | null>(null);
@@ -221,12 +226,14 @@ const saveAsDraft = ref(false);
 const textAreaReadOnly = ref(false);
 const justEndedComposition = ref(false);
 const renoteTargetNote: ShallowRef<PostFormProps['renote'] | null> = shallowRef(props.renote);
+const postFormActions = getPluginHandlers('post_form_action');
 const replyTargetNote: ShallowRef<PostFormProps['reply'] | null> = shallowRef(props.reply);
 const targetChannel = shallowRef(props.channel);
 const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
 const scheduleNote = ref<{
 	scheduledAt: number | null;
 } | null>(null);
+const isUploading = ref(false);
 
 const serverDraftId = ref<string | null>(null);
 
@@ -276,7 +283,7 @@ const submitText = computed((): string => {
 				? i18n.ts.reply
 				: props.updateMode
 					? i18n.ts.edit
-					: defaultStore.state.renameTheButtonInPostFormToNya
+					: prefer.s.renameTheButtonInPostFormToNya
 						? i18n.ts.nya
 						: i18n.ts.note;
 });
@@ -296,7 +303,7 @@ const cwTextLength = computed((): number => {
 const maxCwTextLength = 100;
 
 const canPost = computed((): boolean => {
-	return !props.mock && !posting.value && !posted.value &&
+	return !props.mock && !posting.value && !posted.value && !isUploading.value &&
 		(
 			1 <= textLength.value ||
 			1 <= files.value.length ||
@@ -306,13 +313,19 @@ const canPost = computed((): boolean => {
 			quoteId.value != null
 		) &&
 		(textLength.value <= maxTextLength.value) &&
-		(cwTextLength.value <= maxCwTextLength) &&
+		(
+			useCw.value ?
+				(
+					cw.value != null && cw.value.trim() !== '' &&
+					cwTextLength.value <= maxCwTextLength
+				) : true
+		) &&
 		(files.value.length <= 16) &&
 		(!poll.value || poll.value.choices.length >= 2);
 });
 
-const withHashtags = computed(defaultStore.makeGetterSetter('postFormWithHashtags'));
-const hashtags = computed(defaultStore.makeGetterSetter('postFormHashtags'));
+const withHashtags = computed(store.makeGetterSetter('postFormWithHashtags'));
+const hashtags = computed(store.makeGetterSetter('postFormHashtags'));
 
 watch(text, () => {
 	checkMissingMention();
@@ -400,7 +413,7 @@ if (props.specified) {
 }
 
 // keep cw when reply
-if (defaultStore.state.keepCw && replyTargetNote.value && replyTargetNote.value.cw) {
+if (prefer.s.keepCw && replyTargetNote.value && replyTargetNote.value.cw) {
 	useCw.value = true;
 	cw.value = replyTargetNote.value.cw;
 }
@@ -517,8 +530,12 @@ function replaceFile(file: Misskey.entities.DriveFile, newFile: Misskey.entities
 function upload(file: File, name?: string): void {
 	if (props.mock) return;
 
-	uploadFile(file, defaultStore.state.uploadFolder, name).then(res => {
+	isUploading.value = true;
+
+	uploadFile(file, prefer.s.uploadFolder, name).then(res => {
 		files.value.push(res);
+	}).finally(() => {
+		isUploading.value = false;
 	});
 }
 
@@ -538,8 +555,8 @@ function setVisibility() {
 	}, {
 		changeVisibility: v => {
 			visibility.value = v;
-			if (defaultStore.state.rememberNoteVisibility) {
-				defaultStore.set('visibility', visibility.value);
+			if (prefer.s.rememberNoteVisibility) {
+				store.set('visibility', visibility.value);
 			}
 		},
 		closed: () => dispose(),
@@ -587,8 +604,8 @@ async function toggleLocalOnly() {
 	}
 
 	localOnly.value = !localOnly.value;
-	if (defaultStore.state.rememberNoteVisibility) {
-		defaultStore.set('localOnly', localOnly.value);
+	if (prefer.s.rememberNoteVisibility) {
+		store.set('localOnly', localOnly.value);
 	}
 }
 
@@ -618,7 +635,13 @@ function showOtherSettings() {
 		reactionAcceptanceIcon = 'ti ti-heart-plus';
 	}
 
-	const menuDef = [{
+	const menuItems = [{
+		type: 'component',
+		component: XTextCounter,
+		props: {
+			textLength: textLength,
+		},
+	}, { type: 'divider' }, {
 		icon: reactionAcceptanceIcon,
 		text: i18n.ts.reactionAcceptance,
 		action: () => {
@@ -645,13 +668,7 @@ function showOtherSettings() {
 		},
 	}] satisfies MenuItem[];
 
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkPostFormOtherMenu.vue')), {
-		items: menuDef,
-		textLength: textLength.value,
-		src: otherSettingsButton.value,
-	}, {
-		closed: () => dispose(),
-	});
+	os.popupMenu(menuItems, otherSettingsButton.value);
 }
 //#endregion
 
@@ -688,13 +705,13 @@ function clear() {
 }
 
 function onKeydown(ev: KeyboardEvent) {
-	if (defaultStore.state.useEnterToSend && !ev.shiftKey) {
+	if (prefer.s.useEnterToSend && !ev.shiftKey) {
 		if (ev.key === 'Enter' && canPost.value) post();
 	} else {
 		if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey) && canPost.value) post();
 	}
 
-	if (defaultStore.state.postFormVisibilityHotkey) {
+	if (prefer.s.postFormVisibilityHotkey) {
 		if (ev.ctrlKey && ev.shiftKey && (visibility.value === 'specified')) visibility.value = 'public';
 		else if (ev.ctrlKey && ev.shiftKey && (visibility.value === 'public')) visibility.value = 'home';
 		else if (ev.ctrlKey && ev.shiftKey && (visibility.value === 'home')) visibility.value = 'followers';
@@ -720,6 +737,8 @@ function onCompositionEnd(ev: CompositionEvent) {
 	justEndedComposition.value = true;
 }
 
+const pastedFileName = 'yyyy-MM-dd HH-mm-ss [{{number}}]';
+
 async function onPaste(ev: ClipboardEvent) {
 	if (props.mock) return;
 	if (!ev.clipboardData) return;
@@ -730,7 +749,7 @@ async function onPaste(ev: ClipboardEvent) {
 			if (!file) continue;
 			const lio = file.name.lastIndexOf('.');
 			const ext = lio >= 0 ? file.name.slice(lio) : '';
-			const formatted = `${formatTimeString(new Date(file.lastModified), defaultStore.state.pastedFileName).replace(/{{number}}/g, `${i + 1}`)}${ext}`;
+			const formatted = `${formatTimeString(new Date(file.lastModified), pastedFileName).replace(/{{number}}/g, `${i + 1}`)}${ext}`;
 			upload(file, formatted);
 		}
 	}
@@ -764,7 +783,7 @@ async function onPaste(ev: ClipboardEvent) {
 				return;
 			}
 
-			const fileName = formatTimeString(new Date(), defaultStore.state.pastedFileName).replace(/{{number}}/g, '0');
+			const fileName = formatTimeString(new Date(), pastedFileName).replace(/{{number}}/g, '0');
 			const file = new File([paste], `${fileName}.txt`, { type: 'text/plain' });
 			upload(file, `${fileName}.txt`);
 		});
@@ -908,7 +927,7 @@ async function post(ev?: MouseEvent) {
 	if (ev) {
 		const el = (ev.currentTarget ?? ev.target) as HTMLElement | null;
 
-		if (el) {
+		if (el && prefer.s.animation) {
 			const rect = el.getBoundingClientRect();
 			const x = rect.left + (el.offsetWidth / 2);
 			const y = rect.top + (el.offsetHeight / 2);
@@ -930,7 +949,7 @@ async function post(ev?: MouseEvent) {
 		return;
 	}
 
-	if (defaultStore.state.showNoAltTextWarning && files.value.some((f) => f.comment == null || f.comment.length === 0)) {
+	if (prefer.s.showNoAltTextWarning && files.value.some((f) => f.comment == null || f.comment.length === 0)) {
 		const confirm = await os.actions({
 			type: 'warning',
 			title: i18n.ts.showNoAltWarning,
@@ -958,7 +977,7 @@ async function post(ev?: MouseEvent) {
 		if (confirm.result === 'cancel') return;
 
 		if (confirm.result === 'neverShow') {
-			defaultStore.set('showNoAltTextWarning', false);
+			prefer.commit('showNoAltTextWarning', false);
 		}
 	}
 
@@ -1024,6 +1043,7 @@ async function post(ev?: MouseEvent) {
 	}
 
 	// plugin
+	const notePostInterruptors = getPluginHandlers('note_post_interruptor');
 	if (notePostInterruptors.length > 0) {
 		for (const interruptor of notePostInterruptors) {
 			try {
@@ -1049,14 +1069,15 @@ async function post(ev?: MouseEvent) {
 			clear();
 		}
 		nextTick(() => {
+			deleteDraft();
+			emit('posted');
+
 			if (replyTargetNote.value) os.toast(i18n.ts.replied, 'reply');
 			else if (renoteTargetNote.value) os.toast(i18n.ts.quoted, 'quote');
 			else if (props.updateMode) os.toast(i18n.ts.noteEdited, 'edited');
 			else if (scheduleNote.value) os.toast(i18n.ts.createSchedulePost, 'scheduled');
 			else os.toast(i18n.ts.posted, 'posted');
 
-			deleteDraft();
-			emit('posted');
 			if (postData.text && postData.text !== '') {
 				const hashtags_ = mfm.parse(postData.text).map(x => x.type === 'hashtag' && x.props.hashtag).filter(x => x) as string[];
 				const history = JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]') as string[];
@@ -1108,7 +1129,6 @@ async function post(ev?: MouseEvent) {
 			if (m === 0 && s === 0) {
 				claimAchievement('postedAt0min0sec');
 			}
-
 			if (serverDraftId.value != null) {
 				misskeyApi('notes/drafts/delete', { draftId: serverDraftId.value });
 			}
@@ -1117,13 +1137,13 @@ async function post(ev?: MouseEvent) {
 		posting.value = false;
 		os.alert({
 			type: 'error',
-			text: err.message + '\n' + (err as any).id,
+			text: `${err.message}\n${(err as any).id}`,
 		});
 	});
 	textareaEl.value.style.height = '140px';
 	if (props.updateMode) sound.playMisskeySfx('noteEdited');
 	else if (scheduleNote.value) sound.playMisskeySfx('noteSchedulePost');
-	vibrate(defaultStore.state.vibrateSystem ? [10, 20, 10, 20, 10, 20, 60] : []);
+	vibrate(prefer.s['vibrate.on.system'] ? [10, 20, 10, 20, 10, 20, 60] : []);
 }
 
 function cancel() {
@@ -1393,6 +1413,7 @@ function showPostMenu(ev: MouseEvent) {
 		text: i18n.ts.disableRightClick,
 		icon: 'ti ti-mouse-off',
 		ref: disableRightClick,
+		disabled: files.value.length < 1,
 	});
 
 	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
@@ -1506,6 +1527,8 @@ defineExpose({
 	&.modal {
 		width: 100%;
 		max-width: 640px;
+		overflow-x: clip;
+		overflow-y: auto;
 	}
 }
 
@@ -1561,6 +1584,7 @@ defineExpose({
 }
 
 .submit {
+	display: flex;
 	margin: 12px 12px 12px 6px;
 	vertical-align: bottom;
 }
@@ -1732,7 +1756,7 @@ html[data-color-scheme=light] .preview {
 	padding: 0 30px;
 	margin: 0;
 	width: 100%;
-	font-size: 16px;
+	font-size: 110%;
 	border: none;
 	border-radius: 0;
 	background: transparent;

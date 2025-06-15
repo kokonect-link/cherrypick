@@ -55,6 +55,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.main">
 			<EmNoteHeader :note="appearNote" :mini="true"/>
 			<div style="container-type: inline-size;">
+				<div v-if="appearNote.replyId" style="margin-bottom: 4px;">
+					<EmA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></EmA>
+					<EmA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></EmA>
+				</div>
 				<p v-if="appearNote.cw != null" :class="$style.cw">
 					<EmMfm v-if="appearNote.cw != ''" style="margin-right: 8px;" :text="appearNote.cw" :author="appearNote.user" :nyaize="'respect'"/>
 					<button style="display: block; width: 100%; margin: 4px 0;" class="_buttonGray _buttonRounded" @click="showContent = !showContent">{{ showContent ? i18n.ts._cw.hide : i18n.ts._cw.show }}</button>
@@ -62,10 +66,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-show="appearNote.cw == null || showContent" :class="[{ [$style.contentCollapsed]: collapsed }]">
 					<div :class="$style.text">
 						<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts.private }})</span>
-						<div v-if="appearNote.replyId" style="margin-bottom: 4px;">
-							<EmA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></EmA>
-							<EmA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></EmA>
-						</div>
 						<EmMfm
 							v-if="appearNote.text"
 							:parsedNodes="parsed"
@@ -128,6 +128,7 @@ import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { url } from '@@/js/config.js';
+import { toUnicode } from 'punycode.js';
 import I18n from '@/components/I18n.vue';
 import EmNoteSub from '@/components/EmNoteSub.vue';
 import EmNoteHeader from '@/components/EmNoteHeader.vue';
@@ -175,9 +176,9 @@ const collapsed = ref(appearNote.value.cw == null && (isLong || (isMFM)));
 const isDeleted = ref(false);
 
 const replyTo = computed(() => {
-	const username = appearNote.value.reply.user.username;
+	const username = appearNote.value.reply.user.host == null ? `@${appearNote.value.reply.user.username}` : `@${appearNote.value.reply.user.username}@${toUnicode(appearNote.value.reply.user.host)}`;
 	const text = i18n.tsx.replyTo({ user: username });
-	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">@${username}</span>`;
+	const user = `<span style="color: var(--MI_THEME-accent); margin-right: 0.25em;">${username}</span>`;
 
 	return text.replace(username, user);
 });

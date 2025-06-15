@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="500">
+<div class="_spacer" style="--MI_SPACER-w: 500px;">
 	<div :class="$style.root" class="_gaps">
 		<div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
 			<span>({{ i18n.ts._reversi.black }})</span>
@@ -61,10 +61,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 								[$style.boardCell_prev]: engine.prevPos === i
 							}]"
 							@click="putStone(i)"
-							@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = true : ''"
-							@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = false : ''"
-							@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = true : ''"
-							@touchend="defaultStore.state.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = false : ''"
+							@mouseover="prefer.s.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = true : ''"
+							@mouseout="prefer.s.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = false : ''"
+							@touchstart="prefer.s.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = true : ''"
+							@touchend="prefer.s.showingAnimatedImages === 'interaction' && stone === true ? playAnimation = false : ''"
 						>
 							<Transition
 								:enterActiveClass="$style.transition_flip_enterActive"
@@ -160,7 +160,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<img src="/client-assets/reversi/logo.png" style="display: block; max-width: 100%; width: 200px; margin: auto;"/>
 		</MkA>
 	</div>
-</MkSpacer>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -175,17 +175,18 @@ import MkButton from '@/components/MkButton.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
-import { deepClone } from '@/scripts/clone.js';
-import { $i } from '@/account.js';
+import { deepClone } from '@/utility/clone.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { userPage } from '@/filters/user.js';
-import * as sound from '@/scripts/sound.js';
+import * as sound from '@/utility/sound.js';
 import * as os from '@/os.js';
-import { reactionPicker } from '@/scripts/reaction-picker.js';
-import { confetti } from '@/scripts/confetti.js';
-import { defaultStore } from '@/store.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { reactionPicker } from '@/utility/reaction-picker.js';
+import { confetti } from '@/utility/confetti.js';
+import { prefer } from '@/preferences.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
+import { store } from '@/store.js';
 
 const props = defineProps<{
 	game: Misskey.entities.ReversiGameDetailed;
@@ -257,16 +258,16 @@ const cellsStyle = computed(() => {
 });
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const blackUserUrl = computed(() => {
 	if (blackUser.value.avatarUrl == null) return null;
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(blackUser.value.avatarUrl);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(blackUser.value.avatarUrl);
 	return blackUser.value.avatarUrl;
 });
 const whiteUserUrl = computed(() => {
 	if (whiteUser.value.avatarUrl == null) return null;
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(whiteUser.value.avatarUrl);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(whiteUser.value.avatarUrl);
 	return whiteUser.value.avatarUrl;
 });
 
@@ -466,7 +467,7 @@ function autoplay() {
 		const tick = () => {
 			const log = logs[i];
 			const time = log.time - previousLog.time;
-			setTimeout(() => {
+			window.setTimeout(() => {
 				i++;
 				logPos.value++;
 				previousLog = log;
@@ -492,11 +493,11 @@ function share() {
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
-const _reactionEmojis = ref(defaultStore.reactiveState.reactions.value);
+const _reactionEmojis = ref(store.r.reactions);
 const reactionEmojis = computed(() => _reactionEmojis.value.slice(0, 10));
 
 const blackUserEl = ref<HTMLElement | null>(null);
@@ -513,11 +514,13 @@ function getKey(emoji: string | Misskey.entities.EmojiSimple | UnicodeEmojiDef):
 function onReactionEmojiClick(emoji: string, ev?: MouseEvent) {
 	if (_DEV_) console.log('emoji click');
 	const el = ev && (ev.currentTarget ?? ev.target) as HTMLElement | null | undefined;
-	if (el) {
+	if (el && prefer.s.animation) {
 		const rect = el.getBoundingClientRect();
 		const x = rect.left + (el.offsetWidth / 2);
 		const y = rect.top + (el.offsetHeight / 2);
-		os.popup(MkRippleEffect, { x, y }, {}, 'end');
+		const { dispose } = os.popup(MkRippleEffect, { x, y }, {
+			end: () => dispose(),
+		});
 	}
 
 	const key = getKey(emoji);
@@ -570,17 +573,18 @@ function onReacted(payload: Parameters<Misskey.Channels['reversiGame']['events']
 		sound.playMisskeySfx('reaction');
 
 		const el = (userId === blackUser.value.id) ? blackUserEl.value : whiteUserEl.value;
-
-		if (el) {
+		if (el && prefer.s.animation) {
 			const rect = el.getBoundingClientRect();
 			const x = (userId === blackUser.value.id) ? rect.left - (el.offsetWidth * 1.8) : rect.right;
 			const y = rect.bottom;
-			os.popup(XEmojiBalloon, {
+			const { dispose } = os.popup(XEmojiBalloon, {
 				reaction,
 				tail: (userId === blackUser.value.id) ? 'right' : 'left',
 				x,
 				y,
-			}, {}, 'end');
+			}, {
+				end: () => dispose(),
+			});
 		}
 	}
 
@@ -604,7 +608,7 @@ onMounted(() => {
 		props.connection.on('ended', onStreamEnded);
 	}
 
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -634,7 +638,7 @@ onUnmounted(() => {
 		props.connection.off('ended', onStreamEnded);
 	}
 
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);

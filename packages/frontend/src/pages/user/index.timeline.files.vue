@@ -5,12 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <MkPagination ref="pagingComponent" :pagination="pagination" :disableAutoLoad="disableAutoLoad">
-	<template #empty>
-		<div class="_fullinfo">
-			<img :src="infoImageUrl" class="_ghost"/>
-			<div>{{ i18n.ts.noNotes }}</div>
-		</div>
-	</template>
+	<template #empty><MkResult type="empty" :text="i18n.ts.noNotes"/></template>
 
 	<template #default="{ items: user }">
 		<div :class="$style.stream">
@@ -21,19 +16,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { shallowRef } from 'vue';
+import { useTemplateRef } from 'vue';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import XFiles from '@/pages/user/index.timeline.files.files.vue';
 import { i18n } from '@/i18n.js';
-import { infoImageUrl } from '@/instance.js';
 
 const props = defineProps<{
 	pagination: Paging;
 	disableAutoLoad?: boolean;
 }>();
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = useTemplateRef('pagingComponent');
 
 defineExpose({
 	pagingComponent,

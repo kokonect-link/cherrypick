@@ -137,11 +137,6 @@
 		document.documentElement.classList.add('useSystemFont');
 	}
 
-	const wallpaper = localStorage.getItem('wallpaper');
-	if (wallpaper) {
-		document.documentElement.style.backgroundImage = `url(${wallpaper})`;
-	}
-
 	const customCss = localStorage.getItem('customCss');
 	if (customCss && customCss.length > 0) {
 		const style = document.createElement('style');
@@ -195,7 +190,7 @@
 			<p>${messages.solution2}</p>
 			<p>${messages.solution3}</p>
 			<p>${messages.solution4}</p>
-			<details style="color: #86b300;">
+			<details style="color: rgb(255, 188, 220);">
 				<summary>${messages.otherOption}</summary>
 				<a href="/flush">
 					<button class="button-small">

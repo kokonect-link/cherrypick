@@ -4,14 +4,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="800">
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 800px;">
 		<div>
-			<Transition :name="defaultStore.state.animation ? 'fade' : ''" mode="out-in">
+			<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
 				<div v-if="note">
 					<div v-if="showNext" class="_margin">
-						<MkNotes class="" :pagination="showNext === 'channel' ? nextChannelPagination : nextUserPagination" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :disableAutoLoad="true"/>
+						<MkNotes class="" :pagination="showNext === 'channel' ? nextChannelPagination : nextUserPagination" :noGap="!prefer.s.showGapBetweenNotesInTimeline" :disableAutoLoad="true"/>
 					</div>
 
 					<div class="_margin">
@@ -36,15 +35,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 
 					<div v-if="showPrev" class="_margin">
-						<MkNotes class="" :pagination="showPrev === 'channel' ? prevChannelPagination : prevUserPagination" :noGap="!defaultStore.state.showGapBetweenNotesInTimeline"/>
+						<MkNotes class="" :pagination="showPrev === 'channel' ? prevChannelPagination : prevUserPagination" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
 					</div>
 				</div>
 				<MkError v-else-if="error" @retry="fetchNote()"/>
 				<MkLoading v-else/>
 			</Transition>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -56,16 +55,16 @@ import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
 import MkNotes from '@/components/MkNotes.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
 import MkButton from '@/components/MkButton.vue';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
 import { dateString } from '@/filters/date.js';
 import MkClipPreview from '@/components/MkClipPreview.vue';
-import { defaultStore } from '@/store.js';
-import { pleaseLogin } from '@/scripts/please-login.js';
-import { getAppearNote } from '@/scripts/get-appear-note.js';
+import { prefer } from '@/preferences.js';
+import { pleaseLogin } from '@/utility/please-login.js';
+import { getAppearNote } from '@/utility/get-appear-note.js';
 import { serverContext, assertServerContext } from '@/server-context.js';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
 
 // contextは非ログイン状態の情報しかないためログイン時は利用できない
 const CTX_NOTE = !$i && assertServerContext(serverContext, 'note') ? serverContext.note : null;
@@ -165,7 +164,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.note,
 	...note.value ? {
 		subtitle: dateString(note.value.createdAt),

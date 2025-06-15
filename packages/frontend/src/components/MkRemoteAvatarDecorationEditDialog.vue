@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #header>{{ name }}</template>
 
 	<div style="display: flex; flex-direction: column; min-height: 100%;">
-		<MkSpacer :marginMin="20" :marginMax="28" style="flex-grow: 1;">
+		<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px; flex-grow: 1;">
 			<div class="_gaps_m">
 				<div v-if="url != ''" :class="$style.preview">
 					<div :class="[$style.previewItem, $style.light]">
@@ -38,21 +38,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template #value>{{ description }}</template>
 				</MkKeyValue>
 			</div>
-		</MkSpacer>
+		</div>
 	</div>
 </MkWindow>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkWindow from '@/components/MkWindow.vue';
 import { i18n } from '@/i18n.js';
 import * as os from '@/os.js';
-import { signinRequired } from '@/account.js';
+import { ensureSignin } from '@/i.js';
 
-const $i = signinRequired();
+const $i = ensureSignin();
 
 const props = defineProps<{
 	decoration: {
@@ -69,7 +69,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void
 }>();
 
-const windowEl = ref<InstanceType<typeof MkWindow> | null>(null);
+const windowEl = useTemplateRef('windowEl');
 
 const name = computed(() => props.decoration.name);
 const description = computed(() => props.decoration.description);

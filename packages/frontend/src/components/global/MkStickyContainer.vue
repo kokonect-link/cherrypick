@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl">
-	<div ref="headerEl" :class="[$style.header, {[$style.reduceAnimation]: !defaultStore.state.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && (mainRouter.currentRoute.value.name !== 'index' || !isFriendly), [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>defaultStore.state.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' && isFriendly }]">
+	<div ref="headerEl" :class="[$style.header, {[$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && (mainRouter.currentRoute.value.name !== 'index' || !isFriendly().value), [$style.showElTl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isAllowHideHeader && mainRouter.currentRoute.value.name === 'index' && isFriendly().value }]">
 		<slot name="header"></slot>
 	</div>
 	<div
@@ -23,24 +23,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { onMounted, onUnmounted, provide, inject, ref, watch, useTemplateRef } from 'vue';
-import { CURRENT_STICKY_BOTTOM, CURRENT_STICKY_TOP } from '@@/js/const.js';
-import type { Ref } from 'vue';
-import { deviceKind } from '@/scripts/device-kind.js';
-import { mainRouter } from '@/router/main.js';
-import { defaultStore } from '@/store.js';
-import { globalEvents } from '@/events.js';
-import { miLocalStorage } from '@/local-storage.js';
+import { DI } from '@/di.js';
+import { deviceKind } from '@/utility/device-kind.js';
+import { mainRouter } from '@/router.js';
+import { prefer } from '@/preferences.js';
+import { isFriendly } from '@/utility/is-friendly.js';
+import { detectScrolling } from '@/utility/detect-scrolling.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
-const isFriendly = ref(miLocalStorage.getItem('ui') === 'friendly');
 const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favorites'].includes(<string>mainRouter.currentRoute.value.name));
 const MOBILE_THRESHOLD = 500;
 
-const isMobile = ref(['smartphone', 'tablet'].includes(<string>deviceKind) || window.innerWidth <= MOBILE_THRESHOLD);
+const isMobile = ref(['smartphone', 'tablet'].includes(String(deviceKind)) || window.innerWidth <= MOBILE_THRESHOLD);
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const showEl = ref(false);
+const { showEl } = scrollToVisibility();
 
 const rootEl = useTemplateRef('rootEl');
 const headerEl = useTemplateRef('headerEl');
@@ -48,13 +47,13 @@ const footerEl = useTemplateRef('footerEl');
 
 const headerHeight = ref<string | undefined>();
 const childStickyTop = ref(0);
-const parentStickyTop = inject<Ref<number>>(CURRENT_STICKY_TOP, ref(0));
-provide(CURRENT_STICKY_TOP, childStickyTop);
+const parentStickyTop = inject(DI.currentStickyTop, ref(0));
+provide(DI.currentStickyTop, childStickyTop);
 
 const footerHeight = ref<string | undefined>();
 const childStickyBottom = ref(0);
-const parentStickyBottom = inject<Ref<number>>(CURRENT_STICKY_BOTTOM, ref(0));
-provide(CURRENT_STICKY_BOTTOM, childStickyBottom);
+const parentStickyBottom = inject(DI.currentStickyBottom, ref(0));
+provide(DI.currentStickyBottom, childStickyBottom);
 
 const calc = () => {
 	// コンポーネントが表示されてないけどKeepAliveで残ってる場合などは null になる
@@ -76,6 +75,8 @@ const observer = new ResizeObserver(() => {
 	}, 100);
 });
 
+detectScrolling(rootEl);
+
 onMounted(() => {
 	calc();
 
@@ -88,10 +89,6 @@ onMounted(() => {
 	if (footerEl.value != null) {
 		observer.observe(footerEl.value);
 	}
-
-	globalEvents.on('showEl', (showEl_receive) => {
-		showEl.value = showEl_receive;
-	});
 });
 
 onUnmounted(() => {

@@ -9,6 +9,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:class="[$style.root, { [$style.normal]: normal, [$style.noStyle]: noStyle }]"
 	src="/client-assets/dummy.png"
 	:title="alt"
+	draggable="false"
+	style="-webkit-user-drag: none;"
 />
 <span v-else-if="errored">:{{ customEmojiName }}:</span>
 <img
@@ -18,29 +20,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 	:alt="alt"
 	:title="alt"
 	decoding="async"
+	draggable="false"
 	@error="errored = true"
 	@load="errored = false"
 	@click.stop="onClick"
-	@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-	@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-	@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-	@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+	@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+	@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 />
 </template>
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, onMounted, onUnmounted, inject, ref } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
-import { getProxiedImageUrl, getStaticImageUrl } from '@/scripts/media-proxy.js';
-import { defaultStore } from '@/store.js';
+import { getProxiedImageUrl, getStaticImageUrl } from '@/utility/media-proxy.js';
 import { customEmojis, customEmojisMap } from '@/custom-emojis.js';
 import * as os from '@/os.js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
-import { copyToClipboard } from '@/scripts/copy-to-clipboard.js';
-import * as sound from '@/scripts/sound.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
+import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import MkCustomEmojiDetailedDialog from '@/components/MkCustomEmojiDetailedDialog.vue';
-import { $i } from '@/account.js';
+import { $i } from '@/i.js';
+import { prefer } from '@/preferences.js';
+import { DI } from '@/di.js';
 
 const props = defineProps<{
 	name: string;
@@ -54,7 +57,7 @@ const props = defineProps<{
 	fallbackToImage?: boolean;
 }>();
 
-const react = inject<((name: string) => void) | null>('react', null);
+const react = inject(DI.mfmEmojiReactCallback);
 
 const customEmojiName = computed(() => (props.name[0] === ':' ? props.name.substring(1, props.name.length - 1) : props.name).replace('@.', ''));
 const isLocal = computed(() => !props.host && (customEmojiName.value.endsWith('@.') || !customEmojiName.value.includes('@')));
@@ -70,8 +73,8 @@ const rawUrl = computed(() => {
 });
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (rawUrl.value == null) return undefined;
 
@@ -84,7 +87,7 @@ const url = computed(() => {
 				false,
 				true,
 			);
-	return defaultStore.reactiveState.disableShowingAnimatedImages.value || (['interaction', 'inactive'].includes(<string>defaultStore.reactiveState.showingAnimatedImages.value) && !playAnimation.value)
+	return prefer.s.disableShowingAnimatedImages || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(proxied)
 		: proxied;
 });
@@ -104,7 +107,6 @@ function onClick(ev: MouseEvent) {
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${props.name}:`);
-				os.toast(i18n.ts.copied, 'copied');
 			},
 		}] : []),
 		);
@@ -128,7 +130,6 @@ function onClick(ev: MouseEvent) {
 				icon: 'ti ti-mood-plus',
 				action: () => {
 					react(`:${props.name}:`);
-					sound.playMisskeySfx('reaction');
 				},
 			});
 		}
@@ -174,12 +175,12 @@ async function edit(name: string) {
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -187,7 +188,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);
@@ -199,6 +200,7 @@ onUnmounted(() => {
 .root {
 	height: 2em;
 	vertical-align: middle;
+	-webkit-user-drag: none;
 	transition: transform 0.2s ease;
 
 	&:hover {

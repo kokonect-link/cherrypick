@@ -151,7 +151,11 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		if (!userAvatarDecorations || userAvatarDecorations.length === 0) {
 			const updates = {} as Partial<MiUser>;
 			updates.avatarDecorations = [];
-			await this.usersRepository.update({ id: user.id }, updates);
+
+			if (!(await this.usersRepository.update({ id: user.id, isDeleted: false }, updates)).affected) {
+				return 'skip';
+			}
+
 			return;
 		}
 
@@ -218,7 +222,9 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 				opacity: avatarDecoration.opacity ?? 1,
 			});
 		}
-		await this.usersRepository.update({ id: user.id }, updates);
+		if (!(await this.usersRepository.update({ id: user.id, isDeleted: false }, updates)).affected) {
+			return 'skip';
+		}
 	}
 
 	@bindThis

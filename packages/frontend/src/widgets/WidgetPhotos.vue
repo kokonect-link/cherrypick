@@ -14,11 +14,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div
 				v-for="(image, i) in images" :key="i"
 				:class="$style.img"
-				:style="`background-image: url(${thumbnail(image)})`"
-				@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-				@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-				@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-				@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+				:style="{ backgroundImage: `url(${thumbnail(image)})` }"
+				@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+				@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+				@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+				@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 			>
 				<div :class="$style.indicators">
 					<div v-if="['image/gif'].includes(image.type)" :class="$style.indicator">GIF</div>
@@ -37,12 +37,12 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import { useStream } from '@/stream.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import MkContainer from '@/components/MkContainer.vue';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 
 const name = 'photos';
@@ -81,18 +81,18 @@ const onDriveFileCreated = (file) => {
 };
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const thumbnail = (image: Misskey.entities.DriveFile): string => {
-	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
+	return (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.media) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl ?? image.url;
 };
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 misskeyApi('drive/stream', {
@@ -106,7 +106,7 @@ misskeyApi('drive/stream', {
 connection.on('driveFileCreated', onDriveFileCreated);
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -114,7 +114,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);
@@ -173,7 +173,7 @@ defineExpose<WidgetComponentExpose>({
 	/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
 	background-color: black;
 	border-radius: 6px;
-	color: var(--MI_THEME-accentLighten);
+	color: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 	display: inline-block;
 	font-weight: bold;
 	font-size: 0.8em;

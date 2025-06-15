@@ -30,8 +30,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
+import { shuffle } from '@/utility/shuffle.js';
 import MarqueeText from '@/components/MkMarquee.vue';
-import { shuffle } from '@/scripts/shuffle.js';
 
 const props = defineProps<{
 	url?: string;

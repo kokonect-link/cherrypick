@@ -50,9 +50,9 @@ const active = ref(false);
 
 onMounted(() => {
 	active.value = true;
-	setTimeout(() => {
+	window.setTimeout(() => {
 		active.value = false;
-		setTimeout(() => {
+		window.setTimeout(() => {
 			emit('end');
 		}, 750);
 	}, 3000);

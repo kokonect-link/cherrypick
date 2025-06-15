@@ -6,7 +6,7 @@
 import { expect, userEvent, within } from '@storybook/test';
 import MkA from './MkA.vue';
 import type { StoryObj } from '@storybook/vue3';
-import { tick } from '@/scripts/test-utils.js';
+import { tick } from '@/utility/test-utils.js';
 export const Default = {
 	render(args) {
 		return {

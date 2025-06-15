@@ -47,7 +47,7 @@ export const Default = {
 					const url = new URL(urlStr);
 
 					if (url.href.startsWith('https://github.com/kokonect-link/cherrypick/blob/master/packages/frontend/assets/')) {
-						const image = await (await fetch(`client-assets/${url.pathname.split('/').pop()}`)).blob();
+						const image = await (await window.fetch(`client-assets/${url.pathname.split('/').pop()}`)).blob();
 						return new HttpResponse(image, {
 							headers: {
 								'Content-Type': 'image/jpeg',

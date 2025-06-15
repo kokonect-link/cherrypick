@@ -284,25 +284,6 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 				default:
 					return null;
 			}
-		case 'unreadMessagingMessage':
-			if (data.body.groupId === null) {
-				return [getUserName(data.body.user ?? { name: null, username: '' }), {
-					body: data.body.text ?? '',
-					icon: data.body.user?.avatarUrl ?? undefined,
-					badge: iconUrl('messages'),
-					tag: `messaging:user:${data.body.userId}`,
-					data,
-					renotify: true,
-				}];
-			}
-			return [data.body.group?.name ?? '', {
-				body: `${getUserName(data.body.user ?? { name: null, username: '' })}: ${data.body.text ?? ''}`,
-				icon: data.body.user?.avatarUrl ?? undefined,
-				badge: iconUrl('messages'),
-				tag: `messaging:group:${data.body.groupId}`,
-				data,
-				renotify: true,
-			}];
 		case 'unreadAntennaNote':
 			return [i18n.tsx._notification.unreadAntennaNote({ name: data.body.antenna.name }), {
 				body: `${getUserName(data.body.note.user)}: ${data.body.note.text ?? ''}`,
@@ -312,6 +293,24 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 				data,
 				renotify: true,
 			}];
+		case 'newChatMessage':
+			if (data.body.toRoom != null) {
+				return [`${data.body.toRoom.name}: ${getUserName(data.body.fromUser)}: ${data.body.text}`, {
+					icon: data.body.fromUser.avatarUrl ?? undefined,
+					badge: iconUrl('messages'),
+					tag: `chat:room:${data.body.toRoomId}`,
+					data,
+					renotify: true,
+				}];
+			} else {
+				return [`${getUserName(data.body.fromUser)}: ${data.body.text}`, {
+					icon: data.body.fromUser.avatarUrl ?? undefined,
+					badge: iconUrl('messages'),
+					tag: `chat:user:${data.body.fromUserId}`,
+					data,
+					renotify: true,
+				}];
+			}
 		default:
 			return null;
 	}

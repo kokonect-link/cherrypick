@@ -4,94 +4,135 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_gaps_m">
-	<FormSection first>
-		<template #label>{{ i18n.ts.sounds }}</template>
-		<div class="_gaps_s">
-			<MkSwitch v-model="notUseSound">
-				<template #label>{{ i18n.ts.notUseSound }}</template>
-			</MkSwitch>
-			<MkSwitch v-model="useSoundOnlyWhenActive">
-				<template #label>{{ i18n.ts.useSoundOnlyWhenActive }}</template>
-			</MkSwitch>
-			<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
-				<template #label>{{ i18n.ts.masterVolume }}</template>
-			</MkRange>
-		</div>
+<SearchMarker path="/settings/sounds-and-vibrations" :label="i18n.ts.soundsAndVibrations" :keywords="['sounds']" icon="ti ti-music">
+	<div class="_gaps_m">
+		<MkFeatureBanner icon="/client-assets/speaker_high_volume_3d.png" color="#ff006f">
+			<SearchKeyword>{{ i18n.ts._settings.soundsBanner }}</SearchKeyword>
+		</MkFeatureBanner>
 
 		<div class="_gaps_s">
-			<MkFolder v-for="type in operationTypes" :key="type">
-				<template #label>{{ i18n.ts._sfx[type] }}</template>
-				<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
-				<Suspense>
-					<template #default>
-						<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
-					</template>
-					<template #fallback>
-						<MkLoading/>
-					</template>
-				</Suspense>
-			</MkFolder>
-		</div>
-	</FormSection>
+			<SearchMarker :keywords="['mute']">
+				<MkPreferenceContainer k="sound.notUseSound">
+					<MkSwitch v-model="notUseSound">
+						<template #label><SearchLabel>{{ i18n.ts.notUseSound }}</SearchLabel></template>
+					</MkSwitch>
+				</MkPreferenceContainer>
+			</SearchMarker>
 
-	<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+			<SearchMarker :keywords="['active', 'mute']">
+				<MkPreferenceContainer k="sound.useSoundOnlyWhenActive">
+					<MkSwitch v-model="useSoundOnlyWhenActive">
+						<template #label><SearchLabel>{{ i18n.ts.useSoundOnlyWhenActive }}</SearchLabel></template>
+					</MkSwitch>
+				</MkPreferenceContainer>
+			</SearchMarker>
 
-	<FormSection>
-		<template #label>{{ i18n.ts.vibrations }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
-		<div class="_gaps_s">
-			<MkSwitch v-model="vibrate" :disabled="ua" @click="demoVibrate()">{{ i18n.ts.playVibrations }}<template v-if="ua" #caption>{{ i18n.ts.cannotBeUsedFunc }} <a class="_link" @click="learnMorePlayVibrations">{{ i18n.ts.learnMore }}</a></template></MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateNote">{{ i18n.ts._vibrations.note }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateNotification">{{ i18n.ts._vibrations.notification }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateChat">{{ i18n.ts._vibrations.chat }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateChatBg">{{ i18n.ts._vibrations.chatBg }}</MkSwitch>
-			<MkSwitch v-if="vibrate" v-model="vibrateSystem" style="margin-top: 10px;">{{ i18n.ts._vibrations.system }}</MkSwitch>
+			<SearchMarker :keywords="['volume', 'master']">
+				<MkPreferenceContainer k="sound.masterVolume">
+					<MkRange v-model="masterVolume" style="margin-bottom: 25px;" :min="0" :max="1" :step="0.05" :textConverter="(v) => `${Math.floor(v * 100)}%`">
+						<template #label><SearchLabel>{{ i18n.ts.masterVolume }}</SearchLabel></template>
+					</MkRange>
+				</MkPreferenceContainer>
+			</SearchMarker>
 		</div>
-	</FormSection>
-</div>
+
+		<FormSection>
+			<template #label>{{ i18n.ts.sounds }}</template>
+			<div class="_gaps_s">
+				<MkFolder v-for="type in operationTypes" :key="type">
+					<template #label>{{ i18n.ts._sfx[type] }}</template>
+					<template #suffix>{{ getSoundTypeName(sounds[type].type) }}</template>
+					<Suspense>
+						<template #default>
+							<XSound :type="sounds[type].type" :volume="sounds[type].volume" :fileId="sounds[type].fileId" :fileUrl="sounds[type].fileUrl" @update="(res) => updated(type, res)"/>
+						</template>
+						<template #fallback>
+							<MkLoading/>
+						</template>
+					</Suspense>
+				</MkFolder>
+			</div>
+		</FormSection>
+
+		<MkButton danger @click="reset()"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
+
+		<FormSection>
+			<template #label>{{ i18n.ts.vibrations }} <span class="_beta" style="vertical-align: middle;">CherryPick</span></template>
+			<div class="_gaps_s">
+				<MkPreferenceContainer k="vibrate">
+					<MkSwitch v-model="vibrate" :disabled="ua">
+						<template #label><SearchLabel>{{ i18n.ts.playVibrations }}</SearchLabel></template>
+						<template v-if="ua" #caption><SearchKeyword>{{ i18n.ts.cannotBeUsedFunc }}</SearchKeyword> <a class="_link" @click="learnMorePlayVibrations">{{ i18n.ts.learnMore }}</a></template>
+						<template v-else #caption><a class="_link" @click="demoVibrate()">{{ i18n.ts.testVibrations }}</a></template>
+					</MkSwitch>
+				</MkPreferenceContainer>
+
+				<template v-if="vibrate">
+					<MkPreferenceContainer k="vibrate.on.note">
+						<MkSwitch v-model="vibrateNote">
+							<template #label><SearchLabel>{{ i18n.ts._vibrations.note }}</SearchLabel></template>
+						</MkSwitch>
+					</MkPreferenceContainer>
+
+					<MkPreferenceContainer k="vibrate.on.notification">
+						<MkSwitch v-model="vibrateNotification">
+							<template #label><SearchLabel>{{ i18n.ts._vibrations.notification }}</SearchLabel></template>
+						</MkSwitch>
+					</MkPreferenceContainer>
+
+					<MkPreferenceContainer k="vibrate.on.system">
+						<MkSwitch v-model="vibrateSystem" style="margin-top: 10px;">
+							<template #label><SearchLabel>{{ i18n.ts._vibrations.system }}</SearchLabel></template>
+						</MkSwitch>
+					</MkPreferenceContainer>
+				</template>
+			</div>
+		</FormSection>
+	</div>
+</SearchMarker>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
 import XSound from './sounds.sound.vue';
 import type { Ref } from 'vue';
-import type { SoundType, OperationType } from '@/scripts/sound.js';
-import type { SoundStore } from '@/store.js';
-import * as os from '@/os.js';
+import type { SoundType, OperationType } from '@/utility/sound.js';
+import type { SoundStore } from '@/preferences/def.js';
+import { prefer } from '@/preferences.js';
 import MkRange from '@/components/MkRange.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSection from '@/components/form/section.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { operationTypes } from '@/scripts/sound.js';
-import { defaultStore } from '@/store.js';
-import { reloadAsk } from '@/scripts/reload-ask.js';
+import { definePage } from '@/page.js';
+import { operationTypes } from '@/utility/sound.js';
+import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
+import { PREF_DEF } from '@/preferences/def.js';
+import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
+import { reloadAsk } from '@/utility/reload-ask.js';
+import * as os from '@/os.js';
 
 const ua = /ipad|iphone/.test(navigator.userAgent.toLowerCase()) || !window.navigator.vibrate;
 
-const notUseSound = computed(defaultStore.makeGetterSetter('sound_notUseSound'));
-const useSoundOnlyWhenActive = computed(defaultStore.makeGetterSetter('sound_useSoundOnlyWhenActive'));
-const masterVolume = computed(defaultStore.makeGetterSetter('sound_masterVolume'));
+const notUseSound = prefer.model('sound.notUseSound');
+const useSoundOnlyWhenActive = prefer.model('sound.useSoundOnlyWhenActive');
+const masterVolume = prefer.model('sound.masterVolume');
 
 const sounds = ref<Record<OperationType, Ref<SoundStore>>>({
-	note: defaultStore.reactiveState.sound_note,
-	noteMy: defaultStore.reactiveState.sound_noteMy,
-	noteSchedulePost: defaultStore.reactiveState.sound_noteSchedulePost,
-	noteEdited: defaultStore.reactiveState.sound_noteEdited,
-	notification: defaultStore.reactiveState.sound_notification,
-	chat: defaultStore.reactiveState.sound_chat,
-	chatBg: defaultStore.reactiveState.sound_chatBg,
-	reaction: defaultStore.reactiveState.sound_reaction,
+	note: prefer.r['sound.on.note'],
+	noteMy: prefer.r['sound.on.noteMy'],
+	noteSchedulePost: prefer.r['sound.on.noteSchedulePost'],
+	noteEdited: prefer.r['sound.on.noteEdited'],
+	notification: prefer.r['sound.on.notification'],
+	reaction: prefer.r['sound.on.reaction'],
+	chatMessage: prefer.r['sound.on.chatMessage'],
 });
 
-const vibrate = computed(defaultStore.makeGetterSetter('vibrate'));
-const vibrateNote = computed(defaultStore.makeGetterSetter('vibrateNote'));
-const vibrateNotification = computed(defaultStore.makeGetterSetter('vibrateNotification'));
-const vibrateChat = computed(defaultStore.makeGetterSetter('vibrateChat'));
-const vibrateChatBg = computed(defaultStore.makeGetterSetter('vibrateChatBg'));
-const vibrateSystem = computed(defaultStore.makeGetterSetter('vibrateSystem'));
+const vibrate = prefer.model('vibrate');
+const vibrateNote = prefer.model('vibrate.on.note');
+const vibrateNotification = prefer.model('vibrate.on.notification');
+const vibrateSystem = prefer.model('vibrate.on.system');
 
 function getSoundTypeName(f: SoundType): string {
 	switch (f) {
@@ -112,14 +153,14 @@ async function updated(type: keyof typeof sounds.value, sound) {
 		volume: sound.volume,
 	};
 
-	defaultStore.set(`sound_${type}`, v);
+	prefer.commit(`sound.on.${type}`, v);
 	sounds.value[type] = v;
 }
 
 function reset() {
 	for (const sound of Object.keys(sounds.value) as Array<keyof typeof sounds.value>) {
-		const v = defaultStore.def[`sound_${sound}`].default;
-		defaultStore.set(`sound_${sound}`, v);
+		const v = PREF_DEF[`sound.on.${sound}`].default;
+		prefer.commit(`sound.on.${sound}`, v);
 		sounds.value[sound] = v;
 	}
 
@@ -147,7 +188,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.soundsAndVibrations,
 	icon: 'ti ti-music',
 }));

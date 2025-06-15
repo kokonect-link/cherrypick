@@ -6,18 +6,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="$style.root" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
-		:class="[$style.inner, $style.noDrag, { [$style.reduceBlurEffect]: !defaultStore.state.useBlurEffect }]"
+		:class="[$style.inner, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl && !forceOpacity }]"
 		:src="url"
 		:hash="user.avatarBlurhash"
 		:cover="true"
 		:onlyAvgColor="true"
-		:noDrag="true"
-		@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
-	<template v-if="showDecoration && defaultStore.state.friendlyUiShowAvatarDecorationsInNavBtn">
+	<template v-if="showDecoration && prefer.s.friendlyUiShowAvatarDecorationsInNavBtn">
 		<img
 			v-for="decoration in decorations ?? user.avatarDecorations"
 			:class="[$style.decoration, { [$style.decorationBlink]: decoration.blink }]"
@@ -30,6 +29,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				opacity: getDecorationOpacity(decoration),
 			}"
 			alt=""
+			draggable="false"
+			style="-webkit-user-drag: none;"
 		>
 	</template>
 </component>
@@ -41,9 +42,12 @@ import * as Misskey from 'cherrypick-js';
 import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurhash.js';
 import MkImgWithBlurhash from '../MkImgWithBlurhash.vue';
 import MkA from './MkA.vue';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+
+const { showEl } = scrollToVisibility();
 
 const props = withDefaults(defineProps<{
 	user: Misskey.entities.User;
@@ -52,30 +56,32 @@ const props = withDefaults(defineProps<{
 	preview?: boolean;
 	decorations?: (Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'> & { blink?: boolean; })[];
 	forceShowDecoration?: boolean;
+	forceOpacity?: boolean;
 }>(), {
 	target: null,
 	link: false,
 	preview: false,
 	decorations: undefined,
 	forceShowDecoration: false,
+	forceOpacity: false,
 });
 
 const emit = defineEmits<{
 	(ev: 'click', v: MouseEvent): void;
 }>();
 
-const showDecoration = props.forceShowDecoration || defaultStore.state.showAvatarDecorations;
+const showDecoration = props.forceShowDecoration || prefer.s.showAvatarDecorations;
 
 const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
 	: {});
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
 	if (props.user.avatarUrl == null) return null;
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
 	return props.user.avatarUrl;
 });
 
@@ -85,7 +91,7 @@ function onClick(ev: MouseEvent): void {
 }
 
 function getDecorationUrl(decoration: Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'>) {
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(decoration.url);
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(decoration.url);
 	return decoration.url;
 }
 
@@ -117,8 +123,8 @@ function getDecorationOpacity(decoration: Omit<Misskey.entities.UserDetailed['av
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 const color = ref<string | undefined>();
@@ -131,7 +137,7 @@ watch(() => props.user.avatarBlurhash, () => {
 });
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -139,7 +145,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);
@@ -170,13 +176,18 @@ onUnmounted(() => {
 	width: 100%;
 	height: 100%;
 	opacity: .7;
+	transition: opacity 0.5s;
 
 	&.reduceBlurEffect {
 		opacity: 1;
 	}
 
-	&.noDrag {
-		-webkit-user-drag: none;
+	&.reduceAnimation {
+		transition: opacity 0s;
+	}
+
+	&.scrollToTransparent {
+		opacity: .7;
 	}
 }
 

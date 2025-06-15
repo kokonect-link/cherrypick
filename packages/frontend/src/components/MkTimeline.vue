@@ -4,31 +4,51 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkPullToRefresh ref="prComponent" :refresher="() => reloadTimeline()">
-	<MkNotes
-		v-if="paginationQuery"
-		ref="tlComponent"
-		:pagination="paginationQuery"
-		:noGap="!defaultStore.state.showGapBetweenNotesInTimeline"
-		@queue="emit('queue', $event)"
-		@status="prComponent?.setDisabled($event)"
-	/>
-</MkPullToRefresh>
+<component :is="prefer.s.enablePullToRefresh ? MkPullToRefresh : 'div'" :refresher="() => reloadTimeline()">
+	<MkPagination v-if="paginationQuery" ref="pagingComponent" :pagination="paginationQuery" @queue="emit('queue', $event)">
+		<template #empty><MkResult type="empty" :text="i18n.ts.noNotes"/></template>
+
+		<template #default="{ items: notes }">
+			<component
+				:is="prefer.s.animation ? TransitionGroup : 'div'"
+				:class="[$style.root, { [$style.noGap]: noGap, '_gaps': !noGap, [$style.reverse]: paginationQuery.reversed }]"
+				:enterActiveClass="$style.transition_x_enterActive"
+				:leaveActiveClass="$style.transition_x_leaveActive"
+				:enterFromClass="$style.transition_x_enterFrom"
+				:leaveToClass="$style.transition_x_leaveTo"
+				:moveClass="$style.transition_x_move"
+				tag="div"
+			>
+				<template v-for="(note, i) in notes" :key="note.id">
+					<div v-if="note._shouldInsertAd_" :class="[$style.noteWithAd, { '_gaps': !noGap }]" :data-scroll-anchor="note.id">
+						<MkNote :class="$style.note" :note="note" :withHardMute="true"/>
+						<div :class="$style.ad">
+							<MkAd :preferForms="['horizontal', 'horizontal-big']"/>
+						</div>
+					</div>
+					<MkNote v-else :class="$style.note" :note="note" :withHardMute="true" :data-scroll-anchor="note.id"/>
+				</template>
+			</component>
+		</template>
+	</MkPagination>
+</component>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onMounted, onUnmounted, provide, ref, shallowRef } from 'vue';
+import { computed, watch, onMounted, onUnmounted, provide, useTemplateRef, TransitionGroup } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { BasicTimelineType } from '@/timelines.js';
 import type { Paging } from '@/components/MkPagination.vue';
-import MkNotes from '@/components/MkNotes.vue';
 import MkPullToRefresh from '@/components/MkPullToRefresh.vue';
 import { useStream } from '@/stream.js';
-import * as sound from '@/scripts/sound.js';
-import { $i } from '@/account.js';
+import * as sound from '@/utility/sound.js';
+import { $i } from '@/i.js';
 import { instance } from '@/instance.js';
-import { defaultStore } from '@/store.js';
-import { vibrate } from '@/scripts/vibrate.js';
+import { prefer } from '@/preferences.js';
+import MkNote from '@/components/MkNote.vue';
+import MkPagination from '@/components/MkPagination.vue';
+import { i18n } from '@/i18n.js';
+import { vibrate } from '@/utility/vibrate.js';
 import { globalEvents } from '@/events.js';
 
 const props = withDefaults(defineProps<{
@@ -72,13 +92,12 @@ type TimelineQueryType = {
 	roleId?: string
 };
 
-const prComponent = shallowRef<InstanceType<typeof MkPullToRefresh>>();
-const tlComponent = shallowRef<InstanceType<typeof MkNotes>>();
+const pagingComponent = useTemplateRef('pagingComponent');
 
 let tlNotesCount = 0;
 
 function prepend(note) {
-	if (tlComponent.value == null) return;
+	if (pagingComponent.value == null) return;
 
 	tlNotesCount++;
 
@@ -86,19 +105,20 @@ function prepend(note) {
 		note._shouldInsertAd_ = true;
 	}
 
-	tlComponent.value.pagingComponent?.prepend(note);
+	pagingComponent.value.prepend(note);
 
 	emit('note');
 
 	if (props.sound) {
 		sound.playMisskeySfx($i && (note.userId === $i.id) ? 'noteMy' : 'note');
-		vibrate($i && (note.userId === $i.id) ? [] : defaultStore.state.vibrateNote ? [30, 20] : []);
+		vibrate($i && (note.userId === $i.id) ? [] : prefer.s['vibrate.on.note'] ? [30, 20] : []);
 	}
 }
 
 let connection: Misskey.ChannelConnection | null = null;
 let connection2: Misskey.ChannelConnection | null = null;
 let paginationQuery: Paging | null = null;
+const noGap = !prefer.s.showGapBetweenNotesInTimeline;
 
 const stream = useStream();
 
@@ -268,7 +288,7 @@ function updatePaginationQuery() {
 }
 
 function refreshEndpointAndChannel() {
-	if (!defaultStore.state.disableStreamingTimeline) {
+	if (!prefer.s.disableStreamingTimeline) {
 		disconnectChannel();
 		connectChannel();
 	}
@@ -296,11 +316,11 @@ onUnmounted(() => {
 
 function reloadTimeline() {
 	return new Promise<void>((res) => {
-		if (tlComponent.value == null) return;
+		if (pagingComponent.value == null) return;
 
 		tlNotesCount = 0;
 
-		tlComponent.value.pagingComponent?.reload().then(() => {
+		pagingComponent.value.reload().then(() => {
 			res();
 		});
 	});
@@ -310,3 +330,76 @@ defineExpose({
 	reloadTimeline,
 });
 </script>
+
+<style lang="scss" module>
+.transition_x_move {
+	transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.transition_x_enterActive {
+	transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+
+	&.note,
+	.note {
+		/* Skip Note Rendering有効時、TransitionGroupでnoteを追加するときに一瞬がくっとなる問題を抑制する */
+		content-visibility: visible !important;
+	}
+}
+
+.transition_x_leaveActive {
+	transition: height 0.2s cubic-bezier(0,.5,.5,1), opacity 0.2s cubic-bezier(0,.5,.5,1);
+}
+
+.transition_x_enterFrom {
+	opacity: 0;
+	transform: translateY(max(-64px, -100%));
+}
+
+@supports (interpolate-size: allow-keywords) {
+	.transition_x_leaveTo {
+		interpolate-size: allow-keywords; // heightのtransitionを動作させるために必要
+		height: 0;
+	}
+}
+
+.transition_x_leaveTo {
+	opacity: 0;
+}
+
+.reverse {
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.root {
+	container-type: inline-size;
+
+	&.noGap {
+		background: var(--MI_THEME-panel);
+
+		.note {
+			border-bottom: solid 0.5px var(--MI_THEME-divider);
+		}
+
+		.ad {
+			padding: 8px;
+			background-size: auto auto;
+			background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, var(--MI_THEME-bg) 8px, var(--MI_THEME-bg) 14px);
+			border-bottom: solid 0.5px var(--MI_THEME-divider);
+		}
+	}
+
+	&:not(.noGap) {
+		background: var(--MI_THEME-bg);
+
+		.note {
+			background: var(--MI_THEME-panel);
+			border-radius: var(--MI-radius);
+		}
+	}
+}
+
+.ad:empty {
+	display: none;
+}
+</style>

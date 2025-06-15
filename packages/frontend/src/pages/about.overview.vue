@@ -138,7 +138,7 @@ import { host, version } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import number from '@/filters/number.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import FormSplit from '@/components/form/split.vue';
@@ -146,7 +146,7 @@ import FormSuspense from '@/components/form/suspense.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkLink from '@/components/MkLink.vue';
-import { donateCherryPick } from '@/scripts/donate-cherrypick.js';
+import { donateCherryPick } from '@/utility/donate-cherrypick.js';
 
 const initStats = () => misskeyApi('stats', {});
 </script>
@@ -237,7 +237,7 @@ const initStats = () => misskeyApi('stats', {});
 	margin-right: 0.75em;
 	flex-shrink: 0;
 	text-align: center;
-	color: var(--MI_THEME-fgTransparentWeak);
+	color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
 
 	&:empty {
 		display: none;

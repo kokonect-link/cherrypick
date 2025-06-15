@@ -4,45 +4,42 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin"/></template>
-	<MkSpacer :contentMax="1400">
-		<MkHorizontalSwipe v-model:tab="tab" :tabs="headerTabs">
-			<div v-if="tab === 'explore'" key="explore">
-				<MkFoldableSection class="_margin">
-					<template #header><i class="ti ti-clock"></i>{{ i18n.ts.recentPosts }}</template>
-					<MkPagination v-slot="{items}" :pagination="recentPostsPagination" :disableAutoLoad="true">
-						<div :class="$style.items">
-							<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
-						</div>
-					</MkPagination>
-				</MkFoldableSection>
-				<MkFoldableSection class="_margin">
-					<template #header><i class="ti ti-comet"></i>{{ i18n.ts.popularPosts }}</template>
-					<MkPagination v-slot="{items}" :pagination="popularPostsPagination" :disableAutoLoad="true">
-						<div :class="$style.items">
-							<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
-						</div>
-					</MkPagination>
-				</MkFoldableSection>
-			</div>
-			<div v-else-if="tab === 'liked'" key="liked">
-				<MkPagination v-slot="{items}" :pagination="likedPostsPagination">
-					<div :class="$style.items">
-						<MkGalleryPostPreview v-for="like in items" :key="like.id" :post="like.post" class="post"/>
-					</div>
-				</MkPagination>
-			</div>
-			<div v-else-if="tab === 'my'" key="my">
-				<MkPagination v-slot="{items}" :pagination="myPostsPagination">
+<PageWithHeader v-model:tab="tab" :actions="$i ? headerActions : null" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true">
+	<div class="_spacer" style="--MI_SPACER-w: 1400px;">
+		<div v-if="tab === 'explore'">
+			<MkFoldableSection class="_margin">
+				<template #header><i class="ti ti-clock"></i>{{ i18n.ts.recentPosts }}</template>
+				<MkPagination v-slot="{items}" :pagination="recentPostsPagination" :disableAutoLoad="true">
 					<div :class="$style.items">
 						<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
 					</div>
 				</MkPagination>
-			</div>
-		</MkHorizontalSwipe>
-	</MkSpacer>
-</MkStickyContainer>
+			</MkFoldableSection>
+			<MkFoldableSection class="_margin">
+				<template #header><i class="ti ti-comet"></i>{{ i18n.ts.popularPosts }}</template>
+				<MkPagination v-slot="{items}" :pagination="popularPostsPagination" :disableAutoLoad="true">
+					<div :class="$style.items">
+						<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
+					</div>
+				</MkPagination>
+			</MkFoldableSection>
+		</div>
+		<div v-else-if="tab === 'liked'">
+			<MkPagination v-slot="{items}" :pagination="likedPostsPagination">
+				<div :class="$style.items">
+					<MkGalleryPostPreview v-for="like in items" :key="like.id" :post="like.post" class="post"/>
+				</div>
+			</MkPagination>
+		</div>
+		<div v-else-if="tab === 'my'">
+			<MkPagination v-slot="{items}" :pagination="myPostsPagination">
+				<div :class="$style.items">
+					<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
+				</div>
+			</MkPagination>
+		</div>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
@@ -50,11 +47,10 @@ import { watch, ref, computed } from 'vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkGalleryPostPreview from '@/components/MkGalleryPostPreview.vue';
-import MkHorizontalSwipe from '@/components/MkHorizontalSwipe.vue';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import { $i } from '@/account.js';
+import { definePage } from '@/page.js';
+import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
-import { useRouter } from '@/router/supplier.js';
+import { useRouter } from '@/router.js';
 
 const router = useRouter();
 
@@ -125,7 +121,7 @@ const headerTabsWhenNotLogin = computed(() => [{
 	icon: 'ti ti-icons',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.gallery,
 	icon: 'ti ti-icons',
 }));

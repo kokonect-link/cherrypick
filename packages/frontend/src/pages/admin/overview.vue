@@ -4,81 +4,77 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div>
-	<MkStickyContainer>
-		<template #header><XHeader :actions="headerActions" :tabs="headerTabs"/></template>
-		<MkSpacer :contentMax="1000">
-			<div ref="rootEl" :class="$style.root">
-				<MkFoldableSection class="item">
-					<template #header>Stats</template>
-					<XStats/>
-				</MkFoldableSection>
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 1000px;">
+		<div ref="rootEl" :class="$style.root">
+			<MkFoldableSection class="item">
+				<template #header>Stats</template>
+				<XStats/>
+			</MkFoldableSection>
 
-				<MkFoldableSection v-if="meta" class="item">
-					<template #header>Server Metric</template>
-					<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
-					<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
-				</MkFoldableSection>
+			<MkFoldableSection v-if="meta" class="item">
+				<template #header>Server Metric</template>
+				<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
+				<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Active users</template>
-					<XActiveUsers/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Active users</template>
+				<XActiveUsers/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Heatmap</template>
-					<XHeatmap/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Heatmap</template>
+				<XHeatmap/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Retention rate</template>
-					<XRetention/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Retention rate</template>
+				<XRetention/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Moderators</template>
-					<XModerators/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Moderators</template>
+				<XModerators/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Federation</template>
-					<XFederation/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Federation</template>
+				<XFederation/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Instances</template>
-					<XInstances/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Instances</template>
+				<XInstances/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Ap requests</template>
-					<XApRequests/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Ap requests</template>
+				<XApRequests/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>New users</template>
-					<XUsers/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>New users</template>
+				<XUsers/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Deliver queue</template>
-					<XQueue domain="deliver"/>
-				</MkFoldableSection>
+			<MkFoldableSection class="item">
+				<template #header>Deliver queue</template>
+				<XQueue domain="deliver"/>
+			</MkFoldableSection>
 
-				<MkFoldableSection class="item">
-					<template #header>Inbox queue</template>
-					<XQueue domain="inbox"/>
-				</MkFoldableSection>
-			</div>
-		</MkSpacer>
-	</MkStickyContainer>
-</div>
+			<MkFoldableSection class="item">
+				<template #header>Inbox queue</template>
+				<XQueue domain="inbox"/>
+			</MkFoldableSection>
+		</div>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { markRaw, onMounted, onBeforeUnmount, nextTick, onUnmounted, shallowRef, ref, computed } from 'vue';
+import { markRaw, onMounted, onUnmounted, onBeforeUnmount, nextTick, shallowRef, ref, computed, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import XHeader from './_header_.vue';
 import XFederation from './overview.federation.vue';
 import XInstances from './overview.instances.vue';
 import XQueue from './overview.queue.vue';
@@ -91,14 +87,14 @@ import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
 import type { InstanceForPie } from './overview.pie.vue';
 import * as os from '@/os.js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 
-const rootEl = shallowRef<HTMLElement>();
+const rootEl = useTemplateRef('rootEl');
 const serverInfo = ref<Misskey.entities.ServerInfoResponse | null>(null);
 const topSubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const topPubInstancesForPie = ref<InstanceForPie[] | null>(null);
@@ -208,7 +204,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.dashboard,
 	icon: 'ti ti-dashboard',
 }));
@@ -222,7 +218,7 @@ definePageMetadata(() => ({
 }
 
 .disabledServerMachineStats {
-  color: var(--MI_THEME-fgTransparentWeak);
+	color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
   margin: 10px;
   font-size: 0.9em;
   text-align: center;

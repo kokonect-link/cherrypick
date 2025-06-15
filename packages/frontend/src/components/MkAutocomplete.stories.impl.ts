@@ -11,7 +11,7 @@ import { commonHandlers } from '../../.storybook/mocks.js';
 import MkAutocomplete from './MkAutocomplete.vue';
 import MkInput from './MkInput.vue';
 import type { StoryObj } from '@storybook/vue3';
-import { tick } from '@/scripts/test-utils.js';
+import { tick } from '@/utility/test-utils.js';
 const common = {
 	render(args) {
 		return {

@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="800" style="padding-top: 0">
+<div class="_spacer" style="--MI_SPACER-w: 800px; padding-top: 0;">
 	<MkStickyContainer>
 		<template #header>
 			<MkTab v-model="include" :class="$style.tab">
@@ -12,9 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<option :value="null">{{ i18n.ts.reverseChronological }}</option>
 			</MkTab>
 		</template>
-		<MkNotes :noGap="!defaultStore.state.showGapBetweenNotesInTimeline" :pagination="pagination" :class="$style.tl" :getDate="include === 'upcoming' ? note => note.event.start : undefined "/>
+		<MkNotes :noGap="!prefer.s.showGapBetweenNotesInTimeline" :pagination="pagination" :class="$style.tl" :getDate="include === 'upcoming' ? note => note.event.start : undefined "/>
 	</MkStickyContainer>
-</MkSpacer>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -23,7 +23,7 @@ import * as Misskey from 'cherrypick-js';
 import MkNotes from '@/components/MkNotes.vue';
 import MkTab from '@/components/MkTab.vue';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;

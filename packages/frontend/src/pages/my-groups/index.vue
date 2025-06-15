@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="700">
+<PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 700px;">
 		<div v-if="tab === 'owned'">
 			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination">
 				<MkA v-for="group in items" :key="group.id" :class="$style.group" class="_panel" :to="`/my/groups/${ group.id }`">
@@ -42,20 +41,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 			</MkPagination>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef } from 'vue';
+import { computed, ref, useTemplateRef } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 
-const pagingComponent = shallowRef<InstanceType<typeof MkPagination>>();
+const pagingComponent = useTemplateRef('pagingComponent');
 
 const ownedPagination = {
 	endpoint: 'users/groups/owned' as const,
@@ -133,7 +132,7 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail-opened',
 }]);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.groups,
 	icon: 'ti ti-users',
 }));

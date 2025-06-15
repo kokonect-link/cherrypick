@@ -1,12 +1,10 @@
 # syntax = docker/dockerfile:1.4
 
-ARG NODE_VERSION=22.11.0-bookworm
+ARG NODE_VERSION=22.15.0-bookworm
 
 # build assets & compile TypeScript
 
 FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS native-builder
-
-ENV COREPACK_DEFAULT_TO_LATEST=0
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 	--mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -15,8 +13,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 	&& apt-get update \
 	&& apt-get install -yqq --no-install-recommends \
 	build-essential
-
-RUN corepack enable
 
 WORKDIR /cherrypick
 
@@ -33,6 +29,8 @@ COPY --link ["packages/misskey-bubble-game/package.json", "./packages/misskey-bu
 
 ARG NODE_ENV=production
 
+RUN node -e "console.log(JSON.parse(require('node:fs').readFileSync('./package.json')).packageManager)" | xargs npm install -g
+
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 	pnpm i --frozen-lockfile --aggregate-output
 
@@ -46,13 +44,9 @@ RUN rm -rf .git/
 
 FROM --platform=$TARGETPLATFORM node:${NODE_VERSION} AS target-builder
 
-ENV COREPACK_DEFAULT_TO_LATEST=0
-
 RUN apt-get update \
 	&& apt-get install -yqq --no-install-recommends \
 	build-essential
-
-RUN corepack enable
 
 WORKDIR /cherrypick
 
@@ -65,6 +59,8 @@ COPY --link ["packages/misskey-bubble-game/package.json", "./packages/misskey-bu
 
 ARG NODE_ENV=production
 
+RUN node -e "console.log(JSON.parse(require('node:fs').readFileSync('./package.json')).packageManager)" | xargs npm install -g
+
 RUN --mount=type=cache,target=/root/.local/share/pnpm/store,sharing=locked \
 	pnpm i --frozen-lockfile --aggregate-output
 
@@ -72,13 +68,11 @@ FROM --platform=$TARGETPLATFORM node:${NODE_VERSION}-slim AS runner
 
 ARG UID="991"
 ARG GID="991"
-ENV COREPACK_DEFAULT_TO_LATEST=0
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 	ffmpeg tini curl libjemalloc-dev libjemalloc2 \
 	&& ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so \
-	&& corepack enable \
 	&& groupadd -g "${GID}" cherrypick \
 	&& useradd -l -u "${UID}" -g "${GID}" -m -d /cherrypick cherrypick \
 	&& find / -type d -path /sys -prune -o -type d -path /proc -prune -o -type f -perm /u+s -ignore_readdir_race -exec chmod u-s {} \; \
@@ -86,12 +80,12 @@ RUN apt-get update \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists
 
+# add package.json to add pnpm
+COPY ./package.json ./package.json
+RUN node -e "console.log(JSON.parse(require('node:fs').readFileSync('./package.json')).packageManager)" | xargs npm install -g
+
 USER cherrypick
 WORKDIR /cherrypick
-
-# add package.json to add pnpm
-COPY --chown=cherrypick:cherrypick ./package.json ./package.json
-RUN corepack install
 
 COPY --chown=cherrypick:cherrypick --from=target-builder /cherrypick/node_modules ./node_modules
 COPY --chown=cherrypick:cherrypick --from=target-builder /cherrypick/packages/backend/node_modules ./packages/backend/node_modules
@@ -111,4 +105,4 @@ ENV MALLOC_CONF=background_thread:true,metadata_thp:auto,dirty_decay_ms:30000,mu
 ENV NODE_ENV=production
 HEALTHCHECK --interval=5s --retries=20 CMD ["/bin/bash", "/cherrypick/healthcheck.sh"]
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["pnpm", "run", "migrateandstart:docker"]
+CMD ["pnpm", "run", "migrateandstart"]

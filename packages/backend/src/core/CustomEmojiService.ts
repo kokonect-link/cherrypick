@@ -5,7 +5,7 @@
 
 import { Inject, Injectable, OnApplicationShutdown } from '@nestjs/common';
 import * as Redis from 'ioredis';
-import { In, IsNull } from 'typeorm';
+import { In, IsNull, Not } from 'typeorm';
 import { EmojiEntityService } from '@/core/entities/EmojiEntityService.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { IdService } from '@/core/IdService.js';
@@ -15,10 +15,12 @@ import { bindThis } from '@/decorators.js';
 import { DI } from '@/di-symbols.js';
 import { MemoryKVCache, RedisSingleCache } from '@/misc/cache.js';
 import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
-import type { DriveFilesRepository, EmojisRepository, MiRole, MiUser } from '@/models/_.js';
+import type { DriveFilesRepository, EmojisRepository, MiMeta, MiRole, MiUser } from '@/models/_.js';
 import type { MiEmoji } from '@/models/Emoji.js';
 import type { Serialized } from '@/types.js';
 import { DriveService } from '@/core/DriveService.js';
+import Logger from '@/logger.js';
+import { LoggerService } from './LoggerService.js';
 
 const parseEmojiStrRegexp = /^([-\w]+)(?:@([\w.-]+))?$/;
 
@@ -62,20 +64,28 @@ export type FetchEmojisSortKeys = typeof fetchEmojisSortKeys[number];
 export class CustomEmojiService implements OnApplicationShutdown {
 	private emojisCache: MemoryKVCache<MiEmoji | null>;
 	public localEmojisCache: RedisSingleCache<Map<string, MiEmoji>>;
+	private readonly logger: Logger;
 
 	constructor(
+		@Inject(DI.meta)
+		private meta: MiMeta,
+
 		@Inject(DI.redis)
 		private redisClient: Redis.Redis,
+
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
+
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
+
 		private utilityService: UtilityService,
 		private idService: IdService,
 		private emojiEntityService: EmojiEntityService,
 		private moderationLogService: ModerationLogService,
 		private globalEventService: GlobalEventService,
 		private driveService: DriveService,
+		private loggerService: LoggerService,
 	) {
 		this.emojisCache = new MemoryKVCache<MiEmoji | null>(1000 * 60 * 60 * 12); // 12h
 
@@ -91,6 +101,8 @@ export class CustomEmojiService implements OnApplicationShutdown {
 				}]));
 			},
 		});
+
+		this.logger = loggerService.getLogger('customEmojiService');
 	}
 
 	@bindThis
@@ -108,17 +120,10 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		roleIdsThatCanBeUsedThisEmojiAsReaction: MiRole['id'][];
 	}, moderator?: MiUser): Promise<MiEmoji> {
 		// システムユーザーとして再アップロード
-		const driveFile = await this.driveFilesRepository.findOneBy({ url: data.originalUrl });
-		if (driveFile?.user && !driveFile.user.isRoot) {
-			const copyDriveFile = await this.driveService.uploadFromUrl({
-				url: data.originalUrl,
-				user: null,
-				force: true,
-			});
-			data.originalUrl = copyDriveFile.url;
-			data.publicUrl = copyDriveFile.webpublicUrl ?? copyDriveFile.url;
-			data.fileType = copyDriveFile.webpublicType ?? copyDriveFile.type;
-		}
+		const result = await this.reuploadFileAndCleanup({ originalUrl: data.originalUrl, name: data.name }, { name: data.name });
+		data.originalUrl = result.url;
+		data.publicUrl = result.webpublicUrl ?? result.url;
+		data.fileType = result.webpublicType ?? result.type;
 
 		const emoji = await this.emojisRepository.insertOne({
 			id: this.idService.gen(),
@@ -186,6 +191,15 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		if (doNameUpdate) {
 			const isDuplicate = await this.checkDuplicate(data.name!);
 			if (isDuplicate) return 'SAME_NAME_EMOJI_EXISTS';
+		}
+
+		// ファイルの更新がある場合
+		if (( data.originalUrl || data.publicUrl || data.fileType ) && emoji.originalUrl !== data.originalUrl) {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+			const result = await this.reuploadFileAndCleanup({ originalUrl: data.originalUrl!, name: data.name }, { name: data.name });
+			data.originalUrl = result.url;
+			data.publicUrl = result.webpublicUrl ?? result.url;
+			data.fileType = result.webpublicType ?? result.type;
 		}
 
 		await this.emojisRepository.update(emoji.id, {
@@ -624,5 +638,86 @@ export class CustomEmojiService implements OnApplicationShutdown {
 	@bindThis
 	public onApplicationShutdown(signal?: string | undefined): void {
 		this.dispose();
+	}
+
+	@bindThis
+	private async reuploadFileAndCleanup(data: {
+		originalUrl: string;
+		name?: string;
+	}, loggerContext: { name?: string }) {
+		let retryCount = 0;
+		let copyDriveFile;
+		const MAX_RETRY_COUNT = 3;
+		const errors: string[] = [];
+		const originalSourceUrl = data.originalUrl;
+
+		while (retryCount < MAX_RETRY_COUNT) {
+			try {
+				copyDriveFile = await this.driveService.uploadFromUrl({
+					url: originalSourceUrl,
+					user: null,
+					force: true,
+				});
+				break;
+			} catch (e) {
+				retryCount++;
+				this.logger.warn(`Failed to upload custom emoji (attempt ${retryCount}/${MAX_RETRY_COUNT})`, {
+					error: e instanceof Error ? e.message : String(e),
+					stack: e instanceof Error ? e.stack : undefined,
+					originalUrl: originalSourceUrl,
+					...loggerContext,
+				});
+				errors.push(e instanceof Error ? e.message : String(e));
+				if (retryCount >= MAX_RETRY_COUNT) {
+					this.logger.error('Maximum retry count reached for custom emoji upload', {
+						error: e instanceof Error ? e.message : String(e),
+						originalUrl: originalSourceUrl,
+						...loggerContext,
+					});
+					throw new Error(`Failed to process custom emoji upload after ${MAX_RETRY_COUNT} attempts: ${errors.join('; ')}`);
+				}
+				await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+			}
+		}
+
+		if (!copyDriveFile) {
+			throw new Error('Emoji upload succeeded but drive file is undefined. This should never happen.');
+		}
+
+		const newUrl = copyDriveFile.url;
+		if (originalSourceUrl !== newUrl) {
+			try {
+				const originalDriveFile = await this.driveFilesRepository.findOneBy({ url: originalSourceUrl });
+				if (originalDriveFile && originalDriveFile.id !== copyDriveFile.id) {
+					const referenceCount = await this.driveFilesRepository.count({
+						where: { url: originalSourceUrl, id: Not(originalDriveFile.id) },
+					});
+					if (referenceCount === 0) {
+						await this.driveService.deleteFile(originalDriveFile);
+						this.logger.info('Deleted original emoji file as it\'s no longer referenced', {
+							fileId: originalDriveFile.id,
+							url: originalSourceUrl,
+						});
+					} else {
+						this.logger.info(`Skipped deleting original emoji file as it has ${referenceCount} references`, {
+							fileId: originalDriveFile.id,
+							url: originalSourceUrl,
+						});
+					}
+				}
+			} catch (e) {
+				this.logger.warn('Failed to delete original emoji file', {
+					error: e instanceof Error ? e.message : String(e),
+					originalUrl: originalSourceUrl,
+				});
+			}
+		}
+
+		return {
+			url: copyDriveFile.url,
+			type: copyDriveFile.type,
+			webpublicUrl: copyDriveFile.webpublicUrl,
+			webpublicType: copyDriveFile.webpublicType,
+		};
 	}
 }

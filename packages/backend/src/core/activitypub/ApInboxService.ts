@@ -24,14 +24,13 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import { MessagingService } from '@/core/MessagingService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, MessagingMessagesRepository } from '@/models/_.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { AbuseReportService } from '@/core/AbuseReportService.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
-import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isRead, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -62,9 +61,6 @@ export class ApInboxService {
 		@Inject(DI.followingsRepository)
 		private followingsRepository: FollowingsRepository,
 
-		@Inject(DI.messagingMessagesRepository)
-		private messagingMessagesRepository: MessagingMessagesRepository,
-
 		@Inject(DI.followRequestsRepository)
 		private followRequestsRepository: FollowRequestsRepository,
 
@@ -91,7 +87,6 @@ export class ApInboxService {
 		private apQuestionService: ApQuestionService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
-		private messagingService: MessagingService,
 	) {
 		this.logger = this.apLoggerService.logger;
 	}
@@ -156,8 +151,6 @@ export class ApInboxService {
 			return await this.delete(actor, activity);
 		} else if (isUpdate(activity)) {
 			return await this.update(actor, activity, resolver);
-		} else if (isRead(activity)) {
-			return await this.read(actor, activity);
 		} else if (isFollow(activity)) {
 			return await this.follow(actor, activity);
 		} else if (isAccept(activity)) {
@@ -221,29 +214,6 @@ export class ApInboxService {
 				throw err;
 			}
 		}
-	}
-
-	@bindThis
-	private async read(actor: MiRemoteUser, activity: IRead): Promise<string> {
-		const id = await getApId(activity.object);
-
-		if (!this.utilityService.isSelfHost(this.utilityService.extractDbHost(id))) {
-			return `skip: Read to foreign host (${id})`;
-		}
-
-		const messageId = id.split('/').pop();
-
-		const message = await this.messagingMessagesRepository.findOneBy({ id: messageId });
-		if (message == null) {
-			return 'skip: message not found';
-		}
-
-		if (actor.id !== message.recipientId) {
-			return 'skip: actor is not a message recipient';
-		}
-
-		await this.messagingService.readUserMessagingMessage(message.recipientId!, message.userId, [message.id]);
-		return `ok: mark as read (${message.userId} => ${message.recipientId} ${message.id})`;
 	}
 
 	@bindThis
@@ -548,18 +518,11 @@ export class ApInboxService {
 			return `skip: delete actor ${actor.uri} !== ${uri}`;
 		}
 
-		const user = await this.usersRepository.findOneBy({ id: actor.id });
-		if (user == null) {
-			return 'skip: actor not found';
-		} else if (user.isDeleted) {
-			return 'skip: already deleted';
+		if (!(await this.usersRepository.update({ id: actor.id, isDeleted: false }, { isDeleted: true })).affected) {
+			return 'skip: already deleted or actor not found';
 		}
 
 		const job = await this.queueService.createDeleteAccountJob(actor);
-
-		await this.usersRepository.update(actor.id, {
-			isDeleted: true,
-		});
 
 		this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: actor.id });
 
@@ -576,16 +539,7 @@ export class ApInboxService {
 			const note = await this.apDbResolverService.getNoteFromApId(uri);
 
 			if (note == null) {
-				const message = await this.apDbResolverService.getMessageFromApId(uri);
-				if (message == null) return 'message not found';
-
-				if (message.userId !== actor.id) {
-					return '投稿を削除しようとしているユーザーは投稿の作成者ではありません';
-				}
-
-				await this.messagingService.deleteMessage(message);
-
-				return 'ok: message deleted';
+				return 'message not found';
 			}
 
 			if (note.userId !== actor.id) {

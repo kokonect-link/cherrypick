@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkSpacer :contentMax="narrow ? 800 : 1100">
+<div class="_spacer" :style="{ '--MI_SPACER-w': narrow ? '800px' : '1100px' }">
 	<div ref="rootEl" class="ftskorzw" :class="{ wide: !narrow }" style="container-type: inline-size;">
 		<div class="main _gaps">
 			<!-- TODO -->
@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div class="profile _gaps">
 				<MkAccountMoved v-if="user.movedTo" :movedTo="user.movedTo"/>
-				<MkRemoteCaution v-if="user.host != null" :href="user.url ?? user.uri!" class="warn"/>
+				<MkRemoteCaution v-if="user.host != null" :href="user.url ?? user.uri!"/>
+				<MkInfo v-if="user.host == null && user.username.includes('.')">{{ i18n.ts.isSystemAccount }}</MkInfo>
 
 				<div :key="user.id" class="main _panel">
 					<div class="banner-container" :style="style">
@@ -54,9 +55,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</div>
 					</div>
 					<div v-if="user.followedMessage != null" class="followedMessage">
-						<MkFukidashi class="fukidashi" :tail="narrow ? 'none' : 'left'" negativeMargin shadow>
+						<MkFukidashi class="fukidashi" :tail="narrow ? 'none' : 'left'" negativeMargin>
 							<div class="messageHeader">{{ i18n.ts.messageToFollower }}</div>
-							<div><MkSparkle><Mfm :plain="true" :text="user.followedMessage" :author="user" :enableEmojiMenu="!!$i"/></MkSparkle></div>
+							<div><MkSparkle><Mfm :plain="true" :text="user.followedMessage" :author="user" :enableEmojiMenu="!!$i" class="_selectable"/></MkSparkle></div>
 						</MkFukidashi>
 					</div>
 					<div v-if="user.roles.length > 0" class="roles">
@@ -89,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="description">
 						<MkOmit>
-							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :enableEmojiMenu="!!$i"/>
+							<Mfm v-if="user.description" :text="user.description" :isNote="false" :author="user" :enableEmojiMenu="!!$i" class="_selectable"/>
 							<p v-else class="empty">{{ i18n.ts.noAccountDescription }}</p>
 							<div v-if="user.description && isForeignLanguage">
 								<MkButton v-if="!(translating || translation)" class="translateButton" small @click="translate"><i class="ti ti-language-hiragana"></i> {{ i18n.ts.translateProfile }}</MkButton>
@@ -99,9 +100,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkLoading v-if="translating" mini/>
 								<div v-else-if="translation">
 									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false" :enableEmojiMenu="!!$i"/>
+									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false" :enableEmojiMenu="!!$i" class="_selectable"/>
 									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-										<img v-if="!defaultStore.state.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+										<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 									</div>
 								</div>
@@ -125,10 +126,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="user.fields.length > 0" class="fields">
 						<dl v-for="(field, i) in user.fields" :key="i" class="field">
 							<dt class="name">
-								<Mfm :text="field.name" :author="user" :plain="true" :colored="false" :enableEmojiMenu="!!$i"/>
+								<Mfm :text="field.name" :author="user" :plain="true" :colored="false" :enableEmojiMenu="!!$i" class="_selectable"/>
 							</dt>
 							<dd class="value">
-								<Mfm :text="field.value" :author="user" :colored="false" :enableEmojiMenu="!!$i"/>
+								<Mfm :text="field.value" :author="user" :colored="false" :enableEmojiMenu="!!$i" class="_selectable"/>
 								<i v-if="user.verifiedLinks.includes(field.value)" v-tooltip:dialog="i18n.ts.verifiedLink" class="ti ti-circle-check" :class="$style.verifiedLink"></i>
 							</dd>
 						</dl>
@@ -168,11 +169,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<XTimeline :user="user"/>
 					</MkLazy>
 				</div>
-				<div v-if="user.isBlocked" class="_fullinfo">
-					<img :src="youBlockedImageUrl" class="_ghost"/>
-					<div style="font-size: 1.4rem; font-weight: bold; padding-bottom: 4px;">{{ i18n.ts.youBlocked }}</div>
-					<div style="opacity: 0.7">{{ i18n.tsx.youBlockedDescription({ user: `@${ user.username }` }) }}</div>
-				</div>
+				<MkResult v-if="user.isBlocked" type="blocked" :user="user"/>
 			</div>
 		</div>
 		<div v-if="!narrow && !user.isBlocked" class="sub _gaps" style="container-type: inline-size;">
@@ -180,7 +177,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<XActivity :key="user.id" :user="user"/>
 		</div>
 	</div>
-</MkSpacer>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -196,27 +193,27 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkOmit from '@/components/MkOmit.vue';
 import MkInfo from '@/components/MkInfo.vue';
 import MkButton from '@/components/MkButton.vue';
-import { getUserMenu } from '@/scripts/get-user-menu.js';
+import { getUserMenu } from '@/utility/get-user-menu.js';
 import number from '@/filters/number.js';
 import { userPage } from '@/filters/user.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
-import { $i, iAmModerator } from '@/account.js';
+import { $i, iAmModerator } from '@/i.js';
 import { dateString } from '@/filters/date.js';
-import { confetti } from '@/scripts/confetti.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/scripts/isFfVisibleForMe.js';
-import { useRouter } from '@/router/supplier.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { confetti } from '@/utility/confetti.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { isFollowingVisibleForMe, isFollowersVisibleForMe } from '@/utility/isFfVisibleForMe.js';
+import { useRouter } from '@/router.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import MkSparkle from '@/components/MkSparkle.vue';
+import { prefer } from '@/preferences.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { editNickname } from '@/scripts/edit-nickname.js';
-import { vibrate } from '@/scripts/vibrate.js';
-import detectLanguage from '@/scripts/detect-language.js';
+import { editNickname } from '@/utility/edit-nickname.js';
+import { vibrate } from '@/utility/vibrate.js';
+import detectLanguage from '@/utility/detect-language.js';
 import { globalEvents } from '@/events.js';
-import { notesSearchAvailable, canSearchNonLocalNotes } from '@/scripts/check-permissions.js';
-import { youBlockedImageUrl } from '@/instance.js';
+import { notesSearchAvailable, canSearchNonLocalNotes } from '@/utility/check-permissions.js';
+import { store } from '@/store.js';
 
 function calcAge(birthdate: string): number {
 	const date = new Date(birthdate);
@@ -270,12 +267,12 @@ watch(moderationNote, async () => {
 });
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 
 const style = computed(() => {
 	if (props.user.bannerUrl == null) return {};
-	if (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)) {
+	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) {
 		return {
 			backgroundImage: `url(${ getStaticImageUrl(props.user.bannerUrl) })`,
 		};
@@ -345,7 +342,7 @@ async function translate(): Promise<void> {
 	globalEvents.emit('showNoteContent', true);
 	translating.value = true;
 
-	vibrate(defaultStore.state.vibrateSystem ? 5 : []);
+	vibrate(prefer.s['vibrate.on.system'] ? 5 : []);
 
 	const res = await misskeyApi('users/translate', {
 		userId: props.user.id,
@@ -354,13 +351,13 @@ async function translate(): Promise<void> {
 	translating.value = false;
 	translation.value = res;
 
-	vibrate(defaultStore.state.vibrateSystem ? [5, 5, 10] : []);
+	vibrate(prefer.s['vibrate.on.system'] ? [5, 5, 10] : []);
 }
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 async function toggleNotify() {
@@ -395,7 +392,7 @@ onMounted(() => {
 		adjustMemoTextarea();
 	});
 
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -407,7 +404,7 @@ onUnmounted(() => {
 		window.cancelAnimationFrame(parallaxAnimationId.value);
 	}
 
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);
@@ -607,7 +604,7 @@ onUnmounted(() => {
 
 					> .heading {
 						text-align: left;
-						color: var(--MI_THEME-fgTransparent);
+						color: color(from var(--MI_THEME-fg) srgb r g b / 0.5);
 						line-height: 1.5;
 						font-size: 85%;
 					}

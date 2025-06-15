@@ -6,7 +6,7 @@
 process.env.NODE_ENV = 'test';
 
 import * as assert from 'assert';
-import { channel, clip, cookie, galleryPost, page, play, post, signup, simpleGet, uploadFile } from '../utils.js';
+import { channel, clip, galleryPost, page, play, post, signup, simpleGet, uploadFile } from '../utils.js';
 import type { SimpleGetResponse } from '../utils.js';
 import type * as misskey from 'cherrypick-js';
 
@@ -177,24 +177,6 @@ describe('Webリソース', () => {
 			path,
 			status: 404,
 			code: 'UNKNOWN_API_ENDPOINT',
-		}));
-	});
-
-	describe.each([{ path: '/queue' }])('$path', ({ path }) => {
-		test('はログインしないとGETできない。', async () => await notOk({
-			path,
-			status: 401,
-		}));
-
-		test('はadminでなければGETできない。', async () => await notOk({
-			path,
-			cookie: cookie(bob),
-			status: 403,
-		}));
-
-		test('はadminならGETできる。', async () => await ok({
-			path,
-			cookie: cookie(alice),
 		}));
 	});
 

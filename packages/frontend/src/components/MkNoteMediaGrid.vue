@@ -7,9 +7,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template v-for="file in note.files">
 	<div
 		v-if="(((
-			(defaultStore.state.nsfw === 'force' || file.isSensitive) &&
-			defaultStore.state.nsfw !== 'ignore'
-		) || (defaultStore.state.dataSaver.media && file.type.startsWith('image/'))) &&
+			(prefer.s.nsfw === 'force' || file.isSensitive) &&
+			prefer.s.nsfw !== 'ignore'
+		) || (prefer.s.dataSaver.media && file.type.startsWith('image/'))) &&
 			!showingFiles.has(file.id)
 		)"
 		:class="[$style.filePreview, { [$style.square]: square }]"
@@ -19,15 +19,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkDriveFileThumbnail
 			:file="file"
 			fit="cover"
-			:highlightWhenSensitive="defaultStore.state.highlightSensitiveMedia"
+			:highlightWhenSensitive="prefer.s.highlightSensitiveMedia"
 			:forceBlurhash="true"
 			:large="true"
 			:class="$style.file"
 		/>
 		<div :class="$style.sensitive">
 			<div>
-				<div v-if="file.isSensitive"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.dataSaver.media && file.size ? ` (${bytes(file.size)})` : '' }}</div>
-				<div v-else><i class="ti ti-photo"></i> {{ defaultStore.state.dataSaver.media && file.size ? bytes(file.size) : i18n.ts.image }}</div>
+				<div v-if="file.isSensitive"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ prefer.s.dataSaver.media && file.size ? ` (${bytes(file.size)})` : '' }}</div>
+				<div v-else><i class="ti ti-photo"></i> {{ prefer.s.dataSaver.media && file.size ? bytes(file.size) : i18n.ts.image }}</div>
 				<div>{{ i18n.ts.clickToShow }}</div>
 			</div>
 		</div>
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkDriveFileThumbnail
 			:file="file"
 			fit="cover"
-			:highlightWhenSensitive="defaultStore.state.highlightSensitiveMedia"
+			:highlightWhenSensitive="prefer.s.highlightSensitiveMedia"
 			:large="true"
 			:class="$style.file"
 		/>
@@ -56,7 +56,7 @@ import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { notePage } from '@/filters/note.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import bytes from '@/filters/bytes.js';
 
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
@@ -72,7 +72,7 @@ const showingFiles = ref<Set<string>>(new Set());
 async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
 	if (!showingFiles.value.has(image.id)) {
 		ev.stopPropagation();
-		if (image.isSensitive && defaultStore.state.confirmWhenRevealingSensitiveMedia) {
+		if (image.isSensitive && prefer.s.confirmWhenRevealingSensitiveMedia) {
 			const { canceled } = await os.confirm({
 				type: 'question',
 				text: i18n.ts.sensitiveMediaRevealConfirm,
@@ -82,12 +82,12 @@ async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
 		}
 	}
 
-	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {});
-	if (defaultStore.state.nsfwOpenBehavior === 'click') showingFiles.value.add(image.id);
+	if (prefer.s.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {});
+	if (prefer.s.nsfwOpenBehavior === 'click') showingFiles.value.add(image.id);
 }
 
 async function onDblClick(image: Misskey.entities.DriveFile) {
-	if (!showingFiles.value.has(image.id) && defaultStore.state.nsfwOpenBehavior === 'doubleClick') showingFiles.value.add(image.id);
+	if (!showingFiles.value.has(image.id) && prefer.s.nsfwOpenBehavior === 'doubleClick') showingFiles.value.add(image.id);
 }
 </script>
 
@@ -151,7 +151,7 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
 	background-color: black;
 	border-radius: 6px;
-	color: var(--MI_THEME-accentLighten);
+	color: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 	display: inline-block;
 	font-weight: bold;
 	font-size: 0.8em;

@@ -53,7 +53,7 @@ export const Default = {
 				http.get('/proxy/image.webp', async ({ request }) => {
 					const url = new URL(request.url).searchParams.get('url');
 					if (url === 'https://github.com/kokonect-link/cherrypick/blob/master/packages/frontend/assets/fedi.jpg?raw=true') {
-						const image = await (await fetch('client-assets/fedi.jpg')).blob();
+						const image = await (await window.fetch('client-assets/fedi.jpg')).blob();
 						return new HttpResponse(image, {
 							headers: {
 								'Content-Type': 'image/jpeg',

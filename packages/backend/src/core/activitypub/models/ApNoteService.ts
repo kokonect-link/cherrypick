@@ -6,7 +6,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { PollsRepository, EmojisRepository, MiMeta, MessagingMessagesRepository, NotesRepository } from '@/models/_.js';
+import type { PollsRepository, EmojisRepository, MiMeta, NotesRepository } from '@/models/_.js';
 import type { Config } from '@/config.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import type { MiNote } from '@/models/Note.js';
@@ -20,7 +20,6 @@ import { IdService } from '@/core/IdService.js';
 import { PollService } from '@/core/PollService.js';
 import { StatusError } from '@/misc/status-error.js';
 import { UtilityService } from '@/core/UtilityService.js';
-import { MessagingService } from '@/core/MessagingService.js';
 import { bindThis } from '@/decorators.js';
 import { checkHttps } from '@/misc/check-https.js';
 import { NoteUpdateService } from '@/core/NoteUpdateService.js';
@@ -57,9 +56,6 @@ export class ApNoteService {
 		@Inject(DI.emojisRepository)
 		private emojisRepository: EmojisRepository,
 
-		@Inject(DI.messagingMessagesRepository)
-		private messagingMessagesRepository: MessagingMessagesRepository,
-
 		@Inject(DI.notesRepository)
 		private notesRepository: NotesRepository,
 
@@ -77,7 +73,6 @@ export class ApNoteService {
 		private apImageService: ApImageService,
 		private apQuestionService: ApQuestionService,
 		private apEventService: ApEventService,
-		private messagingService: MessagingService,
 		private appLockService: AppLockService,
 		private pollService: PollService,
 		private noteCreateService: NoteCreateService,
@@ -234,8 +229,6 @@ export class ApNoteService {
 			}
 		}
 
-		let isMessaging = note._misskey_talk && visibility === 'specified';
-
 		// 添付ファイル
 		const files: MiDriveFile[] = [];
 
@@ -257,17 +250,6 @@ export class ApNoteService {
 					return x;
 				})
 				.catch(async err => {
-					// トークだったらinReplyToのエラーは無視
-					const uri = getApId(note.inReplyTo);
-					if (uri.startsWith(this.config.url + '/')) {
-						const id = uri.split('/').pop();
-						const talk = await this.messagingMessagesRepository.findOneBy({ id });
-						if (talk) {
-							isMessaging = true;
-							return null;
-						}
-					}
-
 					this.logger.warn(`Error in inReplyTo ${note.inReplyTo} - ${err.statusCode ?? err}`);
 					throw err;
 				})
@@ -334,13 +316,6 @@ export class ApNoteService {
 		const apEmojis = emojis.map(emoji => emoji.name);
 
 		const event = await this.apEventService.extractEventFromNote(note, resolver).catch(() => undefined);
-
-		if (isMessaging) {
-			for (const recipient of visibleUsers) {
-				await this.messagingService.createMessage(actor, recipient, null, text ?? undefined, (files && files.length > 0) ? files[0] : null, object.id);
-				return null;
-			}
-		}
 
 		try {
 			return await this.noteCreateService.create(actor, {

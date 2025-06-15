@@ -15,7 +15,7 @@ import { computed } from 'vue';
 import { instanceName as localInstanceName } from '@@/js/config.js';
 import type { CSSProperties } from 'vue';
 import { instance as localInstance } from '@/instance.js';
-import { getProxiedImageUrlNullable } from '@/scripts/media-proxy.js';
+import { getProxiedImageUrlNullable } from '@/utility/media-proxy.js';
 
 const props = defineProps<{
 	host: string | null;
@@ -64,19 +64,14 @@ $height: 2ex;
 	color: #000;
 	margin-top: 5px;
 	padding: 1px 5px 1px 0;
-	text-shadow: /* .866 ≈ sin(60deg) */
-		1px 0 1px #fff,
-		.866px .5px 1px #fff,
-		.5px .866px 1px #fff,
-		0 1px 1px #fff,
-		-.5px .866px 1px #fff,
-		-.866px .5px 1px #fff,
-		-1px 0 1px #fff,
-		-.866px -.5px 1px #fff,
-		-.5px -.866px 1px #fff,
-		0 -1px 1px #fff,
-		.5px -.866px 1px #fff,
-		.866px -.5px 1px #fff;
+
+	// text-shadowは重いから使うな
+
+	//mask-image: linear-gradient(90deg,
+	//	rgb(0,0,0),
+	//	rgb(0,0,0) calc(100% - 16px),
+	//	rgba(0,0,0,0) 100%
+	//);
 }
 
 .icon {
@@ -94,6 +89,9 @@ $height: 2ex;
   overflow-wrap: anywhere;
   max-width: 300px;
   text-overflow: ellipsis;
+	padding: 1px;
+	-webkit-text-stroke: 3px #fff;
+	paint-order: stroke fill;
 
   &::-webkit-scrollbar {
     display: none;

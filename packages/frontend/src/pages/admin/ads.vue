@@ -4,11 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header>
-		<XHeader :actions="headerActions" :tabs="headerTabs"/>
-	</template>
-	<MkSpacer :contentMax="900">
+<PageWithHeader :actions="headerActions" :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 900px;">
 		<MkSelect v-model="filterType" :class="$style.input" @update:modelValue="filterItems">
 			<template #label>{{ i18n.ts.state }}</template>
 			<option value="all">{{ i18n.ts.all }}</option>
@@ -30,14 +27,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<option value="horizontal">horizontal</option>
 					<option value="horizontal-big">horizontal-big</option>
 				</MkRadios>
+
 				<!--
-			<div style="margin: 32px 0;">
-				{{ i18n.ts.priority }}
-				<MkRadio v-model="ad.priority" value="high">{{ i18n.ts.high }}</MkRadio>
-				<MkRadio v-model="ad.priority" value="middle">{{ i18n.ts.middle }}</MkRadio>
-				<MkRadio v-model="ad.priority" value="low">{{ i18n.ts.low }}</MkRadio>
-			</div>
-			-->
+				<div style="margin: 32px 0;">
+					{{ i18n.ts.priority }}
+					<MkRadio v-model="ad.priority" value="high">{{ i18n.ts.high }}</MkRadio>
+					<MkRadio v-model="ad.priority" value="middle">{{ i18n.ts.middle }}</MkRadio>
+					<MkRadio v-model="ad.priority" value="low">{{ i18n.ts.low }}</MkRadio>
+				</div>
+				-->
+
 				<FormSplit>
 					<MkInput v-model="ad.ratio" type="number">
 						<template #label>{{ i18n.ts.ratio }}</template>
@@ -78,14 +77,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<i class="ti ti-reload"></i> {{ i18n.ts.more }}
 			</MkButton>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import XHeader from './_header_.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -94,9 +92,9 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
+import { definePage } from '@/page.js';
 
 const ads = ref<Misskey.entities.Ad[]>([]);
 
@@ -253,7 +251,7 @@ const headerActions = computed(() => [{
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.ads,
 	icon: 'ti ti-ad',
 }));

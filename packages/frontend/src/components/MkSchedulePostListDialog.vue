@@ -11,14 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@close="cancel()"
 >
 	<template #header>{{ i18n.ts.schedulePostList }}</template>
-	<MkSpacer :marginMin="20" :marginMax="28">
+	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
 		<MkPagination ref="paginationEl" :pagination="pagination">
-			<template #empty>
-				<div class="_fullinfo">
-					<img :src="infoImageUrl" class="_ghost"/>
-					<div>{{ i18n.ts.nothing }}</div>
-				</div>
-			</template>
+			<template #empty><MkResult type="empty"/></template>
 
 			<template #default="{ items }">
 				<div class="_gaps">
@@ -26,24 +21,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</template>
 		</MkPagination>
-	</MkSpacer>
+	</div>
 </MkModalWindow>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import type { Paging } from '@/components/MkPagination.vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import { i18n } from '@/i18n.js';
-import { infoImageUrl } from '@/instance.js';
 
 const emit = defineEmits<{
 	(ev: 'cancel'): void;
 }>();
 
-const dialogEl = ref();
+const dialogEl = useTemplateRef('dialogEl');
 const cancel = () => {
 	emit('cancel');
 	dialogEl.value.close();

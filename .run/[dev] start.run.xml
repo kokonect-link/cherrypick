@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="[dev] start" type="js.build_tools.npm" folderName="dev">
+    <package-json value="$PROJECT_DIR$/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs>
+      <env name="NODE_ENV" value="development" />
+      <env name="CHERRYPICK_WEBFINGER_USE_HTTP" value="true" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

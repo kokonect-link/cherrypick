@@ -28,13 +28,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, shallowRef, computed } from 'vue';
+import { onBeforeUnmount, onMounted, ref, computed, useTemplateRef } from 'vue';
 import { instanceName } from '@@/js/config.js';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 type Result = string | number | true | null;
 
@@ -47,7 +47,7 @@ const emit = defineEmits<{
 	(ev: 'closed'): void;
 }>();
 
-const modal = shallowRef<InstanceType<typeof MkModal>>();
+const modal = useTemplateRef('modal');
 const trustThisDomain = ref(false);
 
 const domain = computed(() => new URL(props.url).hostname);
@@ -63,8 +63,8 @@ function done(canceled: boolean, result?: Result): void { // eslint-disable-line
 
 async function ok() {
 	const result = true;
-	if (!defaultStore.state.trustedDomains.includes(domain.value) && trustThisDomain.value) {
-		await defaultStore.set('trustedDomains', defaultStore.state.trustedDomains.concat(domain.value));
+	if (!prefer.s.trustedDomains.includes(domain.value) && trustThisDomain.value) {
+		await prefer.commit('trustedDomains', prefer.s.trustedDomains.concat(domain.value));
 	}
 	done(false, result);
 }
@@ -83,11 +83,11 @@ function onKeydown(evt: KeyboardEvent) {
 }
 
 onMounted(() => {
-	document.addEventListener('keydown', onKeydown);
+	window.document.addEventListener('keydown', onKeydown);
 });
 
 onBeforeUnmount(() => {
-	document.removeEventListener('keydown', onKeydown);
+	window.document.removeEventListener('keydown', onKeydown);
 });
 </script>
 

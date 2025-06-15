@@ -710,7 +710,7 @@ export class ApPersonService implements OnModuleInit {
 					isCollectionOrOrderedCollection(person.outbox)
 						? person.outbox.totalItems
 						: undefined,
-			featured: person.featured,
+			featured: person.featured ? getApId(person.featured) : undefined,
 			emojis: emojiNames,
 			name: truncate(person.name, nameLength),
 			tags,
@@ -748,7 +748,10 @@ export class ApPersonService implements OnModuleInit {
 		// Update user
 		const user = await this.usersRepository.findOneByOrFail({ id: exist.id });
 		await this.avatarDecorationService.remoteUserUpdate(user);
-		await this.usersRepository.update(exist.id, updates);
+
+		if (!(await this.usersRepository.update({ id: exist.id, isDeleted: false }, updates)).affected) {
+			return 'skip';
+		}
 
 		if (person.publicKey) {
 			await this.userPublickeysRepository.update({ userId: exist.id }, {
@@ -853,7 +856,7 @@ export class ApPersonService implements OnModuleInit {
 
 	@bindThis
 	public async updateFeatured(userId: MiUser['id'], resolver?: Resolver): Promise<void> {
-		const user = await this.usersRepository.findOneByOrFail({ id: userId });
+		const user = await this.usersRepository.findOneByOrFail({ id: userId, isDeleted: false });
 		if (!this.userEntityService.isRemoteUser(user)) return;
 		if (!user.featured) return;
 

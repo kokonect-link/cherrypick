@@ -4,51 +4,58 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><MkPageHeader v-if="!popup" :actions="headerActions" :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="800">
+<PageWithHeader :actions="headerActions" :tabs="headerTabs" :popup="popup">
+	<div class="_spacer" style="--MI_SPACER-w: 800px;">
 		<div :class="$style.root">
 			<div :class="$style.intro">{{ i18n.ts._keyboardShortCut.description }}</div>
+
 			<MkFoldableSection>
 				<template #header>{{ i18n.ts._keyboardShortCut._category.general }}</template>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.openPostForm }}</div>
 					<div :class="$style.content">
 						<kbd>N</kbd>, <kbd>P</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.toggleDarkMode }}</div>
 					<div :class="$style.content">
 						<kbd>D</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.redirectToSearch }}</div>
 					<div :class="$style.content">
 						<kbd>S</kbd>
 					</div>
 				</div>
-			</MkFoldableSection>
-			<MkFoldableSection>
-				<template #header>{{ i18n.ts._keyboardShortCut._category.postForm }}</template>
-				<div :class="$style.section">
-					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleVisibility }}</div>
-					<div v-if="!defaultStore.state.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
+				<div :class="$style.section" class="_gaps_s">
+					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._general.viewKeyboardShortCutList }}</div>
 					<div :class="$style.content">
-						<kbd>Ctrl</kbd>+<kbd>Shift</kbd>
+						<kbd>Shift</kbd> + <kbd>/</kbd> or <kbd>?</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+			</MkFoldableSection>
+
+			<MkFoldableSection>
+				<template #header>{{ i18n.ts._keyboardShortCut._category.postForm }}</template>
+				<div :class="$style.section" class="_gaps_s">
+					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleVisibility }}</div>
+					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
+					<div :class="$style.content">
+						<kbd>Ctrl</kbd> + <kbd>Shift</kbd>
+					</div>
+				</div>
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.toggleLocalOnly }}</div>
-					<div v-if="!defaultStore.state.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
+					<div v-if="!prefer.s.postFormVisibilityHotkey" :class="$style.caution">{{ i18n.ts._keyboardShortCut._postForm.featureWarn }}</div>
 					<div :class="$style.content">
 						<kbd>Ctrl</kbd> + <kbd>Alt</kbd>
 					</div>
 				</div>
-				<div :class="$style.section">
+				<div :class="$style.section" class="_gaps_s">
 					<div :class="$style.title">{{ i18n.ts._keyboardShortCut._postForm.sendPost }}</div>
-					<div v-if="defaultStore.state.useEnterToSend" :class="$style.content">
+					<div v-if="prefer.s.useEnterToSend" :class="$style.content">
 						<kbd>Enter</kbd>
 					</div>
 					<div v-else :class="$style.content">
@@ -57,16 +64,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkFoldableSection>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata';
+import { definePage } from '@/page.js';
+import { prefer } from '@/preferences.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import { defaultStore } from '@/store.js';
 
 defineProps<{
 	popup?: boolean;
@@ -76,7 +83,7 @@ const headerActions = computed(() => []);
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts._keyboardShortCut.title,
 	icon: 'ti ti-keyboard',
 }));

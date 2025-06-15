@@ -5,16 +5,15 @@
 
 import { computed, reactive } from 'vue';
 import { ui } from '@@/js/config.js';
-import { clearCache } from './scripts/clear-cache.js';
-import { $i } from '@/account.js';
+import { clearCache } from './utility/clear-cache.js';
+import { $i } from '@/i.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { openInstanceMenu, openToolsMenu } from '@/ui/_common_/common.js';
-import { lookup } from '@/scripts/lookup.js';
+import { lookup } from '@/utility/lookup.js';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
-import { unisonReload } from '@/scripts/unison-reload.js';
-import { donateCherryPick } from '@/scripts/donate-cherrypick.js';
+import { unisonReload } from '@/utility/unison-reload.js';
+import { donateCherryPick } from '@/utility/donate-cherrypick.js';
 
 export const navbarItemDef = reactive({
 	notifications: {
@@ -32,13 +31,6 @@ export const navbarItemDef = reactive({
 			}
 		}),
 		to: '/my/notifications',
-	},
-	messaging: {
-		title: i18n.ts.messaging,
-		icon: 'ti ti-messages',
-		show: computed(() => $i != null),
-		indicated: computed(() => $i != null && $i.hasUnreadMessagingMessage),
-		to: '/my/messaging',
 	},
 	drive: {
 		title: i18n.ts.drive,
@@ -125,6 +117,13 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-device-tv',
 		to: '/channels',
 	},
+	chat: {
+		title: i18n.ts.chat,
+		icon: 'ti ti-messages',
+		to: '/chat',
+		show: computed(() => $i != null && $i.policies.chatAvailability !== 'unavailable'),
+		indicated: computed(() => $i?.hasUnreadChatMessages),
+	},
 	achievements: {
 		title: i18n.ts.achievements,
 		icon: 'ti ti-medal',
@@ -161,13 +160,6 @@ export const navbarItemDef = reactive({
 					miLocalStorage.setItem('ui', 'deck');
 					unisonReload();
 				},
-			}, {
-				text: i18n.ts.classic,
-				active: ui === 'classic',
-				action: () => {
-					miLocalStorage.setItem('ui', 'classic');
-					unisonReload();
-				},
 			}], ev.currentTarget ?? ev.target);
 		},
 	},
@@ -176,11 +168,11 @@ export const navbarItemDef = reactive({
 		icon: 'ti ti-help-circle',
 		action: (ev) => {
 			os.popupMenu([{
-				text: i18n.ts.help,
-				icon: 'ti ti-help-circle',
-				action: () => {
-					window.open('https://misskey-hub.net/help.html', '_blank');
-				},
+				type: 'a',
+				text: i18n.ts.document,
+				icon: 'ti ti-bulb',
+				href: 'https://misskey-hub.net/docs/for-users/',
+				target: '_blank',
 			}, {
 				type: 'link',
 				text: i18n.ts._mfc.cheatSheet,
@@ -212,7 +204,7 @@ export const navbarItemDef = reactive({
 		title: i18n.ts.reload,
 		icon: 'ti ti-refresh',
 		action: (ev) => {
-			location.reload();
+			window.location.reload();
 		},
 	},
 	profile: {

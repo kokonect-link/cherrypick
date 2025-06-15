@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="label">
 		<slot name="label"></slot>
 	</div>
-	<div v-adaptive-border class="body">
+	<div v-adaptive-border :class="{ fontSizeSlider: isFontSizeSlider }" class="body">
 		<div ref="containerEl" class="container">
 			<div class="track">
 				<div class="highlight" :style="{ width: (steppedRawValue * 100) + '%' }"></div>
@@ -33,11 +33,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, shallowRef, watch } from 'vue';
-import { isTouchUsing } from '@/scripts/touch.js';
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
+import { isTouchUsing } from '@/utility/touch.js';
 import * as os from '@/os.js';
-import { vibrate } from '@/scripts/vibrate.js';
-import { defaultStore } from '@/store.js';
+import { vibrate } from '@/utility/vibrate.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	modelValue: number;
@@ -49,6 +49,7 @@ const props = withDefaults(defineProps<{
 	showTicks?: boolean;
 	easing?: boolean;
 	continuousUpdate?: boolean;
+	isFontSizeSlider?: boolean;
 }>(), {
 	step: 1,
 	textConverter: (v) => v.toString(),
@@ -60,8 +61,8 @@ const emit = defineEmits<{
 	(ev: 'dragEnded', value: number): void;
 }>();
 
-const containerEl = shallowRef<HTMLElement>();
-const thumbEl = shallowRef<HTMLElement>();
+const containerEl = useTemplateRef('containerEl');
+const thumbEl = useTemplateRef('thumbEl');
 
 const rawValue = ref((props.modelValue - props.min) / (props.max - props.min));
 const steppedRawValue = computed(() => {
@@ -139,7 +140,7 @@ function onMouseenter() {
 }
 
 function onMousedown(ev: MouseEvent | TouchEvent) {
-	vibrate(defaultStore.state.vibrateSystem ? 10 : []);
+	vibrate(prefer.s['vibrate.on.system'] ? 10 : []);
 
 	ev.preventDefault();
 
@@ -155,20 +156,21 @@ function onMousedown(ev: MouseEvent | TouchEvent) {
 		closed: () => dispose(),
 	});
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode('* { cursor: grabbing !important; } body * { pointer-events: none !important; }'));
-	document.head.appendChild(style);
+	const style = window.document.createElement('style');
+	style.appendChild(window.document.createTextNode('* { cursor: grabbing !important; } body * { pointer-events: none !important; }'));
+	window.document.head.appendChild(style);
 
 	const thumbWidth = getThumbWidth();
 
 	const onDrag = (ev: MouseEvent | TouchEvent) => {
 		ev.preventDefault();
+		let beforeValue = finalValue.value;
 		const containerRect = containerEl.value!.getBoundingClientRect();
 		const pointerX = 'touches' in ev && ev.touches.length > 0 ? ev.touches[0].clientX : 'clientX' in ev ? ev.clientX : 0;
 		const pointerPositionOnContainer = pointerX - (containerRect.left + (thumbWidth / 2));
 		rawValue.value = Math.min(1, Math.max(0, pointerPositionOnContainer / (containerEl.value!.offsetWidth - thumbWidth)));
 
-		if (props.continuousUpdate) {
+		if (props.continuousUpdate && beforeValue !== finalValue.value) {
 			emit('update:modelValue', finalValue.value);
 		}
 	};
@@ -176,7 +178,7 @@ function onMousedown(ev: MouseEvent | TouchEvent) {
 	let beforeValue = finalValue.value;
 
 	const onMouseup = () => {
-		document.head.removeChild(style);
+		window.document.head.removeChild(style);
 		tooltipForDragShowing.value = false;
 		window.removeEventListener('mousemove', onDrag);
 		window.removeEventListener('touchmove', onDrag);
@@ -216,7 +218,7 @@ function onMousedown(ev: MouseEvent | TouchEvent) {
 	> .caption {
 		font-size: 0.85em;
 		padding: 8px 0 0 0;
-		color: var(--MI_THEME-fgTransparentWeak);
+		color: color(from var(--MI_THEME-fg) srgb r g b / 0.75);
 
 		&:empty {
 			display: none;
@@ -290,9 +292,14 @@ function onMousedown(ev: MouseEvent | TouchEvent) {
 				border-radius: 999px;
 
 				&:hover {
-					background: var(--MI_THEME-accentLighten);
+					background: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 				}
 			}
+		}
+
+		&.fontSizeSlider {
+			background: var(--MI_THEME-bg);
+			border: none;
 		}
 	}
 

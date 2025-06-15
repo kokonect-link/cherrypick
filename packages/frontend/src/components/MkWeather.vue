@@ -27,10 +27,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.daily">
 				<div v-for="(day, i) in weatherData.daily.time.slice(0, 3)" :key="i" :class="$style.day">
 					<div style="font-size: 0.8em;">{{ formatDate(day) }}</div>
-					<i style="margin: 4px 0;" :class="getWeatherIcon(Number(weatherData.daily.weatherCode[i]))"></i>
-					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMax[i])) }}</span> / <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMin[i])) }}</span><span :class="$style.detailsUnit">{{ temperatureUnit }}</span></div>
-					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationSum[i])) }}</span><span :class="$style.detailsUnit">mm</span></div>
-					<div><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationProbabilityMean[i])) }}</span><span :class="$style.detailsUnit">%</span></div>
+					<i style="margin: 4px 0; font-size: 1.55em;" :class="getWeatherIcon(Number(weatherData.daily.weatherCode[i]))"></i>
+					<div style="font-size: 0.85em;"><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMax[i])) }}</span> / <span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.temperature2mMin[i])) }}</span><span :class="$style.detailsUnit">{{ temperatureUnit }}</span></div>
+					<div style="font-size: 0.85em;"><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationSum[i])) }}</span><span :class="$style.detailsUnit">mm</span></div>
+					<div style="font-size: 0.85em;"><span style="opacity: 0.7;">{{ Math.round(Number(weatherData.daily.precipitationProbabilityMean[i])) }}</span><span :class="$style.detailsUnit">%</span></div>
 				</div>
 			</div>
 		</div>
@@ -48,10 +48,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref, onMounted, watch, nextTick, onUnmounted } from 'vue';
 import { fetchWeatherApi } from 'openmeteo';
 import { Chart, registerables } from 'chart.js';
-import { chartVLine } from '@/scripts/chart-vline.js';
+import { chartVLine } from '@/utility/chart-vline.js';
 import { i18n } from '@/i18n.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { defaultStore } from '@/store.js';
+import { store } from '@/store.js';
 
 const props = withDefaults(defineProps<{
 	latitude?: number;
@@ -211,12 +211,12 @@ function createPressureChart() {
 		weatherData.value.hourly.surfacePressure.slice(startIndex, endIndex),
 	);
 
-	const vLineColor = defaultStore.state.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+	const vLineColor = store.s.darkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
 
 	if (pressureChart) pressureChart.destroy();
 
-	Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--MI_THEME-fg');
-	Chart.defaults.borderColor = defaultStore.state.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+	Chart.defaults.color = getComputedStyle(window.document.documentElement).getPropertyValue('--MI_THEME-fg');
+	Chart.defaults.borderColor = store.s.darkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
 
 	pressureChart = new Chart(pressureChartEl.value, {
 		type: 'line',
@@ -285,13 +285,13 @@ onMounted(async () => {
 	await Promise.all([fetchWeather(), fetchLocation()]);
 	createPressureChart();
 
-	const interval = setInterval(async () => {
+	const interval = window.setInterval(async () => {
 		await fetchWeather();
 		createPressureChart();
 	}, 1000 * 60 * 60);
 
 	onUnmounted(() => {
-		clearInterval(interval);
+		window.clearInterval(interval);
 	});
 });
 

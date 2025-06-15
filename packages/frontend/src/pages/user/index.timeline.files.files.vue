@@ -10,8 +10,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<ImgWithBlurhash :class="$style.sensitiveImg" :hash="note.files[0].blurhash" :src="thumbnail(note.files[0])" :title="note.files[0].name" :forceBlurhash="true"/>
 		<div :class="$style.sensitive">
 			<div>
-				<div v-if="note.files[0].isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ defaultStore.state.dataSaver.media ? ` (${i18n.ts.image}${note.files[0].size ? ' ' + bytes(note.files[0].size) : ''})` : '' }}</div>
-				<div v-else style="display: block;"><i class="ti ti-photo"></i> {{ defaultStore.state.dataSaver.media && note.files[0].size ? bytes(note.files[0].size) : i18n.ts.image }}</div>
+				<div v-if="note.files[0].isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ prefer.s.dataSaver.media ? ` (${i18n.ts.image}${note.files[0].size ? ' ' + bytes(note.files[0].size) : ''})` : '' }}</div>
+				<div v-else style="display: block;"><i class="ti ti-photo"></i> {{ prefer.s.dataSaver.media && note.files[0].size ? bytes(note.files[0].size) : i18n.ts.image }}</div>
 				<div>{{ i18n.ts.clickToShow }}</div>
 			</div>
 		</div>
@@ -22,10 +22,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:hash="note.files[0].blurhash"
 			:src="thumbnail(note.files[0])"
 			:title="note.files[0].name"
-			@mouseover="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-			@mouseout="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-			@touchstart="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-			@touchend="defaultStore.state.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		/>
 		<div :class="$style.indicators">
 			<div v-if="['image/gif'].includes(note.files[0].type)" :class="$style.indicator">GIF</div>
@@ -46,11 +46,11 @@ import { onMounted, onUnmounted, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import bytes from '@/filters/bytes.js';
-import { getStaticImageUrl } from '@/scripts/media-proxy.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { notePage } from '@/filters/note.js';
 import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import MkA from '@/components/global/MkA.vue';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
@@ -62,11 +62,11 @@ const props = defineProps<{
 const showingFiles = ref<string[]>([]);
 
 const playAnimation = ref(true);
-if (defaultStore.state.showingAnimatedImages === 'interaction') playAnimation.value = false;
-let playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
+let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 
 function thumbnail(image: Misskey.entities.DriveFile): string | null {
-	return (defaultStore.state.disableShowingAnimatedImages || defaultStore.state.dataSaver.media) || (['interaction', 'inactive'].includes(<string>defaultStore.state.showingAnimatedImages) && !playAnimation.value)
+	return (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.media) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
 		? getStaticImageUrl(image.url)
 		: image.thumbnailUrl;
 }
@@ -74,7 +74,7 @@ function thumbnail(image: Misskey.entities.DriveFile): string | null {
 async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
 	if (!showingFiles.value.includes(image.id)) {
 		ev.stopPropagation();
-		if (image.isSensitive && defaultStore.state.confirmWhenRevealingSensitiveMedia) {
+		if (image.isSensitive && prefer.s.confirmWhenRevealingSensitiveMedia) {
 			const { canceled } = await os.confirm({
 				type: 'question',
 				text: i18n.ts.sensitiveMediaRevealConfirm,
@@ -84,21 +84,21 @@ async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
 		}
 	}
 
-	if (defaultStore.state.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {});
-	if (defaultStore.state.nsfwOpenBehavior === 'click') showingFiles.value.push(image.id);
+	if (prefer.s.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {});
+	if (prefer.s.nsfwOpenBehavior === 'click') showingFiles.value.push(image.id);
 }
 
 async function onDblClick(image: Misskey.entities.DriveFile) {
-	if (!showingFiles.value.includes(image.id) && defaultStore.state.nsfwOpenBehavior === 'doubleClick') showingFiles.value.push(image.id);
+	if (!showingFiles.value.includes(image.id) && prefer.s.nsfwOpenBehavior === 'doubleClick') showingFiles.value.push(image.id);
 }
 
 watch(() => props.note, () => {
-	if (defaultStore.state.nsfw === 'force' || defaultStore.state.dataSaver.media) {
+	if (prefer.s.nsfw === 'force' || prefer.s.dataSaver.media) {
 		//hide = true;
 	} else {
 		for (const image of props.note.files) {
 			if (image.isSensitive) {
-				if (defaultStore.state.nsfw !== 'ignore') {
+				if (prefer.s.nsfw !== 'ignore') {
 					//hide = true;
 				} else {
 					if (!showingFiles.value.includes(image.id)) {
@@ -119,12 +119,12 @@ watch(() => props.note, () => {
 
 function resetTimer() {
 	playAnimation.value = true;
-	clearTimeout(playAnimationTimer);
-	playAnimationTimer = setTimeout(() => playAnimation.value = false, 5000);
+	window.clearTimeout(playAnimationTimer);
+	playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 }
 
 onMounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.addEventListener('mousemove', resetTimer);
 		window.addEventListener('touchstart', resetTimer);
 		window.addEventListener('touchend', resetTimer);
@@ -132,7 +132,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-	if (defaultStore.state.showingAnimatedImages === 'inactive') {
+	if (prefer.s.showingAnimatedImages === 'inactive') {
 		window.removeEventListener('mousemove', resetTimer);
 		window.removeEventListener('touchstart', resetTimer);
 		window.removeEventListener('touchend', resetTimer);
@@ -235,7 +235,7 @@ html[data-color-scheme=light] .visible {
 	/* Hardcode to black because either --MI_THEME-bg or --MI_THEME-fg makes it hard to read in dark/light mode */
 	background-color: black;
 	border-radius: 6px;
-	color: var(--MI_THEME-accentLighten);
+	color: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 	display: inline-block;
 	font-weight: bold;
 	font-size: 0.8em;

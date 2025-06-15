@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="['all', 'bg'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
 	<div :class="$style.top">
 		<div v-if="['all', 'topBottom', 'top'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.topBanner]" :style="{ backgroundImage: `url(${ instance.bannerUrl })` }"></div>
-		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.instance" @click="openInstanceMenu">
+		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="$style.instance" @click="openInstanceMenu">
 			<img :src="instance.iconUrl || instance.faviconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon"/>
 		</button>
 	</div>
@@ -16,12 +16,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkA :class="$style.item" :activeClass="$style.active" to="/" exact>
 			<i :class="$style.itemIcon" class="ti ti-home ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.timeline }}</span>
 		</MkA>
-		<template v-for="item in menu">
+		<template v-for="item in prefer.r.menu.value">
 			<div v-if="item === '-'" :class="$style.divider"></div>
-			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
+			<component :is="navbarItemDef[item].to ? 'MkA' : 'button'" v-else-if="navbarItemDef[item] && (navbarItemDef[item].show !== false)" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.item, { [$style.active]: navbarItemDef[item].active }]" :activeClass="$style.active" :to="navbarItemDef[item].to" v-on="navbarItemDef[item].action ? { click: navbarItemDef[item].action } : {}">
 				<i class="ti-fw" :class="[$style.itemIcon, navbarItemDef[item].icon]"></i><span :class="$style.itemText">{{ navbarItemDef[item].title }}</span>
 				<span v-if="navbarItemDef[item].indicated" :class="$style.itemIndicator" class="_blink">
-					<span v-if="navbarItemDef[item].indicateValue && defaultStore.state.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
+					<span v-if="navbarItemDef[item].indicateValue && prefer.s.showUnreadNotificationsCount" class="_indicateCounter" :class="$style.itemIndicateValueIcon">{{ navbarItemDef[item].indicateValue }}</span>
 					<i v-else class="_indicatorCircle"></i>
 				</span>
 			</component>
@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<i :class="$style.itemIcon" class="ti ti-dashboard ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.controlPanel }}</span>
 			<span v-if="controlPanelIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 		</MkA>
-		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" :class="$style.item" class="_button" @click="more">
+		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="more">
 			<i :class="$style.itemIcon" class="ti ti-dots ti-fw"></i><span :class="$style.itemText">{{ i18n.ts.more }}</span>
 			<span v-if="otherMenuItemIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 		</button>
@@ -41,42 +41,42 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div :class="$style.bottom">
 		<div v-if="['all', 'topBottom', 'bottom'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-		<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
-			<i :class="[$style.postIcon, defaultStore.state.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']" class="ti ti-fw"></i><span style="position: relative;">{{ defaultStore.state.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
+		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="$style.post" data-cy-open-post-form @click="os.post">
+			<i :class="[$style.postIcon, prefer.s.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']" class="ti ti-fw"></i><span style="position: relative;">{{ prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
 		</button>
 		<div :class="$style.profile">
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.account" @click="openProfile">
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="$style.account" @click="openProfile">
 				<MkAvatar :user="$i" :class="$style.avatar"/><MkUserName :class="$style.acct" class="_nowrap" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
 			</button>
-			<button v-vibrate="defaultStore.state.vibrateSystem ? 5 : []" class="_button" :class="$style.drawer" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
+			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="$style.drawer" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 		</div>
 	</div>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, toRef, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 import { openInstanceMenu } from '@/ui/_common_/common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
-import { $i, openAccountMenu as openAccountMenu_ } from '@/account.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
-import { mainRouter } from '@/router/main.js';
-import { fetchCherrypickReleases } from '@/scripts/fetch-cherrypick-releases.js';
+import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { $i } from '@/i.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
+import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
+import { mainRouter } from '@/router.js';
 
-const menu = toRef(defaultStore.state, 'menu');
 const otherMenuItemIndicated = computed(() => {
 	for (const def in navbarItemDef) {
-		if (menu.value.includes(def)) continue;
+		if (prefer.r.menu.value.includes(def)) continue;
 		if (navbarItemDef[def].indicated) return true;
 	}
 	return false;
 });
 const controlPanelIndicated = ref(false);
-const bannerDisplay = ref(defaultStore.state.bannerDisplay);
+const bannerDisplay = ref(prefer.s.bannerDisplay);
 
 if ($i && ($i.isAdmin ?? $i.isModerator)) {
 	misskeyApi('admin/abuse-user-reports', {
@@ -91,12 +91,12 @@ if ($i && ($i.isAdmin ?? $i.isModerator)) {
 	});
 }
 
-watch(defaultStore.reactiveState.bannerDisplay, () => {
+watch(prefer.r.bannerDisplay, () => {
 	toggleBannerDisplay();
 });
 
 function toggleBannerDisplay() {
-	bannerDisplay.value = defaultStore.state.bannerDisplay;
+	bannerDisplay.value = prefer.s.bannerDisplay;
 }
 
 function openAccountMenu(ev: MouseEvent) {
@@ -209,7 +209,7 @@ function openProfile() {
 
 	&:hover, &.active {
 		&::before {
-			background: var(--MI_THEME-accentLighten);
+			background: hsl(from var(--MI_THEME-accent) h s calc(l + 10));
 		}
 	}
 }
@@ -289,7 +289,7 @@ function openProfile() {
 
 	&:hover {
 		text-decoration: none;
-		color: var(--MI_THEME-navHoverFg);
+		color: light-dark(hsl(from var(--MI_THEME-navFg) h s calc(l - 17)), hsl(from var(--MI_THEME-navFg) h s calc(l + 17)));
 	}
 
 	&.active {

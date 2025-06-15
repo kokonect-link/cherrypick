@@ -567,6 +567,10 @@ const extension_context_definition = {
 	'isCat': 'misskey:isCat',
 	// vcard
 	vcard: 'http://www.w3.org/2006/vcard/ns#',
+	// CherryPick
+	cherrypick: 'https://kokonect.link/ns#',
+	setFederationAvatarShape: 'cherrypick:setFederationAvatarShape',
+	isSquareAvatars: 'cherrypick:isSquareAvatars',
 } satisfies Context;
 
 export const CONTEXT: (string | Context)[] = [...context_iris, extension_context_definition];

@@ -33,10 +33,10 @@ import { url as base } from '@@/js/config.js';
 import { useInterval } from '@@/js/use-interval.js';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import MarqueeText from '@/components/MkMarquee.vue';
 import MkContainer from '@/components/MkContainer.vue';
-import { shuffle } from '@/scripts/shuffle.js';
+import { shuffle } from '@/utility/shuffle.js';
 
 const name = 'rssTicker';
 
@@ -108,7 +108,7 @@ const intervalClear = ref<(() => void) | undefined>();
 const key = ref(0);
 
 const tick = () => {
-	if (document.visibilityState === 'hidden' && rawItems.value.length !== 0) return;
+	if (window.document.visibilityState === 'hidden' && rawItems.value.length !== 0) return;
 
 	window.fetch(fetchEndpoint.value, {})
 		.then(res => res.json())

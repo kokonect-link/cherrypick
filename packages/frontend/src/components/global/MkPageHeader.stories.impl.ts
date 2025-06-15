@@ -28,7 +28,7 @@ export const Empty = {
 		};
 	},
 	async play() {
-		const wait = new Promise((resolve) => setTimeout(resolve, 800));
+		const wait = new Promise((resolve) => window.setTimeout(resolve, 800));
 		await waitFor(async () => await wait);
 	},
 	args: {

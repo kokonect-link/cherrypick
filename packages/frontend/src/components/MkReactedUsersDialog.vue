@@ -12,13 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@closed="emit('closed')"
 >
 	<template #header>{{ i18n.ts.reactionsList }}</template>
-
-	<MkSpacer :marginMin="20" :marginMax="28">
+	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 28px;">
 		<div v-if="note" class="_gaps">
-			<div v-if="reactions && reactions.length === 0" class="_fullinfo">
-				<img :src="infoImageUrl" class="_ghost"/>
-				<div>{{ i18n.ts.nothing }}</div>
-			</div>
+			<MkResult v-if="reactions && reactions.length === 0" type="empty"/>
 			<template v-else>
 				<div :class="$style.tabs">
 					<button v-for="reaction in reactions" :key="reaction" :class="[$style.tab, { [$style.tabActive]: tab === reaction }]" class="_button" @click="tab = reaction">
@@ -34,20 +30,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-else>
 			<MkLoading/>
 		</div>
-	</MkSpacer>
+	</div>
 </MkModalWindow>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, shallowRef, watch } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkModalWindow from '@/components/MkModalWindow.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
-import { misskeyApi, misskeyApiGet } from '@/scripts/misskey-api.js';
-import { infoImageUrl } from '@/instance.js';
+import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 
 const emit = defineEmits<{
 	(ev: 'closed'): void,
@@ -57,7 +52,7 @@ const props = defineProps<{
 	noteId: Misskey.entities.Note['id'];
 }>();
 
-const dialog = shallowRef<InstanceType<typeof MkModalWindow>>();
+const dialog = useTemplateRef('dialog');
 
 const note = ref<Misskey.entities.Note>();
 const tab = ref<string>();

@@ -17,7 +17,7 @@ import isChromatic from 'chromatic/isChromatic';
 import { onMounted, onUnmounted, ref, computed } from 'vue';
 import { dateTimeFormat } from '@@/js/intl-const.js';
 import { i18n } from '@/i18n.js';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	time: Date | string | number | null;
@@ -55,7 +55,7 @@ const relative = computed<string>(() => {
 	// if (props.mode === 'absolute') return ''; // absoluteではrelativeを使わないので計算しない
 	if (invalid) return i18n.ts._ago.invalid;
 
-	if (defaultStore.state.enableMarkByDate) {
+	if (prefer.s.enableMarkByDate) {
 		return (
 			ago.value >= 86400 ? i18n.tsx._ago.daysAgo({ n: Math.round(ago.value / 86400).toString() }) :
 			ago.value >= 3600 ? i18n.tsx._ago.hoursAgo({ n: Math.round(ago.value / 3600).toString() }) :

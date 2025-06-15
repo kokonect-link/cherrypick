@@ -6,17 +6,42 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div ref="root" :class="['chromatic-ignore', $style.root, { [$style.cover]: cover }]" :title="title ?? ''">
 	<TransitionGroup
-		:duration="defaultStore.state.animation && props.transition?.duration || undefined"
-		:enterActiveClass="defaultStore.state.animation && props.transition?.enterActiveClass || undefined"
-		:leaveActiveClass="defaultStore.state.animation && (props.transition?.leaveActiveClass ?? $style.transition_leaveActive) || undefined"
-		:enterFromClass="defaultStore.state.animation && props.transition?.enterFromClass || undefined"
-		:leaveToClass="defaultStore.state.animation && props.transition?.leaveToClass || undefined"
-		:enterToClass="defaultStore.state.animation && props.transition?.enterToClass || undefined"
-		:leaveFromClass="defaultStore.state.animation && props.transition?.leaveFromClass || undefined"
+		:duration="prefer.s.animation && props.transition?.duration || undefined"
+		:enterActiveClass="prefer.s.animation && props.transition?.enterActiveClass || undefined"
+		:leaveActiveClass="prefer.s.animation && (props.transition?.leaveActiveClass ?? $style.transition_leaveActive) || undefined"
+		:enterFromClass="prefer.s.animation && props.transition?.enterFromClass || undefined"
+		:leaveToClass="prefer.s.animation && props.transition?.leaveToClass || undefined"
+		:enterToClass="prefer.s.animation && props.transition?.enterToClass || undefined"
+		:leaveFromClass="prefer.s.animation && props.transition?.leaveFromClass || undefined"
 	>
-		<canvas v-show="hide" key="canvas" ref="canvas" :class="$style.canvas" :width="canvasWidth" :height="canvasHeight" :title="title ?? undefined" tabindex="-1"/>
-		<img v-show="!hide" key="img" ref="img" :height="imgHeight ?? undefined" :width="imgWidth ?? undefined" :class="[$style.img, { [$style.noDrag]: noDrag }]" :src="src ?? undefined" :title="title ?? undefined" :alt="alt ?? undefined" loading="eager" decoding="async" tabindex="-1"/>
-		<i v-if="alt && showAltIndicator" :class="$style.altIndicator" class="ti ti-alt"></i>
+		<canvas
+			v-show="hide"
+			key="canvas"
+			ref="canvas"
+			:class="$style.canvas"
+			:width="canvasWidth"
+			:height="canvasHeight"
+			:title="title ?? undefined"
+			draggable="false"
+			tabindex="-1"
+			style="-webkit-user-drag: none;"
+		/>
+		<img
+			v-show="!hide"
+			key="img"
+			ref="img"
+			:height="imgHeight ?? undefined"
+			:width="imgWidth ?? undefined"
+			:class="$style.img"
+			:src="src ?? undefined"
+			:title="title ?? undefined"
+			:alt="alt ?? undefined"
+			loading="eager"
+			decoding="async"
+			draggable="false"
+			tabindex="-1"
+			style="-webkit-user-drag: none;"
+		/>
 	</TransitionGroup>
 </div>
 </template>
@@ -30,7 +55,7 @@ import { extractAvgColorFromBlurhash } from '@@/js/extract-avg-color-from-blurha
 const canvasPromise = new Promise<WorkerMultiDispatch | HTMLCanvasElement>(resolve => {
 	// テスト環境で Web Worker インスタンスは作成できない
 	if (import.meta.env.MODE === 'test') {
-		const canvas = document.createElement('canvas');
+		const canvas = window.document.createElement('canvas');
 		canvas.width = 64;
 		canvas.height = 64;
 		resolve(canvas);
@@ -44,13 +69,11 @@ const canvasPromise = new Promise<WorkerMultiDispatch | HTMLCanvasElement>(resol
 				Math.min(navigator.hardwareConcurrency - 1, 4),
 			);
 			resolve(workers);
-			if (_DEV_) console.log('WebGL2 in worker is supported!');
 		} else {
-			const canvas = document.createElement('canvas');
+			const canvas = window.document.createElement('canvas');
 			canvas.width = 64;
 			canvas.height = 64;
 			resolve(canvas);
-			if (_DEV_) console.log('WebGL2 in worker is not supported...');
 		}
 		testWorker.terminate();
 	});
@@ -58,10 +81,10 @@ const canvasPromise = new Promise<WorkerMultiDispatch | HTMLCanvasElement>(resol
 </script>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, onUnmounted, shallowRef, watch, ref } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, useTemplateRef, watch, ref } from 'vue';
 import { v4 as uuid } from 'uuid';
 import { render } from 'buraha';
-import { defaultStore } from '@/store.js';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{
 	transition?: {
@@ -82,8 +105,6 @@ const props = withDefaults(defineProps<{
 	cover?: boolean;
 	forceBlurhash?: boolean;
 	onlyAvgColor?: boolean; // 軽量化のためにBlurhashを使わずに平均色だけを描画
-	noDrag?: boolean;
-	showAltIndicator?: boolean;
 }>(), {
 	transition: null,
 	src: null,
@@ -94,14 +115,12 @@ const props = withDefaults(defineProps<{
 	cover: true,
 	forceBlurhash: false,
 	onlyAvgColor: false,
-	noDrag: false,
-	showAltIndicator: false,
 });
 
 const viewId = uuid();
-const canvas = shallowRef<HTMLCanvasElement>();
-const root = shallowRef<HTMLDivElement>();
-const img = shallowRef<HTMLImageElement>();
+const canvas = useTemplateRef('canvas');
+const root = useTemplateRef('root');
+const img = useTemplateRef('img');
 const loaded = ref(false);
 const canvasWidth = ref(64);
 const canvasHeight = ref(64);
@@ -241,6 +260,7 @@ onUnmounted(() => {
 	top: 0;
 	left: 0;
 }
+
 .root {
 	position: relative;
 	width: 100%;
@@ -267,26 +287,5 @@ onUnmounted(() => {
 
 .img {
 	object-fit: contain;
-
-	&.noDrag {
-		-webkit-user-drag: none;
-	}
-}
-
-.altIndicator {
-	display: flex;
-	gap: 4px;
-	position: absolute;
-	border-radius: 8px;
-	overflow: hidden;
-	top: 2.5px;
-	right: 2px;
-	background-color: var(--MI_THEME-bg);
-	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
-	backdrop-filter: var(--MI-blur, blur(15px));
-	color: var(--MI_THEME-accent);
-	font-size: 1em;
-	padding: 2px 4px;
-	text-align: center;
 }
 </style>

@@ -12,9 +12,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:class="[
 				$style.medias,
 				count === 1 ? [$style.n1, {
-					[$style.n116_9]: defaultStore.reactiveState.mediaListWithOneImageAppearance.value === '16_9',
-					[$style.n11_1]: defaultStore.reactiveState.mediaListWithOneImageAppearance.value === '1_1',
-					[$style.n12_3]: defaultStore.reactiveState.mediaListWithOneImageAppearance.value === '2_3',
+					[$style.n116_9]: prefer.s.mediaListWithOneImageAppearance === '16_9',
+					[$style.n11_1]: prefer.s.mediaListWithOneImageAppearance === '1_1',
+					[$style.n12_3]: prefer.s.mediaListWithOneImageAppearance === '2_3',
 				}] : count === 2 ? $style.n2 : count === 3 ? $style.n3 : count === 4 ? $style.n4 : $style.nMany,
 			]"
 		>
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, shallowRef } from 'vue';
+import { computed, onMounted, onUnmounted, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import PhotoSwipeLightbox from 'photoswipe/lightbox';
 import PhotoSwipe from 'photoswipe';
@@ -38,17 +38,18 @@ import XBanner from '@/components/MkMediaBanner.vue';
 import XImage from '@/components/MkMediaImage.vue';
 import XVideo from '@/components/MkMediaVideo.vue';
 import * as os from '@/os.js';
-import { defaultStore } from '@/store.js';
-import { focusParent } from '@/scripts/focus.js';
+import { focusParent } from '@/utility/focus.js';
+import { prefer } from '@/preferences.js';
 
 const props = defineProps<{
 	mediaList: Misskey.entities.DriveFile[];
 	raw?: boolean;
+	disableRightClick?: boolean;
 }>();
 
-const gallery = shallowRef<HTMLDivElement>();
+const gallery = useTemplateRef('gallery');
 const pswpZIndex = os.claimZIndex('middle');
-document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
+window.document.documentElement.style.setProperty('--mk-pswp-root-z-index', pswpZIndex.toString());
 const count = computed(() => props.mediaList.filter(media => previewable(media)).length);
 let lightbox: PhotoSwipeLightbox | null = null;
 
@@ -75,7 +76,7 @@ async function calcAspectRatio() {
 		return `${Math.max(ratio, img.properties.width / img.properties.height).toString()} / 1`;
 	};
 
-	switch (defaultStore.state.mediaListWithOneImageAppearance) {
+	switch (prefer.s.mediaListWithOneImageAppearance) {
 		case '16_9':
 			gallery.value.style.aspectRatio = ratioMax(16 / 9);
 			break;
@@ -114,7 +115,7 @@ onMounted(() => {
 				return item;
 			}),
 		gallery: gallery.value,
-		mainClass: defaultStore.state.useBlurEffectForModal ? 'pswp' : 'pswpX2',
+		mainClass: prefer.s.useBlurEffectForModal ? 'pswp' : 'pswpX2',
 		children: '.image',
 		thumbSelector: '.image',
 		loop: false,
@@ -175,7 +176,7 @@ onMounted(() => {
 			className: 'pswp__alt-text-container',
 			appendTo: 'wrapper',
 			onInit: (el, pswp) => {
-				const textBox = document.createElement('p');
+				const textBox = window.document.createElement('p');
 				textBox.className = 'pswp__alt-text _acrylic';
 				el.appendChild(textBox);
 
@@ -206,20 +207,24 @@ onMounted(() => {
 	});
 
 	lightbox.on('afterInit', () => {
-		activeEl = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+		activeEl = window.document.activeElement instanceof HTMLElement ? window.document.activeElement : null;
 		focusParent(activeEl, true, true);
 		lightbox?.pswp?.element?.focus({
 			preventScroll: true,
 		});
-		history.pushState(null, '', '#pswp');
+		window.history.pushState(null, '', '#pswp');
+
+		if (props.disableRightClick) document.addEventListener('contextmenu', preventRightClick);
 	});
 
 	lightbox.on('destroy', () => {
 		focusParent(activeEl, true, false);
 		activeEl = null;
 		if (window.location.hash === '#pswp') {
-			history.back();
+			window.history.back();
 		}
+
+		if (props.disableRightClick) document.removeEventListener('contextmenu', preventRightClick);
 	});
 
 	window.addEventListener('popstate', popstateHandler);
@@ -246,6 +251,10 @@ const openGallery = () => {
 	}
 };
 
+function preventRightClick(event: MouseEvent) {
+	event.preventDefault();
+}
+
 defineExpose({
 	openGallery,
 });
@@ -255,7 +264,6 @@ defineExpose({
 .container {
 	position: relative;
 	width: 100%;
-	margin-top: 4px;
 }
 
 .medias {

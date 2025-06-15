@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref } from 'vue';
 import { i18n } from '../../i18n.js';
 import XColumn from './column.vue';
-import type { Column } from './deck-store.js';
+import type { Column } from '@/deck.js';
 import MkNotes from '@/components/MkNotes.vue';
 
 defineProps<{

@@ -4,9 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkStickyContainer>
-	<template #header><XHeader :tabs="headerTabs"/></template>
-	<MkSpacer :contentMax="700" :marginMin="16" :marginMax="32">
+<PageWithHeader :tabs="headerTabs">
+	<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
 		<div class="_gaps_m">
 			<MkFolder :defaultOpen="false">
 				<template #icon><i class="ti ti-cloud"></i></template>
@@ -159,24 +158,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</MkFolder>
 		</div>
-	</MkSpacer>
-</MkStickyContainer>
+	</div>
+	<template #footer>
+		<div :class="$style.footer">
+			<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 16px;">
+				<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+			</div>
+		</div>
+	</template>
+</PageWithHeader>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import XHeader from './_header_.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkInput from '@/components/MkInput.vue';
+import MkFormFooter from '@/components/MkFormFooter.vue';
+import MkButton from '@/components/MkButton.vue';
 import FormSplit from '@/components/form/split.vue';
 import * as os from '@/os.js';
-import { misskeyApi } from '@/scripts/misskey-api.js';
+import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
-import { definePageMetadata } from '@/scripts/page-metadata.js';
-import MkFormFooter from '@/components/MkFormFooter.vue';
-import { useForm } from '@/scripts/use-form.js';
+import { definePage } from '@/page.js';
+import { useForm } from '@/use/use-form.js';
 
 const meta = await misskeyApi('admin/meta');
 
@@ -244,7 +250,7 @@ const remoteObjectStorageForm = useForm({
 
 const headerTabs = computed(() => []);
 
-definePageMetadata(() => ({
+definePage(() => ({
 	title: i18n.ts.objectStorage,
 	icon: 'ti ti-cloud',
 }));

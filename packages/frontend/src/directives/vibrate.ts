@@ -4,7 +4,7 @@
  */
 
 import type { Directive } from 'vue';
-import { vibrate } from '@/scripts/vibrate.js';
+import { vibrate } from '@/utility/vibrate.js';
 
 export default {
 	mounted(el, binding) {

@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { host } from '@@/js/config.js';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/scripts/form.js';
+import type { GetFormResultType } from '@/utility/form.js';
 import { instance } from '@/instance.js';
 
 const name = 'instanceInfo';

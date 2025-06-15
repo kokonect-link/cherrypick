@@ -124,8 +124,8 @@ import * as Misskey from 'cherrypick-js';
 import MkInput from './MkInput.vue';
 import MkSwitch from './MkSwitch.vue';
 import type { Ref } from 'vue';
-import { formatDateTimeString } from '@/scripts/format-time-string.js';
-import { addTime } from '@/scripts/time.js';
+import { formatDateTimeString } from '@/utility/format-time-string.js';
+import { addTime } from '@/utility/time.js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
