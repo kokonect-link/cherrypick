@@ -11,14 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
 		<div :class="[$style.contents, !isMobile && prefer.r.showTitlebar.value ? $style.withSidebarAndTitlebar : null]" @contextmenu.stop="onContextmenu">
-			<Transition name="slide-fade" @beforeEnter="beforeEnter" @beforeLeave="beforeLeave" @enter="enter" @leave="leave">
-				<div v-if="!showEl2">
-					<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
-					<XAnnouncements v-if="$i"/>
-					<XStatusBars :class="$style.statusbars"/>
-				</div>
-			</Transition>
-
+			<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+			<XAnnouncements v-if="$i"/>
+			<XStatusBars :class="$style.statusbars"/>
 			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
 			<RouterView v-else :class="$style.content"/>
 			<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
@@ -70,8 +65,6 @@ const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_
 window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
-
-const { showEl2 } = scrollToVisibility();
 
 const pageMetadata = ref<null | PageMetadata>(null);
 const widgetsShowing = ref(false);

@@ -11,14 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
 		<div :class="[$style.contents, !isMobile && prefer.r.showTitlebar.value ? $style.withSidebarAndTitlebar : null]" @contextmenu.stop="onContextmenu">
-			<Transition name="slide-fade" @beforeEnter="beforeEnter" @beforeLeave="beforeLeave" @enter="enter" @leave="leave">
-				<div v-if="!showEl2">
-					<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
-					<XAnnouncements v-if="$i"/>
-					<XStatusBars :class="$style.statusbars"/>
-				</div>
-			</Transition>
-
+			<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+			<XAnnouncements v-if="$i"/>
+			<XStatusBars :class="$style.statusbars"/>
 			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
 			<RouterView v-else :class="$style.content"/>
 			<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
@@ -119,7 +114,7 @@ const enablePostButton = [
 	'user',
 ];
 
-const { showEl, showEl2 } = scrollToVisibility();
+const { showEl } = scrollToVisibility();
 const queue = ref(0);
 const bg = ref<string | undefined>(undefined);
 const PostBg = ref<string | undefined>(undefined);
@@ -219,39 +214,6 @@ function createChat(ev: MouseEvent) {
 	if (mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('createChat', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
 }
-
-function beforeEnter(el: Element) {
-	(el as HTMLElement).style.height = '0';
-}
-
-function beforeLeave(el: Element) {
-	const h = (el as HTMLElement).scrollHeight;
-	(el as HTMLElement).style.height = `${h}px`;
-	(el as HTMLElement).style.opacity = '1';
-}
-
-function enter(el: Element) {
-	if (!(el instanceof HTMLElement)) return;
-	const h = el.scrollHeight;
-	const dur = prefer.s.animation ? '0.5s' : '0s';
-	el.style.transition = `height ${dur}, opacity ${dur}`;
-	requestAnimationFrame(() => {
-		el.style.height = `${h}px`;
-		el.style.opacity = '1';
-	});
-}
-
-function leave(el: Element) {
-	if (!(el instanceof HTMLElement)) return;
-	const h = el.scrollHeight;
-	const dur = prefer.s.animation ? '0.5s' : '0s';
-	el.style.height = `${h}px`;
-	el.style.transition = `height ${dur}, opacity ${dur}`;
-	requestAnimationFrame(() => {
-		el.style.height = '0';
-		el.style.opacity = '0';
-	});
-}
 </script>
 
 <style lang="scss" module>
@@ -304,31 +266,31 @@ $float-button-size: 65px;
 }
 
 .floatButton {
-  display: block;
-  position: fixed;
-  z-index: 1000;
-  bottom: calc(65px + env(safe-area-inset-bottom));
-  width: $float-button-size;
-  height: $float-button-size;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 28px;
-  -webkit-backdrop-filter: var(--MI-blur, blur(15px));
-  backdrop-filter: var(--MI-blur, blur(15px));
-  transition: opacity 0.5s, transform 0.5s, background-color 0.5s;
+	display: block;
+	position: fixed;
+	z-index: 1000;
+	bottom: calc(65px + env(safe-area-inset-bottom));
+	width: $float-button-size;
+	height: $float-button-size;
+	box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+	border-radius: 28px;
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
+	transition: opacity 0.5s, transform 0.5s, background-color 0.5s;
 
-  &.reduceBlurEffect {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
+	&.reduceBlurEffect {
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
 
-  &.reduceAnimation {
-    transition: opacity 0s, transform 0s, background-color 0s;
-  }
+	&.reduceAnimation {
+		transition: opacity 0s, transform 0s, background-color 0s;
+	}
 }
 
 .floatNavButton {
-  composes: floatButton;
-  left: 15px;
+	composes: floatButton;
+	left: 15px;
 
 	&.showEl {
 		transform: translateX(-250px);
@@ -342,7 +304,7 @@ $float-button-size: 65px;
 }
 
 .floatPostButton {
-  composes: floatButton;
+	composes: floatButton;
 	right: 15px;
 	font-size: 18px;
 
