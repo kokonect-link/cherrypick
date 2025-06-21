@@ -82,7 +82,7 @@ definePage(() => ({
 .img {
 	vertical-align: bottom;
 	height: 128px;
-	margin-bottom: 24px;
+	margin: auto;
 	border-radius: 16px;
 }
 </style>
