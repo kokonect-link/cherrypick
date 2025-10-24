@@ -135,7 +135,6 @@ import { store } from '@/store.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { prefer } from '@/preferences.js';
-import { PREF_DEF } from '@/preferences/def.js';
 import { getInitialPrefValue } from '@/preferences/manager.js';
 import { genId } from '@/utility/id.js';
 import { miLocalStorage } from '@/local-storage.js';
@@ -156,6 +155,7 @@ const items = ref(prefer.s.menu.map(x => ({
 	id: genId(),
 	type: x,
 })));
+const itemTypeValues = computed(() => items.value.map(x => x.type));
 
 const menuDisplay = computed(store.makeGetterSetter('menuDisplay'));
 const showNavbarSubButtons = prefer.model('showNavbarSubButtons');
@@ -171,7 +171,7 @@ const showWidgetButtonInNavbar = computed(store.makeGetterSetter('showWidgetButt
 const showPostButtonInNavbar = computed(store.makeGetterSetter('showPostButtonInNavbar'));
 
 async function addItem(ev: MouseEvent) {
-	const menu = Object.keys(navbarItemDef).filter(k => !prefer.s.menu.includes(k));
+	const menu = Object.keys(navbarItemDef).filter(k => !itemTypeValues.value.includes(k));
 	os.popupMenu([
 		...menu.map(k => ({
 			type: 'button',
@@ -203,8 +203,9 @@ function removeItem(index: number) {
 	items.value.splice(index, 1);
 }
 
-async function save() {
-	prefer.commit('menu', items.value.map(x => x.type));
+function save() {
+	prefer.commit('menu', itemTypeValues.value);
+	os.success();
 }
 
 function reset() {

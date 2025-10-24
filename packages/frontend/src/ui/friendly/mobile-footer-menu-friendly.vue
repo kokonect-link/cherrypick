@@ -60,8 +60,9 @@ import { mainRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { store } from '@/store.js';
 import { globalEvents } from '@/events.js';
-import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { getAccountMenu } from '@/accounts.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+import * as os from '@/os.js';
 
 const { showEl } = scrollToVisibility();
 const queuedAheadItemsCount = ref(0);
@@ -73,14 +74,16 @@ const rootEl = useTemplateRef('rootEl');
 
 const rootElHeight = ref(0);
 
-function openAccountMenu(ev: TouchEvent) {
+async function openAccountMenu(ev: TouchEvent) {
 	if (prefer.s.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
-		window.setTimeout(() => {
+		window.setTimeout(async () => {
 			if (longTouchNavHome.value === true) {
-				openAccountMenu_({
+				const menuItems = await getAccountMenu({
 					withExtraOperationFriendly: true,
-				}, ev);
+				});
+
+				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 			}
 		}, 500);
 	}

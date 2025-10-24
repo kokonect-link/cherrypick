@@ -1,6 +1,7 @@
 import path from 'path';
 import pluginReplace from '@rollup/plugin-replace';
 import pluginVue from '@vitejs/plugin-vue';
+import pluginGlsl from 'vite-plugin-glsl';
 import { defineConfig } from 'vite';
 import type { UserConfig } from 'vite';
 import * as yaml from 'js-yaml';
@@ -126,6 +127,7 @@ export function getConfig(): UserConfig {
 			pluginRemoveUnrefI18n(),
 			pluginUnwindCssModuleClassName(),
 			pluginJson5(),
+			pluginGlsl({ minify: true }),
 			...process.env.NODE_ENV === 'production'
 				? [
 					pluginReplace({

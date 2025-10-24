@@ -719,6 +719,10 @@ export const meta = {
 				type: 'string',
 				optional: false, nullable: true,
 			},
+			showRoleBadgesOfRemoteUsers: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -900,6 +904,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				enableRemoteNotesCleaning: instance.enableRemoteNotesCleaning,
 				remoteNotesCleaningExpiryDaysForEachNotes: instance.remoteNotesCleaningExpiryDaysForEachNotes,
 				remoteNotesCleaningMaxProcessingDurationInMinutes: instance.remoteNotesCleaningMaxProcessingDurationInMinutes,
+				showRoleBadgesOfRemoteUsers: instance.showRoleBadgesOfRemoteUsers,
 				doNotSendNotificationEmailsForAbuseReport: instance.doNotSendNotificationEmailsForAbuseReport,
 				emailToReceiveAbuseReport: instance.emailToReceiveAbuseReport,
 				enableReceivePrerelease: instance.enableReceivePrerelease,

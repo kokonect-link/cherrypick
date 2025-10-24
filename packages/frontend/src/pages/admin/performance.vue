@@ -55,6 +55,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<SearchMarker>
 					<div class="_panel" style="padding: 16px;">
+						<MkSwitch v-model="showRoleBadgesOfRemoteUsers" @change="onChange_showRoleBadgesOfRemoteUsers">
+							<template #label><SearchLabel>{{ i18n.ts.showRoleBadgesOfRemoteUsers }}</SearchLabel></template>
+							<template #caption>{{ i18n.ts.turnOffToImprovePerformance }}</template>
+						</MkSwitch>
+					</div>
+				</SearchMarker>
+
+				<SearchMarker>
+					<div class="_panel" style="padding: 16px;">
 						<MkSwitch v-model="doNotSendNotificationEmailsForAbuseReport" @change="onChange_doNotSendNotificationEmailsForAbuseReport">
 							<template #label><SearchLabel>{{ i18n.ts.doNotSendNotificationEmailsForAbuseReport }}</SearchLabel></template>
 						</MkSwitch>
@@ -121,7 +130,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<SearchMarker>
 					<MkFolder :defaultOpen="true">
 						<template #icon><SearchIcon><i class="ti ti-bolt"></i></SearchIcon></template>
-						<template #label><SearchLabel>CherryPick® Reactions Boost Technology™ (RBT)</SearchLabel><span class="_beta">{{ i18n.ts.beta }}</span></template>
+						<template #label><SearchLabel>CherryPick® Reactions Boost Technology™ (RBT)</SearchLabel><span class="_beta" style="vertical-align: middle;">{{ i18n.ts.beta }}</span></template>
 						<template v-if="rbtForm.savedState.enableReactionsBuffering" #suffix>Enabled</template>
 						<template v-else #suffix>Disabled</template>
 						<template v-if="rbtForm.modified.value" #footer>
@@ -196,6 +205,7 @@ const enableIdenticonGeneration = ref(meta.enableIdenticonGeneration);
 const enableChartsForRemoteUser = ref(meta.enableChartsForRemoteUser);
 const enableStatsForFederatedInstances = ref(meta.enableStatsForFederatedInstances);
 const enableChartsForFederatedInstances = ref(meta.enableChartsForFederatedInstances);
+const showRoleBadgesOfRemoteUsers = ref(meta.showRoleBadgesOfRemoteUsers);
 const doNotSendNotificationEmailsForAbuseReport = ref(meta.doNotSendNotificationEmailsForAbuseReport);
 
 function onChange_enableServerMachineStats(value: boolean) {
@@ -233,6 +243,14 @@ function onChange_enableStatsForFederatedInstances(value: boolean) {
 function onChange_enableChartsForFederatedInstances(value: boolean) {
 	os.apiWithDialog('admin/update-meta', {
 		enableChartsForFederatedInstances: value,
+	}).then(() => {
+		fetchInstance(true);
+	});
+}
+
+function onChange_showRoleBadgesOfRemoteUsers(value: boolean) {
+	os.apiWithDialog('admin/update-meta', {
+		showRoleBadgesOfRemoteUsers: value,
 	}).then(() => {
 		fetchInstance(true);
 	});

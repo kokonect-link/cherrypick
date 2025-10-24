@@ -90,11 +90,11 @@ export type PageHeaderProps = {
 import { onMounted, onUnmounted, ref, inject, watch, nextTick, useTemplateRef, computed } from 'vue';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import { globalEvents } from '@/events.js';
-import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { getAccountMenu } from '@/accounts.js';
 import { $i } from '@/i.js';
 import { DI } from '@/di.js';
-import { mainRouter } from '@/router.js';
 import * as os from '@/os.js';
+import { mainRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
@@ -165,12 +165,14 @@ const top = (ev: MouseEvent) => {
 	}
 };
 
-function openAccountMenu(ev: MouseEvent) {
+async function openAccountMenu(ev: MouseEvent) {
 	haptic();
 
-	openAccountMenu_({
+	const menuItems = await getAccountMenu({
 		withExtraOperation: true,
-	}, ev);
+	});
+
+	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 }
 
 function onTabMousedown(tab: Tab, ev: MouseEvent): void {

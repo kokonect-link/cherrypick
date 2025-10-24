@@ -10,6 +10,7 @@ import tinycolor from 'tinycolor2';
 import lightTheme from '@@/themes/_light.json5';
 import darkTheme from '@@/themes/_dark.json5';
 import JSON5 from 'json5';
+import { version } from '@@/js/config.js';
 import type { Ref } from 'vue';
 import type { BundledTheme } from 'shiki/themes';
 import { deepClone } from '@/utility/clone.js';
@@ -139,6 +140,7 @@ function applyThemeInternal(theme: Theme, persist: boolean) {
 	if (persist) {
 		miLocalStorage.setItem('theme', JSON.stringify(props));
 		miLocalStorage.setItem('themeId', theme.id);
+		miLocalStorage.setItem('themeCachedVersion', version);
 		miLocalStorage.setItem('colorScheme', colorScheme);
 	}
 
@@ -147,7 +149,7 @@ function applyThemeInternal(theme: Theme, persist: boolean) {
 }
 
 let timeout: number | null = null;
-let currentTheme: Theme | null = null;
+let currentThemeId = miLocalStorage.getItem('themeId');
 
 export function applyTheme(theme: Theme, persist = true) {
 	if (timeout) {
@@ -155,9 +157,8 @@ export function applyTheme(theme: Theme, persist = true) {
 		timeout = null;
 	}
 
-	if (deepEqual(currentTheme, theme)) return;
-	// リアクティビティ解除
-	currentTheme = deepClone(theme);
+	if (theme.id === currentThemeId && miLocalStorage.getItem('themeCachedVersion') === version) return;
+	currentThemeId = theme.id;
 
 	if (window.document.startViewTransition != null) {
 		window.document.documentElement.classList.add('_themeChanging_');

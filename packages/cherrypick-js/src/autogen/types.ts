@@ -10391,6 +10391,7 @@ export interface operations {
                         moderatorInactivityLimitDays: number;
                         bubbleInstances: string[];
                         customRobotsTxt: string | null;
+                        showRoleBadgesOfRemoteUsers: boolean;
                     };
                 };
             };
@@ -13744,6 +13745,7 @@ export interface operations {
                     enableRemoteNotesCleaning?: boolean;
                     remoteNotesCleaningExpiryDaysForEachNotes?: number;
                     remoteNotesCleaningMaxProcessingDurationInMinutes?: number;
+                    showRoleBadgesOfRemoteUsers?: boolean;
                     doNotSendNotificationEmailsForAbuseReport?: boolean;
                     emailToReceiveAbuseReport?: string | null;
                     enableReceivePrerelease?: boolean;
