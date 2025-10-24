@@ -4,37 +4,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<PageWithHeader ref="pageComponent" v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true" :displayMyAvatar="true">
+<PageWithHeader v-model:tab="src" :actions="headerActions" :tabs="$i ? headerTabs : headerTabsWhenNotLogin" :swipable="true" :displayMyAvatar="true" :canOmitTitle="!isFriendly().value">
 	<div class="_spacer" style="--MI_SPACER-w: 800px;">
-		<MkInfo v-if="isBasicTimeline(src) && !store.r.timelineTutorials.value[src]" style="margin-bottom: var(--MI-margin);" closable @close="closeTutorial()">
+		<MkTip v-if="isBasicTimeline(src)" :k="`tl.${src}`" style="margin-bottom: var(--MI-margin);">
 			{{ i18n.ts._timelineDescription[src] }}
-		</MkInfo>
+		</MkTip>
 		<MkInfo v-if="schedulePostList > 0" style="margin-bottom: var(--MI-margin);">
-			<button type="button" :class="$style.checkSchedulePostList" @click="os.listScheduleNotePost">
+			<button type="button" :class="$style.checkSchedulePostList" @click="showDraftMenu(true)">
 				{{ i18n.tsx.thereIsSchedulePost({ n: schedulePostList }) }}
 			</button>
 		</MkInfo>
 		<MkPostForm v-if="prefer.r.showFixedPostForm.value" :class="$style.postForm" class="_panel" fixed style="margin-bottom: var(--MI-margin);"/>
-
-		<transition
-			:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
-			:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
-			:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
-			:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
-		>
-			<div
-				v-if="queue > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
-				:class="[$style.new, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
-			>
-				<button class="_buttonPrimary" :class="$style.newButton" @click="top()">
-					<i class="ti ti-arrow-up"></i>
-					<I18n :src="prefer.s.newNoteReceivedNotificationBehavior === 'count' ? i18n.ts.newNoteRecivedCount : prefer.s.newNoteReceivedNotificationBehavior === 'default' ? i18n.ts.newNoteRecived : null" textTag="span">
-						<template v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" #n>{{ queue > 19 ? queue + '+' : queue }}</template>
-					</I18n>
-				</button>
-			</div>
-		</transition>
-
 		<div v-if="!isAvailableBasicTimeline(src) && !src.startsWith('list:')" :class="[$style.disabled, $style.tl]">
 			<p :class="$style.disabledTitle">
 				<i class="ti ti-circle-minus"></i>
@@ -42,32 +22,29 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</p>
 			<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
 		</div>
-
-		<MkTimeline
+		<MkStreamingNotesTimeline
 			v-else
 			ref="tlComponent"
 			:key="src + withRenotes + withReplies + onlyFiles + withSensitive"
 			:class="$style.tl"
-			:src="src.split(':')[0]"
+			:src="(src.split(':')[0] as (BasicTimelineType | 'list'))"
 			:list="src.split(':')[1]"
 			:withRenotes="withRenotes"
 			:withReplies="withReplies"
 			:withSensitive="withSensitive"
 			:onlyFiles="onlyFiles"
 			:sound="true"
-			@queue="queueUpdated"
 		/>
 	</div>
 </PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, provide, useTemplateRef, ref, onMounted, onActivated } from 'vue';
+import { computed, watch, provide, useTemplateRef, defineAsyncComponent, ref, onMounted, onActivated } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { MenuItem } from '@/types/menu.js';
 import type { BasicTimelineType } from '@/timelines.js';
-import MkTimeline from '@/components/MkTimeline.vue';
-import MkInfo from '@/components/MkInfo.vue';
+import MkStreamingNotesTimeline from '@/components/MkStreamingNotesTimeline.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
@@ -82,11 +59,9 @@ import { miLocalStorage } from '@/local-storage.js';
 import { availableBasicTimelines, hasWithReplies, isAvailableBasicTimeline, isBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { prefer } from '@/preferences.js';
 import { globalEvents } from '@/events.js';
-import { reloadAsk } from '@/utility/reload-ask.js';
+import { suggestReload } from '@/utility/reload-suggest.js';
 import { isFriendly } from '@/utility/is-friendly.js';
-import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
-
-const { showEl } = scrollToVisibility();
+import MkInfo from '@/components/MkInfo.vue';
 
 const DESKTOP_THRESHOLD = 1100;
 const MOBILE_THRESHOLD = 500;
@@ -98,16 +73,12 @@ window.addEventListener('resize', () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
 });
 
-const schedulePostList = $i ? (await misskeyApi('notes/schedule/list')).length : 0;
-
-if (!isFriendly().value) provide('shouldOmitHeaderTitle', true);
+const schedulePostList = $i ? (await misskeyApi('notes/drafts/list', { scheduled: true })).length : 0;
 
 const tlComponent = useTemplateRef('tlComponent');
-const pageComponent = useTemplateRef('pageComponent');
 
 type TimelinePageSrc = BasicTimelineType | `list:${string}`;
 
-const queue = ref(0);
 const srcWhenNotSignin = ref<'local' | 'global'>(isAvailableBasicTimeline('local') ? 'local' : 'global');
 const src = computed<TimelinePageSrc>({
 	get: () => ($i ? store.r.tl.value.src : srcWhenNotSignin.value),
@@ -166,6 +137,8 @@ const withSensitive = computed<boolean>({
 	set: (x) => saveTlFilter('withSensitive', x),
 });
 
+const showFixedPostForm = prefer.model('showFixedPostForm');
+
 const enableWidgetsArea = ref(prefer.s.enableWidgetsArea);
 const friendlyUiEnableNotificationsArea = ref(prefer.s.friendlyUiEnableNotificationsArea);
 
@@ -186,59 +159,54 @@ const collapseDefault = ref(prefer.s.collapseDefault);
 const alwaysShowCw = ref(prefer.s.alwaysShowCw);
 const showReplyTargetNote = ref(prefer.s.showReplyTargetNote);
 
-watch(src, () => {
-	queue.value = 0;
-	queueUpdated(queue.value);
-});
-
 watch(enableWidgetsArea, (x) => {
 	prefer.commit('enableWidgetsArea', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(friendlyUiEnableNotificationsArea, (x) => {
 	prefer.commit('friendlyUiEnableNotificationsArea', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableHomeTimeline, (x) => {
 	prefer.commit('enableHomeTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableLocalTimeline, (x) => {
 	prefer.commit('enableLocalTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableSocialTimeline, (x) => {
 	prefer.commit('enableSocialTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableGlobalTimeline, (x) => {
 	prefer.commit('enableGlobalTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableBubbleTimeline, (x) => {
 	prefer.commit('enableBubbleTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableListTimeline, (x) => {
 	prefer.commit('enableListTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableAntennaTimeline, (x) => {
 	prefer.commit('enableAntennaTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(enableChannelTimeline, (x) => {
 	prefer.commit('enableChannelTimeline', x);
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 });
 
 watch(forceCollapseAllRenotes, (x) => {
@@ -280,18 +248,9 @@ watch(showReplyTargetNote, (x) => {
 	reloadNotification();
 });
 
-function queueUpdated(q: number): void {
-	queue.value = q;
-	globalEvents.emit('queueUpdated', q);
-}
-
-function top(): void {
-	if (pageComponent.value) pageComponent.value.scrollToTop();
-}
-
 async function chooseList(ev: MouseEvent): Promise<void> {
 	const lists = await userListsCache.fetch();
-	const items: MenuItem[] = [
+	const items: (MenuItem | undefined)[] = [
 		...lists.map(list => ({
 			type: 'link' as const,
 			text: list.name,
@@ -305,12 +264,12 @@ async function chooseList(ev: MouseEvent): Promise<void> {
 			to: '/my/lists',
 		},
 	];
-	os.popupMenu(items, ev.currentTarget ?? ev.target);
+	os.popupMenu(items.filter(i => i != null), ev.currentTarget ?? ev.target);
 }
 
 async function chooseAntenna(ev: MouseEvent): Promise<void> {
 	const antennas = await antennasCache.fetch();
-	const items: MenuItem[] = [
+	const items: (MenuItem | undefined)[] = [
 		...antennas.map(antenna => ({
 			type: 'link' as const,
 			text: antenna.name,
@@ -325,12 +284,12 @@ async function chooseAntenna(ev: MouseEvent): Promise<void> {
 			to: '/my/antennas',
 		},
 	];
-	os.popupMenu(items, ev.currentTarget ?? ev.target);
+	os.popupMenu(items.filter(i => i != null), ev.currentTarget ?? ev.target);
 }
 
 async function chooseChannel(ev: MouseEvent): Promise<void> {
 	const channels = await favoritedChannelsCache.fetch();
-	const items: MenuItem[] = [
+	const items: (MenuItem | undefined)[] = [
 		...channels.map(channel => {
 			const lastReadedAt = miLocalStorage.getItemAsJson(`channelLastReadedAt:${channel.id}`) ?? null;
 			const hasUnreadNote = (lastReadedAt && channel.lastNotedAt) ? Date.parse(channel.lastNotedAt) > lastReadedAt : !!(!lastReadedAt && channel.lastNotedAt);
@@ -350,7 +309,7 @@ async function chooseChannel(ev: MouseEvent): Promise<void> {
 			to: '/channels',
 		},
 	];
-	os.popupMenu(items, ev.currentTarget ?? ev.target);
+	os.popupMenu(items.filter(i => i != null), ev.currentTarget ?? ev.target);
 }
 
 function saveSrc(newSrc: TimelinePageSrc): void {
@@ -374,26 +333,6 @@ function saveTlFilter(key: keyof typeof store.s.tl.filter, newValue: boolean) {
 	}
 }
 
-async function timetravel(): Promise<void> {
-	const { canceled, result: date } = await os.inputDate({
-		title: i18n.ts.date,
-	});
-	if (canceled) return;
-
-	tlComponent.value.timetravel(date);
-}
-
-function focus(): void {
-	tlComponent.value.focus();
-}
-
-function closeTutorial(): void {
-	if (!isBasicTimeline(src.value)) return;
-	const before = store.s.timelineTutorials;
-	before[src.value] = true;
-	store.set('timelineTutorials', before);
-}
-
 function switchTlIfNeeded() {
 	if (isBasicTimeline(src.value) && !isAvailableBasicTimeline(src.value)) {
 		src.value = availableBasicTimelines()[0];
@@ -408,6 +347,10 @@ function reloadNotification() {
 	globalEvents.emit('reloadNotification');
 }
 
+function showDraftMenu(scheduled: boolean) {
+	os.popup(defineAsyncComponent(() => import('@/components/MkNoteDraftsDialog.vue')), { scheduled }, {}, 'closed');
+}
+
 onMounted(() => {
 	switchTlIfNeeded();
 });
@@ -416,171 +359,183 @@ onActivated(() => {
 });
 
 const headerActions = computed(() => {
-	const tmp = [
-		{
-			icon: 'ti ti-dots',
-			text: i18n.ts.options,
-			handler: (ev) => {
-				const menuItems: MenuItem[] = [];
+	const items = [{
+		icon: 'ti ti-dots',
+		text: i18n.ts.options,
+		handler: (ev) => {
+			const menuItems: MenuItem[] = [];
 
-				if (isFriendly().value) {
-					menuItems.push({
-						type: 'parent',
-						icon: 'ti ti-settings',
-						text: 'Friendly UI',
-						children: async () => {
-							const friendlyUiChildMenu = [] as MenuItem[];
-
-							if (isDesktop.value) {
-								friendlyUiChildMenu.push({
-									type: 'switch',
-									text: i18n.ts._cherrypick.friendlyUiEnableNotificationsArea,
-									ref: friendlyUiEnableNotificationsArea,
-								});
-							}
-
-							return friendlyUiChildMenu;
-						},
-					});
-				}
-
-				menuItems.push({
-					type: 'switch',
-					text: i18n.ts._cherrypick.enableWidgetsArea,
-					ref: enableWidgetsArea,
-				});
-
-				menuItems.push({ type: 'divider' });
-
+			if (isFriendly().value) {
 				menuItems.push({
 					type: 'parent',
-					icon: 'ti ti-align-left',
-					text: i18n.ts.timeline,
+					icon: 'ti ti-layout-board',
+					text: 'Friendly UI',
 					children: async () => {
-						const displayOfTimelineChildMenu = [] as MenuItem[];
+						const friendlyUiChildMenu = [] as MenuItem[];
 
-						displayOfTimelineChildMenu.push({
-							type: 'switch',
-							text: i18n.ts._timelines.home,
-							icon: 'ti ti-home',
-							ref: enableHomeTimeline,
-						}, {
-							type: 'switch',
-							text: i18n.ts._timelines.local,
-							icon: 'ti ti-planet',
-							ref: enableLocalTimeline,
-						}, {
-							type: 'switch',
-							text: i18n.ts._timelines.social,
-							icon: 'ti ti-universe',
-							ref: enableSocialTimeline,
-						}, {
-							type: 'switch',
-							text: i18n.ts._timelines.global,
-							icon: 'ti ti-world',
-							ref: enableGlobalTimeline,
-						}, {
-							type: 'switch',
-							text: i18n.ts._timelines.bubble,
-							icon: 'ti ti-droplet',
-							ref: enableBubbleTimeline,
-						}, { type: 'divider' }, {
-							type: 'switch',
-							text: i18n.ts.lists,
-							icon: 'ti ti-list',
-							ref: enableListTimeline,
-						}, {
-							type: 'switch',
-							text: i18n.ts.antennas,
-							icon: 'ti ti-antenna',
-							ref: enableAntennaTimeline,
-						}, {
-							type: 'switch',
-							text: i18n.ts.channel,
-							icon: 'ti ti-device-tv',
-							ref: enableChannelTimeline,
-						});
-
-						return displayOfTimelineChildMenu;
-					},
-				});
-
-				menuItems.push({
-					type: 'parent',
-					icon: 'ti ti-note',
-					text: i18n.ts.displayOfNote,
-					children: async () => {
-						const displayOfNoteChildMenu = [] as MenuItem[];
-
-						displayOfNoteChildMenu.push({
-							type: 'switch',
-							text: i18n.ts.showRenotes,
-							ref: withRenotes,
-						});
-
-						if (isBasicTimeline(src.value) && hasWithReplies(src.value)) {
-							displayOfNoteChildMenu.push({
+						if (isDesktop.value) {
+							friendlyUiChildMenu.push({
 								type: 'switch',
-								text: i18n.ts.showRepliesToOthersInTimeline,
-								ref: withReplies,
-								disabled: onlyFiles,
+								icon: 'ti ti-layout-sidebar-right',
+								text: i18n.ts._cherrypick.friendlyUiEnableNotificationsArea,
+								ref: friendlyUiEnableNotificationsArea,
 							});
 						}
 
-						displayOfNoteChildMenu.push({
-							type: 'switch',
-							text: i18n.ts.withSensitive,
-							ref: withSensitive,
-						}, {
-							type: 'switch',
-							text: i18n.ts.fileAttachedOnly,
-							ref: onlyFiles,
-							disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
-						}, {
-							type: 'switch',
-							text: i18n.ts.showCatOnly,
-							ref: onlyCats,
-						}, { type: 'divider' }, {
-							type: 'switch',
-							text: i18n.ts.forceCollapseAllRenotes,
-							ref: forceCollapseAllRenotes,
-						}, {
-							type: 'switch',
-							text: i18n.ts.collapseRenotes,
-							disabled: forceCollapseAllRenotes.value,
-							ref: collapseRenotes,
-						}, {
-							type: 'switch',
-							text: i18n.ts.collapseReplies,
-							ref: collapseReplies,
-						}, {
-							type: 'switch',
-							text: i18n.ts.collapseLongNoteContent,
-							ref: collapseLongNoteContent,
-						}, {
-							type: 'switch',
-							text: i18n.ts.collapseDefault,
-							ref: collapseDefault,
-						}, {
-							type: 'switch',
-							text: i18n.ts.alwaysShowCw,
-							ref: alwaysShowCw,
-						}, {
-							type: 'switch',
-							text: i18n.ts.showReplyTargetNote,
-							ref: showReplyTargetNote,
-						});
-
-						return displayOfNoteChildMenu;
+						return friendlyUiChildMenu;
 					},
 				});
+			}
 
-				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
-			},
+			menuItems.push({
+				type: 'switch',
+				icon: 'ti ti-layout-sidebar-right',
+				text: i18n.ts._cherrypick.enableWidgetsArea,
+				ref: enableWidgetsArea,
+			});
+
+			menuItems.push({ type: 'divider' });
+
+			menuItems.push({
+				type: 'parent',
+				icon: 'ti ti-align-left',
+				text: i18n.ts.timeline,
+				children: async () => {
+					const displayOfTimelineChildMenu = [] as MenuItem[];
+
+					displayOfTimelineChildMenu.push({
+						type: 'switch',
+						text: i18n.ts._timelines.home,
+						icon: 'ti ti-home',
+						ref: enableHomeTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts._timelines.local,
+						icon: 'ti ti-planet',
+						ref: enableLocalTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts._timelines.social,
+						icon: 'ti ti-universe',
+						ref: enableSocialTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts._timelines.global,
+						icon: 'ti ti-world',
+						ref: enableGlobalTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts._timelines.bubble,
+						icon: 'ti ti-droplet',
+						ref: enableBubbleTimeline,
+					}, { type: 'divider' }, {
+						type: 'switch',
+						text: i18n.ts.lists,
+						icon: 'ti ti-list',
+						ref: enableListTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts.antennas,
+						icon: 'ti ti-antenna',
+						ref: enableAntennaTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts.channel,
+						icon: 'ti ti-device-tv',
+						ref: enableChannelTimeline,
+					});
+
+					return displayOfTimelineChildMenu;
+				},
+			});
+
+			menuItems.push({
+				type: 'parent',
+				icon: 'ti ti-note',
+				text: i18n.ts.displayOfNote,
+				children: async () => {
+					const displayOfNoteChildMenu = [] as MenuItem[];
+
+					displayOfNoteChildMenu.push({
+						type: 'switch',
+						icon: 'ti ti-repeat',
+						text: i18n.ts.showRenotes,
+						ref: withRenotes,
+					});
+
+					if (isBasicTimeline(src.value) && hasWithReplies(src.value)) {
+						displayOfNoteChildMenu.push({
+							type: 'switch',
+							icon: 'ti ti-messages',
+							text: i18n.ts.showRepliesToOthersInTimeline,
+							ref: withReplies,
+							disabled: onlyFiles,
+						});
+					}
+
+					displayOfNoteChildMenu.push({
+						type: 'switch',
+						icon: 'ti ti-eye-exclamation',
+						text: i18n.ts.withSensitive,
+						ref: withSensitive,
+					}, {
+						type: 'switch',
+						icon: 'ti ti-photo',
+						text: i18n.ts.fileAttachedOnly,
+						ref: onlyFiles,
+						disabled: isBasicTimeline(src.value) && hasWithReplies(src.value) ? withReplies : false,
+					}, {
+						type: 'switch',
+						icon: 'ti ti-cat',
+						text: i18n.ts.showCatOnly,
+						ref: onlyCats,
+					}, { type: 'divider' }, {
+						type: 'switch',
+						text: i18n.ts.forceCollapseAllRenotes,
+						ref: forceCollapseAllRenotes,
+					}, {
+						type: 'switch',
+						text: i18n.ts.collapseRenotes,
+						disabled: forceCollapseAllRenotes.value,
+						ref: collapseRenotes,
+					}, {
+						type: 'switch',
+						text: i18n.ts.collapseReplies,
+						ref: collapseReplies,
+					}, {
+						type: 'switch',
+						text: i18n.ts.collapseLongNoteContent,
+						ref: collapseLongNoteContent,
+					}, {
+						type: 'switch',
+						text: i18n.ts.collapseDefault,
+						ref: collapseDefault,
+					}, {
+						type: 'switch',
+						text: i18n.ts.alwaysShowCw,
+						ref: alwaysShowCw,
+					}, {
+						type: 'switch',
+						text: i18n.ts.showReplyTargetNote,
+						ref: showReplyTargetNote,
+					}, {
+						type: 'divider',
+					}, {
+						type: 'switch',
+						text: i18n.ts.showFixedPostForm,
+						ref: showFixedPostForm,
+					});
+
+					return displayOfNoteChildMenu;
+				},
+			});
+
+			os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 		},
-	];
+	}];
+
 	if (deviceKind === 'desktop') {
-		tmp.unshift({
+		items.unshift({
 			icon: 'ti ti-refresh',
 			text: i18n.ts.reload,
 			handler: (ev: Event) => {
@@ -588,7 +543,8 @@ const headerActions = computed(() => {
 			},
 		});
 	}
-	return tmp;
+
+	return items;
 });
 
 const headerTabs = computed(() => [...(prefer.r.pinnedUserLists.value.map(l => ({
@@ -632,11 +588,6 @@ definePage(() => ({
 </script>
 
 <style lang="scss" module>
-.transition_new_enterActive,
-.transition_new_leaveActive {
-	transform: translateY(-64px);
-}
-
 .new {
 	position: sticky;
 	top: calc(var(--MI-stickyTop, 0px) + 8px);
@@ -648,14 +599,6 @@ definePage(() => ({
 	&:first-child {
 		margin-top: calc(-0.675em - 8px - var(--MI-margin));
 	}
-
-	&.showEl {
-		transform: translateY(calc(var(--MI-stickyTop, 0px) - 101px))
-	}
-
-  &.showElTab {
-    transform: translateY(calc(var(--MI-stickyTop, 0px) - 181px))
-  }
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;

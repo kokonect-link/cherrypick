@@ -4,9 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation, [$style.cat]: user.isCat, [$style.square]: squareAvatars }]" :style="{ color }" :title="acct(user)" @click="onClick">
+<component :is="link ? MkA : 'span'" v-user-preview="preview ? user.id : undefined" v-bind="bound" class="_noSelect" :class="[$style.root, { [$style.animation]: animation && (!isToastAvatar && !isFloatingBtn), [$style.cat]: user.isCat && (!isToastAvatar && !isFloatingBtn), [$style.square]: squareAvatars && !isFloatingBtn, [$style.isFloatingBtn]: isFloatingBtn }]" :style="{ color }" :title="acct(user)" @click="onClick">
 	<MkImgWithBlurhash
-		:class="$style.inner"
+		v-if="prefer.s.enableHighQualityImagePlaceholders"
+		:class="[$style.inner, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl && !forceOpacity, [$style.isFloatingBtn]: isFloatingBtn }]"
 		:src="url"
 		:hash="user.avatarBlurhash"
 		:cover="true"
@@ -16,8 +17,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 	/>
-	<MkUserOnlineIndicator v-if="indicator" :class="$style.indicator" :user="user"/>
-	<div v-if="user.isCat" :class="[$style.ears]">
+	<img
+		v-else
+		:class="[$style.inner, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl && !forceOpacity, [$style.isFloatingBtn]: isFloatingBtn }]"
+		:src="url"
+		alt=""
+		decoding="async"
+		style="pointer-events: none;"
+		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	/>
+	<MkUserOnlineIndicator v-if="indicator && !isToastAvatar" :class="$style.indicator" :user="user"/>
+	<div v-if="user.isCat && !isToastAvatar" :class="[$style.ears]">
 		<div :class="$style.earLeft">
 			<div v-if="false" :class="$style.layer">
 				<div :class="$style.plot" :style="{ backgroundImage: `url(${JSON.stringify(url)})` }"/>
@@ -63,6 +76,9 @@ import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { acct, userPage } from '@/filters/user.js';
 import MkUserOnlineIndicator from '@/components/MkUserOnlineIndicator.vue';
 import { prefer } from '@/preferences.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+
+const { showEl } = scrollToVisibility();
 
 const animation = ref(prefer.s.animation);
 
@@ -75,6 +91,9 @@ const props = withDefaults(defineProps<{
 	decorations?: (Omit<Misskey.entities.UserDetailed['avatarDecorations'][number], 'id'> & { blink?: boolean; })[];
 	forceShowDecoration?: boolean;
 	noteClick?: boolean;
+	forceOpacity?: boolean;
+	isToastAvatar?: boolean;
+	isFloatingBtn?: boolean;
 }>(), {
 	target: null,
 	link: false,
@@ -83,6 +102,9 @@ const props = withDefaults(defineProps<{
 	decorations: undefined,
 	forceShowDecoration: false,
 	noteClick: false,
+	forceOpacity: false,
+	isToastAvatar: false,
+	isFloatingBtn: false,
 });
 
 const emit = defineEmits<{
@@ -100,7 +122,6 @@ const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => {
-	if (props.user.avatarUrl == null) return null;
 	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(props.user.avatarUrl);
 	return props.user.avatarUrl;
 });
@@ -210,6 +231,10 @@ onUnmounted(() => {
 	flex-shrink: 0;
 	border-radius: 100%;
 	line-height: 16px;
+
+	&.isFloatingBtn {
+		border-radius: initial;
+	}
 }
 
 .inner {
@@ -224,6 +249,20 @@ onUnmounted(() => {
 	object-fit: cover;
 	width: 100%;
 	height: 100%;
+
+	&.isFloatingBtn {
+		border-radius: 28px;
+		opacity: .7;
+		transition: opacity 0.5s;
+	}
+
+	&.reduceAnimation {
+		transition: opacity 0s;
+	}
+
+	&.scrollToTransparent {
+		opacity: .7;
+	}
 }
 
 .indicator {

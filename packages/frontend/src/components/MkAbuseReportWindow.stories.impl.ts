@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { HttpResponse, http } from 'msw';
 import { userDetailed } from '../../.storybook/fakes.js';
 import { commonHandlers } from '../../.storybook/mocks.js';

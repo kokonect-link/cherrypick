@@ -4,15 +4,15 @@
  */
 
 export const postMessageEventTypes = [
-	'misskey:embed:ready',
-	'misskey:embed:changeHeight',
+	'cherrypick:embed:ready',
+	'cherrypick:embed:changeHeight',
 ] as const;
 
 export type PostMessageEventType = typeof postMessageEventTypes[number];
 
 export interface PostMessageEventPayload extends Record<PostMessageEventType, any> {
-	'misskey:embed:ready': undefined;
-	'misskey:embed:changeHeight': {
+	'cherrypick:embed:ready': undefined;
+	'cherrypick:embed:changeHeight': {
 		height: number;
 	};
 }

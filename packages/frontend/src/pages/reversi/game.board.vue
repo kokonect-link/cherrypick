@@ -176,7 +176,7 @@ import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 import { deepClone } from '@/utility/clone.js';
-import { $i } from '@/i.js';
+import { ensureSignin, $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { userPage } from '@/filters/user.js';
@@ -184,13 +184,16 @@ import * as sound from '@/utility/sound.js';
 import * as os from '@/os.js';
 import { reactionPicker } from '@/utility/reaction-picker.js';
 import { confetti } from '@/utility/confetti.js';
+import { genId } from '@/utility/id.js';
 import { prefer } from '@/preferences.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { store } from '@/store.js';
 
+//const $i = ensureSignin();
+
 const props = defineProps<{
 	game: Misskey.entities.ReversiGameDetailed;
-	connection?: Misskey.ChannelConnection<Misskey.Channels['reversiGame']> | null;
+	connection?: Misskey.IChannelConnection<Misskey.Channels['reversiGame']> | null;
 }>();
 
 const showBoardLabels = ref<boolean>(false);
@@ -261,12 +264,10 @@ const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const blackUserUrl = computed(() => {
-	if (blackUser.value.avatarUrl == null) return null;
 	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(blackUser.value.avatarUrl);
 	return blackUser.value.avatarUrl;
 });
 const whiteUserUrl = computed(() => {
-	if (whiteUser.value.avatarUrl == null) return null;
 	if (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.avatar || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)) return getStaticImageUrl(whiteUser.value.avatarUrl);
 	return whiteUser.value.avatarUrl;
 });
@@ -316,7 +317,7 @@ function putStone(pos: number) {
 		playbackRate: 1,
 	});
 
-	const id = Math.random().toString(36).slice(2);
+	const id = genId();
 	props.connection!.send('putStone', {
 		pos: pos,
 		id,

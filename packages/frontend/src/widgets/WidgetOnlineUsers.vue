@@ -15,11 +15,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useInterval } from '@@/js/use-interval.js';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/utility/form.js';
-import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
+import type { FormWithDefault, GetFormResultType } from '@/utility/form.js';
+import { misskeyApiGet } from '@/utility/misskey-api.js';
+import { useInterval } from '@@/js/use-interval.js';
 import { i18n } from '@/i18n.js';
 import number from '@/filters/number.js';
 
@@ -27,10 +27,10 @@ const name = 'onlineUsers';
 
 const widgetPropsDef = {
 	transparent: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: true,
 	},
-};
+} satisfies FormWithDefault;
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 

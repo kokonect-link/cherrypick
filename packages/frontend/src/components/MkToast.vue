@@ -13,7 +13,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		appear @afterLeave="emit('closed')"
 	>
 		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ zIndex }">
-			<div style="padding: 16px 24px;">
+			<div v-if="welcome">
+				<MkAvatar :class="$style.avatar" :user="$i" forceOpacity isToastAvatar/>
+				<Mfm style="display: inherit; margin: 10px;" :text="message" :plain="true"></Mfm>
+			</div>
+			<div v-else style="padding: 16px 24px;">
 				<i
 					v-if="icon"
 					:class="
@@ -39,10 +43,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, ref } from 'vue';
 import * as os from '@/os.js';
 import { prefer } from '@/preferences.js';
+import { $i } from '@/i.js';
 
 defineProps<{
 	message: string;
 	icon?: string;
+	welcome?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -93,5 +99,14 @@ onMounted(() => {
 		width: 100%;
 		top: 0;
 	}
+}
+
+.avatar {
+	position: relative;
+	vertical-align: bottom;
+	border-radius: 100%;
+	width: 48px;
+	height: 48px;
+	margin-top: 16px;
 }
 </style>

@@ -4,7 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import { In } from 'typeorm';
+import { EntityNotFoundError, In } from 'typeorm';
 import { ModuleRef } from '@nestjs/core';
 import { DI } from '@/di-symbols.js';
 import type { Packed } from '@/misc/json-schema.js';
@@ -44,6 +44,17 @@ function getAppearNoteIds(notes: MiNote[]): Set<string> {
 		}
 	}
 	return appearNoteIds;
+}
+
+async function nullIfEntityNotFound<T>(promise: Promise<T>): Promise<T | null> {
+	try {
+		return await promise;
+	} catch (err) {
+		if (err instanceof EntityNotFoundError) {
+			return null;
+		}
+		throw err;
+	}
 }
 
 @Injectable()
@@ -449,25 +460,30 @@ export class NoteEntityService implements OnModuleInit {
 				userId: channel.userId,
 			} : undefined,
 			mentions: note.mentions.length > 0 ? note.mentions : undefined,
+			hasPoll: note.hasPoll || undefined,
 			uri: note.uri ?? undefined,
 			url: note.url ?? undefined,
 
 			...(opts.detail ? {
 				clippedCount: note.clippedCount,
 
-				reply: note.replyId ? this.pack(note.reply ?? note.replyId, me, {
-					detail: false,
-					skipHide: opts.skipHide,
-					withReactionAndUserPairCache: opts.withReactionAndUserPairCache,
-					_hint_: options?._hint_,
-				}) : undefined,
-
-				renote: note.renoteId ? this.pack(note.renote ?? note.renoteId, me, {
+				// そもそもJOINしていない場合はundefined、JOINしたけど存在していなかった場合はnullで区別される
+				reply: (note.replyId && note.reply === null) ? null : note.replyId ? nullIfEntityNotFound(this.pack(note.reply ?? note.replyId, me, {
+					// NOTE: 기본값은 false 이지만, 2025.10.0 대응 과정에서 코드가 변경됨에 따라 MkSubNoteContent에서 myReaction을 불러오지 못하는 문제가 있으므로 true로 변경됨.
+					// myReaction을 불러오지 못하면 자신이 리액션 했다는 정보를 불러오지 못하므로 이미 리액션을 했더라도 다시 눌러 리액션을 취소하는 기능을 사용할 수 없고, 리액션을 중복으로 등록하려고 시도하게됨.
 					detail: true,
 					skipHide: opts.skipHide,
 					withReactionAndUserPairCache: opts.withReactionAndUserPairCache,
 					_hint_: options?._hint_,
-				}) : undefined,
+				})) : undefined,
+
+				// そもそもJOINしていない場合はundefined、JOINしたけど存在していなかった場合はnullで区別される
+				renote: (note.renoteId && note.renote === null) ? null : note.renoteId ? nullIfEntityNotFound(this.pack(note.renote ?? note.renoteId, me, {
+					detail: true,
+					skipHide: opts.skipHide,
+					withReactionAndUserPairCache: opts.withReactionAndUserPairCache,
+					_hint_: options?._hint_,
+				})) : undefined,
 
 				poll: note.hasPoll ? this.populatePoll(note, meId) : undefined,
 				event: note.hasEvent ? this.populateEvent(note) : undefined,
@@ -611,7 +627,45 @@ export class NoteEntityService implements OnModuleInit {
 	private findNoteOrFail(id: string): Promise<MiNote> {
 		return this.notesRepository.findOneOrFail({
 			where: { id },
-			relations: ['user'],
+			relations: ['user', 'renote', 'reply'],
 		});
+	}
+
+	@bindThis
+	public async fetchDiffs(noteIds: MiNote['id'][]) {
+		if (noteIds.length === 0) return [];
+
+		const notes = await this.notesRepository.find({
+			where: {
+				id: In(noteIds),
+			},
+			select: {
+				id: true,
+				userHost: true,
+				reactions: true,
+				reactionAndUserPairCache: true,
+			},
+		});
+
+		const bufferedReactionsMap = this.meta.enableReactionsBuffering ? await this.reactionsBufferingService.getMany(noteIds) : null;
+
+		const packings = notes.map(note => {
+			const bufferedReactions = bufferedReactionsMap?.get(note.id);
+			//const reactionAndUserPairCache = note.reactionAndUserPairCache.concat(bufferedReactions.pairs.map(x => x.join('/')));
+
+			const reactions = this.reactionService.convertLegacyReactions(this.reactionsBufferingService.mergeReactions(note.reactions, bufferedReactions?.deltas ?? {}));
+
+			const reactionEmojiNames = Object.keys(reactions)
+				.filter(x => x.startsWith(':') && x.includes('@') && !x.includes('@.')) // リモートカスタム絵文字のみ
+				.map(x => this.reactionService.decodeReaction(x).reaction.replaceAll(':', ''));
+
+			return this.customEmojiService.populateEmojis(reactionEmojiNames, note.userHost).then(reactionEmojis => ({
+				id: note.id,
+				reactions,
+				reactionEmojis,
+			}));
+		});
+
+		return await Promise.all(packings);
 	}
 }

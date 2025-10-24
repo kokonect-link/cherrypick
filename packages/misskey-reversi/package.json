@@ -25,15 +25,15 @@
 		"format:write": "pnpm biome format --write"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/node": "22.15.2",
-		"@typescript-eslint/eslint-plugin": "8.31.0",
-		"@typescript-eslint/parser": "8.31.0",
-		"execa": "9.5.2",
+		"@biomejs/biome": "2.2.5",
+		"@types/node": "22.18.6",
+		"@typescript-eslint/eslint-plugin": "8.44.1",
+		"@typescript-eslint/parser": "8.44.1",
+		"execa": "9.6.0",
 		"nodemon": "3.1.10",
-		"typescript": "5.8.3",
-		"esbuild": "0.25.3",
-		"glob": "11.0.2"
+		"typescript": "5.9.2",
+		"esbuild": "0.25.10",
+		"glob": "11.0.3"
 	},
 	"files": [
 		"built"

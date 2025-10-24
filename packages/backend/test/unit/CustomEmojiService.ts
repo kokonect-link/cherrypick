@@ -88,7 +88,7 @@ describe('CustomEmojiService', () => {
 		}
 
 		afterEach(async () => {
-			await emojisRepository.delete({});
+			await emojisRepository.createQueryBuilder().delete().execute();
 		});
 
 		describe('単独', () => {

@@ -15,6 +15,7 @@ import { CheckModeratorsActivityProcessorService } from '@/queue/processors/Chec
 import { UserWebhookDeliverProcessorService } from './processors/UserWebhookDeliverProcessorService.js';
 import { SystemWebhookDeliverProcessorService } from './processors/SystemWebhookDeliverProcessorService.js';
 import { EndedPollNotificationProcessorService } from './processors/EndedPollNotificationProcessorService.js';
+import { PostScheduledNoteProcessorService } from './processors/PostScheduledNoteProcessorService.js';
 import { DeliverProcessorService } from './processors/DeliverProcessorService.js';
 import { InboxProcessorService } from './processors/InboxProcessorService.js';
 import { DeleteDriveFilesProcessorService } from './processors/DeleteDriveFilesProcessorService.js';
@@ -46,8 +47,8 @@ import { CheckExpiredMutingsProcessorService } from './processors/CheckExpiredMu
 import { BakeBufferedReactionsProcessorService } from './processors/BakeBufferedReactionsProcessorService.js';
 import { CleanProcessorService } from './processors/CleanProcessorService.js';
 import { AggregateRetentionProcessorService } from './processors/AggregateRetentionProcessorService.js';
+import { CleanRemoteNotesProcessorService } from './processors/CleanRemoteNotesProcessorService.js';
 import { ScheduledNoteDeleteProcessorService } from './processors/ScheduledNoteDeleteProcessorService.js';
-import { ScheduleNotePostProcessorService } from './processors/ScheduleNotePostProcessorService.js';
 import { QueueLoggerService } from './QueueLoggerService.js';
 import { QUEUE, baseWorkerOptions } from './const.js';
 
@@ -89,8 +90,8 @@ export class QueueProcessorService implements OnApplicationShutdown {
 	private relationshipQueueWorker: Bull.Worker;
 	private objectStorageQueueWorker: Bull.Worker;
 	private endedPollNotificationQueueWorker: Bull.Worker;
+	private postScheduledNoteQueueWorker: Bull.Worker;
 	private scheduledNoteDeleteQueueWorker: Bull.Worker;
-	private schedulerNotePostQueueWorker: Bull.Worker;
 
 	constructor(
 		@Inject(DI.config)
@@ -103,6 +104,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private userWebhookDeliverProcessorService: UserWebhookDeliverProcessorService,
 		private systemWebhookDeliverProcessorService: SystemWebhookDeliverProcessorService,
 		private endedPollNotificationProcessorService: EndedPollNotificationProcessorService,
+		private postScheduledNoteProcessorService: PostScheduledNoteProcessorService,
 		private deliverProcessorService: DeliverProcessorService,
 		private inboxProcessorService: InboxProcessorService,
 		private deleteDriveFilesProcessorService: DeleteDriveFilesProcessorService,
@@ -135,8 +137,8 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		private bakeBufferedReactionsProcessorService: BakeBufferedReactionsProcessorService,
 		private checkModeratorsActivityProcessorService: CheckModeratorsActivityProcessorService,
 		private cleanProcessorService: CleanProcessorService,
+		private cleanRemoteNotesProcessorService: CleanRemoteNotesProcessorService,
 		private scheduledNoteDeleteProcessorService: ScheduledNoteDeleteProcessorService,
-		private scheduleNotePostProcessorService: ScheduleNotePostProcessorService,
 	) {
 		this.logger = this.queueLoggerService.logger;
 
@@ -178,6 +180,7 @@ export class QueueProcessorService implements OnApplicationShutdown {
 					case 'bakeBufferedReactions': return this.bakeBufferedReactionsProcessorService.process();
 					case 'checkModeratorsActivity': return this.checkModeratorsActivityProcessorService.process();
 					case 'clean': return this.cleanProcessorService.process();
+					case 'cleanRemoteNotes': return this.cleanRemoteNotesProcessorService.process(job);
 					default: throw new Error(`unrecognized job type ${job.name} for system`);
 				}
 			};
@@ -534,6 +537,21 @@ export class QueueProcessorService implements OnApplicationShutdown {
 		}
 		//#endregion
 
+		//#region post scheduled note
+		{
+			this.postScheduledNoteQueueWorker = new Bull.Worker(QUEUE.POST_SCHEDULED_NOTE, async (job) => {
+				if (this.config.sentryForBackend) {
+					return Sentry.startSpan({ name: 'Queue: PostScheduledNote' }, () => this.postScheduledNoteProcessorService.process(job));
+				} else {
+					return this.postScheduledNoteProcessorService.process(job);
+				}
+			}, {
+				...baseWorkerOptions(this.config, QUEUE.POST_SCHEDULED_NOTE, this.redisForJobQueue),
+				autorun: false,
+			});
+		}
+		//#endregion
+
 		//#region scheduled note delete
 		{
 			this.scheduledNoteDeleteQueueWorker = new Bull.Worker(QUEUE.SCHEDULED_NOTE_DELETE, (job) => {
@@ -544,15 +562,6 @@ export class QueueProcessorService implements OnApplicationShutdown {
 				}
 			}, {
 				...baseWorkerOptions(this.config, QUEUE.SCHEDULED_NOTE_DELETE, this.redisForJobQueue),
-				autorun: false,
-			});
-		}
-		//#endregion
-
-		//#region schedule note post
-		{
-			this.schedulerNotePostQueueWorker = new Bull.Worker(QUEUE.SCHEDULE_NOTE_POST, (job) => this.scheduleNotePostProcessorService.process(job), {
-				...baseWorkerOptions(this.config, QUEUE.SCHEDULE_NOTE_POST, this.redisForJobQueue),
 				autorun: false,
 			});
 		}
@@ -571,8 +580,8 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.relationshipQueueWorker.run(),
 			this.objectStorageQueueWorker.run(),
 			this.endedPollNotificationQueueWorker.run(),
+			this.postScheduledNoteQueueWorker.run(),
 			this.scheduledNoteDeleteQueueWorker.run(),
-			this.schedulerNotePostQueueWorker.run(),
 		]);
 	}
 
@@ -588,8 +597,8 @@ export class QueueProcessorService implements OnApplicationShutdown {
 			this.relationshipQueueWorker.close(),
 			this.objectStorageQueueWorker.close(),
 			this.endedPollNotificationQueueWorker.close(),
+			this.postScheduledNoteQueueWorker.close(),
 			this.scheduledNoteDeleteQueueWorker.close(),
-			this.schedulerNotePostQueueWorker.close(),
 		]);
 	}
 

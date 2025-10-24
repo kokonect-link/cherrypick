@@ -6,11 +6,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div v-if="show" ref="el" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl }]">
 	<div :class="[$style.upper, { [$style.slim]: narrow || isFriendly().value, [$style.thin]: thin_, [$style.hideTitle]: hideTitle && isFriendly().value }]">
-		<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+		<div v-if="!thin_ && !canBack && !notification" :class="$style.buttonsLeft">
+			<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 		</div>
-		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly().value" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-			<MkAvatar v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.avatar" :user="$i"/>
+		<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly().value && !notification" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
+			<MkAvatar :class="$style.avatar" :user="$i"/>
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
 		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly().value" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
@@ -18,21 +18,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="actions.length >= 3" style="width: 42px;"/>
 			<div style="width: 34px;"/>
 		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly().value && mainRouter.currentRoute.value.name === 'my-notifications'">
+		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly().value && mainRouter.currentRoute.value.name === 'my-notifications' && !notification">
 			<div style="width: 50px; margin-right: 8px;"/>
 		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name === 'index'" :class="$style.buttonsLeft" style="margin-right: auto;">
+		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name === 'index' && !notification" :class="$style.buttonsLeft" style="margin-right: auto;">
 			<div style="width: 84px;"/>
 		</div>
-		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name !== 'index'">
+		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name !== 'index' && !notification">
 			<div style="width: 34px;"/>
 		</div>
-		<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id)">
+		<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id) && !notification">
 			<div style="width: 50px;"/>
 		</div>
 
-		<template v-if="pageMetadata">
+		<template v-if="props.title || props.icon">
 			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="top">
+				<i v-if="props.icon" :class="[$style.titleIcon, props.icon]"></i>
+
+				<div :class="$style.title">
+					<div v-if="props.title">{{ props.title }}</div>
+				</div>
+			</div>
+			<XTabs v-if="(!narrow || hideTitle) && !isFriendly().value" :class="[$style.tabs, { [$style.tabs_canBack]: !canBack }]" :tab="tab" :tabs="tabs" :rootEl="el" @update:tab="key => emit('update:tab', key)" @tabClick="onTabClick"/>
+		</template>
+		<template v-else-if="pageMetadata">
+			<div v-if="!hideTitle" :class="[$style.titleContainer, { [$style.titleContainer_canBack]: !canBack }]" @click="(ev) => topWithMenu(ev)">
 				<div v-if="pageMetadata.avatar" :class="$style.titleAvatarContainer">
 					<MkAvatar :class="$style.titleAvatar" :user="pageMetadata.avatar" indicator/>
 				</div>
@@ -51,11 +61,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 		<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 			<template v-for="action in actions">
-				<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+				<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 			</template>
 		</div>
 		<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
-		<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id) && mainRouter.currentRoute.value.name === 'user' && !disableFollowButton" :class="$style.followButton">
+		<div v-if="pageMetadata && pageMetadata.avatar && ($i && $i.id !== pageMetadata.userName?.id) && mainRouter.currentRoute.value.name === 'user' && !disableFollowButton && !notification" :class="$style.followButton">
 			<MkFollowButton :user="pageMetadata.avatar" :transparent="false" :full="!narrow"/>
 		</div>
 	</div>
@@ -79,8 +89,12 @@ export type PageHeaderProps = {
 	actions?: PageHeaderItem[] | null;
 	thin?: boolean;
 	hideTitle?: boolean;
+	canOmitTitle?: boolean;
 	displayMyAvatar?: boolean;
 	disableFollowButton?: boolean;
+	notification?: boolean;
+	title?: string;
+	icon?: string;
 };
 </script>
 
@@ -99,6 +113,7 @@ import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
+import { haptic } from '@/utility/haptic.js';
 
 const { showEl } = scrollToVisibility();
 
@@ -116,7 +131,7 @@ const emit = defineEmits<{
 const injectedPageMetadata = inject(DI.pageMetadata, ref(null));
 const pageMetadata = computed(() => props.overridePageMetadata ?? injectedPageMetadata.value);
 
-const hideTitle = computed(() => inject('shouldOmitHeaderTitle', false) || props.hideTitle);
+const hideTitle = computed(() => inject('shouldOmitHeaderTitle', false) || props.hideTitle || (props.canOmitTitle && props.tabs.length > 0));
 const thin_ = props.thin || inject('shouldHeaderThin', false);
 
 const el = useTemplateRef('el');
@@ -131,7 +146,13 @@ const preventDrag = (ev: TouchEvent) => {
 	ev.stopPropagation();
 };
 
-const top = (ev: MouseEvent) => {
+const top = () => {
+	if (el.value) {
+		scrollToTop(el.value as HTMLElement, { behavior: 'smooth' });
+	}
+};
+
+const topWithMenu = (ev: MouseEvent) => {
 	const pos = getScrollPosition(el.value as HTMLElement);
 	if (el.value && pos !== 0) {
 		scrollToTop(el.value as HTMLElement, { behavior: 'smooth' });
@@ -147,6 +168,8 @@ const top = (ev: MouseEvent) => {
 };
 
 function openAccountMenu(ev: MouseEvent) {
+	haptic();
+
 	openAccountMenu_({
 		withExtraOperation: true,
 	}, ev);
@@ -157,6 +180,8 @@ function onTabClick(): void {
 }
 
 function goBack() {
+	haptic();
+
 	window.history.back();
 }
 

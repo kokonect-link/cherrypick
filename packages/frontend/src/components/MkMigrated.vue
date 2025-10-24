@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<MkModal v-if="!showChangelog" ref="modal" :zPriority="'middle'">
+<MkModal v-if="!showChangelog" ref="modal" preferType="dialog" :zPriority="'middle'" @click="modal?.close()" @closed="$emit('closed')">
 	<div :class="$style.root">
 		<div style="display: grid;">
 			<Mfm text="$[tada 🎉]"/>
@@ -17,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div>✨{{ version }}🚀</div>
 			<div style="font-size: 0.8em;">{{ basedMisskeyVersion }}</div>
 		</div>
+		<div v-if="isBeta" :class="$style.beta">{{ i18n.ts.thankYouForTestingBeta }}</div>
 		<MkButton rounded full @click="whatIsNewCherryPick">{{ i18n.ts.whatIsNew }}</MkButton>
 		<MkButton :class="$style.gotIt" primary rounded full @click="close">{{ i18n.ts.gotIt }}</MkButton>
 	</div>
@@ -49,15 +50,19 @@ const showChangelog = ref(false);
 
 const modal = useTemplateRef('modal');
 
+const isBeta = version.includes('-beta') || version.includes('-alpha') || version.includes('-rc');
+
 /**
- * const whatIsNewMisskey = () => {
+ * function whatIsNewMisskey() {
+ * 	// modal.value?.close();
  * 	window.open(`https://misskey-hub.net/docs/releases/#_${basedMisskeyVersion.replace(/\./g, '')}`, '_blank');
- * };
+ * }
  */
 
-const whatIsNewCherryPick = () => {
+function whatIsNewCherryPick() {
+	// modal.value?.close();
 	window.open(`https://github.com/kokonect-link/cherrypick/blob/develop/CHANGELOG_CHERRYPICK.md#${version.replace(/\./g, '')}`, '_blank');
-};
+}
 
 const close = async () => {
 	modal.value?.close();
@@ -95,6 +100,10 @@ onMounted(() => {
 }
 
 .version {
+	margin: 1em 0;
+}
+
+.beta {
 	margin: 1em 0;
 }
 

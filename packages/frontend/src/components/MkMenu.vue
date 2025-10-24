@@ -16,7 +16,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 	@focusin.passive.stop="() => {}"
 >
 	<div
-		v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
 		class="_shadow"
 		:class="[
 			$style.menu,
@@ -220,7 +219,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<div v-if="childMenu">
-		<XChild ref="child" :items="childMenu" :targetElement="childTarget!" :rootElement="itemsEl!" @actioned="childActioned" @closed="closeChild"/>
+		<XChild ref="child" :items="childMenu" :anchorElement="childTarget!" :rootElement="itemsEl!" @actioned="childActioned" @closed="closeChild"/>
 	</div>
 </div>
 </template>

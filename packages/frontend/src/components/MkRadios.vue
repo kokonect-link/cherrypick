@@ -13,6 +13,10 @@ export default defineComponent({
 		modelValue: {
 			required: false,
 		},
+		vertical: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	setup(props, context) {
 		const value = ref(props.modelValue);
@@ -34,7 +38,10 @@ export default defineComponent({
 		options = options.filter(vnode => !(typeof vnode.type === 'symbol' && vnode.type.description === 'v-cmt' && vnode.children === 'v-if'));
 
 		return () => h('div', {
-			class: 'novjtcto',
+			class: [
+				'novjtcto',
+				...(props.vertical ? ['vertical'] : []),
+			],
 		}, [
 			...(label ? [h('div', {
 				class: 'label',
@@ -71,7 +78,7 @@ export default defineComponent({
 
 	> .body {
 		display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
 	}
 
@@ -82,6 +89,12 @@ export default defineComponent({
 
 		&:empty {
 			display: none;
+		}
+	}
+
+	&.vertical {
+		> .body {
+			flex-direction: column;
 		}
 	}
 }

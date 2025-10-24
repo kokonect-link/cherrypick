@@ -93,10 +93,10 @@ import FormSection from '@/components/form/section.vue';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
-import { reloadAsk } from '@/utility/reload-ask.js';
+import { suggestReload } from '@/utility/reload-suggest.js';
 
 function save() {
-	reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+	suggestReload();
 }
 
 const enableHomeTimeline = prefer.model('enableHomeTimeline');

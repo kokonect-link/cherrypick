@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 700px;">
 		<div v-if="tab === 'owned'">
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="ownedPagination">
+			<MkPagination v-slot="{items}" :paginator="ownedPaginator">
 				<MkA v-for="group in items" :key="group.id" :class="$style.group" class="_panel" :to="`/my/groups/${ group.id }`">
 					<div :class="$style.name">{{ group.name }}</div>
 					<MkAvatars :class="$style.avatars" :userIds="group.userIds"/>
@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 
 		<div v-else-if="tab === 'joined'">
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="joinedPagination">
+			<MkPagination v-slot="{items}" :paginator="joinedPaginator">
 				<div v-for="group in items" :class="$style.group" class="_panel">
 					<MkA :key="group.id" :class="$style.groupTop" :to="`/my/groups/${ group.id }`">
 						<div :class="$style.name">{{ group.name }}</div>
@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 
 		<div v-else-if="tab === 'invites'">
-			<MkPagination v-slot="{items}" ref="pagingComponent" :pagination="invitationPagination">
+			<MkPagination v-slot="{items}" :paginator="invitationPaginator">
 				<MkA v-for="invitation in items" :key="invitation.id" :class="$style.group" class="_panel">
 					<div :class="$style.name">{{ invitation.group.name }}</div>
 					<MkAvatars :class="$style.avatars" :userIds="invitation.group.userIds"/>
@@ -46,29 +46,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, useTemplateRef } from 'vue';
+import { computed, markRaw, ref } from 'vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkButton from '@/components/MkButton.vue';
 import MkAvatars from '@/components/MkAvatars.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
+import { Paginator } from '@/utility/paginator.js';
 
-const pagingComponent = useTemplateRef('pagingComponent');
-
-const ownedPagination = {
-	endpoint: 'users/groups/owned' as const,
+const ownedPaginator = markRaw(new Paginator('users/groups/owned', {
 	limit: 10,
 	// sort: '+createdAt/updatedAt',
-};
-const joinedPagination = {
-	endpoint: 'users/groups/joined' as const,
+}));
+const joinedPaginator = markRaw(new Paginator('users/groups/joined', {
 	limit: 10,
-};
-const invitationPagination = {
-	endpoint: 'i/user-group-invites' as const,
+}));
+const invitationPaginator = markRaw(new Paginator('i/user-group-invites', {
 	limit: 10,
-};
+}));
 
 const tab = ref('owned');
 
@@ -77,8 +73,12 @@ async function create() {
 		title: i18n.ts.groupName,
 	});
 	if (canceled) return;
-	await os.apiWithDialog('users/groups/create', { name: name });
-	pagingComponent.value.reload();
+	await os.apiWithDialog('users/groups/create', {
+		name: name
+	}).then(() => {
+		os.success();
+		ownedPaginator.reload();
+	});
 }
 
 async function acceptInvite(invitation) {
@@ -86,7 +86,8 @@ async function acceptInvite(invitation) {
 		invitationId: invitation.id,
 	}).then(() => {
 		os.success();
-		pagingComponent.value.reload();
+		joinedPaginator.reload();
+		invitationPaginator.reload();
 	});
 }
 
@@ -94,7 +95,8 @@ function rejectInvite(invitation) {
 	os.apiWithDialog('users/groups/invitations/reject', {
 		invitationId: invitation.id,
 	}).then(() => {
-		pagingComponent.value.reload();
+		joinedPaginator.reload();
+		invitationPaginator.reload();
 		// this.$refs.invitations.reload();
 	});
 }
@@ -108,7 +110,8 @@ async function leave(group) {
 	os.apiWithDialog('users/groups/leave', {
 		groupId: group.id,
 	}).then(() => {
-		pagingComponent.value.reload();
+		ownedPaginator.reload();
+		joinedPaginator.reload();
 	});
 }
 

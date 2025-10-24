@@ -18,6 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 </MkModalWindow>
 </template>
+
 <script lang="ts" setup>
 import { ref } from 'vue';
 import MkModalWindow from './MkModalWindow.vue';
@@ -32,8 +33,8 @@ const modal = ref<typeof MkModalWindow | null>(null);
 function close() {
 	modal.value?.close();
 }
-
 </script>
+
 <style lang="scss" module>
 	.container {
 		box-sizing: border-box;

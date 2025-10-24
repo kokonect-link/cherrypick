@@ -8,13 +8,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="_gaps_m">
 		<FormSection first>
 			<template #label><SearchLabel>{{ i18n.ts._cherrypick.function }}</SearchLabel></template>
-			<template #description><SearchKeyword>{{ i18n.ts._cherrypick.functionDescription }}</SearchKeyword></template>
+			<template #description><SearchText>{{ i18n.ts._cherrypick.functionDescription }}</SearchText></template>
 			<div class="_gaps_m">
 				<SearchMarker :keywords="['nickname', 'enable']">
 					<MkPreferenceContainer k="nicknameEnabled">
 						<MkSwitch v-model="nicknameEnabled">
 							<template #label><SearchLabel>{{ i18n.ts._cherrypick.nickname }}</SearchLabel></template>
-							<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.nicknameDescription }}</SearchKeyword></template>
+							<template #caption><SearchText>{{ i18n.ts._cherrypick.nicknameDescription }}</SearchText></template>
 						</MkSwitch>
 					</MkPreferenceContainer>
 				</SearchMarker>
@@ -24,7 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkPreferenceContainer k="useEnterToSend">
 							<MkSwitch v-model="useEnterToSend">
 								<template #label><SearchLabel>{{ i18n.ts._cherrypick.useEnterToSend }}</SearchLabel></template>
-								<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</SearchKeyword></template>
+								<template #caption><SearchText>{{ i18n.ts._cherrypick.useEnterToSendDescription }}</SearchText></template>
 							</MkSwitch>
 						</MkPreferenceContainer>
 					</SearchMarker>
@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkPreferenceContainer k="postFormVisibilityHotkey">
 							<MkSwitch v-model="postFormVisibilityHotkey">
 								<template #label><SearchLabel>{{ i18n.ts._cherrypick.postFormVisibilityHotkey }}</SearchLabel></template>
-								<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</SearchKeyword></template>
+								<template #caption><SearchText>{{ i18n.ts._cherrypick.postFormVisibilityHotkeyDescription }}</SearchText></template>
 							</MkSwitch>
 						</MkPreferenceContainer>
 					</SearchMarker>
@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkPreferenceContainer k="showRenoteConfirmPopup">
 							<MkSwitch v-model="showRenoteConfirmPopup">
 								<template #label><SearchLabel>{{ i18n.ts._cherrypick.showRenoteConfirmPopup }}</SearchLabel></template>
-								<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</SearchKeyword></template>
+								<template #caption><SearchText>{{ i18n.ts._cherrypick.showRenoteConfirmPopupDescription }}</SearchText></template>
 							</MkSwitch>
 						</MkPreferenceContainer>
 					</SearchMarker>
@@ -51,17 +51,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkPreferenceContainer k="expandOnNoteClick">
 							<MkSwitch v-model="expandOnNoteClick">
 								<template #label><SearchLabel>{{ i18n.ts._cherrypick.expandOnNoteClick }}</SearchLabel></template>
-								<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</SearchKeyword></template>
+								<template #caption><SearchText>{{ i18n.ts._cherrypick.expandOnNoteClickDescription }}</SearchText></template>
 							</MkSwitch>
 						</MkPreferenceContainer>
 
 						<MkDisableSection :disabled="!expandOnNoteClick">
 							<SearchMarker :keywords="['behavior']">
 								<MkPreferenceContainer k="expandOnNoteClickBehavior">
-									<MkSelect v-model="expandOnNoteClickBehavior" style="margin-left: 44px;">
+									<MkSelect
+										v-model="expandOnNoteClickBehavior"
+										:items="[
+											{ label: i18n.ts._nsfwOpenBehavior.click, value: 'click' },
+											{ label: i18n.ts._nsfwOpenBehavior.doubleClick, value: 'doubleClick' },
+										]"
+										style="margin-left: 44px;"
+									>
 										<template #label><SearchLabel>{{ i18n.ts._cherrypick.expandOnNoteClickBehavior }}</SearchLabel></template>
-										<option value="click">{{ i18n.ts._nsfwOpenBehavior.click }}</option>
-										<option value="doubleClick">{{ i18n.ts._nsfwOpenBehavior.doubleClick }}</option>
 									</MkSelect>
 								</MkPreferenceContainer>
 							</SearchMarker>
@@ -90,7 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<SearchMarker :keywords="['patch', 'behavior']">
 			<FormSection>
 				<template #label><SearchLabel>{{ i18n.ts._cherrypick.patch }}</SearchLabel></template>
-				<template #description><SearchKeyword>{{ i18n.ts._cherrypick.patchDescription }}</SearchKeyword></template>
+				<template #description><SearchText>{{ i18n.ts._cherrypick.patchDescription }}</SearchText></template>
 				<div class="_gaps_m">
 					<SearchMarker :keywords="['reactable', 'remote', 'reaction', 'react', 'enable']">
 						<MkPreferenceContainer k="reactableRemoteReactionEnabled">
@@ -120,7 +125,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkPreferenceContainer k="renameTheButtonInPostFormToNya">
 							<MkSwitch v-model="renameTheButtonInPostFormToNya">
 								<template #label><SearchLabel>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNya }}</SearchLabel></template>
-								<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</SearchKeyword></template>
+								<template #caption><SearchText>{{ i18n.ts._cherrypick.renameTheButtonInPostFormToNyaDescription }}</SearchText></template>
 							</MkSwitch>
 						</MkPreferenceContainer>
 					</SearchMarker>
@@ -156,7 +161,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<MkPreferenceContainer k="enableLongPressOpenAccountMenu">
 									<MkSwitch v-model="enableLongPressOpenAccountMenu">
 										<template #label><SearchLabel>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenu }}</SearchLabel></template>
-										<template #caption><SearchKeyword>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</SearchKeyword></template>
+										<template #caption><SearchText>{{ i18n.ts._cherrypick.enableLongPressOpenAccountMenuDescription }}</SearchText></template>
 									</MkSwitch>
 								</MkPreferenceContainer>
 							</SearchMarker>
@@ -177,7 +182,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<SearchMarker :keywords="['behavior', 'lab']">
 			<FormSection>
 				<template #label><i class="ti ti-flask"/> <SearchLabel>{{ i18n.ts.cherrypickLabs }}</SearchLabel></template>
-				<template #description><SearchKeyword>{{ i18n.ts.cherrypickLabsDescription }}</SearchKeyword></template>
+				<template #description><SearchText>{{ i18n.ts.cherrypickLabsDescription }}</SearchText></template>
 				<div class="_gaps_m">
 				</div>
 			</FormSection>
@@ -195,7 +200,7 @@ import FormSection from '@/components/form/section.vue';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
-import { reloadAsk } from '@/utility/reload-ask.js';
+import { suggestReload } from '@/utility/reload-suggest.js';
 import MkDisableSection from '@/components/MkDisableSection.vue';
 import MkPreferenceContainer from '@/components/MkPreferenceContainer.vue';
 
@@ -228,8 +233,8 @@ watch([
 	renameTheButtonInPostFormToNya,
 	enableWidgetsArea,
 	friendlyUiEnableNotificationsArea,
-], async () => {
-	await reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true });
+], () => {
+	suggestReload();
 });
 
 const headerActions = computed(() => []);

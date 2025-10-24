@@ -9,61 +9,75 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i class="ti ti-calendar-event icon"></i>
 		{{ note.event!.title }}
 	</div>
+
 	<dl :class="$style.details">
 		<dt :class="$style.key">{{ i18n.ts._event.startDateTime }}</dt>
 		<dd :class="$style.value">
 			<MkTime :time="note.event!.start" mode="detail"/>
 		</dd>
+
 		<template v-if="note.event!.end">
 			<dt :class="$style.key">{{ i18n.ts._event.endDateTime }}</dt>
 			<dd :class="$style.value">
 				<MkTime :time="note.event!.end" mode="detail"/>
 			</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.doorTime">
 			<dt :class="$style.key">{{ i18n.ts._event.doorTime }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.doorTime }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.location">
 			<dt :class="$style.key">{{ i18n.ts._event.location }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.location }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.url">
-			<dt :class="$style.key">{{ i18n.ts._event.url }}</dt>
+			<dt :class="$style.key">URL</dt>
 			<dd :class="$style.value"><a :href="note.event!.metadata.url">{{ note.event!.metadata.url }}</a></dd>
 		</template>
+
 		<template v-if="note.event!.metadata.organizer">
 			<dt :class="$style.key">{{ i18n.ts._event.organizer }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.organizer.name }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.audience">
 			<dt :class="$style.key">{{ i18n.ts._event.audience }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.audience.name }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.inLanguage">
 			<dt :class="$style.key">{{ i18n.ts._event.language }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.inLanguage }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.typicalAgeRange">
 			<dt :class="$style.key">{{ i18n.ts._event.ageRange }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.typicalAgeRange }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.performer">
 			<dt :class="$style.key">{{ i18n.ts._event.performers }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.performer.join(', ') }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.offers?.url">
 			<dt :class="$style.key">{{ i18n.ts._event.ticketsUrl }}</dt>
 			<dd :class="$style.value"><a :href="note.event!.metadata.offers.url">{{ note.event!.metadata.offers.url }}</a></dd>
 		</template>
+
 		<template v-if="note.event!.metadata.isAccessibleForFree">
 			<dt :class="$style.key">{{ i18n.ts._event.isFree }}</dt>
 			<dd :class="$style.value">{{ i18n.ts.yes }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.offers?.price">
 			<dt :class="$style.key">{{ i18n.ts._event.price }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.offers.price }}</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.offers?.availabilityStarts || note.event!.metadata.offers?.availabilityEnds">
 			<dt :class="$style.key">{{ i18n.ts._event.availability }}</dt>
 			<dd :class="$style.value">
@@ -73,6 +87,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					.join(' ') }}
 			</dd>
 		</template>
+
 		<template v-if="note.event!.metadata.keywords">
 			<dt :class="$style.key">{{ i18n.ts._event.keywords }}</dt>
 			<dd :class="$style.value">{{ note.event!.metadata.keywords }}</dd>
@@ -86,7 +101,7 @@ import * as Misskey from 'cherrypick-js';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
-	note: Misskey.entities.Note
+	note: Misskey.entities.Note | null;
 }>();
 </script>
 

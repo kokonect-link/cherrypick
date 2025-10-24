@@ -63,10 +63,7 @@ import { useRouter } from '@/router.js';
 import MkInstanceTicker from '@/components/MkInstanceTicker.vue';
 
 const props = defineProps<{
-	note: Misskey.entities.Note & {
-		isSchedule?: boolean
-	};
-	scheduled?: boolean;
+	note: Misskey.entities.Note;
 }>();
 
 const mock = inject(DI.mock, false);

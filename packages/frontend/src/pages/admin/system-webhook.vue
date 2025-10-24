@@ -6,11 +6,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 900px;">
-		<div class="_gaps_m">
-			<div class="_gaps">
-				<XItem v-for="item in webhooks" :key="item.id" :entity="item" @edit="onEditButtonClicked" @delete="onDeleteButtonClicked"/>
+		<SearchMarker path="/admin/system-webhook" label="SystemWebhook" :keywords="['webhook']" icon="ti ti-webhook">
+			<div class="_gaps_m">
+				<FormSection>
+					<div class="_gaps">
+						<XItem v-for="item in webhooks" :key="item.id" :entity="item" @edit="onEditButtonClicked" @delete="onDeleteButtonClicked"/>
+					</div>
+				</FormSection>
 			</div>
-		</div>
+		</SearchMarker>
 	</div>
 </PageWithHeader>
 </template>

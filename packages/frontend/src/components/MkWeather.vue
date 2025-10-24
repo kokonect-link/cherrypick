@@ -177,7 +177,7 @@ function formatDate(time: Date): string {
 
 async function fetchLocation() {
 	try {
-		const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${props.latitude}&lon=${props.longtitude}&format=json`);
+		const response = await window.fetch(`https://nominatim.openstreetmap.org/reverse?lat=${props.latitude}&lon=${props.longtitude}&format=json`);
 		const data = await response.json();
 		location.value = data.address.city || data.address.town || data.address.village || data.address.suburb || data.address.state;
 	} catch (err) {

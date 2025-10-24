@@ -10,7 +10,7 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 export async function fetchCherrypickReleases(): Promise<boolean> {
 	try {
 		const meta = await misskeyApi('admin/meta');
-		const response = await fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases');
+		const response = await window.fetch('https://api.github.com/repos/kokonect-link/cherrypick/releases');
 		const releasesData = await response.json();
 
 		if (!Array.isArray(releasesData) || releasesData.length === 0) {

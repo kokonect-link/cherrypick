@@ -4,7 +4,7 @@
  */
 import * as Misskey from 'cherrypick-js';
 
-const providedContextEl = document.getElementById('cherrypick_embedCtx');
+const providedContextEl = window.document.getElementById('cherrypick_embedCtx');
 
 export type ServerContext = {
 	clip?: Misskey.entities.Clip;

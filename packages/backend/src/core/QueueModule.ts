@@ -17,13 +17,14 @@ import {
 	RelationshipJobData,
 	UserWebhookDeliverJobData,
 	SystemWebhookDeliverJobData,
+	PostScheduledNoteJobData,
 	ScheduledNoteDeleteJobData,
-	ScheduleNotePostJobData,
 } from '../queue/types.js';
 import type { Provider } from '@nestjs/common';
 
 export type SystemQueue = Bull.Queue<Record<string, unknown>>;
 export type EndedPollNotificationQueue = Bull.Queue<EndedPollNotificationJobData>;
+export type PostScheduledNoteQueue = Bull.Queue<PostScheduledNoteJobData>;
 export type DeliverQueue = Bull.Queue<DeliverJobData>;
 export type InboxQueue = Bull.Queue<InboxJobData>;
 export type DbQueue = Bull.Queue;
@@ -32,7 +33,6 @@ export type ObjectStorageQueue = Bull.Queue;
 export type UserWebhookDeliverQueue = Bull.Queue<UserWebhookDeliverJobData>;
 export type SystemWebhookDeliverQueue = Bull.Queue<SystemWebhookDeliverJobData>;
 export type ScheduledNoteDeleteQueue = Bull.Queue<ScheduledNoteDeleteJobData>;
-export type ScheduleNotePostQueue = Bull.Queue<ScheduleNotePostJobData>;
 
 const $system: Provider = {
 	provide: 'queue:system',
@@ -43,6 +43,12 @@ const $system: Provider = {
 const $endedPollNotification: Provider = {
 	provide: 'queue:endedPollNotification',
 	useFactory: (config: Config, redisForJobQueue: Redis.Redis) => new Bull.Queue(QUEUE.ENDED_POLL_NOTIFICATION, baseQueueOptions(config, QUEUE.ENDED_POLL_NOTIFICATION, redisForJobQueue)),
+	inject: [DI.config, DI.redisForJobQueue],
+};
+
+const $postScheduledNote: Provider = {
+	provide: 'queue:postScheduledNote',
+	useFactory: (config: Config, redisForJobQueue: Redis.Redis) => new Bull.Queue(QUEUE.POST_SCHEDULED_NOTE, baseQueueOptions(config, QUEUE.POST_SCHEDULED_NOTE, redisForJobQueue)),
 	inject: [DI.config, DI.redisForJobQueue],
 };
 
@@ -94,18 +100,13 @@ const $scheduledNoteDelete: Provider = {
 	inject: [DI.config, DI.redisForJobQueue],
 };
 
-const $scheduleNotePost: Provider = {
-	provide: 'queue:scheduleNotePost',
-	useFactory: (config: Config, redisForJobQueue: Redis.Redis) => new Bull.Queue(QUEUE.SCHEDULE_NOTE_POST, baseQueueOptions(config, QUEUE.SCHEDULE_NOTE_POST, redisForJobQueue)),
-	inject: [DI.config, DI.redisForJobQueue],
-};
-
 @Module({
 	imports: [
 	],
 	providers: [
 		$system,
 		$endedPollNotification,
+		$postScheduledNote,
 		$deliver,
 		$inbox,
 		$db,
@@ -114,11 +115,11 @@ const $scheduleNotePost: Provider = {
 		$userWebhookDeliver,
 		$systemWebhookDeliver,
 		$scheduledNoteDelete,
-		$scheduleNotePost,
 	],
 	exports: [
 		$system,
 		$endedPollNotification,
+		$postScheduledNote,
 		$deliver,
 		$inbox,
 		$db,
@@ -127,13 +128,13 @@ const $scheduleNotePost: Provider = {
 		$userWebhookDeliver,
 		$systemWebhookDeliver,
 		$scheduledNoteDelete,
-		$scheduleNotePost,
 	],
 })
 export class QueueModule implements OnApplicationShutdown {
 	constructor(
 		@Inject('queue:system') public systemQueue: SystemQueue,
 		@Inject('queue:endedPollNotification') public endedPollNotificationQueue: EndedPollNotificationQueue,
+		@Inject('queue:postScheduledNote') public postScheduledNoteQueue: PostScheduledNoteQueue,
 		@Inject('queue:deliver') public deliverQueue: DeliverQueue,
 		@Inject('queue:inbox') public inboxQueue: InboxQueue,
 		@Inject('queue:db') public dbQueue: DbQueue,
@@ -142,7 +143,6 @@ export class QueueModule implements OnApplicationShutdown {
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
 		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
 		@Inject('queue:scheduledNoteDelete') public scheduledNoteDeleteQueue: ScheduledNoteDeleteQueue,
-		@Inject('queue:scheduleNotePost') public scheduleNotePostQueue: ScheduleNotePostQueue,
 	) {}
 
 	public async dispose(): Promise<void> {
@@ -152,6 +152,7 @@ export class QueueModule implements OnApplicationShutdown {
 		await Promise.all([
 			this.systemQueue.close(),
 			this.endedPollNotificationQueue.close(),
+			this.postScheduledNoteQueue.close(),
 			this.deliverQueue.close(),
 			this.inboxQueue.close(),
 			this.dbQueue.close(),
@@ -160,7 +161,6 @@ export class QueueModule implements OnApplicationShutdown {
 			this.userWebhookDeliverQueue.close(),
 			this.systemWebhookDeliverQueue.close(),
 			this.scheduledNoteDeleteQueue.close(),
-			this.scheduleNotePostQueue.close(),
 		]);
 	}
 

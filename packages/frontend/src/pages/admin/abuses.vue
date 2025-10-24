@@ -12,28 +12,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkButton link to="/admin/abuse-report-notification-recipient" primary>{{ i18n.ts.notificationSetting }}</MkButton>
 				</div>
 
-				<MkInfo v-if="!store.r.abusesTutorial.value" closable @close="closeTutorial()">
+				<MkTip k="abuses">
 					{{ i18n.ts._abuseUserReport.resolveTutorial }}
-				</MkInfo>
+				</MkTip>
 
 				<div :class="$style.inputs" class="_gaps">
-					<MkSelect v-model="state" :class="$style.state">
+					<MkSelect v-model="state" :items="stateDef" :class="$style.state">
 						<template #label>{{ i18n.ts.state }}</template>
-						<option value="all">{{ i18n.ts.all }}</option>
-						<option value="unresolved">{{ i18n.ts.unresolved }}</option>
-						<option value="resolved">{{ i18n.ts.resolved }}</option>
 					</MkSelect>
-					<MkSelect v-model="targetUserOrigin" :class="$style.targetUserOrigin">
+					<MkSelect v-model="targetUserOrigin" :items="targetUserOriginDef" :class="$style.targetUserOrigin">
 						<template #label>{{ i18n.ts.reporteeOrigin }}</template>
-						<option value="combined">{{ i18n.ts.all }}</option>
-						<option value="local">{{ i18n.ts.local }}</option>
-						<option value="remote">{{ i18n.ts.remote }}</option>
 					</MkSelect>
-					<MkSelect v-model="reporterOrigin" :class="$style.reporterOrigin">
+					<MkSelect v-model="reporterOrigin" :items="reporterOriginDef" :class="$style.reporterOrigin">
 						<template #label>{{ i18n.ts.reporterOrigin }}</template>
-						<option value="combined">{{ i18n.ts.all }}</option>
-						<option value="local">{{ i18n.ts.local }}</option>
-						<option value="remote">{{ i18n.ts.remote }}</option>
 					</MkSelect>
 				</div>
 
@@ -43,14 +34,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span>{{ i18n.ts.username }}</span>
 						<template v-if="searchUsername != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchUsername = ''; searchUsernameEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
-					<MkInput ref="searchHostEl" v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="pagination.params().origin === 'local'">
+					<MkInput ref="searchHostEl" v-model="searchHost" style="margin: 0; flex: 1;" type="text" :spellcheck="false" :disabled="paginator.computedParams.value.origin === 'local'">
 						<span>{{ i18n.ts.host }}</span>
 						<template v-if="searchHost != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchHost = ''; searchHostEl?.focus();"><i class="ti ti-x"></i></button></template>
 					</MkInput>
 				</div>
 				-->
 
-				<MkPagination v-slot="{items}" ref="reports" :pagination="pagination">
+				<MkPagination v-slot="{items}" :paginator="paginator">
 					<div class="_gaps">
 						<XAbuseReport v-for="report in items" :key="report.id" :report="report" @resolved="resolved"/>
 					</div>
@@ -60,16 +51,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<div v-else>
 			<div class="_gaps">
-				<MkFolder ref="folderComponent">
+				<MkFolder>
 					<template #label><i class="ti ti-plus" style="margin-right: 5px;"></i>{{ i18n.ts.createNew }}</template>
-					<MkAbuseReportResolver v-model="newResolver" :editable="true">
+					<MkAbuseReportResolver v-model="newResolver" :editable="true" :noGap="true">
 						<template #button>
 							<MkButton primary :class="$style.margin" @click="create">{{ i18n.ts.create }}</MkButton>
 						</template>
 					</MkAbuseReportResolver>
 				</MkFolder>
-				<MkPagination v-slot="{items}" ref="resolverPagingComponent" :pagination="resolverPagination">
-					<div v-for="resolver in items" :key="resolver.id" :class="$style.resolverList" class="_spacer" style="--MI_SPACER-w: 900px; --MI_SPACER-min: 14px; --MI_SPACER-max: 22px;">
+
+				<MkPagination v-slot="{items}" :paginator="resolverPaginator">
+					<div v-for="resolver in items" :key="resolver.id" :class="$style.resolverList">
 						<MkAbuseReportResolver v-model="editingResolver" :data="(resolver as any)" :editable="editableResolver === resolver.id">
 							<template #button>
 								<div v-if="editableResolver !== resolver.id">
@@ -90,7 +82,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, useTemplateRef, ref } from 'vue';
+import { computed, ref, markRaw } from 'vue';
 import * as os from '@/os.js';
 import MkSelect from '@/components/MkSelect.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -99,17 +91,45 @@ import MkAbuseReportResolver from '@/components/MkAbuseReportResolver.vue';
 import XAbuseReport from '@/components/MkAbuseReport.vue';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
+import { useMkSelect } from '@/composables/use-mkselect.js';
 import MkButton from '@/components/MkButton.vue';
-import MkInfo from '@/components/MkInfo.vue';
-import { store } from '@/store.js';
+import { Paginator } from '@/utility/paginator.js';
 
-const reports = useTemplateRef('reports');
-const resolverPagingComponent = useTemplateRef('resolverPagingComponent');
-const folderComponent = useTemplateRef('folderComponent');
-
-const state = ref('unresolved');
-const reporterOrigin = ref('combined');
-const targetUserOrigin = ref('combined');
+const {
+	model: state,
+	def: stateDef,
+} = useMkSelect({
+	items: [
+		{ label: i18n.ts.all, value: 'all' },
+		{ label: i18n.ts.unresolved, value: 'unresolved' },
+		{ label: i18n.ts.resolved, value: 'resolved' },
+	],
+	initialValue: 'unresolved',
+});
+const {
+	model: reporterOrigin,
+	def: reporterOriginDef,
+} = useMkSelect({
+	items: [
+		{ label: i18n.ts.all, value: 'combined' },
+		{ label: i18n.ts.local, value: 'local' },
+		{ label: i18n.ts.remote, value: 'remote' },
+	],
+	initialValue: 'combined',
+});
+const {
+	model: targetUserOrigin,
+	def: targetUserOriginDef,
+} = useMkSelect({
+	items: [
+		{ label: i18n.ts.all, value: 'combined' },
+		{ label: i18n.ts.local, value: 'local' },
+		{ label: i18n.ts.remote, value: 'remote' },
+	],
+	initialValue: 'combined',
+});
+const searchUsername = ref('');
+const searchHost = ref('');
 
 const tab = ref('list');
 const editableResolver = ref<null | string>(null);
@@ -144,20 +164,18 @@ const editingResolver = ref<{
 	previousExpiresAt?: string;
 }>(defaultResolver);
 
-const pagination = {
-	endpoint: 'admin/abuse-user-reports' as const,
+const paginator = markRaw(new Paginator('admin/abuse-user-reports', {
 	limit: 10,
-	params: computed(() => ({
+	computedParams: computed(() => ({
 		state: state.value,
 		reporterOrigin: reporterOrigin.value,
 		targetUserOrigin: targetUserOrigin.value,
 	})),
-};
+}));
 
-const resolverPagination = {
-	endpoint: 'admin/abuse-report-resolver/list' as const,
+const resolverPaginator = markRaw(new Paginator('admin/abuse-report-resolver/list', {
 	limit: 10,
-};
+}));
 
 /*
 const searchUsernameEl = ref(null);
@@ -165,11 +183,7 @@ const searchHostEl = ref(null);
  */
 
 function resolved(reportId) {
-	reports.value?.removeItem(reportId);
-}
-
-function closeTutorial() {
-	store.set('abusesTutorial', false);
+	paginator.removeItem(reportId);
 }
 
 function edit(id: string) {
@@ -196,7 +210,7 @@ function deleteResolver(id: string): void {
 	os.apiWithDialog('admin/abuse-report-resolver/delete', {
 		resolverId: id,
 	}).then(() => {
-		resolverPagingComponent.value.reload();
+		resolverPaginator.reload();
 	});
 }
 
@@ -209,8 +223,7 @@ function create(): void {
 		expiresAt: newResolver.value.expiresAt,
 		forward: newResolver.value.forward,
 	}).then(() => {
-		folderComponent.value.toggle();
-		resolverPagingComponent.value.reload();
+		resolverPaginator.reload();
 		newResolver.value.name = '';
 		newResolver.value.targetUserPattern = '';
 		newResolver.value.reporterPattern = '';

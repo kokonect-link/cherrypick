@@ -216,6 +216,10 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
+		canSearchUsers: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 		canUseTranslator: {
 			type: 'boolean',
 			optional: false, nullable: false,
@@ -235,6 +239,14 @@ export const packedRolePoliciesSchema = {
 		maxFileSizeMb: {
 			type: 'integer',
 			optional: false, nullable: false,
+		},
+		uploadableFileTypes: {
+			type: 'array',
+			optional: false, nullable: false,
+			items: {
+				type: 'string',
+				optional: false, nullable: false,
+			},
 		},
 		alwaysMarkNsfw: {
 			type: 'boolean',
@@ -304,16 +316,8 @@ export const packedRolePoliciesSchema = {
 			type: 'boolean',
 			optional: false, nullable: false,
 		},
-		noteDraftLimit: {
-			type: 'integer',
-			optional: false, nullable: false,
-		},
 		canEditNote: {
 			type: 'boolean',
-			optional: false, nullable: false,
-		},
-		scheduleNoteMax: {
-			type: 'integer',
 			optional: false, nullable: false,
 		},
 		canSetFederationAvatarShape: {
@@ -324,6 +328,18 @@ export const packedRolePoliciesSchema = {
 			type: 'string',
 			optional: false, nullable: false,
 			enum: ['available', 'readonly', 'unavailable'],
+		},
+		noteDraftLimit: {
+			type: 'integer',
+			optional: false, nullable: false,
+		},
+		scheduledNoteLimit: {
+			type: 'integer',
+			optional: false, nullable: false,
+		},
+		watermarkAvailable: {
+			type: 'boolean',
+			optional: false, nullable: false,
 		},
 	},
 } as const;

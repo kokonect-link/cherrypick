@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</p>
 		<p :class="$style.disabledDescription">{{ i18n.ts._disabledTimeline.description }}</p>
 	</div>
-	<MkTimeline
+	<MkStreamingNotesTimeline
 		v-else-if="column.tl"
 		ref="timeline"
 		:key="column.tl + withRenotes + withReplies + onlyFiles + onlyCats"
@@ -27,7 +27,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:withSensitive="withSensitive"
 		:onlyFiles="onlyFiles"
 		:onlyCats="onlyCats"
-		@note="onNote"
+		:sound="true"
+		:customSound="soundSetting"
 	/>
 </XColumn>
 </template>
@@ -39,12 +40,11 @@ import type { Column } from '@/deck.js';
 import type { MenuItem } from '@/types/menu.js';
 import type { SoundStore } from '@/preferences/def.js';
 import { removeColumn, updateColumn } from '@/deck.js';
-import MkTimeline from '@/components/MkTimeline.vue';
+import MkStreamingNotesTimeline from '@/components/MkStreamingNotesTimeline.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { hasWithReplies, isAvailableBasicTimeline, basicTimelineIconClass } from '@/timelines.js';
 import { soundSettingsButton } from '@/ui/deck/tl-note-notification.js';
-import * as sound from '@/utility/sound.js';
 
 const props = defineProps<{
 	column: Column;
@@ -104,15 +104,15 @@ async function setType() {
 	const { canceled, result: src } = await os.select({
 		title: i18n.ts.timeline,
 		items: [{
-			value: 'home' as const, text: i18n.ts._timelines.home,
+			value: 'home', label: i18n.ts._timelines.home,
 		}, {
-			value: 'local' as const, text: i18n.ts._timelines.local,
+			value: 'local', label: i18n.ts._timelines.local,
 		}, {
-			value: 'social' as const, text: i18n.ts._timelines.social,
+			value: 'social', label: i18n.ts._timelines.social,
 		}, {
-			value: 'global' as const, text: i18n.ts._timelines.global,
+			value: 'global', label: i18n.ts._timelines.global,
 		}, {
-			value: 'bubble' as const, text: i18n.ts._timelines.bubble,
+			value: 'bubble', label: i18n.ts._timelines.bubble,
 		}],
 	});
 	if (canceled) {
@@ -125,10 +125,6 @@ async function setType() {
 	updateColumn(props.column.id, {
 		tl: src ?? undefined,
 	});
-}
-
-function onNote() {
-	sound.playMisskeySfxFile(soundSetting.value);
 }
 
 const menu = computed<MenuItem[]>(() => {

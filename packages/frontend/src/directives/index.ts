@@ -14,7 +14,6 @@ import clickAnime from './click-anime.js';
 import panel from './panel.js';
 import adaptiveBorder from './adaptive-border.js';
 import adaptiveBg from './adaptive-bg.js';
-import vibrate from './vibrate.js';
 import type { App } from 'vue';
 
 export default function(app: App) {
@@ -36,5 +35,4 @@ export const directives = {
 	'panel': panel,
 	'adaptive-border': adaptiveBorder,
 	'adaptive-bg': adaptiveBg,
-	'vibrate': vibrate,
 };

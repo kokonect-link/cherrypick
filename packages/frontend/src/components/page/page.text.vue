@@ -17,12 +17,12 @@ import { defineAsyncComponent } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
 import { extractUrlFromMfm } from '@/utility/extract-url-from-mfm.js';
-import { isEnabledUrlPreview } from '@/instance.js';
+import { isEnabledUrlPreview } from '@/utility/url-preview.js';
 
 const MkUrlPreview = defineAsyncComponent(() => import('@/components/MkUrlPreview.vue'));
 
 const props = defineProps<{
-	block: Misskey.entities.PageBlock,
+	block: Extract<Misskey.entities.PageBlock, { type: 'text' }>,
 	page: Misskey.entities.Page,
 }>();
 

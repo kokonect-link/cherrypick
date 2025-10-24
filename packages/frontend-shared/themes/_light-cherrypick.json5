@@ -64,7 +64,6 @@
 		switchOnFg: '@fgOnAccent',
 		inputBorder: 'rgba(0, 0, 0, 0.1)',
 		inputBorderHover: 'rgba(0, 0, 0, 0.2)',
-		driveFolderBg: ':alpha<0.3<@accent',
 		badge: '#ffa9c3',
 		patron: '#a3faff',
 		messageBg: '#dedede',

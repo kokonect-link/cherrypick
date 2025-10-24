@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 800px;">
-		<MkNotes ref="notes" class="" :pagination="pagination"/>
+		<MkNotesTimeline :paginator="paginator"/>
 	</div>
 	<template v-if="$i" #footer>
 		<div :class="$style.footer">
@@ -19,8 +19,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import MkNotes from '@/components/MkNotes.vue';
+import { computed, markRaw, ref } from 'vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkButton from '@/components/MkButton.vue';
 import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
@@ -28,19 +28,18 @@ import { $i } from '@/i.js';
 import { store } from '@/store.js';
 import * as os from '@/os.js';
 import { genEmbedCode } from '@/utility/get-embed-code.js';
+import { Paginator } from '@/utility/paginator.js';
 
 const props = defineProps<{
 	tag: string;
 }>();
 
-const pagination = {
-	endpoint: 'notes/search-by-tag' as const,
+const paginator = markRaw(new Paginator('notes/search-by-tag', {
 	limit: 10,
-	params: computed(() => ({
+	computedParams: computed(() => ({
 		tag: props.tag,
 	})),
-};
-const notes = ref<InstanceType<typeof MkNotes>>();
+}));
 
 async function post() {
 	store.set('postFormHashtags', props.tag);
@@ -48,12 +47,12 @@ async function post() {
 	await os.post();
 	store.set('postFormHashtags', '');
 	store.set('postFormWithHashtags', false);
-	notes.value?.pagingComponent?.reload();
+	paginator.reload();
 }
 
 const headerActions = computed(() => [{
 	icon: 'ti ti-dots',
-	label: i18n.ts.more,
+	text: i18n.ts.more,
 	handler: (ev: MouseEvent) => {
 		os.popupMenu([{
 			text: i18n.ts.embed,

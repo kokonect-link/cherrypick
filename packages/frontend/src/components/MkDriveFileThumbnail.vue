@@ -11,18 +11,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 		[$style.large]: large,
 	}]"
 >
-	<ImgWithBlurhash
-		v-if="isThumbnailAvailable"
+	<MkImgWithBlurhash
+		v-if="isThumbnailAvailable && prefer.s.enableHighQualityImagePlaceholders"
 		:hash="file.blurhash"
 		:src="url"
 		:alt="file.comment"
 		:title="file.name"
+		:class="$style.thumbnail"
 		:cover="fit !== 'contain'"
 		:forceBlurhash="forceBlurhash"
 		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+	/>
+	<img
+		v-else-if="isThumbnailAvailable && file.thumbnailUrl != null"
+		:src="url"
+		:alt="file.name"
+		:title="file.name"
+		:class="$style.thumbnail"
+		:style="{ objectFit: fit }"
 	/>
 	<i v-else-if="is === 'image'" class="ti ti-photo" :class="$style.icon"></i>
 	<i v-else-if="is === 'video'" class="ti ti-video" :class="$style.icon"></i>
@@ -40,7 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import { prefer } from '@/preferences.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 
@@ -152,5 +161,9 @@ onUnmounted(() => {
 
 .large .icon {
 	font-size: 40px;
+}
+
+.thumbnail {
+	width: 100%;
 }
 </style>

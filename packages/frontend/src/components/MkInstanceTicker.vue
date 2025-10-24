@@ -85,13 +85,19 @@ $height: 2ex;
 	font-size: 0.9em;
 	font-weight: bold;
 	white-space: nowrap;
+	//overflow: visible;
+
+	// text-shadowは重いから使うな
+	//color: var(--MI_THEME-fg);
+	//-webkit-text-stroke: var(--MI_THEME-panel) .225em;
+	paint-order: stroke fill;
+
 	overflow: hidden;
   overflow-wrap: anywhere;
   max-width: 300px;
   text-overflow: ellipsis;
 	padding: 1px;
 	-webkit-text-stroke: 3px #fff;
-	paint-order: stroke fill;
 
   &::-webkit-scrollbar {
     display: none;

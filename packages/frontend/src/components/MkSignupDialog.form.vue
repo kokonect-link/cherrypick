@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<div class="_spacer" style="--MI_SPACER-min: 20px; --MI_SPACER-max: 32px;">
 		<form class="_gaps_m" autocomplete="new-password" @submit.prevent="onSubmit">
-			<MkInput v-if="instance.disableRegistration" v-model="invitationCode" type="text" :spellcheck="false" required>
+			<MkInput v-if="instance.disableRegistration" v-model="invitationCode" type="text" :spellcheck="false" required data-cy-signup-invitation-code>
 				<template #label>{{ i18n.ts.invitationCode }}</template>
 				<template #prefix><i class="ti ti-key"></i></template>
 			</MkInput>
@@ -74,10 +74,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkCaptcha v-if="instance.enableMcaptcha" ref="mcaptcha" v-model="mCaptchaResponse" :class="$style.captcha" provider="mcaptcha" :sitekey="instance.mcaptchaSiteKey" :instanceUrl="instance.mcaptchaInstanceUrl"/>
 			<MkCaptcha v-if="instance.enableRecaptcha" ref="recaptcha" v-model="reCaptchaResponse" :class="$style.captcha" provider="recaptcha" :sitekey="instance.recaptchaSiteKey"/>
 			<MkCaptcha v-if="instance.enableTurnstile" ref="turnstile" v-model="turnstileResponse" :class="$style.captcha" provider="turnstile" :sitekey="instance.turnstileSiteKey"/>
-			<MkCaptcha v-if="instance.enableTestcaptcha" ref="testcaptcha" v-model="testcaptchaResponse" :class="$style.captcha" provider="testcaptcha"/>
+			<MkCaptcha v-if="instance.enableTestcaptcha" ref="testcaptcha" v-model="testcaptchaResponse" :class="$style.captcha" provider="testcaptcha" :sitekey="null"/>
 			<div class="_buttonsCenter">
 				<MkButton inline rounded @click="goBack"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-				<MkButton type="submit" :disabled="shouldDisableSubmitting" inline gradate rounded data-cy-signup-submit>
+				<MkButton type="submit" :disabled="shouldDisableSubmitting" inline gradate rounded data-cy-signup-submit style="margin: 0 auto;">
 					<template v-if="submitting">
 						<MkLoading :em="true" :colored="false"/>
 					</template>
@@ -150,6 +150,7 @@ const shouldDisableSubmitting = computed((): boolean => {
 		instance.enableTurnstile && !turnstileResponse.value ||
 		instance.enableTestcaptcha && !testcaptchaResponse.value ||
 		instance.emailRequiredForSignup && emailState.value !== 'ok' ||
+		instance.disableRegistration && invitationCode.value === '' ||
 		usernameState.value !== 'ok' ||
 		passwordRetypeState.value !== 'match';
 });

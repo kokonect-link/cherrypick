@@ -4,8 +4,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="_spacer" style="--MI_SPACER-w: 700px;">
-	<MkPagination v-slot="{items}" ref="list" :pagination="pagination">
+<div style="--MI_SPACER-w: 700px;">
+	<MkPagination v-slot="{items}" :paginator="paginator" withControl>
 		<div v-for="item in items" :key="item.id" :to="`/clips/${item.id}`" class="_panel _margin">
 			<div :class="$style.header">
 				<MkAvatar :class="$style.avatar" :user="user"/>
@@ -19,23 +19,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, markRaw } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkPagination from '@/components/MkPagination.vue';
 import MkNote from '@/components/MkNote.vue';
 import MkReactionIcon from '@/components/MkReactionIcon.vue';
+import { Paginator } from '@/utility/paginator.js';
 
 const props = defineProps<{
 	user: Misskey.entities.User;
 }>();
 
-const pagination = {
-	endpoint: 'users/reactions' as const,
+const paginator = markRaw(new Paginator('users/reactions', {
 	limit: 20,
-	params: computed(() => ({
+	computedParams: computed(() => ({
 		userId: props.user.id,
 	})),
-};
+}));
 </script>
 
 <style lang="scss" module>

@@ -5,28 +5,28 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl }]">
-	<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
+	<button v-if="store.s.showHomeButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]">
 			<i :class="$style.itemIcon" class="ti ti-home"></i>
-			<span v-if="queue > 0" :class="$style.itemIndicatorHome">
+			<span v-if="queuedAheadItemsCount > 0" :class="$style.itemIndicatorHome">
 				<i class="_indicatorCircle"></i>
 			</span>
 		</div>
 	</button>
 
-	<button v-if="store.s.showExploreButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/explore')">
+	<button v-if="store.s.showExploreButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/explore')">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]">
 			<i :class="$style.itemIcon" class="ti ti-hash"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showSearchButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/search')">
+	<button v-if="store.s.showSearchButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/search')">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]">
 			<i :class="$style.itemIcon" class="ti ti-search"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showNotificationButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/my/notifications')">
+	<button v-if="store.s.showNotificationButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/my/notifications')">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]">
 			<i :class="$style.itemIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.itemIndicator" class="_blink">
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/chat')">
+	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" :class="$style.item" class="_button" @click="mainRouter.push('/chat')">
 		<div :class="[$style.itemInner, { [$style.active]: ['chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name) }]">
 			<i :class="$style.itemIcon" class="ti ti-messages"></i>
 			<span v-if="$i?.hasUnreadChatMessages" :class="$style.itemIndicator" class="_blink">
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showWidgetButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="widgetsShowing = true">
+	<button :class="$style.item" class="_button" @click="widgetsShowing = true">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-apps"></i>
 		</div>
@@ -64,7 +64,7 @@ import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 
 const { showEl } = scrollToVisibility();
-const queue = ref(0);
+const queuedAheadItemsCount = ref(0);
 const longTouchNavHome = ref(false);
 
 const widgetsShowing = defineModel<boolean>('widgetsShowing');
@@ -91,7 +91,7 @@ function closeAccountMenu() {
 }
 
 function queueUpdated(q: number): void {
-	queue.value = q;
+	queuedAheadItemsCount.value = q;
 }
 
 watch(rootEl, () => {

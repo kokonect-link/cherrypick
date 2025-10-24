@@ -18,10 +18,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkFolder>
 			<template #label>{{ i18n.ts.options }}</template>
 
-			<MkSelect v-model="eventSort" small>
+			<MkSelect v-model="eventSort" :items="eventSortDef" small>
 				<template #label>{{ i18n.ts.sort }}</template>
-				<option value="startDate">{{ i18n.ts._event.startDate }}</option>
-				<option value="createdAt">{{ i18n.ts.reverseChronological }}</option>
 			</MkSelect>
 
 			<section>
@@ -38,17 +36,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 
-	<MkFoldableSection v-if="eventPagination">
+	<MkFoldableSection v-if="paginator">
 		<template #header>{{ i18n.ts.searchResult }}</template>
-		<MkNotes :key="key" :pagination="eventPagination" :getDate="eventSort === 'startDate' ? note => note.event.start : undefined"/>
+		<MkNotesTimeline :key="key" :paginator="paginator" :getDate="eventSort === 'startDate' ? note => note.event.start : undefined"/>
 	</MkFoldableSection>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import type { Paging } from '@/components/MkPagination.vue';
-import MkNotes from '@/components/MkNotes.vue';
+import { computed, markRaw, ref, shallowRef } from 'vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -56,9 +53,19 @@ import MkSelect from '@/components/MkSelect.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import { i18n } from '@/i18n.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
+import { Paginator } from '@/utility/paginator.js';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 
 const key = ref(0);
-const eventPagination = ref<Paging<'notes/events/search'>>();
+const paginator = shallowRef<Paginator<'notes/events/search'> | null>(null);
+
+const eventSortDef = computed(() => {
+	const items = [
+		{ label: i18n.ts._event.startDate, value: 'startDate' },
+		{ label: i18n.ts.reverseChronological, value: 'createdAt' },
+	] satisfies MkSelectItem[];
+	return items;
+});
 
 const searchQuery = ref('');
 const searchOrigin = ref('combined');
@@ -75,8 +82,7 @@ async function search(): Promise<void> {
 	// only notes/users search require the query string
 	if (query == null || query === '') return;
 
-	eventPagination.value = {
-		endpoint: 'notes/events/search',
+	paginator.value = markRaw(new Paginator('notes/events/search', {
 		limit: 10,
 		offsetMode: true,
 		params: {
@@ -86,7 +92,7 @@ async function search(): Promise<void> {
 			untilDate: endDate.value ? (new Date(endDate.value)).getTime() + 1000 * 3600 * 24 : undefined,
 			origin: searchOrigin.value,
 		},
-	};
+	}));
 
 	key.value++;
 }

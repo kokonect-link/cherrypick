@@ -85,6 +85,7 @@ import XStats from './overview.stats.vue';
 import XRetention from './overview.retention.vue';
 import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
+import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 import type { InstanceForPie } from './overview.pie.vue';
 import * as os from '@/os.js';
 import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
@@ -92,7 +93,7 @@ import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
+import { genId } from '@/utility/id.js';
 
 const rootEl = useTemplateRef('rootEl');
 const serverInfo = ref<Misskey.entities.ServerInfoResponse | null>(null);
@@ -103,7 +104,7 @@ const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
 const federationSubActiveDiff = ref<number | null>(null);
 const newUsers = ref<Misskey.entities.UserDetailed[] | null>(null);
-const activeInstances = shallowRef<Misskey.entities.FederationInstance | null>(null);
+const activeInstances = shallowRef<Misskey.entities.FederationInstancesResponse | null>(null);
 const queueStatsConnection = markRaw(useStream().useChannel('queueStats'));
 const connection = useStream().useChannel('serverStats');
 const now = new Date();
@@ -186,7 +187,7 @@ onMounted(async () => {
 
 	nextTick(() => {
 		queueStatsConnection.send('requestLog', {
-			id: Math.random().toString().substring(2, 10),
+			id: genId(),
 			length: 100,
 		});
 	});

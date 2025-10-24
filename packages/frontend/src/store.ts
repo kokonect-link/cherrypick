@@ -10,6 +10,7 @@ import darkTheme from '@@/themes/d-cherrypick.json5';
 import { hemisphere } from '@@/js/intl-const.js';
 import type { DeviceKind } from '@/utility/device-kind.js';
 import type { Plugin } from '@/plugin.js';
+import type { TIPS } from '@/tips.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { Pizzax } from '@/lib/pizzax.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
@@ -23,26 +24,13 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'account',
 		default: 0,
 	},
-	timelineTutorials: {
-		where: 'account',
-		default: {
-			home: false,
-			local: false,
-			social: false,
-			global: false,
-		},
-	},
-	abusesTutorial: {
-		where: 'account',
-		default: false,
-	},
-	readDriveTip: {
-		where: 'account',
-		default: false,
+	tips: {
+		where: 'device',
+		default: {} as Partial<Record<typeof TIPS[number], boolean>>, // true = 既読
 	},
 	memo: {
 		where: 'account',
-		default: null,
+		default: null as string | null,
 	},
 	reactionAcceptance: {
 		where: 'account',
@@ -78,6 +66,10 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
+	realtimeMode: {
+		where: 'device',
+		default: true,
+	},
 	recentlyUsedEmojis: {
 		where: 'device',
 		default: [] as string[],
@@ -112,7 +104,7 @@ export const store = markRaw(new Pizzax('base', {
 	},
 	accountInfos: {
 		where: 'device',
-		default: {} as Record<string, Misskey.entities.User>, // host/userId, user
+		default: {} as Record<string, Misskey.entities.MeDetailed>, // host/userId, user
 	},
 
 	enablePreferencesAutoCloudBackup: {
@@ -377,10 +369,6 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
-	disableStreamingTimeline: {
-		where: 'device',
-		default: false,
-	},
 	useGroupedNotifications: {
 		where: 'device',
 		default: true,
@@ -392,7 +380,7 @@ export const store = markRaw(new Pizzax('base', {
 			avatar: false,
 			urlPreview: false,
 			code: false,
-		} as Record<string, boolean>,
+		},
 	},
 	enableSeasonalScreenEffect: {
 		where: 'device',
@@ -752,24 +740,6 @@ export const store = markRaw(new Pizzax('base', {
 		default: true,
 	},
 
-	// - Settings/Sounds & Vibrations
-	vibrate: {
-		where: 'device',
-		default: !/ipad|iphone/.test(navigator.userAgent.toLowerCase()) && window.navigator.vibrate,
-	},
-	vibrate_note: {
-		where: 'device',
-		default: true,
-	},
-	vibrate_notification: {
-		where: 'device',
-		default: true,
-	},
-	vibrate_system: {
-		where: 'device',
-		default: true,
-	},
-
 	// - Settings/CherryPick
 	nicknameEnabled: {
 		where: 'account',
@@ -845,12 +815,6 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
 	},
-
-	// - Settings/Drive
-	imageCompressionMode: {
-		where: 'account',
-		default: 'resizeCompressLossy' as 'resizeCompress' | 'noResizeCompress' | 'resizeCompressLossy' | 'noResizeCompressLossy' | null,
-	},
 	// #endregion
 }));
 
@@ -872,7 +836,7 @@ export class ColdDeviceStorage {
 		lightTheme, // TODO: 消す(preferに移行済みのため)
 		darkTheme, // TODO: 消す(preferに移行済みのため)
 		syncDeviceDarkMode: true, // TODO: 消す(preferに移行済みのため)
-		plugins: [] as Plugin[], // TODO: 消す(preferに移行済みのため)
+		plugins: [] as (Omit<Plugin, 'installId'> & { id: string })[], // TODO: 消す(preferに移行済みのため)
 	};
 
 	public static watchers: Watcher[] = [];

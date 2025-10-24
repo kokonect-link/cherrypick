@@ -13,11 +13,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:leaveToClass="$style.transition_change_leaveTo"
 			mode="default"
 		>
-			<MarqueeText :key="key" :duration="marqueeDuration" :reverse="marqueeReverse">
+			<MkMarqueeText :key="key" :duration="marqueeDuration" :reverse="marqueeReverse">
 				<span v-for="item in items" :class="$style.item">
 					<a :href="item.link" rel="nofollow noopener" target="_blank" :title="item.title">{{ item.title }}</a><span :class="$style.divider"></span>
 				</span>
-			</MarqueeText>
+			</MkMarqueeText>
 		</Transition>
 	</template>
 	<template v-else-if="display === 'oneByOne'">
@@ -30,17 +30,17 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
+import MkMarqueeText from '@/components/MkMarqueeText.vue';
 import { shuffle } from '@/utility/shuffle.js';
-import MarqueeText from '@/components/MkMarquee.vue';
 
 const props = defineProps<{
-	url?: string;
+	url: string;
 	shuffle?: boolean;
 	display?: 'marquee' | 'oneByOne';
 	marqueeDuration?: number;
 	marqueeReverse?: boolean;
 	oneByOneInterval?: number;
-	refreshIntervalSec?: number;
+	refreshIntervalSec: number;
 }>();
 
 const items = ref<Misskey.entities.FetchRssResponse['items']>([]);

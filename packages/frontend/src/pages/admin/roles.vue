@@ -73,21 +73,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSwitch>
 					</MkFolder>
 
-					<MkFolder v-if="matchQuery([i18n.ts._role._options.scheduleNoteMax, 'scheduleNoteMax'])">
-						<template #label>{{ i18n.ts._role._options.scheduleNoteMax }}</template>
-						<template #suffix>{{ policies.scheduleNoteMax }}</template>
-						<MkInput v-model="policies.scheduleNoteMax" type="number">
-						</MkInput>
-					</MkFolder>
-
 					<MkFolder v-if="matchQuery([i18n.ts._role._options.chatAvailability, 'chatAvailability'])">
 						<template #label>{{ i18n.ts._role._options.chatAvailability }}</template>
 						<template #suffix>{{ policies.chatAvailability === 'available' ? i18n.ts.yes : policies.chatAvailability === 'readonly' ? i18n.ts.readonly : i18n.ts.no }}</template>
-						<MkSelect v-model="policies.chatAvailability">
+						<MkSelect
+							v-model="policies.chatAvailability"
+							:items="[
+								{ label: i18n.ts.enabled, value: 'available' },
+								{ label: i18n.ts.readonly, value: 'readonly' },
+								{ label: i18n.ts.disabled, value: 'unavailable' },
+							]"
+						>
 							<template #label>{{ i18n.ts.enable }}</template>
-							<option value="available">{{ i18n.ts.enabled }}</option>
-							<option value="readonly">{{ i18n.ts.readonly }}</option>
-							<option value="unavailable">{{ i18n.ts.disabled }}</option>
 						</MkSelect>
 					</MkFolder>
 
@@ -153,6 +150,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkSwitch>
 					</MkFolder>
 
+					<MkFolder v-if="matchQuery([i18n.ts._role._options.canSearchUsers, 'canSearchUsers'])">
+						<template #label>{{ i18n.ts._role._options.canSearchUsers }}</template>
+						<template #suffix>{{ policies.canSearchUsers ? i18n.ts.yes : i18n.ts.no }}</template>
+						<MkSwitch v-model="policies.canSearchUsers">
+							<template #label>{{ i18n.ts.enable }}</template>
+						</MkSwitch>
+					</MkFolder>
+
 					<MkFolder v-if="matchQuery([i18n.ts._role._options.canUseTranslator, 'canUseTranslator'])">
 						<template #label>{{ i18n.ts._role._options.canUseTranslator }}</template>
 						<template #suffix>{{ policies.canUseTranslator ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -182,7 +187,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template #suffix>{{ policies.maxFileSizeMb }}MB</template>
 						<MkInput v-model="policies.maxFileSizeMb" type="number">
 							<template #suffix>MB</template>
+							<template #caption>
+								<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._role._options.maxFileSize_caption }}</div>
+							</template>
 						</MkInput>
+					</MkFolder>
+
+					<MkFolder v-if="matchQuery([i18n.ts._role._options.uploadableFileTypes, 'uploadableFileTypes'])">
+						<template #label>{{ i18n.ts._role._options.uploadableFileTypes }}</template>
+						<template #suffix>...</template>
+						<MkTextarea :modelValue="policies.uploadableFileTypes.join('\n')" @update:modelValue="v => policies.uploadableFileTypes = v.split('\n')">
+							<template #caption>
+								<div>{{ i18n.ts._role._options.uploadableFileTypes_caption }}</div>
+								<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.tsx._role._options.uploadableFileTypes_caption2({ x: 'application/octet-stream' }) }}</div>
+							</template>
+						</MkTextarea>
 					</MkFolder>
 
 					<MkFolder v-if="matchQuery([i18n.ts._role._options.alwaysMarkNsfw, 'alwaysMarkNsfw'])">
@@ -320,6 +339,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</MkInput>
 					</MkFolder>
 
+					<MkFolder v-if="matchQuery([i18n.ts._role._options.scheduledNoteLimit, 'scheduledNoteLimit'])">
+						<template #label>{{ i18n.ts._role._options.scheduledNoteLimit }}</template>
+						<template #suffix>{{ policies.scheduledNoteLimit }}</template>
+						<MkInput v-model="policies.scheduledNoteLimit" type="number" :min="0">
+						</MkInput>
+					</MkFolder>
+
+					<MkFolder v-if="matchQuery([i18n.ts._role._options.watermarkAvailable, 'watermarkAvailable'])">
+						<template #label>{{ i18n.ts._role._options.watermarkAvailable }}</template>
+						<template #suffix>{{ policies.watermarkAvailable ? i18n.ts.yes : i18n.ts.no }}</template>
+						<MkSwitch v-model="policies.watermarkAvailable">
+							<template #label>{{ i18n.ts.enable }}</template>
+						</MkSwitch>
+					</MkFolder>
+
 					<MkFolder v-if="matchQuery([i18n.ts._role._options.canSetFederationAvatarShape, 'canSetFederationAvatarShape'])">
 						<template #label>{{ i18n.ts._role._options.canSetFederationAvatarShape }}</template>
 						<template #suffix>{{ policies.canSetFederationAvatarShape ? i18n.ts.yes : i18n.ts.no }}</template>
@@ -350,7 +384,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue';
-import { ROLE_POLICIES } from '@@/js/const.js';
+import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import MkFolder from '@/components/MkFolder.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -366,6 +400,8 @@ import { definePage } from '@/page.js';
 import { instance, fetchInstance } from '@/instance.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { useRouter } from '@/router.js';
+import { deepClone } from '@/utility/clone.js';
+import MkTextarea from '@/components/MkTextarea.vue';
 
 const router = useRouter();
 const baseRoleQ = ref('');
@@ -373,10 +409,7 @@ const baseRoleQEl = ref(null);
 
 const roles = await misskeyApi('admin/roles/list');
 
-const policies = reactive<Record<typeof ROLE_POLICIES[number], any>>({});
-for (const ROLE_POLICY of ROLE_POLICIES) {
-	policies[ROLE_POLICY] = instance.policies[ROLE_POLICY];
-}
+const policies = reactive(deepClone(instance.policies));
 
 const avatarDecorationLimit = computed({
 	get: () => Math.min(16, Math.max(0, policies.avatarDecorationLimit)),
@@ -396,6 +429,7 @@ function matchQuery(keywords: string[]): boolean {
 
 async function updateBaseRole() {
 	await os.apiWithDialog('admin/roles/update-default-policies', {
+		//@ts-expect-error cherrypick-js側の型定義が不十分
 		policies,
 	});
 	fetchInstance(true);

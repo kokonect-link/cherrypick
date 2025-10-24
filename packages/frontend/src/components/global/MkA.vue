@@ -4,10 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<a v-if="noteClick" ref="el" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-if="noteClick" ref="el" :href="to" :class="active ? activeClass : null" @click.prevent.stop="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
-<a v-else ref="el" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
+<a v-else ref="el" :href="to" :class="active ? activeClass : null" @click.prevent="nav" @contextmenu.prevent.stop="onContextmenu">
 	<slot></slot>
 </a>
 </template>
@@ -23,7 +23,7 @@ import * as os from '@/os.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { i18n } from '@/i18n.js';
 import { useRouter } from '@/router.js';
-import { prefer } from '@/preferences.js';
+import { haptic } from '@/utility/haptic.js';
 
 const props = withDefaults(defineProps<{
 	to: string;
@@ -70,7 +70,7 @@ function onContextmenu(ev) {
 		icon: 'ti ti-player-eject',
 		text: i18n.ts.showInPage,
 		action: () => {
-			router.push(props.to, 'forcePage');
+			router.pushByPath(props.to, 'forcePage');
 		},
 	}, { type: 'divider' }, {
 		icon: 'ti ti-external-link',
@@ -92,6 +92,13 @@ function openWindow() {
 }
 
 function nav(ev: MouseEvent) {
+	haptic();
+
+	// 制御キーとの組み合わせは無視（shiftを除く）
+	if (ev.metaKey || ev.altKey || ev.ctrlKey) return;
+
+	ev.preventDefault();
+
 	if (behavior === 'browser') {
 		window.location.href = props.to;
 		return;
@@ -105,6 +112,6 @@ function nav(ev: MouseEvent) {
 		return openWindow();
 	}
 
-	router.push(props.to, ev.ctrlKey ? 'forcePage' : null);
+	router.pushByPath(props.to, ev.ctrlKey ? 'forcePage' : null);
 }
 </script>

@@ -13,8 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span>Switch is now {{ flag ? 'on' : 'off' }}</span>
 		</MkSwitch>
 		<div :class="$style.preview__content1__input">
-			<MkRadio v-model="radio" value="misskey">Misskey</MkRadio>
 			<MkRadio v-model="radio" value="cherrypick">CherryPick</MkRadio>
+			<MkRadio v-model="radio" value="misskey">Misskey</MkRadio>
 			<MkRadio v-model="radio" value="mastodon">Mastodon</MkRadio>
 			<MkRadio v-model="radio" value="pleroma">Pleroma</MkRadio>
 		</div>
@@ -45,6 +45,7 @@ import MkTextarea from '@/components/MkTextarea.vue';
 import MkRadio from '@/components/MkRadio.vue';
 import * as os from '@/os.js';
 import { $i } from '@/i.js';
+import { chooseDriveFile } from '@/utility/drive.js';
 
 const text = ref('');
 const flag = ref(true);
@@ -80,7 +81,9 @@ const openForm = async () => {
 };
 
 const openDrive = async () => {
-	await os.selectDriveFile(false);
+	await chooseDriveFile({
+		multiple: false,
+	});
 };
 
 const selectUser = async () => {

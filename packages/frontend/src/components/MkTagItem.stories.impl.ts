@@ -3,9 +3,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { action } from '@storybook/addon-actions';
-import MkTagItem from './MkTagItem.vue';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable import/no-default-export */
+import { action } from 'storybook/actions';
 import type { StoryObj } from '@storybook/vue3';
+import MkTagItem from './MkTagItem.vue';
 
 export const Default = {
 	render(args) {
