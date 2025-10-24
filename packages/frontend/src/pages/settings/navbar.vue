@@ -186,8 +186,9 @@ async function addItem(ev: MouseEvent) {
 		})), {
 			type: 'button',
 			text: i18n.ts.divider,
+			icon: 'ti ti-line-dashed',
 			// Note: アイコン指定しないとテキストの位置が他の項目とずれる
-			icon: 'ti',
+			//icon: 'ti',
 			action() {
 				items.value = [...items.value, {
 					id: genId(),
