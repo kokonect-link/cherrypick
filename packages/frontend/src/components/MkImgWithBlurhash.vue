@@ -87,8 +87,8 @@ const canvasPromise = new Promise<WorkerMultiDispatch | HTMLCanvasElement>(resol
 
 <script lang="ts" setup>
 import { computed, nextTick, onMounted, onUnmounted, useTemplateRef, watch, ref } from 'vue';
-import { genId } from '@/utility/id.js';
 import { render } from 'buraha';
+import { genId } from '@/utility/id.js';
 import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<{

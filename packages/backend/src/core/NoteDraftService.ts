@@ -4,8 +4,8 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import type { noteVisibilities, noteReactionAcceptances } from '@/types.js';
 import { In } from 'typeorm';
+import type { noteVisibilities, noteReactionAcceptances } from '@/types.js';
 import { DI } from '@/di-symbols.js';
 import type { MiNoteDraft, NoteDraftsRepository, MiNote, MiDriveFile, MiChannel, UsersRepository, DriveFilesRepository, NotesRepository, BlockingsRepository, ChannelsRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';

@@ -6,8 +6,8 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable import/no-default-export */
 import { action } from 'storybook/actions';
-import type { StoryObj } from '@storybook/vue3';
 import MkTagItem from './MkTagItem.vue';
+import type { StoryObj } from '@storybook/vue3';
 
 export const Default = {
 	render(args) {

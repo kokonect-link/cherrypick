@@ -11,7 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		[$style.outerStyle]: !codeEditor && withOuterStyle,
 		[$style.dark]: darkMode,
 		[$style.light]: !darkMode,
-	}]" v-html="html"></div>
+	}]"
+	v-html="html"
+></div>
 </template>
 
 <script lang="ts" setup>

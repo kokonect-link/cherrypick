@@ -34,10 +34,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, onMounted, ref, watch } from 'vue';
 import MkInput from './MkInput.vue';
 import MkSelect from './MkSelect.vue';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import { formatDateTimeString } from '@/utility/format-time-string.js';
 import { addTime } from '@/utility/time.js';
 import { i18n } from '@/i18n.js';
-import type { MkSelectItem } from '@/components/MkSelect.vue';
 
 export type DeleteScheduleEditorModelValue = {
 	deleteAt: number | null;

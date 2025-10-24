@@ -98,7 +98,7 @@ async function startUser() {
 		router.push('/chat/user/:userId', {
 			params: {
 				userId: user.id,
-			}
+			},
 		});
 	});
 }
@@ -117,7 +117,7 @@ async function createRoom() {
 	router.push('/chat/room/:roomId', {
 		params: {
 			roomId: room.id,
-		}
+		},
 	});
 }
 

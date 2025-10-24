@@ -57,10 +57,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { onMounted, computed, useTemplateRef } from 'vue';
 import { Chart } from 'chart.js';
-import MkSelect from '@/components/MkSelect.vue';
 import type { MkSelectItem, ItemOption } from '@/components/MkSelect.vue';
-import MkChart from '@/components/MkChart.vue';
 import type { ChartSrc } from '@/components/MkChart.vue';
+import MkSelect from '@/components/MkSelect.vue';
+import MkChart from '@/components/MkChart.vue';
 import { useChartTooltip } from '@/composables/use-chart-tooltip.js';
 import { $i } from '@/i.js';
 import * as os from '@/os.js';

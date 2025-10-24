@@ -41,6 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref, watch } from 'vue';
 import { PrismEditor } from 'vue-prism-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
@@ -49,7 +50,6 @@ import 'vue-prism-editor/dist/prismeditor.min.css';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-regex';
 import 'prismjs/themes/prism-okaidia.css';
-import type { MkSelectItem } from '@/components/MkSelect.vue';
 
 const props = defineProps<{
 	modelValue?: {

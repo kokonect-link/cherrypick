@@ -44,10 +44,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import type { GetMkSelectValueTypesFromDef, MkSelectItem } from '@/components/MkSelect.vue';
 import { genId } from '@/utility/id.js';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
-import type { GetMkSelectValueTypesFromDef, MkSelectItem } from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 import { deepClone } from '@/utility/clone.js';

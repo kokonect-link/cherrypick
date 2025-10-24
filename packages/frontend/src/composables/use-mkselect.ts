@@ -17,7 +17,7 @@ export function useMkSelect<
 	TItemsValue = GetMkSelectValueTypesFromDef<UnwrapReadonlyItems<TItems>>,
 	ModelType = TInitialValue extends void
 		? TItemsValue
-		: (TItemsValue | TInitialValue)
+		: (TItemsValue | TInitialValue),
 >(opts: {
 	items: TItemsInput;
 	initialValue?: (TInitialValue | (OptionValue extends TItemsValue ? OptionValue : TInitialValue)) & (
@@ -26,9 +26,9 @@ export function useMkSelect<
 			: { 'Error: Type of initialValue must include all types of items': TItemsValue }
 	);
 }): {
-	def: TItemsInput;
-	model: Ref<ModelType>;
-} {
+		def: TItemsInput;
+		model: Ref<ModelType>;
+	} {
 	const model = ref(opts.initialValue ?? null);
 
 	return {

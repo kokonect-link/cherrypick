@@ -1,12 +1,12 @@
 import assert from 'assert';
 import { mkdir, readFile, writeFile } from 'fs/promises';
-import type { OpenAPIV3_1 } from 'openapi-types';
 import { toPascal } from 'ts-case-convert';
 import { parse } from '@readme/openapi-parser';
 import openapiTS, { astToString } from 'openapi-typescript';
-import type { OpenAPI3, OperationObject, PathItemObject } from 'openapi-typescript';
 import ts from 'typescript';
 import { removeNeverPropertiesFromAST } from './ast-transformer.js';
+import type { OpenAPI3, OperationObject, PathItemObject } from 'openapi-typescript';
+import type { OpenAPIV3_1 } from 'openapi-types';
 
 async function generateBaseTypes(
 	openApiDocs: OpenAPIV3_1.Document,

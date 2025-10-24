@@ -48,7 +48,7 @@ export const meta = {
 						optional: false, nullable: false,
 					},
 				},
-			}
+			},
 		],
 	},
 } as const;

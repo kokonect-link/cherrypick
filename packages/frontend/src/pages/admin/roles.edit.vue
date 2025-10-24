@@ -21,8 +21,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { genId } from '@/utility/id.js';
 import XEditor from './roles.editor.vue';
+import { genId } from '@/utility/id.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
@@ -75,7 +75,7 @@ async function save() {
 		router.push('/admin/roles/:id', {
 			params: {
 				id: role.value.id,
-			}
+			},
 		});
 	} else {
 		const created = await os.apiWithDialog('admin/roles/create', {
@@ -84,7 +84,7 @@ async function save() {
 		router.push('/admin/roles/:id', {
 			params: {
 				id: created.id,
-			}
+			},
 		});
 	}
 }

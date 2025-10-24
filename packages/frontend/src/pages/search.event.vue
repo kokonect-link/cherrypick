@@ -45,6 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, markRaw, ref, shallowRef } from 'vue';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -54,7 +55,6 @@ import MkFolder from '@/components/MkFolder.vue';
 import { i18n } from '@/i18n.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { Paginator } from '@/utility/paginator.js';
-import type { MkSelectItem } from '@/components/MkSelect.vue';
 
 const key = ref(0);
 const paginator = shallowRef<Paginator<'notes/events/search'> | null>(null);

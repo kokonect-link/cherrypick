@@ -33,8 +33,8 @@ import { url as base } from '@@/js/config.js';
 import { useInterval } from '@@/js/use-interval.js';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import MkMarqueeText from '@/components/MkMarqueeText.vue';
 import type { FormWithDefault, GetFormResultType } from '@/utility/form.js';
+import MkMarqueeText from '@/components/MkMarqueeText.vue';
 import MkContainer from '@/components/MkContainer.vue';
 import { shuffle } from '@/utility/shuffle.js';
 

@@ -4,18 +4,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-	<div :class="$style.tabsRoot">
-		<button
-			v-for="option in tabs"
-			:key="option.key"
-			:class="['_button', $style.tabButton, { [$style.active]: modelValue === option.key }]"
-			:disabled="modelValue === option.key"
-			@click="update(option.key)"
-		>
-			<i v-if="option.icon" :class="[option.icon, $style.icon]"></i>
-			{{ option.label }}
-		</button>
-	</div>
+<div :class="$style.tabsRoot">
+	<button
+		v-for="option in tabs"
+		:key="option.key"
+		:class="['_button', $style.tabButton, { [$style.active]: modelValue === option.key }]"
+		:disabled="modelValue === option.key"
+		@click="update(option.key)"
+	>
+		<i v-if="option.icon" :class="[option.icon, $style.icon]"></i>
+		{{ option.label }}
+	</button>
+</div>
 </template>
 
 <script lang="ts">

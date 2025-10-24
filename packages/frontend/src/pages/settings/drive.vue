@@ -176,6 +176,7 @@ import * as Misskey from 'cherrypick-js';
 import tinycolor from 'tinycolor2';
 import XWatermarkItem from './drive.WatermarkItem.vue';
 import type { WatermarkPreset } from '@/utility/watermark.js';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import FormLink from '@/components/form/link.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
@@ -195,7 +196,6 @@ import MkFeatureBanner from '@/components/MkFeatureBanner.vue';
 import { selectDriveFolder } from '@/utility/drive.js';
 import MkFolder from '@/components/MkFolder.vue';
 import MkButton from '@/components/MkButton.vue';
-import type { MkSelectItem } from '@/components/MkSelect.vue';
 
 const $i = ensureSignin();
 

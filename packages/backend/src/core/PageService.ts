@@ -141,7 +141,7 @@ export class PageService {
 				eyeCatchingImageId: body.eyeCatchingImage === undefined ? undefined : (body.eyeCatchingImage?.id ?? null),
 			});
 
-			console.log("page.content", page.content);
+			console.log('page.content', page.content);
 
 			if (body.content != null) {
 				const beforeReferencedNotes = this.collectReferencedNotes(page.content);

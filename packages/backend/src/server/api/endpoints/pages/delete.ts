@@ -9,9 +9,9 @@ import { Endpoint } from '@/server/api/endpoint-base.js';
 import { DI } from '@/di-symbols.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
 import { RoleService } from '@/core/RoleService.js';
-import { ApiError } from '../../error.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
 import { PageService } from '@/core/PageService.js';
+import { ApiError } from '../../error.js';
 
 export const meta = {
 	tags: ['pages'],

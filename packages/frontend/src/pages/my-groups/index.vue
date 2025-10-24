@@ -74,7 +74,7 @@ async function create() {
 	});
 	if (canceled) return;
 	await os.apiWithDialog('users/groups/create', {
-		name: name
+		name: name,
 	}).then(() => {
 		os.success();
 		ownedPaginator.reload();

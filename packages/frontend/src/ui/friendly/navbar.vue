@@ -219,7 +219,7 @@ async function more(ev: MouseEvent) {
 
 	const target = getHTMLElementOrNull(ev.currentTarget ?? ev.target);
 	if (!target) return;
-		const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkLaunchPad.vue').then(x => x.default), {
+	const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkLaunchPad.vue').then(x => x.default), {
 		anchorElement: target,
 	}, {
 		closed: () => dispose(),
@@ -233,7 +233,7 @@ function menuEdit() {
 function openProfile() {
 	haptic();
 
-	router.push(`/@:username`, {
+	router.push('/@:username', {
 		params: {
 			username: $i.username,
 		},

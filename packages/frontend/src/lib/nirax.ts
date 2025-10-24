@@ -125,7 +125,7 @@ type GetSinglePathQuery<Def extends RouteDef, Path extends FlattenAllPaths<Route
 					? ChildPath extends FlattenAllPaths<Children>
 						? GetPathQuery<Children, ChildPath>
 						: Record<string, never>
-				: never
+					: never
 				: never
 			: never
 		: Def['path'] extends Path
@@ -133,9 +133,9 @@ type GetSinglePathQuery<Def extends RouteDef, Path extends FlattenAllPaths<Route
 				? Query extends Record<string, string>
 					? UnwrapReadOnly<{ [Key in keyof Query]?: string; }>
 					: Record<string, never>
+				: Record<string, never>
 			: Record<string, never>
-		: Record<string, never>
-	>;
+>;
 
 type GetPathQuery<Defs extends RouteDef[], Path extends FlattenAllPaths<Defs>> = GetSinglePathQuery<Defs[number], Path>;
 

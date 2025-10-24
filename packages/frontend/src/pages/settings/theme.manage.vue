@@ -28,6 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, ref } from 'vue';
 import JSON5 from 'json5';
 import type { Theme } from '@/theme.js';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -38,7 +39,6 @@ import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { useMkSelect } from '@/composables/use-mkselect.js';
-import type { MkSelectItem } from '@/components/MkSelect.vue';
 
 const installedThemes = getThemesRef();
 const builtinThemes = getBuiltinThemesRef();

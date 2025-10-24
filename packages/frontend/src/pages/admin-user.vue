@@ -206,6 +206,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, defineAsyncComponent, watch, ref, markRaw } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
+import type { ChartSrc } from '@/components/MkChart.vue';
 import MkChart from '@/components/MkChart.vue';
 import MkObjectView from '@/components/MkObjectView.vue';
 import MkTextarea from '@/components/MkTextarea.vue';
@@ -228,7 +229,6 @@ import { ensureSignin, iAmAdmin, iAmModerator } from '@/i.js';
 import MkRolePreview from '@/components/MkRolePreview.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import { Paginator } from '@/utility/paginator.js';
-import type { ChartSrc } from '@/components/MkChart.vue';
 
 const $i = ensureSignin();
 
@@ -248,7 +248,7 @@ const {
 } = useMkSelect({
 	items: [
 		{ label: i18n.ts.notes, value: 'per-user-notes' },
-],
+	],
 	initialValue: 'per-user-notes',
 });
 const user = ref(result.user);

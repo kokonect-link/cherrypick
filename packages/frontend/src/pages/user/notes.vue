@@ -42,8 +42,8 @@ import { i18n } from '@/i18n.js';
 import { Paginator } from '@/utility/paginator.js';
 import { prefer } from '@/preferences.js';
 import { $i } from '@/i.js';
-import XReactions from "@/pages/user/reactions.vue";
-import XFiles from "@/pages/user/index.timeline.files.vue";
+import XReactions from '@/pages/user/reactions.vue';
+import XFiles from '@/pages/user/index.timeline.files.vue';
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;

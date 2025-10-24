@@ -33,11 +33,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import * as Misskey from 'cherrypick-js';
 import { inject, watch, ref } from 'vue';
 import { TransitionGroup } from 'vue';
+import { isSupportedEmoji } from '@@/js/emojilist.js';
 import XReaction from '@/components/MkReactionsViewer.reaction.vue';
 import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 import { customEmojisMap } from '@/custom-emojis.js';
-import { isSupportedEmoji } from '@@/js/emojilist.js';
 import { DI } from '@/di.js';
 
 const props = withDefaults(defineProps<{

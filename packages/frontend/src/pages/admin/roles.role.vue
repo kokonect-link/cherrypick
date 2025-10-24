@@ -87,7 +87,7 @@ function edit() {
 	router.push('/admin/roles/:id/edit', {
 		params: {
 			id: role.id,
-		}
+		},
 	});
 }
 

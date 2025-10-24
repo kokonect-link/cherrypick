@@ -46,7 +46,7 @@ export const FX_mirror = defineImageEffectorFx({
 			enum: [
 				{ value: -1 as const, icon: 'ti ti-arrow-bar-right' },
 				{ value: 0 as const, icon: 'ti ti-minus-vertical' },
-				{ value: 1 as const, icon: 'ti ti-arrow-bar-left' }
+				{ value: 1 as const, icon: 'ti ti-arrow-bar-left' },
 			],
 			default: -1,
 		},
@@ -56,7 +56,7 @@ export const FX_mirror = defineImageEffectorFx({
 			enum: [
 				{ value: -1 as const, icon: 'ti ti-arrow-bar-down' },
 				{ value: 0 as const, icon: 'ti ti-minus' },
-				{ value: 1 as const, icon: 'ti ti-arrow-bar-up' }
+				{ value: 1 as const, icon: 'ti ti-arrow-bar-up' },
 			],
 			default: 0,
 		},
