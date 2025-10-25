@@ -32533,6 +32533,7 @@ export interface operations {
                     'application/json': {
                         isFavorited: boolean;
                         isMutedThread: boolean;
+                        isRenoted: boolean;
                     };
                 };
             };
