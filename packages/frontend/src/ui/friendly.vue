@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)"
 			:class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]"
 			class="_button"
-			@click="drawerMenuShowing = true"
+			@click="clickNavButton"
 		>
 			<MkAvatar :class="$style.floatNavButtonAvatar" :user="$i" isFloatingBtn/>
 		</button>
@@ -210,6 +210,11 @@ function createChat(ev: MouseEvent) {
 
 	if (mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('createChat', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
+}
+
+function clickNavButton() {
+	haptic();
+	drawerMenuShowing.value = true;
 }
 </script>
 

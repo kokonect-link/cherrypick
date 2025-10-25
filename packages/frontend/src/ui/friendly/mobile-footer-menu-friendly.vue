@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl }]">
-	<button v-if="store.s.showHomeButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
+	<button v-if="store.s.showHomeButtonInNavbar" :class="$style.item" class="_button" @click="clickHomeButton" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]">
 			<i :class="$style.itemIcon" class="ti ti-home"></i>
 			<span v-if="queuedAheadItemsCount > 0" :class="$style.itemIndicatorHome">
@@ -14,19 +14,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showExploreButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/explore')">
+	<button v-if="store.s.showExploreButtonInNavbar" :class="$style.item" class="_button" @click="clickExploreButton">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]">
 			<i :class="$style.itemIcon" class="ti ti-hash"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showSearchButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/search')">
+	<button v-if="store.s.showSearchButtonInNavbar" :class="$style.item" class="_button" @click="clickSearchButton">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]">
 			<i :class="$style.itemIcon" class="ti ti-search"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showNotificationButtonInNavbar" :class="$style.item" class="_button" @click="mainRouter.push('/my/notifications')">
+	<button v-if="store.s.showNotificationButtonInNavbar" :class="$style.item" class="_button" @click="clickNotificationButton">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]">
 			<i :class="$style.itemIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.itemIndicator" class="_blink">
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" :class="$style.item" class="_button" @click="mainRouter.push('/chat')">
+	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" :class="$style.item" class="_button" @click="clickChatButton">
 		<div :class="[$style.itemInner, { [$style.active]: ['chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name) }]">
 			<i :class="$style.itemIcon" class="ti ti-messages"></i>
 			<span v-if="$i?.hasUnreadChatMessages" :class="$style.itemIndicator" class="_blink">
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button :class="$style.item" class="_button" @click="widgetsShowing = true">
+	<button :class="$style.item" class="_button" @click="clickWidgetButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-apps"></i>
 		</div>
@@ -62,6 +62,7 @@ import { store } from '@/store.js';
 import { globalEvents } from '@/events.js';
 import { getAccountMenu } from '@/accounts.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+import { haptic } from '@/utility/haptic.js';
 import * as os from '@/os.js';
 
 const { showEl } = scrollToVisibility();
@@ -75,6 +76,8 @@ const rootEl = useTemplateRef('rootEl');
 const rootElHeight = ref(0);
 
 async function openAccountMenu(ev: TouchEvent) {
+	haptic();
+
 	if (prefer.s.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
 		window.setTimeout(async () => {
@@ -96,6 +99,36 @@ function closeAccountMenu() {
 
 function queueUpdated(q: number): void {
 	queuedAheadItemsCount.value = q;
+}
+
+function clickHomeButton() {
+	haptic();
+	mainRouter.push('/');
+}
+
+function clickExploreButton() {
+	haptic();
+	mainRouter.push('/explore');
+}
+
+function clickSearchButton() {
+	haptic();
+	mainRouter.push('/search');
+}
+
+function clickNotificationButton() {
+	haptic();
+	mainRouter.push('/my/notifications');
+}
+
+function clickChatButton() {
+	haptic();
+	mainRouter.push('/chat');
+}
+
+function clickWidgetButton() {
+	haptic();
+	widgetsShowing.value = true;
 }
 
 watch(rootEl, () => {
