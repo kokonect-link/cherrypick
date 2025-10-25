@@ -159,6 +159,18 @@ const availabilityStart = ref(props.modelValue?.metadata?.offers?.availabilitySt
 const availabilityEnd = ref(props.modelValue?.metadata?.offers?.availabilityEnds ?? null);
 const keywords = ref(props.modelValue?.metadata?.keywords ?? null);
 
+if (props.modelValue?.start) {
+	const startDateTime = new Date(props.modelValue.start);
+	startDate.value = formatDateTimeString(startDateTime, 'yyyy-MM-dd');
+	startTime.value = formatDateTimeString(startDateTime, 'HH:mm');
+}
+
+if (props.modelValue?.end) {
+	const endDateTime = new Date(props.modelValue.end);
+	endDate.value = formatDateTimeString(endDateTime, 'yyyy-MM-dd');
+	endTime.value = formatDateTimeString(endDateTime, 'HH:mm');
+}
+
 function get(): Misskey.entities.Note['event'] {
 	const calcAt = (date: Ref<string>, time: Ref<string>): number => (new Date(`${date.value} ${time.value}`)).getTime();
 
