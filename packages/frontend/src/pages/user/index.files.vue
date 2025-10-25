@@ -66,4 +66,8 @@ onMounted(() => {
 		display: none;
 	}
 }
+
+.empty {
+	margin-left: 10px;
+}
 </style>
