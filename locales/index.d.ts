@@ -14,6 +14,18 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 全リノート解除
+     */
+    "unRenoteAll": string;
+    /**
+     * 全リノート解除
+     */
+    "unRenoteAllConfirm": string;
+    /**
+     * このノートのすべてのリノットを削除しようとしています。実行しますか？
+     */
+    "unRenoteAllConfirmDescription": string;
+    /**
      * ノート自動削除
      */
     "autoDeleteNotes": string;

@@ -417,6 +417,19 @@ export function getNoteMenu(props: {
 		props.noNyaize.value = false;
 	}
 
+	async function unRenoteAll(): Promise<void> {
+		const { canceled } = await os.confirm({
+			type: 'warning',
+			text: i18n.ts.unRenoteAllConfirm,
+			caption: i18n.ts.unRenoteAllConfirmDescription,
+		});
+		if (canceled) return;
+
+		await os.apiWithDialog('notes/unrenote', {
+			noteId: appearNote.id,
+		});
+	}
+
 	const menuItems: MenuItem[] = [];
 
 	if ($i) {
@@ -576,6 +589,14 @@ export function getNoteMenu(props: {
 						});
 					}
 				}
+
+				noteChildMenu.push({ type: 'divider' });
+
+				noteChildMenu.push({
+					icon: 'ti ti-repeat-off',
+					text: i18n.ts.unRenoteAll,
+					action: unRenoteAll,
+				});
 
 				if (appearNote.userId === $i.id) {
 					noteChildMenu.push({ type: 'divider' });

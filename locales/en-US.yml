@@ -1,5 +1,8 @@
 ---
 _lang_: "English"
+unRenoteAll: "Remove all renote from notes"
+unRenoteAllConfirm: "Remove all renote from notes"
+unRenoteAllConfirmDescription: "All renotes for this note will be deleted. Still continue?"
 autoDeleteNotes: "Auto-delete notes"
 autoDeleteNotesDescription: "Automatically delete notes after a specified period."
 autoDeleteNotesAfterDays: "Auto-delete period"

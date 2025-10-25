@@ -1,5 +1,8 @@
 _lang_: "日本語"
 
+unRenoteAll: "全リノート解除"
+unRenoteAllConfirm: "全リノート解除"
+unRenoteAllConfirmDescription: "このノートのすべてのリノットを削除しようとしています。実行しますか？"
 autoDeleteNotes: "ノート自動削除"
 autoDeleteNotesDescription: "指定した期間が経過したノートを自動的に削除します。"
 autoDeleteNotesAfterDays: "自動削除期間"
