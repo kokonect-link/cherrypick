@@ -264,4 +264,3 @@ export function clearAppliedThemeCache() {
 	miLocalStorage.removeItem('themeId');
 	miLocalStorage.removeItem('themeCachedVersion');
 }
-
