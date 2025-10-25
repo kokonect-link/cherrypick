@@ -28,6 +28,23 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
+	<div v-if="!prefer.s.showGapBodyOfTheNote">
+		<MkInfo v-if="note.deleteAt != null" warn :class="$style.deleteAt">
+			<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+				<template #x>
+					<MkTime :time="note.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+				</template>
+			</I18n>
+		</MkInfo>
+		<MkEvent v-if="note.event" :note="note"/>
+		<p v-if="note.cw != null" :class="$style.cw">
+			<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'" :emojiUrls="note.emojis"/>
+			<MkCwButton v-model="showContent" :text="note.text" :renote="note.renote" :files="note.files" :poll="note.poll" @click.stop/>
+		</p>
+		<div v-show="note.cw == null || showContent">
+			<MkSubNoteContent :class="$style.text" :note="note" :showSubNoteFooterButton="false"/>
+		</div>
+	</div>
 </div>
 <div v-else :class="$style.deleted">
 	{{ i18n.ts.deletedNote }}
