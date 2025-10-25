@@ -93,7 +93,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<template v-if="posted"></template>
 					<template v-else-if="posting"><MkEllipsis/></template>
 					<template v-else>{{ submitText }}</template>
-					<i v-if="$i" style="margin-left: 6px;" :class="posted ? 'ti ti-check' : saveAsDraft ? 'ti ti-pencil-minus' : replyTargetNote ? 'ti ti-arrow-back-up' : renoteTargetNote ? 'ti ti-quote' : updateMode ? 'ti ti-pencil' : prefer.s.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send'"></i>
+					<i style="margin-left: 6px;" :class="submitIcon"></i>
 				</div>
 			</button>
 			<button v-click-anime class="_button" style="margin-left: 2px;" :class="$style.submitButton" @click="showPostMenu">
@@ -262,7 +262,7 @@ const recentHashtags = ref(JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]'
 const imeText = ref('');
 const showingOptions = ref(false);
 const disableRightClick = ref(false);
-const saveAsDraft = ref(false);
+const saveToDraft = ref(false);
 const textAreaReadOnly = ref(false);
 const justEndedComposition = ref(false);
 const renoteTargetNote: ShallowRef<PostFormProps['renote'] | null> = shallowRef(props.renote);
@@ -329,7 +329,7 @@ const placeholder = computed((): string => {
 const submitText = computed((): string => {
 	return !$i
 		? i18n.ts.login
-		: saveAsDraft.value
+		: saveToDraft.value
 			? i18n.ts.draft
 			: scheduledAt.value != null
 				? i18n.ts.schedule
@@ -345,7 +345,7 @@ const submitText = computed((): string => {
 });
 
 const submitIcon = computed((): string => {
-	return posted.value ? 'ti ti-check' : scheduledAt.value != null ? 'ti ti-calendar-time' : saveAsDraft.value ? 'ti ti-pencil-minus' : replyTargetNote.value ? 'ti ti-arrow-back-up' : renoteTargetNote.value ? 'ti ti-quote' : props.updateMode ? 'ti ti-pencil' : prefer.s.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send';
+	return posted.value ? 'ti ti-check' : scheduledAt.value != null ? 'ti ti-calendar-time' : saveToDraft.value ? 'ti ti-pencil-minus' : replyTargetNote.value ? 'ti ti-arrow-back-up' : renoteTargetNote.value ? 'ti ti-quote' : props.updateMode ? 'ti ti-pencil' : prefer.s.renameTheButtonInPostFormToNya ? 'ti ti-paw-filled' : 'ti ti-send';
 });
 
 const textLength = computed((): number => {
@@ -459,7 +459,7 @@ function watchForDraft() {
 	watch(useCw, () => saveDraft());
 	watch(cw, () => saveDraft());
 	watch(disableRightClick, () => saveDraft());
-	watch(saveAsDraft, () => saveDraft());
+	watch(saveToDraft, () => saveDraft());
 	watch(poll, () => saveDraft());
 	watch(event, () => saveDraft());
 	watch(files, () => saveDraft(), { deep: true });
@@ -674,7 +674,7 @@ function showOtherSettings() {
 		action: () => {
 			toggleReactionAcceptance();
 		},
-	}, { type: 'divider' }, {
+	}, { type: 'divider' }, /*{
 		type: 'button',
 		text: i18n.ts._drafts.saveToDraft,
 		icon: 'ti ti-cloud-upload',
@@ -687,7 +687,7 @@ function showOtherSettings() {
 			}
 			saveServerDraft();
 		},
-	}, ...($i.policies.scheduledNoteLimit > 0 ? [{
+	}, */...($i.policies.scheduledNoteLimit > 0 ? [{
 		icon: 'ti ti-calendar-time',
 		text: i18n.ts.schedulePost + '...',
 		action: () => {
@@ -767,7 +767,7 @@ function clear() {
 	quoteId.value = null;
 	scheduledAt.value = null;
 	scheduledNoteDelete.value = null;
-	saveAsDraft.value = false;
+	saveToDraft.value = false;
 	disableRightClick.value = false;
 }
 
@@ -930,7 +930,7 @@ function saveDraft() {
 			useCw: useCw.value,
 			cw: cw.value,
 			disableRightClick: disableRightClick.value,
-			saveAsDraft: text.value === '' ? false : saveAsDraft.value,
+			saveToDraft: text.value === '' ? false : saveToDraft.value,
 			visibility: visibility.value,
 			localOnly: localOnly.value,
 			files: files.value,
@@ -958,7 +958,7 @@ function deleteDraft() {
 async function saveServerDraft(options: {
 	isActuallyScheduled?: boolean;
 } = {}) {
-	return await os.apiWithDialog(serverDraftId.value == null ? 'notes/drafts/create' : 'notes/drafts/update', {
+	return await misskeyApi(serverDraftId.value == null ? 'notes/drafts/create' : 'notes/drafts/update', {
 		...(serverDraftId.value == null ? {} : { draftId: serverDraftId.value }),
 		text: text.value,
 		cw: useCw.value ? cw.value || null : null,
@@ -978,7 +978,10 @@ async function saveServerDraft(options: {
 		isActuallyScheduled: options.isActuallyScheduled ?? false,
 		scheduledNoteDelete: scheduledNoteDelete.value,
 	}).then(() => {
-		os.toast(i18n.ts.noteDrafted, 'drafted');
+		if (scheduledAt.value != null && options.isActuallyScheduled === true) os.toast(i18n.ts.createSchedulePost, 'scheduled');
+		else os.toast(i18n.ts.noteDrafted, 'drafted');
+		clear();
+		emit('posted');
 	});
 }
 
@@ -1030,7 +1033,7 @@ async function post(ev?: MouseEvent) {
 
 	if (props.mock) return;
 
-	if (saveAsDraft.value) return await saveServerDraft(true);
+	if (saveToDraft.value) return await saveServerDraft();
 
 	if (useCw.value && (cw.value == null || cw.value.trim() === '')) {
 		os.alert({
@@ -1186,7 +1189,6 @@ async function post(ev?: MouseEvent) {
 			if (replyTargetNote.value) os.toast(i18n.ts.replied, 'reply');
 			else if (renoteTargetNote.value) os.toast(i18n.ts.quoted, 'quote');
 			else if (props.updateMode) os.toast(i18n.ts.noteEdited, 'edited');
-			else if (scheduledAt.value) os.toast(i18n.ts.createSchedulePost, 'scheduled');
 			else os.toast(i18n.ts.posted, 'posted');
 
 			if (postData.text && postData.text !== '') {
@@ -1333,7 +1335,14 @@ function showActions(ev: MouseEvent) {
 }
 
 async function openMfmCheatSheet() {
-	os.popup(defineAsyncComponent(() => import('@/components/MkMfmCheatSheetDialog.vue')), {}, {}, 'closed');
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkMfmCheatSheetDialog.vue')), {}, {
+		cancel: () => {
+
+		},
+		closed: () => {
+			dispose();
+		},
+	});
 }
 
 const postAccount = ref<Misskey.entities.UserDetailed | null>(null);
@@ -1490,9 +1499,9 @@ function showPostMenu(ev: MouseEvent) {
 	if ($i.policies.noteDraftLimit > 0) {
 		menuItems.push({
 			type: 'switch',
-			text: i18n.ts.saveAsDraft,
+			text: i18n.ts._drafts.saveToDraft,
 			icon: 'ti ti-pencil-minus',
-			ref: saveAsDraft,
+			ref: saveToDraft,
 		});
 	}
 
@@ -1567,7 +1576,7 @@ onMounted(() => {
 				useCw.value = draft.data.useCw;
 				cw.value = draft.data.cw;
 				disableRightClick.value = draft.data.disableRightClick;
-				saveAsDraft.value = draft.data.saveAsDraft;
+				saveToDraft.value = draft.data.saveToDraft;
 				visibility.value = draft.data.visibility;
 				localOnly.value = draft.data.localOnly;
 				files.value = (draft.data.files || []).filter(draftFile => draftFile);
@@ -1621,7 +1630,7 @@ onMounted(() => {
 			quoteId.value = renoteTargetNote.value ? renoteTargetNote.value.id : null;
 			reactionAcceptance.value = init.reactionAcceptance;
 			disableRightClick.value = init.disableRightClick != null;
-			saveAsDraft.value = false;
+			saveToDraft.value = false;
 			if (init.deletedAt) {
 				scheduledNoteDelete.value = {
 					deleteAt: init.deletedAt ? (new Date(init.deletedAt)).getTime() : null,
