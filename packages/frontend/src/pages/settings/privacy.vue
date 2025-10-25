@@ -81,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<SearchMarker :keywords="['chat']">
 						<MkSelect v-model="chatScope" :items="chatScopeDef" @update:modelValue="save()">
 							<template #label><SearchLabel>{{ i18n.ts._chat.chatAllowedUsers }}</SearchLabel></template>
-							<template #caption>{{ i18n.ts._chat.chatAllowedUsers_note }}</template>
+							<template #caption><<SearchText>{{ i18n.ts._chat.chatAllowedUsers_note }}</SearchText></template>
 						</MkSelect>
 					</SearchMarker>
 				</div>
@@ -97,8 +97,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<MkSwitch :modelValue="requireSigninToViewContents" @update:modelValue="update_requireSigninToViewContents">
 							<template #label><SearchLabel>{{ i18n.ts._accountSettings.requireSigninToViewContents }}</SearchLabel></template>
 							<template #caption>
-								<div>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription1 }}</div>
-								<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> {{ i18n.ts._accountSettings.requireSigninToViewContentsDescription2 }}</div>
+								<div><SearchText>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription1 }}</SearchText></div>
+								<div><i class="ti ti-alert-triangle" style="color: var(--MI_THEME-warn);"></i> <SearchText>{{ i18n.ts._accountSettings.requireSigninToViewContentsDescription2 }}</SearchText></div>
 							</template>
 						</MkSwitch>
 					</SearchMarker>
@@ -207,12 +207,45 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</FormSection>
 		</SearchMarker>
+
+		<SearchMarker :keywords="['auto', 'delete', 'notes']">
+			<FormSection>
+				<template #label><SearchLabel>{{ i18n.ts.autoDeleteNotes }}</SearchLabel></template>
+
+				<div class="_gaps_m">
+					<MkInfo>{{ i18n.ts.autoDeleteNotesDescription }}</MkInfo>
+
+					<SearchMarker :keywords="['auto', 'delete', 'enable']">
+						<MkInput
+							v-model="autoDeleteNotesAfterDays"
+							type="number"
+							:min="1"
+							:max="3650"
+							@update:modelValue="saveAutoDelete()"
+						>
+							<template #label><SearchLabel>{{ i18n.ts.autoDeleteNotesAfterDays }}</SearchLabel></template>
+							<template #suffix>{{ i18n.ts._time.day }}</template>
+							<template #caption><SearchText>{{ i18n.ts.autoDeleteNotesAfterDaysDescription }}</SearchText></template>
+						</MkInput>
+					</SearchMarker>
+
+					<SearchMarker :keywords="['favorite', 'keep']">
+						<MkSwitch v-model="autoDeleteKeepFavorites" @update:modelValue="saveAutoDelete()">
+							<template #label><SearchLabel>{{ i18n.ts.autoDeleteKeepFavorites }}</SearchLabel></template>
+							<template #caption><SearchText>{{ i18n.ts.autoDeleteKeepFavoritesDescription }}</SearchText></template>
+						</MkSwitch>
+					</SearchMarker>
+
+					<MkInfo warn>{{ i18n.ts.autoDeleteNotesWarning }}</MkInfo>
+				</div>
+			</FormSection>
+		</SearchMarker>
 	</div>
 </SearchMarker>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import type { MkSelectItem } from '@/components/MkSelect.vue';
 import MkSwitch from '@/components/MkSwitch.vue';
 import MkSelect from '@/components/MkSelect.vue';
@@ -243,6 +276,9 @@ const makeNotesFollowersOnlyBefore = ref($i.makeNotesFollowersOnlyBefore ?? null
 const makeNotesHiddenBefore = ref($i.makeNotesHiddenBefore ?? null);
 const hideOnlineStatus = ref($i.hideOnlineStatus);
 const publicReactions = ref($i.publicReactions);
+const autoDeleteNotesAfterDays = ref<number | null>($i?.autoDeleteNotesAfterDays ?? null);
+const autoDeleteKeepFavorites = ref($i?.autoDeleteKeepFavorites ?? false);
+
 const {
 	model: followingVisibility,
 	def: followingVisibilityDef,
@@ -387,6 +423,16 @@ watch([makeNotesFollowersOnlyBefore, makeNotesHiddenBefore], () => {
 	save();
 });
 
+onMounted(async () => {
+	try {
+		const settings = await misskeyApi('i/auto-delete-settings');
+		autoDeleteNotesAfterDays.value = settings.autoDeleteNotesAfterDays;
+		autoDeleteKeepFavorites.value = settings.autoDeleteKeepFavorites;
+	} catch (error) {
+		console.error('Failed to load auto-delete settings:', error);
+	}
+});
+
 async function update_requireSigninToViewContents(value: boolean) {
 	if (value === true && instance.federation !== 'none') {
 		const { canceled } = await os.confirm({
@@ -415,6 +461,13 @@ function save() {
 		followingVisibility: followingVisibility.value,
 		followersVisibility: followersVisibility.value,
 		chatScope: chatScope.value,
+	});
+}
+
+async function saveAutoDelete() {
+	await misskeyApi('i/update-auto-delete-settings', {
+		autoDeleteNotesAfterDays: autoDeleteNotesAfterDays.value,
+		autoDeleteKeepFavorites: !!autoDeleteKeepFavorites.value,
 	});
 }
 

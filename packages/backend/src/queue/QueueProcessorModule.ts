@@ -21,6 +21,7 @@ import { CleanProcessorService } from './processors/CleanProcessorService.js';
 import { CheckModeratorsActivityProcessorService } from './processors/CheckModeratorsActivityProcessorService.js';
 import { CleanRemoteNotesProcessorService } from './processors/CleanRemoteNotesProcessorService.js';
 import { CleanRemoteFilesProcessorService } from './processors/CleanRemoteFilesProcessorService.js';
+import { AutoDeleteNotesProcessorService } from './processors/AutoDeleteNotesProcessorService.js';
 import { DeleteAccountProcessorService } from './processors/DeleteAccountProcessorService.js';
 import { TruncateAccountProcessorService } from './processors/TruncateAccountProcessorService.js';
 import { DeleteDriveFilesProcessorService } from './processors/DeleteDriveFilesProcessorService.js';
@@ -92,6 +93,7 @@ import { ScheduledNoteDeleteProcessorService } from './processors/ScheduledNoteD
 		CheckExpiredMutingsProcessorService,
 		CheckModeratorsActivityProcessorService,
 		CleanRemoteNotesProcessorService,
+		AutoDeleteNotesProcessorService,
 		QueueProcessorService,
 		ScheduledNoteDeleteProcessorService,
 	],

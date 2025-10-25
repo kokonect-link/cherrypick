@@ -1,5 +1,12 @@
 ---
 _lang_: "English"
+autoDeleteNotes: "Auto-delete notes"
+autoDeleteNotesDescription: "Automatically delete notes after a specified period."
+autoDeleteNotesAfterDays: "Auto-delete period"
+autoDeleteNotesAfterDaysDescription: "Notes older than this period will be automatically deleted. Leave empty to disable."
+autoDeleteKeepFavorites: "Protect favorited notes"
+autoDeleteKeepFavoritesDescription: "Favorited notes will not be automatically deleted."
+autoDeleteNotesWarning: "This action cannot be undone. Deleted notes cannot be recovered."
 scheduledToDeleteOnX: "Deletion is scheduled for {x}"
 showGapBodyOfTheNote: "Show a gap between body on the note"
 replyTo: "Replying to {user}"

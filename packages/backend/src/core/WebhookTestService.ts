@@ -65,6 +65,8 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		token: null,
 		setFederationAvatarShape: null,
 		isSquareAvatars: null,
+		autoDeleteNotesAfterDays: null,
+		autoDeleteKeepFavorites: true,
 		...override,
 	};
 }

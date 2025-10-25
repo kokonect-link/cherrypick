@@ -297,6 +297,18 @@ export class MiUser {
 	})
 	public isSquareAvatars: boolean | null;
 
+	@Column('integer', {
+		nullable: true,
+		default: null,
+	})
+	public autoDeleteNotesAfterDays!: number | null;
+
+	@Column('boolean', {
+		default: true,
+
+	})
+	public autoDeleteKeepFavorites: boolean;
+
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;
 

@@ -715,6 +715,14 @@ export const packedMeDetailedOnlySchema = {
 			},
 		},
 		//#endregion
+		autoDeleteNotesAfterDays: {
+			type: 'number',
+			nullable: true, optional: false,
+		},
+		autoDeleteKeepFavorites: {
+			type: 'boolean',
+			nullable: false, optional: false,
+		},
 	},
 } as const;
 

@@ -1,5 +1,12 @@
 ---
 _lang_: "한국어"
+autoDeleteNotes: "노트 자동 삭제"
+autoDeleteNotesDescription: "지정한 기간이 지난 노트를 자동으로 삭제해요."
+autoDeleteNotesAfterDays: "자동 삭제 기간"
+autoDeleteNotesAfterDaysDescription: "이 기간이 지난 노트는 자동으로 삭제돼요. 비활성화하려면 비워두세요."
+autoDeleteKeepFavorites: "즐겨찾기한 노트 제외"
+autoDeleteKeepFavoritesDescription: "활성화하면 즐겨찾기한 노트는 자동으로 삭제되지 않아요."
+autoDeleteNotesWarning: "이 작업은 취소할 수 없으며, 삭제된 노트는 복구할 수 없으니 신중하게 결정해 주세요!"
 scheduledToDeleteOnX: "{x}에 삭제가 예약되어 있어요."
 showGapBodyOfTheNote: "노트 본문 사이를 띄워서 표시"
 replyTo: "{user}님에게 보내는 답글"
