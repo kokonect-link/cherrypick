@@ -1876,7 +1876,7 @@ html[data-color-scheme=light] .preview {
 }
 
 .targetNote {
-	padding: 0 20px 16px 20px;
+	padding: 0 30px 16px 30px;
 }
 
 .withQuote {
