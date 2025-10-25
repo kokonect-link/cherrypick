@@ -143,21 +143,21 @@ const startDate = ref(formatDateTimeString(addTime(new Date(), 1, 'day'), 'yyyy-
 const startTime = ref('00:00');
 const endDate = ref('');
 const endTime = ref('');
-const location = ref(props.modelValue?.metadata.location ?? null);
-const url = ref(props.modelValue?.metadata.url ?? null);
+const location = ref(props.modelValue?.metadata?.location ?? null);
+const url = ref(props.modelValue?.metadata?.url ?? null);
 const showAdvanced = ref(false);
-const doorTime = ref(props.modelValue?.metadata.doorTime ?? null);
-const organizer = ref(props.modelValue?.metadata.organizer?.name ?? null);
-const organizerLink = ref(props.modelValue?.metadata.organizer?.sameAs ?? null);
-const audience = ref(props.modelValue?.metadata.audience?.name ?? null);
-const language = ref(props.modelValue?.metadata.inLanguage ?? null);
-const ageRange = ref(props.modelValue?.metadata.typicalAgeRange ?? null);
-const ticketsUrl = ref(props.modelValue?.metadata.offers?.url ?? null);
-const isFree = ref(props.modelValue?.metadata.isAccessibleForFree ?? false);
-const price = ref(props.modelValue?.metadata.offers?.price ?? null);
-const availabilityStart = ref(props.modelValue?.metadata.offers?.availabilityStarts ?? null);
-const availabilityEnd = ref(props.modelValue?.metadata.offers?.availabilityEnds ?? null);
-const keywords = ref(props.modelValue?.metadata.keywords ?? null);
+const doorTime = ref(props.modelValue?.metadata?.doorTime ?? null);
+const organizer = ref(props.modelValue?.metadata?.organizer?.name ?? null);
+const organizerLink = ref(props.modelValue?.metadata?.organizer?.sameAs ?? null);
+const audience = ref(props.modelValue?.metadata?.audience?.name ?? null);
+const language = ref(props.modelValue?.metadata?.inLanguage ?? null);
+const ageRange = ref(props.modelValue?.metadata?.typicalAgeRange ?? null);
+const ticketsUrl = ref(props.modelValue?.metadata?.offers?.url ?? null);
+const isFree = ref(props.modelValue?.metadata?.isAccessibleForFree ?? false);
+const price = ref(props.modelValue?.metadata?.offers?.price ?? null);
+const availabilityStart = ref(props.modelValue?.metadata?.offers?.availabilityStarts ?? null);
+const availabilityEnd = ref(props.modelValue?.metadata?.offers?.availabilityEnds ?? null);
+const keywords = ref(props.modelValue?.metadata?.keywords ?? null);
 
 function get(): Misskey.entities.Note['event'] {
 	const calcAt = (date: Ref<string>, time: Ref<string>): number => (new Date(`${date.value} ${time.value}`)).getTime();

@@ -988,7 +988,7 @@ async function saveServerDraft(options: {
 		reactionAcceptance: reactionAcceptance.value,
 		scheduledAt: scheduledAt.value,
 		isActuallyScheduled: options.isActuallyScheduled ?? false,
-		scheduledNoteDelete: scheduledNoteDelete.value,
+		scheduledDelete: scheduledNoteDelete.value,
 	}).then(() => {
 		if (scheduledAt.value != null && options.isActuallyScheduled === true) os.toast(i18n.ts.createSchedulePost, 'scheduled');
 		else os.toast(i18n.ts.noteDrafted, 'drafted');
@@ -1606,6 +1606,7 @@ onMounted(() => {
 				quoteId.value = draft.data.quoteId;
 				reactionAcceptance.value = draft.data.reactionAcceptance;
 				scheduledAt.value = draft.data.scheduledAt ?? null;
+				scheduledNoteDelete.value = draft.data.scheduledNoteDelete ?? null;
 			}
 		}
 
