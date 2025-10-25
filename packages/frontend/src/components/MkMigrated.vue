@@ -105,6 +105,8 @@ onMounted(() => {
 
 .beta {
 	margin: 1em 0;
+	font-size: 11px;
+	opacity: 0.7;
 }
 
 .gotIt {
