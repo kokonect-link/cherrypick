@@ -165,7 +165,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-if="viewTextSource">
 					<hr style="margin: 10px 0;">
 					<pre style="margin: initial;"><small>{{ appearNote.text }}</small></pre>
-					<button class="_button" style="padding-top: 5px; color: var(--MI_THEME-accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+					<button class="_button" style="padding: 5px 0; color: var(--MI_THEME-accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 				</div>
 				<div v-if="appearNote.files && appearNote.files.length > 0">
 					<MkMediaList ref="galleryEl" :mediaList="appearNote.files" :disableRightClick="appearNote.disableRightClick" @contextmenu="disableRightClickHandler"/>
