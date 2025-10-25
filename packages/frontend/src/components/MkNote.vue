@@ -440,7 +440,7 @@ import { globalEvents } from '@/events.js';
 import { instance } from '@/instance.js';
 import { mainRouter, useRouter } from '@/router.js';
 import { miLocalStorage } from '@/local-storage.js';
-import { haptic } from '@/utility/haptic.js';
+import { haptic, hapticConfirm } from '@/utility/haptic.js';
 import { store } from '@/store.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import detectLanguage from '@/utility/detect-language.js';
@@ -1013,7 +1013,7 @@ async function translate(): Promise<void> {
 	translating.value = false;
 	translation.value = res;
 
-	haptic();
+	hapticConfirm();
 }
 
 function showRenoteMenu(): void {
