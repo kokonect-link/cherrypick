@@ -585,13 +585,13 @@ if (appearNote.reactionAcceptance === 'likeOnly') {
 
 if (prefer.s.alwaysShowCw) showContent.value = true;
 
-function renote() {
+async function renote() {
 	haptic();
 
 	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 
-	const { menu } = getRenoteMenu({ note: note, renoteButton });
+	const { menu } = await getRenoteMenu({ note: note, renoteButton });
 	os.popupMenu(menu, renoteButton.value);
 
 	// リノート後は反応が来る可能性があるので手動で購読する

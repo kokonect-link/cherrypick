@@ -324,13 +324,13 @@ watch(() => viewTextSource.value, () => {
 	collapsed.value = false;
 });
 
-function renote() {
+async function renote() {
 	haptic();
 
 	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 
-	const { menu } = getRenoteMenu({ note: note, renoteButton, mock: props.mock });
+	const { menu } = await getRenoteMenu({ note: note, renoteButton, mock: props.mock });
 	os.popupMenu(menu, renoteButton.value);
 
 	subscribeManuallyToNoteCapture();

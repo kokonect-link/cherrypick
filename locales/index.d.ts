@@ -26,6 +26,18 @@ export interface Locale extends ILocale {
      */
     "unRenoteAllConfirmDescription": string;
     /**
+     * 既にリノートしました
+     */
+    "alreadyRenotedConfirm": string;
+    /**
+     * このノートは既にリノートしました。もう一度リノートしますか？
+     */
+    "alreadyRenotedConfirmDescription": string;
+    /**
+     * Mastodonなど、一部のソフトウェアは最初のリノートのみを処理するため、それ以降のリノートは表示されないことがあります。
+     */
+    "alreadyRenotedConfirmCaption": string;
+    /**
      * ノート自動削除
      */
     "autoDeleteNotes": string;

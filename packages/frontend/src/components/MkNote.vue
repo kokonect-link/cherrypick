@@ -723,13 +723,13 @@ function noteDblClick(ev: MouseEvent) {
 	else router.pushByPath(notePage(appearNote));
 }
 
-function renote() {
+async function renote() {
 	haptic();
 
 	pleaseLogin({ openOnRemote: pleaseLoginContext.value });
 	showMovedDialog();
 
-	const { menu } = getRenoteMenu({ note: note, renoteButton, mock: props.mock });
+	const { menu } = await getRenoteMenu({ note: note, renoteButton, mock: props.mock });
 	os.popupMenu(menu, renoteButton.value);
 
 	subscribeManuallyToNoteCapture();

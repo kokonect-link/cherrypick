@@ -420,8 +420,8 @@ export function getNoteMenu(props: {
 	async function unRenoteAll(): Promise<void> {
 		const { canceled } = await os.confirm({
 			type: 'warning',
-			text: i18n.ts.unRenoteAllConfirm,
-			caption: i18n.ts.unRenoteAllConfirmDescription,
+			title: i18n.ts.unRenoteAllConfirm,
+			text: i18n.ts.unRenoteAllConfirmDescription,
 		});
 		if (canceled) return;
 
@@ -857,7 +857,31 @@ export function getQuoteMenu(props: {
 	return { menu };
 }
 
-export function getRenoteMenu(props: {
+async function checkRenoted(props: {
+	note: Misskey.entities.Note;
+	mock?: boolean;
+}): Promise<boolean> {
+	const appearNote = getAppearNote(props.note) ?? props.note;
+
+	if (!props.mock && $i) {
+		const state = await misskeyApi('notes/state', {
+			noteId: appearNote.id,
+		}) as { isFavorited: boolean; isMutedThread: boolean; isRenoted: boolean };
+
+		if (state.isRenoted) {
+			const { canceled } = await os.confirm({
+				type: 'warning',
+				title: i18n.ts.alreadyRenotedConfirm,
+				text: i18n.ts.alreadyRenotedConfirmDescription,
+				caption: i18n.ts.alreadyRenotedConfirmCaption,
+			});
+			if (canceled) return true;
+		}
+	}
+	return false;
+}
+
+export async function getRenoteMenu(props: {
 	note: Misskey.entities.Note;
 	renoteButton: ShallowRef<HTMLElement | null | undefined>;
 	mock?: boolean;
@@ -874,7 +898,7 @@ export function getRenoteMenu(props: {
 		const channelRenoteButton = {
 			text: i18n.ts.inChannelRenote,
 			icon: 'ti ti-repeat',
-			action: () => {
+			action: async () => {
 				const el = props.renoteButton.value;
 				if (el && prefer.s.animation) {
 					const rect = el.getBoundingClientRect();
@@ -886,6 +910,9 @@ export function getRenoteMenu(props: {
 				}
 
 				if (!props.mock) {
+					const canceled = await checkRenoted(props);
+					if (canceled) return;
+
 					misskeyApi('notes/create', {
 						renoteId: appearNote.id,
 						channelId: appearNote.channelId,
@@ -907,8 +934,11 @@ export function getRenoteMenu(props: {
 			channelRenoteItems.push({
 				text: i18n.ts.inChannelQuote,
 				icon: 'ti ti-quote',
-				action: () => {
+				action: async () => {
 					if (!props.mock) {
+						const canceled = await checkRenoted(props);
+						if (canceled) return;
+
 						os.post({
 							renote: appearNote,
 							channel: appearNote.channel,
@@ -923,7 +953,7 @@ export function getRenoteMenu(props: {
 		normalRenoteItems.push({
 			text: i18n.ts.renote,
 			icon: 'ti ti-repeat',
-			action: () => {
+			action: async () => {
 				const el = props.renoteButton.value;
 				if (el && prefer.s.animation) {
 					const rect = el.getBoundingClientRect();
@@ -944,6 +974,9 @@ export function getRenoteMenu(props: {
 				}
 
 				if (!props.mock) {
+					const canceled = await checkRenoted(props);
+					if (canceled) return;
+
 					misskeyApi('notes/create', {
 						localOnly,
 						visibility,
@@ -961,7 +994,10 @@ export function getRenoteMenu(props: {
 			normalRenoteItems.push({
 				text: i18n.ts.quote,
 				icon: 'ti ti-quote',
-				action: () => {
+				action: async () => {
+					const canceled = await checkRenoted(props);
+					if (canceled) return;
+
 					os.post({
 						renote: appearNote,
 					});
@@ -980,7 +1016,7 @@ export function getRenoteMenu(props: {
 					return channel.id !== appearNote.channelId;
 				}).map((channel) => ({
 					text: channel.name,
-					action: () => {
+					action: async () => {
 						const el = props.renoteButton.value;
 						if (el && prefer.s.animation) {
 							const rect = el.getBoundingClientRect();
@@ -992,6 +1028,9 @@ export function getRenoteMenu(props: {
 						}
 
 						if (!props.mock) {
+							const canceled = await checkRenoted(props);
+							if (canceled) return;
+
 							misskeyApi('notes/create', {
 								renoteId: appearNote.id,
 								channelId: channel.id,
@@ -1017,7 +1056,10 @@ export function getRenoteMenu(props: {
 				visibilityRenoteItems.push({
 					text: `${i18n.ts.renote} (${i18n.ts._visibility.public})`,
 					icon: 'ti ti-world',
-					action: () => {
+					action: async () => {
+						const canceled = await checkRenoted(props);
+						if (canceled) return;
+
 						misskeyApi('notes/create', {
 							localOnly,
 							visibility: 'public',
@@ -1034,7 +1076,10 @@ export function getRenoteMenu(props: {
 				visibilityRenoteItems.push({
 					text: `${i18n.ts.renote} (${i18n.ts._visibility.home})`,
 					icon: 'ti ti-home',
-					action: () => {
+					action: async () => {
+						const canceled = await checkRenoted(props);
+						if (canceled) return;
+
 						misskeyApi('notes/create', {
 							localOnly,
 							visibility: 'home',
@@ -1050,7 +1095,10 @@ export function getRenoteMenu(props: {
 			visibilityRenoteItems.push({
 				text: `${i18n.ts.renote} (${i18n.ts._visibility.followers})`,
 				icon: 'ti ti-lock',
-				action: () => {
+				action: async () => {
+					const canceled = await checkRenoted(props);
+					if (canceled) return;
+
 					misskeyApi('notes/create', {
 						localOnly,
 						visibility: 'followers',
@@ -1090,6 +1138,9 @@ export async function getRenoteOnly(props: {
 		});
 		if (canceled) return;
 	}
+
+	const canceled = await checkRenoted(props);
+	if (canceled) return;
 
 	if (appearNote.channel) {
 		const el = props.renoteButton.value as HTMLElement | null | undefined;
