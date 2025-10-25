@@ -102,7 +102,7 @@ const props = withDefaults(defineProps<{
 	decorations: undefined,
 	forceShowDecoration: false,
 	noteClick: false,
-	forceOpacity: false,
+	forceOpacity: true,
 	isToastAvatar: false,
 	isFloatingBtn: false,
 });
