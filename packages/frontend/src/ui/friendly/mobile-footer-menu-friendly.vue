@@ -80,7 +80,8 @@ async function openAccountMenu(ev: TouchEvent) {
 		window.setTimeout(async () => {
 			if (longTouchNavHome.value === true) {
 				const menuItems = await getAccountMenu({
-					withExtraOperationFriendly: true,
+					withExtraOperation: false,
+					includeCurrentAccount: true,
 				});
 
 				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);

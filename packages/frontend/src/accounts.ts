@@ -214,8 +214,7 @@ export async function switchAccount(host: string, id: string) {
 
 export async function getAccountMenu(opts: {
 	includeCurrentAccount?: boolean;
-	withExtraOperation?: boolean;
-	withExtraOperationFriendly?: boolean;
+	withExtraOperation: boolean;
 	active?: Misskey.entities.User['id'];
 	onChoose?: (account: Misskey.entities.MeDetailed) => void;
 }) {
@@ -333,37 +332,23 @@ export async function getAccountMenu(opts: {
 			to: '/settings/accounts',
 		});
 
-		if (!opts.withExtraOperationFriendly) {
-			menuItems.push({
-				type: 'button',
-				icon: 'ti ti-logout',
-				text: i18n.ts.logout,
-				action: async () => {
-					const { canceled } = await os.confirm({
-						type: 'warning',
-						text: i18n.ts.logoutConfirm,
-					});
-					if (canceled) return;
-					signout();
-				},
-				danger: true,
-			});
-		}
+		menuItems.push({
+			type: 'button',
+			icon: 'ti ti-logout',
+			text: i18n.ts.logout,
+			action: async () => {
+				const { canceled } = await os.confirm({
+					type: 'warning',
+					text: i18n.ts.logoutConfirm,
+				});
+				if (canceled) return;
+				signout();
+			},
+			danger: true,
+		});
 	} else {
 		if (opts.includeCurrentAccount) {
 			menuItems.push(createItem(host, $i.id, $i.username, $i, $i.token));
-			if (accountItems.length > 0) menuItems.push({ type: 'divider' });
-		}
-
-		if (opts.withExtraOperationFriendly) {
-			menuItems.push({
-				type: 'link',
-				text: $i.name,
-				to: `/@${$i.username}`,
-				avatar: $i,
-			});
-
-			if (accountItems.length > 0) menuItems.push({ type: 'divider' });
 		}
 
 		menuItems.push(...accountItems);
