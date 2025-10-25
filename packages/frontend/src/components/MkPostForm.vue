@@ -75,6 +75,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</template>
 		</I18n> - <button class="_textButton" @click="cancelSchedule()">{{ i18n.ts.cancel }}</button>
 	</MkInfo>
+	<MkInfo v-if="scheduledNoteDelete != null" warn :class="$style.scheduledAt">
+		<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+			<template #x>
+				<MkTime :key="scheduledDeleteAt" :time="scheduledDeleteAt" :mode="'detail'" style="font-weight: bold;"/>
+			</template>
+		</I18n>
+	</MkInfo>
 	<MkInfo v-if="hasNotSpecifiedMentions" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 	<div v-show="useCw" :class="$style.cwOuter">
 		<input ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown" @keyup="onKeyup" @compositionend="onCompositionEnd">
@@ -247,6 +254,11 @@ const serverDraftId = ref<string | null>(null);
 const postFormActions = getPluginHandlers('post_form_action');
 
 const scheduledNoteDelete = ref<DeleteScheduleEditorModelValue | null>(null);
+const scheduledDeleteAt = computed(() => {
+	if (scheduledNoteDelete.value?.deleteAt) return scheduledNoteDelete.value.deleteAt;
+	else if (scheduledNoteDelete.value?.deleteAfter) return Date.now() + scheduledNoteDelete.value.deleteAfter;
+	return null;
+});
 
 const uploader = useUploader({
 	multiple: true,

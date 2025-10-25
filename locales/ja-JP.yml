@@ -1,5 +1,6 @@
 _lang_: "日本語"
 
+scheduledToDeleteOnX: "{x}に削除が予約されています"
 showGapBodyOfTheNote: "ノートの本文を離して表示"
 replyTo: "{user}さんに返信"
 forceCollapseAllRenotes: "すべてのリノートの省略"

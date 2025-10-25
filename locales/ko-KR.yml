@@ -1,5 +1,6 @@
 ---
 _lang_: "한국어"
+scheduledToDeleteOnX: "{x}에 삭제가 예약되어 있어요."
 showGapBodyOfTheNote: "노트 본문 사이를 띄워서 표시"
 replyTo: "{user}님에게 보내는 답글"
 forceCollapseAllRenotes: "모든 리노트 간략화하기"

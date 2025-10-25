@@ -60,6 +60,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.main">
 				<MkNoteHeader :note="appearNote" :mini="true"/>
 				<div v-if="prefer.s.showGapBodyOfTheNote" :style="prefer.s.showGapBodyOfTheNote ? 'margin-top: 4px;' : null" style="container-type: inline-size;">
+					<MkInfo v-if="appearNote.deleteAt != null" warn :class="$style.deleteAt">
+						<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+							<template #x>
+								<MkTime :time="appearNote.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+							</template>
+						</I18n>
+					</MkInfo>
 					<MkEvent v-if="appearNote.event" :note="appearNote"/>
 					<div v-if="appearNote.replyId && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
 						<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
@@ -165,6 +172,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 		<div v-if="!prefer.s.showGapBodyOfTheNote" style="container-type: inline-size;">
+			<MkInfo v-if="appearNote.deleteAt != null" warn :class="$style.deleteAt">
+				<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+					<template #x>
+						<MkTime :time="appearNote.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+					</template>
+				</I18n>
+			</MkInfo>
 			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<div v-if="appearNote.replyId && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
 				<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
@@ -430,6 +444,7 @@ import { haptic } from '@/utility/haptic.js';
 import { store } from '@/store.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import detectLanguage from '@/utility/detect-language.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const { showEl } = scrollToVisibility();
 
@@ -1439,6 +1454,10 @@ function emitUpdReaction(emoji: string, delta: number) {
 
 .danger {
 	color: var(--MI_THEME-accent);
+}
+
+.deleteAt {
+	margin: 0 0 8px 0;
 }
 
 @container (max-width: 580px) {

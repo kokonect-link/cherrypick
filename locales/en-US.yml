@@ -1,5 +1,6 @@
 ---
 _lang_: "English"
+scheduledToDeleteOnX: "Deletion is scheduled for {x}"
 showGapBodyOfTheNote: "Show a gap between body on the note"
 replyTo: "Replying to {user}"
 forceCollapseAllRenotes: "Collapse all renotes"

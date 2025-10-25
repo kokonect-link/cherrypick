@@ -15,6 +15,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
+				<MkInfo v-if="note.deleteAt != null" warn :class="$style.deleteAt">
+					<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+						<template #x>
+							<MkTime :time="note.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+						</template>
+					</I18n>
+				</MkInfo>
 				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'"/>
@@ -59,6 +66,7 @@ import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/utility/check-word-mute.js';
 import { prefer } from '@/preferences.js';
 import { useRouter } from '@/router.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const hideLine = ref(false);
 
@@ -240,5 +248,9 @@ function noteDblClick(ev: MouseEvent) {
 	background-size: auto auto;
 	background-image: repeating-linear-gradient(135deg, transparent, transparent 10px, var(--color) 4px, var(--color) 14px);
 	border-radius: 8px;
+}
+
+.deleteAt {
+	margin: 0 0 8px 0;
 }
 </style>

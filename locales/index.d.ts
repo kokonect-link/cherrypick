@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * {x}に削除が予約されています
+     */
+    "scheduledToDeleteOnX": ParameterizedString<"x">;
+    /**
      * ノートの本文を離して表示
      */
     "showGapBodyOfTheNote": string;

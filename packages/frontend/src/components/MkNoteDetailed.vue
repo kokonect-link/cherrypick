@@ -100,6 +100,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</header>
 		<div :class="$style.noteContent">
+			<MkInfo v-if="appearNote.deleteAt != null" warn :class="$style.deleteAt">
+				<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+					<template #x>
+						<MkTime :time="appearNote.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+					</template>
+				</I18n>
+			</MkInfo>
 			<MkEvent v-if="appearNote.event" :note="appearNote"/>
 			<p v-if="appearNote.cw != null" :class="$style.cw">
 				<Mfm
@@ -401,6 +408,7 @@ import { deviceKind } from '@/utility/device-kind.js';
 import { haptic, hapticConfirm } from '@/utility/haptic.js';
 import { store } from '@/store.js';
 import detectLanguage from '@/utility/detect-language.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -1333,5 +1341,9 @@ function showOnRemote() {
 	& + .badgeRole {
 		margin-left: 0.2em;
 	}
+}
+
+.deleteAt {
+	margin: 0 0 8px 0;
 }
 </style>
