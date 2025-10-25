@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div v-if="viewTextSource">
 			<hr style="margin: 10px 0;">
-			<pre style="margin: initial;"><small>{{ note.text }}</small></pre>
+			<pre style="margin: initial; white-space: pre-wrap; word-wrap: break-word;"><small>{{ note.text }}</small></pre>
 			<button class="_button" style="padding: 5px 0; color: var(--MI_THEME-accent);" @click.stop="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
 		</div>
 		<div v-show="showContent">
