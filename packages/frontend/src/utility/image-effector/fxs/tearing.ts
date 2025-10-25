@@ -4,8 +4,8 @@
  */
 
 import seedrandom from 'seedrandom';
-import shader from './tearing.glsl';
 import { defineImageEffectorFx } from '../ImageEffector.js';
+import shader from './tearing.glsl';
 import { i18n } from '@/i18n.js';
 
 export const FX_tearing = defineImageEffectorFx({
