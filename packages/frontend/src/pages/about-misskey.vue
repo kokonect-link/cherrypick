@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div ref="containerEl" class="container" :class="{ playing: easterEggEngine != null }">
 						<img src="/client-assets/about-icon.png" alt="" class="icon" draggable="false" @load="iconLoaded" @click="gravity"/>
 						<div class="cherrypick">CherryPick</div>
-						<div class="version" @click="whatIsNewCherryPick">v{{ version }}</div>
+						<div class="version" @click="whatIsNewCherryPick">v{{ version }} <span class="commit-hash" @click.stop="openCommitPage('kokonect-link/cherrypick', gitHash)">({{ gitHash.substring(0, 8) }})</span></div>
 						<div class="version" style="font-size: 11px;" @click="whatIsNewMisskey">v{{ basedMisskeyVersion }} (Based on Misskey)</div>
 						<span v-for="emoji in easterEggEmojis" :key="emoji.id" class="emoji" :data-physics-x="emoji.left" :data-physics-y="emoji.top" :class="{ _physics_circle_: !emoji.emoji.startsWith(':') }">
 							<MkCustomEmoji v-if="emoji.emoji[0] === ':'" class="emoji" :name="emoji.emoji" :normal="true" :noStyle="true" :fallbackToImage="true"/>
@@ -224,7 +224,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, computed } from 'vue';
-import { host, version, basedMisskeyVersion } from '@@/js/config.js';
+import { host, version, basedMisskeyVersion, gitHash } from '@@/js/config.js';
 import FormLink from '@/components/form/link.vue';
 import FormSection from '@/components/form/section.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -238,6 +238,7 @@ import { claimAchievement, claimedAchievements } from '@/utility/achievements.js
 import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
 import { donateCherryPick } from '@/utility/donate-cherrypick.js';
+import { openCommitPage } from '@/utility/fetch-releases.js';
 
 const patronsWithIconWithCherryPick = [{
 	name: 'Etone Sabasappugawa',
@@ -665,6 +666,18 @@ definePage(() => ({
           text-decoration: underline;
           color: var(--MI_THEME-link);
         }
+
+				.commit-hash {
+					font-size: 11px;
+					opacity: 0.7;
+					cursor: pointer;
+
+					&:hover {
+						opacity: 1;
+						text-decoration: underline;
+						color: var(--MI_THEME-link);
+					}
+				}
 			}
 
 			> .emoji {

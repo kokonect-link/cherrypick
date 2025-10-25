@@ -21,9 +21,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 	<FormSection>
 		<div class="_gaps_m">
-			<MkKeyValue :copy="version">
+			<MkKeyValue :copy="`${version} (${gitHash})`">
 				<template #key>CherryPick</template>
-				<template #value>{{ version }}</template>
+				<template #value>{{ version }} <span style="font-size: 11px; opacity: 0.5;">({{ gitHash.substring(0, 8) }})</span></template>
 			</MkKeyValue>
 			<div v-html="i18n.tsx.poweredByMisskeyDescription({ name: instance.name ?? host })">
 			</div>
@@ -134,7 +134,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { host, version } from '@@/js/config.js';
+import { host, version, gitHash } from '@@/js/config.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
 import number from '@/filters/number.js';

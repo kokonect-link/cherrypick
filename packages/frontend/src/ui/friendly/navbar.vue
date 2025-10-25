@@ -122,7 +122,7 @@ import { prefer } from '@/preferences.js';
 import { getAccountMenu } from '@/accounts.js';
 import { $i } from '@/i.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
-import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
+import { fetchCherrypickReleases } from '@/utility/fetch-releases.js';
 import { haptic } from '@/utility/haptic.js';
 
 const router = useRouter();

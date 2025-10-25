@@ -60,7 +60,7 @@ import { prefer } from '@/preferences.js';
 import { getAccountMenu } from '@/accounts.js';
 import { $i } from '@/i.js';
 import { getHTMLElementOrNull } from '@/utility/get-dom-node-or-null.js';
-import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
+import { fetchCherrypickReleases } from '@/utility/fetch-releases.js';
 import { haptic } from '@/utility/haptic.js';
 
 const WINDOW_THRESHOLD = 1400;

@@ -29,6 +29,7 @@ export default [
 				_LANGS_: false,
 				_VERSION_: false,
 				_BASEDMISSKEYVERSION_: false,
+				_GIT_HASH_: false,
 				_ENV_: false,
 				_PERF_PREFIX_: false,
 			},

@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</svg>
 			<div :class="$style.title">
 				<div>Welcome to CherryPick!</div>
-				<div :class="$style.version">v{{ version }}</div>
+				<div :class="$style.version">v{{ version }} <span style="font-size: 11px; opacity: 0.5;">({{ gitHash.substring(0, 8) }})</span></div>
 			</div>
 			<div style="padding: 16px 32px 32px 32px;">
 				<form v-if="!accountCreated" class="_gaps_m" @submit.prevent="createAccount()">
@@ -129,7 +129,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import { host, version } from '@@/js/config.js';
+import { host, version, gitHash } from '@@/js/config.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import * as os from '@/os.js';

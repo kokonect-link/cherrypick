@@ -46,7 +46,7 @@ import { lookupUser, lookupUserByEmail, lookupFile } from '@/utility/admin-looku
 import { definePage, provideMetadataReceiver, provideReactiveMetadata } from '@/page.js';
 import { useRouter } from '@/router.js';
 import { genSearchIndexes } from '@/utility/inapp-search.js';
-import { fetchCherrypickReleases } from '@/utility/fetch-cherrypick-releases.js';
+import { fetchCherrypickReleases } from '@/utility/fetch-releases.js';
 
 const searchIndex = await import('search-index:admin').then(({ searchIndexes }) => genSearchIndexes(searchIndexes));
 
