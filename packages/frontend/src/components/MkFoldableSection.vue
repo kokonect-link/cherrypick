@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl" :class="$style.root">
-	<header :class="[$style.header, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="showBody = !showBody">
+	<header :class="[$style.header, { [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl , [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="showBody = !showBody">
 		<div :class="$style.title"><div><slot name="header"></slot></div></div>
 		<div :class="$style.divider"></div>
 		<button class="_button" :class="$style.button">
@@ -139,6 +139,10 @@ onBeforeUnmount(() => {
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;
+	}
+
+	&.scrollToTransparent {
+		background-color: transparent;
 	}
 
 	&.showEl {
