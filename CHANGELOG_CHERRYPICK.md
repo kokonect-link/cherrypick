@@ -39,6 +39,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 	또한 이 변경에 따라 iOS 디바이스에서의 진동을 지원합니다.
 
 ### General
+- Change: 버블 타임라인의 역할 기본값을 `사용 가능`으로 변경함
+- Change: 예약 게시 노트 수를 늘리기 위해 `노트 게시 예약` 역할의 기본값을 `3`으로 변경함
 - Feat: 노트 자동 삭제 기능 (misskey-dev/misskey#16705)
   - 지정한 기간보다 오래된 노트를 자동으로 삭제합니다.
   - 삭제 대상에서 즐겨찾기한 노트를 제외할 수 있습니다.
@@ -46,8 +48,6 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
   -　엔드포인트:`api/federation/remote-software`
   - 프론트엔드는 `/about#charts`에서 확인할 수 있습니다.
 - Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
-- Change: 버블 타임라인의 역할 기본값을 `사용 가능`으로 변경함
-- Change: 예약 게시 노트 수를 늘리기 위해 `노트 게시 예약` 역할의 기본값을 `3`으로 변경함
 
 ### Client
 - Feat: 모든 리노트를 제거할 수 있음 (kokonect-link/cherrypick#583, yojo-art/cherrypick#711, yojo-art/cherrypick#736)
