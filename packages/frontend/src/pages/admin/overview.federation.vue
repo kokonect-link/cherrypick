@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div>
 	<MkLoading v-if="fetching"/>
 	<div v-show="!fetching" :class="$style.root">
-		<div v-if="topSubInstancesForPie && topPubInstancesForPie" class="pies">
+		<div v-if="topSubInstancesForPie && topPubInstancesForPie && topSoftwareForPie" class="pies">
 			<div class="pie deliver _panel">
 				<div class="title">Sub</div>
 				<XPie :data="topSubInstancesForPie" class="chart"/>
@@ -16,6 +16,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="pie inbox _panel">
 				<div class="title">Pub</div>
 				<XPie :data="topPubInstancesForPie" class="chart"/>
+				<div class="subTitle">Top 10</div>
+			</div>
+			<div class="pie software _panel">
+				<div class="title">Software</div>
+				<XPie :data="topSoftwareForPie" class="chart"/>
 				<div class="subTitle">Top 10</div>
 			</div>
 		</div>
@@ -58,6 +63,7 @@ import { useChartTooltip } from '@/composables/use-chart-tooltip.js';
 
 const topSubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const topPubInstancesForPie = ref<InstanceForPie[] | null>(null);
+const topSoftwareForPie = ref<InstanceForPie[] | null>(null);
 const federationPubActive = ref<number | null>(null);
 const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
@@ -96,6 +102,17 @@ onMounted(async () => {
 			})),
 			{ name: '(other)', color: '#80808080', value: res.otherFollowingCount },
 		];
+	});
+
+	misskeyApiGet('federation/remote-software', {}).then(res => {
+		const softwareData = res.map(x => ({
+			name: x.softwareName,
+			color: x.color,
+			value: x.count,
+		}));
+
+		const sortedSoftwareData = softwareData.sort((a, b) => a.value > b.value ? -1 : 1);
+		topSoftwareForPie.value = sortedSoftwareData.slice(0, 10);
 	});
 
 	fetching.value = false;
@@ -164,14 +181,21 @@ onMounted(async () => {
 					}
 				}
 
-				&.pub {
-					> .icon {
-						background: #00cf2326;
-						color: #00cd5b;
-					}
+			&.pub {
+				> .icon {
+					background: #00cf2326;
+					color: #00cd5b;
 				}
+			}
 
-				> .body {
+			&.software {
+				> .icon {
+					background: #00a2cf26;
+					color: #00a2cf;
+				}
+			}
+
+			> .body {
 					padding: 2px 0;
 
 					> .value {
