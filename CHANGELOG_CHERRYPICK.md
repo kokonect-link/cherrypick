@@ -42,6 +42,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Feat: 노트 자동 삭제 기능 (misskey-dev/misskey#16705)
   - 지정한 기간보다 오래된 노트를 자동으로 삭제합니다.
   - 삭제 대상에서 즐겨찾기한 노트를 제외할 수 있습니다.
+- Feat: 리모트 인스턴스 소프트웨어 차트 표시 (yojo-art/cherrypick#659)
+  -　엔드포인트:`api/federation/remote-software`
+  - 프론트엔드는 `/about#charts`에서 확인할 수 있습니다.
 
 ### Client
 - Feat: 모든 리노트를 제거할 수 있음 (kokonect-link/cherrypick#583, yojo-art/cherrypick#711, yojo-art/cherrypick#736)

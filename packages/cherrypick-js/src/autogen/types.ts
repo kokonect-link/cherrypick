@@ -1982,6 +1982,15 @@ export type paths = {
          */
         post: operations['federation___instances'];
     };
+    '/federation/remote-software': {
+        /**
+         * federation/remote-software
+         * @description No description provided.
+         *
+         *     **Credential required**: *No*
+         */
+        post: operations['federation___remote-software'];
+    };
     '/federation/show-instance': {
         /**
          * federation/show-instance
@@ -21808,6 +21817,82 @@ export interface operations {
                 };
                 content: {
                     'application/json': components['schemas']['FederationInstance'][];
+                };
+            };
+            /** @description Client error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Authentication error */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Forbidden error */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description I'm Ai */
+            418: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+        };
+    };
+    'federation___remote-software': {
+        requestBody: {
+            content: {
+                'application/json': {
+                    blocked?: boolean | null;
+                    notResponding?: boolean | null;
+                    suspended?: boolean | null;
+                    silenced?: boolean | null;
+                    federating?: boolean | null;
+                    subscribing?: boolean | null;
+                    publishing?: boolean | null;
+                    quarantined?: boolean | null;
+                };
+            };
+        };
+        responses: {
+            /** @description OK (with results) */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': {
+                        softwareName: string;
+                        color: string | null;
+                        count: number;
+                    }[];
                 };
             };
             /** @description Client error */

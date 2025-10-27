@@ -1889,6 +1889,8 @@ declare namespace entities {
         FederationFollowingResponse,
         FederationInstancesRequest,
         FederationInstancesResponse,
+        FederationRemoteSoftwareRequest,
+        FederationRemoteSoftwareResponse,
         FederationShowInstanceRequest,
         FederationShowInstanceResponse,
         FederationStatsRequest,
@@ -2350,6 +2352,12 @@ type FederationInstancesRequest = operations['federation___instances']['requestB
 
 // @public (undocumented)
 type FederationInstancesResponse = operations['federation___instances']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type FederationRemoteSoftwareRequest = operations['federation___remote-software']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
+type FederationRemoteSoftwareResponse = operations['federation___remote-software']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type FederationShowInstanceRequest = operations['federation___show-instance']['requestBody']['content']['application/json'];

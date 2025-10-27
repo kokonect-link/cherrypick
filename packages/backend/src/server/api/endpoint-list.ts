@@ -205,6 +205,7 @@ export * as 'export-custom-emojis' from './endpoints/export-custom-emojis.js';
 export * as 'federation/followers' from './endpoints/federation/followers.js';
 export * as 'federation/following' from './endpoints/federation/following.js';
 export * as 'federation/instances' from './endpoints/federation/instances.js';
+export * as 'federation/remote-software' from './endpoints/federation/remote-software.js';
 export * as 'federation/show-instance' from './endpoints/federation/show-instance.js';
 export * as 'federation/stats' from './endpoints/federation/stats.js';
 export * as 'federation/update-remote-user' from './endpoints/federation/update-remote-user.js';

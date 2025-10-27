@@ -336,6 +336,8 @@ import type {
 	FederationFollowingResponse,
 	FederationInstancesRequest,
 	FederationInstancesResponse,
+	FederationRemoteSoftwareRequest,
+	FederationRemoteSoftwareResponse,
 	FederationShowInstanceRequest,
 	FederationShowInstanceResponse,
 	FederationStatsRequest,
@@ -921,6 +923,7 @@ export type Endpoints = {
 	'federation/followers': { req: FederationFollowersRequest; res: FederationFollowersResponse };
 	'federation/following': { req: FederationFollowingRequest; res: FederationFollowingResponse };
 	'federation/instances': { req: FederationInstancesRequest; res: FederationInstancesResponse };
+	'federation/remote-software': { req: FederationRemoteSoftwareRequest; res: FederationRemoteSoftwareResponse };
 	'federation/show-instance': { req: FederationShowInstanceRequest; res: FederationShowInstanceResponse };
 	'federation/stats': { req: FederationStatsRequest; res: FederationStatsResponse };
 	'federation/update-remote-user': { req: FederationUpdateRemoteUserRequest; res: EmptyResponse };
