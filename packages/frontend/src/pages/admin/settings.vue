@@ -327,7 +327,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 							<SearchMarker :keywords="['cache', 'remote', 'files']">
 								<MkSwitch v-model="federationForm.state.cacheRemoteFiles">
 									<template #label><SearchLabel>{{ i18n.ts.cacheRemoteFiles }}</SearchLabel><span v-if="federationForm.modifiedStates.cacheRemoteFiles" class="_modified">{{ i18n.ts.modified }}</span></template>
-									<template #caption><SearchText>{{ i18n.ts.cacheRemoteFilesDescription }}</SearchText>{{ i18n.ts.youCanCleanRemoteFilesCache }}</template>
+									<template #caption><SearchText>{{ i18n.ts.cacheRemoteFilesDescription }}</SearchText> {{ i18n.ts.youCanCleanRemoteFilesCache }}</template>
 								</MkSwitch>
 							</SearchMarker>
 
