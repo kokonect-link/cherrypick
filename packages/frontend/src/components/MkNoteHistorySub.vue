@@ -29,9 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
-import MkNoteHeader from '@/components/MkNoteHeader.vue';
 import MkNoteHistorySubContent from '@/components/MkNoteHistorySubContent.vue';
 import { userPage } from '@/filters/user.js';
 import { i18n } from '@/i18n.js';
