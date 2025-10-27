@@ -16663,6 +16663,7 @@ export interface operations {
                         pubsub: number[];
                         subActive: number[];
                         pubActive: number[];
+                        software: number[];
                     };
                 };
             };

@@ -45,6 +45,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div class="label">Pub</div>
 				</div>
 			</div>
+			<div class="item _panel software">
+				<div class="icon"><i class="ti ti-apps"></i></div>
+				<div class="body">
+					<div v-if="softwareCount != null" class="value">
+						{{ number(softwareCount) }}
+						<MkNumberDiff v-if="softwareCountDiff != null" v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="softwareCountDiff"></MkNumberDiff>
+					</div>
+					<div class="label">Software</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -68,6 +78,8 @@ const federationPubActive = ref<number | null>(null);
 const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
 const federationSubActiveDiff = ref<number | null>(null);
+const softwareCount = ref<number | null>(null);
+const softwareCountDiff = ref<number | null>(null);
 const fetching = ref(true);
 
 const { handler: externalTooltipHandler } = useChartTooltip();
@@ -78,6 +90,8 @@ onMounted(async () => {
 	federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
 	federationSubActive.value = chart.subActive[0];
 	federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
+	softwareCount.value = chart.software[0];
+	softwareCountDiff.value = chart.software[0] - chart.software[1];
 
 	misskeyApiGet('federation/stats', { limit: 10 }).then(res => {
 		topSubInstancesForPie.value = [
@@ -110,7 +124,6 @@ onMounted(async () => {
 			color: x.color,
 			value: x.count,
 		}));
-
 		const sortedSoftwareData = softwareData.sort((a, b) => a.value > b.value ? -1 : 1);
 		topSoftwareForPie.value = sortedSoftwareData.slice(0, 10);
 	});
