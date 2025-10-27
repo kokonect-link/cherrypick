@@ -45,6 +45,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Feat: 리모트 인스턴스 소프트웨어 차트 표시 (yojo-art/cherrypick#659)
   -　엔드포인트:`api/federation/remote-software`
   - 프론트엔드는 `/about#charts`에서 확인할 수 있습니다.
+- Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
 
 ### Client
 - Feat: 모든 리노트를 제거할 수 있음 (kokonect-link/cherrypick#583, yojo-art/cherrypick#711, yojo-art/cherrypick#736)

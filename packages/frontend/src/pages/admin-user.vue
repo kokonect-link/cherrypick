@@ -116,7 +116,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<template v-if="iAmAdmin && ips">
 							<div v-for="record in ips" :key="record.ip" class="_monospace" :class="$style.ip" style="margin: 1em 0;">
 								<span class="date">{{ record.createdAt }}</span>
-								<span class="ip">{{ record.ip }}</span>
+								<span v-if="record.dnsNames.length > 0" class="ip">{{ record.ip }} ({{ record.dnsNames[0] }} <i v-if="record.dnsNames.length > 1" class="ti ti-info-circle" @mouseover="showIpToolTip = true" @mouseleave="showIpToolTip = false"><MkTooltip :showing="showIpToolTip"><div v-for="host in record.dnsNames" :key="host">{{ host }}</div></MkTooltip></i>)</span>
+								<span v-else class="ip">{{ record.ip }} ({{ i18n.ts.none }})</span>
 							</div>
 						</template>
 					</MkFolder>
@@ -219,6 +220,7 @@ import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkFileListForAdmin from '@/components/MkFileListForAdmin.vue';
 import MkInfo from '@/components/MkInfo.vue';
+import MkTooltip from '@/components/MkTooltip.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { acct } from '@/filters/user.js';
@@ -254,6 +256,7 @@ const {
 const user = ref(result.user);
 const info = ref(result.info);
 const ips = ref(result.ips);
+const showIpToolTip = ref(false);
 const ap = ref<any>(null);
 const moderator = ref(info.value.isModerator);
 const silenced = ref(info.value.isSilenced);

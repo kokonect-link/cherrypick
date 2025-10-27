@@ -9993,6 +9993,7 @@ export interface operations {
                 content: {
                     'application/json': {
                         ip: string;
+                        dnsNames: string[];
                         /** Format: date-time */
                         createdAt: string;
                     }[];

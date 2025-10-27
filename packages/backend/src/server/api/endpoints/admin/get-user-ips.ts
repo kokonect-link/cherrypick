@@ -25,6 +25,7 @@ export const meta = {
 			nullable: false,
 			properties: {
 				ip: { type: 'string' },
+				dnsNames: { type: 'array', items: { type: 'string' } },
 				createdAt: {
 					type: 'string',
 					optional: false,
@@ -61,6 +62,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			return ips.map(x => ({
 				ip: x.ip,
+				dnsNames: x.dnsNames,
 				createdAt: x.createdAt.toISOString(),
 			}));
 		});
