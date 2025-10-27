@@ -9,13 +9,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
 			<div v-if="note">
 				<div v-if="showNext" class="_margin">
-					<MkNotesTimeline direction="up" :withControl="false" :pullToRefresh="false" class="" :paginator="showNext === 'channel' ? nextChannelPaginator : nextUserPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
+					<MkNotesTimeline direction="up" :withControl="false" :pullToRefresh="false" class="" :paginator="showNext === 'channel' ? nextChannelPaginator : showNext === 'user'? nextUserPaginator : showNext === 'home' ? nextHomePaginator : nextLocalPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
 				</div>
 
 				<div class="_margin">
 					<div v-if="!showNext" class="_buttons" :class="$style.loadNext">
 						<MkButton v-if="note.channelId" rounded :class="$style.loadButton" @click="showNext = 'channel'"><i class="ti ti-chevron-up"></i> <i class="ti ti-device-tv"></i></MkButton>
 						<MkButton rounded :class="$style.loadButton" @click="showNext = 'user'"><i class="ti ti-chevron-up"></i> <i class="ti ti-user"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('home')" rounded :class="$style.loadButton" @click="showNext = 'home'"><i class="ti ti-chevron-up"></i> <i class="ti ti-home"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('local')" rounded :class="$style.loadButton" @click="showNext = 'local'"><i class="ti ti-chevron-up"></i> <i class="ti ti-planet"></i></MkButton>
 					</div>
 					<div class="_margin _gaps_s">
 						<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
@@ -30,11 +32,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div v-if="!showPrev" class="_buttons" :class="$style.loadPrev">
 						<MkButton v-if="note.channelId" rounded :class="$style.loadButton" @click="showPrev = 'channel'"><i class="ti ti-chevron-down"></i> <i class="ti ti-device-tv"></i></MkButton>
 						<MkButton rounded :class="$style.loadButton" @click="showPrev = 'user'"><i class="ti ti-chevron-down"></i> <i class="ti ti-user"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('home')" rounded :class="$style.loadButton" @click="showPrev = 'home'"><i class="ti ti-chevron-down"></i> <i class="ti ti-home"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('local')" rounded :class="$style.loadButton" @click="showPrev = 'local'"><i class="ti ti-chevron-down"></i> <i class="ti ti-planet"></i></MkButton>
 					</div>
 				</div>
 
 				<div v-if="showPrev" class="_margin">
-					<MkNotesTimeline :withControl="false" :pullToRefresh="false" class="" :paginator="showPrev === 'channel' ? prevChannelPaginator : prevUserPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
+					<MkNotesTimeline :withControl="false" :pullToRefresh="false" class="" :paginator="showPrev === 'channel' ? prevChannelPaginator : showNext === 'user'? prevUserPaginator : showNext === 'home' ? prevHomePaginator : prevLocalPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
 				</div>
 			</div>
 			<MkError v-else-if="error" @retry="fetchNote()"/>
@@ -63,6 +67,7 @@ import { getAppearNote } from '@/utility/get-appear-note.js';
 import { serverContext, assertServerContext } from '@/server-context.js';
 import { $i } from '@/i.js';
 import { Paginator } from '@/utility/paginator.js';
+import { isAvailableBasicTimeline } from '@/timelines.js';
 
 // contextは非ログイン状態の情報しかないためログイン時は利用できない
 const CTX_NOTE = !$i && assertServerContext(serverContext, 'note') ? serverContext.note : null;
@@ -74,8 +79,8 @@ const props = defineProps<{
 
 const note = ref<null | Misskey.entities.Note>(CTX_NOTE);
 const clips = ref<Misskey.entities.Clip[]>();
-const showPrev = ref<'user' | 'channel' | false>(false);
-const showNext = ref<'user' | 'channel' | false>(false);
+const showPrev = ref<'user' | 'channel' | 'home' | 'local' | false>(false);
+const showNext = ref<'user' | 'channel' | 'home' | 'local' | false>(false);
 const error = ref();
 
 const prevUserPaginator = markRaw(new Paginator('users/notes', {
@@ -109,6 +114,48 @@ const nextChannelPaginator = markRaw(new Paginator('channels/timeline', {
 	initialDirection: 'newer',
 	computedParams: computed(() => note.value && note.value.channelId != null ? ({
 		channelId: note.value.channelId,
+	}) : undefined),
+}));
+
+const prevHomePaginator = markRaw(new Paginator('notes/timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
+		untilId: note.value.id,
+	}) : undefined),
+}));
+
+const nextHomePaginator = markRaw(new Paginator('notes/timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	initialDirection: 'newer',
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
+		sinceId: note.value.id,
+	}) : undefined),
+}));
+
+const prevLocalPaginator = markRaw(new Paginator('notes/local-timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
+		untilId: note.value.id,
+	}) : undefined),
+}));
+
+const nextLocalPaginator = markRaw(new Paginator('notes/local-timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	initialDirection: 'newer',
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
+		sinceId: note.value.id,
 	}) : undefined),
 }));
 
