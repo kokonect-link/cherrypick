@@ -80,7 +80,7 @@ export type RolePolicies = {
 export const DEFAULT_POLICIES: RolePolicies = {
 	gtlAvailable: true,
 	ltlAvailable: true,
-	btlAvailable: false,
+	btlAvailable: true,
 	canPublicNote: true,
 	canEditNote: true,
 	mentionLimit: 20,
