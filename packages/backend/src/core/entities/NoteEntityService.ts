@@ -405,7 +405,7 @@ export class NoteEntityService implements OnModuleInit {
 
 		let text = note.text;
 
-		if (note.name && (note.url ?? note.uri)) {
+		if (note.name && (note.url ?? note.uri) && !note.hasEvent) {
 			text = `【${note.name}】\n${(note.text ?? '').trim()}\n\n${note.url ?? note.uri}`;
 		}
 
