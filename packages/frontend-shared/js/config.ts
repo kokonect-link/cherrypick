@@ -22,3 +22,4 @@ export const instanceName = (siteName === 'CherryPick' || siteName == null) ? ho
 export const ui = localStorage.getItem('ui');
 export const debug = localStorage.getItem('debug') === 'true';
 export const isSafeMode = localStorage.getItem('isSafeMode') === 'true';
+export const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion)').matches;
