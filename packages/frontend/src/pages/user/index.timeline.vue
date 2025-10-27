@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					label: i18n.ts.reaction
 				}] : []),
 			]"
-			:class="$style.tab"
+			:class="[$style.tab, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.scrollToTransparent]: showEl }]"
 		>
 		</MkTab>
 	</template>
@@ -39,6 +39,9 @@ import { i18n } from '@/i18n.js';
 import { Paginator } from '@/utility/paginator.js';
 import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
+import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+
+const { showEl } = scrollToVisibility();
 
 const props = defineProps<{
 	user: Misskey.entities.UserDetailed;
@@ -76,7 +79,20 @@ const filesPaginator = markRaw(new Paginator('users/notes', {
 <style lang="scss" module>
 .tab {
 	padding: calc(var(--MI-margin) / 2) 0;
-	background: var(--MI_THEME-bg);
+	//background: var(--MI_THEME-bg);
+	-webkit-backdrop-filter: var(--MI-blur, blur(15px));
+	backdrop-filter: var(--MI-blur, blur(15px));
+	transition: opacity 0.5s, background-color 0.5s;
+
+	&.reduceBlurEffect {
+		background-color: color(from var(--MI_THEME-bg) srgb r g b / 1);
+		-webkit-backdrop-filter: none;
+		backdrop-filter: none;
+	}
+
+	&.scrollToTransparent {
+		background-color: transparent;
+	}
 }
 
 .tl {
