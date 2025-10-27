@@ -152,7 +152,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							choices: poll.choices,
 							multiple: poll.multiple,
 							expiresAt: poll.expiresAt,
-						} : null
+						} : null,
 					)
 					: Promise.resolve(null),
 				note.hasEvent
@@ -162,7 +162,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							start: event.start,
 							end: event.end,
 							metadata: event.metadata,
-						} : null
+						} : null,
 					)
 					: Promise.resolve(null),
 			]);

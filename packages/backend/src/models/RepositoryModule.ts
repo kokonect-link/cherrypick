@@ -89,8 +89,8 @@ import {
 	MiChatRoomInvitation,
 	MiChatApproval,
 } from './_.js';
-import type { Provider } from '@nestjs/common';
 import { NoteHistory } from './NoteHistory.js';
+import type { Provider } from '@nestjs/common';
 import type { DataSource } from 'typeorm';
 
 const $usersRepository: Provider = {

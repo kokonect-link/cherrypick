@@ -65,7 +65,7 @@ export class NoteHistorySerivce implements OnApplicationShutdown {
 			// 이전에 이미 기록된 히스토리가 있는 경우 가장 최근의 히스토리를 가져오기
 			const lastRecord = await this.noteHistoryRepository.findOne({
 				where: { noteId: originalNote.id },
-				order: { id: 'DESC' }
+				order: { id: 'DESC' },
 			});
 
 			const lastRecord_createdAt = lastRecord?.updatedAt ?? this.idService.parse(originalNote.id).date;
