@@ -338,7 +338,7 @@ onMounted(() => {
 			display: flex;
 			gap: 16px;
 
-			> .sub, > .pub >.soft {
+			> .sub, > .pub, > .soft {
 				flex: 1;
 				min-width: 0;
 				position: relative;
