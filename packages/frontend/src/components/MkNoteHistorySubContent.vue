@@ -5,11 +5,30 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div>
-	<div>
-		<Mfm v-if="history.text && !collapsed" :text="history.text" :author="originalNote.user" :nyaize="'respect'" :emojiUrls="history.emojis"/>
+	<div v-if="history.cw != null" :class="$style.cw">
+		<Mfm v-if="history.cw != ''" :text="history.cw" :author="originalNote.user" :nyaize="'respect'" :emojiUrls="history.emojis"/>
+		<MkCwButton v-model="showContent" :text="history.text" :files="history.files" :poll="history.poll"/>
 	</div>
-	<div v-if="props.history.files && props.history.files.length > 0 && !collapsed" style="margin-top: 8px;">
-		<MkMediaList :mediaList="props.history.files"/>
+	<div v-show="history.cw == null || showContent">
+		<div>
+			<Mfm v-if="history.text && !collapsed" :text="history.text" :author="originalNote.user" :nyaize="'respect'" :emojiUrls="history.emojis"/>
+		</div>
+		<div v-if="props.history.files && props.history.files.length > 0 && !collapsed" style="margin-top: 8px;">
+			<MkMediaList :mediaList="props.history.files"/>
+		</div>
+		<div v-if="history.poll && !collapsed" style="margin-top: 8px;">
+			<MkPoll
+				:noteId="originalNote.id"
+				:choices="history.poll.choices"
+				:multiple="history.poll.multiple"
+				:expiresAt="history.poll.expiresAt"
+				:emojiUrls="history.emojis"
+				readOnly
+			/>
+		</div>
+		<div v-if="history.event && !collapsed" style="margin-top: 8px;">
+			<MkEvent :note="{ ...originalNote, event: history.event }"/>
+		</div>
 	</div>
 	<div>
 		<button v-if="collapsed" :class="$style.showLess" class="_button" @click="collapsed = false">
@@ -30,6 +49,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkMediaList from '@/components/MkMediaList.vue';
+import MkPoll from '@/components/MkPoll.vue';
+import MkEvent from '@/components/MkEvent.vue';
+import MkCwButton from '@/components/MkCwButton.vue';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
@@ -38,9 +60,18 @@ const props = defineProps<{
 }>();
 
 const collapsed = ref(true);
+const showContent = ref(false);
 </script>
 
 <style lang="scss" module>
+.cw {
+	cursor: default;
+	display: block;
+	margin: 0 0 8px 0;
+	padding: 0;
+	overflow-wrap: break-word;
+}
+
 .reply {
 	margin-right: 6px;
 	color: var(--accent);

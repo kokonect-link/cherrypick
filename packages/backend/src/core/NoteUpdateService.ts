@@ -145,14 +145,38 @@ export class NoteUpdateService implements OnApplicationShutdown {
 
 		// 投稿を更新
 		try {
-			if ((note.hasPoll && values.hasPoll) || (note.hasEvent && values.hasEvent)) {
-				// Start transaction
+			const [originalPoll, originalEvent] = await Promise.all([
+				note.hasPoll
+					? this.db.getRepository(MiPoll).findOneBy({ noteId: note.id }).then(poll =>
+						poll ? {
+							choices: poll.choices,
+							multiple: poll.multiple,
+							expiresAt: poll.expiresAt,
+						} : null
+					)
+					: Promise.resolve(null),
+				note.hasEvent
+					? this.db.getRepository(MiEvent).findOneBy({ noteId: note.id }).then(event =>
+						event ? {
+							start: event.start,
+							end: event.end,
+							title: event.title,
+							metadata: event.metadata,
+						} : null
+					)
+					: Promise.resolve(null),
+			]);
+
+			// Start transaction for any poll or event changes
+			const needsTransaction = note.hasPoll || values.hasPoll || note.hasEvent || values.hasEvent;
+
+			if (needsTransaction) {
 				await this.db.transaction(async transactionalEntityManager => {
 					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
 
-					if (values.hasPoll) {
+					if (note.hasPoll && values.hasPoll) {
 						const old_poll = await transactionalEntityManager.findOneBy(MiPoll, { noteId: note.id });
-						if (old_poll!.choices.toString() !== data.poll!.choices.toString() || old_poll!.multiple !== data.poll!.multiple) {
+						if (old_poll && (old_poll.choices.toString() !== data.poll!.choices.toString() || old_poll.multiple !== data.poll!.multiple)) {
 							await transactionalEntityManager.delete(MiPoll, { noteId: note.id });
 							const poll = new MiPoll({
 								noteId: note.id,
@@ -166,16 +190,31 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							});
 							await transactionalEntityManager.insert(MiPoll, poll);
 						}
+					} else if (!note.hasPoll && values.hasPoll) {
+						const poll = new MiPoll({
+							noteId: note.id,
+							choices: data.poll!.choices,
+							expiresAt: data.poll!.expiresAt,
+							multiple: data.poll!.multiple,
+							votes: new Array(data.poll!.choices.length).fill(0),
+							noteVisibility: note.visibility,
+							userId: user.id,
+							userHost: user.host,
+						});
+						await transactionalEntityManager.insert(MiPoll, poll);
+					} else if (note.hasPoll && !values.hasPoll) {
+						// Remove poll
+						await transactionalEntityManager.delete(MiPoll, { noteId: note.id });
 					}
 
-					if (values.hasEvent) {
+					if (note.hasEvent && values.hasEvent) {
 						const old_event = await transactionalEntityManager.findOneBy(MiEvent, { noteId: note.id });
-						if (
-							old_event!.start !== data.event!.start ||
-							old_event!.end !== data.event!.end ||
-							old_event!.title !== data.event!.title ||
-							old_event!.metadata !== data.event!.metadata
-						) {
+						if (old_event && (
+							old_event.start !== data.event!.start ||
+							old_event.end !== data.event!.end ||
+							old_event.title !== data.event!.title ||
+							old_event.metadata !== data.event!.metadata
+						)) {
 							await transactionalEntityManager.delete(MiEvent, { noteId: note.id });
 							const event = new MiEvent({
 								noteId: note.id,
@@ -189,29 +228,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							});
 							await transactionalEntityManager.insert(MiEvent, event);
 						}
-					}
-				});
-			} else if ((!note.hasPoll && values.hasPoll) || (!note.hasEvent && values.hasEvent)) {
-				// Start transaction
-				await this.db.transaction(async transactionalEntityManager => {
-					await transactionalEntityManager.update(MiNote, { id: note.id }, values);
-
-					if (values.hasPoll) {
-						const poll = new MiPoll({
-							noteId: note.id,
-							choices: data.poll!.choices,
-							expiresAt: data.poll!.expiresAt,
-							multiple: data.poll!.multiple,
-							votes: new Array(data.poll!.choices.length).fill(0),
-							noteVisibility: note.visibility,
-							userId: user.id,
-							userHost: user.host,
-						});
-
-						await transactionalEntityManager.insert(MiPoll, poll);
-					}
-
-					if (values.hasEvent) {
+					} else if (!note.hasEvent && values.hasEvent) {
 						const event = new MiEvent({
 							noteId: note.id,
 							start: data.event!.start,
@@ -222,18 +239,8 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							userId: user.id,
 							userHost: user.host,
 						});
-
 						await transactionalEntityManager.insert(MiEvent, event);
-					}
-				});
-			} else if ((note.hasPoll && !values.hasPoll) || (note.hasEvent && !values.hasEvent)) {
-				// Start transaction
-				await this.db.transaction(async transactionalEntityManager => {
-					if (!values.hasPoll) {
-						await transactionalEntityManager.delete(MiPoll, { noteId: note.id });
-					}
-
-					if (!values.hasEvent) {
+					} else if (note.hasEvent && !values.hasEvent) {
 						await transactionalEntityManager.delete(MiEvent, { noteId: note.id });
 					}
 				});
@@ -241,7 +248,7 @@ export class NoteUpdateService implements OnApplicationShutdown {
 				await this.notesRepository.update({ id: note.id }, values);
 			}
 
-			await this.noteHistoryService.recordHistory(values, note, { updatedAt: data.updatedAt });
+			await this.noteHistoryService.recordHistory(values, note, originalPoll, originalEvent, { updatedAt: data.updatedAt });
 
 			return await this.notesRepository.findOneBy({ id: note.id });
 		} catch (e) {

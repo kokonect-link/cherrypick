@@ -5989,6 +5989,21 @@ export type components = {
             /** Format: id */
             userId: string;
             text: string | null;
+            cw?: string | null;
+            poll?: {
+                choices: string[];
+                multiple: boolean;
+                /** Format: date-time */
+                expiresAt: string | null;
+            } | null;
+            event?: {
+                /** Format: date-time */
+                start: string;
+                /** Format: date-time */
+                end: string | null;
+                title: string;
+                metadata: Record<string, never>;
+            } | null;
             fileIds?: string[];
             files?: components['schemas']['DriveFile'][];
             /** @enum {string} */

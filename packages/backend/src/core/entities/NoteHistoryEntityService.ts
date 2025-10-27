@@ -95,6 +95,18 @@ export class NoteHistoryEntityService implements OnModuleInit {
 			updatedAt: history.updatedAt.toISOString(),
 			userId: history.userId,
 			text: text,
+			cw: history.cw ?? undefined,
+			poll: history.poll ? {
+				choices: history.poll.choices.map(choice => ({ text: choice, votes: 0 })),
+				multiple: history.poll.multiple,
+				expiresAt: history.poll.expiresAt ? new Date(history.poll.expiresAt).toISOString() : null,
+			} : undefined,
+			event: history.event ? {
+				start: new Date(history.event.start).toISOString(),
+				end: history.event.end ? new Date(history.event.end).toISOString() : null,
+				title: history.event.title,
+				metadata: history.event.metadata,
+			} : undefined,
 			visibility: history.visibility,
 			visibleUserIds: history.visibility === 'specified' ? history.visibleUserIds : undefined,
 			emojis: host != null ? this.customEmojiService.populateEmojis(history.emojis, host) : undefined,

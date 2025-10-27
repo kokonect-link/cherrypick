@@ -35,6 +35,51 @@ export const packedNoteHistorySchema = {
 			type: 'string',
 			optional: false, nullable: true,
 		},
+		cw: {
+			type: 'string',
+			optional: true, nullable: true,
+		},
+		poll: {
+			type: 'object',
+			optional: true, nullable: true,
+			properties: {
+				choices: {
+					type: 'array',
+					items: {
+						type: 'string',
+					},
+				},
+				multiple: {
+					type: 'boolean',
+				},
+				expiresAt: {
+					type: 'string',
+					format: 'date-time',
+					nullable: true,
+				},
+			},
+		},
+		event: {
+			type: 'object',
+			optional: true, nullable: true,
+			properties: {
+				start: {
+					type: 'string',
+					format: 'date-time',
+				},
+				end: {
+					type: 'string',
+					format: 'date-time',
+					nullable: true,
+				},
+				title: {
+					type: 'string',
+				},
+				metadata: {
+					type: 'object',
+				},
+			},
+		},
 		fileIds: {
 			type: 'array',
 			optional: true, nullable: false,

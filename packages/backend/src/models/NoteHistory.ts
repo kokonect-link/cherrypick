@@ -63,6 +63,33 @@ export class NoteHistory {
 	})
 	public text: string | null;
 
+	@Column('varchar', {
+		length: 512,
+		nullable: true,
+	})
+	public cw: string | null;
+
+	@Column('jsonb', {
+		nullable: true,
+		default: null,
+	})
+	public poll: {
+		choices: string[];
+		multiple: boolean;
+		expiresAt: Date | null;
+	} | null;
+
+	@Column('jsonb', {
+		nullable: true,
+		default: null,
+	})
+	public event: {
+		start: Date;
+		end: Date | null;
+		title: string;
+		metadata: Record<string, any>;
+	} | null;
+
 	@Column('enum', { enum: noteVisibilities })
 	public visibility: typeof noteVisibilities[number];
 
