@@ -91,9 +91,12 @@ onMounted(async () => {
 	federationSubActive.value = chart.subActive[0];
 	federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
 	
-	if (chart.software && chart.software.length >= 2) {
+	if (chart.software.length >= 2) {
 		softwareCount.value = chart.software[0];
 		softwareCountDiff.value = chart.software[0] - chart.software[1];
+	} else {
+		softwareCount.value = 0;
+		softwareCountDiff.value = 0;
 	}
 
 	misskeyApiGet('federation/stats', { limit: 10 }).then(res => {
