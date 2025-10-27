@@ -37,6 +37,8 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - CherryPick의 고유 기능 중 하나인 `진동 기능`은 Misskey에서 대응함에 따라 일부를 개선하여 적용합니다.
 	이 과정에서 기존에 진동이 작동했으나 현재는 작동하지 않는 부분이 있을 수 있습니다.
 	또한 이 변경에 따라 iOS 디바이스에서의 진동을 지원합니다.
+- 노트 편집 기록이 개선됨에 따라 기존 노트 편집 기록은 더 이상 이용할 수 없게 되며 편집 기록 데이터가 모두 삭제됩니다.
+  이 변경 사항이 반영된 시점부터의 노트 편집 기록만 확인할 수 있습니다.
 
 ### General
 - Change: 버블 타임라인의 역할 기본값을 `사용 가능`으로 변경함
@@ -45,7 +47,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
   - 지정한 기간보다 오래된 노트를 자동으로 삭제합니다.
   - 삭제 대상에서 즐겨찾기한 노트를 제외할 수 있습니다.
 - Feat: 리모트 인스턴스 소프트웨어 차트 표시 (yojo-art/cherrypick#659)
-  -　엔드포인트:`api/federation/remote-software`
+  - 엔드포인트:`api/federation/remote-software`
   - 프론트엔드는 `/about#charts`에서 확인할 수 있습니다.
 - Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
 - Enhance: 노트 편집 기록을 개선함 ([serafuku/misskey@90d2e1b3](https://github.com/serafuku/misskey/commit/90d2e1b35bf52196004291964f9f30a7c2f7d1b4))
