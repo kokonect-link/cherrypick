@@ -82,8 +82,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<dt :class="$style.key">{{ i18n.ts._event.availability }}</dt>
 			<dd :class="$style.value">
 				{{ [
-					(note.event!.metadata.offers.availabilityStarts ? i18n.ts._event.from + note.event!.metadata.offers.availabilityStarts : ''),
-					(note.event!.metadata.offers.availabilityEnds ? i18n.ts._event.until + note.event!.metadata.offers.availabilityEnds : '')]
+					(note.event!.metadata.offers.availabilityStarts ? i18n.ts._event.from + ' ' + note.event!.metadata.offers.availabilityStarts : ''),
+					(note.event!.metadata.offers.availabilityEnds ? i18n.ts._event.until + ' ' + note.event!.metadata.offers.availabilityEnds : '')]
 					.join(' ') }}
 			</dd>
 		</template>
