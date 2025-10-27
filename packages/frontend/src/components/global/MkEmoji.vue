@@ -85,7 +85,7 @@ function onClick(ev: MouseEvent) {
 		if (props.menuReaction && react) {
 			menuItems.push({
 				text: i18n.ts.doReaction,
-				icon: 'ti ti-plus',
+				icon: 'ti ti-mood-plus',
 				action: () => {
 					react(props.emoji);
 				},
