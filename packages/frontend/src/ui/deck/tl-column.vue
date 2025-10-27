@@ -112,6 +112,8 @@ async function setType() {
 		}, {
 			value: 'global', label: i18n.ts._timelines.global,
 		}, {
+			value: 'media', label: i18n.ts._timelines.media,
+		}, {
 			value: 'bubble', label: i18n.ts._timelines.bubble,
 		}],
 	});

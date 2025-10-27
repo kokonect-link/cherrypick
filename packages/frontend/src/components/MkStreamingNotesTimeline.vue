@@ -50,7 +50,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:moveClass="$style.transition_x_move"
 			tag="div"
 		>
-			<template v-for="(note, i) in paginator.items.value" :key="note.id">
+			<template v-if="props.src === 'media'">
+				<div :class="$style.mediaGrid">
+					<MkNoteMediaGrid v-for="note in paginator.items.value" :note="note" square/>
+				</div>
+			</template>
+			<template v-for="(note, i) in paginator.items.value" v-else :key="note.id">
 				<div v-if="i > 0 && isSeparatorNeeded(paginator.items.value[i -1].createdAt, note.createdAt)" :class="{ '_gaps': !noGap }" :data-scroll-anchor="note.id">
 					<div :class="[$style.date, { [$style.noGap]: noGap }]">
 						<span><i class="ti ti-chevron-up"></i> {{ getSeparatorInfo(paginator.items.value[i -1].createdAt, note.createdAt)?.prevText }}</span>
@@ -101,6 +106,7 @@ import { Paginator } from '@/utility/paginator.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+import MkNoteMediaGrid from '@/components/MkNoteMediaGrid.vue';
 
 const { showEl } = scrollToVisibility();
 
@@ -186,6 +192,16 @@ if (props.src === 'antenna') {
 		computedParams: computed(() => ({
 			withRenotes: props.withRenotes,
 			withFiles: props.onlyFiles ? true : undefined,
+			withCats: props.onlyCats,
+		})),
+		useShallowRef: true,
+	}));
+} else if (props.src === 'media') {
+	paginator = markRaw(new Paginator('notes/hybrid-timeline', {
+		computedParams: computed(() => ({
+			withRenotes: props.withRenotes,
+			withReplies: false,
+			withFiles: true,
 			withCats: props.onlyCats,
 		})),
 		useShallowRef: true,
@@ -359,6 +375,7 @@ const connections = {
 	localTimeline: null as Misskey.IChannelConnection<Misskey.Channels['localTimeline']> | null,
 	hybridTimeline: null as Misskey.IChannelConnection<Misskey.Channels['hybridTimeline']> | null,
 	globalTimeline: null as Misskey.IChannelConnection<Misskey.Channels['globalTimeline']> | null,
+	mediaTimeline: null as Misskey.IChannelConnection<Misskey.Channels['hybridTimeline']> | null,
 	bubbleTimeline: null as Misskey.IChannelConnection<Misskey.Channels['bubbleTimeline']> | null,
 	main: null as Misskey.IChannelConnection<Misskey.Channels['main']> | null,
 	userList: null as Misskey.IChannelConnection<Misskey.Channels['userList']> | null,
@@ -405,6 +422,14 @@ function connectChannel() {
 			withCats: props.onlyCats,
 		});
 		connections.globalTimeline.on('note', prepend);
+	} else if (props.src === 'media') {
+		connections.hybridTimeline = stream.useChannel('hybridTimeline', {
+			withRenotes: props.withRenotes,
+			withReplies: false,
+			withFiles: true,
+			withCats: props.onlyCats,
+		});
+		connections.hybridTimeline.on('note', prepend);
 	} else if (props.src === 'bubble') {
 		connections.bubbleTimeline = stream.useChannel('bubbleTimeline', {
 			withRenotes: props.withRenotes,
@@ -705,5 +730,29 @@ defineExpose({
 	box-sizing: border-box;
 	padding: 16px;
 	background: var(--MI_THEME-panel);
+}
+
+.mediaGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(224px, 1fr));
+	grid-gap: 6px;
+}
+
+@container (max-width: 785px) {
+	.mediaGrid {
+		grid-template-columns: repeat(auto-fill, minmax(192px, 1fr));
+	}
+}
+
+@container (max-width: 660px) {
+	.mediaGrid {
+		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+	}
+}
+
+@container (max-width: 530px) {
+	.mediaGrid {
+		grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+	}
 }
 </style>

@@ -674,6 +674,9 @@ export const PREF_DEF = definePreferences({
 	enableGlobalTimeline: {
 		default: true,
 	},
+	enableMediaTimeline: {
+		default: true,
+	},
 	enableBubbleTimeline: {
 		default: true,
 	},

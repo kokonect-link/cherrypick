@@ -150,6 +150,7 @@ const enableHomeTimeline = ref(prefer.s.enableHomeTimeline);
 const enableLocalTimeline = ref(prefer.s.enableLocalTimeline);
 const enableSocialTimeline = ref(prefer.s.enableSocialTimeline);
 const enableGlobalTimeline = ref(prefer.s.enableGlobalTimeline);
+const enableMediaTimeline = ref(prefer.s.enableMediaTimeline);
 const enableBubbleTimeline = ref(prefer.s.enableBubbleTimeline);
 const enableListTimeline = ref(prefer.s.enableListTimeline);
 const enableAntennaTimeline = ref(prefer.s.enableAntennaTimeline);
@@ -191,6 +192,11 @@ watch(enableSocialTimeline, (x) => {
 
 watch(enableGlobalTimeline, (x) => {
 	prefer.commit('enableGlobalTimeline', x);
+	suggestReload();
+});
+
+watch(enableMediaTimeline, (x) => {
+	prefer.commit('enableMediaTimeline', x);
 	suggestReload();
 });
 
@@ -434,6 +440,11 @@ const headerActions = computed(() => {
 						text: i18n.ts._timelines.global,
 						icon: 'ti ti-world',
 						ref: enableGlobalTimeline,
+					}, {
+						type: 'switch',
+						text: i18n.ts._timelines.media,
+						icon: 'ti ti-photo',
+						ref: enableMediaTimeline,
 					}, {
 						type: 'switch',
 						text: i18n.ts._timelines.bubble,

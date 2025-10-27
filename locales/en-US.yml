@@ -1866,6 +1866,7 @@ _initialTutorial:
     local: "You can view notes from all users on this server."
     social: "Notes from the Home and Local timelines will be displayed."
     global: "You can view notes from all connected servers."
+    media: "Notes from the Home and Local timelines that contain media will be displayed."
     bubble: "You can see notes from servers set up by the administrator."
     description2: "You can switch between timelines at the top of the screen at any time."
     description3: "Additionally, there are list timelines and channel timelines. For more details, please refer to {link}."
@@ -1905,6 +1906,7 @@ _timelineDescription:
   local: "In the Local timeline, you can see notes from all users on this server."
   social: "The Social timeline displays notes from both the Home and Local timelines."
   global: "In the Global timeline, you can see notes from all connected servers."
+  media: "The Media timeline displays notes that contain media from both the Home and Local timelines."
   bubble: "In the Bubble timeline, you can see notes from servers set up by the administrator."
 _serverRules:
   description: "A set of rules to be displayed before registration. Setting a summary of the Terms of Service is recommended."
@@ -2978,6 +2980,7 @@ _timelines:
   local: "Local"
   social: "Social"
   global: "Global"
+  media: "Media"
   bubble: "Bubble"
 _play:
   new: "Create Play"

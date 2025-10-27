@@ -724,6 +724,10 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: true,
 	},
+	enableMediaTimeline: {
+		where: 'device',
+		default: true,
+	},
 	enableBubbleTimeline: {
 		where: 'device',
 		default: true,

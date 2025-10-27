@@ -202,6 +202,7 @@ export function migrateOldSettings() {
 		prefer.commit('enableLocalTimeline', store.s.enableLocalTimeline);
 		prefer.commit('enableSocialTimeline', store.s.enableSocialTimeline);
 		prefer.commit('enableGlobalTimeline', store.s.enableGlobalTimeline);
+		prefer.commit('enableMediaTimeline', store.s.enableMediaTimeline);
 		prefer.commit('enableBubbleTimeline', store.s.enableBubbleTimeline);
 		prefer.commit('enableListTimeline', store.s.enableListTimeline);
 		prefer.commit('enableAntennaTimeline', store.s.enableAntennaTimeline);

@@ -7433,6 +7433,10 @@ export interface Locale extends ILocale {
              */
             "global": string;
             /**
+             * メディアを含むホームタイムラインとローカルタイムラインの投稿が表示されます。
+             */
+            "media": string;
+            /**
              * 管理者が設定したサーバーの投稿を見ることができます。
              */
             "bubble": string;
@@ -7573,6 +7577,10 @@ export interface Locale extends ILocale {
          * グローバルタイムラインでは、接続している他のすべてのサーバーからの投稿を見られます。
          */
         "global": string;
+        /**
+         * メディアタイムラインでは、メディアを含むホームタイムラインとローカルタイムラインの投稿が表示されます。
+         */
+        "media": string;
         /**
          * バブルタイムラインでは、管理者が設定したサーバーの投稿を見ることができます。
          */
@@ -11607,6 +11615,10 @@ export interface Locale extends ILocale {
          * グローバル
          */
         "global": string;
+        /**
+         * メディア
+         */
+        "media": string;
         /**
          * バブル
          */
