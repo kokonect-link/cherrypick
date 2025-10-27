@@ -162,6 +162,7 @@ const collapseLongNoteContent = ref(prefer.s.collapseLongNoteContent);
 const collapseDefault = ref(prefer.s.collapseDefault);
 const alwaysShowCw = ref(prefer.s.alwaysShowCw);
 const showReplyTargetNote = ref(prefer.s.showReplyTargetNote);
+const disableNyaize = ref(prefer.s.disableNyaize);
 
 watch(enableWidgetsArea, (x) => {
 	prefer.commit('enableWidgetsArea', x);
@@ -248,6 +249,12 @@ watch(alwaysShowCw, (x) => {
 
 watch(showReplyTargetNote, (x) => {
 	prefer.commit('showReplyTargetNote', x);
+	reloadTimeline();
+	reloadNotification();
+});
+
+watch(disableNyaize, (x) => {
+	prefer.commit('disableNyaize', x);
 	reloadTimeline();
 	reloadNotification();
 });
@@ -522,6 +529,10 @@ const headerActions = computed(() => {
 						type: 'switch',
 						text: i18n.ts.showReplyTargetNote,
 						ref: showReplyTargetNote,
+					}, {
+						type: 'switch',
+						text: i18n.ts.noNyaization,
+						ref: disableNyaize,
 					}, {
 						type: 'divider',
 					}, {
