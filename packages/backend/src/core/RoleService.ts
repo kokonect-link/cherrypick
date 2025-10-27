@@ -123,7 +123,7 @@ export const DEFAULT_POLICIES: RolePolicies = {
 		'audio/*',
 	],
 	noteDraftLimit: 10,
-	scheduledNoteLimit: 1,
+	scheduledNoteLimit: 3,
 	watermarkAvailable: true,
 	canSetFederationAvatarShape: true,
 };
