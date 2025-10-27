@@ -1673,7 +1673,7 @@ _settings:
   timelineAndNote: "타임라인과 노트"
   makeEveryTextElementsSelectable: "모든 텍스트 요소를 선택할 수 있도록 함"
   makeEveryTextElementsSelectable_description: "활성화 시, 일부 동작에서 사용자의 접근성이 나빠질 수도 있어요."
-  useStickyIcons: "아이콘이 스크롤을 따라가도록 하기"
+  useStickyIcons: "프로필 아이콘이 스크롤에 반응하도록 설정"
   enableHighQualityImagePlaceholders: "고품질 이미지를 위한 자리 표시자 표시"
   uiAnimations: "UI 애니메이션"
   showNavbarSubButtons: "내비게이션 바에 보조 버튼 표시"
