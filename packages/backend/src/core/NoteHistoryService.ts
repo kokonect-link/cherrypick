@@ -107,9 +107,9 @@ export class NoteHistorySerivce implements OnApplicationShutdown {
 			let eventChanged = newData.hasEvent !== originalNote.hasEvent;
 			if (!eventChanged && originalEvent && lastRecord?.event) {
 				eventChanged =
+					originalEvent.title !== lastRecord.event.title ||
 					originalEvent.start.getTime() !== new Date(lastRecord.event.start).getTime() ||
 					originalEvent.end?.getTime() !== (lastRecord.event.end ? new Date(lastRecord.event.end).getTime() : null) ||
-					originalEvent.title !== lastRecord.event.title ||
 					JSON.stringify(originalEvent.metadata) !== JSON.stringify(lastRecord.event.metadata);
 			}
 

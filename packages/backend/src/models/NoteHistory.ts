@@ -84,9 +84,9 @@ export class NoteHistory {
 		default: null,
 	})
 	public event: {
+		title: string;
 		start: Date;
 		end: Date | null;
-		title: string;
 		metadata: Record<string, any>;
 	} | null;
 

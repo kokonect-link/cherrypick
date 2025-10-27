@@ -14,6 +14,10 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * 内容比較
+     */
+    "compareContent": string;
+    /**
      * 修正履歴
      */
     "editHistory": string;

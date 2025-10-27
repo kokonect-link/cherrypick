@@ -314,7 +314,18 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div v-if="!historiesLoaded" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
 			</div>
-			<MkNoteHistorySub v-for="history in histories" :key="history.id" :history="history" :originalNote="appearNote" :class="$style.reply" :detail="true"/>
+			<MkSwitch v-if="historiesLoaded" v-model="history_raw" style="padding: 16px;">{{ i18n.ts.compareContent }}</MkSwitch>
+			<MkNoteHistory
+				v-for="(history, index) in histories"
+				:key="history.id"
+				:oldNote="histories[index+1] ? histories[index+1] : null"
+				:newNote="history"
+				:originalNote="appearNote"
+				:class="$style.reply"
+				:detail="true"
+				:raw="history_raw"
+				:index="index"
+			/>
 			<div v-if="historiesLoaded && !history_list_end" style="padding: 16px">
 				<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
 			</div>
@@ -336,7 +347,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, markRaw, onMounted, provide, ref, useTemplateRef } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
-import { CodeDiff } from 'v-code-diff';
 import { isLink } from '@@/js/is-link.js';
 import { host } from '@@/js/config.js';
 import type { OpenOnRemoteOptions } from '@/utility/please-login.js';
@@ -390,7 +400,8 @@ import { haptic, hapticConfirm } from '@/utility/haptic.js';
 import { store } from '@/store.js';
 import detectLanguage from '@/utility/detect-language.js';
 import MkInfo from '@/components/MkInfo.vue';
-import MkNoteHistorySub from '@/components/MkNoteHistorySub.vue';
+import MkNoteHistory from '@/components/MkNoteHistory.vue';
+import MkSwitch from '@/components/MkSwitch.vue';
 
 const MOBILE_THRESHOLD = 500;
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
@@ -451,6 +462,10 @@ const canRenote = computed(() => ['public', 'home'].includes(appearNote.visibili
 const viewTextSource = ref(false);
 const noNyaize = ref(false);
 const histories = ref<Misskey.entities.NoteHistory[]>([]);
+const historiesLoaded = ref(false);
+const histories_untilId = ref<Misskey.entities.NoteHistory['id']>();
+const history_list_end = ref(false);
+const history_raw = ref(false);
 
 useGlobalEvent('noteDeleted', (noteId) => {
 	if (noteId === note.id || noteId === appearNote.id) {
@@ -883,10 +898,6 @@ function showOnRemote() {
 	if (props.note.user.instance !== undefined) window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
 
-const historiesLoaded = ref(false);
-const histories_untilId = ref<Misskey.entities.NoteHistory['id']>();
-const history_list_end = ref(false);
-
 function loadHistories() {
 	historiesLoaded.value = true;
 	misskeyApi('notes/history', {
@@ -894,9 +905,36 @@ function loadHistories() {
 		noteId: appearNote.id,
 		limit: 5,
 	}).then(res => {
-		if (res.length === 0) {
+		if (histories.value.length === 0) {
+			const current_version: Misskey.entities.NoteHistory = {
+				id: appearNote.id,
+				noteId: appearNote.id,
+				createdAt: appearNote.createdAt,
+				updatedAt: appearNote.createdAt,
+				userId: appearNote.userId,
+				text: appearNote.text,
+				cw: appearNote.cw,
+				poll: appearNote.poll ? {
+					choices: appearNote.poll.choices.map(c => c.text),
+					multiple: appearNote.poll.multiple,
+					expiresAt: appearNote.poll.expiresAt ?? null,
+				} : null,
+				event: appearNote.event ? {
+					title: appearNote.event.title,
+					start: appearNote.event.start,
+					end: appearNote.event.end,
+					metadata: appearNote.event.metadata,
+				} : null,
+				fileIds: appearNote.fileIds,
+				files: appearNote.files,
+				visibility: appearNote.visibility,
+				visibleUserIds: appearNote.visibleUserIds,
+				emojis: appearNote.emojis,
+			};
+			histories.value.push(current_version);
+		}
+		if (res.length < 5) {
 			history_list_end.value = true;
-			return;
 		}
 		histories_untilId.value = res[ res.length - 1 ].id;
 		histories.value = histories.value.concat(res);

@@ -102,9 +102,9 @@ export class NoteHistoryEntityService implements OnModuleInit {
 				expiresAt: history.poll.expiresAt ? new Date(history.poll.expiresAt).toISOString() : null,
 			} : undefined,
 			event: history.event ? {
+				title: history.event.title,
 				start: new Date(history.event.start).toISOString(),
 				end: history.event.end ? new Date(history.event.end).toISOString() : null,
-				title: history.event.title,
 				metadata: history.event.metadata,
 			} : undefined,
 			visibility: history.visibility,

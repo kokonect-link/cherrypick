@@ -63,6 +63,9 @@ export const packedNoteHistorySchema = {
 			type: 'object',
 			optional: true, nullable: true,
 			properties: {
+				title: {
+					type: 'string',
+				},
 				start: {
 					type: 'string',
 					format: 'date-time',
@@ -71,9 +74,6 @@ export const packedNoteHistorySchema = {
 					type: 'string',
 					format: 'date-time',
 					nullable: true,
-				},
-				title: {
-					type: 'string',
 				},
 				metadata: {
 					type: 'object',

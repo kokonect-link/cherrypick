@@ -5997,11 +5997,11 @@ export type components = {
                 expiresAt: string | null;
             } | null;
             event?: {
+                title: string;
                 /** Format: date-time */
                 start: string;
                 /** Format: date-time */
                 end: string | null;
-                title: string;
                 metadata: Record<string, never>;
             } | null;
             fileIds?: string[];

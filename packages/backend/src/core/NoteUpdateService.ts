@@ -158,9 +158,9 @@ export class NoteUpdateService implements OnApplicationShutdown {
 				note.hasEvent
 					? this.db.getRepository(MiEvent).findOneBy({ noteId: note.id }).then(event =>
 						event ? {
+							title: event.title,
 							start: event.start,
 							end: event.end,
-							title: event.title,
 							metadata: event.metadata,
 						} : null
 					)
@@ -218,9 +218,9 @@ export class NoteUpdateService implements OnApplicationShutdown {
 							await transactionalEntityManager.delete(MiEvent, { noteId: note.id });
 							const event = new MiEvent({
 								noteId: note.id,
+								title: data.event!.title,
 								start: data.event!.start,
 								end: data.event!.end ?? undefined,
-								title: data.event!.title,
 								metadata: data.event!.metadata,
 								noteVisibility: note.visibility,
 								userId: user.id,
@@ -231,9 +231,9 @@ export class NoteUpdateService implements OnApplicationShutdown {
 					} else if (!note.hasEvent && values.hasEvent) {
 						const event = new MiEvent({
 							noteId: note.id,
+							title: data.event!.title,
 							start: data.event!.start,
 							end: data.event!.end ?? undefined,
-							title: data.event!.title,
 							metadata: data.event!.metadata,
 							noteVisibility: note.visibility,
 							userId: user.id,
