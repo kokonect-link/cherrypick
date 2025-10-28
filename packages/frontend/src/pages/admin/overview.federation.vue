@@ -90,14 +90,8 @@ onMounted(async () => {
 	federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
 	federationSubActive.value = chart.subActive[0];
 	federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
-	
-	if (chart.software.length >= 2) {
-		softwareCount.value = chart.software[0];
-		softwareCountDiff.value = chart.software[0] - chart.software[1];
-	} else {
-		softwareCount.value = 0;
-		softwareCountDiff.value = 0;
-	}
+	softwareCount.value = chart.software[0];
+	softwareCountDiff.value = chart.software[0] - chart.software[1];
 
 	misskeyApiGet('federation/stats', { limit: 10 }).then(res => {
 		topSubInstancesForPie.value = [
