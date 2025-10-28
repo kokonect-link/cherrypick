@@ -58,7 +58,6 @@ jobs:
         run: |
           BASED_MISSKEY_VERSION=$(node -p "require('./package.json').basedMisskeyVersion")
           echo "based_misskey_version=$BASED_MISSKEY_VERSION" >> $GITHUB_OUTPUT
-          # 2025.10.2 -> 20251002 형식으로 변환
           CHANGELOG_ANCHOR=$(echo $BASED_MISSKEY_VERSION | sed 's/\.//g')
           echo "changelog_anchor=$CHANGELOG_ANCHOR" >> $GITHUB_OUTPUT
       - name: Generate changes template
