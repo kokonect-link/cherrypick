@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl }]">
+<div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl, [$style.atBottom]: isAtBottom }]">
 	<button v-if="store.s.showHomeButtonInNavbar" :class="$style.item" class="_button" @click="clickHomeButton" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]">
 			<i :class="$style.itemIcon" class="ti ti-home"></i>
@@ -74,6 +74,7 @@ const widgetsShowing = defineModel<boolean>('widgetsShowing');
 const rootEl = useTemplateRef('rootEl');
 
 const rootElHeight = ref(0);
+const isAtBottom = ref(false);
 
 async function openAccountMenu(ev: TouchEvent) {
 	haptic();
@@ -131,6 +132,10 @@ function clickWidgetButton() {
 	widgetsShowing.value = true;
 }
 
+function handleIsAtBottom(value: boolean) {
+	isAtBottom.value = value;
+}
+
 watch(rootEl, () => {
 	if (rootEl.value) {
 		rootElHeight.value = rootEl.value.offsetHeight;
@@ -145,10 +150,12 @@ watch(rootEl, () => {
 
 onMounted(() => {
 	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
+	globalEvents.on('isAtBottom', handleIsAtBottom);
 });
 
 onUnmounted(() => {
 	globalEvents.off('queueUpdated', (q) => queueUpdated(q));
+	globalEvents.off('isAtBottom', handleIsAtBottom);
 });
 </script>
 
@@ -183,6 +190,10 @@ onUnmounted(() => {
 
 	&.scrollToTransparent {
 		background-color: transparent;
+	}
+
+	&.atBottom {
+		position: relative;
 	}
 }
 

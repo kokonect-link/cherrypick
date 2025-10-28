@@ -73,6 +73,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: `MkPagination`을 사용하는 요소에서 무한 스크롤을 사용할 수 있음
 - Enhance: 노트 상세 페이지에서 이전 또는 다음 HTL/LTL을 불러올 수 있음 (yojo-art/cherrypick#572)
 - Fix: (Friendly) 알림 영역이 잘못된 디자인으로 표시될 수 있음
+- Fix: (Friendly) 최하단으로 스크롤하면 요소가 네비게이션 바에 가려져 클릭하지 못할 수 있음
 - Fix: `제어판 > 신고`의 `리졸브` 섹션이 잘못된 디자인으로 표시될 수 있음
 - Fix: 이벤트 URL 섹션 이름이 표시되지 않음
 - Fix: 사용자 페이지의 타임라인 또는 노트 탭에서 리액션 탭을 통해 리액션 목록을 불러올 때 잘못된 동작을 할 수 있음
