@@ -1,6 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-	"organizeImports": { "enabled": true },
+	"$schema": "https://biomejs.dev/schemas/2.3.1/schema.json",
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -8,10 +7,9 @@
 			"complexity": {
 				"noBannedTypes": "error",
 				"noExtraBooleanCast": "error",
-				"noMultipleSpacesInRegularExpressionLiterals": "error",
+				"noAdjacentSpacesInRegex": "error",
 				"noUselessCatch": "error",
-				"noUselessTypeConstraint": "error",
-				"noWith": "error"
+				"noUselessTypeConstraint": "error"
 			},
 			"correctness": {
 				"noConstAssign": "error",
@@ -21,7 +19,7 @@
 				"noGlobalObjectCalls": "error",
 				"noInnerDeclarations": "off",
 				"noInvalidConstructorSuper": "error",
-				"noNewSymbol": "error",
+				"noInvalidBuiltinInstantiation": "error",
 				"noNonoctalDecimalEscape": "error",
 				"noPrecisionLoss": "error",
 				"noSelfAssign": "error",
@@ -34,7 +32,6 @@
 				"noUnsafeOptionalChaining": "error",
 				"noUnusedLabels": "error",
 				"noUnusedVariables": "error",
-				"useArrayLiterals": "off",
 				"useIsNan": "error",
 				"useValidForDirection": "error",
 				"useYield": "error"
@@ -45,7 +42,6 @@
 				"noNamespace": "error",
 				"noNonNullAssertion": "warn",
 				"noParameterAssign": "warn",
-				"noVar": "error",
 				"useAsConstAssertion": "error"
 			},
 			"suspicious": {
@@ -74,32 +70,27 @@
 				"noShadowRestrictedNames": "error",
 				"noUnsafeDeclarationMerging": "error",
 				"noUnsafeNegation": "error",
-				"useGetterReturn": "error",
-				"useValidTypeof": "error"
+				"useGetterReturn": "error"
 			}
-		},
-		"ignore": ["build.js"]
+		}
 	},
 	"javascript": { "globals": [] },
 	"overrides": [
 		{
-			"include": ["**/*.ts", "**/*.tsx"],
+			"includes": ["**/*.ts", "**/*.tsx"],
 			"linter": {
 				"rules": {
 					"correctness": {
 						"noConstAssign": "off",
 						"noGlobalObjectCalls": "off",
 						"noInvalidConstructorSuper": "off",
-						"noInvalidNewBuiltin": "off",
-						"noNewSymbol": "off",
+						"noInvalidBuiltinInstantiation": "off",
 						"noSetterReturn": "off",
 						"noUndeclaredVariables": "off",
 						"noUnreachable": "off",
 						"noUnreachableSuper": "off"
 					},
 					"style": {
-						"noArguments": "error",
-						"noVar": "error",
 						"useConst": "error"
 					},
 					"suspicious": {

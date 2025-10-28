@@ -87,6 +87,7 @@ export class DropAndFusionGame extends EventEmitter<{
 			case 'square': return SQUARE_MONOS;
 			case 'sweets': return SWEETS_MONOS;
 			case 'space': return NORAML_MONOS;
+			default: return NORAML_MONOS;
 		}
 	}
 
@@ -203,7 +204,9 @@ export class DropAndFusionGame extends EventEmitter<{
 			return Matter.Bodies.rectangle(x, y, mono.sizeX, mono.sizeY, options);
 		} else if (mono.shape === 'custom' && mono.vertices != null && mono.verticesSize != null) { //eslint-disable-line @typescript-eslint/no-unnecessary-condition
 			return Matter.Bodies.fromVertices(x, y, mono.vertices.map(i => i.map(j => ({
+				// biome-ignore lint/style/noNonNullAssertion: verticesSize is checked in the condition
 				x: (j.x / mono.verticesSize!) * mono.sizeX, //eslint-disable-line @typescript-eslint/no-non-null-assertion
+				// biome-ignore lint/style/noNonNullAssertion: verticesSize is checked in the condition
 				y: (j.y / mono.verticesSize!) * mono.sizeY, //eslint-disable-line @typescript-eslint/no-non-null-assertion
 			}))), options);
 		} else {
