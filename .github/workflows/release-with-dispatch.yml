@@ -3,16 +3,16 @@ name: "Release Manager [Dispatch]"
 on:
   workflow_dispatch:
     inputs:
-      ## Specify the type of the next release.
-      #version_increment_type:
-      #  type: choice
-      #  description: 'VERSION INCREMENT TYPE'
-      #  default: 'patch'
-      #  required: false
-      #  options:
-      #    - 'major'
-      #    - 'minor'
-      #    - 'patch'
+      # Specify the type of the next release.
+      version_increment_type:
+        type: choice
+        description: 'VERSION INCREMENT TYPE'
+        default: 'patch'
+        required: false
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
       merge:
         type: boolean
         description: 'MERGE RELEASE BRANCH TO MAIN'
@@ -45,9 +45,53 @@ jobs:
         env:
           STABLE_BRANCH: ${{ vars.STABLE_BRANCH }}
 
+  prepare-merge:
+    runs-on: ubuntu-latest
+    needs: get-pr
+    if: ${{ needs.get-pr.outputs.pr_number != '' && inputs.merge == true }}
+    outputs:
+      changes_template: ${{ steps.generate-template.outputs.template }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read package.json
+        id: read-package
+        run: |
+          BASED_MISSKEY_VERSION=$(node -p "require('./package.json').basedMisskeyVersion")
+          echo "based_misskey_version=$BASED_MISSKEY_VERSION" >> $GITHUB_OUTPUT
+          # 2025.10.2 -> 20251002 형식으로 변환
+          CHANGELOG_ANCHOR=$(echo $BASED_MISSKEY_VERSION | sed 's/\.//g')
+          echo "changelog_anchor=$CHANGELOG_ANCHOR" >> $GITHUB_OUTPUT
+      - name: Generate changes template
+        id: generate-template
+        env:
+          BASED_VERSION: ${{ steps.read-package.outputs.based_misskey_version }}
+          CHANGELOG_ANCHOR: ${{ steps.read-package.outputs.changelog_anchor }}
+        run: |
+          {
+            echo 'template<<EOF'
+            echo "## Unreleased"
+            echo "출시일: unreleased<br>"
+            echo "기반 Misskey 버전: ${BASED_VERSION}<br>"
+            echo "Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#${CHANGELOG_ANCHOR}](CHANGELOG.md#${CHANGELOG_ANCHOR}) 문서를 참고하십시오."
+            echo ""
+            echo "### NOTE"
+            echo "-"
+            echo ""
+            echo "### General"
+            echo "-"
+            echo ""
+            echo "### Client"
+            echo "-"
+            echo ""
+            echo "### Server"
+            echo "-"
+            echo ""
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
   merge:
     uses: kokonect-link/release-manager-actions/.github/workflows/merge.yml@v2
-    needs: get-pr
+    needs: [get-pr, prepare-merge]
     if: ${{ needs.get-pr.outputs.pr_number != '' && inputs.merge == true }}
     with:
       pr_number: ${{ needs.get-pr.outputs.pr_number }}
@@ -55,18 +99,7 @@ jobs:
       package_jsons_to_rewrite: ${{ vars.PACKAGE_JSONS_TO_REWRITE }}
       # Text to prepend to the changelog
       # The first line must be `## Unreleased`
-      changes_template: |
-        ## Unreleased
-
-        ### General
-        -
-
-        ### Client
-        -
-
-        ### Server
-        -
-
+      changes_template: ${{ needs.prepare-merge.outputs.changes_template }}
       use_external_app_to_release: ${{ vars.USE_RELEASE_APP == 'true' }}
       indent: ${{ vars.INDENT }}
     secrets:
@@ -101,31 +134,31 @@ jobs:
       # process.env.CURRENT_VERSION: The current version.
       #
       # Misskey calender versioning (yyyy.MM.patch) example
-      version_increment_script: |
-        const now = new Date();
-        const year = now.toLocaleDateString('en-US', { year: 'numeric', timeZone: 'Asia/Tokyo' });
-        const month = now.toLocaleDateString('en-US', { month: 'numeric', timeZone: 'Asia/Tokyo' });
-        const [major, minor, _patch] = process.env.CURRENT_VERSION.split('.');
-        const patch = Number(_patch.split('-')[0]);
-        if (Number.isNaN(patch)) {
-          console.error('Invalid patch version', year, month, process.env.CURRENT_VERSION, major, minor, _patch);
-          throw new Error('Invalid patch version');
-        }
-        if (year !== major || month !== minor) {
-          return `${year}.${month}.0`;
-        } else {
-          return `${major}.${minor}.${patch + 1}`;
-        }
-      ##Semver example
       #version_increment_script: |
-      #  const [major, minor, patch] = process.env.CURRENT_VERSION.split('.');
-      #  if ("${{ inputs.version_increment_type }}" === "major") {
-      #    return `${Number(major) + 1}.0.0`;
-      #  } else if ("${{ inputs.version_increment_type }}" === "minor") {
-      #    return `${major}.${Number(minor) + 1}.0`;
-      #  } else {
-      #    return `${major}.${minor}.${Number(patch) + 1}`;
+      #  const now = new Date();
+      #  const year = now.toLocaleDateString('en-US', { year: 'numeric', timeZone: 'Asia/Tokyo' });
+      #  const month = now.toLocaleDateString('en-US', { month: 'numeric', timeZone: 'Asia/Tokyo' });
+      #  const [major, minor, _patch] = process.env.CURRENT_VERSION.split('.');
+      #  const patch = Number(_patch.split('-')[0]);
+      #  if (Number.isNaN(patch)) {
+      #    console.error('Invalid patch version', year, month, process.env.CURRENT_VERSION, major, minor, _patch);
+      #    throw new Error('Invalid patch version');
       #  }
+      #  if (year !== major || month !== minor) {
+      #    return `${year}.${month}.0`;
+      #  } else {
+      #    return `${major}.${minor}.${patch + 1}`;
+      #  }
+      #Semver example
+      version_increment_script: |
+        const [major, minor, patch] = process.env.CURRENT_VERSION.split('.');
+        if ("${{ inputs.version_increment_type }}" === "major") {
+          return `${Number(major) + 1}.0.0`;
+        } else if ("${{ inputs.version_increment_type }}" === "minor") {
+          return `${major}.${Number(minor) + 1}.0`;
+        } else {
+          return `${major}.${minor}.${Number(patch) + 1}`;
+        }
       package_jsons_to_rewrite: ${{ vars.PACKAGE_JSONS_TO_REWRITE }}
       use_external_app_to_release: ${{ vars.USE_RELEASE_APP == 'true' }}
       indent: ${{ vars.INDENT }}

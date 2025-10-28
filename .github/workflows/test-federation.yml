@@ -32,7 +32,7 @@ jobs:
           - .node-version
           - .github/min.node-version
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.3.0
         with:
           submodules: true
       - name: Setup pnpm
@@ -42,7 +42,7 @@ jobs:
         run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Setup and Restore ffmpeg/ffprobe Cache
         id: cache-ffmpeg
-        uses: actions/cache@v4
+        uses: actions/cache@v4.3.0
         with:
           path: |
             /usr/local/bin/ffmpeg

@@ -45,4 +45,4 @@ jobs:
           gh pr edit "$PR_NUMBER" --body "$CHANGELOG_CHERRYPICK"
         env:
           PR_NUMBER: ${{ steps.get_pr.outputs.pr_number }}
-          CHANGELOG: ${{ steps.changelog.outputs.changelog }}
+          CHANGELOG_CHERRYPICK: ${{ steps.changelog.outputs.changelog }}
