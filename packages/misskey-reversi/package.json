@@ -6,10 +6,12 @@
 	"types": "./built/index.d.ts",
 	"exports": {
 		".": {
+			"default": "./built/index.js",
 			"import": "./built/index.js",
 			"types": "./built/index.d.ts"
 		},
 		"./*": {
+			"default": "./built/*",
 			"import": "./built/*",
 			"types": "./built/*"
 		}
@@ -25,8 +27,8 @@
 		"format:write": "pnpm biome format --write"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.2.5",
-		"@types/node": "22.18.10",
+		"@biomejs/biome": "2.3.1",
+		"@types/node": "24.9.1",
 		"@typescript-eslint/eslint-plugin": "8.46.1",
 		"@typescript-eslint/parser": "8.46.1",
 		"esbuild": "0.25.10",

@@ -69,10 +69,10 @@
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.2.5",
+		"@biomejs/biome": "2.3.1",
 		"@misskey-dev/eslint-plugin": "2.1.0",
 		"@types/js-yaml": "4.0.9",
-		"@types/node": "22.18.10",
+		"@types/node": "24.9.1",
 		"@typescript-eslint/eslint-plugin": "8.46.1",
 		"@typescript-eslint/parser": "8.46.1",
 		"cross-env": "10.1.0",
@@ -89,6 +89,9 @@
 	"pnpm": {
 		"overrides": {
 			"@aiscript-dev/aiscript-languageserver": "-"
-		}
+		},
+		"ignoredBuiltDependencies": [
+			"@sentry-internal/node-cpu-profiler"
+		]
 	}
 }
