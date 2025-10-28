@@ -54,7 +54,7 @@ export class ApEventService {
 					name: note.name,
 					url: note.href,
 					startDate: start.toISOString(),
-					endDate: end.toISOString(),
+					endDate: end?.toISOString(),
 					description: note.summary,
 					identifier: note.id,
 				},

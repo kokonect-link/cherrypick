@@ -506,6 +506,7 @@ export class UserEntityService implements OnModuleInit {
 			isLocked: user.isLocked,
 			isBot: user.isBot,
 			isCat: user.isCat,
+			// @ts-expect-error - proxyAccountId is not defined in MiMeta
 			isProxy: this.meta.proxyAccountId === user.id,
 			requireSigninToViewContents: user.requireSigninToViewContents === false ? undefined : true,
 			makeNotesFollowersOnlyBefore: user.makeNotesFollowersOnlyBefore ?? undefined,

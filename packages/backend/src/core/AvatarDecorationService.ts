@@ -225,6 +225,8 @@ export class AvatarDecorationService implements OnApplicationShutdown {
 		if (!(await this.usersRepository.update({ id: user.id, isDeleted: false }, updates)).affected) {
 			return 'skip';
 		}
+
+		return undefined;
 	}
 
 	@bindThis

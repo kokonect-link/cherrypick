@@ -75,7 +75,7 @@ export class ExportAntennasProcessorService {
 				}
 				write(JSON.stringify({
 					name: antenna.name,
-					src: antenna.src,
+					src: antenna.src as any,
 					keywords: antenna.keywords,
 					excludeKeywords: antenna.excludeKeywords,
 					users: antenna.users,

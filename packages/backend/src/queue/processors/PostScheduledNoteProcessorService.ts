@@ -55,9 +55,9 @@ export class PostScheduledNoteProcessorService {
 				visibility: draft.visibility,
 				visibleUserIds: draft.visibleUserIds,
 				channelId: draft.channelId,
-				event: draft.hasEvent ? {
+				event: draft.hasEvent && draft.eventTitle && draft.eventStart ? {
 					title: draft.eventTitle,
-					start: draft.eventStart ? new Date(draft.eventStart) : null,
+					start: new Date(draft.eventStart),
 					end: draft.eventEnd ? new Date(draft.eventEnd) : null,
 					metadata: draft.eventMetadata,
 				} : null,

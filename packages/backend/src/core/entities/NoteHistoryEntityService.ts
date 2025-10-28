@@ -97,7 +97,7 @@ export class NoteHistoryEntityService implements OnModuleInit {
 			text: text,
 			cw: history.cw ?? undefined,
 			poll: history.poll ? {
-				choices: history.poll.choices.map(choice => ({ text: choice, votes: 0 })),
+				choices: history.poll.choices,
 				multiple: history.poll.multiple,
 				expiresAt: history.poll.expiresAt ? new Date(history.poll.expiresAt).toISOString() : null,
 			} : undefined,

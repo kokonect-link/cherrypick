@@ -21,6 +21,7 @@ import { storeBootloaderErrors } from '@@/js/store-boot-errors';
 import { url, version, basedMisskeyVersion, lang } from '@@/js/config.js';
 import { parseEmbedParams } from '@@/js/embed-page.js';
 import { applyTheme, assertIsTheme } from '@/theme.js';
+import type { Theme } from '@/theme.js';
 import { fetchCustomEmojis } from '@/custom-emojis.js';
 import { DI } from '@/di.js';
 import { serverMetadata } from '@/server-metadata.js';
