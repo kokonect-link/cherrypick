@@ -42,7 +42,7 @@ const paginator = markRaw(new Paginator('users/notes', {
 
 .stream {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
 	gap: var(--MI-marginHalf);
 }
 
@@ -50,6 +50,11 @@ const paginator = markRaw(new Paginator('users/notes', {
 	.stream {
 		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 	}
+}
 
+@media screen and (min-width: 550px) {
+	.stream {
+		grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+	}
 }
 </style>

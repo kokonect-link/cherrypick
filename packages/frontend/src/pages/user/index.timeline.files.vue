@@ -50,4 +50,10 @@ const props = defineProps<{
 		grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
 	}
 }
+
+@container (max-width: 450px) {
+	.stream {
+		grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+	}
+}
 </style>

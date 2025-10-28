@@ -320,9 +320,21 @@ html[data-color-scheme=light] .visible {
 	}
 
 	.multiple {
-		top: 7px;
-		right: 7px;
+		top: 8.5px;
+		right: 8.5px;
 		font-size: 1.1em;
+	}
+}
+
+@container (max-width: 450px) {
+	.img {
+		height: 128px;
+	}
+
+	.multiple {
+		top: 9px;
+		right: 9px;
+		font-size: 1.05em;
 	}
 }
 </style>

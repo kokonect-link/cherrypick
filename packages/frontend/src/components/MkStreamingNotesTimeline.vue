@@ -755,4 +755,10 @@ defineExpose({
 		grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
 	}
 }
+
+@container (max-width: 450px) {
+	.mediaGrid {
+		grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+	}
+}
 </style>
