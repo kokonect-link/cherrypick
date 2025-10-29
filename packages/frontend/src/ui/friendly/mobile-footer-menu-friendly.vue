@@ -77,8 +77,6 @@ const rootElHeight = ref(0);
 const isAtBottom = ref(false);
 
 async function openAccountMenu(ev: TouchEvent) {
-	haptic();
-
 	if (prefer.s.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
 		window.setTimeout(async () => {
@@ -88,6 +86,7 @@ async function openAccountMenu(ev: TouchEvent) {
 					includeCurrentAccount: true,
 				});
 
+				haptic();
 				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 			}
 		}, 500);
