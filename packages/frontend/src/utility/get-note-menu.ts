@@ -7,6 +7,7 @@ import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
 import { shouldCollapsed } from '@@/js/collapsed.js';
 import { claimAchievement } from './achievements.js';
+import { defineAsyncComponent } from 'vue';
 import type { Ref, ShallowRef } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
 import { $i } from '@/i.js';
@@ -347,15 +348,19 @@ export function getNoteMenu(props: {
 	}
 
 	function showReactions(): void {
-		os.popup(defineAsyncComponent(() => import('@/components/MkReactedUsersDialog.vue')), {
+		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkReactedUsersDialog.vue')), {
 			noteId: appearNote.id,
-		}, {}, 'closed');
+		}, {
+			closed: () => dispose(),
+		});
 	}
 
 	function showRenotes(): void {
-		os.popup(defineAsyncComponent(() => import('@/components/MkRenotedUsersDialog.vue')), {
+		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkRenotedUsersDialog.vue')), {
 			noteId: appearNote.id,
-		}, {}, 'closed');
+		}, {
+			closed: () => dispose(),
+		});
 	}
 
 	async function translate(): Promise<void> {
