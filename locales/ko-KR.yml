@@ -1776,7 +1776,7 @@ _cherrypick:
   nickname: "닉네임 기능"
   nicknameDescription: "사용자 페이지에서 이름을 클릭 또는 탭하여 원하는 이름으로 변경할 수 있어요. 변경한 이름은 자신에게만 반영돼요.\n자주 이름을 바꾸는 사용자를 식별하는 데 사용할 수 있어요."
   useEnterToSend: "Enter 키를 눌러 보내기"
-  useEnterToSendDescription: "옵션을 활성화하면 줄 바꿈은 Shift + Enter 키로 할 수 있어요. 대화를 전송할 때는 옵션의 영향을 받지 않아요."
+  useEnterToSendDescription: "옵션을 활성화하면 줄 바꿈은 Shift + Enter 키로 할 수 있어요. 대화를 전송할 때는 이 설정의 영향을 받지 않아요."
   postFormVisibilityHotkey: "단축키로 공개 범위 전환하기"
   postFormVisibilityHotkeyDescription: "노트를 작성할 때, Ctrl(control) + Shift 키를 누르면 공개 범위를 전환할 수 있어요. 로컬에만 보이게 하는 단축키는 Ctrl(command 또는 control) + Alt(option) 키에요."
   showRenoteConfirmPopup: "리노트할 때 확인 팝업 표시"
