@@ -59,7 +59,7 @@ export async function exist(key: string) {
 		const keys = await ikeys();
 		return keys.includes(key);
 	}
-	return window.localStorage.getItem(fallbackName(key)) !== null;
+	return window.localStorage.getItem(`${PREFIX}${key}`) !== null;
 }
 
 export async function clear() {

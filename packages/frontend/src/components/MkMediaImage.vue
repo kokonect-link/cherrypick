@@ -132,7 +132,11 @@ async function reveal(ev: MouseEvent) {
 		}
 	}
 
-	if (prefer.s.nsfwOpenBehavior === 'doubleClick') os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {}, 'end');
+	if (prefer.s.nsfwOpenBehavior === 'doubleClick') {
+		const { dispose } = os.popup(MkRippleEffect, { x: ev.clientX, y: ev.clientY }, {
+			end: () => dispose(),
+		});
+	}
 	if (prefer.s.nsfwOpenBehavior === 'click') hide.value = false;
 }
 

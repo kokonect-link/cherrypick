@@ -1133,7 +1133,7 @@ export async function getRenoteOnly(props: {
 	renoteButton: ShallowRef<HTMLElement | null | undefined>;
 	mock?: boolean;
 }) {
-	const appearNote = getAppearNote(props.note);
+	const appearNote = getAppearNote(props.note) ?? props.note;
 
 	if (prefer.s.showRenoteConfirmPopup) {
 		const { canceled } = await os.confirm({

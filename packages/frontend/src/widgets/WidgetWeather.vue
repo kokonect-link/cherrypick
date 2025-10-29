@@ -89,11 +89,11 @@ onMounted(() => {
 	getLocation();
 });
 
-watch(() => [widgetProps.latitude, widgetProps.longtitude], { immediate: true });
-watch(() => widgetProps.setTempUnitFahrenheit, { immediate: true });
-watch(() => widgetProps.showSurfacePressure, { immediate: true });
-watch(() => widgetProps.show12Hours, { immediate: true });
-watch(() => widgetProps.useCurrentLocation, { immediate: true });
+watch(() => [widgetProps.latitude, widgetProps.longtitude], () => {}, { immediate: true });
+watch(() => widgetProps.setTempUnitFahrenheit, () => {}, { immediate: true });
+watch(() => widgetProps.showSurfacePressure, () => {}, { immediate: true });
+watch(() => widgetProps.show12Hours, () => {}, { immediate: true });
+watch(() => widgetProps.useCurrentLocation, () => {}, { immediate: true });
 
 defineExpose<WidgetComponentExpose>({
 	name,

@@ -255,6 +255,10 @@ export function userLite(id = 'someuserid', username = 'cherrypikist', host: ent
 		avatarBlurhash: 'eQFRshof5NWBRi},juayfPju53WB?0ofs;s*a{ofjuay^SoMEJR%ay',
 		avatarDecorations: [],
 		emojis: {},
+		isLocked: false,
+		isBot: false,
+		isCat: false,
+		badgeRoles: [],
 	};
 }
 

@@ -46,16 +46,19 @@ const props = withDefaults(defineProps<{
 	showAverageTotal: false,
 });
 
-const diceCount = ref(1);
-const diceFaces = ref(6);
+const diceCount = ref('1');
+const diceFaces = ref('6');
 const diceResult: Ref<number | null> = ref(null);
 const diceMinTotal: Ref<number | null> = ref(null);
 const diceMaxTotal: Ref<number | null> = ref(null);
 const diceAverageTotal: Ref<number | null> = ref(null);
 
 const rollDice = () => {
-	let roll = new DiceRoll(`${diceCount.value}d${diceFaces.value}`);
-	if (diceCount.value > 999) {
+	const count = Number(diceCount.value);
+	const faces = Number(diceFaces.value);
+
+	let roll = new DiceRoll(`${count}d${faces}`);
+	if (count > 999) {
 		return;
 	}
 

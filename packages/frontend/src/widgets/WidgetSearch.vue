@@ -15,7 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, markRaw, ref, shallowRef } from 'vue';
+import { defineAsyncComponent, markRaw, ref, shallowRef, useTemplateRef } from 'vue';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
 import type { FormWithDefault, GetFormResultType } from '@/utility/form.js';
@@ -29,7 +29,7 @@ import { Paginator } from '@/utility/paginator.js';
 
 const name = 'search';
 
-const searchQueryEl = ref(null);
+const searchQueryEl = useTemplateRef('searchQueryEl');
 
 const widgetPropsDef = {
 	showHeader: {

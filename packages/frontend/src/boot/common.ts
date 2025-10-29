@@ -70,7 +70,9 @@ export async function common(createVue: () => Promise<App<Element>>) {
 	if (miLocalStorage.getItem('ui') === null) miLocalStorage.setItem('ui', 'friendly');
 
 	if (instance.swPublickey && ('PushManager' in window) && $i && $i.token && showPushNotificationDialog == null) {
-		popup(defineAsyncComponent(() => import('@/components/MkPushNotification.vue')), {}, {}, 'closed');
+		const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkPushNotification.vue')), {}, {
+			closed: () => dispose(),
+		});
 	}
 
 	//#region クライアントが更新されたかチェック

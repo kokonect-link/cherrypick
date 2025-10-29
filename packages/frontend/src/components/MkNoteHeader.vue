@@ -72,7 +72,7 @@ const showTicker = (prefer.s.instanceTicker === 'always') || (prefer.s.instanceT
 const router = useRouter();
 
 function showOnRemote() {
-	if (props.note.user.instance === undefined) router.push(notePage(props.note));
+	if (props.note.user.instance === undefined) router.pushByPath(notePage(props.note));
 	else window.open(props.note.url ?? props.note.uri, '_blank', 'noopener');
 }
 </script>

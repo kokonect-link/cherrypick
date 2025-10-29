@@ -29,13 +29,14 @@ export async function warningExternalWebsite(ev: MouseEvent, url: string) {
 		ev.stopPropagation();
 
 		const confirm = await new Promise<{ canceled: boolean }>(resolve => {
-			os.popup(MkUrlWarningDialog, {
+			const { dispose } = os.popup(MkUrlWarningDialog, {
 				url,
 			}, {
 				done: result => {
 					resolve(result ? result : { canceled: true });
 				},
-			}, 'closed');
+				closed: () => dispose(),
+			});
 		});
 
 		if (confirm.canceled) return false;

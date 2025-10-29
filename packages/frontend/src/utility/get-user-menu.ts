@@ -39,10 +39,10 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		const { canceled, result: groupId } = await os.select({
 			title: i18n.ts.group,
 			items: groups.map(group => ({
-				value: group.id, text: group.name,
+				value: group.id, label: group.name,
 			})),
 		});
-		if (canceled) return;
+		if (canceled || !groupId) return;
 		os.apiWithDialog('users/groups/invite', {
 			groupId: groupId,
 			userId: user.id,
@@ -528,23 +528,20 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 						text: i18n.ts.instanceInfo,
 						action: () => {
 							if (user.host == null) return;
-							router.push(`/instance-info/${user.host}`);
+							router.pushByPath(`/instance-info/${user.host}`);
 						},
 					}, {
 						type: 'switch',
 						text: i18n.ts.blockThisInstance,
 						ref: isAdminInstanceBlocked,
-						action: toggleAdminInstanceBlock,
 					}, {
 						type: 'switch',
 						text: i18n.ts.silenceThisInstance,
 						ref: isAdminInstanceSilenced,
-						action: toggleAdminInstanceSilenced,
 					}, {
 						type: 'switch',
 						text: i18n.ts.mediaSilenceThisInstance,
 						ref: isAdminInstanceMediaSilenced,
-						action: toggleAdminInstanceMediaSilenced,
 					});
 
 					return federationChildMenu;

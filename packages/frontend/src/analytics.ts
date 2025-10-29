@@ -101,7 +101,6 @@ export async function initAnalytics(instance: Misskey.entities.MetaDetailed) {
 	analytics.setAnalytics(Analytics({
 		app: 'cherrypick',
 		version: _VERSION_,
-		basedMisskeyVersion: _BASEDMISSKEYVERSION_,
 		debug: _DEV_,
 		plugins,
 	}));

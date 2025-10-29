@@ -129,7 +129,7 @@ const {
 	initialValue: props.select?.default ?? null,
 });
 
-const inputValueEl = ref(null);
+const inputValueEl = useTemplateRef('inputValueEl');
 
 // overload function を使いたいので lint エラーを無視する
 function done(canceled: true): void;

@@ -135,7 +135,7 @@ function onClick(ev: MouseEvent) {
 				action: () => {
 					os.apiWithDialog('admin/emoji/steal', {
 						name: customEmojiName.value,
-						host: props.host,
+						host: props.host!,
 					});
 				},
 			});
