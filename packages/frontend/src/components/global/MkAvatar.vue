@@ -46,7 +46,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</div>
 		</div>
 	</div>
-	<template v-if="showDecoration && !isFloatingBtn">
+	<template v-if="showDecoration || showDecorationWithFloatingBtn">
 		<img
 			v-for="decoration in decorations ?? user.avatarDecorations"
 			:class="[$style.decoration, { [$style.decorationBlink]: decoration.blink }]"
@@ -112,7 +112,8 @@ const emit = defineEmits<{
 }>();
 
 const squareAvatars = ref((!prefer.s.setFederationAvatarShape && prefer.s.squareAvatars) || (prefer.s.setFederationAvatarShape && !props.user.setFederationAvatarShape && prefer.s.squareAvatars) || (prefer.s.setFederationAvatarShape && props.user.setFederationAvatarShape && props.user.isSquareAvatars));
-const showDecoration = props.forceShowDecoration || prefer.s.showAvatarDecorations;
+const showDecoration = (props.forceShowDecoration || prefer.s.showAvatarDecorations) && !props.isFloatingBtn;
+const showDecorationWithFloatingBtn = props.isFloatingBtn && prefer.s.showAvatarDecorations && prefer.s.friendlyUiShowAvatarDecorationsInNavBtn;
 
 const bound = computed(() => props.link
 	? { to: userPage(props.user), target: props.target }
