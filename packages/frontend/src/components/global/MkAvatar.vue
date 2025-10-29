@@ -257,6 +257,10 @@ onUnmounted(() => {
 		transition: opacity 0.5s;
 	}
 
+	&.reduceBlurEffect {
+		opacity: 1;
+	}
+
 	&.reduceAnimation {
 		transition: opacity 0s;
 	}
