@@ -175,7 +175,10 @@ async function del() {
 }
 
 async function changeImage(ev) {
-	const file = await selectFile(ev.currentTarget ?? ev.target, null);
+	const file = await selectFile({
+		anchorElement: ev.currentTarget ?? ev.target,
+		multiple: false,
+	});
 	if (file != null) {
 		url.value = file.url;
 	}
