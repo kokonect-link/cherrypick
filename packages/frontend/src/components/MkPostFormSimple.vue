@@ -94,21 +94,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="targetChannel" :class="$style.colorBar" :style="{ background: targetChannel.color }"></div>
 		<textarea ref="textareaEl" v-model="text" :class="[$style.text]" :disabled="posting || posted" :readonly="textAreaReadOnly" :placeholder="placeholder" data-cy-post-form-text @click="formClick" @keydown="onKeydown" @keyup="onKeyup" @paste="onPaste" @compositionupdate="onCompositionUpdate" @compositionend="onCompositionEnd"/>
 		<div v-if="maxTextLength - textLength < 100" :class="['_acrylic', $style.textCount, { [$style.textOver]: textLength > maxTextLength }]">{{ maxTextLength - textLength }}</div>
-		<div v-if="!showForm" style="position: fixed; bottom: 0; right: 8px;" :class="$style.submit">
-			<button v-click-anime class="_button" :class="$style.submitButton" :disabled="!canPost && !!$i" data-cy-open-post-form-submit @click="$i ? post() : signin()">
-				<div :class="$style.submitInner">
-					<template v-if="posted"></template>
-					<template v-else-if="posting"><MkEllipsis/></template>
-					<template v-else>{{ submitText }}</template>
-					<i style="margin-left: 6px;" :class="submitIcon"></i>
-				</div>
-			</button>
-			<button v-click-anime class="_button" style="margin-left: 2px;" :class="$style.submitButton" @click="showPostMenu">
-				<div :class="$style.submitInnerMenu">
-					<i class="ti ti-caret-down-filled"></i>
-				</div>
-			</button>
-		</div>
 	</div>
 	<input v-show="withHashtags && showForm" ref="hashtagsInputEl" v-model="hashtags" :class="$style.hashtags" :placeholder="i18n.ts.hashtags" list="hashtags">
 	<XPostFormAttaches v-if="showForm" v-model="files" @detach="detachFile" @changeSensitive="updateFileSensitive" @changeName="updateFileName"/>
