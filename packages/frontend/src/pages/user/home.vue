@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
 								<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
-								<span v-if="user.isBot" v-tooltip="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
+								<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
 								<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
 									<button v-if="$i && !isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
 										<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<span class="username"><MkAcct :user="user" :detail="true"/></span>
 								<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
 								<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
-								<span v-if="user.isBot" v-tooltip="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
+								<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
 								<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
 							</div>
 						</div>
