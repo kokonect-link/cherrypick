@@ -131,6 +131,7 @@ function shareWithNote() {
 }
 
 function shareQRCode() {
+	if (!post.value) return;
 	os.displayQRCode(`${url}/gallery/${post.value.id}`);
 }
 

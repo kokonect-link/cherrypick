@@ -110,10 +110,13 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail',
 }]);
 
-definePage(computed(() => !props.notification ? {
+definePage(() => !props.notification ? {
 	title: i18n.ts.notifications,
 	icon: 'ti ti-bell',
-} : null));
+} : {
+	title: '',
+	icon: 'ti ti-bell',
+});
 </script>
 
 <style lang="scss" module>

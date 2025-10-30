@@ -44,7 +44,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, ref, shallowRef } from 'vue';
+import { computed, markRaw, ref, shallowRef, useTemplateRef } from 'vue';
 import type { MkSelectItem } from '@/components/MkSelect.vue';
 import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -74,7 +74,7 @@ const eventSort = ref('startDate');
 const startDate = ref<any>(null);
 const endDate = ref<any>(null);
 
-const searchQueryEl = ref(null);
+const searchQueryEl = useTemplateRef('searchQueryEl');
 
 async function search(): Promise<void> {
 	const query = searchQuery.value.toString().trim();

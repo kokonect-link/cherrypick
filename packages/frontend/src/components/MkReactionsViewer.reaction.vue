@@ -180,19 +180,19 @@ function stealReaction(ev: MouseEvent) {
 		text: i18n.ts.import,
 		icon: 'ti ti-plus',
 		action: async () => {
-			await os.apiWithDialog('admin/emoji/steal', {
-				name: reactionName.value,
-				host: props.note.user.host,
-			});
-		},
-	}, {
-		text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
-		icon: 'ti ti-mood-plus',
-		action: async () => {
-			await os.apiWithDialog('admin/emoji/steal', {
-				name: reactionName.value,
-				host: props.note.user.host,
-			});
+		await os.apiWithDialog('admin/emoji/steal', {
+			name: reactionName.value,
+			host: props.note.user.host ?? '',
+		});
+	},
+}, {
+	text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
+	icon: 'ti ti-mood-plus',
+	action: async () => {
+		await os.apiWithDialog('admin/emoji/steal', {
+			name: reactionName.value,
+			host: props.note.user.host ?? '',
+		});
 
 			await misskeyApi('notes/reactions/create', {
 				noteId: props.note.id,

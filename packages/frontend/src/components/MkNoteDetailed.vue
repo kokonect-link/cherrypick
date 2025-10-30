@@ -617,15 +617,16 @@ function quote(): void {
 		os.post({
 			renote: appearNote,
 			channel: appearNote.channel,
-		}, () => {
+		}).then(() => {
+			focus();
+		});
+	} else {
+		os.post({
+			renote: appearNote,
+		}).then(() => {
 			focus();
 		});
 	}
-	os.post({
-		renote: appearNote,
-	}, () => {
-		focus();
-	});
 }
 
 function reply(): void {
@@ -805,7 +806,7 @@ const isForeignLanguage: boolean = appearNote.text != null && (() => {
 	return postLang !== '' && (postLang !== targetLang || pollLang !== targetLang);
 })();
 
-if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && (appearNote.cw == null || showContent.value) && appearNote.text && isForeignLanguage) translate();
+if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && (appearNote.cw == null || showContent.value) && appearNote.text && isForeignLanguage) translate();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

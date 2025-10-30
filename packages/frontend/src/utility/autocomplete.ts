@@ -47,11 +47,11 @@ export class Autocomplete {
 		this.close = this.close.bind(this);
 		//#endregion
 
-		this.suggestion = null;
-		this.textarea = textarea;
-		this.textRef = textRef;
-		this.opening = false;
-		this.onlyType = onlyType ?? ['user', 'hashtag', 'emoji', 'mfmTag', 'mfmParam' | 'htmlTag'];
+	this.suggestion = null;
+	this.textarea = textarea;
+	this.textRef = textRef;
+	this.opening = false;
+	this.onlyType = onlyType ?? ['user', 'hashtag', 'emoji', 'mfmTag', 'mfmParam', 'htmlTag'];
 
 		this.attach();
 	}

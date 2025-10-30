@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { watch, ref } from 'vue';
+import { watch, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XEmoji from './emojis.emoji.vue';
 import MkButton from '@/components/MkButton.vue';
@@ -44,7 +44,7 @@ import { $i } from '@/i.js';
 const q = ref('');
 const searchEmojis = ref<Misskey.entities.EmojiSimple[] | null>(null);
 
-const queryEl = ref(null);
+const queryEl = useTemplateRef('queryEl');
 
 function search() {
 	if (q.value === '' || q.value == null) {

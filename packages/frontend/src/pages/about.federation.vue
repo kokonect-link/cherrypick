@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, ref } from 'vue';
+import { computed, markRaw, ref, useTemplateRef } from 'vue';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -97,7 +97,7 @@ const paginator = markRaw(new Paginator('federation/instances', {
 	})),
 }));
 
-const hostEl = ref(null);
+const hostEl = useTemplateRef('hostEl');
 
 function getStatus(instance) {
 	if (instance.isSuspended) return 'Suspended';

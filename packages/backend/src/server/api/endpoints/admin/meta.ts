@@ -475,6 +475,26 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			ctav3SaKey: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			ctav3ProjectId: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			ctav3Location: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			ctav3Model: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
+			ctav3Glossary: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 			libreTranslateEndPoint: {
 				type: 'string',
 				optional: false, nullable: true,

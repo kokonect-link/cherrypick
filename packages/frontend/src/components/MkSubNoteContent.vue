@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			class="_selectable"
 		/>
 		<MkA v-if="note.renoteId" :class="$style.rp" :to="`/notes/${note.renoteId}`">RN: ...</MkA>
-		<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && note.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
+		<div v-if="prefer.s.showTranslateButtonInNote && $i && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || note.cw != null || !showContent)))) && instance.translatorAvailable && $i.policies.canUseTranslator && note.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
 			<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 			<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 		</div>
@@ -50,10 +50,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 						isTranslation
 						@click.stop
 					/>
-				</div>
-				<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-					<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
-					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+			</div>
+			<div v-if="'translator' in translation && translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+				<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+				<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 				</div>
 			</div>
 		</div>
@@ -77,9 +77,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					@click.stop
 				/>
 			</div>
-		</div>
 	</div>
-	<button v-if="((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (note.files && note.files.length) > 0 || note.poll) && collapsed" :class="$style.fade" class="_button" @click.stop="collapsed = false">
+</div>
+<button v-if="((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (note.files && note.files.length > 0) || !!note.poll) && collapsed" :class="$style.fade" class="_button" @click.stop="collapsed = false">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
 			<span v-if="note.files && note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
@@ -227,7 +227,7 @@ const reactButton = useTemplateRef('reactButton');
 const heartReactButton = useTemplateRef('heartReactButton');
 const quoteButton = useTemplateRef('quoteButton');
 const clipButton = useTemplateRef('clipButton');
-const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || (props.note.visibility === 'followers' && props.note.userId === $i.id));
+const canRenote = computed(() => ['public', 'home'].includes(props.note.visibility) || (props.note.visibility === 'followers' && $i && props.note.userId === $i.id));
 const currentClip = inject<Ref<Misskey.entities.Clip> | null>('currentClip', null);
 
 const showContent = ref(true);
@@ -242,7 +242,7 @@ const parsed = props.note.text ? mfm.parse(props.note.text) : null;
 const isLong = shouldCollapsed(props.note, []);
 const isMFM = shouldMfmCollapsed(props.note);
 
-const collapsed = ref((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (props.note.files && props.note.files.length > 0) || props.note.poll);
+const collapsed = ref((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (props.note.files && props.note.files.length > 0) || !!props.note.poll);
 
 const pleaseLoginContext = computed<OpenOnRemoteOptions>(() => ({
 	type: 'lookup',
@@ -359,19 +359,19 @@ function quote(): void {
 			os.popupMenu(menu, quoteButton.value);
 		} else {
 			os.post({
-				renote: props.note,
-				channel: props.note.channel,
-			}, () => {
-				focus();
-			});
-		}
-	} else {
-		os.post({
 			renote: props.note,
-		}, () => {
+			channel: props.note.channel,
+		}).then(() => {
 			focus();
 		});
 	}
+} else {
+	os.post({
+		renote: props.note,
+	}).then(() => {
+		focus();
+	});
+}
 }
 
 function reply(): void {
@@ -537,11 +537,11 @@ function undoReact(): void {
 function toggleReact() {
 	haptic();
 
-	if ($note.myReaction != null && note.reactionAcceptance === 'likeOnly') {
-		undoReact(note);
-	} else {
-		react();
-	}
+if ($note.myReaction != null && note.reactionAcceptance === 'likeOnly') {
+	undoReact();
+} else {
+	react();
+}
 }
 
 function showMenu(): void {
@@ -573,7 +573,7 @@ const isForeignLanguage: boolean = note.text != null && (() => {
 	return postLang !== '' && (postLang !== targetLang || pollLang !== targetLang);
 })();
 
-if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (note.cw == null || showContent.value) && note.text && isForeignLanguage) translate();
+if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (note.cw == null || showContent.value) && note.text && isForeignLanguage) translate();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

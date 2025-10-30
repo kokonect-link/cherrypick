@@ -58,7 +58,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, onMounted, ref, shallowRef } from 'vue';
+import { computed, markRaw, onMounted, ref, shallowRef, useTemplateRef } from 'vue';
 import MkChannelPreview from '@/components/MkChannelPreview.vue';
 import MkChannelList from '@/components/MkChannelList.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -85,7 +85,7 @@ const searchQuery = ref('');
 const searchType = ref('nameAndDescription');
 const channelPaginator = shallowRef();
 
-const searchQueryEl = ref(null);
+const searchQueryEl = useTemplateRef('searchQueryEl');
 
 onMounted(() => {
 	searchQuery.value = props.query ?? '';

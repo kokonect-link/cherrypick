@@ -383,7 +383,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import MkFolder from '@/components/MkFolder.vue';
@@ -405,7 +405,7 @@ import MkTextarea from '@/components/MkTextarea.vue';
 
 const router = useRouter();
 const baseRoleQ = ref('');
-const baseRoleQEl = ref(null);
+const baseRoleQEl = useTemplateRef('baseRoleQEl');
 
 const roles = await misskeyApi('admin/roles/list');
 

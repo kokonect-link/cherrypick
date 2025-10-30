@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script setup lang="ts">
 import { entities } from 'cherrypick-js';
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { computed, defineAsyncComponent, onMounted, ref, useTemplateRef } from 'vue';
 import XRecipient from './notification-recipient.item.vue';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import MkInput from '@/components/MkInput.vue';
@@ -92,7 +92,7 @@ const filteredRecipients = computed(() => {
 const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
 
-const filterTextEl = ref(null);
+const filterTextEl = useTemplateRef('filterTextEl');
 
 async function onAddButtonClicked() {
 	await showEditor('create');

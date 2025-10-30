@@ -38,7 +38,7 @@ export const Default = {
 		};
 	},
 	args: {
-		imageFile: file(),
+		imageFile: new Blob(['fake image data'], { type: 'image/jpeg' }),
 		aspectRatio: NaN,
 	},
 	parameters: {

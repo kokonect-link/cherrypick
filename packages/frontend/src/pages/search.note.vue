@@ -115,7 +115,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, ref, shallowRef, toRef } from 'vue';
+import { computed, markRaw, ref, shallowRef, toRef, useTemplateRef } from 'vue';
 import { host as localHost } from '@@/js/config.js';
 import type * as Misskey from 'cherrypick-js';
 import { $i } from '@/i.js';
@@ -161,8 +161,8 @@ const noteSearchableScope = instance.noteSearchableScope ?? 'local';
 //#region set user
 let fetchedUser: Misskey.entities.UserDetailed | null = null;
 
-const searchQueryEl = ref(null);
-const hostInputEl = ref(null);
+const searchQueryEl = useTemplateRef('searchQueryEl');
+const hostInputEl = useTemplateRef('hostInputEl');
 
 if (props.userId) {
 	fetchedUser = await misskeyApi('users/show', {

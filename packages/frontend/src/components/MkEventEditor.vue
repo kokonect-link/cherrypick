@@ -133,31 +133,31 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: 'update:modelValue', v: {
-		model: Misskey.entities.Note['event']
-	})
+	(ev: 'update:modelValue', v: Misskey.entities.Note['event'])
 }>();
+
+const metadata = props.modelValue?.metadata as Record<string, unknown> | undefined;
 
 const title = ref(props.modelValue?.title ?? null);
 const startDate = ref(formatDateTimeString(addTime(new Date(), 1, 'day'), 'yyyy-MM-dd'));
 const startTime = ref('00:00');
 const endDate = ref('');
 const endTime = ref('');
-const location = ref(props.modelValue?.metadata?.location ?? null);
-const url = ref(props.modelValue?.metadata?.url ?? null);
+const location = ref((metadata?.location as string | undefined) ?? null);
+const url = ref((metadata?.url as string | undefined) ?? null);
 const showAdvanced = ref(false);
-const doorTime = ref(props.modelValue?.metadata?.doorTime ?? null);
-const organizer = ref(props.modelValue?.metadata?.organizer?.name ?? null);
-const organizerLink = ref(props.modelValue?.metadata?.organizer?.sameAs ?? null);
-const audience = ref(props.modelValue?.metadata?.audience?.name ?? null);
-const language = ref(props.modelValue?.metadata?.inLanguage ?? null);
-const ageRange = ref(props.modelValue?.metadata?.typicalAgeRange ?? null);
-const ticketsUrl = ref(props.modelValue?.metadata?.offers?.url ?? null);
-const isFree = ref(props.modelValue?.metadata?.isAccessibleForFree ?? false);
-const price = ref(props.modelValue?.metadata?.offers?.price ?? null);
-const availabilityStart = ref(props.modelValue?.metadata?.offers?.availabilityStarts ?? null);
-const availabilityEnd = ref(props.modelValue?.metadata?.offers?.availabilityEnds ?? null);
-const keywords = ref(props.modelValue?.metadata?.keywords ?? null);
+const doorTime = ref((metadata?.doorTime as string | undefined) ?? null);
+const organizer = ref((metadata?.organizer as { name?: string } | undefined)?.name ?? null);
+const organizerLink = ref((metadata?.organizer as { sameAs?: string } | undefined)?.sameAs ?? null);
+const audience = ref((metadata?.audience as { name?: string } | undefined)?.name ?? null);
+const language = ref((metadata?.inLanguage as string | undefined) ?? null);
+const ageRange = ref((metadata?.typicalAgeRange as string | undefined) ?? null);
+const ticketsUrl = ref((metadata?.offers as { url?: string } | undefined)?.url ?? null);
+const isFree = ref((metadata?.isAccessibleForFree as boolean | undefined) ?? false);
+const price = ref((metadata?.offers as { price?: string } | undefined)?.price ?? null);
+const availabilityStart = ref((metadata?.offers as { availabilityStarts?: string } | undefined)?.availabilityStarts ?? null);
+const availabilityEnd = ref((metadata?.offers as { availabilityEnds?: string } | undefined)?.availabilityEnds ?? null);
+const keywords = ref((metadata?.keywords as string | undefined) ?? null);
 
 if (props.modelValue?.start) {
 	const startDateTime = new Date(props.modelValue.start);
@@ -177,9 +177,9 @@ function get(): Misskey.entities.Note['event'] {
 	const start = calcAt(startDate, startTime);
 	const end = endDate.value ? calcAt(endDate, endTime) : null;
 	return {
-		title: title.value,
-		start: start,
-		end: end,
+		title: (title.value ?? '') as any,
+		start: start as any,
+		end: end as any,
 		metadata: {
 			'@type': 'Event',
 			name: title.value,
@@ -207,9 +207,9 @@ function get(): Misskey.entities.Note['event'] {
 				availabilityEnds: availabilityEnd.value ?? undefined,
 				url: ticketsUrl.value ?? undefined,
 			} : undefined,
-			keywords: keywords.value ?? undefined,
-		},
-	};
+		keywords: keywords.value ?? undefined,
+	} as any,
+	} as any;
 }
 
 watch([
@@ -232,12 +232,20 @@ watch([
 	availabilityStart,
 	availabilityEnd,
 	keywords,
-], () => emit('update:modelValue', get()), {
+], () => {
+	const eventData = get();
+	if (eventData) {
+		emit('update:modelValue', eventData);
+	}
+}, {
 	deep: true,
 });
 
 onMounted(() => {
-	emit('update:modelValue', get());
+	const eventData = get();
+	if (eventData) {
+		emit('update:modelValue', eventData);
+	}
 });
 </script>
 

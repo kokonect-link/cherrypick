@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.renoteAvatar" :user="note.user" link preview/>
 		<i :class="isRenote ? 'ti ti-repeat' : appearNote.reply ? 'ti ti-arrow-back-up' : ''" style="margin-right: 4px;"></i>
 		<I18n :src="isRenote ? i18n.ts.renotedBy : appearNote.reply ? i18n.ts.repliedBy : ''" tag="span" :class="$style.renoteText">
-			<template #user>
+			<template v-if="'user' in note && note.user" #user>
 				<MkA v-user-preview="note.userId" :class="$style.renoteUserName" :to="userPage(note.user)">
 					<MkUserName :user="note.user"/>
 				</MkA>
@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</I18n>
 					</MkInfo>
 					<MkEvent v-if="appearNote.event" :note="appearNote"/>
-					<div v-if="appearNote.replyId && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
+					<div v-if="appearNote.replyId && appearNote.reply && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
 						<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
 						<MkA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></MkA>
 					</div>
@@ -98,7 +98,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								:enableEmojiMenuReaction="!!$i"
 								class="_selectable"
 							/>
-							<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
+							<div v-if="prefer.s.showTranslateButtonInNote && $i && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
 								<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 								<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 							</div>
@@ -128,7 +128,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 										isTranslation
 										@click.stop
 									/>
-									<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+									<div v-if="'translator' in translation && translation.translator === 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 										<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 										<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 									</div>
@@ -180,7 +180,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</I18n>
 			</MkInfo>
 			<MkEvent v-if="appearNote.event" :note="appearNote"/>
-			<div v-if="appearNote.replyId && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
+			<div v-if="appearNote.replyId && appearNote.reply && !(forceShowReplyTargetNote || prefer.s.showReplyTargetNote)" style="margin-bottom: 4px;">
 				<MkA :class="$style.replyIcon" :to="`/notes/${appearNote.replyId}`" @click.stop><i class="ti ti-arrow-back-up"></i></MkA>
 				<MkA v-user-preview="appearNote.reply.userId" :class="$style.replyToText" :to="userPage(appearNote.reply.user)" @click.stop><span v-html="replyTo"></span></MkA>
 			</div>
@@ -210,7 +210,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:enableEmojiMenuReaction="!!$i"
 						class="_selectable"
 					/>
-					<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
+					<div v-if="prefer.s.showTranslateButtonInNote && $i && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (isLong || appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
 						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click.stop="translate()">{{ i18n.ts.translateNote }}</button>
 						<button v-else class="_button" @click.stop="translation = null">{{ i18n.ts.close }}</button>
 					</div>
@@ -240,7 +240,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 								isTranslation
 								@click.stop
 							/>
-							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+							<div v-if="'translator' in translation && translation.translator === 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 								<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 								<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 							</div>
@@ -510,7 +510,7 @@ const parsed = computed(() => appearNote.text ? mfm.parse(appearNote.text) : nul
 const urls = computed(() => parsed.value ? extractUrlFromMfm(parsed.value).filter((url) => appearNote.renote?.url !== url && appearNote.renote?.uri !== url) : null);
 const isLong = shouldCollapsed(appearNote, urls.value ?? []);
 const isMFM = shouldMfmCollapsed(appearNote);
-const collapsed = ref(appearNote.cw == null && ((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (appearNote.files.length > 0 && prefer.s.allMediaNoteCollapse)));
+const collapsed = ref(appearNote.cw == null && ((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || ((appearNote.files?.length ?? 0) > 0 && prefer.s.allMediaNoteCollapse)));
 const muted = ref(checkMute(appearNote, $i?.mutedWords));
 const hardMuted = ref(props.withHardMute && checkMute(appearNote, $i?.hardMutedWords, true));
 const showSoftWordMutedWord = computed(() => prefer.s.showSoftWordMutedWord);
@@ -760,14 +760,14 @@ function quote(): void {
 			os.post({
 				renote: appearNote,
 				channel: appearNote.channel,
-			}, () => {
+			}).then(() => {
 				focus();
 			});
 		}
 	} else {
 		os.post({
 			renote: appearNote,
-		}, () => {
+		}).then(() => {
 			focus();
 		});
 	}
@@ -941,7 +941,7 @@ function toggleReact() {
 	haptic();
 
 	if ($appearNote.myReaction != null && appearNote.reactionAcceptance === 'likeOnly') {
-		undoReact(appearNote);
+		undoReact();
 	} else {
 		react();
 	}
@@ -993,7 +993,7 @@ const isForeignLanguage: boolean = appearNote.text != null && (() => {
 	return postLang !== '' && (postLang !== targetLang || pollLang !== targetLang);
 })();
 
-if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (appearNote.cw == null || showContent.value) && appearNote.text && isForeignLanguage) translate();
+if (prefer.s.useAutoTranslate && instance.translatorAvailable && $i && $i.policies.canUseTranslator && $i.policies.canUseAutoTranslate && !isLong && (appearNote.cw == null || showContent.value) && appearNote.text && isForeignLanguage) translate();
 
 async function translate(): Promise<void> {
 	if (translation.value != null) return;

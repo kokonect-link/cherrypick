@@ -135,7 +135,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useTemplateRef, watch } from 'vue';
 import { gridSortOrderKeys } from './custom-emojis-manager.impl.js';
 import type { EmojiSearchQuery } from './custom-emojis-manager.local.list.vue';
 import type { SortOrder } from '@/components/MkSortOrderEditor.define.js';
@@ -163,11 +163,11 @@ const emit = defineEmits<{
 const model = ref<EmojiSearchQuery>(props.query);
 const queryRolesText = computed(() => model.value.roles.map(it => it.name).join(','));
 
-const modelNameEl = ref(null);
-const modelCategoryEl = ref(null);
-const modelAliasesEl = ref(null);
-const modelTypeEl = ref(null);
-const modelLicenseEl = ref(null);
+const modelNameEl = useTemplateRef('modelNameEl');
+const modelCategoryEl = useTemplateRef('modelCategoryEl');
+const modelAliasesEl = useTemplateRef('modelAliasesEl');
+const modelTypeEl = useTemplateRef('modelTypeEl');
+const modelLicenseEl = useTemplateRef('modelLicenseEl');
 
 watch(model, () => {
 	emit('queryUpdated', model.value);

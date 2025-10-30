@@ -365,7 +365,7 @@ function reloadNotification() {
 }
 
 function showDraftMenu(scheduled: boolean) {
-	os.popup(defineAsyncComponent(() => import('@/components/MkNoteDraftsDialog.vue')), { scheduled }, {}, 'closed');
+	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkNoteDraftsDialog.vue')), { scheduled }, { closed: () => dispose() });
 }
 
 onMounted(() => {

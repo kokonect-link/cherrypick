@@ -6,8 +6,8 @@
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
 import { shouldCollapsed } from '@@/js/collapsed.js';
-import { claimAchievement } from './achievements.js';
 import { defineAsyncComponent } from 'vue';
+import { claimAchievement } from './achievements.js';
 import type { Ref, ShallowRef } from 'vue';
 import type { MenuItem } from '@/types/menu.js';
 import { $i } from '@/i.js';
@@ -101,7 +101,7 @@ export async function getNoteClipMenu(props: {
 				}));
 			});
 		},
-	})), clips.length > 0 ? { type: 'divider' } : undefined, {
+	})), ...(clips.length > 0 ? [{ type: 'divider' as const }] : []), {
 		icon: 'ti ti-plus',
 		text: i18n.ts.createNew,
 		action: async () => {
@@ -603,7 +603,7 @@ export function getNoteMenu(props: {
 					action: unRenoteAll,
 				});
 
-				if (appearNote.userId === $i.id) {
+				if ($i && appearNote.userId === $i.id) {
 					noteChildMenu.push({ type: 'divider' });
 					noteChildMenu.push({
 						icon: 'ti ti-edit-circle',
@@ -832,7 +832,7 @@ export function getQuoteMenu(props: {
 	const menu: MenuItem[] = [];
 	const appearNote = getAppearNote(props.note);
 
-	if (!appearNote.channel || appearNote.channel.allowRenoteToExternal) {
+	if (appearNote && (!appearNote.channel || appearNote.channel.allowRenoteToExternal)) {
 		menu.push({
 			text: i18n.ts.quote,
 			icon: 'ti ti-quote',
@@ -844,7 +844,7 @@ export function getQuoteMenu(props: {
 		});
 	}
 
-	if (appearNote.channel) {
+	if (appearNote && appearNote.channel) {
 		menu.push({
 			text: i18n.ts.inChannelQuote,
 			icon: 'ti ti-device-tv',
@@ -1050,11 +1050,8 @@ export async function getRenoteMenu(props: {
 		});
 
 		// Add visibility section
-		if (
-			prefer.s.renoteVisibilitySelection &&
-			!['followers', 'specified'].includes(appearNote.visibility)
-		) {
-			const localOnly = prefer.s.rememberNoteVisibility ? prefer.s.localOnly : prefer.s.defaultNoteLocalOnly;
+		if (prefer.s.renoteVisibilitySelection && !['followers', 'specified'].includes(appearNote.visibility)) {
+			const localOnly = store.s.rememberNoteVisibility ? (store.s.localOnly ?? false) : store.s.defaultNoteLocalOnly;
 
 			// renote to public
 			if (appearNote.visibility === 'public') {
@@ -1179,8 +1176,8 @@ export async function getRenoteOnly(props: {
 			});
 		}
 
-		const configuredVisibility = prefer.s.rememberNoteVisibility ? prefer.s.visibility : prefer.s.defaultNoteVisibility;
-		const localOnly = prefer.s.rememberNoteVisibility ? prefer.s.localOnly : prefer.s.defaultNoteLocalOnly;
+		const configuredVisibility = store.s.rememberNoteVisibility ? store.s.visibility : store.s.defaultNoteVisibility;
+		const localOnly = store.s.rememberNoteVisibility ? (store.s.localOnly ?? false) : store.s.defaultNoteLocalOnly;
 
 		let visibility = appearNote.visibility;
 		visibility = smallerVisibility(visibility, configuredVisibility);

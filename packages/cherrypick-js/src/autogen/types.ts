@@ -10405,6 +10405,11 @@ export interface operations {
                         backgroundImageUrl: string | null;
                         deeplAuthKey: string | null;
                         deeplIsPro: boolean;
+                        ctav3SaKey: string | null;
+                        ctav3ProjectId: string | null;
+                        ctav3Location: string | null;
+                        ctav3Model: string | null;
+                        ctav3Glossary: string | null;
                         libreTranslateEndPoint: string | null;
                         libreTranslateApiKey: string | null;
                         defaultDarkTheme: string | null;

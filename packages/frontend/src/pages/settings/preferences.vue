@@ -1402,7 +1402,7 @@ const trustedDomains = ref(prefer.s.trustedDomains.join('\n'));
 const fontSize = prefer.model('fontSize');
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
-const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
+const useBoldFont = ref(miLocalStorage.getItem('useBoldFont') === 'true');
 
 const overridedDeviceKind = prefer.model('overridedDeviceKind');
 const pollingInterval = prefer.model('pollingInterval');
@@ -1526,7 +1526,7 @@ watch(fontSize, () => {
 
 watch(useBoldFont, () => {
 	if (useBoldFont.value) {
-		miLocalStorage.setItem('useBoldFont', useBoldFont.value);
+		miLocalStorage.setItem('useBoldFont', `${useBoldFont.value}`);
 	} else {
 		miLocalStorage.removeItem('useBoldFont');
 	}

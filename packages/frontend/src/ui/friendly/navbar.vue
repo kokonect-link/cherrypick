@@ -54,21 +54,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 		<div :class="$style.bottom">
 			<button v-if="showWidgetButton" v-tooltip.noDelay.right="i18n.ts.widgets" class="_button" :class="[$style.widget]" @click="() => emit('widgetButtonClick')">
-				<i class="ti ti-apps ti-fw"></i>
+			<i class="ti ti-apps ti-fw"></i>
+		</button>
+		<div v-if="$i && ['all', 'topBottom', 'bottom'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
+		<button v-if="iconOnly" v-tooltip.noDelay.right="i18n.ts.realtimeMode" class="_button" :class="[$style.realtimeMode, store.r.realtimeMode.value ? $style.on : null]" @click="toggleRealtimeMode">
+			<i class="ti ti-bolt ti-fw"></i>
+		</button>
+		<button v-tooltip.noDelay.right="prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="() => { os.post(); }">
+			<i class="ti ti-fw" :class="[$style.postIcon, prefer.s.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
+		</button>
+		<div :class="$style.profile">
+			<button v-if="iconOnly && $i" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
+				<MkAvatar :user="$i" :class="$style.avatar" style="viewTransitionName: navbar-avatar;"/>
 			</button>
-			<div v-if="['all', 'topBottom', 'bottom'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
-			<button v-if="iconOnly" v-tooltip.noDelay.right="i18n.ts.realtimeMode" class="_button" :class="[$style.realtimeMode, store.r.realtimeMode.value ? $style.on : null]" @click="toggleRealtimeMode">
-				<i class="ti ti-bolt ti-fw"></i>
-			</button>
-			<button v-tooltip.noDelay.right="prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="() => { os.post(); }">
-				<i class="ti ti-fw" :class="[$style.postIcon, prefer.s.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
-			</button>
-			<div :class="$style.profile">
-				<button v-if="iconOnly" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openAccountMenu">
-					<MkAvatar :user="$i" :class="$style.avatar" style="viewTransitionName: navbar-avatar;"/>
-				</button>
-				<button v-else-if="$i != null" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openProfile">
-					<MkAvatar :user="$i" :class="$style.avatar" style="viewTransitionName: navbar-avatar;"/><MkUserName class="_nowrap" :class="$style.acct" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
+			<button v-else-if="$i != null" v-tooltip.noDelay.right="`${i18n.ts.account}: @${$i.username}`" class="_button" :class="[$style.account]" @click="openProfile">
+				<MkAvatar :user="$i" :class="$style.avatar" style="viewTransitionName: navbar-avatar;"/><MkUserName class="_nowrap" :class="$style.acct" :user="$i"/><div v-if="$i.isLocked"><i class="ti ti-lock"></i></div>
 				</button>
 				<button v-if="!iconOnly" class="_button" :class="[$style.drawer]" @click="openAccountMenu"><i class="ti ti-chevron-up"/></button>
 			</div>
@@ -120,10 +120,12 @@ import { getHTMLElementOrNull } from '@/utility/get-dom-node-or-null.js';
 import { useRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { getAccountMenu } from '@/accounts.js';
-import { $i } from '@/i.js';
+import { ensureSignin } from '@/i.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchCherrypickReleases } from '@/utility/fetch-releases.js';
 import { haptic } from '@/utility/haptic.js';
+
+const $i = ensureSignin();
 
 const router = useRouter();
 
@@ -235,9 +237,9 @@ function menuEdit() {
 function openProfile() {
 	haptic();
 
-	router.push('/@:username', {
+	router.push('/@:acct/:page?', {
 		params: {
-			username: $i.username,
+			acct: $i.username,
 		},
 	});
 }

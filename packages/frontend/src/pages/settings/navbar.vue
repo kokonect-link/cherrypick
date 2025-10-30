@@ -174,7 +174,7 @@ async function addItem(ev: MouseEvent) {
 	const menu = Object.keys(navbarItemDef).filter(k => !itemTypeValues.value.includes(k));
 	os.popupMenu([
 		...menu.map(k => ({
-			type: 'button',
+			type: 'button' as const,
 			text: navbarItemDef[k].title,
 			icon: navbarItemDef[k].icon,
 			action() {
@@ -184,7 +184,7 @@ async function addItem(ev: MouseEvent) {
 				}];
 			},
 		})), {
-			type: 'button',
+			type: 'button' as const,
 			text: i18n.ts.divider,
 			icon: 'ti ti-line-dashed',
 			// Note: アイコン指定しないとテキストの位置が他の項目とずれる

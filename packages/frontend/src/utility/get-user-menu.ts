@@ -562,13 +562,12 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 						text: i18n.ts.instanceInfo,
 						action: () => {
 							if (user.host == null) return;
-							router.push(`/instance-info/${user.host}`);
+							router.pushByPath(`/instance-info/${user.host}`);
 						},
 					}, {
 						type: 'switch',
 						text: i18n.ts.instanceMute,
 						ref: isInstanceMuted,
-						action: toggleInstanceMute,
 					});
 
 					return federationChildMenu;

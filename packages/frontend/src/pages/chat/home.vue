@@ -26,16 +26,17 @@ import { definePage } from '@/page.js';
 import MkPolkadots from '@/components/MkPolkadots.vue';
 import { globalEvents } from '@/events.js';
 import { $i } from '@/i.js';
+import type { PageHeaderItem } from '@/types/page-header.js';
 
 const tab = ref('home');
 
-const headerActions = computed(() => [$i?.policies.chatAvailability === 'available' ? {
+const headerActions = computed<PageHeaderItem[]>(() => $i?.policies.chatAvailability === 'available' ? [{
 	icon: 'ti ti-plus',
 	text: i18n.ts.startChat,
 	handler: (ev) => {
 		globalEvents.emit('createChat', ev);
 	},
-} : null]);
+}] : []);
 
 const headerTabs = computed(() => [{
 	key: 'home',

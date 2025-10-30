@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, markRaw, ref } from 'vue';
+import { computed, markRaw, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import MkInput from '@/components/MkInput.vue';
 import MkSelect from '@/components/MkSelect.vue';
@@ -70,9 +70,9 @@ const paginator = markRaw(new Paginator('admin/drive/files', {
 	})),
 }));
 
-const searchHostEl = ref(null);
-const userIdEl = ref(null);
-const typeEl = ref(null);
+const searchHostEl = useTemplateRef('searchHostEl');
+const userIdEl = useTemplateRef('userIdEl');
+const typeEl = useTemplateRef('typeEl');
 
 function clear() {
 	os.confirm({

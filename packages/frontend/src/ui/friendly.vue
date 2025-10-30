@@ -33,7 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XCommon v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
 
 		<button
-			v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)"
+			v-if="$i && isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)"
 			:class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]"
 			class="_button"
 			@click="clickNavButton"

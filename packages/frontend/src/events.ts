@@ -22,10 +22,11 @@ type Events = {
 	// CherryPick
 	showEl: (value: boolean) => void;
 	showEl2: (value: boolean) => void;
-	isAtBottom: (value: boolean) => void;
 	queueUpdated: (q: number) => void;
 	createChat: (ev: MouseEvent) => void;
 	showNoteContent: (value: boolean) => void;
+	isAtBottom: (value: boolean) => void;
+	hasRequireRefresh: (value: boolean) => void;
 	reloadTimeline: () => void;
 	reloadNotification: () => void;
 };

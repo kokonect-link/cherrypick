@@ -78,7 +78,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<MkInfo v-if="scheduledNoteDelete != null" warn :class="$style.scheduledAt">
 		<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
 			<template #x>
-				<MkTime :key="scheduledDeleteAt" :time="scheduledDeleteAt" :mode="'detail'" style="font-weight: bold;"/>
+				<MkTime v-if="scheduledDeleteAt" :key="scheduledDeleteAt" :time="scheduledDeleteAt" :mode="'detail'" style="font-weight: bold;"/>
 			</template>
 		</I18n>
 	</MkInfo>
@@ -214,12 +214,7 @@ const posted = ref(false);
 const text = ref(props.initialText ?? '');
 const files = ref(props.initialFiles ?? ([] as Misskey.entities.DriveFile[]));
 const poll = ref<PollEditorModelValue | null>(null);
-const event = ref<{
-	title: string;
-	start: string;
-	end: string | null;
-	metadata: Record<string, string>;
-} | null>(null);
+const event = ref<any>(null);
 const useCw = ref<boolean>(!!props.initialCw);
 const showPreview = ref(prefer.s.showPreview);
 const showProfilePreview = ref(prefer.s.showProfilePreview);
@@ -528,9 +523,9 @@ function toggleEvent() {
 	} else {
 		event.value = {
 			title: '',
-			start: (new Date()).toString(),
+			start: (new Date()).getTime(),
 			end: null,
-			metadata: {},
+			metadata: {} as Record<string, never>,
 		};
 	}
 }
@@ -1266,7 +1261,7 @@ async function post(ev?: MouseEvent) {
 			text: `${err.message}\n${(err as any).id}`,
 		});
 	});
-	textareaEl.value.style.height = '140px';
+	if (textareaEl.value) textareaEl.value.style.height = '140px';
 	if (props.updateMode) sound.playMisskeySfx('noteEdited');
 	haptic();
 }
@@ -1399,10 +1394,16 @@ async function openAccountMenu(ev: MouseEvent) {
 				if (draft.event) {
 					event.value = null;
 					nextTick(() => {
+						const startValue = typeof draft.event!.start === 'string'
+							? (new Date(draft.event!.start)).getTime()
+							: draft.event!.start;
+						const endValue = typeof draft.event!.end === 'string'
+							? (new Date(draft.event!.end)).getTime()
+							: draft.event!.end;
 						event.value = {
 							title: draft.event!.title,
-							start: draft.event!.start ? (new Date(draft.event!.start)).getTime() : null,
-							end: draft.event!.end ? (new Date(draft.event!.end)).getTime() : null,
+							start: startValue,
+							end: endValue,
 							metadata: draft.event!.metadata,
 						};
 					});
@@ -1590,10 +1591,16 @@ onMounted(() => {
 				};
 			}
 			if (init.event) {
+				const startValue = typeof init.event.start === 'string'
+					? (new Date(init.event.start)).getTime()
+					: init.event.start;
+				const endValue = typeof init.event.end === 'string'
+					? (new Date(init.event.end)).getTime()
+					: init.event.end;
 				event.value = {
 					title: init.event.title,
-					start: init.event.start ? (new Date(init.event.start)).getTime() : null,
-					end: init.event.end ? (new Date(init.event.end)).getTime() : null,
+					start: startValue,
+					end: endValue,
 					metadata: init.event.metadata,
 				};
 			}

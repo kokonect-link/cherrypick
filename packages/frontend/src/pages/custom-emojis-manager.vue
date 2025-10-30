@@ -73,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, markRaw, ref } from 'vue';
+import { computed, defineAsyncComponent, markRaw, ref, useTemplateRef } from 'vue';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkPagination from '@/components/MkPagination.vue';
@@ -110,8 +110,8 @@ const remotePaginator = markRaw(new Paginator('admin/emoji/list-remote', {
 	})),
 }));
 
-const queryEl = ref(null);
-const queryRemoteEl = ref(null);
+const queryEl = useTemplateRef('queryEl');
+const queryRemoteEl = useTemplateRef('queryRemoteEl');
 
 const selectAll = () => {
 	if (selectedEmojis.value.length > 0) {

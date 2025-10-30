@@ -150,7 +150,7 @@ import MkFolder from '@/components/MkFolder.vue';
 
 const meta = await misskeyApi('admin/meta');
 
-const provider = meta.translatorType;
+const provider = ref(meta.translatorType);
 const deeplAuthKey = ref(meta.deeplAuthKey ?? '');
 const deeplIsPro = ref(meta.deeplIsPro);
 const ctav3SaKey = ref(meta.ctav3SaKey ?? '');

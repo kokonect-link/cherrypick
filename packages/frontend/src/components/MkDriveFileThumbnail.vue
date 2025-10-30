@@ -27,7 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	/>
 	<img
 		v-else-if="isThumbnailAvailable && file.thumbnailUrl != null"
-		:src="url"
+		:src="url ?? undefined"
 		:alt="file.name"
 		:title="file.name"
 		:class="$style.thumbnail"

@@ -930,7 +930,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, computed } from 'vue';
+import { watch, ref, computed, useTemplateRef } from 'vue';
 import { throttle } from 'throttle-debounce';
 import * as Misskey from 'cherrypick-js';
 import RolesEditorFormula from './RolesEditorFormula.vue';
@@ -959,7 +959,7 @@ const props = defineProps<{
 
 const role = ref(deepClone(props.modelValue));
 
-const queryEl = ref(null);
+const queryEl = useTemplateRef('queryEl');
 
 // fill missing policy
 for (const ROLE_POLICY of Misskey.rolePolicies) {

@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<template #icon><i class="ti ti-bell"></i></template>
 	<template #header>{{ i18n.ts.notifications }}</template>
 	<template #func="{ buttonStyleClass }">
-		<button v-tooltip="i18n.ts.markAllAsRead" class="_button" :class="buttonStyleClass" @click="os.apiWithDialog('notifications/mark-all-as-read')"><i class="ti ti-check"></i></button>
+		<button v-tooltip="i18n.ts.markAllAsRead" class="_button" :class="buttonStyleClass" @click="os.apiWithDialog('notifications/mark-all-as-read', {})"><i class="ti ti-check"></i></button>
 		<button v-tooltip="i18n.ts.settings" class="_button" :class="buttonStyleClass" @click="configureNotification()"><i class="ti ti-settings"></i></button>
 	</template>
 

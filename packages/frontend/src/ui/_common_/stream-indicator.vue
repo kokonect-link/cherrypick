@@ -37,14 +37,14 @@ const hasDisconnected = ref(false);
 const timeoutId = ref<number>();
 
 function onDisconnected() {
-	window.clearTimeout(timeoutId);
+	window.clearTimeout(timeoutId.value);
 	timeoutId.value = window.setTimeout(() => {
 		hasDisconnected.value = true;
 	}, 1000 * 10);
 }
 
 function resetDisconnected() {
-	window.clearTimeout(timeoutId);
+	window.clearTimeout(timeoutId.value);
 	hasDisconnected.value = false;
 }
 
@@ -61,15 +61,15 @@ if (store.s.realtimeMode) {
 	useStream().on('_disconnected_', onDisconnected);
 
 	onUnmounted(() => {
-		window.clearTimeout(timeoutId);
+		window.clearTimeout(timeoutId.value);
 		useStream().off('_connected_', resetDisconnected);
 		useStream().off('_disconnected_', onDisconnected);
 	});
 }
 
 onMounted(() => {
-	globalEvents.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
-		hasRequireRefresh.value = hasRequireRefresh_receive;
+	globalEvents.on('hasRequireRefresh', (value) => {
+		hasRequireRefresh.value = value;
 	});
 });
 </script>

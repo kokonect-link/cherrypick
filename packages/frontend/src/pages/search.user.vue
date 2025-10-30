@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { markRaw, ref, shallowRef, toRef } from 'vue';
+import { markRaw, ref, shallowRef, toRef, useTemplateRef } from 'vue';
 import type { Endpoints } from 'cherrypick-js';
 import MkUserList from '@/components/MkUserList.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -56,7 +56,7 @@ const paginator = shallowRef<Paginator<'users/search'> | null>(null);
 const searchQuery = ref(toRef(props, 'query').value);
 const searchOrigin = ref(toRef(props, 'origin').value);
 
-const searchQueryEl = ref(null);
+const searchQueryEl = useTemplateRef('searchQueryEl');
 
 async function search() {
 	const query = searchQuery.value.toString().trim();

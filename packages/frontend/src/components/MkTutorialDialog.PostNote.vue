@@ -57,6 +57,7 @@ const exampleCWNote = reactive<Misskey.entities.Note>({
 		avatarBlurhash: 'eiKmhHIByXxZ~qWXs:-pR*NbR*s:xuRjoL-oR*WCt6WWf6WVf6oeWB',
 		isBot: false,
 		isCat: true,
+		isLocked: false,
 		emojis: {},
 		onlineStatus: 'unknown',
 		badgeRoles: [],

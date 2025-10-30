@@ -20,9 +20,9 @@ export async function warningExternalWebsite(ev: MouseEvent, url: string) {
 		if (r) {
 			return new RegExp(r[1], r[2]).test(url);
 		} else if (expression.includes(' ')) return expression.split(' ').every(keyword => url.includes(keyword));
-		else return domain.endsWith(expression);
+		else return domain ? domain.endsWith(expression) : false;
 	});
-	const isTrustedByUser = prefer.r.trustedDomains.value.includes(domain);
+	const isTrustedByUser = domain ? prefer.r.trustedDomains.value.includes(domain) : false;
 
 	if (!self && !isTrustedByInstance && !isTrustedByUser && prefer.s.externalNavigationWarning) {
 		ev.preventDefault();

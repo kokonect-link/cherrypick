@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkFoldableSection v-if="meta" class="item">
 				<template #header>Server Metric</template>
-				<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
+				<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats && serverInfo" :connection="connection" :meta="serverInfo"/>
 				<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
 			</MkFoldableSection>
 
@@ -114,7 +114,7 @@ const filesPagination = {
 	noPaging: true,
 };
 
-const meta = ref(null);
+const meta = useTemplateRef('meta');
 
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);

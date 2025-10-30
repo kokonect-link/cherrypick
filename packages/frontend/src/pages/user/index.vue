@@ -157,6 +157,7 @@ const headerTabs = computed(() => user.value ? [{
 }] : []);
 
 function menu(ev) {
+	if (!user.value) return;
 	const { menu, cleanup } = getUserMenu(user.value, mainRouter);
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }

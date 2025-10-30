@@ -132,7 +132,7 @@ const headerActions = computed(() => []);
 const headerTabs = computed(() => []);
 
 definePage(() => ({
-	title: i18n.ts.soundsAndVibrations,
+	title: i18n.ts.sounds,
 	icon: 'ti ti-music',
 }));
 </script>

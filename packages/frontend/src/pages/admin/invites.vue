@@ -126,7 +126,7 @@ function inviteRevoke() {
 		text: i18n.ts.inviteRevokeConfirm,
 	}).then(({ canceled }) => {
 		if (canceled) return;
-		os.apiWithDialog('admin/invite/revoke');
+		os.apiWithDialog('admin/invite/revoke', {});
 	});
 }
 
