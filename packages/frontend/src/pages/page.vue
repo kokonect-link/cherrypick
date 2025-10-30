@@ -124,6 +124,7 @@ import { useRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import { Paginator } from '@/utility/paginator.js';
+import { popup } from '@/os.js';
 
 const router = useRouter();
 
@@ -194,7 +195,11 @@ function copyLink() {
 
 function shareQRCode() {
 	if (!page.value) return;
-	os.displayQRCode(`${url}/@${page.value.user.username}/pages/${page.value.name}`);
+	const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+		qrCode: `${url}/@${page.value.user.username}/pages/${page.value.name}`,
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 function shareWithNote() {

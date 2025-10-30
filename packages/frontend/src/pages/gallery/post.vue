@@ -82,6 +82,7 @@ import { isSupportShare } from '@/utility/navigator.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { useRouter } from '@/router.js';
 import { Paginator } from '@/utility/paginator.js';
+import { popup } from '@/os.js';
 
 const router = useRouter();
 
@@ -132,7 +133,11 @@ function shareWithNote() {
 
 function shareQRCode() {
 	if (!post.value) return;
-	os.displayQRCode(`${url}/gallery/${post.value.id}`);
+	const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+		qrCode: `${url}/gallery/${post.value.id}`,
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 function like() {

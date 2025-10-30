@@ -27,7 +27,6 @@ import MkToast from '@/components/MkToast.vue';
 import MkDialog from '@/components/MkDialog.vue';
 import MkPopupMenu from '@/components/MkPopupMenu.vue';
 import MkContextMenu from '@/components/MkContextMenu.vue';
-import MkQRCode from '@/components/MkQRCode.vue';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { pleaseLogin } from '@/utility/please-login.js';
 import { showMovedDialog } from '@/utility/show-moved-dialog.js';
@@ -812,20 +811,3 @@ export function launchUploader(
 }
 
 export const pageFolderTeleportCount = ref(0);
-
-export async function displayQRCode(qrCode: string) {
-	(await new Promise<(() => void ) | undefined>((resolve) => {
-		let dispose: (() => void ) | undefined;
-		popup(
-			MkQRCode,
-			{ qrCode },
-			{
-				closed: () => {
-					resolve(dispose);
-				},
-			},
-		).then((res) => {
-			dispose = res.dispose;
-		});
-	}))?.();
-}

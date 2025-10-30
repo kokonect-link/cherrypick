@@ -21,6 +21,7 @@ import { genEmbedCode } from '@/utility/get-embed-code.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import { editNickname } from '@/utility/edit-nickname.js';
+import { popup } from '@/os.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -297,7 +298,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-qrcode',
 		text: i18n.ts.getQRCode,
 		action: () => {
-			os.displayQRCode(`https://${user.host ?? host}/@${user.username}`);
+			const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+				qrCode: `https://${user.host ?? host}/@${user.username}`,
+			}, {
+				closed: () => dispose(),
+			});
 		},
 	});
 

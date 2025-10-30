@@ -84,6 +84,7 @@ import { $i } from '@/i.js';
 import { isSupportShare } from '@/utility/navigator.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { pleaseLogin } from '@/utility/please-login.js';
+import { popup } from '@/os.js';
 
 const props = defineProps<{
 	id: string;
@@ -133,7 +134,11 @@ function copyLink() {
 
 function shareQRCode() {
 	if (!flash.value) return;
-	os.displayQRCode(`${url}/play/${flash.value.id}`);
+	const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+		qrCode: `${url}/play/${flash.value.id}`,
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 function shareWithNavigator() {

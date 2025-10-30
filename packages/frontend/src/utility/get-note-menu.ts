@@ -28,6 +28,7 @@ import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import { globalEvents } from '@/events.js';
 import { addDividersBetweenMenuSections } from '@/utility/add-dividers-between-menu-sections.js';
+import { popup } from '@/os.js';
 
 const isInBrowserTranslationAvailable = (
 	'LanguageDetector' in window &&
@@ -467,7 +468,11 @@ export function getNoteMenu(props: {
 			icon: 'ti ti-qrcode',
 			text: i18n.ts.getQRCode,
 			action: () => {
-				os.displayQRCode(`${url}/notes/${appearNote.id}`);
+				const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+					qrCode: `${url}/notes/${appearNote.id}`,
+				}, {
+					closed: () => dispose(),
+				});
 			},
 		}, {
 			icon: 'ti ti-external-link',
@@ -702,7 +707,11 @@ export function getNoteMenu(props: {
 			icon: 'ti ti-qrcode',
 			text: i18n.ts.getQRCode,
 			action: () => {
-				os.displayQRCode(`${url}/notes/${appearNote.id}`);
+				const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+					qrCode: `${url}/notes/${appearNote.id}`,
+				}, {
+					closed: () => dispose(),
+				});
 			},
 		}, {
 			icon: 'ti ti-external-link',

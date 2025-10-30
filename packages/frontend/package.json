@@ -72,7 +72,6 @@
 		"prismjs": "1.30.0",
 		"punycode.js": "2.3.1",
 		"qrcode": "^1.5.4",
-		"qrcode-vue3": "^1.7.1",
 		"qr-code-styling": "1.9.2",
 		"qr-scanner": "1.4.2",
 		"rollup": "4.52.4",
