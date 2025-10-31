@@ -10,6 +10,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 	class="_button"
 	:class="[$style.root, { [$style.reacted]: myReaction == reaction, [$style.canToggle]: (canToggle || alternative), [$style.small]: prefer.s.reactionsDisplaySize === 'small', [$style.large]: prefer.s.reactionsDisplaySize === 'large' }]"
 	@click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"
+	@touchstart.stop="(ev) => openEmojiMenu(ev)"
+	@touchend.stop="closeEmojiMenu"
 	@contextmenu.prevent.stop="menu"
 >
 	<MkReactionIcon style="pointer-events: none;" :class="prefer.s.limitWidthOfReaction ? $style.limitWidth : ''" :reaction="reaction" :emojiUrl="reactionEmojis[reaction.substring(1, reaction.length - 1)]" @click.stop="(ev) => { canToggle || alternative ? toggleReaction(ev) : stealReaction(ev) }"/>
@@ -18,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, useTemplateRef, watch } from 'vue';
+import {computed, inject, onMounted, ref, useTemplateRef, watch} from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getUnicodeEmojiOrNull } from '@@/js/emojilist.js';
 import MkCustomEmojiDetailedDialog from './MkCustomEmojiDetailedDialog.vue';
@@ -78,6 +80,10 @@ const reactionName = computed(() => {
 });
 
 const alternative: ComputedRef<string | null> = computed(() => prefer.s.reactableRemoteReactionEnabled ? (customEmojis.value.find(it => it.name === reactionName.value)?.name ?? null) : null);
+
+const canSteal = computed(() => props.note.user.host && $i && ($i.isAdmin || $i.policies.canManageCustomEmojis));
+
+const longTouchEmoji = ref(false);
 
 async function toggleReaction(ev: MouseEvent) {
 	haptic();
@@ -171,35 +177,97 @@ async function toggleReaction(ev: MouseEvent) {
 function stealReaction(ev: MouseEvent) {
 	haptic();
 
-	if (!props.note.user.host && $i && !($i.isAdmin || $i.policies.canManageCustomEmojis)) return;
+	let menuItems: MenuItem[] = [];
 
-	os.popupMenu([{
+	menuItems.push({
 		type: 'label',
-		text: props.reaction,
-	}, {
-		text: i18n.ts.import,
-		icon: 'ti ti-plus',
-		action: async () => {
-		await os.apiWithDialog('admin/emoji/steal', {
-			name: reactionName.value,
-			host: props.note.user.host ?? '',
-		});
-	},
-}, {
-	text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
-	icon: 'ti ti-mood-plus',
-	action: async () => {
-		await os.apiWithDialog('admin/emoji/steal', {
-			name: reactionName.value,
-			host: props.note.user.host ?? '',
-		});
+		text: `:${reactionName.value}:`,
+	});
 
-			await misskeyApi('notes/reactions/create', {
-				noteId: props.note.id,
-				reaction: `:${reactionName.value}:`,
-			});
-		},
-	}], ev.currentTarget ?? ev.target);
+	if (canGetInfo.value) {
+		menuItems.push({
+			text: i18n.ts.info,
+			icon: 'ti ti-info-circle',
+			action: async () => {
+				const { dispose } = os.popup(MkCustomEmojiDetailedDialog, {
+					emoji: await misskeyApiGet('emoji', {
+						name: props.reaction.replace(/:/g, '').replace(/@\./, ''),
+					}),
+				}, {
+					closed: () => dispose(),
+				});
+			},
+		});
+	}
+
+	if (customEmojis.value.find(it => it.name === reactionName.value)?.name) {
+		menuItems.push({
+			text: i18n.ts.copy,
+			icon: 'ti ti-copy',
+			action: () => {
+				copyToClipboard(`:${reactionName.value}:`);
+			},
+		});
+	}
+
+	if (canSteal.value) {
+		menuItems.push({
+			text: i18n.ts.import,
+			icon: 'ti ti-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host ?? '',
+				});
+			},
+		}, {
+			text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
+			icon: 'ti ti-mood-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host ?? '',
+				});
+
+				await misskeyApi('notes/reactions/create', {
+					noteId: props.note.id,
+					reaction: `:${reactionName.value}:`,
+				});
+			},
+		});
+	}
+
+	if (isEmojiMuted(props.reaction).value) {
+		menuItems.push({
+			text: i18n.ts.emojiUnmute,
+			icon: 'ti ti-mood-smile',
+			action: () => {
+				os.confirm({
+					type: 'question',
+					title: i18n.tsx.unmuteX({ x: isLocalCustomEmoji ? `:${emojiName.value}:` : props.reaction }),
+				}).then(({ canceled }) => {
+					if (canceled) return;
+					unmuteEmoji(props.reaction);
+				});
+			},
+		});
+	} else {
+		menuItems.push({
+			text: i18n.ts.emojiMute,
+			icon: 'ti ti-mood-off',
+			action: () => {
+				os.confirm({
+					type: 'question',
+					title: i18n.tsx.muteX({ x: isLocalCustomEmoji ? `:${emojiName.value}:` : props.reaction }),
+				}).then(({ canceled }) => {
+					if (canceled) return;
+					muteEmoji(props.reaction);
+				});
+			},
+		});
+	}
+
+	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 }
 
 async function menu(ev) {
@@ -232,6 +300,33 @@ async function menu(ev) {
 			icon: 'ti ti-copy',
 			action: () => {
 				copyToClipboard(`:${reactionName.value}:`);
+			},
+		});
+	}
+
+	if (canSteal.value) {
+		menuItems.push({
+			text: i18n.ts.import,
+			icon: 'ti ti-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host ?? '',
+				});
+			},
+		}, {
+			text: `${i18n.ts.doReaction} (${i18n.ts.import})`,
+			icon: 'ti ti-mood-plus',
+			action: async () => {
+				await os.apiWithDialog('admin/emoji/steal', {
+					name: reactionName.value,
+					host: props.note.user.host ?? '',
+				});
+
+				await misskeyApi('notes/reactions/create', {
+					noteId: props.note.id,
+					reaction: `:${reactionName.value}:`,
+				});
 			},
 		});
 	}
@@ -288,6 +383,17 @@ function chooseAlternative(ev) {
 		noteId: props.noteId,
 		reaction: `:${alternative.value}:`,
 	});
+}
+
+async function openEmojiMenu(ev) {
+	longTouchEmoji.value = true;
+	window.setTimeout(async () => {
+		if (longTouchEmoji.value === true) stealReaction(ev);
+	}, 500);
+}
+
+function closeEmojiMenu() {
+	longTouchEmoji.value = false;
 }
 
 watch(() => props.count, (newCount, oldCount) => {
