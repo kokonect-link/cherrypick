@@ -484,7 +484,6 @@ export class ApRendererService {
 		if (note.hasEvent) {
 			const event = await this.eventsRepository.findOneBy({ noteId: note.id });
 			asEvent = event ? {
-				type: 'Event',
 				name: event.title,
 				startTime: event.start,
 				endTime: event.end,
