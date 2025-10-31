@@ -74,6 +74,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 ### Server
 - Feat: 이벤트 연합 (yojo-art/cherrypick#658)
 - Fix: 이벤트가 포함된 노트를 편집하면 편집한 내용이 연합되지 않을 수 있음
+- Fix: 상대방이 나를 팔로우했을 때 ServiceWorker를 통한 알림이 제대로 표시되지 않을 수 있음
 
 ---
 

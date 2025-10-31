@@ -56,19 +56,39 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					// users/showの型定義をswos.apiへ当てはめるのが困難なのでapiFetch.requestを直接使用
 					const account = await getAccountFromId(data.userId);
 					if (!account) return null;
-					const userDetail = await cli.request('users/show', { userId: data.body.userId }, account.token);
-					return [i18n.ts._notification.youWereFollowed, {
-						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
-						icon: data.body.user.avatarUrl ?? undefined,
-						badge: iconUrl('user-plus'),
-						data,
-						actions: userDetail.isFollowing ? [] : [
-							{
-								action: 'follow',
-								title: i18n.ts._notification._actions.followBack,
-							},
-						],
-					}];
+					try {
+						const userDetail = await cli.request('users/show', { userId: data.body.userId }, account.token);
+						const userInfo = data.body.user;
+						const acct = userInfo?.host ? `@${userInfo.username}@${userInfo.host}` : `@${userInfo.username}`;
+						const body = userInfo?.username ? `${getUserName(userInfo)} (${acct})` : getUserName(userInfo);
+						return [i18n.ts._notification.youWereFollowed, {
+							body,
+							icon: userInfo?.avatarUrl ?? undefined,
+							badge: iconUrl('user-plus'),
+							data,
+							actions: userDetail?.isFollowing ? [] : [
+								{
+									action: 'follow',
+									title: i18n.ts._notification._actions.followBack,
+								},
+							],
+						}];
+					} catch (error) {
+						console.error('Failed to process follow notification', error);
+						const userInfo = data.body.user;
+						return [i18n.ts._notification.youWereFollowed, {
+							body: getUserName(userInfo),
+							icon: userInfo?.avatarUrl ?? undefined,
+							badge: iconUrl('user-plus'),
+							data,
+							actions: [
+								{
+									action: 'follow',
+									title: i18n.ts._notification._actions.followBack,
+								},
+							],
+						}];
+					}
 				}
 
 				case 'mention':
@@ -177,31 +197,71 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					}];
 				}
 
-				case 'receiveFollowRequest':
-					return [i18n.ts._notification.youReceivedFollowRequest, {
-						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
-						icon: data.body.user.avatarUrl ?? undefined,
-						badge: iconUrl('user-plus'),
-						data,
-						actions: [
-							{
-								action: 'accept',
-								title: i18n.ts.accept,
-							},
-							{
-								action: 'reject',
-								title: i18n.ts.reject,
-							},
-						],
-					}];
+				case 'receiveFollowRequest': {
+					try {
+						const userInfo = data.body.user;
+						const acct = userInfo?.host ? `@${userInfo.username}@${userInfo.host}` : `@${userInfo.username}`;
+						const body = userInfo?.username ? `${getUserName(userInfo)} (${acct})` : getUserName(userInfo);
+						return [i18n.ts._notification.youReceivedFollowRequest, {
+							body,
+							icon: userInfo?.avatarUrl ?? undefined,
+							badge: iconUrl('user-plus'),
+							data,
+							actions: [
+								{
+									action: 'accept',
+									title: i18n.ts.accept,
+								},
+								{
+									action: 'reject',
+									title: i18n.ts.reject,
+								},
+							],
+						}];
+					} catch (error) {
+						console.error('Failed to process receiveFollowRequest notification', error);
+						const userInfo = data.body.user;
+						return [i18n.ts._notification.youReceivedFollowRequest, {
+							body: getUserName(userInfo),
+							icon: userInfo?.avatarUrl ?? undefined,
+							badge: iconUrl('user-plus'),
+							data,
+							actions: [
+								{
+									action: 'accept',
+									title: i18n.ts.accept,
+								},
+								{
+									action: 'reject',
+									title: i18n.ts.reject,
+								},
+							],
+						}];
+					}
+				}
 
-				case 'followRequestAccepted':
-					return [i18n.ts._notification.yourFollowRequestAccepted, {
-						body: `${getUserName(data.body.user)} (@${data.body.user.username}${data.body.user.host != null ? '@' + data.body.user.host : ''})`,
-						icon: data.body.user.avatarUrl ?? undefined,
-						badge: iconUrl('circle-check'),
-						data,
-					}];
+				case 'followRequestAccepted': {
+					try {
+						const userInfo = data.body.user;
+						const acct = userInfo?.host ? `@${userInfo.username}@${userInfo.host}` : `@${userInfo.username}`;
+						const body = userInfo?.username ? `${getUserName(userInfo)} (${acct})` : getUserName(userInfo);
+						return [i18n.ts._notification.yourFollowRequestAccepted, {
+							body,
+							icon: userInfo?.avatarUrl ?? undefined,
+							badge: iconUrl('circle-check'),
+							data,
+						}];
+					} catch (error) {
+						console.error('Failed to process followRequestAccepted notification', error);
+						const userInfo = data.body.user;
+						return [i18n.ts._notification.yourFollowRequestAccepted, {
+							body: getUserName(userInfo),
+							icon: userInfo?.avatarUrl ?? undefined,
+							badge: iconUrl('circle-check'),
+							data,
+						}];
+					}
+				}
 
 				case 'groupInvited':
 					return [i18n.tsx._notification.youWereInvitedToGroup({ userName: getUserName(data.body.user) }), {
