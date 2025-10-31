@@ -1100,26 +1100,36 @@ function emitUpdReaction(emoji: string, delta: number) {
 	overflow: clip;
 	contain: content;
 
-	&:focus-visible {
-		outline: none;
+	&::after {
+		content: "";
+		pointer-events: none;
+		display: block;
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		//width: calc(100% - 8px);
+		//height: calc(100% - 8px);
+		background: var(--MI_THEME-panelHighlight);
+		//border: dashed 2px var(--MI_THEME-focus);
+		border-radius: var(--MI-radius);
+		box-sizing: border-box;
+		opacity: 0;
+		transition: opacity .2s, background .2s;
+	}
 
-		&::after {
-			content: "";
-			pointer-events: none;
-			display: block;
-			position: absolute;
-			z-index: 10;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			margin: auto;
-			width: calc(100% - 8px);
-			height: calc(100% - 8px);
-			border: dashed 2px var(--MI_THEME-focus);
-			border-radius: var(--MI-radius);
-			box-sizing: border-box;
-		}
+	&:focus-visible,
+	&:hover {
+		outline: none;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	&:hover::after {
+		opacity: 1;
 	}
 
 	.footer {

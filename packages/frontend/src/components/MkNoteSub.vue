@@ -132,6 +132,43 @@ function noteDblClick(ev: MouseEvent) {
 
 .main {
 	display: flex;
+
+	&::after {
+		content: "";
+		pointer-events: none;
+		display: block;
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		//width: calc(100% - 8px);
+		//height: calc(100% - 8px);
+		background: var(--MI_THEME-panelHighlight);
+		//border: dashed 2px var(--MI_THEME-focus);
+		border-radius: var(--MI-radius);
+		box-sizing: border-box;
+		opacity: 0;
+		transition: opacity .2s, background .2s;
+	}
+
+	:is(.reply, .more) &::after {
+		width: calc(100% + 2.5%);
+		height: calc(100% + 2.5%);
+	}
+
+	&:focus-visible,
+	&:hover {
+		outline: none;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	&:hover::after {
+		opacity: 1;
+	}
 }
 
 .colorBar {
