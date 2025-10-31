@@ -8,14 +8,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="_gaps">
 		<MkInput ref="searchQueryEl" v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
 			<template #prefix><i class="ti ti-search"></i></template>
-			<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
+			<template v-if="searchQuery != ''" #suffix>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" @click="search"><i class="ti ti-search"></i></button>
+			</template>
 		</MkInput>
-		<MkRadios v-if="instance.federation !== 'none'" v-model="searchOrigin" @update:modelValue="search()">
-			<option value="combined">{{ i18n.ts.all }}</option>
-			<option value="local">{{ i18n.ts.local }}</option>
-			<option value="remote">{{ i18n.ts.remote }}</option>
-		</MkRadios>
-		<MkButton large primary gradate rounded @click="search">{{ i18n.ts.search }}</MkButton>
+		<MkFoldableSection expanded>
+			<template #header>{{ i18n.ts.options }}</template>
+
+			<div class="_gaps_m">
+				<!--
+				<MkRadios v-if="instance.federation !== 'none'" v-model="searchOrigin" @update:modelValue="search()">
+					<option value="combined">{{ i18n.ts.all }}</option>
+					<option value="local">{{ i18n.ts.local }}</option>
+					<option value="remote">{{ i18n.ts.remote }}</option>
+				</MkRadios>
+				-->
+				<MkSelect v-model="searchOrigin" :items="searchOriginDef" small @update:modelValue="search()"></MkSelect>
+			</div>
+		</MkFoldableSection>
+		<!-- <MkButton large primary gradate rounded @click="search">{{ i18n.ts.search }}</MkButton> -->
 	</div>
 
 	<MkFoldableSection v-if="paginator">
@@ -26,8 +38,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { markRaw, ref, shallowRef, toRef, useTemplateRef } from 'vue';
+import { computed, markRaw, ref, shallowRef, toRef, useTemplateRef } from 'vue';
 import type { Endpoints } from 'cherrypick-js';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import MkUserList from '@/components/MkUserList.vue';
 import MkInput from '@/components/MkInput.vue';
 import MkRadios from '@/components/MkRadios.vue';
@@ -39,6 +52,7 @@ import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { useRouter } from '@/router.js';
 import { Paginator } from '@/utility/paginator.js';
+import MkSelect from '@/components/MkSelect.vue';
 
 const props = withDefaults(defineProps<{
 	query?: string,
@@ -52,6 +66,15 @@ const router = useRouter();
 
 const key = ref(0);
 const paginator = shallowRef<Paginator<'users/search'> | null>(null);
+
+const searchOriginDef = computed(() => {
+	const items = [
+		{ label: i18n.ts.all, value: 'combined' },
+		{ label: i18n.ts.local, value: 'local' },
+		{ label: i18n.ts.remote, value: 'remote' },
+	] satisfies MkSelectItem[];
+	return items;
+});
 
 const searchQuery = ref(toRef(props, 'query').value);
 const searchOrigin = ref(toRef(props, 'origin').value);
@@ -141,7 +164,7 @@ async function search() {
 </script>
 
 <style lang="scss" module>
-.deleteBtn {
+.searchInputButton {
 	position: relative;
 	z-index: 2;
 	margin: 0 auto;

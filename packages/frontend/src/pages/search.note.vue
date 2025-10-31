@@ -15,18 +15,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 			@enter.prevent="search"
 		>
 			<template #prefix><i class="ti ti-search"></i></template>
-			<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
+			<template v-if="searchQuery != ''" #suffix>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" :disabled="searchParams == null" @click="search"><i class="ti ti-search"></i></button>
+			</template>
 		</MkInput>
 		<MkFoldableSection expanded>
 			<template #header>{{ i18n.ts.options }}</template>
 
 			<div class="_gaps_m">
+				<!--
 				<MkRadios v-model="searchScope">
 					<option v-if="instance.federation !== 'none' && noteSearchableScope === 'global'" value="all">{{ i18n.ts._search.searchScopeAll }}</option>
 					<option value="local">{{ instance.federation === 'none' ? i18n.ts._search.searchScopeAll : i18n.ts._search.searchScopeLocal }}</option>
 					<option v-if="instance.federation !== 'none' && noteSearchableScope === 'global'" value="server">{{ i18n.ts._search.searchScopeServer }}</option>
 					<option value="user">{{ i18n.ts._search.searchScopeUser }}</option>
 				</MkRadios>
+				-->
+
+				<MkSelect v-model="searchScope" :items="searchScopeDef" small></MkSelect>
 
 				<div v-if="instance.federation !== 'none' && searchScope === 'server'" :class="$style.subOptionRoot">
 					<MkInput
@@ -92,6 +99,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</MkFoldableSection>
+		<!--
 		<div>
 			<MkButton
 				large
@@ -105,6 +113,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts.search }}
 			</MkButton>
 		</div>
+		-->
 	</div>
 
 	<MkFoldableSection v-if="paginator">
@@ -118,6 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, markRaw, ref, shallowRef, toRef, useTemplateRef } from 'vue';
 import { host as localHost } from '@@/js/config.js';
 import type * as Misskey from 'cherrypick-js';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -132,6 +142,7 @@ import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { Paginator } from '@/utility/paginator.js';
+import MkSelect from '@/components/MkSelect.vue';
 
 const props = withDefaults(defineProps<{
 	query?: string;
@@ -149,6 +160,19 @@ const router = useRouter();
 
 const key = ref(0);
 const paginator = shallowRef<Paginator<'notes/search'> | null>(null);
+
+const searchScopeDef = computed(() => {
+	const items: MkSelectItem[] = [];
+	if (instance.federation !== 'none' && noteSearchableScope === 'global') {
+		items.push({ label: i18n.ts._search.searchScopeAll, value: 'all' });
+	}
+	items.push({ label: instance.federation === 'none' ? i18n.ts._search.searchScopeAll : i18n.ts._search.searchScopeLocal, value: 'local' });
+	if (instance.federation !== 'none' && noteSearchableScope === 'global') {
+		items.push({ label: i18n.ts._search.searchScopeServer, value: 'server' });
+	}
+	items.push({ label: i18n.ts._search.searchScopeUser, value: 'user' });
+	return items;
+});
 
 const searchQuery = ref(toRef(props, 'query').value);
 const hostInput = ref(toRef(props, 'host').value);
@@ -375,7 +399,7 @@ async function search() {
 	color: #ff2a2a;
 }
 
-.deleteBtn {
+.searchInputButton {
 	position: relative;
 	z-index: 2;
 	margin: 0 auto;

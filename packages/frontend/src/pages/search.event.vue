@@ -8,32 +8,45 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="_gaps">
 		<MkInput ref="searchQueryEl" v-model="searchQuery" :large="true" :autofocus="true" type="search" @enter.prevent="search">
 			<template #prefix><i class="ti ti-search"></i></template>
-			<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
+			<template v-if="searchQuery != ''" #suffix>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" @click="search"><i class="ti ti-search"></i></button>
+			</template>
 		</MkInput>
-		<MkRadios v-model="searchOrigin" @update:modelValue="search()">
-			<option value="combined">{{ i18n.ts.all }}</option>
-			<option value="local">{{ i18n.ts.local }}</option>
-			<option value="remote">{{ i18n.ts.remote }}</option>
-		</MkRadios>
-		<MkFolder>
-			<template #label>{{ i18n.ts.options }}</template>
+		<MkFoldableSection expanded>
+			<template #header>{{ i18n.ts.options }}</template>
 
-			<MkSelect v-model="eventSort" :items="eventSortDef" small>
-				<template #label>{{ i18n.ts.sort }}</template>
-			</MkSelect>
+			<div class="_gaps_m">
+				<!--
+				<MkRadios v-model="searchOrigin" @update:modelValue="search()">
+					<option value="combined">{{ i18n.ts.all }}</option>
+					<option value="local">{{ i18n.ts.local }}</option>
+					<option value="remote">{{ i18n.ts.remote }}</option>
+				</MkRadios>
+				-->
+				<MkSelect v-model="searchOrigin" :items="searchOriginDef" small @update:modelValue="search()"></MkSelect>
 
-			<section>
-				<MkInput v-model="startDate" small style="margin-top: 10px;" type="date">
-					<template #label>{{ i18n.ts._event.startDate }}</template>
-				</MkInput>
-				<MkInput v-model="endDate" small style="margin-top: 10px;" type="date">
-					<template #label>{{ i18n.ts._event.endDate }}</template>
-				</MkInput>
-			</section>
-		</MkFolder>
+				<div :class="$style.subOptionRoot">
+					<MkSelect v-model="eventSort" :items="eventSortDef" small>
+						<template #label>{{ i18n.ts.sort }}</template>
+					</MkSelect>
+
+					<section>
+						<MkInput v-model="startDate" small style="margin-top: 10px;" type="date">
+							<template #label>{{ i18n.ts._event.startDate }}</template>
+						</MkInput>
+						<MkInput v-model="endDate" small style="margin-top: 10px;" type="date">
+							<template #label>{{ i18n.ts._event.endDate }}</template>
+						</MkInput>
+					</section>
+				</div>
+			</div>
+		</MkFoldableSection>
+		<!--
 		<div>
 			<MkButton large primary gradate rounded style="margin: 0 auto;" @click="search">{{ i18n.ts.search }}</MkButton>
 		</div>
+		-->
 	</div>
 
 	<MkFoldableSection v-if="paginator">
@@ -58,6 +71,15 @@ import { Paginator } from '@/utility/paginator.js';
 
 const key = ref(0);
 const paginator = shallowRef<Paginator<'notes/events/search'> | null>(null);
+
+const searchOriginDef = computed(() => {
+	const items = [
+		{ label: i18n.ts.all, value: 'combined' },
+		{ label: i18n.ts.local, value: 'local' },
+		{ label: i18n.ts.remote, value: 'remote' },
+	] satisfies MkSelectItem[];
+	return items;
+});
 
 const eventSortDef = computed(() => {
 	const items = [
@@ -99,7 +121,13 @@ async function search(): Promise<void> {
 </script>
 
 <style lang="scss" module>
-.deleteBtn {
+.subOptionRoot {
+	background: var(--MI_THEME-panel);
+	border-radius: var(--MI-radius);
+	padding: var(--MI-margin);
+}
+
+.searchInputButton {
 	position: relative;
 	z-index: 2;
 	margin: 0 auto;
