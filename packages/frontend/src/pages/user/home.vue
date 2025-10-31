@@ -25,12 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<div class="name">
 									<MkUserName :user="user" :nowrap="true" :enableEmojiMenu="!!$i" @click="editNickname(props.user)"/>
 								</div>
-							<div class="bottom">
-								<span class="username"><MkAcct :user="user" :detail="true"/></span>
-								<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
-								<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
-								<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
-								<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
+								<div class="bottom">
+									<span class="username"><MkAcct :user="user" :detail="true"/></span>
+									<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
+									<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
+									<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
+									<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
 									<button v-if="$i && !isEditingMemo && !memoDraft" class="_button add-note-button" @click="showMemoTextarea">
 										<i class="ti ti-edit"/> {{ i18n.ts.addMemo }}
 									</button>
@@ -100,9 +100,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 								<div v-if="translating || translation" class="translation">
 									<MkLoading v-if="translating" mini/>
 									<div v-else-if="translation">
-									<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-									<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false" :enableEmojiMenu="!!$i" class="_selectable"/>
-									<div v-if="'translator' in translation && translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+										<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+										<Mfm :text="translation.text" :isNote="false" :author="user" :nyaize="false" :enableEmojiMenu="!!$i" class="_selectable"/>
+										<div v-if="'translator' in translation && translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
 											<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
 											<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 										</div>

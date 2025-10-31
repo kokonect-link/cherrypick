@@ -20,8 +20,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 									</MkA>
 									<MkAcct :user="user" :class="$style.acct"/>
 								</div>
-							<div v-if="user.id === group.ownerId" v-tooltip="i18n.ts._group.leader" style="color: var(--MI_THEME-badge);"><i class="ti ti-crown"></i></div>
-							<div v-else-if="group && $i && $i.id === group.ownerId">
+								<div v-if="user.id === group.ownerId" v-tooltip="i18n.ts._group.leader" style="color: var(--MI_THEME-badge);"><i class="ti ti-crown"></i></div>
+								<div v-else-if="group && $i && $i.id === group.ownerId">
 									<button v-tooltip="i18n.ts._group.banish" class="_button" @click="removeUser(user)"><i class="ti ti-x"></i></button>
 								</div>
 							</div>

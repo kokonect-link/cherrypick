@@ -10,20 +10,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 			v-if="isThumbnailAvailable && prefer.s.enableHighQualityImagePlaceholders"
 			:hash="note.files[0].blurhash"
 			:src="url"
-		:alt="note.files[0].comment ?? undefined"
-		:title="note.files[0].name"
-		:class="$style.sensitiveImg"
-		:cover="true"
-		:forceBlurhash="true"
-	/>
-	<img
-		v-else-if="isThumbnailAvailable && note.files[0].thumbnailUrl != null"
-		:src="url ?? undefined"
-		:alt="note.files[0].name"
-		:title="note.files[0].name"
-		:class="$style.thumbnail"
-		style="object-fit: cover;"
-	/>
+			:alt="note.files[0].comment ?? undefined"
+			:title="note.files[0].name"
+			:class="$style.sensitiveImg"
+			:cover="true"
+			:forceBlurhash="true"
+		/>
+		<img
+			v-else-if="isThumbnailAvailable && note.files[0].thumbnailUrl != null"
+			:src="url ?? undefined"
+			:alt="note.files[0].name"
+			:title="note.files[0].name"
+			:class="$style.thumbnail"
+			style="object-fit: cover;"
+		/>
 		<div :class="$style.sensitive">
 			<div>
 				<div v-if="note.files[0].isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ prefer.s.dataSaver.media ? ` (${i18n.ts.image}${note.files[0].size ? ' ' + bytes(note.files[0].size) : ''})` : '' }}</div>
@@ -37,24 +37,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 			v-if="isThumbnailAvailable && prefer.s.enableHighQualityImagePlaceholders"
 			:hash="note.files[0].blurhash"
 			:src="url"
-		:alt="note.files[0].comment ?? undefined"
-		:title="note.files[0].name"
-		:class="$style.thumbnail"
-		:cover="true"
-		:forceBlurhash="false"
-		@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-		@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
-		@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
-	/>
-	<img
-		v-else-if="isThumbnailAvailable && note.files[0].thumbnailUrl != null"
-		:src="url ?? undefined"
-		:alt="note.files[0].name"
-		:title="note.files[0].name"
-		:class="$style.thumbnail"
-		style="object-fit: cover;"
-	/>
+			:alt="note.files[0].comment ?? undefined"
+			:title="note.files[0].name"
+			:class="$style.thumbnail"
+			:cover="true"
+			:forceBlurhash="false"
+			@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+			@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
+			@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		/>
+		<img
+			v-else-if="isThumbnailAvailable && note.files[0].thumbnailUrl != null"
+			:src="url ?? undefined"
+			:alt="note.files[0].name"
+			:title="note.files[0].name"
+			:class="$style.thumbnail"
+			style="object-fit: cover;"
+		/>
 		<div :class="$style.indicators">
 			<div v-if="['image/gif'].includes(note.files[0].type)" :class="$style.indicator">GIF</div>
 			<div v-if="['image/apng'].includes(note.files[0].type)" :class="$style.indicator">APNG</div>

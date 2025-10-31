@@ -21,12 +21,12 @@ import XHome from './home.home.vue';
 import XInvitations from './home.invitations.vue';
 import XJoiningRooms from './home.joiningRooms.vue';
 import XOwnedRooms from './home.ownedRooms.vue';
+import type { PageHeaderItem } from '@/types/page-header.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkPolkadots from '@/components/MkPolkadots.vue';
 import { globalEvents } from '@/events.js';
 import { $i } from '@/i.js';
-import type { PageHeaderItem } from '@/types/page-header.js';
 
 const tab = ref('home');
 

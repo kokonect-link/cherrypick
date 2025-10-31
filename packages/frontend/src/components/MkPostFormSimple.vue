@@ -79,11 +79,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</I18n> - <button class="_textButton" @click="cancelSchedule()">{{ i18n.ts.cancel }}</button>
 	</MkInfo>
 	<MkInfo v-if="scheduledNoteDelete != null" warn :class="$style.scheduledAt">
-	<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
-		<template #x>
-			<MkTime v-if="scheduledDeleteAt" :key="scheduledDeleteAt" :time="scheduledDeleteAt" :mode="'detail'" style="font-weight: bold;"/>
-		</template>
-	</I18n>
+		<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+			<template #x>
+				<MkTime v-if="scheduledDeleteAt" :key="scheduledDeleteAt" :time="scheduledDeleteAt" :mode="'detail'" style="font-weight: bold;"/>
+			</template>
+		</I18n>
 	</MkInfo>
 	<MkInfo v-if="hasNotSpecifiedMentions && showForm" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 	<div v-show="useCw && showForm" :class="$style.cwOuter">

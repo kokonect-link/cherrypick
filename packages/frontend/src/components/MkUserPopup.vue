@@ -24,14 +24,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</svg>
 			<MkAvatar :class="$style.avatar" :user="user" indicator/>
 			<div :class="$style.title">
-			<MkA :class="$style.name" :to="userPage(user)"><MkUserName :user="user" :nowrap="false"/></MkA>
-			<div :class="$style.username"><MkAcct :user="user"/></div>
-		<div v-if="('isAdmin' in user && user.isAdmin) || user.isLocked || user.isBot || ('isProxy' in user && user.isProxy)" style="margin-top: 4px;">
-			<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
-			<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
-			<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
-			<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
-		</div>
+				<MkA :class="$style.name" :to="userPage(user)"><MkUserName :user="user" :nowrap="false"/></MkA>
+				<div :class="$style.username"><MkAcct :user="user"/></div>
+				<div v-if="('isAdmin' in user && user.isAdmin) || user.isLocked || user.isBot || ('isProxy' in user && user.isProxy)" style="margin-top: 4px;">
+					<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
+					<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
+					<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
+					<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
+				</div>
 			</div>
 			<div :class="$style.description">
 				<Mfm v-if="user.description" :class="$style.mfm" :text="user.description" :author="user"/>

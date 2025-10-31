@@ -25,14 +25,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { computed, onMounted, useTemplateRef } from 'vue';
+import QRCodeStyling from 'qr-code-styling';
+import tinycolor from 'tinycolor2';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
-import QRCodeStyling from 'qr-code-styling';
 import { instance } from '@/instance.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
-import tinycolor from 'tinycolor2';
 
 const props = defineProps<{
 	qrCode: string;

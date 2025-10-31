@@ -24,12 +24,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 				v-if="paginator.queuedAheadItemsCount.value > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
 				:class="[$style.new2, { [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && !isFriendly().value, [$style.showElTab]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && isFriendly().value, [$style.reduceAnimation]: !prefer.s.animation }]"
 			>
-			<button class="_buttonPrimary" :class="$style.newButton2" @click="releaseQueue()">
-			<i class="ti ti-arrow-up"></i>
-			<I18n v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" :src="i18n.ts.newNoteRecivedCount" textTag="span">
-				<template #n>{{ paginator.queuedAheadItemsCount.value }}</template>
-			</I18n>
-			<span v-else-if="prefer.s.newNoteReceivedNotificationBehavior === 'default'">{{ i18n.ts.newNoteRecived }}</span>
+				<button class="_buttonPrimary" :class="$style.newButton2" @click="releaseQueue()">
+					<i class="ti ti-arrow-up"></i>
+					<I18n v-if="prefer.s.newNoteReceivedNotificationBehavior === 'count'" :src="i18n.ts.newNoteRecivedCount" textTag="span">
+						<template #n>{{ paginator.queuedAheadItemsCount.value }}</template>
+					</I18n>
+					<span v-else-if="prefer.s.newNoteReceivedNotificationBehavior === 'default'">{{ i18n.ts.newNoteRecived }}</span>
 				</button>
 			</div>
 		</transition>

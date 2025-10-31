@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import {computed, inject, onMounted, ref, useTemplateRef, watch} from 'vue';
+import { computed, inject, onMounted, ref, useTemplateRef, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getUnicodeEmojiOrNull } from '@@/js/emojilist.js';
 import MkCustomEmojiDetailedDialog from './MkCustomEmojiDetailedDialog.vue';

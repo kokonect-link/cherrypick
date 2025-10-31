@@ -50,10 +50,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 						isTranslation
 						@click.stop
 					/>
-			</div>
-			<div v-if="'translator' in translation && translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-				<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
-				<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+				</div>
+				<div v-if="'translator' in translation && translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+					<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+					<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
 				</div>
 			</div>
 		</div>
@@ -77,9 +77,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					@click.stop
 				/>
 			</div>
+		</div>
 	</div>
-</div>
-<button v-if="((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (note.files && note.files.length > 0) || !!note.poll) && collapsed" :class="$style.fade" class="_button" @click.stop="collapsed = false">
+	<button v-if="((isLong && prefer.s.collapseLongNoteContent) || (isMFM && prefer.s.collapseDefault) || (note.files && note.files.length > 0) || !!note.poll) && collapsed" :class="$style.fade" class="_button" @click.stop="collapsed = false">
 		<span :class="$style.fadeLabel">
 			{{ i18n.ts.showMore }}
 			<span v-if="note.files && note.files.length > 0" :class="$style.label">({{ collapseLabel }})</span>
@@ -359,19 +359,19 @@ function quote(): void {
 			os.popupMenu(menu, quoteButton.value);
 		} else {
 			os.post({
+				renote: props.note,
+				channel: props.note.channel,
+			}).then(() => {
+				focus();
+			});
+		}
+	} else {
+		os.post({
 			renote: props.note,
-			channel: props.note.channel,
 		}).then(() => {
 			focus();
 		});
 	}
-} else {
-	os.post({
-		renote: props.note,
-	}).then(() => {
-		focus();
-	});
-}
 }
 
 function reply(): void {
@@ -537,11 +537,11 @@ function undoReact(): void {
 function toggleReact() {
 	haptic();
 
-if ($note.myReaction != null && note.reactionAcceptance === 'likeOnly') {
-	undoReact();
-} else {
-	react();
-}
+	if ($note.myReaction != null && note.reactionAcceptance === 'likeOnly') {
+		undoReact();
+	} else {
+		react();
+	}
 }
 
 function showMenu(): void {

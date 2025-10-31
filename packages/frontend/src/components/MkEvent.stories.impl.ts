@@ -41,16 +41,16 @@ export const Default = {
 			renoteCount: 0,
 			repliesCount: 0,
 			reactionCount: 0,
-		event: {
-			title: 'Come on a Tea Party!' as any,
-			start: new Date('2017-10-25T15:00:00+0900').getTime() as any,
-			end: new Date('2017-10-25T18:00:00+0900').getTime() as any,
-			metadata: {
-				'@type': 'Event',
-				location: 'Kawasaki, Japan',
-				description: 'Let\'s have a tea party!',
-			} as any,
-		},
+			event: {
+				title: 'Come on a Tea Party!' as any,
+				start: new Date('2017-10-25T15:00:00+0900').getTime() as any,
+				end: new Date('2017-10-25T18:00:00+0900').getTime() as any,
+				metadata: {
+					'@type': 'Event',
+					location: 'Kawasaki, Japan',
+					description: 'Let\'s have a tea party!',
+				} as any,
+			},
 		},
 	},
 	parameters: {

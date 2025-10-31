@@ -207,8 +207,8 @@ function get(): Misskey.entities.Note['event'] {
 				availabilityEnds: availabilityEnd.value ?? undefined,
 				url: ticketsUrl.value ?? undefined,
 			} : undefined,
-		keywords: keywords.value ?? undefined,
-	} as any,
+			keywords: keywords.value ?? undefined,
+		} as any,
 	} as any;
 }
 

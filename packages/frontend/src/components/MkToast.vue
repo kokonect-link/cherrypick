@@ -12,11 +12,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 		:leaveToClass="prefer.s.animation ? $style.transition_toast_leaveTo : ''"
 		appear @afterLeave="emit('closed')"
 	>
-	<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ zIndex }">
-		<div v-if="welcome && $i">
-			<MkAvatar :class="$style.avatar" :user="$i" forceOpacity isToastAvatar/>
-			<Mfm style="display: inherit; margin: 10px;" :text="message" :plain="true"></Mfm>
-		</div>
+		<div v-if="showing" class="_acrylic" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect }]" :style="{ zIndex }">
+			<div v-if="welcome && $i">
+				<MkAvatar :class="$style.avatar" :user="$i" forceOpacity isToastAvatar/>
+				<Mfm style="display: inherit; margin: 10px;" :text="message" :plain="true"></Mfm>
+			</div>
 			<div v-else style="padding: 16px 24px;">
 				<i
 					v-if="icon"

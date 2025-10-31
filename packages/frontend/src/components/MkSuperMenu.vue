@@ -64,10 +64,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 						<span style="opacity: 0.7; font-size: 90%; word-break: break-word;">{{ item.parentLabels.join(' > ') }}</span>
 						<br>
 						<span style="word-break: break-word;">{{ item.label }}</span>
-				</template>
-			</span>
-			<span v-if="'indicated' in item && item.indicated" class="itemIndicator _blink"><i class="_indicatorCircle"></i></span>
-		</MkA>
+					</template>
+				</span>
+				<span v-if="'indicated' in item && item.indicated" class="itemIndicator _blink"><i class="_indicatorCircle"></i></span>
+			</MkA>
 		</div>
 	</template>
 </div>

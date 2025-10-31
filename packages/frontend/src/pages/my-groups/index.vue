@@ -8,19 +8,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div class="_spacer" style="--MI_SPACER-w: 700px;">
 		<div v-if="tab === 'owned'">
 			<MkPagination v-slot="{items}" :paginator="ownedPaginator">
-			<MkA v-for="group in items" :key="group.id" :class="$style.group" class="_panel" :to="`/my/groups/${ group.id }`">
-				<div :class="$style.name">{{ group.name }}</div>
-				<MkAvatars :class="$style.avatars" :userIds="group.userIds ?? []"/>
+				<MkA v-for="group in items" :key="group.id" :class="$style.group" class="_panel" :to="`/my/groups/${ group.id }`">
+					<div :class="$style.name">{{ group.name }}</div>
+					<MkAvatars :class="$style.avatars" :userIds="group.userIds ?? []"/>
 				</MkA>
 			</MkPagination>
 		</div>
 
 		<div v-else-if="tab === 'joined'">
 			<MkPagination v-slot="{items}" :paginator="joinedPaginator">
-			<div v-for="group in items" :class="$style.group" class="_panel">
-				<MkA :key="group.id" :class="$style.groupTop" :to="`/my/groups/${ group.id }`">
-					<div :class="$style.name">{{ group.name }}</div>
-					<MkAvatars :class="$style.avatars" :userIds="group.userIds ?? []"/>
+				<div v-for="group in items" :class="$style.group" class="_panel">
+					<MkA :key="group.id" :class="$style.groupTop" :to="`/my/groups/${ group.id }`">
+						<div :class="$style.name">{{ group.name }}</div>
+						<MkAvatars :class="$style.avatars" :userIds="group.userIds ?? []"/>
 					</MkA>
 					<div :class="$style.actions">
 						<MkButton rounded danger @click="leave(group)">{{ i18n.ts.leaveGroup }}</MkButton>
@@ -30,15 +30,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 
 		<div v-else-if="tab === 'invites'">
-		<MkPagination v-slot="{items}" :paginator="invitationPaginator">
-			<div v-for="invitation in items" :key="invitation.id" :class="$style.group" class="_panel">
-				<div :class="$style.name">{{ invitation.group.name }}</div>
-				<MkAvatars :class="$style.avatars" :userIds="invitation.group.userIds ?? []"/>
-				<div :class="$style.actions">
-					<MkButton primary rounded inline :class="$style.invitesButton" @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ i18n.ts.accept }}</MkButton>
-					<MkButton rounded inline :class="$style.invitesButton" @click="rejectInvite(invitation)"><i class="ti ti-x"></i> {{ i18n.ts.reject }}</MkButton>
+			<MkPagination v-slot="{items}" :paginator="invitationPaginator">
+				<div v-for="invitation in items" :key="invitation.id" :class="$style.group" class="_panel">
+					<div :class="$style.name">{{ invitation.group.name }}</div>
+					<MkAvatars :class="$style.avatars" :userIds="invitation.group.userIds ?? []"/>
+					<div :class="$style.actions">
+						<MkButton primary rounded inline :class="$style.invitesButton" @click="acceptInvite(invitation)"><i class="ti ti-check"></i> {{ i18n.ts.accept }}</MkButton>
+						<MkButton rounded inline :class="$style.invitesButton" @click="rejectInvite(invitation)"><i class="ti ti-x"></i> {{ i18n.ts.reject }}</MkButton>
+					</div>
 				</div>
-			</div>
 			</MkPagination>
 		</div>
 	</div>
