@@ -13,22 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkAvatar :class="$style.avatar" :user="$i"/>
 		</div>
 		<div v-else-if="!thin_ && narrow && !hideTitle && canBack" :class="$style.buttonsLeft"/>
-		<div v-if="!thin_ && (actions && actions.length > 1) && isFriendly().value" :class="$style.buttonsLeft" style="min-width: initial; margin-right: initial;">
-			<div v-if="!narrow && canBack" style="width: 50px; margin-right: 8px;"/>
-			<div v-if="actions.length >= 3" style="width: 42px;"/>
-			<div style="width: 34px;"/>
-		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length == 1) && isFriendly().value && mainRouter.currentRoute.value.name === 'my-notifications' && !notification">
-			<div style="width: 50px; margin-right: 8px;"/>
-		</div>
-		<div v-if="!thin_ && !narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name === 'index' && !notification" :class="$style.buttonsLeft" style="margin-right: auto;">
-			<div style="width: 84px;"/>
-		</div>
-		<div v-if="!thin_ && narrow && (actions && actions.length > 1) && !isFriendly().value && mainRouter.currentRoute.value.name !== 'index' && !notification">
-			<div style="width: 34px;"/>
-		</div>
-		<div v-if="pageMetadata && pageMetadata.avatar && !thin_ && mainRouter.currentRoute.value.name === 'user' && ($i != null && $i.id != pageMetadata.avatar.id) && !notification">
-			<div style="width: 50px;"/>
+		<div v-if="leftSpacing" :class="leftSpacing.class ? $style.buttonsLeft : undefined" :style="leftSpacing.style">
+			<div v-for="(width, index) in leftSpacing.children" :key="index" :style="width"/>
 		</div>
 
 		<template v-if="props.title || props.icon">
@@ -140,6 +126,39 @@ const hasTabs = computed(() => props.tabs.length > 0);
 const hasActions = computed(() => props.actions && props.actions.length > 0);
 const show = computed(() => {
 	return !hideTitle.value || hasTabs.value || hasActions.value;
+});
+
+const leftSpacing = computed(() => {
+	if (thin_ || props.notification) return null;
+
+	const actions = props.actions;
+	const actionsLength = actions?.length ?? 0;
+
+	if (actionsLength > 1 && isFriendly().value) {
+		const widths: string[] = [];
+		if (!narrow.value && canBack.value) widths.push('width: 50px; margin-right: 8px;');
+		if (actionsLength >= 3) widths.push('width: 42px;');
+		widths.push('width: 34px;');
+		return { class: true, style: 'min-width: initial; margin-right: initial;', children: widths };
+	}
+
+	if (!narrow.value && actionsLength === 1 && isFriendly().value && ['my-notifications', 'chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name)) {
+		return { class: false, style: '', children: ['width: 50px; margin-right: 8px;'] };
+	}
+
+	if (!narrow.value && actionsLength > 1 && !isFriendly().value && mainRouter.currentRoute.value.name === 'index') {
+		return { class: true, style: 'margin-right: auto;', children: ['width: 84px;'] };
+	}
+
+	if (narrow.value && actionsLength > 1 && !isFriendly().value && mainRouter.currentRoute.value.name !== 'index') {
+		return { class: false, style: '', children: ['width: 34px;'] };
+	}
+
+	if (pageMetadata.value?.avatar && mainRouter.currentRoute.value.name === 'user' && $i?.id !== pageMetadata.value.avatar.id) {
+		return { class: false, style: '', children: ['width: 50px;'] };
+	}
+
+	return null;
 });
 
 const preventDrag = (ev: TouchEvent) => {
