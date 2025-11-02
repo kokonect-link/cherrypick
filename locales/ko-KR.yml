@@ -1692,8 +1692,8 @@ _settings:
   showAvailableReactionsFirstInNote: "사용 가능한 리액션을 맨 위에 표시"
   showPageTabBarBottom: "페이지 탭 바를 아래쪽에 표시"
   _chat:
-    showSenderName: "발신자 이름 표시"
-    sendOnEnter: "엔터로 보내기"
+    showSenderName: "보낸 사람 이름 표시"
+    sendOnEnter: "엔터로 채팅 전송"
 _preferencesProfile:
   profileName: "프로필 이름"
   profileNameDescription: "이 디바이스를 식별할 이름을 설정해 주세요."
