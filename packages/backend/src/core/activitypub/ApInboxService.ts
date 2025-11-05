@@ -25,7 +25,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -66,6 +66,9 @@ export class ApInboxService {
 
 		@Inject(DI.followRequestsRepository)
 		private followRequestsRepository: FollowRequestsRepository,
+
+		@Inject(DI.chatMessagesRepository)
+		private chatMessagesRepository: ChatMessagesRepository,
 
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
@@ -445,6 +448,16 @@ export class ApInboxService {
 						const url = new URL(inReplyToUri);
 						if (this.utilityService.isSelfHost(url.hostname) && inReplyToUri.includes('/chat/messages/')) {
 							isReplyToChatMessage = true;
+						} else {
+							// Check if inReplyTo exists in our chat_messages table
+							// This handles cases where the reply is to a previous reply that was saved as a chat message
+							const inReplyToId = inReplyToUri.split('/').pop();
+							if (inReplyToId) {
+								const chatMessage = await this.chatMessagesRepository.findOneBy({ uri: inReplyToUri });
+								if (chatMessage) {
+									isReplyToChatMessage = true;
+								}
+							}
 						}
 					} catch (e) {
 						// Ignore error, treat as normal note
@@ -505,6 +518,11 @@ export class ApInboxService {
 
 		if (typeof object !== 'object') return 'skip: object is not an object';
 		if (!object.id) return 'skip: object has no id';
+
+		// Check if this message already exists (by URI)
+		// Note: Cannot use fetchNote because chat messages are not in the notes table
+		// For now, let ChatService handle duplicates
+		this.logger.info(`Processing chat message: ${object.id}`);
 
 		// Get recipients from the 'to' field
 		const toUris = getApIds(object.to);
