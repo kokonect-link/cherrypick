@@ -4,6 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import * as mfm from 'mfc-js';
 import * as Redis from 'ioredis';
 import { Brackets } from 'typeorm';
 import { DI } from '@/di-symbols.js';
@@ -25,7 +26,7 @@ import { MiChatRoomInvitation } from '@/models/ChatRoomInvitation.js';
 import { Packed } from '@/misc/json-schema.js';
 import { sqlLikeEscape } from '@/misc/sql-like-escape.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
-import { emojiRegex } from '@/misc/emoji-regex.js';
+import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mfm.js';
 import { NotificationService } from '@/core/NotificationService.js';
 import { ModerationLogService } from '@/core/ModerationLogService.js';
 
@@ -196,14 +197,9 @@ export class ChatService {
 	});
 	
 	if (!params.emojis && params.text) {
-		const matches = params.text.match(emojiRegex);
-		if (matches) {
-			emojis = matches
-				.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
-				.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
-				.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
-				.map(x => x.name); // Only store the name, like notes do
-		}
+		// Parse MFM and extract custom emojis, same as notes do
+		const tokens = mfm.parse(params.text);
+		emojis = extractCustomEmojisFromMfm(tokens);
 	}
 	
 	console.log('[ChatService DEBUG createMessageToUser - after extraction]:', {
@@ -301,24 +297,19 @@ export class ChatService {
 
 		const membershipsOtherThanMe = memberships.filter(member => member.userId !== fromUser.id);
 
-		// Extract emojis from text if not provided
-		// Store only emoji names (like notes do), not name@host format
-		let emojis = params.emojis ?? [];
-		if (!params.emojis && params.text) {
-			const matches = params.text.match(emojiRegex);
-			if (matches) {
-				emojis = matches
-					.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
-					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
-					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
-					.map(x => x.name); // Only store the name, like notes do
-			}
-		}
+	// Extract emojis from text if not provided
+	// Store only emoji names (like notes do), not name@host format
+	let emojis = params.emojis ?? [];
+	if (!params.emojis && params.text) {
+		// Parse MFM and extract custom emojis, same as notes do
+		const tokens = mfm.parse(params.text);
+		emojis = extractCustomEmojisFromMfm(tokens);
+	}
 
-		const message = {
-			id: this.idService.gen(),
-			fromUserId: fromUser.id,
-			toRoomId: toRoom.id,
+	const message = {
+		id: this.idService.gen(),
+		fromUserId: fromUser.id,
+		toRoomId: toRoom.id,
 			text: params.text ? params.text.trim() : null,
 			fileId: params.file ? params.file.id : null,
 			reads: [],
