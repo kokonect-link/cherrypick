@@ -82,4 +82,9 @@ export class MiChatMessage {
 		length: 1024, array: true, default: '{}',
 	})
 	public reactions: string[];
+
+	@Column('varchar', {
+		length: 128, array: true, default: '{}',
+	})
+	public emojis: string[];
 }

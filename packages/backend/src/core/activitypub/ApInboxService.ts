@@ -39,6 +39,7 @@ import { ApResolverService } from './ApResolverService.js';
 import { ApAudienceService } from './ApAudienceService.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import { ApQuestionService } from './models/ApQuestionService.js';
+import { ApImageService } from './models/ApImageService.js';
 import type { Resolver } from './ApResolverService.js';
 import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
 
@@ -87,6 +88,7 @@ export class ApInboxService {
 		private apNoteService: ApNoteService,
 		private apPersonService: ApPersonService,
 		private apQuestionService: ApQuestionService,
+		private apImageService: ApImageService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
 	) {
@@ -505,8 +507,25 @@ export class ApInboxService {
 		const text = object.content ?? null;
 		const uri = object.id;
 
-		// TODO: Handle file attachments
-		// For now, we'll only handle text messages
+		// Handle file attachments
+		let file = null;
+		if (object.attachment && Array.isArray(object.attachment) && object.attachment.length > 0) {
+			try {
+				const attach = object.attachment[0]; // Take first attachment for now
+				attach.sensitive ??= object.sensitive;
+				file = await this.apImageService.resolveImage(actor, attach);
+			} catch (e) {
+				this.logger.warn(`Failed to resolve attachment: ${e}`);
+			}
+		}
+
+		// Extract emojis
+		const emojis = await this.apNoteService.extractEmojis(object.tag ?? [], actor.host).catch(e => {
+			this.logger.info(`extractEmojis: ${e}`);
+			return [];
+		});
+
+		const apEmojis = emojis.map(emoji => emoji.name);
 
 		try {
 			// Determine if this is a 1:1 chat or group chat
@@ -515,8 +534,9 @@ export class ApInboxService {
 				const recipient = recipients[0];
 				await this.chatService.createMessageToUser(actor, recipient, {
 					text,
-					file: null,
+					file,
 					uri,
+					emojis: apEmojis,
 				});
 			} else {
 				// Group chat

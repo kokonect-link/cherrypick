@@ -798,6 +798,10 @@ export class ApRendererService {
 	 * Renders a chat message as an ActivityPub Note with _misskey_talk flag
 	 * Compatible with legacy Misskey chat federation
 	 */
+	/**
+	 * Renders a chat message as an ActivityPub Note with _misskey_talk flag
+	 * Compatible with legacy Misskey chat federation
+	 */
 	@bindThis
 	public async renderChatMessage(message: any, fromUser: MiUser, toUsers: MiUser[]): Promise<IPost> {
 		const attributedTo = this.userEntityService.genLocalUserUri(fromUser.id);
@@ -818,6 +822,10 @@ export class ApRendererService {
 			}
 		}
 
+		// Get emojis
+		const emojis = message.emojis && message.emojis.length > 0 ? await this.getEmojis(message.emojis) : [];
+		const apemojis = emojis.filter(emoji => !emoji.localOnly).map(emoji => this.renderEmoji(emoji));
+
 		const note: IPost = {
 			id: message.uri ?? `${this.config.url}/chat/messages/${message.id}`,
 			type: 'Note',
@@ -830,6 +838,10 @@ export class ApRendererService {
 
 		if (attachment) {
 			note.attachment = [attachment];
+		}
+
+		if (apemojis.length > 0) {
+			note.tag = apemojis;
 		}
 
 		return note;

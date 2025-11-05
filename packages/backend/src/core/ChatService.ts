@@ -133,6 +133,7 @@ export class ChatService {
 		text?: string | null;
 		file?: MiDriveFile | null;
 		uri?: string | null;
+		emojis?: string[];
 	}): Promise<Packed<'ChatMessageLiteFor1on1'>> {
 		if (fromUser.id === toUser.id) {
 			throw new Error('yourself');
@@ -183,6 +184,18 @@ export class ChatService {
 			throw new Error('blocked');
 		}
 
+		// Extract emojis from text if not provided
+		let emojis = params.emojis ?? [];
+		if (!params.emojis && params.text) {
+			const matches = params.text.match(emojiRegex);
+			if (matches) {
+				emojis = matches
+					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
+					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
+					.map(x => x.host ? `${x.name}@${x.host}` : x.name);
+			}
+		}
+
 		const message = {
 			id: this.idService.gen(),
 			fromUserId: fromUser.id,
@@ -191,6 +204,7 @@ export class ChatService {
 			fileId: params.file ? params.file.id : null,
 			reads: [],
 			uri: params.uri ?? null,
+			emojis,
 		} satisfies Partial<MiChatMessage>;
 
 		const inserted = await this.chatMessagesRepository.insertOne(message);
@@ -257,6 +271,7 @@ export class ChatService {
 		text?: string | null;
 		file?: MiDriveFile | null;
 		uri?: string | null;
+		emojis?: string[];
 	}): Promise<Packed<'ChatMessageLiteForRoom'>> {
 		const memberships = (await this.chatRoomMembershipsRepository.findBy({ roomId: toRoom.id })).map(m => ({
 			userId: m.userId,
@@ -272,6 +287,18 @@ export class ChatService {
 
 		const membershipsOtherThanMe = memberships.filter(member => member.userId !== fromUser.id);
 
+		// Extract emojis from text if not provided
+		let emojis = params.emojis ?? [];
+		if (!params.emojis && params.text) {
+			const matches = params.text.match(emojiRegex);
+			if (matches) {
+				emojis = matches
+					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
+					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
+					.map(x => x.host ? `${x.name}@${x.host}` : x.name);
+			}
+		}
+
 		const message = {
 			id: this.idService.gen(),
 			fromUserId: fromUser.id,
@@ -280,6 +307,7 @@ export class ChatService {
 			fileId: params.file ? params.file.id : null,
 			reads: [],
 			uri: params.uri ?? null,
+			emojis,
 		} satisfies Partial<MiChatMessage>;
 
 		const inserted = await this.chatMessagesRepository.insertOne(message);
