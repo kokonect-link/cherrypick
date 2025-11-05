@@ -433,7 +433,27 @@ export class ApInboxService {
 			if (typeof object === 'object' && '_misskey_talk' in object && object._misskey_talk === true) {
 				await this.createChatMessage(resolver, actor, object, activity);
 			} else {
-				await this.createNote(resolver, actor, object, false, activity);
+				// Check if this is a reply to a chat message
+				// If so, treat it as a chat message even without _misskey_talk flag
+				let isReplyToChatMessage = false;
+				if (typeof object === 'object' && object.inReplyTo) {
+					try {
+						const inReplyToUri = getApId(object.inReplyTo);
+						// Check if inReplyTo is our chat message by checking the URI pattern and host
+						const url = new URL(inReplyToUri);
+						if (this.utilityService.isSelfHost(url.hostname) && inReplyToUri.includes('/chat/messages/')) {
+							isReplyToChatMessage = true;
+						}
+					} catch (e) {
+						// Ignore error, treat as normal note
+					}
+				}
+
+				if (isReplyToChatMessage) {
+					await this.createChatMessage(resolver, actor, object, activity);
+				} else {
+					await this.createNote(resolver, actor, object, false, activity);
+				}
 			}
 		} else {
 			return `Unknown type: ${getApType(object)}`;
