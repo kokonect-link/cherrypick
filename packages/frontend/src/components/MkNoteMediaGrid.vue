@@ -25,6 +25,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:large="true"
 			:class="$style.file"
 		/>
+		<div v-if="isTimeline" :class="$style.avatars">
+			<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview noteClick/>
+			<div style="white-space: nowrap;">
+				<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)" noteClick>
+					<MkUserName :user="note.user"/>
+				</MkA>
+				<div :class="$style.username"><MkAcct :user="note.user"/></div>
+			</div>
+		</div>
 		<div :class="$style.sensitive">
 			<div>
 				<div v-if="file.isSensitive"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ prefer.s.dataSaver.media && file.size ? ` (${bytes(file.size)})` : '' }}</div>
@@ -41,6 +50,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:large="true"
 			:class="$style.file"
 		/>
+		<div v-if="isTimeline" :class="$style.avatars">
+			<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview noteClick/>
+			<div style="white-space: nowrap;">
+				<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)" noteClick>
+					<MkUserName :user="note.user"/>
+				</MkA>
+				<div :class="$style.username"><MkAcct :user="note.user"/></div>
+			</div>
+		</div>
 		<div :class="$style.indicators">
 			<div v-if="['image/gif'].includes(file.type)" :class="$style.indicator">GIF</div>
 			<div v-if="['image/apng'].includes(file.type)" :class="$style.indicator">APNG</div>
@@ -62,10 +80,12 @@ import bytes from '@/filters/bytes.js';
 
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
+import { userPage } from '@/filters/user.js';
 
 defineProps<{
 	note: Misskey.entities.Note;
 	square?: boolean;
+	isTimeline?: boolean;
 }>();
 
 const showingFiles = ref<Set<string>>(new Set());
@@ -158,5 +178,84 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	font-weight: bold;
 	font-size: 0.8em;
 	padding: 2px 5px;
+}
+
+.avatars {
+	display: inline-flex;
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	opacity: .7;
+	gap: 6px;
+	z-index: 1;
+
+	&::before {
+		content: '';
+		position: absolute;
+		bottom: -10px;
+		left: -10px;
+		right: -300px;
+		height: 80px;
+		background: linear-gradient(
+			to top,
+			rgba(0, 0, 0, 0.7) 0%,
+			rgba(0, 0, 0, 0.4) 40%,
+			rgba(0, 0, 0, 0) 100%
+		);
+		pointer-events: none;
+		z-index: -1;
+		border-radius: calc(var(--MI-radius) / 2);
+	}
+}
+
+.avatar {
+	flex-shrink: 0;
+	display: block !important;
+	position: sticky !important;
+	margin: 0 7px 0 0;
+	width: 36px;
+	height: 36px;
+	background: var(--MI_THEME-panel);
+	transition: top 0.5s;
+}
+
+.name {
+	flex-shrink: 1;
+	display: block;
+	padding: 0;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+	font-size: 1em;
+	font-weight: bold;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	max-width: 300px;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	&:hover {
+		color: var(--MI_THEME-nameHover);
+		text-decoration: none;
+	}
+}
+
+.username {
+	flex-shrink: 9999999;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: .95em;
+	max-width: 300px;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@container (max-width: 500px) {
+	.name, .username {
+		max-width: 200px;
+	}
 }
 </style>

@@ -53,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		>
 			<template v-if="props.src === 'media'">
 				<div :class="$style.mediaGrid">
-					<MkNoteMediaGrid v-for="note in paginator.items.value" :key="note.id" :note="note" square/>
+					<MkNoteMediaGrid v-for="note in paginator.items.value" :key="note.id" :note="note" square isTimeline/>
 				</div>
 			</template>
 			<template v-for="(note, i) in paginator.items.value" v-else :key="note.id">
