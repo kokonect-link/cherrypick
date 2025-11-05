@@ -804,9 +804,22 @@ export class ChatService {
 		await this.chatRoomMembershipsRepository.insertOne(membership);
 		await this.chatRoomInvitationsRepository.delete(invitation.id);
 
-		// Federation: Notify remote members about the new member
+		// Federation: Notify about acceptance and new member
 		const room = await this.chatRoomsRepository.findOneByOrFail({ id: roomId });
 		const joiningUser = await this.usersRepository.findOneByOrFail({ id: userId });
+		const owner = await this.usersRepository.findOneByOrFail({ id: room.ownerId });
+
+		// Send Accept activity to the inviter (room owner) if they are remote
+		if (this.userEntityService.isLocalUser(joiningUser) && this.userEntityService.isRemoteUser(owner)) {
+			const roomObject = this.apRendererService.renderChatRoom(room, owner);
+			const inviteObject = this.apRendererService.renderInvite(roomObject, this.userEntityService.genLocalUserUri(joiningUser.id), owner);
+			const acceptActivity = this.apRendererService.renderAccept(inviteObject, joiningUser);
+			const activity = {
+				...acceptActivity,
+				published: this.idService.parse(membership.id).date.toISOString(),
+			};
+			this.queueService.deliver(joiningUser, this.apRendererService.addContext(activity), owner.inbox, false);
+		}
 
 		// Get all members (including owner, excluding the joining user)
 		const memberships = await this.chatRoomMembershipsRepository.findBy({ roomId });
@@ -814,14 +827,13 @@ export class ChatService {
 		const memberUsers = await this.usersRepository.findBy({ id: In(memberUserIds) });
 		const remoteMembers = memberUsers.filter(m => this.userEntityService.isRemoteUser(m));
 
+		// Send Add activity to other remote members (not the owner, as they got Accept)
 		if (remoteMembers.length > 0) {
 			const roomUri = `${this.config.url}/chat/rooms/${room.id}`;
 			const joiningUserUri = this.userEntityService.isLocalUser(joiningUser)
 				? this.userEntityService.genLocalUserUri(joiningUser.id)
 				: joiningUser.uri;
 
-			// Send Add activity to each remote member
-			const owner = await this.usersRepository.findOneByOrFail({ id: room.ownerId });
 			if (this.userEntityService.isLocalUser(owner)) {
 				const addActivity = this.apRendererService.renderAdd(joiningUserUri, roomUri, owner);
 				const activity = {

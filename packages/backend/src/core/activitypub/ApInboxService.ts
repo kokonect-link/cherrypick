@@ -25,7 +25,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository, ChatRoomsRepository, ChatRoomInvitationsRepository } from '@/models/_.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository, ChatRoomsRepository, ChatRoomInvitationsRepository, ChatRoomMembershipsRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -75,6 +75,9 @@ export class ApInboxService {
 
 		@Inject(DI.chatRoomInvitationsRepository)
 		private chatRoomInvitationsRepository: ChatRoomInvitationsRepository,
+
+		@Inject(DI.chatRoomMembershipsRepository)
+		private chatRoomMembershipsRepository: ChatRoomMembershipsRepository,
 
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
@@ -248,6 +251,7 @@ export class ApInboxService {
 		});
 
 		if (isFollow(object)) return await this.acceptFollow(actor, object);
+		if (isInvite(object)) return await this.acceptInvite(actor, object);
 
 		return `skip: Unknown Accept type: ${getApType(object)}`;
 	}
@@ -273,6 +277,59 @@ export class ApInboxService {
 		}
 
 		await this.userFollowingService.acceptFollowRequest(actor, follower);
+		return 'ok';
+	}
+
+	@bindThis
+	private async acceptInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
+		// actor is the one who accepted the invitation (invitee)
+		// activity.target should be the actor who accepted
+		// activity.object should be the room
+
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
+
+		// Extract room ID from URI
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Find the room
+		const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+		if (!room) {
+			this.logger.warn(`Room not found: ${roomId}`);
+			return 'skip: room not found';
+		}
+
+		// Delete the invitation
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId,
+			userId: actor.id,
+		});
+		if (invitation) {
+			await this.chatRoomInvitationsRepository.delete(invitation.id);
+		}
+
+		// Check if already a member
+		const existingMembership = await this.chatService.isRoomMember(room, actor.id);
+		if (existingMembership) {
+			this.logger.info(`User ${actor.id} is already a member of room ${roomId}`);
+			return 'ok';
+		}
+
+		// Add membership
+		const membership = {
+			id: this.idService.gen(),
+			roomId: room.id,
+			userId: actor.id,
+		};
+
+		await this.chatRoomMembershipsRepository.insertOne(membership);
+
+		this.logger.info(`Remote user ${actor.id} accepted invitation and joined room ${roomId}`);
 		return 'ok';
 	}
 
