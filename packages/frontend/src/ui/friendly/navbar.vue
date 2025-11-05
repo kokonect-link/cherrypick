@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<img :src="instance.iconUrl || '/favicon.ico'" alt="" :class="$style.instanceIcon" style="viewTransitionName: navbar-serverIcon;"/>
 			</button>
 			<button v-if="!iconOnly" v-tooltip.noDelay.right="i18n.ts.realtimeMode" class="_button" :class="[$style.realtimeMode, store.r.realtimeMode.value ? $style.on : null]" @click="toggleRealtimeMode">
-				<i class="ti ti-bolt ti-fw"></i>
+				<i v-if="store.r.realtimeMode.value" class="ti ti-bolt ti-fw"></i>
+				<i v-else class="ti ti-bolt-off ti-fw"></i>
 			</button>
 		</div>
 		<div :class="$style.middle">
@@ -58,7 +59,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</button>
 			<div v-if="$i && ['all', 'topBottom', 'bottom'].includes(<string>bannerDisplay)" :class="[$style.banner, $style.bottomBanner]" :style="{ backgroundImage: `url(${ $i.bannerUrl })` }"></div>
 			<button v-if="iconOnly" v-tooltip.noDelay.right="i18n.ts.realtimeMode" class="_button" :class="[$style.realtimeMode, store.r.realtimeMode.value ? $style.on : null]" @click="toggleRealtimeMode">
-				<i class="ti ti-bolt ti-fw"></i>
+				<i v-if="store.r.realtimeMode.value" class="ti ti-bolt ti-fw"></i>
+				<i v-else class="ti ti-bolt-off ti-fw"></i>
 			</button>
 			<button v-tooltip.noDelay.right="prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note" class="_button" :class="[$style.post]" data-cy-open-post-form @click="() => { os.post(); }">
 				<i class="ti ti-fw" :class="[$style.postIcon, prefer.s.renameTheButtonInPostFormToNya ? 'ti-paw-filled' : 'ti-pencil']"></i><span :class="$style.postText">{{ prefer.s.renameTheButtonInPostFormToNya ? i18n.ts.nya : i18n.ts.note }}</span>
