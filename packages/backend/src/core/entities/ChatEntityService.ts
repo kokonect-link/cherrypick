@@ -74,10 +74,10 @@ export class ChatEntityService {
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
 		
-		// Populate emoji URLs
-		const emojiUrls = message.emojis && message.emojis.length > 0 
+		// Populate emoji URLs - only for remote users, like notes do
+		const emojis = fromUserHost != null 
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
-			: {};
+			: undefined;
 
 		return {
 			id: message.id,
@@ -92,7 +92,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions: reactions.filter((r): r is { user: Packed<'UserLite'>; reaction: string; } => r.user != null),
-			emojis: emojiUrls,
+			emojis: emojis,
 		};
 	}
 
@@ -163,10 +163,10 @@ export class ChatEntityService {
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
 		
-		// Populate emoji URLs
-		const emojiUrls = message.emojis && message.emojis.length > 0 
+		// Populate emoji URLs - only for remote users, like notes do
+		const emojis = fromUserHost != null 
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
-			: {};
+			: undefined;
 
 		return {
 			id: message.id,
@@ -177,7 +177,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions,
-			emojis: emojiUrls,
+			emojis: emojis,
 		};
 	}
 
@@ -225,10 +225,10 @@ export class ChatEntityService {
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
 		
-		// Populate emoji URLs
-		const emojiUrls = message.emojis && message.emojis.length > 0 
+		// Populate emoji URLs - only for remote users, like notes do
+		const emojis = fromUserHost != null 
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
-			: {};
+			: undefined;
 
 		return {
 			id: message.id,
@@ -240,7 +240,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions: reactions.filter((r): r is { user: Packed<'UserLite'>; reaction: string; } => r.user != null),
-			emojis: emojiUrls,
+			emojis: emojis,
 		};
 	}
 

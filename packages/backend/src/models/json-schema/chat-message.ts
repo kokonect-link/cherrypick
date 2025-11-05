@@ -80,7 +80,7 @@ export const packedChatMessageSchema = {
 		},
 		emojis: {
 			type: 'object',
-			optional: false, nullable: false,
+			optional: true, nullable: false,
 		},
 	},
 } as const;
@@ -148,7 +148,7 @@ export const packedChatMessageLiteSchema = {
 		},
 		emojis: {
 			type: 'object',
-			optional: false, nullable: false,
+			optional: true, nullable: false,
 		},
 	},
 } as const;
@@ -202,7 +202,7 @@ export const packedChatMessageLiteFor1on1Schema = {
 		},
 		emojis: {
 			type: 'object',
-			optional: false, nullable: false,
+			optional: true, nullable: false,
 		},
 	},
 } as const;
@@ -266,7 +266,7 @@ export const packedChatMessageLiteForRoomSchema = {
 		},
 		emojis: {
 			type: 'object',
-			optional: false, nullable: false,
+			optional: true, nullable: false,
 		},
 	},
 } as const;
