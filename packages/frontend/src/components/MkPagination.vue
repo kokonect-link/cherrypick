@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<div v-else key="_root_" class="_gaps">
 				<div v-if="direction === 'up' || direction === 'both'" v-show="upButtonVisible">
-					<MkButton v-if="!upButtonLoading" v-appear="prefer.s.enableInfiniteScroll ? paginator.fetchNewer : null" :class="$style.more" primary rounded @click="upButtonClick">
+					<MkButton v-if="!upButtonLoading" :class="$style.more" primary rounded @click="upButtonClick">
 						{{ i18n.ts.loadMore }}
 					</MkButton>
 					<MkLoading v-else/>
