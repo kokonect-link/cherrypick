@@ -185,6 +185,7 @@ export class ChatService {
 		}
 
 		// Extract emojis from text if not provided
+		// Store only emoji names (like notes do), not name@host format
 		let emojis = params.emojis ?? [];
 		if (!params.emojis && params.text) {
 			const matches = params.text.match(emojiRegex);
@@ -193,7 +194,7 @@ export class ChatService {
 					.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
 					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
 					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
-					.map(x => x.host ? `${x.name}@${x.host}` : x.name);
+					.map(x => x.name); // Only store the name, like notes do
 			}
 		}
 
@@ -289,6 +290,7 @@ export class ChatService {
 		const membershipsOtherThanMe = memberships.filter(member => member.userId !== fromUser.id);
 
 		// Extract emojis from text if not provided
+		// Store only emoji names (like notes do), not name@host format
 		let emojis = params.emojis ?? [];
 		if (!params.emojis && params.text) {
 			const matches = params.text.match(emojiRegex);
@@ -297,7 +299,7 @@ export class ChatService {
 					.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
 					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
 					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
-					.map(x => x.host ? `${x.name}@${x.host}` : x.name);
+					.map(x => x.name); // Only store the name, like notes do
 			}
 		}
 
