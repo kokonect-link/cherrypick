@@ -6605,6 +6605,10 @@ export interface Locale extends ILocale {
              */
             "none": string;
         };
+        /**
+         * {n}人が参加中
+         */
+        "usersCount": ParameterizedString<"n">;
     };
     "_emojiPalette": {
         /**

@@ -1647,6 +1647,7 @@ _chat:
     following: "Only users you are following"
     mutual: "Mutual followers only"
     none: "Nobody"
+  usersCount: "{n} Participants"
 _emojiPalette:
   palettes: "Palette"
   enableSyncBetweenDevicesForPalettes: "Enable palette sync between devices"

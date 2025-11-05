@@ -1652,6 +1652,7 @@ _chat:
     following: "自分がフォローしているユーザーのみ"
     mutual: "相互フォローのユーザーのみ"
     none: "誰も許可しない"
+  usersCount: "{n}人が参加中"
 
 _emojiPalette:
   palettes: "パレット"
