@@ -275,7 +275,6 @@ onUnmounted(() => {
 
 	&:has(.itemIndicateValueIcon) {
 		animation: none;
-		font-size: 6px;
 	}
 }
 
