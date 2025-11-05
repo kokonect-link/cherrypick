@@ -1642,7 +1642,7 @@ _chat:
   thisUserAllowsChatOnlyFromMutualFollowing: "이 사용자는 서로 팔로우하고 있는 사용자만 채팅을 허용하고 있어요."
   thisUserNotAllowedChatAnyone: "이 사용자는 다른 사람의 채팅을 받지 않도록 설정했어요."
   chatAllowedUsers: "채팅을 허용한 상대"
-  chatAllowedUsers_note: "내가 채팅 메시지를 보낸 상대와는 이 설정에 영향을 받지 않고 채팅을 할 수 있어요."
+  chatAllowedUsers_note: "내가 먼저 메시지를 보낸 상대와는 이 설정에 영향을 받지 않고 채팅을 할 수 있어요."
   _chatAllowedUsers:
     everyone: "누구나"
     followers: "나를 팔로우하는 사용자만"
