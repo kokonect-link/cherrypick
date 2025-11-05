@@ -27,6 +27,10 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Feat: 리모트 인스턴스 소프트웨어 차트 표시 (yojo-art/cherrypick#659)
   - 엔드포인트:`api/federation/remote-software`
   - 프론트엔드는 `/about#charts`에서 확인할 수 있습니다.
+- Feat: 채팅 연합
+  - 메시지 기능이 이제 연합에 대응하는 리모트 서버와 연합됩니다.
+  - 개편되기 전 채팅 기능을 유지하고 있는 클라이언트(4.15.1 이하 버전의 CherryPick 또는 2025.3.1 이하 버전의 Misskey 또는 이에 대응하는 코드를 사용하는 클라이언트 또는 포크 클라이언트)에서도 채팅 연합이 대응됩니다.
+  - 이전 버전의 클라이언트와 호환성을 유지하기 위해, `_misskey_talk`을 통해 채팅 연합 가능 유무를 확인합니다.
 - Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
 - Enhance: 노트 편집 기록을 개선함 ([serafuku/misskey@90d2e1b3](https://github.com/serafuku/misskey/commit/90d2e1b35bf52196004291964f9f30a7c2f7d1b4))
 - Enhance: 노트 편집 기록이 CW, 투표, 이벤트에 대응됨
