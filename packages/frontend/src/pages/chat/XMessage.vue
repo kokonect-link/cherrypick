@@ -16,6 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				:text="message.text"
 				:i="$i"
 				:nyaize="'respect'"
+				:emojiUrls="message.emojis"
 				:enableEmojiMenu="true"
 				:enableEmojiMenuReaction="true"
 			/>

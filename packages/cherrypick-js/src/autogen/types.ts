@@ -5835,6 +5835,8 @@ export type components = {
                 serviceWorker: boolean;
                 /** @default true */
                 miauth: boolean;
+                /** @default true */
+                chatFederation: boolean;
             };
             proxyAccountName: string | null;
             /** @example false */

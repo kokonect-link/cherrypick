@@ -190,6 +190,7 @@ export class ChatService {
 			const matches = params.text.match(emojiRegex);
 			if (matches) {
 				emojis = matches
+					.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
 					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
 					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
 					.map(x => x.host ? `${x.name}@${x.host}` : x.name);
@@ -293,6 +294,7 @@ export class ChatService {
 			const matches = params.text.match(emojiRegex);
 			if (matches) {
 				emojis = matches
+					.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
 					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
 					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
 					.map(x => x.host ? `${x.name}@${x.host}` : x.name);

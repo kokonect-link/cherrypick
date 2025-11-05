@@ -78,6 +78,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions: reactions.filter((r): r is { user: Packed<'UserLite'>; reaction: string; } => r.user != null),
+			emojis: message.emojis,
 		};
 	}
 
@@ -153,6 +154,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions,
+			emojis: message.emojis,
 		};
 	}
 
@@ -206,6 +208,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions: reactions.filter((r): r is { user: Packed<'UserLite'>; reaction: string; } => r.user != null),
+			emojis: message.emojis,
 		};
 	}
 
