@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="roles != null && roles.length > 0" class="_gaps_s">
 		<MkRolePreview v-for="role in roles" :key="role.id" :role="role" :forModeration="false"/>
 	</div>
-	<MkLoading v-else-if="loading" />
+	<MkLoading v-else-if="loading"/>
 	<MkResult v-else type="empty" :text="i18n.ts.noRole"/>
 </div>
 </template>
