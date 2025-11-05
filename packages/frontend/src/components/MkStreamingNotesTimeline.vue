@@ -17,8 +17,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<transition
 			:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
 			:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
-			:enterFromClass="prefer.s.animation ? $style.transition_new_enterFrom : ''"
-			:leaveToClass="prefer.s.animation ? $style.transition_new_leaveTo : ''"
 		>
 			<div
 				v-if="paginator.queuedAheadItemsCount.value > 0 && ['default', 'count'].includes(prefer.s.newNoteReceivedNotificationBehavior)"
@@ -108,6 +106,7 @@ import { deviceKind } from '@/utility/device-kind.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import MkNoteMediaGrid from '@/components/MkNoteMediaGrid.vue';
+import { haptic, hapticConfirm } from '@/utility/haptic.js';
 
 const { showEl } = scrollToVisibility();
 
@@ -342,8 +341,10 @@ useGlobalEvent('noteDeleted', (noteId) => {
 });
 
 function releaseQueue() {
+	haptic();
 	paginator.releaseQueue();
 	scrollToTop(rootEl.value!);
+	hapticConfirm();
 }
 
 function prepend(note: Misskey.entities.Note & MisskeyEntity) {
