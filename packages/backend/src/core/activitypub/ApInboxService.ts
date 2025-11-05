@@ -15,6 +15,7 @@ import { UserBlockingService } from '@/core/UserBlockingService.js';
 import { NoteDeleteService } from '@/core/NoteDeleteService.js';
 import { NoteCreateService } from '@/core/NoteCreateService.js';
 import { NoteUpdateService } from '@/core/NoteUpdateService.js';
+import { ChatService } from '@/core/ChatService.js';
 import { concat, toArray, toSingle, unique } from '@/misc/prelude/array.js';
 import { AppLockService } from '@/core/AppLockService.js';
 import type Logger from '@/logger.js';
@@ -78,6 +79,7 @@ export class ApInboxService {
 		private noteCreateService: NoteCreateService,
 		private noteUpdateService: NoteUpdateService,
 		private noteDeleteService: NoteDeleteService,
+		private chatService: ChatService,
 		private appLockService: AppLockService,
 		private apResolverService: ApResolverService,
 		private apDbResolverService: ApDbResolverService,
@@ -425,7 +427,12 @@ export class ApInboxService {
 		});
 
 		if (isPost(object)) {
-			await this.createNote(resolver, actor, object, false, activity);
+			// Check if this is a chat message (legacy Misskey format)
+			if (typeof object === 'object' && '_misskey_talk' in object && object._misskey_talk === true) {
+				await this.createChatMessage(resolver, actor, object, activity);
+			} else {
+				await this.createNote(resolver, actor, object, false, activity);
+			}
 		} else {
 			return `Unknown type: ${getApType(object)}`;
 		}
@@ -465,6 +472,65 @@ export class ApInboxService {
 			}
 		} finally {
 			unlock();
+		}
+	}
+
+	@bindThis
+	private async createChatMessage(resolver: Resolver, actor: MiRemoteUser, object: IPost, activity: ICreate): Promise<string> {
+		this.logger.info('Receiving chat message from remote');
+
+		if (typeof object !== 'object') return 'skip: object is not an object';
+		if (!object.id) return 'skip: object has no id';
+
+		// Get recipients from the 'to' field
+		const toUris = getApIds(object.to);
+		if (!toUris || toUris.length === 0) return 'skip: no recipients';
+
+		// Resolve recipient users
+		const recipients = [];
+		for (const uri of toUris) {
+			try {
+				const user = await this.apPersonService.resolvePerson(uri, resolver);
+				if (user) {
+					recipients.push(user);
+				}
+			} catch (e) {
+				this.logger.warn(`Failed to resolve recipient: ${uri}`);
+			}
+		}
+
+		if (recipients.length === 0) return 'skip: no valid recipients';
+
+		// Extract message content
+		const text = object.content ?? null;
+		const uri = object.id;
+
+		// TODO: Handle file attachments
+		// For now, we'll only handle text messages
+
+		try {
+			// Determine if this is a 1:1 chat or group chat
+			if (recipients.length === 1) {
+				// 1:1 chat
+				const recipient = recipients[0];
+				await this.chatService.createMessageToUser(actor, recipient, {
+					text,
+					file: null,
+					uri,
+				});
+			} else {
+				// Group chat
+				// For group chats, we need to find or create a chat room
+				// This is more complex and requires additional logic
+				// For now, we'll log and skip
+				this.logger.warn('Group chat messages not yet fully implemented in receiver');
+				return 'skip: group chat not yet fully implemented';
+			}
+
+			return 'ok';
+		} catch (err) {
+			this.logger.error(`Failed to create chat message: ${err}`);
+			throw err;
 		}
 	}
 

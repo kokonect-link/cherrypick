@@ -236,6 +236,19 @@ export class ChatService {
 			}, 3000);
 		}
 
+		// Federation: Send to remote user if applicable
+		if (this.userEntityService.isLocalUser(fromUser) && this.userEntityService.isRemoteUser(toUser)) {
+			const fullFromUser = await this.usersRepository.findOneByOrFail({ id: fromUser.id });
+			const chatMessageObject = await this.apRendererService.renderChatMessage(inserted, fullFromUser, [toUser]);
+			const activity = {
+				type: 'Create',
+				actor: this.userEntityService.genLocalUserUri(fullFromUser.id),
+				object: chatMessageObject,
+				published: this.idService.parse(inserted.id).date.toISOString(),
+			};
+			this.queueService.deliver(fullFromUser, this.apRendererService.addContext(activity), toUser.inbox, false);
+		}
+
 		return packedMessage;
 	}
 
@@ -305,6 +318,33 @@ export class ChatService {
 				this.pushNotificationService.pushNotification(membershipsOtherThanMe[i].userId, 'newChatMessage', packedMessageForTo);
 			}
 		}, 3000);
+
+		// Federation: Send to remote members if applicable
+		if (this.userEntityService.isLocalUser(fromUser)) {
+			// Get all members (including owner)
+			const allMembers = await Promise.all(
+				memberships.map(m => this.usersRepository.findOneBy({ id: m.userId }))
+			);
+			const remoteMembers = allMembers.filter(m => m && this.userEntityService.isRemoteUser(m)) as any[];
+
+			if (remoteMembers.length > 0) {
+				const fullFromUser = await this.usersRepository.findOneByOrFail({ id: fromUser.id });
+				const allMembersForRendering = allMembers.filter(m => m != null) as MiUser[];
+				const chatMessageObject = await this.apRendererService.renderChatMessage(inserted, fullFromUser, allMembersForRendering);
+				const activity = {
+					type: 'Create',
+					actor: this.userEntityService.genLocalUserUri(fullFromUser.id),
+					object: chatMessageObject,
+					published: this.idService.parse(inserted.id).date.toISOString(),
+				};
+				const contextedActivity = this.apRendererService.addContext(activity);
+
+				// Send to each remote member
+				for (const remoteMember of remoteMembers) {
+					this.queueService.deliver(fullFromUser, contextedActivity, remoteMember.inbox, false);
+				}
+			}
+		}
 
 		return packedMessage;
 	}

@@ -793,4 +793,45 @@ export class ApRendererService {
 
 		return emojis;
 	}
+
+	/**
+	 * Renders a chat message as an ActivityPub Note with _misskey_talk flag
+	 * Compatible with legacy Misskey chat federation
+	 */
+	@bindThis
+	public async renderChatMessage(message: any, fromUser: MiUser, toUsers: MiUser[]): Promise<IPost> {
+		const attributedTo = this.userEntityService.genLocalUserUri(fromUser.id);
+
+		// Render recipients
+		const to: string[] = toUsers.map(user =>
+			this.userEntityService.isRemoteUser(user)
+				? user.uri!
+				: this.userEntityService.genLocalUserUri(user.id)
+		);
+
+		// Get file if attached
+		let attachment: IApDocument | undefined;
+		if (message.fileId) {
+			const file = await this.driveFilesRepository.findOneBy({ id: message.fileId });
+			if (file) {
+				attachment = this.renderDocument(file);
+			}
+		}
+
+		const note: IPost = {
+			id: message.uri ?? `${this.config.url}/chat/messages/${message.id}`,
+			type: 'Note',
+			attributedTo,
+			content: message.text ?? '',
+			to,
+			published: this.idService.parse(message.id).date.toISOString(),
+			_misskey_talk: true, // Legacy Misskey chat marker
+		};
+
+		if (attachment) {
+			note.attachment = [attachment];
+		}
+
+		return note;
+	}
 }

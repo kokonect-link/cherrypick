@@ -133,6 +133,7 @@ export interface IPost extends IObject {
 	};
 	_misskey_quote?: string;
 	_misskey_content?: string;
+	_misskey_talk?: boolean;
 	quoteUrl?: string;
 }
 
