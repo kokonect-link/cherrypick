@@ -741,9 +741,9 @@ export class ChatService {
 
 		// Federation: Send Invite activity to remote user if applicable
 		if (this.userEntityService.isLocalUser(inviter) && this.userEntityService.isRemoteUser(invitee)) {
-			const roomUri = `${this.config.url}/chat/rooms/${room.id}`;
+			const roomObject = this.apRendererService.renderChatRoom(room, inviter);
 			const inviteeUri = invitee.uri;
-			const inviteActivity = this.apRendererService.renderInvite(roomUri, inviteeUri, inviter);
+			const inviteActivity = this.apRendererService.renderInvite(roomObject, inviteeUri, inviter);
 			const activity = {
 				...inviteActivity,
 				published: this.idService.parse(invitation.id).date.toISOString(),

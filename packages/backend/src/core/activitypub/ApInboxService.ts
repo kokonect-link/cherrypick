@@ -25,7 +25,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository } from '@/models/_.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository, ChatRoomsRepository, ChatRoomInvitationsRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
@@ -69,6 +69,12 @@ export class ApInboxService {
 
 		@Inject(DI.chatMessagesRepository)
 		private chatMessagesRepository: ChatMessagesRepository,
+
+		@Inject(DI.chatRoomsRepository)
+		private chatRoomsRepository: ChatRoomsRepository,
+
+		@Inject(DI.chatRoomInvitationsRepository)
+		private chatRoomInvitationsRepository: ChatRoomInvitationsRepository,
 
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
@@ -988,9 +994,12 @@ export class ApInboxService {
 
 	@bindThis
 	private async invite(actor: MiRemoteUser, activity: IInvite, resolver?: Resolver): Promise<string> {
-		// Get the room ID from the activity object
-		const roomUri = getApId(activity.object);
-		if (!roomUri) return 'skip: invalid activity object';
+		// Parse the room object
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
 
 		// Extract room ID from URI (format: https://example.com/chat/rooms/{roomId})
 		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
@@ -1005,13 +1014,46 @@ export class ApInboxService {
 		if (!invitee) return 'skip: target user not found';
 		if (!this.userEntityService.isLocalUser(invitee)) return 'skip: target user is not local';
 
-		// Create the invitation through ChatService
-		try {
-			await this.chatService.createRoomInvitation(actor.id, roomId, invitee.id);
-			return 'ok';
-		} catch (error) {
-			this.logger.error(`Failed to create chat room invitation: ${error}`);
-			return `skip: ${error}`;
+		// Check if the room already exists locally
+		let room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+
+		// If the room doesn't exist, create a local copy for the remote room
+		if (!room) {
+			const roomName = typeof roomObject.name === 'string' ? roomObject.name : 'Remote Chat Room';
+			const roomDescription = typeof roomObject.summary === 'string' ? roomObject.summary : '';
+
+			room = await this.chatRoomsRepository.insertOne({
+				id: roomId,
+				name: roomName,
+				description: roomDescription,
+				ownerId: actor.id,
+				isArchived: false,
+			});
 		}
+
+		// Check if invitation already exists
+		const existingInvitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId: room.id,
+			userId: invitee.id,
+		});
+		if (existingInvitation) {
+			return 'skip: invitation already exists';
+		}
+
+		// Create the invitation directly
+		const invitation = {
+			id: this.idService.gen(),
+			roomId: room.id,
+			userId: invitee.id,
+		};
+
+		await this.chatRoomInvitationsRepository.insertOne(invitation);
+
+		// Send local notification
+		// Note: Do not use notificationService here as it's not injected
+		// The user will see the invitation in their inbox
+
+		this.logger.info(`Created chat room invitation for local user ${invitee.id} to remote room ${room.id}`);
+		return 'ok';
 	}
 }
