@@ -142,7 +142,7 @@ const leftSpacing = computed(() => {
 		return { class: true, style: 'min-width: initial; margin-right: initial;', children: widths };
 	}
 
-	if (!narrow.value && actionsLength === 1 && isFriendly().value && ['my-notifications', 'chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name)) {
+	if (canBack.value && !narrow.value && actionsLength === 1 && isFriendly().value && ['my-notifications', 'chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name)) {
 		return { class: false, style: '', children: ['width: 50px; margin-right: 8px;'] };
 	}
 
