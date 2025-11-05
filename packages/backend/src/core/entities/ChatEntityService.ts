@@ -11,9 +11,9 @@ import type { Packed } from '@/misc/json-schema.js';
 import type { } from '@/models/Blocking.js';
 import { bindThis } from '@/decorators.js';
 import { IdService } from '@/core/IdService.js';
+import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
-import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { In } from 'typeorm';
 
 @Injectable()
@@ -74,10 +74,19 @@ export class ChatEntityService {
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
 		
+		console.log('[ChatEntity DEBUG packMessageDetailed]:', {
+			messageId: message.id,
+			fromUserId: message.fromUserId,
+			fromUserHost,
+			emojisArray: message.emojis,
+		});
+		
 		// Populate emoji URLs - only for remote users, like notes do
 		const emojis = fromUserHost != null 
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
 			: undefined;
+		
+		console.log('[ChatEntity DEBUG packMessageDetailed Result]:', emojis);
 
 		return {
 			id: message.id,
@@ -163,10 +172,19 @@ export class ChatEntityService {
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
 		
+		console.log('[ChatEntity DEBUG packMessageLiteFor1on1]:', {
+			messageId: message.id,
+			fromUserId: message.fromUserId,
+			fromUserHost,
+			emojisArray: message.emojis,
+		});
+		
 		// Populate emoji URLs - only for remote users, like notes do
 		const emojis = fromUserHost != null 
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
 			: undefined;
+		
+		console.log('[ChatEntity DEBUG packMessageLiteFor1on1 Result]:', emojis);
 
 		return {
 			id: message.id,
@@ -225,10 +243,19 @@ export class ChatEntityService {
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
 		
+		console.log('[ChatEntity DEBUG packMessageLiteForRoom]:', {
+			messageId: message.id,
+			fromUserId: message.fromUserId,
+			fromUserHost,
+			emojisArray: message.emojis,
+		});
+		
 		// Populate emoji URLs - only for remote users, like notes do
 		const emojis = fromUserHost != null 
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
 			: undefined;
+		
+		console.log('[ChatEntity DEBUG packMessageLiteForRoom Result]:', emojis);
 
 		return {
 			id: message.id,
