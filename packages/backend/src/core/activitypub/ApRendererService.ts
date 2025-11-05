@@ -806,7 +806,7 @@ export class ApRendererService {
 		const to: string[] = toUsers.map(user =>
 			this.userEntityService.isRemoteUser(user)
 				? user.uri!
-				: this.userEntityService.genLocalUserUri(user.id)
+				: this.userEntityService.genLocalUserUri(user.id),
 		);
 
 		// Get file if attached

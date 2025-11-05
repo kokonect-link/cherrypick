@@ -519,13 +519,13 @@ export class ApInboxService {
 			}
 		}
 
-	// Extract emojis
-	const emojis = await this.apNoteService.extractEmojis(object.tag ?? [], actor.host).catch(e => {
-		this.logger.info(`extractEmojis: ${e}`);
-		return [];
-	});
+		// Extract emojis
+		const emojis = await this.apNoteService.extractEmojis(object.tag ?? [], actor.host).catch(e => {
+			this.logger.info(`extractEmojis: ${e}`);
+			return [];
+		});
 
-	const apEmojis = emojis.map(emoji => emoji.name);
+		const apEmojis = emojis.map(emoji => emoji.name);
 
 		try {
 			// Determine if this is a 1:1 chat or group chat

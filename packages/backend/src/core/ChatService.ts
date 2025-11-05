@@ -181,20 +181,20 @@ export class ChatService {
 		}
 
 		const blocked = await this.userBlockingService.checkBlocked(toUser.id, fromUser.id);
-	if (blocked) {
-		throw new Error('blocked');
-	}
+		if (blocked) {
+			throw new Error('blocked');
+		}
 
-	// Extract emojis from text if not provided
-	// Store only emoji names (like notes do), not name@host format
-	let emojis = params.emojis ?? [];
-	if (!params.emojis && params.text) {
+		// Extract emojis from text if not provided
+		// Store only emoji names (like notes do), not name@host format
+		let emojis = params.emojis ?? [];
+		if (!params.emojis && params.text) {
 		// Parse MFM and extract custom emojis, same as notes do
-		const tokens = mfm.parse(params.text);
-		emojis = extractCustomEmojisFromMfm(tokens);
-	}
+			const tokens = mfm.parse(params.text);
+			emojis = extractCustomEmojisFromMfm(tokens);
+		}
 
-	const message = {
+		const message = {
 			id: this.idService.gen(),
 			fromUserId: fromUser.id,
 			toUserId: toUser.id,
@@ -285,19 +285,19 @@ export class ChatService {
 
 		const membershipsOtherThanMe = memberships.filter(member => member.userId !== fromUser.id);
 
-	// Extract emojis from text if not provided
-	// Store only emoji names (like notes do), not name@host format
-	let emojis = params.emojis ?? [];
-	if (!params.emojis && params.text) {
+		// Extract emojis from text if not provided
+		// Store only emoji names (like notes do), not name@host format
+		let emojis = params.emojis ?? [];
+		if (!params.emojis && params.text) {
 		// Parse MFM and extract custom emojis, same as notes do
-		const tokens = mfm.parse(params.text);
-		emojis = extractCustomEmojisFromMfm(tokens);
-	}
+			const tokens = mfm.parse(params.text);
+			emojis = extractCustomEmojisFromMfm(tokens);
+		}
 
-	const message = {
-		id: this.idService.gen(),
-		fromUserId: fromUser.id,
-		toRoomId: toRoom.id,
+		const message = {
+			id: this.idService.gen(),
+			fromUserId: fromUser.id,
+			toRoomId: toRoom.id,
 			text: params.text ? params.text.trim() : null,
 			fileId: params.file ? params.file.id : null,
 			reads: [],
@@ -346,7 +346,7 @@ export class ChatService {
 		if (this.userEntityService.isLocalUser(fromUser)) {
 			// Get all members (including owner)
 			const allMembers = await Promise.all(
-				memberships.map(m => this.usersRepository.findOneBy({ id: m.userId }))
+				memberships.map(m => this.usersRepository.findOneBy({ id: m.userId })),
 			);
 			const remoteMembers = allMembers.filter(m => m && this.userEntityService.isRemoteUser(m)) as any[];
 
