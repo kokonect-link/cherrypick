@@ -5,7 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { DI } from '@/di-symbols.js';
-import type { MiUser, ChatMessagesRepository, MiChatMessage, ChatRoomsRepository, MiChatRoom, MiChatRoomInvitation, ChatRoomInvitationsRepository, MiChatRoomMembership, ChatRoomMembershipsRepository } from '@/models/_.js';
+import type { MiUser, ChatMessagesRepository, MiChatMessage, ChatRoomsRepository, MiChatRoom, MiChatRoomInvitation, ChatRoomInvitationsRepository, MiChatRoomMembership, ChatRoomMembershipsRepository, UsersRepository } from '@/models/_.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
 import type { Packed } from '@/misc/json-schema.js';
 import type { } from '@/models/Blocking.js';
@@ -13,6 +13,7 @@ import { bindThis } from '@/decorators.js';
 import { IdService } from '@/core/IdService.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
+import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { In } from 'typeorm';
 
 @Injectable()
@@ -30,8 +31,12 @@ export class ChatEntityService {
 		@Inject(DI.chatRoomMembershipsRepository)
 		private chatRoomMembershipsRepository: ChatRoomMembershipsRepository,
 
+		@Inject(DI.usersRepository)
+		private usersRepository: UsersRepository,
+
 		private userEntityService: UserEntityService,
 		private driveFileEntityService: DriveFileEntityService,
+		private customEmojiService: CustomEmojiService,
 		private idService: IdService,
 	) {
 	}
@@ -65,12 +70,21 @@ export class ChatEntityService {
 			});
 		}
 
+		// Get fromUser host for emoji URL resolution
+		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
+		const fromUserHost = fromUser?.host ?? null;
+		
+		// Populate emoji URLs
+		const emojiUrls = message.emojis && message.emojis.length > 0 
+			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
+			: {};
+
 		return {
 			id: message.id,
 			createdAt: this.idService.parse(message.id).date.toISOString(),
 			text: message.text,
 			fromUserId: message.fromUserId,
-			fromUser: packedUsers?.get(message.fromUserId) ?? await this.userEntityService.pack(message.fromUser ?? message.fromUserId, me),
+			fromUser: packedUsers?.get(message.fromUserId) ?? await this.userEntityService.pack(fromUser ?? message.fromUserId, me),
 			toUserId: message.toUserId,
 			toUser: message.toUserId ? (packedUsers?.get(message.toUserId) ?? await this.userEntityService.pack(message.toUser ?? message.toUserId, me)) : undefined,
 			toRoomId: message.toRoomId,
@@ -78,7 +92,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions: reactions.filter((r): r is { user: Packed<'UserLite'>; reaction: string; } => r.user != null),
-			emojis: message.emojis,
+			emojis: emojiUrls,
 		};
 	}
 
@@ -145,6 +159,15 @@ export class ChatEntityService {
 			});
 		}
 
+		// Get fromUser host for emoji URL resolution
+		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
+		const fromUserHost = fromUser?.host ?? null;
+		
+		// Populate emoji URLs
+		const emojiUrls = message.emojis && message.emojis.length > 0 
+			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
+			: {};
+
 		return {
 			id: message.id,
 			createdAt: this.idService.parse(message.id).date.toISOString(),
@@ -154,7 +177,7 @@ export class ChatEntityService {
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions,
-			emojis: message.emojis,
+			emojis: emojiUrls,
 		};
 	}
 
@@ -198,17 +221,26 @@ export class ChatEntityService {
 			});
 		}
 
+		// Get fromUser host for emoji URL resolution
+		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
+		const fromUserHost = fromUser?.host ?? null;
+		
+		// Populate emoji URLs
+		const emojiUrls = message.emojis && message.emojis.length > 0 
+			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
+			: {};
+
 		return {
 			id: message.id,
 			createdAt: this.idService.parse(message.id).date.toISOString(),
 			text: message.text,
 			fromUserId: message.fromUserId,
-			fromUser: packedUsers?.get(message.fromUserId) ?? await this.userEntityService.pack(message.fromUser ?? message.fromUserId),
+			fromUser: packedUsers?.get(message.fromUserId) ?? await this.userEntityService.pack(fromUser ?? message.fromUserId),
 			toRoomId: message.toRoomId!,
 			fileId: message.fileId,
 			file: message.fileId ? (packedFiles?.get(message.fileId) ?? await this.driveFileEntityService.pack(message.file ?? message.fileId)) : null,
 			reactions: reactions.filter((r): r is { user: Packed<'UserLite'>; reaction: string; } => r.user != null),
-			emojis: message.emojis,
+			emojis: emojiUrls,
 		};
 	}
 
