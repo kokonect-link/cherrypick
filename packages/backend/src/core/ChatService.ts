@@ -188,23 +188,11 @@ export class ChatService {
 	// Extract emojis from text if not provided
 	// Store only emoji names (like notes do), not name@host format
 	let emojis = params.emojis ?? [];
-	console.log('[ChatService DEBUG createMessageToUser - before extraction]:', {
-		fromUserId: fromUser.id,
-		fromUserHost: fromUser.host,
-		paramsEmojis: params.emojis,
-		text: params.text,
-		emojisBeforeExtraction: emojis,
-	});
-	
 	if (!params.emojis && params.text) {
 		// Parse MFM and extract custom emojis, same as notes do
 		const tokens = mfm.parse(params.text);
 		emojis = extractCustomEmojisFromMfm(tokens);
 	}
-	
-	console.log('[ChatService DEBUG createMessageToUser - after extraction]:', {
-		finalEmojis: emojis,
-	});
 
 	const message = {
 			id: this.idService.gen(),

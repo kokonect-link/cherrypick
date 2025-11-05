@@ -526,14 +526,6 @@ export class ApInboxService {
 	});
 
 	const apEmojis = emojis.map(emoji => emoji.name);
-	
-	console.log('[ApInbox DEBUG createChatMessage]:', {
-		text,
-		actorHost: actor.host,
-		extractedEmojis: emojis,
-		apEmojis,
-		objectTag: object.tag,
-	});
 
 		try {
 			// Determine if this is a 1:1 chat or group chat

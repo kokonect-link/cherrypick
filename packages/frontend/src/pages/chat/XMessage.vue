@@ -86,15 +86,6 @@ const props = defineProps<{
 const isMe = computed(() => props.message.fromUserId === $i.id);
 const urls = computed(() => props.message.text ? extractUrlFromMfm(mfm.parse(props.message.text)) : []);
 
-// Debug logging
-console.log('[XMessage DEBUG]:', {
-	messageId: props.message.id,
-	fromUser: props.message.fromUser,
-	fromUserHost: props.message.fromUser?.host,
-	emojis: props.message.emojis,
-	text: props.message.text,
-});
-
 provide(DI.mfmEmojiReactCallback, (reaction) => {
 	if ($i.policies.chatAvailability !== 'available') return;
 

@@ -4,6 +4,7 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
+import { In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { MiUser, ChatMessagesRepository, MiChatMessage, ChatRoomsRepository, MiChatRoom, MiChatRoomInvitation, ChatRoomInvitationsRepository, MiChatRoomMembership, ChatRoomMembershipsRepository, UsersRepository } from '@/models/_.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
@@ -14,7 +15,6 @@ import { IdService } from '@/core/IdService.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { UserEntityService } from './UserEntityService.js';
 import { DriveFileEntityService } from './DriveFileEntityService.js';
-import { In } from 'typeorm';
 
 @Injectable()
 export class ChatEntityService {
@@ -73,20 +73,11 @@ export class ChatEntityService {
 		// Get fromUser host for emoji URL resolution
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
-		
-		console.log('[ChatEntity DEBUG packMessageDetailed]:', {
-			messageId: message.id,
-			fromUserId: message.fromUserId,
-			fromUserHost,
-			emojisArray: message.emojis,
-		});
-		
+
 		// Populate emoji URLs - only for remote users, like notes do
-		const emojis = fromUserHost != null 
+		const emojis = fromUserHost != null
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
 			: undefined;
-		
-		console.log('[ChatEntity DEBUG packMessageDetailed Result]:', emojis);
 
 		return {
 			id: message.id,
@@ -171,20 +162,11 @@ export class ChatEntityService {
 		// Get fromUser host for emoji URL resolution
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
-		
-		console.log('[ChatEntity DEBUG packMessageLiteFor1on1]:', {
-			messageId: message.id,
-			fromUserId: message.fromUserId,
-			fromUserHost,
-			emojisArray: message.emojis,
-		});
-		
+
 		// Populate emoji URLs - only for remote users, like notes do
-		const emojis = fromUserHost != null 
+		const emojis = fromUserHost != null
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
 			: undefined;
-		
-		console.log('[ChatEntity DEBUG packMessageLiteFor1on1 Result]:', emojis);
 
 		return {
 			id: message.id,
@@ -242,20 +224,11 @@ export class ChatEntityService {
 		// Get fromUser host for emoji URL resolution
 		const fromUser = message.fromUser ?? await this.usersRepository.findOneBy({ id: message.fromUserId });
 		const fromUserHost = fromUser?.host ?? null;
-		
-		console.log('[ChatEntity DEBUG packMessageLiteForRoom]:', {
-			messageId: message.id,
-			fromUserId: message.fromUserId,
-			fromUserHost,
-			emojisArray: message.emojis,
-		});
-		
+
 		// Populate emoji URLs - only for remote users, like notes do
-		const emojis = fromUserHost != null 
+		const emojis = fromUserHost != null
 			? await this.customEmojiService.populateEmojis(message.emojis, fromUserHost)
 			: undefined;
-		
-		console.log('[ChatEntity DEBUG packMessageLiteForRoom Result]:', emojis);
 
 		return {
 			id: message.id,
