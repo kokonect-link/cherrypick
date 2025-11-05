@@ -31,7 +31,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
   - 메시지 기능이 이제 연합에 대응하는 리모트 서버와 연합됩니다.
   - 메시지로 개편되기 전의 채팅 기능을 유지하고 있는 클라이언트(4.15.1 이하 버전의 CherryPick 또는 2025.3.1 이하 버전의 Misskey 등)에서도 메시지 연합이 대응됩니다.
   - 이전 버전의 클라이언트와 호환성을 유지하기 위해, `_misskey_talk`을 통해 메시지를 전달합니다.
-  - 메시지 연합이 지원되지 않는 서버의 사용자에게는 다이렉트 메시지를 통해 전송됩니다.
+  - 메시지 연합이 지원되지 않는 서버의 사용자에게는 다이렉트 메시지를 통해 전송되며, 여기에 답장한 DM은 메시지에서 표시됩니다.
 - Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
 - Enhance: 노트 편집 기록을 개선함 ([serafuku/misskey@90d2e1b3](https://github.com/serafuku/misskey/commit/90d2e1b35bf52196004291964f9f30a7c2f7d1b4))
 - Enhance: 노트 편집 기록이 CW, 투표, 이벤트에 대응됨
