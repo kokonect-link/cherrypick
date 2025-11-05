@@ -31,7 +31,7 @@ import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { AbuseReportService } from '@/core/AbuseReportService.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
-import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isInvite, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -42,7 +42,7 @@ import { ApQuestionService } from './models/ApQuestionService.js';
 import { ApImageService } from './models/ApImageService.js';
 import { ApMfmService } from './ApMfmService.js';
 import type { Resolver } from './ApResolverService.js';
-import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
+import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, IInvite, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
 
 @Injectable()
 export class ApInboxService {
@@ -182,6 +182,8 @@ export class ApInboxService {
 			return await this.flag(actor, activity);
 		} else if (isMove(activity)) {
 			return await this.move(actor, activity, resolver);
+		} else if (isInvite(activity)) {
+			return await this.invite(actor, activity, resolver);
 		} else {
 			return `unrecognized activity type: ${activity.type}`;
 		}
@@ -982,5 +984,34 @@ export class ApInboxService {
 		if (!targetUri) return 'skip: invalid activity target';
 
 		return await this.apPersonService.updatePerson(actor.uri, resolver) ?? 'skip: nothing to do';
+	}
+
+	@bindThis
+	private async invite(actor: MiRemoteUser, activity: IInvite, resolver?: Resolver): Promise<string> {
+		// Get the room ID from the activity object
+		const roomUri = getApId(activity.object);
+		if (!roomUri) return 'skip: invalid activity object';
+
+		// Extract room ID from URI (format: https://example.com/chat/rooms/{roomId})
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Get the target user (invitee)
+		const targetUri = getApHrefNullable(activity.target);
+		if (!targetUri) return 'skip: invalid activity target';
+
+		const invitee = await this.apDbResolverService.getUserFromApId(targetUri);
+		if (!invitee) return 'skip: target user not found';
+		if (!this.userEntityService.isLocalUser(invitee)) return 'skip: target user is not local';
+
+		// Create the invitation through ChatService
+		try {
+			await this.chatService.createRoomInvitation(actor.id, roomId, invitee.id);
+			return 'ok';
+		} catch (error) {
+			this.logger.error(`Failed to create chat room invitation: ${error}`);
+			return `skip: ${error}`;
+		}
 	}
 }

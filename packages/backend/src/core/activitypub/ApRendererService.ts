@@ -31,7 +31,7 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { JsonLdService } from './JsonLdService.js';
 import { ApMfmService } from './ApMfmService.js';
 import { CONTEXT } from './misc/contexts.js';
-import type { IAccept, IActivity, IAdd, IAnnounce, IApDocument, IApEmoji, IApHashtag, IApImage, IApMention, IBlock, ICreate, IDelete, IFlag, IFollow, IKey, ILike, IMove, IObject, IPost, IQuestion, IRead, IReject, IRemove, ITombstone, IUndo, IUpdate } from './type.js';
+import type { IAccept, IActivity, IAdd, IAnnounce, IApDocument, IApEmoji, IApHashtag, IApImage, IApMention, IBlock, ICreate, IDelete, IFlag, IFollow, IInvite, IKey, ILike, IMove, IObject, IPost, IQuestion, IRead, IReject, IRemove, ITombstone, IUndo, IUpdate } from './type.js';
 
 @Injectable()
 export class ApRendererService {
@@ -78,6 +78,16 @@ export class ApRendererService {
 			type: 'Accept',
 			actor: this.userEntityService.genLocalUserUri(user.id),
 			object,
+		};
+	}
+
+	@bindThis
+	public renderInvite(object: string | IObject, target: string, user: { id: MiUser['id']; host: null }): IInvite {
+		return {
+			type: 'Invite',
+			actor: this.userEntityService.genLocalUserUri(user.id),
+			object,
+			target,
 		};
 	}
 

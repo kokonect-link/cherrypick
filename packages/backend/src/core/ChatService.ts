@@ -6,7 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as mfm from 'mfc-js';
 import * as Redis from 'ioredis';
-import { Brackets } from 'typeorm';
+import { Brackets, In } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { Config } from '@/config.js';
 import { QueueService } from '@/core/QueueService.js';
@@ -728,9 +728,28 @@ export class ChatService {
 
 		const created = await this.chatRoomInvitationsRepository.insertOne(invitation);
 
-		this.notificationService.createNotification(inviteeId, 'chatRoomInvitationReceived', {
-			invitationId: invitation.id,
-		}, inviterId);
+		// Get inviter and invitee users
+		const inviter = await this.usersRepository.findOneByOrFail({ id: inviterId });
+		const invitee = await this.usersRepository.findOneByOrFail({ id: inviteeId });
+
+		// Send local notification if invitee is local
+		if (this.userEntityService.isLocalUser(invitee)) {
+			this.notificationService.createNotification(inviteeId, 'chatRoomInvitationReceived', {
+				invitationId: invitation.id,
+			}, inviterId);
+		}
+
+		// Federation: Send Invite activity to remote user if applicable
+		if (this.userEntityService.isLocalUser(inviter) && this.userEntityService.isRemoteUser(invitee)) {
+			const roomUri = `${this.config.url}/chat/rooms/${room.id}`;
+			const inviteeUri = invitee.uri;
+			const inviteActivity = this.apRendererService.renderInvite(roomUri, inviteeUri, inviter);
+			const activity = {
+				...inviteActivity,
+				published: this.idService.parse(invitation.id).date.toISOString(),
+			};
+			this.queueService.deliver(inviter, this.apRendererService.addContext(activity), invitee.inbox, false);
+		}
 
 		return created;
 	}
@@ -784,6 +803,38 @@ export class ChatService {
 		// TODO: transaction
 		await this.chatRoomMembershipsRepository.insertOne(membership);
 		await this.chatRoomInvitationsRepository.delete(invitation.id);
+
+		// Federation: Notify remote members about the new member
+		const room = await this.chatRoomsRepository.findOneByOrFail({ id: roomId });
+		const joiningUser = await this.usersRepository.findOneByOrFail({ id: userId });
+
+		// Get all members (including owner, excluding the joining user)
+		const memberships = await this.chatRoomMembershipsRepository.findBy({ roomId });
+		const memberUserIds = [room.ownerId, ...memberships.map(m => m.userId)].filter(id => id !== userId);
+		const memberUsers = await this.usersRepository.findBy({ id: In(memberUserIds) });
+		const remoteMembers = memberUsers.filter(m => this.userEntityService.isRemoteUser(m));
+
+		if (remoteMembers.length > 0) {
+			const roomUri = `${this.config.url}/chat/rooms/${room.id}`;
+			const joiningUserUri = this.userEntityService.isLocalUser(joiningUser)
+				? this.userEntityService.genLocalUserUri(joiningUser.id)
+				: joiningUser.uri;
+
+			// Send Add activity to each remote member
+			const owner = await this.usersRepository.findOneByOrFail({ id: room.ownerId });
+			if (this.userEntityService.isLocalUser(owner)) {
+				const addActivity = this.apRendererService.renderAdd(joiningUserUri, roomUri, owner);
+				const activity = {
+					...addActivity,
+					published: this.idService.parse(membership.id).date.toISOString(),
+				};
+				const contextedActivity = this.apRendererService.addContext(activity);
+
+				for (const remoteMember of remoteMembers) {
+					this.queueService.deliver(owner, contextedActivity, remoteMember.inbox, false);
+				}
+			}
+		}
 	}
 
 	@bindThis
