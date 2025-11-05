@@ -798,10 +798,6 @@ export class ApRendererService {
 	 * Renders a chat message as an ActivityPub Note with _misskey_talk flag
 	 * Compatible with legacy Misskey chat federation
 	 */
-	/**
-	 * Renders a chat message as an ActivityPub Note with _misskey_talk flag
-	 * Compatible with legacy Misskey chat federation
-	 */
 	@bindThis
 	public async renderChatMessage(message: any, fromUser: MiUser, toUsers: MiUser[]): Promise<IPost> {
 		const attributedTo = this.userEntityService.genLocalUserUri(fromUser.id);
