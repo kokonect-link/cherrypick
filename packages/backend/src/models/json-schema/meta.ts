@@ -394,11 +394,6 @@ export const packedMetaDetailedOnlySchema = {
 					optional: true, nullable: false,
 					default: true,
 				},
-				chatFederation: {
-					type: 'boolean',
-					optional: true, nullable: false,
-					default: true,
-				},
 			},
 		},
 		proxyAccountName: {

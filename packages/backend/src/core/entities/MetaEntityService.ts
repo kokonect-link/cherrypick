@@ -176,7 +176,6 @@ export class MetaEntityService {
 				objectStorage: instance.useObjectStorage,
 				serviceWorker: instance.enableServiceWorker,
 				miauth: true,
-				chatFederation: true,
 			},
 		};
 
