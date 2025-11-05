@@ -246,6 +246,9 @@ const patronsWithIconWithCherryPick = [{
 }, {
 	name: 'Kitty',
 	icon: 'https://s3.kokonect.link/cherrypick/patreons/5f8e4bac9cf34984bc59875f6d8d5c1d.gif',
+}, {
+	name: 'Buachi',
+	icon: 'https://s3.kokonect.link/cherrypick/patreons/cropped_%E7%84%A1%E9%A1%8C3_20250119014817.png-web.webp%20(1).png',
 }];
 
 const patronsWithIconWithMisskey = [{
