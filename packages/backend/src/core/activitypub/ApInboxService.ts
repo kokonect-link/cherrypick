@@ -40,6 +40,7 @@ import { ApAudienceService } from './ApAudienceService.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import { ApQuestionService } from './models/ApQuestionService.js';
 import { ApImageService } from './models/ApImageService.js';
+import { ApMfmService } from './ApMfmService.js';
 import type { Resolver } from './ApResolverService.js';
 import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
 
@@ -89,6 +90,7 @@ export class ApInboxService {
 		private apPersonService: ApPersonService,
 		private apQuestionService: ApQuestionService,
 		private apImageService: ApImageService,
+		private apMfmService: ApMfmService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
 	) {
@@ -524,7 +526,14 @@ export class ApInboxService {
 		if (recipients.length === 0) return 'skip: no valid recipients';
 
 		// Extract message content
-		const text = object.content ?? null;
+		let text: string | null = null;
+		if (object.source?.mediaType === 'text/x.misskeymarkdown' && typeof object.source.content === 'string') {
+			text = object.source.content;
+		} else if (typeof object._misskey_content !== 'undefined') {
+			text = object._misskey_content;
+		} else if (typeof object.content === 'string') {
+			text = this.apMfmService.htmlToMfm(object.content, object.tag);
+		}
 		const uri = object.id;
 
 		// Handle file attachments
