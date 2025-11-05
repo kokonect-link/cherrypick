@@ -180,25 +180,37 @@ export class ChatService {
 		}
 
 		const blocked = await this.userBlockingService.checkBlocked(toUser.id, fromUser.id);
-		if (blocked) {
-			throw new Error('blocked');
-		}
+	if (blocked) {
+		throw new Error('blocked');
+	}
 
-		// Extract emojis from text if not provided
-		// Store only emoji names (like notes do), not name@host format
-		let emojis = params.emojis ?? [];
-		if (!params.emojis && params.text) {
-			const matches = params.text.match(emojiRegex);
-			if (matches) {
-				emojis = matches
-					.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
-					.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
-					.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
-					.map(x => x.name); // Only store the name, like notes do
-			}
+	// Extract emojis from text if not provided
+	// Store only emoji names (like notes do), not name@host format
+	let emojis = params.emojis ?? [];
+	console.log('[ChatService DEBUG createMessageToUser - before extraction]:', {
+		fromUserId: fromUser.id,
+		fromUserHost: fromUser.host,
+		paramsEmojis: params.emojis,
+		text: params.text,
+		emojisBeforeExtraction: emojis,
+	});
+	
+	if (!params.emojis && params.text) {
+		const matches = params.text.match(emojiRegex);
+		if (matches) {
+			emojis = matches
+				.filter(x => isCustomEmojiRegexp.test(x)) // Filter to custom emojis only
+				.map(x => this.customEmojiService.parseEmojiStr(x, fromUser.host))
+				.filter((x): x is { name: string; host: string | null } => x != null && x.name != null)
+				.map(x => x.name); // Only store the name, like notes do
 		}
+	}
+	
+	console.log('[ChatService DEBUG createMessageToUser - after extraction]:', {
+		finalEmojis: emojis,
+	});
 
-		const message = {
+	const message = {
 			id: this.idService.gen(),
 			fromUserId: fromUser.id,
 			toUserId: toUser.id,

@@ -519,13 +519,21 @@ export class ApInboxService {
 			}
 		}
 
-		// Extract emojis
-		const emojis = await this.apNoteService.extractEmojis(object.tag ?? [], actor.host).catch(e => {
-			this.logger.info(`extractEmojis: ${e}`);
-			return [];
-		});
+	// Extract emojis
+	const emojis = await this.apNoteService.extractEmojis(object.tag ?? [], actor.host).catch(e => {
+		this.logger.info(`extractEmojis: ${e}`);
+		return [];
+	});
 
-		const apEmojis = emojis.map(emoji => emoji.name);
+	const apEmojis = emojis.map(emoji => emoji.name);
+	
+	console.log('[ApInbox DEBUG createChatMessage]:', {
+		text,
+		actorHost: actor.host,
+		extractedEmojis: emojis,
+		apEmojis,
+		objectTag: object.tag,
+	});
 
 		try {
 			// Determine if this is a 1:1 chat or group chat
