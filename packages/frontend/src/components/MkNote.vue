@@ -1121,15 +1121,21 @@ function emitUpdReaction(emoji: string, delta: number) {
 		transition: opacity .2s, background .2s;
 	}
 
-	&:focus-visible,
-	&:hover {
+	&:focus-visible {
 		outline: none;
 		text-decoration: none;
-		cursor: pointer;
 	}
 
-	&:hover::after {
-		opacity: 1;
+	@media (hover: hover) {
+		&:hover {
+			outline: none;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		&:hover::after {
+			opacity: 1;
+		}
 	}
 
 	.footer {

@@ -159,15 +159,21 @@ function noteDblClick(ev: MouseEvent) {
 		height: calc(100% + 2.5%);
 	}
 
-	&:focus-visible,
-	&:hover {
+	&:focus-visible {
 		outline: none;
 		text-decoration: none;
-		cursor: pointer;
 	}
 
-	&:hover::after {
-		opacity: 1;
+	@media (hover: hover) {
+		&:hover {
+			outline: none;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		&:hover::after {
+			opacity: 1;
+		}
 	}
 }
 
