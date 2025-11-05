@@ -376,7 +376,7 @@ onBeforeUnmount(() => {
 async function inviteUser() {
 	if (room.value == null) return;
 
-	const invitee = await os.selectUser({ includeSelf: false, localOnly: true });
+	const invitee = await os.selectUser({ includeSelf: false, localOnly: false });
 	os.apiWithDialog('chat/rooms/invitations/create', {
 		roomId: room.value.id,
 		userId: invitee.id,
