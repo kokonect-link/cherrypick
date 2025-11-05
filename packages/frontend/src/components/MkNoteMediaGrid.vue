@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:large="true"
 			:class="$style.file"
 		/>
-		<div v-if="isTimeline" :class="$style.avatars">
+		<div v-if="isTimeline" :class="$style.bottom">
 			<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview noteClick/>
 			<div style="white-space: nowrap;">
 				<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)" noteClick>
@@ -33,6 +33,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 				<div :class="$style.username"><MkAcct :user="note.user"/></div>
 			</div>
+		</div>
+		<div :class="[$style.time, { [$style.isTimeline]: isTimeline }]">
+			<MkTime :time="note.createdAt" :mode="prefer.s.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 		</div>
 		<div :class="$style.sensitive">
 			<div>
@@ -50,7 +53,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:large="true"
 			:class="$style.file"
 		/>
-		<div v-if="isTimeline" :class="$style.avatars">
+		<div v-if="isTimeline" :class="$style.bottom">
 			<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.avatar" :user="note.user" link preview noteClick/>
 			<div style="white-space: nowrap;">
 				<MkA v-user-preview="note.user.id" :class="$style.name" :to="userPage(note.user)" noteClick>
@@ -58,6 +61,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</MkA>
 				<div :class="$style.username"><MkAcct :user="note.user"/></div>
 			</div>
+		</div>
+		<div :class="[$style.time, { [$style.isTimeline]: isTimeline }]">
+			<MkTime :time="note.createdAt" :mode="prefer.s.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
 		</div>
 		<div :class="$style.indicators">
 			<div v-if="['image/gif'].includes(file.type)" :class="$style.indicator">GIF</div>
@@ -180,12 +186,12 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	padding: 2px 5px;
 }
 
-.avatars {
+.bottom {
 	display: inline-flex;
 	position: absolute;
 	bottom: 10px;
 	left: 10px;
-	opacity: .7;
+	//opacity: .7;
 	gap: 6px;
 	z-index: 1;
 
@@ -212,11 +218,11 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	flex-shrink: 0;
 	display: block !important;
 	position: sticky !important;
-	margin: 0 7px 0 0;
+	margin: 0 3px 0 0;
 	width: 36px;
 	height: 36px;
 	background: var(--MI_THEME-panel);
-	transition: top 0.5s;
+	filter: drop-shadow(0 0 1.5px #6060608a);
 }
 
 .name {
@@ -229,7 +235,8 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	font-weight: bold;
 	text-decoration: none;
 	text-overflow: ellipsis;
-	max-width: 300px;
+	max-width: 180px;
+	filter: drop-shadow(0 0 1.5px #6060608a);
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -246,10 +253,33 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: .95em;
-	max-width: 300px;
+	max-width: 180px;
+	filter: drop-shadow(0 0 1.5px #6060608a);
 
 	&::-webkit-scrollbar {
 		display: none;
+	}
+}
+
+.time {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	bottom: 5px;
+	right: 8px;
+	text-decoration: none;
+	color: #fff;
+	z-index: 1;
+	filter: drop-shadow(0 0 1.5px #6060608a);
+
+	&.isTimeline {
+		bottom: 48px;
+		right: 10px;
+	}
+
+	&:hover {
+		text-decoration: none;
 	}
 }
 

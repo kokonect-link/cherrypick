@@ -66,6 +66,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span style="text-align: center; margin-right: 0.25em;">{{ note.files.length }}</span>
 		<i class="ti ti-box-multiple-filled"></i>
 	</div>
+	<div :class="$style.time">
+		<MkTime :time="note.createdAt" :mode="prefer.s.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
+	</div>
 </div>
 </template>
 
@@ -300,6 +303,23 @@ html[data-color-scheme=light] .visible {
 
 .thumbnail {
 	width: 100%;
+}
+
+.time {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	text-decoration: none;
+	color: #fff;
+	opacity: .9;
+	filter: drop-shadow(0 0 1.5px #6060608a);
+
+	&:hover {
+		text-decoration: none;
+	}
 }
 
 @container (max-width: 785px) {
