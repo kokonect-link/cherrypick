@@ -1623,6 +1623,7 @@ _chat:
   inviteUser: "ユーザーを招待"
   sentInvitations: "送信した招待"
   join: "参加"
+  reject: "拒否"
   ignore: "無視"
   leave: "グループから退出"
   members: "メンバー"

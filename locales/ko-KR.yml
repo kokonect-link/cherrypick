@@ -1620,6 +1620,7 @@ _chat:
   inviteUser: "사용자 초대"
   sentInvitations: "초대 보내기"
   join: "참여"
+  reject: "거부"
   ignore: "무시"
   leave: "룸 떠나기"
   members: "멤버"

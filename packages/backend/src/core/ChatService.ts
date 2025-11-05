@@ -353,7 +353,7 @@ export class ChatService {
 			if (remoteMembers.length > 0) {
 				const fullFromUser = await this.usersRepository.findOneByOrFail({ id: fromUser.id });
 				const allMembersForRendering = allMembers.filter(m => m != null) as MiUser[];
-				const chatMessageObject = await this.apRendererService.renderChatMessage(inserted, fullFromUser, allMembersForRendering);
+				const chatMessageObject = await this.apRendererService.renderChatMessage(inserted, fullFromUser, allMembersForRendering, toRoom.id);
 				const activity = {
 					type: 'Create',
 					actor: this.userEntityService.genLocalUserUri(fullFromUser.id),
@@ -841,6 +841,33 @@ export class ChatService {
 	public async ignoreRoomInvitation(userId: MiUser['id'], roomId: MiChatRoom['id']) {
 		const invitation = await this.chatRoomInvitationsRepository.findOneByOrFail({ roomId, userId });
 		await this.chatRoomInvitationsRepository.update(invitation.id, { ignored: true });
+	}
+
+	@bindThis
+	public async rejectRoomInvitation(userId: MiUser['id'], roomId: MiChatRoom['id']) {
+		const invitation = await this.chatRoomInvitationsRepository.findOneByOrFail({ roomId, userId });
+		const room = await this.chatRoomsRepository.findOneByOrFail({ id: roomId });
+
+		// Delete the invitation
+		await this.chatRoomInvitationsRepository.delete(invitation.id);
+
+		// Federation: Send Reject activity to the inviter if applicable
+		const inviter = await this.usersRepository.findOneByOrFail({ id: room.ownerId });
+		const invitee = await this.usersRepository.findOneByOrFail({ id: userId });
+
+		if (this.userEntityService.isLocalUser(invitee) && this.userEntityService.isRemoteUser(inviter)) {
+			const roomUri = room.ownerId === inviter.id
+				? `${this.config.url}/chat/rooms/${room.id}`
+				: inviter.uri?.replace(/\/users\/.*$/, `/chat/rooms/${room.id}`) ?? `${this.config.url}/chat/rooms/${room.id}`;
+
+			const inviteObject = this.apRendererService.renderInvite(roomUri, this.userEntityService.genLocalUserUri(invitee.id), inviter);
+			const rejectActivity = this.apRendererService.renderReject(inviteObject, invitee);
+			const activity = {
+				...rejectActivity,
+				published: new Date().toISOString(),
+			};
+			this.queueService.deliver(invitee, this.apRendererService.addContext(activity), inviter.inbox, false);
+		}
 	}
 
 	@bindThis

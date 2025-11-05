@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #footer>
 				<div class="_buttons">
 					<MkButton primary @click="join(invitation)"><i class="ti ti-plus"></i> {{ i18n.ts._chat.join }}</MkButton>
-					<MkButton danger @click="ignore(invitation)"><i class="ti ti-x"></i> {{ i18n.ts._chat.ignore }}</MkButton>
+					<MkButton danger @click="ignore(invitation)"><i class="ti ti-x"></i> {{ i18n.ts._chat.reject }}</MkButton>
 				</div>
 			</template>
 

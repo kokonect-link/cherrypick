@@ -6492,6 +6492,10 @@ export interface Locale extends ILocale {
          */
         "join": string;
         /**
+         * 拒否
+         */
+        "reject": string;
+        /**
          * 無視
          */
         "ignore": string;

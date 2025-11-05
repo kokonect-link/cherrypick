@@ -809,7 +809,7 @@ export class ApRendererService {
 	 * Compatible with legacy Misskey chat federation
 	 */
 	@bindThis
-	public async renderChatMessage(message: any, fromUser: MiUser, toUsers: MiUser[]): Promise<IPost> {
+	public async renderChatMessage(message: any, fromUser: MiUser, toUsers: MiUser[], roomId?: string): Promise<IPost> {
 		const attributedTo = this.userEntityService.genLocalUserUri(fromUser.id);
 
 		// Render recipients
@@ -841,6 +841,11 @@ export class ApRendererService {
 			published: this.idService.parse(message.id).date.toISOString(),
 			_misskey_talk: true, // Legacy Misskey chat marker
 		};
+
+		// Add context for group chat
+		if (roomId) {
+			note['@context'] = `${this.config.url}/chat/rooms/${roomId}`;
+		}
 
 		if (attachment) {
 			note.attachment = [attachment];

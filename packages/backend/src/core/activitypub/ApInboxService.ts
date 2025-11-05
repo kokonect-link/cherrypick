@@ -595,11 +595,53 @@ export class ApInboxService {
 				});
 			} else {
 				// Group chat
-				// For group chats, we need to find or create a chat room
-				// This is more complex and requires additional logic
-				// For now, we'll log and skip
-				this.logger.warn('Group chat messages not yet fully implemented in receiver');
-				return 'skip: group chat not yet fully implemented';
+				// Extract room ID from context
+				const contextUri = object['@context'];
+				if (!contextUri || typeof contextUri !== 'string') {
+					this.logger.warn('Group chat message missing context');
+					return 'skip: group chat message missing context';
+				}
+
+				const roomIdMatch = contextUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+				if (!roomIdMatch) {
+					this.logger.warn(`Invalid context URI format: ${contextUri}`);
+					return 'skip: invalid context URI format';
+				}
+
+				const roomId = roomIdMatch[1];
+
+				// Check if the room exists locally
+				const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+				if (!room) {
+					this.logger.warn(`Room not found: ${roomId}`);
+					return 'skip: room not found';
+				}
+
+				// Check if at least one recipient is a local user who is a member of the room
+				let hasLocalMember = false;
+				for (const recipient of recipients) {
+					if (this.userEntityService.isLocalUser(recipient)) {
+						// Check if this local user is a member of the room
+						const isMember = await this.chatService.isRoomMember(room, recipient.id);
+						if (isMember) {
+							hasLocalMember = true;
+							break;
+						}
+					}
+				}
+
+				if (!hasLocalMember) {
+					this.logger.warn('No local members found in the room');
+					return 'skip: no local members in room';
+				}
+
+				// Create the message to the room
+				await this.chatService.createMessageToRoom(actor, room, {
+					text,
+					file,
+					uri,
+					emojis: apEmojis,
+				});
 			}
 
 			return 'ok';
@@ -735,6 +777,7 @@ export class ApInboxService {
 		});
 
 		if (isFollow(object)) return await this.rejectFollow(actor, object);
+		if (isInvite(object)) return await this.rejectInvite(actor, object);
 
 		return `skip: Unknown Reject type: ${getApType(object)}`;
 	}
@@ -760,6 +803,39 @@ export class ApInboxService {
 		}
 
 		await this.userFollowingService.remoteReject(actor, follower);
+		return 'ok';
+	}
+
+	@bindThis
+	private async rejectInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
+		// actor is the one who rejected the invitation (invitee)
+		// activity.target should be the actor who rejected
+		// activity.object should be the room
+
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
+
+		// Extract room ID from URI
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Find the invitation and delete it
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId,
+			userId: actor.id,
+		});
+
+		if (!invitation) {
+			return 'skip: invitation not found';
+		}
+
+		await this.chatRoomInvitationsRepository.delete(invitation.id);
+
+		this.logger.info(`Remote user ${actor.id} rejected invitation to room ${roomId}`);
 		return 'ok';
 	}
 
