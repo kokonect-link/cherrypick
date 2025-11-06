@@ -517,7 +517,21 @@ export const PREF_DEF = definePreferences({
 	},
 
 	// #region CherryPick
-	// - Settings/Preferences
+	// - Settings/Appearance
+	fontSize: {
+		default: 8,
+	},
+	showUnreadNotificationsCount: {
+		default: false,
+	},
+	setFederationAvatarShape: {
+		default: true,
+	},
+	filesGridLayoutInUserPage: {
+		default: true,
+	},
+
+	// - Settings/Timeline and Note
 	forceCollapseAllRenotes: {
 		default: false,
 	},
@@ -587,6 +601,52 @@ export const PREF_DEF = definePreferences({
 	alwaysShowCw: {
 		default: false,
 	},
+	hideAvatarsInNote: {
+		default: false,
+	},
+	enableAbsoluteTime: {
+		default: false,
+	},
+	enableMarkByDate: {
+		default: false,
+	},
+	showReplyTargetNote: {
+		default: true,
+	},
+	showReplyTargetNoteInSemiTransparent: {
+		default: true,
+	},
+	nsfwOpenBehavior: {
+		default: 'click' as 'click' | 'doubleClick',
+	},
+
+	// - Settings/Posting form
+	showPreview: {
+		default: false,
+	},
+	showProfilePreview: {
+		default: true,
+	},
+
+	// - Settings/Navigate to an external site warning
+	externalNavigationWarning: {
+		default: true,
+	},
+	trustedDomains: {
+		default: [] as string[],
+	},
+
+	// - Settings/Accessibility
+	showingAnimatedImages: {
+		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
+	},
+
+	// - Settings/Performance
+	removeModalBgColorForBlur: {
+		default: DEFAULT_DEVICE_KIND === 'desktop',
+	},
+
+	// - Settings/Other
 	autoLoadMoreReplies: {
 		default: false,
 	},
@@ -607,53 +667,6 @@ export const PREF_DEF = definePreferences({
 	},
 	newNoteReceivedNotificationBehavior: {
 		default: 'count' as 'default' | 'count' | 'none',
-	},
-	showUnreadNotificationsCount: {
-		default: false,
-	},
-	externalNavigationWarning: {
-		default: true,
-	},
-	trustedDomains: {
-		default: [] as string[],
-	},
-	showPreview: {
-		default: false,
-	},
-	showProfilePreview: {
-		default: true,
-	},
-
-	// - Settings/Appearance
-	fontSize: {
-		default: 8,
-	},
-	removeModalBgColorForBlur: {
-		default: DEFAULT_DEVICE_KIND === 'desktop',
-	},
-	setFederationAvatarShape: {
-		default: true,
-	},
-	filesGridLayoutInUserPage: {
-		default: true,
-	},
-	hideAvatarsInNote: {
-		default: false,
-	},
-	enableAbsoluteTime: {
-		default: false,
-	},
-	enableMarkByDate: {
-		default: false,
-	},
-	showReplyTargetNote: {
-		default: true,
-	},
-	showReplyTargetNoteInSemiTransparent: {
-		default: true,
-	},
-	nsfwOpenBehavior: {
-		default: 'click' as 'click' | 'doubleClick',
 	},
 
 	// - Settings/Navigation bar
@@ -741,11 +754,6 @@ export const PREF_DEF = definePreferences({
 	},
 	friendlyUiShowAvatarDecorationsInNavBtn: {
 		default: false,
-	},
-
-	// - Settings/Accessibility
-	showingAnimatedImages: {
-		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
 	},
 	//#endregion
 

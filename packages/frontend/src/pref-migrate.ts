@@ -148,10 +148,15 @@ export function migrateOldSettings() {
 		prefer.commit('sound.on.reaction', store.s.sound_reaction as any);
 		prefer.commit('defaultNoteVisibility', store.s.defaultNoteVisibility);
 		prefer.commit('defaultNoteLocalOnly', store.s.defaultNoteLocalOnly);
-		prefer.commit('showPreview', store.s.showPreview);
 
 		// #region CherryPick
-		// - Settings/Preferences
+		// - Settings/Appearance
+		prefer.commit('fontSize', store.s.fontSize);
+		prefer.commit('showUnreadNotificationsCount', store.s.showUnreadNotificationsCount);
+		prefer.commit('setFederationAvatarShape', store.s.setFederationAvatarShape);
+		prefer.commit('filesGridLayoutInUserPage', store.s.filesGridLayoutInUserPage);
+
+		// - Settings/Timeline and Note
 		prefer.commit('forceCollapseAllRenotes', store.s.forceCollapseAllRenotes);
 		prefer.commit('collapseReplies', store.s.collapseReplies);
 		prefer.commit('collapseLongNoteContent', store.s.collapseLongNoteContent);
@@ -174,6 +179,28 @@ export function migrateOldSettings() {
 		prefer.commit('showFixedPostFormInReplies', store.s.showFixedPostFormInReplies);
 		prefer.commit('showNoAltTextWarning', store.s.showNoAltTextWarning);
 		prefer.commit('alwaysShowCw', store.s.alwaysShowCw);
+		prefer.commit('hideAvatarsInNote', store.s.hideAvatarsInNote);
+		prefer.commit('enableAbsoluteTime', store.s.enableAbsoluteTime);
+		prefer.commit('enableMarkByDate', store.s.enableMarkByDate);
+		prefer.commit('showReplyTargetNote', store.s.showReplyTargetNote);
+		prefer.commit('showReplyTargetNoteInSemiTransparent', store.s.showReplyTargetNoteInSemiTransparent);
+		prefer.commit('nsfwOpenBehavior', store.s.nsfwOpenBehavior);
+
+		// - Settings/Posting form
+		prefer.commit('showPreview', store.s.showPreview);
+		prefer.commit('showProfilePreview', store.s.showProfilePreview);
+
+		// - Settings/Navigate to an external site warning
+		prefer.commit('externalNavigationWarning', store.s.externalNavigationWarning);
+		prefer.commit('trustedDomains', store.s.trustedDomains);
+
+		// - Settings/Accessibility
+		prefer.commit('showingAnimatedImages', store.s.showingAnimatedImages);
+
+		// - Settings/Performance
+		prefer.commit('removeModalBgColorForBlur', store.s.removeModalBgColorForBlur);
+
+		// - Settings/Other
 		prefer.commit('autoLoadMoreReplies', store.s.autoLoadMoreReplies);
 		prefer.commit('autoLoadMoreConversation', store.s.autoLoadMoreConversation);
 		prefer.commit('useAutoTranslate', store.s.useAutoTranslate);
@@ -181,18 +208,6 @@ export function migrateOldSettings() {
 		prefer.commit('disableNyaize', store.s.disableNyaize);
 		prefer.commit('requireRefreshBehavior', store.s.requireRefreshBehavior);
 		prefer.commit('newNoteReceivedNotificationBehavior', store.s.newNoteReceivedNotificationBehavior);
-		prefer.commit('showProfilePreview', store.s.showProfilePreview);
-
-		// - Settings/Appearance
-		prefer.commit('fontSize', store.s.fontSize);
-		prefer.commit('setFederationAvatarShape', store.s.setFederationAvatarShape);
-		prefer.commit('filesGridLayoutInUserPage', store.s.filesGridLayoutInUserPage);
-		prefer.commit('hideAvatarsInNote', store.s.hideAvatarsInNote);
-		prefer.commit('enableAbsoluteTime', store.s.enableAbsoluteTime);
-		prefer.commit('enableMarkByDate', store.s.enableMarkByDate);
-		prefer.commit('showReplyTargetNote', store.s.showReplyTargetNote);
-		prefer.commit('showReplyTargetNoteInSemiTransparent', store.s.showReplyTargetNoteInSemiTransparent);
-		prefer.commit('nsfwOpenBehavior', store.s.nsfwOpenBehavior);
 
 		// - Settings/Navigation bar
 		prefer.commit('bannerDisplay', store.s.bannerDisplay);

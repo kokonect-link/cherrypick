@@ -473,7 +473,25 @@ export const store = markRaw(new Pizzax('base', {
 	},
 
 	// #region CherryPick
-	// - Settings/Preferences
+	// - Settings/Appearance
+	fontSize: {
+		where: 'device',
+		default: 8,
+	},
+	showUnreadNotificationsCount: {
+		where: 'deviceAccount',
+		default: false,
+	},
+	setFederationAvatarShape: {
+		where: 'account',
+		default: true,
+	},
+	filesGridLayoutInUserPage: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Timeline and Note
 	forceCollapseAllRenotes: {
 		where: 'account',
 		default: false,
@@ -566,6 +584,64 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
+	hideAvatarsInNote: {
+		where: 'device',
+		default: false,
+	},
+	enableAbsoluteTime: {
+		where: 'device',
+		default: false,
+	},
+	enableMarkByDate: {
+		where: 'device',
+		default: false,
+	},
+	showReplyTargetNote: {
+		where: 'device',
+		default: true,
+	},
+	showReplyTargetNoteInSemiTransparent: {
+		where: 'device',
+		default: true,
+	},
+	nsfwOpenBehavior: {
+		where: 'device',
+		default: 'click' as 'click' | 'doubleClick',
+	},
+
+	// - Settings/Posting form
+	showPreview: {
+		where: 'device',
+		default: false,
+	},
+	showProfilePreview: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Navigate to an external site warning
+	externalNavigationWarning: {
+		where: 'device',
+		default: true,
+	},
+	trustedDomains: {
+		where: 'device',
+		default: [] as string[],
+	},
+
+	// - Settings/Accessibility
+	showingAnimatedImages: {
+		where: 'device',
+		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
+	},
+
+	// - Settings/Performance
+	removeModalBgColorForBlur: {
+		where: 'device',
+		default: DEFAULT_DEVICE_KIND === 'desktop',
+	},
+
+	// - Settings/Other
 	autoLoadMoreReplies: {
 		where: 'device',
 		default: false,
@@ -605,68 +681,6 @@ export const store = markRaw(new Pizzax('base', {
 	searchEngineUrlQuery: {
 		where: 'device',
 		default: 'q',
-	},
-	showUnreadNotificationsCount: {
-		where: 'deviceAccount',
-		default: false,
-	},
-	externalNavigationWarning: {
-		where: 'device',
-		default: true,
-	},
-	trustedDomains: {
-		where: 'device',
-		default: [] as string[],
-	},
-	showPreview: {
-		where: 'device',
-		default: false,
-	},
-	showProfilePreview: {
-		where: 'device',
-		default: true,
-	},
-
-	// - Settings/Appearance
-	removeModalBgColorForBlur: {
-		where: 'device',
-		default: DEFAULT_DEVICE_KIND === 'desktop',
-	},
-	fontSize: {
-		where: 'device',
-		default: 8,
-	},
-	setFederationAvatarShape: {
-		where: 'account',
-		default: true,
-	},
-	filesGridLayoutInUserPage: {
-		where: 'device',
-		default: true,
-	},
-	hideAvatarsInNote: {
-		where: 'device',
-		default: false,
-	},
-	enableAbsoluteTime: {
-		where: 'device',
-		default: false,
-	},
-	enableMarkByDate: {
-		where: 'device',
-		default: false,
-	},
-	showReplyTargetNote: {
-		where: 'device',
-		default: true,
-	},
-	showReplyTargetNoteInSemiTransparent: {
-		where: 'device',
-		default: true,
-	},
-	nsfwOpenBehavior: {
-		where: 'device',
-		default: 'click' as 'click' | 'doubleClick',
 	},
 
 	// - Settings/Navigation bar
@@ -813,12 +827,6 @@ export const store = markRaw(new Pizzax('base', {
 	friendlyUiShowAvatarDecorationsInNavBtn: {
 		where: 'device',
 		default: false,
-	},
-
-	// - Settings/Accessibility
-	showingAnimatedImages: {
-		where: 'device',
-		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
 	},
 	// #endregion
 }));
