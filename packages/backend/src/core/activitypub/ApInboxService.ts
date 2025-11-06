@@ -17,6 +17,7 @@ import { NoteCreateService } from '@/core/NoteCreateService.js';
 import { NoteUpdateService } from '@/core/NoteUpdateService.js';
 import { NotificationService } from '@/core/NotificationService.js';
 import { ChatService } from '@/core/ChatService.js';
+import { RoleService } from '@/core/RoleService.js';
 import { concat, toArray, toSingle, unique } from '@/misc/prelude/array.js';
 import { AppLockService } from '@/core/AppLockService.js';
 import type Logger from '@/logger.js';
@@ -96,6 +97,7 @@ export class ApInboxService {
 		private noteDeleteService: NoteDeleteService,
 		private notificationService: NotificationService,
 		private chatService: ChatService,
+		private roleService: RoleService,
 		private appLockService: AppLockService,
 		private apResolverService: ApResolverService,
 		private apDbResolverService: ApDbResolverService,
@@ -646,12 +648,31 @@ export class ApInboxService {
 			if (recipients.length === 1) {
 				// 1:1 chat
 				const recipient = recipients[0];
-				await this.chatService.createMessageToUser(actor, recipient, {
-					text,
-					file,
-					uri,
-					emojis: apEmojis,
-				});
+
+				// Check if recipient can use chat
+				let recipientCanChat = true;
+				if (this.userEntityService.isLocalUser(recipient)) {
+					// For local users, check their role policies
+					const policies = await this.roleService.getUserPolicies(recipient.id);
+					recipientCanChat = policies.chatAvailability !== 'unavailable';
+				} else {
+					// For remote users, check the canChat field from their server
+					recipientCanChat = recipient.canChat ?? true;
+				}
+
+				if (!recipientCanChat) {
+					// If recipient cannot use chat, convert to DM
+					this.logger.info(`Recipient ${recipient.username} cannot use chat, converting to DM`);
+					await this.apNoteService.createNote(object, actor, resolver, true);
+				} else {
+					// Normal chat message
+					await this.chatService.createMessageToUser(actor, recipient, {
+						text,
+						file,
+						uri,
+						emojis: apEmojis,
+					});
+				}
 			} else {
 				// Group chat
 				// Extract room ID from context
@@ -914,7 +935,7 @@ export class ApInboxService {
 			this.logger.warn(`[rejectInvite] Invitation not found for roomId: ${roomId}, userId: ${actor.id}`);
 			// Try to find all invitations for this room to debug
 			const allInvitations = await this.chatRoomInvitationsRepository.findBy({ roomId });
-			this.logger.warn(`[rejectInvite] All invitations for room ${roomId}:`, JSON.stringify(allInvitations.map(i => ({ id: i.id, userId: i.userId }))));
+			this.logger.warn(`[rejectInvite] All invitations for room ${roomId}: ${JSON.stringify(allInvitations.map(i => ({ id: i.id, userId: i.userId })))}`);
 			return 'skip: invitation not found';
 		}
 
@@ -923,7 +944,7 @@ export class ApInboxService {
 		// Delete the invitation
 		const deleteResult = await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
 
-		this.logger.info(`[rejectInvite] Delete result:`, JSON.stringify(deleteResult));
+		this.logger.info(`[rejectInvite] Delete result: ${JSON.stringify(deleteResult)}`);
 		this.logger.info(`[rejectInvite] Successfully deleted invitation ${invitation.id} from user ${actor.id} for room ${roomId}`);
 
 		return 'ok';

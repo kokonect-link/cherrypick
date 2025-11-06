@@ -67,6 +67,7 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		isSquareAvatars: null,
 		autoDeleteNotesAfterDays: null,
 		autoDeleteKeepFavorites: true,
+		canChat: null,
 		...override,
 	};
 }
