@@ -232,8 +232,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 
 				case 'chatRoomInvitationReceived':
 					return [i18n.ts._notification.chatRoomInvitationReceived, {
-						body: getUserName(data.body.user),
-						icon: data.body.user.avatarUrl ?? undefined,
+						body: `${data.body.invitation.room.name}\n${getUserName(data.body.invitation.user)} (@${data.body.invitation.user.username}${data.body.invitation.user.host != null ? '@' + data.body.invitation.user.host : ''})`,
+						icon: data.body.invitation.user.avatarUrl ?? undefined,
 						badge: iconUrl('messages'),
 						data,
 						actions: [
