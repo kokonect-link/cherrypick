@@ -866,7 +866,7 @@ export class ChatService {
 		const room = await this.chatRoomsRepository.findOneByOrFail({ id: roomId });
 
 		// Delete the invitation
-		await this.chatRoomInvitationsRepository.delete(invitation.id);
+		await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
 
 		// Federation: Send Reject activity to the inviter if applicable
 		const inviter = await this.usersRepository.findOneByOrFail({ id: room.ownerId });
@@ -889,6 +889,51 @@ export class ChatService {
 			};
 			this.queueService.deliver(invitee, this.apRendererService.addContext(activity), inviter.inbox, false);
 		}
+	}
+
+	@bindThis
+	public async cancelRoomInvitation(inviterId: MiUser['id'], invitationId: MiChatRoomInvitation['id']): Promise<boolean> {
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({ id: invitationId });
+		if (!invitation) return false;
+
+		const room = await this.chatRoomsRepository.findOneByOrFail({ id: invitation.roomId });
+
+		// Check if the inviter is the room owner
+		if (room.ownerId !== inviterId) {
+			throw new Error('not owner');
+		}
+
+		// Get inviter and invitee users
+		const inviter = await this.usersRepository.findOneByOrFail({ id: inviterId });
+		const invitee = await this.usersRepository.findOneByOrFail({ id: invitation.userId });
+
+		// Delete the invitation
+		await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
+
+		// Federation: Send Undo(Invite) activity to remote invitee
+		if (this.userEntityService.isLocalUser(inviter) && this.userEntityService.isRemoteUser(invitee)) {
+			const roomObject = this.apRendererService.renderChatRoom(room, inviter);
+			const inviteObject = this.apRendererService.renderInvite(roomObject, invitee.uri, inviter);
+
+			// Generate activity ID for the original Invite
+			const inviteActivityId = `${this.config.url}/invitations/${invitation.id}`;
+			const inviteWithId = {
+				...inviteObject,
+				id: inviteActivityId,
+			};
+
+			// Create Undo activity
+			const undoActivity = this.apRendererService.renderUndo(inviteWithId, inviter);
+			const activityId = `${this.config.url}/activities/${this.idService.gen()}`;
+			const contextedActivity = this.apRendererService.addContext({
+				...undoActivity,
+				id: activityId,
+			});
+
+			this.queueService.deliver(inviter, contextedActivity, invitee.inbox, false);
+		}
+
+		return true;
 	}
 
 	@bindThis

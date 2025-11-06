@@ -465,6 +465,7 @@ export * as 'chat/rooms/joining' from './endpoints/chat/rooms/joining.js';
 export * as 'chat/rooms/update' from './endpoints/chat/rooms/update.js';
 export * as 'chat/rooms/members' from './endpoints/chat/rooms/members.js';
 export * as 'chat/rooms/invitations/create' from './endpoints/chat/rooms/invitations/create.js';
+export * as 'chat/rooms/invitations/cancel' from './endpoints/chat/rooms/invitations/cancel.js';
 export * as 'chat/rooms/invitations/ignore' from './endpoints/chat/rooms/invitations/ignore.js';
 export * as 'chat/rooms/invitations/inbox' from './endpoints/chat/rooms/invitations/inbox.js';
 export * as 'chat/rooms/invitations/outbox' from './endpoints/chat/rooms/invitations/outbox.js';

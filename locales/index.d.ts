@@ -6613,6 +6613,10 @@ export interface Locale extends ILocale {
          * {n}人が参加中
          */
         "usersCount": ParameterizedString<"n">;
+        /**
+         * {x}さんに送信された招待をキャンセルしますか？
+         */
+        "invitationCancelAreYouSure": ParameterizedString<"x">;
     };
     "_emojiPalette": {
         /**

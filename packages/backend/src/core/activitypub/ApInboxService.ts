@@ -965,6 +965,7 @@ export class ApInboxService {
 		if (isLike(object)) return await this.undoLike(actor, object);
 		if (isAnnounce(object)) return await this.undoAnnounce(actor, object);
 		if (isAccept(object)) return await this.undoAccept(actor, object);
+		if (isInvite(object)) return await this.undoInvite(actor, object);
 
 		return `skip: unknown object type ${getApType(object)}`;
 	}
@@ -989,6 +990,45 @@ export class ApInboxService {
 		}
 
 		return 'skip: フォローされていない';
+	}
+
+	@bindThis
+	private async undoInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
+		// Parse the room object from the Invite activity
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
+
+		// Extract room ID from URI
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Get the target user (invitee)
+		const targetUri = getApHrefNullable(activity.target);
+		if (!targetUri) return 'skip: invalid activity target';
+
+		const invitee = await this.apDbResolverService.getUserFromApId(targetUri);
+		if (!invitee) return 'skip: target user not found';
+		if (!this.userEntityService.isLocalUser(invitee)) return 'skip: target user is not local';
+
+		// Find and delete the invitation
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId: roomId,
+			userId: invitee.id,
+		});
+
+		if (!invitation) {
+			this.logger.warn(`Invitation not found: room=${roomId}, user=${invitee.id}`);
+			return 'skip: invitation not found';
+		}
+
+		await this.chatRoomInvitationsRepository.delete(invitation.id);
+
+		this.logger.info(`Cancelled invitation: room=${roomId}, user=${invitee.id}`);
+		return 'ok: invitation cancelled';
 	}
 
 	@bindThis

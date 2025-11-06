@@ -254,6 +254,7 @@ export type ChatMessagesUserTimelineResponse = operations['chat___messages___use
 export type ChatRoomsCreateRequest = operations['chat___rooms___create']['requestBody']['content']['application/json'];
 export type ChatRoomsCreateResponse = operations['chat___rooms___create']['responses']['200']['content']['application/json'];
 export type ChatRoomsDeleteRequest = operations['chat___rooms___delete']['requestBody']['content']['application/json'];
+export type ChatRoomsInvitationsCancelRequest = operations['chat___rooms___invitations___cancel']['requestBody']['content']['application/json'];
 export type ChatRoomsInvitationsCreateRequest = operations['chat___rooms___invitations___create']['requestBody']['content']['application/json'];
 export type ChatRoomsInvitationsCreateResponse = operations['chat___rooms___invitations___create']['responses']['200']['content']['application/json'];
 export type ChatRoomsInvitationsIgnoreRequest = operations['chat___rooms___invitations___ignore']['requestBody']['content']['application/json'];

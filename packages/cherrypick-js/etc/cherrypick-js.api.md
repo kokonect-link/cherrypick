@@ -1188,6 +1188,9 @@ type ChatRoomsCreateResponse = operations['chat___rooms___create']['responses'][
 type ChatRoomsDeleteRequest = operations['chat___rooms___delete']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
+type ChatRoomsInvitationsCancelRequest = operations['chat___rooms___invitations___cancel']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type ChatRoomsInvitationsCreateRequest = operations['chat___rooms___invitations___create']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1804,6 +1807,7 @@ declare namespace entities {
         ChatRoomsCreateRequest,
         ChatRoomsCreateResponse,
         ChatRoomsDeleteRequest,
+        ChatRoomsInvitationsCancelRequest,
         ChatRoomsInvitationsCreateRequest,
         ChatRoomsInvitationsCreateResponse,
         ChatRoomsInvitationsIgnoreRequest,

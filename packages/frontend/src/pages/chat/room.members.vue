@@ -28,6 +28,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkA :class="$style.invitationBody" :to="`${userPage(invitation.user)}`">
 				<MkUserCardMini :user="invitation.user"/>
 			</MkA>
+			<button :class="$style.cancelButton" @click="cancelInvitation(invitation)">
+				<i class="ti ti-x"></i>
+			</button>
 		</div>
 	</template>
 </div>
@@ -42,6 +45,7 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
 import { userPage } from '@/filters/user.js';
 import { ensureSignin } from '@/i.js';
+import * as os from '@/os.js';
 
 const $i = ensureSignin();
 
@@ -59,6 +63,21 @@ const isOwner = computed(() => {
 
 const memberships = ref<Misskey.entities.ChatRoomMembership[]>([]);
 const invitations = ref<Misskey.entities.ChatRoomInvitation[]>([]);
+
+async function cancelInvitation(invitation: Misskey.entities.ChatRoomInvitation) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.tsx._chat.invitationCancelAreYouSure({ x: invitation.user.name || invitation.user.username }),
+	});
+	if (canceled) return;
+
+	await misskeyApi('chat/rooms/invitations/cancel', {
+		invitationId: invitation.id,
+	});
+
+	// Remove from local state
+	invitations.value = invitations.value.filter(i => i.id !== invitation.id);
+}
 
 onMounted(async () => {
 	memberships.value = await misskeyApi('chat/rooms/members', {
@@ -94,5 +113,24 @@ onMounted(async () => {
 	flex: 1;
 	min-width: 0;
 	margin-right: 8px;
+}
+
+.cancelButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: none;
+	border-radius: 100%;
+	background: var(--MI_THEME-error);
+	color: var(--MI_THEME-fgOnAccent);
+	margin: auto 8px auto auto;
+	cursor: pointer;
+	transition: opacity 0.2s;
+
+	&:hover {
+		opacity: 0.8;
+	}
 }
 </style>

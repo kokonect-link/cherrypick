@@ -869,7 +869,7 @@ export class ApRendererService {
 			id: `${this.config.url}/chat/rooms/${room.id}`,
 			name: room.name,
 			summary: room.description || undefined,
-			attributedTo: ownerUri ?? undefined,
+			attributedTo: ownerUri || undefined,
 		};
 	}
 }

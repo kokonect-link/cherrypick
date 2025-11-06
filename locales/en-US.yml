@@ -1649,6 +1649,7 @@ _chat:
     mutual: "Mutual followers only"
     none: "Nobody"
   usersCount: "{n} Participants"
+  invitationCancelAreYouSure: "Are you sure you want to cancel the invitation sent to {x}?"
 _emojiPalette:
   palettes: "Palette"
   enableSyncBetweenDevicesForPalettes: "Enable palette sync between devices"
