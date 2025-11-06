@@ -836,7 +836,7 @@ export class ApInboxService {
 		});
 
 		if (isFollow(object)) return await this.rejectFollow(actor, object);
-		if (isInvite(object)) return await this.rejectInvite(actor, object);
+		if (isInvite(object)) return await this.rejectInvite(actor, activity);
 
 		return `skip: Unknown Reject type: ${getApType(object)}`;
 	}
@@ -866,22 +866,34 @@ export class ApInboxService {
 	}
 
 	@bindThis
-	private async rejectInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
+	private async rejectInvite(actor: MiRemoteUser, activity: IReject): Promise<string> {
 		// actor is the one who rejected the invitation (invitee)
+		// activity is the Reject activity
 		// activity.object should be the Invite object being rejected
 		// activity.object.object should be the room URI
 
 		this.logger.info(`[rejectInvite] Processing rejection from actor: ${actor.id}, username: ${actor.username}@${actor.host}`);
 
 		const inviteObject = activity.object;
-		if (typeof inviteObject === 'string') return 'skip: object must be a full Invite object, not a URI';
+		if (typeof inviteObject === 'string') {
+			this.logger.warn(`[rejectInvite] inviteObject is a string: ${inviteObject}`);
+			return 'skip: object must be a full Invite object, not a URI';
+		}
+
+		this.logger.info(`[rejectInvite] inviteObject type: ${(inviteObject as any).type}`);
 
 		// The Invite object contains the room URI in its object property
 		const roomObject = (inviteObject as any).object;
-		if (!roomObject) return 'skip: invite object missing room';
+		if (!roomObject) {
+			this.logger.warn('[rejectInvite] invite object missing room');
+			return 'skip: invite object missing room';
+		}
 
 		const roomUri = getApId(roomObject);
-		if (!roomUri) return 'skip: invalid room object';
+		if (!roomUri) {
+			this.logger.warn('[rejectInvite] invalid room object');
+			return 'skip: invalid room object';
+		}
 
 		this.logger.info(`[rejectInvite] Room URI: ${roomUri}`);
 
