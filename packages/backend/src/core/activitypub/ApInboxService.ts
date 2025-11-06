@@ -868,19 +868,29 @@ export class ApInboxService {
 	@bindThis
 	private async rejectInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
 		// actor is the one who rejected the invitation (invitee)
-		// activity.target should be the actor who rejected
-		// activity.object should be the room
+		// activity.object should be the Invite object being rejected
+		// activity.object.object should be the room URI
 
-		const roomObject = activity.object;
-		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+		this.logger.info(`[rejectInvite] Processing rejection from actor: ${actor.id}, username: ${actor.username}@${actor.host}`);
+
+		const inviteObject = activity.object;
+		if (typeof inviteObject === 'string') return 'skip: object must be a full Invite object, not a URI';
+
+		// The Invite object contains the room URI in its object property
+		const roomObject = (inviteObject as any).object;
+		if (!roomObject) return 'skip: invite object missing room';
 
 		const roomUri = getApId(roomObject);
 		if (!roomUri) return 'skip: invalid room object';
+
+		this.logger.info(`[rejectInvite] Room URI: ${roomUri}`);
 
 		// Extract room ID from URI
 		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
 		if (!roomIdMatch) return 'skip: invalid room URI format';
 		const roomId = roomIdMatch[1];
+
+		this.logger.info(`[rejectInvite] Searching for invitation - roomId: ${roomId}, userId: ${actor.id}`);
 
 		// Find the invitation and delete it
 		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
@@ -889,13 +899,21 @@ export class ApInboxService {
 		});
 
 		if (!invitation) {
+			this.logger.warn(`[rejectInvite] Invitation not found for roomId: ${roomId}, userId: ${actor.id}`);
+			// Try to find all invitations for this room to debug
+			const allInvitations = await this.chatRoomInvitationsRepository.findBy({ roomId });
+			this.logger.warn(`[rejectInvite] All invitations for room ${roomId}:`, JSON.stringify(allInvitations.map(i => ({ id: i.id, userId: i.userId }))));
 			return 'skip: invitation not found';
 		}
 
-		// Delete the invitation
-		await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
+		this.logger.info(`[rejectInvite] Found invitation: ${invitation.id}, deleting...`);
 
-		this.logger.info(`Remote user ${actor.id} rejected invitation to room ${roomId}`);
+		// Delete the invitation
+		const deleteResult = await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
+
+		this.logger.info(`[rejectInvite] Delete result:`, JSON.stringify(deleteResult));
+		this.logger.info(`[rejectInvite] Successfully deleted invitation ${invitation.id} from user ${actor.id} for room ${roomId}`);
+
 		return 'ok';
 	}
 
