@@ -299,7 +299,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 			}];
 		case 'newChatMessage':
 			if (data.body.toRoom != null) {
-				return [`${data.body.toRoom.name}: ${getUserName(data.body.fromUser)}: ${data.body.text}`, {
+				return [`${data.body.toRoom.name}`, {
+					body: `${getUserName(data.body.fromUser)}: ${data.body.text}`,
 					icon: data.body.fromUser.avatarUrl ?? undefined,
 					badge: iconUrl('messages'),
 					tag: `chat:room:${data.body.toRoomId}`,
@@ -307,7 +308,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					renotify: true,
 				}];
 			} else {
-				return [`${getUserName(data.body.fromUser)}: ${data.body.text}`, {
+				return [`${getUserName(data.body.fromUser)}`, {
+					body: `${data.body.text}`,
 					icon: data.body.fromUser.avatarUrl ?? undefined,
 					badge: iconUrl('messages'),
 					tag: `chat:user:${data.body.fromUserId}`,

@@ -2614,10 +2614,6 @@ export interface Locale extends ILocale {
      */
     "attachAsFileQuestion": string;
     /**
-     * 新しいメッセージがあります
-     */
-    "newMessageExists": string;
-    /**
      * メッセージに添付できるファイルはひとつです
      */
     "onlyOneFileCanBeAttached": string;
