@@ -71,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 
 	<template #footer>
-		<div v-if="tab === 'chat'" :class="$style.footer">
+		<div v-if="tab === 'chat'" :class="[$style.footer, {[$style.isFriendly]: isMobile && isFriendly().value }]">
 			<div class="_gaps">
 				<Transition name="fade">
 					<div v-show="showIndicator" :class="$style.new">
@@ -112,6 +112,15 @@ import { useMutationObserver } from '@/composables/use-mutation-observer.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { makeDateSeparatedTimelineComputedRef } from '@/utility/timeline-date-separate.js';
 import { acct as getAcct } from '@/filters/user.js';
+import { isFriendly } from '@/utility/is-friendly.js';
+import { deviceKind } from '@/utility/device-kind.js';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+window.addEventListener('resize', () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+});
 
 const $i = ensureSignin();
 const router = useRouter();
@@ -511,6 +520,10 @@ definePage(computed(() => {
 .footer {
 	width: 100%;
 	padding-top: 8px;
+
+	&.isFriendly {
+		padding-bottom: 50px;
+	}
 }
 
 .new {
@@ -531,10 +544,6 @@ definePage(computed(() => {
 .newIcon {
 	display: inline-block;
 	margin-right: 8px;
-}
-
-.footer {
-
 }
 
 .form {
