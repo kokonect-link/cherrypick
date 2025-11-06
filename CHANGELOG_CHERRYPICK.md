@@ -27,9 +27,16 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Feat: 리모트 인스턴스 소프트웨어 차트 표시 (yojo-art/cherrypick#659)
   - 엔드포인트:`api/federation/remote-software`
   - 프론트엔드는 `/about#charts`에서 확인할 수 있습니다.
+- Feat: 쪽지 연합
+  - 이제 쪽지 기능이 대응하는 리모트 서버와 연합됩니다.
+  - 쪽지 연합을 대응하는 서버에서는 그룹도 사용할 수 있으며, 리모트 서버로 초대를 보내거나 수락할 수 있습니다.
+  - 쪽지로 개편되기 전의 채팅 기능을 유지하고 있는 클라이언트(4.15.1 이하 버전의 CherryPick 또는 13.6.1 이하 버전의 Misskey 등)에서도 메시지 연합이 대응됩니다.
+  - 이전 버전의 클라이언트와 호환성을 유지하기 위해, `_misskey_talk`을 통해 쪽지를 전달합니다.
+  - 쪽지 연합이 지원되지 않는 서버의 사용자에게는 다이렉트 노트를 통해 전송되며, 상대방이 여기에 답장하면 쪽지로 표시됩니다.
 - Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
 - Enhance: 노트 편집 기록을 개선함 ([serafuku/misskey@90d2e1b3](https://github.com/serafuku/misskey/commit/90d2e1b35bf52196004291964f9f30a7c2f7d1b4))
 - Enhance: 노트 편집 기록이 CW, 투표, 이벤트에 대응됨
+- Enhance: 그룹에서 보낸 멤버 초대를 취소할 수 있음
 
 ### Client
 - Feat: 모든 리노트를 제거할 수 있음 (kokonect-link/cherrypick#583, yojo-art/cherrypick#711, yojo-art/cherrypick#736)
@@ -55,6 +62,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: 터치스크린 환경에서 노트의 리액션 뷰어를 길게 눌러 이모지 메뉴를 열 수 있음
 - Enhance: 검색 페이지의 디자인이 개선됨
 - Enhance: 노트 위에 커서를 올려 노트를 강조할 수 있음
+- Enhance: 쪽지 헤더가 개선됨
+  - 개인 대화인 경우, 헤더의 서브 타이틀에 상대방의 사용자 이름이 표시됩니다.
+  - 그룹 대화인 경우, 헤더의 서브 타이틀에 참여 중인 사용자 수가 표시됩니다.
 - Fix: (Friendly) 알림 영역이 잘못된 디자인으로 표시될 수 있음
 - Fix: (Friendly) 최하단으로 스크롤하면 요소가 네비게이션 바에 가려져 클릭하지 못할 수 있음
 - Fix: `제어판 > 신고`의 `리졸브` 섹션이 잘못된 디자인으로 표시될 수 있음

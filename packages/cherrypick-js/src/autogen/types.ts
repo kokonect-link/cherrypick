@@ -1513,6 +1513,15 @@ export type paths = {
          */
         post: operations['chat___rooms___delete'];
     };
+    '/chat/rooms/invitations/cancel': {
+        /**
+         * chat/rooms/invitations/cancel
+         * @description No description provided.
+         *
+         *     **Credential required**: *Yes* / **Permission**: *write:chat*
+         */
+        post: operations['chat___rooms___invitations___cancel'];
+    };
     '/chat/rooms/invitations/create': {
         /**
          * chat/rooms/invitations/create
@@ -1548,6 +1557,15 @@ export type paths = {
          *     **Credential required**: *Yes* / **Permission**: *read:chat*
          */
         post: operations['chat___rooms___invitations___outbox'];
+    };
+    '/chat/rooms/invitations/reject': {
+        /**
+         * chat/rooms/invitations/reject
+         * @description No description provided.
+         *
+         *     **Credential required**: *Yes* / **Permission**: *write:chat*
+         */
+        post: operations['chat___rooms___invitations___reject'];
     };
     '/chat/rooms/join': {
         /**
@@ -5901,6 +5919,7 @@ export type components = {
                 reaction: string;
                 user: components['schemas']['UserLite'];
             }[];
+            emojis?: Record<string, never>;
         };
         ChatMessageLite: {
             id: string;
@@ -5917,6 +5936,7 @@ export type components = {
                 reaction: string;
                 user?: components['schemas']['UserLite'] | null;
             }[];
+            emojis?: Record<string, never>;
         };
         ChatMessageLiteFor1on1: {
             id: string;
@@ -5930,6 +5950,7 @@ export type components = {
             reactions: {
                 reaction: string;
             }[];
+            emojis?: Record<string, never>;
         };
         ChatMessageLiteForRoom: {
             id: string;
@@ -5945,6 +5966,7 @@ export type components = {
                 reaction: string;
                 user: components['schemas']['UserLite'];
             }[];
+            emojis?: Record<string, never>;
         };
         ChatRoom: {
             id: string;
@@ -18314,6 +18336,69 @@ export interface operations {
             };
         };
     };
+    chat___rooms___invitations___cancel: {
+        requestBody: {
+            content: {
+                'application/json': {
+                    /** Format: misskey:id */
+                    invitationId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK (without any results) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+            };
+            /** @description Client error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Authentication error */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Forbidden error */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description I'm Ai */
+            418: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+        };
+    };
     chat___rooms___invitations___create: {
         requestBody: {
             content: {
@@ -18551,6 +18636,69 @@ export interface operations {
                 };
                 content: {
                     'application/json': components['schemas']['ChatRoomInvitation'][];
+                };
+            };
+            /** @description Client error */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Authentication error */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Forbidden error */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description I'm Ai */
+            418: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+            /** @description Internal server error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    'application/json': components['schemas']['Error'];
+                };
+            };
+        };
+    };
+    chat___rooms___invitations___reject: {
+        requestBody: {
+            content: {
+                'application/json': {
+                    /** Format: misskey:id */
+                    roomId: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK (without any results) */
+            204: {
+                headers: {
+                    [name: string]: unknown;
                 };
             };
             /** @description Client error */

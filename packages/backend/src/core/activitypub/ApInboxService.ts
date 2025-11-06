@@ -15,6 +15,9 @@ import { UserBlockingService } from '@/core/UserBlockingService.js';
 import { NoteDeleteService } from '@/core/NoteDeleteService.js';
 import { NoteCreateService } from '@/core/NoteCreateService.js';
 import { NoteUpdateService } from '@/core/NoteUpdateService.js';
+import { NotificationService } from '@/core/NotificationService.js';
+import { ChatService } from '@/core/ChatService.js';
+import { RoleService } from '@/core/RoleService.js';
 import { concat, toArray, toSingle, unique } from '@/misc/prelude/array.js';
 import { AppLockService } from '@/core/AppLockService.js';
 import type Logger from '@/logger.js';
@@ -24,13 +27,13 @@ import { UtilityService } from '@/core/UtilityService.js';
 import { NoteEntityService } from '@/core/entities/NoteEntityService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
 import { QueueService } from '@/core/QueueService.js';
-import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
+import type { UsersRepository, NotesRepository, FollowingsRepository, AbuseUserReportsRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository, ChatRoomsRepository, ChatRoomInvitationsRepository, ChatRoomMembershipsRepository } from '@/models/_.js';
 import { bindThis } from '@/decorators.js';
 import type { MiRemoteUser } from '@/models/User.js';
 import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { AbuseReportService } from '@/core/AbuseReportService.js';
 import { IdentifiableError } from '@/misc/identifiable-error.js';
-import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
+import { getApHrefNullable, getApId, getApIds, getApType, isAccept, isActor, isAdd, isAnnounce, isBlock, isCollection, isCollectionOrOrderedCollection, isCreate, isDelete, isFlag, isFollow, isInvite, isLike, isMove, isPost, isReject, isRemove, isTombstone, isUndo, isUpdate, validActor, validPost } from './type.js';
 import { ApNoteService } from './models/ApNoteService.js';
 import { ApLoggerService } from './ApLoggerService.js';
 import { ApDbResolverService } from './ApDbResolverService.js';
@@ -38,8 +41,10 @@ import { ApResolverService } from './ApResolverService.js';
 import { ApAudienceService } from './ApAudienceService.js';
 import { ApPersonService } from './models/ApPersonService.js';
 import { ApQuestionService } from './models/ApQuestionService.js';
+import { ApImageService } from './models/ApImageService.js';
+import { ApMfmService } from './ApMfmService.js';
 import type { Resolver } from './ApResolverService.js';
-import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
+import type { IAccept, IAdd, IAnnounce, IBlock, ICreate, IDelete, IFlag, IFollow, IInvite, ILike, IObject, IRead, IReject, IRemove, IUndo, IUpdate, IMove, IPost } from './type.js';
 
 @Injectable()
 export class ApInboxService {
@@ -64,6 +69,18 @@ export class ApInboxService {
 		@Inject(DI.followRequestsRepository)
 		private followRequestsRepository: FollowRequestsRepository,
 
+		@Inject(DI.chatMessagesRepository)
+		private chatMessagesRepository: ChatMessagesRepository,
+
+		@Inject(DI.chatRoomsRepository)
+		private chatRoomsRepository: ChatRoomsRepository,
+
+		@Inject(DI.chatRoomInvitationsRepository)
+		private chatRoomInvitationsRepository: ChatRoomInvitationsRepository,
+
+		@Inject(DI.chatRoomMembershipsRepository)
+		private chatRoomMembershipsRepository: ChatRoomMembershipsRepository,
+
 		private userEntityService: UserEntityService,
 		private noteEntityService: NoteEntityService,
 		private utilityService: UtilityService,
@@ -78,6 +95,9 @@ export class ApInboxService {
 		private noteCreateService: NoteCreateService,
 		private noteUpdateService: NoteUpdateService,
 		private noteDeleteService: NoteDeleteService,
+		private notificationService: NotificationService,
+		private chatService: ChatService,
+		private roleService: RoleService,
 		private appLockService: AppLockService,
 		private apResolverService: ApResolverService,
 		private apDbResolverService: ApDbResolverService,
@@ -85,6 +105,8 @@ export class ApInboxService {
 		private apNoteService: ApNoteService,
 		private apPersonService: ApPersonService,
 		private apQuestionService: ApQuestionService,
+		private apImageService: ApImageService,
+		private apMfmService: ApMfmService,
 		private queueService: QueueService,
 		private globalEventService: GlobalEventService,
 	) {
@@ -173,6 +195,8 @@ export class ApInboxService {
 			return await this.flag(actor, activity);
 		} else if (isMove(activity)) {
 			return await this.move(actor, activity, resolver);
+		} else if (isInvite(activity)) {
+			return await this.invite(actor, activity, resolver);
 		} else {
 			return `unrecognized activity type: ${activity.type}`;
 		}
@@ -231,6 +255,7 @@ export class ApInboxService {
 		});
 
 		if (isFollow(object)) return await this.acceptFollow(actor, object);
+		if (isInvite(object)) return await this.acceptInvite(actor, object);
 
 		return `skip: Unknown Accept type: ${getApType(object)}`;
 	}
@@ -256,6 +281,59 @@ export class ApInboxService {
 		}
 
 		await this.userFollowingService.acceptFollowRequest(actor, follower);
+		return 'ok';
+	}
+
+	@bindThis
+	private async acceptInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
+		// actor is the one who accepted the invitation (invitee)
+		// activity.target should be the actor who accepted
+		// activity.object should be the room
+
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
+
+		// Extract room ID from URI
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Find the room
+		const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+		if (!room) {
+			this.logger.warn(`Room not found: ${roomId}`);
+			return 'skip: room not found';
+		}
+
+		// Delete the invitation
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId,
+			userId: actor.id,
+		});
+		if (invitation) {
+			await this.chatRoomInvitationsRepository.delete(invitation.id);
+		}
+
+		// Check if already a member
+		const existingMembership = await this.chatService.isRoomMember(room, actor.id);
+		if (existingMembership) {
+			this.logger.info(`User ${actor.id} is already a member of room ${roomId}`);
+			return 'ok';
+		}
+
+		// Add membership
+		const membership = {
+			id: this.idService.gen(),
+			roomId: room.id,
+			userId: actor.id,
+		};
+
+		await this.chatRoomMembershipsRepository.insertOne(membership);
+
+		this.logger.info(`Remote user ${actor.id} accepted invitation and joined room ${roomId}`);
 		return 'ok';
 	}
 
@@ -425,7 +503,42 @@ export class ApInboxService {
 		});
 
 		if (isPost(object)) {
-			await this.createNote(resolver, actor, object, false, activity);
+			// Check if this is a chat message (legacy Misskey format)
+			if (typeof object === 'object' && '_misskey_talk' in object && object._misskey_talk === true) {
+				await this.createChatMessage(resolver, actor, object, activity);
+			} else {
+				// Check if this is a reply to a chat message
+				// If so, treat it as a chat message even without `_misskey_talk` flag
+				let isReplyToChatMessage = false;
+				if (typeof object === 'object' && object.inReplyTo) {
+					try {
+						const inReplyToUri = getApId(object.inReplyTo);
+						// Check if inReplyTo is our chat message by checking the URI pattern and host
+						const url = new URL(inReplyToUri);
+						if (this.utilityService.isSelfHost(url.hostname) && inReplyToUri.includes('/chat/messages/')) {
+							isReplyToChatMessage = true;
+						} else {
+							// Check if inReplyTo exists in our chat_messages table
+							// This handles cases where the reply is to a previous reply that was saved as a chat message
+							const inReplyToId = inReplyToUri.split('/').pop();
+							if (inReplyToId) {
+								const chatMessage = await this.chatMessagesRepository.findOneBy({ uri: inReplyToUri });
+								if (chatMessage) {
+									isReplyToChatMessage = true;
+								}
+							}
+						}
+					} catch (e) {
+						// Ignore error, treat as normal note
+					}
+				}
+
+				if (isReplyToChatMessage) {
+					await this.createChatMessage(resolver, actor, object, activity);
+				} else {
+					await this.createNote(resolver, actor, object, false, activity);
+				}
+			}
 		} else {
 			return `Unknown type: ${getApType(object)}`;
 		}
@@ -465,6 +578,156 @@ export class ApInboxService {
 			}
 		} finally {
 			unlock();
+		}
+	}
+
+	@bindThis
+	private async createChatMessage(resolver: Resolver, actor: MiRemoteUser, object: IPost, activity: ICreate): Promise<string> {
+		this.logger.info('Receiving chat message from remote');
+
+		if (typeof object !== 'object') return 'skip: object is not an object';
+		if (!object.id) return 'skip: object has no id';
+
+		// Check if this message already exists (by URI)
+		// Note: Cannot use fetchNote because chat messages are not in the notes table
+		// For now, let ChatService handle duplicates
+		this.logger.info(`Processing chat message: ${object.id}`);
+
+		// Get recipients from the 'to' field
+		const toUris = getApIds(object.to);
+		if (!toUris || toUris.length === 0) return 'skip: no recipients';
+
+		// Resolve recipient users
+		const recipients = [];
+		for (const uri of toUris) {
+			try {
+				const user = await this.apPersonService.resolvePerson(uri, resolver);
+				if (user) {
+					recipients.push(user);
+				}
+			} catch (e) {
+				this.logger.warn(`Failed to resolve recipient: ${uri}`);
+			}
+		}
+
+		if (recipients.length === 0) return 'skip: no valid recipients';
+
+		// Extract message content
+		let text: string | null = null;
+		if (object.source?.mediaType === 'text/x.misskeymarkdown' && typeof object.source.content === 'string') {
+			text = object.source.content;
+		} else if (typeof object._misskey_content !== 'undefined') {
+			text = object._misskey_content;
+		} else if (typeof object.content === 'string') {
+			text = this.apMfmService.htmlToMfm(object.content, object.tag);
+		}
+		const uri = object.id;
+
+		// Handle file attachments
+		let file = null;
+		if (object.attachment && Array.isArray(object.attachment) && object.attachment.length > 0) {
+			try {
+				const attach = object.attachment[0]; // Take first attachment for now
+				attach.sensitive ??= object.sensitive;
+				file = await this.apImageService.resolveImage(actor, attach);
+			} catch (e) {
+				this.logger.warn(`Failed to resolve attachment: ${e}`);
+			}
+		}
+
+		// Extract emojis
+		const emojis = await this.apNoteService.extractEmojis(object.tag ?? [], actor.host).catch(e => {
+			this.logger.info(`extractEmojis: ${e}`);
+			return [];
+		});
+
+		const apEmojis = emojis.map(emoji => emoji.name);
+
+		try {
+			// Determine if this is a 1:1 chat or group chat
+			if (recipients.length === 1) {
+				// 1:1 chat
+				const recipient = recipients[0];
+
+				// Check if recipient can use chat
+				let recipientCanChat = true;
+				if (this.userEntityService.isLocalUser(recipient)) {
+					// For local users, check their role policies
+					const policies = await this.roleService.getUserPolicies(recipient.id);
+					recipientCanChat = policies.chatAvailability !== 'unavailable';
+				} else {
+					// For remote users, check the canChat field from their server
+					recipientCanChat = recipient.canChat ?? true;
+				}
+
+				if (!recipientCanChat) {
+					// If recipient cannot use chat, convert to DM
+					this.logger.info(`Recipient ${recipient.username} cannot use chat, converting to DM`);
+					await this.apNoteService.createNote(object, actor, resolver, true);
+				} else {
+					// Normal chat message
+					await this.chatService.createMessageToUser(actor, recipient, {
+						text,
+						file,
+						uri,
+						emojis: apEmojis,
+					});
+				}
+			} else {
+				// Group chat
+				// Extract room ID from context
+				const contextUri = object['@context'];
+				if (!contextUri || typeof contextUri !== 'string') {
+					this.logger.warn('Group chat message missing context');
+					return 'skip: group chat message missing context';
+				}
+
+				const roomIdMatch = contextUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+				if (!roomIdMatch) {
+					this.logger.warn(`Invalid context URI format: ${contextUri}`);
+					return 'skip: invalid context URI format';
+				}
+
+				const roomId = roomIdMatch[1];
+
+				// Check if the room exists locally
+				const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+				if (!room) {
+					this.logger.warn(`Room not found: ${roomId}`);
+					return 'skip: room not found';
+				}
+
+				// Check if at least one recipient is a local user who is a member of the room
+				let hasLocalMember = false;
+				for (const recipient of recipients) {
+					if (this.userEntityService.isLocalUser(recipient)) {
+						// Check if this local user is a member of the room
+						const isMember = await this.chatService.isRoomMember(room, recipient.id);
+						if (isMember) {
+							hasLocalMember = true;
+							break;
+						}
+					}
+				}
+
+				if (!hasLocalMember) {
+					this.logger.warn('No local members found in the room');
+					return 'skip: no local members in room';
+				}
+
+				// Create the message to the room
+				await this.chatService.createMessageToRoom(actor, room, {
+					text,
+					file,
+					uri,
+					emojis: apEmojis,
+				});
+			}
+
+			return 'ok';
+		} catch (err) {
+			this.logger.error(`Failed to create chat message: ${err}`);
+			throw err;
 		}
 	}
 
@@ -594,6 +857,7 @@ export class ApInboxService {
 		});
 
 		if (isFollow(object)) return await this.rejectFollow(actor, object);
+		if (isInvite(object)) return await this.rejectInvite(actor, activity);
 
 		return `skip: Unknown Reject type: ${getApType(object)}`;
 	}
@@ -623,6 +887,70 @@ export class ApInboxService {
 	}
 
 	@bindThis
+	private async rejectInvite(actor: MiRemoteUser, activity: IReject): Promise<string> {
+		// actor is the one who rejected the invitation (invitee)
+		// activity is the Reject activity
+		// activity.object should be the Invite object being rejected
+		// activity.object.object should be the room URI
+
+		this.logger.info(`[rejectInvite] Processing rejection from actor: ${actor.id}, username: ${actor.username}@${actor.host}`);
+
+		const inviteObject = activity.object;
+		if (typeof inviteObject === 'string') {
+			this.logger.warn(`[rejectInvite] inviteObject is a string: ${inviteObject}`);
+			return 'skip: object must be a full Invite object, not a URI';
+		}
+
+		this.logger.info(`[rejectInvite] inviteObject type: ${(inviteObject as any).type}`);
+
+		// The Invite object contains the room URI in its object property
+		const roomObject = (inviteObject as any).object;
+		if (!roomObject) {
+			this.logger.warn('[rejectInvite] invite object missing room');
+			return 'skip: invite object missing room';
+		}
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) {
+			this.logger.warn('[rejectInvite] invalid room object');
+			return 'skip: invalid room object';
+		}
+
+		this.logger.info(`[rejectInvite] Room URI: ${roomUri}`);
+
+		// Extract room ID from URI
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		this.logger.info(`[rejectInvite] Searching for invitation - roomId: ${roomId}, userId: ${actor.id}`);
+
+		// Find the invitation and delete it
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId,
+			userId: actor.id,
+		});
+
+		if (!invitation) {
+			this.logger.warn(`[rejectInvite] Invitation not found for roomId: ${roomId}, userId: ${actor.id}`);
+			// Try to find all invitations for this room to debug
+			const allInvitations = await this.chatRoomInvitationsRepository.findBy({ roomId });
+			this.logger.warn(`[rejectInvite] All invitations for room ${roomId}: ${JSON.stringify(allInvitations.map(i => ({ id: i.id, userId: i.userId })))}`);
+			return 'skip: invitation not found';
+		}
+
+		this.logger.info(`[rejectInvite] Found invitation: ${invitation.id}, deleting...`);
+
+		// Delete the invitation
+		const deleteResult = await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
+
+		this.logger.info(`[rejectInvite] Delete result: ${JSON.stringify(deleteResult)}`);
+		this.logger.info(`[rejectInvite] Successfully deleted invitation ${invitation.id} from user ${actor.id} for room ${roomId}`);
+
+		return 'ok';
+	}
+
+	@bindThis
 	private async remove(actor: MiRemoteUser, activity: IRemove, resolver?: Resolver): Promise<string | void> {
 		if (actor.uri !== activity.actor) {
 			return 'invalid actor';
@@ -637,6 +965,31 @@ export class ApInboxService {
 			if (note == null) return 'note not found';
 			await this.notePiningService.removePinned(actor, note.id);
 			return;
+		}
+
+		// Handle chat room membership removal
+		const targetUri = getApId(activity.target);
+		this.logger.info(`[ApInboxService.remove] Processing Remove activity, target: ${targetUri}`);
+
+		const roomIdMatch = targetUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (roomIdMatch) {
+			const roomId = roomIdMatch[1];
+			this.logger.info(`[ApInboxService.remove] Matched room ID: ${roomId}, actor: ${actor.uri}`);
+
+			const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+			if (!room) {
+				this.logger.warn(`[ApInboxService.remove] Room not found: ${roomId}`);
+				return 'room not found';
+			}
+
+			// Delete the membership
+			const result = await this.chatRoomMembershipsRepository.delete({
+				roomId: room.id,
+				userId: actor.id,
+			});
+
+			this.logger.info(`[ApInboxService.remove] Deleted membership, affected rows: ${result.affected}, room: ${room.id}, user: ${actor.id}`);
+			return 'ok: removed from chat room';
 		}
 
 		return `unknown target: ${activity.target}`;
@@ -666,6 +1019,7 @@ export class ApInboxService {
 		if (isLike(object)) return await this.undoLike(actor, object);
 		if (isAnnounce(object)) return await this.undoAnnounce(actor, object);
 		if (isAccept(object)) return await this.undoAccept(actor, object);
+		if (isInvite(object)) return await this.undoInvite(actor, object);
 
 		return `skip: unknown object type ${getApType(object)}`;
 	}
@@ -690,6 +1044,45 @@ export class ApInboxService {
 		}
 
 		return 'skip: フォローされていない';
+	}
+
+	@bindThis
+	private async undoInvite(actor: MiRemoteUser, activity: IInvite): Promise<string> {
+		// Parse the room object from the Invite activity
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
+
+		// Extract room ID from URI
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Get the target user (invitee)
+		const targetUri = getApHrefNullable(activity.target);
+		if (!targetUri) return 'skip: invalid activity target';
+
+		const invitee = await this.apDbResolverService.getUserFromApId(targetUri);
+		if (!invitee) return 'skip: target user not found';
+		if (!this.userEntityService.isLocalUser(invitee)) return 'skip: target user is not local';
+
+		// Find and delete the invitation
+		const invitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId: roomId,
+			userId: invitee.id,
+		});
+
+		if (!invitation) {
+			this.logger.warn(`Invitation not found: room=${roomId}, user=${invitee.id}`);
+			return 'skip: invitation not found';
+		}
+
+		await this.chatRoomInvitationsRepository.delete(invitation.id);
+
+		this.logger.info(`Cancelled invitation: room=${roomId}, user=${invitee.id}`);
+		return 'ok: invitation cancelled';
 	}
 
 	@bindThis
@@ -849,5 +1242,89 @@ export class ApInboxService {
 		if (!targetUri) return 'skip: invalid activity target';
 
 		return await this.apPersonService.updatePerson(actor.uri, resolver) ?? 'skip: nothing to do';
+	}
+
+	@bindThis
+	private async invite(actor: MiRemoteUser, activity: IInvite, resolver?: Resolver): Promise<string> {
+		// Parse the room object
+		const roomObject = activity.object;
+		if (typeof roomObject === 'string') return 'skip: object must be a full object, not a URI';
+
+		const roomUri = getApId(roomObject);
+		if (!roomUri) return 'skip: invalid room object';
+
+		// Extract room ID from URI (format: https://example.com/chat/rooms/{roomId})
+		const roomIdMatch = roomUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (!roomIdMatch) return 'skip: invalid room URI format';
+		const roomId = roomIdMatch[1];
+
+		// Get the target user (invitee)
+		const targetUri = getApHrefNullable(activity.target);
+		if (!targetUri) return 'skip: invalid activity target';
+
+		const invitee = await this.apDbResolverService.getUserFromApId(targetUri);
+		if (!invitee) return 'skip: target user not found';
+		if (!this.userEntityService.isLocalUser(invitee)) return 'skip: target user is not local';
+
+		// Check if the room already exists locally
+		let room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+
+		// If the room doesn't exist, create a local copy for the remote room
+		if (!room) {
+			const roomName = typeof roomObject.name === 'string' ? roomObject.name : 'Remote Chat Room';
+			const roomDescription = typeof roomObject.summary === 'string' ? roomObject.summary : '';
+
+			// Extract owner from attributedTo field
+			let ownerId = actor.id; // Default to actor if attributedTo is not available
+
+			if (roomObject.attributedTo) {
+				// Handle both single value and array
+				const attributedTo = Array.isArray(roomObject.attributedTo)
+					? roomObject.attributedTo[0]
+					: roomObject.attributedTo;
+				const ownerUri = getApHrefNullable(attributedTo);
+
+				if (ownerUri) {
+					const owner = await this.apDbResolverService.getUserFromApId(ownerUri);
+					if (owner) {
+						ownerId = owner.id;
+					}
+				}
+			}
+
+			room = await this.chatRoomsRepository.insertOne({
+				id: roomId,
+				name: roomName,
+				description: roomDescription,
+				ownerId: ownerId,
+				isArchived: false,
+			});
+		}
+
+		// Check if invitation already exists
+		const existingInvitation = await this.chatRoomInvitationsRepository.findOneBy({
+			roomId: room.id,
+			userId: invitee.id,
+		});
+		if (existingInvitation) {
+			return 'skip: invitation already exists';
+		}
+
+		// Create the invitation directly
+		const invitation = {
+			id: this.idService.gen(),
+			roomId: room.id,
+			userId: invitee.id,
+		};
+
+		await this.chatRoomInvitationsRepository.insertOne(invitation);
+
+		// Send local notification
+		this.notificationService.createNotification(invitee.id, 'chatRoomInvitationReceived', {
+			invitationId: invitation.id,
+		}, actor.id);
+
+		this.logger.info(`Created chat room invitation for local user ${invitee.id} to remote room ${room.id}`);
+		return 'ok';
 	}
 }

@@ -230,6 +230,28 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						],
 					}];
 
+				case 'chatRoomInvitationReceived':
+					return [i18n.ts._notification.chatRoomInvitationReceived, {
+						body: `${data.body.invitation.room.name}\n${getUserName(data.body.invitation.user)} (@${data.body.invitation.user.username}${data.body.invitation.user.host != null ? '@' + data.body.invitation.user.host : ''})`,
+						icon: data.body.invitation.user.avatarUrl ?? undefined,
+						badge: iconUrl('messages'),
+						data,
+						actions: [
+							{
+								action: 'accept',
+								title: i18n.ts.accept,
+							},
+							{
+								action: 'reject',
+								title: i18n.ts.reject,
+							},
+							{
+								action: 'ignore',
+								title: i18n.ts._chat.ignore,
+							},
+						],
+					}];
+
 				case 'achievementEarned':
 					return [i18n.ts._notification.achievementEarned, {
 						body: i18n.ts._achievements._types[`_${data.body.achievement}`].title,
@@ -299,7 +321,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 			}];
 		case 'newChatMessage':
 			if (data.body.toRoom != null) {
-				return [`${data.body.toRoom.name}: ${getUserName(data.body.fromUser)}: ${data.body.text}`, {
+				return [`${data.body.toRoom.name}`, {
+					body: `${getUserName(data.body.fromUser)}: ${data.body.text}`,
 					icon: data.body.fromUser.avatarUrl ?? undefined,
 					badge: iconUrl('messages'),
 					tag: `chat:room:${data.body.toRoomId}`,
@@ -307,7 +330,8 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 					renotify: true,
 				}];
 			} else {
-				return [`${getUserName(data.body.fromUser)}: ${data.body.text}`, {
+				return [`${getUserName(data.body.fromUser)}`, {
+					body: `${data.body.text}`,
 					icon: data.body.fromUser.avatarUrl ?? undefined,
 					badge: iconUrl('messages'),
 					tag: `chat:user:${data.body.fromUserId}`,

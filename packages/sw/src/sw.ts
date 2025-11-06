@@ -126,6 +126,9 @@ globalThis.addEventListener('notificationclick', (ev: ServiceWorkerGlobalScopeEv
 							case 'groupInvited':
 								await swos.api('users/groups/invitations/accept', loginId, { invitationId: data.body.invitation.id });
 								break;
+							case 'chatRoomInvitationReceived':
+								await swos.api('chat/rooms/join', loginId, { roomId: data.body.roomId });
+								break;
 						}
 						break;
 					case 'reject':
@@ -135,6 +138,16 @@ globalThis.addEventListener('notificationclick', (ev: ServiceWorkerGlobalScopeEv
 								break;
 							case 'groupInvited':
 								await swos.api('users/groups/invitations/reject', loginId, { invitationId: data.body.invitation.id });
+								break;
+							case 'chatRoomInvitationReceived':
+								await swos.api('chat/rooms/invitations/reject', loginId, { roomId: data.body.roomId });
+								break;
+						}
+						break;
+					case 'ignore':
+						switch (data.body.type) {
+							case 'chatRoomInvitationReceived':
+								await swos.api('chat/rooms/invitations/ignore', loginId, { roomId: data.body.roomId });
 								break;
 						}
 						break;
@@ -151,6 +164,9 @@ globalThis.addEventListener('notificationclick', (ev: ServiceWorkerGlobalScopeEv
 								break;
 							case 'reaction':
 								client = await swos.openNote(data.body.note.id, loginId);
+								break;
+							case 'chatRoomInvitationReceived':
+								client = await swos.openClient('push', '/chat', loginId);
 								break;
 							default:
 								if ('note' in data.body) {

@@ -2614,10 +2614,6 @@ export interface Locale extends ILocale {
      */
     "attachAsFileQuestion": string;
     /**
-     * 新しいメッセージがあります
-     */
-    "newMessageExists": string;
-    /**
      * メッセージに添付できるファイルはひとつです
      */
     "onlyOneFileCanBeAttached": string;
@@ -6492,6 +6488,10 @@ export interface Locale extends ILocale {
          */
         "join": string;
         /**
+         * 拒否
+         */
+        "reject": string;
+        /**
          * 無視
          */
         "ignore": string;
@@ -6536,7 +6536,7 @@ export interface Locale extends ILocale {
          */
         "chatIsReadOnlyForThisAccountOrServer": string;
         /**
-         * 相手のアカウントでダイレクトメッセージが使えない状態になっています。
+         * 相手のアカウントでダイレクトメッセージが使えない状態になっています。ダイレクトメッセージを送るとユーザー指定ノートで送信され、相手がユーザー指定ノートに返信すればここで見ることができます。
          */
         "chatNotAvailableInOtherAccount": string;
         /**
@@ -6605,6 +6605,22 @@ export interface Locale extends ILocale {
              */
             "none": string;
         };
+        /**
+         * {n}人が参加中
+         */
+        "usersCount": ParameterizedString<"n">;
+        /**
+         * {x}さんに送信された招待をキャンセルしますか？
+         */
+        "invitationCancelAreYouSure": ParameterizedString<"x">;
+        /**
+         * この招待を無視すると、グループの管理者が招待を取り消して再度招待したり、グループを削除して再作成した場合にのみ招待されることができます。
+         */
+        "ignoreThisInvitation": string;
+        /**
+         * 招待を無視しますか？
+         */
+        "doYouIgnoreInvitation": string;
     };
     "_emojiPalette": {
         /**

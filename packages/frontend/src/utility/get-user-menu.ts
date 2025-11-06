@@ -589,7 +589,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			},
 		});
 
-		if ($i.policies.chatAvailability === 'available' && user.canChat && user.host == null) {
+		if ($i.policies.chatAvailability === 'available' && user.canChat) {
 			menuItems.push({
 				type: 'link',
 				icon: 'ti ti-messages',
@@ -599,13 +599,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		}
 
 		if (meId !== user.id) {
-			if (user.host === null) {
-				menuItems.push({
-					icon: 'ti ti-users',
-					text: i18n.ts.inviteToGroup,
-					action: inviteGroup,
-				});
-			}
+			menuItems.push({
+				icon: 'ti ti-users',
+				text: i18n.ts.inviteToGroup,
+				action: inviteGroup,
+			});
 		}
 
 		menuItems.push({ type: 'divider' }, {
