@@ -1051,6 +1051,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkPreferenceContainer>
 						</SearchMarker>
 
+						<SearchMarker :keywords="['smooth', 'animation', 'motion', 'reduce']">
+							<MkPreferenceContainer k="smoothTransitionAnimations">
+								<MkSwitch :modelValue="!smoothTransitionAnimations" @update:modelValue="v => smoothTransitionAnimations = !v">
+									<template #label><SearchLabel>{{ i18n.ts._settings.smoothTransitionAnimations }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									<template #caption><SearchText>{{ i18n.ts.turnOffToImprovePerformance }}</SearchText></template>
+								</MkSwitch>
+							</MkPreferenceContainer>
+						</SearchMarker>
+
 						<SearchMarker :keywords="['blur']">
 							<MkPreferenceContainer k="useBlurEffect">
 								<MkSwitch v-model="useBlurEffect">
@@ -1511,6 +1520,7 @@ const showReplyTargetNoteInSemiTransparent = prefer.model('showReplyTargetNoteIn
 const nsfwOpenBehavior = prefer.model('nsfwOpenBehavior');
 const showProfilePreview = prefer.model('showProfilePreview');
 const showingAnimatedImages = prefer.model('showingAnimatedImages');
+const smoothTransitionAnimations = prefer.model('smoothTransitionAnimations', v => !v, v => !v);
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -1588,6 +1598,7 @@ watch([
 	filesGridLayoutInUserPage,
 	disableShowingAnimatedImages,
 	showingAnimatedImages,
+	smoothTransitionAnimations,
 ], () => {
 	suggestReload();
 });

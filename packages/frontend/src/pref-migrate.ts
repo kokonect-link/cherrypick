@@ -199,6 +199,7 @@ export function migrateOldSettings() {
 
 		// - Settings/Performance
 		prefer.commit('removeModalBgColorForBlur', store.s.removeModalBgColorForBlur);
+		prefer.commit('smoothTransitionAnimations', store.s.smoothTransitionAnimations);
 
 		// - Settings/Other
 		prefer.commit('autoLoadMoreReplies', store.s.autoLoadMoreReplies);

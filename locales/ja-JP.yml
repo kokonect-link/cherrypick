@@ -1701,6 +1701,7 @@ _settings:
   showAvailableReactionsFirstInNote: "利用できるリアクションを先頭に表示"
   showPageTabBarBottom: "ページのタブバーを下部に表示"
   emojiPaletteBanner: "絵文字ピッカーに固定表示するプリセットをパレットとして登録したり、ピッカーの表示方法をカスタマイズしたりできます。"
+  smoothTransitionAnimations: "柔らかい転換アニメーション"
 
   _chat:
     showSenderName: "送信者の名前を表示"

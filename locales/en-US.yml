@@ -1693,6 +1693,7 @@ _settings:
   showUrlPreview: "Show URL preview"
   showAvailableReactionsFirstInNote: "Show available reactions at the top."
   showPageTabBarBottom: "Show page tab bar at the bottom"
+  smoothTransitionAnimations: "Smooth transition animation"
   _chat:
     showSenderName: "Show sender's name"
     sendOnEnter: "Press Enter to send"

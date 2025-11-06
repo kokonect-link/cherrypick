@@ -645,6 +645,9 @@ export const PREF_DEF = definePreferences({
 	removeModalBgColorForBlur: {
 		default: DEFAULT_DEVICE_KIND === 'desktop',
 	},
+	smoothTransitionAnimations: {
+		default: !prefersReducedMotion,
+	},
 
 	// - Settings/Other
 	autoLoadMoreReplies: {

@@ -1695,6 +1695,7 @@ _settings:
   showUrlPreview: "URL 미리보기 표시"
   showAvailableReactionsFirstInNote: "사용 가능한 리액션을 맨 위에 표시"
   showPageTabBarBottom: "페이지 탭 바를 아래쪽에 표시"
+  smoothTransitionAnimations: "부드러운 전환 애니메이션"
   _chat:
     showSenderName: "보낸 사람 이름 표시"
     sendOnEnter: "엔터로 쪽지 전송"
