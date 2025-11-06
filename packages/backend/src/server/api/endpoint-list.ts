@@ -469,6 +469,7 @@ export * as 'chat/rooms/invitations/cancel' from './endpoints/chat/rooms/invitat
 export * as 'chat/rooms/invitations/ignore' from './endpoints/chat/rooms/invitations/ignore.js';
 export * as 'chat/rooms/invitations/inbox' from './endpoints/chat/rooms/invitations/inbox.js';
 export * as 'chat/rooms/invitations/outbox' from './endpoints/chat/rooms/invitations/outbox.js';
+export * as 'chat/rooms/invitations/reject' from './endpoints/chat/rooms/invitations/reject.js';
 export * as 'chat/history' from './endpoints/chat/history.js';
 export * as 'chat/read-all' from './endpoints/chat/read-all.js';
 export * as 'users/translate' from './endpoints/users/translate.js';

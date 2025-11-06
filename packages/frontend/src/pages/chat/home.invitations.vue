@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #footer>
 				<div class="_buttons">
 					<MkButton primary @click="join(invitation)"><i class="ti ti-plus"></i> {{ i18n.ts._chat.join }}</MkButton>
-					<MkButton danger @click="ignore(invitation)"><i class="ti ti-x"></i> {{ i18n.ts._chat.reject }}</MkButton>
+					<MkButton danger @click="reject(invitation)"><i class="ti ti-ban"></i> {{ i18n.ts._chat.reject }}</MkButton>
+					<MkButton @click="ignore(invitation)"><i class="ti ti-x"></i> {{ i18n.ts._chat.ignore }}</MkButton>
 				</div>
 			</template>
 
@@ -66,6 +67,14 @@ async function join(invitation: Misskey.entities.ChatRoomInvitation) {
 			roomId: invitation.room.id,
 		},
 	});
+}
+
+async function reject(invitation: Misskey.entities.ChatRoomInvitation) {
+	await misskeyApi('chat/rooms/invitations/reject', {
+		roomId: invitation.room.id,
+	});
+
+	invitations.value = invitations.value.filter(i => i.id !== invitation.id);
 }
 
 async function ignore(invitation: Misskey.entities.ChatRoomInvitation) {

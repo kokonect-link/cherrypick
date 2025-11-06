@@ -1212,6 +1212,9 @@ type ChatRoomsInvitationsOutboxRequest = operations['chat___rooms___invitations_
 type ChatRoomsInvitationsOutboxResponse = operations['chat___rooms___invitations___outbox']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
+type ChatRoomsInvitationsRejectRequest = operations['chat___rooms___invitations___reject']['requestBody']['content']['application/json'];
+
+// @public (undocumented)
 type ChatRoomsJoiningRequest = operations['chat___rooms___joining']['requestBody']['content']['application/json'];
 
 // @public (undocumented)
@@ -1815,6 +1818,7 @@ declare namespace entities {
         ChatRoomsInvitationsInboxResponse,
         ChatRoomsInvitationsOutboxRequest,
         ChatRoomsInvitationsOutboxResponse,
+        ChatRoomsInvitationsRejectRequest,
         ChatRoomsJoinRequest,
         ChatRoomsJoiningRequest,
         ChatRoomsJoiningResponse,
