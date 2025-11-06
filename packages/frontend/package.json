@@ -64,7 +64,7 @@
 		"magic-string": "0.30.19",
 		"matter-js": "0.20.0",
 		"mediabunny": "1.23.0",
-		"mfc-js": "0.25.0-cherrypick.1",
+		"mfc-js": "0.1.0",
 		"misskey-bubble-game": "workspace:*",
 		"misskey-reversi": "workspace:*",
 		"openmeteo": "1.1.4",

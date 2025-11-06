@@ -27,7 +27,7 @@
 		"frontend-shared": "workspace:*",
 		"icons-subsetter": "workspace:*",
 		"json5": "2.2.3",
-		"mfc-js": "0.25.0-cherrypick.1",
+		"mfc-js": "0.1.0",
 		"punycode.js": "2.3.1",
 		"rollup": "4.52.4",
 		"sass": "1.93.2",
