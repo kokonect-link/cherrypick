@@ -860,14 +860,16 @@ export class ApRendererService {
 
 	@bindThis
 	public renderChatRoom(room: any, owner: MiUser): IObject {
+		const ownerUri = this.userEntityService.isLocalUser(owner)
+			? this.userEntityService.genLocalUserUri(owner.id)
+			: owner.uri;
+
 		return {
 			type: 'Group',
 			id: `${this.config.url}/chat/rooms/${room.id}`,
 			name: room.name,
 			summary: room.description || undefined,
-			attributedTo: this.userEntityService.isLocalUser(owner)
-				? this.userEntityService.genLocalUserUri(owner.id)
-				: owner.uri,
+			attributedTo: ownerUri ?? undefined,
 		};
 	}
 }

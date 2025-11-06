@@ -913,6 +913,26 @@ export class ApInboxService {
 			return;
 		}
 
+		// Handle chat room membership removal
+		const targetUri = getApId(activity.target);
+		const roomIdMatch = targetUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
+		if (roomIdMatch) {
+			const roomId = roomIdMatch[1];
+			const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
+			if (!room) {
+				return 'room not found';
+			}
+
+			// Delete the membership
+			await this.chatRoomMembershipsRepository.delete({
+				roomId: room.id,
+				userId: actor.id,
+			});
+
+			this.logger.info(`Removed ${actor.uri} from chat room ${room.id}`);
+			return 'ok: removed from chat room';
+		}
+
 		return `unknown target: ${activity.target}`;
 	}
 
@@ -1155,11 +1175,29 @@ export class ApInboxService {
 			const roomName = typeof roomObject.name === 'string' ? roomObject.name : 'Remote Chat Room';
 			const roomDescription = typeof roomObject.summary === 'string' ? roomObject.summary : '';
 
+			// Extract owner from attributedTo field
+			let ownerId = actor.id; // Default to actor if attributedTo is not available
+
+			if (roomObject.attributedTo) {
+				// Handle both single value and array
+				const attributedTo = Array.isArray(roomObject.attributedTo)
+					? roomObject.attributedTo[0]
+					: roomObject.attributedTo;
+				const ownerUri = getApHrefNullable(attributedTo);
+
+				if (ownerUri) {
+					const owner = await this.apDbResolverService.getUserFromApId(ownerUri);
+					if (owner) {
+						ownerId = owner.id;
+					}
+				}
+			}
+
 			room = await this.chatRoomsRepository.insertOne({
 				id: roomId,
 				name: roomName,
 				description: roomDescription,
-				ownerId: actor.id,
+				ownerId: ownerId,
 				isArchived: false,
 			});
 		}
