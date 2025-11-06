@@ -41,6 +41,7 @@ import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { useRouter } from '@/router.js';
 import MkFolder from '@/components/MkFolder.vue';
+import * as os from '@/os.js';
 
 const router = useRouter();
 
@@ -58,7 +59,7 @@ async function fetchInvitations() {
 }
 
 async function join(invitation: Misskey.entities.ChatRoomInvitation) {
-	await misskeyApi('chat/rooms/join', {
+	await os.apiWithDialog('chat/rooms/join', {
 		roomId: invitation.room.id,
 	});
 
@@ -70,7 +71,7 @@ async function join(invitation: Misskey.entities.ChatRoomInvitation) {
 }
 
 async function reject(invitation: Misskey.entities.ChatRoomInvitation) {
-	await misskeyApi('chat/rooms/invitations/reject', {
+	await os.apiWithDialog('chat/rooms/invitations/reject', {
 		roomId: invitation.room.id,
 	});
 
@@ -78,7 +79,7 @@ async function reject(invitation: Misskey.entities.ChatRoomInvitation) {
 }
 
 async function ignore(invitation: Misskey.entities.ChatRoomInvitation) {
-	await misskeyApi('chat/rooms/invitations/ignore', {
+	await os.apiWithDialog('chat/rooms/invitations/ignore', {
 		roomId: invitation.room.id,
 	});
 
