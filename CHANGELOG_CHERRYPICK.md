@@ -36,7 +36,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: 사용자 IP 기록 시 역방향 도메인 표시 (yojo-art/cherrypick#729)
 - Enhance: 노트 편집 기록을 개선함 ([serafuku/misskey@90d2e1b3](https://github.com/serafuku/misskey/commit/90d2e1b35bf52196004291964f9f30a7c2f7d1b4))
 - Enhance: 노트 편집 기록이 CW, 투표, 이벤트에 대응됨
-- Enhance: 그룹 채팅룸에서 보낸 멤버 초대를 취소할 수 있음
+- Enhance: 그룹에서 보낸 멤버 초대를 취소할 수 있음
 
 ### Client
 - Feat: 모든 리노트를 제거할 수 있음 (kokonect-link/cherrypick#583, yojo-art/cherrypick#711, yojo-art/cherrypick#736)
@@ -62,9 +62,9 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Enhance: 터치스크린 환경에서 노트의 리액션 뷰어를 길게 눌러 이모지 메뉴를 열 수 있음
 - Enhance: 검색 페이지의 디자인이 개선됨
 - Enhance: 노트 위에 커서를 올려 노트를 강조할 수 있음
-- Enhance: 채팅 헤더가 개선됨
-  - 1:1 대화인 경우, 헤더의 서브 타이틀에 상대방의 사용자 이름이 표시됩니다.
-  - 그룹 채팅방인 경우, 채팅방에 참여한 사용자 수가 표시됩니다.
+- Enhance: 쪽지 헤더가 개선됨
+  - 개인 대화인 경우, 헤더의 서브 타이틀에 상대방의 사용자 이름이 표시됩니다.
+  - 그룹 대화인 경우, 헤더의 서브 타이틀에 참여 중인 사용자 수가 표시됩니다.
 - Fix: (Friendly) 알림 영역이 잘못된 디자인으로 표시될 수 있음
 - Fix: (Friendly) 최하단으로 스크롤하면 요소가 네비게이션 바에 가려져 클릭하지 못할 수 있음
 - Fix: `제어판 > 신고`의 `리졸브` 섹션이 잘못된 디자인으로 표시될 수 있음
