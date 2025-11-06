@@ -1601,7 +1601,7 @@ _order:
   oldest: "오래된 순"
 _chat:
   messages: "쪽지"
-  noMessagesYet: "아직 쪽지가 없어요.\n간단하게 인사로 시작해 보는 것은 어떨까요?"
+  noMessagesYet: "아직 아무런 대화도 시작하지 않았어요.\n간단하게 인사로 시작해 보는 것은 어떨까요?"
   newMessage: "새로운 쪽지"
   individualChat: "개인"
   individualChat_description: "단일 사용자와 대화를 주고 받을 수 있어요."
