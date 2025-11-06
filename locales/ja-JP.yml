@@ -1634,7 +1634,7 @@ _chat:
   deleteRoom: "グループを削除"
   chatNotAvailableForThisAccountOrServer: "このサーバー、またはこのアカウントでダイレクトメッセージは有効化されていません。"
   chatIsReadOnlyForThisAccountOrServer: "このサーバー、またはこのアカウントでダイレクトメッセージは読み取り専用となっています。新たに書き込んだり、グループを作成・参加したりすることはできません。"
-  chatNotAvailableInOtherAccount: "相手のアカウントでダイレクトメッセージが使えない状態になっています。"
+  chatNotAvailableInOtherAccount: "相手のアカウントでダイレクトメッセージが使えない状態になっています。ダイレクトメッセージを送るとユーザー指定ノートで送信され、相手がユーザー指定ノートに返信すればここで見ることができます。"
   cannotChatWithTheUser: "このユーザーとのダイレクトメッセージを開始できません"
   cannotChatWithTheUser_description: "ダイレクトメッセージが使えない状態になっているか、相手がダイレクトメッセージを開放していません。"
   youAreNotAMemberOfThisRoomButInvited: "あなたはこのグループの参加者ではありませんが、招待が届いています。参加するには、招待を承認してください。"

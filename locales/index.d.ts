@@ -6536,7 +6536,7 @@ export interface Locale extends ILocale {
          */
         "chatIsReadOnlyForThisAccountOrServer": string;
         /**
-         * 相手のアカウントでダイレクトメッセージが使えない状態になっています。
+         * 相手のアカウントでダイレクトメッセージが使えない状態になっています。ダイレクトメッセージを送るとユーザー指定ノートで送信され、相手がユーザー指定ノートに返信すればここで見ることができます。
          */
         "chatNotAvailableInOtherAccount": string;
         /**

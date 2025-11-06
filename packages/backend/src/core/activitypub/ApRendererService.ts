@@ -28,6 +28,7 @@ import { bindThis } from '@/decorators.js';
 import { CustomEmojiService } from '@/core/CustomEmojiService.js';
 import { IdService } from '@/core/IdService.js';
 import { UtilityService } from '@/core/UtilityService.js';
+import { RoleService } from '@/core/RoleService.js';
 import { JsonLdService } from './JsonLdService.js';
 import { ApMfmService } from './ApMfmService.js';
 import { CONTEXT } from './misc/contexts.js';
@@ -69,6 +70,7 @@ export class ApRendererService {
 		private mfmService: MfmService,
 		private idService: IdService,
 		private utilityService: UtilityService,
+		private roleService: RoleService,
 	) {
 	}
 
@@ -544,10 +546,11 @@ export class ApRendererService {
 		const id = this.userEntityService.genLocalUserUri(user.id);
 		const isSystem = user.username.includes('.');
 
-		const [avatar, banner, profile] = await Promise.all([
+		const [avatar, banner, profile, policies] = await Promise.all([
 			user.avatarId ? this.driveFilesRepository.findOneBy({ id: user.avatarId }) : undefined,
 			user.bannerId ? this.driveFilesRepository.findOneBy({ id: user.bannerId }) : undefined,
 			this.userProfilesRepository.findOneByOrFail({ userId: user.id }),
+			this.roleService.getUserPolicies(user.id),
 		]);
 
 		const tryRewriteUrl = (maybeUrl: string) => {
@@ -606,6 +609,7 @@ export class ApRendererService {
 			_misskey_requireSigninToViewContents: user.requireSigninToViewContents,
 			_misskey_makeNotesFollowersOnlyBefore: user.makeNotesFollowersOnlyBefore,
 			_misskey_makeNotesHiddenBefore: user.makeNotesHiddenBefore,
+			_misskey_canChat: policies.chatAvailability !== 'unavailable',
 			icon: avatar ? this.renderImage(avatar) : isSystem ? this.renderSystemAvatar(user) : this.renderIdenticon(user),
 			image: banner ? this.renderImage(banner) : isSystem ? this.renderSystemBanner() : null,
 			tag,

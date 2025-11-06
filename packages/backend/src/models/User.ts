@@ -309,6 +309,11 @@ export class MiUser {
 	})
 	public autoDeleteKeepFavorites: boolean;
 
+	@Column('boolean', {
+		nullable: true,
+	})
+	public canChat: boolean | null;
+
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;
 
