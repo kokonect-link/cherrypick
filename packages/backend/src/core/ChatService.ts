@@ -906,7 +906,17 @@ export class ChatService {
 		await redisPipeline.exec();
 
 		// Federation: Send Remove activity when local user leaves
-		if (room && room.owner && this.userEntityService.isLocalUser(leavingUser)) {
+		if (room && this.userEntityService.isLocalUser(leavingUser)) {
+			// Load owner if not already loaded
+			const owner = room.owner ?? await this.usersRepository.findOneByOrFail({ id: room.ownerId });
+
+			if (!owner) {
+				console.log('[ChatService.leaveRoom] Owner not found for room:', room.id);
+				return;
+			}
+
+			console.log('[ChatService.leaveRoom] Processing federation for room:', room.id, 'owner:', owner.id, 'isRemote:', this.userEntityService.isRemoteUser(owner));
+
 			// Get all members including owner
 			const allMemberIds = (await this.chatRoomMembershipsRepository.findBy({ roomId: room.id }))
 				.map(m => m.userId)
@@ -916,11 +926,13 @@ export class ChatService {
 			const remoteMembers = allMembers.filter(u => this.userEntityService.isRemoteUser(u));
 
 			// Send Remove activity to remote members and owner
-			if (remoteMembers.length > 0 || this.userEntityService.isRemoteUser(room.owner)) {
+			if (remoteMembers.length > 0 || this.userEntityService.isRemoteUser(owner)) {
 				// Generate the correct room URI based on the owner's server
-				const roomUri = this.userEntityService.isLocalUser(room.owner)
+				const roomUri = this.userEntityService.isLocalUser(owner)
 					? `${this.config.url}/chat/rooms/${room.id}`
-					: `${room.owner.uri?.replace(/\/users\/.*$/, '')}/chat/rooms/${room.id}`;
+					: `${owner.uri?.replace(/\/users\/.*$/, '')}/chat/rooms/${room.id}`;
+
+				console.log('[ChatService.leaveRoom] Generated roomUri:', roomUri);
 
 				const leavingUserUri = this.userEntityService.genLocalUserUri(leavingUser.id) ?? '';
 				const removeActivity = this.apRendererService.renderRemove(
@@ -929,16 +941,21 @@ export class ChatService {
 					leavingUserUri,
 				);
 
+				console.log('[ChatService.leaveRoom] Remove activity:', JSON.stringify(removeActivity, null, 2));
+
 				// Send to all remote members
 				for (const remoteMember of remoteMembers) {
+					console.log('[ChatService.leaveRoom] Sending Remove to remote member:', remoteMember.id, remoteMember.inbox);
 					this.queueService.deliver(leavingUser, removeActivity, remoteMember.inbox, false);
 				}
 
 				// Send to room owner if remote
-				const owner = room.owner;
 				if (this.userEntityService.isRemoteUser(owner) && !remoteMembers.some(m => m.id === owner.id)) {
+					console.log('[ChatService.leaveRoom] Sending Remove to room owner:', owner.id, owner.inbox);
 					this.queueService.deliver(leavingUser, removeActivity, owner.inbox, false);
 				}
+			} else {
+				console.log('[ChatService.leaveRoom] No remote members or owner, skipping federation');
 			}
 		}
 	}

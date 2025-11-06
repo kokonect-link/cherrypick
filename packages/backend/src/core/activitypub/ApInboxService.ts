@@ -915,21 +915,26 @@ export class ApInboxService {
 
 		// Handle chat room membership removal
 		const targetUri = getApId(activity.target);
+		this.logger.info(`[ApInboxService.remove] Processing Remove activity, target: ${targetUri}`);
+
 		const roomIdMatch = targetUri.match(/\/chat\/rooms\/([a-zA-Z0-9]+)$/);
 		if (roomIdMatch) {
 			const roomId = roomIdMatch[1];
+			this.logger.info(`[ApInboxService.remove] Matched room ID: ${roomId}, actor: ${actor.uri}`);
+
 			const room = await this.chatRoomsRepository.findOneBy({ id: roomId });
 			if (!room) {
+				this.logger.warn(`[ApInboxService.remove] Room not found: ${roomId}`);
 				return 'room not found';
 			}
 
 			// Delete the membership
-			await this.chatRoomMembershipsRepository.delete({
+			const result = await this.chatRoomMembershipsRepository.delete({
 				roomId: room.id,
 				userId: actor.id,
 			});
 
-			this.logger.info(`Removed ${actor.uri} from chat room ${room.id}`);
+			this.logger.info(`[ApInboxService.remove] Deleted membership, affected rows: ${result.affected}, room: ${room.id}, user: ${actor.id}`);
 			return 'ok: removed from chat room';
 		}
 
