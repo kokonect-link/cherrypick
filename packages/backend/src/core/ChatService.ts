@@ -917,11 +917,15 @@ export class ChatService {
 
 			// Send Remove activity to remote members and owner
 			if (remoteMembers.length > 0 || this.userEntityService.isRemoteUser(room.owner)) {
-				const roomObject = this.apRendererService.renderChatRoom(room, room.owner);
+				// Generate the correct room URI based on the owner's server
+				const roomUri = this.userEntityService.isLocalUser(room.owner)
+					? `${this.config.url}/chat/rooms/${room.id}`
+					: `${room.owner.uri?.replace(/\/users\/.*$/, '')}/chat/rooms/${room.id}`;
+
 				const leavingUserUri = this.userEntityService.genLocalUserUri(leavingUser.id) ?? '';
 				const removeActivity = this.apRendererService.renderRemove(
 					leavingUser,
-					roomObject,
+					roomUri,
 					leavingUserUri,
 				);
 
