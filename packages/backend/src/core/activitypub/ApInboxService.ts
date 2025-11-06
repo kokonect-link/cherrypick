@@ -508,7 +508,7 @@ export class ApInboxService {
 				await this.createChatMessage(resolver, actor, object, activity);
 			} else {
 				// Check if this is a reply to a chat message
-				// If so, treat it as a chat message even without _misskey_talk flag
+				// If so, treat it as a chat message even without `_misskey_talk` flag
 				let isReplyToChatMessage = false;
 				if (typeof object === 'object' && object.inReplyTo) {
 					try {
