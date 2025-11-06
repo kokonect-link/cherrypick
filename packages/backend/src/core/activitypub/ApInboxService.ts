@@ -892,7 +892,8 @@ export class ApInboxService {
 			return 'skip: invitation not found';
 		}
 
-		await this.chatRoomInvitationsRepository.delete(invitation.id);
+		// Delete the invitation
+		await this.chatRoomInvitationsRepository.delete({ id: invitation.id });
 
 		this.logger.info(`Remote user ${actor.id} rejected invitation to room ${roomId}`);
 		return 'ok';

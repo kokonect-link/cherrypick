@@ -230,6 +230,28 @@ async function composeNotification(data: PushNotificationDataMap[keyof PushNotif
 						],
 					}];
 
+				case 'chatRoomInvitationReceived':
+					return [i18n.ts._notification.chatRoomInvitationReceived, {
+						body: getUserName(data.body.user),
+						icon: data.body.user.avatarUrl ?? undefined,
+						badge: iconUrl('messages'),
+						data,
+						actions: [
+							{
+								action: 'accept',
+								title: i18n.ts.accept,
+							},
+							{
+								action: 'reject',
+								title: i18n.ts.reject,
+							},
+							{
+								action: 'ignore',
+								title: i18n.ts._chat.ignore,
+							},
+						],
+					}];
+
 				case 'achievementEarned':
 					return [i18n.ts._notification.achievementEarned, {
 						body: i18n.ts._achievements._types[`_${data.body.achievement}`].title,
