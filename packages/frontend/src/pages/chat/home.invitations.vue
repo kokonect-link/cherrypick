@@ -79,6 +79,13 @@ async function reject(invitation: Misskey.entities.ChatRoomInvitation) {
 }
 
 async function ignore(invitation: Misskey.entities.ChatRoomInvitation) {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts._chat.doYouIgnoreInvitation,
+		caption: i18n.ts._chat.ignoreThisInvitation,
+	});
+	if (canceled) return;
+
 	await os.apiWithDialog('chat/rooms/invitations/ignore', {
 		roomId: invitation.room.id,
 	});

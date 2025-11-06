@@ -6613,6 +6613,14 @@ export interface Locale extends ILocale {
          * {x}さんに送信された招待をキャンセルしますか？
          */
         "invitationCancelAreYouSure": ParameterizedString<"x">;
+        /**
+         * この招待を無視すると、グループの管理者が招待を取り消して再度招待したり、グループを削除して再作成した場合にのみ招待されることができます。
+         */
+        "ignoreThisInvitation": string;
+        /**
+         * 招待を無視しますか？
+         */
+        "doYouIgnoreInvitation": string;
     };
     "_emojiPalette": {
         /**
