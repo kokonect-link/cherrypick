@@ -15,6 +15,7 @@ import { UserBlockingService } from '@/core/UserBlockingService.js';
 import { NoteDeleteService } from '@/core/NoteDeleteService.js';
 import { NoteCreateService } from '@/core/NoteCreateService.js';
 import { NoteUpdateService } from '@/core/NoteUpdateService.js';
+import { NotificationService } from '@/core/NotificationService.js';
 import { ChatService } from '@/core/ChatService.js';
 import { concat, toArray, toSingle, unique } from '@/misc/prelude/array.js';
 import { AppLockService } from '@/core/AppLockService.js';
@@ -93,6 +94,7 @@ export class ApInboxService {
 		private noteCreateService: NoteCreateService,
 		private noteUpdateService: NoteUpdateService,
 		private noteDeleteService: NoteDeleteService,
+		private notificationService: NotificationService,
 		private chatService: ChatService,
 		private appLockService: AppLockService,
 		private apResolverService: ApResolverService,
@@ -1266,8 +1268,9 @@ export class ApInboxService {
 		await this.chatRoomInvitationsRepository.insertOne(invitation);
 
 		// Send local notification
-		// Note: Do not use notificationService here as it's not injected
-		// The user will see the invitation in their inbox
+		this.notificationService.createNotification(invitee.id, 'chatRoomInvitationReceived', {
+			invitationId: invitation.id,
+		}, actor.id);
 
 		this.logger.info(`Created chat room invitation for local user ${invitee.id} to remote room ${room.id}`);
 		return 'ok';
