@@ -71,7 +71,7 @@ async function cancelInvitation(invitation: Misskey.entities.ChatRoomInvitation)
 	});
 	if (canceled) return;
 
-	await misskeyApi('chat/rooms/invitations/cancel', {
+	await os.apiWithDialog('chat/rooms/invitations/cancel', {
 		invitationId: invitation.id,
 	});
 
