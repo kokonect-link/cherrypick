@@ -941,18 +941,25 @@ export class ChatService {
 					leavingUserUri,
 				);
 
-				console.log('[ChatService.leaveRoom] Remove activity:', JSON.stringify(removeActivity, null, 2));
+				// Add id and @context to the activity
+				const activityId = `${this.config.url}/activities/${this.idService.gen()}`;
+				const contextedActivity = this.apRendererService.addContext({
+					...removeActivity,
+					id: activityId,
+				});
+
+				console.log('[ChatService.leaveRoom] Remove activity:', JSON.stringify(contextedActivity, null, 2));
 
 				// Send to all remote members
 				for (const remoteMember of remoteMembers) {
 					console.log('[ChatService.leaveRoom] Sending Remove to remote member:', remoteMember.id, remoteMember.inbox);
-					this.queueService.deliver(leavingUser, removeActivity, remoteMember.inbox, false);
+					this.queueService.deliver(leavingUser, contextedActivity, remoteMember.inbox, false);
 				}
 
 				// Send to room owner if remote
 				if (this.userEntityService.isRemoteUser(owner) && !remoteMembers.some(m => m.id === owner.id)) {
 					console.log('[ChatService.leaveRoom] Sending Remove to room owner:', owner.id, owner.inbox);
-					this.queueService.deliver(leavingUser, removeActivity, owner.inbox, false);
+					this.queueService.deliver(leavingUser, contextedActivity, owner.inbox, false);
 				}
 			} else {
 				console.log('[ChatService.leaveRoom] No remote members or owner, skipping federation');
