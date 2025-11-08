@@ -1979,7 +1979,7 @@ _serverSettings:
   allowExternalApRedirect_description: "활성화하면 다른 서버가 이 서버를 통해 제3자의 콘텐츠를 조회할 수 있지만, 콘텐츠 스푸핑과 같은 문제가 발생할 수 있어요."
   userGeneratedContentsVisibilityForVisitor: "게스트에게 사용자 생성 콘텐츠의 표시 여부"
   userGeneratedContentsVisibilityForVisitor_description: "이 기능은 적절하게 관리되지 않은 부적절한 리모트 콘텐츠가 사용자의 서버를 통해 의도치 않게 인터넷에 게시되는 것을 방지하는 데 유용해요."
-  userGeneratedContentsVisibilityForVisitor_description2: "서버에 수신된 원격 콘텐츠를 포함하여 서버의 모든 콘텐츠를 인터넷에 무조건 게시하는 것은 위험해요. 특히 콘텐츠의 분산된 특성을 모르는 게스트는 원격 콘텐츠조차도 서버 내 사용자가 생성한 콘텐츠라고 오해할 수 있기 때문이에요."
+  userGeneratedContentsVisibilityForVisitor_description2: "서버에 수신된 리모트 콘텐츠를 포함하여 서버의 모든 콘텐츠를 인터넷에 무조건 게시하는 것은 위험해요. 특히, 콘텐츠의 분산된 특성을 모르는 게스트는 리모트 콘텐츠조차도 서버 내 사용자가 생성한 콘텐츠라고 오해할 수 있기 때문이에요."
   restartServerSetupWizardConfirm_title: "서버 설정 마법사를 다시 시작할까요?"
   restartServerSetupWizardConfirm_text: "이미 설정한 항목들 중 일부가 재설정돼요."
   entrancePageStyle: "로그인 페이지 스타일"
