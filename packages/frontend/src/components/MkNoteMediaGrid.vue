@@ -231,6 +231,7 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	padding: 0;
 	overflow: hidden;
 	overflow-wrap: anywhere;
+	color: #fff;
 	font-size: 1em;
 	font-weight: bold;
 	text-decoration: none;
@@ -251,6 +252,7 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 .username {
 	flex-shrink: 9999999;
 	overflow: hidden;
+	color: #fff;
 	text-overflow: ellipsis;
 	font-size: .95em;
 	max-width: 180px;
@@ -268,9 +270,9 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	position: absolute;
 	bottom: 5px;
 	right: 8px;
+	color: #fff;
 	text-decoration: none;
 	font-size: 1em;
-	color: #fff;
 	z-index: 1;
 	filter: drop-shadow(0 0 1.5px #6060608a);
 
