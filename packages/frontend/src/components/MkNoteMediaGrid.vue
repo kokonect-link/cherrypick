@@ -263,6 +263,10 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	}
 }
 
+.name, .username {
+	max-width: 150px;
+}
+
 .time {
 	display: flex;
 	align-items: center;
@@ -286,7 +290,13 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	}
 }
 
-@container (max-width: 500px) {
+@container (max-width: 600px) {
+	.name, .username {
+		max-width: 130px;
+	}
+}
+
+@container (max-width: 550px) {
 	.bottom {
 		bottom: 9px;
 		left: 9px;
@@ -306,7 +316,7 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	}
 
 	.name, .username {
-		max-width: 200px;
+		max-width: 100px;
 	}
 
 	.time {
@@ -340,7 +350,7 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 	}
 
 	.name, .username {
-		max-width: 150px;
+		max-width: 84px;
 	}
 
 	.time {
