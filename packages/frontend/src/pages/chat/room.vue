@@ -522,7 +522,7 @@ definePage(computed(() => {
 	padding-top: 8px;
 
 	&.isFriendly {
-		padding-bottom: 50px;
+		padding-bottom: calc(50px + env(safe-area-inset-bottom));
 	}
 }
 
