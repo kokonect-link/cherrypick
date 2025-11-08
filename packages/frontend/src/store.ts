@@ -642,7 +642,7 @@ export const store = markRaw(new Pizzax('base', {
 	},
 	smoothTransitionAnimations: {
 		where: 'device',
-		default: !prefersReducedMotion,
+		default: false,
 	},
 
 	// - Settings/Other

@@ -46,34 +46,36 @@ provide(DI.routerCurrentDepth, currentDepth + 1);
 
 const rootEl = useTemplateRef('rootEl');
 onMounted(() => {
-	if (prefer.s.animation) {
+	if (prefer.s.animation && prefer.s.smoothTransitionAnimations) {
 		rootEl.value.style.viewTransitionName = viewId; // view-transition-nameにcss varが使えないっぽいため直接代入
 	}
 });
 
-// view-transition-newなどの<pt-name-selector>にはcss varが使えず、v-bindできないため直接スタイルを生成
-const viewTransitionStylesTag = window.document.createElement('style');
-viewTransitionStylesTag.textContent = `
-@keyframes ${viewId}-old {
-	to { transform: scale(0.95); opacity: 0; }
-}
+if (prefer.s.animation && prefer.s.smoothTransitionAnimations) {
+	// view-transition-newなどの<pt-name-selector>にはcss varが使えず、v-bindできないため直接スタイルを生成
+	const viewTransitionStylesTag = window.document.createElement('style');
+	viewTransitionStylesTag.textContent = `
+	@keyframes ${viewId}-old {
+		to { transform: scale(0.95); opacity: 0; }
+	}
 
-@keyframes ${viewId}-new {
-	from { transform: scale(0.95); opacity: 0; }
-}
+	@keyframes ${viewId}-new {
+		from { transform: scale(0.95); opacity: 0; }
+	}
 
-::view-transition-old(${viewId}) {
-	animation-duration: 0.2s;
-  animation-name: ${viewId}-old;
-}
+	::view-transition-old(${viewId}) {
+		animation-duration: 0.2s;
+  	animation-name: ${viewId}-old;
+	}
 
-::view-transition-new(${viewId}) {
-	animation-duration: 0.2s;
-  animation-name: ${viewId}-new;
-}
-`;
+	::view-transition-new(${viewId}) {
+		animation-duration: 0.2s;
+  	animation-name: ${viewId}-new;
+	}
+	`;
 
-window.document.head.appendChild(viewTransitionStylesTag);
+	window.document.head.appendChild(viewTransitionStylesTag);
+}
 
 const current = router.current;
 const currentPageComponent = shallowRef('component' in current.route ? current.route.component : MkLoadingPage);

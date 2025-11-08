@@ -646,7 +646,7 @@ export const PREF_DEF = definePreferences({
 		default: DEFAULT_DEVICE_KIND === 'desktop',
 	},
 	smoothTransitionAnimations: {
-		default: !prefersReducedMotion,
+		default: false,
 	},
 
 	// - Settings/Other
