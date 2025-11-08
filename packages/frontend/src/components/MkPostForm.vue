@@ -86,6 +86,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-show="useCw" :class="$style.cwOuter">
 		<input ref="cwInputEl" v-model="cw" :class="$style.cw" :placeholder="i18n.ts.annotation" @keydown="onKeydown" @keyup="onKeyup" @compositionend="onCompositionEnd">
 		<div v-if="maxCwTextLength - cwTextLength < 20" :class="['_acrylic', $style.cwTextCount, { [$style.cwTextOver]: cwTextLength > maxCwTextLength }]">{{ maxCwTextLength - cwTextLength }}</div>
+		<button class="_button" :class="$style.cwSwapButton" @click="swapCwText">
+			<i class="ti ti-switch-vertical"></i>
+		</button>
 	</div>
 	<div :class="[$style.textOuter, { [$style.withCw]: useCw }]">
 		<div v-if="targetChannel" :class="$style.colorBar" :style="{ background: targetChannel.color }"></div>
@@ -501,6 +504,15 @@ function addMissingMention() {
 				pushVisibleUser(user);
 			});
 		}
+	}
+}
+
+function swapCwText() {
+	if (useCw.value) {
+		// textの一行目を取り出す
+		const temp = text.value.split(/\r?\n/).join(" ");
+		text.value = cw.value ?? "";
+		cw.value = temp;
 	}
 }
 
@@ -1812,6 +1824,15 @@ defineExpose({
 }
 //#endregion
 
+.cwSwapButton {
+	margin-left: 8px;
+	padding: 8px;
+	border-radius: 6px;
+	&:hover {
+		background: var(--X4);
+	}
+}
+
 .preview {
 	padding: 16px 20px;
 	// min-height: 75px;
@@ -1903,6 +1924,7 @@ html[data-color-scheme=light] .preview {
 }
 
 .cwOuter {
+	display: flex;
 	width: 100%;
 	position: relative;
 }
