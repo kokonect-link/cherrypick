@@ -43,6 +43,15 @@ export class MiNote {
 	})
 	public deleteAt: Date | null;
 
+	@Column('jsonb', {
+		nullable: true,
+		default: {},
+	})
+	public deliveryTargets: {
+		mode: 'include' | 'exclude';
+		hosts: string[];
+	} | null;
+
 	@Index()
 	@Column({
 		...id(),

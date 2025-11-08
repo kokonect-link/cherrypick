@@ -49,6 +49,7 @@ const base: MiNote = {
 	hasEvent: false,
 	disableRightClick: false,
 	deleteAt: null,
+	deliveryTargets: null,
 };
 
 describe('misc:is-renote', () => {

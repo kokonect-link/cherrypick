@@ -13672,294 +13672,6 @@ export interface Locale extends ILocale {
          */
         "serverHostPlaceholder": string;
     };
-    "_abuse": {
-        "_resolver": {
-            /**
-             * 一時間
-             */
-            "1hour": string;
-            /**
-             * 半日
-             */
-            "12hours": string;
-            /**
-             * 一日
-             */
-            "1day": string;
-            /**
-             * 一週間
-             */
-            "1week": string;
-            /**
-             * 一ヶ月
-             */
-            "1month": string;
-            /**
-             * 三ヶ月
-             */
-            "3months": string;
-            /**
-             * 六ヶ月
-             */
-            "6months": string;
-            /**
-             * 一年
-             */
-            "1year": string;
-            /**
-             * 無期限
-             */
-            "indefinitely": string;
-            /**
-             * この条件の有効期限
-             */
-            "expiresAt": string;
-            /**
-             * 通報先のパターン
-             */
-            "targetUserPattern": string;
-            /**
-             * 通報元のパターン
-             */
-            "reporterPattern": string;
-            /**
-             * 通報内容のパターン
-             */
-            "reportContentPattern": string;
-        };
-        /**
-         * 一覧
-         */
-        "list": string;
-        /**
-         * リソルバー
-         */
-        "resolver": string;
-    };
-    "_externalNavigationWarning": {
-        /**
-         * 外部サイトに移動します
-         */
-        "title": string;
-        /**
-         * {host}を離れて外部サイトに移動します
-         */
-        "description": ParameterizedString<"host">;
-        /**
-         * このデバイスで今後このドメインを信頼する
-         */
-        "trustThisDomain": string;
-        /**
-         * 外部サイトに移動する際の警告
-         */
-        "externalNavigationWarning": string;
-        /**
-         * 外部サイトに移動する際の警告を表示
-         */
-        "enableExternalNavigationWarning": string;
-        /**
-         * 信頼するドメインリスト
-         */
-        "trustedDomainList": string;
-        /**
-         * `http://`と`https://`を省略して入力してください。
-         */
-        "trustedDomainListDescription": string;
-        /**
-         * 改行で区切って設定します
-         */
-        "trustedDomainListDescription2": string;
-        /**
-         * 信頼するドメインリストのリセット
-         */
-        "deleteTrustedDomainList": string;
-    };
-    "_altWarning": {
-        /**
-         * ファイルに代替テキストが設定されていません。
-         */
-        "noAltWarning": string;
-        /**
-         * この設定は「設定 → アピアランス」で変更できます。
-         */
-        "noAltWarningDescription": string;
-    };
-    "_dice": {
-        /**
-         * サイコロを振る
-         */
-        "rollDice": string;
-        /**
-         * サイコロの数
-         */
-        "diceCount": string;
-        /**
-         * サイコロの面数
-         */
-        "diceFaces": string;
-    };
-    "_scheduledNoteDelete": {
-        /**
-         * 期限
-         */
-        "expiration": string;
-        /**
-         * 日時指定
-         */
-        "at": string;
-        /**
-         * 経過指定
-         */
-        "after": string;
-        /**
-         * 期日
-         */
-        "deadlineDate": string;
-        /**
-         * 時間
-         */
-        "deadlineTime": string;
-        /**
-         * 期間
-         */
-        "duration": string;
-    };
-    "_getQRCode": {
-        /**
-         * QRコードをスキャンする
-         */
-        "title": string;
-        /**
-         * 以下のQRコードをスキャンまたは共有できます。
-         */
-        "description": string;
-    };
-    "_searchSite": {
-        /**
-         * 検索エンジン
-         */
-        "title": string;
-        /**
-         * MFCの検索構文で検索できるサイトを変更します。
-         */
-        "description": string;
-        /**
-         * その他の検索エンジン
-         */
-        "otherSearchEngine": string;
-        /**
-         * その他の検索エンジンを使用します。
-         */
-        "otherDescription": string;
-        /**
-         * 検索クエリ
-         */
-        "query": string;
-        /**
-         * 検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)
-         */
-        "queryDescription": string;
-    };
-    "_accountTruncate": {
-        /**
-         * アカウントの整理
-         */
-        "accountDelete": string;
-        /**
-         * アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。
-         */
-        "mayTakeTime": string;
-        /**
-         * アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。
-         */
-        "sendEmail": string;
-        /**
-         * アカウント整理をリクエスト
-         */
-        "requestAccountTruncate": string;
-        /**
-         * 整理処理が開始されました。
-         */
-        "started": string;
-        /**
-         * 整理が進行中
-         */
-        "inProgress": string;
-    };
-    "_keyboardShortCut": {
-        /**
-         * キーボードショートカット
-         */
-        "title": string;
-        /**
-         * クライアント上で使えるキーボードショートカットの一覧です。
-         */
-        "description": string;
-        /**
-         * ショートカット一覧
-         */
-        "list": string;
-        "_category": {
-            /**
-             * 一般
-             */
-            "general": string;
-            /**
-             * 投稿フォーム
-             */
-            "postForm": string;
-        };
-        "_general": {
-            /**
-             * 投稿フォームを開く
-             */
-            "openPostForm": string;
-            /**
-             * ダークモードを切り替える
-             */
-            "toggleDarkMode": string;
-            /**
-             * 検索ページに移動
-             */
-            "redirectToSearch": string;
-            /**
-             * キーボードショートカット一覧を見る
-             */
-            "viewKeyboardShortCutList": string;
-        };
-        "_postForm": {
-            /**
-             * 公開範囲を切り替える
-             */
-            "toggleVisibility": string;
-            /**
-             * 連合なしを切り替える
-             */
-            "toggleLocalOnly": string;
-            /**
-             * この機能は「設定 → CherryPick」から該当の機能を有効にすることで利用できます。
-             */
-            "featureWarn": string;
-            /**
-             * 投稿する
-             */
-            "sendPost": string;
-        };
-    };
-    "_weather": {
-        /**
-         * 湿度
-         */
-        "humidity": string;
-        /**
-         * 気圧
-         */
-        "pressure": string;
-        /**
-         * 降水量
-         */
-        "precipitation": string;
-    };
     "_serverSetupWizard": {
         /**
          * CherryPickのインストールが完了しました！
@@ -14699,6 +14411,336 @@ export interface Locale extends ILocale {
          * MFC
          */
         "mfm": string;
+    };
+    "_abuse": {
+        "_resolver": {
+            /**
+             * 一時間
+             */
+            "1hour": string;
+            /**
+             * 半日
+             */
+            "12hours": string;
+            /**
+             * 一日
+             */
+            "1day": string;
+            /**
+             * 一週間
+             */
+            "1week": string;
+            /**
+             * 一ヶ月
+             */
+            "1month": string;
+            /**
+             * 三ヶ月
+             */
+            "3months": string;
+            /**
+             * 六ヶ月
+             */
+            "6months": string;
+            /**
+             * 一年
+             */
+            "1year": string;
+            /**
+             * 無期限
+             */
+            "indefinitely": string;
+            /**
+             * この条件の有効期限
+             */
+            "expiresAt": string;
+            /**
+             * 通報先のパターン
+             */
+            "targetUserPattern": string;
+            /**
+             * 通報元のパターン
+             */
+            "reporterPattern": string;
+            /**
+             * 通報内容のパターン
+             */
+            "reportContentPattern": string;
+        };
+        /**
+         * 一覧
+         */
+        "list": string;
+        /**
+         * リソルバー
+         */
+        "resolver": string;
+    };
+    "_externalNavigationWarning": {
+        /**
+         * 外部サイトに移動します
+         */
+        "title": string;
+        /**
+         * {host}を離れて外部サイトに移動します
+         */
+        "description": ParameterizedString<"host">;
+        /**
+         * このデバイスで今後このドメインを信頼する
+         */
+        "trustThisDomain": string;
+        /**
+         * 外部サイトに移動する際の警告
+         */
+        "externalNavigationWarning": string;
+        /**
+         * 外部サイトに移動する際の警告を表示
+         */
+        "enableExternalNavigationWarning": string;
+        /**
+         * 信頼するドメインリスト
+         */
+        "trustedDomainList": string;
+        /**
+         * `http://`と`https://`を省略して入力してください。
+         */
+        "trustedDomainListDescription": string;
+        /**
+         * 改行で区切って設定します
+         */
+        "trustedDomainListDescription2": string;
+        /**
+         * 信頼するドメインリストのリセット
+         */
+        "deleteTrustedDomainList": string;
+    };
+    "_altWarning": {
+        /**
+         * ファイルに代替テキストが設定されていません。
+         */
+        "noAltWarning": string;
+        /**
+         * この設定は「設定 → アピアランス」で変更できます。
+         */
+        "noAltWarningDescription": string;
+    };
+    "_dice": {
+        /**
+         * サイコロを振る
+         */
+        "rollDice": string;
+        /**
+         * サイコロの数
+         */
+        "diceCount": string;
+        /**
+         * サイコロの面数
+         */
+        "diceFaces": string;
+    };
+    "_scheduledNoteDelete": {
+        /**
+         * 期限
+         */
+        "expiration": string;
+        /**
+         * 日時指定
+         */
+        "at": string;
+        /**
+         * 経過指定
+         */
+        "after": string;
+        /**
+         * 期日
+         */
+        "deadlineDate": string;
+        /**
+         * 時間
+         */
+        "deadlineTime": string;
+        /**
+         * 期間
+         */
+        "duration": string;
+    };
+    "_getQRCode": {
+        /**
+         * QRコードをスキャンする
+         */
+        "title": string;
+        /**
+         * 以下のQRコードをスキャンまたは共有できます。
+         */
+        "description": string;
+    };
+    "_searchSite": {
+        /**
+         * 検索エンジン
+         */
+        "title": string;
+        /**
+         * MFCの検索構文で検索できるサイトを変更します。
+         */
+        "description": string;
+        /**
+         * その他の検索エンジン
+         */
+        "otherSearchEngine": string;
+        /**
+         * その他の検索エンジンを使用します。
+         */
+        "otherDescription": string;
+        /**
+         * 検索クエリ
+         */
+        "query": string;
+        /**
+         * 検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)
+         */
+        "queryDescription": string;
+    };
+    "_accountTruncate": {
+        /**
+         * アカウントの整理
+         */
+        "accountDelete": string;
+        /**
+         * アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。
+         */
+        "mayTakeTime": string;
+        /**
+         * アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。
+         */
+        "sendEmail": string;
+        /**
+         * アカウント整理をリクエスト
+         */
+        "requestAccountTruncate": string;
+        /**
+         * 整理処理が開始されました。
+         */
+        "started": string;
+        /**
+         * 整理が進行中
+         */
+        "inProgress": string;
+    };
+    "_keyboardShortCut": {
+        /**
+         * キーボードショートカット
+         */
+        "title": string;
+        /**
+         * クライアント上で使えるキーボードショートカットの一覧です。
+         */
+        "description": string;
+        /**
+         * ショートカット一覧
+         */
+        "list": string;
+        "_category": {
+            /**
+             * 一般
+             */
+            "general": string;
+            /**
+             * 投稿フォーム
+             */
+            "postForm": string;
+        };
+        "_general": {
+            /**
+             * 投稿フォームを開く
+             */
+            "openPostForm": string;
+            /**
+             * ダークモードを切り替える
+             */
+            "toggleDarkMode": string;
+            /**
+             * 検索ページに移動
+             */
+            "redirectToSearch": string;
+            /**
+             * キーボードショートカット一覧を見る
+             */
+            "viewKeyboardShortCutList": string;
+        };
+        "_postForm": {
+            /**
+             * 公開範囲を切り替える
+             */
+            "toggleVisibility": string;
+            /**
+             * 連合なしを切り替える
+             */
+            "toggleLocalOnly": string;
+            /**
+             * この機能は「設定 → CherryPick」から該当の機能を有効にすることで利用できます。
+             */
+            "featureWarn": string;
+            /**
+             * 投稿する
+             */
+            "sendPost": string;
+        };
+    };
+    "_weather": {
+        /**
+         * 湿度
+         */
+        "humidity": string;
+        /**
+         * 気圧
+         */
+        "pressure": string;
+        /**
+         * 降水量
+         */
+        "precipitation": string;
+    };
+    "_deliveryTargetControl": {
+        /**
+         * 配送先制御
+         */
+        "deliveryTargetControl": string;
+        /**
+         * 選択したサーバーのみに配送
+         */
+        "deliveryTargetInclude": string;
+        /**
+         * 選択したサーバーを除外して配送
+         */
+        "deliveryTargetExclude": string;
+        /**
+         * リモートサーバーのフォロワーがいません
+         */
+        "noFollowersFromRemoteServers": string;
+        /**
+         * サーバー一覧の読み込みに失敗しました
+         */
+        "loadError": string;
+        /**
+         * {count}人のフォロワー
+         */
+        "followersCount": ParameterizedString<"count">;
+        /**
+         * {count}件見つかりました（全{total}件中）
+         */
+        "searchResults": ParameterizedString<"count" | "total">;
+        /**
+         * 一部のサーバーにのみ公開
+         */
+        "deliveryTargetsInclude": string;
+        /**
+         * 一部のサーバーに非公開
+         */
+        "deliveryTargetsExclude": string;
+        /**
+         * 配送先が選択されています
+         */
+        "hasDeliveryTargets": string;
     };
 }
 declare const locales: {

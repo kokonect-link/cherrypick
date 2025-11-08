@@ -3638,95 +3638,6 @@ _search:
   pleaseSelectUser: "ユーザーを選択してください"
   serverHostPlaceholder: "例: cherrypick.example.com"
 
-_abuse:
-  _resolver:
-    1hour: "一時間"
-    12hours: "半日"
-    1day: "一日"
-    1week: "一週間"
-    1month: "一ヶ月"
-    3months: "三ヶ月"
-    6months: "六ヶ月"
-    1year: "一年"
-    indefinitely: "無期限"
-    expiresAt: "この条件の有効期限"
-    targetUserPattern: "通報先のパターン"
-    reporterPattern: "通報元のパターン"
-    reportContentPattern: "通報内容のパターン"
-  list: "一覧"
-  resolver: "リソルバー"
-
-_externalNavigationWarning:
-  title: "外部サイトに移動します"
-  description: "{host}を離れて外部サイトに移動します"
-  trustThisDomain: "このデバイスで今後このドメインを信頼する"
-  externalNavigationWarning: "外部サイトに移動する際の警告"
-  enableExternalNavigationWarning: "外部サイトに移動する際の警告を表示"
-  trustedDomainList: "信頼するドメインリスト"
-  trustedDomainListDescription: "`http://`と`https://`を省略して入力してください。"
-  trustedDomainListDescription2: "改行で区切って設定します"
-  deleteTrustedDomainList: "信頼するドメインリストのリセット"
-
-_altWarning:
-  noAltWarning: "ファイルに代替テキストが設定されていません。"
-  noAltWarningDescription: "この設定は「設定 → アピアランス」で変更できます。"
-
-_dice:
-  rollDice: "サイコロを振る"
-  diceCount: "サイコロの数"
-  diceFaces: "サイコロの面数"
-
-_scheduledNoteDelete:
-  expiration: "期限"
-  at: "日時指定"
-  after: "経過指定"
-  deadlineDate: "期日"
-  deadlineTime: "時間"
-  duration: "期間"
-
-_getQRCode:
-  title: "QRコードをスキャンする"
-  description: "以下のQRコードをスキャンまたは共有できます。"
-
-_searchSite:
-  title: "検索エンジン"
-  description: "MFCの検索構文で検索できるサイトを変更します。"
-  otherSearchEngine: "その他の検索エンジン"
-  otherDescription: "その他の検索エンジンを使用します。"
-  query: "検索クエリ"
-  queryDescription: "検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)"
-
-_accountTruncate:
-  accountDelete: "アカウントの整理"
-  mayTakeTime: "アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。"
-  sendEmail: "アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。"
-  requestAccountTruncate: "アカウント整理をリクエスト"
-  started: "整理処理が開始されました。"
-  inProgress: "整理が進行中"
-
-_keyboardShortCut:
-  title: "キーボードショートカット"
-  description: "クライアント上で使えるキーボードショートカットの一覧です。"
-  list: "ショートカット一覧"
-  _category:
-    general: "一般"
-    postForm: "投稿フォーム"
-  _general:
-    openPostForm: "投稿フォームを開く"
-    toggleDarkMode: "ダークモードを切り替える"
-    redirectToSearch: "検索ページに移動"
-    viewKeyboardShortCutList: "キーボードショートカット一覧を見る"
-  _postForm:
-    toggleVisibility: "公開範囲を切り替える"
-    toggleLocalOnly: "連合なしを切り替える"
-    featureWarn: "この機能は「設定 → CherryPick」から該当の機能を有効にすることで利用できます。"
-    sendPost: "投稿する"
-
-_weather:
-  humidity: "湿度"
-  pressure: "気圧"
-  precipitation: "降水量"
-
 _serverSetupWizard:
   installCompleted: "CherryPickのインストールが完了しました！"
   firstCreateAccount: "まずは、管理者アカウントを作成しましょう。"
@@ -3929,3 +3840,104 @@ _qr:
   scanFile: "端末の画像をスキャン"
   raw: "テキスト"
   mfm: "MFC"
+
+_abuse:
+  _resolver:
+    1hour: "一時間"
+    12hours: "半日"
+    1day: "一日"
+    1week: "一週間"
+    1month: "一ヶ月"
+    3months: "三ヶ月"
+    6months: "六ヶ月"
+    1year: "一年"
+    indefinitely: "無期限"
+    expiresAt: "この条件の有効期限"
+    targetUserPattern: "通報先のパターン"
+    reporterPattern: "通報元のパターン"
+    reportContentPattern: "通報内容のパターン"
+  list: "一覧"
+  resolver: "リソルバー"
+
+_externalNavigationWarning:
+  title: "外部サイトに移動します"
+  description: "{host}を離れて外部サイトに移動します"
+  trustThisDomain: "このデバイスで今後このドメインを信頼する"
+  externalNavigationWarning: "外部サイトに移動する際の警告"
+  enableExternalNavigationWarning: "外部サイトに移動する際の警告を表示"
+  trustedDomainList: "信頼するドメインリスト"
+  trustedDomainListDescription: "`http://`と`https://`を省略して入力してください。"
+  trustedDomainListDescription2: "改行で区切って設定します"
+  deleteTrustedDomainList: "信頼するドメインリストのリセット"
+
+_altWarning:
+  noAltWarning: "ファイルに代替テキストが設定されていません。"
+  noAltWarningDescription: "この設定は「設定 → アピアランス」で変更できます。"
+
+_dice:
+  rollDice: "サイコロを振る"
+  diceCount: "サイコロの数"
+  diceFaces: "サイコロの面数"
+
+_scheduledNoteDelete:
+  expiration: "期限"
+  at: "日時指定"
+  after: "経過指定"
+  deadlineDate: "期日"
+  deadlineTime: "時間"
+  duration: "期間"
+
+_getQRCode:
+  title: "QRコードをスキャンする"
+  description: "以下のQRコードをスキャンまたは共有できます。"
+
+_searchSite:
+  title: "検索エンジン"
+  description: "MFCの検索構文で検索できるサイトを変更します。"
+  otherSearchEngine: "その他の検索エンジン"
+  otherDescription: "その他の検索エンジンを使用します。"
+  query: "検索クエリ"
+  queryDescription: "検索エンジンが使用するクエリを入力します。(例: https://www.google.com/search?q=test の場合qを入れる)"
+
+_accountTruncate:
+  accountDelete: "アカウントの整理"
+  mayTakeTime: "アカウントの整理は負荷のかかる処理であるため、作成したコンテンツの数やアップロードしたファイルの数が多いと完了までに時間がかかることがあります。"
+  sendEmail: "アカウントの整理が完了する際は、登録してあったメールアドレス宛に通知を送信します。"
+  requestAccountTruncate: "アカウント整理をリクエスト"
+  started: "整理処理が開始されました。"
+  inProgress: "整理が進行中"
+
+_keyboardShortCut:
+  title: "キーボードショートカット"
+  description: "クライアント上で使えるキーボードショートカットの一覧です。"
+  list: "ショートカット一覧"
+  _category:
+    general: "一般"
+    postForm: "投稿フォーム"
+  _general:
+    openPostForm: "投稿フォームを開く"
+    toggleDarkMode: "ダークモードを切り替える"
+    redirectToSearch: "検索ページに移動"
+    viewKeyboardShortCutList: "キーボードショートカット一覧を見る"
+  _postForm:
+    toggleVisibility: "公開範囲を切り替える"
+    toggleLocalOnly: "連合なしを切り替える"
+    featureWarn: "この機能は「設定 → CherryPick」から該当の機能を有効にすることで利用できます。"
+    sendPost: "投稿する"
+
+_weather:
+  humidity: "湿度"
+  pressure: "気圧"
+  precipitation: "降水量"
+
+_deliveryTargetControl:
+  deliveryTargetControl: "配送先制御"
+  deliveryTargetInclude: "選択したサーバーのみに配送"
+  deliveryTargetExclude: "選択したサーバーを除外して配送"
+  noFollowersFromRemoteServers: "リモートサーバーのフォロワーがいません"
+  loadError: "サーバー一覧の読み込みに失敗しました"
+  followersCount: "{count}人のフォロワー"
+  searchResults: "{count}件見つかりました（全{total}件中）"
+  deliveryTargetsInclude: "一部のサーバーにのみ公開"
+  deliveryTargetsExclude: "一部のサーバーに非公開"
+  hasDeliveryTargets: "配送先が選択されています"
