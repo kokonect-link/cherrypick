@@ -88,7 +88,7 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 
 ### Server
 - Feat: 이벤트 연합 (yojo-art/cherrypick#658)
-- Enhance: NodeInfo에서 kmyblue 호환 기능을 표시하도록 설정함 ([bettaku/engawa@694fe793](https://github.com/bettaku/engawa/commit/694fe7936182815a613187c98a1ba175b05ac415))
+- Enhance: NodeInfo에서 kmyblue 호환 기능을 표시하도록 설정함 (yojo-art/cherrypick#624)
 - Fix: 이벤트가 포함된 노트를 편집하면 편집한 내용이 연합되지 않을 수 있음
 - Fix: 상대방이 나를 팔로우했을 때 ServiceWorker를 통한 알림이 제대로 표시되지 않을 수 있음
 - Fix: 이름 또는 로고를 지정하지 않은 클라이언트가 `OAuth2ProviderService`를 사용하려고 할 때 오류가 발생할 수 있음 (kokonect-link/cherrypick#609)
