@@ -93,6 +93,11 @@ Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025xx](CHANGE
 - Fix: 이름 또는 로고를 지정하지 않은 클라이언트가 `OAuth2ProviderService`를 사용하려고 할 때 오류가 발생할 수 있음 (kokonect-link/cherrypick#609)
   - OAuth 2.0 표준안 준수를 위해 수정되었습니다.
 - Fix: 정지되지 않은 원격 사용자가 로컬과 상호 작용할 수 없음 (misskey-dev/misskey#13890)
+- Fix: JoinMisskey API에 의해 Misskey Hub의 서버 목록에 CherryPick 인스턴스가 표시되지 않을 수 있음
+  - CherryPick은 Misskey를 기반으로 하며, Mastodon 또는 Pleroma 등과 같은 타사 서비스가 아닌 Misskey 포크 소프트웨어 중 하나입니다.
+  - JoinMisskey는 `software.name`이 `misskey`인 서버만 허용하며, 여기에 해당하지 않을 경우 `https://instanceapp.misskey.page/not-misskey.txt`로 분류되어 서버 목록에 나타나지 않습니다.
+    이러한 문제를 우회하기 위해, JoinMisskey API에서의 NodeInfo 호출이 감지되면, `misskey`를 반환하는 방식으로 우회합니다.
+    이 방법은 향후 JoinMisskey API의 변경으로 인해 사용하지 못할 가능성이 있습니다.
 
 ---
 
