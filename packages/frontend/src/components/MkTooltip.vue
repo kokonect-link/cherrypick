@@ -114,5 +114,6 @@ onUnmounted(() => {
 	border: solid 0.5px var(--MI_THEME-divider);
 	pointer-events: none;
 	transform-origin: center center;
+	white-space: pre-line;
 }
 </style>
