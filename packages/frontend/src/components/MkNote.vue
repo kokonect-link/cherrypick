@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span
 				v-if="appearNote.deliveryTargets"
-				v-tooltip="`${i18n.ts._deliveryTargetControl[appearNote.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude']}\n${appearNote.deliveryTargets.hosts.join('\n')}`"
+				v-tooltip="`${i18n.ts._deliveryTargetControl[appearNote.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude']}${appearNote.deliveryTargets.hosts?.length ? `\n${appearNote.deliveryTargets.hosts.join('\n')}` : ''}`"
 				style="margin-right: 0.5em;"
 			>
 				<i :class="appearNote.deliveryTargets.mode === 'include' ? 'ti ti-truck' : 'ti ti-truck-filled'"></i>
