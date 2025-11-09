@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span
 				v-if="note.deliveryTargets && (note.deliveryTargets.mode === 'include' || note.deliveryTargets.hosts?.length)"
 				v-tooltip="`${i18n.ts._deliveryTargetControl[note.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude']}${note.deliveryTargets.hosts?.length ? `\n${note.deliveryTargets.hosts.join('\n')}` : ''}`"
-				style="margin-left: 0.5em;"
+				style="margin-right: 0.5em;"
 			>
 				<i :class="note.deliveryTargets.mode === 'include' ? 'ti ti-truck' : 'ti ti-truck-filled'"></i>
 			</span>
