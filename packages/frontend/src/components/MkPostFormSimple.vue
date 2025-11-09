@@ -83,7 +83,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #x>
 				<MkTime v-if="scheduledDeleteAt" :key="scheduledDeleteAt" :time="scheduledDeleteAt" :mode="'detail'" style="font-weight: bold;"/>
 			</template>
-		</I18n>
+		</I18n> - <button class="_textButton" @click="cancelScheduleDelete()">{{ i18n.ts.cancel }}</button>
 	</MkInfo>
 	<MkInfo v-if="hasNotSpecifiedMentions && showForm" warn :class="$style.hasNotSpecifiedMentions">{{ i18n.ts.notSpecifiedMentionWarning }} - <button class="_textButton" @click="addMissingMention()">{{ i18n.ts.add }}</button></MkInfo>
 	<div v-show="useCw && showForm" :class="$style.cwOuter">
@@ -1517,6 +1517,10 @@ function toggleScheduledNoteDelete() {
 			deleteAfter: null,
 		};
 	}
+}
+
+function cancelScheduleDelete() {
+	scheduledNoteDelete.value = null;
 }
 
 function showPostMenu(ev: MouseEvent) {

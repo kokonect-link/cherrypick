@@ -5,28 +5,35 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div :class="$style.root">
-	<span>{{ i18n.ts.scheduledNoteDelete }}</span>
-	<section>
-		<div>
-			<MkSelect v-model="expiration" :items="expirationDef" small>
-				<template #label>{{ i18n.ts._scheduledNoteDelete.expiration }}</template>
-			</MkSelect>
-			<section v-if="expiration === 'at'">
-				<MkInput v-model="atDate" small type="date" class="input">
-					<template #label>{{ i18n.ts._scheduledNoteDelete.deadlineDate }}</template>
-				</MkInput>
-				<MkInput v-model="atTime" small type="time" class="input">
-					<template #label>{{ i18n.ts._scheduledNoteDelete.deadlineTime }}</template>
-				</MkInput>
-			</section>
-			<section v-else-if="expiration === 'after'">
-				<MkInput v-model="after" small type="number" class="input">
-					<template #label>{{ i18n.ts._scheduledNoteDelete.duration }}</template>
-				</MkInput>
-				<MkSelect v-model="unit" :items="unitDef" small></MkSelect>
-			</section>
-		</div>
-	</section>
+	<div :class="$style.label"><i class="ti ti-clock-hour-9"></i> {{ i18n.ts.scheduledNoteDelete }}</div>
+
+	<div :class="$style.body">
+		<section :class="$style.section">
+			<div>
+				<MkSelect v-model="expiration" :items="expirationDef" small>
+					<template #label>{{ i18n.ts._scheduledNoteDelete.expiration }}</template>
+				</MkSelect>
+
+				<section v-if="expiration === 'at'">
+					<MkInput v-model="atDate" small type="date" class="input">
+						<template #label>{{ i18n.ts._scheduledNoteDelete.deadlineDate }}</template>
+					</MkInput>
+
+					<MkInput v-model="atTime" small type="time" class="input">
+						<template #label>{{ i18n.ts._scheduledNoteDelete.deadlineTime }}</template>
+					</MkInput>
+				</section>
+
+				<section v-else-if="expiration === 'after'">
+					<MkInput v-model="after" small type="number" class="input">
+						<template #label>{{ i18n.ts._scheduledNoteDelete.duration }}</template>
+					</MkInput>
+
+					<MkSelect v-model="unit" :items="unitDef" small></MkSelect>
+				</section>
+			</div>
+		</section>
+	</div>
 </div>
 </template>
 
@@ -129,62 +136,52 @@ onMounted(() => {
 
 <style lang="scss" module>
 .root {
-	padding: 8px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 8px 24px;
+}
 
-	> span {
-		opacity: 0.7;
-	}
+.label {
+	font-size: 0.85em;
+	padding: 0 0 8px 0;
+	user-select: none;
+	color: var(--MI_THEME-accent);
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
 
-	> ul {
-		display: block;
-		margin: 0;
-		padding: 0;
-		list-style: none;
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
 
-		> li {
-			display: flex;
-			margin: 8px 0;
-			padding: 0;
-			width: 100%;
+.section {
+	> div {
+		margin: 0 8px;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 12px;
 
-			> .input {
-				flex: 1;
+		&:last-child {
+			flex: 1 0 auto;
+
+			> div {
+				flex-grow: 1;
 			}
 
-			> button {
-				width: 32px;
-				padding: 4px 0;
-			}
-		}
-	}
+			> section {
+				// MAGIC: Prevent div above from growing unless wrapped to its own line
+				flex-grow: 9999;
+				align-items: end;
+				display: flex;
+				gap: 4px;
 
-	> section {
-		margin: 16px 0 0 0;
-
-		> div {
-			margin: 0 8px;
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 12px;
-
-			&:last-child {
-				flex: 1 0 auto;
-
-				> div {
-					flex-grow: 1;
-				}
-
-				> section {
-					// MAGIC: Prevent div above from growing unless wrapped to its own line
-					flex-grow: 9999;
-					align-items: end;
-					display: flex;
-					gap: 4px;
-
-					> .input {
-						flex: 1 1 auto;
-					}
+				> .input {
+					flex: 1 1 auto;
 				}
 			}
 		}
