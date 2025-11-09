@@ -38,7 +38,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<span v-if="note.localOnly" style="margin-right: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
 			<span
 				v-if="note.deliveryTargets"
-				v-tooltip="`${i18n.ts._deliveryTargetControl[note.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude'] + ':' + (note.deliveryTargets.hosts?.length ? '\n' + note.deliveryTargets.hosts.map((h, i) => note.deliveryTargets.names?.[i] ? `${note.deliveryTargets.names[i]} (${h})` : h).join('\n') : '')}`"
+				v-tooltip="`${i18n.ts._deliveryTargetControl[note.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude'] + ':' + (note.deliveryTargets.hosts?.length ? '\n' + note.deliveryTargets.hosts.map((h, i) => note.deliveryTargets.names?.[i] ? `${note.deliveryTargets.names[i]} (${h})` : h).join('\n') : '\n' + i18n.ts.none)}`"
 				style="margin-right: 0.5em;"
 			>
 				<i :class="note.deliveryTargets.mode === 'include' ? 'ti ti-truck' : 'ti ti-truck-filled'"></i>
