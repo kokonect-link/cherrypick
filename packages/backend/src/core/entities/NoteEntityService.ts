@@ -21,6 +21,7 @@ import type { CustomEmojiService } from '../CustomEmojiService.js';
 import type { ReactionService } from '../ReactionService.js';
 import type { UserEntityService } from './UserEntityService.js';
 import type { DriveFileEntityService } from './DriveFileEntityService.js';
+import { RoleService } from '@/core/RoleService.js';
 
 // is-renote.tsとよしなにリンク
 function isPureRenote(note: MiNote): note is MiNote & { renoteId: MiNote['id']; renote: MiNote } {
@@ -66,6 +67,7 @@ export class NoteEntityService implements OnModuleInit {
 	private reactionsBufferingService: ReactionsBufferingService;
 	private idService: IdService;
 	private noteLoader = new DebounceLoader(this.findNoteOrFail);
+	private roleService: RoleService;
 
 	constructor(
 		private moduleRef: ModuleRef,
@@ -113,6 +115,7 @@ export class NoteEntityService implements OnModuleInit {
 		this.reactionService = this.moduleRef.get('ReactionService');
 		this.reactionsBufferingService = this.moduleRef.get('ReactionsBufferingService');
 		this.idService = this.moduleRef.get('IdService');
+		this.roleService = this.moduleRef.get('RoleService');
 	}
 
 	@bindThis
@@ -393,6 +396,7 @@ export class NoteEntityService implements OnModuleInit {
 		const meId = me ? me.id : null;
 		const note = typeof src === 'object' ? src : await this.noteLoader.load(src);
 		const host = note.userHost;
+		const iAmModerator = me ? await this.roleService.isModerator(me as MiUser) : false;
 
 		const bufferedReactions = opts._hint_?.bufferedReactions != null
 			? (opts._hint_.bufferedReactions.get(note.id) ?? { deltas: {}, pairs: [] })
@@ -462,6 +466,10 @@ export class NoteEntityService implements OnModuleInit {
 			hasPoll: note.hasPoll || undefined,
 			uri: note.uri ?? undefined,
 			url: note.url ?? undefined,
+			hasDeliveryTargets: note.deliveryTargets != null,
+			...((meId === note.userId || iAmModerator) ? {
+				deliveryTargets: note.deliveryTargets ?? undefined,
+			} : {}),
 
 			...(opts.detail ? {
 				clippedCount: note.clippedCount,

@@ -272,6 +272,7 @@ export * as 'i/export-mute' from './endpoints/i/export-mute.js';
 export * as 'i/export-notes' from './endpoints/i/export-notes.js';
 export * as 'i/export-user-lists' from './endpoints/i/export-user-lists.js';
 export * as 'i/favorites' from './endpoints/i/favorites.js';
+export * as 'i/followers-servers' from './endpoints/i/followers-servers.js';
 export * as 'i/gallery/likes' from './endpoints/i/gallery/likes.js';
 export * as 'i/gallery/posts' from './endpoints/i/gallery/posts.js';
 export * as 'i/import-antennas' from './endpoints/i/import-antennas.js';

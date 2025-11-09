@@ -211,4 +211,13 @@ export class MiNoteDraft {
 		nullable: true,
 	})
 	public deleteAt: Date | null;
+
+	@Column('jsonb', {
+		nullable: true,
+		default: {},
+	})
+	public deliveryTargets: {
+		mode: 'include' | 'exclude';
+		hosts: string[];
+	} | null;
 }

@@ -66,6 +66,7 @@ describe('NoteCreateService', () => {
 			hasEvent: false,
 			disableRightClick: false,
 			deleteAt: null,
+			deliveryTargets: null,
 		};
 
 		const poll: IPoll = {

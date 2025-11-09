@@ -1994,6 +1994,7 @@ declare namespace entities {
         IExportFollowingRequest,
         IFavoritesRequest,
         IFavoritesResponse,
+        IFollowersServersResponse,
         IGalleryLikesRequest,
         IGalleryLikesResponse,
         IGalleryPostsRequest,
@@ -2704,6 +2705,9 @@ type IFavoritesRequest = operations['i___favorites']['requestBody']['content']['
 
 // @public (undocumented)
 type IFavoritesResponse = operations['i___favorites']['responses']['200']['content']['application/json'];
+
+// @public (undocumented)
+type IFollowersServersResponse = operations['i___followers-servers']['responses']['200']['content']['application/json'];
 
 // @public (undocumented)
 type IGalleryLikesRequest = operations['i___gallery___likes']['requestBody']['content']['application/json'];

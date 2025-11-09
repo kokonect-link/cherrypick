@@ -438,6 +438,7 @@ export type IDeleteAccountRequest = operations['i___delete-account']['requestBod
 export type IExportFollowingRequest = operations['i___export-following']['requestBody']['content']['application/json'];
 export type IFavoritesRequest = operations['i___favorites']['requestBody']['content']['application/json'];
 export type IFavoritesResponse = operations['i___favorites']['responses']['200']['content']['application/json'];
+export type IFollowersServersResponse = operations['i___followers-servers']['responses']['200']['content']['application/json'];
 export type IGalleryLikesRequest = operations['i___gallery___likes']['requestBody']['content']['application/json'];
 export type IGalleryLikesResponse = operations['i___gallery___likes']['responses']['200']['content']['application/json'];
 export type IGalleryPostsRequest = operations['i___gallery___posts']['requestBody']['content']['application/json'];
