@@ -43,7 +43,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:class="$style.serverItem"
 					>
 						<div :class="$style.serverInfo">
-							<div :class="$style.serverHost">{{ server.host }}</div>
+							<div :class="$style.serverHost">
+								<template>{{ server.name }} ({{ server.host }})</template>
+							</div>
 							<div :class="$style.serverCount">
 								{{ i18n.tsx._deliveryTargetControl.followersCount({ count: server.followersCount }) }}
 							</div>
@@ -91,7 +93,7 @@ const emit = defineEmits<{
 
 const deliveryMode = ref<'include' | 'exclude'>(props.modelValue.mode);
 const selectedHosts = ref<string[]>([...props.modelValue.hosts]);
-const servers = ref<{ host: string; followersCount: number }[]>([]);
+const servers = ref<{ host: string; name: string; followersCount: number }[]>([]);
 const serversLoading = ref(true);
 const loadError = ref(false);
 const searchQuery = ref('');
@@ -107,7 +109,8 @@ const filteredServers = computed(() => {
 	const query = searchQuery.value.toLowerCase().trim();
 
 	return servers.value.filter(server =>
-		server.host.toLowerCase().includes(query),
+		server.host.toLowerCase().includes(query) ||
+		(server.name && server.name.toLowerCase().includes(query)),
 	);
 });
 
@@ -153,7 +156,7 @@ const loadServers = async () => {
 	loadError.value = false;
 
 	try {
-		const result = await misskeyApi<{ servers: { host: string; followersCount: number }[] }>('i/followers-servers', {});
+		const result = await misskeyApi<{ servers: { host: string; name: string | null; followersCount: number }[] }>('i/followers-servers', {});
 		servers.value = result.servers;
 	} catch (err) {
 		console.error('Failed to load follower servers:', err);
