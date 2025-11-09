@@ -4,117 +4,142 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="zmdxowut">
-	<span>{{ i18n.ts.event }}</span>
-	<MkInput v-model="title" small type="text" class="input" style="margin: 16px 0 0 0;">
-		<template #label>*{{ i18n.ts.title }}</template>
-	</MkInput>
-	<section>
-		<div>
-			<section>
-				<MkInput v-model="startDate" small type="date" class="input">
-					<template #label>*{{ i18n.ts._event.startDate }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="startTime" small type="time" class="input">
-					<template #label>*{{ i18n.ts._event.startTime }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="endDate" small type="date" class="input">
-					<template #label>{{ i18n.ts._event.endDate }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="endTime" small type="time" class="input">
-					<template #label>{{ i18n.ts._event.endTime }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="location" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.location }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="url" small type="url" class="input">
-					<template #label>URL</template>
-				</MkInput>
-			</section>
-		</div>
-		<div style="margin: 10px 8px;">
-			<section>
-				<MkSwitch v-model="showAdvanced" :disabled="false" class="input">{{ i18n.ts.advanced }}</MkSwitch>
-			</section>
-		</div>
-		<div v-show="showAdvanced">
-			<section>
-				<MkInput v-model="doorTime" small type="time" class="input">
-					<template #label>{{ i18n.ts._event.doorTime }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="organizer" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.organizer }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="organizerLink" small type="url" class="input">
-					<template #label>{{ i18n.ts._event.organizerLink }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="audience" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.audience }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="language" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.language }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="ageRange" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.ageRange }}</template>
-				</MkInput>
-			</section>
-			<!--<section>
-				<MkInput v-model="performers" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.performers }}</template>
-				</MkInput>
-			</section>-->
-			<section>
-				<MkInput v-model="ticketsUrl" small type="url" class="input">
-					<template #label>{{ i18n.ts._event.ticketsUrl }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkSwitch v-model="isFree" :disabled="false">
-					{{ i18n.ts._event.isFree }}
-				</MkSwitch>
-			</section>
-			<section>
-				<MkInput v-model="price" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.price }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="availabilityStart" small type="datetime-local" class="input">
-					<template #label>{{ i18n.ts._event.availabilityStart }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="availabilityEnd" small type="datetime-local" class="input">
-					<template #label>{{ i18n.ts._event.availabilityEnd }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="keywords" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.keywords }}</template>
-				</MkInput>
-			</section>
-		</div>
-	</section>
+<div :class="$style.root">
+	<div :class="$style.label"><i class="ti ti-calendar"></i> {{ i18n.ts.event }}</div>
+
+	<div :class="$style.body">
+		<MkInput v-model="title" small type="text" class="input">
+			<template #label>*{{ i18n.ts.title }}</template>
+		</MkInput>
+
+		<section :class="$style.section">
+			<div>
+				<section>
+					<MkInput v-model="startDate" small type="date" class="input">
+						<template #label>*{{ i18n.ts._event.startDate }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="startTime" small type="time" class="input">
+						<template #label>*{{ i18n.ts._event.startTime }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="endDate" small type="date" class="input">
+						<template #label>{{ i18n.ts._event.endDate }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="endTime" small type="time" class="input">
+						<template #label>{{ i18n.ts._event.endTime }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="location" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.location }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="url" small type="url" class="input">
+						<template #label>URL</template>
+					</MkInput>
+				</section>
+			</div>
+
+			<div>
+				<section style="margin-top: 8px;">
+					<MkSwitch v-model="showAdvanced" :disabled="false" class="input">{{ i18n.ts.advanced }}</MkSwitch>
+				</section>
+			</div>
+
+			<div v-show="showAdvanced">
+				<section style="margin-top: 8px;">
+					<MkInput v-model="doorTime" small type="time" class="input">
+						<template #label>{{ i18n.ts._event.doorTime }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="organizer" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.organizer }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="organizerLink" small type="url" class="input">
+						<template #label>{{ i18n.ts._event.organizerLink }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="audience" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.audience }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="language" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.language }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="ageRange" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.ageRange }}</template>
+					</MkInput>
+				</section>
+
+				<!--
+				<section>
+					<MkInput v-model="performers" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.performers }}</template>
+					</MkInput>
+				</section>
+				-->
+
+				<section>
+					<MkInput v-model="ticketsUrl" small type="url" class="input">
+						<template #label>{{ i18n.ts._event.ticketsUrl }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkSwitch v-model="isFree" :disabled="false">
+						{{ i18n.ts._event.isFree }}
+					</MkSwitch>
+				</section>
+
+				<section>
+					<MkInput v-model="price" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.price }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="availabilityStart" small type="datetime-local" class="input">
+						<template #label>{{ i18n.ts._event.availabilityStart }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="availabilityEnd" small type="datetime-local" class="input">
+						<template #label>{{ i18n.ts._event.availabilityEnd }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="keywords" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.keywords }}</template>
+					</MkInput>
+				</section>
+			</div>
+		</section>
+	</div>
 </div>
 </template>
 
@@ -249,41 +274,53 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-.zmdxowut {
-	padding: 8px 16px;
+<style lang="scss" module>
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 8px 24px;
+}
 
-	> span {
-		opacity: 0.7;
-	}
+.label {
+	font-size: 0.85em;
+	padding: 0 0 8px 0;
+	user-select: none;
+	color: var(--MI_THEME-accent);
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
 
-	> section {
-		margin: 16px 0 0 0;
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
 
-		> div {
-			margin: 0 8px;
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 12px;
+.section {
+	> div {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 12px;
 
-			&:last-child {
-				flex: 1 0 auto;
+		&:last-child {
+			flex: 1 0 auto;
 
-				> div {
-					flex-grow: 1;
-				}
+			> div {
+				flex-grow: 1;
+			}
 
-				> section {
-					// MAGIC: Prevent div above from growing unless wrapped to its own line
-					flex-grow: 9999;
-					align-items: end;
-					display: flex;
-					gap: 4px;
+			> section {
+				// MAGIC: Prevent div above from growing unless wrapped to its own line
+				flex-grow: 9999;
+				align-items: end;
+				display: flex;
+				gap: 4px;
 
-					> .input {
-						flex: 1 1 auto;
-					}
+				> .input {
+					flex: 1 1 auto;
 				}
 			}
 		}
