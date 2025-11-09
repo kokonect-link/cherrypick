@@ -15,9 +15,9 @@ import type { MiNote } from '@/models/Note.js';
 import { bindThis } from '@/decorators.js';
 import { MiLocalUser, MiRemoteUser } from '@/models/User.js';
 import { QueueService } from '@/core/QueueService.js';
+import type { DbQueue } from '@/core/QueueModule.js';
 import { getApId } from './type.js';
 import { ApPersonService } from './models/ApPersonService.js';
-import type { DbQueue } from '@/core/QueueModule.js';
 import type { IObject } from './type.js';
 
 export type UriParseResult = {

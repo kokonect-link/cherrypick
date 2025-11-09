@@ -515,8 +515,8 @@ function addMissingMention() {
 function swapCwText() {
 	if (useCw.value) {
 		// textの一行目を取り出す
-		const temp = text.value.split(/\r?\n/).join(" ");
-		text.value = cw.value ?? "";
+		const temp = text.value.split(/\r?\n/).join(' ');
+		text.value = cw.value ?? '';
 		cw.value = temp;
 	}
 }
