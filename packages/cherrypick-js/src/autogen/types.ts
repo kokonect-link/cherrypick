@@ -26857,6 +26857,7 @@ export interface operations {
                     'application/json': {
                         servers: {
                             host: string;
+                            name: string | null;
                             followersCount: number;
                         }[];
                     };
