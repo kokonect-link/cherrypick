@@ -43,9 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						:class="$style.serverItem"
 					>
 						<div :class="$style.serverInfo">
-							<div :class="$style.serverHost">
-								<template>{{ server.name }} ({{ server.host }})</template>
-							</div>
+							<div :class="$style.serverHost">{{ server.name }} ({{ server.host }})</div>
 							<div :class="$style.serverCount">
 								{{ i18n.tsx._deliveryTargetControl.followersCount({ count: server.followersCount }) }}
 							</div>
@@ -93,7 +91,7 @@ const emit = defineEmits<{
 
 const deliveryMode = ref<'include' | 'exclude'>(props.modelValue.mode);
 const selectedHosts = ref<string[]>([...props.modelValue.hosts]);
-const servers = ref<{ host: string; name: string; followersCount: number }[]>([]);
+const servers = ref<{ host: string; name: string | null; followersCount: number }[]>([]);
 const serversLoading = ref(true);
 const loadError = ref(false);
 const searchQuery = ref('');
