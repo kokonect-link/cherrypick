@@ -31,15 +31,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSwitch>
 				</SearchMarker>
 
-				<SearchMarker :keywords="['inactivity', 'limit']">
-					<MkInput v-if="disableRegistrationWhenInactive || disablePublicNoteWhenInactive" v-model="moderatorInactivityLimitDays" type="number" :min="1" :max="30">
+				<template v-if="disableRegistrationWhenInactive || disablePublicNoteWhenInactive">
+					<MkInput v-model="moderatorInactivityLimitDays" type="number" :min="1" :max="30">
 						<template #label>{{ i18n.ts.expirationDate + `(${i18n.ts._time.day})` }}</template>
 					</MkInput>
-				</SearchMarker>
 
-				<MkButton v-if="meta.moderatorInactivityLimitDays !== moderatorInactivityLimitDays" primary rounded @click="onChange_moderatorInactivityLimitDays">
-					<i class="ti ti-check"></i> {{ i18n.ts.save }}
-				</MkButton>
+					<MkButton v-if="meta.moderatorInactivityLimitDays !== moderatorInactivityLimitDays" primary rounded @click="onChange_moderatorInactivityLimitDays">
+						<i class="ti ti-check"></i> {{ i18n.ts.save }}
+					</MkButton>
+				</template>
 
 				<SearchMarker :keywords="['email', 'required', 'signup']">
 					<MkSwitch v-model="emailRequiredForSignup" @change="onChange_emailRequiredForSignup">
