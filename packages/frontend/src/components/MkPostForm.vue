@@ -135,6 +135,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed, useTemplateRef, onUnmounted } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
+import { parseMfmCached } from '@/utility/mfm-cache.js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode.js';
 import { host, url } from '@@/js/config.js';
@@ -401,7 +402,7 @@ if (replyTargetNote.value && (replyTargetNote.value.user.username !== $i.usernam
 }
 
 if (replyTargetNote.value && replyTargetNote.value.text != null) {
-	const ast = mfm.parse(replyTargetNote.value.text);
+	const ast = parseMfmCached(replyTargetNote.value.text);
 	const otherHost = replyTargetNote.value.user.host;
 
 	for (const x of extractMentions(ast)) {
@@ -488,7 +489,7 @@ function watchForDraft() {
 
 function checkMissingMention() {
 	if (visibility.value === 'specified') {
-		const ast = mfm.parse(text.value);
+		const ast = parseMfmCached(text.value);
 
 		for (const x of extractMentions(ast)) {
 			if (!visibleUsers.value.some(u => (u.username === x.username) && (u.host === x.host))) {
@@ -501,7 +502,7 @@ function checkMissingMention() {
 }
 
 function addMissingMention() {
-	const ast = mfm.parse(text.value);
+	const ast = parseMfmCached(text.value);
 
 	for (const x of extractMentions(ast)) {
 		if (!visibleUsers.value.some(u => (u.username === x.username) && (u.host === x.host))) {
@@ -1226,7 +1227,7 @@ async function post(ev?: MouseEvent) {
 			else os.toast(i18n.ts.posted, 'posted');
 
 			if (postData.text && postData.text !== '') {
-				const hashtags_ = mfm.parse(postData.text).map(x => x.type === 'hashtag' && x.props.hashtag).filter(x => x) as string[];
+				const hashtags_ = parseMfmCached(postData.text).map(x => x.type === 'hashtag' && x.props.hashtag).filter(x => x) as string[];
 				const history = JSON.parse(miLocalStorage.getItem('hashtags') ?? '[]') as string[];
 				miLocalStorage.setItem('hashtags', JSON.stringify(unique(hashtags_.concat(history))));
 			}

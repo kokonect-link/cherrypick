@@ -163,6 +163,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, provide, ref, useTemplateRef, watch } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
+import { parseMfmCached } from '@/utility/mfm-cache.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { concat } from '@@/js/array.js';
 import { host } from '@@/js/config.js';
@@ -237,7 +238,7 @@ const translating = ref(false);
 const viewTextSource = ref(false);
 const noNyaize = ref(false);
 
-const parsed = props.note.text ? mfm.parse(props.note.text) : null;
+const parsed = props.note.text ? parseMfmCached(props.note.text) : null;
 
 const isLong = shouldCollapsed(props.note, []);
 const isMFM = shouldMfmCollapsed(props.note);
