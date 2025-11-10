@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<component :is="prefer.s.enablePullToRefresh && pullToRefresh ? MkPullToRefresh : 'div'" :refresher="() => paginator.reload()" @contextmenu.prevent.stop="onContextmenu">
+<component :is="prefer.s.enablePullToRefresh && pullToRefresh ? MkPullToRefresh : 'div'" :refresher="reload" @contextmenu.prevent.stop="onContextmenu">
 	<div>
 		<MkPaginationControl v-if="props.withControl" :paginator="paginator" style="margin-bottom: 10px"/>
 
@@ -75,6 +75,10 @@ const props = withDefaults(defineProps<{
 	pullToRefresh: true,
 	withControl: false,
 });
+
+function reload() {
+	props.paginator.reload();
+}
 
 function onContextmenu(ev: MouseEvent) {
 	if (ev.target && isLink(ev.target as HTMLElement)) return;

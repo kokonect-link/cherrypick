@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<XColumn :column="column" :isStacked="isStacked" :menu="menu" :refresher="async () => { await notificationsComponent?.reload() }">
+<XColumn :column="column" :isStacked="isStacked" :menu="menu" :refresher="reload">
 	<template #header><i class="ti ti-bell" style="margin-right: 8px;"></i>{{ column.name || i18n.ts._deck._columns.notifications }}</template>
 
 	<MkStreamingNotificationsTimeline ref="notificationsComponent" :excludeTypes="props.column.excludeTypes"/>
@@ -26,6 +26,10 @@ const props = defineProps<{
 }>();
 
 const notificationsComponent = useTemplateRef('notificationsComponent');
+
+async function reload() {
+	await notificationsComponent.value?.reload();
+}
 
 async function func() {
 	const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkNotificationSelectWindow.vue').then(x => x.default), {

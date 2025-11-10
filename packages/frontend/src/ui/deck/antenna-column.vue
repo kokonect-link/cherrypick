@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<XColumn :menu="menu" :column="column" :isStacked="isStacked" :refresher="async () => { await timeline?.reloadTimeline() }">
+<XColumn :menu="menu" :column="column" :isStacked="isStacked" :refresher="reloadTimeline">
 	<template #header>
 		<i class="ti ti-antenna"></i><span style="margin-left: 8px;">{{ column.name || column.timelineNameCache || i18n.ts._deck._columns.antenna }}</span>
 	</template>
@@ -35,6 +35,10 @@ const props = defineProps<{
 
 const timeline = useTemplateRef('timeline');
 const soundSetting = ref<SoundStore>(props.column.soundSetting ?? { type: null, volume: 1 });
+
+async function reloadTimeline() {
+	await timeline.value?.reloadTimeline();
+}
 
 onMounted(() => {
 	if (props.column.antennaId == null) {

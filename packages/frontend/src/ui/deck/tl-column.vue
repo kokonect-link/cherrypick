@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<XColumn :menu="menu" :column="column" :isStacked="isStacked" :refresher="async () => { await timeline?.reloadTimeline() }">
+<XColumn :menu="menu" :column="column" :isStacked="isStacked" :refresher="reloadTimeline">
 	<template #header>
 		<i v-if="column.tl != null" :class="basicTimelineIconClass(column.tl)"/>
 		<span style="margin-left: 8px;">{{ column.name || (column.tl ? i18n.ts._timelines[column.tl] : null) || i18n.ts._deck._columns.tl }}</span>
@@ -52,6 +52,10 @@ const props = defineProps<{
 }>();
 
 const timeline = useTemplateRef('timeline');
+
+async function reloadTimeline() {
+	await timeline.value?.reloadTimeline();
+}
 
 const soundSetting = ref<SoundStore>(props.column.soundSetting ?? { type: null, volume: 1 });
 const withRenotes = ref(props.column.withRenotes ?? true);
