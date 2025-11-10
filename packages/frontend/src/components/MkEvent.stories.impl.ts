@@ -17,7 +17,7 @@ export const Default = {
 				};
 			},
 			beforeMount () {
-				document.body.style.background = 'var(--panel)';
+				window.document.body.style.background = 'var(--panel)';
 			},
 			computed: {
 				props() {

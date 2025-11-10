@@ -163,12 +163,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, provide, ref, useTemplateRef, watch } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
-import { parseMfmCached } from '@/utility/mfm-cache.js';
 import { shouldCollapsed, shouldMfmCollapsed } from '@@/js/collapsed.js';
 import { concat } from '@@/js/array.js';
 import { host } from '@@/js/config.js';
 import type { Ref } from 'vue';
 import type { OpenOnRemoteOptions } from '@/utility/please-login.js';
+import { parseMfmCached } from '@/utility/mfm-cache.js';
 import * as os from '@/os.js';
 import * as sound from '@/utility/sound.js';
 import MkMediaList from '@/components/MkMediaList.vue';

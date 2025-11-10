@@ -272,7 +272,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				eventTitle: ps.event?.title ? ps.event.title! : null,
 				eventMetadata: ps.event?.metadata ? ps.event.metadata : null,
 				deleteAt: ps.scheduledDelete?.deleteAt ? new Date(ps.scheduledDelete.deleteAt) : ps.scheduledDelete?.deleteAfter ? new Date(Date.now() + ps.scheduledDelete.deleteAfter) : null,
-				deliveryTargets: ps.deliveryTargets,
+				deliveryTargets: ps.deliveryTargets ?? null,
 			}).catch((err) => {
 				if (err instanceof IdentifiableError) {
 					switch (err.id) {

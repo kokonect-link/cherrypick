@@ -364,11 +364,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { computed, inject, markRaw, onMounted, provide, ref, useTemplateRef } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
-import { parseMfmCached } from '@/utility/mfm-cache.js';
 import { isLink } from '@@/js/is-link.js';
 import { host } from '@@/js/config.js';
 import type { OpenOnRemoteOptions } from '@/utility/please-login.js';
 import type { Keymap } from '@/utility/hotkey.js';
+import { parseMfmCached } from '@/utility/mfm-cache.js';
 import MkNoteSub from '@/components/MkNoteSub.vue';
 import MkNoteSimple from '@/components/MkNoteSimple.vue';
 import MkReactionsViewer from '@/components/MkReactionsViewer.vue';

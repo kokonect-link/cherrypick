@@ -135,7 +135,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { inject, watch, nextTick, onMounted, defineAsyncComponent, provide, shallowRef, ref, computed, useTemplateRef, onUnmounted } from 'vue';
 import * as mfm from 'mfc-js';
 import * as Misskey from 'cherrypick-js';
-import { parseMfmCached } from '@/utility/mfm-cache.js';
 import insertTextAtCursor from 'insert-text-at-cursor';
 import { toASCII } from 'punycode.js';
 import { host, url } from '@@/js/config.js';
@@ -148,6 +147,7 @@ import type { PollEditorModelValue } from '@/components/MkPollEditor.vue';
 import type { UploaderItem } from '@/composables/use-uploader.js';
 import type { DeleteScheduleEditorModelValue } from '@/components/MkScheduledNoteDelete.vue';
 import type { DeliveryTargetEditorModelValue } from '@/components/MkDeliveryTargetEditor.vue';
+import { parseMfmCached } from '@/utility/mfm-cache.js';
 import MkNotePreview from '@/components/MkNotePreview.vue';
 import XPostFormAttaches from '@/components/MkPostFormAttaches.vue';
 import XTextCounter from '@/components/MkPostForm.TextCounter.vue';

@@ -81,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<SearchMarker :keywords="['chat']">
 						<MkSelect v-model="chatScope" :items="chatScopeDef" @update:modelValue="save()">
 							<template #label><SearchLabel>{{ i18n.ts._chat.chatAllowedUsers }}</SearchLabel></template>
-							<template #caption><<SearchText>{{ i18n.ts._chat.chatAllowedUsers_note }}</SearchText></template>
+							<template #caption><SearchText>{{ i18n.ts._chat.chatAllowedUsers_note }}</SearchText></template>
 						</MkSelect>
 					</SearchMarker>
 				</div>
