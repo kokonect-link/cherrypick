@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue';
 import { openInstanceMenu } from './common.js';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
@@ -64,6 +64,12 @@ import { fetchCherrypickReleases } from '@/utility/fetch-releases.js';
 import { haptic } from '@/utility/haptic.js';
 
 const WINDOW_THRESHOLD = 1400;
+
+const handleResize = () => {
+	settingsWindowed.value = (window.innerWidth >= WINDOW_THRESHOLD);
+};
+
+window.addEventListener('resize', handleResize, { passive: true });
 
 const settingsWindowed = ref(window.innerWidth > WINDOW_THRESHOLD);
 const menu = ref(prefer.s.menu);
@@ -115,12 +121,9 @@ async function openAccountMenu(ev: MouseEvent) {
 	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 }
 
-onMounted(() => {
-	window.addEventListener('resize', () => {
-		settingsWindowed.value = (window.innerWidth >= WINDOW_THRESHOLD);
-	}, { passive: true });
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
 });
-
 </script>
 
 <style lang="scss" scoped>

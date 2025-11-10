@@ -105,7 +105,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch, onUnmounted } from 'vue';
 import { openInstanceMenu } from './common.js';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
@@ -172,6 +172,10 @@ watch(store.r.menuDisplay, () => {
 
 watch(prefer.r.bannerDisplay, () => {
 	toggleBannerDisplay();
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', calcViewState);
 });
 
 function toggleIconOnly() {

@@ -98,9 +98,11 @@ const MOBILE_THRESHOLD = 500;
 // デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const enableNavButton = [
 	'index',
@@ -186,6 +188,7 @@ onMounted(() => {
 
 onUnmounted(() => {
 	globalEvents.off('themeChanging', calcBg);
+	window.removeEventListener('resize', handleResize);
 });
 
 const onContextmenu = (ev) => {

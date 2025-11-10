@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onActivated, onDeactivated, onMounted, ref } from 'vue';
+import { onActivated, onDeactivated, onMounted, onUnmounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
 import XMessage from './XMessage.vue';
@@ -61,9 +61,11 @@ import { globalEvents } from '@/events.js';
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const $i = ensureSignin();
 
@@ -132,8 +134,11 @@ async function search() {
 
 onMounted(() => {
 	updateCurrentAccountPartial({ hasUnreadChatMessages: false });
-
 	globalEvents.on('createChat', (ev) => start(ev));
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
 });
 </script>
 

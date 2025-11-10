@@ -31,7 +31,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { onBeforeUnmount, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { prefer } from '@/preferences.js';
 import { globalEvents } from '@/events.js';
@@ -43,9 +43,11 @@ import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const { showEl } = scrollToVisibility();
 
@@ -105,6 +107,10 @@ function updateBgColor() {
 onMounted(() => {
 	updateBgColor();
 	globalEvents.on('themeChanging', updateBgColor);
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
 });
 
 onBeforeUnmount(() => {

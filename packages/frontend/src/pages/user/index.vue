@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, onUnmounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { acct as getAcct } from '@/filters/user.js';
@@ -42,9 +42,11 @@ import { serverContext, assertServerContext } from '@/server-context.js';
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
 const XNotes = defineAsyncComponent(() => import('./notes.vue'));
@@ -98,6 +100,10 @@ function fetchUser(): void {
 
 watch(() => props.acct, fetchUser, {
 	immediate: true,
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
 });
 
 const headerActions = computed(() => [{

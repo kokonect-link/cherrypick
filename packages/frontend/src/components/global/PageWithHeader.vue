@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, useTemplateRef } from 'vue';
+import { computed, onUnmounted, ref, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { scrollInContainer } from '@@/js/scroll.js';
 import type { PageHeaderProps } from './MkPageHeader.vue';
@@ -45,9 +45,11 @@ import { detectScrolling } from '@/utility/detect-scrolling.js';
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(['smartphone', 'tablet'].includes(String(deviceKind)) || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const props = withDefaults(defineProps<PageHeaderProps & {
 	reversed?: boolean;
@@ -86,6 +88,10 @@ router.useListener('same', () => {
 function scrollToTop() {
 	if (rootEl.value) scrollInContainer(rootEl.value, { top: 0, behavior: 'smooth' });
 }
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+});
 
 defineExpose({
 	scrollToTop,

@@ -225,7 +225,7 @@ const lastLine = computed(() => rows.value.filter(it => it.using).length - 1);
 // endregion
 // #endregion
 
-watch(data, patchData, { deep: true });
+watch(() => JSON.stringify(data.value), () => patchData(data.value));
 
 if (_DEV_) {
 	watch(state, (value, oldValue) => {

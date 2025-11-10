@@ -41,7 +41,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, provide, useTemplateRef, defineAsyncComponent, ref, onMounted, onActivated } from 'vue';
+import { computed, watch, provide, useTemplateRef, defineAsyncComponent, ref, onMounted, onActivated, onUnmounted } from 'vue';
 import type { Tab } from '@/components/global/MkPageHeader.tabs.vue';
 import type { MenuItem } from '@/types/menu.js';
 import type { BasicTimelineType } from '@/timelines.js';
@@ -70,9 +70,11 @@ const MOBILE_THRESHOLD = 500;
 // デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(['smartphone', 'tablet'].includes(String(deviceKind)) || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const schedulePostList = $i ? (await misskeyApi('notes/drafts/list', { scheduled: true })).length : 0;
 
@@ -371,6 +373,11 @@ function showDraftMenu(scheduled: boolean) {
 onMounted(() => {
 	switchTlIfNeeded();
 });
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+});
+
 onActivated(() => {
 	switchTlIfNeeded();
 });

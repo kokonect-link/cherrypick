@@ -82,7 +82,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref, useTemplateRef } from 'vue';
+import { defineAsyncComponent, ref, useTemplateRef, onUnmounted } from 'vue';
 import XCommon from './_common_/common.vue';
 import { genId } from '@/utility/id.js';
 import XSidebar from '@/ui/_common_/navbar.vue';
@@ -141,9 +141,11 @@ mainRouter.navHook = (path, flag): boolean => {
 };
 
 const isMobile = ref(window.innerWidth <= 500);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = window.innerWidth <= 500;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 // ポインターイベント非対応用に初期値はUAから出す
 const snapScroll = ref(deviceKind === 'smartphone' || deviceKind === 'tablet');
@@ -225,6 +227,11 @@ async function deleteProfile() {
 
 window.document.documentElement.style.overflowY = 'hidden';
 window.document.documentElement.style.scrollBehavior = 'auto';
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+	window.document.removeEventListener('pointerdown', pointerEvent);
+});
 </script>
 
 <style lang="scss" module>

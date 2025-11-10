@@ -1037,7 +1037,7 @@ async function learnMoreAutoTranslate() {
 	if (confirm.canceled) role.value.policies.canUseAutoTranslate.value = false;
 }
 
-watch(role, save, { deep: true });
+watch(() => JSON.stringify(role.value), save);
 </script>
 
 <style lang="scss" module>
