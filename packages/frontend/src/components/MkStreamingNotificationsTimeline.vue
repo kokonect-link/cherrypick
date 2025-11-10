@@ -71,7 +71,6 @@ const virtualScroller = useTimelineVirtualScroller(rootEl, {
 	enabled: computed(() => prefer.s.enableTimelineVirtualScroller),
 	buffer: 1000,
 	minItems: prefer.s.timelineVirtualScrollerThreshold,
-	maxPlaceholders: 20,
 });
 
 const paginator = prefer.s.useGroupedNotifications && !props.notUseGrouped ? markRaw(new Paginator('i/notifications-grouped', {
