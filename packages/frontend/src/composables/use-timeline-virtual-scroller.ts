@@ -18,6 +18,7 @@ interface VirtualItem {
 	id: string;
 	element: HTMLElement;
 	placeholder: HTMLElement | null;
+	spacer: HTMLElement | null;
 	isVisible: boolean;
 	height: number;
 	top: number;
@@ -31,8 +32,6 @@ export function useTimelineVirtualScroller(
 	const items = new Map<string, VirtualItem>();
 	let resizeObserver: ResizeObserver | null = null;
 	let styleElement: HTMLStyleElement | null = null;
-	let topSpacerHeight = 0;
-	let bottomSpacerHeight = 0;
 
 	const injectStyles = () => {
 		if (styleElement) return;
@@ -89,6 +88,14 @@ export function useTimelineVirtualScroller(
 		return placeholder;
 	};
 
+	const createSpacer = (item: VirtualItem): HTMLElement => {
+		const spacer = window.document.createElement('div');
+		spacer.dataset.noteId = item.id;
+		spacer.dataset.spacer = 'true';
+		spacer.style.cssText = `height: ${item.height}px; min-height: ${item.height}px;`;
+		return spacer;
+	};
+
 	const hideItem = (item: VirtualItem) => {
 		if (!item.isVisible || !item.element.parentElement) return;
 		item.height = item.element.offsetHeight || 150;
@@ -98,7 +105,8 @@ export function useTimelineVirtualScroller(
 	};
 
 	const showItem = (item: VirtualItem, animate = true) => {
-		if (item.isVisible || !item.placeholder?.parentElement) return;
+		const current = item.spacer ?? item.placeholder;
+		if (item.isVisible || !current?.parentElement) return;
 
 		if (animate) {
 			item.element.classList.add('timeline-item-fade-in');
@@ -117,16 +125,18 @@ export function useTimelineVirtualScroller(
 			item.element.classList.remove('timeline-item-fade-in');
 		}
 
-		item.placeholder.parentElement.replaceChild(item.element, item.placeholder);
+		current.parentElement.replaceChild(item.element, current);
 		item.placeholder = null;
+		item.spacer = null;
 		item.isVisible = true;
 	};
 
-	const updateSpacers = () => {
-		if (!containerRef.value) return;
-
-		containerRef.value.style.paddingTop = `${topSpacerHeight}px`;
-		containerRef.value.style.paddingBottom = `${bottomSpacerHeight}px`;
+	const hideToSpacer = (item: VirtualItem) => {
+		if (!item.isVisible || !item.element.parentElement) return;
+		item.height = item.element.offsetHeight || 150;
+		item.spacer = createSpacer(item);
+		item.element.parentElement.replaceChild(item.spacer, item.element);
+		item.isVisible = false;
 	};
 
 	const processVisibility = (animate: boolean) => {
@@ -138,14 +148,12 @@ export function useTimelineVirtualScroller(
 		const bottomThreshold = scrollTop + viewportHeight + buffer;
 		const placeholderBuffer = maxPlaceholders * 200;
 
-		let topHeight = 0;
-		let bottomHeight = 0;
 		let topPCount = 0;
 		let bottomPCount = 0;
 
 		const itemsArray = Array.from(items.values());
 		for (const item of itemsArray) {
-			const element = item.isVisible ? item.element : item.placeholder;
+			const element = item.isVisible ? item.element : (item.placeholder ?? item.spacer);
 			if (element?.parentElement) {
 				const rect = element.getBoundingClientRect();
 				item.top = rect.top + scrollTop;
@@ -154,7 +162,7 @@ export function useTimelineVirtualScroller(
 		itemsArray.sort((a, b) => a.top - b.top);
 
 		for (const item of itemsArray) {
-			const element = item.isVisible ? item.element : item.placeholder;
+			const element = item.isVisible ? item.element : (item.placeholder ?? item.spacer);
 			if (!element?.parentElement) continue;
 
 			const bottom = item.top + (item.height || 150);
@@ -169,24 +177,34 @@ export function useTimelineVirtualScroller(
 				const count = isTop ? topPCount : bottomPCount;
 
 				if (count < maxPlaceholders) {
-					if (item.isVisible) hideItem(item);
+					if (item.isVisible) {
+						hideItem(item);
+					} else if (item.spacer?.parentElement) {
+						item.placeholder = createPlaceholder(item);
+						item.spacer.parentElement.replaceChild(item.placeholder, item.spacer);
+						item.spacer = null;
+					}
 					if (isTop) topPCount++;
 					else bottomPCount++;
 				} else {
-					element.remove();
-					if (isTop) topHeight += item.height || 150;
-					else bottomHeight += item.height || 150;
+					if (item.placeholder?.parentElement) {
+						item.spacer = createSpacer(item);
+						item.placeholder.parentElement.replaceChild(item.spacer, item.placeholder);
+						item.placeholder = null;
+					} else if (item.isVisible) {
+						hideToSpacer(item);
+					}
 				}
 			} else {
-				element.remove();
-				if (item.top < topThreshold) topHeight += item.height || 150;
-				else bottomHeight += item.height || 150;
+				if (item.isVisible) {
+					hideToSpacer(item);
+				} else if (item.placeholder?.parentElement) {
+					item.spacer = createSpacer(item);
+					item.placeholder.parentElement.replaceChild(item.spacer, item.placeholder);
+					item.placeholder = null;
+				}
 			}
 		}
-
-		topSpacerHeight = topHeight;
-		bottomSpacerHeight = bottomHeight;
-		updateSpacers();
 	};
 
 	const updateVisibility = throttle(100, () => processVisibility(true));
@@ -200,6 +218,7 @@ export function useTimelineVirtualScroller(
 			id,
 			element,
 			placeholder: null,
+			spacer: null,
 			isVisible: true,
 			height: 0,
 			top: 0,
@@ -213,7 +232,8 @@ export function useTimelineVirtualScroller(
 		if (!item) return;
 
 		resizeObserver?.unobserve(item.element);
-		item.placeholder?.parentElement && item.placeholder.replaceWith(item.element);
+		const current = item.placeholder ?? item.spacer;
+		current?.parentElement && current.replaceWith(item.element);
 		items.delete(id);
 	};
 
@@ -277,15 +297,12 @@ export function useTimelineVirtualScroller(
 		window.removeEventListener('scroll', handleScroll);
 		window.removeEventListener('resize', updateVisibility);
 
-		items.forEach(item => !item.isVisible && item.placeholder && showItem(item, false));
+		items.forEach(item => {
+			if (!item.isVisible && (item.placeholder || item.spacer)) {
+				showItem(item, false);
+			}
+		});
 		items.clear();
-
-		if (containerRef.value) {
-			containerRef.value.style.paddingTop = '';
-			containerRef.value.style.paddingBottom = '';
-		}
-		topSpacerHeight = 0;
-		bottomSpacerHeight = 0;
 
 		styleElement?.remove();
 		styleElement = null;
