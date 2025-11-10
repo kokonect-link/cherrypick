@@ -69,8 +69,8 @@ jobs:
           {
             echo 'template<<EOF'
             echo "## Unreleased"
-            echo "출시일: unreleased<br>"
-            echo "기반 Misskey 버전: ${BASED_VERSION}<br>"
+            echo "**출시일**: unreleased  "
+            echo "**기반 Misskey 버전**: ${BASED_VERSION}  "
             echo "Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#${CHANGELOG_ANCHOR}](CHANGELOG.md#${CHANGELOG_ANCHOR}) 문서를 참고하십시오."
             echo ""
             echo "### NOTE"
