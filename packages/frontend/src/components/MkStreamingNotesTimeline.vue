@@ -319,6 +319,7 @@ const virtualScroller = useTimelineVirtualScroller(rootEl, {
 	enabled: computed(() => prefer.s.enableTimelineVirtualScroller),
 	buffer: 1000,
 	minItems: prefer.s.timelineVirtualScrollerThreshold,
+	maxPlaceholders: 20,
 });
 
 const visibility = useDocumentVisibility();
