@@ -20,6 +20,7 @@ interface VirtualItem {
 	placeholder: HTMLElement | null;
 	isVisible: boolean;
 	height: number;
+	top: number;
 }
 
 export function useTimelineVirtualScroller(
@@ -28,7 +29,6 @@ export function useTimelineVirtualScroller(
 ) {
 	const { enabled, buffer = 1000, minItems = 100, maxPlaceholders = 20 } = options;
 	const items = new Map<string, VirtualItem>();
-	let observer: IntersectionObserver | null = null;
 	let resizeObserver: ResizeObserver | null = null;
 	let styleElement: HTMLStyleElement | null = null;
 	let topSpacerHeight = 0;
@@ -97,28 +97,29 @@ export function useTimelineVirtualScroller(
 		item.isVisible = false;
 	};
 
-	const showItem = (item: VirtualItem) => {
+	const showItem = (item: VirtualItem, animate = true) => {
 		if (item.isVisible || !item.placeholder?.parentElement) return;
-		item.element.classList.add('timeline-item-fade-in');
+
+		if (animate) {
+			item.element.classList.add('timeline-item-fade-in');
+			const timeoutId = window.setTimeout(() => {
+				item.element.classList.remove('timeline-item-fade-in');
+			}, 300);
+
+			const handleFastScroll = () => {
+				window.clearTimeout(timeoutId);
+				item.element.classList.remove('timeline-item-fade-in');
+			};
+
+			window.addEventListener('wheel', handleFastScroll, { once: true, passive: true });
+			window.addEventListener('touchmove', handleFastScroll, { once: true, passive: true });
+		} else {
+			item.element.classList.remove('timeline-item-fade-in');
+		}
+
 		item.placeholder.parentElement.replaceChild(item.element, item.placeholder);
 		item.placeholder = null;
 		item.isVisible = true;
-
-		const removeAnimation = () => {
-			item.element.classList.remove('timeline-item-fade-in');
-		};
-
-		const timeoutId = window.setTimeout(removeAnimation, 300);
-
-		const handleFastScroll = () => {
-			window.clearTimeout(timeoutId);
-			removeAnimation();
-			window.removeEventListener('wheel', handleFastScroll);
-			window.removeEventListener('touchmove', handleFastScroll);
-		};
-
-		window.addEventListener('wheel', handleFastScroll, { once: true, passive: true });
-		window.addEventListener('touchmove', handleFastScroll, { once: true, passive: true });
 	};
 
 	const updateSpacers = () => {
@@ -128,149 +129,91 @@ export function useTimelineVirtualScroller(
 		containerRef.value.style.paddingBottom = `${bottomSpacerHeight}px`;
 	};
 
-	const updateVisibility = throttle(100, () => {
+	const processVisibility = (animate: boolean) => {
 		if (!enabled.value || items.size < minItems) return;
-		const scrollTop = window.scrollY;
-		const viewportHeight = window.innerHeight;
-		const topThreshold = scrollTop - buffer;
-		const bottomThreshold = scrollTop + viewportHeight + buffer;
-		const placeholderBuffer = maxPlaceholders * 200; // 플레이스홀더 영역 (예상 높이)
 
-		const itemsArray = Array.from(items.values()).sort((a, b) => {
-			const aTop = (a.isVisible ? a.element : a.placeholder)?.getBoundingClientRect().top ?? 0;
-			const bTop = (b.isVisible ? b.element : b.placeholder)?.getBoundingClientRect().top ?? 0;
-			return aTop - bTop;
-		});
-
-		let accumulatedTopHeight = 0;
-		let accumulatedBottomHeight = 0;
-		let topPlaceholderCount = 0;
-		let bottomPlaceholderCount = 0;
-
-		for (const item of itemsArray) {
-			const element = item.isVisible ? item.element : item.placeholder;
-			if (!element || !element.parentElement) continue;
-
-			const rect = element.getBoundingClientRect();
-			const elementTop = rect.top + scrollTop;
-			const elementBottom = elementTop + rect.height;
-
-			const inViewport = elementBottom > topThreshold && elementTop < bottomThreshold;
-			const inPlaceholderZone = elementBottom > (topThreshold - placeholderBuffer) &&
-			                          elementTop < (bottomThreshold + placeholderBuffer);
-
-			if (inViewport) {
-				if (!item.isVisible) showItem(item);
-			} else if (inPlaceholderZone && (topPlaceholderCount < maxPlaceholders || bottomPlaceholderCount < maxPlaceholders)) {
-				if (item.isVisible) hideItem(item);
-
-				if (elementTop < topThreshold) topPlaceholderCount++;
-				else bottomPlaceholderCount++;
-			} else {
-				element.remove();
-
-				if (elementTop < topThreshold) {
-					accumulatedTopHeight += item.height || 150;
-				} else {
-					accumulatedBottomHeight += item.height || 150;
-				}
-			}
-		}
-
-		topSpacerHeight = accumulatedTopHeight;
-		bottomSpacerHeight = accumulatedBottomHeight;
-		updateSpacers();
-	});
-
-	const updateVisibilityImmediate = () => {
-		if (!enabled.value || items.size < minItems) return;
 		const scrollTop = window.scrollY;
 		const viewportHeight = window.innerHeight;
 		const topThreshold = scrollTop - buffer;
 		const bottomThreshold = scrollTop + viewportHeight + buffer;
 		const placeholderBuffer = maxPlaceholders * 200;
 
-		const itemsArray = Array.from(items.values()).sort((a, b) => {
-			const aTop = (a.isVisible ? a.element : a.placeholder)?.getBoundingClientRect().top ?? 0;
-			const bTop = (b.isVisible ? b.element : b.placeholder)?.getBoundingClientRect().top ?? 0;
-			return aTop - bTop;
-		});
+		let topHeight = 0;
+		let bottomHeight = 0;
+		let topPCount = 0;
+		let bottomPCount = 0;
 
-		let accumulatedTopHeight = 0;
-		let accumulatedBottomHeight = 0;
-		let topPlaceholderCount = 0;
-		let bottomPlaceholderCount = 0;
+		const itemsArray = Array.from(items.values());
+		for (const item of itemsArray) {
+			const element = item.isVisible ? item.element : item.placeholder;
+			if (element?.parentElement) {
+				const rect = element.getBoundingClientRect();
+				item.top = rect.top + scrollTop;
+			}
+		}
+		itemsArray.sort((a, b) => a.top - b.top);
 
 		for (const item of itemsArray) {
 			const element = item.isVisible ? item.element : item.placeholder;
-			if (!element || !element.parentElement) continue;
+			if (!element?.parentElement) continue;
 
-			const rect = element.getBoundingClientRect();
-			const elementTop = rect.top + scrollTop;
-			const elementBottom = elementTop + rect.height;
-
-			const inViewport = elementBottom > topThreshold && elementTop < bottomThreshold;
-			const inPlaceholderZone = elementBottom > (topThreshold - placeholderBuffer) &&
-			                          elementTop < (bottomThreshold + placeholderBuffer);
+			const bottom = item.top + (item.height || 150);
+			const inViewport = bottom > topThreshold && item.top < bottomThreshold;
+			const inPlaceholderZone = bottom > (topThreshold - placeholderBuffer) &&
+			                          item.top < (bottomThreshold + placeholderBuffer);
 
 			if (inViewport) {
-				if (!item.isVisible) {
-					item.element.classList.remove('timeline-item-fade-in');
-					if (item.placeholder?.parentElement) {
-						item.placeholder.parentElement.replaceChild(item.element, item.placeholder);
-					}
-					item.placeholder = null;
-					item.isVisible = true;
-				}
-			} else if (inPlaceholderZone && (topPlaceholderCount < maxPlaceholders || bottomPlaceholderCount < maxPlaceholders)) {
-				if (item.isVisible) hideItem(item);
+				if (!item.isVisible) showItem(item, animate);
+			} else if (inPlaceholderZone) {
+				const isTop = item.top < topThreshold;
+				const count = isTop ? topPCount : bottomPCount;
 
-				if (elementTop < topThreshold) topPlaceholderCount++;
-				else bottomPlaceholderCount++;
+				if (count < maxPlaceholders) {
+					if (item.isVisible) hideItem(item);
+					if (isTop) topPCount++;
+					else bottomPCount++;
+				} else {
+					element.remove();
+					if (isTop) topHeight += item.height || 150;
+					else bottomHeight += item.height || 150;
+				}
 			} else {
 				element.remove();
-
-				if (elementTop < topThreshold) {
-					accumulatedTopHeight += item.height || 150;
-				} else {
-					accumulatedBottomHeight += item.height || 150;
-				}
+				if (item.top < topThreshold) topHeight += item.height || 150;
+				else bottomHeight += item.height || 150;
 			}
 		}
 
-		topSpacerHeight = accumulatedTopHeight;
-		bottomSpacerHeight = accumulatedBottomHeight;
+		topSpacerHeight = topHeight;
+		bottomSpacerHeight = bottomHeight;
 		updateSpacers();
 	};
+
+	const updateVisibility = throttle(100, () => processVisibility(true));
+	const updateVisibilityImmediate = () => processVisibility(false);
 
 	const registerItem = (element: HTMLElement) => {
 		const id = element.dataset.noteId;
 		if (!id || items.has(id)) return;
 
-		const item: VirtualItem = {
+		items.set(id, {
 			id,
 			element,
 			placeholder: null,
 			isVisible: true,
 			height: 0,
-		};
+			top: 0,
+		});
 
-		items.set(id, item);
 		resizeObserver?.observe(element);
-		observer?.observe(element);
 	};
 
 	const unregisterItem = (id: string) => {
 		const item = items.get(id);
 		if (!item) return;
 
-		observer?.unobserve(item.element);
 		resizeObserver?.unobserve(item.element);
-
-		if (item.placeholder?.parentElement) {
-			item.placeholder.replaceWith(item.element);
-		}
-
+		item.placeholder?.parentElement && item.placeholder.replaceWith(item.element);
 		items.delete(id);
 	};
 
@@ -307,25 +250,13 @@ export function useTimelineVirtualScroller(
 
 		injectStyles();
 
-		observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					const id = (entry.target as HTMLElement).dataset.noteId;
-					if (id && entry.isIntersecting) {
-						const item = items.get(id);
-						if (item) showItem(item);
-					}
-				}
-				updateVisibility();
-			},
-			{ rootMargin: `${buffer}px 0px`, threshold: 0 },
-		);
-
 		resizeObserver = new ResizeObserver((entries) => {
 			for (const entry of entries) {
 				const id = (entry.target as HTMLElement).dataset.noteId;
-				const item = id ? items.get(id) : null;
-				if (item) item.height = entry.contentRect.height;
+				if (id) {
+					const item = items.get(id);
+					if (item) item.height = entry.contentRect.height;
+				}
 			}
 		});
 
@@ -342,18 +273,13 @@ export function useTimelineVirtualScroller(
 			scrollEndTimer = null;
 		}
 
-		observer?.disconnect();
 		resizeObserver?.disconnect();
 		window.removeEventListener('scroll', handleScroll);
 		window.removeEventListener('resize', updateVisibility);
 
-		for (const item of items.values()) {
-			if (!item.isVisible && item.placeholder) showItem(item);
-		}
-
+		items.forEach(item => !item.isVisible && item.placeholder && showItem(item, false));
 		items.clear();
 
-		// padding 리셋
 		if (containerRef.value) {
 			containerRef.value.style.paddingTop = '';
 			containerRef.value.style.paddingBottom = '';
@@ -361,36 +287,27 @@ export function useTimelineVirtualScroller(
 		topSpacerHeight = 0;
 		bottomSpacerHeight = 0;
 
-		if (styleElement?.parentElement) {
-			styleElement.parentElement.removeChild(styleElement);
-			styleElement = null;
-		}
+		styleElement?.remove();
+		styleElement = null;
 	};
 
-	onMounted(() => {
-		if (enabled.value && containerRef.value) init();
-	});
-
+	onMounted(() => enabled.value && containerRef.value && init());
 	onUnmounted(cleanup);
 
-	watch(enabled, (newValue) => {
-		if (newValue && containerRef.value) init();
-		else cleanup();
-	});
-
-	watch(containerRef, (newContainer, oldContainer) => {
-		if (oldContainer) cleanup();
-		if (newContainer && enabled.value) init();
+	watch(enabled, (val) => val && containerRef.value ? init() : cleanup());
+	watch(containerRef, (newC, oldC) => {
+		oldC && cleanup();
+		newC && enabled.value && init();
 	});
 
 	return {
 		registerItem,
 		unregisterItem,
 		updateVisibility,
-		getStats: () => ({
-			total: items.size,
-			visible: Array.from(items.values()).filter(i => i.isVisible).length,
-			hidden: Array.from(items.values()).filter(i => !i.isVisible).length,
-		}),
+		getStats: () => {
+			let visible = 0;
+			items.forEach(i => i.isVisible && visible++);
+			return { total: items.size, visible, hidden: items.size - visible };
+		},
 	};
 }
