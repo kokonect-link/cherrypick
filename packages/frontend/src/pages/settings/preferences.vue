@@ -1087,6 +1087,22 @@ SPDX-License-Identifier: AGPL-3.0-only
 							</MkPreferenceContainer>
 						</SearchMarker>
 
+						<SearchMarker :keywords="['timeline', 'virtual', 'scroll']">
+							<MkPreferenceContainer k="enableTimelineVirtualScroller">
+								<MkSwitch v-model="enableTimelineVirtualScroller">
+									<template #label><SearchLabel>{{ i18n.ts.enableTimelineVirtualScroller }}</SearchLabel> <span class="_beta">CherryPick</span></template>
+									<template #caption><SearchText>{{ i18n.ts.enableTimelineVirtualScrollerDescription }}</SearchText></template>
+								</MkSwitch>
+							</MkPreferenceContainer>
+
+							<MkPreferenceContainer v-if="enableTimelineVirtualScroller" k="timelineVirtualScrollerThreshold">
+								<MkRange v-model="timelineVirtualScrollerThreshold" :min="10" :max="150" :step="10" style="margin: 6px 0 0 44px;">
+									<template #label><SearchLabel>{{ i18n.ts.timelineVirtualScrollerThreshold }}</SearchLabel></template>
+									<template #caption><SearchText>{{ i18n.ts.timelineVirtualScrollerThresholdDescription }}</SearchText></template>
+								</MkRange>
+							</MkPreferenceContainer>
+						</SearchMarker>
+
 						<SearchMarker :keywords="['blur', 'modal', 'bg', 'remove']">
 							<MkPreferenceContainer k="removeModalBgColorForBlur">
 								<MkSwitch v-if="useBlurEffect && useBlurEffectForModal" v-model="removeModalBgColorForBlur">
@@ -1521,6 +1537,8 @@ const nsfwOpenBehavior = prefer.model('nsfwOpenBehavior');
 const showProfilePreview = prefer.model('showProfilePreview');
 const showingAnimatedImages = prefer.model('showingAnimatedImages');
 const smoothTransitionAnimations = prefer.model('smoothTransitionAnimations', v => !v, v => !v);
+const enableTimelineVirtualScroller = prefer.model('enableTimelineVirtualScroller');
+const timelineVirtualScrollerThreshold = prefer.model('timelineVirtualScrollerThreshold');
 
 watch(lang, () => {
 	miLocalStorage.setItem('lang', lang.value as string);
@@ -1632,6 +1650,8 @@ watch([
 	showDoReactionButtonInNoteFooter,
 	showQuoteButtonInNoteFooter,
 	showMoreButtonInNoteFooter,
+	enableTimelineVirtualScroller,
+	timelineVirtualScrollerThreshold,
 ], () => {
 	reloadTimeline();
 	reloadNotification();

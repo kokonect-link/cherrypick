@@ -648,6 +648,12 @@ export const PREF_DEF = definePreferences({
 	smoothTransitionAnimations: {
 		default: false,
 	},
+	enableTimelineVirtualScroller: {
+		default: true,
+	},
+	timelineVirtualScrollerThreshold: {
+		default: 20,
+	},
 
 	// - Settings/Other
 	autoLoadMoreReplies: {

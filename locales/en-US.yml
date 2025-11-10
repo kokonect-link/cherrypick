@@ -1,5 +1,9 @@
 ---
 _lang_: "English"
+enableTimelineVirtualScroller: "Timeline Performance Optimization"
+enableTimelineVirtualScrollerDescription: "Improves performance by removing notes from the DOM that are no longer visible on the screen due to scrolling. Significantly reduces device memory usage as the number of notes increases."
+timelineVirtualScrollerThreshold: "Minimum Number of Notes to optimize"
+timelineVirtualScrollerThresholdDescription: "Optimizes timeline performance only when loading more notes than the value set here. If you experience issues during use, setting a higher value may alleviate the problem."
 compareContent: "Compare content"
 editHistory: "Edit history"
 unRenoteAll: "Remove all renote from notes"

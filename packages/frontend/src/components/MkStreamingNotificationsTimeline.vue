@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<slot name="empty"><MkResult type="empty" :text="i18n.ts.noNotifications"/></slot>
 	</div>
 
-	<div v-else ref="rootEl">
+	<div v-else ref="rootEl" data-timeline-container>
 		<component
 			:is="prefer.s.animation ? TransitionGroup : 'div'" :class="[$style.notifications]"
 			:enterActiveClass="$style.transition_x_enterActive"
@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			:moveClass="$style.transition_x_move"
 			tag="div"
 		>
-			<div v-for="(notification, i) in paginator.items.value" :key="notification.id" :data-scroll-anchor="notification.id" :class="$style.item">
+			<div v-for="(notification, i) in paginator.items.value" :key="notification.id" :data-scroll-anchor="notification.id" :data-note-id="notification.id" :class="$style.item">
 				<div v-if="i > 0 && isSeparatorNeeded(paginator.items.value[i -1].createdAt, notification.createdAt)" :class="$style.date">
 					<span><i class="ti ti-chevron-up"></i> {{ getSeparatorInfo(paginator.items.value[i -1].createdAt, notification.createdAt)?.prevText }}</span>
 					<span style="height: 1em; width: 1px; background: var(--MI_THEME-divider);"></span>
@@ -42,7 +42,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, onMounted, computed, useTemplateRef, TransitionGroup, markRaw, watch } from 'vue';
+import { onUnmounted, onMounted, computed, useTemplateRef, TransitionGroup, markRaw, watch, nextTick } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { notificationTypes } from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
@@ -58,6 +58,7 @@ import { store } from '@/store.js';
 import { isSeparatorNeeded, getSeparatorInfo } from '@/utility/timeline-date-separate.js';
 import { Paginator } from '@/utility/paginator.js';
 import { globalEvents } from '@/events.js';
+import { useTimelineVirtualScroller } from '@/composables/use-timeline-virtual-scroller.js';
 
 const props = defineProps<{
 	excludeTypes?: typeof notificationTypes[number][] | null;
@@ -65,6 +66,12 @@ const props = defineProps<{
 }>();
 
 const rootEl = useTemplateRef('rootEl');
+
+const virtualScroller = useTimelineVirtualScroller(rootEl, {
+	enabled: computed(() => prefer.s.enableTimelineVirtualScroller),
+	buffer: 1000,
+	minItems: prefer.s.timelineVirtualScrollerThreshold,
+});
 
 const paginator = prefer.s.useGroupedNotifications && !props.notUseGrouped ? markRaw(new Paginator('i/notifications-grouped', {
 	limit: 20,
@@ -170,6 +177,22 @@ onMounted(() => {
 			paginator.reload();
 		}, { immediate: false, deep: true });
 	}
+
+	watch(() => paginator.items.value.length, () => {
+		if (prefer.s.enableTimelineVirtualScroller) {
+			nextTick(() => {
+				if (rootEl.value) {
+					const notificationElements = rootEl.value.querySelectorAll<HTMLElement>('[data-note-id]');
+					notificationElements.forEach(el => {
+						if (el.dataset.noteId) {
+							virtualScroller.registerItem(el);
+						}
+					});
+					virtualScroller.updateVisibility();
+				}
+			});
+		}
+	});
 
 	if (store.s.realtimeMode) {
 		connection = useStream().useChannel('main');

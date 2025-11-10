@@ -14,6 +14,22 @@ export interface Locale extends ILocale {
      */
     "_lang_": string;
     /**
+     * タイムラインのパフォーマンス最適化
+     */
+    "enableTimelineVirtualScroller": string;
+    /**
+     * スクロールによって画面から見えなくなったノートをDOMから削除し、パフォーマンスを向上させます。ノートの数が増えるほど、デバイスのメモリ使用量が大幅に減少します。
+     */
+    "enableTimelineVirtualScrollerDescription": string;
+    /**
+     * 最適化する最小ノート数
+     */
+    "timelineVirtualScrollerThreshold": string;
+    /**
+     * ここに設定した値よりも多くのノートを読み込む場合にのみ、タイムラインのパフォーマンスを最適化します。使用中に問題が発生する場合、値を高く設定することで問題が緩和される可能性があります。
+     */
+    "timelineVirtualScrollerThresholdDescription": string;
+    /**
      * 内容比較
      */
     "compareContent": string;

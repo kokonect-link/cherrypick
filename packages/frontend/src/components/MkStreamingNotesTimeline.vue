@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<slot name="empty"><MkResult type="empty" :text="i18n.ts.noNotes"/></slot>
 	</div>
 
-	<div v-else ref="rootEl">
+	<div v-else ref="rootEl" data-timeline-container>
 		<transition
 			:enterActiveClass="prefer.s.animation ? $style.transition_new_enterActive : ''"
 			:leaveActiveClass="prefer.s.animation ? $style.transition_new_leaveActive : ''"
@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</template>
 			<template v-for="(note, i) in paginator.items.value" v-else :key="note.id">
-				<div v-if="i > 0 && isSeparatorNeeded(paginator.items.value[i -1].createdAt, note.createdAt)" :class="{ '_gaps': !noGap }" :data-scroll-anchor="note.id">
+				<div v-if="i > 0 && isSeparatorNeeded(paginator.items.value[i -1].createdAt, note.createdAt)" :class="{ '_gaps': !noGap }" :data-scroll-anchor="note.id" :data-note-id="note.id">
 					<div :class="[$style.date, { [$style.noGap]: noGap }]">
 						<span><i class="ti ti-chevron-up"></i> {{ getSeparatorInfo(paginator.items.value[i -1].createdAt, note.createdAt)?.prevText }}</span>
 						<span style="height: 1em; width: 1px; background: var(--MI_THEME-divider);"></span>
@@ -63,13 +63,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<MkNote :class="$style.note" :note="note" :withHardMute="true"/>
 				</div>
-				<div v-else-if="note._shouldInsertAd_" :class="{ '_gaps': !noGap }" :data-scroll-anchor="note.id">
+				<div v-else-if="note._shouldInsertAd_" :class="{ '_gaps': !noGap }" :data-scroll-anchor="note.id" :data-note-id="note.id">
 					<MkNote :class="$style.note" :note="note" :withHardMute="true"/>
 					<div :class="[$style.ad, { [$style.noGap]: noGap }]">
 						<MkAd :preferForms="['horizontal', 'horizontal-big']"/>
 					</div>
 				</div>
-				<MkNote v-else :class="$style.note" :note="note" :withHardMute="true" :data-scroll-anchor="note.id"/>
+				<MkNote v-else :class="$style.note" :note="note" :withHardMute="true" :data-scroll-anchor="note.id" :data-note-id="note.id"/>
 			</template>
 		</component>
 		<button v-show="paginator.canFetchOlder.value" key="_more_" v-appear="prefer.s.enableInfiniteScroll ? paginator.fetchOlder : null" :disabled="paginator.fetchingOlder.value" class="_button" :class="$style.more" @click="paginator.fetchOlder">
@@ -81,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, onUnmounted, provide, useTemplateRef, TransitionGroup, onMounted, shallowRef, ref, markRaw } from 'vue';
+import { computed, watch, onUnmounted, provide, useTemplateRef, TransitionGroup, onMounted, shallowRef, ref, markRaw, nextTick } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { useInterval } from '@@/js/use-interval.js';
 import { useDocumentVisibility } from '@@/js/use-document-visibility.js';
@@ -107,6 +107,7 @@ import { isFriendly } from '@/utility/is-friendly.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import MkNoteMediaGrid from '@/components/MkNoteMediaGrid.vue';
 import { haptic, hapticConfirm } from '@/utility/haptic.js';
+import { useTimelineVirtualScroller } from '@/composables/use-timeline-virtual-scroller.js';
 
 const { showEl } = scrollToVisibility();
 
@@ -264,6 +265,22 @@ onMounted(() => {
 			paginator.reload();
 		}, { immediate: false, deep: true });
 	}
+
+	watch(() => paginator.items.value.length, () => {
+		if (prefer.s.enableTimelineVirtualScroller) {
+			nextTick(() => {
+				if (rootEl.value) {
+					const noteElements = rootEl.value.querySelectorAll<HTMLElement>('[data-note-id]');
+					noteElements.forEach(el => {
+						if (el.dataset.noteId) {
+							virtualScroller.registerItem(el);
+						}
+					});
+					virtualScroller.updateVisibility();
+				}
+			});
+		}
+	});
 });
 
 function isTop() {
@@ -296,6 +313,12 @@ onUnmounted(() => {
 		scrollContainer.removeEventListener('scroll', onScrollContainerScroll);
 	}
 	window.removeEventListener('resize', handleResize);
+});
+
+const virtualScroller = useTimelineVirtualScroller(rootEl, {
+	enabled: computed(() => prefer.s.enableTimelineVirtualScroller),
+	buffer: 1000,
+	minItems: prefer.s.timelineVirtualScrollerThreshold,
 });
 
 const visibility = useDocumentVisibility();

@@ -1,5 +1,9 @@
 ---
 _lang_: "한국어"
+enableTimelineVirtualScroller: "타임라인 성능 최적화"
+enableTimelineVirtualScrollerDescription: "스크롤되어 화면에서 보이지 않는 노트를 DOM에서 제거해 성능을 향상시켜요. 노트 수가 많아질수록 디바이스의 메모리 사용량이 크게 감소해요."
+timelineVirtualScrollerThreshold: "최적화할 최소 노트 수"
+timelineVirtualScrollerThresholdDescription: "여기에 설정한 값보다 많은 노트를 불러오는 경우에만 타임라인의 성능을 최적화해요. 사용에 문제가 발생하는 경우 값을 높게 설정하면 문제가 완화될 수 있어요."
 compareContent: "내용 비교하기"
 editHistory: "편집 기록"
 unRenoteAll: "모든 리노트 삭제"
