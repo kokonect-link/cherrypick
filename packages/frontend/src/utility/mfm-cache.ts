@@ -11,7 +11,7 @@ interface CacheEntry {
 }
 
 const cache = new Map<string, CacheEntry>();
-const MAX_CACHE_SIZE = 500;
+const MAX_CACHE_SIZE = 150;
 
 /**
  * Parse MFC text with LRU caching
