@@ -241,6 +241,7 @@ export function note(id = 'somenoteid'): entities.Note {
 		reactionCount: 0,
 		renoteCount: 0,
 		repliesCount: 0,
+		hasDeliveryTargets: false,
 	};
 }
 

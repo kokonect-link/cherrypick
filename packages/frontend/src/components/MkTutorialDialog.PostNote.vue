@@ -76,6 +76,7 @@ const exampleCWNote = reactive<Misskey.entities.Note>({
 	files: [],
 	replyId: null,
 	renoteId: null,
+	hasDeliveryTargets: false,
 });
 </script>
 
