@@ -2,7 +2,7 @@
 이 문서는 CherryPick의 변경 사항만 포함합니다.
 
 ## 4.17.0
-**출시일**: unreleased  
+**출시일**: 2025/11/12  
 **기반 Misskey 버전**: 2025.10.2  
 Misskey의 전체 변경 사항을 확인하려면, [CHANGELOG.md#2025102](CHANGELOG.md#2025102) 문서를 참고하십시오.
 
