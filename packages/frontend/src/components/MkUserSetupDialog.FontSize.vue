@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: syuilo and misskey-project
+SPDX-FileCopyrightText: syuilo and misskey-project & noridev and cherrypick-project
 SPDX-License-Identifier: AGPL-3.0-only
 -->
 
@@ -53,7 +53,7 @@ import { unisonReload } from '@/utility/unison-reload.js';
 const fontSize = prefer.model('fontSize');
 const fontSizeBefore = ref(miLocalStorage.getItem('fontSize'));
 const useSystemFont = ref(miLocalStorage.getItem('useSystemFont') != null);
-const useBoldFont = ref(miLocalStorage.getItem('useBoldFont'));
+const useBoldFont = ref(miLocalStorage.getItem('useBoldFont') === 'true');
 
 watch(fontSize, () => {
 	if (fontSize.value == null) {
@@ -65,7 +65,7 @@ watch(fontSize, () => {
 
 watch(useBoldFont, () => {
 	if (useBoldFont.value) {
-		miLocalStorage.setItem('useBoldFont', useBoldFont.value);
+		miLocalStorage.setItem('useBoldFont', `${useBoldFont.value}`);
 	} else {
 		miLocalStorage.removeItem('useBoldFont');
 	}

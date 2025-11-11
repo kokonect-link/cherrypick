@@ -10,7 +10,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 		tail === 'left' ? $style.left : $style.right,
 		negativeMargin === true && $style.negativeMargin,
 		shadow === true && $style.shadow,
-		accented === true && $style.accented
+		accented === true && $style.accented,
+		fullWidth === true && $style.fullWidth,
 	]"
 >
 	<div :class="$style.bg">
@@ -39,6 +40,7 @@ withDefaults(defineProps<{
 	negativeMargin?: boolean;
 	shadow?: boolean;
 	accented?: boolean;
+	fullWidth?: boolean;
 	contentBgPanel?: boolean;
 	small?: boolean;
 }>(), {
@@ -46,6 +48,7 @@ withDefaults(defineProps<{
 	negativeMargin: false,
 	shadow: false,
 	accented: false,
+	fullWidth: false,
 	contentBgPanel: false,
 	small: false,
 });
@@ -84,6 +87,14 @@ withDefaults(defineProps<{
 			margin-right: calc(calc(var(--fukidashi-radius) * .13) * -1);
 		}
 	}
+
+	&.fullWidth {
+		width: 100%;
+
+		&.content {
+			width: 100%;
+		}
+	}
 }
 
 .bg {
@@ -96,6 +107,7 @@ withDefaults(defineProps<{
 .content {
 	position: relative;
 	padding: 10px 14px;
+	box-sizing: border-box;
 
 	&.small {
 		padding: 6px 10px;

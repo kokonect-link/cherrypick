@@ -120,7 +120,7 @@ export class MiUser {
 
 	// avatarId が null になったとしてもこれが null でない可能性があるため、このフィールドを使うときは avatarId の non-null チェックをすること
 	@Column('varchar', {
-		length: 512, nullable: true,
+		length: 1024, nullable: true,
 	})
 	public avatarUrl: string | null;
 
@@ -296,6 +296,23 @@ export class MiUser {
 		nullable: true,
 	})
 	public isSquareAvatars: boolean | null;
+
+	@Column('integer', {
+		nullable: true,
+		default: null,
+	})
+	public autoDeleteNotesAfterDays!: number | null;
+
+	@Column('boolean', {
+		default: true,
+
+	})
+	public autoDeleteKeepFavorites: boolean;
+
+	@Column('boolean', {
+		nullable: true,
+	})
+	public canChat: boolean | null;
 
 	constructor(data: Partial<MiUser>) {
 		if (data == null) return;

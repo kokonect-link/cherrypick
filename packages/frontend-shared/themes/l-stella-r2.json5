@@ -16,7 +16,6 @@
 		link: 'rgb(137, 105, 151)',
 		mention: '@link',
 		hashtag: 'rgb(0, 43, 255)',
-		driveFolderBg: 'rgba(137, 131, 226, 0.3)',
 		divider: 'rgb(208, 205, 217)',
 	},
 }

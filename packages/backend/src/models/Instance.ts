@@ -98,6 +98,14 @@ export class MiInstance {
 	})
 	public suspensionState: 'none' | 'manuallySuspended' | 'goneSuspended' | 'autoSuspendedForNotResponding';
 
+	/**
+	 * このインスタンスが隔離制限されているかどうか
+	 */
+	@Column('boolean', {
+		default: false,
+	})
+	public quarantineLimited: boolean;
+
 	@Column('varchar', {
 		length: 64, nullable: true,
 		comment: 'The software of the Instance.',

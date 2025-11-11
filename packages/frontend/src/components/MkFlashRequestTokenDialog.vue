@@ -27,6 +27,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 </MkModalWindow>
 </template>
+
 <script lang="ts" setup>
 import { useTemplateRef } from 'vue';
 import MkModalWindow from '@/components/MkModalWindow.vue';
@@ -55,6 +56,7 @@ const accept = () => {
 	dialog.value?.close();
 };
 </script>
+
 <style lang="scss" module>
 .cancel {
 	margin-right: 5px;

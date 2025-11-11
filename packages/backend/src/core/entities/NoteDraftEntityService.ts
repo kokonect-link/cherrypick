@@ -5,6 +5,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
+import { EntityNotFoundError } from 'typeorm';
 import { DI } from '@/di-symbols.js';
 import type { Packed } from '@/misc/json-schema.js';
 import { awaitAll } from '@/misc/prelude/await-all.js';
@@ -90,9 +91,22 @@ export class NoteDraftEntityService implements OnModuleInit {
 		const packedFiles = options?._hint_?.packedFiles;
 		const packedUsers = options?._hint_?.packedUsers;
 
+		async function nullIfEntityNotFound<T>(promise: Promise<T>): Promise<T | null> {
+			try {
+				return await promise;
+			} catch (err) {
+				if (err instanceof EntityNotFoundError) {
+					return null;
+				}
+				throw err;
+			}
+		}
+
 		const packed: Packed<'NoteDraft'> = await awaitAll({
 			id: noteDraft.id,
 			createdAt: this.idService.parse(noteDraft.id).date.toISOString(),
+			scheduledAt: noteDraft.scheduledAt?.getTime() ?? null,
+			isActuallyScheduled: noteDraft.isActuallyScheduled,
 			deleteAt: noteDraft.deleteAt ? noteDraft.deleteAt.toISOString() : undefined,
 			userId: noteDraft.userId,
 			user: packedUsers?.get(noteDraft.userId) ?? this.userEntityService.pack(noteDraft.user ?? noteDraft.userId, me),
@@ -101,14 +115,14 @@ export class NoteDraftEntityService implements OnModuleInit {
 			visibility: noteDraft.visibility,
 			localOnly: noteDraft.localOnly,
 			reactionAcceptance: noteDraft.reactionAcceptance,
-			visibleUserIds: noteDraft.visibility === 'specified' ? noteDraft.visibleUserIds : undefined,
+			visibleUserIds: noteDraft.visibleUserIds,
 			disableRightClick: noteDraft.disableRightClick || undefined,
 			hashtag: noteDraft.hashtag,
 			fileIds: noteDraft.fileIds,
 			files: packedFiles != null ? this.packAttachedFiles(noteDraft.fileIds, packedFiles) : this.driveFileEntityService.packManyByIds(noteDraft.fileIds),
 			replyId: noteDraft.replyId,
 			renoteId: noteDraft.renoteId,
-			channelId: noteDraft.channelId ?? undefined,
+			channelId: noteDraft.channelId,
 			channel: channel ? {
 				id: channel.id,
 				name: channel.name,
@@ -117,31 +131,30 @@ export class NoteDraftEntityService implements OnModuleInit {
 				allowRenoteToExternal: channel.allowRenoteToExternal,
 				userId: channel.userId,
 			} : undefined,
+			poll: noteDraft.hasPoll ? {
+				choices: noteDraft.pollChoices,
+				multiple: noteDraft.pollMultiple,
+				expiresAt: noteDraft.pollExpiresAt?.toISOString(),
+				expiredAfter: noteDraft.pollExpiredAfter,
+			} : null,
+			event: noteDraft.hasEvent ? {
+				title: noteDraft.eventTitle,
+				start: noteDraft.eventStart?.getTime(),
+				end: noteDraft.eventEnd?.getTime(),
+				metadata: noteDraft.eventMetadata,
+			} : undefined,
+			deliveryTargets: noteDraft.deliveryTargets ?? undefined,
 
 			...(opts.detail ? {
-				reply: noteDraft.replyId ? this.noteEntityService.pack(noteDraft.replyId, me, {
+				reply: noteDraft.replyId ? nullIfEntityNotFound(this.noteEntityService.pack(noteDraft.replyId, me, {
 					detail: false,
 					skipHide: opts.skipHide,
-				}) : undefined,
+				})) : undefined,
 
-				renote: noteDraft.renoteId ? this.noteEntityService.pack(noteDraft.renoteId, me, {
+				renote: noteDraft.renoteId ? nullIfEntityNotFound(this.noteEntityService.pack(noteDraft.renoteId, me, {
 					detail: true,
 					skipHide: opts.skipHide,
-				}) : undefined,
-
-				poll: noteDraft.hasPoll ? {
-					choices: noteDraft.pollChoices,
-					multiple: noteDraft.pollMultiple,
-					expiresAt: noteDraft.pollExpiresAt?.toISOString(),
-					expiredAfter: noteDraft.pollExpiredAfter,
-				} : undefined,
-
-				event: noteDraft.hasEvent ? {
-					title: noteDraft.eventTitle,
-					start: noteDraft.eventStart.getTime(),
-					end: noteDraft.eventEnd?.getTime(),
-					metadata: noteDraft.eventMetadata,
-				} : undefined,
+				})) : undefined,
 			} : {} ),
 		});
 

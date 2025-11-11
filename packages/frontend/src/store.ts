@@ -7,9 +7,11 @@ import { markRaw, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import lightTheme from '@@/themes/l-cherrypick.json5';
 import darkTheme from '@@/themes/d-cherrypick.json5';
+import { prefersReducedMotion } from '@@/js/config.js';
 import { hemisphere } from '@@/js/intl-const.js';
 import type { DeviceKind } from '@/utility/device-kind.js';
 import type { Plugin } from '@/plugin.js';
+import type { TIPS } from '@/tips.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { Pizzax } from '@/lib/pizzax.js';
 import { DEFAULT_DEVICE_KIND } from '@/utility/device-kind.js';
@@ -23,26 +25,13 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'account',
 		default: 0,
 	},
-	timelineTutorials: {
-		where: 'account',
-		default: {
-			home: false,
-			local: false,
-			social: false,
-			global: false,
-		},
-	},
-	abusesTutorial: {
-		where: 'account',
-		default: false,
-	},
-	readDriveTip: {
-		where: 'account',
-		default: false,
+	tips: {
+		where: 'device',
+		default: {} as Partial<Record<typeof TIPS[number], boolean>>, // true = 既読
 	},
 	memo: {
 		where: 'account',
-		default: null,
+		default: null as string | null,
 	},
 	reactionAcceptance: {
 		where: 'account',
@@ -78,6 +67,10 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
+	realtimeMode: {
+		where: 'device',
+		default: true,
+	},
 	recentlyUsedEmojis: {
 		where: 'device',
 		default: [] as string[],
@@ -112,7 +105,7 @@ export const store = markRaw(new Pizzax('base', {
 	},
 	accountInfos: {
 		where: 'device',
-		default: {} as Record<string, Misskey.entities.User>, // host/userId, user
+		default: {} as Record<string, Misskey.entities.MeDetailed>, // host/userId, user
 	},
 
 	enablePreferencesAutoCloudBackup: {
@@ -227,11 +220,11 @@ export const store = markRaw(new Pizzax('base', {
 	},
 	animation: {
 		where: 'device',
-		default: !window.matchMedia('(prefers-reduced-motion)').matches,
+		default: !prefersReducedMotion,
 	},
 	animatedMfm: {
 		where: 'device',
-		default: !window.matchMedia('(prefers-reduced-motion)').matches,
+		default: !prefersReducedMotion,
 	},
 	advancedMfm: {
 		where: 'device',
@@ -255,7 +248,7 @@ export const store = markRaw(new Pizzax('base', {
 	},
 	disableShowingAnimatedImages: {
 		where: 'device',
-		default: window.matchMedia('(prefers-reduced-motion)').matches,
+		default: prefersReducedMotion,
 	},
 	emojiStyle: {
 		where: 'device',
@@ -377,10 +370,6 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
-	disableStreamingTimeline: {
-		where: 'device',
-		default: false,
-	},
 	useGroupedNotifications: {
 		where: 'device',
 		default: true,
@@ -392,7 +381,7 @@ export const store = markRaw(new Pizzax('base', {
 			avatar: false,
 			urlPreview: false,
 			code: false,
-		} as Record<string, boolean>,
+		},
 	},
 	enableSeasonalScreenEffect: {
 		where: 'device',
@@ -484,7 +473,25 @@ export const store = markRaw(new Pizzax('base', {
 	},
 
 	// #region CherryPick
-	// - Settings/Preferences
+	// - Settings/Appearance
+	fontSize: {
+		where: 'device',
+		default: 8,
+	},
+	showUnreadNotificationsCount: {
+		where: 'deviceAccount',
+		default: false,
+	},
+	setFederationAvatarShape: {
+		where: 'account',
+		default: true,
+	},
+	filesGridLayoutInUserPage: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Timeline and Note
 	forceCollapseAllRenotes: {
 		where: 'account',
 		default: false,
@@ -577,6 +584,68 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
+	hideAvatarsInNote: {
+		where: 'device',
+		default: false,
+	},
+	enableAbsoluteTime: {
+		where: 'device',
+		default: false,
+	},
+	enableMarkByDate: {
+		where: 'device',
+		default: false,
+	},
+	showReplyTargetNote: {
+		where: 'device',
+		default: true,
+	},
+	showReplyTargetNoteInSemiTransparent: {
+		where: 'device',
+		default: true,
+	},
+	nsfwOpenBehavior: {
+		where: 'device',
+		default: 'click' as 'click' | 'doubleClick',
+	},
+
+	// - Settings/Posting form
+	showPreview: {
+		where: 'device',
+		default: false,
+	},
+	showProfilePreview: {
+		where: 'device',
+		default: true,
+	},
+
+	// - Settings/Navigate to an external site warning
+	externalNavigationWarning: {
+		where: 'device',
+		default: true,
+	},
+	trustedDomains: {
+		where: 'device',
+		default: [] as string[],
+	},
+
+	// - Settings/Accessibility
+	showingAnimatedImages: {
+		where: 'device',
+		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
+	},
+
+	// - Settings/Performance
+	removeModalBgColorForBlur: {
+		where: 'device',
+		default: DEFAULT_DEVICE_KIND === 'desktop',
+	},
+	smoothTransitionAnimations: {
+		where: 'device',
+		default: false,
+	},
+
+	// - Settings/Other
 	autoLoadMoreReplies: {
 		where: 'device',
 		default: false,
@@ -616,68 +685,6 @@ export const store = markRaw(new Pizzax('base', {
 	searchEngineUrlQuery: {
 		where: 'device',
 		default: 'q',
-	},
-	showUnreadNotificationsCount: {
-		where: 'deviceAccount',
-		default: false,
-	},
-	externalNavigationWarning: {
-		where: 'device',
-		default: true,
-	},
-	trustedDomains: {
-		where: 'device',
-		default: [] as string[],
-	},
-	showPreview: {
-		where: 'device',
-		default: false,
-	},
-	showProfilePreview: {
-		where: 'device',
-		default: true,
-	},
-
-	// - Settings/Appearance
-	removeModalBgColorForBlur: {
-		where: 'device',
-		default: DEFAULT_DEVICE_KIND === 'desktop',
-	},
-	fontSize: {
-		where: 'device',
-		default: 8,
-	},
-	setFederationAvatarShape: {
-		where: 'account',
-		default: true,
-	},
-	filesGridLayoutInUserPage: {
-		where: 'device',
-		default: true,
-	},
-	hideAvatarsInNote: {
-		where: 'device',
-		default: false,
-	},
-	enableAbsoluteTime: {
-		where: 'device',
-		default: false,
-	},
-	enableMarkByDate: {
-		where: 'device',
-		default: false,
-	},
-	showReplyTargetNote: {
-		where: 'device',
-		default: true,
-	},
-	showReplyTargetNoteInSemiTransparent: {
-		where: 'device',
-		default: true,
-	},
-	nsfwOpenBehavior: {
-		where: 'device',
-		default: 'click' as 'click' | 'doubleClick',
 	},
 
 	// - Settings/Navigation bar
@@ -735,6 +742,10 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: true,
 	},
+	enableMediaTimeline: {
+		where: 'device',
+		default: true,
+	},
 	enableBubbleTimeline: {
 		where: 'device',
 		default: true,
@@ -748,24 +759,6 @@ export const store = markRaw(new Pizzax('base', {
 		default: true,
 	},
 	enableChannelTimeline: {
-		where: 'device',
-		default: true,
-	},
-
-	// - Settings/Sounds & Vibrations
-	vibrate: {
-		where: 'device',
-		default: !/ipad|iphone/.test(navigator.userAgent.toLowerCase()) && window.navigator.vibrate,
-	},
-	vibrate_note: {
-		where: 'device',
-		default: true,
-	},
-	vibrate_notification: {
-		where: 'device',
-		default: true,
-	},
-	vibrate_system: {
 		where: 'device',
 		default: true,
 	},
@@ -839,18 +832,6 @@ export const store = markRaw(new Pizzax('base', {
 		where: 'device',
 		default: false,
 	},
-
-	// - Settings/Accessibility
-	showingAnimatedImages: {
-		where: 'device',
-		default: /mobile|ipad|iphone|android/.test(navigator.userAgent.toLowerCase()) ? 'inactive' : 'always' as 'always' | 'interaction' | 'inactive',
-	},
-
-	// - Settings/Drive
-	imageCompressionMode: {
-		where: 'account',
-		default: 'resizeCompressLossy' as 'resizeCompress' | 'noResizeCompress' | 'resizeCompressLossy' | 'noResizeCompressLossy' | null,
-	},
 	// #endregion
 }));
 
@@ -872,7 +853,7 @@ export class ColdDeviceStorage {
 		lightTheme, // TODO: 消す(preferに移行済みのため)
 		darkTheme, // TODO: 消す(preferに移行済みのため)
 		syncDeviceDarkMode: true, // TODO: 消す(preferに移行済みのため)
-		plugins: [] as Plugin[], // TODO: 消す(preferに移行済みのため)
+		plugins: [] as (Omit<Plugin, 'installId'> & { id: string })[], // TODO: 消す(preferに移行済みのため)
 	};
 
 	public static watchers: Watcher[] = [];

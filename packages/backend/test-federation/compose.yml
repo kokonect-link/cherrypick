@@ -75,6 +75,10 @@ services:
         target: /cherrypick/pnpm-workspace.yaml
         read_only: true
       - type: bind
+        source: ../../../patches
+        target: /cherrypick/patches
+        read_only: true
+      - type: bind
         source: ./certificates/rootCA.crt
         target: /usr/local/share/ca-certificates/rootCA.crt
         read_only: true
@@ -117,6 +121,10 @@ services:
       - type: bind
         source: ../../../pnpm-workspace.yaml
         target: /cherrypick/pnpm-workspace.yaml
+        read_only: true
+      - type: bind
+        source: ../../../patches
+        target: /cherrypick/patches
         read_only: true
     working_dir: /cherrypick
     command: >

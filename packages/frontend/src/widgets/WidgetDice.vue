@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/utility/form.js';
+import type { FormWithDefault, GetFormResultType } from '@/utility/form.js';
 import MkDice from '@/components/MkDice.vue';
 import MkContainer from '@/components/MkContainer.vue';
 
@@ -26,22 +26,22 @@ const name = 'dice';
 
 const widgetPropsDef = {
 	transparent: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	showMinTotal: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	showMaxTotal: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	showAverageTotal: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
-};
+} satisfies FormWithDefault;
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 

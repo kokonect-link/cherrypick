@@ -35,9 +35,11 @@ const isAllowHideHeader = ref(['index', 'explore', 'my-notifications', 'my-favor
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(['smartphone', 'tablet'].includes(String(deviceKind)) || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const { showEl } = scrollToVisibility();
 
@@ -93,6 +95,7 @@ onMounted(() => {
 
 onUnmounted(() => {
 	observer.disconnect();
+	window.removeEventListener('resize', handleResize);
 });
 
 defineExpose({

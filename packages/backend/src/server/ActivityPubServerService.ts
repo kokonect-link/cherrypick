@@ -13,7 +13,7 @@ import accepts from 'accepts';
 import vary from 'vary';
 import secureJson from 'secure-json-parse';
 import { DI } from '@/di-symbols.js';
-import type { FollowingsRepository, NotesRepository, EmojisRepository, NoteReactionsRepository, UserProfilesRepository, UserNotePiningsRepository, UsersRepository, FollowRequestsRepository, MiMeta } from '@/models/_.js';
+import type { FollowingsRepository, NotesRepository, EmojisRepository, NoteReactionsRepository, UserProfilesRepository, UserNotePiningsRepository, UsersRepository, FollowRequestsRepository, MiMeta, ChatMessagesRepository } from '@/models/_.js';
 import * as url from '@/misc/prelude/url.js';
 import type { Config } from '@/config.js';
 import { ApRendererService } from '@/core/activitypub/ApRendererService.js';
@@ -31,6 +31,7 @@ import { IActivity } from '@/core/activitypub/type.js';
 import { isQuote, isRenote } from '@/misc/is-renote.js';
 import * as Acct from '@/misc/acct.js';
 import { FanoutTimelineEndpointService } from '@/core/FanoutTimelineEndpointService.js';
+import { ActivityPubAccessControlService } from '@/core/ActivityPubAccessControlService.js';
 import type { FastifyInstance, FastifyRequest, FastifyReply, FastifyPluginOptions, FastifyBodyParser } from 'fastify';
 import type { FindOptionsWhere } from 'typeorm';
 
@@ -70,6 +71,9 @@ export class ActivityPubServerService {
 		@Inject(DI.followRequestsRepository)
 		private followRequestsRepository: FollowRequestsRepository,
 
+		@Inject(DI.chatMessagesRepository)
+		private chatMessagesRepository: ChatMessagesRepository,
+
 		private utilityService: UtilityService,
 		private userEntityService: UserEntityService,
 		private apRendererService: ApRendererService,
@@ -77,6 +81,7 @@ export class ActivityPubServerService {
 		private userKeypairService: UserKeypairService,
 		private queryService: QueryService,
 		private fanoutTimelineEndpointService: FanoutTimelineEndpointService,
+		private activityPubAccessControlService: ActivityPubAccessControlService,
 	) {
 		//this.createServer = this.createServer.bind(this);
 	}
@@ -185,12 +190,28 @@ export class ActivityPubServerService {
 	}
 
 	@bindThis
+	private async applyAccessControl(request: FastifyRequest, reply: FastifyReply, allowLimitedHosts = false): Promise<boolean> {
+		const accessControl = await this.activityPubAccessControlService.checkAccess(request, allowLimitedHosts);
+		if (accessControl) {
+			reply.code(403);
+			reply.header('Content-Type', 'text/plain; charset=utf-8');
+			reply.send(`Access denied: ${accessControl.reason}`);
+			return true;
+		}
+		return false;
+	}
+
+	@bindThis
 	private async followers(
 		request: FastifyRequest<{ Params: { user: string; }; Querystring: { cursor?: string; page?: string; }; }>,
 		reply: FastifyReply,
 	) {
 		if (this.meta.federation === 'none') {
 			reply.code(403);
+			return;
+		}
+
+		if (await this.applyAccessControl(request, reply)) {
 			return;
 		}
 
@@ -291,6 +312,10 @@ export class ActivityPubServerService {
 			return;
 		}
 
+		if (await this.applyAccessControl(request, reply)) {
+			return;
+		}
+
 		const userId = request.params.user;
 
 		const cursor = request.query.cursor;
@@ -385,6 +410,10 @@ export class ActivityPubServerService {
 			return;
 		}
 
+		if (await this.applyAccessControl(request, reply)) {
+			return;
+		}
+
 		const userId = request.params.user;
 
 		const user = await this.usersRepository.findOneBy({
@@ -431,6 +460,10 @@ export class ActivityPubServerService {
 	) {
 		if (this.meta.federation === 'none') {
 			reply.code(403);
+			return;
+		}
+
+		if (await this.applyAccessControl(request, reply)) {
 			return;
 		}
 
@@ -482,15 +515,26 @@ export class ActivityPubServerService {
 				useDbFallback: true,
 				ignoreAuthorFromMute: true,
 				excludePureRenotes: false,
+				withCats: true,
 				noteFilter: (note) => {
 					if (note.visibility !== 'home' && note.visibility !== 'public') return false;
 					if (note.localOnly) return false;
 					return true;
 				},
 				dbFallback: async (untilId, sinceId, limit) => {
-					return await this.getUserNotesFromDb(sinceId, untilId, limit, user.id);
+					return await this.getUserNotesFromDb({
+						untilId,
+						sinceId,
+						limit,
+						userId: user.id,
+					});
 				},
-			}) : await this.getUserNotesFromDb(sinceId ?? null, untilId ?? null, limit, user.id);
+			}) : await this.getUserNotesFromDb({
+				untilId: untilId ?? null,
+				sinceId: sinceId ?? null,
+				limit,
+				userId: user.id,
+			});
 
 			if (sinceId) notes.reverse();
 
@@ -529,16 +573,21 @@ export class ActivityPubServerService {
 	}
 
 	@bindThis
-	private async getUserNotesFromDb(untilId: string | null, sinceId: string | null, limit: number, userId: MiUser['id']) {
-		return await this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), sinceId, untilId)
-			.andWhere('note.userId = :userId', { userId })
+	private async getUserNotesFromDb(ps: {
+		untilId: string | null,
+		sinceId: string | null,
+		limit: number,
+		userId: MiUser['id'],
+	}) {
+		return await this.queryService.makePaginationQuery(this.notesRepository.createQueryBuilder('note'), ps.sinceId, ps.untilId)
+			.andWhere('note.userId = :userId', { userId: ps.userId })
 			.andWhere(new Brackets(qb => {
 				qb
 					.where('note.visibility = \'public\'')
 					.orWhere('note.visibility = \'home\'');
 			}))
 			.andWhere('note.localOnly = FALSE')
-			.limit(limit)
+			.limit(ps.limit)
 			.getMany();
 	}
 
@@ -546,6 +595,10 @@ export class ActivityPubServerService {
 	private async userInfo(request: FastifyRequest, reply: FastifyReply, user: MiUser | null) {
 		if (this.meta.federation === 'none') {
 			reply.code(403);
+			return;
+		}
+
+		if (await this.applyAccessControl(request, reply, true)) {
 			return;
 		}
 
@@ -636,6 +689,10 @@ export class ActivityPubServerService {
 				return;
 			}
 
+			if (await this.applyAccessControl(request, reply, true)) {
+				return;
+			}
+
 			const note = await this.notesRepository.findOneBy({
 				id: request.params.note,
 				visibility: In(['public', 'home']),
@@ -643,6 +700,11 @@ export class ActivityPubServerService {
 			});
 
 			if (note == null) {
+				reply.code(404);
+				return;
+			}
+
+			if (!await this.activityPubAccessControlService.checkNoteAccess(note, request)) {
 				reply.code(404);
 				return;
 			}
@@ -671,6 +733,10 @@ export class ActivityPubServerService {
 				return;
 			}
 
+			if (await this.applyAccessControl(request, reply, true)) {
+				return;
+			}
+
 			const note = await this.notesRepository.findOneBy({
 				id: request.params.note,
 				userHost: IsNull(),
@@ -686,6 +752,53 @@ export class ActivityPubServerService {
 			reply.header('Cache-Control', 'public, max-age=180');
 			this.setResponseType(request, reply);
 			return (this.apRendererService.addContext(await this.packActivity(note)));
+		});
+
+		// chat message
+		fastify.get<{ Params: { id: string; } }>('/chat/messages/:id', { constraints: { apOrHtml: 'ap' } }, async (request, reply) => {
+			vary(reply.raw, 'Accept');
+
+			if (this.meta.federation === 'none') {
+				reply.code(403);
+				return;
+			}
+
+			const message = await this.chatMessagesRepository.findOneBy({
+				id: request.params.id,
+			});
+
+			if (message == null) {
+				reply.code(404);
+				return;
+			}
+
+			// Get fromUser
+			const fromUser = await this.usersRepository.findOneBy({ id: message.fromUserId });
+			if (fromUser == null || fromUser.host !== null) {
+				reply.code(404);
+				return;
+			}
+
+			// Get toUser(s)
+			let toUsers: MiUser[] = [];
+			if (message.toUserId) {
+				// 1:1 chat
+				const toUser = await this.usersRepository.findOneBy({ id: message.toUserId });
+				if (toUser) toUsers = [toUser];
+			} else if (message.toRoomId) {
+				// Group chat - not yet fully implemented for ActivityPub
+				reply.code(404);
+				return;
+			}
+
+			if (toUsers.length === 0) {
+				reply.code(404);
+				return;
+			}
+
+			reply.header('Cache-Control', 'public, max-age=180');
+			this.setResponseType(request, reply);
+			return this.apRendererService.addContext(await this.apRendererService.renderChatMessage(message, fromUser, toUsers));
 		});
 
 		// outbox
@@ -713,6 +826,10 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { user: string; } }>('/users/:user/publickey', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
+				return;
+			}
+
+			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 
@@ -785,6 +902,10 @@ export class ActivityPubServerService {
 				return;
 			}
 
+			if (await this.applyAccessControl(request, reply, true)) {
+				return;
+			}
+
 			const emoji = await this.emojisRepository.findOneBy({
 				host: IsNull(),
 				name: request.params.emoji,
@@ -804,6 +925,10 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { like: string; } }>('/likes/:like', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
+				return;
+			}
+
+			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 
@@ -830,6 +955,10 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { follower: string; followee: string; } }>('/follows/:follower/:followee', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
+				return;
+			}
+
+			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 
@@ -861,6 +990,10 @@ export class ActivityPubServerService {
 		fastify.get<{ Params: { followRequestId: string; } }>('/follows/:followRequestId', async (request, reply) => {
 			if (this.meta.federation === 'none') {
 				reply.code(403);
+				return;
+			}
+
+			if (await this.applyAccessControl(request, reply, true)) {
 				return;
 			}
 

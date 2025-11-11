@@ -17,13 +17,13 @@ function abort(message?: string) {
 }
 
 function main() {
-	if (!fs.existsSync('./CHANGELOG-base.md') || !fs.existsSync('./CHANGELOG-head.md')) {
-		console.error('CHANGELOG-base.md or CHANGELOG-head.md is missing.');
+	if (!fs.existsSync('./CHANGELOG_CHERRYPICK-base.md') || !fs.existsSync('./CHANGELOG_CHERRYPICK-head.md')) {
+		console.error('CHANGELOG_CHERRYPICK-base.md or CHANGELOG_CHERRYPICK-head.md is missing.');
 		return;
 	}
 
-	const base = parseChangeLog('./CHANGELOG-base.md');
-	const head = parseChangeLog('./CHANGELOG-head.md');
+	const base = parseChangeLog('./CHANGELOG_CHERRYPICK-base.md');
+	const head = parseChangeLog('./CHANGELOG_CHERRYPICK-head.md');
 
 	const result = (base.length < head.length)
 		? checkNewRelease(base, head)

@@ -133,6 +133,7 @@ export interface IPost extends IObject {
 	};
 	_misskey_quote?: string;
 	_misskey_content?: string;
+	_misskey_talk?: boolean;
 	quoteUrl?: string;
 }
 
@@ -343,6 +344,10 @@ export interface IMove extends IActivity {
 	target: IObject | string;
 }
 
+export interface IInvite extends IActivity {
+	type: 'Invite';
+}
+
 export const isCreate = (object: IObject): object is ICreate => getApType(object) === 'Create';
 export const isDelete = (object: IObject): object is IDelete => getApType(object) === 'Delete';
 export const isUpdate = (object: IObject): object is IUpdate => getApType(object) === 'Update';
@@ -360,4 +365,5 @@ export const isAnnounce = (object: IObject): object is IAnnounce => getApType(ob
 export const isBlock = (object: IObject): object is IBlock => getApType(object) === 'Block';
 export const isFlag = (object: IObject): object is IFlag => getApType(object) === 'Flag';
 export const isMove = (object: IObject): object is IMove => getApType(object) === 'Move';
+export const isInvite = (object: IObject): object is IInvite => getApType(object) === 'Invite';
 export const isNote = (object: IObject): object is IPost => getApType(object) === 'Note';

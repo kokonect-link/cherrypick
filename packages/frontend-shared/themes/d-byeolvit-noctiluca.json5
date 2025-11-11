@@ -59,7 +59,6 @@
 		navIndicator: '@accent',
 		windowHeader: ':alpha<0.85<@panel',
 		buttonHoverBg: 'rgba(174, 219, 233, 0.14)',
-		driveFolderBg: ':alpha<0.1<@renote',
 		fgHighlighted: '#FFF',
 		panelHeaderBg: ':lighten<6<@panel',
 		buttonGradateA: '@accent',

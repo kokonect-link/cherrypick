@@ -11,9 +11,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XSidebar v-if="!isMobile" :class="$style.sidebar" :showWidgetButton="!isDesktop" @widgetButtonClick="widgetsShowing = true"/>
 
 		<div :class="[$style.contents, !isMobile && prefer.r.showTitlebar.value ? $style.withSidebarAndTitlebar : null]" @contextmenu.stop="onContextmenu">
-			<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
-			<XAnnouncements v-if="$i"/>
-			<XStatusBars :class="$style.statusbars"/>
+			<div>
+				<XReloadSuggestion v-if="shouldSuggestReload"/>
+				<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
+				<XAnnouncements v-if="$i"/>
+				<XStatusBars :class="$style.statusbars"/>
+			</div>
 			<StackingRouterView v-if="prefer.s['experimental.stackingRouterView']" :class="$style.content"/>
 			<RouterView v-else :class="$style.content"/>
 			<XMobileFooterMenu v-if="isMobile" ref="navFooter" v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
@@ -30,18 +33,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<XCommon v-model:drawerMenuShowing="drawerMenuShowing" v-model:widgetsShowing="widgetsShowing"/>
 
 		<button
-			v-if="isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)"
-			v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
+			v-if="$i && isMobile && enableNavButton.includes(<string>mainRouter.currentRoute.value.name)"
 			:class="[$style.floatNavButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]"
 			class="_button"
-			@click="drawerMenuShowing = true"
+			@click="clickNavButton"
 		>
-			<CPAvatar :class="$style.floatNavButtonAvatar" :user="$i"/>
+			<MkAvatar :class="$style.floatNavButtonAvatar" :user="$i" isFloatingBtn/>
 		</button>
 
 		<button
 			v-if="isMobile && enablePostButton.includes(<string>mainRouter.currentRoute.value.name)"
-			v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
 			:class="[$style.floatPostButton, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderFloatBtn', 'hideFloatBtnOnly', 'hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]"
 			:style="{ background: PostBg }"
 			class="_button"
@@ -64,6 +65,7 @@ import XCommon from './_common_/common.vue';
 import type { PageMetadata } from '@/page.js';
 import XMobileFooterMenu from '@/ui/friendly/mobile-footer-menu-friendly.vue';
 import XPreferenceRestore from '@/ui/_common_/PreferenceRestore.vue';
+import XReloadSuggestion from '@/ui/_common_/ReloadSuggestion.vue';
 import XTitlebar from '@/ui/_common_/titlebar.vue';
 import XSidebar from '@/ui/friendly/navbar.vue';
 import * as os from '@/os.js';
@@ -78,7 +80,8 @@ import { shouldSuggestRestoreBackup } from '@/preferences/utility.js';
 import { DI } from '@/di.js';
 import { globalEvents } from '@/events.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
-import CPAvatar from '@/components/global/CPAvatar-Friendly.vue';
+import { haptic } from '@/utility/haptic.js';
+import { shouldSuggestReload } from '@/utility/reload-suggest.js';
 
 const XWidgets = defineAsyncComponent(() => import('./_common_/widgets.vue'));
 const XNotifications = defineAsyncComponent(() => import('@/pages/notifications.vue'));
@@ -95,9 +98,11 @@ const MOBILE_THRESHOLD = 500;
 // デスクトップでウィンドウを狭くしたときモバイルUIが表示されて欲しいことはあるので deviceKind === 'desktop' の判定は行わない
 const isDesktop = ref(window.innerWidth >= DESKTOP_THRESHOLD);
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const enableNavButton = [
 	'index',
@@ -115,7 +120,6 @@ const enablePostButton = [
 ];
 
 const { showEl } = scrollToVisibility();
-const queue = ref(0);
 const bg = ref<string | undefined>(undefined);
 const PostBg = ref<string | undefined>(undefined);
 
@@ -178,15 +182,13 @@ onMounted(() => {
 		}, { passive: true });
 	}
 
-	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
-
 	calcBg();
 	globalEvents.on('themeChanging', calcBg);
 });
 
 onUnmounted(() => {
-	globalEvents.off('queueUpdated', (q) => queueUpdated(q));
 	globalEvents.off('themeChanging', calcBg);
+	window.removeEventListener('resize', handleResize);
 });
 
 const onContextmenu = (ev) => {
@@ -206,18 +208,20 @@ const onContextmenu = (ev) => {
 	}], ev);
 };
 
-function queueUpdated(q: number): void {
-	queue.value = q;
-}
-
 function createChat(ev: MouseEvent) {
+	haptic();
+
 	if (mainRouter.currentRoute.value.name === 'chat' && !(['chat-room'].includes(<string>mainRouter.currentRoute.value.name))) globalEvents.emit('createChat', ev);
 	else if (enablePostButton.includes(<string>mainRouter.currentRoute.value.name)) os.post();
+}
+
+function clickNavButton() {
+	haptic();
+	drawerMenuShowing.value = true;
 }
 </script>
 
 <style lang="scss" module>
-$ui-font-size: 1em; // TODO: どこかに集約したい
 $widgets-hide-threshold: 1090px;
 $float-button-size: 65px;
 

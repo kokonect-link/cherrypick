@@ -52,8 +52,8 @@ function safeURIDecode(str: string): string {
 	}
 }
 
-const page = location.pathname.split('/')[2];
-const contentId = safeURIDecode(location.pathname.split('/')[3]);
+const page = window.location.pathname.split('/')[2];
+const contentId = safeURIDecode(window.location.pathname.split('/')[3]);
 if (_DEV_) console.log(page, contentId);
 
 const embedParams = inject(DI.embedParams, defaultEmbedParams);
@@ -71,7 +71,7 @@ let previousHeight = 0;
 const resizeObserver = new ResizeObserver(async () => {
 	const height = rootEl.value!.scrollHeight + (embedNoBorder.value ? 0 : 2); // border 上下1px
 	if (Math.abs(previousHeight - height) < 1) return; // 1px未満の変化は無視
-	postMessageToParentWindow('misskey:embed:changeHeight', {
+	postMessageToParentWindow('cherrypick:embed:changeHeight', {
 		height: (maxHeight.value > 0 && height > maxHeight.value) ? maxHeight.value : height,
 	});
 	previousHeight = height;

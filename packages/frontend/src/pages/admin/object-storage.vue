@@ -6,166 +6,209 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 32px;">
-		<div class="_gaps_m">
-			<MkFolder :defaultOpen="false">
-				<template #icon><i class="ti ti-cloud"></i></template>
-				<template #label>{{ i18n.ts.objectStorage }}</template>
-				<template v-if="objectStorageForm.savedState.useObjectStorage" #suffix>Enabled</template>
-				<template v-else #suffix>Disabled</template>
-				<template v-if="objectStorageForm.modified.value" #footer>
-					<MkFormFooter :form="objectStorageForm"/>
-				</template>
-
-				<div class="_gaps">
-					<MkSwitch v-model="objectStorageForm.state.useObjectStorage">
-						<template #label>{{ i18n.ts.useObjectStorage }}<span v-if="objectStorageForm.modifiedStates.useObjectStorage" class="_modified">{{ i18n.ts.modified }}</span></template>
-					</MkSwitch>
-
-					<template v-if="objectStorageForm.state.useObjectStorage">
-						<MkInput v-model="objectStorageForm.state.objectStorageBaseUrl" :placeholder="'https://example.com'" type="url">
-							<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
-							<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
-						</MkInput>
-
-						<MkInput v-model="objectStorageForm.state.objectStorageBucket">
-							<template #label>{{ i18n.ts.objectStorageBucket }}</template>
-							<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
-						</MkInput>
-
-						<MkInput v-model="objectStorageForm.state.objectStoragePrefix">
-							<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
-							<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
-						</MkInput>
-
-						<MkInput v-model="objectStorageForm.state.objectStorageEndpoint" :placeholder="'example.com'">
-							<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
-							<template #prefix>https://</template>
-							<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
-						</MkInput>
-
-						<MkInput v-model="objectStorageForm.state.objectStorageRegion">
-							<template #label>{{ i18n.ts.objectStorageRegion }}</template>
-							<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
-						</MkInput>
-
-						<FormSplit :minWidth="280">
-							<MkInput v-model="objectStorageForm.state.objectStorageAccessKey">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Access key<span v-if="objectStorageForm.modifiedStates.objectStorageAccessKey" class="_modified">{{ i18n.ts.modified }}</span></template>
-							</MkInput>
-
-							<MkInput v-model="objectStorageForm.state.objectStorageSecretKey" type="password">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Secret key<span v-if="objectStorageForm.modifiedStates.objectStorageSecretKey" class="_modified">{{ i18n.ts.modified }}</span></template>
-							</MkInput>
-						</FormSplit>
-
-						<MkSwitch v-model="objectStorageForm.state.objectStorageUseSSL">
-							<template #label>{{ i18n.ts.objectStorageUseSSL }}<span v-if="objectStorageForm.modifiedStates.objectStorageUseSSL" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
-						</MkSwitch>
-
-						<MkSwitch v-model="objectStorageForm.state.objectStorageUseProxy">
-							<template #label>{{ i18n.ts.objectStorageUseProxy }}<span v-if="objectStorageForm.modifiedStates.objectStorageUseProxy" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
-						</MkSwitch>
-
-						<MkSwitch v-model="objectStorageForm.state.objectStorageSetPublicRead">
-							<template #label>{{ i18n.ts.objectStorageSetPublicRead }}<span v-if="objectStorageForm.modifiedStates.objectStorageSetPublicRead" class="_modified">{{ i18n.ts.modified }}</span></template>
-						</MkSwitch>
-
-						<MkSwitch v-model="objectStorageForm.state.objectStorageS3ForcePathStyle">
-							<template #label>s3ForcePathStyle<span v-if="objectStorageForm.modifiedStates.objectStorageS3ForcePathStyle" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
-						</MkSwitch>
+		<SearchMarker path="/admin/object-storage" :label="i18n.ts.objectStorage" :keywords="['objectStorage']" icon="ti ti-cloud">
+			<div class="_gaps_m">
+				<MkFolder :defaultOpen="false">
+					<template #icon><i class="ti ti-cloud"></i></template>
+					<template #label>{{ i18n.ts.objectStorage }}</template>
+					<template v-if="objectStorageForm.savedState.useObjectStorage" #suffix>Enabled</template>
+					<template v-else #suffix>Disabled</template>
+					<template v-if="objectStorageForm.modified.value" #footer>
+						<MkFormFooter :form="objectStorageForm"/>
 					</template>
-				</div>
-			</MkFolder>
 
-			<MkFolder :defaultOpen="false">
-				<template #icon><i class="ti ti-cloud"></i></template>
-				<template #label>{{ i18n.ts.objectStorage }} ({{ i18n.ts.remote }})</template>
-				<template v-if="remoteObjectStorageForm.savedState.useRemoteObjectStorage" #suffix>Enabled</template>
-				<template v-else #suffix>Disabled</template>
-				<template v-if="remoteObjectStorageForm.modified.value" #footer>
-					<MkFormFooter :form="remoteObjectStorageForm"/>
-				</template>
+					<div class="_gaps">
+						<SearchMarker>
+							<MkSwitch v-model="objectStorageForm.state.useObjectStorage">
+								<template #label>{{ i18n.ts.useObjectStorage }}<span v-if="objectStorageForm.modifiedStates.useObjectStorage" class="_modified">{{ i18n.ts.modified }}</span></template>
+							</MkSwitch>
+						</SearchMarker>
 
-				<div class="_gaps">
-					<MkSwitch v-model="remoteObjectStorageForm.state.useRemoteObjectStorage">
-						<template #label>{{ i18n.ts.useObjectStorage }} ({{ i18n.ts.remote }})<span v-if="remoteObjectStorageForm.modifiedStates.useRemoteObjectStorage" class="_modified">{{ i18n.ts.modified }}</span></template>
-						<template #caption>{{ i18n.ts.objectStorageRemoteEnableDesc }}</template>
-					</MkSwitch>
+						<template v-if="objectStorageForm.state.useObjectStorage">
+							<SearchMarker>
+								<MkInput v-model="objectStorageForm.state.objectStorageBaseUrl" :placeholder="'https://example.com'" type="url">
+									<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
+									<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
+								</MkInput>
+							</SearchMarker>
 
-					<template v-if="remoteObjectStorageForm.state.useRemoteObjectStorage">
-						<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageBaseUrl" :placeholder="'https://example.com'" type="url">
-							<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
-							<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
-						</MkInput>
+							<SearchMarker>
+								<MkInput v-model="objectStorageForm.state.objectStorageBucket">
+									<template #label>{{ i18n.ts.objectStorageBucket }}</template>
+									<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
+								</MkInput>
+							</SearchMarker>
 
-						<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageBucket">
-							<template #label>{{ i18n.ts.objectStorageBucket }}</template>
-							<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
-						</MkInput>
+							<SearchMarker>
+								<MkInput v-model="objectStorageForm.state.objectStoragePrefix">
+									<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
+									<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
+								</MkInput>
+							</SearchMarker>
 
-						<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStoragePrefix">
-							<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
-							<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
-						</MkInput>
+							<SearchMarker>
+								<MkInput v-model="objectStorageForm.state.objectStorageEndpoint" :placeholder="'example.com'">
+									<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
+									<template #prefix>https://</template>
+									<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
+								</MkInput>
+							</SearchMarker>
 
-						<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageEndpoint" :placeholder="'example.com'">
-							<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
-							<template #prefix>https://</template>
-							<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
-						</MkInput>
+							<SearchMarker>
+								<MkInput v-model="objectStorageForm.state.objectStorageRegion">
+									<template #label>{{ i18n.ts.objectStorageRegion }}</template>
+									<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
+								</MkInput>
+							</SearchMarker>
 
-						<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageRegion">
-							<template #label>{{ i18n.ts.objectStorageRegion }}</template>
-							<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
-						</MkInput>
+							<FormSplit :minWidth="280">
+								<SearchMarker>
+									<MkInput v-model="objectStorageForm.state.objectStorageAccessKey">
+										<template #prefix><i class="ti ti-key"></i></template>
+										<template #label>Access key<span v-if="objectStorageForm.modifiedStates.objectStorageAccessKey" class="_modified">{{ i18n.ts.modified }}</span></template>
+									</MkInput>
+								</SearchMarker>
 
-						<FormSplit :minWidth="280">
-							<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageAccessKey">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Access key<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageAccessKey" class="_modified">{{ i18n.ts.modified }}</span></template>
-							</MkInput>
+								<SearchMarker>
+									<MkInput v-model="objectStorageForm.state.objectStorageSecretKey" type="password">
+										<template #prefix><i class="ti ti-key"></i></template>
+										<template #label>Secret key<span v-if="objectStorageForm.modifiedStates.objectStorageSecretKey" class="_modified">{{ i18n.ts.modified }}</span></template>
+									</MkInput>
+								</SearchMarker>
+							</FormSplit>
 
-							<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageSecretKey" type="password">
-								<template #prefix><i class="ti ti-key"></i></template>
-								<template #label>Secret key<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageSecretKey" class="_modified">{{ i18n.ts.modified }}</span></template>
-							</MkInput>
-						</FormSplit>
+							<SearchMarker>
+								<MkSwitch v-model="objectStorageForm.state.objectStorageUseSSL">
+									<template #label>{{ i18n.ts.objectStorageUseSSL }}<span v-if="objectStorageForm.modifiedStates.objectStorageUseSSL" class="_modified">{{ i18n.ts.modified }}</span></template>
+									<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
+								</MkSwitch>
+							</SearchMarker>
 
-						<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageUseSSL">
-							<template #label>{{ i18n.ts.objectStorageUseSSL }}<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageUseSSL" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
-						</MkSwitch>
+							<SearchMarker>
+								<MkSwitch v-model="objectStorageForm.state.objectStorageUseProxy">
+									<template #label>{{ i18n.ts.objectStorageUseProxy }}<span v-if="objectStorageForm.modifiedStates.objectStorageUseProxy" class="_modified">{{ i18n.ts.modified }}</span></template>
+									<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
+								</MkSwitch>
+							</SearchMarker>
 
-						<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageUseProxy">
-							<template #label>{{ i18n.ts.objectStorageUseProxy }}<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageUseProxy" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
-						</MkSwitch>
+							<SearchMarker>
+								<MkSwitch v-model="objectStorageForm.state.objectStorageSetPublicRead">
+									<template #label>{{ i18n.ts.objectStorageSetPublicRead }}<span v-if="objectStorageForm.modifiedStates.objectStorageSetPublicRead" class="_modified">{{ i18n.ts.modified }}</span></template>
+								</MkSwitch>
+							</SearchMarker>
 
-						<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageSetPublicRead">
-							<template #label>{{ i18n.ts.objectStorageSetPublicRead }}<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageSetPublicRead" class="_modified">{{ i18n.ts.modified }}</span></template>
-						</MkSwitch>
+							<SearchMarker>
+								<MkSwitch v-model="objectStorageForm.state.objectStorageS3ForcePathStyle">
+									<template #label>s3ForcePathStyle<span v-if="objectStorageForm.modifiedStates.objectStorageS3ForcePathStyle" class="_modified">{{ i18n.ts.modified }}</span></template>
+									<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
+								</MkSwitch>
+							</SearchMarker>
+						</template>
+					</div>
+				</MkFolder>
 
-						<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageS3ForcePathStyle">
-							<template #label>s3ForcePathStyle<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageS3ForcePathStyle" class="_modified">{{ i18n.ts.modified }}</span></template>
-							<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
-						</MkSwitch>
+				<MkFolder :defaultOpen="false">
+					<template #icon><i class="ti ti-cloud"></i></template>
+					<template #label>{{ i18n.ts.objectStorage }} ({{ i18n.ts.remote }})</template>
+					<template v-if="remoteObjectStorageForm.savedState.useRemoteObjectStorage" #suffix>Enabled</template>
+					<template v-else #suffix>Disabled</template>
+					<template v-if="remoteObjectStorageForm.modified.value" #footer>
+						<MkFormFooter :form="remoteObjectStorageForm"/>
 					</template>
-				</div>
-			</MkFolder>
-		</div>
-	</div>
-	<template #footer>
-		<div :class="$style.footer">
-			<div class="_spacer" style="--MI_SPACER-w: 700px; --MI_SPACER-min: 16px; --MI_SPACER-max: 16px;">
-				<MkButton primary rounded @click="save"><i class="ti ti-check"></i> {{ i18n.ts.save }}</MkButton>
+
+					<div class="_gaps">
+						<SearchMarker>
+							<MkSwitch v-model="remoteObjectStorageForm.state.useRemoteObjectStorage">
+								<template #label>{{ i18n.ts.useObjectStorage }} ({{ i18n.ts.remote }})<span v-if="remoteObjectStorageForm.modifiedStates.useRemoteObjectStorage" class="_modified">{{ i18n.ts.modified }}</span></template>
+								<template #caption>{{ i18n.ts.objectStorageRemoteEnableDesc }}</template>
+							</MkSwitch>
+						</SearchMarker>
+
+						<template v-if="remoteObjectStorageForm.state.useRemoteObjectStorage">
+							<SearchMarker>
+								<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageBaseUrl" :placeholder="'https://example.com'" type="url">
+									<template #label>{{ i18n.ts.objectStorageBaseUrl }}</template>
+									<template #caption>{{ i18n.ts.objectStorageBaseUrlDesc }}</template>
+								</MkInput>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageBucket">
+									<template #label>{{ i18n.ts.objectStorageBucket }}</template>
+									<template #caption>{{ i18n.ts.objectStorageBucketDesc }}</template>
+								</MkInput>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStoragePrefix">
+									<template #label>{{ i18n.ts.objectStoragePrefix }}</template>
+									<template #caption>{{ i18n.ts.objectStoragePrefixDesc }}</template>
+								</MkInput>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageEndpoint" :placeholder="'example.com'">
+									<template #label>{{ i18n.ts.objectStorageEndpoint }}</template>
+									<template #prefix>https://</template>
+									<template #caption>{{ i18n.ts.objectStorageEndpointDesc }}</template>
+								</MkInput>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageRegion">
+									<template #label>{{ i18n.ts.objectStorageRegion }}</template>
+									<template #caption>{{ i18n.ts.objectStorageRegionDesc }}</template>
+								</MkInput>
+							</SearchMarker>
+
+							<FormSplit :minWidth="280">
+								<SearchMarker>
+									<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageAccessKey">
+										<template #prefix><i class="ti ti-key"></i></template>
+										<template #label>Access key<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageAccessKey" class="_modified">{{ i18n.ts.modified }}</span></template>
+									</MkInput>
+								</SearchMarker>
+
+								<SearchMarker>
+									<MkInput v-model="remoteObjectStorageForm.state.remoteObjectStorageSecretKey" type="password">
+										<template #prefix><i class="ti ti-key"></i></template>
+										<template #label>Secret key<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageSecretKey" class="_modified">{{ i18n.ts.modified }}</span></template>
+									</MkInput>
+								</SearchMarker>
+							</FormSplit>
+
+							<SearchMarker>
+								<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageUseSSL">
+									<template #label>{{ i18n.ts.objectStorageUseSSL }}<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageUseSSL" class="_modified">{{ i18n.ts.modified }}</span></template>
+									<template #caption>{{ i18n.ts.objectStorageUseSSLDesc }}</template>
+								</MkSwitch>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageUseProxy">
+									<template #label>{{ i18n.ts.objectStorageUseProxy }}<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageUseProxy" class="_modified">{{ i18n.ts.modified }}</span></template>
+									<template #caption>{{ i18n.ts.objectStorageUseProxyDesc }}</template>
+								</MkSwitch>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageSetPublicRead">
+									<template #label>{{ i18n.ts.objectStorageSetPublicRead }}<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageSetPublicRead" class="_modified">{{ i18n.ts.modified }}</span></template>
+								</MkSwitch>
+							</SearchMarker>
+
+							<SearchMarker>
+								<MkSwitch v-model="remoteObjectStorageForm.state.remoteObjectStorageS3ForcePathStyle">
+									<template #label>s3ForcePathStyle<span v-if="remoteObjectStorageForm.modifiedStates.remoteObjectStorageS3ForcePathStyle" class="_modified">{{ i18n.ts.modified }}</span></template>
+									<template #caption>{{ i18n.ts.s3ForcePathStyleDesc }}</template>
+								</MkSwitch>
+							</SearchMarker>
+						</template>
+					</div>
+				</MkFolder>
 			</div>
-		</div>
-	</template>
+		</SearchMarker>
+	</div>
 </PageWithHeader>
 </template>
 
@@ -182,7 +225,7 @@ import { misskeyApi } from '@/utility/misskey-api.js';
 import { fetchInstance } from '@/instance.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
-import { useForm } from '@/use/use-form.js';
+import { useForm } from '@/composables/use-form.js';
 
 const meta = await misskeyApi('admin/meta');
 

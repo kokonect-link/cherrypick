@@ -11,25 +11,26 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-else-if="tab === 'users'" class="_spacer" style="--MI_SPACER-w: 1200px;">
 		<div class="_gaps_s">
 			<div v-if="role">{{ role.description }}</div>
-			<MkUserList v-if="visible" :pagination="users" :extractor="(item) => item.user"/>
+			<MkUserList v-if="visible" :paginator="usersPaginator" :extractor="(item) => item.user"/>
 			<MkResult v-else-if="!visible" type="empty" :text="i18n.ts.nothing"/>
 		</div>
 	</div>
 	<div v-else-if="tab === 'timeline'" class="_spacer" style="--MI_SPACER-w: 700px;">
-		<MkTimeline v-if="visible" ref="timeline" src="role" :role="props.roleId"/>
+		<MkStreamingNotesTimeline v-if="visible" ref="timeline" src="role" :role="props.roleId"/>
 		<MkResult v-else-if="!visible" type="empty" :text="i18n.ts.nothing"/>
 	</div>
 </PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, markRaw } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import MkUserList from '@/components/MkUserList.vue';
 import { definePage } from '@/page.js';
 import { i18n } from '@/i18n.js';
-import MkTimeline from '@/components/MkTimeline.vue';
+import MkStreamingNotesTimeline from '@/components/MkStreamingNotesTimeline.vue';
+import { Paginator } from '@/utility/paginator.js';
 
 const props = withDefaults(defineProps<{
 	roleId: string;
@@ -60,12 +61,11 @@ watch(() => props.roleId, () => {
 	});
 }, { immediate: true });
 
-const users = computed(() => ({
-	endpoint: 'roles/users' as const,
+const usersPaginator = markRaw(new Paginator('roles/users', {
 	limit: 30,
-	params: {
+	computedParams: computed(() => ({
 		roleId: props.roleId,
-	},
+	})),
 }));
 
 const headerTabs = computed(() => [{

@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</TransitionGroup>
 			</div>
 
-			<div v-if="user && (!user.canChat || user.host !== null)">
+			<div v-if="user && !user.canChat">
 				<MkInfo warn>{{ i18n.ts._chat.chatNotAvailableInOtherAccount }}</MkInfo>
 			</div>
 
@@ -71,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 
 	<template #footer>
-		<div v-if="tab === 'chat'" :class="$style.footer">
+		<div v-if="tab === 'chat'" :class="[$style.footer, {[$style.isFriendly]: isMobile && isFriendly().value }]">
 			<div class="_gaps">
 				<Transition name="fade">
 					<div v-show="showIndicator" :class="$style.new">
@@ -80,7 +80,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 						</button>
 					</div>
 				</Transition>
-				<XForm v-if="!initializing" :user="user" :room="room" :class="$style.form"/>
+				<XForm v-if="initialized" :user="user" :room="room" :class="$style.form"/>
 			</div>
 		</div>
 	</template>
@@ -88,7 +88,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref, useTemplateRef, computed, onMounted, onBeforeUnmount, onDeactivated, onActivated } from 'vue';
+import { ref, useTemplateRef, computed, onMounted, onBeforeUnmount, onDeactivated, onActivated, onUnmounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { getScrollContainer } from '@@/js/scroll.js';
 import XMessage from './XMessage.vue';
@@ -108,9 +108,21 @@ import { definePage } from '@/page.js';
 import { prefer } from '@/preferences.js';
 import MkButton from '@/components/MkButton.vue';
 import { useRouter } from '@/router.js';
-import { useMutationObserver } from '@/use/use-mutation-observer.js';
+import { useMutationObserver } from '@/composables/use-mutation-observer.js';
 import MkInfo from '@/components/MkInfo.vue';
 import { makeDateSeparatedTimelineComputedRef } from '@/utility/timeline-date-separate.js';
+import { acct as getAcct } from '@/filters/user.js';
+import { isFriendly } from '@/utility/is-friendly.js';
+import { deviceKind } from '@/utility/device-kind.js';
+
+const MOBILE_THRESHOLD = 500;
+
+const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
+const handleResize = () => {
+	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
+};
+
+window.addEventListener('resize', handleResize);
 
 const $i = ensureSignin();
 const router = useRouter();
@@ -127,12 +139,14 @@ export type NormalizedChatMessage = Omit<Misskey.entities.ChatMessageLite, 'from
 	})[];
 };
 
-const initializing = ref(true);
+const initializing = ref(false);
+const initialized = ref(false);
 const moreFetching = ref(false);
 const messages = ref<NormalizedChatMessage[]>([]);
 const canFetchMore = ref(false);
 const user = ref<Misskey.entities.UserDetailed | null>(null);
 const room = ref<Misskey.entities.ChatRoom | null>(null);
+const memberships = ref<Misskey.entities.ChatRoomMembership[]>([]);
 const connection = ref<Misskey.IChannelConnection<Misskey.Channels['chatUser']> | Misskey.IChannelConnection<Misskey.Channels['chatRoom']> | null>(null);
 const showIndicator = ref(false);
 const timelineEl = useTemplateRef('timelineEl');
@@ -171,7 +185,10 @@ function normalizeMessage(message: Misskey.entities.ChatMessageLite | Misskey.en
 async function initialize() {
 	const LIMIT = 20;
 
+	if (initializing.value) return;
+
 	initializing.value = true;
+	initialized.value = false;
 
 	if (props.userId) {
 		const [u, m] = await Promise.all([
@@ -193,14 +210,50 @@ async function initialize() {
 		connection.value.on('deleted', onDeleted);
 		connection.value.on('react', onReact);
 		connection.value.on('unreact', onUnreact);
-	} else {
-		const [r, m] = await Promise.all([
+	} else if (props.roomId) {
+		const [rResult, mResult] = await Promise.allSettled([
 			misskeyApi('chat/rooms/show', { roomId: props.roomId }),
 			misskeyApi('chat/messages/room-timeline', { roomId: props.roomId, limit: LIMIT }),
 		]);
 
-		room.value = r as Misskey.entities.ChatRoomsShowResponse;
-		messages.value = (m as Misskey.entities.ChatMessagesRoomTimelineResponse).map(x => normalizeMessage(x));
+		if (rResult.status === 'rejected') {
+			os.alert({
+				type: 'error',
+				text: i18n.ts.somethingHappened,
+			});
+			initializing.value = false;
+			return;
+		}
+
+		const r = rResult.value as Misskey.entities.ChatRoomsShowResponse;
+
+		if (r.invitationExists) {
+			const confirm = await os.confirm({
+				type: 'question',
+				title: r.name,
+				text: i18n.ts._chat.youAreNotAMemberOfThisRoomButInvited + '\n' + i18n.ts._chat.doYouAcceptInvitation,
+			});
+			if (confirm.canceled) {
+				initializing.value = false;
+				router.push('/chat');
+				return;
+			} else {
+				await os.apiWithDialog('chat/rooms/join', { roomId: r.id });
+				initializing.value = false;
+				initialize();
+				return;
+			}
+		}
+
+		const m = mResult.status === 'fulfilled' ? mResult.value as Misskey.entities.ChatMessagesRoomTimelineResponse : [];
+
+		room.value = r;
+		messages.value = m.map(x => normalizeMessage(x));
+
+		memberships.value = await misskeyApi('chat/rooms/members', {
+			roomId: room.value.id,
+			limit: 50,
+		});
 
 		if (messages.value.length === LIMIT) {
 			canFetchMore.value = true;
@@ -217,6 +270,7 @@ async function initialize() {
 
 	window.document.addEventListener('visibilitychange', onVisibilitychange);
 
+	initialized.value = true;
 	initializing.value = false;
 }
 
@@ -319,6 +373,16 @@ onMounted(() => {
 	initialize();
 });
 
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+});
+
+onActivated(() => {
+	if (!initialized.value) {
+		initialize();
+	}
+});
+
 onBeforeUnmount(() => {
 	connection.value?.dispose();
 	window.document.removeEventListener('visibilitychange', onVisibilitychange);
@@ -327,7 +391,7 @@ onBeforeUnmount(() => {
 async function inviteUser() {
 	if (room.value == null) return;
 
-	const invitee = await os.selectUser({ includeSelf: false, localOnly: true });
+	const invitee = await os.selectUser({ includeSelf: false, localOnly: false });
 	os.apiWithDialog('chat/rooms/invitations/create', {
 		roomId: room.value.id,
 		userId: invitee.id,
@@ -379,7 +443,7 @@ const tab = ref('chat');
 
 const headerTabs = computed(() => room.value ? [{
 	key: 'chat',
-	title: i18n.ts.chat,
+	title: i18n.ts._chat.messages,
 	icon: 'ti ti-messages',
 }, {
 	key: 'members',
@@ -395,7 +459,7 @@ const headerTabs = computed(() => room.value ? [{
 	icon: 'ti ti-info-circle',
 }] : [{
 	key: 'chat',
-	title: i18n.ts.chat,
+	title: i18n.ts._chat.messages,
 	icon: 'ti ti-messages',
 }, {
 	key: 'search',
@@ -410,26 +474,28 @@ const headerActions = computed<PageHeaderItem[]>(() => [{
 }]);
 
 definePage(computed(() => {
-	if (!initializing.value) {
+	if (initialized.value) {
 		if (user.value) {
 			return {
 				userName: user.value,
-				title: user.value.name ?? user.value.username,
+				title: user.value.name ? `${user.value.name} (@${user.value.username})` : `@${user.value.username}`,
+				subtitle: `@${getAcct(user.value)}`,
 				avatar: user.value,
 			};
 		} else if (room.value) {
 			return {
 				title: room.value.name,
+				subtitle: i18n.tsx._chat.usersCount({ n: memberships.value.length + 1 }),
 				icon: 'ti ti-users',
 			};
 		} else {
 			return {
-				title: i18n.ts.chat,
+				title: i18n.ts.directMessage,
 			};
 		}
 	} else {
 		return {
-			title: i18n.ts.chat,
+			title: i18n.ts.directMessage,
 		};
 	}
 }));
@@ -460,6 +526,10 @@ definePage(computed(() => {
 .footer {
 	width: 100%;
 	padding-top: 8px;
+
+	&.isFriendly {
+		padding-bottom: calc(50px + env(safe-area-inset-bottom));
+	}
 }
 
 .new {
@@ -480,10 +550,6 @@ definePage(computed(() => {
 .newIcon {
 	display: inline-block;
 	margin-right: 8px;
-}
-
-.footer {
-
 }
 
 .form {

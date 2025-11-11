@@ -37,10 +37,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<!-- スマホ・タブレットの場合、キーボードが表示されると投稿が見づらくなるので、デスクトップ場合のみ自動でフォーカスを当てる -->
 			<MkPostForm v-if="$i && prefer.r.showFixedPostFormInChannel.value" :channel="channel" class="post-form _panel" fixed :autofocus="deviceKind === 'desktop'"/>
 
-			<MkTimeline :key="channelId" src="channel" :channel="channelId" @before="before" @after="after" @note="miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.id}`, Date.now())"/>
+			<MkStreamingNotesTimeline :key="channelId" src="channel" :channel="channelId"/>
 		</div>
 		<div v-else-if="tab === 'featured'">
-			<MkNotes :pagination="featuredPagination"/>
+			<MkNotesTimeline :paginator="featuredPaginator"/>
 		</div>
 		<div v-else-if="tab === 'search'">
 			<div v-if="notesSearchAvailable" class="_gaps">
@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkInput>
 					<MkButton primary rounded style="margin-top: 8px;" @click="search()">{{ i18n.ts.search }}</MkButton>
 				</div>
-				<MkNotes v-if="searchPagination" :key="searchKey" :pagination="searchPagination"/>
+				<MkNotesTimeline v-if="searchPaginator" :key="searchKey" :paginator="searchPaginator"/>
 			</div>
 			<div v-else>
 				<MkInfo warn>{{ i18n.ts.notesSearchNotAvailable }}</MkInfo>
@@ -70,12 +70,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, markRaw, shallowRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
+import { useInterval } from '@@/js/use-interval.js';
 import type { PageHeaderItem } from '@/types/page-header.js';
 import MkPostForm from '@/components/MkPostForm.vue';
-import MkTimeline from '@/components/MkTimeline.vue';
+import MkStreamingNotesTimeline from '@/components/MkStreamingNotesTimeline.vue';
 import XChannelFollowButton from '@/components/MkChannelFollowButton.vue';
 import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
@@ -83,7 +84,7 @@ import { $i, iAmModerator } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { deviceKind } from '@/utility/device-kind.js';
-import MkNotes from '@/components/MkNotes.vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import { favoritedChannelsCache } from '@/cache.js';
 import MkButton from '@/components/MkButton.vue';
 import MkInput from '@/components/MkInput.vue';
@@ -96,6 +97,7 @@ import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { notesSearchAvailable } from '@/utility/check-permissions.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { useRouter } from '@/router.js';
+import { Paginator } from '@/utility/paginator.js';
 
 const router = useRouter();
 
@@ -108,20 +110,29 @@ const tab = ref('overview');
 const channel = ref<Misskey.entities.Channel | null>(null);
 const favorited = ref(false);
 const searchQuery = ref('');
-const searchPagination = ref();
+const searchPaginator = shallowRef();
 const searchKey = ref('');
-const featuredPagination = computed(() => ({
-	endpoint: 'notes/featured' as const,
+const featuredPaginator = markRaw(new Paginator('notes/featured', {
 	limit: 10,
-	params: {
+	computedParams: computed(() => ({
 		channelId: props.channelId,
-	},
+	})),
 }));
+
+useInterval(() => {
+	if (channel.value == null) return;
+	miLocalStorage.setItemAsJson(`channelLastReadedAt:${channel.value.id}`, Date.now());
+}, 3000, {
+	immediate: true,
+	afterMounted: true,
+});
 
 watch(() => props.channelId, async () => {
 	channel.value = await misskeyApi('channels/show', {
 		channelId: props.channelId,
 	});
+	if (channel.value == null) return; // TSを黙らすため
+
 	favorited.value = channel.value.isFavorited ?? false;
 	if (favorited.value || channel.value.isFollowing) {
 		tab.value = 'timeline';
@@ -138,7 +149,11 @@ watch(() => props.channelId, async () => {
 }, { immediate: true });
 
 function edit() {
-	router.push(`/channels/${channel.value?.id}/edit`);
+	router.push('/channels/:channelId/edit', {
+		params: {
+			channelId: props.channelId,
+		},
+	});
 }
 
 function openPostForm() {
@@ -181,14 +196,13 @@ async function search() {
 
 	if (query == null) return;
 
-	searchPagination.value = {
-		endpoint: 'notes/search',
+	searchPaginator.value = markRaw(new Paginator('notes/search', {
 		limit: 10,
 		params: {
 			query: query,
 			channelId: channel.value.id,
 		},
-	};
+	}));
 
 	searchKey.value = query;
 }
@@ -205,7 +219,7 @@ const headerActions = computed(() => {
 					console.warn('failed to copy channel URL. channel.value is null.');
 					return;
 				}
-				copyToClipboard(`${url}/channels/${channel.value.id}`);
+				copyToClipboard(`${url}/channels/${channel.value.id}`, 'link');
 			},
 		});
 

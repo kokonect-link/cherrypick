@@ -4,7 +4,7 @@
  */
 
 import { randomUUID } from 'node:crypto';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { MetricsTime, type JobType } from 'bullmq';
 import { parse as parseRedisInfo } from 'redis-info';
 import type { IActivity } from '@/core/activitypub/type.js';
@@ -18,6 +18,7 @@ import { bindThis } from '@/decorators.js';
 import type { Antenna } from '@/server/api/endpoints/i/import-antennas.js';
 import { ApRequestCreator } from '@/core/activitypub/ApRequestService.js';
 import { type SystemWebhookPayload } from '@/core/SystemWebhookService.js';
+import type { Packed } from '@/misc/json-schema.js';
 import { type UserWebhookPayload } from './UserWebhookService.js';
 import type {
 	DbJobData,
@@ -31,6 +32,7 @@ import type {
 	DbQueue,
 	DeliverQueue,
 	EndedPollNotificationQueue,
+	PostScheduledNoteQueue,
 	InboxQueue,
 	ObjectStorageQueue,
 	RelationshipQueue,
@@ -38,7 +40,6 @@ import type {
 	SystemWebhookDeliverQueue,
 	UserWebhookDeliverQueue,
 	ScheduledNoteDeleteQueue,
-	ScheduleNotePostQueue,
 } from './QueueModule.js';
 import type httpSignature from '@peertube/http-signature';
 import type * as Bull from 'bullmq';
@@ -46,6 +47,7 @@ import type * as Bull from 'bullmq';
 export const QUEUE_TYPES = [
 	'system',
 	'endedPollNotification',
+	'postScheduledNote',
 	'deliver',
 	'inbox',
 	'db',
@@ -55,14 +57,50 @@ export const QUEUE_TYPES = [
 	'systemWebhookDeliver',
 ] as const;
 
+const REPEATABLE_SYSTEM_JOB_DEF = [{
+	name: 'tickCharts',
+	pattern: '55 * * * *',
+}, {
+	name: 'resyncCharts',
+	pattern: '0 0 * * *',
+}, {
+	name: 'cleanCharts',
+	pattern: '0 0 * * *',
+}, {
+	name: 'aggregateRetention',
+	pattern: '0 0 * * *',
+}, {
+	name: 'clean',
+	pattern: '0 0 * * *',
+}, {
+	name: 'checkExpiredMutings',
+	pattern: '*/5 * * * *',
+}, {
+	name: 'bakeBufferedReactions',
+	pattern: '0 0 * * *',
+}, {
+	name: 'checkModeratorsActivity',
+	// 毎時30分に起動
+	pattern: '30 * * * *',
+}, {
+	name: 'cleanRemoteNotes',
+	// 毎日午前4時に起動(最も人の少ない時間帯)
+	pattern: '0 4 * * *',
+}, {
+	name: 'autoDeleteNotes',
+	// 매일 오전 3시에 실행
+	pattern: '0 3 * * *',
+}];
+
 @Injectable()
-export class QueueService {
+export class QueueService implements OnModuleInit {
 	constructor(
 		@Inject(DI.config)
 		private config: Config,
 
 		@Inject('queue:system') public systemQueue: SystemQueue,
 		@Inject('queue:endedPollNotification') public endedPollNotificationQueue: EndedPollNotificationQueue,
+		@Inject('queue:postScheduledNote') public postScheduledNoteQueue: PostScheduledNoteQueue,
 		@Inject('queue:deliver') public deliverQueue: DeliverQueue,
 		@Inject('queue:inbox') public inboxQueue: InboxQueue,
 		@Inject('queue:db') public dbQueue: DbQueue,
@@ -71,64 +109,44 @@ export class QueueService {
 		@Inject('queue:userWebhookDeliver') public userWebhookDeliverQueue: UserWebhookDeliverQueue,
 		@Inject('queue:systemWebhookDeliver') public systemWebhookDeliverQueue: SystemWebhookDeliverQueue,
 		@Inject('queue:scheduledNoteDelete') public scheduledNoteDeleteQueue: ScheduledNoteDeleteQueue,
-		@Inject('queue:scheduleNotePost') public ScheduleNotePostQueue: ScheduleNotePostQueue,
-	) {
-		this.systemQueue.add('tickCharts', {
-		}, {
-			repeat: { pattern: '55 * * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
+	) { }
 
-		this.systemQueue.add('resyncCharts', {
-		}, {
-			repeat: { pattern: '0 0 * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
+	async onModuleInit() {
+		console.log('[QueueService] onModuleInit: Setting up', REPEATABLE_SYSTEM_JOB_DEF.length, 'repeatable jobs');
+		try {
+			for (const def of REPEATABLE_SYSTEM_JOB_DEF) {
+				console.log('[QueueService] Setting up repeatable job:', def.name, 'pattern:', def.pattern);
+				const result = await this.systemQueue.upsertJobScheduler(def.name, {
+					pattern: def.pattern,
+					immediately: false,
+				}, {
+					name: def.name,
+					opts: {
+						// 期限ではなくcountで設定したいが、ジョブごとではなくキュー全体でカウントされるため、高頻度で実行されるジョブによって低頻度で実行されるジョブのログが消えることになる
+						removeOnComplete: {
+							age: 3600 * 24 * 7, // keep up to 7 days
+						},
+						removeOnFail: {
+							age: 3600 * 24 * 7, // keep up to 7 days
+						},
+					},
+				});
+				console.log('[QueueService] Result:', def.name, result);
+			}
 
-		this.systemQueue.add('cleanCharts', {
-		}, {
-			repeat: { pattern: '0 0 * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
-
-		this.systemQueue.add('aggregateRetention', {
-		}, {
-			repeat: { pattern: '0 0 * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
-
-		this.systemQueue.add('clean', {
-		}, {
-			repeat: { pattern: '0 0 * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
-
-		this.systemQueue.add('checkExpiredMutings', {
-		}, {
-			repeat: { pattern: '*/5 * * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
-
-		this.systemQueue.add('bakeBufferedReactions', {
-		}, {
-			repeat: { pattern: '0 0 * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
-
-		this.systemQueue.add('checkModeratorsActivity', {
-		}, {
-			// 毎時30分に起動
-			repeat: { pattern: '30 * * * *' },
-			removeOnComplete: 10,
-			removeOnFail: 30,
-		});
+			// 古いバージョンで作成され現在使われなくなったrepeatableジョブをクリーンアップ
+			const schedulers = await this.systemQueue.getJobSchedulers();
+			console.log('[QueueService] Found', schedulers.length, 'existing schedulers');
+			for (const scheduler of schedulers) {
+				if (!REPEATABLE_SYSTEM_JOB_DEF.some(def => def.name === scheduler.key)) {
+					await this.systemQueue.removeJobScheduler(scheduler.key);
+				}
+			}
+			console.log('[QueueService] onModuleInit: All repeatable jobs set up successfully');
+		} catch (error) {
+			console.error('[QueueService] ERROR in onModuleInit:', error);
+			throw error;
+		}
 	}
 
 	@bindThis
@@ -735,6 +753,7 @@ export class QueueService {
 		switch (type) {
 			case 'system': return this.systemQueue;
 			case 'endedPollNotification': return this.endedPollNotificationQueue;
+			case 'postScheduledNote': return this.postScheduledNoteQueue;
 			case 'deliver': return this.deliverQueue;
 			case 'inbox': return this.inboxQueue;
 			case 'db': return this.dbQueue;
@@ -774,8 +793,8 @@ export class QueueService {
 	@bindThis
 	public async queueRetryJob(queueType: typeof QUEUE_TYPES[number], jobId: string) {
 		const queue = this.getQueue(queueType);
-		const job: Bull.Job | null = await queue.getJob(jobId);
-		if (job) {
+		const job = await queue.getJob(jobId);
+		if (job != null) {
 			if (job.finishedOn != null) {
 				await job.retry();
 			} else {
@@ -787,20 +806,20 @@ export class QueueService {
 	@bindThis
 	public async queueRemoveJob(queueType: typeof QUEUE_TYPES[number], jobId: string) {
 		const queue = this.getQueue(queueType);
-		const job: Bull.Job | null = await queue.getJob(jobId);
-		if (job) {
+		const job = await queue.getJob(jobId);
+		if (job != null) {
 			await job.remove();
 		}
 	}
 
 	@bindThis
-	private packJobData(job: Bull.Job) {
+	private packJobData(job: Bull.Job): Packed<'QueueJob'> {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const stacktrace = job.stacktrace ? job.stacktrace.filter(Boolean) : [];
 		stacktrace.reverse();
 
 		return {
-			id: job.id,
+			id: job.id!,
 			name: job.name,
 			data: job.data,
 			opts: job.opts,
@@ -821,12 +840,19 @@ export class QueueService {
 	@bindThis
 	public async queueGetJob(queueType: typeof QUEUE_TYPES[number], jobId: string) {
 		const queue = this.getQueue(queueType);
-		const job: Bull.Job | null = await queue.getJob(jobId);
-		if (job) {
+		const job = await queue.getJob(jobId);
+		if (job != null) {
 			return this.packJobData(job);
 		} else {
 			throw new Error(`Job not found: ${jobId}`);
 		}
+	}
+
+	@bindThis
+	public async queueGetJobLogs(queueType: typeof QUEUE_TYPES[number], jobId: string) {
+		const queue = this.getQueue(queueType);
+		const result = await queue.getJobLogs(jobId);
+		return result.logs;
 	}
 
 	@bindThis

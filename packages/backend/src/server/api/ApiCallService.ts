@@ -6,6 +6,7 @@
 import { randomUUID } from 'node:crypto';
 import * as fs from 'node:fs';
 import * as stream from 'node:stream/promises';
+import * as dns from 'node:dns';
 import { Inject, Injectable } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { DI } from '@/di-symbols.js';
@@ -267,7 +268,7 @@ export class ApiCallService implements OnApplicationShutdown {
 	}
 
 	@bindThis
-	private logIp(request: FastifyRequest, user: MiLocalUser) {
+	private async logIp(request: FastifyRequest, user: MiLocalUser) {
 		if (!this.meta.enableIpLogging) return;
 		const ip = request.ip;
 		const ips = this.userIpHistories.get(user.id);
@@ -278,11 +279,22 @@ export class ApiCallService implements OnApplicationShutdown {
 				ips.add(ip);
 			}
 
+			let hostNames: string[] | undefined = undefined;
+
 			try {
-				this.userIpsRepository.createQueryBuilder().insert().values({
+				const names = await dns.promises.reverse(ip);
+				hostNames = names.map(x =>
+					x.length < 512 ? x : x.substring(0, 512));
+			} catch (e) {
+				console.log(e);
+			}
+
+			try {
+				await this.userIpsRepository.createQueryBuilder().insert().values({
 					createdAt: new Date(),
 					userId: user.id,
 					ip: ip,
+					dnsNames: hostNames,
 				}).orIgnore(true).execute();
 			} catch {
 			}
@@ -328,19 +340,15 @@ export class ApiCallService implements OnApplicationShutdown {
 
 			if (factor > 0) {
 				// Rate limit
-				await this.rateLimiterService.limit(limit as IEndpointMeta['limit'] & { key: NonNullable<string> }, limitActor, factor).catch(err => {
-					if ('info' in err) {
-						// errはLimiter.LimiterInfoであることが期待される
-						throw new ApiError({
-							message: 'Rate limit exceeded. Please try again later.',
-							code: 'RATE_LIMIT_EXCEEDED',
-							id: 'd5826d14-3982-4d2e-8011-b9e9f02499ef',
-							httpStatusCode: 429,
-						}, err.info);
-					} else {
-						throw new TypeError('information must be a rate-limiter information.');
-					}
-				});
+				const rateLimit = await this.rateLimiterService.limit(limit as IEndpointMeta['limit'] & { key: NonNullable<string> }, limitActor, factor);
+				if (rateLimit != null) {
+					throw new ApiError({
+						message: 'Rate limit exceeded. Please try again later.',
+						code: 'RATE_LIMIT_EXCEEDED',
+						id: 'd5826d14-3982-4d2e-8011-b9e9f02499ef',
+						httpStatusCode: 429,
+					}, rateLimit.info);
+				}
 			}
 		}
 

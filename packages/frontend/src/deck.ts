@@ -5,11 +5,11 @@
 
 import { notificationTypes } from 'cherrypick-js';
 import { ref } from 'vue';
-import { v4 as uuid } from 'uuid';
 import { i18n } from './i18n.js';
 import type { BasicTimelineType } from '@/timelines.js';
 import type { SoundStore } from '@/preferences/def.js';
 import type { MenuItem } from '@/types/menu.js';
+import { genId } from '@/utility/id.js';
 import { deepClone } from '@/utility/clone.js';
 import { prefer } from '@/preferences.js';
 import * as os from '@/os.js';
@@ -63,6 +63,8 @@ export type Column = {
 	onlyFiles?: boolean;
 	onlyCats?: boolean;
 	soundSetting?: SoundStore;
+	// The cache for the name of the antenna, channel, list, or role
+	timelineNameCache?: string;
 };
 
 const _currentProfile = prefer.s['deck.profiles'].find(p => p.name === prefer.s['deck.profile']);
@@ -104,7 +106,7 @@ function addProfile(name: string) {
 	if (prefer.s['deck.profiles'].find(p => p.name === name)) return;
 
 	const newProfile: DeckProfile = {
-		id: uuid(),
+		id: genId(),
 		name,
 		columns: [],
 		layout: [],

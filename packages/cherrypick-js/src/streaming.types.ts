@@ -114,6 +114,17 @@ export type Channels = {
 		};
 		receives: null;
 	};
+	bubbleTimeline: {
+		params: {
+			withRenotes?: boolean;
+			withFiles?: boolean;
+			withCats?: boolean;
+		};
+		events: {
+			note: (payload: Note) => void;
+		};
+		receives: null;
+	};
 	userList: {
 		params: {
 			listId: string;
@@ -209,6 +220,14 @@ export type Channels = {
 				reporterId: string;
 				comment: string;
 			}
+		};
+		receives: null;
+	};
+	reversi: {
+		params: null;
+		events: {
+			matched: (payload: { game: ReversiGameDetailed }) => void;
+			invited: (payload: { user: User }) => void;
 		};
 		receives: null;
 	};

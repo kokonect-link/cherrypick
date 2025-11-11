@@ -150,7 +150,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useCssModule } from 'vue';
+import { computed, onMounted, ref, useCssModule, useTemplateRef } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import type { GridSortOrderKey, RequestLogItem } from '@/pages/admin/custom-emojis-manager.impl.js';
 import type { GridCellValueChangeEvent, GridEvent } from '@/components/grid/grid-event.js';
@@ -169,7 +169,7 @@ import * as os from '@/os.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import MkPagingButtons from '@/components/MkPagingButtons.vue';
 import MkSortOrderEditor from '@/components/MkSortOrderEditor.vue';
-import { useLoading } from '@/components/hook/useLoading.js';
+import { useLoading } from '@/composables/use-loading.js';
 
 type GridItem = {
 	checked: boolean;
@@ -279,11 +279,11 @@ const gridItems = ref<GridItem[]>([]);
 const spMode = computed(() => ['smartphone', 'tablet'].includes(deviceKind));
 const checkedItemsCount = computed(() => gridItems.value.filter(it => it.checked).length);
 
-const queryNameEl = ref(null);
-const queryHostEl = ref(null);
-const queryLicenseEl = ref(null);
-const queryUriEl = ref(null);
-const queryPublicUrlEl = ref(null);
+const queryNameEl = useTemplateRef('queryNameEl');
+const queryHostEl = useTemplateRef('queryHostEl');
+const queryLicenseEl = useTemplateRef('queryLicenseEl');
+const queryUriEl = useTemplateRef('queryUriEl');
+const queryPublicUrlEl = useTemplateRef('queryPublicUrlEl');
 
 function onSortOrderUpdate(_sortOrders: SortOrder<GridSortOrderKey>[]) {
 	sortOrders.value = _sortOrders;

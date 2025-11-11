@@ -8,20 +8,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<i class="ti ti-zoom" style="margin-right: 0.5em;"></i>
 		<b>{{ i18n.ts.searchResult }}</b>
 	</template>
-	<MkNotes :key="props.noteKey" :pagination="props.notePagination"/>
+	<MkNotesTimeline :key="props.noteKey" :paginator="props.notePaginator"/>
 </MkWindow>
 </template>
 
 <script lang="ts" setup>
-import { } from 'vue';
-import type { Paging } from '@/components/MkPagination.vue';
-import MkNotes from '@/components/MkNotes.vue';
+import { Paginator } from '@/utility/paginator.js';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkWindow from '@/components/MkWindow.vue';
 import { i18n } from '@/i18n.js';
 
 const props = defineProps<{
 	noteKey: string | number | symbol | undefined;
-	notePagination: Paging;
+	notePaginator: Paginator<'notes/search'>;
 }>();
 
 const emit = defineEmits<{

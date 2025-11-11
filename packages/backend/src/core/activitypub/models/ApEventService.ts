@@ -26,9 +26,15 @@ export class ApEventService {
 
 	@bindThis
 	public async extractEventFromNote(source: string | IObject, resolverParam?: Resolver): Promise<IEvent> {
-		const resolver = resolverParam ?? this.apResolverService.createResolver();
+		let note: IObject;
 
-		const note = await resolver.resolve(source);
+		if (typeof source === 'object') {
+			note = source;
+		} else {
+			const resolver = resolverParam ?? this.apResolverService.createResolver();
+
+			note = await resolver.resolve(source);
+		}
 
 		if (!isEvent(note)) {
 			throw new Error('invalid type');
@@ -36,8 +42,8 @@ export class ApEventService {
 
 		if (note.name && note.startTime) {
 			const title = note.name;
-			const start = note.startTime;
-			const end = note.endTime ?? null;
+			const start = new Date(note.startTime);
+			const end = note.endTime ? new Date(note.endTime) : null;
 
 			return {
 				title,
@@ -47,8 +53,8 @@ export class ApEventService {
 					'@type': 'Event',
 					name: note.name,
 					url: note.href,
-					startDate: note.startTime.toISOString(),
-					endDate: note.endTime?.toISOString(),
+					startDate: start.toISOString(),
+					endDate: end?.toISOString(),
 					description: note.summary,
 					identifier: note.id,
 				},

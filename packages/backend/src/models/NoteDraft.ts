@@ -13,11 +13,13 @@ import { MiNote } from './Note.js';
 import type { MiDriveFile } from './DriveFile.js';
 
 @Entity('note_draft')
+@Index('IDX_NOTE_DRAFT_FILE_IDS', { synchronize: false }) // GIN for fileIds in production
+@Index('IDX_NOTE_DRAFT_VISIBLE_USER_IDS', { synchronize: false }) // GIN for visibleUserIds in production
 export class MiNoteDraft {
 	@PrimaryColumn(id())
 	public id: string;
 
-	@Index()
+	@Index('IDX_NOTE_DRAFT_REPLY_ID')
 	@Column({
 		...id(),
 		nullable: true,
@@ -25,13 +27,14 @@ export class MiNoteDraft {
 	})
 	public replyId: MiNote['id'] | null;
 
+	// There is a possibility that replyId is not null but reply is null when the reply note is deleted.
 	@ManyToOne(type => MiNote, {
-		onDelete: 'CASCADE',
+		createForeignKeyConstraints: false,
 	})
 	@JoinColumn()
 	public reply: MiNote | null;
 
-	@Index()
+	@Index('IDX_NOTE_DRAFT_RENOTE_ID')
 	@Column({
 		...id(),
 		nullable: true,
@@ -39,8 +42,9 @@ export class MiNoteDraft {
 	})
 	public renoteId: MiNote['id'] | null;
 
+	// There is a possibility that renoteId is not null but renote is null when the renote note is deleted.
 	@ManyToOne(type => MiNote, {
-		onDelete: 'CASCADE',
+		createForeignKeyConstraints: false,
 	})
 	@JoinColumn()
 	public renote: MiNote | null;
@@ -61,7 +65,7 @@ export class MiNoteDraft {
 	})
 	public cw: string | null;
 
-	@Index()
+	@Index('IDX_NOTE_DRAFT_USER_ID')
 	@Column({
 		...id(),
 		comment: 'The ID of author.',
@@ -115,9 +119,9 @@ export class MiNoteDraft {
 	@Column('varchar', {
 		length: 128, nullable: true,
 	})
-	public hashtag: string;
+	public hashtag: string | null;
 
-	@Index()
+	@Index('IDX_NOTE_DRAFT_CHANNEL_ID')
 	@Column({
 		...id(),
 		nullable: true,
@@ -125,13 +129,15 @@ export class MiNoteDraft {
 	})
 	public channelId: MiChannel['id'] | null;
 
+	// There is a possibility that channelId is not null but channel is null when the channel is deleted.
+	// (deleting channel is not implemented so it's not happening now but may happen in the future)
 	@ManyToOne(type => MiChannel, {
-		onDelete: 'CASCADE',
+		createForeignKeyConstraints: false,
 	})
 	@JoinColumn()
 	public channel: MiChannel | null;
 
-	// 以下、Pollについて追加
+	//#region 以下、Pollについて追加
 
 	@Column('boolean', {
 		default: false,
@@ -156,11 +162,27 @@ export class MiNoteDraft {
 	})
 	public pollExpiredAfter: number | null;
 
+	//#endregion
+
+	// 予約日時
+	// これがあるだけでは実際に予約されているかどうかはわからない
+	@Column('timestamp with time zone', {
+		nullable: true,
+	})
+	public scheduledAt: Date | null;
+
+	// scheduledAtに基づいて実際にスケジュールされているか
+	@Column('boolean', {
+		default: false,
+	})
+	public isActuallyScheduled: boolean;
+
 	@Index()
 	@Column('timestamp with time zone', {
 		comment: 'The start time of the event',
+		nullable: true,
 	})
-	public eventStart: Date;
+	public eventStart: Date | null;
 
 	@Column('timestamp with time zone', {
 		comment: 'The end of the event',
@@ -172,8 +194,9 @@ export class MiNoteDraft {
 		type: 'varchar',
 		length: 128,
 		comment: 'short name of event',
+		nullable: true,
 	})
-	public eventTitle: string;
+	public eventTitle: string | null;
 
 	@Column('jsonb', {
 		default: {
@@ -189,13 +212,12 @@ export class MiNoteDraft {
 	})
 	public deleteAt: Date | null;
 
-	// ここまで追加
-
-	constructor(data: Partial<MiNoteDraft>) {
-		if (data == null) return;
-
-		for (const [k, v] of Object.entries(data)) {
-			(this as any)[k] = v;
-		}
-	}
+	@Column('jsonb', {
+		nullable: true,
+		default: {},
+	})
+	public deliveryTargets: {
+		mode: 'include' | 'exclude';
+		hosts: string[];
+	} | null;
 }

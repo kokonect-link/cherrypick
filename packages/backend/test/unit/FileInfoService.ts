@@ -292,8 +292,8 @@ describe('FileInfoService', () => {
 				size: 9817,
 				md5: '74c9279a4abe98789565f1dc1a541a42',
 				type: {
-					mime: 'audio/mp4',
-					ext: 'm4a',
+					mime: 'video/mp4',
+					ext: 'mp4',
 				},
 			});
 		});
@@ -308,7 +308,7 @@ describe('FileInfoService', () => {
 				size: 8879,
 				md5: '53bc1adcb6acbbda67ff9bd484896438',
 				type: {
-					mime: 'audio/webm',
+					mime: 'video/webm',
 					ext: 'webm',
 				},
 			});

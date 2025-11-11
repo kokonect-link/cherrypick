@@ -4,117 +4,142 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div class="zmdxowut">
-	<span>{{ i18n.ts.event }}</span>
-	<MkInput v-model="title" small type="text" class="input" style="margin: 16px 0 0 0;">
-		<template #label>*{{ i18n.ts.title }}</template>
-	</MkInput>
-	<section>
-		<div>
-			<section>
-				<MkInput v-model="startDate" small type="date" class="input">
-					<template #label>*{{ i18n.ts._event.startDate }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="startTime" small type="time" class="input">
-					<template #label>*{{ i18n.ts._event.startTime }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="endDate" small type="date" class="input">
-					<template #label>{{ i18n.ts._event.endDate }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="endTime" small type="time" class="input">
-					<template #label>{{ i18n.ts._event.endTime }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="location" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.location }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="url" small type="url" class="input">
-					<template #label>URL</template>
-				</MkInput>
-			</section>
-		</div>
-		<div style="margin: 10px 8px;">
-			<section>
-				<MkSwitch v-model="showAdvanced" :disabled="false" class="input">{{ i18n.ts.advanced }}</MkSwitch>
-			</section>
-		</div>
-		<div v-show="showAdvanced">
-			<section>
-				<MkInput v-model="doorTime" small type="time" class="input">
-					<template #label>{{ i18n.ts._event.doorTime }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="organizer" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.organizer }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="organizerLink" small type="url" class="input">
-					<template #label>{{ i18n.ts._event.organizerLink }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="audience" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.audience }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="language" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.language }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="ageRange" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.ageRange }}</template>
-				</MkInput>
-			</section>
-			<!--<section>
-				<MkInput v-model="performers" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.performers }}</template>
-				</MkInput>
-			</section>-->
-			<section>
-				<MkInput v-model="ticketsUrl" small type="url" class="input">
-					<template #label>{{ i18n.ts._event.ticketsUrl }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkSwitch v-model="isFree" :disabled="false">
-					{{ i18n.ts._event.isFree }}
-				</MkSwitch>
-			</section>
-			<section>
-				<MkInput v-model="price" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.price }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="availabilityStart" small type="datetime-local" class="input">
-					<template #label>{{ i18n.ts._event.availabilityStart }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="availabilityEnd" small type="datetime-local" class="input">
-					<template #label>{{ i18n.ts._event.availabilityEnd }}</template>
-				</MkInput>
-			</section>
-			<section>
-				<MkInput v-model="keywords" small type="text" class="input">
-					<template #label>{{ i18n.ts._event.keywords }}</template>
-				</MkInput>
-			</section>
-		</div>
-	</section>
+<div :class="$style.root">
+	<div :class="$style.label"><i class="ti ti-calendar"></i> {{ i18n.ts.event }}</div>
+
+	<div :class="$style.body">
+		<MkInput v-model="title" small type="text" class="input">
+			<template #label>*{{ i18n.ts.title }}</template>
+		</MkInput>
+
+		<section :class="$style.section">
+			<div>
+				<section>
+					<MkInput v-model="startDate" small type="date" class="input">
+						<template #label>*{{ i18n.ts._event.startDate }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="startTime" small type="time" class="input">
+						<template #label>*{{ i18n.ts._event.startTime }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="endDate" small type="date" class="input">
+						<template #label>{{ i18n.ts._event.endDate }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="endTime" small type="time" class="input">
+						<template #label>{{ i18n.ts._event.endTime }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="location" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.location }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="url" small type="url" class="input">
+						<template #label>URL</template>
+					</MkInput>
+				</section>
+			</div>
+
+			<div>
+				<section style="margin-top: 8px;">
+					<MkSwitch v-model="showAdvanced" :disabled="false" class="input">{{ i18n.ts.advanced }}</MkSwitch>
+				</section>
+			</div>
+
+			<div v-show="showAdvanced">
+				<section style="margin-top: 8px;">
+					<MkInput v-model="doorTime" small type="time" class="input">
+						<template #label>{{ i18n.ts._event.doorTime }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="organizer" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.organizer }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="organizerLink" small type="url" class="input">
+						<template #label>{{ i18n.ts._event.organizerLink }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="audience" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.audience }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="language" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.language }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="ageRange" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.ageRange }}</template>
+					</MkInput>
+				</section>
+
+				<!--
+				<section>
+					<MkInput v-model="performers" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.performers }}</template>
+					</MkInput>
+				</section>
+				-->
+
+				<section>
+					<MkInput v-model="ticketsUrl" small type="url" class="input">
+						<template #label>{{ i18n.ts._event.ticketsUrl }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkSwitch v-model="isFree" :disabled="false">
+						{{ i18n.ts._event.isFree }}
+					</MkSwitch>
+				</section>
+
+				<section>
+					<MkInput v-model="price" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.price }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="availabilityStart" small type="datetime-local" class="input">
+						<template #label>{{ i18n.ts._event.availabilityStart }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="availabilityEnd" small type="datetime-local" class="input">
+						<template #label>{{ i18n.ts._event.availabilityEnd }}</template>
+					</MkInput>
+				</section>
+
+				<section>
+					<MkInput v-model="keywords" small type="text" class="input">
+						<template #label>{{ i18n.ts._event.keywords }}</template>
+					</MkInput>
+				</section>
+			</div>
+		</section>
+	</div>
 </div>
 </template>
 
@@ -133,31 +158,43 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(ev: 'update:modelValue', v: {
-		model: Misskey.entities.Note['event']
-	})
+	(ev: 'update:modelValue', v: Misskey.entities.Note['event'])
 }>();
+
+const metadata = props.modelValue?.metadata as Record<string, unknown> | undefined;
 
 const title = ref(props.modelValue?.title ?? null);
 const startDate = ref(formatDateTimeString(addTime(new Date(), 1, 'day'), 'yyyy-MM-dd'));
 const startTime = ref('00:00');
 const endDate = ref('');
 const endTime = ref('');
-const location = ref(props.modelValue?.metadata.location ?? null);
-const url = ref(props.modelValue?.metadata.url ?? null);
+const location = ref((metadata?.location as string | undefined) ?? null);
+const url = ref((metadata?.url as string | undefined) ?? null);
 const showAdvanced = ref(false);
-const doorTime = ref(props.modelValue?.metadata.doorTime ?? null);
-const organizer = ref(props.modelValue?.metadata.organizer?.name ?? null);
-const organizerLink = ref(props.modelValue?.metadata.organizer?.sameAs ?? null);
-const audience = ref(props.modelValue?.metadata.audience?.name ?? null);
-const language = ref(props.modelValue?.metadata.inLanguage ?? null);
-const ageRange = ref(props.modelValue?.metadata.typicalAgeRange ?? null);
-const ticketsUrl = ref(props.modelValue?.metadata.offers?.url ?? null);
-const isFree = ref(props.modelValue?.metadata.isAccessibleForFree ?? false);
-const price = ref(props.modelValue?.metadata.offers?.price ?? null);
-const availabilityStart = ref(props.modelValue?.metadata.offers?.availabilityStarts ?? null);
-const availabilityEnd = ref(props.modelValue?.metadata.offers?.availabilityEnds ?? null);
-const keywords = ref(props.modelValue?.metadata.keywords ?? null);
+const doorTime = ref((metadata?.doorTime as string | undefined) ?? null);
+const organizer = ref((metadata?.organizer as { name?: string } | undefined)?.name ?? null);
+const organizerLink = ref((metadata?.organizer as { sameAs?: string } | undefined)?.sameAs ?? null);
+const audience = ref((metadata?.audience as { name?: string } | undefined)?.name ?? null);
+const language = ref((metadata?.inLanguage as string | undefined) ?? null);
+const ageRange = ref((metadata?.typicalAgeRange as string | undefined) ?? null);
+const ticketsUrl = ref((metadata?.offers as { url?: string } | undefined)?.url ?? null);
+const isFree = ref((metadata?.isAccessibleForFree as boolean | undefined) ?? false);
+const price = ref((metadata?.offers as { price?: string } | undefined)?.price ?? null);
+const availabilityStart = ref((metadata?.offers as { availabilityStarts?: string } | undefined)?.availabilityStarts ?? null);
+const availabilityEnd = ref((metadata?.offers as { availabilityEnds?: string } | undefined)?.availabilityEnds ?? null);
+const keywords = ref((metadata?.keywords as string | undefined) ?? null);
+
+if (props.modelValue?.start) {
+	const startDateTime = new Date(props.modelValue.start);
+	startDate.value = formatDateTimeString(startDateTime, 'yyyy-MM-dd');
+	startTime.value = formatDateTimeString(startDateTime, 'HH:mm');
+}
+
+if (props.modelValue?.end) {
+	const endDateTime = new Date(props.modelValue.end);
+	endDate.value = formatDateTimeString(endDateTime, 'yyyy-MM-dd');
+	endTime.value = formatDateTimeString(endDateTime, 'HH:mm');
+}
 
 function get(): Misskey.entities.Note['event'] {
 	const calcAt = (date: Ref<string>, time: Ref<string>): number => (new Date(`${date.value} ${time.value}`)).getTime();
@@ -165,9 +202,9 @@ function get(): Misskey.entities.Note['event'] {
 	const start = calcAt(startDate, startTime);
 	const end = endDate.value ? calcAt(endDate, endTime) : null;
 	return {
-		title: title.value,
-		start: start,
-		end: end,
+		title: (title.value ?? '') as any,
+		start: start as any,
+		end: end as any,
 		metadata: {
 			'@type': 'Event',
 			name: title.value,
@@ -196,8 +233,8 @@ function get(): Misskey.entities.Note['event'] {
 				url: ticketsUrl.value ?? undefined,
 			} : undefined,
 			keywords: keywords.value ?? undefined,
-		},
-	};
+		} as any,
+	} as any;
 }
 
 watch([
@@ -220,50 +257,70 @@ watch([
 	availabilityStart,
 	availabilityEnd,
 	keywords,
-], () => emit('update:modelValue', get()), {
+], () => {
+	const eventData = get();
+	if (eventData) {
+		emit('update:modelValue', eventData);
+	}
+}, {
 	deep: true,
 });
 
 onMounted(() => {
-	emit('update:modelValue', get());
+	const eventData = get();
+	if (eventData) {
+		emit('update:modelValue', eventData);
+	}
 });
 </script>
 
-<style lang="scss" scoped>
-.zmdxowut {
-	padding: 8px 16px;
+<style lang="scss" module>
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding: 8px 24px;
+}
 
-	> span {
-		opacity: 0.7;
-	}
+.label {
+	font-size: 0.85em;
+	padding: 0 0 8px 0;
+	user-select: none;
+	color: var(--MI_THEME-accent);
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
 
-	> section {
-		margin: 16px 0 0 0;
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
 
-		> div {
-			margin: 0 8px;
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 12px;
+.section {
+	> div {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 12px;
 
-			&:last-child {
-				flex: 1 0 auto;
+		&:last-child {
+			flex: 1 0 auto;
 
-				> div {
-					flex-grow: 1;
-				}
+			> div {
+				flex-grow: 1;
+			}
 
-				> section {
-					// MAGIC: Prevent div above from growing unless wrapped to its own line
-					flex-grow: 9999;
-					align-items: end;
-					display: flex;
-					gap: 4px;
+			> section {
+				// MAGIC: Prevent div above from growing unless wrapped to its own line
+				flex-grow: 9999;
+				align-items: end;
+				display: flex;
+				gap: 4px;
 
-					> .input {
-						flex: 1 1 auto;
-					}
+				> .input {
+					flex: 1 1 auto;
 				}
 			}
 		}

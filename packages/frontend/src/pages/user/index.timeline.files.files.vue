@@ -6,8 +6,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div v-if="note.files.length > 0" :class="[$style.root, $style.visible]">
 	<div v-if="!showingFiles.includes(note.files[0].id)" :key="note.id + note.files[0].id" :class="$style.img" @click="onClick($event, note.files[0])" @dblclick="onDblClick(note.files[0])">
-		<!-- TODO: 画像以外のファイルに対応 -->
-		<ImgWithBlurhash :class="$style.sensitiveImg" :hash="note.files[0].blurhash" :src="thumbnail(note.files[0])" :title="note.files[0].name" :forceBlurhash="true"/>
+		<MkImgWithBlurhash
+			v-if="isThumbnailAvailable && prefer.s.enableHighQualityImagePlaceholders"
+			:hash="note.files[0].blurhash"
+			:src="url"
+			:alt="note.files[0].comment ?? undefined"
+			:title="note.files[0].name"
+			:class="$style.sensitiveImg"
+			:cover="true"
+			:forceBlurhash="true"
+		/>
+		<img
+			v-else-if="isThumbnailAvailable && note.files[0].thumbnailUrl != null"
+			:src="url ?? undefined"
+			:alt="note.files[0].name"
+			:title="note.files[0].name"
+			:class="$style.thumbnail"
+			style="object-fit: cover;"
+		/>
 		<div :class="$style.sensitive">
 			<div>
 				<div v-if="note.files[0].isSensitive" style="display: block;"><i class="ti ti-eye-exclamation"></i> {{ i18n.ts.sensitive }}{{ prefer.s.dataSaver.media ? ` (${i18n.ts.image}${note.files[0].size ? ' ' + bytes(note.files[0].size) : ''})` : '' }}</div>
@@ -17,15 +33,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</div>
 	<MkA v-else :class="[$style.img, { [$style.multipleImg]: note.files.length > 1 }]" :to="notePage(note)">
-		<!-- TODO: 画像以外のファイルに対応 -->
-		<ImgWithBlurhash
+		<MkImgWithBlurhash
+			v-if="isThumbnailAvailable && prefer.s.enableHighQualityImagePlaceholders"
 			:hash="note.files[0].blurhash"
-			:src="thumbnail(note.files[0])"
+			:src="url"
+			:alt="note.files[0].comment ?? undefined"
 			:title="note.files[0].name"
+			:class="$style.thumbnail"
+			:cover="true"
+			:forceBlurhash="false"
 			@mouseover="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 			@mouseout="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
 			@touchstart="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = true : ''"
 			@touchend="prefer.s.showingAnimatedImages === 'interaction' ? playAnimation = false : ''"
+		/>
+		<img
+			v-else-if="isThumbnailAvailable && note.files[0].thumbnailUrl != null"
+			:src="url ?? undefined"
+			:alt="note.files[0].name"
+			:title="note.files[0].name"
+			:class="$style.thumbnail"
+			style="object-fit: cover;"
 		/>
 		<div :class="$style.indicators">
 			<div v-if="['image/gif'].includes(note.files[0].type)" :class="$style.indicator">GIF</div>
@@ -38,17 +66,20 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<span style="text-align: center; margin-right: 0.25em;">{{ note.files.length }}</span>
 		<i class="ti ti-box-multiple-filled"></i>
 	</div>
+	<div :class="$style.time">
+		<MkTime :time="note.createdAt" :mode="prefer.s.enableAbsoluteTime ? 'absolute' : 'relative'" colored/>
+	</div>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import bytes from '@/filters/bytes.js';
 import { getStaticImageUrl } from '@/utility/media-proxy.js';
 import { notePage } from '@/filters/note.js';
-import ImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
+import MkImgWithBlurhash from '@/components/MkImgWithBlurhash.vue';
 import MkA from '@/components/global/MkA.vue';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
@@ -61,15 +92,43 @@ const props = defineProps<{
 
 const showingFiles = ref<string[]>([]);
 
+const is = computed(() => {
+	if (props.note.files[0].type.startsWith('image/')) return 'image';
+	if (props.note.files[0].type.startsWith('video/')) return 'video';
+	if (props.note.files[0].type === 'audio/midi') return 'midi';
+	if (props.note.files[0].type.startsWith('audio/')) return 'audio';
+	if (props.note.files[0].type.endsWith('/csv')) return 'csv';
+	if (props.note.files[0].type.endsWith('/pdf')) return 'pdf';
+	if (props.note.files[0].type.startsWith('text/')) return 'textfile';
+	if ([
+		'application/zip',
+		'application/x-cpio',
+		'application/x-bzip',
+		'application/x-bzip2',
+		'application/java-archive',
+		'application/x-rar-compressed',
+		'application/x-tar',
+		'application/gzip',
+		'application/x-7z-compressed',
+	].some(archiveType => archiveType === props.note.files[0].type)) return 'archive';
+	return 'unknown';
+});
+
+const isThumbnailAvailable = computed(() => {
+	return props.note.files[0].thumbnailUrl || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
+		? (is.value === 'image' || is.value === 'video')
+		: false;
+});
+
 const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
-
-function thumbnail(image: Misskey.entities.DriveFile): string | null {
-	return (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.media) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
-		? getStaticImageUrl(image.url)
-		: image.thumbnailUrl;
-}
+const url = computed(() => (prefer.s.loadRawImages)
+	? props.note.files[0].url
+	: (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.media) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
+		? getStaticImageUrl(props.note.files[0].url)
+		: props.note.files[0].thumbnailUrl,
+);
 
 async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
 	if (!showingFiles.value.includes(image.id)) {
@@ -242,6 +301,27 @@ html[data-color-scheme=light] .visible {
 	padding: 2px 5px;
 }
 
+.thumbnail {
+	width: 100%;
+}
+
+.time {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	text-decoration: none;
+	color: #fff;
+	opacity: .9;
+	filter: drop-shadow(0 0 1.5px #6060608a);
+
+	&:hover {
+		text-decoration: none;
+	}
+}
+
 @container (max-width: 785px) {
 	.img {
 		height: 192px;
@@ -260,9 +340,21 @@ html[data-color-scheme=light] .visible {
 	}
 
 	.multiple {
-		top: 7px;
-		right: 7px;
+		top: 8.5px;
+		right: 8.5px;
 		font-size: 1.1em;
+	}
+}
+
+@container (max-width: 450px) {
+	.img {
+		height: 128px;
+	}
+
+	.multiple {
+		top: 9px;
+		right: 9px;
+		font-size: 1.05em;
 	}
 }
 </style>

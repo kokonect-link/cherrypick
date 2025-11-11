@@ -30,7 +30,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	>
 		<div v-show="showBody" ref="contentEl" :class="[$style.content, { [$style.omitted]: omitted }]">
 			<slot></slot>
-			<button v-if="omitted" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.fade" class="_button" @click="showMore">
+			<button v-if="omitted" :class="$style.fade" class="_button" @click="showMore">
 				<span :class="$style.fadeLabel">{{ i18n.ts.showMore }}</span>
 			</button>
 		</div>
@@ -42,13 +42,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import { prefer } from '@/preferences.js';
 import { i18n } from '@/i18n.js';
+import { haptic } from '@/utility/haptic.js';
 
 const props = withDefaults(defineProps<{
 	showHeader?: boolean;
 	thin?: boolean;
 	naked?: boolean;
 	foldable?: boolean;
-	onUnfold?: () => boolean; // return false to prevent unfolding
 	scrollable?: boolean;
 	expanded?: boolean;
 	maxHeight?: number | null;
@@ -103,7 +103,7 @@ const omitObserver = new ResizeObserver((entries, observer) => {
 });
 
 function showMore() {
-	if (props.onUnfold && !props.onUnfold()) return;
+	haptic();
 
 	ignoreOmit.value = true;
 	omitted.value = false;
@@ -154,6 +154,10 @@ onUnmounted(() => {
 	&.naked {
 		background: transparent !important;
 		box-shadow: none !important;
+
+		> .content {
+			background: transparent !important;
+		}
 	}
 
 	&.scrollable {

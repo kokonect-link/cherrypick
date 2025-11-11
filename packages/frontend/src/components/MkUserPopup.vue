@@ -26,11 +26,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div :class="$style.title">
 				<MkA :class="$style.name" :to="userPage(user)"><MkUserName :user="user" :nowrap="false"/></MkA>
 				<div :class="$style.username"><MkAcct :user="user"/></div>
-				<div v-if="user.isAdmin || user.isLocked || user.isBot || user.isProxy" style="margin-top: 4px;">
-					<span v-if="user.isAdmin" v-tooltip="i18n.ts.administrator" :title="i18n.ts.isAdmin" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
-					<span v-if="user.isLocked" :title="i18n.ts.isLocked"><i class="ti ti-lock"></i></span>
-					<span v-if="user.isBot" :title="i18n.ts.isBot"><i class="ti ti-robot"></i></span>
-					<span v-if="user.isProxy" v-tooltip="i18n.ts.proxyAccount" :title="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
+				<div v-if="('isAdmin' in user && user.isAdmin) || user.isLocked || user.isBot || ('isProxy' in user && user.isProxy)" style="margin-top: 4px;">
+					<span v-if="'isAdmin' in user && user.isAdmin" v-tooltip="i18n.ts.administrator" style="color: var(--MI_THEME-badge);"><i class="ti ti-shield"></i></span>
+					<span v-if="user.isLocked" v-tooltip="i18n.ts.makeFollowManuallyApprove"><i class="ti ti-lock"></i></span>
+					<span v-if="user.isBot"><i class="ti ti-robot"></i></span>
+					<span v-if="'isProxy' in user && user.isProxy" v-tooltip="i18n.ts.proxyAccount"><i class="ti ti-ghost"></i></span>
 				</div>
 			</div>
 			<div :class="$style.description">
@@ -79,7 +79,7 @@ import { getStaticImageUrl } from '@/utility/media-proxy.js';
 
 const props = defineProps<{
 	showing: boolean;
-	q: string;
+	q: string | Misskey.entities.UserDetailed;
 	source: HTMLElement;
 }>();
 
@@ -106,10 +106,11 @@ async function fetchUser() {
 		user.value = props.q;
 		error.value = false;
 	} else {
-		const query: Omit<Misskey.entities.UsersShowRequest, 'userIds'> = props.q.startsWith('@') ?
+		const query: Misskey.entities.UsersShowRequest = props.q.startsWith('@') ?
 			Misskey.acct.parse(props.q.substring(1)) :
 			{ userId: props.q };
 
+		// @ts-expect-error payloadの引数側の型が正常に解決されない
 		misskeyApi('users/show', query).then(res => {
 			if (!props.showing) return;
 			user.value = res;

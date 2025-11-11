@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 import { onMounted, watch } from 'vue';
 import { useWidgetPropsManager } from './widget.js';
 import type { WidgetComponentEmits, WidgetComponentExpose, WidgetComponentProps } from './widget.js';
-import type { GetFormResultType } from '@/utility/form.js';
+import type { FormWithDefault, GetFormResultType } from '@/utility/form.js';
 import MkContainer from '@/components/MkContainer.vue';
 import MkWeather from '@/components/MkWeather.vue';
 
@@ -31,34 +31,34 @@ const name = 'weather';
 
 const widgetPropsDef = {
 	transparent: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	latitude: {
-		type: 'number' as const,
+		type: 'number',
 		default: 37.566,
 	},
 	longtitude: {
-		type: 'number' as const,
+		type: 'number',
 		default: 126.9784,
 	},
 	setTempUnitFahrenheit: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	showSurfacePressure: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	show12Hours: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: false,
 	},
 	useCurrentLocation: {
-		type: 'boolean' as const,
+		type: 'boolean',
 		default: true,
 	},
-};
+} satisfies FormWithDefault;
 
 type WidgetProps = GetFormResultType<typeof widgetPropsDef>;
 
@@ -89,11 +89,11 @@ onMounted(() => {
 	getLocation();
 });
 
-watch(() => [widgetProps.latitude, widgetProps.longtitude], { immediate: true });
-watch(() => widgetProps.setTempUnitFahrenheit, { immediate: true });
-watch(() => widgetProps.showSurfacePressure, { immediate: true });
-watch(() => widgetProps.show12Hours, { immediate: true });
-watch(() => widgetProps.useCurrentLocation, { immediate: true });
+watch(() => [widgetProps.latitude, widgetProps.longtitude], () => {}, { immediate: true });
+watch(() => widgetProps.setTempUnitFahrenheit, () => {}, { immediate: true });
+watch(() => widgetProps.showSurfacePressure, () => {}, { immediate: true });
+watch(() => widgetProps.show12Hours, () => {}, { immediate: true });
+watch(() => widgetProps.useCurrentLocation, () => {}, { immediate: true });
 
 defineExpose<WidgetComponentExpose>({
 	name,

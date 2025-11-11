@@ -10,6 +10,7 @@ export function parse(_acct: string): Acct {
 	return { username: split[0], host: split[1] || null };
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: This is a public API function
 export function toString(acct: Acct): string {
 	return acct.host == null ? acct.username : `${acct.username}@${acct.host}`;
 }

@@ -12,6 +12,7 @@ export const basicTimelineTypes = [
 	'local',
 	'social',
 	'global',
+	'media',
 	'bubble',
 ] as const;
 
@@ -31,6 +32,8 @@ export function basicTimelineIconClass(timeline: BasicTimelineType): string {
 			return 'ti ti-universe';
 		case 'global':
 			return 'ti ti-world';
+		case 'media':
+			return 'ti ti-photo';
 		case 'bubble':
 			return 'ti ti-droplet';
 	}
@@ -46,6 +49,8 @@ export function isAvailableBasicTimeline(timeline: BasicTimelineType | undefined
 			return $i != null && $i.policies.ltlAvailable && prefer.s.enableSocialTimeline;
 		case 'global':
 			return ($i == null && instance.policies.gtlAvailable) || ($i != null && $i.policies.gtlAvailable && prefer.s.enableGlobalTimeline);
+		case 'media':
+			return ($i == null && instance.policies.ltlAvailable) || ($i != null && $i.policies.ltlAvailable && prefer.s.enableMediaTimeline);
 		case 'bubble':
 			return ($i == null && instance.policies.btlAvailable) || ($i != null && $i.policies.btlAvailable && prefer.s.enableBubbleTimeline);
 		default:

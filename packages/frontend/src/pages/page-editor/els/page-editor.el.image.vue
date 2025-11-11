@@ -24,9 +24,9 @@ import { onMounted, ref } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import XContainer from '../page-editor.container.vue';
 import MkDriveFileThumbnail from '@/components/MkDriveFileThumbnail.vue';
-import * as os from '@/os.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { i18n } from '@/i18n.js';
+import { chooseDriveFile } from '@/utility/drive.js';
 
 const props = defineProps<{
 	modelValue: Misskey.entities.PageBlock & { type: 'image' };
@@ -40,7 +40,7 @@ const emit = defineEmits<{
 const file = ref<Misskey.entities.DriveFile | null>(null);
 
 async function choose() {
-	os.selectDriveFile(false).then((fileResponse) => {
+	chooseDriveFile({ multiple: false }).then((fileResponse) => {
 		file.value = fileResponse[0];
 		emit('update:modelValue', {
 			...props.modelValue,

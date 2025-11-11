@@ -9,38 +9,74 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.body">
 			<div :class="$style.title">{{ i18n.ts._getQRCode.title }}</div>
 			<div :class="$style.description">{{ i18n.ts._getQRCode.description }}</div>
-			<QRCodeVue3
-				:value="qrCode"
-				:qrOptions="{ errorCorrectionLevel: 'Q' }"
-				:cornersSquareOptions="{ type: 'square' }"
-				:cornersDotOptions="{ type: 'square' }"
-				:dotsOptions="{
-					type: 'square',
-				}"
-			/>
+			<div
+				ref="qrCodeEl" v-flip
+				style="cursor: default;"
+				:class="$style.qr"
+			></div>
 		</div>
 		<div class="_flexList" style="gap: 0.6rem">
-			<MkButton :class="$style.copyLink" rounded full @click="copyLink()">{{ i18n.ts.copyLink }}</MkButton>
-			<MkButton :class="$style.gotIt" primary rounded full @click="gotIt()">{{ i18n.ts.gotIt }}</MkButton>
+			<MkButton :class="$style.copyLink" rounded full @click="copyLink()"><i class="ti ti-link"></i> {{ i18n.ts.copyLink }}</MkButton>
+			<MkButton :class="$style.gotIt" primary rounded full @click="gotIt()"><i class="ti ti-check"></i> {{ i18n.ts.gotIt }}</MkButton>
 		</div>
 	</div>
 </MkModal>
 </template>
 
 <script lang="ts" setup>
-import { useTemplateRef } from 'vue';
-import QRCodeVue3 from 'qrcode-vue3';
+import { computed, onMounted, useTemplateRef } from 'vue';
+import QRCodeStyling from 'qr-code-styling';
+import tinycolor from 'tinycolor2';
 import MkModal from '@/components/MkModal.vue';
 import MkButton from '@/components/MkButton.vue';
 import { i18n } from '@/i18n.js';
-import * as os from '@/os.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
+import { instance } from '@/instance.js';
+import { getStaticImageUrl } from '@/utility/media-proxy.js';
 
 const props = defineProps<{
 	qrCode: string;
 }>();
 
 const modal = useTemplateRef('modal');
+
+const qrCodeEl = useTemplateRef('qrCodeEl');
+
+const qrColor = computed(() => tinycolor(instance.themeColor ?? 'rgb(255, 188, 220)'));
+const qrHsl = computed(() => qrColor.value.toHsl());
+
+const qrCodeInstance = new QRCodeStyling({
+	width: 600,
+	height: 600,
+	margin: 42,
+	type: 'canvas',
+	data: props.qrCode,
+	image: instance.iconUrl ? getStaticImageUrl(instance.iconUrl) : '/favicon.ico',
+	qrOptions: {
+		typeNumber: 0,
+		mode: 'Byte',
+		errorCorrectionLevel: 'H',
+	},
+	imageOptions: {
+		hideBackgroundDots: true,
+		imageSize: 0.3,
+		margin: 16,
+		crossOrigin: 'anonymous',
+	},
+	dotsOptions: {
+		type: 'dots',
+		color: tinycolor(`hsl(${qrHsl.value.h}, 100, 18)`).toRgbString(),
+	},
+	cornersDotOptions: {
+		type: 'dot',
+	},
+	cornersSquareOptions: {
+		type: 'extra-rounded',
+	},
+	backgroundOptions: {
+		//color: tinycolor(`hsl(${qrHsl.value.h}, 100, 97)`).toRgbString(),
+	},
+});
 
 const gotIt = () => {
 	modal.value?.close();
@@ -49,6 +85,12 @@ const gotIt = () => {
 const copyLink = () => {
 	copyToClipboard(props.qrCode, 'link');
 };
+
+onMounted(() => {
+	if (qrCodeEl.value != null) {
+		qrCodeInstance.append(qrCodeEl.value);
+	}
+});
 </script>
 
 <style lang="scss" module>
@@ -91,8 +133,23 @@ const copyLink = () => {
 	margin-bottom: 12px;
 }
 
-.time {
-	font-size: 0.8rem;
+.qr {
+	position: relative;
+	margin: 0 auto;
+	width: 100%;
+	max-width: 230px;
+	border-radius: 12px;
+	overflow: clip;
+	aspect-ratio: 1;
+
+	> svg,
+	> canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .copyLink {

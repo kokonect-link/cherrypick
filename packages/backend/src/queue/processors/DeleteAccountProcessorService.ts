@@ -6,7 +6,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { MoreThan } from 'typeorm';
 import { DI } from '@/di-symbols.js';
-import type { DriveFilesRepository, NotesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
+import type { DriveFilesRepository, NotesRepository, PagesRepository, UserProfilesRepository, UsersRepository } from '@/models/_.js';
 import type Logger from '@/logger.js';
 import { DriveService } from '@/core/DriveService.js';
 import type { MiDriveFile } from '@/models/DriveFile.js';
@@ -14,7 +14,9 @@ import type { MiNote } from '@/models/Note.js';
 import { EmailService } from '@/core/EmailService.js';
 import { bindThis } from '@/decorators.js';
 import { SearchService } from '@/core/SearchService.js';
+import { PageService } from '@/core/PageService.js';
 import { UserEntityService } from '@/core/entities/UserEntityService.js';
+import { GlobalEventService } from '@/core/GlobalEventService.js';
 import { QueueLoggerService } from '../QueueLoggerService.js';
 import type * as Bull from 'bullmq';
 import type { DbUserDeleteJobData } from '../types.js';
@@ -36,11 +38,16 @@ export class DeleteAccountProcessorService {
 		@Inject(DI.driveFilesRepository)
 		private driveFilesRepository: DriveFilesRepository,
 
+		@Inject(DI.pagesRepository)
+		private pagesRepository: PagesRepository,
+
 		private userEntityService: UserEntityService,
 		private driveService: DriveService,
+		private pageService: PageService,
 		private emailService: EmailService,
 		private queueLoggerService: QueueLoggerService,
 		private searchService: SearchService,
+		private globalEventService: GlobalEventService,
 	) {
 		this.logger = this.queueLoggerService.logger.createSubLogger('delete-account');
 	}
@@ -115,6 +122,28 @@ export class DeleteAccountProcessorService {
 			this.logger.succ(`All of files deleted: ${job.data.user.id}`);
 		}
 
+		{
+			// delete pages. Necessary for decrementing pageCount of notes.
+			while (true) {
+				const pages = await this.pagesRepository.find({
+					where: {
+						userId: user.id,
+					},
+					take: 100,
+					order: {
+						id: 1,
+					},
+				});
+
+				if (pages.length === 0) {
+					break;
+				}
+				for (const page of pages) {
+					await this.pageService.delete(user, page.id);
+				}
+			}
+		}
+
 		{ // Send email notification
 			const profile = await this.userProfilesRepository.findOneByOrFail({ userId: user.id });
 			if (profile.email && profile.emailVerified) {
@@ -129,6 +158,9 @@ export class DeleteAccountProcessorService {
 		// nop
 		} else {
 			await this.usersRepository.delete(job.data.user.id);
+
+			// Trigger CacheService
+			this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: job.data.user.id });
 		}
 
 		return `[${job.data.user.id}] Account deleted`;

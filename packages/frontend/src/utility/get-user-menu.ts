@@ -21,6 +21,7 @@ import { genEmbedCode } from '@/utility/get-embed-code.js';
 import { prefer } from '@/preferences.js';
 import { getPluginHandlers } from '@/plugin.js';
 import { editNickname } from '@/utility/edit-nickname.js';
+import { popup } from '@/os.js';
 
 export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router = mainRouter) {
 	const meId = $i ? $i.id : null;
@@ -39,10 +40,10 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		const { canceled, result: groupId } = await os.select({
 			title: i18n.ts.group,
 			items: groups.map(group => ({
-				value: group.id, text: group.name,
+				value: group.id, label: group.name,
 			})),
 		});
-		if (canceled) return;
+		if (canceled || !groupId) return;
 		os.apiWithDialog('users/groups/invite', {
 			groupId: groupId,
 			userId: user.id,
@@ -132,15 +133,15 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			const { canceled, result: period } = await os.select({
 				title: i18n.ts.mutePeriod,
 				items: [{
-					value: 'indefinitely', text: i18n.ts.indefinitely,
+					value: 'indefinitely', label: i18n.ts.indefinitely,
 				}, {
-					value: 'tenMinutes', text: i18n.ts.tenMinutes,
+					value: 'tenMinutes', label: i18n.ts.tenMinutes,
 				}, {
-					value: 'oneHour', text: i18n.ts.oneHour,
+					value: 'oneHour', label: i18n.ts.oneHour,
 				}, {
-					value: 'oneDay', text: i18n.ts.oneDay,
+					value: 'oneDay', label: i18n.ts.oneDay,
 				}, {
-					value: 'oneWeek', text: i18n.ts.oneWeek,
+					value: 'oneWeek', label: i18n.ts.oneWeek,
 				}],
 				default: 'indefinitely',
 			});
@@ -189,8 +190,8 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 	}
 
-	function reportAbuse() {
-		const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
+	async function reportAbuse() {
+		const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkAbuseReportWindow.vue').then(x => x.default), {
 			user: user,
 		}, {
 			closed: () => dispose(),
@@ -227,6 +228,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		const userDetailed = await misskeyApi('users/show', {
 			userId: user.id,
 		});
+
 		const { canceled, result } = await os.form(i18n.ts.editMemo, {
 			memo: {
 				type: 'string',
@@ -236,6 +238,7 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 				default: userDetailed.memo,
 			},
 		});
+
 		if (canceled) return;
 
 		os.apiWithDialog('users/update-memo', {
@@ -267,7 +270,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 			icon: 'ti ti-user-exclamation',
 			text: i18n.ts.moderation,
 			action: () => {
-				router.push(`/admin/user/${user.id}`);
+				router.push('/admin/user/:userId', {
+					params: {
+						userId: user.id,
+					},
+				});
 			},
 		}, { type: 'divider' });
 	}
@@ -291,7 +298,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		icon: 'ti ti-qrcode',
 		text: i18n.ts.getQRCode,
 		action: () => {
-			os.displayQRCode(`https://${user.host ?? host}/@${user.username}`);
+			const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+				qrCode: `https://${user.host ?? host}/@${user.username}`,
+			}, {
+				closed: () => dispose(),
+			});
 		},
 	});
 
@@ -326,12 +337,32 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		});
 	}
 
+	if ($i && meId === user.id) {
+		menuItems.push({
+			icon: 'ti ti-qrcode',
+			text: i18n.ts.qr,
+			action: () => {
+				router.push('/qr');
+			},
+		});
+	}
+
 	if (notesSearchAvailable && (user.host == null || canSearchNonLocalNotes)) {
 		menuItems.push({
 			icon: 'ti ti-search',
 			text: i18n.ts.searchThisUsersNotes,
 			action: () => {
-				router.push(`/search?username=${encodeURIComponent(user.username)}${user.host != null ? '&host=' + encodeURIComponent(user.host) : ''}`);
+				const query = {
+					username: user.username,
+				} as { username: string, host?: string };
+
+				if (user.host !== null) {
+					query.host = user.host;
+				}
+
+				router.push('/search', {
+					query,
+				});
 			},
 		});
 	}
@@ -411,7 +442,6 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 							caseSensitive: antenna.caseSensitive,
 							withReplies: antenna.withReplies,
 							withFile: antenna.withFile,
-							notify: antenna.notify,
 						});
 						antennasCache.delete();
 					},
@@ -435,15 +465,15 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 							const { canceled, result: period } = await os.select({
 								title: i18n.ts.period + ': ' + r.name,
 								items: [{
-									value: 'indefinitely', text: i18n.ts.indefinitely,
+									value: 'indefinitely', label: i18n.ts.indefinitely,
 								}, {
-									value: 'oneHour', text: i18n.ts.oneHour,
+									value: 'oneHour', label: i18n.ts.oneHour,
 								}, {
-									value: 'oneDay', text: i18n.ts.oneDay,
+									value: 'oneDay', label: i18n.ts.oneDay,
 								}, {
-									value: 'oneWeek', text: i18n.ts.oneWeek,
+									value: 'oneWeek', label: i18n.ts.oneWeek,
 								}, {
-									value: 'oneMonth', text: i18n.ts.oneMonth,
+									value: 'oneMonth', label: i18n.ts.oneMonth,
 								}],
 								default: 'indefinitely',
 							});
@@ -503,23 +533,20 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 						text: i18n.ts.instanceInfo,
 						action: () => {
 							if (user.host == null) return;
-							router.push(`/instance-info/${user.host}`);
+							router.pushByPath(`/instance-info/${user.host}`);
 						},
 					}, {
 						type: 'switch',
 						text: i18n.ts.blockThisInstance,
 						ref: isAdminInstanceBlocked,
-						action: toggleAdminInstanceBlock,
 					}, {
 						type: 'switch',
 						text: i18n.ts.silenceThisInstance,
 						ref: isAdminInstanceSilenced,
-						action: toggleAdminInstanceSilenced,
 					}, {
 						type: 'switch',
 						text: i18n.ts.mediaSilenceThisInstance,
 						ref: isAdminInstanceMediaSilenced,
-						action: toggleAdminInstanceMediaSilenced,
 					});
 
 					return federationChildMenu;
@@ -540,13 +567,12 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 						text: i18n.ts.instanceInfo,
 						action: () => {
 							if (user.host == null) return;
-							router.push(`/instance-info/${user.host}`);
+							router.pushByPath(`/instance-info/${user.host}`);
 						},
 					}, {
 						type: 'switch',
 						text: i18n.ts.instanceMute,
 						ref: isInstanceMuted,
-						action: toggleInstanceMute,
 					});
 
 					return federationChildMenu;
@@ -555,15 +581,15 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		}
 
 		menuItems.push({ type: 'divider' }, {
-			icon: 'ti ti-mail',
-			text: i18n.ts.sendMessage,
+			icon: 'ti ti-pencil-heart',
+			text: i18n.ts.createUserSpecifiedNote,
 			action: () => {
 				const canonical = user.host === null ? `@${user.username}` : `@${user.username}@${user.host}`;
 				os.post({ specified: user, initialText: `${canonical} ` });
 			},
 		});
 
-		if ($i.policies.chatAvailability === 'available' && user.canChat && user.host == null) {
+		if ($i.policies.chatAvailability === 'available' && user.canChat) {
 			menuItems.push({
 				type: 'link',
 				icon: 'ti ti-messages',
@@ -573,13 +599,11 @@ export function getUserMenu(user: Misskey.entities.UserDetailed, router: Router 
 		}
 
 		if (meId !== user.id) {
-			if (user.host === null) {
-				menuItems.push({
-					icon: 'ti ti-users',
-					text: i18n.ts.inviteToGroup,
-					action: inviteGroup,
-				});
-			}
+			menuItems.push({
+				icon: 'ti ti-users',
+				text: i18n.ts.inviteToGroup,
+				action: inviteGroup,
+			});
 		}
 
 		menuItems.push({ type: 'divider' }, {

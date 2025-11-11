@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { http, HttpResponse } from 'msw';
 import * as Misskey from 'cherrypick-js';
 import { file, folder } from '../../.storybook/fakes.js';

@@ -24,7 +24,7 @@ import * as Misskey from 'cherrypick-js';
 import XPie from './pie-compact.vue';
 
 const props = defineProps<{
-	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
+	connection: Misskey.IChannelConnection<Misskey.Channels['serverStats']>,
 	meta: Misskey.entities.ServerInfoResponse
 }>();
 

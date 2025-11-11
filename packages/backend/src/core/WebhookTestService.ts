@@ -65,6 +65,9 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		token: null,
 		setFederationAvatarShape: null,
 		isSquareAvatars: null,
+		autoDeleteNotesAfterDays: null,
+		autoDeleteKeepFavorites: true,
+		canChat: null,
 		...override,
 	};
 }
@@ -87,6 +90,7 @@ function generateDummyNote(override?: Partial<MiNote>): MiNote {
 		renoteCount: 10,
 		repliesCount: 5,
 		clippedCount: 0,
+		pageCount: 0,
 		reactions: {},
 		visibility: 'public',
 		uri: null,
@@ -109,10 +113,10 @@ function generateDummyNote(override?: Partial<MiNote>): MiNote {
 		renoteUserHost: null,
 		updatedAt: null,
 		updatedAtHistory: null,
-		noteEditHistory: [],
 		hasEvent: false,
 		disableRightClick: false,
 		deleteAt: null,
+		deliveryTargets: null,
 		...override,
 	};
 }
@@ -251,7 +255,6 @@ export class WebhookTestService {
 			case 'reaction':
 				return;
 			default: {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const _exhaustiveAssertion: never = params.type;
 				return;
 			}
@@ -338,7 +341,6 @@ export class WebhookTestService {
 				break;
 			}
 			default: {
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				const _exhaustiveAssertion: never = params.type;
 				return;
 			}
@@ -406,6 +408,7 @@ export class WebhookTestService {
 			uri: note.uri ?? undefined,
 			url: note.url ?? undefined,
 			reactionAndUserPairCache: note.reactionAndUserPairCache,
+			hasDeliveryTargets: note.deliveryTargets != null,
 			...(detail ? {
 				clippedCount: note.clippedCount,
 				reply: note.reply ? await this.toPackedNote(note.reply, false) : null,
@@ -423,7 +426,7 @@ export class WebhookTestService {
 			name: user.name,
 			username: user.username,
 			host: user.host,
-			avatarUrl: user.avatarId == null ? null : user.avatarUrl,
+			avatarUrl: (user.avatarId == null ? null : user.avatarUrl) ?? '',
 			avatarBlurhash: user.avatarId == null ? null : user.avatarBlurhash,
 			avatarDecorations: user.avatarDecorations.map(it => ({
 				id: it.id,
@@ -432,6 +435,8 @@ export class WebhookTestService {
 				url: 'https://example.com/dummy-image001.png',
 				offsetX: it.offsetX,
 				offsetY: it.offsetY,
+				scale: it.scale,
+				opacity: it.opacity,
 			})),
 			isLocked: user.isLocked,
 			isBot: user.isBot,

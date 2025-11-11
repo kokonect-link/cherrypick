@@ -1,17 +1,9 @@
-import type { PureRenote } from './entities.js';
+import type { Note, PureRenote } from './entities.js';
 
-export function isPureRenote(note: {
-	renote?: object | null,
-	reply?: object | null,
-	text: string | null,
-	cw?: string | null,
-	fileIds?: string[],
-	poll?: object | null,
-	event?: Record<string, never> | null,
-}): note is PureRenote {
+export function isPureRenote(note: Note): note is PureRenote {
 	return (
-		note.renote != null &&
-		note.reply == null &&
+		note.renoteId != null &&
+		note.replyId == null &&
 		note.text == null &&
 		note.cw == null &&
 		(note.fileIds == null || note.fileIds.length === 0) &&

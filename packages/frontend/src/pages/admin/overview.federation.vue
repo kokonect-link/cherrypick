@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div>
 	<MkLoading v-if="fetching"/>
 	<div v-show="!fetching" :class="$style.root">
-		<div v-if="topSubInstancesForPie && topPubInstancesForPie" class="pies">
+		<div v-if="topSubInstancesForPie && topPubInstancesForPie && topSoftwareForPie" class="pies">
 			<div class="pie deliver _panel">
 				<div class="title">Sub</div>
 				<XPie :data="topSubInstancesForPie" class="chart"/>
@@ -18,14 +18,19 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<XPie :data="topPubInstancesForPie" class="chart"/>
 				<div class="subTitle">Top 10</div>
 			</div>
+			<div class="pie software _panel">
+				<div class="title">Software</div>
+				<XPie :data="topSoftwareForPie" class="chart"/>
+				<div class="subTitle">Top 10</div>
+			</div>
 		</div>
 		<div v-if="!fetching" class="items">
 			<div class="item _panel sub">
 				<div class="icon"><i class="ti ti-world-download"></i></div>
 				<div class="body">
-					<div class="value">
+					<div v-if="federationSubActive != null" class="value">
 						{{ number(federationSubActive) }}
-						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationSubActiveDiff"></MkNumberDiff>
+						<MkNumberDiff v-if="federationSubActiveDiff != null" v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationSubActiveDiff"></MkNumberDiff>
 					</div>
 					<div class="label">Sub</div>
 				</div>
@@ -33,11 +38,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div class="item _panel pub">
 				<div class="icon"><i class="ti ti-world-upload"></i></div>
 				<div class="body">
-					<div class="value">
+					<div v-if="federationPubActive != null" class="value">
 						{{ number(federationPubActive) }}
-						<MkNumberDiff v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationPubActiveDiff"></MkNumberDiff>
+						<MkNumberDiff v-if="federationPubActiveDiff != null" v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="federationPubActiveDiff"></MkNumberDiff>
 					</div>
 					<div class="label">Pub</div>
+				</div>
+			</div>
+			<div class="item _panel software">
+				<div class="icon"><i class="ti ti-apps"></i></div>
+				<div class="body">
+					<div v-if="softwareCount != null" class="value">
+						{{ number(softwareCount) }}
+						<MkNumberDiff v-if="softwareCountDiff != null" v-tooltip="i18n.ts.dayOverDayChanges" class="diff" :value="softwareCountDiff"></MkNumberDiff>
+					</div>
+					<div class="label">Software</div>
 				</div>
 			</div>
 		</div>
@@ -54,14 +69,17 @@ import { misskeyApiGet } from '@/utility/misskey-api.js';
 import number from '@/filters/number.js';
 import MkNumberDiff from '@/components/MkNumberDiff.vue';
 import { i18n } from '@/i18n.js';
-import { useChartTooltip } from '@/use/use-chart-tooltip.js';
+import { useChartTooltip } from '@/composables/use-chart-tooltip.js';
 
 const topSubInstancesForPie = ref<InstanceForPie[] | null>(null);
 const topPubInstancesForPie = ref<InstanceForPie[] | null>(null);
+const topSoftwareForPie = ref<InstanceForPie[] | null>(null);
 const federationPubActive = ref<number | null>(null);
 const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
 const federationSubActiveDiff = ref<number | null>(null);
+const softwareCount = ref<number | null>(null);
+const softwareCountDiff = ref<number | null>(null);
 const fetching = ref(true);
 
 const { handler: externalTooltipHandler } = useChartTooltip();
@@ -72,6 +90,8 @@ onMounted(async () => {
 	federationPubActiveDiff.value = chart.pubActive[0] - chart.pubActive[1];
 	federationSubActive.value = chart.subActive[0];
 	federationSubActiveDiff.value = chart.subActive[0] - chart.subActive[1];
+	softwareCount.value = chart.software[0];
+	softwareCountDiff.value = chart.software[0] - chart.software[1];
 
 	misskeyApiGet('federation/stats', { limit: 10 }).then(res => {
 		topSubInstancesForPie.value = [
@@ -96,6 +116,16 @@ onMounted(async () => {
 			})),
 			{ name: '(other)', color: '#80808080', value: res.otherFollowingCount },
 		];
+	});
+
+	misskeyApiGet('federation/remote-software', {}).then(res => {
+		const softwareData = res.map(x => ({
+			name: x.softwareName,
+			color: x.color,
+			value: x.count,
+		}));
+		const sortedSoftwareData = softwareData.sort((a, b) => a.value > b.value ? -1 : 1);
+		topSoftwareForPie.value = sortedSoftwareData.slice(0, 10);
 	});
 
 	fetching.value = false;
@@ -164,14 +194,21 @@ onMounted(async () => {
 					}
 				}
 
-				&.pub {
-					> .icon {
-						background: #00cf2326;
-						color: #00cd5b;
-					}
+			&.pub {
+				> .icon {
+					background: #00cf2326;
+					color: #00cd5b;
 				}
+			}
 
-				> .body {
+			&.software {
+				> .icon {
+					background: #00a2cf26;
+					color: #00a2cf;
+				}
+			}
+
+			> .body {
 					padding: 2px 0;
 
 					> .value {

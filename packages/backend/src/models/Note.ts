@@ -20,7 +20,8 @@ import type { MiDriveFile } from './DriveFile.js';
 // You should not use `@Index({ concurrent: true })` decorator because database initialization for test will fail
 // because it will always run CREATE INDEX in transaction based on decorators.
 // Not appending `{ concurrent: true }` to `@Index` will not cause any problem in production,
-@Index(['userId', 'id'])
+
+@Index(['userId', 'id']) // Note: this index is ("userId", "id" DESC) in production, but not in test.
 @Entity('note')
 export class MiNote {
 	@PrimaryColumn(id())
@@ -37,17 +38,19 @@ export class MiNote {
 	})
 	public updatedAtHistory: Date[] | null;
 
-	@Column('varchar', {
-		length: 3000,
-		array: true,
-		default: '{}',
-	})
-	public noteEditHistory: string[];
-
 	@Column('timestamp with time zone', {
 		nullable: true,
 	})
 	public deleteAt: Date | null;
+
+	@Column('jsonb', {
+		nullable: true,
+		default: {},
+	})
+	public deliveryTargets: {
+		mode: 'include' | 'exclude';
+		hosts: string[];
+	} | null;
 
 	@Index()
 	@Column({
@@ -58,8 +61,7 @@ export class MiNote {
 	public replyId: MiNote['id'] | null;
 
 	@ManyToOne(type => MiNote, {
-		// onDelete: 'CASCADE',
-		onDelete: 'SET NULL',
+		createForeignKeyConstraints: false,
 	})
 	@JoinColumn()
 	public reply: MiNote | null;
@@ -73,7 +75,7 @@ export class MiNote {
 	public renoteId: MiNote['id'] | null;
 
 	@ManyToOne(type => MiNote, {
-		onDelete: 'CASCADE',
+		createForeignKeyConstraints: false,
 	})
 	@JoinColumn()
 	public renote: MiNote | null;
@@ -146,6 +148,13 @@ export class MiNote {
 		default: 0,
 	})
 	public clippedCount: number;
+
+	// The number of note page blocks referencing this note.
+	// This column is used by Remote Note Cleaning and manually updated rather than automatically with triggers.
+	@Column('smallint', {
+		default: 0,
+	})
+	public pageCount: number;
 
 	@Column('jsonb', {
 		default: {},

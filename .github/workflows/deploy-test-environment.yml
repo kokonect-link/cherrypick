@@ -28,7 +28,7 @@ jobs:
       wait_time: ${{ steps.get-wait-time.outputs.wait_time }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4.3.0
 
       - name: Check allowed users
         id: check-allowed-users
@@ -43,9 +43,9 @@ jobs:
           "https://api.github.com/organizations/$ORG_ID/public_members/$COMMENT_AUTHOR" \
           -o /dev/null -w '%{http_code}\n' -s)
           if [ "$MEMBERSHIP_STATUS" -eq 204 ]; then
-            echo "is-allowed-user=true" > $GITHUB_OUTPUT
+            echo "is-allowed-user=true" >> $GITHUB_OUTPUT
           else
-            echo "is-allowed-user=false" > $GITHUB_OUTPUT
+            echo "is-allowed-user=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Get PR ref
@@ -60,7 +60,7 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
           WAIT_TIME=$(echo "$COMMENT_BODY" | grep -oP '(?<=/preview\s)\d+' || echo "1800")
-          echo "wait_time=$WAIT_TIME" > $GITHUB_OUTPUT
+          echo "wait_time=$WAIT_TIME" >> $GITHUB_OUTPUT
 
   deploy-test-environment-pr-comment:
     needs: get-pr-ref

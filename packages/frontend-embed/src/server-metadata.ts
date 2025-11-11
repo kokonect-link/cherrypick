@@ -6,7 +6,7 @@
 import * as Misskey from 'cherrypick-js';
 import { misskeyApi } from '@/misskey-api.js';
 
-const providedMetaEl = document.getElementById('cherrypick_meta');
+const providedMetaEl = window.document.getElementById('cherrypick_meta');
 
 const _serverMetadata: Misskey.entities.MetaDetailed | null = (providedMetaEl && providedMetaEl.textContent) ? JSON.parse(providedMetaEl.textContent) : null;
 

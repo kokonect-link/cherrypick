@@ -60,7 +60,7 @@ export default class FederationChart extends Chart<typeof schema> { // eslint-di
 			.select('f.followerHost')
 			.where('f.followerHost IS NOT NULL');
 
-		const [sub, pub, pubsub, subActive, pubActive] = await Promise.all([
+		const [sub, pub, pubsub, subActive, pubActive, software] = await Promise.all([
 			this.followingsRepository.createQueryBuilder('following')
 				.select('COUNT(DISTINCT following.followeeHost)')
 				.where('following.followeeHost IS NOT NULL')
@@ -100,6 +100,14 @@ export default class FederationChart extends Chart<typeof schema> { // eslint-di
 				.andWhere('instance.isNotResponding = false')
 				.getRawOne()
 				.then(x => parseInt(x.count, 10)),
+			this.instancesRepository.createQueryBuilder('instance')
+				.select('COUNT(DISTINCT instance.softwareName)')
+				.where('instance.host IS NOT NULL')
+				.andWhere(this.meta.blockedHosts.length === 0 ? '1=1' : 'instance.host NOT ILIKE ALL(ARRAY[:...blocked])', { blocked: this.meta.blockedHosts.flatMap(x => [x, `%.${x}`]) })
+				.andWhere('instance.suspensionState = \'none\'')
+				.andWhere('instance.isNotResponding = false')
+				.getRawOne()
+				.then(x => parseInt(x.count, 10)),
 		]);
 
 		return {
@@ -108,6 +116,7 @@ export default class FederationChart extends Chart<typeof schema> { // eslint-di
 			'pubsub': pubsub,
 			'subActive': subActive,
 			'pubActive': pubActive,
+			'software': software,
 		};
 	}
 

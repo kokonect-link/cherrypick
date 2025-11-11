@@ -95,6 +95,8 @@ async function calcAspectRatio() {
 onMounted(() => {
 	calcAspectRatio();
 
+	if (gallery.value == null) return; // TSを黙らすため
+
 	lightbox = new PhotoSwipeLightbox({
 		dataSource: props.mediaList
 			.filter(media => {
@@ -196,7 +198,7 @@ onMounted(() => {
 			className: 'pswp__file-name-container',
 			appendTo: 'wrapper',
 			onInit: (el, pswp) => {
-				const textBox = document.createElement('p');
+				const textBox = window.document.createElement('p');
 				textBox.className = 'pswp__file-name _acrylic';
 				el.appendChild(textBox);
 				pswp.on('change', () => {
@@ -214,7 +216,7 @@ onMounted(() => {
 		});
 		window.history.pushState(null, '', '#pswp');
 
-		if (props.disableRightClick) document.addEventListener('contextmenu', preventRightClick);
+		if (props.disableRightClick) window.document.addEventListener('contextmenu', preventRightClick);
 	});
 
 	lightbox.on('destroy', () => {
@@ -224,7 +226,7 @@ onMounted(() => {
 			window.history.back();
 		}
 
-		if (props.disableRightClick) document.removeEventListener('contextmenu', preventRightClick);
+		if (props.disableRightClick) window.document.removeEventListener('contextmenu', preventRightClick);
 	});
 
 	window.addEventListener('popstate', popstateHandler);

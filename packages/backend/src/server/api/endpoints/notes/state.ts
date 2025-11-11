@@ -26,6 +26,10 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: false,
 			},
+			isRenoted: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
 		},
 	},
 } as const;
@@ -53,7 +57,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		super(meta, paramDef, async (ps, me) => {
 			const note = await this.notesRepository.findOneByOrFail({ id: ps.noteId });
 
-			const [favorite, threadMuting] = await Promise.all([
+			const [favorite, threadMuting, renoted] = await Promise.all([
 				this.noteFavoritesRepository.count({
 					where: {
 						userId: me.id,
@@ -68,11 +72,19 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					},
 					take: 1,
 				}),
+				this.notesRepository.count({
+					where: {
+						userId: me.id,
+						renoteId: note.id,
+					},
+					take: 1,
+				}),
 			]);
 
 			return {
 				isFavorited: favorite !== 0,
 				isMutedThread: threadMuting !== 0,
+				isRenoted: renoted !== 0,
 			};
 		});
 	}

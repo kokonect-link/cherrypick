@@ -27,6 +27,7 @@ import { i18n } from '@/i18n.js';
 import MkButton from '@/components/MkButton.vue';
 import * as os from '@/os.js';
 import { prefer } from '@/preferences.js';
+import { store } from '@/store.js';
 import { globalEvents } from '@/events.js';
 
 const zIndex = os.claimZIndex('high');
@@ -36,14 +37,14 @@ const hasDisconnected = ref(false);
 const timeoutId = ref<number>();
 
 function onDisconnected() {
-	window.clearTimeout(timeoutId);
+	window.clearTimeout(timeoutId.value);
 	timeoutId.value = window.setTimeout(() => {
 		hasDisconnected.value = true;
 	}, 1000 * 10);
 }
 
 function resetDisconnected() {
-	window.clearTimeout(timeoutId);
+	window.clearTimeout(timeoutId.value);
 	hasDisconnected.value = false;
 }
 
@@ -55,19 +56,21 @@ function reload() {
 	window.location.reload();
 }
 
-useStream().on('_connected_', resetDisconnected);
-useStream().on('_disconnected_', onDisconnected);
+if (store.s.realtimeMode) {
+	useStream().on('_connected_', resetDisconnected);
+	useStream().on('_disconnected_', onDisconnected);
+
+	onUnmounted(() => {
+		window.clearTimeout(timeoutId.value);
+		useStream().off('_connected_', resetDisconnected);
+		useStream().off('_disconnected_', onDisconnected);
+	});
+}
 
 onMounted(() => {
-	globalEvents.on('hasRequireRefresh', (hasRequireRefresh_receive) => {
-		hasRequireRefresh.value = hasRequireRefresh_receive;
+	globalEvents.on('hasRequireRefresh', (value) => {
+		hasRequireRefresh.value = value;
 	});
-});
-
-onUnmounted(() => {
-	window.clearTimeout(timeoutId);
-	useStream().off('_connected_', resetDisconnected);
-	useStream().off('_disconnected_', onDisconnected);
 });
 </script>
 

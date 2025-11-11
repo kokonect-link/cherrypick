@@ -250,7 +250,6 @@ noUsers: "Niciun utilizator"
 editProfile: "Editează profilul"
 noteDeleteConfirm: "Ești sigur(ă) că vrei să ștergi această notă?"
 pinLimitExceeded: "Nu poți mai fixa mai multe note"
-intro: "CherryPick s-a instalat! Te rog crează un utilizator admin."
 done: "Gata"
 processing: "Se procesează"
 preview: "Previzualizare"
@@ -523,8 +522,8 @@ showNoteActionsOnlyHover: "Afișează acțiunile de notare numai la trecerea cur
 showReactionsCount: "Afișează numărul de reacții la note"
 noHistory: "Nu există istoric"
 signinHistory: "Istoric autentificări"
-enableAdvancedMfm: "Permite autentificarea multiplă(MFM) avansată"
-enableAnimatedMfm: "Permite autentificarea multiplă(MFM) animată"
+enableAdvancedMfm: "Permite autentificarea multiplă(MFC) avansată"
+enableAnimatedMfm: "Permite autentificarea multiplă(MFC) animată"
 doing: "Se procesează..."
 category: "Categorie"
 tags: "Etichete"
@@ -1280,7 +1279,6 @@ _theme:
 _sfx:
   note: "Note"
   notification: "Notificări"
-  chat: "Chat"
 _ago:
   invalid: "Nu e nimic de văzut aici"
 _2fa:
@@ -1305,6 +1303,7 @@ _cw:
 _visibility:
   home: "Acasă"
   followers: "Urmăritori"
+  specified: "Note directe"
 _postForm:
   replyPlaceholder: "Răspunde la această notă..."
   quotePlaceholder: "Citează aceasta nota..."
@@ -1359,6 +1358,7 @@ _deck:
     list: "Liste"
     channel: "Canale"
     mentions: "Mențiuni"
+    direct: "Note directe"
     roleTimeline: "Cronologia rolului"
 _webhookSettings:
   name: "Nume"
@@ -1394,3 +1394,18 @@ _search:
   searchScopeLocal: "Local"
   searchScopeUser: "Utilizator specific"
   serverHostPlaceholder: "Exemplu: cherrypick.example.com"
+_watermarkEditor:
+  scale: "Dimensiune"
+  text: "Text"
+  position: "Poziție"
+  type: "Tip"
+  image: "Imagini"
+  advanced: "Avansat"
+_imageEffector:
+  _fxProps:
+    scale: "Dimensiune"
+    size: "Dimensiune"
+    offset: "Poziție"
+_qr:
+  showTabTitle: "Arată"
+  raw: "Text"

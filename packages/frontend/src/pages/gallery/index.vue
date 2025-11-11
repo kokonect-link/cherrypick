@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div v-if="tab === 'explore'">
 			<MkFoldableSection class="_margin">
 				<template #header><i class="ti ti-clock"></i>{{ i18n.ts.recentPosts }}</template>
-				<MkPagination v-slot="{items}" :pagination="recentPostsPagination" :disableAutoLoad="true">
+				<MkPagination v-slot="{items}" :paginator="recentPostsPaginator">
 					<div :class="$style.items">
 						<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
 					</div>
@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFoldableSection>
 			<MkFoldableSection class="_margin">
 				<template #header><i class="ti ti-comet"></i>{{ i18n.ts.popularPosts }}</template>
-				<MkPagination v-slot="{items}" :pagination="popularPostsPagination" :disableAutoLoad="true">
+				<MkPagination v-slot="{items}" :paginator="popularPostsPaginator">
 					<div :class="$style.items">
 						<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
 					</div>
@@ -25,14 +25,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkFoldableSection>
 		</div>
 		<div v-else-if="tab === 'liked'">
-			<MkPagination v-slot="{items}" :pagination="likedPostsPagination">
+			<MkPagination v-slot="{items}" :paginator="likedPostsPaginator">
 				<div :class="$style.items">
 					<MkGalleryPostPreview v-for="like in items" :key="like.id" :post="like.post" class="post"/>
 				</div>
 			</MkPagination>
 		</div>
 		<div v-else-if="tab === 'my'">
-			<MkPagination v-slot="{items}" :pagination="myPostsPagination">
+			<MkPagination v-slot="{items}" :paginator="myPostsPaginator">
 				<div :class="$style.items">
 					<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
 				</div>
@@ -43,7 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { watch, ref, computed } from 'vue';
+import { watch, ref, computed, markRaw } from 'vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkPagination from '@/components/MkPagination.vue';
 import MkGalleryPostPreview from '@/components/MkGalleryPostPreview.vue';
@@ -51,6 +51,7 @@ import { definePage } from '@/page.js';
 import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { useRouter } from '@/router.js';
+import { Paginator } from '@/utility/paginator.js';
 
 const router = useRouter();
 
@@ -59,34 +60,19 @@ const props = defineProps<{
 }>();
 
 const tab = ref('explore');
-const tags = ref([]);
 const tagsRef = ref();
 
-const recentPostsPagination = {
-	endpoint: 'gallery/posts' as const,
+const recentPostsPaginator = markRaw(new Paginator('gallery/posts', {
 	limit: 6,
-};
-const popularPostsPagination = {
-	endpoint: 'gallery/featured' as const,
+}));
+const popularPostsPaginator = markRaw(new Paginator('gallery/featured', {
 	noPaging: true,
-};
-const myPostsPagination = {
-	endpoint: 'i/gallery/posts' as const,
+}));
+const myPostsPaginator = markRaw(new Paginator('i/gallery/posts', {
 	limit: 5,
-};
-const likedPostsPagination = {
-	endpoint: 'i/gallery/likes' as const,
+}));
+const likedPostsPaginator = markRaw(new Paginator('i/gallery/likes', {
 	limit: 5,
-};
-
-const tagUsersPagination = computed(() => ({
-	endpoint: 'hashtags/users' as const,
-	limit: 30,
-	params: {
-		tag: props.tag,
-		origin: 'combined',
-		sort: '+follower',
-	},
 }));
 
 watch(() => props.tag, () => {

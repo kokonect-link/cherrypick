@@ -31,6 +31,7 @@ import { i18n } from '@/i18n.js';
 import { globalEvents } from '@/events.js';
 import { $i } from '@/i.js';
 import MkNote from '@/components/MkNote.vue';
+import { genId } from '@/utility/id.js';
 
 const props = defineProps<{
 	phase: 'aboutNote' | 'howToReact';
@@ -54,6 +55,7 @@ const exampleNote = reactive<Misskey.entities.Note>({
 		avatarBlurhash: 'eiKmhHIByXxZ~qWXs:-pR*NbR*s:xuRjoL-oR*WCt6WWf6WVf6oeWB',
 		isBot: false,
 		isCat: true,
+		isLocked: false,
 		emojis: {},
 		onlineStatus: 'unknown',
 		badgeRoles: [],
@@ -72,14 +74,13 @@ const exampleNote = reactive<Misskey.entities.Note>({
 	files: [],
 	replyId: null,
 	renoteId: null,
+	hasDeliveryTargets: false,
 });
 const onceReacted = ref<boolean>(false);
 
 function addReaction(emoji) {
 	onceReacted.value = true;
 	emit('reacted');
-	exampleNote.reactions[emoji] = 1;
-	exampleNote.myReaction = emoji;
 	doNotification(emoji);
 }
 
@@ -87,7 +88,7 @@ function doNotification(emoji: string): void {
 	if (!$i || !emoji) return;
 
 	const notification: Misskey.entities.Notification = {
-		id: Math.random().toString(),
+		id: genId(),
 		createdAt: new Date().toUTCString(),
 		type: 'reaction',
 		reaction: emoji,

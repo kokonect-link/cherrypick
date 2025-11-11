@@ -4,7 +4,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="!muted" :class="[$style.root, { [$style.children]: depth > 1 }]">
+<div v-if="note == null" :class="$style.deleted">
+	{{ i18n.ts.deletedNote }}
+</div>
+<div v-else-if="!muted" :class="[$style.root, { [$style.children]: depth > 1 }]">
 	<div v-if="!prefer.s.hideAvatarsInNote && !hideLine" :class="$style.line"></div>
 	<div :class="$style.main">
 		<div v-if="note.channel" :class="$style.colorBar" :style="{ background: note.channel.color }"></div>
@@ -12,6 +15,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<div :class="$style.body" :style="{ cursor: expandOnNoteClick ? 'pointer' : '' }" @click.stop="noteClick" @dblclick.stop="noteDblClick">
 			<MkNoteHeader :class="$style.header" :note="note" :mini="true"/>
 			<div>
+				<MkInfo v-if="note.deleteAt != null" warn :class="$style.deleteAt">
+					<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+						<template #x>
+							<MkTime :time="note.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+						</template>
+					</I18n>
+				</MkInfo>
 				<MkEvent v-if="note.event" :note="note"/>
 				<p v-if="note.cw != null" :class="$style.cw">
 					<Mfm v-if="note.cw != ''" style="margin-right: 8px;" :text="note.cw" :author="note.user" :nyaize="'respect'"/>
@@ -56,11 +66,12 @@ import { userPage } from '@/filters/user.js';
 import { checkWordMute } from '@/utility/check-word-mute.js';
 import { prefer } from '@/preferences.js';
 import { useRouter } from '@/router.js';
+import MkInfo from '@/components/MkInfo.vue';
 
 const hideLine = ref(false);
 
 const props = withDefaults(defineProps<{
-	note: Misskey.entities.Note;
+	note: Misskey.entities.Note | null;
 	detail?: boolean;
 
 	// how many notes are in between this one and the note being viewed in detail
@@ -69,7 +80,7 @@ const props = withDefaults(defineProps<{
 	depth: 1,
 });
 
-const muted = ref($i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
+const muted = ref(props.note && $i ? checkWordMute(props.note, $i, $i.mutedWords) : false);
 
 const expandOnNoteClick = prefer.s.expandOnNoteClick;
 const router = useRouter();
@@ -77,7 +88,7 @@ const router = useRouter();
 const showContent = ref(false);
 const replies = ref<Misskey.entities.Note[]>([]);
 
-if (props.detail) {
+if (props.detail && props.note) {
 	misskeyApi('notes/children', {
 		noteId: props.note.id,
 		limit: 5,
@@ -91,12 +102,12 @@ if (prefer.s.alwaysShowCw) showContent.value = true;
 
 function noteClick(ev: MouseEvent) {
 	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'doubleClick') ev.stopPropagation();
-	else router.push(notePage(props.note));
+	else router.pushByPath(notePage(props.note));
 }
 
 function noteDblClick(ev: MouseEvent) {
 	if (!expandOnNoteClick || window.getSelection()?.toString() !== '' || prefer.s.expandOnNoteClickBehavior === 'click') ev.stopPropagation();
-	else router.push(notePage(props.note));
+	else router.pushByPath(notePage(props.note));
 }
 </script>
 
@@ -121,6 +132,49 @@ function noteDblClick(ev: MouseEvent) {
 
 .main {
 	display: flex;
+
+	&::after {
+		content: "";
+		pointer-events: none;
+		display: block;
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		margin: auto;
+		//width: calc(100% - 8px);
+		//height: calc(100% - 8px);
+		background: var(--MI_THEME-panelHighlight);
+		//border: dashed 2px var(--MI_THEME-focus);
+		border-radius: var(--MI-radius);
+		box-sizing: border-box;
+		opacity: 0;
+		transition: opacity .2s, background .2s;
+	}
+
+	:is(.reply, .more) &::after {
+		width: calc(100% + 2.5%);
+		height: calc(100% + 2.5%);
+	}
+
+	&:focus-visible {
+		outline: none;
+		text-decoration: none;
+	}
+
+	@media (hover: hover) {
+		&:hover {
+			outline: none;
+			text-decoration: none;
+			cursor: pointer;
+		}
+
+		&:hover::after {
+			opacity: 1;
+		}
+	}
 }
 
 .colorBar {
@@ -227,5 +281,19 @@ function noteDblClick(ev: MouseEvent) {
 	border: 1px solid var(--MI_THEME-divider);
 	margin: 8px 8px 0 8px;
 	border-radius: 8px;
+}
+
+.deleted {
+	text-align: center;
+	padding: 8px !important;
+	margin: 8px 8px 0 8px;
+	--color: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+	background-size: auto auto;
+	background-image: repeating-linear-gradient(135deg, transparent, transparent 10px, var(--color) 4px, var(--color) 14px);
+	border-radius: 8px;
+}
+
+.deleteAt {
+	margin: 0 0 8px 0;
 }
 </style>

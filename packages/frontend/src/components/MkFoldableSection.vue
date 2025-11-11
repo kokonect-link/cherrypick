@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl" :class="$style.root">
-	<header :class="[$style.header, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="showBody = !showBody">
+	<header :class="[$style.header, { [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl , [$style.showEl]: (showEl && ['hideHeaderOnly', 'hideHeaderFloatBtn', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) && isMobile && mainRouter.currentRoute.value.name === 'explore' }]" class="_button" @click="showBody = !showBody">
 		<div :class="$style.title"><div><slot name="header"></slot></div></div>
 		<div :class="$style.divider"></div>
 		<button class="_button" :class="$style.button">
@@ -31,9 +31,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, useTemplateRef, watch } from 'vue';
+import { onBeforeUnmount, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 import { miLocalStorage } from '@/local-storage.js';
 import { prefer } from '@/preferences.js';
+import { globalEvents } from '@/events.js';
 import { getBgColor } from '@/utility/get-bg-color.js';
 import { mainRouter } from '@/router.js';
 import { deviceKind } from '@/utility/device-kind.js';
@@ -42,9 +43,11 @@ import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const { showEl } = scrollToVisibility();
 
@@ -95,8 +98,23 @@ function afterLeave(el: Element) {
 	el.style.height = '';
 }
 
+function updateBgColor() {
+	if (rootEl.value) {
+		parentBg.value = getBgColor(rootEl.value.parentElement);
+	}
+}
+
 onMounted(() => {
-	parentBg.value = getBgColor(rootEl.value?.parentElement);
+	updateBgColor();
+	globalEvents.on('themeChanging', updateBgColor);
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+});
+
+onBeforeUnmount(() => {
+	globalEvents.off('themeChanging', updateBgColor);
 });
 </script>
 
@@ -127,6 +145,10 @@ onMounted(() => {
 
 	&.reduceAnimation {
 		transition: opacity 0s, transform 0s;
+	}
+
+	&.scrollToTransparent {
+		background-color: transparent;
 	}
 
 	&.showEl {

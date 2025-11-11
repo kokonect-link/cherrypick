@@ -25,4 +25,11 @@ export class MiUserIp {
 		length: 128,
 	})
 	public ip: string;
+
+	@Column('varchar', {
+		length: 512,
+		array: true,
+		default: '{}',
+	})
+	public dnsNames: string[];
 }

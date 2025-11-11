@@ -32,9 +32,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { watch, ref } from 'vue';
-import { v4 as uuid } from 'uuid';
 import tinycolor from 'tinycolor2';
 import { useInterval } from '@@/js/use-interval.js';
+import { genId } from '@/utility/id.js';
 
 const props = defineProps<{
 	src: number[];
@@ -42,7 +42,7 @@ const props = defineProps<{
 
 const viewBoxX = 50;
 const viewBoxY = 50;
-const gradientId = uuid();
+const gradientId = genId();
 const polylinePoints = ref('');
 const polygonPoints = ref('');
 const headX = ref<number | null>(null);

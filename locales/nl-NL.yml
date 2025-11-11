@@ -250,7 +250,6 @@ noUsers: "Er zijn geen gebruikers."
 editProfile: "Bewerk Profiel"
 noteDeleteConfirm: "Ben je zeker dat je dit bericht wil verwijderen?"
 pinLimitExceeded: "Je kunt geen berichten meer vastprikken"
-intro: "Installatie van CherryPick geëindigd! Maak nu een beheerder aan."
 done: "Klaar"
 processing: "Bezig met verwerken"
 preview: "Voorbeeld"
@@ -523,8 +522,8 @@ showNoteActionsOnlyHover: "Toon notitiemenu alleen bij muisaanwijzer"
 showReactionsCount: "Zie het aantal reacties op notities"
 noHistory: "Geen geschiedenis gevonden"
 signinHistory: "Inloggeschiedenis"
-enableAdvancedMfm: "Uitgebreide MFM activeren"
-enableAnimatedMfm: "Geanimeerde MFM activeren"
+enableAdvancedMfm: "Uitgebreide MFC activeren"
+enableAnimatedMfm: "Geanimeerde MFC activeren"
 doing: "In uitvoering..."
 category: "Categorie"
 tags: "Aliassen"
@@ -1004,7 +1003,6 @@ _theme:
 _sfx:
   note: "Notities"
   notification: "Meldingen"
-  chat: "Chat"
 _2fa:
   renewTOTPCancel: "Nee, bedankt"
 _widgets:
@@ -1022,6 +1020,7 @@ _cw:
 _visibility:
   home: "Startpagina"
   followers: "Volgers"
+  specified: "Directe notities"
 _profile:
   name: "Naam"
   username: "Gebruikersnaam"
@@ -1064,6 +1063,7 @@ _deck:
     list: "Lijsten"
     channel: "Kanalen"
     mentions: "Vermeldingen"
+    direct: "Directe notities"
 _webhookSettings:
   name: "Naam"
   active: "Ingeschakeld"
@@ -1081,3 +1081,8 @@ _remoteLookupErrors:
     title: "Niet gevonden"
 _search:
   searchScopeAll: "Alle"
+_watermarkEditor:
+  image: "Afbeeldingen"
+  advanced: "Geavanceerd"
+_qr:
+  showTabTitle: "Weergave"

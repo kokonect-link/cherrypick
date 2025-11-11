@@ -416,7 +416,6 @@ _theme:
 _sfx:
   note: "ບັນທຶກ"
   notification: "ການແຈ້ງເຕືອນ"
-  chat: "ແຊ໋ດ"
 _2fa:
   renewTOTPCancel: "ບໍ່​ແມ່ນ​ຕອນ​ນີ້"
 _widgets:
@@ -434,6 +433,7 @@ _cw:
 _visibility:
   home: "ໜ້າຫຼັກ"
   followers: "ຜູ້ຕິດຕາມ"
+  specified: "ໂພສ Direct note"
 _profile:
   name: "ຊື່"
   username: "ຊື່ຜູ້ໃຊ້"
@@ -471,6 +471,7 @@ _deck:
     list: "ລາຍການ"
     channel: "ຊ່ອງ"
     mentions: "ກ່າວເຖິງເຈົ້າ"
+    direct: "ໂພສ Direct note"
 _webhookSettings:
   name: "ຊື່"
 _abuseReport:
@@ -484,3 +485,5 @@ _remoteLookupErrors:
     title: "ບໍ່ພົບ"
 _search:
   searchScopeAll: "ທັງໝົດ"
+_watermarkEditor:
+  image: "ຮູບພາບ"

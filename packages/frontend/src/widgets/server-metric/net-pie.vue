@@ -40,7 +40,7 @@ import bytes from '@/filters/bytes-net-v.js';
 import bytesSizes from '@/filters/bytes-net-sizes.js';
 
 const props = defineProps<{
-	connection: Misskey.ChannelConnection<Misskey.Channels['serverStats']>,
+	connection: Misskey.IChannelConnection<Misskey.Channels['serverStats']>,
 	meta: Misskey.entities.ServerInfoResponse
 }>();
 

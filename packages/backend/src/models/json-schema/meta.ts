@@ -75,6 +75,10 @@ export const packedMetaLiteSchema = {
 			type: 'string',
 			optional: false, nullable: true,
 		},
+		clientOptions: {
+			type: 'object',
+			optional: false, nullable: false,
+		},
 		disableRegistration: {
 			type: 'boolean',
 			optional: false, nullable: false,
@@ -198,6 +202,10 @@ export const packedMetaLiteSchema = {
 					dayOfWeek: {
 						type: 'integer',
 						optional: false, nullable: false,
+					},
+					isSensitive: {
+						type: 'boolean',
+						optional: true, nullable: false,
 					},
 				},
 			},

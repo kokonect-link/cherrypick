@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { action } from '@storybook/addon-actions';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { action } from 'storybook/actions';
 import { ref } from 'vue';
 import { commonHandlers } from '../../../.storybook/mocks.js';
 import { boolean, choose, country, date, firstName, integer, lastName, text } from '../../../.storybook/fake-utils.js';

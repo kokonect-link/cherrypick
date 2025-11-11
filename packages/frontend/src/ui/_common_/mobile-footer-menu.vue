@@ -5,31 +5,31 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div ref="rootEl" :class="[$style.root, { [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)) }]">
-	<button v-if="store.s.showMenuButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="drawerMenuShowing = true">
+	<button v-if="store.s.showMenuButtonInNavbar" :class="$style.item" class="_button" @click="drawerMenuShowing = true">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-menu-2"></i><span v-if="menuIndicated" :class="$style.itemIndicator" class="_blink"><i class="_indicatorCircle"></i></span>
 		</div>
 	</button>
 
-	<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/')">
+	<button v-if="store.s.showHomeButtonInNavbar" :class="$style.item" class="_button" @click="clickHomeButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-home"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showExploreButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/explore')">
+	<button v-if="store.s.showExploreButtonInNavbar" :class="$style.item" class="_button" @click="clickExploreButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-hash"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showSearchButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/search')">
+	<button v-if="store.s.showSearchButtonInNavbar" :class="$style.item" class="_button" @click="clickSearchButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-search"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showNotificationButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/my/notifications')">
+	<button v-if="store.s.showNotificationButtonInNavbar" :class="$style.item" class="_button" @click="clickNotificationButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.itemIndicator" class="_blink">
@@ -39,7 +39,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/chat')">
+	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" :class="$style.item" class="_button" @click="clickChatButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-messages"></i>
 			<span v-if="$i?.hasUnreadChatMessages" :class="$style.itemIndicator" class="_blink">
@@ -48,13 +48,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="widgetsShowing = true">
+	<button :class="$style.item" class="_button" @click="clickWidgetButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-apps"></i>
 		</div>
 	</button>
 
-	<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="[$style.item, $style.post]" class="_button" @click="os.post()">
+	<button :class="[$style.item, $style.post]" class="_button" @click="clickPostButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-pencil"></i>
 		</div>
@@ -71,6 +71,7 @@ import { navbarItemDef } from '@/navbar.js';
 import { prefer } from '@/preferences.js';
 import { store } from '@/store.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+import { haptic } from '@/utility/haptic.js';
 
 const { showEl } = scrollToVisibility();
 
@@ -88,6 +89,41 @@ const menuIndicated = computed(() => {
 });
 
 const rootElHeight = ref(0);
+
+function clickHomeButton() {
+	haptic();
+	mainRouter.push('/');
+}
+
+function clickExploreButton() {
+	haptic();
+	mainRouter.push('/explore');
+}
+
+function clickSearchButton() {
+	haptic();
+	mainRouter.push('/search');
+}
+
+function clickNotificationButton() {
+	haptic();
+	mainRouter.push('/my/notifications');
+}
+
+function clickChatButton() {
+	haptic();
+	mainRouter.push('/chat');
+}
+
+function clickWidgetButton() {
+	haptic();
+	widgetsShowing.value = true;
+}
+
+function clickPostButton() {
+	haptic();
+	os.post();
+}
 
 watch(rootEl, () => {
 	if (rootEl.value) {
@@ -113,7 +149,7 @@ watch(rootEl, () => {
 	box-sizing: border-box;
 	background: var(--MI_THEME-navBg);
 	color: var(--MI_THEME-navFg);
-	box-shadow: 0px 0px 6px 6px #0000000f;
+	border-top: solid 0.5px var(--MI_THEME-divider);
 	transition: opacity 0.5s, transform 0.5s;
 
 	&.reduceAnimation {
@@ -172,7 +208,7 @@ watch(rootEl, () => {
 }
 
 .itemIcon {
-	font-size: 14px;
+	font-size: 15px;
 }
 
 .itemIndicator {

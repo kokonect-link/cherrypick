@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<template #footer>
 				<div class="_buttons">
 					<MkButton primary @click="join(invitation)"><i class="ti ti-plus"></i> {{ i18n.ts._chat.join }}</MkButton>
-					<MkButton danger @click="ignore(invitation)"><i class="ti ti-x"></i> {{ i18n.ts._chat.ignore }}</MkButton>
+					<MkButton danger @click="reject(invitation)"><i class="ti ti-ban"></i> {{ i18n.ts._chat.reject }}</MkButton>
+					<MkButton @click="ignore(invitation)"><i class="ti ti-x"></i> {{ i18n.ts._chat.ignore }}</MkButton>
 				</div>
 			</template>
 
@@ -40,6 +41,7 @@ import { i18n } from '@/i18n.js';
 import { misskeyApi } from '@/utility/misskey-api.js';
 import { useRouter } from '@/router.js';
 import MkFolder from '@/components/MkFolder.vue';
+import * as os from '@/os.js';
 
 const router = useRouter();
 
@@ -57,15 +59,34 @@ async function fetchInvitations() {
 }
 
 async function join(invitation: Misskey.entities.ChatRoomInvitation) {
-	await misskeyApi('chat/rooms/join', {
+	await os.apiWithDialog('chat/rooms/join', {
 		roomId: invitation.room.id,
 	});
 
-	router.push(`/chat/room/${invitation.room.id}`);
+	router.push('/chat/room/:roomId', {
+		params: {
+			roomId: invitation.room.id,
+		},
+	});
+}
+
+async function reject(invitation: Misskey.entities.ChatRoomInvitation) {
+	await os.apiWithDialog('chat/rooms/invitations/reject', {
+		roomId: invitation.room.id,
+	});
+
+	invitations.value = invitations.value.filter(i => i.id !== invitation.id);
 }
 
 async function ignore(invitation: Misskey.entities.ChatRoomInvitation) {
-	await misskeyApi('chat/rooms/invitations/ignore', {
+	const { canceled } = await os.confirm({
+		type: 'warning',
+		text: i18n.ts._chat.doYouIgnoreInvitation,
+		caption: i18n.ts._chat.ignoreThisInvitation,
+	});
+	if (canceled) return;
+
+	await os.apiWithDialog('chat/rooms/invitations/ignore', {
 		roomId: invitation.room.id,
 	});
 

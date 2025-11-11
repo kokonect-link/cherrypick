@@ -13,7 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<div class="_gaps_s">
 						<MkKeyValue>
 							<template #key>{{ i18n.ts._externalResourceInstaller._vendorInfo.endpoint }}</template>
-							<template #value><MkUrl :url="url" :showUrlPreview="false"></MkUrl></template>
+							<template #value><MkUrl v-if="url" :url="url" :showUrlPreview="false"></MkUrl></template>
 						</MkKeyValue>
 						<MkKeyValue>
 							<template #key>{{ i18n.ts._externalResourceInstaller._vendorInfo.hashVerify }}</template>
@@ -81,7 +81,7 @@ function close_(): void {
 	}
 }
 
-async function fetch() {
+async function _fetch_() {
 	if (!url.value || !hash.value) {
 		errorKV.value = {
 			title: i18n.ts._externalResourceInstaller._errors._invalidParams.title,
@@ -152,7 +152,7 @@ async function fetch() {
 		case 'theme':
 			try {
 				const metaRaw = parseThemeCode(res.data);
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 				const { id, props, desc: description, ...meta } = metaRaw;
 				data.value = {
 					type: 'theme',
@@ -162,7 +162,7 @@ async function fetch() {
 					},
 					raw: res.data,
 				};
-			} catch (err) {
+			} catch (err: any) {
 				switch (err.message.toLowerCase()) {
 					case 'builtin theme':
 						errorKV.value = {
@@ -237,7 +237,7 @@ async function install() {
 const urlParams = new URLSearchParams(window.location.search);
 url.value = urlParams.get('url');
 hash.value = urlParams.get('hash');
-fetch();
+_fetch_();
 
 definePage(() => ({
 	title: i18n.ts._externalResourceInstaller.title,

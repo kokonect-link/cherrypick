@@ -7,6 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <div class="_gaps_m">
 	<FormInfo warn>{{ i18n.ts.customCssWarn }}</FormInfo>
 
+	<FormInfo v-if="isSafeMode" warn>{{ i18n.ts.customCssIsDisabledBecauseSafeMode }}</FormInfo>
+
 	<MkCodeEditor v-model="localCustomCss" manualSave lang="css">
 		<template #label>CSS</template>
 	</MkCodeEditor>
@@ -15,6 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue';
+import { isSafeMode } from '@@/js/config.js';
 import MkCodeEditor from '@/components/MkCodeEditor.vue';
 import FormInfo from '@/components/MkInfo.vue';
 import * as os from '@/os.js';

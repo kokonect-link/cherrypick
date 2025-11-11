@@ -6,10 +6,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div v-if="show" ref="el" :class="[$style.root, {[$style.slim]: narrow, [$style.thin]: thin_, [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.scrollToTransparent]: showEl }]">
 	<div v-if="!thin_ && !canBack" :class="$style.buttonsLeft">
-		<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
+		<button class="_button" :class="[$style.button, $style.goBack]" @click.stop="goBack" @touchstart="preventDrag"><i class="ti ti-arrow-left"></i></button>
 	</div>
 	<div v-if="!thin_ && narrow && props.displayMyAvatar && $i && !isFriendly().value" class="_button" :class="$style.buttonsLeft" @click="openAccountMenu">
-		<MkAvatar v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.avatar" :user="$i"/>
+		<MkAvatar :class="$style.avatar" :user="$i"/>
 	</div>
 	<div v-else-if="!thin_ && canBack" :class="$style.buttonsLeft">
 		<div v-if="narrow && !hideTitle" :class="$style.button"/>
@@ -51,7 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div v-if="!thin_ && !narrow && (actions && actions.length > 0) && hideTitle && ['index'].includes(<string>mainRouter.currentRoute.value.name)" :class="$style.buttonsRight"/>
 	<div v-if="(!thin_ && narrow && !hideTitle) || (actions && actions.length > 0)" :class="$style.buttonsRight">
 		<template v-for="action in actions">
-			<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
+			<button v-tooltip.noDelay="action.text" class="_button" :class="[$style.button, { [$style.highlighted]: action.highlighted }]" @click.stop="action.handler" @touchstart="preventDrag"><i :class="action.icon"></i></button>
 		</template>
 	</div>
 	<div v-else-if="!thin_ && !canBack && !(actions && actions.length > 0)" :class="$style.buttonsRight"/>
@@ -90,16 +90,17 @@ export type PageHeaderProps = {
 import { onMounted, onUnmounted, ref, inject, watch, nextTick, useTemplateRef, computed } from 'vue';
 import { getScrollPosition, scrollToTop } from '@@/js/scroll.js';
 import { globalEvents } from '@/events.js';
-import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { getAccountMenu } from '@/accounts.js';
 import { $i } from '@/i.js';
 import { DI } from '@/di.js';
-import { mainRouter } from '@/router.js';
 import * as os from '@/os.js';
+import { mainRouter } from '@/router.js';
 import { i18n } from '@/i18n.js';
 import { prefer } from '@/preferences.js';
 import { isFriendly } from '@/utility/is-friendly.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
 import MkFollowButton from '@/components/MkFollowButton.vue';
+import { haptic } from '@/utility/haptic.js';
 
 const { showEl } = scrollToVisibility();
 const canBack = ref(['index', 'explore', 'my-notifications', 'chat'].includes(<string>mainRouter.currentRoute.value.name));
@@ -164,10 +165,14 @@ const top = (ev: MouseEvent) => {
 	}
 };
 
-function openAccountMenu(ev: MouseEvent) {
-	openAccountMenu_({
+async function openAccountMenu(ev: MouseEvent) {
+	haptic();
+
+	const menuItems = await getAccountMenu({
 		withExtraOperation: true,
-	}, ev);
+	});
+
+	os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 }
 
 function onTabMousedown(tab: Tab, ev: MouseEvent): void {
@@ -189,6 +194,8 @@ function onTabClick(tab: Tab, ev: MouseEvent): void {
 }
 
 function goBack() {
+	haptic();
+
 	window.history.back();
 }
 

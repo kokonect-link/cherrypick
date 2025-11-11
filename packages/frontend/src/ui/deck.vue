@@ -10,9 +10,11 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<div :class="$style.nonTitlebarArea">
 		<XSidebar v-if="!isMobile && prefer.r['deck.navbarPosition'].value === 'left'"/>
 
-		<div :class="[$style.main, { [$style.withWallpaper]: withWallpaper, [$style.withSidebarAndTitlebar]: !isMobile && prefer.r['deck.navbarPosition'].value === 'left' && prefer.r.showTitlebar.value }]" :style="{ backgroundImage: prefer.s['deck.wallpaper'] != null ? `url(${ prefer.s['deck.wallpaper'] })` : null }">
+		<div :class="[$style.main, { [$style.withWallpaper]: withWallpaper, [$style.withSidebarAndTitlebar]: !isMobile && prefer.r['deck.navbarPosition'].value === 'left' && prefer.r.showTitlebar.value }]" :style="{ backgroundImage: prefer.s['deck.wallpaper'] != null ? `url(${ prefer.s['deck.wallpaper'] })` : '' }">
 			<XNavbarH v-if="!isMobile && prefer.r['deck.navbarPosition'].value === 'top'"/>
 
+			<XReloadSuggestion v-if="shouldSuggestReload"/>
+			<XPreferenceRestore v-if="shouldSuggestRestoreBackup"/>
 			<XAnnouncements v-if="$i"/>
 			<XStatusBars/>
 			<div :class="$style.columnsWrapper">
@@ -44,14 +46,14 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 				<div v-if="prefer.r['deck.menuPosition'].value === 'right'" :class="$style.sideMenu">
 					<div :class="$style.sideMenuTop">
-						<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="`${i18n.ts._deck.profile}: ${prefer.s['deck.profile']}`" :class="$style.sideMenuButton" class="_button" @click="switchProfileMenu"><i class="ti ti-caret-down"></i></button>
-						<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="i18n.ts._deck.deleteProfile" :class="$style.sideMenuButton" class="_button" @click="deleteProfile"><i class="ti ti-trash"></i></button>
+						<button v-tooltip.noDelay.left="`${i18n.ts._deck.profile}: ${prefer.s['deck.profile']}`" :class="$style.sideMenuButton" class="_button" @click="switchProfileMenu"><i class="ti ti-caret-down"></i></button>
+						<button v-tooltip.noDelay.left="i18n.ts._deck.deleteProfile" :class="$style.sideMenuButton" class="_button" @click="deleteProfile"><i class="ti ti-trash"></i></button>
 					</div>
 					<div :class="$style.sideMenuMiddle">
-						<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="i18n.ts._deck.addColumn" :class="$style.sideMenuButton" class="_button" @click="addColumn"><i class="ti ti-plus"></i></button>
+						<button v-tooltip.noDelay.left="i18n.ts._deck.addColumn" :class="$style.sideMenuButton" class="_button" @click="addColumn"><i class="ti ti-plus"></i></button>
 					</div>
 					<div :class="$style.sideMenuBottom">
-						<button v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" v-tooltip.noDelay.left="i18n.ts.settings" :class="$style.sideMenuButton" class="_button" @click="showSettings"><i class="ti ti-settings-2"></i></button>
+						<button v-tooltip.noDelay.left="i18n.ts.settings" :class="$style.sideMenuButton" class="_button" @click="showSettings"><i class="ti ti-settings-2"></i></button>
 					</div>
 				</div>
 			</div>
@@ -80,13 +82,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, ref, useTemplateRef } from 'vue';
-import { v4 as uuid } from 'uuid';
+import { defineAsyncComponent, ref, useTemplateRef, onUnmounted } from 'vue';
 import XCommon from './_common_/common.vue';
+import { genId } from '@/utility/id.js';
 import XSidebar from '@/ui/_common_/navbar.vue';
 import XNavbarH from '@/ui/_common_/navbar-h.vue';
 import XMobileFooterMenu from '@/ui/_common_/mobile-footer-menu.vue';
 import XTitlebar from '@/ui/_common_/titlebar.vue';
+import XPreferenceRestore from '@/ui/_common_/PreferenceRestore.vue';
+import XReloadSuggestion from '@/ui/_common_/ReloadSuggestion.vue';
 import * as os from '@/os.js';
 import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
@@ -105,6 +109,9 @@ import XRoleTimelineColumn from '@/ui/deck/role-timeline-column.vue';
 import XChatColumn from '@/ui/deck/chat-column.vue';
 import { mainRouter } from '@/router.js';
 import { columns, layout, columnTypes, switchProfileMenu, addColumn as addColumnToStore, deleteProfile as deleteProfile_ } from '@/deck.js';
+import { shouldSuggestRestoreBackup } from '@/preferences/utility.js';
+import { shouldSuggestReload } from '@/utility/reload-suggest.js';
+import { haptic } from '@/utility/haptic.js';
 
 const XStatusBars = defineAsyncComponent(() => import('@/ui/_common_/statusbars.vue'));
 const XAnnouncements = defineAsyncComponent(() => import('@/ui/_common_/announcements.vue'));
@@ -134,9 +141,11 @@ mainRouter.navHook = (path, flag): boolean => {
 };
 
 const isMobile = ref(window.innerWidth <= 500);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = window.innerWidth <= 500;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 // ポインターイベント非対応用に初期値はUAから出す
 const snapScroll = ref(deviceKind === 'smartphone' || deviceKind === 'tablet');
@@ -153,23 +162,27 @@ watch(route, () => {
 */
 
 function showSettings() {
+	haptic();
+
 	os.pageWindow('/settings/deck');
 }
 
 const columnsEl = useTemplateRef('columnsEl');
 
 const addColumn = async (ev) => {
+	haptic();
+
 	const { canceled, result: column } = await os.select({
 		title: i18n.ts._deck.addColumn,
-		items: columnTypes.map(column => ({
-			value: column, text: i18n.ts._deck._columns[column],
+		items: columnTypes.filter(column => column !== 'chat' || $i == null || $i.policies.chatAvailability !== 'unavailable').map(column => ({
+			value: column, label: i18n.ts._deck._columns[column],
 		})),
 	});
 	if (canceled || column == null) return;
 
 	addColumnToStore({
 		type: column,
-		id: uuid(),
+		id: genId(),
 		name: null,
 		width: 330,
 		soundSetting: { type: null, volume: 1 },
@@ -214,6 +227,11 @@ async function deleteProfile() {
 
 window.document.documentElement.style.overflowY = 'hidden';
 window.document.documentElement.style.scrollBehavior = 'auto';
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+	window.document.removeEventListener('pointerdown', pointerEvent);
+});
 </script>
 
 <style lang="scss" module>

@@ -4,11 +4,12 @@
  */
 
 import { HttpResponse, http } from 'msw';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { channel } from '../../.storybook/fakes.js';
 import { commonHandlers } from '../../.storybook/mocks.js';
 import MkChannelList from './MkChannelList.vue';
 import type { StoryObj } from '@storybook/vue3';
+import { Paginator } from '@/utility/paginator.js';
 export const Default = {
 	render(args) {
 		return {
@@ -31,10 +32,7 @@ export const Default = {
 		};
 	},
 	args: {
-		pagination: {
-			endpoint: 'channels/search',
-			limit: 10,
-		},
+		paginator: new Paginator('channels/search', {}),
 	},
 	parameters: {
 		chromatic: {

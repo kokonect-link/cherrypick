@@ -1,17 +1,18 @@
 {
 	"name": "cherrypick",
-	"version": "4.16.0",
-	"basedMisskeyVersion": "2025.5.0",
+	"version": "4.17.0",
+	"basedMisskeyVersion": "2025.10.2",
 	"codename": "nasubi",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
-	"packageManager": "pnpm@10.10.0",
+	"packageManager": "pnpm@10.18.2",
 	"workspaces": [
 		"packages/frontend-shared",
 		"packages/frontend",
 		"packages/frontend-embed",
+		"packages/icons-subsetter",
 		"packages/backend",
 		"packages/sw",
 		"packages/cherrypick-js",
@@ -27,6 +28,7 @@
 		"build-cherrypick-js-with-types": "pnpm build-pre && pnpm --filter backend... --filter=!cherrypick-js build && pnpm --filter backend generate-api-json --no-build && ncp packages/backend/built/api.json packages/cherrypick-js/generator/api.json && pnpm --filter cherrypick-js update-autogen-code && pnpm --filter cherrypick-js build && pnpm --filter cherrypick-js api",
 		"start": "pnpm check:connect && cd packages/backend && node ./built/boot/entry.js",
 		"start:test": "ncp ./.github/cherrypick/test.yml ./.config/test.yml && cd packages/backend && cross-env NODE_ENV=test node ./built/boot/entry.js",
+		"cli": "cd packages/backend && pnpm cli",
 		"init": "pnpm migrate",
 		"migrate": "cd packages/backend && pnpm migrate",
 		"revert": "cd packages/backend && pnpm revert",
@@ -36,7 +38,7 @@
 		"dev": "node scripts/dev.mjs",
 		"lint": "pnpm -r lint",
 		"biome-lint": "pnpm -r biome-lint",
-		"cy:open": "pnpm cypress open --browser --e2e --config-file=cypress.config.ts",
+		"cy:open": "pnpm cypress open --config-file=cypress.config.ts",
 		"cy:run": "pnpm cypress run",
 		"e2e": "pnpm start-server-and-test start:test http://localhost:61812 cy:run",
 		"e2e-dev-container": "ncp ./.config/cypress-devcontainer.yml ./.config/test.yml && pnpm start-server-and-test start:test http://localhost:61812 cy:run",
@@ -54,31 +56,32 @@
 		"lodash": "4.17.21"
 	},
 	"dependencies": {
-		"cssnano": "7.0.6",
-		"esbuild": "0.25.3",
-		"execa": "9.5.2",
+		"cssnano": "7.1.1",
+		"esbuild": "0.25.10",
+		"execa": "9.6.0",
 		"fast-glob": "3.3.3",
-		"glob": "11.0.2",
-		"ignore-walk": "7.0.0",
+		"glob": "11.0.3",
+		"ignore-walk": "8.0.0",
 		"js-yaml": "4.1.0",
-		"postcss": "8.5.3",
-		"tar": "7.4.3",
-		"terser": "5.39.0",
-		"typescript": "5.8.3"
+		"postcss": "8.5.6",
+		"tar": "7.5.1",
+		"terser": "5.44.0",
+		"typescript": "5.9.3"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
+		"@biomejs/biome": "2.3.1",
 		"@misskey-dev/eslint-plugin": "2.1.0",
-		"@types/node": "22.15.2",
-		"@typescript-eslint/eslint-plugin": "8.31.0",
-		"@typescript-eslint/parser": "8.31.0",
-		"cross-env": "7.0.3",
-		"cypress": "14.3.2",
-		"eslint": "9.25.1",
-		"globals": "16.0.0",
+		"@types/js-yaml": "4.0.9",
+		"@types/node": "24.9.1",
+		"@typescript-eslint/eslint-plugin": "8.46.1",
+		"@typescript-eslint/parser": "8.46.1",
+		"cross-env": "10.1.0",
+		"cypress": "15.4.0",
+		"eslint": "9.37.0",
+		"globals": "16.4.0",
 		"ncp": "2.0.0",
-		"pnpm": "10.10.0",
-		"start-server-and-test": "2.0.11"
+		"pnpm": "10.18.2",
+		"start-server-and-test": "2.1.2"
 	},
 	"optionalDependencies": {
 		"@tensorflow/tfjs-core": "4.22.0"
@@ -86,6 +89,9 @@
 	"pnpm": {
 		"overrides": {
 			"@aiscript-dev/aiscript-languageserver": "-"
-		}
+		},
+		"ignoredBuiltDependencies": [
+			"@sentry-internal/node-cpu-profiler"
+		]
 	}
 }

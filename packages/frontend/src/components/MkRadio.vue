@@ -6,7 +6,6 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <div
 	v-adaptive-border
-	v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []"
 	:class="[$style.root, { [$style.disabled]: disabled, [$style.checked]: checked }]"
 	:aria-checked="checked"
 	:aria-disabled="disabled"
@@ -27,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <script lang="ts" setup generic="T extends unknown">
 import { computed } from 'vue';
-import { prefer } from '@/preferences.js';
+import { haptic } from '@/utility/haptic.js';
 
 const props = defineProps<{
 	modelValue: T;
@@ -42,6 +41,8 @@ const emit = defineEmits<{
 const checked = computed(() => props.modelValue === props.value);
 
 function toggle(): void {
+	haptic();
+
 	if (props.disabled) return;
 	emit('update:modelValue', props.value);
 }
@@ -50,7 +51,8 @@ function toggle(): void {
 <style lang="scss" module>
 .root {
 	position: relative;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 	text-align: left;
 	cursor: pointer;
 	padding: 7px 10px;
@@ -104,7 +106,8 @@ function toggle(): void {
 }
 
 .button {
-	position: absolute;
+	position: relative;
+	display: inline-block;
 	width: 14px;
 	height: 14px;
 	background: none;
@@ -128,7 +131,7 @@ function toggle(): void {
 }
 
 .label {
-	margin-left: 28px;
+	margin-left: 8px;
 	display: block;
 	line-height: 20px;
 	cursor: pointer;

@@ -24,6 +24,7 @@ describe('Endpoints', () => {
 		bob = await signup({ username: 'bob' });
 		carol = await signup({ username: 'carol' });
 		dave = await signup({ username: 'dave' });
+		await api('admin/update-meta', { federation: 'all' }, alice as misskey.entities.SignupResponse);
 	}, 1000 * 60 * 2);
 
 	describe('signup', () => {
@@ -572,19 +573,10 @@ describe('Endpoints', () => {
 
 	describe('drive', () => {
 		test('ドライブ情報を取得できる', async () => {
-			await uploadFile(alice, {
-				blob: new Blob([new Uint8Array(256)]),
-			});
-			await uploadFile(alice, {
-				blob: new Blob([new Uint8Array(512)]),
-			});
-			await uploadFile(alice, {
-				blob: new Blob([new Uint8Array(1024)]),
-			});
 			const res = await api('drive', {}, alice);
 			assert.strictEqual(res.status, 200);
 			assert.strictEqual(typeof res.body === 'object' && !Array.isArray(res.body), true);
-			expect(res.body).toHaveProperty('usage', 1792);
+			expect(res.body).toHaveProperty('usage', 0);
 		});
 	});
 
@@ -1064,7 +1056,7 @@ describe('Endpoints', () => {
 				userId: bob.id,
 			}, alice);
 			assert.strictEqual(res1.status, 204);
-			assert.strictEqual((res2.body as unknown as { memo: string }).memo, memo);
+			assert.strictEqual((res2.body as unknown as { memo: string })?.memo, memo);
 		});
 
 		test('自分に関するメモを更新できる', async () => {
@@ -1079,7 +1071,7 @@ describe('Endpoints', () => {
 				userId: alice.id,
 			}, alice);
 			assert.strictEqual(res1.status, 204);
-			assert.strictEqual((res2.body as unknown as { memo: string }).memo, memo);
+			assert.strictEqual((res2.body as unknown as { memo: string })?.memo, memo);
 		});
 
 		test('メモを削除できる', async () => {

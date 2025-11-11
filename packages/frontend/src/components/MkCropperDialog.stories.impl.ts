@@ -4,7 +4,7 @@
  */
 
 import { HttpResponse, http } from 'msw';
-import { action } from '@storybook/addon-actions';
+import { action } from 'storybook/actions';
 import { file } from '../../.storybook/fakes.js';
 import { commonHandlers } from '../../.storybook/mocks.js';
 import MkCropperDialog from './MkCropperDialog.vue';
@@ -38,7 +38,7 @@ export const Default = {
 		};
 	},
 	args: {
-		file: file(),
+		imageFile: new Blob(['fake image data'], { type: 'image/jpeg' }),
 		aspectRatio: NaN,
 	},
 	parameters: {

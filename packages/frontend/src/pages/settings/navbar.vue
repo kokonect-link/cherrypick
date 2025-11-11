@@ -94,7 +94,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkSwitch>
 
 					<MkSwitch v-model="showChatButtonInNavbar" :disabled="!isMobile">
-						<template #label><i class="ti ti-messages"></i> <SearchLabel>{{ i18n.ts.chat }}</SearchLabel></template>
+						<template #label><i class="ti ti-messages"></i> <SearchLabel>{{ i18n.ts._chat.messages }}</SearchLabel></template>
 					</MkSwitch>
 
 					<MkDisableSection :disabled="miLocalStorage.getItem('ui') === 'deck'">
@@ -111,7 +111,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 				<div class="_buttons" style="margin-top: 20px;">
 					<MkButton :disabled="!isMobile" danger @click="resetButtomNavbar"><i class="ti ti-reload"></i> {{ i18n.ts.default }}</MkButton>
-					<MkButton :disabled="!isMobile" primary class="save" @click="reloadAsk({ reason: i18n.ts.reloadToApplySetting, unison: true })"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
+					<MkButton :disabled="!isMobile" primary class="save" @click="suggestReload();"><i class="ti ti-device-floppy"></i> {{ i18n.ts.save }}</MkButton>
 				</div>
 			</FormSection>
 		</SearchMarker>
@@ -120,7 +120,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, defineAsyncComponent, ref } from 'vue';
+import { computed, defineAsyncComponent, onUnmounted, ref } from 'vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkButton from '@/components/MkButton.vue';
 import FormSlot from '@/components/form/slot.vue';
@@ -132,28 +132,32 @@ import FormSection from '@/components/form/section.vue';
 import * as os from '@/os.js';
 import { navbarItemDef } from '@/navbar.js';
 import { store } from '@/store.js';
-import { reloadAsk } from '@/utility/reload-ask.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import { prefer } from '@/preferences.js';
-import { PREF_DEF } from '@/preferences/def.js';
+import { getInitialPrefValue } from '@/preferences/manager.js';
+import { genId } from '@/utility/id.js';
 import { miLocalStorage } from '@/local-storage.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { isFriendly } from '@/utility/is-friendly.js';
+import { suggestReload } from '@/utility/reload-suggest.js';
 
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const Sortable = defineAsyncComponent(() => import('vuedraggable').then(x => x.default));
 
 const items = ref(prefer.s.menu.map(x => ({
-	id: Math.random().toString(),
+	id: genId(),
 	type: x,
 })));
+const itemTypeValues = computed(() => items.value.map(x => x.type));
 
 const menuDisplay = computed(store.makeGetterSetter('menuDisplay'));
 const showNavbarSubButtons = prefer.model('showNavbarSubButtons');
@@ -169,26 +173,27 @@ const showWidgetButtonInNavbar = computed(store.makeGetterSetter('showWidgetButt
 const showPostButtonInNavbar = computed(store.makeGetterSetter('showPostButtonInNavbar'));
 
 async function addItem(ev: MouseEvent) {
-	const menu = Object.keys(navbarItemDef).filter(k => !prefer.s.menu.includes(k));
+	const menu = Object.keys(navbarItemDef).filter(k => !itemTypeValues.value.includes(k));
 	os.popupMenu([
 		...menu.map(k => ({
-			type: 'button',
+			type: 'button' as const,
 			text: navbarItemDef[k].title,
 			icon: navbarItemDef[k].icon,
 			action() {
 				items.value = [...items.value, {
-					id: Math.random().toString(),
+					id: genId(),
 					type: k,
 				}];
 			},
 		})), {
-			type: 'button',
+			type: 'button' as const,
 			text: i18n.ts.divider,
+			icon: 'ti ti-line-dashed',
 			// Note: アイコン指定しないとテキストの位置が他の項目とずれる
-			icon: 'ti',
+			//icon: 'ti',
 			action() {
 				items.value = [...items.value, {
-					id: Math.random().toString(),
+					id: genId(),
 					type: '-',
 				}];
 			},
@@ -200,13 +205,14 @@ function removeItem(index: number) {
 	items.value.splice(index, 1);
 }
 
-async function save() {
-	prefer.commit('menu', items.value.map(x => x.type));
+function save() {
+	prefer.commit('menu', itemTypeValues.value);
+	os.success();
 }
 
 function reset() {
-	items.value = PREF_DEF.menu.default.map(x => ({
-		id: Math.random().toString(),
+	items.value = getInitialPrefValue('menu').map(x => ({
+		id: genId(),
 		type: x,
 	}));
 }
@@ -228,6 +234,10 @@ function learnMoreBottomNavbar() {
 		text: i18n.ts.bottomNavbarDescription,
 	});
 }
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
+});
 
 const headerActions = computed(() => []);
 

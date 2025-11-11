@@ -127,6 +127,7 @@ export class Game {
 		// ターン計算
 		this.turn =
 			this.canPutSomewhere(!this.prevColor) ? !this.prevColor :
+			// biome-ignore lint/style/noNonNullAssertion: prevColor is checked in the condition
 			this.canPutSomewhere(this.prevColor!) ? this.prevColor : //eslint-disable-line @typescript-eslint/no-non-null-assertion
 			null;
 	}

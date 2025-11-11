@@ -461,13 +461,13 @@ export default function (props: MfmProps, { emit }: { emit: SetupContext<MfmEven
 			}
 
 			case 'mathInline': {
-				const ret = document.createElement('span');
+				const ret = window.document.createElement('span');
 				temml.render(token.props.formula, ret, {});
 				return [h('span', { innerHTML: ret.innerHTML })];
 			}
 
 			case 'mathBlock': {
-				const ret = document.createElement('div');
+				const ret = window.document.createElement('div');
 				temml.render(token.props.formula, ret, { displayMode: true });
 				return [h('div', { innerHTML: ret.innerHTML })];
 			}

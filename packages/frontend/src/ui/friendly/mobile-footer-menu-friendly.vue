@@ -4,29 +4,29 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl }]">
-	<button v-if="store.s.showHomeButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/')" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
+<div ref="rootEl" :class="[$style.root, { [$style.reduceBlurEffect]: !prefer.s.useBlurEffect, [$style.reduceAnimation]: !prefer.s.animation, [$style.showEl]: (showEl && ['hideFloatBtnNavBar', 'hide'].includes(<string>prefer.s.displayHeaderNavBarWhenScroll)), [$style.scrollToTransparent]: showEl, [$style.atBottom]: isAtBottom }]">
+	<button v-if="store.s.showHomeButtonInNavbar" :class="$style.item" class="_button" @click="clickHomeButton" @touchstart="openAccountMenu" @touchend="closeAccountMenu">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'index' }]">
 			<i :class="$style.itemIcon" class="ti ti-home"></i>
-			<span v-if="queue > 0" :class="$style.itemIndicatorHome">
+			<span v-if="queuedAheadItemsCount > 0" :class="$style.itemIndicatorHome">
 				<i class="_indicatorCircle"></i>
 			</span>
 		</div>
 	</button>
 
-	<button v-if="store.s.showExploreButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/explore')">
+	<button v-if="store.s.showExploreButtonInNavbar" :class="$style.item" class="_button" @click="clickExploreButton">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'explore' }]">
 			<i :class="$style.itemIcon" class="ti ti-hash"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showSearchButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/search')">
+	<button v-if="store.s.showSearchButtonInNavbar" :class="$style.item" class="_button" @click="clickSearchButton">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'search' }]">
 			<i :class="$style.itemIcon" class="ti ti-search"></i>
 		</div>
 	</button>
 
-	<button v-if="store.s.showNotificationButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/my/notifications')">
+	<button v-if="store.s.showNotificationButtonInNavbar" :class="$style.item" class="_button" @click="clickNotificationButton">
 		<div :class="[$style.itemInner, { [$style.active]: mainRouter.currentRoute.value.name === 'my-notifications' }]">
 			<i :class="$style.itemIcon" class="ti ti-bell"></i>
 			<span v-if="$i?.hasUnreadNotification" :class="$style.itemIndicator" class="_blink">
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="mainRouter.push('/chat')">
+	<button v-if="store.s.showChatButtonInNavbar && $i != null && $i.policies.chatAvailability !== 'unavailable'" :class="$style.item" class="_button" @click="clickChatButton">
 		<div :class="[$style.itemInner, { [$style.active]: ['chat', 'chat-room'].includes(<string>mainRouter.currentRoute.value.name) }]">
 			<i :class="$style.itemIcon" class="ti ti-messages"></i>
 			<span v-if="$i?.hasUnreadChatMessages" :class="$style.itemIndicator" class="_blink">
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		</div>
 	</button>
 
-	<button v-if="store.s.showWidgetButtonInNavbar" v-vibrate="prefer.s['vibrate.on.system'] ? 5 : []" :class="$style.item" class="_button" @click="widgetsShowing = true">
+	<button :class="$style.item" class="_button" @click="clickWidgetButton">
 		<div :class="$style.itemInner">
 			<i :class="$style.itemIcon" class="ti ti-apps"></i>
 		</div>
@@ -60,11 +60,13 @@ import { mainRouter } from '@/router.js';
 import { prefer } from '@/preferences.js';
 import { store } from '@/store.js';
 import { globalEvents } from '@/events.js';
-import { openAccountMenu as openAccountMenu_ } from '@/accounts.js';
+import { getAccountMenu } from '@/accounts.js';
 import { scrollToVisibility } from '@/utility/scroll-to-visibility.js';
+import { haptic } from '@/utility/haptic.js';
+import * as os from '@/os.js';
 
 const { showEl } = scrollToVisibility();
-const queue = ref(0);
+const queuedAheadItemsCount = ref(0);
 const longTouchNavHome = ref(false);
 
 const widgetsShowing = defineModel<boolean>('widgetsShowing');
@@ -72,15 +74,20 @@ const widgetsShowing = defineModel<boolean>('widgetsShowing');
 const rootEl = useTemplateRef('rootEl');
 
 const rootElHeight = ref(0);
+const isAtBottom = ref(false);
 
-function openAccountMenu(ev: TouchEvent) {
+async function openAccountMenu(ev: TouchEvent) {
 	if (prefer.s.enableLongPressOpenAccountMenu) {
 		longTouchNavHome.value = true;
-		window.setTimeout(() => {
+		window.setTimeout(async () => {
 			if (longTouchNavHome.value === true) {
-				openAccountMenu_({
-					withExtraOperationFriendly: true,
-				}, ev);
+				const menuItems = await getAccountMenu({
+					withExtraOperation: false,
+					includeCurrentAccount: true,
+				});
+
+				haptic();
+				os.popupMenu(menuItems, ev.currentTarget ?? ev.target);
 			}
 		}, 500);
 	}
@@ -91,7 +98,41 @@ function closeAccountMenu() {
 }
 
 function queueUpdated(q: number): void {
-	queue.value = q;
+	queuedAheadItemsCount.value = q;
+}
+
+function clickHomeButton() {
+	haptic();
+	mainRouter.push('/');
+}
+
+function clickExploreButton() {
+	haptic();
+	mainRouter.push('/explore');
+}
+
+function clickSearchButton() {
+	haptic();
+	mainRouter.push('/search');
+}
+
+function clickNotificationButton() {
+	haptic();
+	mainRouter.push('/my/notifications');
+}
+
+function clickChatButton() {
+	haptic();
+	mainRouter.push('/chat');
+}
+
+function clickWidgetButton() {
+	haptic();
+	widgetsShowing.value = true;
+}
+
+function handleIsAtBottom(value: boolean) {
+	isAtBottom.value = value;
 }
 
 watch(rootEl, () => {
@@ -108,10 +149,12 @@ watch(rootEl, () => {
 
 onMounted(() => {
 	globalEvents.on('queueUpdated', (q) => queueUpdated(q));
+	globalEvents.on('isAtBottom', handleIsAtBottom);
 });
 
 onUnmounted(() => {
 	globalEvents.off('queueUpdated', (q) => queueUpdated(q));
+	globalEvents.off('isAtBottom', handleIsAtBottom);
 });
 </script>
 
@@ -146,6 +189,10 @@ onUnmounted(() => {
 
 	&.scrollToTransparent {
 		background-color: transparent;
+	}
+
+	&.atBottom {
+		position: relative;
 	}
 }
 
@@ -228,7 +275,6 @@ onUnmounted(() => {
 
 	&:has(.itemIndicateValueIcon) {
 		animation: none;
-		font-size: 6px;
 	}
 }
 

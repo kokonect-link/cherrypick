@@ -11,29 +11,15 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkResult v-if="resultType === 'notFound'" type="notFound"/>
 			<MkResult v-if="resultType === 'error'" type="error"/>
 			<MkResult v-if="resultType === 'blocked'" type="blocked" :user="null"/>
-			<MkSelect
-				v-model="resultType" :items="[
-					{ label: 'empty', value: 'empty' },
-					{ label: 'notFound', value: 'notFound' },
-					{ label: 'error', value: 'error' },
-					{ label: 'blocked', value: 'blocked' },
-				]"
-			></MkSelect>
+			<MkSelect v-model="resultType" :items="resultTypeDef"></MkSelect>
 
-			<MkSystemIcon v-if="iconType === 'info'" type="info" style="width: 60px;"/>
-			<MkSystemIcon v-if="iconType === 'question'" type="question" style="width: 60px;"/>
-			<MkSystemIcon v-if="iconType === 'success'" type="success" style="width: 60px;"/>
-			<MkSystemIcon v-if="iconType === 'warn'" type="warn" style="width: 60px;"/>
-			<MkSystemIcon v-if="iconType === 'error'" type="error" style="width: 60px;"/>
-			<MkSelect
-				v-model="iconType" :items="[
-					{ label: 'info', value: 'info' },
-					{ label: 'question', value: 'question' },
-					{ label: 'success', value: 'success' },
-					{ label: 'warn', value: 'warn' },
-					{ label: 'error', value: 'error' },
-				]"
-			></MkSelect>
+			<MkSystemIcon v-if="iconType === 'info'" type="info" style="width: 150px;"/>
+			<MkSystemIcon v-if="iconType === 'question'" type="question" style="width: 150px;"/>
+			<MkSystemIcon v-if="iconType === 'success'" type="success" style="width: 150px;"/>
+			<MkSystemIcon v-if="iconType === 'warn'" type="warn" style="width: 150px;"/>
+			<MkSystemIcon v-if="iconType === 'error'" type="error" style="width: 150px;"/>
+			<MkSystemIcon v-if="iconType === 'waiting'" type="waiting" style="width: 150px;"/>
+			<MkSelect v-model="iconType" :items="iconTypeDef"></MkSelect>
 
 			<div class="_buttons">
 				<MkButton @click="os.alert({ type: 'error', title: 'Error', text: 'error' })">Error</MkButton>
@@ -56,10 +42,35 @@ import MkKeyValue from '@/components/MkKeyValue.vue';
 import MkLink from '@/components/MkLink.vue';
 import MkSelect from '@/components/MkSelect.vue';
 import MkButton from '@/components/MkButton.vue';
+import { useMkSelect } from '@/composables/use-mkselect.js';
 import * as os from '@/os.js';
 
-const resultType = ref('empty');
-const iconType = ref('info');
+const {
+	model: resultType,
+	def: resultTypeDef,
+} = useMkSelect({
+	items: [
+		{ label: 'empty', value: 'empty' },
+		{ label: 'notFound', value: 'notFound' },
+		{ label: 'error', value: 'error' },
+		{ label: 'blocked', value: 'blocked' },
+	],
+	initialValue: 'empty',
+});
+const {
+	model: iconType,
+	def: iconTypeDef,
+} = useMkSelect({
+	items: [
+		{ label: 'info', value: 'info' },
+		{ label: 'question', value: 'question' },
+		{ label: 'success', value: 'success' },
+		{ label: 'warn', value: 'warn' },
+		{ label: 'error', value: 'error' },
+		{ label: 'waiting', value: 'waiting' },
+	],
+	initialValue: 'info',
+});
 
 definePage(() => ({
 	title: 'DEBUG ROOM',

@@ -15,18 +15,25 @@ SPDX-License-Identifier: AGPL-3.0-only
 			@enter.prevent="search"
 		>
 			<template #prefix><i class="ti ti-search"></i></template>
-			<template v-if="searchQuery != ''" #suffix><button type="button" :class="$style.deleteBtn" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button></template>
+			<template v-if="searchQuery != ''" #suffix>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" @click="searchQuery = ''; searchQueryEl?.focus();"><i class="ti ti-x"></i></button>
+				<button type="button" :class="$style.searchInputButton" tabindex="-1" :disabled="searchParams == null" @click="search"><i class="ti ti-search"></i></button>
+			</template>
 		</MkInput>
 		<MkFoldableSection expanded>
 			<template #header>{{ i18n.ts.options }}</template>
 
 			<div class="_gaps_m">
+				<!--
 				<MkRadios v-model="searchScope">
 					<option v-if="instance.federation !== 'none' && noteSearchableScope === 'global'" value="all">{{ i18n.ts._search.searchScopeAll }}</option>
 					<option value="local">{{ instance.federation === 'none' ? i18n.ts._search.searchScopeAll : i18n.ts._search.searchScopeLocal }}</option>
 					<option v-if="instance.federation !== 'none' && noteSearchableScope === 'global'" value="server">{{ i18n.ts._search.searchScopeServer }}</option>
 					<option value="user">{{ i18n.ts._search.searchScopeUser }}</option>
 				</MkRadios>
+				-->
+
+				<MkSelect v-model="searchScope" :items="searchScopeDef" small></MkSelect>
 
 				<div v-if="instance.federation !== 'none' && searchScope === 'server'" :class="$style.subOptionRoot">
 					<MkInput
@@ -92,6 +99,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				</div>
 			</div>
 		</MkFoldableSection>
+		<!--
 		<div>
 			<MkButton
 				large
@@ -105,20 +113,21 @@ SPDX-License-Identifier: AGPL-3.0-only
 				{{ i18n.ts.search }}
 			</MkButton>
 		</div>
+		-->
 	</div>
 
-	<MkFoldableSection v-if="notePagination">
+	<MkFoldableSection v-if="paginator">
 		<template #header>{{ i18n.ts.searchResult }}</template>
-		<MkNotes :key="`searchNotes:${key}`" :pagination="notePagination"/>
+		<MkNotesTimeline :key="`searchNotes:${key}`" :paginator="paginator"/>
 	</MkFoldableSection>
 </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, shallowRef, toRef } from 'vue';
+import { computed, markRaw, ref, shallowRef, toRef, useTemplateRef } from 'vue';
 import { host as localHost } from '@@/js/config.js';
 import type * as Misskey from 'cherrypick-js';
-import type { Paging } from '@/components/MkPagination.vue';
+import type { MkSelectItem } from '@/components/MkSelect.vue';
 import { $i } from '@/i.js';
 import { i18n } from '@/i18n.js';
 import { instance } from '@/instance.js';
@@ -129,9 +138,11 @@ import { useRouter } from '@/router.js';
 import MkButton from '@/components/MkButton.vue';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
 import MkInput from '@/components/MkInput.vue';
-import MkNotes from '@/components/MkNotes.vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkRadios from '@/components/MkRadios.vue';
 import MkUserCardMini from '@/components/MkUserCardMini.vue';
+import { Paginator } from '@/utility/paginator.js';
+import MkSelect from '@/components/MkSelect.vue';
 
 const props = withDefaults(defineProps<{
 	query?: string;
@@ -148,7 +159,20 @@ const props = withDefaults(defineProps<{
 const router = useRouter();
 
 const key = ref(0);
-const notePagination = ref<Paging<'notes/search'>>();
+const paginator = shallowRef<Paginator<'notes/search'> | null>(null);
+
+const searchScopeDef = computed(() => {
+	const items: MkSelectItem[] = [];
+	if (instance.federation !== 'none' && noteSearchableScope === 'global') {
+		items.push({ label: i18n.ts._search.searchScopeAll, value: 'all' });
+	}
+	items.push({ label: instance.federation === 'none' ? i18n.ts._search.searchScopeAll : i18n.ts._search.searchScopeLocal, value: 'local' });
+	if (instance.federation !== 'none' && noteSearchableScope === 'global') {
+		items.push({ label: i18n.ts._search.searchScopeServer, value: 'server' });
+	}
+	items.push({ label: i18n.ts._search.searchScopeUser, value: 'user' });
+	return items;
+});
 
 const searchQuery = ref(toRef(props, 'query').value);
 const hostInput = ref(toRef(props, 'host').value);
@@ -161,8 +185,8 @@ const noteSearchableScope = instance.noteSearchableScope ?? 'local';
 //#region set user
 let fetchedUser: Misskey.entities.UserDetailed | null = null;
 
-const searchQueryEl = ref(null);
-const hostInputEl = ref(null);
+const searchQueryEl = useTemplateRef('searchQueryEl');
+const hostInputEl = useTemplateRef('hostInputEl');
 
 if (props.userId) {
 	fetchedUser = await misskeyApi('users/show', {
@@ -271,10 +295,18 @@ async function search() {
 			const res = await apLookup(searchParams.value.query);
 
 			if (res.type === 'User') {
-				router.push(`/@${res.object.username}@${res.object.host}`);
+				router.push('/@:acct/:page?', {
+					params: {
+						acct: `${res.object.username}@${res.object.host}`,
+					},
+				});
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			} else if (res.type === 'Note') {
-				router.push(`/notes/${res.object.id}`);
+				router.push('/notes/:noteId/:initialTab?', {
+					params: {
+						noteId: res.object.id,
+					},
+				});
 			}
 
 			return;
@@ -289,7 +321,7 @@ async function search() {
 				text: i18n.ts.lookupConfirm,
 			});
 			if (!confirm.canceled) {
-				router.push(`/${searchParams.value.query}`);
+				router.pushByPath(`/${searchParams.value.query}`);
 				return;
 			}
 		}
@@ -300,19 +332,22 @@ async function search() {
 				text: i18n.ts.openTagPageConfirm,
 			});
 			if (!confirm.canceled) {
-				router.push(`/tags/${encodeURIComponent(searchParams.value.query.substring(1))}`);
+				router.push('/tags/:tag', {
+					params: {
+						tag: searchParams.value.query.substring(1),
+					},
+				});
 				return;
 			}
 		}
 	}
 
-	notePagination.value = {
-		endpoint: 'notes/search',
+	paginator.value = markRaw(new Paginator('notes/search', {
 		limit: 10,
 		params: {
 			...searchParams.value,
 		},
-	};
+	}));
 
 	key.value++;
 }
@@ -364,7 +399,7 @@ async function search() {
 	color: #ff2a2a;
 }
 
-.deleteBtn {
+.searchInputButton {
 	position: relative;
 	z-index: 2;
 	margin: 0 auto;

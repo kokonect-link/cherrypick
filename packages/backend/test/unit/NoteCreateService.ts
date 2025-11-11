@@ -40,6 +40,7 @@ describe('NoteCreateService', () => {
 			renoteCount: 0,
 			repliesCount: 0,
 			clippedCount: 0,
+			pageCount: 0,
 			reactions: {},
 			visibility: 'public',
 			uri: null,
@@ -62,10 +63,10 @@ describe('NoteCreateService', () => {
 			renoteUserHost: null,
 			updatedAt: null,
 			updatedAtHistory: null,
-			noteEditHistory: [],
 			hasEvent: false,
 			disableRightClick: false,
 			deleteAt: null,
+			deliveryTargets: null,
 		};
 
 		const poll: IPoll = {

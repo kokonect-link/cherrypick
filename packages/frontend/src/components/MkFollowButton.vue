@@ -56,8 +56,8 @@ import { claimAchievement } from '@/utility/achievements.js';
 import { pleaseLogin } from '@/utility/please-login.js';
 import { $i } from '@/i.js';
 import { prefer } from '@/preferences.js';
+import { haptic } from '@/utility/haptic.js';
 import { userName } from '@/filters/user.js';
-import { vibrate } from '@/utility/vibrate.js';
 import { useRouter } from '@/router.js';
 
 const router = useRouter();
@@ -105,6 +105,8 @@ async function onClick() {
 
 	wait.value = true;
 
+	haptic();
+
 	try {
 		if (isFollowing.value) {
 			const { canceled } = await os.confirm({
@@ -147,7 +149,6 @@ async function onClick() {
 					...props.user,
 					withReplies: prefer.s.defaultFollowWithReplies,
 				});
-				vibrate(prefer.s['vibrate.on.system'] ? [30, 40, 100] : []);
 				hasPendingFollowRequestFromYou.value = true;
 
 				if ($i == null) {

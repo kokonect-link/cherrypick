@@ -6,10 +6,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :user="user" :swipable="true">
 	<div v-if="user">
-		<XHome v-if="tab === 'home'" :user="user" @unfoldFiles="() => { tab = 'files'; }"/>
-		<div v-else-if="tab === 'notes'" class="_spacer" style="--MI_SPACER-w: 800px;">
-			<XTimeline :user="user"/>
-		</div>
+		<XHome v-if="tab === 'home'" :user="user" @showMoreFiles="() => { tab = 'files'; }"/>
+		<XNotes v-else-if="tab === 'notes'" :user="user"/>
 		<XFiles v-else-if="tab === 'files'" :user="user"/>
 		<XEvent v-else-if="tab === 'events'" :user="user"/>
 		<XActivity v-else-if="tab === 'activity'" :user="user"/>
@@ -28,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, computed, watch, ref } from 'vue';
+import { defineAsyncComponent, computed, watch, ref, onUnmounted } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import * as os from '@/os.js';
 import { acct as getAcct } from '@/filters/user.js';
@@ -44,16 +42,19 @@ import { serverContext, assertServerContext } from '@/server-context.js';
 const MOBILE_THRESHOLD = 500;
 
 const isMobile = ref(deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD);
-window.addEventListener('resize', () => {
+const handleResize = () => {
 	isMobile.value = deviceKind === 'smartphone' || window.innerWidth <= MOBILE_THRESHOLD;
-});
+};
+
+window.addEventListener('resize', handleResize);
 
 const XHome = defineAsyncComponent(() => import('./home.vue'));
-const XTimeline = defineAsyncComponent(() => import('./index.timeline.vue'));
+const XNotes = defineAsyncComponent(() => import('./notes.vue'));
 const XFiles = defineAsyncComponent(() => import('./files.vue'));
 const XEvent = defineAsyncComponent(() => import('./events.vue'));
 const XActivity = defineAsyncComponent(() => import('./activity.vue'));
 const XAchievements = defineAsyncComponent(() => import('./achievements.vue'));
+//const XReactions = defineAsyncComponent(() => import('./reactions.vue'));
 const XClips = defineAsyncComponent(() => import('./clips.vue'));
 const XLists = defineAsyncComponent(() => import('./lists.vue'));
 const XPages = defineAsyncComponent(() => import('./pages.vue'));
@@ -99,6 +100,10 @@ function fetchUser(): void {
 
 watch(() => props.acct, fetchUser, {
 	immediate: true,
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', handleResize);
 });
 
 const headerActions = computed(() => [{
@@ -158,6 +163,7 @@ const headerTabs = computed(() => user.value ? [{
 }] : []);
 
 function menu(ev) {
+	if (!user.value) return;
 	const { menu, cleanup } = getUserMenu(user.value, mainRouter);
 	os.popupMenu(menu, ev.currentTarget ?? ev.target).finally(cleanup);
 }

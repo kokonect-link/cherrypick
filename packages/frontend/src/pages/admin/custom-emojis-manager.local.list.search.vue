@@ -66,20 +66,24 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</MkInput>
 					<MkSelect
 						v-model="model.sensitive"
+						:items="[
+							{ label: '-', value: null },
+							{ label: 'true', value: 'true' },
+							{ label: 'false', value: 'false' },
+						]"
 					>
 						<template #label>sensitive</template>
-						<option :value="null">-</option>
-						<option :value="true">true</option>
-						<option :value="false">false</option>
 					</MkSelect>
 
 					<MkSelect
 						v-model="model.localOnly"
+						:items="[
+							{ label: '-', value: null },
+							{ label: 'true', value: 'true' },
+							{ label: 'false', value: 'false' },
+						]"
 					>
 						<template #label>localOnly</template>
-						<option :value="null">-</option>
-						<option :value="true">true</option>
-						<option :value="false">false</option>
 					</MkSelect>
 					<MkInput
 						v-model="model.updatedAtFrom"
@@ -131,7 +135,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, ref, useTemplateRef, watch } from 'vue';
 import { gridSortOrderKeys } from './custom-emojis-manager.impl.js';
 import type { EmojiSearchQuery } from './custom-emojis-manager.local.list.vue';
 import type { SortOrder } from '@/components/MkSortOrderEditor.define.js';
@@ -159,11 +163,11 @@ const emit = defineEmits<{
 const model = ref<EmojiSearchQuery>(props.query);
 const queryRolesText = computed(() => model.value.roles.map(it => it.name).join(','));
 
-const modelNameEl = ref(null);
-const modelCategoryEl = ref(null);
-const modelAliasesEl = ref(null);
-const modelTypeEl = ref(null);
-const modelLicenseEl = ref(null);
+const modelNameEl = useTemplateRef('modelNameEl');
+const modelCategoryEl = useTemplateRef('modelCategoryEl');
+const modelAliasesEl = useTemplateRef('modelAliasesEl');
+const modelTypeEl = useTemplateRef('modelTypeEl');
+const modelLicenseEl = useTemplateRef('modelLicenseEl');
 
 watch(model, () => {
 	emit('queryUpdated', model.value);

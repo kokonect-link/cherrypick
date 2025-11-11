@@ -43,7 +43,6 @@ import {
 	MiNote,
 	MiNoteFavorite,
 	MiNoteReaction,
-	MiNoteSchedule,
 	MiNoteThreadMuting,
 	MiNoteDraft,
 	MiPage,
@@ -90,6 +89,7 @@ import {
 	MiChatRoomInvitation,
 	MiChatApproval,
 } from './_.js';
+import { NoteHistory } from './NoteHistory.js';
 import type { Provider } from '@nestjs/common';
 import type { DataSource } from 'typeorm';
 
@@ -573,9 +573,9 @@ const $abuseReportResolversRepository: Provider = {
 	inject: [DI.db],
 };
 
-const $noteScheduleRepository: Provider = {
-	provide: DI.noteScheduleRepository,
-	useFactory: (db: DataSource) => db.getRepository(MiNoteSchedule).extend(miRepository as MiRepository<MiNoteSchedule>),
+const $noteHistoryRepository: Provider = {
+	provide: DI.noteHistoryRepository,
+	useFactory: (db: DataSource) => db.getRepository(NoteHistory).extend(miRepository as MiRepository<NoteHistory>),
 	inject: [DI.db],
 };
 
@@ -662,7 +662,7 @@ const $noteScheduleRepository: Provider = {
 		$bubbleGameRecordsRepository,
 		$reversiGamesRepository,
 		$abuseReportResolversRepository,
-		$noteScheduleRepository,
+		$noteHistoryRepository,
 	],
 	exports: [
 		$usersRepository,
@@ -745,7 +745,7 @@ const $noteScheduleRepository: Provider = {
 		$bubbleGameRecordsRepository,
 		$reversiGamesRepository,
 		$abuseReportResolversRepository,
-		$noteScheduleRepository,
+		$noteHistoryRepository,
 	],
 })
 export class RepositoryModule {

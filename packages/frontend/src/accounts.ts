@@ -24,7 +24,7 @@ export async function getAccounts(): Promise<{
 	host: string;
 	id: Misskey.entities.User['id'];
 	username: Misskey.entities.User['username'];
-	user?: Misskey.entities.User | null;
+	user?: Misskey.entities.MeDetailed | null;
 	token: string | null;
 }[]> {
 	const tokens = store.s.accountTokens;
@@ -39,7 +39,7 @@ export async function getAccounts(): Promise<{
 	}));
 }
 
-async function addAccount(host: string, user: Misskey.entities.User, token: AccountWithToken['token']) {
+async function addAccount(host: string, user: Misskey.entities.MeDetailed, token: AccountWithToken['token']) {
 	if (!prefer.s.accounts.some(x => x[0] === host && x[1].id === user.id)) {
 		store.set('accountTokens', { ...store.s.accountTokens, [host + '/' + user.id]: token });
 		store.set('accountInfos', { ...store.s.accountInfos, [host + '/' + user.id]: user });
@@ -150,9 +150,10 @@ export function updateCurrentAccountPartial(accountData: Partial<Misskey.entitie
 
 export async function refreshCurrentAccount() {
 	if (!$i) return;
+	const me = $i;
 	return fetchAccount($i.token, $i.id).then(updateCurrentAccount).catch(reason => {
 		if (reason === isAccountDeleted) {
-			removeAccount(host, $i.id);
+			removeAccount(host, me.id);
 			if (Object.keys(store.s.accountTokens).length > 0) {
 				login(Object.values(store.s.accountTokens)[0]);
 			} else {
@@ -211,42 +212,70 @@ export async function switchAccount(host: string, id: string) {
 	}
 }
 
-export async function openAccountMenu(opts: {
+export async function getAccountMenu(opts: {
 	includeCurrentAccount?: boolean;
 	withExtraOperation: boolean;
-	withExtraOperationFriendly?: boolean;
 	active?: Misskey.entities.User['id'];
-	onChoose?: (account: Misskey.entities.User) => void;
-}, ev: MouseEvent) {
-	if (!$i) return;
+	onChoose?: (account: Misskey.entities.MeDetailed) => void;
+}) {
+	if ($i == null) throw new Error('No current account');
+	const me = $i;
 
-	function createItem(host: string, id: Misskey.entities.User['id'], username: Misskey.entities.User['username'], account: Misskey.entities.User | null | undefined, token: string): MenuItem {
+	const callback = opts.onChoose;
+
+	function createItem(host: string, id: Misskey.entities.User['id'], username: Misskey.entities.User['username'], account: Misskey.entities.MeDetailed | null | undefined, token: string | null): MenuItem {
 		if (account) {
 			return {
 				type: 'user' as const,
 				user: account,
 				active: opts.active != null ? opts.active === id : false,
 				action: async () => {
-					if (opts.onChoose) {
-						opts.onChoose(account);
+					if (callback) {
+						callback(account);
 					} else {
 						switchAccount(host, id);
 					}
 				},
 			};
-		} else {
+		} else if (token != null) {
 			return {
 				type: 'button' as const,
 				text: username,
 				active: opts.active != null ? opts.active === id : false,
 				action: async () => {
-					if (opts.onChoose) {
+					if (callback) {
 						fetchAccount(token, id).then(account => {
-							opts.onChoose(account);
+							callback(account);
 						});
 					} else {
 						switchAccount(host, id);
 					}
+				},
+			};
+		} else { // プロファイルを復元した場合などはアカウントのトークンや詳細情報はstoreにキャッシュされていない
+			return {
+				type: 'button' as const,
+				text: username,
+				active: opts.active != null ? opts.active === id : false,
+				action: async () => {
+					const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkSigninDialog.vue')), {
+						initialUsername: username,
+					}, {
+						done: async (res: Misskey.entities.SigninFlowResponse & { finished: true }) => {
+							store.set('accountTokens', { ...store.s.accountTokens, [host + '/' + res.id]: res.i });
+
+							if (callback) {
+								fetchAccount(res.i, id).then(account => {
+									callback(account);
+								});
+							} else {
+								switchAccount(host, id);
+							}
+						},
+						closed: () => {
+							dispose();
+						},
+					});
 				},
 			};
 		}
@@ -255,7 +284,7 @@ export async function openAccountMenu(opts: {
 	const menuItems: MenuItem[] = [];
 
 	// TODO: $iのホストも比較したいけど通常null
-	const accountItems = (await getAccounts().then(accounts => accounts.filter(x => x.id !== $i.id))).map(a => createItem(a.host, a.id, a.username, a.user, a.token));
+	const accountItems = (await getAccounts().then(accounts => accounts.filter(x => x.id !== me.id))).map(a => createItem(a.host, a.id, a.username, a.user, a.token));
 
 	if (opts.withExtraOperation) {
 		menuItems.push({
@@ -303,45 +332,29 @@ export async function openAccountMenu(opts: {
 			to: '/settings/accounts',
 		});
 
-		if (!opts.withExtraOperationFriendly) {
-			menuItems.push({
-				type: 'button',
-				icon: 'ti ti-logout',
-				text: i18n.ts.logout,
-				action: async () => {
-					const { canceled } = await os.confirm({
-						type: 'warning',
-						text: i18n.ts.logoutConfirm,
-					});
-					if (canceled) return;
-					signout();
-				},
-				danger: true,
-			});
-		}
+		menuItems.push({
+			type: 'button',
+			icon: 'ti ti-logout',
+			text: i18n.ts.logout,
+			action: async () => {
+				const { canceled } = await os.confirm({
+					type: 'warning',
+					text: i18n.ts.logoutConfirm,
+				});
+				if (canceled) return;
+				signout();
+			},
+			danger: true,
+		});
 	} else {
 		if (opts.includeCurrentAccount) {
 			menuItems.push(createItem(host, $i.id, $i.username, $i, $i.token));
-			if (accountItems.length > 0) menuItems.push({ type: 'divider' });
-		}
-
-		if (opts.withExtraOperationFriendly) {
-			menuItems.push({
-				type: 'link',
-				text: $i.name,
-				to: `/@${$i.username}`,
-				avatar: $i,
-			});
-
-			if (accountItems.length > 0) menuItems.push({ type: 'divider' });
 		}
 
 		menuItems.push(...accountItems);
 	}
 
-	popupMenu(menuItems, ev.currentTarget ?? ev.target, {
-		align: 'left',
-	});
+	return menuItems;
 }
 
 export function getAccountWithSigninDialog(): Promise<{ id: string, token: string } | null> {

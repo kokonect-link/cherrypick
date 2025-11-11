@@ -87,6 +87,7 @@ export class DropAndFusionGame extends EventEmitter<{
 			case 'square': return SQUARE_MONOS;
 			case 'sweets': return SWEETS_MONOS;
 			case 'space': return NORAML_MONOS;
+			default: return NORAML_MONOS;
 		}
 	}
 
@@ -186,7 +187,7 @@ export class DropAndFusionGame extends EventEmitter<{
 	}
 
 	private createBody(mono: Mono, x: number, y: number) {
-		const options: Matter.IBodyDefinition = {
+		const options = {
 			label: mono.id,
 			density: this.gameMode === 'space' ? 0.01 : ((mono.sizeX * mono.sizeY) / 10000),
 			restitution: this.gameMode === 'space' ? 0.5 : 0.2,
@@ -196,14 +197,16 @@ export class DropAndFusionGame extends EventEmitter<{
 			slop: this.gameMode === 'space' ? 0.01 : 0.7,
 			//mass: 0,
 			render: this.getMonoRenderOptions ? this.getMonoRenderOptions(mono) : undefined,
-		};
+		} satisfies Matter.IChamferableBodyDefinition;
 		if (mono.shape === 'circle') {
 			return Matter.Bodies.circle(x, y, mono.sizeX / 2, options);
 		} else if (mono.shape === 'rectangle') {
 			return Matter.Bodies.rectangle(x, y, mono.sizeX, mono.sizeY, options);
 		} else if (mono.shape === 'custom' && mono.vertices != null && mono.verticesSize != null) { //eslint-disable-line @typescript-eslint/no-unnecessary-condition
 			return Matter.Bodies.fromVertices(x, y, mono.vertices.map(i => i.map(j => ({
+				// biome-ignore lint/style/noNonNullAssertion: verticesSize is checked in the condition
 				x: (j.x / mono.verticesSize!) * mono.sizeX, //eslint-disable-line @typescript-eslint/no-non-null-assertion
+				// biome-ignore lint/style/noNonNullAssertion: verticesSize is checked in the condition
 				y: (j.y / mono.verticesSize!) * mono.sizeY, //eslint-disable-line @typescript-eslint/no-non-null-assertion
 			}))), options);
 		} else {

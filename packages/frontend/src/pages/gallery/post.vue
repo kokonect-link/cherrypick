@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</div>
 					<div class="body">
 						<div class="title">{{ post.title }}</div>
-						<div class="description"><Mfm :text="post.description"/></div>
+						<div class="description"><Mfm v-if="post.description != null" :text="post.description"/></div>
 						<div class="info">
 							<i class="ti ti-clock"></i> <MkTime :time="post.createdAt" mode="detail"/>
 						</div>
@@ -47,7 +47,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkContainer :max-height="300" :foldable="true" class="other">
 						<template #icon><i class="ti ti-clock"></i></template>
 						<template #header>{{ i18n.ts.recentPosts }}</template>
-						<MkPagination v-slot="{items}" :pagination="otherPostsPagination">
+						<MkPagination v-slot="{items}" :paginator="otherPostsPaginator">
 							<div class="sdrarzaf">
 								<MkGalleryPostPreview v-for="post in items" :key="post.id" :post="post" class="post"/>
 							</div>
@@ -63,7 +63,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref, defineAsyncComponent } from 'vue';
+import { computed, watch, ref, defineAsyncComponent, markRaw } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { url } from '@@/js/config.js';
 import type { MenuItem } from '@/types/menu.js';
@@ -81,6 +81,8 @@ import { $i } from '@/i.js';
 import { isSupportShare } from '@/utility/navigator.js';
 import { copyToClipboard } from '@/utility/copy-to-clipboard.js';
 import { useRouter } from '@/router.js';
+import { Paginator } from '@/utility/paginator.js';
+import { popup } from '@/os.js';
 
 const router = useRouter();
 
@@ -90,13 +92,12 @@ const props = defineProps<{
 
 const post = ref<Misskey.entities.GalleryPost | null>(null);
 const error = ref<any>(null);
-const otherPostsPagination = {
-	endpoint: 'users/gallery/posts' as const,
+const otherPostsPaginator = markRaw(new Paginator('users/gallery/posts', {
 	limit: 6,
-	params: computed(() => ({
-		userId: post.value.user.id,
+	computedParams: computed(() => ({
+		userId: post.value!.user.id,
 	})),
-};
+}));
 
 function fetchPost() {
 	post.value = null;
@@ -110,37 +111,47 @@ function fetchPost() {
 }
 
 function copyLink() {
+	if (!post.value) return;
 	copyToClipboard(`${url}/gallery/${post.value.id}`, 'link');
 }
 
 function share() {
+	if (!post.value) return;
 	navigator.share({
 		title: post.value.title,
-		text: post.value.description,
+		text: post.value.description ?? undefined,
 		url: `${url}/gallery/${post.value.id}`,
 	});
 }
 
 function shareWithNote() {
+	if (!post.value) return;
 	os.post({
 		initialText: `${post.value.title}\n${url}/gallery/${post.value.id}`,
 	});
 }
 
 function shareQRCode() {
-	os.displayQRCode(`${url}/gallery/${post.value.id}`);
+	if (!post.value) return;
+	const { dispose } = popup(defineAsyncComponent(() => import('@/components/MkQRCode.vue')), {
+		qrCode: `${url}/gallery/${post.value.id}`,
+	}, {
+		closed: () => dispose(),
+	});
 }
 
 function like() {
+	if (!post.value) return;
 	os.apiWithDialog('gallery/posts/like', {
 		postId: props.postId,
 	}).then(() => {
-		post.value.isLiked = true;
-		post.value.likedCount++;
+		post.value!.isLiked = true;
+		post.value!.likedCount++;
 	});
 }
 
 async function unlike() {
+	if (!post.value) return;
 	const confirm = await os.confirm({
 		type: 'warning',
 		text: i18n.ts.unlikeConfirm,
@@ -149,21 +160,25 @@ async function unlike() {
 	os.apiWithDialog('gallery/posts/unlike', {
 		postId: props.postId,
 	}).then(() => {
-		post.value.isLiked = false;
-		post.value.likedCount--;
+		post.value!.isLiked = false;
+		post.value!.likedCount--;
 	});
 }
 
 function edit() {
-	router.push(`/gallery/${post.value.id}/edit`);
+	router.push('/gallery/:postId/edit', {
+		params: {
+			postId: props.postId,
+		},
+	});
 }
 
-function reportAbuse() {
+async function reportAbuse() {
 	if (!post.value) return;
 
 	const pageUrl = `${url}/gallery/${post.value.id}`;
 
-	const { dispose } = os.popup(defineAsyncComponent(() => import('@/components/MkAbuseReportWindow.vue')), {
+	const { dispose } = await os.popupAsyncWithDialog(import('@/components/MkAbuseReportWindow.vue').then(x => x.default), {
 		user: post.value.user,
 		initialComment: `Post: ${pageUrl}\n-----\n`,
 	}, {

@@ -46,7 +46,6 @@
 		inputBorder: 'rgba(0, 0, 0, 0.1)',
 		inputBorderHover: 'rgba(0, 0, 0, 0.2)',
 		listItemHoverBg: 'rgba(0, 0, 0, 0.03)',
-		driveFolderBg: ':alpha<0.3<@accent',
 		badge: '#31b1ce',
 		messageBg: '@bg',
 		success: '#907aa9',

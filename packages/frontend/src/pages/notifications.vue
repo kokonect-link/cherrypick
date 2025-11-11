@@ -5,37 +5,38 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <PageWithHeader v-model:tab="tab" :actions="headerActions" :tabs="headerTabs" :swipable="true" :notification="notification">
-	<div class="_spacer" style="--MI_SPACER-w: 800px;">
+	<div :class="{['_spacer']: !notification }" style="--MI_SPACER-w: 800px;">
 		<div v-if="tab === 'all'">
-			<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="excludeTypes"/>
+			<MkStreamingNotificationsTimeline :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="excludeTypes"/>
 		</div>
 		<div v-else-if="tab === 'newNote'">
-			<XNotifications :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
+			<MkStreamingNotificationsTimeline :class="[$style.notifications, { [$style.noRadius]: notification }]" :excludeTypes="newNoteExcludeTypes" :notUseGrouped="true"/>
 		</div>
 		<div v-else-if="tab === 'mentions'">
-			<MkNotes :pagination="mentionsPagination" :notification="notification"/>
+			<MkNotesTimeline :paginator="mentionsPaginator" :notification="notification"/>
 		</div>
 		<div v-else-if="tab === 'directNotes'">
-			<MkNotes :pagination="directNotesPagination" :notification="true"/>
+			<MkNotesTimeline :paginator="directNotesPaginator" :notification="true"/>
 		</div>
 	</div>
 </PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import { notificationTypes } from '@@/js/const.js';
-import XNotifications from '@/components/MkNotifications.vue';
-import MkNotes from '@/components/MkNotes.vue';
+import { computed, markRaw, ref } from 'vue';
+import { notificationTypes } from 'cherrypick-js';
+import MkStreamingNotificationsTimeline from '@/components/MkStreamingNotificationsTimeline.vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import * as os from '@/os.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
+import { Paginator } from '@/utility/paginator.js';
 import { deviceKind } from '@/utility/device-kind.js';
 import { globalEvents } from '@/events.js';
 
 const tab = ref('all');
 const includeTypes = ref<string[] | null>(null);
-const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value.includes(t)) : undefined);
+const excludeTypes = computed(() => includeTypes.value ? notificationTypes.filter(t => !includeTypes.value!.includes(t)) : null);
 const newNoteExcludeTypes = computed(() => notificationTypes.filter(t => !['note'].includes(t)));
 
 const props = defineProps<{
@@ -43,18 +44,16 @@ const props = defineProps<{
 	notification?: boolean;
 }>();
 
-const mentionsPagination = {
-	endpoint: 'notes/mentions' as const,
+const mentionsPaginator = markRaw(new Paginator('notes/mentions', {
 	limit: 10,
-};
+}));
 
-const directNotesPagination = {
-	endpoint: 'notes/mentions' as const,
+const directNotesPaginator = markRaw(new Paginator('notes/mentions', {
 	limit: 10,
 	params: {
 		visibility: 'specified',
 	},
-};
+}));
 
 function setFilter(ev) {
 	const typeItems = notificationTypes.map(t => ({
@@ -89,7 +88,7 @@ const headerActions = computed(() => [deviceKind === 'desktop' && !props.disable
 	text: i18n.ts.markAllAsRead,
 	icon: 'ti ti-check',
 	handler: () => {
-		os.apiWithDialog('notifications/mark-all-as-read');
+		os.apiWithDialog('notifications/mark-all-as-read', {});
 	},
 } : undefined].filter(x => x !== undefined));
 
@@ -111,10 +110,13 @@ const headerTabs = computed(() => [{
 	icon: 'ti ti-mail',
 }]);
 
-definePage(computed(() => !props.notification ? {
+definePage(() => !props.notification ? {
 	title: i18n.ts.notifications,
 	icon: 'ti ti-bell',
-} : null));
+} : {
+	title: '',
+	icon: 'ti ti-bell',
+});
 </script>
 
 <style lang="scss" module>

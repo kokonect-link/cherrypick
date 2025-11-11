@@ -7,11 +7,13 @@
 	"exports": {
 		".": {
 			"import": "./built/index.js",
-			"types": "./built/index.d.ts"
+			"types": "./built/index.d.ts",
+			"default": "./built/index.js"
 		},
 		"./*": {
 			"import": "./built/*",
-			"types": "./built/*"
+			"types": "./built/*",
+			"default": "./built/*"
 		}
 	},
 	"scripts": {
@@ -25,15 +27,15 @@
 		"format:write": "pnpm biome format --write"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
-		"@types/node": "22.15.2",
-		"@typescript-eslint/eslint-plugin": "8.31.0",
-		"@typescript-eslint/parser": "8.31.0",
-		"execa": "9.5.2",
+		"@biomejs/biome": "2.3.1",
+		"@types/node": "24.9.1",
+		"@typescript-eslint/eslint-plugin": "8.46.1",
+		"@typescript-eslint/parser": "8.46.1",
+		"esbuild": "0.25.10",
+		"execa": "9.6.0",
+		"glob": "11.0.3",
 		"nodemon": "3.1.10",
-		"typescript": "5.8.3",
-		"esbuild": "0.25.3",
-		"glob": "11.0.2"
+		"typescript": "5.9.3"
 	},
 	"files": [
 		"built"

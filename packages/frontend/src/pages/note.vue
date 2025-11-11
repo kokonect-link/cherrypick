@@ -6,53 +6,54 @@ SPDX-License-Identifier: AGPL-3.0-only
 <template>
 <PageWithHeader :actions="headerActions" :tabs="headerTabs">
 	<div class="_spacer" style="--MI_SPACER-w: 800px;">
-		<div>
-			<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
-				<div v-if="note">
-					<div v-if="showNext" class="_margin">
-						<MkNotes class="" :pagination="showNext === 'channel' ? nextChannelPagination : nextUserPagination" :noGap="!prefer.s.showGapBetweenNotesInTimeline" :disableAutoLoad="true"/>
-					</div>
+		<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
+			<div v-if="note">
+				<div v-if="showNext" class="_margin">
+					<MkNotesTimeline direction="up" :withControl="false" :pullToRefresh="false" class="" :paginator="showNext === 'channel' ? nextChannelPaginator : showNext === 'user'? nextUserPaginator : showNext === 'home' ? nextHomePaginator : nextLocalPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
+				</div>
 
-					<div class="_margin">
-						<div v-if="!showNext" class="_buttons" :class="$style.loadNext">
-							<MkButton v-if="note.channelId" rounded :class="$style.loadButton" @click="showNext = 'channel'"><i class="ti ti-chevron-up"></i> <i class="ti ti-device-tv"></i></MkButton>
-							<MkButton rounded :class="$style.loadButton" @click="showNext = 'user'"><i class="ti ti-chevron-up"></i> <i class="ti ti-user"></i></MkButton>
-						</div>
-						<div class="_margin _gaps_s">
-							<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
-							<MkNoteDetailed :key="note.id" v-model:note="note" :initialTab="initialTab" :class="$style.note"/>
-						</div>
-						<div v-if="clips && clips.length > 0" class="_margin">
-							<div style="font-weight: bold; padding: 12px;">{{ i18n.ts.clip }}</div>
-							<div class="_gaps">
-								<MkClipPreview v-for="item in clips" :key="item.id" :clip="item"/>
-							</div>
-						</div>
-						<div v-if="!showPrev" class="_buttons" :class="$style.loadPrev">
-							<MkButton v-if="note.channelId" rounded :class="$style.loadButton" @click="showPrev = 'channel'"><i class="ti ti-chevron-down"></i> <i class="ti ti-device-tv"></i></MkButton>
-							<MkButton rounded :class="$style.loadButton" @click="showPrev = 'user'"><i class="ti ti-chevron-down"></i> <i class="ti ti-user"></i></MkButton>
+				<div class="_margin">
+					<div v-if="!showNext" class="_buttons" :class="$style.loadNext">
+						<MkButton v-if="note.channelId" rounded :class="$style.loadButton" @click="showNext = 'channel'"><i class="ti ti-chevron-up"></i> <i class="ti ti-device-tv"></i></MkButton>
+						<MkButton rounded :class="$style.loadButton" @click="showNext = 'user'"><i class="ti ti-chevron-up"></i> <i class="ti ti-user"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('home')" rounded :class="$style.loadButton" @click="showNext = 'home'"><i class="ti ti-chevron-up"></i> <i class="ti ti-home"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('local')" rounded :class="$style.loadButton" @click="showNext = 'local'"><i class="ti ti-chevron-up"></i> <i class="ti ti-planet"></i></MkButton>
+					</div>
+					<div class="_margin _gaps_s">
+						<MkRemoteCaution v-if="note.user.host != null" :href="note.url ?? note.uri"/>
+						<MkNoteDetailed :key="note.id" v-model:note="note" :initialTab="initialTab" :class="$style.note"/>
+					</div>
+					<div v-if="clips && clips.length > 0" class="_margin">
+						<div style="font-weight: bold; padding: 12px;">{{ i18n.ts.clip }}</div>
+						<div class="_gaps">
+							<MkClipPreview v-for="item in clips" :key="item.id" :clip="item"/>
 						</div>
 					</div>
-
-					<div v-if="showPrev" class="_margin">
-						<MkNotes class="" :pagination="showPrev === 'channel' ? prevChannelPagination : prevUserPagination" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
+					<div v-if="!showPrev" class="_buttons" :class="$style.loadPrev">
+						<MkButton v-if="note.channelId" rounded :class="$style.loadButton" @click="showPrev = 'channel'"><i class="ti ti-chevron-down"></i> <i class="ti ti-device-tv"></i></MkButton>
+						<MkButton rounded :class="$style.loadButton" @click="showPrev = 'user'"><i class="ti ti-chevron-down"></i> <i class="ti ti-user"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('home')" rounded :class="$style.loadButton" @click="showPrev = 'home'"><i class="ti ti-chevron-down"></i> <i class="ti ti-home"></i></MkButton>
+						<MkButton v-if="isAvailableBasicTimeline('local')" rounded :class="$style.loadButton" @click="showPrev = 'local'"><i class="ti ti-chevron-down"></i> <i class="ti ti-planet"></i></MkButton>
 					</div>
 				</div>
-				<MkError v-else-if="error" @retry="fetchNote()"/>
-				<MkLoading v-else/>
-			</Transition>
-		</div>
+
+				<div v-if="showPrev" class="_margin">
+					<MkNotesTimeline :withControl="false" :pullToRefresh="false" class="" :paginator="showPrev === 'channel' ? prevChannelPaginator : showNext === 'user'? prevUserPaginator : showNext === 'home' ? prevHomePaginator : prevLocalPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
+				</div>
+			</div>
+			<MkError v-else-if="error" @retry="fetchNote()"/>
+			<MkLoading v-else/>
+		</Transition>
 	</div>
 </PageWithHeader>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, markRaw } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { host } from '@@/js/config.js';
-import type { Paging } from '@/components/MkPagination.vue';
 import MkNoteDetailed from '@/components/MkNoteDetailed.vue';
-import MkNotes from '@/components/MkNotes.vue';
+import MkNotesTimeline from '@/components/MkNotesTimeline.vue';
 import MkRemoteCaution from '@/components/MkRemoteCaution.vue';
 import MkButton from '@/components/MkButton.vue';
 import { misskeyApi } from '@/utility/misskey-api.js';
@@ -65,6 +66,8 @@ import { pleaseLogin } from '@/utility/please-login.js';
 import { getAppearNote } from '@/utility/get-appear-note.js';
 import { serverContext, assertServerContext } from '@/server-context.js';
 import { $i } from '@/i.js';
+import { Paginator } from '@/utility/paginator.js';
+import { isAvailableBasicTimeline } from '@/timelines.js';
 
 // contextは非ログイン状態の情報しかないためログイン時は利用できない
 const CTX_NOTE = !$i && assertServerContext(serverContext, 'note') ? serverContext.note : null;
@@ -76,47 +79,85 @@ const props = defineProps<{
 
 const note = ref<null | Misskey.entities.Note>(CTX_NOTE);
 const clips = ref<Misskey.entities.Clip[]>();
-const showPrev = ref<'user' | 'channel' | false>(false);
-const showNext = ref<'user' | 'channel' | false>(false);
+const showPrev = ref<'user' | 'channel' | 'home' | 'local' | false>(false);
+const showNext = ref<'user' | 'channel' | 'home' | 'local' | false>(false);
 const error = ref();
 
-const prevUserPagination: Paging = {
-	endpoint: 'users/notes',
+const prevUserPaginator = markRaw(new Paginator('users/notes', {
 	limit: 10,
-	params: computed(() => note.value ? ({
+	initialId: props.noteId,
+	computedParams: computed(() => note.value ? ({
 		userId: note.value.userId,
+	}) : undefined),
+}));
+
+const nextUserPaginator = markRaw(new Paginator('users/notes', {
+	limit: 10,
+	initialId: props.noteId,
+	initialDirection: 'newer',
+	computedParams: computed(() => note.value ? ({
+		userId: note.value.userId,
+	}) : undefined),
+}));
+
+const prevChannelPaginator = markRaw(new Paginator('channels/timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	computedParams: computed(() => note.value && note.value.channelId != null ? ({
+		channelId: note.value.channelId,
+	}) : undefined),
+}));
+
+const nextChannelPaginator = markRaw(new Paginator('channels/timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	initialDirection: 'newer',
+	computedParams: computed(() => note.value && note.value.channelId != null ? ({
+		channelId: note.value.channelId,
+	}) : undefined),
+}));
+
+const prevHomePaginator = markRaw(new Paginator('notes/timeline', {
+	limit: 10,
+	initialId: props.noteId,
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
 		untilId: note.value.id,
 	}) : undefined),
-};
+}));
 
-const nextUserPagination: Paging = {
-	reversed: true,
-	endpoint: 'users/notes',
+const nextHomePaginator = markRaw(new Paginator('notes/timeline', {
 	limit: 10,
-	params: computed(() => note.value ? ({
-		userId: note.value.userId,
+	initialId: props.noteId,
+	initialDirection: 'newer',
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
 		sinceId: note.value.id,
 	}) : undefined),
-};
+}));
 
-const prevChannelPagination: Paging = {
-	endpoint: 'channels/timeline',
+const prevLocalPaginator = markRaw(new Paginator('notes/local-timeline', {
 	limit: 10,
-	params: computed(() => note.value ? ({
-		channelId: note.value.channelId,
+	initialId: props.noteId,
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
 		untilId: note.value.id,
 	}) : undefined),
-};
+}));
 
-const nextChannelPagination: Paging = {
-	reversed: true,
-	endpoint: 'channels/timeline',
+const nextLocalPaginator = markRaw(new Paginator('notes/local-timeline', {
 	limit: 10,
-	params: computed(() => note.value ? ({
-		channelId: note.value.channelId,
+	initialId: props.noteId,
+	initialDirection: 'newer',
+	computedParams: computed(() => note.value ? ({
+		withRenotes: true,
+		withReplies: true,
 		sinceId: note.value.id,
 	}) : undefined),
-};
+}));
 
 function fetchNote() {
 	showPrev.value = false;
@@ -132,7 +173,7 @@ function fetchNote() {
 		noteId: props.noteId,
 	}).then(res => {
 		note.value = res;
-		const appearNote = getAppearNote(res);
+		const appearNote = getAppearNote(res) ?? res;
 		// 古いノートは被クリップ数をカウントしていないので、2023-10-01以前のものは強制的にnotes/clipsを叩く
 		if ((appearNote.clippedCount ?? 0) > 0 || new Date(appearNote.createdAt).getTime() < new Date('2023-10-01').getTime()) {
 			misskeyApi('notes/clips', {
@@ -142,10 +183,10 @@ function fetchNote() {
 			});
 		}
 	}).catch(err => {
-		if (err.id === '8e75455b-738c-471d-9f80-62693f33372e') {
+		if (['fbcc002d-37d9-4944-a6b0-d9e29f2d33ab', '145f88d2-b03d-4087-8143-a78928883c4b'].includes(err.id)) {
 			pleaseLogin({
 				path: '/',
-				message: i18n.ts.thisContentsAreMarkedAsSigninRequiredByAuthor,
+				message: err.id === 'fbcc002d-37d9-4944-a6b0-d9e29f2d33ab' ? i18n.ts.thisContentsAreMarkedAsSigninRequiredByAuthor : i18n.ts.signinOrContinueOnRemote,
 				openOnRemote: {
 					type: 'lookup',
 					url: `https://${host}/notes/${props.noteId}`,

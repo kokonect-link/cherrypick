@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<path transform="scale(.26458)" d="m439.77 247.19c-43.673 0-78.832 35.157-78.832 78.83v249.98h407.06v-328.81z" :fill="themeVariables.panel"/>
 	</g>
 	<rect x="12" y="63" width="40.5" height="40.5" rx="15" ry="15" :fill="themeVariables.accentedBg"/>
-	<rect x="113" y="83" width="46" height="46" rx="10" ry="10" :fill="themeVariables.fg" fill-opacity="0.5"/>
+	<!-- <rect x="113" y="83" width="46" height="46" rx="10" ry="10" :fill="themeVariables.fg" fill-opacity="0.5"/> -->
 	<!-- <circle cx="32" cy="83" r="21" :fill="themeVariables.accentedBg"/> -->
 	<!-- <circle cx="136" cy="106" r="23" :fill="themeVariables.fg" fill-opacity="0.5"/> -->
 	<g>

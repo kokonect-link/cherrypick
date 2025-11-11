@@ -14,7 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 			<MkFoldableSection v-if="meta" class="item">
 				<template #header>Server Metric</template>
-				<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats" :connection="connection" :meta="serverInfo"/>
+				<XCpuMemoryNetCompact v-if="meta.enableServerMachineStats && serverInfo" :connection="connection" :meta="serverInfo"/>
 				<div v-else :class="$style.disabledServerMachineStats" v-html="i18n.ts.disabledServerMachineStats.replaceAll('\n', '<br>')"></div>
 			</MkFoldableSection>
 
@@ -86,13 +86,14 @@ import XRetention from './overview.retention.vue';
 import XModerators from './overview.moderators.vue';
 import XHeatmap from './overview.heatmap.vue';
 import type { InstanceForPie } from './overview.pie.vue';
+import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
 import * as os from '@/os.js';
 import { misskeyApi, misskeyApiGet } from '@/utility/misskey-api.js';
 import { useStream } from '@/stream.js';
 import { i18n } from '@/i18n.js';
 import { definePage } from '@/page.js';
 import MkFoldableSection from '@/components/MkFoldableSection.vue';
-import XCpuMemoryNetCompact from '@/widgets/server-metric/cpu-mem-net-pie.vue';
+import { genId } from '@/utility/id.js';
 
 const rootEl = useTemplateRef('rootEl');
 const serverInfo = ref<Misskey.entities.ServerInfoResponse | null>(null);
@@ -103,7 +104,7 @@ const federationPubActiveDiff = ref<number | null>(null);
 const federationSubActive = ref<number | null>(null);
 const federationSubActiveDiff = ref<number | null>(null);
 const newUsers = ref<Misskey.entities.UserDetailed[] | null>(null);
-const activeInstances = shallowRef<Misskey.entities.FederationInstance | null>(null);
+const activeInstances = shallowRef<Misskey.entities.FederationInstancesResponse | null>(null);
 const queueStatsConnection = markRaw(useStream().useChannel('queueStats'));
 const connection = useStream().useChannel('serverStats');
 const now = new Date();
@@ -113,7 +114,7 @@ const filesPagination = {
 	noPaging: true,
 };
 
-const meta = ref(null);
+const meta = useTemplateRef('meta');
 
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);
@@ -186,7 +187,7 @@ onMounted(async () => {
 
 	nextTick(() => {
 		queueStatsConnection.send('requestLog', {
-			id: Math.random().toString().substring(2, 10),
+			id: genId(),
 			length: 100,
 		});
 	});
