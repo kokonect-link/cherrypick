@@ -86,7 +86,7 @@ watch(() => props.lang, (to) => {
 <style lang="scss" module>
 .codeBlockRoot :global(.shiki) {
 	overflow: auto;
-	font-family: Consolas, Monaco, Andale Mono, Ubuntu Mono, monospace;
+	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
 
 	color: var(--shiki-fallback);
 
@@ -152,8 +152,8 @@ watch(() => props.lang, (to) => {
 		font-size: 1em;
 		overflow: visible;
 		text-rendering: inherit;
-    text-transform: inherit;
-    white-space: pre;
+		text-transform: inherit;
+		white-space: pre;
 
 		& span {
 			display: inline-block;
