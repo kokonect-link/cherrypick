@@ -389,12 +389,12 @@ export async function mainBoot() {
 
 		// 프로필 아이콘 모양 설정 연합 초기화
 		if ($i.policies.canSetFederationAvatarShape && prefer.s.setFederationAvatarShape) {
-			await misskeyApi('i/update', {
+			misskeyApi('i/update', {
 				setFederationAvatarShape: true,
 				isSquareAvatars: prefer.s.squareAvatars,
 			});
 		} else if (!$i.policies.canSetFederationAvatarShape && prefer.s.setFederationAvatarShape) {
-			await misskeyApi('i/update', {
+			misskeyApi('i/update', {
 				setFederationAvatarShape: false,
 				isSquareAvatars: prefer.s.squareAvatars,
 			});
