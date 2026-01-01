@@ -5,6 +5,7 @@
 
 export function BiosPage(props: {
 	version: string;
+	basedMisskeyVersion: string;
 }) {
 	return (
 		<>

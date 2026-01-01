@@ -5,6 +5,7 @@
 
 export function CliPage(props: {
 	version: string;
+	basedMisskeyVersion: string;
 }) {
 	return (
 		<>
