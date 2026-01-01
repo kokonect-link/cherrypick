@@ -249,8 +249,8 @@ export class NoteEntityService implements OnModuleInit {
 		const event = await this.eventsRepository.findOneByOrFail({ noteId: note.id });
 		return {
 			title: event.title,
-			start: event.start,
-			end: event.end,
+			start: event.start.toISOString(),
+			end: event.end ? event.end.toISOString() : null,
 			metadata: event.metadata,
 		};
 	}
