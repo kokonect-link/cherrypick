@@ -18,9 +18,17 @@ export const meta = {
 
 	res: {
 		type: 'array',
+		optional: false, nullable: false,
 		items: {
 			type: 'object',
+			optional: false, nullable: false,
 			properties: {
+				id: {
+					type: 'string',
+					nullable: false, optional: false,
+					format: 'id',
+					example: 'xxxxxxxxxx',
+				},
 				name: {
 					type: 'string',
 					nullable: false, optional: false,
@@ -60,8 +68,8 @@ export const paramDef = {
 	required: [],
 } as const;
 
-@Injectable() // eslint-disable-next-line import/no-default-export
-export default class extends Endpoint<typeof meta, typeof paramDef> {
+@Injectable()
+export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-disable-line import/no-default-export
 	constructor(
 		@Inject(DI.abuseReportResolversRepository)
 		private abuseReportResolversRepository: AbuseReportResolversRepository,

@@ -55,7 +55,7 @@ function toolsMenuItems(): MenuItem[] {
 			icon: 'ti ti-list-numbers',
 			action: () => {
 				prefer.commit('accountSetupWizard', 0);
-				os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {}, 'closed');
+				os.popup(defineAsyncComponent(() => import('@/components/MkUserSetupDialog.vue')), {}, {});
 			},
 		});
 	}

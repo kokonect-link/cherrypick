@@ -191,8 +191,9 @@ export function createAiScriptEnv(opts: { storageKey: string, token?: string }) 
 					throw new Error(`Invalid type. expected string but got ${typeof val}`);
 				}
 				return val;
-			}).filter(val => MkPermissions.includes(val));
-			return await new Promise(async (resolve: any) => {
+			}).filter(val => MkPermissions.includes(val as any));
+
+			return await new Promise<values.Value>(async (resolve: (v: values.Value) => void) => {
 				await os.popup(defineAsyncComponent(() => import('@/components/MkFlashRequestTokenDialog.vue')), {
 					permissions,
 				}, {
@@ -208,7 +209,7 @@ export function createAiScriptEnv(opts: { storageKey: string, token?: string }) 
 					closed: () => {
 						resolve(values.FALSE);
 					},
-				}, 'closed');
+				});
 			});
 		}),
 		'Mk:nyaize': values.FN_NATIVE(([text]) => {

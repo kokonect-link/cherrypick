@@ -20,6 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 <script lang="ts" setup>
 import { inject, nextTick, onMounted, provide, ref, shallowRef, useTemplateRef } from 'vue';
 import type { Router } from '@/router.js';
+import type { PathResolvedResult } from '@/lib/nirax.js';
 import { prefer } from '@/preferences.js';
 import MkLoadingPage from '@/pages/_loading_.vue';
 import { DI } from '@/di.js';
@@ -46,7 +47,7 @@ provide(DI.routerCurrentDepth, currentDepth + 1);
 
 const rootEl = useTemplateRef('rootEl');
 onMounted(() => {
-	if (prefer.s.animation && prefer.s.smoothTransitionAnimations) {
+	if (rootEl.value != null && prefer.s.animation && prefer.s.smoothTransitionAnimations) {
 		rootEl.value.style.viewTransitionName = viewId; // view-transition-nameにcss varが使えないっぽいため直接代入
 	}
 });
@@ -77,18 +78,32 @@ if (prefer.s.animation && prefer.s.smoothTransitionAnimations) {
 	window.document.head.appendChild(viewTransitionStylesTag);
 }
 
-const current = router.current;
+function resolveNested(current: PathResolvedResult, d = 0): PathResolvedResult | null {
+	if (d === currentDepth) {
+		return current;
+	} else {
+		if (current.child) {
+			return resolveNested(current.child, d + 1);
+		} else {
+			return null;
+		}
+	}
+}
+
+const current = resolveNested(router.current)!;
 const currentPageComponent = shallowRef('component' in current.route ? current.route.component : MkLoadingPage);
 const currentPageProps = ref(current.props);
 let currentRoutePath = current.route.path;
 const key = ref(router.getCurrentFullPath());
 
 router.useListener('change', ({ resolved }) => {
-	if (resolved == null || 'redirect' in resolved.route) return;
+	const current = resolveNested(resolved);
+	if (current == null || 'redirect' in current.route) return;
 	if (resolved.route.path === currentRoutePath && deepEqual(resolved.props, currentPageProps.value)) return;
 
 	function _() {
-		currentPageComponent.value = resolved.route.component;
+		if (current == null || 'redirect' in current.route) return;
+		currentPageComponent.value = current.route.component;
 		currentPageProps.value = resolved.props;
 		key.value = router.getCurrentFullPath();
 		currentRoutePath = resolved.route.path;
@@ -96,7 +111,7 @@ router.useListener('change', ({ resolved }) => {
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (prefer.s.animation && prefer.s.smoothTransitionAnimations && window.document.startViewTransition) {
-		window.document.startViewTransition(() => new Promise((res) => {
+		window.document.startViewTransition(() => new Promise<void>((res) => {
 			_();
 			nextTick(() => {
 				res();

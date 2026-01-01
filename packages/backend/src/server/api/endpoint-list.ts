@@ -15,10 +15,10 @@ export * as 'admin/abuse-report/notification-recipient/delete' from './endpoints
 export * as 'admin/abuse-report/notification-recipient/list' from './endpoints/admin/abuse-report/notification-recipient/list.js';
 export * as 'admin/abuse-report/notification-recipient/show' from './endpoints/admin/abuse-report/notification-recipient/show.js';
 export * as 'admin/abuse-report/notification-recipient/update' from './endpoints/admin/abuse-report/notification-recipient/update.js';
-export * as 'admin/abuse-report-resolver/create' from '@/server/api/endpoints/admin/abuse-report-resolver/create.js';
-export * as 'admin/abuse-report-resolver/delete' from '@/server/api/endpoints/admin/abuse-report-resolver/delete.js';
-export * as 'admin/abuse-report-resolver/list' from '@/server/api/endpoints/admin/abuse-report-resolver/list.js';
-export * as 'admin/abuse-report-resolver/update' from '@/server/api/endpoints/admin/abuse-report-resolver/update.js';
+export * as 'admin/abuse-report-resolver/create' from './endpoints/admin/abuse-report-resolver/create.js';
+export * as 'admin/abuse-report-resolver/delete' from './endpoints/admin/abuse-report-resolver/delete.js';
+export * as 'admin/abuse-report-resolver/list' from './endpoints/admin/abuse-report-resolver/list.js';
+export * as 'admin/abuse-report-resolver/update' from './endpoints/admin/abuse-report-resolver/update.js';
 export * as 'admin/abuse-user-reports' from './endpoints/admin/abuse-user-reports.js';
 export * as 'admin/accounts/create' from './endpoints/admin/accounts/create.js';
 export * as 'admin/accounts/delete' from './endpoints/admin/accounts/delete.js';

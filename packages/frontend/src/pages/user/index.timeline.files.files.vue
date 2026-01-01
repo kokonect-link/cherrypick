@@ -4,7 +4,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 -->
 
 <template>
-<div v-if="note.files.length > 0" :class="[$style.root, $style.visible]">
+<div v-if="note.files != null && note.files.length > 0" :class="[$style.root, $style.visible]">
 	<div v-if="!showingFiles.includes(note.files[0].id)" :key="note.id + note.files[0].id" :class="$style.img" @click="onClick($event, note.files[0])" @dblclick="onDblClick(note.files[0])">
 		<MkImgWithBlurhash
 			v-if="isThumbnailAvailable && prefer.s.enableHighQualityImagePlaceholders"
@@ -86,20 +86,23 @@ import { i18n } from '@/i18n.js';
 import MkRippleEffect from '@/components/MkRippleEffect.vue';
 
 const props = defineProps<{
-	user: Misskey.entities.UserDetailed;
-	note: Misskey.entities.Note & { files: Misskey.entities.DriveFile[] };
+	user: Misskey.entities.UserLite;
+	note: Misskey.entities.Note;
 }>();
 
 const showingFiles = ref<string[]>([]);
 
 const is = computed(() => {
-	if (props.note.files[0].type.startsWith('image/')) return 'image';
-	if (props.note.files[0].type.startsWith('video/')) return 'video';
-	if (props.note.files[0].type === 'audio/midi') return 'midi';
-	if (props.note.files[0].type.startsWith('audio/')) return 'audio';
-	if (props.note.files[0].type.endsWith('/csv')) return 'csv';
-	if (props.note.files[0].type.endsWith('/pdf')) return 'pdf';
-	if (props.note.files[0].type.startsWith('text/')) return 'textfile';
+	const file = props.note.files?.[0];
+	if (file == null) return 'unknown';
+
+	if (file.type.startsWith('image/')) return 'image';
+	if (file.type.startsWith('video/')) return 'video';
+	if (file.type === 'audio/midi') return 'midi';
+	if (file.type.startsWith('audio/')) return 'audio';
+	if (file.type.endsWith('/csv')) return 'csv';
+	if (file.type.endsWith('/pdf')) return 'pdf';
+	if (file.type.startsWith('text/')) return 'textfile';
 	if ([
 		'application/zip',
 		'application/x-cpio',
@@ -110,12 +113,15 @@ const is = computed(() => {
 		'application/x-tar',
 		'application/gzip',
 		'application/x-7z-compressed',
-	].some(archiveType => archiveType === props.note.files[0].type)) return 'archive';
+	].some(archiveType => archiveType === file.type)) return 'archive';
 	return 'unknown';
 });
 
 const isThumbnailAvailable = computed(() => {
-	return props.note.files[0].thumbnailUrl || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
+	const file = props.note.files?.[0];
+	if (file == null) return false;
+
+	return file.thumbnailUrl || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
 		? (is.value === 'image' || is.value === 'video')
 		: false;
 });
@@ -124,10 +130,10 @@ const playAnimation = ref(true);
 if (prefer.s.showingAnimatedImages === 'interaction') playAnimation.value = false;
 let playAnimationTimer = window.setTimeout(() => playAnimation.value = false, 5000);
 const url = computed(() => (prefer.s.loadRawImages)
-	? props.note.files[0].url
+	? props.note.files?.[0].url
 	: (prefer.s.disableShowingAnimatedImages || prefer.s.dataSaver.media) || (['interaction', 'inactive'].includes(<string>prefer.s.showingAnimatedImages) && !playAnimation.value)
-		? getStaticImageUrl(props.note.files[0].url)
-		: props.note.files[0].thumbnailUrl,
+		? getStaticImageUrl(props.note.files![0].url)
+		: props.note.files?.[0].thumbnailUrl,
 );
 
 async function onClick(ev: MouseEvent, image: Misskey.entities.DriveFile) {
@@ -152,21 +158,23 @@ async function onDblClick(image: Misskey.entities.DriveFile) {
 }
 
 watch(() => props.note, () => {
-	if (prefer.s.nsfw === 'force' || prefer.s.dataSaver.media) {
-		//hide = true;
-	} else {
-		for (const image of props.note.files) {
-			if (image.isSensitive) {
-				if (prefer.s.nsfw !== 'ignore') {
-					//hide = true;
+	if (props.note.files != null && props.note.files.length > 0) {
+		if (prefer.s.nsfw === 'force' || prefer.s.dataSaver.media) {
+			//hide = true;
+		} else {
+			for (const image of props.note.files) {
+				if (image.isSensitive) {
+					if (prefer.s.nsfw !== 'ignore') {
+						//hide = true;
+					} else {
+						if (!showingFiles.value.includes(image.id)) {
+							showingFiles.value.push(image.id);
+						}
+					}
 				} else {
 					if (!showingFiles.value.includes(image.id)) {
 						showingFiles.value.push(image.id);
 					}
-				}
-			} else {
-				if (!showingFiles.value.includes(image.id)) {
-					showingFiles.value.push(image.id);
 				}
 			}
 		}

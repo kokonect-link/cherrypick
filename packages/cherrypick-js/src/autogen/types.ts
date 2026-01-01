@@ -5130,6 +5130,15 @@ export type components = {
             /** Format: date-time */
             createdAt: string;
             /** @enum {string} */
+            type: 'note:grouped';
+            noteIds: (string | null)[];
+            users: components['schemas']['UserLite'][];
+        } | {
+            /** Format: id */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** @enum {string} */
             type: 'test';
         } | {
             /** Format: id */
@@ -6276,6 +6285,11 @@ export interface operations {
                 };
                 content: {
                     'application/json': {
+                        /**
+                         * Format: id
+                         * @example xxxxxxxxxx
+                         */
+                        id: string;
                         name: string;
                         targetUserPattern: string | null;
                         reporterPattern: string | null;

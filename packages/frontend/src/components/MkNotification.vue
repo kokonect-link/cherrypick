@@ -256,11 +256,13 @@ function getActualReactedUsersCount(notification: Misskey.entities.Notification)
 }
 
 const acceptGroupInvitation = () => {
+	if (!('invitation' in props.notification)) return;
 	groupInviteDone.value = true;
 	misskeyApi('users/groups/invitations/accept', { invitationId: props.notification.invitation.id });
 };
 
 const rejectGroupInvitation = () => {
+	if (!('invitation' in props.notification)) return;
 	groupInviteDone.value = true;
 	misskeyApi('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };

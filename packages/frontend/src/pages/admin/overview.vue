@@ -114,7 +114,7 @@ const filesPagination = {
 	noPaging: true,
 };
 
-const meta = useTemplateRef('meta');
+const meta = await misskeyApi('admin/meta');
 
 function onInstanceClick(i) {
 	os.pageWindow(`/instance-info/${i.host}`);
@@ -179,10 +179,6 @@ onMounted(async () => {
 		limit: 25,
 	}).then(res => {
 		activeInstances.value = res;
-	});
-
-	misskeyApi('admin/meta', {}).then(res => {
-		meta.value = res;
 	});
 
 	nextTick(() => {
