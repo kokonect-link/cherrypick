@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<div>
 				<div v-if="newNote.cw != null" :class="$style.cw">
 					<Mfm v-if="newNote.cw != ''" :text="newNote.cw" :author="originalNote.user" :nyaize="'respect'" :emojiUrls="newNote.emojis"/>
-					<MkCwButton v-model="showContent" :text="newNote.text" :files="newNote.files" :poll="newNote.poll"/>
+					<MkCwButton v-model="showContent" :text="newNote.text" :files="newNote.files" :poll="mappedPoll"/>
 				</div>
 				<div v-show="newNote.cw == null || showContent">
 					<div v-if="newNote.text">
@@ -68,7 +68,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import * as Misskey from 'cherrypick-js';
 import { CodeDiff } from 'v-code-diff';
 import { userPage } from '@/filters/user.js';
@@ -90,6 +90,16 @@ const props = defineProps<{
 }>();
 
 const showContent = ref(false);
+
+const mappedPoll = computed(() => {
+	const p = (props.newNote as any).poll;
+	if (!p) return null;
+	return {
+		choices: (p.choices || []).map((text: string) => ({ text, votes: 0, isVoted: false })),
+		expiresAt: p.expiresAt ?? null,
+		multiple: !!p.multiple,
+	};
+});
 </script>
 
 <style lang="scss" module>
