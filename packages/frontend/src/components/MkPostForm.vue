@@ -1479,7 +1479,7 @@ async function openAccountMenu(ev: MouseEvent) {
 				replyTargetNote.value = draft.reply;
 				reactionAcceptance.value = draft.reactionAcceptance;
 				scheduledAt.value = draft.scheduledAt ?? null;
-				deliveryTargets.value = draft.deliveryTargets ?? null;
+				deliveryTargets.value = draft.deliveryTargets == null ? null : { mode: draft.deliveryTargets.mode, hosts: draft.deliveryTargets.hosts ?? [] };
 				if (draft.channel) targetChannel.value = draft.channel as unknown as Misskey.entities.Channel;
 
 				visibleUsers.value = [];
@@ -1736,7 +1736,7 @@ onMounted(() => {
 					deleteAfter: null,
 				};
 			}
-			deliveryTargets.value = init.deliveryTargets ?? null;
+			deliveryTargets.value = init.deliveryTargets == null ? null : { mode: init.deliveryTargets.mode, hosts: init.deliveryTargets.hosts ?? [] };
 		}
 
 		nextTick(() => watchForDraft());
