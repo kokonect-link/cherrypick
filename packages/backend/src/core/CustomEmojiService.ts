@@ -179,7 +179,7 @@ export class CustomEmojiService implements OnApplicationShutdown {
 		null
 		| 'NO_SUCH_EMOJI'
 		| 'SAME_NAME_EMOJI_EXISTS'
-		> {
+	> {
 		const emoji = data.id
 			? await this.getEmojiById(data.id)
 			: await this.getEmojiByName(data.name!);

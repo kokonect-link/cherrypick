@@ -26,9 +26,9 @@ export function useMkSelect<
 			: { 'Error: Type of initialValue must include all types of items': TItemsValue }
 	);
 }): {
-		def: TItemsInput;
-		model: Ref<ModelType>;
-	} {
+	def: TItemsInput;
+	model: Ref<ModelType>;
+} {
 	const model = ref(opts.initialValue ?? null);
 
 	return {

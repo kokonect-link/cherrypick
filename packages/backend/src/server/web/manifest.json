@@ -3,8 +3,8 @@
 	"name": "CherryPick",
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#95e3e8",
-	"theme_color": "#ffa9c3",
+	"background_color": "#b1d3ff",
+	"theme_color": "#ffbcdc",
 	"icons": [
 		{
 			"src": "/static-assets/icons/192.png",

@@ -50,7 +50,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #prefix><i class="ti ti-lock"></i></template>
 				<template #suffix>
 					<div v-if="isCapsLock" :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div>
-					<button v-if="password" type="button" :class="$style.passwordToggleBtn" @click="togglePassword"><i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
+					<button v-if="password" type="button" tabindex="-1" :class="$style.passwordToggleBtn" @click="togglePassword"><i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
 				</template>
 				<template #caption>
 					<span v-if="passwordStrength == 'low'" style="color: var(--MI_THEME-error)"><i class="ti ti-alert-triangle ti-fw"></i> {{ i18n.ts.weakPassword }}</span>
@@ -63,12 +63,16 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #prefix><i class="ti ti-lock"></i></template>
 				<template #suffix>
 					<div v-if="isCapsLock" :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div>
-					<button v-if="retypedPassword" type="button" :class="$style.passwordToggleBtn" @click="togglePassword2"><i :class="showPassword2 ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
+					<button v-if="retypedPassword" type="button" tabindex="-1" :class="$style.passwordToggleBtn" @click="togglePassword2"><i :class="showPassword2 ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
 				</template>
 				<template #caption>
 					<span v-if="passwordRetypeState == 'match'" style="color: var(--MI_THEME-success)"><i class="ti ti-check ti-fw"></i> {{ i18n.ts.passwordMatched }}</span>
 					<span v-if="passwordRetypeState == 'not-match'" style="color: var(--MI_THEME-error)"><i class="ti ti-alert-triangle ti-fw"></i> {{ i18n.ts.passwordNotMatched }}</span>
 				</template>
+			</MkInput>
+			<MkInput v-if="instance.approvalRequiredForSignup" v-model="reason" type="text" :spellcheck="false" required data-cy-signup-reason>
+				<template #label>{{ i18n.ts.signupReason }} <div v-tooltip:dialog="i18n.ts._signup.reasonInfo" class="_button _help"><i class="ti ti-help-circle"></i></div></template>
+				<template #prefix><i class="ti ti-notes"></i></template>
 			</MkInput>
 			<MkCaptcha v-if="instance.enableHcaptcha" ref="hcaptcha" v-model="hCaptchaResponse" :class="$style.captcha" provider="hcaptcha" :sitekey="instance.hcaptchaSiteKey"/>
 			<MkCaptcha v-if="instance.enableMcaptcha" ref="mcaptcha" v-model="mCaptchaResponse" :class="$style.captcha" provider="mcaptcha" :sitekey="instance.mcaptchaSiteKey" :instanceUrl="instance.mcaptchaInstanceUrl"/>
@@ -77,7 +81,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkCaptcha v-if="instance.enableTestcaptcha" ref="testcaptcha" v-model="testcaptchaResponse" :class="$style.captcha" provider="testcaptcha" :sitekey="null"/>
 			<div class="_buttonsCenter">
 				<MkButton inline rounded @click="goBack"><i class="ti ti-arrow-left"></i> {{ i18n.ts.goBack }}</MkButton>
-				<MkButton type="submit" :disabled="shouldDisableSubmitting" inline gradate rounded data-cy-signup-submit style="margin: 0 auto;">
+				<MkButton type="submit" :disabled="shouldDisableSubmitting" inline gradate rounded data-cy-signup-submit>
 					<template v-if="submitting">
 						<MkLoading :em="true" :colored="false"/>
 					</template>
@@ -114,6 +118,7 @@ const emit = defineEmits<{
 	(ev: 'signup', user: Misskey.entities.SignupResponse): void;
 	(ev: 'signupEmailPending'): void;
 	(ev: 'back'): void;
+	(ev: 'approvalPending'): void;
 }>();
 
 const host = toUnicode(config.host);
@@ -141,6 +146,7 @@ const turnstileResponse = ref<string | null>(null);
 const testcaptchaResponse = ref<string | null>(null);
 const usernameAbortController = ref<null | AbortController>(null);
 const emailAbortController = ref<null | AbortController>(null);
+const reason = ref<string>('');
 
 const shouldDisableSubmitting = computed((): boolean => {
 	return submitting.value ||
@@ -288,6 +294,7 @@ async function onSubmit(): Promise<void> {
 		password: password.value,
 		emailAddress: email.value,
 		invitationCode: invitationCode.value,
+		reason: reason.value,
 		'hcaptcha-response': hCaptchaResponse.value,
 		'm-captcha-response': mCaptchaResponse.value,
 		'g-recaptcha-response': reCaptchaResponse.value,
@@ -307,7 +314,14 @@ async function onSubmit(): Promise<void> {
 	});
 
 	if (res && res.ok) {
-		if (res.status === 204 || instance.emailRequiredForSignup) {
+		if (instance.approvalRequiredForSignup) {
+			os.alert({
+				type: 'success',
+				title: i18n.ts._signup.almostThere,
+				text: i18n.ts._signup.approvalPending,
+			});
+			emit('approvalPending');
+		} else if (res.status === 204 || instance.emailRequiredForSignup) {
 			os.alert({
 				type: 'success',
 				title: i18n.ts._signup.almostThere,

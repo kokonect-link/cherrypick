@@ -120,6 +120,7 @@ async function setType() {
 		}, {
 			value: 'bubble', label: i18n.ts._timelines.bubble,
 		}],
+		default: props.column.tl,
 	});
 	if (canceled) {
 		if (props.column.tl == null) {

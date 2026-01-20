@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-only
 >
 	<MkPostForm
 		ref="form"
-		:class="$style.form"
+		:class="[$style.form, { _popup: modal && (!prefer.s.useBlurEffect || !prefer.s.useBlurEffectForModal || !prefer.s.removeModalBgColorForBlur), _popupAcrylic: modal && prefer.s.useBlurEffect && prefer.s.useBlurEffectForModal && prefer.s.removeModalBgColorForBlur }]"
+		class="_popup"
 		v-bind="props"
 		autofocus
 		freezeAfterPosted
@@ -29,6 +30,7 @@ import { useTemplateRef } from 'vue';
 import type { PostFormProps } from '@/types/post-form.js';
 import MkModal from '@/components/MkModal.vue';
 import MkPostForm from '@/components/MkPostForm.vue';
+import { prefer } from '@/preferences.js';
 
 const props = withDefaults(defineProps<PostFormProps & {
 	instant?: boolean;
@@ -74,6 +76,8 @@ function onModalClosed() {
 
 <style lang="scss" module>
 .form {
+	width: 100%;
+	max-width: 800px;
 	max-height: calc(100% - env(safe-area-inset-bottom));
 	margin: 0 auto auto auto;
 	overflow: scroll;

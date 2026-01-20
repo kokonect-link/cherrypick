@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <template>
 <div
-	v-if="!muted && !isDeleted"
+	v-if="!muted && !hideByPlugin && !isDeleted"
 	ref="rootEl"
 	v-hotkey="keymap"
 	:class="$style.root"
@@ -55,268 +55,253 @@ SPDX-License-Identifier: AGPL-3.0-only
 	</div>
 	<template v-if="appearNote.reply && appearNote.reply.replyId"><MkNoteSub v-for="note in conversation" :key="note.id" :class="[$style.replyToMore, { [$style.showReplyTargetNoteInSemiTransparent]: prefer.s.showReplyTargetNoteInSemiTransparent }]" :note="note"/></template>
 	<MkNoteSub v-if="appearNote.replyId" :note="appearNote.reply" :class="[$style.replyTo, { [$style.showReplyTargetNoteInSemiTransparent]: prefer.s.showReplyTargetNoteInSemiTransparent }]"/>
-	<article :class="$style.note" :style="{ paddingTop: prefer.s.showSubNoteFooterButton && appearNote.reply ? '14px' : '' }" @contextmenu.stop="onContextmenu">
-		<header :class="$style.noteHeader">
-			<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
-			<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">
-				<div :class="$style.noteHeaderBody">
-					<div :class="$style.noteHeaderName">
-						<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
-							<MkUserName :nowrap="true" :user="appearNote.user"/>
-						</MkA>
-						<span v-if="appearNote.user.isLocked" :class="$style.userBadge"><i class="ti ti-lock"></i></span>
-						<span v-if="appearNote.user.isBot" :class="$style.userBadge"><i class="ti ti-robot"></i></span>
-						<span v-if="appearNote.user.isProxy" :class="$style.userBadge"><i class="ti ti-ghost"></i></span>
-						<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
-							<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
-						</span>
-					</div>
-					<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
-				</div>
-			</div>
-			<div style="display: flex; align-items: flex-end; margin-left: auto;">
-				<div :class="$style.noteHeaderBody">
-					<div :class="$style.noteHeaderInfo">
-						<span v-if="appearNote.updatedAt" style="margin-right: 0.5em;"><i v-tooltip="i18n.tsx.noteUpdatedAt({ date: (new Date(appearNote.updatedAt)).toLocaleDateString(), time: (new Date(appearNote.updatedAt)).toLocaleTimeString() })" class="ti ti-pencil"></i></span>
-						<span v-if="appearNote.deleteAt" style="margin-right: 0.5em;"><i v-tooltip="`${i18n.ts.scheduledNoteDelete}: ${(new Date(appearNote.deleteAt)).toLocaleString()}`" class="ti ti-bomb"></i></span>
-						<span v-if="appearNote.visibility !== 'public'" style="margin-left: 0.5em;">
-							<i v-if="appearNote.visibility === 'home'" v-tooltip="i18n.ts._visibility[appearNote.visibility]" class="ti ti-home"></i>
-							<i v-else-if="appearNote.visibility === 'followers'" v-tooltip="i18n.ts._visibility[appearNote.visibility]" class="ti ti-lock"></i>
-							<i v-else-if="appearNote.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[appearNote.visibility]" class="ti ti-mail"></i>
-						</span>
-						<span v-if="appearNote.reactionAcceptance != null" style="margin-left: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>appearNote.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
-							<i v-if="appearNote.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
-							<i v-else-if="appearNote.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
-							<i v-else-if="appearNote.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
-							<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" v-tooltip="i18n.ts.likeOnly" class="ti ti-heart"></i>
-						</span>
-						<span v-if="appearNote.localOnly" style="margin-left: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
-						<span
-							v-if="appearNote.deliveryTargets && (appearNote.deliveryTargets.mode === 'include' || appearNote.deliveryTargets.hosts?.length)"
-							v-tooltip="i18n.ts._deliveryTargetControl[appearNote.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude'] + ':' + (appearNote.deliveryTargets.hosts?.length ? '\n' + appearNote.deliveryTargets.hosts.map((h, i) => appearNote.deliveryTargets.names?.[i] ? `${appearNote.deliveryTargets.names[i]} (${h})` : h).join('\n') : '\n' + i18n.ts.none)"
-							style="margin-right: 0.5em;"
-						>
-							<i :class="appearNote.deliveryTargets.mode === 'include' ? 'ti ti-truck' : 'ti ti-truck-filled'"></i>
-						</span>
-					</div>
-					<MkInstanceTicker v-if="showTicker" :host="appearNote.user.host" :instance="appearNote.user.instance" @click="showOnRemote"/>
-				</div>
-				<!--
-				<div :class="$style.noteHeaderUsernameAndBadgeRoles">
-					<div :class="$style.noteHeaderUsername">
-						<MkAcct :user="appearNote.user"/>
-					</div>
-					<div v-if="appearNote.user.badgeRoles" :class="$style.noteHeaderBadgeRoles">
-						<img v-for="(role, i) in appearNote.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.noteHeaderBadgeRole" :src="role.iconUrl!"/>
+	<div v-if="isRenote && note.renote == null" :class="$style.deleted">
+		{{ i18n.ts.deletedNote }}
+	</div>
+	<template v-else>
+		<article :class="$style.note" :style="{ paddingTop: prefer.s.showSubNoteFooterButton && appearNote.reply ? '14px' : '' }" @contextmenu.stop="onContextmenu">
+			<header :class="$style.noteHeader">
+				<MkAvatar v-if="!prefer.s.hideAvatarsInNote" :class="$style.noteHeaderAvatar" :user="appearNote.user" indicator link preview/>
+				<div style="display: flex; align-items: center; white-space: nowrap; overflow: hidden;">
+					<div :class="$style.noteHeaderBody">
+						<div :class="$style.noteHeaderName">
+							<MkA v-user-preview="appearNote.user.id" :class="$style.noteHeaderName" :to="userPage(appearNote.user)">
+								<MkUserName :nowrap="true" :user="appearNote.user"/>
+							</MkA>
+							<span v-if="appearNote.user.isLocked" :class="$style.userBadge"><i class="ti ti-lock"></i></span>
+							<span v-if="appearNote.user.isBot" :class="$style.userBadge"><i class="ti ti-robot"></i></span>
+							<span v-if="appearNote.user.isProxy" :class="$style.userBadge"><i class="ti ti-ghost"></i></span>
+							<span v-if="appearNote.user.badgeRoles" :class="$style.badgeRoles">
+								<img v-for="role in appearNote.user.badgeRoles" :key="role.id" v-tooltip="role.name" :class="$style.badgeRole" :src="role.iconUrl"/>
+							</span>
+						</div>
+						<div :class="$style.noteHeaderUsername"><MkAcct :user="appearNote.user"/></div>
 					</div>
 				</div>
-				-->
-			</div>
-		</header>
-		<div :class="$style.noteContent">
-			<MkInfo v-if="appearNote.deleteAt != null" warn :class="$style.deleteAt">
-				<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
-					<template #x>
-						<MkTime :time="appearNote.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
-					</template>
-				</I18n>
-			</MkInfo>
-			<MkEvent v-if="appearNote.event" :note="appearNote"/>
-			<p v-if="appearNote.cw != null" :class="$style.cw">
-				<Mfm
-					v-if="appearNote.cw != ''"
-					style="margin-right: 8px;"
-					:text="appearNote.cw"
-					:author="appearNote.user"
-					:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
-					:enableEmojiMenu="!!$i"
-					:enableEmojiMenuReaction="!!$i"
-				/>
-				<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;"/>
-			</p>
-			<div v-show="appearNote.cw == null || showContent">
-				<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
-				<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
-				<Mfm
-					v-if="appearNote.text"
-					:parsedNodes="parsed"
-					:text="appearNote.text"
-					:author="appearNote.user"
-					:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
-					:emojiUrls="appearNote.emojis"
-					:enableEmojiMenu="!!$i"
-					:enableEmojiMenuReaction="!!$i"
-					class="_selectable"
-				/>
-				<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
-				<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
-					<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click="translate()">{{ i18n.ts.translateNote }}</button>
-					<button v-else class="_button" @click="translation = null">{{ i18n.ts.close }}</button>
-				</div>
-				<div v-if="translating || translation" :class="$style.translation">
-					<MkLoading v-if="translating" mini/>
-					<div v-else-if="translation">
-						<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
-						<Mfm
-							:text="translation.text"
-							:author="appearNote.user"
-							:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
-							:emojiUrls="appearNote.emojis"
-							:enableEmojiMenu="!!$i"
-							:enableEmojiMenuReaction="!!$i"
-							class="_selectable"
-						/>
-						<MkPoll
-							v-if="appearNote.poll"
-							:noteId="appearNote.id"
-							:multiple="appearNote.poll.multiple"
-							:expiresAt="appearNote.poll.expiresAt"
-							:choices="$appearNote.pollChoices"
-							:author="appearNote.user"
-							:emojiUrls="appearNote.emojis"
-							:class="$style.poll"
-							isTranslation
-						/>
-						<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
-							<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
-							<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+				<div style="display: flex; align-items: flex-end; margin-left: auto;">
+					<div :class="$style.noteHeaderBody">
+						<div :class="$style.noteHeaderInfo">
+							<span v-if="appearNote.updatedAt" style="margin-right: 0.5em;"><i v-tooltip="i18n.tsx.noteUpdatedAt({ date: (new Date(appearNote.updatedAt)).toLocaleDateString(), time: (new Date(appearNote.updatedAt)).toLocaleTimeString() })" class="ti ti-pencil"></i></span>
+							<span v-if="appearNote.deleteAt" style="margin-right: 0.5em;"><i v-tooltip="`${i18n.ts.scheduledNoteDelete}: ${(new Date(appearNote.deleteAt)).toLocaleString()}`" class="ti ti-bomb"></i></span>
+							<span v-if="appearNote.visibility !== 'public'" style="margin-left: 0.5em;">
+								<i v-if="appearNote.visibility === 'home'" v-tooltip="i18n.ts._visibility[appearNote.visibility]" class="ti ti-home"></i>
+								<i v-else-if="appearNote.visibility === 'followers'" v-tooltip="i18n.ts._visibility[appearNote.visibility]" class="ti ti-lock"></i>
+								<i v-else-if="appearNote.visibility === 'specified'" ref="specified" v-tooltip="i18n.ts._visibility[appearNote.visibility]" class="ti ti-mail"></i>
+							</span>
+							<span v-if="appearNote.reactionAcceptance != null" style="margin-left: 0.5em;" :class="{ [$style.danger]: ['nonSensitiveOnly', 'nonSensitiveOnlyForLocalLikeOnlyForRemote', 'likeOnly'].includes(<string>appearNote.reactionAcceptance) }" :title="i18n.ts.reactionAcceptance">
+								<i v-if="appearNote.reactionAcceptance === 'likeOnlyForRemote'" v-tooltip="i18n.ts.likeOnlyForRemote" class="ti ti-heart-plus"></i>
+								<i v-else-if="appearNote.reactionAcceptance === 'nonSensitiveOnly'" v-tooltip="i18n.ts.nonSensitiveOnly" class="ti ti-icons"></i>
+								<i v-else-if="appearNote.reactionAcceptance === 'nonSensitiveOnlyForLocalLikeOnlyForRemote'" v-tooltip="i18n.ts.nonSensitiveOnlyForLocalLikeOnlyForRemote" class="ti ti-heart-plus"></i>
+								<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" v-tooltip="i18n.ts.likeOnly" class="ti ti-heart"></i>
+							</span>
+							<span v-if="appearNote.localOnly" style="margin-left: 0.5em;"><i v-tooltip="i18n.ts._visibility['disableFederation']" class="ti ti-rocket-off"></i></span>
+							<span
+								v-if="appearNote.deliveryTargets && (appearNote.deliveryTargets.mode === 'include' || appearNote.deliveryTargets.hosts?.length)"
+								v-tooltip="i18n.ts._deliveryTargetControl[appearNote.deliveryTargets.mode === 'include' ? 'deliveryTargetsInclude' : 'deliveryTargetsExclude'] + ':' + (appearNote.deliveryTargets.hosts?.length ? '\n' + appearNote.deliveryTargets.hosts.map((h, i) => appearNote.deliveryTargets.names?.[i] ? `${appearNote.deliveryTargets.names[i]} (${h})` : h).join('\n') : '\n' + i18n.ts.none)"
+								style="margin-right: 0.5em;"
+							>
+								<i :class="appearNote.deliveryTargets.mode === 'include' ? 'ti ti-truck' : 'ti ti-truck-filled'"></i>
+							</span>
+						</div>
+						<MkInstanceTicker v-if="showTicker" :host="appearNote.user.host" :instance="appearNote.user.instance" @click="showOnRemote"/>
+					</div>
+					<!--
+					<div :class="$style.noteHeaderUsernameAndBadgeRoles">
+						<div :class="$style.noteHeaderUsername">
+							<MkAcct :user="appearNote.user"/>
+						</div>
+						<div v-if="appearNote.user.badgeRoles" :class="$style.noteHeaderBadgeRoles">
+							<img v-for="(role, i) in appearNote.user.badgeRoles" :key="i" v-tooltip="role.name" :class="$style.noteHeaderBadgeRole" :src="role.iconUrl!"/>
 						</div>
 					</div>
+					-->
 				</div>
-				<div v-if="viewTextSource">
-					<hr style="margin: 10px 0;">
-					<pre style="margin: initial; white-space: pre-wrap; word-wrap: break-word;"><small>{{ appearNote.text }}</small></pre>
-					<button class="_button" style="padding: 5px 0; color: var(--MI_THEME-accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
-				</div>
-				<div v-if="appearNote.files && appearNote.files.length > 0">
-					<MkMediaList ref="galleryEl" :mediaList="appearNote.files" :disableRightClick="appearNote.disableRightClick" @contextmenu="disableRightClickHandler"/>
-				</div>
-				<MkPoll
-					v-if="appearNote.poll"
-					:noteId="appearNote.id"
-					:multiple="appearNote.poll.multiple"
-					:expiresAt="appearNote.poll.expiresAt"
-					:choices="$appearNote.pollChoices"
-					:author="appearNote.user"
-					:emojiUrls="appearNote.emojis"
-					:class="$style.poll"
-				/>
-				<div v-if="isEnabledUrlPreview">
-					<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="true" style="margin-top: 6px;"/>
-				</div>
-				<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
-			</div>
-			<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
-		</div>
-		<footer>
-			<div :class="$style.noteFooterInfo">
-				<div v-if="appearNote.updatedAt">
-					{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail" colored/>
-				</div>
-				<MkA :to="notePage(appearNote)">
-					<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail" colored/>
-				</MkA>
-				<span style="margin-left: 0.5em;">
-					<span style="border: 1px solid var(--MI_THEME-divider); margin-right: 0.5em;"/>
-					<i v-if="appearNote.visibility === 'public'" class="ti ti-world"></i>
-					<i v-else-if="appearNote.visibility === 'home'" class="ti ti-home"></i>
-					<i v-else-if="appearNote.visibility === 'followers'" class="ti ti-lock"></i>
-					<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
-					<span style="margin-left: 0.3em;">{{ i18n.ts._visibility[appearNote.visibility] }}</span>
-				</span>
-			</div>
-			<MkReactionsViewer
-				v-if="appearNote.reactionAcceptance !== 'likeOnly'"
-				style="margin-top: 6px;"
-				:reactions="$appearNote.reactions"
-				:reactionEmojis="$appearNote.reactionEmojis"
-				:myReaction="$appearNote.myReaction"
-				:noteId="appearNote.id"
-				:note="appearNote"
-				:maxNumber="16"
-				@mockUpdateMyReaction="emitUpdReaction"
-			/>
-			<template v-if="prefer.s.showReplyButtonInNoteFooter">
-				<button v-if="!note.isHidden" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
-					<i class="ti ti-arrow-back-up"></i>
-					<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.repliesCount) }}</p>
-				</button>
-				<button v-else-if="note.isHidden" class="_button" :class="$style.noteFooterButton" disabled>
-					<i class="ti ti-ban"></i>
-				</button>
-			</template>
-			<template v-if="prefer.s.showRenoteButtonInNoteFooter">
-				<button
-					v-if="canRenote"
-					ref="renoteButton"
-					v-tooltip="i18n.ts.renote"
-					class="_button"
-					:class="$style.noteFooterButton"
-					@click.stop="prefer.s.renoteQuoteButtonSeparation && ((!prefer.s.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
-				>
-					<i class="ti ti-repeat"></i>
-					<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.renoteCount) }}</p>
-				</button>
-				<button v-else-if="!canRenote" class="_button" :class="$style.noteFooterButton" disabled>
-					<i class="ti ti-ban"></i>
-				</button>
-			</template>
-			<button v-if="appearNote.reactionAcceptance !== 'likeOnly' && $appearNote.myReaction == null && prefer.s.showLikeButtonInNoteFooter" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @click="heartReact()">
-				<i class="ti ti-heart"></i>
-			</button>
-			<button v-if="prefer.s.showDoReactionButtonInNoteFooter" ref="reactButton" v-tooltip="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null ? i18n.ts.unlike : $appearNote.myReaction != null ? i18n.ts.editReaction : appearNote.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.noteFooterButton" class="_button" @click.stop="toggleReact()">
-				<i v-if="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--MI_THEME-love);"></i>
-				<i v-else-if="$appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--MI_THEME-accent);"></i>
-				<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
-				<i v-else class="ti ti-mood-plus"></i>
-				<p v-if="(appearNote.reactionAcceptance === 'likeOnly' || prefer.s.showReactionsCount) && $appearNote.reactionCount > 0" :class="$style.noteFooterButtonCount">{{ number($appearNote.reactionCount) }}</p>
-			</button>
-			<button v-if="canRenote && prefer.s.renoteQuoteButtonSeparation && prefer.s.showQuoteButtonInNoteFooter" ref="quoteButton" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @click="quote()">
-				<i class="ti ti-quote"></i>
-			</button>
-			<button v-if="prefer.s.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @click="clip()">
-				<i class="ti ti-paperclip"></i>
-			</button>
-			<button v-if="prefer.s.showMoreButtonInNoteFooter" ref="menuButton" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @click="showMenu()">
-				<i class="ti ti-dots"></i>
-			</button>
-		</footer>
-	</article>
-	<div :class="$style.tabs">
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.replies }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ti ti-repeat"></i> {{ i18n.ts.renotes }}</button>
-		<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ti ti-icons"></i> {{ i18n.ts.reactions }}</button>
-		<button v-if="appearNote.updatedAt" class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history'}]" @click="tab = 'history'"> <i class="ti ti-history"></i> {{ i18n.ts.editHistory }} </button>
-	</div>
-	<div>
-		<div v-if="tab === 'replies'">
-			<MkPostForm v-if="$i && !note.isHidden && !isMobile && prefer.s.showFixedPostFormInReplies" class="post-form _panel" fixed :reply="appearNote"></MkPostForm>
-			<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
-			<div v-if="replies.length > 2 && !repliesLoaded" style="padding: 16px">
-				<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadMore }}</MkButton>
-			</div>
-		</div>
-		<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
-			<MkPagination :paginator="renotesPaginator">
-				<template #default="{ items }">
-					<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); grid-gap: 12px;">
-						<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
-							<MkUserCardMini :user="item.user" :withChart="false"/>
-						</MkA>
+			</header>
+			<div :class="$style.noteContent">
+				<MkInfo v-if="appearNote.deleteAt != null" warn :class="$style.deleteAt">
+					<I18n :src="i18n.ts.scheduledToDeleteOnX" tag="span">
+						<template #x>
+							<MkTime :time="appearNote.deleteAt" :mode="'detail'" style="font-weight: bold;"/>
+						</template>
+					</I18n>
+				</MkInfo>
+				<MkEvent v-if="appearNote.event" :note="appearNote"/>
+				<p v-if="appearNote.cw != null" :class="$style.cw">
+					<Mfm
+						v-if="appearNote.cw != ''"
+						style="margin-right: 8px;"
+						:text="appearNote.cw"
+						:author="appearNote.user"
+						:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
+						:enableEmojiMenu="!!$i"
+						:enableEmojiMenuReaction="!!$i"
+					/>
+					<MkCwButton v-model="showContent" :text="appearNote.text" :renote="appearNote.renote" :files="appearNote.files" :poll="appearNote.poll" style="margin: 4px 0;"/>
+				</p>
+				<div v-show="appearNote.cw == null || showContent">
+					<span v-if="appearNote.isHidden" style="opacity: 0.5">({{ i18n.ts._ffVisibility.private }})</span>
+					<MkA v-if="appearNote.replyId" :class="$style.noteReplyTarget" :to="`/notes/${appearNote.replyId}`"><i class="ti ti-arrow-back-up"></i></MkA>
+					<Mfm
+						v-if="appearNote.text"
+						:parsedNodes="parsed"
+						:text="appearNote.text"
+						:author="appearNote.user"
+						:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
+						:emojiUrls="appearNote.emojis"
+						:enableEmojiMenu="!!$i"
+						:enableEmojiMenuReaction="!!$i"
+						class="_selectable"
+					/>
+					<a v-if="appearNote.renote != null" :class="$style.rn">RN:</a>
+					<div v-if="prefer.s.showTranslateButtonInNote && (!prefer.s.useAutoTranslate || (!$i.policies.canUseAutoTranslate || (prefer.s.useAutoTranslate && (appearNote.cw != null || !showContent)))) && instance.translatorAvailable && $i && $i.policies.canUseTranslator && appearNote.text && isForeignLanguage" style="padding: 5px 0; color: var(--MI_THEME-accent);">
+						<button v-if="!(translating || translation)" ref="translateButton" class="_button" @click="translate()">{{ i18n.ts.translateNote }}</button>
+						<button v-else class="_button" @click="translation = null">{{ i18n.ts.close }}</button>
 					</div>
-				</template>
-			</MkPagination>
-		</div>
-		<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
-			<MkResult v-if="$appearNote.reactionCount === 0" type="empty"/>
-			<div v-else>
-				<div :class="$style.reactionTabs">
-					<button v-for="reaction in Object.keys($appearNote.reactions)" :key="reaction" :class="[$style.reactionTab, { [$style.reactionTabActive]: reactionTabType === reaction }]" class="_button" @click="reactionTabType = reaction">
-						<MkReactionIcon :reaction="reaction"/>
-						<span style="margin-left: 4px;">{{ $appearNote.reactions[reaction] }}</span>
-					</button>
+					<div v-if="translating || translation" :class="$style.translation">
+						<MkLoading v-if="translating" mini/>
+						<div v-else-if="translation">
+							<b>{{ i18n.tsx.translatedFrom({ x: translation.sourceLang }) }}:</b><hr style="margin: 10px 0;">
+							<Mfm
+								:text="translation.text"
+								:author="appearNote.user"
+								:nyaize="prefer.s.disableNyaize || noNyaize ? false : 'respect'"
+								:emojiUrls="appearNote.emojis"
+								:enableEmojiMenu="!!$i"
+								:enableEmojiMenuReaction="!!$i"
+								class="_selectable"
+							/>
+							<MkPoll
+								v-if="appearNote.poll"
+								:noteId="appearNote.id"
+								:multiple="appearNote.poll.multiple"
+								:expiresAt="appearNote.poll.expiresAt"
+								:choices="$appearNote.pollChoices"
+								:author="appearNote.user"
+								:emojiUrls="appearNote.emojis"
+								:class="$style.poll"
+								isTranslation
+							/>
+							<div v-if="translation.translator == 'ctav3'" style="margin-top: 10px; padding: 0 0 15px;">
+								<img v-if="!store.s.darkMode" src="/client-assets/color-short.svg" alt="" style="float: right;">
+								<img v-else src="/client-assets/white-short.svg" alt="" style="float: right;"/>
+							</div>
+						</div>
+					</div>
+					<div v-if="viewTextSource">
+						<hr style="margin: 10px 0;">
+						<pre style="margin: initial; white-space: pre-wrap; word-wrap: break-word;"><small>{{ appearNote.text }}</small></pre>
+						<button class="_button" style="padding: 5px 0; color: var(--MI_THEME-accent);" @click="viewTextSource = false"><small>{{ i18n.ts.close }}</small></button>
+					</div>
+					<div v-if="appearNote.files && appearNote.files.length > 0">
+						<MkMediaList ref="galleryEl" :mediaList="appearNote.files" :disableRightClick="appearNote.disableRightClick" @contextmenu="disableRightClickHandler"/>
+					</div>
+					<MkPoll
+						v-if="appearNote.poll"
+						:noteId="appearNote.id"
+						:multiple="appearNote.poll.multiple"
+						:expiresAt="appearNote.poll.expiresAt"
+						:choices="$appearNote.pollChoices"
+						:author="appearNote.user"
+						:emojiUrls="appearNote.emojis"
+						:class="$style.poll"
+					/>
+					<div v-if="isEnabledUrlPreview">
+						<MkUrlPreview v-for="url in urls" :key="url" :url="url" :compact="true" :detail="true" style="margin-top: 6px;"/>
+					</div>
+					<div v-if="appearNote.renote" :class="$style.quote"><MkNoteSimple :note="appearNote.renote" :class="$style.quoteNote"/></div>
 				</div>
-				<MkPagination v-if="reactionTabType" :key="reactionTabType" :paginator="reactionsPaginator">
+				<MkA v-if="appearNote.channel && !inChannel" :class="$style.channel" :to="`/channels/${appearNote.channel.id}`"><i class="ti ti-device-tv"></i> {{ appearNote.channel.name }}</MkA>
+			</div>
+			<footer>
+				<div :class="$style.noteFooterInfo">
+					<div v-if="appearNote.updatedAt">
+						{{ i18n.ts.edited }}: <MkTime :class="$style.time" :time="appearNote.updatedAt" mode="detail" colored/>
+					</div>
+					<MkA :to="notePage(appearNote)">
+						<MkTime :class="$style.time" :time="appearNote.createdAt" mode="detail" colored/>
+					</MkA>
+					<span style="margin-left: 0.5em;">
+						<span style="border: 1px solid var(--MI_THEME-divider); margin-right: 0.5em;"/>
+						<i v-if="appearNote.visibility === 'public'" class="ti ti-world"></i>
+						<i v-else-if="appearNote.visibility === 'home'" class="ti ti-home"></i>
+						<i v-else-if="appearNote.visibility === 'followers'" class="ti ti-lock"></i>
+						<i v-else-if="appearNote.visibility === 'specified'" ref="specified" class="ti ti-mail"></i>
+						<span style="margin-left: 0.3em;">{{ i18n.ts._visibility[appearNote.visibility] }}</span>
+					</span>
+				</div>
+				<MkReactionsViewer
+					v-if="appearNote.reactionAcceptance !== 'likeOnly'"
+					style="margin-top: 6px;"
+					:reactions="$appearNote.reactions"
+					:reactionEmojis="$appearNote.reactionEmojis"
+					:myReaction="$appearNote.myReaction"
+					:noteId="appearNote.id"
+					:note="appearNote"
+					:maxNumber="16"
+					@mockUpdateMyReaction="emitUpdReaction"
+				/>
+				<template v-if="prefer.s.showReplyButtonInNoteFooter">
+					<button v-if="!note.isHidden" v-tooltip="i18n.ts.reply" class="_button" :class="$style.noteFooterButton" @click="reply()">
+						<i class="ti ti-arrow-back-up"></i>
+						<p v-if="appearNote.repliesCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.repliesCount) }}</p>
+					</button>
+					<button v-else-if="note.isHidden" class="_button" :class="$style.noteFooterButton" disabled>
+						<i class="ti ti-ban"></i>
+					</button>
+				</template>
+				<template v-if="prefer.s.showRenoteButtonInNoteFooter">
+					<button
+						v-if="canRenote"
+						ref="renoteButton"
+						v-tooltip="i18n.ts.renote"
+						class="_button"
+						:class="$style.noteFooterButton"
+						@click.stop="prefer.s.renoteQuoteButtonSeparation && ((!prefer.s.renoteVisibilitySelection && !appearNote.channel) || (appearNote.channel && !appearNote.channel.allowRenoteToExternal) || appearNote.visibility === 'followers') ? renoteOnly() : renote()"
+					>
+						<i class="ti ti-repeat"></i>
+						<p v-if="appearNote.renoteCount > 0" :class="$style.noteFooterButtonCount">{{ number(appearNote.renoteCount) }}</p>
+					</button>
+					<button v-else-if="!canRenote" class="_button" :class="$style.noteFooterButton" disabled>
+						<i class="ti ti-ban"></i>
+					</button>
+				</template>
+				<button v-if="appearNote.reactionAcceptance !== 'likeOnly' && $appearNote.myReaction == null && prefer.s.showLikeButtonInNoteFooter" ref="heartReactButton" v-tooltip="i18n.ts.like" :class="$style.noteFooterButton" class="_button" @click="heartReact()">
+					<i class="ti ti-heart"></i>
+				</button>
+				<button v-if="prefer.s.showDoReactionButtonInNoteFooter" ref="reactButton" v-tooltip="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null ? i18n.ts.unlike : $appearNote.myReaction != null ? i18n.ts.editReaction : appearNote.reactionAcceptance === 'likeOnly' ? i18n.ts.like : i18n.ts.doReaction" :class="$style.noteFooterButton" class="_button" @click.stop="toggleReact()">
+					<i v-if="appearNote.reactionAcceptance === 'likeOnly' && $appearNote.myReaction != null" class="ti ti-heart-filled" style="color: var(--MI_THEME-love);"></i>
+					<i v-else-if="$appearNote.myReaction != null" class="ti ti-mood-edit" style="color: var(--MI_THEME-accent);"></i>
+					<i v-else-if="appearNote.reactionAcceptance === 'likeOnly'" class="ti ti-heart"></i>
+					<i v-else class="ti ti-mood-plus"></i>
+					<p v-if="(appearNote.reactionAcceptance === 'likeOnly' || prefer.s.showReactionsCount) && $appearNote.reactionCount > 0" :class="$style.noteFooterButtonCount">{{ number($appearNote.reactionCount) }}</p>
+				</button>
+				<button v-if="canRenote && prefer.s.renoteQuoteButtonSeparation && prefer.s.showQuoteButtonInNoteFooter" ref="quoteButton" v-tooltip="i18n.ts.quote" class="_button" :class="$style.noteFooterButton" @click="quote()">
+					<i class="ti ti-quote"></i>
+				</button>
+				<button v-if="prefer.s.showClipButtonInNoteFooter" ref="clipButton" v-tooltip="i18n.ts.clip" class="_button" :class="$style.noteFooterButton" @click="clip()">
+					<i class="ti ti-paperclip"></i>
+				</button>
+				<button v-if="prefer.s.showMoreButtonInNoteFooter" ref="menuButton" v-tooltip="i18n.ts.more" class="_button" :class="$style.noteFooterButton" @click="showMenu()">
+					<i class="ti ti-dots"></i>
+				</button>
+			</footer>
+		</article>
+		<div :class="$style.tabs">
+			<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'replies' }]" @click="tab = 'replies'"><i class="ti ti-arrow-back-up"></i> {{ i18n.ts.replies }}</button>
+			<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'renotes' }]" @click="tab = 'renotes'"><i class="ti ti-repeat"></i> {{ i18n.ts.renotes }}</button>
+			<button class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'reactions' }]" @click="tab = 'reactions'"><i class="ti ti-icons"></i> {{ i18n.ts.reactions }}</button>
+			<button v-if="appearNote.updatedAt" class="_button" :class="[$style.tab, { [$style.tabActive]: tab === 'history'}]" @click="tab = 'history'"> <i class="ti ti-history"></i> {{ i18n.ts.editHistory }} </button>
+		</div>
+		<div>
+			<div v-if="tab === 'replies'">
+				<MkPostForm v-if="$i && !note.isHidden && !isMobile && prefer.s.showFixedPostFormInReplies" class="post-form _panel" fixed :reply="appearNote"></MkPostForm>
+				<MkNoteSub v-for="note in replies" :key="note.id" :note="note" :class="$style.reply" :detail="true"/>
+				<div v-if="replies.length > 2 && !repliesLoaded" style="padding: 16px">
+					<MkButton style="margin: 0 auto;" primary rounded @click="loadReplies">{{ i18n.ts.loadMore }}</MkButton>
+				</div>
+			</div>
+			<div v-else-if="tab === 'renotes'" :class="$style.tab_renotes">
+				<MkPagination :paginator="renotesPaginator" :forceDisableInfiniteScroll="true">
 					<template #default="{ items }">
 						<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); grid-gap: 12px;">
 							<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
@@ -326,28 +311,48 @@ SPDX-License-Identifier: AGPL-3.0-only
 					</template>
 				</MkPagination>
 			</div>
-		</div>
-		<div v-else-if="tab === 'history'">
-			<div v-if="!historiesLoaded" style="padding: 16px">
-				<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
+			<div v-else-if="tab === 'reactions'" :class="$style.tab_reactions">
+				<MkResult v-if="$appearNote.reactionCount === 0" type="empty"/>
+				<div v-else>
+					<div :class="$style.reactionTabs">
+						<button v-for="reaction in Object.keys($appearNote.reactions)" :key="reaction" :class="[$style.reactionTab, { [$style.reactionTabActive]: reactionTabType === reaction }]" class="_button" @click="reactionTabType = reaction">
+							<MkReactionIcon :reaction="reaction"/>
+							<span style="margin-left: 4px;">{{ $appearNote.reactions[reaction] }}</span>
+						</button>
+					</div>
+					<MkPagination v-if="reactionTabType" :key="reactionTabType" :paginator="reactionsPaginator" :forceDisableInfiniteScroll="true">
+						<template #default="{ items }">
+							<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); grid-gap: 12px;">
+								<MkA v-for="item in items" :key="item.id" :to="userPage(item.user)">
+									<MkUserCardMini :user="item.user" :withChart="false"/>
+								</MkA>
+							</div>
+						</template>
+					</MkPagination>
+				</div>
 			</div>
-			<MkSwitch v-if="historiesLoaded" v-model="history_raw" style="padding: 16px;">{{ i18n.ts.compareContent }}</MkSwitch>
-			<MkNoteHistory
-				v-for="(history, index) in histories"
-				:key="history.id"
-				:oldNote="histories[index+1] ? histories[index+1] : null"
-				:newNote="history"
-				:originalNote="appearNote"
-				:class="$style.reply"
-				:detail="true"
-				:raw="history_raw"
-				:index="index"
-			/>
-			<div v-if="historiesLoaded && !history_list_end" style="padding: 16px">
-				<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
+			<div v-else-if="tab === 'history'">
+				<div v-if="!historiesLoaded" style="padding: 16px">
+					<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
+				</div>
+				<MkSwitch v-if="historiesLoaded" v-model="history_raw" style="padding: 16px;">{{ i18n.ts.compareContent }}</MkSwitch>
+				<MkNoteHistory
+					v-for="(history, index) in histories"
+					:key="history.id"
+					:oldNote="histories[index+1] ? histories[index+1] : null"
+					:newNote="history"
+					:originalNote="appearNote"
+					:class="$style.reply"
+					:detail="true"
+					:raw="history_raw"
+					:index="index"
+				/>
+				<div v-if="historiesLoaded && !history_list_end" style="padding: 16px">
+					<MkButton style="margin: 0 auto;" primary rounded @click="loadHistories">{{ i18n.ts.loadMore }}</MkButton>
+				</div>
 			</div>
 		</div>
-	</div>
+	</template>
 </div>
 <div v-else-if="muted" class="_panel" :class="$style.muted" @click="muted = false">
 	<I18n :src="i18n.ts.userSaysSomething" tag="small">
@@ -437,6 +442,7 @@ let note = deepClone(props.note);
 
 // plugin
 const noteViewInterruptors = getPluginHandlers('note_view_interruptor');
+const hideByPlugin = ref(false);
 if (noteViewInterruptors.length > 0) {
 	let result: Misskey.entities.Note | null = deepClone(note);
 	for (const interruptor of noteViewInterruptors) {
@@ -446,7 +452,11 @@ if (noteViewInterruptors.length > 0) {
 			console.error(err);
 		}
 	}
-	note = result as Misskey.entities.Note;
+	if (result == null) {
+		hideByPlugin.value = true;
+	} else {
+		note = result as Misskey.entities.Note;
+	}
 }
 
 const isRenote = Misskey.note.isPureRenote(note);
@@ -1387,6 +1397,16 @@ function loadHistories() {
 	padding: 8px;
 	text-align: center;
 	opacity: 0.7;
+}
+
+.deleted {
+	text-align: center;
+	padding: 32px;
+	margin: 6px 32px 32px;
+	--color: light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+	background-size: auto auto;
+	background-image: repeating-linear-gradient(135deg, transparent, transparent 10px, var(--color) 4px, var(--color) 14px);
+	border-radius: 8px;
 }
 
 .badgeRoles {

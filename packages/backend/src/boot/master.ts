@@ -10,8 +10,6 @@ import * as os from 'node:os';
 import cluster from 'node:cluster';
 import chalk from 'chalk';
 import chalkTemplate from 'chalk-template';
-import * as Sentry from '@sentry/node';
-import { nodeProfilingIntegration } from '@sentry/profiling-node';
 import Logger from '@/logger.js';
 import { loadConfig } from '@/config.js';
 import type { Config } from '@/config.js';
@@ -27,30 +25,70 @@ const meta = JSON.parse(fs.readFileSync(`${_dirname}/../../../../built/meta.json
 const logger = new Logger('core', 'cyan');
 const bootLogger = logger.createSubLogger('boot', 'magenta');
 
-const themeColor = chalk.hex('#ffa9c3');
+const themeColorCherry = chalk.hex('#ffbcdc');
+const themeColorPick = chalk.hex('#b1d3ff');
+const themeColorMisskey = chalk.hex('#9ec23f');
+const themeColorWarning = chalk.hex('#ffbb00');
 
 function greet() {
 	if (!envOption.quiet) {
 		//#region CherryPick logo
 		const v = `v${meta.version}`;
-		console.log(chalk.hex('#ffa9c3').bold('   _____ _                         ') + chalk.hex('#95e3e8').bold(' _____ _      _'));
-		console.log(chalk.hex('#ffa9c3').bold('  / ____| |                        ') + chalk.hex('#95e3e8').bold('|  __ (_)    | |'));
-		console.log(chalk.hex('#ffa9c3').bold(' | |    | |__   ___ _ __ _ __ _   _') + chalk.hex('#95e3e8').bold('| |__) |  ___| | __'));
-		console.log(chalk.hex('#ffa9c3').bold(' | |    | \'_ \\ / _ \\ \'__| \'__| | | ') + chalk.hex('#95e3e8').bold('|  ___/ |/ __| |/ /'));
-		console.log(chalk.hex('#ffa9c3').bold(' | |____| | | |  __/ |  | |  | |_| ') + chalk.hex('#95e3e8').bold('| |   | | (__|   <'));
-		console.log(chalk.hex('#ffa9c3').bold('  \\_____|_| |_|\\___|_|  |_|   \\__, ') + chalk.hex('#95e3e8').bold('|_|   |_|\\___|_|\\_\\'));
-		console.log(chalk.hex('#ffa9c3').bold('                               __/ |'));
-		console.log(chalk.hex('#ffa9c3').bold('                              |___/'));
+		console.log(themeColorCherry.bold('   _____ _                         ') + themeColorPick.bold(' _____ _      _'));
+		console.log(themeColorCherry.bold('  / ____| |                        ') + themeColorPick.bold('|  __ (_)    | |'));
+		console.log(themeColorCherry.bold(' | |    | |__   ___ _ __ _ __ _   _') + themeColorPick.bold('| |__) |  ___| | __'));
+		console.log(themeColorCherry.bold(' | |    | \'_ \\ / _ \\ \'__| \'__| | | ') + themeColorPick.bold('|  ___/ |/ __| |/ /'));
+		console.log(themeColorCherry.bold(' | |____| | | |  __/ |  | |  | |_| ') + themeColorPick.bold('| |   | | (__|   <'));
+		console.log(themeColorCherry.bold('  \\_____|_| |_|\\___|_|  |_|   \\__, ') + themeColorPick.bold('|_|   |_|\\___|_|\\_\\'));
+		console.log(themeColorCherry.bold('                               __/ |'));
+		console.log(themeColorCherry.bold('                              |___/'));
 		//#endregion
 
-		console.log(chalk.hex('#ffa9c3').bold(' Cherry') + chalk.hex('#95e3e8').bold('Pick') + (' is an open-source decentralized microblogging platform based from') + (chalk.hex('#9ec23f').bold(' Misskey') + ('.')));
-		console.log(chalk.hex('#ffbb00')(' If you like ') + chalk.hex('#ffa9c3').bold('Cherry') + chalk.hex('#95e3e8').bold('Pick') + chalk.hex('#ffbb00')(', please donate to support development.'));
-		console.log(chalk.hex('#ffbb00')(' ・Patreon: https://www.patreon.com/noridev'));
-		console.log(chalk.hex('#ffbb00')(' ・Paypal: https://www.paypal.me/noridev'));
-		console.log(chalk.hex('#ffbb00')(' ・GitHub Sponsers: https://github.com/sponsors/noridev'));
-		console.log(chalk.hex('#ffbb00')(' ・Kakao Pay: https://qr.kakaopay.com/Ej9SHx6pQ'));
-		console.log(chalk.hex('#ffbb00')(' ・pixivFANBOX: https://noridev.fanbox.cc/plans'));
-		// console.log(chalk.hex('#ffa9c3').bold(' KOKO') + chalk.hex('#95e3e8').bold('NECT') + chalk.hex('#ffa9c3')(' with') + chalk.hex('#95e3e8').bold(' NoriDev.'));
+		console.log(themeColorCherry.bold(' Cherry') + themeColorPick.bold('Pick') + (' is an open-source decentralized microblogging platform based from') + (themeColorMisskey.bold(' Misskey') + ('.')));
+		console.log(themeColorWarning(' If you like ') + themeColorCherry.bold('Cherry') + themeColorPick.bold('Pick') + themeColorWarning(', please consider donating to support dev.'));
+		console.log(themeColorWarning(' ・Patreon: https://www.patreon.com/noridev'));
+		console.log(themeColorWarning(' ・Paypal: https://www.paypal.me/noridev'));
+		console.log(themeColorWarning(' ・GitHub Sponsers: https://github.com/sponsors/noridev'));
+		console.log(themeColorWarning(' ・Kakao Pay: https://qr.kakaopay.com/Ej9SHx6pQ'));
+		console.log(themeColorWarning(' ・pixivFANBOX: https://noridev.fanbox.cc/plans'));
+
+		let config!: Config;
+
+		// initialize app
+		try {
+			config = loadConfigBoot(false);
+		} catch (e) {
+			bootLogger.error('Fatal error occurred during initialization', null, true);
+			process.exit(1);
+		}
+
+		const kokonectHosts = [
+			'kokonect.link',
+			'beta.kokonect.link',
+			'universe.noridev.moe',
+		];
+
+		function getHostToCompare(url: string): string | null {
+			try {
+				const fullUrl = url.startsWith('http') ? url : `http://${url}`;
+				const urlObject = new URL(fullUrl);
+
+				if (urlObject.port && urlObject.port !== '80' && urlObject.port !== '443') {
+					return `${urlObject.hostname}:${urlObject.port}`;
+				}
+				return urlObject.hostname;
+			} catch (e) {
+				console.error(`Invalid URL in config: ${url}`);
+				return null;
+			}
+		}
+
+		const currentHost = getHostToCompare(config.url);
+
+		if (currentHost && kokonectHosts.includes(currentHost)) {
+			console.log('');
+			console.log(themeColorCherry.bold(' KOKO') + themeColorPick.bold('NECT') + ' with' + themeColorCherry.bold(' Nori') + themeColorPick.bold('Dev') + '.');
+		}
 
 		console.log('');
 		console.log(chalkTemplate`--- ${os.hostname()} {gray (PID: ${process.pid.toString()})} ---`);
@@ -81,9 +119,12 @@ export async function masterMain() {
 		process.exit(1);
 	}
 
-	bootLogger.succ(chalk.hex('#ffa9c3')('Cherry') + chalk.hex('#95e3e8')('Pick') + (' initialized'));
+	bootLogger.succ(themeColorCherry('Cherry') + themeColorPick('Pick') + (' initialized'));
 
 	if (config.sentryForBackend) {
+		const Sentry = await import('@sentry/node');
+		const { nodeProfilingIntegration } = await import('@sentry/profiling-node');
+
 		Sentry.init({
 			integrations: [
 				...(config.sentryForBackend.enableNodeProfiling ? [nodeProfilingIntegration()] : []),
@@ -157,7 +198,7 @@ function showNodejsVersion(): void {
 	nodejsLogger.info(`Version ${process.version} detected.`);
 }
 
-function loadConfigBoot(): Config {
+function loadConfigBoot(debug = true): Config {
 	const configLogger = bootLogger.createSubLogger('config');
 	let config;
 
@@ -174,7 +215,7 @@ function loadConfigBoot(): Config {
 		throw exception;
 	}
 
-	configLogger.succ('Loaded');
+	if (debug) configLogger.succ('Loaded');
 
 	return config;
 }

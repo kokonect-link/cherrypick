@@ -188,6 +188,14 @@ export const meta = {
 				type: 'boolean',
 				optional: false, nullable: true,
 			},
+			approved: {
+				type: 'boolean',
+				optional: false, nullable: false,
+			},
+			signupReason: {
+				type: 'string',
+				optional: false, nullable: true,
+			},
 		},
 	},
 } as const;
@@ -270,6 +278,8 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 				})),
 				setFederationAvatarShape: user.setFederationAvatarShape,
 				isSquareAvatars: user.isSquareAvatars,
+				approved: user.approved,
+				signupReason: user.signupReason,
 			};
 		});
 	}

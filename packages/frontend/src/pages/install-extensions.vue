@@ -162,7 +162,11 @@ async function _fetch_() {
 					},
 					raw: res.data,
 				};
-			} catch (err: any) {
+			} catch (err) {
+				if (!(err instanceof Error)) {
+					throw err;
+				}
+
 				switch (err.message.toLowerCase()) {
 					case 'builtin theme':
 						errorKV.value = {

@@ -342,6 +342,10 @@ export const packedMetaLiteSchema = {
 			type: 'string',
 			optional: false, nullable: true,
 		},
+		approvalRequiredForSignup: {
+			type: 'boolean',
+			optional: false, nullable: false,
+		},
 	},
 } as const;
 

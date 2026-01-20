@@ -201,9 +201,9 @@ export function useNoteCapture(props: {
 	parentNote: Misskey.entities.Note | null;
 	mock?: boolean;
 }): {
-		$note: Reactive<ReactiveNoteData>;
-		subscribe: () => void;
-	} {
+	$note: Reactive<ReactiveNoteData>;
+	subscribe: () => void;
+} {
 	const { note, parentNote, mock } = props;
 
 	const $note = reactive<ReactiveNoteData>({

@@ -142,6 +142,18 @@ export const meta = {
 			id: 'ed1952ac-2d26-4957-8b30-2deda76bedf7',
 		},
 
+		scheduledAtRequired: {
+			message: 'scheduledAt is required when isActuallyScheduled is true.',
+			code: 'SCHEDULED_AT_REQUIRED',
+			id: '15e28a55-e74c-4d65-89b7-8880cdaaa87d',
+		},
+
+		scheduledAtMustBeInFuture: {
+			message: 'scheduledAt must be in the future.',
+			code: 'SCHEDULED_AT_MUST_BE_IN_FUTURE',
+			id: 'e4bed6c9-017e-4934-aed0-01c22cc60ec1',
+		},
+
 		cannotScheduleDeleteEarlierThanNow: {
 			message: 'Cannot specify delete time earlier than now.',
 			code: 'CANNOT_SCHEDULE_DELETE_EARLIER_THAN_NOW',
@@ -304,6 +316,12 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 							throw new ApiError(meta.errors.cannotReplyToSpecifiedVisibilityNoteWithExtendedVisibility);
 						case 'c3275f19-4558-4c59-83e1-4f684b5fab66':
 							throw new ApiError(meta.errors.tooManyScheduledNotes);
+						case '94a89a43-3591-400a-9c17-dd166e71fdfa':
+							throw new ApiError(meta.errors.scheduledAtRequired);
+						case 'b34d0c1b-996f-4e34-a428-c636d98df457':
+							throw new ApiError(meta.errors.scheduledAtMustBeInFuture);
+						case 'e16efd6a-8f31-4d24-9fe3-e06df47c2d4e':
+							throw new ApiError(meta.errors.cannotScheduleDeleteEarlierThanNow);
 						default:
 							throw err;
 					}

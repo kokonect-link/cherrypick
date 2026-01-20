@@ -14,4 +14,3 @@ export class AddInstanceQuarantineLimited1762797644990 {
         await queryRunner.query(`ALTER TABLE "instance" DROP COLUMN "quarantineLimited"`);
     }
 }
-

@@ -469,7 +469,6 @@ const headerTabs = computed(() => room.value ? [{
 
 const headerActions = computed<PageHeaderItem[]>(() => [{
 	icon: 'ti ti-dots',
-	text: '',
 	handler: showMenu,
 }]);
 

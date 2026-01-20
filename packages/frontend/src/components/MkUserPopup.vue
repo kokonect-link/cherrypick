@@ -22,7 +22,9 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<path d="M64,32C81.661,32 96,46.339 96,64C95.891,72.184 104,72 104,72C104,72 74.096,80 64,80C52.755,80 24,72 24,72C24,72 31.854,72.018 32,64C32,46.339 46.339,32 64,32Z" style="fill: var(--MI_THEME-popup);"/>
 				</g>
 			</svg>
-			<MkAvatar :class="$style.avatar" :user="user" indicator/>
+			<MkA :to="userPage(user)">
+				<MkAvatar :class="$style.avatar" :user="user" indicator/>
+			</MkA>
 			<div :class="$style.title">
 				<MkA :class="$style.name" :to="userPage(user)"><MkUserName :user="user" :nowrap="false"/></MkA>
 				<div :class="$style.username"><MkAcct :user="user"/></div>
@@ -38,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<div v-else style="opacity: 0.7;">{{ i18n.ts.noAccountDescription }}</div>
 			</div>
 			<div :class="$style.status">
-				<MkA :to="userPage(user)" :class="$style.statusItem">
+				<MkA :class="$style.statusItem" :to="userPage(user, 'notes')">
 					<div :class="$style.statusItemLabel">{{ i18n.ts.notes }}</div>
 					<b>{{ number(user.notesCount) }}</b>
 				</MkA>

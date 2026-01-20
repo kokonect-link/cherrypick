@@ -16,7 +16,7 @@ import type {
 	UsersRepository,
 } from '@/models/_.js';
 import type { TestingModule } from '@nestjs/testing';
-import type { MockFunctionMetadata } from 'jest-mock';
+import type { MockMetadata } from 'jest-mock';
 import { GlobalModule } from '@/GlobalModule.js';
 import { AnnouncementService } from '@/core/AnnouncementService.js';
 import { AnnouncementEntityService } from '@/core/entities/AnnouncementEntityService.js';
@@ -84,7 +84,7 @@ describe('AnnouncementService', () => {
 						log: jest.fn(),
 					};
 				} else if (typeof token === 'function') {
-					const mockMetadata = moduleMocker.getMetadata(token) as MockFunctionMetadata<any, any>;
+					const mockMetadata = moduleMocker.getMetadata(token) as MockMetadata<any, any>;
 					const Mock = moduleMocker.generateFromMetadata(mockMetadata);
 					return new Mock();
 				}

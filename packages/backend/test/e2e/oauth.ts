@@ -19,7 +19,7 @@ import {
 	ResourceOwnerPassword,
 } from 'simple-oauth2';
 import pkceChallenge from 'pkce-challenge';
-import { JSDOM } from 'jsdom';
+import * as htmlParser from 'node-html-parser';
 import Fastify, { type FastifyInstance, type FastifyReply } from 'fastify';
 import { api, port, sendEnvUpdateRequest, signup } from '../utils.js';
 import type * as misskey from 'cherrypick-js';
@@ -73,11 +73,11 @@ const clientConfig: ModuleOptions<'client_id'> = {
 };
 
 function getMeta(html: string): { transactionId: string | undefined, clientName: string | undefined, clientLogo: string | undefined } {
-	const fragment = JSDOM.fragment(html);
+	const doc = htmlParser.parse(`<div>${html}</div>`);
 	return {
-		transactionId: fragment.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:transaction-id"]')?.content,
-		clientName: fragment.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:client-name"]')?.content,
-		clientLogo: fragment.querySelector<HTMLMetaElement>('meta[name="misskey:oauth:client-logo"]')?.content,
+		transactionId: doc.querySelector('meta[name="misskey:oauth:transaction-id"]')?.attributes.content,
+		clientName: doc.querySelector('meta[name="misskey:oauth:client-name"]')?.attributes.content,
+		clientLogo: doc.querySelector('meta[name="misskey:oauth:client-logo"]')?.attributes.content,
 	};
 }
 
@@ -148,7 +148,7 @@ function assertIndirectError(response: Response, error: string): void {
 async function assertDirectError(response: Response, status: number, error: string): Promise<void> {
 	assert.strictEqual(response.status, status);
 
-	const data = await response.json();
+	const data = await response.json() as any;
 	assert.strictEqual(data.error, error);
 }
 
@@ -495,7 +495,7 @@ describe('OAuth', () => {
 		// authorization, the authorization server MUST either process the
 		// request using a pre-defined default value or fail the request
 		// indicating an invalid scope."
-		// (And Misskey does the latter)
+		// (And CherryPick does the latter)
 		test('Missing scope', async () => {
 			const client = new AuthorizationCode(clientConfig);
 
@@ -538,7 +538,7 @@ describe('OAuth', () => {
 		// is different from the one requested by the client, the authorization
 		// server MUST include the "scope" response parameter to inform the
 		// client of the actual scope granted."
-		// (Although Misskey always return scope, which is also fine)
+		// (Although CherryPick always return scope, which is also fine)
 		test('Partially known scopes', async () => {
 			const { code_challenge, code_verifier } = await pkceChallenge(128);
 
@@ -704,12 +704,12 @@ describe('OAuth', () => {
 		const response = await fetch(new URL('.well-known/oauth-authorization-server', host));
 		assert.strictEqual(response.status, 200);
 
-		const body = await response.json();
+		const body = await response.json() as any;
 		assert.strictEqual(body.issuer, 'http://cherrypick.local');
 		assert.ok(body.scopes_supported.includes('write:notes'));
 	});
 
-	// Any error on decision endpoint is solely on Misskey side and nothing to do with the client.
+	// Any error on decision endpoint is solely on CherryPick side and nothing to do with the client.
 	// Do not use indirect error here.
 	describe('Decision endpoint', () => {
 		test('No login token', async () => {

@@ -12,16 +12,17 @@
 		"format:write": "pnpm biome format --write"
 	},
 	"dependencies": {
-		"esbuild": "0.25.10",
+		"i18n": "workspace:*",
+		"esbuild": "0.27.1",
 		"idb-keyval": "6.2.2",
 		"cherrypick-js": "workspace:*"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.3.1",
-		"@typescript-eslint/parser": "8.46.1",
+		"@biomejs/biome": "2.3.11",
+		"@typescript-eslint/parser": "8.49.0",
 		"@typescript/lib-webworker": "npm:@types/serviceworker@0.0.74",
 		"eslint-plugin-import": "2.32.0",
-		"nodemon": "3.1.10",
+		"nodemon": "3.1.11",
 		"typescript": "5.9.3"
 	},
 	"type": "module"

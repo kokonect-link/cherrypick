@@ -254,6 +254,7 @@ export const paramDef = {
 		moderatorInactivityLimitDays: { type: 'integer', nullable: false },
 		bubbleInstances: { type: 'array', items: { type: 'string' } },
 		customRobotsTxt: { type: 'string', nullable: true },
+		approvalRequiredForSignup: { type: 'boolean' },
 	},
 	required: [],
 } as const;
@@ -931,6 +932,10 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 			if (ps.customRobotsTxt !== undefined) {
 				set.customRobotsTxt = ps.customRobotsTxt;
+			}
+
+			if (ps.approvalRequiredForSignup !== undefined) {
+				set.approvalRequiredForSignup = ps.approvalRequiredForSignup;
 			}
 
 			const before = await this.metaService.fetch(true);

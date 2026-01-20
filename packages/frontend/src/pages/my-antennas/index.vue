@@ -10,7 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			<MkResult v-if="antennas.length === 0" type="empty"/>
 
 			<div v-if="antennas.length > 0" class="_gaps">
-				<MkA v-for="antenna in antennas" :key="antenna.id" :class="$style.antenna" :to="`/my/antennas/${antenna.id}`">
+				<MkA v-for="antenna in antennas" :key="antenna.id" :class="$style.antenna" :to="`/timeline/antenna/${antenna.id}`">
 					<div class="name">{{ antenna.name }}</div>
 				</MkA>
 			</div>

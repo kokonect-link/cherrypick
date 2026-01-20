@@ -533,6 +533,7 @@ export class UserEntityService implements OnModuleInit {
 			) : undefined,
 			setFederationAvatarShape: user.setFederationAvatarShape ?? undefined,
 			isSquareAvatars: user.isSquareAvatars ?? undefined,
+			approved: user.approved,
 
 			...(isDetailed ? {
 				url: profile!.url,
@@ -645,6 +646,7 @@ export class UserEntityService implements OnModuleInit {
 						},
 					})
 					: [],
+				signupReason: user.signupReason,
 			} : {}),
 
 			...(relation ? {

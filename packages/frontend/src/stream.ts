@@ -7,8 +7,6 @@ import * as Misskey from 'cherrypick-js';
 import { markRaw } from 'vue';
 import { wsOrigin } from '@@/js/config.js';
 import { $i } from '@/i.js';
-// TODO: No WebsocketモードでStreamMockが使えそう
-//import { StreamMock } from '@/utility/stream-mock.js';
 
 // heart beat interval in ms
 const HEART_BEAT_INTERVAL = 1000 * 60;

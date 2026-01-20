@@ -19,6 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 					<MkInfo v-if="noBotProtection" warn>{{ i18n.ts.noBotProtectionWarning }} <MkA to="/admin/security" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 					<MkInfo v-if="noEmailServer" warn>{{ i18n.ts.noEmailServerWarning }} <MkA to="/admin/email-settings" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
 					<MkInfo v-if="updateAvailable" warn>{{ i18n.ts.newVersionOfClientAvailable }} <MkA to="/admin/update" class="_link">{{ i18n.ts.configure }}</MkA></MkInfo>
+					<MkInfo v-if="pendingUserApprovals" warn class="info">{{ i18n.ts.pendingUserApprovals }} <MkA to="/admin/approvals" class="_link">{{ i18n.ts.check }}</MkA></MkInfo>
 				</div>
 
 				<MkSuperMenu :def="menuDef" :searchIndex="searchIndex" :grid="narrow"></MkSuperMenu>
@@ -75,12 +76,21 @@ const noInquiryUrl = computed(() => isEmpty(instance.inquiryUrl));
 const thereIsUnresolvedAbuseReport = ref(false);
 const currentPage = computed(() => router.currentRef.value.child);
 const updateAvailable = ref(false);
+const pendingUserApprovals = ref(false);
 
 misskeyApi('admin/abuse-user-reports', {
 	state: 'unresolved',
 	limit: 1,
 }).then(reports => {
 	if (reports.length > 0) thereIsUnresolvedAbuseReport.value = true;
+});
+
+misskeyApi('admin/show-users', {
+	state: 'pending',
+	origin: 'local',
+	limit: 1,
+}).then(approvals => {
+	if (approvals.length > 0) pendingUserApprovals.value = true;
 });
 
 fetchCherrypickReleases().then((result) => {
@@ -123,6 +133,11 @@ const menuDef = computed<SuperMenuDef[]>(() => [{
 		text: i18n.ts.invite,
 		to: '/admin/invites',
 		active: currentPage.value?.route.name === 'invites',
+	}, {
+		icon: 'ti ti-notes',
+		text: i18n.ts.approvals,
+		to: '/admin/approvals',
+		active: currentPage.value?.route.name === 'approvals',
 	}, {
 		icon: 'ti ti-badges',
 		text: i18n.ts.roles,

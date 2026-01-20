@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 		<Transition :name="prefer.s.animation ? 'fade' : ''" mode="out-in">
 			<div v-if="note">
 				<div v-if="showNext" class="_margin">
-					<MkNotesTimeline direction="up" :withControl="false" :pullToRefresh="false" class="" :paginator="showNext === 'channel' ? nextChannelPaginator : showNext === 'user'? nextUserPaginator : showNext === 'home' ? nextHomePaginator : nextLocalPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline"/>
+					<MkNotesTimeline direction="up" :withControl="false" :pullToRefresh="false" class="" :paginator="showNext === 'channel' ? nextChannelPaginator : showNext === 'user'? nextUserPaginator : showNext === 'home' ? nextHomePaginator : nextLocalPaginator" :noGap="!prefer.s.showGapBetweenNotesInTimeline" :forceDisableInfiniteScroll="true"/>
 				</div>
 
 				<div class="_margin">

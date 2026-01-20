@@ -7,7 +7,7 @@ import RE2 from 're2';
 import * as mfm from 'mfc-js';
 import { Inject, Injectable } from '@nestjs/common';
 import ms from 'ms';
-import { JSDOM } from 'jsdom';
+import * as htmlParser from 'node-html-parser';
 import { extractCustomEmojisFromMfm } from '@/misc/extract-custom-emojis-from-mfm.js';
 import { extractHashtags } from '@/misc/extract-hashtags.js';
 import * as Acct from '@/misc/acct.js';
@@ -300,8 +300,20 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			if (ps.chatScope !== undefined) updates.chatScope = ps.chatScope;
 
 			function checkMuteWordCount(mutedWords: (string[] | string)[], limit: number) {
-				// TODO: ちゃんと数える
-				const length = JSON.stringify(mutedWords).length;
+				const count = (arr: (string[] | string)[]) => {
+					let length = 0;
+					for (const item of arr) {
+						if (typeof item === 'string') {
+							length += item.length;
+						} else if (Array.isArray(item)) {
+							for (const subItem of item) {
+								length += subItem.length;
+							}
+						}
+					}
+					return length;
+				};
+				const length = count(mutedWords);
 				if (length > limit) {
 					throw new ApiError(meta.errors.tooManyMutedWords);
 				}
@@ -567,16 +579,15 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 		try {
 			const html = await this.httpRequestService.getHtml(url);
 
-			const { window } = new JSDOM(html);
-			const doc: Document = window.document;
+			const doc = htmlParser.parse(html);
 
 			const myLink = `${this.config.url}/@${user.username}`;
 
 			const aEls = Array.from(doc.getElementsByTagName('a'));
 			const linkEls = Array.from(doc.getElementsByTagName('link'));
 
-			const includesMyLink = aEls.some(a => a.href === myLink);
-			const includesRelMeLinks = [...aEls, ...linkEls].some(link => link.rel === 'me' && link.href === myLink);
+			const includesMyLink = aEls.some(a => a.attributes.href === myLink);
+			const includesRelMeLinks = [...aEls, ...linkEls].some(link => link.attributes.rel?.split(/\s+/).includes('me') && link.attributes.href === myLink);
 
 			if (includesMyLink || includesRelMeLinks) {
 				await this.userProfilesRepository.createQueryBuilder('profile').update()
@@ -586,8 +597,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					})
 					.execute();
 			}
-
-			window.close();
 		} catch (err) {
 			// なにもしない
 		}

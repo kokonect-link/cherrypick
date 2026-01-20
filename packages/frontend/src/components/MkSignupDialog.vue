@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<XServerRules @done="isAcceptedServerRule = true" @cancel="onClose"/>
 			</template>
 			<template v-else>
-				<XSignup :autoSet="autoSet" @back="isAcceptedServerRule = false" @signup="onSignup" @signupEmailPending="onSignupEmailPending"/>
+				<XSignup :autoSet="autoSet" @back="isAcceptedServerRule = false" @signup="onSignup" @signupEmailPending="onSignupEmailPending" @approvalPending="onApprovalPending"/>
 			</template>
 		</Transition>
 	</div>
@@ -67,6 +67,10 @@ function onSignup(res: Misskey.entities.SignupResponse) {
 }
 
 function onSignupEmailPending() {
+	dialog.value?.close();
+}
+
+function onApprovalPending() {
 	dialog.value?.close();
 }
 </script>

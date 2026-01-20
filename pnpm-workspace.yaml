@@ -4,6 +4,7 @@ packages:
   - packages/frontend
   - packages/frontend-builder
   - packages/frontend-embed
+  - packages/i18n
   - packages/icons-subsetter
   - packages/sw
   - packages/cherrypick-js
@@ -15,6 +16,7 @@ onlyBuiltDependencies:
   - '@nestjs/core'
   - '@parcel/watcher'
   - '@sentry/profiling-node'
+  - '@sentry-internal/node-cpu-profiler'
   - '@swc/core'
   - '@tensorflow/tfjs-node'
   - argon2
@@ -35,4 +37,6 @@ onlyBuiltDependencies:
 ignorePatchFailures: false
 minimumReleaseAge: 10080 # delay 7days to mitigate supply-chain attack
 minimumReleaseAgeExclude:
-  - happy-dom # セキュリティ修正のため一時的に。そのうち消すこと
+  - '@syuilo/aiscript'
+  - systeminformation # 脆弱性対応。そのうち消すこと
+  - 'mfc-js'

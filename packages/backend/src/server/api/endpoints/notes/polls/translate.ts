@@ -145,7 +145,6 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 
 	private async translateDeepL(text: string[], targetLang: string, authKey: string, isPro: boolean, provider: string) {
 		const params = new URLSearchParams();
-		params.append('auth_key', authKey);
 		params.append('target_lang', targetLang);
 
 		const translations = [];
@@ -156,6 +155,7 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 			const res = await this.httpRequestService.send(endpoint, {
 				method: 'POST',
 				headers: {
+					'Authorization': `DeepL-Auth-Key ${this.serverSettings.deeplAuthKey}`,
 					'Content-Type': 'application/x-www-form-urlencoded',
 					Accept: 'application/json, */*',
 				},

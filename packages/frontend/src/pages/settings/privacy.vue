@@ -90,7 +90,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 		<SearchMarker :keywords="['lockdown']">
 			<FormSection>
-				<template #label><SearchLabel>{{ i18n.ts.lockdown }}</SearchLabel><span class="_beta" style="vertical-align: middle;">{{ i18n.ts.beta }}</span></template>
+				<template #label><SearchLabel>{{ i18n.ts.lockdown }}</SearchLabel></template>
 
 				<div class="_gaps_m">
 					<SearchMarker :keywords="['login', 'signin']">

@@ -44,9 +44,9 @@ export class SnowfallEffect {
 		start: number;
 		previous: number;
 	} = {
-			start: 0,
-			previous: 0,
-		};
+		start: 0,
+		previous: 0,
+	};
 	private raf = 0;
 
 	private density: number = 1 / 90;

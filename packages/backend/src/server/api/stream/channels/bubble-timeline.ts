@@ -74,7 +74,7 @@ class BubbleTimelineChannel extends Channel {
 				note.renote.myReaction = myRenoteReaction;
 			}
 		}
-		
+
 		this.send('note', note);
 	}
 

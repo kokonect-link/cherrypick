@@ -55,12 +55,24 @@ services:
         target: /cherrypick/packages/backend/jest.js
         read_only: true
       - type: bind
+        source: ../scripts/compile_config.js
+        target: /cherrypick/packages/backend/scripts/compile_config.js
+        read_only: true
+      - type: bind
         source: ../../cherrypick-js/built
         target: /cherrypick/packages/cherrypick-js/built
         read_only: true
       - type: bind
         source: ../../cherrypick-js/package.json
         target: /cherrypick/packages/cherrypick-js/package.json
+        read_only: true
+      - type: bind
+        source: ../../i18n/built
+        target: /cherrypick/packages/i18n/built
+        read_only: true
+      - type: bind
+        source: ../../i18n/package.json
+        target: /cherrypick/packages/i18n/package.json
         read_only: true
       - type: bind
         source: ../../../package.json

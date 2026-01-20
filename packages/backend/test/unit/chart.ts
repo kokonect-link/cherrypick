@@ -9,7 +9,7 @@ import * as assert from 'assert';
 import { jest } from '@jest/globals';
 import * as lolex from '@sinonjs/fake-timers';
 import { DataSource } from 'typeorm';
-import type { AppLockService } from '@/core/AppLockService.js';
+import * as Redis from 'ioredis';
 import TestChart from '@/core/chart/charts/test.js';
 import TestGroupedChart from '@/core/chart/charts/test-grouped.js';
 import TestUniqueChart from '@/core/chart/charts/test-unique.js';
@@ -23,11 +23,12 @@ import Logger from '@/logger.js';
 
 describe('Chart', () => {
 	const config = loadConfig();
-	const appLockService = {
-		getChartInsertLock: () => () => Promise.resolve(() => {}),
-	} as unknown as jest.Mocked<AppLockService>;
 
 	let db: DataSource | undefined;
+	const redisClient = {
+		set: () => Promise.resolve('OK'),
+		get: () => Promise.resolve(null),
+	} as unknown as jest.Mocked<Redis.Redis>;
 
 	let testChart: TestChart;
 	let testGroupedChart: TestGroupedChart;
@@ -64,12 +65,14 @@ describe('Chart', () => {
 		await db.initialize();
 
 		const logger = new Logger('chart'); // TODO: モックにする
-		testChart = new TestChart(db, appLockService, logger);
-		testGroupedChart = new TestGroupedChart(db, appLockService, logger);
-		testUniqueChart = new TestUniqueChart(db, appLockService, logger);
-		testIntersectionChart = new TestIntersectionChart(db, appLockService, logger);
+		testChart = new TestChart(db, redisClient, logger);
+		testGroupedChart = new TestGroupedChart(db, redisClient, logger);
+		testUniqueChart = new TestUniqueChart(db, redisClient, logger);
+		testIntersectionChart = new TestIntersectionChart(db, redisClient, logger);
 
 		clock = lolex.install({
+			// https://github.com/sinonjs/sinon/issues/2620
+			toFake: Object.keys(lolex.timers).filter((key) => !['nextTick', 'queueMicrotask'].includes(key)) as lolex.FakeMethod[],
 			now: new Date(Date.UTC(2000, 0, 1, 0, 0, 0)),
 			shouldClearNativeTimers: true,
 		});

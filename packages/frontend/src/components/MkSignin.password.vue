@@ -29,7 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 				<template #prefix><i class="ti ti-lock"></i></template>
 				<template #suffix>
 					<div v-if="isCapsLock" :class="$style.isCapslock"><i class="ti ti-arrow-big-up-line"></i></div>
-					<button v-if="password" type="button" :class="$style.passwordToggleBtn" @click="togglePassword"><i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
+					<button v-if="password" type="button" tabindex="-1" :class="$style.passwordToggleBtn" @click="togglePassword"><i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'"></i></button>
 				</template>
 				<template #caption><button class="_textButton" type="button" @click="resetPassword">{{ i18n.ts.forgotPassword }}</button></template>
 			</MkInput>

@@ -60,6 +60,12 @@ export type ModerationLog = {
 	type: 'unsuspend';
 	info: ModerationLogPayloads['unsuspend'];
 } | {
+	type: 'approve';
+	info: ModerationLogPayloads['approve'];
+} | {
+	type: 'decline';
+	info: ModerationLogPayloads['decline'];
+} | {
 	type: 'updateUserNote';
 	info: ModerationLogPayloads['updateUserNote'];
 } | {
@@ -265,6 +271,7 @@ export type SignupRequest = {
 	host?: string;
 	invitationCode?: string;
 	emailAddress?: string;
+	reason?: string;
 	'hcaptcha-response'?: string | null;
 	'g-recaptcha-response'?: string | null;
 	'turnstile-response'?: string | null;
@@ -294,6 +301,7 @@ export type SigninFlowRequest = {
 	'g-recaptcha-response'?: string | null;
 	'turnstile-response'?: string | null;
 	'm-captcha-response'?: string | null;
+	'testcaptcha-response'?: string | null;
 };
 
 export type SigninFlowResponse = {

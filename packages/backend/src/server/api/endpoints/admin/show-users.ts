@@ -35,7 +35,7 @@ export const paramDef = {
 		limit: { type: 'integer', minimum: 1, maximum: 100, default: 10 },
 		offset: { type: 'integer', default: 0 },
 		sort: { type: 'string', enum: ['+follower', '-follower', '+createdAt', '-createdAt', '+updatedAt', '-updatedAt', '+lastActiveDate', '-lastActiveDate'] },
-		state: { type: 'string', enum: ['all', 'alive', 'available', 'admin', 'moderator', 'adminOrModerator', 'suspended'], default: 'all' },
+		state: { type: 'string', enum: ['all', 'alive', 'available', 'admin', 'moderator', 'adminOrModerator', 'suspended', 'pending'], default: 'all' },
 		origin: { type: 'string', enum: ['combined', 'local', 'remote'], default: 'combined' },
 		username: { type: 'string', nullable: true, default: null },
 		hostname: {
@@ -82,6 +82,11 @@ export default class extends Endpoint<typeof meta, typeof paramDef> { // eslint-
 					query.where('user.id IN (:...adminOrModeratorIds)', { adminOrModeratorIds: adminOrModeratorIds });
 					break;
 				}
+				case 'pending':
+					query.leftJoin('system_account', 'system_account', 'system_account.userId = user.id');
+					query.andWhere('user.approved = FALSE');
+					query.andWhere('system_account.id IS NULL');
+					break;
 			}
 
 			switch (ps.origin) {
