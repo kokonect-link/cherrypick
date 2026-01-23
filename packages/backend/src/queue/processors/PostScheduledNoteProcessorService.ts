@@ -59,7 +59,9 @@ export class PostScheduledNoteProcessorService {
 					title: draft.eventTitle,
 					start: new Date(draft.eventStart),
 					end: draft.eventEnd ? new Date(draft.eventEnd) : null,
-					metadata: draft.eventMetadata,
+					metadata: draft.eventMetadata ?? {
+						'@type': 'Event',
+					},
 				} : null,
 				deleteAt: draft.deleteAt ? new Date(draft.deleteAt) : null,
 			});
