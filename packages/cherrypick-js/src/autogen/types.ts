@@ -4431,6 +4431,8 @@ export type components = {
             /** @enum {string} */
             notify?: 'normal' | 'none';
             withReplies?: boolean;
+            approved?: boolean;
+            signupReason?: string;
         };
         MeDetailedOnly: {
             /** Format: id */

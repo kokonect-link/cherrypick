@@ -34,6 +34,13 @@ export class MiUserPending {
 
 	@Column('varchar', {
 		length: 1000,
+		nullable: true,
 	})
 	public reason: string;
+
+	@Column('varchar', {
+		length: 128,
+		nullable: true,
+	})
+	public requestOriginIp: string;
 }
