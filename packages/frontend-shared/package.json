@@ -25,10 +25,10 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.11",
-		"@types/node": "24.10.2",
-		"@typescript-eslint/eslint-plugin": "8.49.0",
-		"@typescript-eslint/parser": "8.49.0",
-		"esbuild": "0.27.1",
+		"@types/node": "24.11.0",
+		"@typescript-eslint/eslint-plugin": "8.56.1",
+		"@typescript-eslint/parser": "8.56.1",
+		"esbuild": "0.27.3",
 		"eslint-plugin-vue": "10.6.2",
 		"nodemon": "3.1.11",
 		"typescript": "5.9.3",
@@ -38,8 +38,8 @@
 		"js-built"
 	],
 	"dependencies": {
-		"i18n": "workspace:*",
 		"cherrypick-js": "workspace:*",
-		"vue": "3.5.25"
+		"i18n": "workspace:*",
+		"vue": "3.5.29"
 	}
 }
