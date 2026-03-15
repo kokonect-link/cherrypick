@@ -160,7 +160,7 @@ export class DeleteAccountProcessorService {
 			await this.usersRepository.delete(job.data.user.id);
 
 			// Trigger CacheService
-			this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: job.data.user.id });
+			//this.globalEventService.publishInternalEvent('remoteUserUpdated', { id: job.data.user.id });
 		}
 
 		return `[${job.data.user.id}] Account deleted`;
