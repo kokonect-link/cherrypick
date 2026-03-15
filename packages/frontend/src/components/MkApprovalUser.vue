@@ -57,8 +57,8 @@ function getReason() {
 	return misskeyApi('admin/show-user', {
 		userId: props.user.id,
 	}).then(info => {
-		reason.value = info?.signupReason;
-		email.value = info?.email;
+		reason.value = info.signupReason ?? '';
+		email.value = info.email ?? '';
 	});
 }
 
