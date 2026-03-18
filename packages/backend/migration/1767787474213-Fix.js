@@ -7,6 +7,9 @@ export class Fix1767787474213 {
     name = 'Fix1767787474213'
 
     async up(queryRunner) {
+        await queryRunner.query(`DELETE FROM "renote_muting" WHERE "muteeId" NOT IN (SELECT "id" FROM "user")`);
+        await queryRunner.query(`DELETE FROM "renote_muting" WHERE "muterId" NOT IN (SELECT "id" FROM "user")`);
+        await queryRunner.query(`ALTER TABLE "poll_vote" DROP CONSTRAINT "FK_poll_vote_poll"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_2cd3b2a6b4cf0b910b260afe08"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_renote_muting_muteeId"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_renote_muting_muterId"`);
@@ -75,5 +78,6 @@ export class Fix1767787474213 {
         await queryRunner.query(`CREATE INDEX "IDX_renote_muting_muterId" ON "muting" ("muterId") `);
         await queryRunner.query(`CREATE INDEX "IDX_renote_muting_muteeId" ON "muting" ("muteeId") `);
         await queryRunner.query(`CREATE INDEX "IDX_2cd3b2a6b4cf0b910b260afe08" ON "instance" ("firstRetrievedAt") `);
+        await queryRunner.query(`ALTER TABLE "poll_vote" ADD CONSTRAINT "FK_poll_vote_poll" FOREIGN KEY ("noteId") REFERENCES "poll"("noteId") ON DELETE CASCADE ON UPDATE NO ACTION`);
     }
 }
