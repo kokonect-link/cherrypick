@@ -43,6 +43,7 @@ export class MiNote {
 	})
 	public deleteAt: Date | null;
 
+	@Index('IDX_note_deliveryTargets', { synchronize: false })
 	@Column('jsonb', {
 		nullable: true,
 		default: {},

@@ -209,6 +209,7 @@ export class MiNoteDraft {
 	})
 	public deleteAt: Date | null;
 
+	@Index('IDX_note_draft_deliveryTargets', { synchronize: false })
 	@Column('jsonb', {
 		nullable: true,
 		default: {},
