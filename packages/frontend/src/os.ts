@@ -265,7 +265,7 @@ export function alert(props: {
 	caption?: string | null;
 }): Promise<void> {
 	return new Promise(resolve => {
-		const { dispose } = popup(MkDialog, props, {
+		const { dispose } = popup(MkDialog, { ...props, caption: props.caption ?? undefined }, {
 			done: () => {
 				resolve();
 			},
@@ -285,6 +285,7 @@ export function confirm(props: {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkDialog, {
 			...props,
+			caption: props.caption ?? undefined,
 			showCancelButton: true,
 		}, {
 			done: result => {
@@ -307,7 +308,7 @@ export function actions<T extends {
 	type: 'error' | 'info' | 'success' | 'warning' | 'waiting' | 'question';
 	title?: string;
 	text?: string;
-	caption?: string | null;
+	caption?: string | null | undefined;
 	actions: T;
 }): Promise<{
 	canceled: true; result: undefined;
@@ -317,6 +318,7 @@ export function actions<T extends {
 	return new Promise(resolve => {
 		const { dispose } = popup(MkDialog, {
 			...props,
+			caption: props.caption ?? undefined,
 			actions: props.actions.map(a => ({
 				text: a.text,
 				primary: a.primary,

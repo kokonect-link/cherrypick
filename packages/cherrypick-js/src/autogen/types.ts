@@ -4431,6 +4431,8 @@ export type components = {
             /** @enum {string} */
             notify?: 'normal' | 'none';
             withReplies?: boolean;
+            approved?: boolean;
+            signupReason?: string;
         };
         MeDetailedOnly: {
             /** Format: id */
@@ -4791,7 +4793,18 @@ export type components = {
             emojis?: {
                 [key: string]: string;
             };
-            event?: Record<string, never> | null;
+            event?: {
+                title: string;
+                /** Format: date-time */
+                start: string;
+                /** Format: date-time */
+                end: string | null;
+                metadata?: {
+                    '@type'?: string;
+                    location?: string;
+                    description?: string;
+                };
+            } | null;
             /**
              * Format: id
              * @example xxxxxxxxxx
@@ -5123,6 +5136,15 @@ export type components = {
             /** @enum {string} */
             type: 'renote:grouped';
             note: components['schemas']['Note'];
+            users: components['schemas']['UserLite'][];
+        } | {
+            /** Format: id */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** @enum {string} */
+            type: 'note:grouped';
+            noteIds: (string | null)[];
             users: components['schemas']['UserLite'][];
         } | {
             /** Format: id */
@@ -6094,7 +6116,11 @@ export type components = {
                 start: string;
                 /** Format: date-time */
                 end: string | null;
-                metadata: Record<string, never>;
+                metadata?: {
+                    '@type'?: string;
+                    location?: string;
+                    description?: string;
+                };
             } | null;
             fileIds?: string[];
             files?: components['schemas']['DriveFile'][];
@@ -6276,6 +6302,11 @@ export interface operations {
                 };
                 content: {
                     'application/json': {
+                        /**
+                         * Format: id
+                         * @example xxxxxxxxxx
+                         */
+                        id: string;
                         name: string;
                         targetUserPattern: string | null;
                         reporterPattern: string | null;
@@ -33782,7 +33813,7 @@ export interface operations {
                 'application/json': {
                     /** Format: misskey:id */
                     noteId: string;
-                    text: string;
+                    text: string | null;
                     fileIds?: string[];
                     mediaIds?: string[];
                     poll?: {

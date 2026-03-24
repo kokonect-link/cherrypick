@@ -77,6 +77,21 @@ export const packedNoteHistorySchema = {
 				},
 				metadata: {
 					type: 'object',
+					optional: true, nullable: false,
+					properties: {
+						'@type': {
+							type: 'string',
+							optional: true, nullable: false,
+						},
+						location: {
+							type: 'string',
+							optional: true, nullable: false,
+						},
+						description: {
+							type: 'string',
+							optional: true, nullable: false,
+						},
+					},
 				},
 			},
 		},

@@ -218,7 +218,7 @@ export class SignupApiService {
 				username: username,
 				password: hash,
 				reason: reason,
-				requestOriginIp: this.meta.enableIpLogging ? request.ip : null,
+				requestOriginIp: this.meta.enableIpLogging ? request.ip : undefined,
 			});
 
 			const link = `${this.config.url}/signup-complete/${code}`;

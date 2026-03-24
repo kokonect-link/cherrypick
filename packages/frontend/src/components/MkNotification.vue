@@ -139,7 +139,7 @@ SPDX-License-Identifier: AGPL-3.0-only
 			</MkA>
 			<template v-else-if="notification.type === 'follow'">
 				<span :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.youGotNewFollower }}</span>
-				<div v-if="full"><MkFollowButton :user="notification.user" :full="true" :disableIfFollowing="prefer.r.showFollowingMessageInsteadOfButtonEnabled.value"/></div>
+				<div v-if="full"><!--<MkFollowButton :user="notification.user" :full="true" :disableIfFollowing="prefer.r.showFollowingMessageInsteadOfButtonEnabled.value"/>--></div>
 			</template>
 			<template v-else-if="notification.type === 'followRequestAccepted'">
 				<div :class="$style.text" style="opacity: 0.6;">{{ i18n.ts.followRequestAccepted }}</div>
@@ -256,11 +256,13 @@ function getActualReactedUsersCount(notification: Misskey.entities.Notification)
 }
 
 const acceptGroupInvitation = () => {
+	if (!('invitation' in props.notification)) return;
 	groupInviteDone.value = true;
 	misskeyApi('users/groups/invitations/accept', { invitationId: props.notification.invitation.id });
 };
 
 const rejectGroupInvitation = () => {
+	if (!('invitation' in props.notification)) return;
 	groupInviteDone.value = true;
 	misskeyApi('users/groups/invitations/reject', { invitationId: props.notification.invitation.id });
 };

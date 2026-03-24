@@ -139,7 +139,7 @@ const defaultResolver = {
 	reporterPattern: '',
 	reportContentPattern: '',
 	expirationDate: '',
-	expiresAt: 'indefinitely',
+	expiresAt: 'indefinitely' as '1hour' | '12hours' | '1day' | '1week' | '1month' | '3months' | '6months' | '1year' | 'indefinitely',
 	forward: false,
 };
 
@@ -149,7 +149,7 @@ const newResolver = ref<{
 	reporterPattern: string;
 	reportContentPattern: string;
 	expirationDate: string;
-	expiresAt: string;
+	expiresAt: '1hour' | '12hours' | '1day' | '1week' | '1month' | '3months' | '6months' | '1year' | 'indefinitely';
 	forward: boolean;
 }>(defaultResolver);
 
@@ -158,7 +158,7 @@ const editingResolver = ref<{
 	targetUserPattern: string;
 	reporterPattern: string;
 	reportContentPattern: string;
-	expiresAt: string;
+	expiresAt: '1hour' | '12hours' | '1day' | '1week' | '1month' | '3months' | '6months' | '1year' | 'indefinitely';
 	expirationDate: string;
 	forward: boolean;
 	previousExpiresAt?: string;
@@ -191,19 +191,21 @@ function edit(id: string) {
 }
 
 function save(): void {
-	os.apiWithDialog('admin/abuse-report-resolver/update', {
-		resolverId: editableResolver.value,
-		name: editingResolver.value.name,
-		targetUserPattern: editingResolver.value.targetUserPattern || null,
-		reporterPattern: editingResolver.value.reporterPattern || null,
-		reportContentPattern: editingResolver.value.reportContentPattern || null,
-		...(editingResolver.value.previousExpiresAt && editingResolver.value.previousExpiresAt === editingResolver.value.expiresAt ? {} : {
-			expiresAt: editingResolver.value.expiresAt,
-		}),
-		forward: editingResolver.value.forward,
-	}).then(() => {
-		editableResolver.value = null;
-	});
+	if (editableResolver.value != null) {
+		os.apiWithDialog('admin/abuse-report-resolver/update', {
+			resolverId: editableResolver.value,
+			name: editingResolver.value.name,
+			targetUserPattern: editingResolver.value.targetUserPattern || null,
+			reporterPattern: editingResolver.value.reporterPattern || null,
+			reportContentPattern: editingResolver.value.reportContentPattern || null,
+			...(editingResolver.value.previousExpiresAt && editingResolver.value.previousExpiresAt === editingResolver.value.expiresAt ? {} : {
+				expiresAt: editingResolver.value.expiresAt,
+			}),
+			forward: editingResolver.value.forward,
+		}).then(() => {
+			editableResolver.value = null;
+		});
+	}
 }
 
 function deleteResolver(id: string): void {

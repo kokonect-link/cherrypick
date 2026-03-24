@@ -236,7 +236,7 @@ const showForm = ref(false);
 const posting = ref(false);
 const posted = ref(false);
 const text = ref(props.initialText ?? '');
-const files = shallowRef(props.initialFiles ?? ([] as Misskey.entities.DriveFile[]));
+const files = ref(props.initialFiles ?? []);
 const poll = ref<PollEditorModelValue | null>(null);
 const event = ref<any>(null);
 const useCw = ref<boolean>(!!props.initialCw);
@@ -1220,7 +1220,12 @@ async function post(ev?: MouseEvent) {
 	}
 
 	posting.value = true;
-	misskeyApi(props.updateMode ? 'notes/update' : 'notes/create', postData, token).then((res) => {
+	const p = () => props.updateMode ? misskeyApi('notes/update', {
+		...postData,
+		noteId: postData.noteId!,
+	}, token) : misskeyApi('notes/create', postData, token);
+
+	p().then((res) => {
 		if (props.freezeAfterPosted) {
 			posted.value = true;
 		} else {
@@ -1459,7 +1464,7 @@ async function openAccountMenu(ev: MouseEvent) {
 				replyTargetNote.value = draft.reply;
 				reactionAcceptance.value = draft.reactionAcceptance;
 				scheduledAt.value = draft.scheduledAt ?? null;
-				deliveryTargets.value = draft.deliveryTargets ?? null;
+				deliveryTargets.value = draft.deliveryTargets == null ? null : { mode: draft.deliveryTargets.mode, hosts: draft.deliveryTargets.hosts ?? [] };
 				if (draft.channel) targetChannel.value = draft.channel as unknown as Misskey.entities.Channel;
 
 				visibleUsers.value = [];
@@ -1747,7 +1752,7 @@ onMounted(() => {
 					deleteAfter: null,
 				};
 			}
-			deliveryTargets.value = init.deliveryTargets ?? null;
+			deliveryTargets.value = init.deliveryTargets == null ? null : { mode: init.deliveryTargets.mode, hosts: init.deliveryTargets.hosts ?? [] };
 		}
 
 		nextTick(() => watchForDraft());

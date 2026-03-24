@@ -7,7 +7,7 @@
 		"type": "git",
 		"url": "https://github.com/kokonect-link/cherrypick.git"
 	},
-	"packageManager": "pnpm@10.25.0",
+	"packageManager": "pnpm@10.30.3",
 	"workspaces": [
 		"packages/cherrypick-js",
 		"packages/i18n",
@@ -61,30 +61,30 @@
 	},
 	"dependencies": {
 		"cssnano": "7.1.2",
-		"esbuild": "0.27.1",
+		"esbuild": "0.27.3",
 		"execa": "9.6.1",
 		"ignore-walk": "8.0.0",
 		"js-yaml": "4.1.1",
 		"postcss": "8.5.6",
-		"tar": "7.5.2",
-		"terser": "5.44.1",
+		"tar": "7.5.10",
+		"terser": "5.46.0",
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.11",
-		"@eslint/js": "9.39.1",
+		"@eslint/js": "9.39.3",
 		"@misskey-dev/eslint-plugin": "2.2.0",
 		"@types/js-yaml": "4.0.9",
-		"@types/node": "24.10.2",
-		"@typescript-eslint/eslint-plugin": "8.49.0",
-		"@typescript-eslint/parser": "8.49.0",
+		"@types/node": "24.11.0",
+		"@typescript-eslint/eslint-plugin": "8.56.1",
+		"@typescript-eslint/parser": "8.56.1",
 		"cross-env": "10.1.0",
-		"cypress": "15.7.1",
-		"eslint": "9.39.1",
-		"globals": "16.5.0",
+		"cypress": "15.11.0",
+		"eslint": "9.39.3",
+		"globals": "17.4.0",
 		"ncp": "2.0.0",
-		"pnpm": "10.25.0",
-		"start-server-and-test": "2.1.3"
+		"pnpm": "10.30.3",
+		"start-server-and-test": "2.1.5"
 	},
 	"optionalDependencies": {
 		"@tensorflow/tfjs-core": "4.22.0"

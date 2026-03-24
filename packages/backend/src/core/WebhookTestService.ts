@@ -68,6 +68,8 @@ function generateDummyUser(override?: Partial<MiUser>): MiUser {
 		autoDeleteNotesAfterDays: null,
 		autoDeleteKeepFavorites: true,
 		canChat: null,
+		approved: true,
+		signupReason: null,
 		...override,
 	};
 }
@@ -484,6 +486,7 @@ export class WebhookTestService {
 			followingVisibility: 'public',
 			chatScope: 'mutual',
 			canChat: true,
+			approved: undefined,
 			twoFactorEnabled: false,
 			usePasswordLessLogin: false,
 			securityKeys: false,

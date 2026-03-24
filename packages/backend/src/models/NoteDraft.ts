@@ -199,19 +199,17 @@ export class MiNoteDraft {
 	public eventTitle: string | null;
 
 	@Column('jsonb', {
-		default: {
-			'@context': 'https://schema.org/',
-			'@type': 'Event',
-		},
 		comment: 'metadata object describing the event. Follows https://schema.org/Event',
+		nullable: true,
 	})
-	public eventMetadata: Event.EventSchema;
+	public eventMetadata: Event.EventSchema | null;
 
 	@Column('timestamp with time zone', {
 		nullable: true,
 	})
 	public deleteAt: Date | null;
 
+	@Index('IDX_note_draft_deliveryTargets', { synchronize: false })
 	@Column('jsonb', {
 		nullable: true,
 		default: {},

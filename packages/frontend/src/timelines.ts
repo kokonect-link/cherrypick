@@ -39,7 +39,7 @@ export function basicTimelineIconClass(timeline: BasicTimelineType): string {
 	}
 }
 
-export function isAvailableBasicTimeline(timeline: BasicTimelineType | undefined | null): boolean {
+export function isAvailableBasicTimeline(timeline: BasicTimelineType | `list:${string}` | undefined | null): boolean {
 	switch (timeline) {
 		case 'home':
 			return $i != null && prefer.s.enableHomeTimeline;

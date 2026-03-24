@@ -24,6 +24,7 @@ import type { UserGroupInvitationEntityService } from './UserGroupInvitationEnti
 
 const NOTE_REQUIRED_NOTIFICATION_TYPES = new Set([
 	'note',
+	'note:grouped',
 	'mention',
 	'reply',
 	'renote',

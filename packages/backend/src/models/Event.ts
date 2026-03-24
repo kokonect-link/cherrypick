@@ -30,7 +30,7 @@ export class MiEvent {
 		comment: 'The end of the event',
 		nullable: true,
 	})
-	public end: Date;
+	public end: Date | null;
 
 	@Column({
 		type: 'varchar',

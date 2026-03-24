@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { jest } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { describe, test, expect, beforeEach } from '@jest/globals';
 import type { FastifyRequest } from 'fastify';

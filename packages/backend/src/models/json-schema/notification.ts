@@ -475,6 +475,33 @@ export const packedNotificationSchema = {
 			type: {
 				type: 'string',
 				optional: false, nullable: false,
+				enum: ['note:grouped'],
+			},
+			noteIds: {
+				type: 'array',
+				optional: false, nullable: false,
+				items: {
+					type: 'string',
+					optional: true, nullable: true,
+				},
+			},
+			users: {
+				type: 'array',
+				optional: false, nullable: false,
+				items: {
+					type: 'object',
+					ref: 'UserLite',
+					optional: false, nullable: false,
+				},
+			},
+		},
+	}, {
+		type: 'object',
+		properties: {
+			...baseSchema.properties,
+			type: {
+				type: 'string',
+				optional: false, nullable: false,
 				enum: ['test'],
 			},
 		},

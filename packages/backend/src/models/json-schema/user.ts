@@ -462,6 +462,14 @@ export const packedUserDetailedNotMeOnlySchema = {
 			type: 'boolean',
 			nullable: false, optional: true,
 		},
+		approved: {
+			type: 'boolean',
+			nullable: false, optional: true,
+		},
+		signupReason: {
+			type: 'string',
+			nullable: false, optional: true,
+		},
 		//#endregion
 	},
 } as const;
